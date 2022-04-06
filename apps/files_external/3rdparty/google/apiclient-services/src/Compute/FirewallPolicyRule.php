@@ -51,6 +51,10 @@ class FirewallPolicyRule extends \Google\Collection
    */
   public $priority;
   /**
+   * @var string
+   */
+  public $ruleName;
+  /**
    * @var int
    */
   public $ruleTupleCount;
@@ -58,6 +62,8 @@ class FirewallPolicyRule extends \Google\Collection
    * @var string[]
    */
   public $targetResources;
+  protected $targetSecureTagsType = FirewallPolicyRuleSecureTag::class;
+  protected $targetSecureTagsDataType = 'array';
   /**
    * @var string[]
    */
@@ -176,6 +182,20 @@ class FirewallPolicyRule extends \Google\Collection
     return $this->priority;
   }
   /**
+   * @param string
+   */
+  public function setRuleName($ruleName)
+  {
+    $this->ruleName = $ruleName;
+  }
+  /**
+   * @return string
+   */
+  public function getRuleName()
+  {
+    return $this->ruleName;
+  }
+  /**
    * @param int
    */
   public function setRuleTupleCount($ruleTupleCount)
@@ -202,6 +222,20 @@ class FirewallPolicyRule extends \Google\Collection
   public function getTargetResources()
   {
     return $this->targetResources;
+  }
+  /**
+   * @param FirewallPolicyRuleSecureTag[]
+   */
+  public function setTargetSecureTags($targetSecureTags)
+  {
+    $this->targetSecureTags = $targetSecureTags;
+  }
+  /**
+   * @return FirewallPolicyRuleSecureTag[]
+   */
+  public function getTargetSecureTags()
+  {
+    return $this->targetSecureTags;
   }
   /**
    * @param string[]

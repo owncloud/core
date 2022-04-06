@@ -44,12 +44,12 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
    * (gameServerDeployments.create)
    *
    * @param string $parent Required. The parent resource name, in the following
-   * form: `projects/{project}/locations/{location}`.
+   * form: `projects/{project}/locations/{locationId}`.
    * @param GameServerDeployment $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string deploymentId Required. The ID of the game server delpoyment
-   * resource to be created.
+   * @opt_param string deploymentId Required. The ID of the game server deployment
+   * resource to create.
    * @return Operation
    */
   public function create($parent, GameServerDeployment $postBody, $optParams = [])
@@ -61,9 +61,9 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
   /**
    * Deletes a single game server deployment. (gameServerDeployments.delete)
    *
-   * @param string $name Required. The name of the game server delpoyment to
-   * delete, in the following form:
-   * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
+   * @param string $name Required. The name of the game server deployment to
+   * delete, in the following form: `projects/{project}/locations/{locationId}/gam
+   * eServerDeployments/{deploymentId}`.
    * @param array $optParams Optional parameters.
    * @return Operation
    */
@@ -79,9 +79,9 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
    * running an older version of the game server deployment.
    * (gameServerDeployments.fetchDeploymentState)
    *
-   * @param string $name Required. The name of the game server delpoyment, in the
-   * following form:
-   * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
+   * @param string $name Required. The name of the game server deployment, in the
+   * following form: `projects/{project}/locations/{locationId}/gameServerDeployme
+   * nts/{deploymentId}`.
    * @param FetchDeploymentStateRequest $postBody
    * @param array $optParams Optional parameters.
    * @return FetchDeploymentStateResponse
@@ -95,9 +95,9 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
   /**
    * Gets details of a single game server deployment. (gameServerDeployments.get)
    *
-   * @param string $name Required. The name of the game server delpoyment to
-   * retrieve, in the following form:
-   * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
+   * @param string $name Required. The name of the game server deployment to
+   * retrieve, in the following form: `projects/{project}/locations/{locationId}/g
+   * ameServerDeployments/{deploymentId}`.
    * @param array $optParams Optional parameters.
    * @return GameServerDeployment
    */
@@ -138,12 +138,12 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
     return $this->call('getIamPolicy', [$params], Policy::class);
   }
   /**
-   * Gets details a single game server deployment rollout.
+   * Gets details of a single game server deployment rollout.
    * (gameServerDeployments.getRollout)
    *
-   * @param string $name Required. The name of the game server delpoyment to
-   * retrieve, in the following form: `projects/{project}/locations/{location}/gam
-   * eServerDeployments/{deployment}/rollout`.
+   * @param string $name Required. The name of the game server deployment rollout
+   * to retrieve, in the following form: `projects/{project}/locations/{locationId
+   * }/gameServerDeployments/{deploymentId}/rollout`.
    * @param array $optParams Optional parameters.
    * @return GameServerDeploymentRollout
    */
@@ -158,20 +158,21 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
    * (gameServerDeployments.listProjectsLocationsGameServerDeployments)
    *
    * @param string $parent Required. The parent resource name, in the following
-   * form: `projects/{project}/locations/{location}`.
+   * form: `projects/{project}/locations/{locationId}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. The filter to apply to list results.
+   * @opt_param string filter Optional. The filter to apply to list results (see
+   * [Filtering](https://google.aip.dev/160)).
    * @opt_param string orderBy Optional. Specifies the ordering of results
-   * following syntax at
-   * https://cloud.google.com/apis/design/design_patterns#sorting_order.
+   * following [Cloud API
+   * syntax](https://cloud.google.com/apis/design/design_patterns#sorting_order).
    * @opt_param int pageSize Optional. The maximum number of items to return. If
-   * unspecified, the server will pick an appropriate default. The server may
-   * return fewer items than requested. A caller should only rely on response's
+   * unspecified, the server picks an appropriate default. The server may return
+   * fewer items than requested. A caller should only rely on the response's
    * next_page_token to determine if there are more GameServerDeployments left to
    * be queried.
    * @opt_param string pageToken Optional. The next_page_token value returned from
-   * a previous List request, if any.
+   * a previous list request, if any.
    * @return ListGameServerDeploymentsResponse
    */
   public function listProjectsLocationsGameServerDeployments($parent, $optParams = [])
@@ -184,17 +185,16 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
    * Patches a game server deployment. (gameServerDeployments.patch)
    *
    * @param string $name The resource name of the game server deployment, in the
-   * following form:
-   * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
-   * For example, `projects/my-project/locations/global/gameServerDeployments/my-
-   * deployment`.
+   * following form: `projects/{project}/locations/{locationId}/gameServerDeployme
+   * nts/{deploymentId}`. For example, `projects/my-
+   * project/locations/global/gameServerDeployments/my-deployment`.
    * @param GameServerDeployment $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Required. Mask of fields to update. At least one
-   * path must be supplied in this field. For the `FieldMask` definition, see
-   * https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#fieldmask
+   * @opt_param string updateMask Required. The update mask to apply to the
+   * resource. At least one path must be supplied in this field. For more
+   * information, see the [`FieldMask` definition](https://developers.google.com
+   * /protocol-buffers/docs/reference/google.protobuf#fieldmask).
    * @return Operation
    */
   public function patch($name, GameServerDeployment $postBody, $optParams = [])
@@ -208,18 +208,18 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
    * rollout resource. (gameServerDeployments.previewRollout)
    *
    * @param string $name The resource name of the game server deployment rollout,
-   * in the following form: `projects/{project}/locations/{location}/gameServerDep
-   * loyments/{deployment}/rollout`. For example, `projects/my-
+   * in the following form: `projects/{project}/locations/{locationId}/gameServerD
+   * eployments/{deploymentId}/rollout`. For example, `projects/my-
    * project/locations/global/gameServerDeployments/my-deployment/rollout`.
    * @param GameServerDeploymentRollout $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string previewTime Optional. The target timestamp to compute the
    * preview. Defaults to the immediately after the proposed rollout completes.
-   * @opt_param string updateMask Optional. Mask of fields to update. At least one
-   * path must be supplied in this field. For the `FieldMask` definition, see
-   * https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#fieldmask
+   * @opt_param string updateMask Optional. The update mask to apply to the
+   * resource. At least one path must be supplied in this field. For more
+   * information, see the [`FieldMask` definition](https://developers.google.com
+   * /protocol-buffers/docs/reference/google.protobuf#fieldmask).
    * @return PreviewGameServerDeploymentRolloutResponse
    */
   public function previewRollout($name, GameServerDeploymentRollout $postBody, $optParams = [])
@@ -269,23 +269,23 @@ class ProjectsLocationsGameServerDeployments extends \Google\Service\Resource
   }
   /**
    * Patches a single game server deployment rollout. The method will not return
-   * an error if the update does not affect any existing realms. For example - if
-   * the default_game_server_config is changed but all existing realms use the
-   * override, that is valid. Similarly, if a non existing realm is explicitly
-   * called out in game_server_config_overrides field, that will also not result
-   * in an error. (gameServerDeployments.updateRollout)
+   * an error if the update does not affect any existing realms. For example, the
+   * following cases will not return an error: * The default_game_server_config is
+   * changed but all existing realms use the override. * A non-existing realm is
+   * explicitly called out in the game_server_config_overrides field.
+   * (gameServerDeployments.updateRollout)
    *
    * @param string $name The resource name of the game server deployment rollout,
-   * in the following form: `projects/{project}/locations/{location}/gameServerDep
-   * loyments/{deployment}/rollout`. For example, `projects/my-
+   * in the following form: `projects/{project}/locations/{locationId}/gameServerD
+   * eployments/{deploymentId}/rollout`. For example, `projects/my-
    * project/locations/global/gameServerDeployments/my-deployment/rollout`.
    * @param GameServerDeploymentRollout $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Required. Mask of fields to update. At least one
-   * path must be supplied in this field. For the `FieldMask` definition, see
-   * https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#fieldmask
+   * @opt_param string updateMask Required. The update mask to apply to the
+   * resource. At least one path must be supplied in this field. For more
+   * information, see the [`FieldMask` definition](https://developers.google.com
+   * /protocol-buffers/docs/reference/google.protobuf#fieldmask).
    * @return Operation
    */
   public function updateRollout($name, GameServerDeploymentRollout $postBody, $optParams = [])

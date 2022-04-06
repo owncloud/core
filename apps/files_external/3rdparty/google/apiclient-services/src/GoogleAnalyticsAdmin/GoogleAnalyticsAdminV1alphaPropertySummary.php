@@ -26,7 +26,15 @@ class GoogleAnalyticsAdminV1alphaPropertySummary extends \Google\Model
   /**
    * @var string
    */
+  public $parent;
+  /**
+   * @var string
+   */
   public $property;
+  /**
+   * @var string
+   */
+  public $propertyType;
 
   /**
    * @param string
@@ -45,6 +53,20 @@ class GoogleAnalyticsAdminV1alphaPropertySummary extends \Google\Model
   /**
    * @param string
    */
+  public function setParent($parent)
+  {
+    $this->parent = $parent;
+  }
+  /**
+   * @return string
+   */
+  public function getParent()
+  {
+    return $this->parent;
+  }
+  /**
+   * @param string
+   */
   public function setProperty($property)
   {
     $this->property = $property;
@@ -55,6 +77,20 @@ class GoogleAnalyticsAdminV1alphaPropertySummary extends \Google\Model
   public function getProperty()
   {
     return $this->property;
+  }
+  /**
+   * @param string
+   */
+  public function setPropertyType($propertyType)
+  {
+    $this->propertyType = $propertyType;
+  }
+  /**
+   * @return string
+   */
+  public function getPropertyType()
+  {
+    return $this->propertyType;
   }
 }
 

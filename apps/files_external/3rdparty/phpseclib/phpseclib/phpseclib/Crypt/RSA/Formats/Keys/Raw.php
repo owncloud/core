@@ -74,7 +74,7 @@ abstract class Raw
 
         if (isset($key['primes'])) {
             $components['primes'] = $key['primes'];
-        } else if (isset($key['p']) && isset($key['q'])) {
+        } elseif (isset($key['p']) && isset($key['q'])) {
             $indices = [
                 ['p', 'q'],
                 ['prime1', 'prime2']
@@ -164,9 +164,15 @@ abstract class Raw
             'e' => clone $e,
             'n' => clone $n,
             'd' => clone $d,
-            'primes' => array_map(function($var) { return clone $var; }, $primes),
-            'exponents' => array_map(function($var) { return clone $var; }, $exponents),
-            'coefficients' => array_map(function($var) { return clone $var; }, $coefficients)
+            'primes' => array_map(function ($var) {
+                return clone $var;
+            }, $primes),
+            'exponents' => array_map(function ($var) {
+                return clone $var;
+            }, $exponents),
+            'coefficients' => array_map(function ($var) {
+                return clone $var;
+            }, $coefficients)
         ];
     }
 

@@ -83,7 +83,8 @@ class TransferOperations extends \Google\Service\Resource
    * Lists transfer operations. Operations are ordered by their creation time in
    * reverse chronological order. (transferOperations.listTransferOperations)
    *
-   * @param string $name Not used.
+   * @param string $name Required. The name of the type being listed; must be
+   * `transferOperations`.
    * @param string $filter Required. A list of query parameters specified as JSON
    * text in the form of: `{"projectId":"my_project_id",
    * "jobNames":["jobid1","jobid2",...], "operationNames":["opid1","opid2",...],

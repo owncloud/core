@@ -33,10 +33,10 @@ use phpseclib3\File\ASN1;
 abstract class RDNSequence
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         // RDNSequence does not define a min or a max, which means it doesn't have one
-        'min'      => 0,
-        'max'      => -1,
+        'min' => 0,
+        'max' => -1,
         'children' => RelativeDistinguishedName::MAP
     ];
 }

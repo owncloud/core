@@ -38,6 +38,7 @@ class WorkflowExecutions extends \Google\Service
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
+  public $projects_locations_workflows;
   public $projects_locations_workflows_executions;
 
   /**
@@ -56,6 +57,26 @@ class WorkflowExecutions extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'workflowexecutions';
 
+    $this->projects_locations_workflows = new WorkflowExecutions\Resource\ProjectsLocationsWorkflows(
+        $this,
+        $this->serviceName,
+        'workflows',
+        [
+          'methods' => [
+            'triggerPubsubExecution' => [
+              'path' => 'v1/{+workflow}:triggerPubsubExecution',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'workflow' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->projects_locations_workflows_executions = new WorkflowExecutions\Resource\ProjectsLocationsWorkflowsExecutions(
         $this,
         $this->serviceName,

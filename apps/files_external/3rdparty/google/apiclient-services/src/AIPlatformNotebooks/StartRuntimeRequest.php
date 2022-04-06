@@ -19,6 +19,25 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class StartRuntimeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $requestId;
+
+  /**
+   * @param string
+   */
+  public function setRequestId($requestId)
+  {
+    $this->requestId = $requestId;
+  }
+  /**
+   * @return string
+   */
+  public function getRequestId()
+  {
+    return $this->requestId;
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

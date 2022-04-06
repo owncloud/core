@@ -21,6 +21,8 @@ class DataSplitResult extends \Google\Model
 {
   protected $evaluationTableType = TableReference::class;
   protected $evaluationTableDataType = '';
+  protected $testTableType = TableReference::class;
+  protected $testTableDataType = '';
   protected $trainingTableType = TableReference::class;
   protected $trainingTableDataType = '';
 
@@ -37,6 +39,20 @@ class DataSplitResult extends \Google\Model
   public function getEvaluationTable()
   {
     return $this->evaluationTable;
+  }
+  /**
+   * @param TableReference
+   */
+  public function setTestTable(TableReference $testTable)
+  {
+    $this->testTable = $testTable;
+  }
+  /**
+   * @return TableReference
+   */
+  public function getTestTable()
+  {
+    return $this->testTable;
   }
   /**
    * @param TableReference

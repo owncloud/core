@@ -29,9 +29,9 @@ class ShoppingAdsProgramStatusRegionStatus extends \Google\Collection
    */
   public $eligibilityStatus;
   /**
-   * @var string
+   * @var string[]
    */
-  public $ineligibilityReason;
+  public $onboardingIssues;
   /**
    * @var string[]
    */
@@ -40,6 +40,16 @@ class ShoppingAdsProgramStatusRegionStatus extends \Google\Collection
    * @var string
    */
   public $reviewEligibilityStatus;
+  /**
+   * @var string
+   */
+  public $reviewIneligibilityReason;
+  /**
+   * @var string
+   */
+  public $reviewIneligibilityReasonDescription;
+  protected $reviewIneligibilityReasonDetailsType = ShoppingAdsProgramStatusReviewIneligibilityReasonDetails::class;
+  protected $reviewIneligibilityReasonDetailsDataType = '';
   /**
    * @var string[]
    */
@@ -74,18 +84,18 @@ class ShoppingAdsProgramStatusRegionStatus extends \Google\Collection
     return $this->eligibilityStatus;
   }
   /**
-   * @param string
+   * @param string[]
    */
-  public function setIneligibilityReason($ineligibilityReason)
+  public function setOnboardingIssues($onboardingIssues)
   {
-    $this->ineligibilityReason = $ineligibilityReason;
+    $this->onboardingIssues = $onboardingIssues;
   }
   /**
-   * @return string
+   * @return string[]
    */
-  public function getIneligibilityReason()
+  public function getOnboardingIssues()
   {
-    return $this->ineligibilityReason;
+    return $this->onboardingIssues;
   }
   /**
    * @param string[]
@@ -114,6 +124,48 @@ class ShoppingAdsProgramStatusRegionStatus extends \Google\Collection
   public function getReviewEligibilityStatus()
   {
     return $this->reviewEligibilityStatus;
+  }
+  /**
+   * @param string
+   */
+  public function setReviewIneligibilityReason($reviewIneligibilityReason)
+  {
+    $this->reviewIneligibilityReason = $reviewIneligibilityReason;
+  }
+  /**
+   * @return string
+   */
+  public function getReviewIneligibilityReason()
+  {
+    return $this->reviewIneligibilityReason;
+  }
+  /**
+   * @param string
+   */
+  public function setReviewIneligibilityReasonDescription($reviewIneligibilityReasonDescription)
+  {
+    $this->reviewIneligibilityReasonDescription = $reviewIneligibilityReasonDescription;
+  }
+  /**
+   * @return string
+   */
+  public function getReviewIneligibilityReasonDescription()
+  {
+    return $this->reviewIneligibilityReasonDescription;
+  }
+  /**
+   * @param ShoppingAdsProgramStatusReviewIneligibilityReasonDetails
+   */
+  public function setReviewIneligibilityReasonDetails(ShoppingAdsProgramStatusReviewIneligibilityReasonDetails $reviewIneligibilityReasonDetails)
+  {
+    $this->reviewIneligibilityReasonDetails = $reviewIneligibilityReasonDetails;
+  }
+  /**
+   * @return ShoppingAdsProgramStatusReviewIneligibilityReasonDetails
+   */
+  public function getReviewIneligibilityReasonDetails()
+  {
+    return $this->reviewIneligibilityReasonDetails;
   }
   /**
    * @param string[]

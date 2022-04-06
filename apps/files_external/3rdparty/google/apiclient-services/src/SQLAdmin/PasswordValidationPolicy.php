@@ -28,6 +28,10 @@ class PasswordValidationPolicy extends \Google\Model
    */
   public $disallowUsernameSubstring;
   /**
+   * @var bool
+   */
+  public $enablePasswordPolicy;
+  /**
    * @var int
    */
   public $minLength;
@@ -67,6 +71,20 @@ class PasswordValidationPolicy extends \Google\Model
   public function getDisallowUsernameSubstring()
   {
     return $this->disallowUsernameSubstring;
+  }
+  /**
+   * @param bool
+   */
+  public function setEnablePasswordPolicy($enablePasswordPolicy)
+  {
+    $this->enablePasswordPolicy = $enablePasswordPolicy;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnablePasswordPolicy()
+  {
+    return $this->enablePasswordPolicy;
   }
   /**
    * @param int

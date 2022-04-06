@@ -25,17 +25,17 @@
 
 namespace phpseclib3\Crypt\EC\Formats\Keys;
 
-use phpseclib3\Math\BigInteger;
+use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\PKCS8 as Progenitor;
-use phpseclib3\File\ASN1;
-use phpseclib3\File\ASN1\Maps;
 use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
-use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
 use phpseclib3\Crypt\EC\BaseCurves\Montgomery as MontgomeryCurve;
+use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
 use phpseclib3\Crypt\EC\Curves\Ed25519;
 use phpseclib3\Crypt\EC\Curves\Ed448;
 use phpseclib3\Exception\UnsupportedCurveException;
-use phpseclib3\Common\Functions\Strings;
+use phpseclib3\File\ASN1;
+use phpseclib3\File\ASN1\Maps;
+use phpseclib3\Math\BigInteger;
 
 /**
  * PKCS#8 Formatted EC Key Handler
@@ -226,8 +226,7 @@ abstract class PKCS8 extends Progenitor
                 [],
                 null,
                 $password,
-                $curve instanceof Ed25519 ? 'id-Ed25519' : 'id-Ed448',
-                "\0" . $curve->encodePoint($publicKey)
+                $curve instanceof Ed25519 ? 'id-Ed25519' : 'id-Ed448'
             );
         }
 

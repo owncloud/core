@@ -60,6 +60,10 @@ class Metadata extends \Google\Model
    */
   public $hasPendingEdits;
   /**
+   * @var bool
+   */
+  public $hasVoiceOfMerchant;
+  /**
    * @var string
    */
   public $mapsUri;
@@ -211,6 +215,20 @@ class Metadata extends \Google\Model
   public function getHasPendingEdits()
   {
     return $this->hasPendingEdits;
+  }
+  /**
+   * @param bool
+   */
+  public function setHasVoiceOfMerchant($hasVoiceOfMerchant)
+  {
+    $this->hasVoiceOfMerchant = $hasVoiceOfMerchant;
+  }
+  /**
+   * @return bool
+   */
+  public function getHasVoiceOfMerchant()
+  {
+    return $this->hasVoiceOfMerchant;
   }
   /**
    * @param string

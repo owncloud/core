@@ -55,6 +55,10 @@ class FirewallPolicy extends \Google\Collection
    */
   public $parent;
   /**
+   * @var string
+   */
+  public $region;
+  /**
    * @var int
    */
   public $ruleTupleCount;
@@ -198,6 +202,20 @@ class FirewallPolicy extends \Google\Collection
   public function getParent()
   {
     return $this->parent;
+  }
+  /**
+   * @param string
+   */
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  /**
+   * @return string
+   */
+  public function getRegion()
+  {
+    return $this->region;
   }
   /**
    * @param int

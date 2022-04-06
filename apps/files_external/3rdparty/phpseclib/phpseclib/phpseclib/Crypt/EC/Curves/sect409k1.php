@@ -33,7 +33,8 @@ class sect409k1 extends Binary
         );
         $this->setOrder(new BigInteger(
             '7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE5F' .
-            '83B2D4EA20400EC4557D5ED3E3E7CA5B4B5C83B8E01E5FCF', 16
+            '83B2D4EA20400EC4557D5ED3E3E7CA5B4B5C83B8E01E5FCF',
+            16
         ));
     }
 }

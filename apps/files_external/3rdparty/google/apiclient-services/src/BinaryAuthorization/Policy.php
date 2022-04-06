@@ -33,6 +33,10 @@ class Policy extends \Google\Collection
   /**
    * @var string
    */
+  public $etag;
+  /**
+   * @var string
+   */
   public $globalPolicyEvaluationMode;
   protected $istioServiceIdentityAdmissionRulesType = AdmissionRule::class;
   protected $istioServiceIdentityAdmissionRulesDataType = 'map';
@@ -104,6 +108,20 @@ class Policy extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  /**
+   * @param string
+   */
+  public function setEtag($etag)
+  {
+    $this->etag = $etag;
+  }
+  /**
+   * @return string
+   */
+  public function getEtag()
+  {
+    return $this->etag;
   }
   /**
    * @param string

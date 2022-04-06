@@ -141,7 +141,7 @@ class ProjectsLocationsGroups extends \Google\Service\Resource
   /**
    * Updates the parameters of a single Group. (groups.patch)
    *
-   * @param string $name The Group name.
+   * @param string $name Output only. The Group name.
    * @param Group $postBody
    * @param array $optParams Optional parameters.
    *

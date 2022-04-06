@@ -39,8 +39,6 @@ class WorkerPool extends \Google\Model
    * @var string
    */
   public $etag;
-  protected $hybridPoolConfigType = HybridPoolConfig::class;
-  protected $hybridPoolConfigDataType = '';
   /**
    * @var string
    */
@@ -129,20 +127,6 @@ class WorkerPool extends \Google\Model
   public function getEtag()
   {
     return $this->etag;
-  }
-  /**
-   * @param HybridPoolConfig
-   */
-  public function setHybridPoolConfig(HybridPoolConfig $hybridPoolConfig)
-  {
-    $this->hybridPoolConfig = $hybridPoolConfig;
-  }
-  /**
-   * @return HybridPoolConfig
-   */
-  public function getHybridPoolConfig()
-  {
-    return $this->hybridPoolConfig;
   }
   /**
    * @param string

@@ -42,20 +42,17 @@ class ArtifactRegistry extends \Google\Service
   const CLOUD_PLATFORM_READ_ONLY =
       "https://www.googleapis.com/auth/cloud-platform.read-only";
 
-  public $operations;
   public $projects;
+  public $projects_locations;
+  public $projects_locations_operations;
   public $projects_locations_repositories;
   public $projects_locations_repositories_aptArtifacts;
-  public $projects_locations_repositories_aptartifacts;
   public $projects_locations_repositories_dockerImages;
   public $projects_locations_repositories_files;
-  public $projects_locations_repositories_gooGetArtifacts;
-  public $projects_locations_repositories_googetartifacts;
   public $projects_locations_repositories_packages;
   public $projects_locations_repositories_packages_tags;
   public $projects_locations_repositories_packages_versions;
   public $projects_locations_repositories_yumArtifacts;
-  public $projects_locations_repositories_yumartifacts;
 
   /**
    * Constructs the internal representation of the ArtifactRegistry service.
@@ -73,26 +70,6 @@ class ArtifactRegistry extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'artifactregistry';
 
-    $this->operations = new ArtifactRegistry\Resource\Operations(
-        $this,
-        $this->serviceName,
-        'operations',
-        [
-          'methods' => [
-            'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
     $this->projects = new ArtifactRegistry\Resource\Projects(
         $this,
         $this->serviceName,
@@ -121,6 +98,68 @@ class ArtifactRegistry extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations = new ArtifactRegistry\Resource\ProjectsLocations(
+        $this,
+        $this->serviceName,
+        'locations',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+name}/locations',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_operations = new ArtifactRegistry\Resource\ProjectsLocationsOperations(
+        $this,
+        $this->serviceName,
+        'operations',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],
@@ -253,17 +292,7 @@ class ArtifactRegistry extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_repositories_aptartifacts = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesAptartifacts(
-        $this,
-        $this->serviceName,
-        'aptartifacts',
-        [
-          'methods' => [
-            'upload' => [
+            ],'upload' => [
               'path' => 'v1/{+parent}/aptArtifacts:create',
               'httpMethod' => 'POST',
               'parameters' => [
@@ -344,6 +373,10 @@ class ArtifactRegistry extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'pageSize' => [
                   'location' => 'query',
                   'type' => 'integer',
@@ -351,46 +384,6 @@ class ArtifactRegistry extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_repositories_gooGetArtifacts = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesGooGetArtifacts(
-        $this,
-        $this->serviceName,
-        'gooGetArtifacts',
-        [
-          'methods' => [
-            'import' => [
-              'path' => 'v1/{+parent}/gooGetArtifacts:import',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_repositories_googetartifacts = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesGoogetartifacts(
-        $this,
-        $this->serviceName,
-        'googetartifacts',
-        [
-          'methods' => [
-            'upload' => [
-              'path' => 'v1/{+parent}/googetArtifacts:create',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ],
               ],
             ],
@@ -605,17 +598,7 @@ class ArtifactRegistry extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_repositories_yumartifacts = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesYumartifacts(
-        $this,
-        $this->serviceName,
-        'yumartifacts',
-        [
-          'methods' => [
-            'upload' => [
+            ],'upload' => [
               'path' => 'v1/{+parent}/yumArtifacts:create',
               'httpMethod' => 'POST',
               'parameters' => [

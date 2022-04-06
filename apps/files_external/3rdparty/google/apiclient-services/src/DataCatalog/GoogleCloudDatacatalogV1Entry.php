@@ -39,6 +39,8 @@ class GoogleCloudDatacatalogV1Entry extends \Google\Model
    * @var string
    */
   public $displayName;
+  protected $filesetSpecType = GoogleCloudDatacatalogV1FilesetSpec::class;
+  protected $filesetSpecDataType = '';
   /**
    * @var string
    */
@@ -195,6 +197,20 @@ class GoogleCloudDatacatalogV1Entry extends \Google\Model
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param GoogleCloudDatacatalogV1FilesetSpec
+   */
+  public function setFilesetSpec(GoogleCloudDatacatalogV1FilesetSpec $filesetSpec)
+  {
+    $this->filesetSpec = $filesetSpec;
+  }
+  /**
+   * @return GoogleCloudDatacatalogV1FilesetSpec
+   */
+  public function getFilesetSpec()
+  {
+    return $this->filesetSpec;
   }
   /**
    * @param string

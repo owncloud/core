@@ -57,8 +57,9 @@ class SpreadsheetsValues extends \Google\Service\Resource
    * (values.append)
    *
    * @param string $spreadsheetId The ID of the spreadsheet to update.
-   * @param string $range The A1 notation of a range to search for a logical table
-   * of data. Values are appended after the last row of the table.
+   * @param string $range The [A1 notation](/sheets/api/guides/concepts#cell) of a
+   * range to search for a logical table of data. Values are appended after the
+   * last row of the table.
    * @param ValueRange $postBody
    * @param array $optParams Optional parameters.
    *
@@ -84,8 +85,8 @@ class SpreadsheetsValues extends \Google\Service\Resource
   /**
    * Clears one or more ranges of values from a spreadsheet. The caller must
    * specify the spreadsheet ID and one or more ranges. Only values are cleared --
-   * all other properties of the cell (such as formatting, data validation, etc..)
-   * are kept. (values.batchClear)
+   * all other properties of the cell (such as formatting and data validation) are
+   * kept. (values.batchClear)
    *
    * @param string $spreadsheetId The ID of the spreadsheet to update.
    * @param BatchClearValuesRequest $postBody
@@ -128,10 +129,12 @@ class SpreadsheetsValues extends \Google\Service\Resource
    * FORMATTED_VALUE. The default dateTime render option is SERIAL_NUMBER.
    * @opt_param string majorDimension The major dimension that results should use.
    * For example, if the spreadsheet data is: `A1=1,B1=2,A2=3,B2=4`, then
-   * requesting `range=A1:B2,majorDimension=ROWS` returns `[[1,2],[3,4]]`, whereas
-   * requesting `range=A1:B2,majorDimension=COLUMNS` returns `[[1,3],[2,4]]`.
-   * @opt_param string ranges The A1 notation or R1C1 notation of the range to
-   * retrieve values from.
+   * requesting `ranges=["A1:B2"],majorDimension=ROWS` returns `[[1,2],[3,4]]`,
+   * whereas requesting `ranges=["A1:B2"],majorDimension=COLUMNS` returns
+   * `[[1,3],[2,4]]`.
+   * @opt_param string ranges The [A1 notation or R1C1
+   * notation](/sheets/api/guides/concepts#cell) of the range to retrieve values
+   * from.
    * @opt_param string valueRenderOption How values should be represented in the
    * output. The default render option is ValueRenderOption.FORMATTED_VALUE.
    * @return BatchGetValuesResponse
@@ -197,7 +200,8 @@ class SpreadsheetsValues extends \Google\Service\Resource
    * as formatting, data validation, etc..) are kept. (values.clear)
    *
    * @param string $spreadsheetId The ID of the spreadsheet to update.
-   * @param string $range The A1 notation or R1C1 notation of the values to clear.
+   * @param string $range The [A1 notation or R1C1
+   * notation](/sheets/api/guides/concepts#cell) of the values to clear.
    * @param ClearValuesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return ClearValuesResponse
@@ -213,8 +217,9 @@ class SpreadsheetsValues extends \Google\Service\Resource
    * spreadsheet ID and a range. (values.get)
    *
    * @param string $spreadsheetId The ID of the spreadsheet to retrieve data from.
-   * @param string $range The A1 notation or R1C1 notation of the range to
-   * retrieve values from.
+   * @param string $range The [A1 notation or R1C1
+   * notation](/sheets/api/guides/concepts#cell) of the range to retrieve values
+   * from.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string dateTimeRenderOption How dates, times, and durations should
@@ -239,7 +244,8 @@ class SpreadsheetsValues extends \Google\Service\Resource
    * spreadsheet ID, range, and a valueInputOption. (values.update)
    *
    * @param string $spreadsheetId The ID of the spreadsheet to update.
-   * @param string $range The A1 notation of the values to update.
+   * @param string $range The [A1 notation](/sheets/api/guides/concepts#cell) of
+   * the values to update.
    * @param ValueRange $postBody
    * @param array $optParams Optional parameters.
    *

@@ -30,12 +30,20 @@ class Instance extends \Google\Collection
    * @var string
    */
   public $bootDiskType;
+  /**
+   * @var bool
+   */
+  public $canIpForward;
   protected $containerImageType = ContainerImage::class;
   protected $containerImageDataType = '';
   /**
    * @var string
    */
   public $createTime;
+  /**
+   * @var string
+   */
+  public $creator;
   /**
    * @var string
    */
@@ -186,6 +194,20 @@ class Instance extends \Google\Collection
     return $this->bootDiskType;
   }
   /**
+   * @param bool
+   */
+  public function setCanIpForward($canIpForward)
+  {
+    $this->canIpForward = $canIpForward;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanIpForward()
+  {
+    return $this->canIpForward;
+  }
+  /**
    * @param ContainerImage
    */
   public function setContainerImage(ContainerImage $containerImage)
@@ -212,6 +234,20 @@ class Instance extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setCreator($creator)
+  {
+    $this->creator = $creator;
+  }
+  /**
+   * @return string
+   */
+  public function getCreator()
+  {
+    return $this->creator;
   }
   /**
    * @param string

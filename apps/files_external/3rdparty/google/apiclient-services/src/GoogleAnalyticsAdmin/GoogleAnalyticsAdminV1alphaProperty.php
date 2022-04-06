@@ -58,6 +58,10 @@ class GoogleAnalyticsAdminV1alphaProperty extends \Google\Model
   /**
    * @var string
    */
+  public $propertyType;
+  /**
+   * @var string
+   */
   public $serviceLevel;
   /**
    * @var string
@@ -193,6 +197,20 @@ class GoogleAnalyticsAdminV1alphaProperty extends \Google\Model
   public function getParent()
   {
     return $this->parent;
+  }
+  /**
+   * @param string
+   */
+  public function setPropertyType($propertyType)
+  {
+    $this->propertyType = $propertyType;
+  }
+  /**
+   * @return string
+   */
+  public function getPropertyType()
+  {
+    return $this->propertyType;
   }
   /**
    * @param string

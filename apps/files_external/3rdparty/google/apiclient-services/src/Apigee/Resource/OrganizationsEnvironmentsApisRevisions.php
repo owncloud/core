@@ -54,18 +54,17 @@ class OrganizationsEnvironmentsApisRevisions extends \Google\Service\Resource
    * `override` is `false` and the deployment is rejected if other revisions of
    * the API proxy are deployed in the environment.
    * @opt_param bool sequencedRollout Flag that specifies whether to enable
-   * sequenced rollout. If set to `true`, a best-effort attempt will be made to
-   * roll out the routing rules corresponding to this deployment and the
-   * environment changes to add this deployment in a safe order. This reduces the
-   * risk of downtime that could be caused by changing the environment group's
-   * routing before the new destination for the affected traffic is ready to
-   * receive it. This should only be necessary if the new deployment will be
-   * capturing traffic from another environment under a shared environment group
-   * or if traffic will be rerouted to a different environment due to a base path
-   * removal. The [GenerateDeployChangeReport API](GenerateDeployChangeReport) may
-   * be used to examine routing changes before issuing the deployment request, and
-   * its response will indicate if a sequenced rollout is recommended for the
-   * deployment.
+   * sequenced rollout. If set to `true`, the routing rules for this deployment
+   * and the environment changes to add the deployment will be rolled out in a
+   * safe order. This reduces the risk of downtime that could be caused by
+   * changing the environment group's routing before the new destination for the
+   * affected traffic is ready to receive it. This should only be necessary if the
+   * new deployment will be capturing traffic from another environment under a
+   * shared environment group or if traffic will be rerouted to a different
+   * environment due to a base path removal. The [GenerateDeployChangeReport
+   * API](GenerateDeployChangeReport) may be used to examine routing changes
+   * before issuing the deployment request, and its response will indicate if a
+   * sequenced rollout is recommended for the deployment.
    * @opt_param string serviceAccount Google Cloud IAM service account. The
    * service account represents the identity of the deployed proxy, and determines
    * what permissions it has. The format must be
@@ -108,16 +107,15 @@ class OrganizationsEnvironmentsApisRevisions extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool sequencedRollout Flag that specifies whether to enable
-   * sequenced rollout. If set to `true`, a best-effort attempt will be made to
-   * remove the environment group routing rules corresponding to this deployment
-   * before removing the deployment from the runtime. This is likely to be a rare
-   * use case; it is only needed when the intended effect of undeploying this
-   * proxy is to cause the traffic it currently handles to be rerouted to some
-   * other existing proxy in the environment group. The
-   * [GenerateUndeployChangeReport API](GenerateUndeployChangeReport) may be used
-   * to examine routing changes before issuing the undeployment request, and its
-   * response will indicate if a sequenced rollout is recommended for the
-   * undeployment.
+   * sequenced rollout. If set to `true`, the environment group routing rules
+   * corresponding to this deployment will be removed before removing the
+   * deployment from the runtime. This is likely to be a rare use case; it is only
+   * needed when the intended effect of undeploying this proxy is to cause the
+   * traffic it currently handles to be rerouted to some other existing proxy in
+   * the environment group. The [GenerateUndeployChangeReport
+   * API](GenerateUndeployChangeReport) may be used to examine routing changes
+   * before issuing the undeployment request, and its response will indicate if a
+   * sequenced rollout is recommended for the undeployment.
    * @return GoogleProtobufEmpty
    */
   public function undeploy($name, $optParams = [])

@@ -48,6 +48,10 @@ class Repository extends \Google\Model
   /**
    * @var string
    */
+  public $sizeBytes;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -147,6 +151,20 @@ class Repository extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setSizeBytes($sizeBytes)
+  {
+    $this->sizeBytes = $sizeBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getSizeBytes()
+  {
+    return $this->sizeBytes;
   }
   /**
    * @param string

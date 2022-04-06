@@ -19,6 +19,8 @@ namespace Google\Service\ArtifactRegistry\Resource;
 
 use Google\Service\ArtifactRegistry\ImportYumArtifactsRequest;
 use Google\Service\ArtifactRegistry\Operation;
+use Google\Service\ArtifactRegistry\UploadYumArtifactMediaResponse;
+use Google\Service\ArtifactRegistry\UploadYumArtifactRequest;
 
 /**
  * The "yumArtifacts" collection of methods.
@@ -47,6 +49,24 @@ class ProjectsLocationsRepositoriesYumArtifacts extends \Google\Service\Resource
     $params = ['parent' => $parent, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('import', [$params], Operation::class);
+  }
+  /**
+   * Directly uploads a Yum artifact. The returned Operation will complete once
+   * the resources are uploaded. Package, Version, and File resources are created
+   * based on the imported artifact. Imported artifacts that conflict with
+   * existing resources are ignored. (yumArtifacts.upload)
+   *
+   * @param string $parent The name of the parent resource where the artifacts
+   * will be uploaded.
+   * @param UploadYumArtifactRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return UploadYumArtifactMediaResponse
+   */
+  public function upload($parent, UploadYumArtifactRequest $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('upload', [$params], UploadYumArtifactMediaResponse::class);
   }
 }
 

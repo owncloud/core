@@ -31,6 +31,10 @@ class MaximizeSpendBidStrategy extends \Google\Model
    * @var string
    */
   public $performanceGoalType;
+  /**
+   * @var bool
+   */
+  public $raiseBidForDeals;
 
   /**
    * @param string
@@ -73,6 +77,20 @@ class MaximizeSpendBidStrategy extends \Google\Model
   public function getPerformanceGoalType()
   {
     return $this->performanceGoalType;
+  }
+  /**
+   * @param bool
+   */
+  public function setRaiseBidForDeals($raiseBidForDeals)
+  {
+    $this->raiseBidForDeals = $raiseBidForDeals;
+  }
+  /**
+   * @return bool
+   */
+  public function getRaiseBidForDeals()
+  {
+    return $this->raiseBidForDeals;
   }
 }
 

@@ -17,8 +17,8 @@
 
 namespace Google\Service\CloudRun\Resource;
 
-use Google\Service\CloudRun\GoogleCloudRunOpV2ListRevisionsResponse;
-use Google\Service\CloudRun\GoogleCloudRunOpV2Revision;
+use Google\Service\CloudRun\GoogleCloudRunV2ListRevisionsResponse;
+use Google\Service\CloudRun\GoogleCloudRunV2Revision;
 use Google\Service\CloudRun\GoogleLongrunningOperation;
 
 /**
@@ -56,13 +56,13 @@ class ProjectsLocationsServicesRevisions extends \Google\Service\Resource
    * @param string $name Required. The full name of the Revision. Format: projects
    * /{project}/locations/{location}/services/{service}/revisions/{revision}
    * @param array $optParams Optional parameters.
-   * @return GoogleCloudRunOpV2Revision
+   * @return GoogleCloudRunV2Revision
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleCloudRunOpV2Revision::class);
+    return $this->call('get', [$params], GoogleCloudRunV2Revision::class);
   }
   /**
    * List Revisions from a given Service, or from a given location.
@@ -78,13 +78,13 @@ class ProjectsLocationsServicesRevisions extends \Google\Service\Resource
    * ListRevisions. All other parameters must match.
    * @opt_param bool showDeleted If true, returns deleted (but unexpired)
    * resources along with active ones.
-   * @return GoogleCloudRunOpV2ListRevisionsResponse
+   * @return GoogleCloudRunV2ListRevisionsResponse
    */
   public function listProjectsLocationsServicesRevisions($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('list', [$params], GoogleCloudRunOpV2ListRevisionsResponse::class);
+    return $this->call('list', [$params], GoogleCloudRunV2ListRevisionsResponse::class);
   }
 }
 

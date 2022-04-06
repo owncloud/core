@@ -32,11 +32,11 @@
 namespace phpseclib3\Crypt;
 
 use phpseclib3\Crypt\Common\AsymmetricKey;
+use phpseclib3\Crypt\DSA\Parameters;
 use phpseclib3\Crypt\DSA\PrivateKey;
 use phpseclib3\Crypt\DSA\PublicKey;
-use phpseclib3\Crypt\DSA\Parameters;
-use phpseclib3\Math\BigInteger;
 use phpseclib3\Exception\InsufficientSetupException;
+use phpseclib3\Math\BigInteger;
 
 /**
  * Pure-PHP FIPS 186-4 compliant implementation of DSA.
@@ -169,7 +169,7 @@ abstract class DSA extends AsymmetricKey
             $h = $h->add(self::$one);
         }
 
-        $dsa = new Parameters;
+        $dsa = new Parameters();
         $dsa->p = $p;
         $dsa->q = $q;
         $dsa->g = $g;
@@ -199,15 +199,15 @@ abstract class DSA extends AsymmetricKey
 
         if (count($args) == 2 && is_int($args[0]) && is_int($args[1])) {
             $params = self::createParameters($args[0], $args[1]);
-        } else if (count($args) == 1 && $args[0] instanceof Parameters) {
+        } elseif (count($args) == 1 && $args[0] instanceof Parameters) {
             $params = $args[0];
-        } else if (!count($args)) {
+        } elseif (!count($args)) {
             $params = self::createParameters();
         } else {
             throw new InsufficientSetupException('Valid parameters are either two integers (L and N), a single DSA object or no parameters at all.');
         }
 
-        $private = new PrivateKey;
+        $private = new PrivateKey();
         $private->p = $params->p;
         $private->q = $params->q;
         $private->g = $params->g;
@@ -237,12 +237,12 @@ abstract class DSA extends AsymmetricKey
         }
 
         if (!isset($components['x']) && !isset($components['y'])) {
-            $new = new Parameters;
-        } else if (isset($components['x'])) {
-            $new = new PrivateKey;
+            $new = new Parameters();
+        } elseif (isset($components['x'])) {
+            $new = new PrivateKey();
             $new->x = $components['x'];
         } else {
-            $new = new PublicKey;
+            $new = new PublicKey();
         }
 
         $new->p = $components['p'];
@@ -292,6 +292,9 @@ abstract class DSA extends AsymmetricKey
      */
     public function getEngine()
     {
+        if (!isset(self::$engines['PHP'])) {
+            self::useBestEngine();
+        }
         return self::$engines['OpenSSL'] && in_array($this->hash->getHash(), openssl_get_md_methods()) ?
             'OpenSSL' : 'PHP';
     }
@@ -339,6 +342,6 @@ abstract class DSA extends AsymmetricKey
      */
     public function getSignatureFormat()
     {
-       return $this->shortFormat;
+        return $this->shortFormat;
     }
 }

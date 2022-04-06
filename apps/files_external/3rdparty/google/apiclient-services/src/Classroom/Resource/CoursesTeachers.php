@@ -32,14 +32,18 @@ use Google\Service\Classroom\Teacher;
 class CoursesTeachers extends \Google\Service\Resource
 {
   /**
-   * Creates a teacher of a course. This method returns the following error codes:
-   * * `PERMISSION_DENIED` if the requesting user is not permitted to create
-   * teachers in this course or for access errors. * `NOT_FOUND` if the requested
-   * course ID does not exist. * `FAILED_PRECONDITION` if the requested user's
-   * account is disabled, for the following request errors: *
-   * CourseMemberLimitReached * CourseNotModifiable * CourseTeacherLimitReached *
-   * UserGroupsMembershipLimitReached * `ALREADY_EXISTS` if the user is already a
-   * teacher or student in the course. (teachers.create)
+   * Creates a teacher of a course. Domain administrators are permitted to
+   * [directly add](https://developers.google.com/classroom/guides/manage-users)
+   * users within their domain as teachers to courses within their domain. Non-
+   * admin users should send an Invitation instead. This method returns the
+   * following error codes: * `PERMISSION_DENIED` if the requesting user is not
+   * permitted to create teachers in this course or for access errors. *
+   * `NOT_FOUND` if the requested course ID does not exist. *
+   * `FAILED_PRECONDITION` if the requested user's account is disabled, for the
+   * following request errors: * CourseMemberLimitReached * CourseNotModifiable *
+   * CourseTeacherLimitReached * UserGroupsMembershipLimitReached *
+   * InactiveCourseOwner * `ALREADY_EXISTS` if the user is already a teacher or
+   * student in the course. (teachers.create)
    *
    * @param string $courseId Identifier of the course. This identifier can be
    * either the Classroom-assigned identifier or an alias.

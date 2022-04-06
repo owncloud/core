@@ -615,7 +615,7 @@ class RC2 extends BlockCipher
                     $r3 += $keys[$r2 & 0x3F];';
                 $limit = $actions[$limit];
             }
-         }
+        }
 
         $encrypt_block .= '$in = pack("v4", $r0, $r1, $r2, $r3);';
 

@@ -30,6 +30,10 @@ class SendDebugCaptureRequest extends \Google\Model
   /**
    * @var string
    */
+  public $dataFormat;
+  /**
+   * @var string
+   */
   public $location;
   /**
    * @var string
@@ -63,6 +67,20 @@ class SendDebugCaptureRequest extends \Google\Model
   public function getData()
   {
     return $this->data;
+  }
+  /**
+   * @param string
+   */
+  public function setDataFormat($dataFormat)
+  {
+    $this->dataFormat = $dataFormat;
+  }
+  /**
+   * @return string
+   */
+  public function getDataFormat()
+  {
+    return $this->dataFormat;
   }
   /**
    * @param string

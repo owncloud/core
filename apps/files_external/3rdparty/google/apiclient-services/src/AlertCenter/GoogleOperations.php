@@ -33,6 +33,10 @@ class GoogleOperations extends \Google\Collection
   /**
    * @var string
    */
+  public $domain;
+  /**
+   * @var string
+   */
   public $header;
   /**
    * @var string
@@ -80,6 +84,20 @@ class GoogleOperations extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  /**
+   * @param string
+   */
+  public function setDomain($domain)
+  {
+    $this->domain = $domain;
+  }
+  /**
+   * @return string
+   */
+  public function getDomain()
+  {
+    return $this->domain;
   }
   /**
    * @param string

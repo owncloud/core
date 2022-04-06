@@ -22,12 +22,30 @@ class ChannelToStoreLinkDetails extends \Google\Model
   /**
    * @var string
    */
+  public $merchantId;
+  /**
+   * @var string
+   */
   public $storeName;
   /**
    * @var string
    */
   public $storeUrl;
 
+  /**
+   * @param string
+   */
+  public function setMerchantId($merchantId)
+  {
+    $this->merchantId = $merchantId;
+  }
+  /**
+   * @return string
+   */
+  public function getMerchantId()
+  {
+    return $this->merchantId;
+  }
   /**
    * @param string
    */

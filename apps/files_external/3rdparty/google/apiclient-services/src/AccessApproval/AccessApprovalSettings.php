@@ -21,11 +21,23 @@ class AccessApprovalSettings extends \Google\Collection
 {
   protected $collection_key = 'notificationEmails';
   /**
+   * @var string
+   */
+  public $activeKeyVersion;
+  /**
+   * @var bool
+   */
+  public $ancestorHasActiveKeyVersion;
+  /**
    * @var bool
    */
   public $enrolledAncestor;
   protected $enrolledServicesType = EnrolledService::class;
   protected $enrolledServicesDataType = 'array';
+  /**
+   * @var bool
+   */
+  public $invalidKeyVersion;
   /**
    * @var string
    */
@@ -35,6 +47,34 @@ class AccessApprovalSettings extends \Google\Collection
    */
   public $notificationEmails;
 
+  /**
+   * @param string
+   */
+  public function setActiveKeyVersion($activeKeyVersion)
+  {
+    $this->activeKeyVersion = $activeKeyVersion;
+  }
+  /**
+   * @return string
+   */
+  public function getActiveKeyVersion()
+  {
+    return $this->activeKeyVersion;
+  }
+  /**
+   * @param bool
+   */
+  public function setAncestorHasActiveKeyVersion($ancestorHasActiveKeyVersion)
+  {
+    $this->ancestorHasActiveKeyVersion = $ancestorHasActiveKeyVersion;
+  }
+  /**
+   * @return bool
+   */
+  public function getAncestorHasActiveKeyVersion()
+  {
+    return $this->ancestorHasActiveKeyVersion;
+  }
   /**
    * @param bool
    */
@@ -62,6 +102,20 @@ class AccessApprovalSettings extends \Google\Collection
   public function getEnrolledServices()
   {
     return $this->enrolledServices;
+  }
+  /**
+   * @param bool
+   */
+  public function setInvalidKeyVersion($invalidKeyVersion)
+  {
+    $this->invalidKeyVersion = $invalidKeyVersion;
+  }
+  /**
+   * @return bool
+   */
+  public function getInvalidKeyVersion()
+  {
+    return $this->invalidKeyVersion;
   }
   /**
    * @param string

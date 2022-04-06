@@ -17,13 +17,12 @@
 
 namespace phpseclib3\Crypt\EC\Formats\Keys;
 
-use ParagonIE\ConstantTime\Base64;
-use phpseclib3\Math\BigInteger;
 use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\OpenSSH as Progenitor;
 use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
-use phpseclib3\Exception\UnsupportedCurveException;
 use phpseclib3\Crypt\EC\Curves\Ed25519;
+use phpseclib3\Exception\UnsupportedCurveException;
+use phpseclib3\Math\BigInteger;
 
 /**
  * OpenSSH Formatted EC Key Handler
@@ -66,7 +65,7 @@ abstract class OpenSSH extends Progenitor
             if ($type != $parsed['type']) {
                 throw new \RuntimeException("The public and private keys are not of the same type ($type vs $parsed[type])");
             }
-            if ($type == 'ssh-ed25519' ) {
+            if ($type == 'ssh-ed25519') {
                 list(, $key, $comment) = Strings::unpackSSH2('sss', $paddedKey);
                 $key = libsodium::load($key);
                 $key['comment'] = $comment;
@@ -118,7 +117,7 @@ abstract class OpenSSH extends Progenitor
         $name = $reflect->getShortName();
 
         $oid = self::$curveOIDs[$name];
-        $aliases = array_filter(self::$curveOIDs, function($v) use ($oid) {
+        $aliases = array_filter(self::$curveOIDs, function ($v) use ($oid) {
             return $v == $oid;
         });
         $aliases = array_keys($aliases);

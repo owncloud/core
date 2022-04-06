@@ -23,9 +23,8 @@
 
 namespace phpseclib3\Crypt\EC\BaseCurves;
 
-use phpseclib3\Common\Functions\Strings;
-use phpseclib3\Math\BinaryField;
 use phpseclib3\Math\BigInteger;
+use phpseclib3\Math\BinaryField;
 use phpseclib3\Math\BinaryField\Integer as BinaryInteger;
 
 /**

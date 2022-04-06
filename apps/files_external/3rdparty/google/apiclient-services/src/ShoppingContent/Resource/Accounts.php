@@ -66,8 +66,8 @@ class Accounts extends \Google\Service\Resource
    *
    * @opt_param bool overwrite Only available to selected merchants, for example
    * multi-client accounts (MCAs) and their sub-accounts. When set to `True`, this
-   * flag removes any existing claim on the requested website and replaces it with
-   * a claim from the account that makes the request.
+   * option removes any existing claim on the requested website and replaces it
+   * with a claim from the account that makes the request.
    * @return AccountsClaimWebsiteResponse
    */
   public function claimwebsite($merchantId, $accountId, $optParams = [])
@@ -99,8 +99,8 @@ class Accounts extends \Google\Service\Resource
    * @param string $accountId The ID of the account.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool force Flag to delete sub-accounts with products. The default
-   * value is false.
+   * @opt_param bool force Option to delete sub-accounts with products. The
+   * default value is false.
    */
   public function delete($merchantId, $accountId, $optParams = [])
   {

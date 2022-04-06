@@ -20,6 +20,8 @@ namespace Google\Service\ChromeManagement;
 class GoogleChromeManagementV1TelemetryDevice extends \Google\Collection
 {
   protected $collection_key = 'storageStatusReport';
+  protected $audioStatusReportType = GoogleChromeManagementV1AudioStatusReport::class;
+  protected $audioStatusReportDataType = 'array';
   protected $batteryInfoType = GoogleChromeManagementV1BatteryInfo::class;
   protected $batteryInfoDataType = 'array';
   protected $batteryStatusReportType = GoogleChromeManagementV1BatteryStatusReport::class;
@@ -65,6 +67,20 @@ class GoogleChromeManagementV1TelemetryDevice extends \Google\Collection
   protected $storageStatusReportType = GoogleChromeManagementV1StorageStatusReport::class;
   protected $storageStatusReportDataType = 'array';
 
+  /**
+   * @param GoogleChromeManagementV1AudioStatusReport[]
+   */
+  public function setAudioStatusReport($audioStatusReport)
+  {
+    $this->audioStatusReport = $audioStatusReport;
+  }
+  /**
+   * @return GoogleChromeManagementV1AudioStatusReport[]
+   */
+  public function getAudioStatusReport()
+  {
+    return $this->audioStatusReport;
+  }
   /**
    * @param GoogleChromeManagementV1BatteryInfo[]
    */

@@ -46,8 +46,8 @@ class ProjectsLocationsRepositoriesFiles extends \Google\Service\Resource
   /**
    * Lists files. (files.listProjectsLocationsRepositoriesFiles)
    *
-   * @param string $parent The name of the parent resource whose files will be
-   * listed.
+   * @param string $parent The name of the repository whose files will be listed.
+   * For example: "projects/p1/locations/us-central1/repositories/repo1
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter An expression for filtering the results of the
@@ -57,6 +57,7 @@ class ProjectsLocationsRepositoriesFiles extends \Google\Service\Resource
    * Files with an ID starting with "a/b/". * `owner="projects/p1/locations/us-
    * central1/repositories/repo1/packages/pkg1/versions/1.0"` --> Files owned by
    * the version `1.0` in package `pkg1`.
+   * @opt_param string orderBy The field to order the results by.
    * @opt_param int pageSize The maximum number of files to return.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous list request, if any.

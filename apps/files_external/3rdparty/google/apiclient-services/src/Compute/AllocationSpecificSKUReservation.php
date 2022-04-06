@@ -22,6 +22,10 @@ class AllocationSpecificSKUReservation extends \Google\Model
   /**
    * @var string
    */
+  public $assuredCount;
+  /**
+   * @var string
+   */
   public $count;
   /**
    * @var string
@@ -30,6 +34,20 @@ class AllocationSpecificSKUReservation extends \Google\Model
   protected $instancePropertiesType = AllocationSpecificSKUAllocationReservedInstanceProperties::class;
   protected $instancePropertiesDataType = '';
 
+  /**
+   * @param string
+   */
+  public function setAssuredCount($assuredCount)
+  {
+    $this->assuredCount = $assuredCount;
+  }
+  /**
+   * @return string
+   */
+  public function getAssuredCount()
+  {
+    return $this->assuredCount;
+  }
   /**
    * @param string
    */

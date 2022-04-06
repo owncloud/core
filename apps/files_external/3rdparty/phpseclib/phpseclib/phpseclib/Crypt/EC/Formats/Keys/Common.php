@@ -16,16 +16,15 @@
 namespace phpseclib3\Crypt\EC\Formats\Keys;
 
 use ParagonIE\ConstantTime\Hex;
-use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
-use phpseclib3\Crypt\EC\BaseCurves\Prime as PrimeCurve;
-use phpseclib3\Crypt\EC\BaseCurves\Binary as BinaryCurve;
-use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
 use phpseclib3\Common\Functions\Strings;
-use phpseclib3\Math\BigInteger;
-use phpseclib3\Math\PrimeField;
+use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
+use phpseclib3\Crypt\EC\BaseCurves\Binary as BinaryCurve;
+use phpseclib3\Crypt\EC\BaseCurves\Prime as PrimeCurve;
+use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
+use phpseclib3\Exception\UnsupportedCurveException;
 use phpseclib3\File\ASN1;
 use phpseclib3\File\ASN1\Maps;
-use phpseclib3\Exception\UnsupportedCurveException;
+use phpseclib3\Math\BigInteger;
 
 /**
  * Generic EC Key Parsing Helper functions
@@ -98,8 +97,8 @@ trait Common
                 'sect163k1' => '1.3.132.0.1',
                 'sect163r2' => '1.3.132.0.15',
                 'secp224r1' => '1.3.132.0.33',
-                'sect233k1'=> '1.3.132.0.26',
-                'sect233r1'=> '1.3.132.0.27',
+                'sect233k1' => '1.3.132.0.26',
+                'sect233r1' => '1.3.132.0.27',
                 'secp256r1' => '1.2.840.10045.3.1.7', // aka prime256v1
                 'sect283k1' => '1.3.132.0.16',
                 'sect283r1' => '1.3.132.0.17',

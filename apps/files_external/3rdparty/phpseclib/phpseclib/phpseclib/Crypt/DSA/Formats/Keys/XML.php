@@ -22,8 +22,9 @@
 namespace phpseclib3\Crypt\DSA\Formats\Keys;
 
 use ParagonIE\ConstantTime\Base64;
-use phpseclib3\Math\BigInteger;
 use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Exception\BadConfigurationException;
+use phpseclib3\Math\BigInteger;
 
 /**
  * XML Formatted DSA Key Handler
@@ -48,6 +49,10 @@ abstract class XML
             throw new \UnexpectedValueException('Key should be a string - not a ' . gettype($key));
         }
 
+        if (!class_exists('DOMDocument')) {
+            throw new BadConfigurationException('The dom extension is not setup correctly on this system');
+        }
+
         $use_errors = libxml_use_internal_errors(true);
 
         $dom = new \DOMDocument();
@@ -55,6 +60,7 @@ abstract class XML
             $key = '<xml>' . $key . '</xml>';
         }
         if (!$dom->loadXML($key)) {
+            libxml_use_internal_errors($use_errors);
             throw new \UnexpectedValueException('Key does not appear to contain XML');
         }
         $xpath = new \DOMXPath($dom);

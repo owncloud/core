@@ -19,6 +19,8 @@ namespace Google\Service\Bigquery;
 
 class Table extends \Google\Model
 {
+  protected $cloneDefinitionType = CloneDefinition::class;
+  protected $cloneDefinitionDataType = '';
   protected $clusteringType = Clustering::class;
   protected $clusteringDataType = '';
   /**
@@ -116,6 +118,20 @@ class Table extends \Google\Model
   protected $viewType = ViewDefinition::class;
   protected $viewDataType = '';
 
+  /**
+   * @param CloneDefinition
+   */
+  public function setCloneDefinition(CloneDefinition $cloneDefinition)
+  {
+    $this->cloneDefinition = $cloneDefinition;
+  }
+  /**
+   * @return CloneDefinition
+   */
+  public function getCloneDefinition()
+  {
+    return $this->cloneDefinition;
+  }
   /**
    * @param Clustering
    */

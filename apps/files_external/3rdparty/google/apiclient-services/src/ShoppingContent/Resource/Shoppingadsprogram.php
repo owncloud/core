@@ -45,7 +45,7 @@ class Shoppingadsprogram extends \Google\Service\Resource
     return $this->call('get', [$params], ShoppingAdsProgramStatus::class);
   }
   /**
-   * Requests a review for Shopping Ads program in the provided country.
+   * Requests a review of Shopping ads in a specific region.
    * (shoppingadsprogram.requestreview)
    *
    * @param string $merchantId Required. The ID of the account.

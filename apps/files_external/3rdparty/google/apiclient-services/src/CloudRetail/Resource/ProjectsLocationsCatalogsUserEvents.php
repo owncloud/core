@@ -100,13 +100,14 @@ class ProjectsLocationsCatalogsUserEvents extends \Google\Service\Resource
     return $this->call('purge', [$params], GoogleLongrunningOperation::class);
   }
   /**
-   * Triggers a user event rejoin operation with latest product catalog. Events
-   * will not be annotated with detailed product information if product is missing
-   * from the catalog at the time the user event is ingested, and these events are
+   * Starts a user event rejoin operation with latest product catalog. Events will
+   * not be annotated with detailed product information if product is missing from
+   * the catalog at the time the user event is ingested, and these events are
    * stored as unjoined events with a limited usage on training and serving. This
-   * API can be used to trigger a 'join' operation on specified events with latest
+   * method can be used to start a join operation on specified events with latest
    * version of product catalog. It can also be used to correct events joined with
-   * wrong product catalog. (userEvents.rejoin)
+   * the wrong product catalog. A rejoin operation can take hours or days to
+   * complete. (userEvents.rejoin)
    *
    * @param string $parent Required. The parent catalog resource name, such as
    * `projects/1234/locations/global/catalogs/default_catalog`.

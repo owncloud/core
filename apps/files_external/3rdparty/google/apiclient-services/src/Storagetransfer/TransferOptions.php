@@ -33,6 +33,10 @@ class TransferOptions extends \Google\Model
    * @var bool
    */
   public $overwriteObjectsAlreadyExistingInSink;
+  /**
+   * @var string
+   */
+  public $overwriteWhen;
 
   /**
    * @param bool
@@ -89,6 +93,20 @@ class TransferOptions extends \Google\Model
   public function getOverwriteObjectsAlreadyExistingInSink()
   {
     return $this->overwriteObjectsAlreadyExistingInSink;
+  }
+  /**
+   * @param string
+   */
+  public function setOverwriteWhen($overwriteWhen)
+  {
+    $this->overwriteWhen = $overwriteWhen;
+  }
+  /**
+   * @return string
+   */
+  public function getOverwriteWhen()
+  {
+    return $this->overwriteWhen;
   }
 }
 

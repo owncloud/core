@@ -45,10 +45,16 @@ class AssignedTargetingOption extends \Google\Model
   protected $categoryDetailsDataType = '';
   protected $channelDetailsType = ChannelAssignedTargetingOptionDetails::class;
   protected $channelDetailsDataType = '';
+  protected $contentDurationDetailsType = ContentDurationAssignedTargetingOptionDetails::class;
+  protected $contentDurationDetailsDataType = '';
+  protected $contentGenreDetailsType = ContentGenreAssignedTargetingOptionDetails::class;
+  protected $contentGenreDetailsDataType = '';
   protected $contentInstreamPositionDetailsType = ContentInstreamPositionAssignedTargetingOptionDetails::class;
   protected $contentInstreamPositionDetailsDataType = '';
   protected $contentOutstreamPositionDetailsType = ContentOutstreamPositionAssignedTargetingOptionDetails::class;
   protected $contentOutstreamPositionDetailsDataType = '';
+  protected $contentStreamTypeDetailsType = ContentStreamTypeAssignedTargetingOptionDetails::class;
+  protected $contentStreamTypeDetailsDataType = '';
   protected $dayAndTimeDetailsType = DayAndTimeAssignedTargetingOptionDetails::class;
   protected $dayAndTimeDetailsDataType = '';
   protected $deviceMakeModelDetailsType = DeviceMakeModelAssignedTargetingOptionDetails::class;
@@ -289,6 +295,34 @@ class AssignedTargetingOption extends \Google\Model
     return $this->channelDetails;
   }
   /**
+   * @param ContentDurationAssignedTargetingOptionDetails
+   */
+  public function setContentDurationDetails(ContentDurationAssignedTargetingOptionDetails $contentDurationDetails)
+  {
+    $this->contentDurationDetails = $contentDurationDetails;
+  }
+  /**
+   * @return ContentDurationAssignedTargetingOptionDetails
+   */
+  public function getContentDurationDetails()
+  {
+    return $this->contentDurationDetails;
+  }
+  /**
+   * @param ContentGenreAssignedTargetingOptionDetails
+   */
+  public function setContentGenreDetails(ContentGenreAssignedTargetingOptionDetails $contentGenreDetails)
+  {
+    $this->contentGenreDetails = $contentGenreDetails;
+  }
+  /**
+   * @return ContentGenreAssignedTargetingOptionDetails
+   */
+  public function getContentGenreDetails()
+  {
+    return $this->contentGenreDetails;
+  }
+  /**
    * @param ContentInstreamPositionAssignedTargetingOptionDetails
    */
   public function setContentInstreamPositionDetails(ContentInstreamPositionAssignedTargetingOptionDetails $contentInstreamPositionDetails)
@@ -315,6 +349,20 @@ class AssignedTargetingOption extends \Google\Model
   public function getContentOutstreamPositionDetails()
   {
     return $this->contentOutstreamPositionDetails;
+  }
+  /**
+   * @param ContentStreamTypeAssignedTargetingOptionDetails
+   */
+  public function setContentStreamTypeDetails(ContentStreamTypeAssignedTargetingOptionDetails $contentStreamTypeDetails)
+  {
+    $this->contentStreamTypeDetails = $contentStreamTypeDetails;
+  }
+  /**
+   * @return ContentStreamTypeAssignedTargetingOptionDetails
+   */
+  public function getContentStreamTypeDetails()
+  {
+    return $this->contentStreamTypeDetails;
   }
   /**
    * @param DayAndTimeAssignedTargetingOptionDetails

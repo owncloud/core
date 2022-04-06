@@ -32,6 +32,10 @@ class Subscription extends \Google\Model
   /**
    * @var bool
    */
+  public $enableExactlyOnceDelivery;
+  /**
+   * @var bool
+   */
   public $enableMessageOrdering;
   protected $expirationPolicyType = ExpirationPolicy::class;
   protected $expirationPolicyDataType = '';
@@ -113,6 +117,20 @@ class Subscription extends \Google\Model
   public function getDetached()
   {
     return $this->detached;
+  }
+  /**
+   * @param bool
+   */
+  public function setEnableExactlyOnceDelivery($enableExactlyOnceDelivery)
+  {
+    $this->enableExactlyOnceDelivery = $enableExactlyOnceDelivery;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableExactlyOnceDelivery()
+  {
+    return $this->enableExactlyOnceDelivery;
   }
   /**
    * @param bool

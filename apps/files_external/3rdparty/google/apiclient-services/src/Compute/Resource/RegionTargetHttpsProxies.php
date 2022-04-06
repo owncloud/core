@@ -163,6 +163,36 @@ class RegionTargetHttpsProxies extends \Google\Service\Resource
     return $this->call('list', [$params], TargetHttpsProxyList::class);
   }
   /**
+   * Patches the specified regional TargetHttpsProxy resource with the data
+   * included in the request. This method supports PATCH semantics and uses JSON
+   * merge patch format and processing rules. (regionTargetHttpsProxies.patch)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $region Name of the region for this request.
+   * @param string $targetHttpsProxy Name of the TargetHttpsProxy resource to
+   * patch.
+   * @param TargetHttpsProxy $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
+   * @return Operation
+   */
+  public function patch($project, $region, $targetHttpsProxy, TargetHttpsProxy $postBody, $optParams = [])
+  {
+    $params = ['project' => $project, 'region' => $region, 'targetHttpsProxy' => $targetHttpsProxy, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], Operation::class);
+  }
+  /**
    * Replaces SslCertificates for TargetHttpsProxy.
    * (regionTargetHttpsProxies.setSslCertificates)
    *

@@ -25,6 +25,8 @@ class EvaluationMetrics extends \Google\Model
   protected $binaryClassificationMetricsDataType = '';
   protected $clusteringMetricsType = ClusteringMetrics::class;
   protected $clusteringMetricsDataType = '';
+  protected $dimensionalityReductionMetricsType = DimensionalityReductionMetrics::class;
+  protected $dimensionalityReductionMetricsDataType = '';
   protected $multiClassClassificationMetricsType = MultiClassClassificationMetrics::class;
   protected $multiClassClassificationMetricsDataType = '';
   protected $rankingMetricsType = RankingMetrics::class;
@@ -73,6 +75,20 @@ class EvaluationMetrics extends \Google\Model
   public function getClusteringMetrics()
   {
     return $this->clusteringMetrics;
+  }
+  /**
+   * @param DimensionalityReductionMetrics
+   */
+  public function setDimensionalityReductionMetrics(DimensionalityReductionMetrics $dimensionalityReductionMetrics)
+  {
+    $this->dimensionalityReductionMetrics = $dimensionalityReductionMetrics;
+  }
+  /**
+   * @return DimensionalityReductionMetrics
+   */
+  public function getDimensionalityReductionMetrics()
+  {
+    return $this->dimensionalityReductionMetrics;
   }
   /**
    * @param MultiClassClassificationMetrics

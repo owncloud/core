@@ -129,7 +129,8 @@ class OrganizationsDevelopersAppsKeys extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string action Approve or revoke the consumer key by setting this
-   * value to `approve` or `revoke`, respectively.
+   * value to `approve` or `revoke`, respectively. The `Content-Type` header must
+   * be set to `application/octet-stream`.
    * @return GoogleCloudApigeeV1DeveloperAppKey
    */
   public function updateDeveloperAppKey($name, GoogleCloudApigeeV1DeveloperAppKey $postBody, $optParams = [])

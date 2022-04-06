@@ -49,6 +49,7 @@ class Firebaseappcheck extends \Google\Service
   public $projects_apps_deviceCheckConfig;
   public $projects_apps_recaptchaConfig;
   public $projects_apps_recaptchaEnterpriseConfig;
+  public $projects_apps_recaptchaV3Config;
   public $projects_apps_safetyNetConfig;
   public $projects_services;
 
@@ -156,6 +157,16 @@ class Firebaseappcheck extends \Google\Service
               ],
             ],'exchangeRecaptchaToken' => [
               'path' => 'v1beta/{+app}:exchangeRecaptchaToken',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'app' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'exchangeRecaptchaV3Token' => [
+              'path' => 'v1beta/{+app}:exchangeRecaptchaV3Token',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -415,6 +426,55 @@ class Firebaseappcheck extends \Google\Service
           'methods' => [
             'batchGet' => [
               'path' => 'v1beta/{+parent}/apps/-/recaptchaEnterpriseConfig:batchGet',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'names' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1beta/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1beta/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_apps_recaptchaV3Config = new Firebaseappcheck\Resource\ProjectsAppsRecaptchaV3Config(
+        $this,
+        $this->serviceName,
+        'recaptchaV3Config',
+        [
+          'methods' => [
+            'batchGet' => [
+              'path' => 'v1beta/{+parent}/apps/-/recaptchaV3Config:batchGet',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [

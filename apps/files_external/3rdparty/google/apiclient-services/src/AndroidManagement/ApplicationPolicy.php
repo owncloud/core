@@ -27,6 +27,10 @@ class ApplicationPolicy extends \Google\Collection
   /**
    * @var string
    */
+  public $alwaysOnVpnLockdownExemption;
+  /**
+   * @var string
+   */
   public $autoUpdateMode;
   /**
    * @var string
@@ -84,6 +88,20 @@ class ApplicationPolicy extends \Google\Collection
   public function getAccessibleTrackIds()
   {
     return $this->accessibleTrackIds;
+  }
+  /**
+   * @param string
+   */
+  public function setAlwaysOnVpnLockdownExemption($alwaysOnVpnLockdownExemption)
+  {
+    $this->alwaysOnVpnLockdownExemption = $alwaysOnVpnLockdownExemption;
+  }
+  /**
+   * @return string
+   */
+  public function getAlwaysOnVpnLockdownExemption()
+  {
+    return $this->alwaysOnVpnLockdownExemption;
   }
   /**
    * @param string

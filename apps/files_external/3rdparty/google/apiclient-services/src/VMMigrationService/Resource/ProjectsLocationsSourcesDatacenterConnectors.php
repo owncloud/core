@@ -20,6 +20,7 @@ namespace Google\Service\VMMigrationService\Resource;
 use Google\Service\VMMigrationService\DatacenterConnector;
 use Google\Service\VMMigrationService\ListDatacenterConnectorsResponse;
 use Google\Service\VMMigrationService\Operation;
+use Google\Service\VMMigrationService\UpgradeApplianceRequest;
 
 /**
  * The "datacenterConnectors" collection of methods.
@@ -125,6 +126,21 @@ class ProjectsLocationsSourcesDatacenterConnectors extends \Google\Service\Resou
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListDatacenterConnectorsResponse::class);
+  }
+  /**
+   * Upgrades the appliance relate to this DatacenterConnector to the in-place
+   * updateable version. (datacenterConnectors.upgradeAppliance)
+   *
+   * @param string $datacenterConnector Required. The DatacenterConnector name.
+   * @param UpgradeApplianceRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function upgradeAppliance($datacenterConnector, UpgradeApplianceRequest $postBody, $optParams = [])
+  {
+    $params = ['datacenterConnector' => $datacenterConnector, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('upgradeAppliance', [$params], Operation::class);
   }
 }
 

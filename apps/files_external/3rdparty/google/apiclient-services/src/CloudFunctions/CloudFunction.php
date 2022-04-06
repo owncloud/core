@@ -47,6 +47,10 @@ class CloudFunction extends \Google\Collection
   /**
    * @var string
    */
+  public $dockerRegistry;
+  /**
+   * @var string
+   */
   public $dockerRepository;
   /**
    * @var string
@@ -222,6 +226,20 @@ class CloudFunction extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  /**
+   * @param string
+   */
+  public function setDockerRegistry($dockerRegistry)
+  {
+    $this->dockerRegistry = $dockerRegistry;
+  }
+  /**
+   * @return string
+   */
+  public function getDockerRegistry()
+  {
+    return $this->dockerRegistry;
   }
   /**
    * @param string

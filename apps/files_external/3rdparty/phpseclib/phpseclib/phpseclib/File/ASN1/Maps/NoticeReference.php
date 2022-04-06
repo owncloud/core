@@ -27,15 +27,15 @@ use phpseclib3\File\ASN1;
 abstract class NoticeReference
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-            'organization'  => DisplayText::MAP,
+            'organization' => DisplayText::MAP,
             'noticeNumbers' => [
-                                   'type'     => ASN1::TYPE_SEQUENCE,
-                                   'min'      => 1,
-                                   'max'      => 200,
-                                   'children' => ['type' => ASN1::TYPE_INTEGER]
-                               ]
+                'type' => ASN1::TYPE_SEQUENCE,
+                'min' => 1,
+                'max' => 200,
+                'children' => ['type' => ASN1::TYPE_INTEGER]
+            ]
         ]
     ];
 }

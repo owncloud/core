@@ -32,21 +32,21 @@
 namespace phpseclib3\Crypt;
 
 use phpseclib3\Crypt\Common\AsymmetricKey;
-use phpseclib3\Crypt\EC\PrivateKey;
-use phpseclib3\Crypt\EC\PublicKey;
-use phpseclib3\Crypt\EC\Parameters;
-use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
 use phpseclib3\Crypt\EC\BaseCurves\Montgomery as MontgomeryCurve;
+use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
 use phpseclib3\Crypt\EC\Curves\Curve25519;
 use phpseclib3\Crypt\EC\Curves\Ed25519;
 use phpseclib3\Crypt\EC\Curves\Ed448;
 use phpseclib3\Crypt\EC\Formats\Keys\PKCS1;
-use phpseclib3\File\ASN1\Maps\ECParameters;
-use phpseclib3\File\ASN1;
-use phpseclib3\Math\BigInteger;
-use phpseclib3\Exception\UnsupportedCurveException;
+use phpseclib3\Crypt\EC\Parameters;
+use phpseclib3\Crypt\EC\PrivateKey;
+use phpseclib3\Crypt\EC\PublicKey;
 use phpseclib3\Exception\UnsupportedAlgorithmException;
+use phpseclib3\Exception\UnsupportedCurveException;
 use phpseclib3\Exception\UnsupportedOperationException;
+use phpseclib3\File\ASN1;
+use phpseclib3\File\ASN1\Maps\ECParameters;
+use phpseclib3\Math\BigInteger;
 
 /**
  * Pure-PHP implementation of EC.
@@ -158,7 +158,7 @@ abstract class EC extends AsymmetricKey
             return $privatekey;
         }
 
-        $privatekey = new PrivateKey;
+        $privatekey = new PrivateKey();
 
         $curveName = $curve;
         if (preg_match('#(?:^curve|^ed)\d+$#', $curveName)) {
@@ -217,14 +217,14 @@ abstract class EC extends AsymmetricKey
         }
 
         if (!isset($components['dA']) && !isset($components['QA'])) {
-            $new = new Parameters;
+            $new = new Parameters();
             $new->curve = $components['curve'];
             return $new;
         }
 
         $new = isset($components['dA']) ?
-            new PrivateKey :
-            new PublicKey;
+            new PrivateKey() :
+            new PublicKey();
         $new->curve = $components['curve'];
         $new->QA = $components['QA'];
 
@@ -323,6 +323,9 @@ abstract class EC extends AsymmetricKey
      */
     public function getEngine()
     {
+        if (!isset(self::$engines['PHP'])) {
+            self::useBestEngine();
+        }
         if ($this->curve instanceof TwistedEdwardsCurve) {
             return $this->curve instanceof Ed25519 && self::$engines['libsodium'] && !isset($this->context) ?
                 'libsodium' : 'PHP';
@@ -396,7 +399,7 @@ abstract class EC extends AsymmetricKey
      */
     public function getSignatureFormat()
     {
-       return $this->shortFormat;
+        return $this->shortFormat;
     }
 
     /**
@@ -437,7 +440,7 @@ abstract class EC extends AsymmetricKey
      */
     public function getContext()
     {
-       return $this->context;
+        return $this->context;
     }
 
     /**

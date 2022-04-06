@@ -27,9 +27,9 @@ use phpseclib3\File\ASN1;
 abstract class AuthorityInfoAccessSyntax
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
-        'min'      => 1,
-        'max'      => -1,
+        'type' => ASN1::TYPE_SEQUENCE,
+        'min' => 1,
+        'max' => -1,
         'children' => AccessDescription::MAP
     ];
 }

@@ -53,9 +53,9 @@ class Curve25519 extends Montgomery
         //return [$this->factory->newInteger(new BigInteger($r, 256))];
 
         $d = $d->toBytes();
-        $d&= "\xF8" . str_repeat("\xFF", 30) . "\x7F";
+        $d &= "\xF8" . str_repeat("\xFF", 30) . "\x7F";
         $d = strrev($d);
-        $d|= "\x40";
+        $d |= "\x40";
         $d = new BigInteger($d, -256);
 
         return parent::multiplyPoint($p, $d);

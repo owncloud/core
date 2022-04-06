@@ -19,6 +19,8 @@ namespace Google\Service\ArtifactRegistry\Resource;
 
 use Google\Service\ArtifactRegistry\ImportAptArtifactsRequest;
 use Google\Service\ArtifactRegistry\Operation;
+use Google\Service\ArtifactRegistry\UploadAptArtifactMediaResponse;
+use Google\Service\ArtifactRegistry\UploadAptArtifactRequest;
 
 /**
  * The "aptArtifacts" collection of methods.
@@ -47,6 +49,24 @@ class ProjectsLocationsRepositoriesAptArtifacts extends \Google\Service\Resource
     $params = ['parent' => $parent, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('import', [$params], Operation::class);
+  }
+  /**
+   * Directly uploads an Apt artifact. The returned Operation will complete once
+   * the resources are uploaded. Package, Version, and File resources are created
+   * based on the imported artifact. Imported artifacts that conflict with
+   * existing resources are ignored. (aptArtifacts.upload)
+   *
+   * @param string $parent The name of the parent resource where the artifacts
+   * will be uploaded.
+   * @param UploadAptArtifactRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return UploadAptArtifactMediaResponse
+   */
+  public function upload($parent, UploadAptArtifactRequest $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('upload', [$params], UploadAptArtifactMediaResponse::class);
   }
 }
 

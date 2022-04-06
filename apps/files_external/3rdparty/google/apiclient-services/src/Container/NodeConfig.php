@@ -91,6 +91,10 @@ class NodeConfig extends \Google\Collection
   protected $shieldedInstanceConfigType = ShieldedInstanceConfig::class;
   protected $shieldedInstanceConfigDataType = '';
   /**
+   * @var bool
+   */
+  public $spot;
+  /**
    * @var string[]
    */
   public $tags;
@@ -406,6 +410,20 @@ class NodeConfig extends \Google\Collection
   public function getShieldedInstanceConfig()
   {
     return $this->shieldedInstanceConfig;
+  }
+  /**
+   * @param bool
+   */
+  public function setSpot($spot)
+  {
+    $this->spot = $spot;
+  }
+  /**
+   * @return bool
+   */
+  public function getSpot()
+  {
+    return $this->spot;
   }
   /**
    * @param string[]

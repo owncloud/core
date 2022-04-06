@@ -39,12 +39,12 @@ class ProjectsLocationsRealmsGameServerClusters extends \Google\Service\Resource
    * (gameServerClusters.create)
    *
    * @param string $parent Required. The parent resource name, in the following
-   * form: `projects/{project}/locations/{location}/realms/{realm-id}`.
+   * form: `projects/{project}/locations/{locationId}/realms/{realmId}`.
    * @param GameServerCluster $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string gameServerClusterId Required. The ID of the game server
-   * cluster resource to be created.
+   * cluster resource to create.
    * @return Operation
    */
   public function create($parent, GameServerCluster $postBody, $optParams = [])
@@ -57,8 +57,8 @@ class ProjectsLocationsRealmsGameServerClusters extends \Google\Service\Resource
    * Deletes a single game server cluster. (gameServerClusters.delete)
    *
    * @param string $name Required. The name of the game server cluster to delete,
-   * in the following form:
-   * `projects/{project}/locations/{location}/gameServerClusters/{cluster}`.
+   * in the following form: `projects/{project}/locations/{locationId}/gameServerC
+   * lusters/{gameServerClusterId}`.
    * @param array $optParams Optional parameters.
    * @return Operation
    */
@@ -72,17 +72,16 @@ class ProjectsLocationsRealmsGameServerClusters extends \Google\Service\Resource
    * Gets details of a single game server cluster. (gameServerClusters.get)
    *
    * @param string $name Required. The name of the game server cluster to
-   * retrieve, in the following form:
-   * `projects/{project}/locations/{location}/realms/{realm-
-   * id}/gameServerClusters/{cluster}`.
+   * retrieve, in the following form: `projects/{project}/locations/{locationId}/r
+   * ealms/{realmId}/gameServerClusters/{gameServerClusterId}`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string view Optional. View for the returned GameServerCluster
    * objects. When `FULL` is specified, the `cluster_state` field is also returned
    * in the GameServerCluster object, which includes the state of the referenced
    * Kubernetes cluster such as versions and provider info. The default/unset
-   * value is GAME_SERVER_CLUSTER_VIEW_UNSPECIFIED, same as BASIC, which does not
-   * return the `cluster_state` field.
+   * value is `GAME_SERVER_CLUSTER_VIEW_UNSPECIFIED`, the same as `BASIC`, which
+   * does not return the `cluster_state` field.
    * @return GameServerCluster
    */
   public function get($name, $optParams = [])
@@ -96,26 +95,27 @@ class ProjectsLocationsRealmsGameServerClusters extends \Google\Service\Resource
    * (gameServerClusters.listProjectsLocationsRealmsGameServerClusters)
    *
    * @param string $parent Required. The parent resource name, in the following
-   * form: "projects/{project}/locations/{location}/realms/{realm}".
+   * form: `projects/{project}/locations/{locationId}/realms/{realmId}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. The filter to apply to list results.
+   * @opt_param string filter Optional. The filter to apply to list results (see
+   * [Filtering](https://google.aip.dev/160)).
    * @opt_param string orderBy Optional. Specifies the ordering of results
-   * following syntax at
-   * https://cloud.google.com/apis/design/design_patterns#sorting_order.
+   * following [Cloud API
+   * syntax](https://cloud.google.com/apis/design/design_patterns#sorting_order).
    * @opt_param int pageSize Optional. The maximum number of items to return. If
-   * unspecified, the server will pick an appropriate default. The server may
-   * return fewer items than requested. A caller should only rely on response's
+   * unspecified, the server picks an appropriate default. The server may return
+   * fewer items than requested. A caller should only rely on response's
    * next_page_token to determine if there are more GameServerClusters left to be
    * queried.
    * @opt_param string pageToken Optional. The next_page_token value returned from
-   * a previous List request, if any.
+   * a previous list request, if any.
    * @opt_param string view Optional. View for the returned GameServerCluster
    * objects. When `FULL` is specified, the `cluster_state` field is also returned
    * in the GameServerCluster object, which includes the state of the referenced
    * Kubernetes cluster such as versions and provider info. The default/unset
-   * value is GAME_SERVER_CLUSTER_VIEW_UNSPECIFIED, same as BASIC, which does not
-   * return the `cluster_state` field.
+   * value is `GAME_SERVER_CLUSTER_VIEW_UNSPECIFIED`, the same as `BASIC`, which
+   * does not return the `cluster_state` field.
    * @return ListGameServerClustersResponse
    */
   public function listProjectsLocationsRealmsGameServerClusters($parent, $optParams = [])
@@ -128,17 +128,16 @@ class ProjectsLocationsRealmsGameServerClusters extends \Google\Service\Resource
    * Patches a single game server cluster. (gameServerClusters.patch)
    *
    * @param string $name Required. The resource name of the game server cluster,
-   * in the following form: `projects/{project}/locations/{location}/realms/{realm
-   * }/gameServerClusters/{cluster}`. For example, `projects/my-
-   * project/locations/{location}/realms/zanzibar/gameServerClusters/my-onprem-
-   * cluster`.
+   * in the following form: `projects/{project}/locations/{locationId}/realms/{rea
+   * lmId}/gameServerClusters/{gameServerClusterId}`. For example, `projects/my-
+   * project/locations/global/realms/zanzibar/gameServerClusters/my-gke-cluster`.
    * @param GameServerCluster $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Required. Mask of fields to update. At least one
-   * path must be supplied in this field. For the `FieldMask` definition, see
-   * https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#fieldmask
+   * @opt_param string updateMask Required. The update mask to apply to the
+   * resource. At least one path must be supplied in this field. For more
+   * information, see the [`FieldMask` definition](https://developers.google.com
+   * /protocol-buffers/docs/reference/google.protobuf#fieldmask).
    * @return Operation
    */
   public function patch($name, GameServerCluster $postBody, $optParams = [])
@@ -152,15 +151,15 @@ class ProjectsLocationsRealmsGameServerClusters extends \Google\Service\Resource
    * location. (gameServerClusters.previewCreate)
    *
    * @param string $parent Required. The parent resource name, in the following
-   * form: `projects/{project}/locations/{location}/realms/{realm}`.
+   * form: `projects/{project}/locations/{locationId}/realms/{realmId}`.
    * @param GameServerCluster $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string gameServerClusterId Required. The ID of the game server
-   * cluster resource to be created.
+   * cluster resource to create.
    * @opt_param string previewTime Optional. The target timestamp to compute the
    * preview.
-   * @opt_param string view Optional. This field is deprecated, preview will
+   * @opt_param string view Optional. This field is deprecated. Preview will
    * always return KubernetesClusterState.
    * @return PreviewCreateGameServerClusterResponse
    */
@@ -175,8 +174,8 @@ class ProjectsLocationsRealmsGameServerClusters extends \Google\Service\Resource
    * (gameServerClusters.previewDelete)
    *
    * @param string $name Required. The name of the game server cluster to delete,
-   * in the following form:
-   * `projects/{project}/locations/{location}/gameServerClusters/{cluster}`.
+   * in the following form: `projects/{project}/locations/{locationId}/gameServerC
+   * lusters/{gameServerClusterId}`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string previewTime Optional. The target timestamp to compute the
@@ -193,19 +192,18 @@ class ProjectsLocationsRealmsGameServerClusters extends \Google\Service\Resource
    * Previews updating a GameServerCluster. (gameServerClusters.previewUpdate)
    *
    * @param string $name Required. The resource name of the game server cluster,
-   * in the following form: `projects/{project}/locations/{location}/realms/{realm
-   * }/gameServerClusters/{cluster}`. For example, `projects/my-
-   * project/locations/{location}/realms/zanzibar/gameServerClusters/my-onprem-
-   * cluster`.
+   * in the following form: `projects/{project}/locations/{locationId}/realms/{rea
+   * lmId}/gameServerClusters/{gameServerClusterId}`. For example, `projects/my-
+   * project/locations/global/realms/zanzibar/gameServerClusters/my-gke-cluster`.
    * @param GameServerCluster $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string previewTime Optional. The target timestamp to compute the
    * preview.
    * @opt_param string updateMask Required. Mask of fields to update. At least one
-   * path must be supplied in this field. For the `FieldMask` definition, see
-   * https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#fieldmask
+   * path must be supplied in this field. For more information, see the
+   * [`FieldMask` definition](https://developers.google.com/protocol-
+   * buffers/docs/reference/google.protobuf#fieldmask).
    * @return PreviewUpdateGameServerClusterResponse
    */
   public function previewUpdate($name, GameServerCluster $postBody, $optParams = [])

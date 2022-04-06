@@ -107,8 +107,8 @@ class PropertiesDataStreamsMeasurementProtocolSecrets extends \Google\Service\Re
    * Updates a measurement protocol secret. (measurementProtocolSecrets.patch)
    *
    * @param string $name Output only. Resource name of this secret. This secret
-   * may be a child of any type of stream. Format: properties/{property}/webDataSt
-   * reams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
+   * may be a child of any type of stream. Format: properties/{property}/dataStrea
+   * ms/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
    * @param GoogleAnalyticsAdminV1alphaMeasurementProtocolSecret $postBody
    * @param array $optParams Optional parameters.
    *

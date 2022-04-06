@@ -20,10 +20,14 @@ namespace Google\Service\Bigquery;
 class TrainingRun extends \Google\Collection
 {
   protected $collection_key = 'results';
+  protected $classLevelGlobalExplanationsType = GlobalExplanation::class;
+  protected $classLevelGlobalExplanationsDataType = 'array';
   protected $dataSplitResultType = DataSplitResult::class;
   protected $dataSplitResultDataType = '';
   protected $evaluationMetricsType = EvaluationMetrics::class;
   protected $evaluationMetricsDataType = '';
+  protected $modelLevelGlobalExplanationType = GlobalExplanation::class;
+  protected $modelLevelGlobalExplanationDataType = '';
   protected $resultsType = IterationResult::class;
   protected $resultsDataType = 'array';
   /**
@@ -32,7 +36,29 @@ class TrainingRun extends \Google\Collection
   public $startTime;
   protected $trainingOptionsType = TrainingOptions::class;
   protected $trainingOptionsDataType = '';
+  /**
+   * @var string
+   */
+  public $vertexAiModelId;
+  /**
+   * @var string
+   */
+  public $vertexAiModelVersion;
 
+  /**
+   * @param GlobalExplanation[]
+   */
+  public function setClassLevelGlobalExplanations($classLevelGlobalExplanations)
+  {
+    $this->classLevelGlobalExplanations = $classLevelGlobalExplanations;
+  }
+  /**
+   * @return GlobalExplanation[]
+   */
+  public function getClassLevelGlobalExplanations()
+  {
+    return $this->classLevelGlobalExplanations;
+  }
   /**
    * @param DataSplitResult
    */
@@ -60,6 +86,20 @@ class TrainingRun extends \Google\Collection
   public function getEvaluationMetrics()
   {
     return $this->evaluationMetrics;
+  }
+  /**
+   * @param GlobalExplanation
+   */
+  public function setModelLevelGlobalExplanation(GlobalExplanation $modelLevelGlobalExplanation)
+  {
+    $this->modelLevelGlobalExplanation = $modelLevelGlobalExplanation;
+  }
+  /**
+   * @return GlobalExplanation
+   */
+  public function getModelLevelGlobalExplanation()
+  {
+    return $this->modelLevelGlobalExplanation;
   }
   /**
    * @param IterationResult[]
@@ -102,6 +142,34 @@ class TrainingRun extends \Google\Collection
   public function getTrainingOptions()
   {
     return $this->trainingOptions;
+  }
+  /**
+   * @param string
+   */
+  public function setVertexAiModelId($vertexAiModelId)
+  {
+    $this->vertexAiModelId = $vertexAiModelId;
+  }
+  /**
+   * @return string
+   */
+  public function getVertexAiModelId()
+  {
+    return $this->vertexAiModelId;
+  }
+  /**
+   * @param string
+   */
+  public function setVertexAiModelVersion($vertexAiModelVersion)
+  {
+    $this->vertexAiModelVersion = $vertexAiModelVersion;
+  }
+  /**
+   * @return string
+   */
+  public function getVertexAiModelVersion()
+  {
+    return $this->vertexAiModelVersion;
   }
 }
 

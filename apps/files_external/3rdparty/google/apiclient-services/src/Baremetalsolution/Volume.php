@@ -51,6 +51,10 @@ class Volume extends \Google\Model
    * @var string
    */
   public $snapshotAutoDeleteBehavior;
+  /**
+   * @var bool
+   */
+  public $snapshotEnabled;
   protected $snapshotReservationDetailType = SnapshotReservationDetail::class;
   protected $snapshotReservationDetailDataType = '';
   /**
@@ -177,6 +181,20 @@ class Volume extends \Google\Model
   public function getSnapshotAutoDeleteBehavior()
   {
     return $this->snapshotAutoDeleteBehavior;
+  }
+  /**
+   * @param bool
+   */
+  public function setSnapshotEnabled($snapshotEnabled)
+  {
+    $this->snapshotEnabled = $snapshotEnabled;
+  }
+  /**
+   * @return bool
+   */
+  public function getSnapshotEnabled()
+  {
+    return $this->snapshotEnabled;
   }
   /**
    * @param SnapshotReservationDetail

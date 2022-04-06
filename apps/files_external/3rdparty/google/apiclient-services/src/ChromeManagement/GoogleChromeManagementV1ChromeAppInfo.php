@@ -31,7 +31,15 @@ class GoogleChromeManagementV1ChromeAppInfo extends \Google\Collection
   /**
    * @var bool
    */
+  public $isKioskOnly;
+  /**
+   * @var bool
+   */
   public $isTheme;
+  /**
+   * @var bool
+   */
+  public $kioskEnabled;
   /**
    * @var int
    */
@@ -76,6 +84,20 @@ class GoogleChromeManagementV1ChromeAppInfo extends \Google\Collection
   /**
    * @param bool
    */
+  public function setIsKioskOnly($isKioskOnly)
+  {
+    $this->isKioskOnly = $isKioskOnly;
+  }
+  /**
+   * @return bool
+   */
+  public function getIsKioskOnly()
+  {
+    return $this->isKioskOnly;
+  }
+  /**
+   * @param bool
+   */
   public function setIsTheme($isTheme)
   {
     $this->isTheme = $isTheme;
@@ -86,6 +108,20 @@ class GoogleChromeManagementV1ChromeAppInfo extends \Google\Collection
   public function getIsTheme()
   {
     return $this->isTheme;
+  }
+  /**
+   * @param bool
+   */
+  public function setKioskEnabled($kioskEnabled)
+  {
+    $this->kioskEnabled = $kioskEnabled;
+  }
+  /**
+   * @return bool
+   */
+  public function getKioskEnabled()
+  {
+    return $this->kioskEnabled;
   }
   /**
    * @param int

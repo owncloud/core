@@ -27,7 +27,7 @@ use phpseclib3\File\ASN1;
 abstract class KeyUsage
 {
     const MAP = [
-        'type'    => ASN1::TYPE_BIT_STRING,
+        'type' => ASN1::TYPE_BIT_STRING,
         'mapping' => [
             'digitalSignature',
             'nonRepudiation',

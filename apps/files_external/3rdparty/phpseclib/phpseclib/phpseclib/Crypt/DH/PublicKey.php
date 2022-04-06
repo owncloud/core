@@ -13,8 +13,8 @@
 
 namespace phpseclib3\Crypt\DH;
 
-use phpseclib3\Crypt\DH;
 use phpseclib3\Crypt\Common;
+use phpseclib3\Crypt\DH;
 
 /**
  * DH Public Key

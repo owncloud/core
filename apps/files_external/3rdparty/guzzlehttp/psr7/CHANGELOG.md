@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+## 1.8.5 - 2022-03-20
+
+### Fixed
+
+- Correct header value validation
+
+## 1.8.4 - 2022-03-20
+
+### Fixed
+
+- Validate header values properly
+
 ## 1.8.3 - 2021-10-05
 
 ### Fixed

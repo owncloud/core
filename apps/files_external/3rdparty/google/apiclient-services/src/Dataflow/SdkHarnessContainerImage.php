@@ -17,8 +17,13 @@
 
 namespace Google\Service\Dataflow;
 
-class SdkHarnessContainerImage extends \Google\Model
+class SdkHarnessContainerImage extends \Google\Collection
 {
+  protected $collection_key = 'capabilities';
+  /**
+   * @var string[]
+   */
+  public $capabilities;
   /**
    * @var string
    */
@@ -32,6 +37,20 @@ class SdkHarnessContainerImage extends \Google\Model
    */
   public $useSingleCorePerContainer;
 
+  /**
+   * @param string[]
+   */
+  public function setCapabilities($capabilities)
+  {
+    $this->capabilities = $capabilities;
+  }
+  /**
+   * @return string[]
+   */
+  public function getCapabilities()
+  {
+    return $this->capabilities;
+  }
   /**
    * @param string
    */

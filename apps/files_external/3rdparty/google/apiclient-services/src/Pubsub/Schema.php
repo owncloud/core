@@ -30,6 +30,14 @@ class Schema extends \Google\Model
   /**
    * @var string
    */
+  public $revisionCreateTime;
+  /**
+   * @var string
+   */
+  public $revisionId;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -59,6 +67,34 @@ class Schema extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setRevisionCreateTime($revisionCreateTime)
+  {
+    $this->revisionCreateTime = $revisionCreateTime;
+  }
+  /**
+   * @return string
+   */
+  public function getRevisionCreateTime()
+  {
+    return $this->revisionCreateTime;
+  }
+  /**
+   * @param string
+   */
+  public function setRevisionId($revisionId)
+  {
+    $this->revisionId = $revisionId;
+  }
+  /**
+   * @return string
+   */
+  public function getRevisionId()
+  {
+    return $this->revisionId;
   }
   /**
    * @param string

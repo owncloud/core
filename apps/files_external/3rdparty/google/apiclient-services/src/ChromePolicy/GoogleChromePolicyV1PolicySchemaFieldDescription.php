@@ -19,7 +19,7 @@ namespace Google\Service\ChromePolicy;
 
 class GoogleChromePolicyV1PolicySchemaFieldDescription extends \Google\Collection
 {
-  protected $collection_key = 'nestedFieldDescriptions';
+  protected $collection_key = 'requiredItems';
   /**
    * @var string
    */
@@ -38,6 +38,8 @@ class GoogleChromePolicyV1PolicySchemaFieldDescription extends \Google\Collectio
   protected $knownValueDescriptionsDataType = 'array';
   protected $nestedFieldDescriptionsType = GoogleChromePolicyV1PolicySchemaFieldDescription::class;
   protected $nestedFieldDescriptionsDataType = 'array';
+  protected $requiredItemsType = GoogleChromePolicyV1PolicySchemaRequiredItems::class;
+  protected $requiredItemsDataType = 'array';
 
   /**
    * @param string
@@ -122,6 +124,20 @@ class GoogleChromePolicyV1PolicySchemaFieldDescription extends \Google\Collectio
   public function getNestedFieldDescriptions()
   {
     return $this->nestedFieldDescriptions;
+  }
+  /**
+   * @param GoogleChromePolicyV1PolicySchemaRequiredItems[]
+   */
+  public function setRequiredItems($requiredItems)
+  {
+    $this->requiredItems = $requiredItems;
+  }
+  /**
+   * @return GoogleChromePolicyV1PolicySchemaRequiredItems[]
+   */
+  public function getRequiredItems()
+  {
+    return $this->requiredItems;
   }
 }
 

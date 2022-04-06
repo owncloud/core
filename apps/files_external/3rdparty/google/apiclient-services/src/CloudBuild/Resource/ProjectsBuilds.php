@@ -121,7 +121,7 @@ class ProjectsBuilds extends \Google\Service\Resource
    * should be discarded, and pagination should be restarted from the first page
    * of results. See https://google.aip.dev/158 for more.
    * @opt_param string parent The parent of the collection of `Builds`. Format:
-   * `projects/{project}/locations/location`
+   * `projects/{project}/locations/{location}`
    * @return ListBuildsResponse
    */
   public function listProjectsBuilds($projectId, $optParams = [])

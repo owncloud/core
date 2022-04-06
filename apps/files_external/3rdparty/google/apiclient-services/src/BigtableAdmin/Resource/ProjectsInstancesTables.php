@@ -185,7 +185,8 @@ class ProjectsInstancesTables extends \Google\Service\Resource
    * @opt_param string pageToken The value of `next_page_token` returned by a
    * previous call.
    * @opt_param string view The view to be applied to the returned tables' fields.
-   * Only NAME_ONLY view (default) and REPLICATION_VIEW are supported.
+   * Only NAME_ONLY view (default), REPLICATION_VIEW and ENCRYPTION_VIEW are
+   * supported.
    * @return ListTablesResponse
    */
   public function listProjectsInstancesTables($parent, $optParams = [])

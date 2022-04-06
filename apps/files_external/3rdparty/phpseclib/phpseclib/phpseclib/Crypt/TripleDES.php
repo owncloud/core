@@ -164,6 +164,7 @@ class TripleDES extends DES
                 break;
             case 'cbc3':
                 $mode = 'cbc';
+                // fall-through
             // If not 3CBC, we init as usual
             default:
                 parent::__construct($mode);
@@ -260,7 +261,7 @@ class TripleDES extends DES
 
         switch (strlen($key)) {
             case 16:
-                $key.= substr($key, 0, 8);
+                $key .= substr($key, 0, 8);
                 break;
             case 24:
                 break;
@@ -275,8 +276,8 @@ class TripleDES extends DES
         $this->setEngine();
 
         if ($this->mode_3cbc) {
-            $this->des[0]->setKey(substr($key,  0, 8));
-            $this->des[1]->setKey(substr($key,  8, 8));
+            $this->des[0]->setKey(substr($key, 0, 8));
+            $this->des[1]->setKey(substr($key, 8, 8));
             $this->des[2]->setKey(substr($key, 16, 8));
         }
     }

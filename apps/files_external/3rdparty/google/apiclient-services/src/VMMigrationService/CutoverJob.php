@@ -25,6 +25,10 @@ class CutoverJob extends \Google\Model
    * @var string
    */
   public $createTime;
+  /**
+   * @var string
+   */
+  public $endTime;
   protected $errorType = Status::class;
   protected $errorDataType = '';
   /**
@@ -75,6 +79,20 @@ class CutoverJob extends \Google\Model
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setEndTime($endTime)
+  {
+    $this->endTime = $endTime;
+  }
+  /**
+   * @return string
+   */
+  public function getEndTime()
+  {
+    return $this->endTime;
   }
   /**
    * @param Status

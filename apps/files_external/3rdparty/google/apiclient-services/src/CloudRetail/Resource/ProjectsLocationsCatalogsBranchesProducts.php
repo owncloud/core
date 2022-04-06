@@ -18,10 +18,12 @@
 namespace Google\Service\CloudRetail\Resource;
 
 use Google\Service\CloudRetail\GoogleCloudRetailV2AddFulfillmentPlacesRequest;
+use Google\Service\CloudRetail\GoogleCloudRetailV2AddLocalInventoriesRequest;
 use Google\Service\CloudRetail\GoogleCloudRetailV2ImportProductsRequest;
 use Google\Service\CloudRetail\GoogleCloudRetailV2ListProductsResponse;
 use Google\Service\CloudRetail\GoogleCloudRetailV2Product;
 use Google\Service\CloudRetail\GoogleCloudRetailV2RemoveFulfillmentPlacesRequest;
+use Google\Service\CloudRetail\GoogleCloudRetailV2RemoveLocalInventoriesRequest;
 use Google\Service\CloudRetail\GoogleCloudRetailV2SetInventoryRequest;
 use Google\Service\CloudRetail\GoogleLongrunningOperation;
 use Google\Service\CloudRetail\GoogleProtobufEmpty;
@@ -43,9 +45,8 @@ class ProjectsLocationsCatalogsBranchesProducts extends \Google\Service\Resource
    * enqueued and processed downstream. As a consequence, when a response is
    * returned, the added place IDs are not immediately manifested in the Product
    * queried by GetProduct or ListProducts. This feature is only available for
-   * users who have Retail Search enabled. Please submit a form
-   * [here](https://cloud.google.com/contact) to contact cloud sales if you are
-   * interested in using Retail Search. (products.addFulfillmentPlaces)
+   * users who have Retail Search enabled. Please enable Retail Search on Cloud
+   * Console before using this feature. (products.addFulfillmentPlaces)
    *
    * @param string $product Required. Full resource name of Product, such as `proj
    * ects/locations/global/catalogs/default_catalog/branches/default_branch/produc
@@ -61,6 +62,34 @@ class ProjectsLocationsCatalogsBranchesProducts extends \Google\Service\Resource
     $params = ['product' => $product, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('addFulfillmentPlaces', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
+   * Updates local inventory information for a Product at a list of places, while
+   * respecting the last update timestamps of each inventory field. This process
+   * is asynchronous and does not require the Product to exist before updating
+   * inventory information. If the request is valid, the update will be enqueued
+   * and processed downstream. As a consequence, when a response is returned,
+   * updates are not immediately manifested in the Product queried by GetProduct
+   * or ListProducts. Local inventory information can only be modified using this
+   * method. CreateProduct and UpdateProduct has no effect on local inventories.
+   * This feature is only available for users who have Retail Search enabled.
+   * Please enable Retail Search on Cloud Console before using this feature.
+   * (products.addLocalInventories)
+   *
+   * @param string $product Required. Full resource name of Product, such as `proj
+   * ects/locations/global/catalogs/default_catalog/branches/default_branch/produc
+   * ts/some_product_id`. If the caller does not have permission to access the
+   * Product, regardless of whether or not it exists, a PERMISSION_DENIED error is
+   * returned.
+   * @param GoogleCloudRetailV2AddLocalInventoriesRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleLongrunningOperation
+   */
+  public function addLocalInventories($product, GoogleCloudRetailV2AddLocalInventoriesRequest $postBody, $optParams = [])
+  {
+    $params = ['product' => $product, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('addLocalInventories', [$params], GoogleLongrunningOperation::class);
   }
   /**
    * Creates a Product. (products.create)
@@ -223,9 +252,8 @@ class ProjectsLocationsCatalogsBranchesProducts extends \Google\Service\Resource
    * enqueued and processed downstream. As a consequence, when a response is
    * returned, the removed place IDs are not immediately manifested in the Product
    * queried by GetProduct or ListProducts. This feature is only available for
-   * users who have Retail Search enabled. Please submit a form
-   * [here](https://cloud.google.com/contact) to contact cloud sales if you are
-   * interested in using Retail Search. (products.removeFulfillmentPlaces)
+   * users who have Retail Search enabled. Please enable Retail Search on Cloud
+   * Console before using this feature. (products.removeFulfillmentPlaces)
    *
    * @param string $product Required. Full resource name of Product, such as `proj
    * ects/locations/global/catalogs/default_catalog/branches/default_branch/produc
@@ -243,6 +271,32 @@ class ProjectsLocationsCatalogsBranchesProducts extends \Google\Service\Resource
     return $this->call('removeFulfillmentPlaces', [$params], GoogleLongrunningOperation::class);
   }
   /**
+   * Remove local inventory information for a Product at a list of places at a
+   * removal timestamp. This process is asynchronous. If the request is valid, the
+   * removal will be enqueued and processed downstream. As a consequence, when a
+   * response is returned, removals are not immediately manifested in the Product
+   * queried by GetProduct or ListProducts. Local inventory information can only
+   * be removed using this method. CreateProduct and UpdateProduct has no effect
+   * on local inventories. This feature is only available for users who have
+   * Retail Search enabled. Please enable Retail Search on Cloud Console before
+   * using this feature. (products.removeLocalInventories)
+   *
+   * @param string $product Required. Full resource name of Product, such as `proj
+   * ects/locations/global/catalogs/default_catalog/branches/default_branch/produc
+   * ts/some_product_id`. If the caller does not have permission to access the
+   * Product, regardless of whether or not it exists, a PERMISSION_DENIED error is
+   * returned.
+   * @param GoogleCloudRetailV2RemoveLocalInventoriesRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleLongrunningOperation
+   */
+  public function removeLocalInventories($product, GoogleCloudRetailV2RemoveLocalInventoriesRequest $postBody, $optParams = [])
+  {
+    $params = ['product' => $product, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('removeLocalInventories', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
    * Updates inventory information for a Product while respecting the last update
    * timestamps of each inventory field. This process is asynchronous and does not
    * require the Product to exist before updating fulfillment information. If the
@@ -256,12 +310,12 @@ class ProjectsLocationsCatalogsBranchesProducts extends \Google\Service\Resource
    * CreateProduct or UpdateProduct request. If no inventory fields are set in
    * CreateProductRequest.product, then any pre-existing inventory information for
    * this product will be used. If no inventory fields are set in
-   * UpdateProductRequest.set_mask, then any existing inventory information will
-   * be preserved. Pre-existing inventory information can only be updated with
+   * SetInventoryRequest.set_mask, then any existing inventory information will be
+   * preserved. Pre-existing inventory information can only be updated with
    * SetInventory, AddFulfillmentPlaces, and RemoveFulfillmentPlaces. This feature
-   * is only available for users who have Retail Search enabled. Please submit a
-   * form [here](https://cloud.google.com/contact) to contact cloud sales if you
-   * are interested in using Retail Search. (products.setInventory)
+   * is only available for users who have Retail Search enabled. Please enable
+   * Retail Search on Cloud Console before using this feature.
+   * (products.setInventory)
    *
    * @param string $name Immutable. Full resource name of the product, such as `pr
    * ojects/locations/global/catalogs/default_catalog/branches/default_branch/prod

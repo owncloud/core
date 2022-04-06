@@ -19,6 +19,7 @@ namespace Google\Service\Apigee\Resource;
 
 use Google\Service\Apigee\GoogleApiHttpBody;
 use Google\Service\Apigee\GoogleCloudApigeeV1AsyncQuery;
+use Google\Service\Apigee\GoogleCloudApigeeV1GetAsyncQueryResultUrlResponse;
 use Google\Service\Apigee\GoogleCloudApigeeV1ListAsyncQueriesResponse;
 use Google\Service\Apigee\GoogleCloudApigeeV1Query;
 
@@ -84,6 +85,23 @@ class OrganizationsEnvironmentsQueries extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('getResult', [$params], GoogleApiHttpBody::class);
+  }
+  /**
+   * After the query is completed, use this API to retrieve the results. If the
+   * request succeeds, and there is a non-zero result set, the result is sent to
+   * the client as a list of urls to JSON files. (queries.getResulturl)
+   *
+   * @param string $name Required. Name of the asynchronous query result to get.
+   * Must be of the form
+   * `organizations/{org}/environments/{env}/queries/{queryId}/resulturl`.
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudApigeeV1GetAsyncQueryResultUrlResponse
+   */
+  public function getResulturl($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getResulturl', [$params], GoogleCloudApigeeV1GetAsyncQueryResultUrlResponse::class);
   }
   /**
    * Return a list of Asynchronous Queries

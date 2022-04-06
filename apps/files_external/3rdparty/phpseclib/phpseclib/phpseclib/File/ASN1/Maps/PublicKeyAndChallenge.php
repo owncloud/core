@@ -27,9 +27,9 @@ use phpseclib3\File\ASN1;
 abstract class PublicKeyAndChallenge
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-            'spki'      => SubjectPublicKeyInfo::MAP,
+            'spki' => SubjectPublicKeyInfo::MAP,
             'challenge' => ['type' => ASN1::TYPE_IA5_STRING]
         ]
     ];

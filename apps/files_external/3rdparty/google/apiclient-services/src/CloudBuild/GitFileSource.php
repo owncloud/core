@@ -22,6 +22,14 @@ class GitFileSource extends \Google\Model
   /**
    * @var string
    */
+  public $bitbucketServerConfig;
+  /**
+   * @var string
+   */
+  public $githubEnterpriseConfig;
+  /**
+   * @var string
+   */
   public $path;
   /**
    * @var string
@@ -36,6 +44,34 @@ class GitFileSource extends \Google\Model
    */
   public $uri;
 
+  /**
+   * @param string
+   */
+  public function setBitbucketServerConfig($bitbucketServerConfig)
+  {
+    $this->bitbucketServerConfig = $bitbucketServerConfig;
+  }
+  /**
+   * @return string
+   */
+  public function getBitbucketServerConfig()
+  {
+    return $this->bitbucketServerConfig;
+  }
+  /**
+   * @param string
+   */
+  public function setGithubEnterpriseConfig($githubEnterpriseConfig)
+  {
+    $this->githubEnterpriseConfig = $githubEnterpriseConfig;
+  }
+  /**
+   * @return string
+   */
+  public function getGithubEnterpriseConfig()
+  {
+    return $this->githubEnterpriseConfig;
+  }
   /**
    * @param string
    */

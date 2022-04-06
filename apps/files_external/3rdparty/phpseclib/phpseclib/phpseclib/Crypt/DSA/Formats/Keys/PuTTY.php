@@ -20,9 +20,9 @@
 
 namespace phpseclib3\Crypt\DSA\Formats\Keys;
 
-use phpseclib3\Math\BigInteger;
 use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\PuTTY as Progenitor;
+use phpseclib3\Math\BigInteger;
 
 /**
  * PuTTY Formatted DSA Key Handler

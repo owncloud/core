@@ -23,6 +23,10 @@ class Release extends \Google\Model
   /**
    * @var string
    */
+  public $fractionGroup;
+  /**
+   * @var string
+   */
   public $name;
   protected $servingType = Interval::class;
   protected $servingDataType = '';
@@ -38,6 +42,20 @@ class Release extends \Google\Model
   public function getFraction()
   {
     return $this->fraction;
+  }
+  /**
+   * @param string
+   */
+  public function setFractionGroup($fractionGroup)
+  {
+    $this->fractionGroup = $fractionGroup;
+  }
+  /**
+   * @return string
+   */
+  public function getFractionGroup()
+  {
+    return $this->fractionGroup;
   }
   /**
    * @param string

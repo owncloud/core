@@ -36,6 +36,8 @@ class AuditLog extends \Google\Collection
    * @var string
    */
   public $numResponseItems;
+  protected $policyViolationInfoType = PolicyViolationInfo::class;
+  protected $policyViolationInfoDataType = '';
   /**
    * @var array[]
    */
@@ -136,6 +138,20 @@ class AuditLog extends \Google\Collection
   public function getNumResponseItems()
   {
     return $this->numResponseItems;
+  }
+  /**
+   * @param PolicyViolationInfo
+   */
+  public function setPolicyViolationInfo(PolicyViolationInfo $policyViolationInfo)
+  {
+    $this->policyViolationInfo = $policyViolationInfo;
+  }
+  /**
+   * @return PolicyViolationInfo
+   */
+  public function getPolicyViolationInfo()
+  {
+    return $this->policyViolationInfo;
   }
   /**
    * @param array[]

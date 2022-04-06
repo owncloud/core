@@ -29,13 +29,9 @@ class FreeListingsProgramStatusRegionStatus extends \Google\Collection
    */
   public $eligibilityStatus;
   /**
-   * @var string
+   * @var string[]
    */
-  public $enhancedEligibilityStatus;
-  /**
-   * @var string
-   */
-  public $ineligibilityReason;
+  public $onboardingIssues;
   /**
    * @var string[]
    */
@@ -44,6 +40,16 @@ class FreeListingsProgramStatusRegionStatus extends \Google\Collection
    * @var string
    */
   public $reviewEligibilityStatus;
+  /**
+   * @var string
+   */
+  public $reviewIneligibilityReason;
+  /**
+   * @var string
+   */
+  public $reviewIneligibilityReasonDescription;
+  protected $reviewIneligibilityReasonDetailsType = FreeListingsProgramStatusReviewIneligibilityReasonDetails::class;
+  protected $reviewIneligibilityReasonDetailsDataType = '';
   /**
    * @var string[]
    */
@@ -78,32 +84,18 @@ class FreeListingsProgramStatusRegionStatus extends \Google\Collection
     return $this->eligibilityStatus;
   }
   /**
-   * @param string
+   * @param string[]
    */
-  public function setEnhancedEligibilityStatus($enhancedEligibilityStatus)
+  public function setOnboardingIssues($onboardingIssues)
   {
-    $this->enhancedEligibilityStatus = $enhancedEligibilityStatus;
+    $this->onboardingIssues = $onboardingIssues;
   }
   /**
-   * @return string
+   * @return string[]
    */
-  public function getEnhancedEligibilityStatus()
+  public function getOnboardingIssues()
   {
-    return $this->enhancedEligibilityStatus;
-  }
-  /**
-   * @param string
-   */
-  public function setIneligibilityReason($ineligibilityReason)
-  {
-    $this->ineligibilityReason = $ineligibilityReason;
-  }
-  /**
-   * @return string
-   */
-  public function getIneligibilityReason()
-  {
-    return $this->ineligibilityReason;
+    return $this->onboardingIssues;
   }
   /**
    * @param string[]
@@ -132,6 +124,48 @@ class FreeListingsProgramStatusRegionStatus extends \Google\Collection
   public function getReviewEligibilityStatus()
   {
     return $this->reviewEligibilityStatus;
+  }
+  /**
+   * @param string
+   */
+  public function setReviewIneligibilityReason($reviewIneligibilityReason)
+  {
+    $this->reviewIneligibilityReason = $reviewIneligibilityReason;
+  }
+  /**
+   * @return string
+   */
+  public function getReviewIneligibilityReason()
+  {
+    return $this->reviewIneligibilityReason;
+  }
+  /**
+   * @param string
+   */
+  public function setReviewIneligibilityReasonDescription($reviewIneligibilityReasonDescription)
+  {
+    $this->reviewIneligibilityReasonDescription = $reviewIneligibilityReasonDescription;
+  }
+  /**
+   * @return string
+   */
+  public function getReviewIneligibilityReasonDescription()
+  {
+    return $this->reviewIneligibilityReasonDescription;
+  }
+  /**
+   * @param FreeListingsProgramStatusReviewIneligibilityReasonDetails
+   */
+  public function setReviewIneligibilityReasonDetails(FreeListingsProgramStatusReviewIneligibilityReasonDetails $reviewIneligibilityReasonDetails)
+  {
+    $this->reviewIneligibilityReasonDetails = $reviewIneligibilityReasonDetails;
+  }
+  /**
+   * @return FreeListingsProgramStatusReviewIneligibilityReasonDetails
+   */
+  public function getReviewIneligibilityReasonDetails()
+  {
+    return $this->reviewIneligibilityReasonDetails;
   }
   /**
    * @param string[]

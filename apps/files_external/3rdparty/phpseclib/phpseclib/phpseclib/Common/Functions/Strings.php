@@ -130,7 +130,7 @@ abstract class Strings
                     // you need > 32-bit precision doesn't mean you need the full 64-bit precision
                     extract(unpack('Nupper/Nlower', self::shift($data, 8)));
                     $temp = $upper ? 4294967296 * $upper : 0;
-                    $temp+= $lower < 0 ? ($lower & 0x7FFFFFFFF) + 0x80000000 : $lower;
+                    $temp += $lower < 0 ? ($lower & 0x7FFFFFFFF) + 0x80000000 : $lower;
                     // $temp = hexdec(bin2hex(self::shift($data, 8)));
                     $result[] = $temp;
                     continue 2;
@@ -158,14 +158,14 @@ abstract class Strings
     /**
      * Create SSH2-style string
      *
+     * @param string $format
      * @param string|int|float|array|bool ...$elements
      * @access public
      * @return string
      */
-    public static function packSSH2(...$elements)
+    public static function packSSH2($format, ...$elements)
     {
-        $format = self::formatPack($elements[0]);
-        array_shift($elements);
+        $format = self::formatPack($format);
         if (strlen($format) != count($elements)) {
             throw new \InvalidArgumentException('There must be as many arguments as there are characters in the $format string');
         }
@@ -177,20 +177,20 @@ abstract class Strings
                     if (!is_int($element)) {
                         throw new \InvalidArgumentException('Bytes must be represented as an integer between 0 and 255, inclusive.');
                     }
-                    $result.= pack('C', $element);
+                    $result .= pack('C', $element);
                     break;
                 case 'b':
                     if (!is_bool($element)) {
                         throw new \InvalidArgumentException('A boolean parameter was expected.');
                     }
-                    $result.= $element ? "\1" : "\0";
+                    $result .= $element ? "\1" : "\0";
                     break;
                 case 'Q':
                     if (!is_int($element) && !is_float($element)) {
                         throw new \InvalidArgumentException('An integer was expected.');
                     }
                     // 4294967296 == 1 << 32
-                    $result.= pack('NN', $element / 4294967296, $element);
+                    $result .= pack('NN', $element / 4294967296, $element);
                     break;
                 case 'N':
                     if (is_float($element)) {
@@ -199,27 +199,27 @@ abstract class Strings
                     if (!is_int($element)) {
                         throw new \InvalidArgumentException('An integer was expected.');
                     }
-                    $result.= pack('N', $element);
+                    $result .= pack('N', $element);
                     break;
                 case 's':
                     if (!self::is_stringable($element)) {
                         throw new \InvalidArgumentException('A string was expected.');
                     }
-                    $result.= pack('Na*', strlen($element), $element);
+                    $result .= pack('Na*', strlen($element), $element);
                     break;
                 case 'i':
                     if (!$element instanceof BigInteger && !$element instanceof FiniteField\Integer) {
                         throw new \InvalidArgumentException('A phpseclib3\Math\BigInteger or phpseclib3\Math\Common\FiniteField\Integer object was expected.');
                     }
                     $element = $element->toBytes(true);
-                    $result.= pack('Na*', strlen($element), $element);
+                    $result .= pack('Na*', strlen($element), $element);
                     break;
                 case 'L':
                     if (!is_array($element)) {
                         throw new \InvalidArgumentException('An array was expected.');
                     }
                     $element = implode(',', $element);
-                    $result.= pack('Na*', strlen($element), $element);
+                    $result .= pack('Na*', strlen($element), $element);
                     break;
                 default:
                     throw new \InvalidArgumentException('$format contains an invalid character');
@@ -241,10 +241,10 @@ abstract class Strings
     {
         $parts = preg_split('#(\d+)#', $format, -1, PREG_SPLIT_DELIM_CAPTURE);
         $format = '';
-        for ($i = 1; $i < count($parts); $i+=2) {
-            $format.= substr($parts[$i - 1], 0, -1) . str_repeat(substr($parts[$i - 1], -1), $parts[$i]);
+        for ($i = 1; $i < count($parts); $i += 2) {
+            $format .= substr($parts[$i - 1], 0, -1) . str_repeat(substr($parts[$i - 1], -1), $parts[$i]);
         }
-        $format.= $parts[$i - 1];
+        $format .= $parts[$i - 1];
 
         return $format;
     }
@@ -293,7 +293,7 @@ abstract class Strings
         foreach ($parts as $part) {
             $xor = $part[0] == '1' ? PHP_INT_MIN : 0;
             $part[0] = '0';
-            $str.= pack(
+            $str .= pack(
                 PHP_INT_SIZE == 4 ? 'N' : 'J',
                 $xor ^ eval('return 0b' . $part . ';')
             );
@@ -328,12 +328,12 @@ abstract class Strings
         if (PHP_INT_SIZE == 4) {
             $digits = unpack('N*', $x);
             foreach ($digits as $digit) {
-                $bits.= sprintf('%032b', $digit);
+                $bits .= sprintf('%032b', $digit);
             }
         } else {
             $digits = unpack('J*', $x);
             foreach ($digits as $digit) {
-                $bits.= sprintf('%064b', $digit);
+                $bits .= sprintf('%064b', $digit);
             }
         }
 
@@ -355,13 +355,13 @@ abstract class Strings
             if (PHP_INT_SIZE === 8) {
                 // 3 operations
                 // from http://graphics.stanford.edu/~seander/bithacks.html#ReverseByteWith64BitsDiv
-                $r.= chr((($b * 0x0202020202) & 0x010884422010) % 1023);
+                $r .= chr((($b * 0x0202020202) & 0x010884422010) % 1023);
             } else {
                 // 7 operations
                 // from http://graphics.stanford.edu/~seander/bithacks.html#ReverseByteWith32Bits
                 $p1 = ($b * 0x0802) & 0x22110;
                 $p2 = ($b * 0x8020) & 0x88440;
-                $r.= chr(
+                $r .= chr(
                     (($p1 | $p2) * 0x10101) >> 16
                 );
             }
@@ -378,7 +378,14 @@ abstract class Strings
      */
     public static function increment_str(&$var)
     {
-        for ($i = 4; $i <= strlen($var); $i+= 4) {
+        if (function_exists('sodium_increment')) {
+            $var = strrev($var);
+            sodium_increment($var);
+            $var = strrev($var);
+            return $var;
+        }
+
+        for ($i = 4; $i <= strlen($var); $i += 4) {
             $temp = substr($var, -$i, 4);
             switch ($temp) {
                 case "\xFF\xFF\xFF\xFF":
@@ -410,9 +417,9 @@ abstract class Strings
     /**
      * Find whether the type of a variable is string (or could be converted to one)
      *
-     * @param string|object $var
-     * @return boolean
-     * @access public
+     * @param mixed $var
+     * @return bool
+     * @psalm-assert-if-true string|\Stringable $var
      */
     public static function is_stringable($var)
     {

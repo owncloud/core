@@ -34,6 +34,10 @@ class SasPortalDeviceGrant extends \Google\Collection
    * @var string
    */
   public $grantId;
+  /**
+   * @var string
+   */
+  public $lastHeartbeatTransmitExpireTime;
   public $maxEirp;
   protected $moveListType = SasPortalDpaMoveList::class;
   protected $moveListDataType = 'array';
@@ -101,6 +105,20 @@ class SasPortalDeviceGrant extends \Google\Collection
   public function getGrantId()
   {
     return $this->grantId;
+  }
+  /**
+   * @param string
+   */
+  public function setLastHeartbeatTransmitExpireTime($lastHeartbeatTransmitExpireTime)
+  {
+    $this->lastHeartbeatTransmitExpireTime = $lastHeartbeatTransmitExpireTime;
+  }
+  /**
+   * @return string
+   */
+  public function getLastHeartbeatTransmitExpireTime()
+  {
+    return $this->lastHeartbeatTransmitExpireTime;
   }
   public function setMaxEirp($maxEirp)
   {

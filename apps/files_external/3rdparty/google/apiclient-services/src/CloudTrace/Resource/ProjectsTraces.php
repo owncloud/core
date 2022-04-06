@@ -31,8 +31,8 @@ use Google\Service\CloudTrace\CloudtraceEmpty;
 class ProjectsTraces extends \Google\Service\Resource
 {
   /**
-   * Sends new spans to new or existing traces. You cannot update existing spans.
-   * (traces.batchWrite)
+   * Batch writes new spans to new or existing traces. You cannot update existing
+   * spans. (traces.batchWrite)
    *
    * @param string $name Required. The name of the project where the spans belong.
    * The format is `projects/[PROJECT_ID]`.

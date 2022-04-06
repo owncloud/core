@@ -39,6 +39,10 @@ class MetricThreshold extends \Google\Collection
   /**
    * @var string
    */
+  public $evaluationMissingData;
+  /**
+   * @var string
+   */
   public $filter;
   public $thresholdValue;
   protected $triggerType = Trigger::class;
@@ -113,6 +117,20 @@ class MetricThreshold extends \Google\Collection
   public function getDuration()
   {
     return $this->duration;
+  }
+  /**
+   * @param string
+   */
+  public function setEvaluationMissingData($evaluationMissingData)
+  {
+    $this->evaluationMissingData = $evaluationMissingData;
+  }
+  /**
+   * @return string
+   */
+  public function getEvaluationMissingData()
+  {
+    return $this->evaluationMissingData;
   }
   /**
    * @param string

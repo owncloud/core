@@ -19,11 +19,51 @@ namespace Google\Service\CloudHealthcare;
 
 class ExportResourcesRequest extends \Google\Model
 {
+  protected $internal_gapi_mappings = [
+        "since" => "_since",
+        "type" => "_type",
+  ];
+  /**
+   * @var string
+   */
+  public $since;
+  /**
+   * @var string
+   */
+  public $type;
   protected $bigqueryDestinationType = GoogleCloudHealthcareV1FhirBigQueryDestination::class;
   protected $bigqueryDestinationDataType = '';
   protected $gcsDestinationType = GoogleCloudHealthcareV1FhirGcsDestination::class;
   protected $gcsDestinationDataType = '';
 
+  /**
+   * @param string
+   */
+  public function setSince($since)
+  {
+    $this->since = $since;
+  }
+  /**
+   * @return string
+   */
+  public function getSince()
+  {
+    return $this->since;
+  }
+  /**
+   * @param string
+   */
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+  /**
+   * @return string
+   */
+  public function getType()
+  {
+    return $this->type;
+  }
   /**
    * @param GoogleCloudHealthcareV1FhirBigQueryDestination
    */

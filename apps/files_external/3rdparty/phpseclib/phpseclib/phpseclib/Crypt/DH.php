@@ -26,12 +26,12 @@
 
 namespace phpseclib3\Crypt;
 
-use phpseclib3\Exception\NoKeyLoadedException;
-use phpseclib3\Exception\UnsupportedOperationException;
 use phpseclib3\Crypt\Common\AsymmetricKey;
+use phpseclib3\Crypt\DH\Parameters;
 use phpseclib3\Crypt\DH\PrivateKey;
 use phpseclib3\Crypt\DH\PublicKey;
-use phpseclib3\Crypt\DH\Parameters;
+use phpseclib3\Exception\NoKeyLoadedException;
+use phpseclib3\Exception\UnsupportedOperationException;
 use phpseclib3\Math\BigInteger;
 
 /**
@@ -82,7 +82,7 @@ abstract class DH extends AsymmetricKey
      */
     public static function createParameters(...$args)
     {
-        $params = new Parameters;
+        $params = new Parameters();
         if (count($args) == 2 && $args[0] instanceof BigInteger && $args[1] instanceof BigInteger) {
             //if (!$args[0]->isPrime()) {
             //    throw new \InvalidArgumentException('The first parameter should be a prime number');
@@ -252,7 +252,7 @@ abstract class DH extends AsymmetricKey
             $max = $params->prime->subtract($one);
         }
 
-        $key = new PrivateKey;
+        $key = new PrivateKey();
         $key->prime = $params->prime;
         $key->base = $params->base;
         $key->privateKey = BigInteger::randomRange($one, $max);
@@ -279,6 +279,7 @@ abstract class DH extends AsymmetricKey
                     return $public->publicKey->powMod($private->privateKey, $private->prime)->toBytes(true);
                 case is_string($public):
                     $public = new BigInteger($public, -256);
+                    // fall-through
                 case $public instanceof BigInteger:
                     return $public->powMod($private->privateKey, $private->prime)->toBytes(true);
                 default:
@@ -290,6 +291,7 @@ abstract class DH extends AsymmetricKey
             switch (true) {
                 case $public instanceof EC\PublicKey:
                     $public = $public->getEncodedCoordinates();
+                    // fall-through
                 case is_string($public):
                     $point = $private->multiply($public);
                     switch ($private->getCurve()) {
@@ -324,7 +326,8 @@ abstract class DH extends AsymmetricKey
     {
         try {
             return EC::load($key, $password);
-        } catch (NoKeyLoadedException $e) {}
+        } catch (NoKeyLoadedException $e) {
+        }
 
         return parent::load($key, $password);
     }
@@ -339,11 +342,11 @@ abstract class DH extends AsymmetricKey
     protected static function onLoad($components)
     {
         if (!isset($components['privateKey']) && !isset($components['publicKey'])) {
-            $new = new Parameters;
+            $new = new Parameters();
         } else {
             $new = isset($components['privateKey']) ?
-                new PrivateKey :
-                new PublicKey;
+                new PrivateKey() :
+                new PublicKey();
         }
 
         $new->prime = $components['prime'];

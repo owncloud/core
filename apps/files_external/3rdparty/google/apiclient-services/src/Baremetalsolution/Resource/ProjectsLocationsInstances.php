@@ -17,8 +17,11 @@
 
 namespace Google\Service\Baremetalsolution\Resource;
 
+use Google\Service\Baremetalsolution\Instance;
+use Google\Service\Baremetalsolution\ListInstancesResponse;
+use Google\Service\Baremetalsolution\Operation;
 use Google\Service\Baremetalsolution\ResetInstanceRequest;
-use Google\Service\Baremetalsolution\ResetInstanceResponse;
+use Google\Service\Baremetalsolution\StartInstanceRequest;
 
 /**
  * The "instances" collection of methods.
@@ -31,19 +34,86 @@ use Google\Service\Baremetalsolution\ResetInstanceResponse;
 class ProjectsLocationsInstances extends \Google\Service\Resource
 {
   /**
-   * Perform an ungraceful, hard reset on a machine (equivalent to shutting the
-   * power off, and then turning it back on). (instances.resetInstance)
+   * Get details about a single server. (instances.get)
    *
-   * @param string $instance Required. Name of the instance to reset.
+   * @param string $name Required. Name of the resource.
+   * @param array $optParams Optional parameters.
+   * @return Instance
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], Instance::class);
+  }
+  /**
+   * List servers in a given project and location.
+   * (instances.listProjectsLocationsInstances)
+   *
+   * @param string $parent Required. Parent value for ListInstancesRequest.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter List filter.
+   * @opt_param int pageSize Requested page size. Server may return fewer items
+   * than requested. If unspecified, the server will pick an appropriate default.
+   * @opt_param string pageToken A token identifying a page of results from the
+   * server.
+   * @return ListInstancesResponse
+   */
+  public function listProjectsLocationsInstances($parent, $optParams = [])
+  {
+    $params = ['parent' => $parent];
+    $params = array_merge($params, $optParams);
+    return $this->call('list', [$params], ListInstancesResponse::class);
+  }
+  /**
+   * Update details of a single server. (instances.patch)
+   *
+   * @param string $name Output only. The resource name of this `Instance`.
+   * Resource names are schemeless URIs that follow the conventions in
+   * https://cloud.google.com/apis/design/resource_names. Format:
+   * `projects/{project}/locations/{location}/instances/{instance}`
+   * @param Instance $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The list of fields to update. The only currently
+   * supported fields are: `labels`
+   * @return Operation
+   */
+  public function patch($name, Instance $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], Operation::class);
+  }
+  /**
+   * Perform an ungraceful, hard reset on a server. Equivalent to shutting the
+   * power off and then turning it back on. (instances.reset)
+   *
+   * @param string $name Required. Name of the resource.
    * @param ResetInstanceRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return ResetInstanceResponse
+   * @return Operation
    */
-  public function resetInstance($instance, ResetInstanceRequest $postBody, $optParams = [])
+  public function reset($name, ResetInstanceRequest $postBody, $optParams = [])
   {
-    $params = ['instance' => $instance, 'postBody' => $postBody];
+    $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('resetInstance', [$params], ResetInstanceResponse::class);
+    return $this->call('reset', [$params], Operation::class);
+  }
+  /**
+   * Starts a server that was shutdown. (instances.start)
+   *
+   * @param string $name Required. Name of the resource.
+   * @param StartInstanceRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function start($name, StartInstanceRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('start', [$params], Operation::class);
   }
 }
 

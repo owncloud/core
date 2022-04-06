@@ -28,6 +28,10 @@ class Cve extends \Google\Collection
   public $id;
   protected $referencesType = Reference::class;
   protected $referencesDataType = 'array';
+  /**
+   * @var bool
+   */
+  public $upstreamFixAvailable;
 
   /**
    * @param Cvssv3
@@ -70,6 +74,20 @@ class Cve extends \Google\Collection
   public function getReferences()
   {
     return $this->references;
+  }
+  /**
+   * @param bool
+   */
+  public function setUpstreamFixAvailable($upstreamFixAvailable)
+  {
+    $this->upstreamFixAvailable = $upstreamFixAvailable;
+  }
+  /**
+   * @return bool
+   */
+  public function getUpstreamFixAvailable()
+  {
+    return $this->upstreamFixAvailable;
   }
 }
 

@@ -24,11 +24,11 @@
 
 namespace phpseclib3\Crypt\RSA\Formats\Keys;
 
-use phpseclib3\Math\BigInteger;
+use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\PKCS1 as Progenitor;
 use phpseclib3\File\ASN1;
 use phpseclib3\File\ASN1\Maps;
-use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Math\BigInteger;
 
 /**
  * PKCS#1 Formatted RSA Key Handler
@@ -70,7 +70,7 @@ abstract class PKCS1 extends Progenitor
 
         $key = ASN1::asn1map($decoded[0], Maps\RSAPrivateKey::MAP);
         if (is_array($key)) {
-            $components+= [
+            $components += [
                 'modulus' => $key['modulus'],
                 'publicExponent' => $key['publicExponent'],
                 'privateExponent' => $key['privateExponent'],

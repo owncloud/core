@@ -26,6 +26,14 @@ class Settings extends \Google\Model
   /**
    * @var string
    */
+  public $kmsKeyName;
+  /**
+   * @var string
+   */
+  public $kmsServiceAccountId;
+  /**
+   * @var string
+   */
   public $name;
   /**
    * @var string
@@ -45,6 +53,34 @@ class Settings extends \Google\Model
   public function getDisableDefaultSink()
   {
     return $this->disableDefaultSink;
+  }
+  /**
+   * @param string
+   */
+  public function setKmsKeyName($kmsKeyName)
+  {
+    $this->kmsKeyName = $kmsKeyName;
+  }
+  /**
+   * @return string
+   */
+  public function getKmsKeyName()
+  {
+    return $this->kmsKeyName;
+  }
+  /**
+   * @param string
+   */
+  public function setKmsServiceAccountId($kmsServiceAccountId)
+  {
+    $this->kmsServiceAccountId = $kmsServiceAccountId;
+  }
+  /**
+   * @return string
+   */
+  public function getKmsServiceAccountId()
+  {
+    return $this->kmsServiceAccountId;
   }
   /**
    * @param string

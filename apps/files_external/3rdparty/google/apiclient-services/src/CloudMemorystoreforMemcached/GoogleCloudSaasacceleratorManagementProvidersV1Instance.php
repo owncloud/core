@@ -29,6 +29,10 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
    */
   public $createTime;
   /**
+   * @var string
+   */
+  public $instanceType;
+  /**
    * @var string[]
    */
   public $labels;
@@ -44,6 +48,10 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
    * @var string
    */
   public $name;
+  /**
+   * @var string[]
+   */
+  public $notificationParameters;
   /**
    * @var string[]
    */
@@ -100,6 +108,20 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setInstanceType($instanceType)
+  {
+    $this->instanceType = $instanceType;
+  }
+  /**
+   * @return string
+   */
+  public function getInstanceType()
+  {
+    return $this->instanceType;
   }
   /**
    * @param string[]
@@ -170,6 +192,20 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string[]
+   */
+  public function setNotificationParameters($notificationParameters)
+  {
+    $this->notificationParameters = $notificationParameters;
+  }
+  /**
+   * @return string[]
+   */
+  public function getNotificationParameters()
+  {
+    return $this->notificationParameters;
   }
   /**
    * @param string[]

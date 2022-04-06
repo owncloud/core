@@ -56,7 +56,7 @@ class ProjectsLocationsWorkerPools extends \Google\Service\Resource
    * Deletes a `WorkerPool`. (workerPools.delete)
    *
    * @param string $name Required. The name of the `WorkerPool` to delete. Format:
-   * `projects/{project}/locations/{workerPool}/workerPools/{workerPool}`.
+   * `projects/{project}/locations/{location}/workerPools/{workerPool}`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool allowMissing If set to true, and the `WorkerPool` is not

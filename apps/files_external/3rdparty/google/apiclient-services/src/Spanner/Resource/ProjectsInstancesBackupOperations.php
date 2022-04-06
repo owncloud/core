@@ -54,9 +54,9 @@ class ProjectsInstancesBackupOperations extends \Google\Service\Resource
    * if the operation is in progress, else true. * `metadata.@type` - the type of
    * metadata. For example, the type string for CreateBackupMetadata is
    * `type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata`.
-   * * `metadata.` - any field in metadata.value. `metadata.type_url` must be
-   * specified if filtering on metadata fields. * `error` - Error associated with
-   * the long-running operation. * `response.@type` - the type of response. *
+   * * `metadata.` - any field in metadata.value. `metadata.@type` must be
+   * specified first if filtering on metadata fields. * `error` - Error associated
+   * with the long-running operation. * `response.@type` - the type of response. *
    * `response.` - any field in response.value. You can combine multiple
    * expressions by enclosing each expression in parentheses. By default,
    * expressions are combined with AND logic, but you can specify AND, OR, and NOT
@@ -71,7 +71,22 @@ class ProjectsInstancesBackupOperations extends \Google\Service\Resource
    * - Returns operations where: * The operation's metadata type is
    * CreateBackupMetadata. * The backup name contains the string "howl". * The
    * operation started before 2018-03-28T14:50:00Z. * The operation resulted in an
-   * error.
+   * error. * `(metadata.@type=type.googleapis.com/google.spanner.admin.database.v
+   * 1.CopyBackupMetadata) AND` \ `(metadata.source_backup:test) AND` \
+   * `(metadata.progress.start_time < \"2022-01-18T14:50:00Z\") AND` \ `(error:*)`
+   * - Returns operations where: * The operation's metadata type is
+   * CopyBackupMetadata. * The source backup of the copied backup name contains
+   * the string "test". * The operation started before 2022-01-18T14:50:00Z. * The
+   * operation resulted in an error. * `((metadata.@type=type.googleapis.com/googl
+   * e.spanner.admin.database.v1.CreateBackupMetadata) AND` \
+   * `(metadata.database:test_db)) OR` \ `((metadata.@type=type.googleapis.com/goo
+   * gle.spanner.admin.database.v1.CopyBackupMetadata) AND` \
+   * `(metadata.source_backup:test_bkp)) AND` \ `(error:*)` - Returns operations
+   * where: * The operation's metadata matches either of criteria: * The
+   * operation's metadata type is CreateBackupMetadata AND the database the backup
+   * was taken from has name containing string "test_db" * The operation's
+   * metadata type is CopyBackupMetadata AND the backup the backup was copied from
+   * has name containing string "test_bkp" * The operation resulted in an error.
    * @opt_param int pageSize Number of operations to be returned in the response.
    * If 0 or less, defaults to the server's maximum allowed page size.
    * @opt_param string pageToken If non-empty, `page_token` should contain a

@@ -26,9 +26,6 @@
 
 namespace phpseclib3\File;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use DateTimeZone;
 use ParagonIE\ConstantTime\Base64;
 use ParagonIE\ConstantTime\Hex;
 use phpseclib3\Crypt\Common\PrivateKey;
@@ -36,6 +33,7 @@ use phpseclib3\Crypt\Common\PublicKey;
 use phpseclib3\Crypt\DSA;
 use phpseclib3\Crypt\EC;
 use phpseclib3\Crypt\Hash;
+use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\Random;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\Formats\Keys\PSS;
@@ -43,7 +41,6 @@ use phpseclib3\Exception\UnsupportedAlgorithmException;
 use phpseclib3\File\ASN1\Element;
 use phpseclib3\File\ASN1\Maps;
 use phpseclib3\Math\BigInteger;
-use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
  * Pure-PHP X.509 Parser
@@ -168,7 +165,7 @@ class X509
     /**
      * Public key
      *
-     * @var string
+     * @var string|PublicKey
      * @access private
      */
     private $publicKey;
@@ -176,7 +173,7 @@ class X509
     /**
      * Private key
      *
-     * @var string
+     * @var string|PrivateKey
      * @access private
      */
     private $privateKey;
@@ -228,7 +225,7 @@ class X509
     /**
      * Certificate End Date
      *
-     * @var string
+     * @var string|Element
      * @access private
      */
     private $endDate;
@@ -337,7 +334,7 @@ class X509
                 //'id-ad' => '1.3.6.1.5.5.7.48',
                 'id-qt-cps' => '1.3.6.1.5.5.7.2.1',
                 'id-qt-unotice' => '1.3.6.1.5.5.7.2.2',
-                'id-ad-ocsp' =>'1.3.6.1.5.5.7.48.1',
+                'id-ad-ocsp' => '1.3.6.1.5.5.7.48.1',
                 'id-ad-caIssuers' => '1.3.6.1.5.5.7.48.2',
                 'id-ad-timeStamping' => '1.3.6.1.5.5.7.48.3',
                 'id-ad-caRepository' => '1.3.6.1.5.5.7.48.5',
@@ -684,7 +681,7 @@ class X509
                     if ($value['extnId'] == $id) {
                         $extensions[$key] = $newext;
                         continue 2;
-                   }
+                    }
                 }
             }
             $extensions[] = $newext;
@@ -1113,7 +1110,7 @@ class X509
 
         if ($value = $this->getDNProp('id-at-commonName')) {
             $value = str_replace(['.', '*'], ['\.', '[^.]*'], $value[0]);
-            return preg_match('#^' . $value . '$#', $components['host']);
+            return preg_match('#^' . $value . '$#', $components['host']) === 1;
         }
 
         return false;
@@ -1124,9 +1121,9 @@ class X509
      *
      * If $date isn't defined it is assumed to be the current date.
      *
-     * @param DateTimeInterface|string $date optional
+     * @param \DateTimeInterface|string $date optional
      * @access public
-     * @return boolean
+     * @return bool
      */
     public function validateDate($date = null)
     {
@@ -1135,7 +1132,7 @@ class X509
         }
 
         if (!isset($date)) {
-            $date = new DateTimeImmutable(null, new DateTimeZone(@date_default_timezone_get()));
+            $date = new \DateTimeImmutable('now', new \DateTimeZone(@date_default_timezone_get()));
         }
 
         $notBefore = $this->currentCert['tbsCertificate']['validity']['notBefore'];
@@ -1145,13 +1142,13 @@ class X509
         $notAfter = isset($notAfter['generalTime']) ? $notAfter['generalTime'] : $notAfter['utcTime'];
 
         if (is_string($date)) {
-            $date = new DateTimeImmutable($date, new DateTimeZone(@date_default_timezone_get()));
+            $date = new \DateTimeImmutable($date, new \DateTimeZone(@date_default_timezone_get()));
         }
 
-        $notBefore = new DateTimeImmutable($notBefore, new DateTimeZone(@date_default_timezone_get()));
-        $notAfter = new DateTimeImmutable($notAfter, new DateTimeZone(@date_default_timezone_get()));
+        $notBefore = new \DateTimeImmutable($notBefore, new \DateTimeZone(@date_default_timezone_get()));
+        $notAfter = new \DateTimeImmutable($notAfter, new \DateTimeZone(@date_default_timezone_get()));
 
-        return $date >= $notBefore && $date<= $notAfter;
+        return $date >= $notBefore && $date <= $notAfter;
     }
 
     /**
@@ -1195,7 +1192,7 @@ class X509
                     if ($temp === false) {
                         return false;
                     }
-                    $data.= $temp;
+                    $data .= $temp;
                 }
 
                 break;
@@ -1697,7 +1694,7 @@ class X509
             $this->dn['rdnSequence'][] = [
                 [
                     'type' => $propName,
-                    'value'=> $v
+                    'value' => $v
                 ]
             ];
         }
@@ -1830,7 +1827,7 @@ class X509
 
         // handles everything else
         $results = preg_split('#((?:^|, *|/)(?:C=|O=|OU=|CN=|L=|ST=|SN=|postalCode=|streetAddress=|emailAddress=|serialNumber=|organizationalUnitName=|title=|description=|role=|x500UniqueIdentifier=|postalAddress=))#', $dn, -1, PREG_SPLIT_DELIM_CAPTURE);
-        for ($i = 1; $i < count($results); $i+=2) {
+        for ($i = 1; $i < count($results); $i += 2) {
             $prop = trim($results[$i], ', =/');
             $value = $results[$i + 1];
             if (!$this->setDNProp($prop, $value, $type)) {
@@ -1847,7 +1844,7 @@ class X509
      * @param mixed $format optional
      * @param array $dn optional
      * @access public
-     * @return array|bool
+     * @return array|bool|string
      */
     public function getDN($format = self::DN_ARRAY, $dn = null)
     {
@@ -1952,7 +1949,7 @@ class X509
             }
 
             if (!$start) {
-                $output.= $delim;
+                $output .= $delim;
             }
             if (is_array($value)) {
                 foreach ($value as $type => $v) {
@@ -1969,10 +1966,12 @@ class X509
                     $value = array_pop($value); // Always strip data type.
                 }
             } elseif (is_object($value) && $value instanceof Element) {
-                $callback = function($x) { return '\x' . bin2hex($x[0]); };
+                $callback = function ($x) {
+                    return '\x' . bin2hex($x[0]);
+                };
                 $value = strtoupper(preg_replace_callback('#[^\x20-\x7E]#', $callback, $value->element));
             }
-            $output.= $desc . '=' . $value;
+            $output .= $desc . '=' . $value;
             $result[$desc] = isset($result[$desc]) ?
                 array_merge((array) $result[$desc], [$value]) :
                 $value;
@@ -2136,7 +2135,7 @@ class X509
      *
      * @param PublicKey $key
      * @access public
-     * @return bool
+     * @return void
      */
     public function setPublicKey(PublicKey $key)
     {
@@ -2381,7 +2380,7 @@ class X509
 
         $spkac = ASN1::asn1map($decoded[0], Maps\SignedPublicKeyAndChallenge::MAP);
 
-        if (!isset($spkac) || $spkac === false) {
+        if (!isset($spkac) || !is_array($spkac)) {
             $this->currentCert = false;
             return false;
         }
@@ -2580,7 +2579,7 @@ class X509
         if ($date instanceof Element) {
             return $date;
         }
-        $dateObj = new DateTimeImmutable($date, new DateTimeZone('GMT'));
+        $dateObj = new \DateTimeImmutable($date, new \DateTimeZone('GMT'));
         $year = $dateObj->format('Y'); // the same way ASN1.php parses this
         if ($year < 2050) {
             return ['utcTime' => $date];
@@ -2656,10 +2655,10 @@ class X509
                 return false;
             }
 
-            $startDate = new DateTimeImmutable('now', new DateTimeZone(@date_default_timezone_get()));
+            $startDate = new \DateTimeImmutable('now', new \DateTimeZone(@date_default_timezone_get()));
             $startDate = !empty($this->startDate) ? $this->startDate : $startDate->format('D, d M Y H:i:s O');
 
-            $endDate = new DateTimeImmutable('+1 year', new DateTimeZone(@date_default_timezone_get()));
+            $endDate = new \DateTimeImmutable('+1 year', new \DateTimeZone(@date_default_timezone_get()));
             $endDate = !empty($this->endDate) ? $this->endDate : $endDate->format('D, d M Y H:i:s O');
 
             /* "The serial number MUST be a positive integer"
@@ -2924,7 +2923,7 @@ class X509
         $signatureSubject = isset($this->signatureSubject) ? $this->signatureSubject : null;
         $signatureAlgorithm = self::identifySignatureAlgorithm($issuer->privateKey);
 
-        $thisUpdate = new DateTimeImmutable('now', new DateTimeZone(@date_default_timezone_get()));
+        $thisUpdate = new \DateTimeImmutable('now', new \DateTimeZone(@date_default_timezone_get()));
         $thisUpdate = !empty($this->startDate) ? $this->startDate : $thisUpdate->format('D, d M Y H:i:s O');
 
         if (isset($crl->currentCert) && is_array($crl->currentCert) && isset($crl->currentCert['tbsCertList'])) {
@@ -3098,13 +3097,13 @@ class X509
     /**
      * Set certificate start date
      *
-     * @param DateTimeInterface|string $date
+     * @param \DateTimeInterface|string $date
      * @access public
      */
     public function setStartDate($date)
     {
-        if (!is_object($date) || !($date instanceof DateTimeInterface)) {
-            $date = new DateTimeImmutable($date, new DateTimeZone(@date_default_timezone_get()));
+        if (!is_object($date) || !($date instanceof \DateTimeInterface)) {
+            $date = new \DateTimeImmutable($date, new \DateTimeZone(@date_default_timezone_get()));
         }
 
         $this->startDate = $date->format('D, d M Y H:i:s O');
@@ -3113,7 +3112,7 @@ class X509
     /**
      * Set certificate end date
      *
-     * @param DateTimeInterface|string $date
+     * @param \DateTimeInterface|string $date
      * @access public
      */
     public function setEndDate($date)
@@ -3130,8 +3129,8 @@ class X509
             $temp = chr(ASN1::TYPE_GENERALIZED_TIME) . ASN1::encodeLength(strlen($temp)) . $temp;
             $this->endDate = new Element($temp);
         } else {
-            if (!is_object($date) || !($date instanceof DateTimeInterface)) {
-                $date = new DateTimeImmutable($date, new DateTimeZone(@date_default_timezone_get()));
+            if (!is_object($date) || !($date instanceof \DateTimeInterface)) {
+                $date = new \DateTimeImmutable($date, new \DateTimeZone(@date_default_timezone_get()));
             }
 
             $this->endDate = $date->format('D, d M Y H:i:s O');
@@ -3460,7 +3459,7 @@ class X509
      * @access public
      * @return mixed
      */
-    public function getExtension($id, $cert = null, $path=null)
+    public function getExtension($id, $cert = null, $path = null)
     {
         return $this->getExtensionHelper($id, $cert, $path);
     }
@@ -3630,6 +3629,7 @@ class X509
         switch ($disposition) {
             case self::ATTR_REPLACE:
                 $disposition = self::ATTR_APPEND;
+                // fall-through
             case self::ATTR_ALL:
                 $this->removeAttribute($id);
                 break;
@@ -3659,7 +3659,7 @@ class X509
                 $attributes[$last]['value'][] = $value;
                 break;
             default:
-                $attributes[] = ['type' => $id, 'value' => $disposition == self::ATTR_ALL ? $value: [$value]];
+                $attributes[] = ['type' => $id, 'value' => $disposition == self::ATTR_ALL ? $value : [$value]];
                 break;
         }
 
@@ -3768,7 +3768,7 @@ class X509
      * Format a public key as appropriate
      *
      * @access private
-     * @return array|bool
+     * @return array|false
      */
     private function formatSubjectPublicKey()
     {
@@ -3780,6 +3780,9 @@ class X509
 
         $decoded = ASN1::decodeBER($publicKey);
         $mapped = ASN1::asn1map($decoded[0], Maps\SubjectPublicKeyInfo::MAP);
+        if (!is_array($mapped)) {
+            return false;
+        }
 
         $mapped['subjectPublicKey'] = $this->publicKey->toString($format);
 
@@ -3789,9 +3792,9 @@ class X509
     /**
      * Set the domain name's which the cert is to be valid for
      *
-     * @param mixed[] ...$domains
+     * @param mixed ...$domains
      * @access public
-     * @return array
+     * @return void
      */
     public function setDomain(...$domains)
     {
@@ -3867,7 +3870,7 @@ class X509
         }
 
         $i = count($rclist);
-        $revocationDate = new DateTimeImmutable('now', new DateTimeZone(@date_default_timezone_get()));
+        $revocationDate = new \DateTimeImmutable('now', new \DateTimeZone(@date_default_timezone_get()));
         $rclist[] = ['userCertificate' => $serial,
                           'revocationDate'  => $this->timeField($revocationDate->format('D, d M Y H:i:s O'))];
         return $i;
@@ -4004,7 +4007,7 @@ class X509
 
         if (is_array($rclist = $this->subArray($crl, 'tbsCertList/revokedCertificates'))) {
             if (($i = $this->revokedCertificate($rclist, $serial)) !== false) {
-                return $this->getExtension($id, $crl,  "tbsCertList/revokedCertificates/$i/crlEntryExtensions");
+                return $this->getExtension($id, $crl, "tbsCertList/revokedCertificates/$i/crlEntryExtensions");
             }
         }
 

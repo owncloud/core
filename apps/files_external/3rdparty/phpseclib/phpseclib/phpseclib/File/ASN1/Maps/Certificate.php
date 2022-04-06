@@ -27,11 +27,11 @@ use phpseclib3\File\ASN1;
 abstract class Certificate
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-             'tbsCertificate'     => TBSCertificate::MAP,
-             'signatureAlgorithm' => AlgorithmIdentifier::MAP,
-             'signature'          => ['type' => ASN1::TYPE_BIT_STRING]
+            'tbsCertificate' => TBSCertificate::MAP,
+            'signatureAlgorithm' => AlgorithmIdentifier::MAP,
+            'signature' => ['type' => ASN1::TYPE_BIT_STRING]
         ]
     ];
 }

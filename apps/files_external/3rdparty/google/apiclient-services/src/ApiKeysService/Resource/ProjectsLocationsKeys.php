@@ -142,9 +142,8 @@ class ProjectsLocationsKeys extends \Google\Service\Resource
    * @opt_param int pageSize Optional. Specifies the maximum number of results to
    * be returned at a time.
    * @opt_param string pageToken Optional. Requests a specific page of results.
-   * @opt_param bool showDeleted Optional. Indicate that keys are marked as
-   * deleted within 30 days should also be returned. Normally only active keys are
-   * returned.
+   * @opt_param bool showDeleted Optional. Indicate that keys deleted in the past
+   * 30 days should also be returned.
    * @return V2ListKeysResponse
    */
   public function listProjectsLocationsKeys($parent, $optParams = [])

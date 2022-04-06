@@ -40,6 +40,10 @@ class Network extends \Google\Collection
    */
   public $description;
   /**
+   * @var bool
+   */
+  public $enableUlaInternalIpv6;
+  /**
    * @var string
    */
   public $gatewayIPv4;
@@ -47,6 +51,10 @@ class Network extends \Google\Collection
    * @var string
    */
   public $id;
+  /**
+   * @var string
+   */
+  public $internalIpv6Range;
   /**
    * @var string
    */
@@ -59,6 +67,10 @@ class Network extends \Google\Collection
    * @var string
    */
   public $name;
+  /**
+   * @var string
+   */
+  public $networkFirewallPolicyEnforcementOrder;
   protected $peeringsType = NetworkPeering::class;
   protected $peeringsDataType = 'array';
   protected $routingConfigType = NetworkRoutingConfig::class;
@@ -67,6 +79,10 @@ class Network extends \Google\Collection
    * @var string
    */
   public $selfLink;
+  /**
+   * @var string
+   */
+  public $selfLinkWithId;
   /**
    * @var string[]
    */
@@ -129,6 +145,20 @@ class Network extends \Google\Collection
     return $this->description;
   }
   /**
+   * @param bool
+   */
+  public function setEnableUlaInternalIpv6($enableUlaInternalIpv6)
+  {
+    $this->enableUlaInternalIpv6 = $enableUlaInternalIpv6;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableUlaInternalIpv6()
+  {
+    return $this->enableUlaInternalIpv6;
+  }
+  /**
    * @param string
    */
   public function setGatewayIPv4($gatewayIPv4)
@@ -155,6 +185,20 @@ class Network extends \Google\Collection
   public function getId()
   {
     return $this->id;
+  }
+  /**
+   * @param string
+   */
+  public function setInternalIpv6Range($internalIpv6Range)
+  {
+    $this->internalIpv6Range = $internalIpv6Range;
+  }
+  /**
+   * @return string
+   */
+  public function getInternalIpv6Range()
+  {
+    return $this->internalIpv6Range;
   }
   /**
    * @param string
@@ -199,6 +243,20 @@ class Network extends \Google\Collection
     return $this->name;
   }
   /**
+   * @param string
+   */
+  public function setNetworkFirewallPolicyEnforcementOrder($networkFirewallPolicyEnforcementOrder)
+  {
+    $this->networkFirewallPolicyEnforcementOrder = $networkFirewallPolicyEnforcementOrder;
+  }
+  /**
+   * @return string
+   */
+  public function getNetworkFirewallPolicyEnforcementOrder()
+  {
+    return $this->networkFirewallPolicyEnforcementOrder;
+  }
+  /**
    * @param NetworkPeering[]
    */
   public function setPeerings($peerings)
@@ -239,6 +297,20 @@ class Network extends \Google\Collection
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param string
+   */
+  public function setSelfLinkWithId($selfLinkWithId)
+  {
+    $this->selfLinkWithId = $selfLinkWithId;
+  }
+  /**
+   * @return string
+   */
+  public function getSelfLinkWithId()
+  {
+    return $this->selfLinkWithId;
   }
   /**
    * @param string[]

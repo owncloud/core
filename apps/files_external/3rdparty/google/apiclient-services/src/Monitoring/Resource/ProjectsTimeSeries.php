@@ -75,8 +75,7 @@ class ProjectsTimeSeries extends \Google\Service\Resource
     return $this->call('createService', [$params], MonitoringEmpty::class);
   }
   /**
-   * Lists time series that match a filter. This method does not require a
-   * Workspace. (timeSeries.listProjectsTimeSeries)
+   * Lists time series that match a filter. (timeSeries.listProjectsTimeSeries)
    *
    * @param string $name Required. The project
    * (https://cloud.google.com/monitoring/api/v3#project_name), organization or
@@ -207,8 +206,7 @@ class ProjectsTimeSeries extends \Google\Service\Resource
     return $this->call('list', [$params], ListTimeSeriesResponse::class);
   }
   /**
-   * Queries time series using Monitoring Query Language. This method does not
-   * require a Workspace. (timeSeries.query)
+   * Queries time series using Monitoring Query Language. (timeSeries.query)
    *
    * @param string $name Required. The project
    * (https://cloud.google.com/monitoring/api/v3#project_name) on which to execute

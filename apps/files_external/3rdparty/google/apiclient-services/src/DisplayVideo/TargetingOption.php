@@ -35,10 +35,16 @@ class TargetingOption extends \Google\Model
   protected $carrierAndIspDetailsDataType = '';
   protected $categoryDetailsType = CategoryTargetingOptionDetails::class;
   protected $categoryDetailsDataType = '';
+  protected $contentDurationDetailsType = ContentDurationTargetingOptionDetails::class;
+  protected $contentDurationDetailsDataType = '';
+  protected $contentGenreDetailsType = ContentGenreTargetingOptionDetails::class;
+  protected $contentGenreDetailsDataType = '';
   protected $contentInstreamPositionDetailsType = ContentInstreamPositionTargetingOptionDetails::class;
   protected $contentInstreamPositionDetailsDataType = '';
   protected $contentOutstreamPositionDetailsType = ContentOutstreamPositionTargetingOptionDetails::class;
   protected $contentOutstreamPositionDetailsDataType = '';
+  protected $contentStreamTypeDetailsType = ContentStreamTypeTargetingOptionDetails::class;
+  protected $contentStreamTypeDetailsDataType = '';
   protected $deviceMakeModelDetailsType = DeviceMakeModelTargetingOptionDetails::class;
   protected $deviceMakeModelDetailsDataType = '';
   protected $deviceTypeDetailsType = DeviceTypeTargetingOptionDetails::class;
@@ -205,6 +211,34 @@ class TargetingOption extends \Google\Model
     return $this->categoryDetails;
   }
   /**
+   * @param ContentDurationTargetingOptionDetails
+   */
+  public function setContentDurationDetails(ContentDurationTargetingOptionDetails $contentDurationDetails)
+  {
+    $this->contentDurationDetails = $contentDurationDetails;
+  }
+  /**
+   * @return ContentDurationTargetingOptionDetails
+   */
+  public function getContentDurationDetails()
+  {
+    return $this->contentDurationDetails;
+  }
+  /**
+   * @param ContentGenreTargetingOptionDetails
+   */
+  public function setContentGenreDetails(ContentGenreTargetingOptionDetails $contentGenreDetails)
+  {
+    $this->contentGenreDetails = $contentGenreDetails;
+  }
+  /**
+   * @return ContentGenreTargetingOptionDetails
+   */
+  public function getContentGenreDetails()
+  {
+    return $this->contentGenreDetails;
+  }
+  /**
    * @param ContentInstreamPositionTargetingOptionDetails
    */
   public function setContentInstreamPositionDetails(ContentInstreamPositionTargetingOptionDetails $contentInstreamPositionDetails)
@@ -231,6 +265,20 @@ class TargetingOption extends \Google\Model
   public function getContentOutstreamPositionDetails()
   {
     return $this->contentOutstreamPositionDetails;
+  }
+  /**
+   * @param ContentStreamTypeTargetingOptionDetails
+   */
+  public function setContentStreamTypeDetails(ContentStreamTypeTargetingOptionDetails $contentStreamTypeDetails)
+  {
+    $this->contentStreamTypeDetails = $contentStreamTypeDetails;
+  }
+  /**
+   * @return ContentStreamTypeTargetingOptionDetails
+   */
+  public function getContentStreamTypeDetails()
+  {
+    return $this->contentStreamTypeDetails;
   }
   /**
    * @param DeviceMakeModelTargetingOptionDetails
