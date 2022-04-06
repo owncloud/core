@@ -283,6 +283,12 @@ class FeatureContext extends BehatVariablesContext {
 
 	/**
 	 *
+	 * @var GraphContext
+	 */
+	public $graphContext;
+
+	/**
+	 *
 	 * @var AppConfigurationContext
 	 */
 	public $appConfigurationContext;
@@ -3511,12 +3517,15 @@ class FeatureContext extends BehatVariablesContext {
 		// that calls BasicStructure.php
 		$this->ocsContext = new OCSContext();
 		$this->authContext = new AuthContext();
+		$this->graphContext = new GraphContext();
 		$this->appConfigurationContext = new AppConfigurationContext();
 		$this->ocsContext->before($scope);
+		$this->graphContext->before($scope);
 		$this->authContext->setUpScenario($scope);
 		$this->appConfigurationContext->setUpScenario($scope);
 		$environment->registerContext($this->ocsContext);
 		$environment->registerContext($this->authContext);
+		$environment->registerContext($this->graphContext);
 		$environment->registerContext($this->appConfigurationContext);
 		$scenarioLine = $scope->getScenario()->getLine();
 		$featureFile = $scope->getFeature()->getFile();

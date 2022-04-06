@@ -1155,16 +1155,10 @@ trait Provisioning {
 		foreach ($usersAttributes as $userAttributes) {
 			$users[] = $userAttributes['userid'];
 			if ($useGraph) {
+				// for graph api, we need to save the user id to be able to add it in some group
 				// can be fetched with the "onPremisesSamAccountName" i.e. userid
-				$userResponse = TestHelpers\GraphHelper::getUser(
-					$this->getBaseUrl(),
-					$this->getStepLineRef(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$userAttributes['userid']
-				);
-				$userJsonResponse = $this->getJsonDecodedResponse($userResponse);
-				$userAttributes['id'] = $userJsonResponse['id'];
+				$this->graphContext->adminHasRetrievedUserUsingTheGraphApi($userAttributes['userid']);
+				$userAttributes['id'] = $this->getJsonDecodedResponse()['id'];
 			} else {
 				$userAttributes['id'] = null;
 			}
@@ -1351,29 +1345,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string $password
-	 *
-	 * @throws JsonException
-	 */
-	public function adminChangesPasswordOfUserToUsingTheGraphApi(
-		string $user,
-		string $password
-	):void {
-		$user = $this->getActualUsername($user);
-		$userId = $this->getAttributeOfCreatedUser($user, 'id');
-		$this->response = \TestHelpers\GraphHelper::editUser(
-			$this->getBaseUrl(),
-			$this->getStepLineRef(),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$userId,
-			null,
-			$password
-		);
-	}
-
-	/**
 	 * @Given the administrator has changed the password of user :user to :password
 	 *
 	 * @param string $user
@@ -1388,15 +1359,16 @@ trait Provisioning {
 	):void {
 		$useGraph = OcisHelper::isTestingWithGraphApi();
 		if ($useGraph) {
-			$this->adminChangesPasswordOfUserToUsingTheGraphApi(
+			$this->graphContext->adminChangesPasswordOfUserToUsingTheGraphApi(
+				$user,
+				$password
+			);
+		} else {
+			$this->adminChangesPasswordOfUserToUsingTheProvisioningApi(
 				$user,
 				$password
 			);
 		}
-		$this->adminChangesPasswordOfUserToUsingTheProvisioningApi(
-			$user,
-			$password
-		);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
 			"could not change password of user $user"
@@ -2102,7 +2074,7 @@ trait Provisioning {
 	 */
 	public function adminHasChangedTheEmailOfUserTo(string $user, string $email):void {
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$updatedUserData = $this->userHasBeenEditedUsingTheGraphApi(
+			$updatedUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$user,
 				null,
 				null,
@@ -2110,7 +2082,7 @@ trait Provisioning {
 			);
 			Assert::assertEquals(
 				$email,
-				$updatedUserData['emailAddress']
+				$updatedUserData['mail']
 			);
 		} else {
 			$this->adminChangesTheEmailOfUserToUsingTheProvisioningApi(
@@ -2228,7 +2200,7 @@ trait Provisioning {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$updateUserData = $this->userHasBeenEditedUsingTheGraphApi(
+			$updateUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$targetUser,
 				null,
 				null,
@@ -2281,49 +2253,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @throws JsonException
-	 */
-	public function userHasBeenEditedUsingTheGraphApi(
-		$user,
-		$userName = null,
-		$password = null,
-		$email = null,
-		$displayName = null,
-		$requester = null,
-		$requesterPassword = null
-	): array {
-		if (!$requester) {
-			$requester = $this->getAdminUsername();
-			$requesterPassword = $this->getAdminPassword();
-		}
-		var_dump($user);
-		var_dump($this->createdUsers);
-		$userId = $this->getAttributeOfCreatedUser($user, 'id');
-		var_dump($userId);
-		$this->response = \TestHelpers\GraphHelper::editUser(
-			$this->getBaseUrl(),
-			$this->getStepLineRef(),
-			$requester,
-			$requesterPassword,
-			$userId,
-			$userName,
-			$password,
-			$email,
-			$displayName
-		);
-		$this->theHTTPStatusCodeShouldBeSuccess();
-		$this->response = \TestHelpers\GraphHelper::getUser(
-			$this->getBaseUrl(),
-			$this->getStepLineRef(),
-			$requester,
-			$requesterPassword,
-			$userId
-		);
-		$this->theHTTPStatusCodeShouldBeSuccess();
-		return $this->getJsonDecodedResponse();
-	}
-
-	/**
 	 * @Given /^the administrator has changed the display name of user "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -2343,7 +2272,7 @@ trait Provisioning {
 				$displayName
 			);
 		} elseif(OcisHelper::isTestingWithGraphApi()) {
-			$updateUserData = $this->userHasBeenEditedUsingTheGraphApi(
+			$updateUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$user,
 				null,
 				null,
@@ -2546,7 +2475,7 @@ trait Provisioning {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$updatedUserData = $this->userHasBeenEditedUsingTheGraphApi(
+			$updatedUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$targetUser,
 				null,
 				null,
@@ -2719,6 +2648,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function retrieveUserInformationAsAdminUsingProvisioningApi(
 		string $user
@@ -2735,50 +2665,12 @@ trait Provisioning {
 	}
 
 	/**
-	 * @throws JsonException
-	 */
-	public function adminHasRetrievedUserUsingTheGraphApi(
-		$user
-	):void {
-		$user = $this->getActualUsername($user);
-		$userId = $this->getAttributeOfCreatedUser($user, "id");
-		$this->response = \TestHelpers\GraphHelper::getUser(
-			$this->getBaseUrl(),
-			$this->getStepLineRef(),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$userId
-		);
-		$this->thenTheHTTPStatusCodeShouldBe(200);
-	}
-
-	/**
-	 * @throws JsonException
-	 */
-	public function userHasRetrievedUserUsingTheGraphApi(
-		$requestingUser,
-		$targetUser
-	):void {
-		$requestor = $this->getActualUsername($requestingUser);
-		$requestorPassword = $this->getPasswordForUser($requestingUser);
-		$user = $this->getActualUsername($targetUser);
-		$userId = $this->getAttributeOfCreatedUser($user, "id");
-		$this->response = \TestHelpers\GraphHelper::getUser(
-			$this->getBaseUrl(),
-			$this->getStepLineRef(),
-			$requestor,
-			$requestorPassword,
-			$userId
-		);
-		$this->thenTheHTTPStatusCodeShouldBe(200);
-	}
-
-	/**
 	 * @When /^the administrator retrieves the information of user "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function adminRetrievesTheInformationOfUserUsingTheProvisioningApi(
 		string $user
@@ -2801,7 +2693,7 @@ trait Provisioning {
 		string $user
 	):void {
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->adminHasRetrievedUserUsingTheGraphApi($user);
+			$this->graphContext->adminHasRetrievedUserUsingTheGraphApi($user);
 		} else {
 			$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
 			$this->theHTTPStatusCodeShouldBeSuccess();
@@ -2813,6 +2705,7 @@ trait Provisioning {
 	 * @param string $targetUser
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function userRetrieveUserInformationUsingProvisioningApi(
 		string $requestingUser,
@@ -2836,6 +2729,7 @@ trait Provisioning {
 	 * @param string $targetUser
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function userRetrievesTheInformationOfUserUsingTheProvisioningApi(
 		string $requestingUser,
@@ -2861,7 +2755,7 @@ trait Provisioning {
 		string $targetUser
 	):void {
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->userHasRetrievedUserUsingTheGraphApi(
+			$this->graphContext->userHasRetrievedUserUsingTheGraphApi(
 				$requestingUser,
 				$targetUser
 			);
@@ -3001,12 +2895,7 @@ trait Provisioning {
 		$should = ($shouldOrNot !== "not");
 		$graphMode = OcisHelper::isTestingWithGraphApi();
 		if ($graphMode) {
-			$groups = \TestHelpers\GraphHelper::getGroups(
-				$this->getBaseUrl(),
-				$this->getStepLineRef(),
-				$this->getAdminUsername(),
-				$this->getAdminPassword()
-			);
+			$groups = $this->graphContext->adminHasRetrievedGroupListUsingTheGraphApi();
 		} else {
 			$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
 		}
@@ -3467,24 +3356,13 @@ trait Provisioning {
 				}
 				break;
 			case "graph":
-				$response = \TestHelpers\GraphHelper::createUser(
-					$this->getBaseUrl(),
-					$this->getStepLineRef(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
+				$newUser = $this->graphContext->theAdminHasCreatedUser(
 					$user,
 					$password,
-					$email,
-					$displayName
+					$displayName,
+					$email
 				);
-				if ($response->getStatusCode() !== 200) {
-					throw new Exception(
-						__METHOD__ . " could not create user. {$response->getBody()}"
-					);
-				} else {
-					$jsonBody = $this->getJsonDecodedResponse($response);
-					$userId = $jsonBody["id"];
-				}
+				$userId = $newUser['id'];
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -3522,7 +3400,7 @@ trait Provisioning {
 	public function cleanupGroup(string $group):void {
 		try {
 			if (OcisHelper::isTestingWithGraphApi()) {
-				$this->adminHasDeletedGroupUsingTheGraphApi($group);
+				$this->graphContext->adminHasDeletedGroupUsingTheGraphApi($group);
 			} else {
 				$this->deleteTheGroupUsingTheProvisioningApi($group);
 			}
@@ -3607,35 +3485,29 @@ trait Provisioning {
 		$user = $this->getActualUsername($user);
 		$respondedArray = [];
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$response = \TestHelpers\GraphHelper::getMembersList(
-				$this->getBaseUrl(),
-				$this->getStepLineRef(),
-				$this->getAdminUsername(),
-				$this->getAdminPassword(),
-				$group
+			$this->graphContext->userShouldBeMemberInGroupUsingTheGraphApi(
+				$user, $group
 			);
-			$jsonBody = $this->getJsonDecodedResponse($response);
-			var_dump($jsonBody);
 		} else {
 			$this->theAdministratorGetsAllTheGroupsOfUser($user);
 			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 			\sort($respondedArray);
+			Assert::assertContains(
+				$group,
+				$respondedArray,
+				__METHOD__ . " Group '$group' does not exist in '"
+				. \implode(', ', $respondedArray)
+				. "'"
+			);
+			Assert::assertEquals(
+				200,
+				$this->response->getStatusCode(),
+				__METHOD__
+				. " Expected status code is '200' but got '"
+				. $this->response->getStatusCode()
+				. "'"
+			);
 		}
-		Assert::assertContains(
-			$group,
-			$respondedArray,
-			__METHOD__ . " Group '$group' does not exist in '"
-			. \implode(', ', $respondedArray)
-			. "'"
-		);
-		Assert::assertEquals(
-			200,
-			$this->response->getStatusCode(),
-			__METHOD__
-			. " Expected status code is '200' but got '"
-			. $this->response->getStatusCode()
-			. "'"
-		);
 	}
 
 	/**
@@ -3673,11 +3545,12 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function userShouldNotBelongToGroup(string $user, string $group):void {
 		$user = $this->getActualUsername($user);
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->userShouldNotBeMemberInGroupUsingTheGraphApi($user, $group);
+			$this->graphContext->userShouldNotBeMemberInGroupUsingTheGraphApi($user, $group);
 		} else {
 			$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
 			$this->response = HttpRequestHelper::get(
@@ -3961,22 +3834,10 @@ trait Provisioning {
 				};
 				break;
 			case "graph":
-				$groupId = $this->getCreatedGroups()[$group]["id"];
-				$userId = $this->getAttributeOfCreatedUser($user, "id");
-				$result = \TestHelpers\GraphHelper::addUserToGroup(
-					$this->getBaseUrl(),
-					$this->getStepLineRef(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$userId,
-					$groupId
+				$this->graphContext->adminHasAddedUserToGroupUsingTheGraphApi(
+					$user,
+					$group
 				);
-				if ($checkResult && ($result->getStatusCode() !== 204)) {
-					throw new Exception(
-						"could not add user to group. "
-						. $result->getStatusCode() . " " . $result->getBody()
-					);
-				}
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -4232,25 +4093,9 @@ trait Provisioning {
 				}
 				break;
 			case "graph":
-				$result = \TestHelpers\GraphHelper::createGroup(
-					$this->getBaseUrl(),
-					$this->getStepLineRef(),
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$group,
-				);
-				$jsonBody = $this->getJsonDecodedResponse($result);
-				if ($result->getStatusCode() === 200) {
-					$groupCanBeDeleted = true;
-					$groupId = $jsonBody["id"];
-				} else {
-					throw new Exception(
-						__METHOD__
-						. "\nError: failed creating group '$group'"
-						. "\nStatus code: " . $jsonBody['error']['code']
-						. "\nMessage: " . $jsonBody['error']['message']
-					);
-				}
+				$newGroup = $this->graphContext->adminHasCreatedGroupUsingTheGraphApi($group);
+				$groupCanBeDeleted = true;
+				$groupId = $newGroup["id"];
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -4259,7 +4104,6 @@ trait Provisioning {
 		}
 
 		$this->addGroupToCreatedGroupsList($group, true, $groupCanBeDeleted, $groupId);
-		var_dump($this->createdGroups);
 	}
 
 	/**
@@ -4559,13 +4403,7 @@ trait Provisioning {
 		// Always try to delete the user
 		if (OcisHelper::isTestingWithGraphApi()) {
 			// users can be deleted using the username in the GraphApi too
-			$this->response = \TestHelpers\GraphHelper::deleteUser(
-				$this->getBaseUrl(),
-				$this->getStepLineRef(),
-				$this->getAdminUsername(),
-				$this->getAdminPassword(),
-				$user
-			);
+			$this->graphContext->adminDeletesUserUsingTheGraphApi($user);
 		} else {
 			$this->response = UserHelper::deleteUser(
 				$this->getBaseUrl(),
@@ -4622,7 +4460,7 @@ trait Provisioning {
 	 */
 	public function groupHasBeenDeleted(string $group):void {
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->adminHasDeletedGroupUsingTheGraphApi($group);
+			$this->graphContext->adminHasDeletedGroupUsingTheGraphApi($group);
 		} else {
 			$this->deleteGroup($group);
 		}
@@ -4639,25 +4477,6 @@ trait Provisioning {
 	 */
 	public function adminDeletesGroup(string $group):void {
 		$this->deleteGroup($group);
-	}
-
-	public function adminHasDeletedGroupUsingTheGraphApi(string $group):void {
-		$groupId = $this->getAttributeOfCreatedGroup($group, "id");
-		if ($groupId) {
-			$this->response = \TestHelpers\GraphHelper::deleteGroup(
-				$this->getBaseUrl(),
-				$this->getStepLineRef(),
-				$this->getAdminUsername(),
-				$this->getAdminPassword(),
-				$groupId
-			);
-			$this->thenTheHTTPStatusCodeShouldBe(204);
-		} else {
-			throw Exception(
-				"Group id does not exist for '$group' in the created list."
-				. " Cannot delete group without id when using the Graph API."
-			);
-		}
 	}
 
 	/**
@@ -4817,58 +4636,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @throws JsonException
-	 */
-	public function adminHasRemovedUserFromGroupUsingTheGraphApi(string $user, string $group):void {
-		$user = $this->getActualUsername($user);
-		$userId = $this->getAttributeOfCreatedUser($user, "id");
-		$groupId = $this->getAttributeOfCreatedGroup($group, "id");
-		$this->response = \TestHelpers\GraphHelper::removeUserFromGroup(
-			$this->getBaseUrl(),
-			$this->getStepLineRef(),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$userId,
-			$groupId,
-		);
-		$this->thenTheHTTPStatusCodeShouldBe(204);
-	}
-
-	public function getUserPresenceInGroupUsingTheGraphApi(string $user, string $group): bool {
-		$user = $this->getActualUsername($user);
-		$userId = $this->getAttributeOfCreatedUser($user, "id");
-		$groupId = $this->getAttributeOfCreatedGroup($group, "id");
-		$this->response = \TestHelpers\GraphHelper::getMembersList(
-			$this->getBaseUrl(),
-			$this->getStepLineRef(),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$userId,
-			$groupId
-		);
-		$this->thenTheHTTPStatusCodeShouldBe(200);
-		$members = $this->getJsonDecodedResponse();
-		$found = false;
-		foreach ($members as $member) {
-			if ($member["id"] === $userId) {
-				$found = true;
-				break;
-			}
-		}
-		return $found;
-	}
-
-	public function userShouldNotBeMemberInGroupUsingTheGraphApi(string $user, string $group):void {
-		$found = $this->getUserPresenceInGroupUsingTheGraphApi($user, $group);
-		Assert::assertFalse($found, "User $user is member of group $group");
-	}
-
-	public function userShouldBeMemberInGroupUsingTheGraphApi(string $user, string $group):void {
-		$found = $this->getUserPresenceInGroupUsingTheGraphApi($user, $group);
-		Assert::assertTrue($found, "User $user is not member of group $group");
-	}
-
-	/**
 	 * @Given user :user has been removed from group :group
 	 *
 	 * @param string $user
@@ -4884,7 +4651,7 @@ trait Provisioning {
 		) {
 			$this->removeUserFromLdapGroup($user, $group);
 		} elseif (OcisHelper::isTestingWithGraphApi()) {
-			$this->adminHasRemovedUserFromGroupUsingTheGraphApi($user, $group);
+			$this->graphContext->adminHasRemovedUserFromGroupUsingTheGraphApi($user, $group);
 		} else {
 			$this->removeUserFromGroupAsAdminUsingTheProvisioningApi(
 				$user,
