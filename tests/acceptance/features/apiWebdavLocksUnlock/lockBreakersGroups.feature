@@ -55,7 +55,7 @@ Feature: UNLOCK locked items
       | new      | exclusive  |
 
 
-  Scenario Outline: members of the lock breakers group can unlock a locked folder shared with them and lock it back again
+  Scenario Outline: members of the lock breakers group can lock shared folder that was unlocked by the lock breaker group before
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "Brian" has been created with default attributes and without skeleton files
@@ -65,9 +65,7 @@ Feature: UNLOCK locked items
     And user "Alice" has locked folder "FOLDER" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared folder "FOLDER" with user "Brian"
-    When user "Brian" unlocks folder "FOLDER" with the last created lock of folder "FOLDER" of user "Alice" using the WebDAV API
-    Then the HTTP status code should be "204"
-    And 0 locks should be reported for folder "FOLDER" of user "Brian" by the WebDAV API
+    And user "Brian" has unlocked folder "FOLDER" with the last created lock of folder "FOLDER" of user "Alice" using the WebDAV API
     When user "Brian" locks folder "FOLDER" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then the HTTP status code should be "200"
@@ -102,7 +100,7 @@ Feature: UNLOCK locked items
       | new      | exclusive  |
 
 
-  Scenario Outline: members of the lock breakers group can unlock a locked file shared with them and lock it back again
+  Scenario Outline: members of the lock breakers group can lock shared file that was unlocked by the lock breaker group before
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "Brian" has been created with default attributes and without skeleton files
@@ -112,9 +110,7 @@ Feature: UNLOCK locked items
     And user "Alice" has locked file "textfile0.txt" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
-    When user "Brian" unlocks file "textfile0.txt" with the last created lock of file "textfile0.txt" of user "Alice" using the WebDAV API
-    Then the HTTP status code should be "204"
-    And 0 locks should be reported for file "textfile0.txt" of user "Brian" by the WebDAV API
+    And user "Brian" has unlocked file "textfile0.txt" with the last created lock of folder "textfile0.txt" of user "Alice" using the WebDAV API
     When user "Brian" locks file "textfile0.txt" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then the HTTP status code should be "200"
@@ -293,19 +289,19 @@ Feature: UNLOCK locked items
     And user "Brian" has been added to group "grp1"
     And user "Brian" has been added to group "grp2"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
-    And user "Alice" has locked file "textfile.txt0" setting the following properties
+    And user "Alice" has locked file "textfile0.txt" setting the following properties
       | lockscope | <lock-scope> |
-    And user "Alice" has shared file "textfile.txt0" with group "grp2"
-    When user "Carol" unlocks file "textfile.txt0" with the last created lock of file "textfile.txt0" of user "Alice" using the WebDAV API
+    And user "Alice" has shared file "textfile0.txt" with group "grp2"
+    When user "Carol" unlocks file "textfile0.txt" with the last created lock of file "textfile0.txt" of user "Alice" using the WebDAV API
     Then the HTTP status code should be "403"
-    And 1 locks should be reported for file "textfile.txt0" of user "Alice" by the WebDAV API
-    And 1 locks should be reported for file "textfile.txt0" of user "Brian" by the WebDAV API
-    And 1 locks should be reported for file "textfile.txt0" of user "Carol" by the WebDAV API
-    When user "Brian" unlocks file "textfile.txt0" with the last created lock of file "textfile.txt0" of user "Alice" using the WebDAV API
+    And 1 locks should be reported for file "textfile0.txt" of user "Alice" by the WebDAV API
+    And 1 locks should be reported for file "textfile0.txt" of user "Brian" by the WebDAV API
+    And 1 locks should be reported for file "textfile0.txt" of user "Carol" by the WebDAV API
+    When user "Brian" unlocks file "textfile0.txt" with the last created lock of file "textfile0.txt" of user "Alice" using the WebDAV API
     Then the HTTP status code should be "204"
-    And 0 locks should be reported for file "textfile.txt0" of user "Alice" by the WebDAV API
-    And 0 locks should be reported for file "textfile.txt0" of user "Brian" by the WebDAV API
-    And 0 locks should be reported for file "textfile.txt0" of user "Carol" by the WebDAV API
+    And 0 locks should be reported for file "textfile0.txt" of user "Alice" by the WebDAV API
+    And 0 locks should be reported for file "textfile0.txt" of user "Brian" by the WebDAV API
+    And 0 locks should be reported for file "textfile0.txt" of user "Carol" by the WebDAV API
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
