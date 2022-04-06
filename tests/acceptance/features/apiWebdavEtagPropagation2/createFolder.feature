@@ -13,7 +13,8 @@ Feature: propagation of etags when creating folders
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/folder"
     When user "Alice" creates folder "/folder/new" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path    |
       | Alice | /       |
       | Alice | /folder |
@@ -36,7 +37,8 @@ Feature: propagation of etags when creating folders
     And user "Alice" has stored etag of element "/folder"
     And user "Alice" has stored etag of element "/folder/sub"
     When user "Alice" creates folder "/folder/sub/.." using the WebDAV API
-    Then these etags should not have changed:
+    Then the HTTP status code should be "405"
+    And these etags should not have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /folder     |
@@ -64,7 +66,8 @@ Feature: propagation of etags when creating folders
     And user "Brian" has stored etag of element "/Shares"
     And user "Brian" has stored etag of element "/Shares/folder"
     When user "Brian" creates folder "/Shares/folder/new" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path           |
       | Alice | /              |
       | Alice | /folder        |
@@ -94,7 +97,8 @@ Feature: propagation of etags when creating folders
     And user "Brian" has stored etag of element "/Shares"
     And user "Brian" has stored etag of element "/Shares/folder"
     When user "Alice" creates folder "/folder/new" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path           |
       | Alice | /              |
       | Alice | /folder        |
@@ -121,7 +125,8 @@ Feature: propagation of etags when creating folders
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/folder"
     When the public creates folder "created-by-public" using the new public WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path    |
       | Alice | /       |
       | Alice | /folder |

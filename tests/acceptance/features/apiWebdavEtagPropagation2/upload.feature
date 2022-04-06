@@ -13,7 +13,7 @@ Feature: propagation of etags when uploading data
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/upload"
     When user "Alice" uploads file with content "uploaded content" to "/upload/file.txt" using the WebDAV API
-    Then the content of file "/upload/file.txt" for user "Alice" should be "uploaded content"
+    Then the HTTP status code should be "201"
     And these etags should have changed:
       | user  | path    |
       | Alice | /       |
@@ -36,7 +36,7 @@ Feature: propagation of etags when uploading data
     And user "Alice" has stored etag of element "/upload"
     And user "Alice" has stored etag of element "/upload/file.txt"
     When user "Alice" uploads file with content "new content" to "/upload/file.txt" using the WebDAV API
-    Then the content of file "/upload/file.txt" for user "Alice" should be "new content"
+    Then the HTTP status code should be "204"
     And these etags should have changed:
       | user  | path             |
       | Alice | /                |
@@ -64,7 +64,8 @@ Feature: propagation of etags when uploading data
     And user "Brian" has stored etag of element "/Shares"
     And user "Brian" has stored etag of element "/Shares/upload"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/upload/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path           |
       | Alice | /              |
       | Alice | /upload        |
@@ -93,7 +94,8 @@ Feature: propagation of etags when uploading data
     And user "Brian" has stored etag of element "/Shares"
     And user "Brian" has stored etag of element "/Shares/upload"
     When user "Alice" uploads file with content "uploaded content" to "/upload/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path           |
       | Alice | /              |
       | Alice | /upload        |
@@ -123,7 +125,8 @@ Feature: propagation of etags when uploading data
     And user "Brian" has stored etag of element "/Shares"
     And user "Brian" has stored etag of element "/Shares/upload"
     When user "Brian" uploads file with content "new content" to "/Shares/upload/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "204"
+    And these etags should have changed:
       | user  | path           |
       | Alice | /              |
       | Alice | /upload        |
@@ -153,7 +156,8 @@ Feature: propagation of etags when uploading data
     And user "Brian" has stored etag of element "/Shares"
     And user "Brian" has stored etag of element "/Shares/upload"
     When user "Alice" uploads file with content "new content" to "/upload/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "204"
+    And these etags should have changed:
       | user  | path           |
       | Alice | /              |
       | Alice | /upload        |
@@ -179,7 +183,8 @@ Feature: propagation of etags when uploading data
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/upload"
     When the public uploads file "file.txt" with content "new content" using the new public WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path    |
       | Alice | /       |
       | Alice | /upload |
