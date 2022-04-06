@@ -30,6 +30,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | /folderB/textfile0.txt |
       | /folderC/textfile0.txt |
       | /folderD/textfile0.txt |
+    Then the HTTP status code of responses on all endpoints should be "204"
     # When issue-23151 is fixed, uncomment these lines. They should pass reliably.
     # These files may or may not exist in the trashbin
 #    Then as "Alice" the folder with original path "/folderA/textfile0.txt" should not exist in the trashbin

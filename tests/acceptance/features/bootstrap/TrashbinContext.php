@@ -552,6 +552,7 @@ class TrashbinContext implements Context {
 			$numItemsDeleted,
 			"Expected to delete exactly one item from the trashbin but $numItemsDeleted were deleted"
 		);
+		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**

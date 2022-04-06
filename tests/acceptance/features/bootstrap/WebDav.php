@@ -919,6 +919,7 @@ trait WebDav {
 			["201", "204"],
 			"HTTP status code was not 201 or 204 while trying to copy file '$fileSource' to '$fileDestination' for user '$user'"
 		);
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**
@@ -3140,6 +3141,7 @@ trait WebDav {
 			["201", "204"],
 			"HTTP status code was not 201 or 204 while trying to upload file '$destination' for user '$user'"
 		);
+		$this->emptyLastHTTPStatusCodesArray();
 		return $fileId;
 	}
 
@@ -3189,7 +3191,7 @@ trait WebDav {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function userHasUploadedFollowingFiles(
+	public function userHasUploadedFollowingFilesWithContent(
 		string $user,
 		?string $content,
 		TableNode $table
@@ -3375,6 +3377,7 @@ trait WebDav {
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		$this->lastUploadDeleteTime = \time();
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -3406,6 +3409,7 @@ trait WebDav {
 			["204"],
 			"HTTP status code was not 204 while trying to $deleteText $fileOrFolder '$entry' for user '$user'"
 		);
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**
@@ -3426,6 +3430,7 @@ trait WebDav {
 		foreach ($paths as $file) {
 			$this->userHasDeletedFile($user, $deletedOrUnshared, $fileOrFolder, $file["path"]);
 		}
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**
@@ -3487,6 +3492,7 @@ trait WebDav {
 		foreach ($table->getTable() as $entry) {
 			$entryName = $entry[0];
 			$this->response = $this->makeDavRequest($user, 'DELETE', $entryName, []);
+			$this->pushToLastStatusCodesArrays();
 		}
 		$this->lastUploadDeleteTime = \time();
 	}
