@@ -23,4 +23,4 @@ OC.L10N.register(
     "You commented on %2$s" : "Vous avez commenté %2$s",
     "%1$s commented on %2$s" : "%1$s a commenté %2$s"
 },
-"nplurals=3; plural=(n==0 || n==1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
+"nplurals=2; plural=(n > 1);");
