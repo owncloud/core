@@ -2289,19 +2289,22 @@ trait Provisioning {
 		$password = null,
 		$email = null,
 		$displayName = null,
-		$requestor = null,
-		$requestorPassword = null
+		$requester = null,
+		$requesterPassword = null
 	): array {
-		if (!$requestor) {
-			$requestor = $this->getAdminUsername();
-			$requestorPassword = $this->getAdminPassword();
+		if (!$requester) {
+			$requester = $this->getAdminUsername();
+			$requesterPassword = $this->getAdminPassword();
 		}
+		var_dump($user);
+		var_dump($this->createdUsers);
 		$userId = $this->getAttributeOfCreatedUser($user, 'id');
-		$this->response = GraphHelper::editUser(
+		var_dump($userId);
+		$this->response = \TestHelpers\GraphHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getStepLineRef(),
-			$requestor,
-			$requestorPassword,
+			$requester,
+			$requesterPassword,
 			$userId,
 			$userName,
 			$password,
@@ -2309,11 +2312,11 @@ trait Provisioning {
 			$displayName
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
-		$this->response = GraphHelper::getUser(
+		$this->response = \TestHelpers\GraphHelper::getUser(
 			$this->getBaseUrl(),
 			$this->getStepLineRef(),
-			$requestor,
-			$requestorPassword,
+			$requester,
+			$requesterPassword,
 			$userId
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
@@ -3394,6 +3397,7 @@ trait Provisioning {
 		bool $setDefault = true,
 		bool $skeleton = true
 	):void {
+		$userId = null;
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
 		}
@@ -3477,6 +3481,9 @@ trait Provisioning {
 					throw new Exception(
 						__METHOD__ . " could not create user. {$response->getBody()}"
 					);
+				} else {
+					$jsonBody = $this->getJsonDecodedResponse($response);
+					$userId = $jsonBody["id"];
 				}
 				break;
 			default:
@@ -3485,7 +3492,7 @@ trait Provisioning {
 				);
 		}
 
-		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
+		$this->addUserToCreatedUsersList($user, $password, $displayName, $email, $userId);
 		if ($initialize) {
 			$this->initializeUser($user, $password);
 		}
@@ -3514,7 +3521,11 @@ trait Provisioning {
 	 */
 	public function cleanupGroup(string $group):void {
 		try {
-			$this->deleteTheGroupUsingTheProvisioningApi($group);
+			if (OcisHelper::isTestingWithGraphApi()) {
+				$this->adminHasDeletedGroupUsingTheGraphApi($group);
+			} else {
+				$this->deleteTheGroupUsingTheProvisioningApi($group);
+			}
 		} catch (Exception $e) {
 			\error_log(
 				"INFORMATION: There was an unexpected problem trying to delete group " .
@@ -4054,6 +4065,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function groupHasBeenCreated(string $group):void {
 		$this->createTheGroup($group);
@@ -4233,9 +4245,10 @@ trait Provisioning {
 					$groupId = $jsonBody["id"];
 				} else {
 					throw new Exception(
-						'Error: failed creating group "' . $group . '" \n'
-						. 'Status code: ' . $jsonBody["error"]["code"] . ' \n'
-						. 'Message: ' . $jsonBody['error']['message'] . ' \n'
+						__METHOD__
+						. "\nError: failed creating group '$group'"
+						. "\nStatus code: " . $jsonBody['error']['code']
+						. "\nMessage: " . $jsonBody['error']['message']
 					);
 				}
 				break;
@@ -4246,6 +4259,7 @@ trait Provisioning {
 		}
 
 		$this->addGroupToCreatedGroupsList($group, true, $groupCanBeDeleted, $groupId);
+		var_dump($this->createdGroups);
 	}
 
 	/**
