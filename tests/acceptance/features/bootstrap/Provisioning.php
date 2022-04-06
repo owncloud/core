@@ -2480,8 +2480,8 @@ trait Provisioning {
 				null,
 				null,
 				$displayName,
-				$targetUser,
-				$this->getPasswordForUser($targetUser)
+				$requestingUser,
+				$this->getPasswordForUser($requestingUser)
 			);
 			Assert::assertEquals(
 				$displayName,

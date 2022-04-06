@@ -150,6 +150,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException
+	 * @throws JsonException
 	 */
 	public function theAdminCreatesAUserUsingTheWebUI(
 		?string $attemptTo,
@@ -182,6 +183,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			$password,
 			$username,
 			$email,
+			null,
 			$shouldExist
 		);
 		if (\is_array($groups)) {
