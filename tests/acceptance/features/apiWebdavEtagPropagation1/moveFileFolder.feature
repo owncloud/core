@@ -12,7 +12,8 @@ Feature: propagation of etags when moving files or folders
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/upload"
     When user "Alice" moves file "/upload/file.txt" to "/upload/renamed.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path    |
       | Alice | /       |
       | Alice | /upload |
@@ -36,7 +37,8 @@ Feature: propagation of etags when moving files or folders
     And user "Alice" has stored etag of element "/src"
     And user "Alice" has stored etag of element "/dst"
     When user "Alice" moves file "/src/file.txt" to "/dst/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path |
       | Alice | /    |
       | Alice | /src |
@@ -61,7 +63,8 @@ Feature: propagation of etags when moving files or folders
     And user "Alice" has stored etag of element "/upload"
     And user "Alice" has stored etag of element "/upload/sub"
     When user "Alice" moves file "/upload/file.txt" to "/upload/sub/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /upload     |
@@ -84,7 +87,8 @@ Feature: propagation of etags when moving files or folders
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/upload"
     When user "Alice" moves folder "/upload/src" to "/upload/dst" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path    |
       | Alice | /       |
       | Alice | /upload |
@@ -108,7 +112,8 @@ Feature: propagation of etags when moving files or folders
     And user "Alice" has stored etag of element "/src"
     And user "Alice" has stored etag of element "/dst"
     When user "Alice" moves folder "/src/folder" to "/dst/folder" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path |
       | Alice | /    |
       | Alice | /src |
@@ -133,7 +138,8 @@ Feature: propagation of etags when moving files or folders
     And user "Alice" has stored etag of element "/upload"
     And user "Alice" has stored etag of element "/upload/sub"
     When user "Alice" moves folder "/upload/folder" to "/upload/sub/folder" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /upload     |
@@ -164,7 +170,8 @@ Feature: propagation of etags when moving files or folders
     And user "Brian" has stored etag of element "/Shares"
     And user "Brian" has stored etag of element "/Shares/upload"
     When user "Brian" moves file "/Shares/upload/file.txt" to "/Shares/upload/renamed.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path           |
       | Alice | /              |
       | Alice | /upload        |
@@ -197,7 +204,8 @@ Feature: propagation of etags when moving files or folders
     And user "Brian" has stored etag of element "/Shares"
     And user "Brian" has stored etag of element "/Shares/upload"
     When user "Alice" moves file "/upload/file.txt" to "/upload/renamed.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path           |
       | Alice | /              |
       | Alice | /upload        |
@@ -235,7 +243,8 @@ Feature: propagation of etags when moving files or folders
     And user "Brian" has stored etag of element "/Shares/src"
     And user "Brian" has stored etag of element "/Shares/dst"
     When user "Alice" moves file "/src/file.txt" to "/dst/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /src        |
@@ -275,7 +284,8 @@ Feature: propagation of etags when moving files or folders
     And user "Brian" has stored etag of element "/Shares/src"
     And user "Brian" has stored etag of element "/Shares/dst"
     When user "Brian" moves file "/Shares/src/file.txt" to "/Shares/dst/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /src        |
@@ -315,7 +325,8 @@ Feature: propagation of etags when moving files or folders
     And user "Brian" has stored etag of element "/Shares/src"
     And user "Brian" has stored etag of element "/Shares/dst"
     When user "Alice" moves folder "/src/toMove" to "/dst/toMove" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /src        |
@@ -355,7 +366,8 @@ Feature: propagation of etags when moving files or folders
     And user "Brian" has stored etag of element "/Shares/src"
     And user "Brian" has stored etag of element "/Shares/dst"
     When user "Brian" moves folder "/Shares/src/toMove" to "/Shares/dst/toMove" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /src        |
@@ -385,7 +397,8 @@ Feature: propagation of etags when moving files or folders
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/upload"
     When the public renames file "file.txt" to "renamed.txt" from the last public share using the new public WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path    |
       | Alice | /       |
       | Alice | /upload |
@@ -410,7 +423,8 @@ Feature: propagation of etags when moving files or folders
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/upload"
     When the public renames folder "sub" to "renamed" from the last public share using the new public WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path    |
       | Alice | /       |
       | Alice | /upload |
