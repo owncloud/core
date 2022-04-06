@@ -3517,15 +3517,12 @@ class FeatureContext extends BehatVariablesContext {
 		// that calls BasicStructure.php
 		$this->ocsContext = new OCSContext();
 		$this->authContext = new AuthContext();
-		$this->graphContext = new GraphContext();
 		$this->appConfigurationContext = new AppConfigurationContext();
 		$this->ocsContext->before($scope);
-		$this->graphContext->before($scope);
 		$this->authContext->setUpScenario($scope);
 		$this->appConfigurationContext->setUpScenario($scope);
 		$environment->registerContext($this->ocsContext);
 		$environment->registerContext($this->authContext);
-		$environment->registerContext($this->graphContext);
 		$environment->registerContext($this->appConfigurationContext);
 		$scenarioLine = $scope->getScenario()->getLine();
 		$featureFile = $scope->getFeature()->getFile();
@@ -3549,6 +3546,12 @@ class FeatureContext extends BehatVariablesContext {
 		if ($this->isTestingWithLdap()) {
 			$suiteParameters = SetupHelper::getSuiteParameters($scope);
 			$this->connectToLdap($suiteParameters);
+		}
+
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext = new GraphContext();
+			$this->graphContext->before($scope);
+			$environment->registerContext($this->graphContext);
 		}
 	}
 

@@ -1332,7 +1332,6 @@ trait Provisioning {
 		string $user,
 		string $password
 	):void {
-
 		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$user,
@@ -2271,7 +2270,7 @@ trait Provisioning {
 				$user,
 				$displayName
 			);
-		} elseif(OcisHelper::isTestingWithGraphApi()) {
+		} elseif (OcisHelper::isTestingWithGraphApi()) {
 			$updateUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$user,
 				null,
@@ -3359,8 +3358,8 @@ trait Provisioning {
 				$newUser = $this->graphContext->theAdminHasCreatedUser(
 					$user,
 					$password,
+					$email,
 					$displayName,
-					$email
 				);
 				$userId = $newUser['id'];
 				break;
@@ -3486,7 +3485,8 @@ trait Provisioning {
 		$respondedArray = [];
 		if (OcisHelper::isTestingWithGraphApi()) {
 			$this->graphContext->userShouldBeMemberInGroupUsingTheGraphApi(
-				$user, $group
+				$user,
+				$group
 			);
 		} else {
 			$this->theAdministratorGetsAllTheGroupsOfUser($user);

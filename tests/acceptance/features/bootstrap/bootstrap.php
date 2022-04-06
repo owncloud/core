@@ -29,6 +29,11 @@ $classLoader = new \Composer\Autoload\ClassLoader();
 $classLoader->addPsr4("Page\\", __DIR__ . "/../lib", true);
 $classLoader->addPsr4("TestHelpers\\", __DIR__ . "/../../../TestHelpers", true);
 $classLoader->addPsr4("TestHelpers\\", $pathToOcis . "/tests/TestHelpers", true);
+$classLoader->addPsr4(
+	"",
+	$pathToOcis . "/tests/acceptance/features/bootstrap",
+	true
+);
 $classLoader->register();
 
 // Sleep for 10 milliseconds
