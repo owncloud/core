@@ -17,7 +17,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | 123textfile.txt  |
       | textfile.XYZ.txt |
     And user "Brian" has uploaded the following files with content "some data"
-      | path              |
+      | path             |
       | TEXTFILE.txt     |
       | TEXT_FILE.txt    |
       | 123TEXTFILE.txt  |
@@ -28,8 +28,10 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | text_file.txt    |
       | 123textfile.txt  |
       | textfile.XYZ.txt |
-    Then as "Brian" the following files should exist
-      | path              |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following files should exist
+      | path             |
       | TEXTFILE.txt     |
       | TEXT_FILE.txt    |
       | 123TEXTFILE.txt  |
@@ -59,7 +61,9 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /F_O/    |
       | /123FO/  |
       | /FO.XYZ/ |
-    Then as "Brian" the following folders should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following folders should exist
       | path     |
       | /FO/     |
       | /F_O/    |
@@ -90,12 +94,14 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | case_sensitive.txt    |
       | 123CASE_SENSITIVE.txt |
       | casesensitive.xyz.txt |
-    Then as "Brian" the following folders should exist
-      | path                  |
-      | /CASESENSITIVE/       |
-      | /CASE_SENSITIVE/      |
-      | /123case_sensitive/   |
-      | /CASESENSITIVE.xyz/   |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following folders should exist
+      | path                |
+      | /CASESENSITIVE/     |
+      | /CASE_SENSITIVE/    |
+      | /123case_sensitive/ |
+      | /CASESENSITIVE.xyz/ |
     And as "Brian" the following files should exist
       | path                  |
       | casesensitive.txt     |
@@ -123,18 +129,20 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /CASE_SENSITIVE/    |
       | /123case_sensitive/ |
       | /CASESENSITIVE.xyz/ |
-    Then as "Brian" the following files should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following files should exist
       | path                  |
       | casesensitive.txt     |
       | case_sensitive.txt    |
       | 123CASE_SENSITIVE.txt |
       | casesensitive.xyz.txt |
     And as "Brian" the following folders should exist
-      | path                  |
-      | /CASESENSITIVE/       |
-      | /CASE_SENSITIVE/      |
-      | /123case_sensitive/   |
-      | /CASESENSITIVE.xyz/   |
+      | path                |
+      | /CASESENSITIVE/     |
+      | /CASE_SENSITIVE/    |
+      | /123case_sensitive/ |
+      | /CASESENSITIVE.xyz/ |
 
 
   Scenario: sharing file with group members that has existing files with different case names
@@ -147,7 +155,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | 123textfile.txt  |
       | textfile.XYZ.txt |
     And user "Brian" has uploaded the following files with content "some data"
-      | path              |
+      | path             |
       | TEXTFILE.txt     |
       | TEXT_FILE.txt    |
       | 123TEXTFILE.txt  |
@@ -158,8 +166,10 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | text_file.txt    |
       | 123textfile.txt  |
       | textfile.XYZ.txt |
-    Then as "Brian" the following files should exist
-      | path              |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following files should exist
+      | path             |
       | TEXTFILE.txt     |
       | TEXT_FILE.txt    |
       | 123TEXTFILE.txt  |
@@ -191,7 +201,9 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /F_O/    |
       | /123FO/  |
       | /FO.XYZ/ |
-    Then as "Brian" the following folders should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following folders should exist
       | path     |
       | /fo/     |
       | /f_o/    |
@@ -224,12 +236,14 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | case_sensitive.txt    |
       | 123CASE_SENSITIVE.txt |
       | casesensitive.xyz.txt |
-    Then as "Brian" the following folders should exist
-      | path                  |
-      | /CASESENSITIVE/       |
-      | /CASE_SENSITIVE/      |
-      | /123case_sensitive/   |
-      | /CASESENSITIVE.xyz/   |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following folders should exist
+      | path                |
+      | /CASESENSITIVE/     |
+      | /CASE_SENSITIVE/    |
+      | /123case_sensitive/ |
+      | /CASESENSITIVE.xyz/ |
     And as "Brian" the following files should exist
       | path                  |
       | casesensitive.txt     |
@@ -258,15 +272,17 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /CASE_SENSITIVE/    |
       | /123case_sensitive/ |
       | /CASESENSITIVE.xyz/ |
-    Then as "Brian" the following files should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following files should exist
       | path                  |
       | casesensitive.txt     |
       | case_sensitive.txt    |
       | 123CASE_SENSITIVE.txt |
       | casesensitive.xyz.txt |
     And as "Brian" the following folders should exist
-      | path                  |
-      | /CASESENSITIVE/       |
-      | /CASE_SENSITIVE/      |
-      | /123case_sensitive/   |
-      | /CASESENSITIVE.xyz/   |
+      | path                |
+      | /CASESENSITIVE/     |
+      | /CASE_SENSITIVE/    |
+      | /123case_sensitive/ |
+      | /CASESENSITIVE.xyz/ |

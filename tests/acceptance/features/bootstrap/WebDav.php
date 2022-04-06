@@ -846,6 +846,7 @@ trait WebDav {
 		$this->asFileOrFolderShouldExist($user, $entry, $source);
 		$this->userMovesFileUsingTheAPI($user, $source, "", $destination);
 		$this->asFileOrFolderShouldExist($user, $entry, $source);
+		$this->asFileOrFolderShouldNotExist($user, $entry, $destination);
 	}
 
 	/**
@@ -2074,6 +2075,7 @@ trait WebDav {
 			"HTTP status code was not 201 or 204 while trying to upload file '$source' to '$destination' for user '$user'"
 		);
 		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
 	}
 
 	/**
@@ -3652,11 +3654,17 @@ trait WebDav {
 	 * @param string $destination
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userShouldNotBeAbleToCreateFolder(string $user, string $destination):void {
 		$user = $this->getActualUsername($user);
 		$this->userCreatesFolder($user, $destination);
 		$this->theHTTPStatusCodeShouldBeFailure();
+		$this->asFileOrFolderShouldNotExist(
+			$user,
+			"folder",
+			$destination
+		);
 	}
 
 	/**

@@ -15,6 +15,8 @@ Feature: resources shared with the same name are received with unique names
     And user "Brian" has created folder "/foo"
     When user "Alice" shares folder "/foo" with user "Carol" using the sharing API
     And user "Brian" shares folder "/foo" with user "Carol" using the sharing API
-    Then user "Carol" should see the following elements
-      | /foo/       |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Carol" should see the following elements
+      | /foo/     |
       | /foo (2)/ |

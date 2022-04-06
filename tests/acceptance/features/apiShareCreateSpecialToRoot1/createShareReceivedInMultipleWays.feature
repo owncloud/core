@@ -17,8 +17,8 @@ Feature: share resources where the sharee receives the share in multiple ways
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with             | %username%        |
       | share_with_displayname | %displayname%     |
-      | file_target            | /textfile0.txt      |
-      | path                   | /textfile0.txt      |
+      | file_target            | /textfile0.txt    |
+      | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
       | uid_owner              | %username%        |
       | displayname_owner      | %displayname%     |
@@ -43,13 +43,13 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
-    Then user "Brian" should see the following elements
-      | /PARENT/                 |
-      | /PARENT/parent.txt       |
-      | /CHILD/                  |
-      | /CHILD/child.txt         |
-    And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
+      | /PARENT/           |
+      | /PARENT/parent.txt |
+      | /CHILD/            |
+      | /CHILD/child.txt   |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -100,16 +100,16 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" has uploaded file with content "First data" to "/randomfile.txt"
     And user "Carol" has uploaded file with content "Second data" to "/randomfile.txt"
     When user "Brian" shares file "randomfile.txt" with user "Alice" with permissions "read" using the sharing API
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response about user "Brian" sharing with user "Alice" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Alice" the info about the last share by user "Brian" with user "Alice" should include
       | uid_owner   | %username%      |
       | share_with  | %username%      |
       | file_target | /randomfile.txt |
       | item_type   | file            |
       | permissions | read            |
     When user "Carol" shares file "randomfile.txt" with user "Alice" with permissions "read,update" using the sharing API
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response about user "Carol" sharing with user "Alice" should include
+    And as "Alice" the info about the last share by user "Carol" with user "Alice" should include
       | uid_owner   | %username%          |
       | share_with  | %username%          |
       | file_target | /randomfile (2).txt |
@@ -118,9 +118,9 @@ Feature: share resources where the sharee receives the share in multiple ways
     And the content of file "randomfile.txt" for user "Alice" should be "First data"
     And the content of file "randomfile (2).txt" for user "Alice" should be "Second data"
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @issue-ocis-2131
   Scenario Outline: multiple users share a folder with the same name to a user
@@ -134,16 +134,14 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Carol" has created folder "/zzzfolder"
     And user "Carol" has created folder "zzzfolder/Carol"
     When user "Brian" shares folder "zzzfolder" with user "Alice" with permissions "read,delete" using the sharing API
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response about user "Brian" sharing with user "Alice" should include
+    And as "Alice" the info about the last share by user "Brian" with user "Alice" should include
       | uid_owner   | %username%  |
       | share_with  | %username%  |
       | file_target | /zzzfolder  |
       | item_type   | folder      |
       | permissions | read,delete |
     When user "Carol" shares folder "zzzfolder" with user "Alice" with permissions "read,share" using the sharing API
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response about user "Carol" sharing with user "Alice" should include
+    And as "Alice" the info about the last share by user "Carol" with user "Alice" should include
       | uid_owner   | %username%     |
       | share_with  | %username%     |
       | file_target | /zzzfolder (2) |
@@ -171,10 +169,12 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Carol" has uploaded file with content "My content" to "lorem.txt"
     When user "Alice" shares file "lorem.txt" with group "grp1" using the sharing API
     And the administrator adds user "Carol" to group "grp1" using the provisioning API
-    Then the content of file "lorem.txt" for user "Brian" should be "Shared content"
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the content of file "lorem.txt" for user "Brian" should be "Shared content"
     And the content of file "lorem.txt" for user "Carol" should be "My content"
     And the content of file "lorem (2).txt" for user "Carol" should be "Shared content"
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
