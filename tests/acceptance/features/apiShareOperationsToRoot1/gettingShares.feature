@@ -108,8 +108,8 @@ Feature: sharing
       | 2               | 404              |
 
   @skipOnLDAP
-  Scenario: Share of folder to a group, remove user from that group
-    Given using OCS API version "1"
+  Scenario Outline: Share of folder to a group, remove user from that group
+    Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And group "group0" has been created
@@ -119,7 +119,9 @@ Feature: sharing
     And user "Alice" has moved file "textfile0.txt" to "PARENT/parent.txt"
     And user "Alice" has shared folder "/PARENT" with group "group0"
     When the administrator removes user "Carol" from group "group0" using the provisioning API
-    Then user "Brian" should see the following elements
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "Brian" should see the following elements
       | /PARENT/                 |
       | /PARENT/parent.txt       |
     And user "Carol" should see the following elements
@@ -127,6 +129,10 @@ Feature: sharing
     But user "Carol" should not see the following elements
       | /PARENT/           |
       | /PARENT/parent.txt |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: getting all the shares inside the folder
     Given using OCS API version "<ocs_api_version>"
