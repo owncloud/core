@@ -27,6 +27,10 @@ class Destination extends \Google\Model
   protected $cloudRunDataType = '';
   protected $gkeType = GKE::class;
   protected $gkeDataType = '';
+  /**
+   * @var string
+   */
+  public $workflow;
 
   /**
    * @param string
@@ -69,6 +73,20 @@ class Destination extends \Google\Model
   public function getGke()
   {
     return $this->gke;
+  }
+  /**
+   * @param string
+   */
+  public function setWorkflow($workflow)
+  {
+    $this->workflow = $workflow;
+  }
+  /**
+   * @return string
+   */
+  public function getWorkflow()
+  {
+    return $this->workflow;
   }
 }
 

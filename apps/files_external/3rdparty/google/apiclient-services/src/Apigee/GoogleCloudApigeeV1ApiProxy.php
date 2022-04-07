@@ -21,6 +21,10 @@ class GoogleCloudApigeeV1ApiProxy extends \Google\Collection
 {
   protected $collection_key = 'revision';
   /**
+   * @var string
+   */
+  public $apiProxyType;
+  /**
    * @var string[]
    */
   public $labels;
@@ -35,10 +39,28 @@ class GoogleCloudApigeeV1ApiProxy extends \Google\Collection
    */
   public $name;
   /**
+   * @var bool
+   */
+  public $readOnly;
+  /**
    * @var string[]
    */
   public $revision;
 
+  /**
+   * @param string
+   */
+  public function setApiProxyType($apiProxyType)
+  {
+    $this->apiProxyType = $apiProxyType;
+  }
+  /**
+   * @return string
+   */
+  public function getApiProxyType()
+  {
+    return $this->apiProxyType;
+  }
   /**
    * @param string[]
    */
@@ -94,6 +116,20 @@ class GoogleCloudApigeeV1ApiProxy extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param bool
+   */
+  public function setReadOnly($readOnly)
+  {
+    $this->readOnly = $readOnly;
+  }
+  /**
+   * @return bool
+   */
+  public function getReadOnly()
+  {
+    return $this->readOnly;
   }
   /**
    * @param string[]

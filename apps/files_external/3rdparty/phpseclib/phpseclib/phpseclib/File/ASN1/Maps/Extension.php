@@ -33,14 +33,14 @@ use phpseclib3\File\ASN1;
 abstract class Extension
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-            'extnId'   => ['type' => ASN1::TYPE_OBJECT_IDENTIFIER],
+            'extnId' => ['type' => ASN1::TYPE_OBJECT_IDENTIFIER],
             'critical' => [
-                              'type'     => ASN1::TYPE_BOOLEAN,
-                              'optional' => true,
-                              'default'  => false
-                          ],
+                'type' => ASN1::TYPE_BOOLEAN,
+                'optional' => true,
+                'default' => false
+            ],
             'extnValue' => ['type' => ASN1::TYPE_OCTET_STRING]
         ]
     ];

@@ -24,6 +24,8 @@ class ResponsePolicy extends \Google\Collection
    * @var string
    */
   public $description;
+  protected $gkeClustersType = ResponsePolicyGKECluster::class;
+  protected $gkeClustersDataType = 'array';
   /**
    * @var string
    */
@@ -52,6 +54,20 @@ class ResponsePolicy extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  /**
+   * @param ResponsePolicyGKECluster[]
+   */
+  public function setGkeClusters($gkeClusters)
+  {
+    $this->gkeClusters = $gkeClusters;
+  }
+  /**
+   * @return ResponsePolicyGKECluster[]
+   */
+  public function getGkeClusters()
+  {
+    return $this->gkeClusters;
   }
   /**
    * @param string

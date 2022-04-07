@@ -19,11 +19,27 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1DatabaseTableSpec extends \Google\Model
 {
+  protected $dataplexTableType = GoogleCloudDatacatalogV1DataplexTableSpec::class;
+  protected $dataplexTableDataType = '';
   /**
    * @var string
    */
   public $type;
 
+  /**
+   * @param GoogleCloudDatacatalogV1DataplexTableSpec
+   */
+  public function setDataplexTable(GoogleCloudDatacatalogV1DataplexTableSpec $dataplexTable)
+  {
+    $this->dataplexTable = $dataplexTable;
+  }
+  /**
+   * @return GoogleCloudDatacatalogV1DataplexTableSpec
+   */
+  public function getDataplexTable()
+  {
+    return $this->dataplexTable;
+  }
   /**
    * @param string
    */

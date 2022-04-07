@@ -140,6 +140,10 @@ class Product extends \Google\Collection
   /**
    * @var string
    */
+  public $externalSellerId;
+  /**
+   * @var string
+   */
   public $gender;
   /**
    * @var string
@@ -761,6 +765,20 @@ class Product extends \Google\Collection
   public function getExpirationDate()
   {
     return $this->expirationDate;
+  }
+  /**
+   * @param string
+   */
+  public function setExternalSellerId($externalSellerId)
+  {
+    $this->externalSellerId = $externalSellerId;
+  }
+  /**
+   * @return string
+   */
+  public function getExternalSellerId()
+  {
+    return $this->externalSellerId;
   }
   /**
    * @param string

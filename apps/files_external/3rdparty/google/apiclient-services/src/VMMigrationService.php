@@ -469,6 +469,16 @@ class VMMigrationService extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'upgradeAppliance' => [
+              'path' => 'v1/{+datacenterConnector}:upgradeAppliance',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'datacenterConnector' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],
           ]
         ]

@@ -20,14 +20,23 @@ namespace Google\Service\Bigquery;
 class GlobalExplanation extends \Google\Collection
 {
   protected $collection_key = 'explanations';
+  /**
+   * @var string
+   */
   public $classLabel;
   protected $explanationsType = Explanation::class;
   protected $explanationsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setClassLabel($classLabel)
   {
     $this->classLabel = $classLabel;
   }
+  /**
+   * @return string
+   */
   public function getClassLabel()
   {
     return $this->classLabel;

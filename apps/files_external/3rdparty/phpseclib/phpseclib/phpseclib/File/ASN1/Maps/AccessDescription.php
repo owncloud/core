@@ -27,9 +27,9 @@ use phpseclib3\File\ASN1;
 abstract class AccessDescription
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-            'accessMethod'   => ['type' => ASN1::TYPE_OBJECT_IDENTIFIER],
+            'accessMethod' => ['type' => ASN1::TYPE_OBJECT_IDENTIFIER],
             'accessLocation' => GeneralName::MAP
         ]
     ];

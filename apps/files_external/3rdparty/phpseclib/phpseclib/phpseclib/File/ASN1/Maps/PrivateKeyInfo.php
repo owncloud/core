@@ -27,13 +27,13 @@ use phpseclib3\File\ASN1;
 abstract class PrivateKeyInfo
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
             'version' => [
                 'type' => ASN1::TYPE_INTEGER,
                 'mapping' => ['v1']
             ],
-            'privateKeyAlgorithm'=> AlgorithmIdentifier::MAP,
+            'privateKeyAlgorithm' => AlgorithmIdentifier::MAP,
             'privateKey' => PrivateKey::MAP,
             'attributes' => [
                 'constant' => 0,

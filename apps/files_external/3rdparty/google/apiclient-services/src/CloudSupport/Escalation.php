@@ -19,12 +19,6 @@ namespace Google\Service\CloudSupport;
 
 class Escalation extends \Google\Model
 {
-  protected $actorType = Actor::class;
-  protected $actorDataType = '';
-  /**
-   * @var string
-   */
-  public $createTime;
   /**
    * @var string
    */
@@ -32,40 +26,8 @@ class Escalation extends \Google\Model
   /**
    * @var string
    */
-  public $name;
-  /**
-   * @var string
-   */
   public $reason;
 
-  /**
-   * @param Actor
-   */
-  public function setActor(Actor $actor)
-  {
-    $this->actor = $actor;
-  }
-  /**
-   * @return Actor
-   */
-  public function getActor()
-  {
-    return $this->actor;
-  }
-  /**
-   * @param string
-   */
-  public function setCreateTime($createTime)
-  {
-    $this->createTime = $createTime;
-  }
-  /**
-   * @return string
-   */
-  public function getCreateTime()
-  {
-    return $this->createTime;
-  }
   /**
    * @param string
    */
@@ -79,20 +41,6 @@ class Escalation extends \Google\Model
   public function getJustification()
   {
     return $this->justification;
-  }
-  /**
-   * @param string
-   */
-  public function setName($name)
-  {
-    $this->name = $name;
-  }
-  /**
-   * @return string
-   */
-  public function getName()
-  {
-    return $this->name;
   }
   /**
    * @param string

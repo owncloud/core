@@ -45,8 +45,8 @@ class Freelistingsprogram extends \Google\Service\Resource
     return $this->call('get', [$params], FreeListingsProgramStatus::class);
   }
   /**
-   * Requests a review for Free Listings program in the provided region.
-   * Important: This method is only whitelisted for selected merchants.
+   * Requests a review of free listings in a specific region Important: This
+   * method is only whitelisted for selected merchants.
    * (freelistingsprogram.requestreview)
    *
    * @param string $merchantId Required. The ID of the account.

@@ -46,7 +46,7 @@ class Pubsubnotificationsettings extends \Google\Service\Resource
   }
   /**
    * Register a Merchant Center account for pubsub notifications. Note that cloud
-   * topic name should not be provided as part of the request.
+   * topic name shouldn't be provided as part of the request.
    * (pubsubnotificationsettings.update)
    *
    * @param string $merchantId The ID of the account.

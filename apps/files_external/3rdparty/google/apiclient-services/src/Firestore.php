@@ -412,6 +412,50 @@ class Firestore extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'listDocuments' => [
+              'path' => 'v1/{+parent}/{collectionId}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'collectionId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'mask.fieldPaths' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'readTime' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'showMissing' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
+                'transaction' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
             ],'listen' => [
               'path' => 'v1/{+database}/documents:listen',
               'httpMethod' => 'POST',

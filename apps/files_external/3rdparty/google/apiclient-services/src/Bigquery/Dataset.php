@@ -79,6 +79,10 @@ class Dataset extends \Google\Collection
    */
   public $location;
   /**
+   * @var string
+   */
+  public $maxTimeTravelHours;
+  /**
    * @var bool
    */
   public $satisfiesPZS;
@@ -312,6 +316,20 @@ class Dataset extends \Google\Collection
   public function getLocation()
   {
     return $this->location;
+  }
+  /**
+   * @param string
+   */
+  public function setMaxTimeTravelHours($maxTimeTravelHours)
+  {
+    $this->maxTimeTravelHours = $maxTimeTravelHours;
+  }
+  /**
+   * @return string
+   */
+  public function getMaxTimeTravelHours()
+  {
+    return $this->maxTimeTravelHours;
   }
   /**
    * @param bool

@@ -51,6 +51,10 @@ class Subnetwork extends \Google\Collection
   /**
    * @var string
    */
+  public $internalIpv6Prefix;
+  /**
+   * @var string
+   */
   public $ipCidrRange;
   /**
    * @var string
@@ -206,6 +210,20 @@ class Subnetwork extends \Google\Collection
   public function getId()
   {
     return $this->id;
+  }
+  /**
+   * @param string
+   */
+  public function setInternalIpv6Prefix($internalIpv6Prefix)
+  {
+    $this->internalIpv6Prefix = $internalIpv6Prefix;
+  }
+  /**
+   * @return string
+   */
+  public function getInternalIpv6Prefix()
+  {
+    return $this->internalIpv6Prefix;
   }
   /**
    * @param string

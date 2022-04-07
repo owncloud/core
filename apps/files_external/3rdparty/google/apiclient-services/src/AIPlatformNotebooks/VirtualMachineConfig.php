@@ -22,6 +22,8 @@ class VirtualMachineConfig extends \Google\Collection
   protected $collection_key = 'tags';
   protected $acceleratorConfigType = RuntimeAcceleratorConfig::class;
   protected $acceleratorConfigDataType = '';
+  protected $bootImageType = BootImage::class;
+  protected $bootImageDataType = '';
   protected $containerImagesType = ContainerImage::class;
   protected $containerImagesDataType = 'array';
   protected $dataDiskType = LocalDisk::class;
@@ -56,6 +58,10 @@ class VirtualMachineConfig extends \Google\Collection
    * @var string
    */
   public $nicType;
+  /**
+   * @var string
+   */
+  public $reservedIpRange;
   protected $shieldedInstanceConfigType = RuntimeShieldedInstanceConfig::class;
   protected $shieldedInstanceConfigDataType = '';
   /**
@@ -84,6 +90,20 @@ class VirtualMachineConfig extends \Google\Collection
   public function getAcceleratorConfig()
   {
     return $this->acceleratorConfig;
+  }
+  /**
+   * @param BootImage
+   */
+  public function setBootImage(BootImage $bootImage)
+  {
+    $this->bootImage = $bootImage;
+  }
+  /**
+   * @return BootImage
+   */
+  public function getBootImage()
+  {
+    return $this->bootImage;
   }
   /**
    * @param ContainerImage[]
@@ -224,6 +244,20 @@ class VirtualMachineConfig extends \Google\Collection
   public function getNicType()
   {
     return $this->nicType;
+  }
+  /**
+   * @param string
+   */
+  public function setReservedIpRange($reservedIpRange)
+  {
+    $this->reservedIpRange = $reservedIpRange;
+  }
+  /**
+   * @return string
+   */
+  public function getReservedIpRange()
+  {
+    return $this->reservedIpRange;
   }
   /**
    * @param RuntimeShieldedInstanceConfig

@@ -23,8 +23,6 @@ class PoolOption extends \Google\Model
    * @var string
    */
   public $name;
-  protected $workerConfigType = GoogleDevtoolsCloudbuildV1BuildOptionsPoolOptionWorkerConfig::class;
-  protected $workerConfigDataType = '';
 
   /**
    * @param string
@@ -39,20 +37,6 @@ class PoolOption extends \Google\Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param GoogleDevtoolsCloudbuildV1BuildOptionsPoolOptionWorkerConfig
-   */
-  public function setWorkerConfig(GoogleDevtoolsCloudbuildV1BuildOptionsPoolOptionWorkerConfig $workerConfig)
-  {
-    $this->workerConfig = $workerConfig;
-  }
-  /**
-   * @return GoogleDevtoolsCloudbuildV1BuildOptionsPoolOptionWorkerConfig
-   */
-  public function getWorkerConfig()
-  {
-    return $this->workerConfig;
   }
 }
 

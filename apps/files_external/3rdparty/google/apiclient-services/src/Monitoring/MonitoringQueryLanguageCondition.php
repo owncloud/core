@@ -26,6 +26,10 @@ class MonitoringQueryLanguageCondition extends \Google\Model
   /**
    * @var string
    */
+  public $evaluationMissingData;
+  /**
+   * @var string
+   */
   public $query;
   protected $triggerType = Trigger::class;
   protected $triggerDataType = '';
@@ -43,6 +47,20 @@ class MonitoringQueryLanguageCondition extends \Google\Model
   public function getDuration()
   {
     return $this->duration;
+  }
+  /**
+   * @param string
+   */
+  public function setEvaluationMissingData($evaluationMissingData)
+  {
+    $this->evaluationMissingData = $evaluationMissingData;
+  }
+  /**
+   * @return string
+   */
+  public function getEvaluationMissingData()
+  {
+    return $this->evaluationMissingData;
   }
   /**
    * @param string

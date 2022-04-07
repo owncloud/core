@@ -17,6 +17,7 @@
 
 namespace Google\Service\AccessApproval\Resource;
 
+use Google\Service\AccessApproval\AccessApprovalServiceAccount;
 use Google\Service\AccessApproval\AccessApprovalSettings;
 use Google\Service\AccessApproval\AccessapprovalEmpty;
 
@@ -62,6 +63,20 @@ class Projects extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('getAccessApprovalSettings', [$params], AccessApprovalSettings::class);
+  }
+  /**
+   * Retrieves the service account that is used by Access Approval to access KMS
+   * keys for signing approved approval requests. (projects.getServiceAccount)
+   *
+   * @param string $name Name of the AccessApprovalServiceAccount to retrieve.
+   * @param array $optParams Optional parameters.
+   * @return AccessApprovalServiceAccount
+   */
+  public function getServiceAccount($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getServiceAccount', [$params], AccessApprovalServiceAccount::class);
   }
   /**
    * Updates the settings associated with a project, folder, or organization.

@@ -26,6 +26,10 @@ class MemInfo extends \Google\Model
   /**
    * @var string
    */
+  public $currentOoms;
+  /**
+   * @var string
+   */
   public $currentRssBytes;
   /**
    * @var string
@@ -49,6 +53,20 @@ class MemInfo extends \Google\Model
   public function getCurrentLimitBytes()
   {
     return $this->currentLimitBytes;
+  }
+  /**
+   * @param string
+   */
+  public function setCurrentOoms($currentOoms)
+  {
+    $this->currentOoms = $currentOoms;
+  }
+  /**
+   * @return string
+   */
+  public function getCurrentOoms()
+  {
+    return $this->currentOoms;
   }
   /**
    * @param string

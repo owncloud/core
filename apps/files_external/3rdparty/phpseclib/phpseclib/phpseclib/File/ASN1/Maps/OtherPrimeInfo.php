@@ -30,9 +30,9 @@ abstract class OtherPrimeInfo
     const MAP = [
         'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-            'prime' =>       ['type' => ASN1::TYPE_INTEGER], // ri
-            'exponent' =>    ['type' => ASN1::TYPE_INTEGER], // di
-            'coefficient' => ['type' => ASN1::TYPE_INTEGER]  // ti
+            'prime' => ['type' => ASN1::TYPE_INTEGER],      // ri
+            'exponent' => ['type' => ASN1::TYPE_INTEGER],   // di
+            'coefficient' => ['type' => ASN1::TYPE_INTEGER] // ti
         ]
     ];
 }

@@ -137,7 +137,8 @@ class FirstAndThirdPartyAudiences extends \Google\Service\Resource
    * @opt_param string advertiserId Required. The ID of the owner advertiser of
    * the updated FirstAndThirdPartyAudience.
    * @opt_param string updateMask Required. The mask to control which fields to
-   * update.
+   * update. Updates are only supported for the following fields: * `displayName`
+   * * `description` * `membershipDurationDays`
    * @return FirstAndThirdPartyAudience
    */
   public function patch($firstAndThirdPartyAudienceId, FirstAndThirdPartyAudience $postBody, $optParams = [])

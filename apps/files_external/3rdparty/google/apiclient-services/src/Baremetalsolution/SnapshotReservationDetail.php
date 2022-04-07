@@ -24,6 +24,10 @@ class SnapshotReservationDetail extends \Google\Model
    */
   public $reservedSpaceGib;
   /**
+   * @var int
+   */
+  public $reservedSpacePercent;
+  /**
    * @var string
    */
   public $reservedSpaceRemainingGib;
@@ -45,6 +49,20 @@ class SnapshotReservationDetail extends \Google\Model
   public function getReservedSpaceGib()
   {
     return $this->reservedSpaceGib;
+  }
+  /**
+   * @param int
+   */
+  public function setReservedSpacePercent($reservedSpacePercent)
+  {
+    $this->reservedSpacePercent = $reservedSpacePercent;
+  }
+  /**
+   * @return int
+   */
+  public function getReservedSpacePercent()
+  {
+    return $this->reservedSpacePercent;
   }
   /**
    * @param string

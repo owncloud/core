@@ -22,6 +22,10 @@ class CreativeRequirements extends \Google\Model
   /**
    * @var string
    */
+  public $creativeFormat;
+  /**
+   * @var string
+   */
   public $creativePreApprovalPolicy;
   /**
    * @var string
@@ -30,8 +34,30 @@ class CreativeRequirements extends \Google\Model
   /**
    * @var string
    */
+  public $maxAdDurationMs;
+  /**
+   * @var string
+   */
   public $programmaticCreativeSource;
+  /**
+   * @var string
+   */
+  public $skippableAdType;
 
+  /**
+   * @param string
+   */
+  public function setCreativeFormat($creativeFormat)
+  {
+    $this->creativeFormat = $creativeFormat;
+  }
+  /**
+   * @return string
+   */
+  public function getCreativeFormat()
+  {
+    return $this->creativeFormat;
+  }
   /**
    * @param string
    */
@@ -63,6 +89,20 @@ class CreativeRequirements extends \Google\Model
   /**
    * @param string
    */
+  public function setMaxAdDurationMs($maxAdDurationMs)
+  {
+    $this->maxAdDurationMs = $maxAdDurationMs;
+  }
+  /**
+   * @return string
+   */
+  public function getMaxAdDurationMs()
+  {
+    return $this->maxAdDurationMs;
+  }
+  /**
+   * @param string
+   */
   public function setProgrammaticCreativeSource($programmaticCreativeSource)
   {
     $this->programmaticCreativeSource = $programmaticCreativeSource;
@@ -73,6 +113,20 @@ class CreativeRequirements extends \Google\Model
   public function getProgrammaticCreativeSource()
   {
     return $this->programmaticCreativeSource;
+  }
+  /**
+   * @param string
+   */
+  public function setSkippableAdType($skippableAdType)
+  {
+    $this->skippableAdType = $skippableAdType;
+  }
+  /**
+   * @return string
+   */
+  public function getSkippableAdType()
+  {
+    return $this->skippableAdType;
   }
 }
 

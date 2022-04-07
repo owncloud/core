@@ -18,7 +18,6 @@
 namespace Google\Service\SASPortalTesting\Resource;
 
 use Google\Service\SASPortalTesting\SasPortalCustomer;
-use Google\Service\SASPortalTesting\SasPortalEmpty;
 use Google\Service\SASPortalTesting\SasPortalListCustomersResponse;
 
 /**
@@ -31,32 +30,6 @@ use Google\Service\SASPortalTesting\SasPortalListCustomersResponse;
  */
 class Customers extends \Google\Service\Resource
 {
-  /**
-   * Creates a new SAS customer. (customers.create)
-   *
-   * @param SasPortalCustomer $postBody
-   * @param array $optParams Optional parameters.
-   * @return SasPortalCustomer
-   */
-  public function create(SasPortalCustomer $postBody, $optParams = [])
-  {
-    $params = ['postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('create', [$params], SasPortalCustomer::class);
-  }
-  /**
-   * Deletes a customer. (customers.delete)
-   *
-   * @param string $name Required. The name of the customer.
-   * @param array $optParams Optional parameters.
-   * @return SasPortalEmpty
-   */
-  public function delete($name, $optParams = [])
-  {
-    $params = ['name' => $name];
-    $params = array_merge($params, $optParams);
-    return $this->call('delete', [$params], SasPortalEmpty::class);
-  }
   /**
    * Returns a requested customer. (customers.get)
    *

@@ -42,6 +42,10 @@ class Instance extends \Google\Collection
    * @var string[]
    */
   public $labels;
+  protected $maintenancePolicyType = GoogleCloudMemcacheV1MaintenancePolicy::class;
+  protected $maintenancePolicyDataType = '';
+  protected $maintenanceScheduleType = MaintenanceSchedule::class;
+  protected $maintenanceScheduleDataType = '';
   /**
    * @var string
    */
@@ -160,6 +164,34 @@ class Instance extends \Google\Collection
   public function getLabels()
   {
     return $this->labels;
+  }
+  /**
+   * @param GoogleCloudMemcacheV1MaintenancePolicy
+   */
+  public function setMaintenancePolicy(GoogleCloudMemcacheV1MaintenancePolicy $maintenancePolicy)
+  {
+    $this->maintenancePolicy = $maintenancePolicy;
+  }
+  /**
+   * @return GoogleCloudMemcacheV1MaintenancePolicy
+   */
+  public function getMaintenancePolicy()
+  {
+    return $this->maintenancePolicy;
+  }
+  /**
+   * @param MaintenanceSchedule
+   */
+  public function setMaintenanceSchedule(MaintenanceSchedule $maintenanceSchedule)
+  {
+    $this->maintenanceSchedule = $maintenanceSchedule;
+  }
+  /**
+   * @return MaintenanceSchedule
+   */
+  public function getMaintenanceSchedule()
+  {
+    return $this->maintenanceSchedule;
   }
   /**
    * @param string

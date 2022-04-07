@@ -21,6 +21,10 @@ class GoogleCloudApigeeV1ApiProxyRevision extends \Google\Collection
 {
   protected $collection_key = 'teams';
   /**
+   * @var string
+   */
+  public $archive;
+  /**
    * @var string[]
    */
   public $basepaths;
@@ -109,6 +113,20 @@ class GoogleCloudApigeeV1ApiProxyRevision extends \Google\Collection
    */
   public $type;
 
+  /**
+   * @param string
+   */
+  public function setArchive($archive)
+  {
+    $this->archive = $archive;
+  }
+  /**
+   * @return string
+   */
+  public function getArchive()
+  {
+    return $this->archive;
+  }
   /**
    * @param string[]
    */

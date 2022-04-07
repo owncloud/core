@@ -30,7 +30,8 @@ use Google\Service\AndroidPublisher\Testers;
 class EditsTesters extends \Google\Service\Resource
 {
   /**
-   * Gets testers. (testers.get)
+   * Gets testers. Note: Testers resource does not support email lists.
+   * (testers.get)
    *
    * @param string $packageName Package name of the app.
    * @param string $editId Identifier of the edit.
@@ -45,7 +46,8 @@ class EditsTesters extends \Google\Service\Resource
     return $this->call('get', [$params], Testers::class);
   }
   /**
-   * Patches testers. (testers.patch)
+   * Patches testers. Note: Testers resource does not support email lists.
+   * (testers.patch)
    *
    * @param string $packageName Package name of the app.
    * @param string $editId Identifier of the edit.
@@ -61,7 +63,8 @@ class EditsTesters extends \Google\Service\Resource
     return $this->call('patch', [$params], Testers::class);
   }
   /**
-   * Updates testers. (testers.update)
+   * Updates testers. Note: Testers resource does not support email lists.
+   * (testers.update)
    *
    * @param string $packageName Package name of the app.
    * @param string $editId Identifier of the edit.

@@ -21,11 +21,11 @@
 
 namespace phpseclib3\Crypt\DH\Formats\Keys;
 
-use phpseclib3\Math\BigInteger;
+use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\PKCS8 as Progenitor;
 use phpseclib3\File\ASN1;
 use phpseclib3\File\ASN1\Maps;
-use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Math\BigInteger;
 
 /**
  * PKCS#8 Formatted DH Key Handler
@@ -130,7 +130,7 @@ abstract class PKCS8 extends Progenitor
         $params = ASN1::encodeDER($params, Maps\DHParameter::MAP);
         $params = new ASN1\Element($params);
         $key = ASN1::encodeDER($privateKey, ['type' => ASN1::TYPE_INTEGER]);
-        return self::wrapPrivateKey($key, [], $params, $password, $options);
+        return self::wrapPrivateKey($key, [], $params, $password, null, '', $options);
     }
 
     /**

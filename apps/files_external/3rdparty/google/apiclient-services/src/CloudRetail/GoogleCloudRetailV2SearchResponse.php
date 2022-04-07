@@ -34,6 +34,8 @@ class GoogleCloudRetailV2SearchResponse extends \Google\Collection
   public $correctedQuery;
   protected $facetsType = GoogleCloudRetailV2SearchResponseFacet::class;
   protected $facetsDataType = 'array';
+  protected $invalidConditionBoostSpecsType = GoogleCloudRetailV2SearchRequestBoostSpecConditionBoostSpec::class;
+  protected $invalidConditionBoostSpecsDataType = 'array';
   /**
    * @var string
    */
@@ -106,6 +108,20 @@ class GoogleCloudRetailV2SearchResponse extends \Google\Collection
   public function getFacets()
   {
     return $this->facets;
+  }
+  /**
+   * @param GoogleCloudRetailV2SearchRequestBoostSpecConditionBoostSpec[]
+   */
+  public function setInvalidConditionBoostSpecs($invalidConditionBoostSpecs)
+  {
+    $this->invalidConditionBoostSpecs = $invalidConditionBoostSpecs;
+  }
+  /**
+   * @return GoogleCloudRetailV2SearchRequestBoostSpecConditionBoostSpec[]
+   */
+  public function getInvalidConditionBoostSpecs()
+  {
+    return $this->invalidConditionBoostSpecs;
   }
   /**
    * @param string

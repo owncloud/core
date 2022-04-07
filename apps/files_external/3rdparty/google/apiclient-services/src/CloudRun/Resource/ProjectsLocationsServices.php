@@ -17,8 +17,8 @@
 
 namespace Google\Service\CloudRun\Resource;
 
-use Google\Service\CloudRun\GoogleCloudRunOpV2ListServicesResponse;
-use Google\Service\CloudRun\GoogleCloudRunOpV2Service;
+use Google\Service\CloudRun\GoogleCloudRunV2ListServicesResponse;
+use Google\Service\CloudRun\GoogleCloudRunV2Service;
 use Google\Service\CloudRun\GoogleIamV1Policy;
 use Google\Service\CloudRun\GoogleIamV1SetIamPolicyRequest;
 use Google\Service\CloudRun\GoogleIamV1TestIamPermissionsRequest;
@@ -41,7 +41,7 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * @param string $parent Required. The location and project in which this
    * service should be created. Format:
    * projects/{projectnumber}/locations/{location}
-   * @param GoogleCloudRunOpV2Service $postBody
+   * @param GoogleCloudRunV2Service $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string serviceId Required. The unique identifier for the Service.
@@ -51,7 +51,7 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * resources.
    * @return GoogleLongrunningOperation
    */
-  public function create($parent, GoogleCloudRunOpV2Service $postBody, $optParams = [])
+  public function create($parent, GoogleCloudRunV2Service $postBody, $optParams = [])
   {
     $params = ['parent' => $parent, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
@@ -83,13 +83,13 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * @param string $name Required. The full name of the Service. Format:
    * projects/{projectnumber}/locations/{location}/services/{service}
    * @param array $optParams Optional parameters.
-   * @return GoogleCloudRunOpV2Service
+   * @return GoogleCloudRunV2Service
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleCloudRunOpV2Service::class);
+    return $this->call('get', [$params], GoogleCloudRunV2Service::class);
   }
   /**
    * Get the IAM Access Control policy currently in effect for the given Cloud Run
@@ -125,7 +125,8 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * List Services. (services.listProjectsLocationsServices)
    *
    * @param string $parent Required. The location and project to list resources
-   * on. Format: projects/{projectnumber}/locations/{location}
+   * on. Location must be a valid GCP region, and may not be the "-" wildcard.
+   * Format: projects/{projectnumber}/locations/{location}
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Maximum number of Services to return in this call.
@@ -133,13 +134,13 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * ListServices. All other parameters must match.
    * @opt_param bool showDeleted If true, returns deleted (but unexpired)
    * resources along with active ones.
-   * @return GoogleCloudRunOpV2ListServicesResponse
+   * @return GoogleCloudRunV2ListServicesResponse
    */
   public function listProjectsLocationsServices($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('list', [$params], GoogleCloudRunOpV2ListServicesResponse::class);
+    return $this->call('list', [$params], GoogleCloudRunV2ListServicesResponse::class);
   }
   /**
    * Updates a Service. (services.patch)
@@ -148,7 +149,7 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * CreateServiceRequest, this field is ignored, and instead composed from
    * CreateServiceRequest.parent and CreateServiceRequest.service_id. Format:
    * projects/{project}/locations/{location}/services/{service_id}
-   * @param GoogleCloudRunOpV2Service $postBody
+   * @param GoogleCloudRunV2Service $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool allowMissing If set to true, and if the Service does not
@@ -160,7 +161,7 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * resources.
    * @return GoogleLongrunningOperation
    */
-  public function patch($name, GoogleCloudRunOpV2Service $postBody, $optParams = [])
+  public function patch($name, GoogleCloudRunV2Service $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);

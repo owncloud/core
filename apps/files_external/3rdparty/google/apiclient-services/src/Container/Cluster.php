@@ -82,6 +82,8 @@ class Cluster extends \Google\Collection
    * @var string
    */
   public $id;
+  protected $identityServiceConfigType = IdentityServiceConfig::class;
+  protected $identityServiceConfigDataType = '';
   /**
    * @var string
    */
@@ -148,6 +150,8 @@ class Cluster extends \Google\Collection
    * @var int
    */
   public $nodeIpv4CidrSize;
+  protected $nodePoolAutoConfigType = NodePoolAutoConfig::class;
+  protected $nodePoolAutoConfigDataType = '';
   protected $nodePoolDefaultsType = NodePoolDefaults::class;
   protected $nodePoolDefaultsDataType = '';
   protected $nodePoolsType = NodePool::class;
@@ -480,6 +484,20 @@ class Cluster extends \Google\Collection
     return $this->id;
   }
   /**
+   * @param IdentityServiceConfig
+   */
+  public function setIdentityServiceConfig(IdentityServiceConfig $identityServiceConfig)
+  {
+    $this->identityServiceConfig = $identityServiceConfig;
+  }
+  /**
+   * @return IdentityServiceConfig
+   */
+  public function getIdentityServiceConfig()
+  {
+    return $this->identityServiceConfig;
+  }
+  /**
    * @param string
    */
   public function setInitialClusterVersion($initialClusterVersion)
@@ -786,6 +804,20 @@ class Cluster extends \Google\Collection
   public function getNodeIpv4CidrSize()
   {
     return $this->nodeIpv4CidrSize;
+  }
+  /**
+   * @param NodePoolAutoConfig
+   */
+  public function setNodePoolAutoConfig(NodePoolAutoConfig $nodePoolAutoConfig)
+  {
+    $this->nodePoolAutoConfig = $nodePoolAutoConfig;
+  }
+  /**
+   * @return NodePoolAutoConfig
+   */
+  public function getNodePoolAutoConfig()
+  {
+    return $this->nodePoolAutoConfig;
   }
   /**
    * @param NodePoolDefaults

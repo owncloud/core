@@ -34,9 +34,15 @@ use Google\Client;
  */
 class CloudIdentity extends \Google\Service
 {
+  /** Private Service: https://www.googleapis.com/auth/cloud-identity.devices. */
+  const CLOUD_IDENTITY_DEVICES =
+      "https://www.googleapis.com/auth/cloud-identity.devices";
   /** See your device details. */
   const CLOUD_IDENTITY_DEVICES_LOOKUP =
       "https://www.googleapis.com/auth/cloud-identity.devices.lookup";
+  /** Private Service: https://www.googleapis.com/auth/cloud-identity.devices.readonly. */
+  const CLOUD_IDENTITY_DEVICES_READONLY =
+      "https://www.googleapis.com/auth/cloud-identity.devices.readonly";
   /** See, change, create, and delete any of the Cloud Identity Groups that you can access, including the members of each group. */
   const CLOUD_IDENTITY_GROUPS =
       "https://www.googleapis.com/auth/cloud-identity.groups";

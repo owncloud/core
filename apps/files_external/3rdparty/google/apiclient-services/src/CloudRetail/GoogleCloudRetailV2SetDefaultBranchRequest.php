@@ -24,6 +24,10 @@ class GoogleCloudRetailV2SetDefaultBranchRequest extends \Google\Model
    */
   public $branchId;
   /**
+   * @var bool
+   */
+  public $force;
+  /**
    * @var string
    */
   public $note;
@@ -41,6 +45,20 @@ class GoogleCloudRetailV2SetDefaultBranchRequest extends \Google\Model
   public function getBranchId()
   {
     return $this->branchId;
+  }
+  /**
+   * @param bool
+   */
+  public function setForce($force)
+  {
+    $this->force = $force;
+  }
+  /**
+   * @return bool
+   */
+  public function getForce()
+  {
+    return $this->force;
   }
   /**
    * @param string

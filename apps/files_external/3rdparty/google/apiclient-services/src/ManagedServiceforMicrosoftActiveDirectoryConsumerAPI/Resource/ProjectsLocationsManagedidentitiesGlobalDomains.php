@@ -27,6 +27,7 @@ use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\Policy;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\ReconfigureTrustRequest;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\ResetAdminPasswordRequest;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\ResetAdminPasswordResponse;
+use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\RestoreDomainRequest;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\SetIamPolicyRequest;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\TestIamPermissionsRequest;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\TestIamPermissionsResponse;
@@ -247,6 +248,22 @@ class ProjectsLocationsManagedidentitiesGlobalDomains extends \Google\Service\Re
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('resetAdminPassword', [$params], ResetAdminPasswordResponse::class);
+  }
+  /**
+   * RestoreDomain restores domain backup mentioned in the RestoreDomainRequest
+   * (domains.restore)
+   *
+   * @param string $name Required. Resource name for the domain to which the
+   * backup belongs
+   * @param RestoreDomainRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function restore($name, RestoreDomainRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('restore', [$params], Operation::class);
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any

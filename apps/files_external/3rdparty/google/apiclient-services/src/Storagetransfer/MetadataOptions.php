@@ -50,6 +50,10 @@ class MetadataOptions extends \Google\Model
   /**
    * @var string
    */
+  public $timeCreated;
+  /**
+   * @var string
+   */
   public $uid;
 
   /**
@@ -149,6 +153,20 @@ class MetadataOptions extends \Google\Model
   public function getTemporaryHold()
   {
     return $this->temporaryHold;
+  }
+  /**
+   * @param string
+   */
+  public function setTimeCreated($timeCreated)
+  {
+    $this->timeCreated = $timeCreated;
+  }
+  /**
+   * @return string
+   */
+  public function getTimeCreated()
+  {
+    return $this->timeCreated;
   }
   /**
    * @param string

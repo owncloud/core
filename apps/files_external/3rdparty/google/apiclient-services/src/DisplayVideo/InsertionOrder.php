@@ -26,6 +26,10 @@ class InsertionOrder extends \Google\Collection
   public $advertiserId;
   protected $bidStrategyType = BiddingStrategy::class;
   protected $bidStrategyDataType = '';
+  /**
+   * @var string
+   */
+  public $billableOutcome;
   protected $budgetType = InsertionOrderBudget::class;
   protected $budgetDataType = '';
   /**
@@ -98,6 +102,20 @@ class InsertionOrder extends \Google\Collection
   public function getBidStrategy()
   {
     return $this->bidStrategy;
+  }
+  /**
+   * @param string
+   */
+  public function setBillableOutcome($billableOutcome)
+  {
+    $this->billableOutcome = $billableOutcome;
+  }
+  /**
+   * @return string
+   */
+  public function getBillableOutcome()
+  {
+    return $this->billableOutcome;
   }
   /**
    * @param InsertionOrderBudget

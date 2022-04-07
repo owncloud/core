@@ -246,7 +246,7 @@ class Orders extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string country The country of the template to retrieve. Defaults
-   * to `US`.
+   * to "`US`".
    * @return OrdersGetTestOrderTemplateResponse
    */
   public function gettestordertemplate($merchantId, $templateName, $optParams = [])
@@ -257,13 +257,13 @@ class Orders extends \Google\Service\Resource
   }
   /**
    * Deprecated. Notifies that item return and refund was handled directly by
-   * merchant outside of Google payments processing (e.g. cash refund done in
-   * store). Note: We recommend calling the returnrefundlineitem method to refund
-   * in-store returns. We will issue the refund directly to the customer. This
-   * helps to prevent possible differences arising between merchant and Google
-   * transaction records. We also recommend having the point of sale system
+   * merchant outside of Google payments processing (for example, cash refund done
+   * in store). Note: We recommend calling the returnrefundlineitem method to
+   * refund in-store returns. We will issue the refund directly to the customer.
+   * This helps to prevent possible differences arising between merchant and
+   * Google transaction records. We also recommend having the point of sale system
    * communicate with Google to ensure that customers do not receive a double
-   * refund by first refunding via Google then via an in-store return.
+   * refund by first refunding through Google then through an in-store return.
    * (orders.instorerefundlineitem)
    *
    * @param string $merchantId The ID of the account that manages the order. This
@@ -302,7 +302,7 @@ class Orders extends \Google\Service\Resource
    * @opt_param string placedDateStart Obtains orders placed after this date
    * (inclusively), in ISO 8601 format.
    * @opt_param string statuses Obtains orders that match any of the specified
-   * statuses. Please note that `active` is a shortcut for `pendingShipment` and
+   * statuses. Note that `active` is a shortcut for `pendingShipment` and
    * `partiallyShipped`, and `completed` is a shortcut for `shipped`,
    * `partiallyDelivered`, `delivered`, `partiallyReturned`, `returned`, and
    * `canceled`.
@@ -364,11 +364,11 @@ class Orders extends \Google\Service\Resource
   }
   /**
    * Returns and refunds a line item. Note that this method can only be called on
-   * fully shipped orders. Please also note that the Orderreturns API is the
-   * preferred way to handle returns after you receive a return from a customer.
-   * You can use Orderreturns.list or Orderreturns.get to search for the return,
-   * and then use Orderreturns.processreturn to issue the refund. If the return
-   * cannot be found, then we recommend using this API to issue a refund.
+   * fully shipped orders. The Orderreturns API is the preferred way to handle
+   * returns after you receive a return from a customer. You can use
+   * Orderreturns.list or Orderreturns.get to search for the return, and then use
+   * Orderreturns.processreturn to issue the refund. If the return cannot be
+   * found, then we recommend using this API to issue a refund.
    * (orders.returnrefundlineitem)
    *
    * @param string $merchantId The ID of the account that manages the order. This
@@ -388,8 +388,8 @@ class Orders extends \Google\Service\Resource
    * Sets (or overrides if it already exists) merchant provided annotations in the
    * form of key-value pairs. A common use case would be to supply us with
    * additional structured information about a line item that cannot be provided
-   * via other methods. Submitted key-value pairs can be retrieved as part of the
-   * orders resource. (orders.setlineitemmetadata)
+   * through other methods. Submitted key-value pairs can be retrieved as part of
+   * the orders resource. (orders.setlineitemmetadata)
    *
    * @param string $merchantId The ID of the account that manages the order. This
    * cannot be a multi-client account.

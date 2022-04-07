@@ -91,12 +91,16 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * field.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
-   * invalid value will be rejected. Requests for policies with any conditional
-   * bindings must specify version 3. Policies without any conditional bindings
-   * may specify any valid value or leave the field unset. To learn which
-   * resources support conditions in their IAM policies, see the [IAM
+   * @opt_param int options.requestedPolicyVersion Optional. The maximum policy
+   * version that will be used to format the policy. Valid values are 0, 1, and 3.
+   * Requests specifying an invalid value will be rejected. Requests for policies
+   * with any conditional role bindings must specify version 3. Policies with no
+   * conditional role bindings may specify any valid value or leave the field
+   * unset. The policy in the response might use the policy version that you
+   * specified, or it might use a lower policy version. For example, if you
+   * specify version 3, but the policy has no conditional role bindings, the
+   * response uses version 1. To learn which resources support conditions in their
+   * IAM policies, see the [IAM
    * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Policy
@@ -144,8 +148,7 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * the update will overwrite in an instance resource. The fields specified in
    * the update_mask are relative to the resource, not the full request. A field
    * will be overwritten if it is in the mask. If the user does not provide a
-   * mask, all the supported fields (labels, options, and version currently) will
-   * be overwritten.
+   * mask, the label field will be overwritten.
    * @return Operation
    */
   public function patch($name, Instance $postBody, $optParams = [])

@@ -56,12 +56,12 @@
 namespace phpseclib3\Crypt;
 
 use phpseclib3\Crypt\Common\AsymmetricKey;
+use phpseclib3\Crypt\RSA\Formats\Keys\PSS;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Crypt\RSA\PublicKey;
-use phpseclib3\Math\BigInteger;
-use phpseclib3\Exception\UnsupportedAlgorithmException;
 use phpseclib3\Exception\InconsistentSetupException;
-use phpseclib3\Crypt\RSA\Formats\Keys\PSS;
+use phpseclib3\Exception\UnsupportedAlgorithmException;
+use phpseclib3\Math\BigInteger;
 
 /**
  * Pure-PHP PKCS#1 compliant implementation of RSA.
@@ -425,7 +425,7 @@ abstract class RSA extends AsymmetricKey
         //     coefficient       INTEGER,  -- (inverse of q) mod p
         //     otherPrimeInfos   OtherPrimeInfos OPTIONAL
         // }
-        $privatekey = new PrivateKey;
+        $privatekey = new PrivateKey();
         $privatekey->modulus = $n;
         $privatekey->k = $bits >> 3;
         $privatekey->publicExponent = $e;
@@ -456,8 +456,8 @@ abstract class RSA extends AsymmetricKey
     protected static function onLoad($components)
     {
         $key = $components['isPublicKey'] ?
-            new PublicKey :
-            new PrivateKey;
+            new PublicKey() :
+            new PrivateKey();
 
         $key->modulus = $components['modulus'];
         $key->publicExponent = $components['publicExponent'];
@@ -603,7 +603,7 @@ abstract class RSA extends AsymmetricKey
             case 'sha512/256':
                 $t = "\x30\x31\x30\x0d\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x06\x05\x00\x04\x20";
         }
-        $t.= $h;
+        $t .= $h;
         $tLen = strlen($t);
 
         if ($emLen < $tLen + 11) {
@@ -663,7 +663,7 @@ abstract class RSA extends AsymmetricKey
             default:
                 throw new UnsupportedAlgorithmException('md2 and md5 require NULLs');
         }
-        $t.= $h;
+        $t .= $h;
         $tLen = strlen($t);
 
         if ($emLen < $tLen + 11) {
@@ -695,7 +695,7 @@ abstract class RSA extends AsymmetricKey
         $count = ceil($maskLen / $this->mgfHLen);
         for ($i = 0; $i < $count; $i++) {
             $c = pack('N', $i);
-            $t.= $this->mgfHash->hash($mgfSeed . $c);
+            $t .= $this->mgfHash->hash($mgfSeed . $c);
         }
 
         return substr($t, 0, $maskLen);
@@ -793,7 +793,7 @@ abstract class RSA extends AsymmetricKey
      */
     public function getMGFHash()
     {
-       return clone $this->mgfHash;
+        return clone $this->mgfHash;
     }
 
     /**
@@ -823,7 +823,7 @@ abstract class RSA extends AsymmetricKey
      */
     public function getSaltLength()
     {
-       return $this->sLen !== null ? $this->sLen : $this->hLen;
+        return $this->sLen !== null ? $this->sLen : $this->hLen;
     }
 
     /**
@@ -855,7 +855,7 @@ abstract class RSA extends AsymmetricKey
      */
     public function getLabel()
     {
-       return $this->label;
+        return $this->label;
     }
 
     /**
@@ -917,7 +917,7 @@ abstract class RSA extends AsymmetricKey
      */
     public function getPadding()
     {
-       return $this->signaturePadding | $this->encryptionPadding;
+        return $this->signaturePadding | $this->encryptionPadding;
     }
 
     /**
@@ -935,6 +935,9 @@ abstract class RSA extends AsymmetricKey
      */
     public function getEngine()
     {
+        if (!isset(self::$engines['PHP'])) {
+            self::useBestEngine();
+        }
         return self::$engines['OpenSSL'] && self::$defaultExponent == 65537 ?
             'OpenSSL' :
             'PHP';

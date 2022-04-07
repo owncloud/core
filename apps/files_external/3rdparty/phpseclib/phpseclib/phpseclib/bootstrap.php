@@ -9,6 +9,7 @@
  *
  * @license http://www.opensource.org/licenses/mit-license.html MIT License
  */
+
 if (extension_loaded('mbstring')) {
     // 2 - MB_OVERLOAD_STRING
     // mbstring.func_overload is deprecated in php 7.2 and removed in php 8.0.

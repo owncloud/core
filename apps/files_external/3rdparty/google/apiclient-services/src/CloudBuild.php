@@ -330,17 +330,7 @@ class CloudBuild extends \Google\Service
         'bitbucketServerConfigs',
         [
           'methods' => [
-            'addBitbucketServerConnectedRepository' => [
-              'path' => 'v1/{+config}:addBitbucketServerConnectedRepository',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'config' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'create' => [
+            'create' => [
               'path' => 'v1/{+parent}/bitbucketServerConfigs',
               'httpMethod' => 'POST',
               'parameters' => [

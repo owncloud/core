@@ -40,6 +40,9 @@ class Players extends \Google\Service\Resource
    *
    * @opt_param string language The preferred language to use for strings returned
    * by this method.
+   * @opt_param string playerIdConsistencyToken Consistency token of the player
+   * id. The call returns a 'not found' result when the token is present and
+   * invalid. Empty value is ignored. See also GlobalPlayerIdConsistencyTokenProto
    * @return Player
    */
   public function get($playerId, $optParams = [])

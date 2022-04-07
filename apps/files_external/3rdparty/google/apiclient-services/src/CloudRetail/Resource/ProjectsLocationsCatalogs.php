@@ -36,9 +36,8 @@ class ProjectsLocationsCatalogs extends \Google\Service\Resource
 {
   /**
    * Completes the specified prefix with keyword suggestions. This feature is only
-   * available for users who have Retail Search enabled. Please submit a form
-   * [here](https://cloud.google.com/contact) to contact cloud sales if you are
-   * interested in using Retail Search. (catalogs.completeQuery)
+   * available for users who have Retail Search enabled. Please enable Retail
+   * Search on Cloud Console before using this feature. (catalogs.completeQuery)
    *
    * @param string $catalog Required. Catalog for which the completion is
    * performed. Full resource name of catalog, such as
@@ -57,23 +56,24 @@ class ProjectsLocationsCatalogs extends \Google\Service\Resource
    * types, e.g. `DESKTOP`, `MOBILE`. If it is empty, the suggestions are across
    * all device types. Supported formats: * `UNKNOWN_DEVICE_TYPE` * `DESKTOP` *
    * `MOBILE` * A customized string starts with `OTHER_`, e.g. `OTHER_IPHONE`.
-   * @opt_param string languageCodes The list of languages of the query. This is
+   * @opt_param string languageCodes The language filters applied to the output
+   * suggestions. If set, it should contain the language of the query. If not set,
+   * suggestions are returned without considering language restrictions. This is
    * the BCP-47 language code, such as "en-US" or "sr-Latn". For more information,
    * see [Tags for Identifying Languages](https://tools.ietf.org/html/bcp47). The
-   * maximum number of allowed characters is 255. Only "en-US" is currently
-   * supported.
+   * maximum number of language codes is 3.
    * @opt_param int maxSuggestions Completion max suggestions. If left unset or
    * set to 0, then will fallback to the configured value
    * CompletionConfig.max_suggestions. The maximum allowed max suggestions is 20.
    * If it is set higher, it will be capped by 20.
    * @opt_param string query Required. The query used to generate suggestions. The
    * maximum number of allowed characters is 255.
-   * @opt_param string visitorId A unique identifier for tracking visitors. For
-   * example, this could be implemented with an HTTP cookie, which should be able
-   * to uniquely identify a visitor on a single device. This unique identifier
-   * should not change if the visitor logs in or out of the website. The field
-   * must be a UTF-8 encoded string with a length limit of 128 characters.
-   * Otherwise, an INVALID_ARGUMENT error is returned.
+   * @opt_param string visitorId Required field. A unique identifier for tracking
+   * visitors. For example, this could be implemented with an HTTP cookie, which
+   * should be able to uniquely identify a visitor on a single device. This unique
+   * identifier should not change if the visitor logs in or out of the website.
+   * The field must be a UTF-8 encoded string with a length limit of 128
+   * characters. Otherwise, an INVALID_ARGUMENT error is returned.
    * @return GoogleCloudRetailV2CompleteQueryResponse
    */
   public function completeQuery($catalog, $optParams = [])
@@ -84,10 +84,8 @@ class ProjectsLocationsCatalogs extends \Google\Service\Resource
   }
   /**
    * Get which branch is currently default branch set by
-   * CatalogService.SetDefaultBranch method under a specified parent catalog. This
-   * feature is only available for users who have Retail Search enabled. Please
-   * submit a form [here](https://cloud.google.com/contact) to contact cloud sales
-   * if you are interested in using Retail Search. (catalogs.getDefaultBranch)
+   * CatalogService.SetDefaultBranch method under a specified parent catalog.
+   * (catalogs.getDefaultBranch)
    *
    * @param string $catalog The parent catalog resource name, such as
    * `projects/locations/global/catalogs/default_catalog`.
@@ -164,10 +162,8 @@ class ProjectsLocationsCatalogs extends \Google\Service\Resource
    * More specifically: * PredictionService will only return product IDs from
    * branch {newBranch}. * SearchService will only return product IDs from branch
    * {newBranch} (if branch is not explicitly set). * UserEventService will only
-   * join events with products from branch {newBranch}. This feature is only
-   * available for users who have Retail Search enabled. Please submit a form
-   * [here](https://cloud.google.com/contact) to contact cloud sales if you are
-   * interested in using Retail Search. (catalogs.setDefaultBranch)
+   * join events with products from branch {newBranch}.
+   * (catalogs.setDefaultBranch)
    *
    * @param string $catalog Full resource name of the catalog, such as
    * `projects/locations/global/catalogs/default_catalog`.

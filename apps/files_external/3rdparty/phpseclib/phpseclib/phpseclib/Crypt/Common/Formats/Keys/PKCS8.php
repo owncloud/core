@@ -28,17 +28,17 @@
 namespace phpseclib3\Crypt\Common\Formats\Keys;
 
 use ParagonIE\ConstantTime\Base64;
+use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Crypt\AES;
 use phpseclib3\Crypt\DES;
+use phpseclib3\Crypt\Random;
 use phpseclib3\Crypt\RC2;
 use phpseclib3\Crypt\RC4;
-use phpseclib3\Crypt\AES;
 use phpseclib3\Crypt\TripleDES;
-use phpseclib3\Crypt\Random;
-use phpseclib3\Math\BigInteger;
+use phpseclib3\Exception\InsufficientSetupException;
+use phpseclib3\Exception\UnsupportedAlgorithmException;
 use phpseclib3\File\ASN1;
 use phpseclib3\File\ASN1\Maps;
-use phpseclib3\Common\Functions\Strings;
-use phpseclib3\Exception\UnsupportedAlgorithmException;
 
 /**
  * PKCS#8 Formatted Key Handler
@@ -268,11 +268,14 @@ abstract class PKCS8 extends PKCS
      */
     private static function initialize_static_variables()
     {
+        if (!isset(static::$childOIDsLoaded)) {
+            throw new InsufficientSetupException('This class should not be called directly');
+        }
+
         if (!static::$childOIDsLoaded) {
             ASN1::loadOIDs(is_array(static::OID_NAME) ?
                 array_combine(static::OID_NAME, static::OID_VALUE) :
-                [static::OID_NAME => static::OID_VALUE]
-            );
+                [static::OID_NAME => static::OID_VALUE]);
             static::$childOIDsLoaded = true;
         }
         if (!self::$oidsLoaded) {
@@ -283,8 +286,8 @@ abstract class PKCS8 extends PKCS
                'pbeWithMD2AndRC2-CBC' => '1.2.840.113549.1.5.4',
                'pbeWithMD5AndDES-CBC' => '1.2.840.113549.1.5.3',
                'pbeWithMD5AndRC2-CBC' => '1.2.840.113549.1.5.6',
-               'pbeWithSHA1AndDES-CBC'=> '1.2.840.113549.1.5.10',
-               'pbeWithSHA1AndRC2-CBC'=> '1.2.840.113549.1.5.11',
+               'pbeWithSHA1AndDES-CBC' => '1.2.840.113549.1.5.10',
+               'pbeWithSHA1AndRC2-CBC' => '1.2.840.113549.1.5.11',
 
                // from PKCS#12:
                // https://tools.ietf.org/html/rfc7292
@@ -304,10 +307,10 @@ abstract class PKCS8 extends PKCS
                'id-hmacWithSHA1' => '1.2.840.113549.2.7',
                'id-hmacWithSHA224' => '1.2.840.113549.2.8',
                'id-hmacWithSHA256' => '1.2.840.113549.2.9',
-               'id-hmacWithSHA384'=> '1.2.840.113549.2.10',
-               'id-hmacWithSHA512'=> '1.2.840.113549.2.11',
-               'id-hmacWithSHA512-224'=> '1.2.840.113549.2.12',
-               'id-hmacWithSHA512-256'=> '1.2.840.113549.2.13',
+               'id-hmacWithSHA384' => '1.2.840.113549.2.10',
+               'id-hmacWithSHA512' => '1.2.840.113549.2.11',
+               'id-hmacWithSHA512-224' => '1.2.840.113549.2.12',
+               'id-hmacWithSHA512-256' => '1.2.840.113549.2.13',
 
                'desCBC'       => '1.3.14.3.2.7',
                'des-EDE3-CBC' => '1.2.840.113549.3.7',
@@ -315,8 +318,8 @@ abstract class PKCS8 extends PKCS
                'rc5-CBC-PAD' => '1.2.840.113549.3.9',
 
                'aes128-CBC-PAD' => '2.16.840.1.101.3.4.1.2',
-               'aes192-CBC-PAD'=> '2.16.840.1.101.3.4.1.22',
-               'aes256-CBC-PAD'=> '2.16.840.1.101.3.4.1.42'
+               'aes192-CBC-PAD' => '2.16.840.1.101.3.4.1.22',
+               'aes256-CBC-PAD' => '2.16.840.1.101.3.4.1.42'
             ]);
             self::$oidsLoaded = true;
         }
@@ -519,11 +522,13 @@ abstract class PKCS8 extends PKCS
         $key = [
             'version' => 'v1',
             'privateKeyAlgorithm' => [
-                'algorithm' => is_string(static::OID_NAME) ? static::OID_NAME : $oid,
-                'parameters' => $params
+                'algorithm' => is_string(static::OID_NAME) ? static::OID_NAME : $oid
              ],
             'privateKey' => $key
         ];
+        if ($oid != 'id-Ed25519' && $oid != 'id-Ed448') {
+            $key['privateKeyAlgorithm']['parameters'] = $params;
+        }
         if (!empty($attr)) {
             $key['attributes'] = $attr;
         }

@@ -28,6 +28,8 @@ class SecurityPolicy extends \Google\Collection
    * @var string
    */
   public $creationTimestamp;
+  protected $ddosProtectionConfigType = SecurityPolicyDdosProtectionConfig::class;
+  protected $ddosProtectionConfigDataType = '';
   /**
    * @var string
    */
@@ -50,6 +52,10 @@ class SecurityPolicy extends \Google\Collection
   public $name;
   protected $recaptchaOptionsConfigType = SecurityPolicyRecaptchaOptionsConfig::class;
   protected $recaptchaOptionsConfigDataType = '';
+  /**
+   * @var string
+   */
+  public $region;
   protected $rulesType = SecurityPolicyRule::class;
   protected $rulesDataType = 'array';
   /**
@@ -102,6 +108,20 @@ class SecurityPolicy extends \Google\Collection
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
+  }
+  /**
+   * @param SecurityPolicyDdosProtectionConfig
+   */
+  public function setDdosProtectionConfig(SecurityPolicyDdosProtectionConfig $ddosProtectionConfig)
+  {
+    $this->ddosProtectionConfig = $ddosProtectionConfig;
+  }
+  /**
+   * @return SecurityPolicyDdosProtectionConfig
+   */
+  public function getDdosProtectionConfig()
+  {
+    return $this->ddosProtectionConfig;
   }
   /**
    * @param string
@@ -186,6 +206,20 @@ class SecurityPolicy extends \Google\Collection
   public function getRecaptchaOptionsConfig()
   {
     return $this->recaptchaOptionsConfig;
+  }
+  /**
+   * @param string
+   */
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  /**
+   * @return string
+   */
+  public function getRegion()
+  {
+    return $this->region;
   }
   /**
    * @param SecurityPolicyRule[]

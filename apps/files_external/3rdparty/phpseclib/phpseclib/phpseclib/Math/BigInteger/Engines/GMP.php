@@ -15,7 +15,6 @@
 
 namespace phpseclib3\Math\BigInteger\Engines;
 
-use ParagonIE\ConstantTime\Hex;
 use phpseclib3\Exception\BadConfigurationException;
 
 /**
@@ -45,54 +44,10 @@ class GMP extends Engine
     const ENGINE_DIR = 'GMP';
 
     /**
-     * Modular Exponentiation Engine
-     *
-     * @var string
-     */
-    protected static $modexpEngine;
-
-    /**
-     * Engine Validity Flag
-     *
-     * @var bool
-     */
-    protected static $isValidEngine;
-
-    /**
-     * BigInteger(0)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\GMP
-     */
-    protected static $zero;
-
-    /**
-     * BigInteger(1)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\GMP
-     */
-    protected static $one;
-
-    /**
-     * BigInteger(2)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\GMP
-     */
-    protected static $two;
-
-    /**
-     * Primes > 2 and < 1000
-     *
-     * Unused for GMP Engine
-     *
-     * @var mixed
-     */
-    protected static $primes;
-
-    /**
      * Test for engine validity
      *
-     * @see parent::__construct()
      * @return bool
+     * @see parent::__construct()
      */
     public static function isValidEngine()
     {
@@ -105,14 +60,13 @@ class GMP extends Engine
      * @param mixed $x integer Base-10 number or base-$base number if $base set.
      * @param int $base
      * @see parent::__construct()
-     * @return \phpseclib3\Math\BigInteger\Engines\GMP
      */
     public function __construct($x = 0, $base = 10)
     {
-        if (!isset(self::$isValidEngine)) {
-            self::$isValidEngine = self::isValidEngine();
+        if (!isset(static::$isValidEngine[static::class])) {
+            static::$isValidEngine[static::class] = self::isValidEngine();
         }
-        if (!self::$isValidEngine) {
+        if (!static::$isValidEngine[static::class]) {
             throw new BadConfigurationException('GMP is not setup correctly on this system');
         }
 
@@ -157,7 +111,7 @@ class GMP extends Engine
      */
     public function toString()
     {
-        return (string) $this->value;
+        return (string)$this->value;
     }
 
     /**
@@ -192,7 +146,7 @@ class GMP extends Engine
      * @param bool $twos_compliment
      * @return string
      */
-    function toBytes($twos_compliment = false)
+    public function toBytes($twos_compliment = false)
     {
         if ($twos_compliment) {
             return $this->toBytesHelper();
@@ -260,7 +214,7 @@ class GMP extends Engine
      * and the divisor (basically, the "common residue" is the first positive modulo).
      *
      * @param GMP $y
-     * @return GMP
+     * @return array{GMP, GMP}
      */
     public function divide(GMP $y)
     {
@@ -279,8 +233,8 @@ class GMP extends Engine
     /**
      * Compares two numbers.
      *
-     * Although one might think !$x->compare($y) means $x != $y, it, in fact, means the opposite.  The reason for this is
-     * demonstrated thusly:
+     * Although one might think !$x->compare($y) means $x != $y, it, in fact, means the opposite.  The reason for this
+     * is demonstrated thusly:
      *
      * $x  > $y: $x->compare($y)  > 0
      * $x  < $y: $x->compare($y)  < 0
@@ -344,8 +298,8 @@ class GMP extends Engine
      * combination is returned is dependent upon which mode is in use.  See
      * {@link http://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity Bezout's identity - Wikipedia} for more information.
      *
-     * @param \phpseclib3\Math\BigInteger\Engines\GMP $n
-     * @return \phpseclib3\Math\BigInteger\Engines\GMP[]
+     * @param GMP $n
+     * @return GMP[]
      */
     public function extendedGCD(GMP $n)
     {
@@ -353,8 +307,8 @@ class GMP extends Engine
 
         return [
             'gcd' => $this->normalize(new self($g)),
-            'x'   => $this->normalize(new self($s)),
-            'y'   => $this->normalize(new self($t))
+            'x' => $this->normalize(new self($s)),
+            'y' => $this->normalize(new self($t))
         ];
     }
 
@@ -375,7 +329,7 @@ class GMP extends Engine
     /**
      * Absolute value.
      *
-     * @return \phpseclib3\Math\BigInteger\Engines\GMP
+     * @return GMP
      * @access public
      */
     public function abs()
@@ -434,7 +388,7 @@ class GMP extends Engine
      * Shifts BigInteger's by $shift bits, effectively dividing by 2**$shift.
      *
      * @param int $shift
-     * @return \phpseclib3\Math\BigInteger\Engines\GMP
+     * @return GMP
      */
     public function bitwise_rightShift($shift)
     {
@@ -453,7 +407,7 @@ class GMP extends Engine
      * Shifts BigInteger's by $shift bits, effectively multiplying by 2**$shift.
      *
      * @param int $shift
-     * @return \phpseclib3\Math\BigInteger\Engines\GMP
+     * @return GMP
      */
     public function bitwise_leftShift($shift)
     {
@@ -498,7 +452,7 @@ class GMP extends Engine
      */
     protected function powModInner(GMP $e, GMP $n)
     {
-        $class = self::$modexpEngine;
+        $class = static::$modexpEngine[static::class];
         return $class::powModHelper($this, $e, $n);
     }
 
@@ -681,7 +635,7 @@ class GMP extends Engine
     public function createRecurringModuloFunction()
     {
         $temp = $this->value;
-        return function(GMP $x) use ($temp) {
+        return function (GMP $x) use ($temp) {
             return new GMP($x->value % $temp);
         };
     }
@@ -704,7 +658,7 @@ class GMP extends Engine
     /**
      * Is Odd?
      *
-     * @return boolean
+     * @return bool
      */
     public function isOdd()
     {
@@ -714,7 +668,7 @@ class GMP extends Engine
     /**
      * Tests if a bit is set
      *
-     * @return boolean
+     * @return bool
      */
     public function testBit($x)
     {
@@ -724,7 +678,7 @@ class GMP extends Engine
     /**
      * Is Negative?
      *
-     * @return boolean
+     * @return bool
      */
     public function isNegative()
     {

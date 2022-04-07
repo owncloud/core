@@ -19,6 +19,8 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2KnowledgeOperationMetadata extends \Google\Model
 {
+  protected $exportOperationMetadataType = GoogleCloudDialogflowV2ExportOperationMetadata::class;
+  protected $exportOperationMetadataDataType = '';
   /**
    * @var string
    */
@@ -28,6 +30,20 @@ class GoogleCloudDialogflowV2KnowledgeOperationMetadata extends \Google\Model
    */
   public $state;
 
+  /**
+   * @param GoogleCloudDialogflowV2ExportOperationMetadata
+   */
+  public function setExportOperationMetadata(GoogleCloudDialogflowV2ExportOperationMetadata $exportOperationMetadata)
+  {
+    $this->exportOperationMetadata = $exportOperationMetadata;
+  }
+  /**
+   * @return GoogleCloudDialogflowV2ExportOperationMetadata
+   */
+  public function getExportOperationMetadata()
+  {
+    return $this->exportOperationMetadata;
+  }
   /**
    * @param string
    */

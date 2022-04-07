@@ -22,6 +22,16 @@ class DatacenterConnector extends \Google\Model
   /**
    * @var string
    */
+  public $applianceInfrastructureVersion;
+  /**
+   * @var string
+   */
+  public $applianceSoftwareVersion;
+  protected $availableVersionsType = AvailableUpdates::class;
+  protected $availableVersionsDataType = '';
+  /**
+   * @var string
+   */
   public $bucket;
   /**
    * @var string
@@ -53,11 +63,55 @@ class DatacenterConnector extends \Google\Model
    * @var string
    */
   public $updateTime;
+  protected $upgradeStatusType = UpgradeStatus::class;
+  protected $upgradeStatusDataType = '';
   /**
    * @var string
    */
   public $version;
 
+  /**
+   * @param string
+   */
+  public function setApplianceInfrastructureVersion($applianceInfrastructureVersion)
+  {
+    $this->applianceInfrastructureVersion = $applianceInfrastructureVersion;
+  }
+  /**
+   * @return string
+   */
+  public function getApplianceInfrastructureVersion()
+  {
+    return $this->applianceInfrastructureVersion;
+  }
+  /**
+   * @param string
+   */
+  public function setApplianceSoftwareVersion($applianceSoftwareVersion)
+  {
+    $this->applianceSoftwareVersion = $applianceSoftwareVersion;
+  }
+  /**
+   * @return string
+   */
+  public function getApplianceSoftwareVersion()
+  {
+    return $this->applianceSoftwareVersion;
+  }
+  /**
+   * @param AvailableUpdates
+   */
+  public function setAvailableVersions(AvailableUpdates $availableVersions)
+  {
+    $this->availableVersions = $availableVersions;
+  }
+  /**
+   * @return AvailableUpdates
+   */
+  public function getAvailableVersions()
+  {
+    return $this->availableVersions;
+  }
   /**
    * @param string
    */
@@ -183,6 +237,20 @@ class DatacenterConnector extends \Google\Model
   public function getUpdateTime()
   {
     return $this->updateTime;
+  }
+  /**
+   * @param UpgradeStatus
+   */
+  public function setUpgradeStatus(UpgradeStatus $upgradeStatus)
+  {
+    $this->upgradeStatus = $upgradeStatus;
+  }
+  /**
+   * @return UpgradeStatus
+   */
+  public function getUpgradeStatus()
+  {
+    return $this->upgradeStatus;
   }
   /**
    * @param string

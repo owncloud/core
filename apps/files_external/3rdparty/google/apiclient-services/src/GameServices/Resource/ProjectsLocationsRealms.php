@@ -36,12 +36,11 @@ class ProjectsLocationsRealms extends \Google\Service\Resource
    * Creates a new realm in a given project and location. (realms.create)
    *
    * @param string $parent Required. The parent resource name, in the following
-   * form: `projects/{project}/locations/{location}`.
+   * form: `projects/{project}/locations/{locationId}`.
    * @param Realm $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string realmId Required. The ID of the realm resource to be
-   * created.
+   * @opt_param string realmId Required. The ID of the realm resource to create.
    * @return Operation
    */
   public function create($parent, Realm $postBody, $optParams = [])
@@ -54,7 +53,7 @@ class ProjectsLocationsRealms extends \Google\Service\Resource
    * Deletes a single realm. (realms.delete)
    *
    * @param string $name Required. The name of the realm to delete, in the
-   * following form: `projects/{project}/locations/{location}/realms/{realm}`.
+   * following form: `projects/{project}/locations/{locationId}/realms/{realmId}`.
    * @param array $optParams Optional parameters.
    * @return Operation
    */
@@ -68,7 +67,7 @@ class ProjectsLocationsRealms extends \Google\Service\Resource
    * Gets details of a single realm. (realms.get)
    *
    * @param string $name Required. The name of the realm to retrieve, in the
-   * following form: `projects/{project}/locations/{location}/realms/{realm}`.
+   * following form: `projects/{project}/locations/{locationId}/realms/{realmId}`.
    * @param array $optParams Optional parameters.
    * @return Realm
    */
@@ -83,19 +82,20 @@ class ProjectsLocationsRealms extends \Google\Service\Resource
    * (realms.listProjectsLocationsRealms)
    *
    * @param string $parent Required. The parent resource name, in the following
-   * form: `projects/{project}/locations/{location}`.
+   * form: `projects/{project}/locations/{locationId}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. The filter to apply to list results.
+   * @opt_param string filter Optional. The filter to apply to list results (see
+   * [Filtering](https://google.aip.dev/160)).
    * @opt_param string orderBy Optional. Specifies the ordering of results
-   * following syntax at
-   * https://cloud.google.com/apis/design/design_patterns#sorting_order.
+   * following [Cloud API
+   * syntax](https://cloud.google.com/apis/design/design_patterns#sorting_order).
    * @opt_param int pageSize Optional. The maximum number of items to return. If
-   * unspecified, server will pick an appropriate default. Server may return fewer
-   * items than requested. A caller should only rely on response's next_page_token
-   * to determine if there are more realms left to be queried.
+   * unspecified, the server picks an appropriate default. The server may return
+   * fewer items than requested. A caller should only rely on the response's
+   * next_page_token to determine if there are more realms left to be queried.
    * @opt_param string pageToken Optional. The next_page_token value returned from
-   * a previous List request, if any.
+   * a previous list request, if any.
    * @return ListRealmsResponse
    */
   public function listProjectsLocationsRealms($parent, $optParams = [])
@@ -108,14 +108,15 @@ class ProjectsLocationsRealms extends \Google\Service\Resource
    * Patches a single realm. (realms.patch)
    *
    * @param string $name The resource name of the realm, in the following form:
-   * `projects/{project}/locations/{location}/realms/{realm}`. For example,
-   * `projects/my-project/locations/{location}/realms/my-realm`.
+   * `projects/{project}/locations/{locationId}/realms/{realmId}`. For example,
+   * `projects/my-project/locations/global/realms/my-realm`.
    * @param Realm $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Required. The update mask applies to the
-   * resource. For the `FieldMask` definition, see https://developers.google.com
-   * /protocol-buffers/docs/reference/google.protobuf#fieldmask
+   * @opt_param string updateMask Required. The update mask to apply to the
+   * resource. For more information, see the [`FieldMask`
+   * definition](https://developers.google.com/protocol-
+   * buffers/docs/reference/google.protobuf#fieldmask).
    * @return Operation
    */
   public function patch($name, Realm $postBody, $optParams = [])
@@ -128,16 +129,17 @@ class ProjectsLocationsRealms extends \Google\Service\Resource
    * Previews patches to a single realm. (realms.previewUpdate)
    *
    * @param string $name The resource name of the realm, in the following form:
-   * `projects/{project}/locations/{location}/realms/{realm}`. For example,
-   * `projects/my-project/locations/{location}/realms/my-realm`.
+   * `projects/{project}/locations/{locationId}/realms/{realmId}`. For example,
+   * `projects/my-project/locations/global/realms/my-realm`.
    * @param Realm $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string previewTime Optional. The target timestamp to compute the
    * preview.
-   * @opt_param string updateMask Required. The update mask applies to the
-   * resource. For the `FieldMask` definition, see https://developers.google.com
-   * /protocol-buffers/docs/reference/google.protobuf#fieldmask
+   * @opt_param string updateMask Required. The update mask to apply to the
+   * resource. For more information, see the [`FieldMask`
+   * definition](https://developers.google.com/protocol-
+   * buffers/docs/reference/google.protobuf#fieldmask).
    * @return PreviewRealmUpdateResponse
    */
   public function previewUpdate($name, Realm $postBody, $optParams = [])

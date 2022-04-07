@@ -27,10 +27,10 @@
 
 namespace phpseclib3\Crypt\RSA\Formats\Keys;
 
-use phpseclib3\Math\BigInteger;
+use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\PKCS8 as Progenitor;
 use phpseclib3\File\ASN1;
-use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Math\BigInteger;
 
 /**
  * PKCS#8 Formatted RSA Key Handler
@@ -128,7 +128,7 @@ abstract class PKCS8 extends Progenitor
     {
         $key = PKCS1::savePrivateKey($n, $e, $d, $primes, $exponents, $coefficients);
         $key = ASN1::extractBER($key);
-        return self::wrapPrivateKey($key, [], null, $password, $options);
+        return self::wrapPrivateKey($key, [], null, $password, null, '', $options);
     }
 
     /**

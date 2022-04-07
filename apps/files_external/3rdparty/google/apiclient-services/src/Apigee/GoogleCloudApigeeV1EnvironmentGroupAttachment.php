@@ -30,6 +30,10 @@ class GoogleCloudApigeeV1EnvironmentGroupAttachment extends \Google\Model
   /**
    * @var string
    */
+  public $environmentGroupId;
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -59,6 +63,20 @@ class GoogleCloudApigeeV1EnvironmentGroupAttachment extends \Google\Model
   public function getEnvironment()
   {
     return $this->environment;
+  }
+  /**
+   * @param string
+   */
+  public function setEnvironmentGroupId($environmentGroupId)
+  {
+    $this->environmentGroupId = $environmentGroupId;
+  }
+  /**
+   * @return string
+   */
+  public function getEnvironmentGroupId()
+  {
+    return $this->environmentGroupId;
   }
   /**
    * @param string

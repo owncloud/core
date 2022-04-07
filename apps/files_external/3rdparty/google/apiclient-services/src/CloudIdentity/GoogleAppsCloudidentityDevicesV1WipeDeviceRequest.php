@@ -23,6 +23,10 @@ class GoogleAppsCloudidentityDevicesV1WipeDeviceRequest extends \Google\Model
    * @var string
    */
   public $customer;
+  /**
+   * @var bool
+   */
+  public $removeResetLock;
 
   /**
    * @param string
@@ -37,6 +41,20 @@ class GoogleAppsCloudidentityDevicesV1WipeDeviceRequest extends \Google\Model
   public function getCustomer()
   {
     return $this->customer;
+  }
+  /**
+   * @param bool
+   */
+  public function setRemoveResetLock($removeResetLock)
+  {
+    $this->removeResetLock = $removeResetLock;
+  }
+  /**
+   * @return bool
+   */
+  public function getRemoveResetLock()
+  {
+    return $this->removeResetLock;
   }
 }
 

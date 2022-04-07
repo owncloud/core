@@ -144,8 +144,6 @@ class Disks extends \Google\Service\Resource
    *
    * @opt_param bool guestFlush [Input Only] Whether to attempt an application
    * consistent snapshot by informing the OS to prepare for the snapshot process.
-   * Currently only supported on Windows instances using the Volume Shadow Copy
-   * Service (VSS).
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed. For

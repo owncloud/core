@@ -33,6 +33,10 @@ class AndroidNotification extends \Google\Collection
    */
   public $bodyLocKey;
   /**
+   * @var bool
+   */
+  public $bypassProxyNotification;
+  /**
    * @var string
    */
   public $channelId;
@@ -160,6 +164,20 @@ class AndroidNotification extends \Google\Collection
   public function getBodyLocKey()
   {
     return $this->bodyLocKey;
+  }
+  /**
+   * @param bool
+   */
+  public function setBypassProxyNotification($bypassProxyNotification)
+  {
+    $this->bypassProxyNotification = $bypassProxyNotification;
+  }
+  /**
+   * @return bool
+   */
+  public function getBypassProxyNotification()
+  {
+    return $this->bypassProxyNotification;
   }
   /**
    * @param string

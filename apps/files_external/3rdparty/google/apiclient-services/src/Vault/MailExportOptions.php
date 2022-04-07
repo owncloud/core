@@ -27,6 +27,10 @@ class MailExportOptions extends \Google\Model
    * @var bool
    */
   public $showConfidentialModeContent;
+  /**
+   * @var bool
+   */
+  public $useNewExport;
 
   /**
    * @param string
@@ -55,6 +59,20 @@ class MailExportOptions extends \Google\Model
   public function getShowConfidentialModeContent()
   {
     return $this->showConfidentialModeContent;
+  }
+  /**
+   * @param bool
+   */
+  public function setUseNewExport($useNewExport)
+  {
+    $this->useNewExport = $useNewExport;
+  }
+  /**
+   * @return bool
+   */
+  public function getUseNewExport()
+  {
+    return $this->useNewExport;
   }
 }
 

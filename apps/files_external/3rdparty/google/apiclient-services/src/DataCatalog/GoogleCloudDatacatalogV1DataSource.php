@@ -27,6 +27,12 @@ class GoogleCloudDatacatalogV1DataSource extends \Google\Model
    * @var string
    */
   public $service;
+  /**
+   * @var string
+   */
+  public $sourceEntry;
+  protected $storagePropertiesType = GoogleCloudDatacatalogV1StorageProperties::class;
+  protected $storagePropertiesDataType = '';
 
   /**
    * @param string
@@ -55,6 +61,34 @@ class GoogleCloudDatacatalogV1DataSource extends \Google\Model
   public function getService()
   {
     return $this->service;
+  }
+  /**
+   * @param string
+   */
+  public function setSourceEntry($sourceEntry)
+  {
+    $this->sourceEntry = $sourceEntry;
+  }
+  /**
+   * @return string
+   */
+  public function getSourceEntry()
+  {
+    return $this->sourceEntry;
+  }
+  /**
+   * @param GoogleCloudDatacatalogV1StorageProperties
+   */
+  public function setStorageProperties(GoogleCloudDatacatalogV1StorageProperties $storageProperties)
+  {
+    $this->storageProperties = $storageProperties;
+  }
+  /**
+   * @return GoogleCloudDatacatalogV1StorageProperties
+   */
+  public function getStorageProperties()
+  {
+    return $this->storageProperties;
   }
 }
 

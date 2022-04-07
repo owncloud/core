@@ -31,6 +31,10 @@ class Model extends \Google\Collection
   /**
    * @var string
    */
+  public $defaultTrialId;
+  /**
+   * @var string
+   */
   public $description;
   protected $encryptionConfigurationType = EncryptionConfiguration::class;
   protected $encryptionConfigurationDataType = '';
@@ -48,6 +52,10 @@ class Model extends \Google\Collection
    * @var string
    */
   public $friendlyName;
+  protected $hparamSearchSpacesType = HparamSearchSpaces::class;
+  protected $hparamSearchSpacesDataType = '';
+  protected $hparamTrialsType = HparamTuningTrial::class;
+  protected $hparamTrialsDataType = 'array';
   protected $labelColumnsType = StandardSqlField::class;
   protected $labelColumnsDataType = 'array';
   /**
@@ -68,6 +76,10 @@ class Model extends \Google\Collection
    * @var string
    */
   public $modelType;
+  /**
+   * @var string[]
+   */
+  public $optimalTrialIds;
   protected $trainingRunsType = TrainingRun::class;
   protected $trainingRunsDataType = 'array';
 
@@ -98,6 +110,20 @@ class Model extends \Google\Collection
   public function getCreationTime()
   {
     return $this->creationTime;
+  }
+  /**
+   * @param string
+   */
+  public function setDefaultTrialId($defaultTrialId)
+  {
+    $this->defaultTrialId = $defaultTrialId;
+  }
+  /**
+   * @return string
+   */
+  public function getDefaultTrialId()
+  {
+    return $this->defaultTrialId;
   }
   /**
    * @param string
@@ -184,6 +210,34 @@ class Model extends \Google\Collection
     return $this->friendlyName;
   }
   /**
+   * @param HparamSearchSpaces
+   */
+  public function setHparamSearchSpaces(HparamSearchSpaces $hparamSearchSpaces)
+  {
+    $this->hparamSearchSpaces = $hparamSearchSpaces;
+  }
+  /**
+   * @return HparamSearchSpaces
+   */
+  public function getHparamSearchSpaces()
+  {
+    return $this->hparamSearchSpaces;
+  }
+  /**
+   * @param HparamTuningTrial[]
+   */
+  public function setHparamTrials($hparamTrials)
+  {
+    $this->hparamTrials = $hparamTrials;
+  }
+  /**
+   * @return HparamTuningTrial[]
+   */
+  public function getHparamTrials()
+  {
+    return $this->hparamTrials;
+  }
+  /**
    * @param StandardSqlField[]
    */
   public function setLabelColumns($labelColumns)
@@ -266,6 +320,20 @@ class Model extends \Google\Collection
   public function getModelType()
   {
     return $this->modelType;
+  }
+  /**
+   * @param string[]
+   */
+  public function setOptimalTrialIds($optimalTrialIds)
+  {
+    $this->optimalTrialIds = $optimalTrialIds;
+  }
+  /**
+   * @return string[]
+   */
+  public function getOptimalTrialIds()
+  {
+    return $this->optimalTrialIds;
   }
   /**
    * @param TrainingRun[]

@@ -43,6 +43,10 @@ class TrainingOptions extends \Google\Collection
   /**
    * @var bool
    */
+  public $calculatePValues;
+  /**
+   * @var bool
+   */
   public $cleanSpikesAndDips;
   public $colsampleBylevel;
   public $colsampleBynode;
@@ -78,6 +82,10 @@ class TrainingOptions extends \Google\Collection
    */
   public $earlyStop;
   /**
+   * @var bool
+   */
+  public $enableGlobalExplain;
+  /**
    * @var string
    */
   public $feedbackType;
@@ -94,6 +102,10 @@ class TrainingOptions extends \Google\Collection
    */
   public $horizon;
   /**
+   * @var string[]
+   */
+  public $hparamTuningObjectives;
+  /**
    * @var bool
    */
   public $includeDrift;
@@ -102,6 +114,10 @@ class TrainingOptions extends \Google\Collection
    * @var string[]
    */
   public $inputLabelColumns;
+  /**
+   * @var string
+   */
+  public $integratedGradientsNumSteps;
   /**
    * @var string
    */
@@ -133,6 +149,10 @@ class TrainingOptions extends \Google\Collection
   /**
    * @var string
    */
+  public $maxParallelTrials;
+  /**
+   * @var string
+   */
   public $maxTreeDepth;
   public $minRelativeProgress;
   public $minSplitLoss;
@@ -161,11 +181,19 @@ class TrainingOptions extends \Google\Collection
   /**
    * @var string
    */
+  public $numTrials;
+  /**
+   * @var string
+   */
   public $optimizationStrategy;
   /**
    * @var bool
    */
   public $preserveInputStructs;
+  /**
+   * @var string
+   */
+  public $sampledShapleyNumPaths;
   public $subsample;
   /**
    * @var string
@@ -266,6 +294,20 @@ class TrainingOptions extends \Google\Collection
   public function getBoosterType()
   {
     return $this->boosterType;
+  }
+  /**
+   * @param bool
+   */
+  public function setCalculatePValues($calculatePValues)
+  {
+    $this->calculatePValues = $calculatePValues;
+  }
+  /**
+   * @return bool
+   */
+  public function getCalculatePValues()
+  {
+    return $this->calculatePValues;
   }
   /**
    * @param bool
@@ -420,6 +462,20 @@ class TrainingOptions extends \Google\Collection
     return $this->earlyStop;
   }
   /**
+   * @param bool
+   */
+  public function setEnableGlobalExplain($enableGlobalExplain)
+  {
+    $this->enableGlobalExplain = $enableGlobalExplain;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableGlobalExplain()
+  {
+    return $this->enableGlobalExplain;
+  }
+  /**
    * @param string
    */
   public function setFeedbackType($feedbackType)
@@ -476,6 +532,20 @@ class TrainingOptions extends \Google\Collection
     return $this->horizon;
   }
   /**
+   * @param string[]
+   */
+  public function setHparamTuningObjectives($hparamTuningObjectives)
+  {
+    $this->hparamTuningObjectives = $hparamTuningObjectives;
+  }
+  /**
+   * @return string[]
+   */
+  public function getHparamTuningObjectives()
+  {
+    return $this->hparamTuningObjectives;
+  }
+  /**
    * @param bool
    */
   public function setIncludeDrift($includeDrift)
@@ -510,6 +580,20 @@ class TrainingOptions extends \Google\Collection
   public function getInputLabelColumns()
   {
     return $this->inputLabelColumns;
+  }
+  /**
+   * @param string
+   */
+  public function setIntegratedGradientsNumSteps($integratedGradientsNumSteps)
+  {
+    $this->integratedGradientsNumSteps = $integratedGradientsNumSteps;
+  }
+  /**
+   * @return string
+   */
+  public function getIntegratedGradientsNumSteps()
+  {
+    return $this->integratedGradientsNumSteps;
   }
   /**
    * @param string
@@ -630,6 +714,20 @@ class TrainingOptions extends \Google\Collection
   /**
    * @param string
    */
+  public function setMaxParallelTrials($maxParallelTrials)
+  {
+    $this->maxParallelTrials = $maxParallelTrials;
+  }
+  /**
+   * @return string
+   */
+  public function getMaxParallelTrials()
+  {
+    return $this->maxParallelTrials;
+  }
+  /**
+   * @param string
+   */
   public function setMaxTreeDepth($maxTreeDepth)
   {
     $this->maxTreeDepth = $maxTreeDepth;
@@ -744,6 +842,20 @@ class TrainingOptions extends \Google\Collection
   /**
    * @param string
    */
+  public function setNumTrials($numTrials)
+  {
+    $this->numTrials = $numTrials;
+  }
+  /**
+   * @return string
+   */
+  public function getNumTrials()
+  {
+    return $this->numTrials;
+  }
+  /**
+   * @param string
+   */
   public function setOptimizationStrategy($optimizationStrategy)
   {
     $this->optimizationStrategy = $optimizationStrategy;
@@ -768,6 +880,20 @@ class TrainingOptions extends \Google\Collection
   public function getPreserveInputStructs()
   {
     return $this->preserveInputStructs;
+  }
+  /**
+   * @param string
+   */
+  public function setSampledShapleyNumPaths($sampledShapleyNumPaths)
+  {
+    $this->sampledShapleyNumPaths = $sampledShapleyNumPaths;
+  }
+  /**
+   * @return string
+   */
+  public function getSampledShapleyNumPaths()
+  {
+    return $this->sampledShapleyNumPaths;
   }
   public function setSubsample($subsample)
   {

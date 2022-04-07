@@ -26,6 +26,10 @@ class GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadata extends \Google\C
    * @var string
    */
   public $destDatasetType;
+  /**
+   * @var string
+   */
+  public $destSplitType;
   protected $individualBatchMoveStatusesType = GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadataIndividualBatchMoveStatus::class;
   protected $individualBatchMoveStatusesDataType = 'array';
 
@@ -56,6 +60,20 @@ class GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadata extends \Google\C
   public function getDestDatasetType()
   {
     return $this->destDatasetType;
+  }
+  /**
+   * @param string
+   */
+  public function setDestSplitType($destSplitType)
+  {
+    $this->destSplitType = $destSplitType;
+  }
+  /**
+   * @return string
+   */
+  public function getDestSplitType()
+  {
+    return $this->destSplitType;
   }
   /**
    * @param GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadataIndividualBatchMoveStatus[]

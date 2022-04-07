@@ -17,8 +17,8 @@
 
 namespace phpseclib3\Crypt\DSA\Formats\Signature;
 
-use phpseclib3\Math\BigInteger;
 use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Math\BigInteger;
 
 /**
  * SSH2 Signature Handler
@@ -70,7 +70,9 @@ abstract class SSH2
         if ($r->getLength() > 160 || $s->getLength() > 160) {
             return false;
         }
-        return Strings::packSSH2('ss', 'ssh-dss',
+        return Strings::packSSH2(
+            'ss',
+            'ssh-dss',
             str_pad($r->toBytes(), 20, "\0", STR_PAD_LEFT) .
             str_pad($s->toBytes(), 20, "\0", STR_PAD_LEFT)
         );

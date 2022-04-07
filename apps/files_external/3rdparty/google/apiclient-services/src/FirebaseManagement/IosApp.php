@@ -22,6 +22,10 @@ class IosApp extends \Google\Model
   /**
    * @var string
    */
+  public $apiKeyId;
+  /**
+   * @var string
+   */
   public $appId;
   /**
    * @var string
@@ -48,6 +52,20 @@ class IosApp extends \Google\Model
    */
   public $teamId;
 
+  /**
+   * @param string
+   */
+  public function setApiKeyId($apiKeyId)
+  {
+    $this->apiKeyId = $apiKeyId;
+  }
+  /**
+   * @return string
+   */
+  public function getApiKeyId()
+  {
+    return $this->apiKeyId;
+  }
   /**
    * @param string
    */

@@ -222,7 +222,7 @@ abstract class OpenSSH
          */
         $paddingLength = (7 * strlen($paddedKey)) % 8;
         for ($i = 1; $i <= $paddingLength; $i++) {
-            $paddedKey.= chr($i);
+            $paddedKey .= chr($i);
         }
         $key = Strings::packSSH2('sssNss', 'none', 'none', '', 1, $publicKey, $paddedKey);
         $key = "openssh-key-v1\0$key";

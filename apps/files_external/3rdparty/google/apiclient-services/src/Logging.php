@@ -766,6 +766,20 @@ class Logging extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'updateSettings' => [
+              'path' => 'v2/{+name}/settings',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
             ],
           ]
         ]

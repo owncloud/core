@@ -32,7 +32,7 @@ abstract class DHParameter
         'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
             'prime' => ['type' => ASN1::TYPE_INTEGER],
-            'base' =>  ['type' => ASN1::TYPE_INTEGER],
+            'base' => ['type' => ASN1::TYPE_INTEGER],
             'privateValueLength' => [
                 'type' => ASN1::TYPE_INTEGER,
                 'optional' => true

@@ -85,6 +85,10 @@ class Route extends \Google\Collection
   /**
    * @var string
    */
+  public $routeStatus;
+  /**
+   * @var string
+   */
   public $routeType;
   /**
    * @var string
@@ -320,6 +324,20 @@ class Route extends \Google\Collection
   public function getPriority()
   {
     return $this->priority;
+  }
+  /**
+   * @param string
+   */
+  public function setRouteStatus($routeStatus)
+  {
+    $this->routeStatus = $routeStatus;
+  }
+  /**
+   * @return string
+   */
+  public function getRouteStatus()
+  {
+    return $this->routeStatus;
   }
   /**
    * @param string

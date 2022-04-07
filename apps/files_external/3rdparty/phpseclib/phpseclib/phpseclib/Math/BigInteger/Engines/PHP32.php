@@ -15,8 +15,6 @@
 
 namespace phpseclib3\Math\BigInteger\Engines;
 
-use ParagonIE\ConstantTime\Hex;
-
 /**
  * Pure-PHP 32-bit Engine.
  *
@@ -46,49 +44,6 @@ class PHP32 extends PHP
      */
     const MAX10LEN = 7;
     const MAX_DIGIT2 = 4503599627370496;
-    /**#@-*/
-
-    /**
-     * Modular Exponentiation Engine
-     *
-     * @var string
-     */
-    protected static $modexpEngine;
-
-    /**
-     * Engine Validity Flag
-     *
-     * @var bool
-     */
-    protected static $isValidEngine;
-
-    /**
-     * Primes > 2 and < 1000
-     *
-     * @var array
-     */
-    protected static $primes;
-
-    /**
-     * BigInteger(0)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP32
-     */
-    protected static $zero;
-
-    /**
-     * BigInteger(1)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP32
-     */
-    protected static $one;
-
-    /**
-     * BigInteger(2)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP32
-     */
-    protected static $two;
 
     /**
      * Initialize a PHP32 BigInteger Engine instance
@@ -111,7 +66,7 @@ class PHP32 extends PHP
         }
 
         while (true) {
-            $i-= 4;
+            $i -= 4;
             if ($i < 0) {
                 if ($i == -4) {
                     break;
@@ -126,10 +81,10 @@ class PHP32 extends PHP
             list(, $digit) = unpack('N', substr($val, $i, 4));
             $step = count($vals) & 3;
             if ($step) {
-                $digit>>= 2 * $step;
+                $digit >>= 2 * $step;
             }
             if ($step != 3) {
-                $digit&= static::MAX_DIGIT;
+                $digit &= static::MAX_DIGIT;
                 $i++;
             }
             $vals[] = $digit;
@@ -199,7 +154,7 @@ class PHP32 extends PHP
      * and the divisor (basically, the "common residue" is the first positive modulo).
      *
      * @param PHP32 $y
-     * @return PHP32
+     * @return array{PHP32, PHP32}
      */
     public function divide(PHP32 $y)
     {

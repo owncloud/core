@@ -1,6 +1,6 @@
 # phpseclib - PHP Secure Communications Library
 
-[![Build Status](https://travis-ci.com/phpseclib/phpseclib.svg?branch=3.0)](https://travis-ci.com/github/phpseclib/phpseclib)
+[![CI Status](https://github.com/phpseclib/phpseclib/actions/workflows/ci.yml/badge.svg?branch=3.0&event=push "CI Status")](https://github.com/phpseclib/phpseclib)
 
 ## Supporting phpseclib
 
@@ -68,9 +68,10 @@ Need Support?
 
 ## Special Thanks
 
-Special Thanks to our Patreon sponsors!:
+Special Thanks to our $50+ sponsors!:
 
 - Allan Simon
+- [ChargeOver](https://chargeover.com/)
 
 ## Contributing
 
@@ -79,22 +80,19 @@ Special Thanks to our Patreon sponsors!:
 2. Ensure you have Composer installed (see [Composer Download Instructions](https://getcomposer.org/download/))
 
 3. Install Development Dependencies
-
-    ``` sh
+    ```sh
     composer install
     ```
 
 4. Create a Feature Branch
 
-5. (Recommended) Run the Test Suite
-
-    ``` sh
-    vendor/bin/phpunit
-    ```
-6. (Recommended) Check whether your code conforms to our Coding Standards by running
-
-    ``` sh
-    vendor/bin/phing -f build/build.xml sniff
-    ```
-
-7. Send us a Pull Request
+5. Run continuous integration checks:
+   ```sh
+   composer global require php:^8.1 squizlabs/php_codesniffer friendsofphp/php-cs-fixer vimeo/psalm
+   phpcs --standard=build/php_codesniffer.xml
+   php-cs-fixer fix --config=build/php-cs-fixer.php --diff --dry-run --using-cache=no
+   psalm --config=build/psalm.xml --no-cache --long-progress --report-show-info=false --output-format=text
+   vendor/bin/phpunit --verbose --configuration tests/phpunit.xml
+   ```
+   
+6. Send us a Pull Request

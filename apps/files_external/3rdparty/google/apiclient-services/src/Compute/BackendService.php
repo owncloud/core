@@ -19,7 +19,7 @@ namespace Google\Service\Compute;
 
 class BackendService extends \Google\Collection
 {
-  protected $collection_key = 'healthChecks';
+  protected $collection_key = 'localityLbPolicies';
   /**
    * @var int
    */
@@ -84,6 +84,8 @@ class BackendService extends \Google\Collection
    * @var string
    */
   public $loadBalancingScheme;
+  protected $localityLbPoliciesType = BackendServiceLocalityLoadBalancingPolicyConfig::class;
+  protected $localityLbPoliciesDataType = 'array';
   /**
    * @var string
    */
@@ -418,6 +420,20 @@ class BackendService extends \Google\Collection
   public function getLoadBalancingScheme()
   {
     return $this->loadBalancingScheme;
+  }
+  /**
+   * @param BackendServiceLocalityLoadBalancingPolicyConfig[]
+   */
+  public function setLocalityLbPolicies($localityLbPolicies)
+  {
+    $this->localityLbPolicies = $localityLbPolicies;
+  }
+  /**
+   * @return BackendServiceLocalityLoadBalancingPolicyConfig[]
+   */
+  public function getLocalityLbPolicies()
+  {
+    return $this->localityLbPolicies;
   }
   /**
    * @param string

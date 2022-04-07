@@ -29,9 +29,9 @@ use phpseclib3\File\ASN1;
 abstract class RSASSA_PSS_params
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-            'hashAlgorithm'    => [
+            'hashAlgorithm' => [
                 'constant' => 0,
                 'optional' => true,
                 'explicit' => true,
@@ -43,19 +43,19 @@ abstract class RSASSA_PSS_params
                 'explicit' => true,
                 //'default'  => 'mgf1SHA1Identifier'
             ] + MaskGenAlgorithm::MAP,
-            'saltLength'       => [
-                'type'     => ASN1::TYPE_INTEGER,
+            'saltLength' => [
+                'type' => ASN1::TYPE_INTEGER,
                 'constant' => 2,
                 'optional' => true,
                 'explicit' => true,
-                'default'  => 20
+                'default' => 20
             ],
-            'trailerField'     => [
-                'type'     => ASN1::TYPE_INTEGER,
+            'trailerField' => [
+                'type' => ASN1::TYPE_INTEGER,
                 'constant' => 3,
                 'optional' => true,
                 'explicit' => true,
-                'default'  => 1
+                'default' => 1
             ]
         ]
     ];

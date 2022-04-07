@@ -27,7 +27,7 @@ use phpseclib3\File\ASN1;
 abstract class ReasonFlags
 {
     const MAP = [
-        'type'    => ASN1::TYPE_BIT_STRING,
+        'type' => ASN1::TYPE_BIT_STRING,
         'mapping' => [
             'unused',
             'keyCompromise',

@@ -13,16 +13,12 @@
 
 namespace phpseclib3\Crypt\RSA;
 
-use phpseclib3\Crypt\RSA;
-use phpseclib3\Math\BigInteger;
-use phpseclib3\File\ASN1;
-use phpseclib3\Common\Functions\Strings;
-use phpseclib3\Crypt\Hash;
-use phpseclib3\Exceptions\NoKeyLoadedException;
-use phpseclib3\Exception\UnsupportedFormatException;
-use phpseclib3\Crypt\Random;
 use phpseclib3\Crypt\Common;
+use phpseclib3\Crypt\Random;
+use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\Formats\Keys\PSS;
+use phpseclib3\Exception\UnsupportedFormatException;
+use phpseclib3\Math\BigInteger;
 
 /**
  * Raw RSA Key Handler
@@ -232,7 +228,7 @@ class PrivateKey extends RSA implements Common\PrivateKey
         $h = $this->hash->hash($m2);
         $ps = str_repeat(chr(0), $emLen - $sLen - $this->hLen - 2);
         $db = $ps . chr(1) . $salt;
-        $dbMask = $this->mgf1($h, $emLen - $this->hLen - 1);
+        $dbMask = $this->mgf1($h, $emLen - $this->hLen - 1); // ie. stlren($db)
         $maskedDB = $db ^ $dbMask;
         $maskedDB[0] = ~chr(0xFF << ($emBits & 7)) & $maskedDB[0];
         $em = $maskedDB . $h . chr(0xBC);
@@ -412,9 +408,9 @@ class PrivateKey extends RSA implements Common\PrivateKey
         $patternMatch = 0;
         $offset = 0;
         for ($i = 0; $i < strlen($m); $i++) {
-            $patternMatch|= $leadingZeros & ($m[$i] === "\1");
-            $leadingZeros&= $m[$i] === "\0";
-            $offset+= $patternMatch ? 0 : 1;
+            $patternMatch |= $leadingZeros & ($m[$i] === "\1");
+            $leadingZeros &= $m[$i] === "\0";
+            $offset += $patternMatch ? 0 : 1;
         }
 
         // we do | instead of || to avoid https://en.wikipedia.org/wiki/Short-circuit_evaluation
@@ -509,7 +505,7 @@ class PrivateKey extends RSA implements Common\PrivateKey
 
         if ($type == PSS::class) {
             if ($this->signaturePadding == self::SIGNATURE_PSS) {
-                $options+= [
+                $options += [
                     'hash' => $this->hash->getHash(),
                     'MGFHash' => $this->mgfHash->getHash(),
                     'saltLength' => $this->getSaltLength()

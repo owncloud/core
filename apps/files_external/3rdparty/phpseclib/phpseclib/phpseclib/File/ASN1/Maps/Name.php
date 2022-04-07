@@ -27,7 +27,7 @@ use phpseclib3\File\ASN1;
 abstract class Name
 {
     const MAP = [
-        'type'     => ASN1::TYPE_CHOICE,
+        'type' => ASN1::TYPE_CHOICE,
         'children' => [
             'rdnSequence' => RDNSequence::MAP
         ]

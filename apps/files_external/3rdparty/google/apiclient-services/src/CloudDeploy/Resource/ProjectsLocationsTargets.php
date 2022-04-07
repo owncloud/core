@@ -152,7 +152,7 @@ class ProjectsLocationsTargets extends \Google\Service\Resource
    * targets. Format must be projects/{project_id}/locations/{location_name}.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. Filter builds to be returned. See
+   * @opt_param string filter Optional. Filter targets to be returned. See
    * https://google.aip.dev/160 for more details.
    * @opt_param string orderBy Optional. Field to sort by. See
    * https://google.aip.dev/132#ordering for more details.

@@ -28,8 +28,8 @@
 
 namespace phpseclib3\Crypt\EC\BaseCurves;
 
-use phpseclib3\Math\PrimeField;
 use phpseclib3\Math\BigInteger;
+use phpseclib3\Math\PrimeField;
 use phpseclib3\Math\PrimeField\Integer as PrimeInteger;
 
 /**

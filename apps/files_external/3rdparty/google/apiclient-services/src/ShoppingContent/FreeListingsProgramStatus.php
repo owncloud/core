@@ -20,13 +20,27 @@ namespace Google\Service\ShoppingContent;
 class FreeListingsProgramStatus extends \Google\Collection
 {
   protected $collection_key = 'regionStatuses';
-  protected $regionStatusesType = FreeListingsProgramStatusRegionStatus::class;
-  protected $regionStatusesDataType = 'array';
   /**
    * @var string
    */
-  public $state;
+  public $globalState;
+  protected $regionStatusesType = FreeListingsProgramStatusRegionStatus::class;
+  protected $regionStatusesDataType = 'array';
 
+  /**
+   * @param string
+   */
+  public function setGlobalState($globalState)
+  {
+    $this->globalState = $globalState;
+  }
+  /**
+   * @return string
+   */
+  public function getGlobalState()
+  {
+    return $this->globalState;
+  }
   /**
    * @param FreeListingsProgramStatusRegionStatus[]
    */
@@ -40,20 +54,6 @@ class FreeListingsProgramStatus extends \Google\Collection
   public function getRegionStatuses()
   {
     return $this->regionStatuses;
-  }
-  /**
-   * @param string
-   */
-  public function setState($state)
-  {
-    $this->state = $state;
-  }
-  /**
-   * @return string
-   */
-  public function getState()
-  {
-    return $this->state;
   }
 }
 

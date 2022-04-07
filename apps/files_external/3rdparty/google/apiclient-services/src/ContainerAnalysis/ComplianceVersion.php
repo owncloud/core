@@ -22,12 +22,30 @@ class ComplianceVersion extends \Google\Model
   /**
    * @var string
    */
+  public $benchmarkDocument;
+  /**
+   * @var string
+   */
   public $cpeUri;
   /**
    * @var string
    */
   public $version;
 
+  /**
+   * @param string
+   */
+  public function setBenchmarkDocument($benchmarkDocument)
+  {
+    $this->benchmarkDocument = $benchmarkDocument;
+  }
+  /**
+   * @return string
+   */
+  public function getBenchmarkDocument()
+  {
+    return $this->benchmarkDocument;
+  }
   /**
    * @param string
    */

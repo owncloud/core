@@ -15,7 +15,7 @@
 
 namespace phpseclib3\Math\BigInteger\Engines\PHP\Reductions;
 
-use phpseclib3\Math\BigInteger\Engines\PHP\Base;
+use phpseclib3\Math\BigInteger\Engines\PHP;
 
 /**
  * PHP Montgomery Modular Exponentiation Engine with interleaved multiplication
@@ -38,7 +38,7 @@ abstract class MontgomeryMult extends Montgomery
      * @param array $x
      * @param array $y
      * @param array $m
-     * @param string $class
+     * @param class-string<PHP> $class
      * @return array
      */
     public static function multiplyReduce(array $x, array $y, array $m, $class)

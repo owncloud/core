@@ -5,6 +5,7 @@ phpseclib ongoing development is made possible by [Tidelift](https://tidelift.co
 ## Backers
 
 - Allan Simon
+- [ChargeOver](https://chargeover.com/)
 - Raghu Veer Dendukuri
 - Zane Hooper
 - [Setasign](https://www.setasign.com/)

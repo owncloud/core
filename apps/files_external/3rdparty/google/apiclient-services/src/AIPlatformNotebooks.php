@@ -573,6 +573,10 @@ class AIPlatformNotebooks extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
+                'requestId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'runtimeId' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -586,6 +590,10 @@ class AIPlatformNotebooks extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+                'requestId' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],'get' => [
@@ -628,6 +636,16 @@ class AIPlatformNotebooks extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],'refreshRuntimeTokenInternal' => [
+              'path' => 'v1/{+name}:refreshRuntimeTokenInternal',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],'reportEvent' => [

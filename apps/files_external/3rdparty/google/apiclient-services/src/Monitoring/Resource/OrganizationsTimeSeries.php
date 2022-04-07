@@ -30,8 +30,8 @@ use Google\Service\Monitoring\ListTimeSeriesResponse;
 class OrganizationsTimeSeries extends \Google\Service\Resource
 {
   /**
-   * Lists time series that match a filter. This method does not require a
-   * Workspace. (timeSeries.listOrganizationsTimeSeries)
+   * Lists time series that match a filter.
+   * (timeSeries.listOrganizationsTimeSeries)
    *
    * @param string $name Required. The project
    * (https://cloud.google.com/monitoring/api/v3#project_name), organization or

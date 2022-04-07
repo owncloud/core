@@ -39,9 +39,8 @@ class SpacesMessages extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string requestId Optional. A unique request ID for this message.
-   * If a message has already been created in the space with this request ID, the
-   * subsequent request will return the existing message and no new message will
-   * be created.
+   * Specifying an existing request ID returns the message created with that ID
+   * instead of creating a new message.
    * @opt_param string threadKey Optional. Opaque thread identifier string that
    * can be specified to group messages into a single thread. If this is the first
    * message with a given thread identifier, a new thread is created. Subsequent
@@ -98,7 +97,7 @@ class SpacesMessages extends \Google\Service\Resource
    *
    * @opt_param string updateMask Required. The field paths to be updated, comma
    * separated if there are multiple. Currently supported field paths: * text *
-   * cards * gsuite_message_integration_render_data * attachment
+   * cards * attachment
    * @return Message
    */
   public function update($name, Message $postBody, $optParams = [])

@@ -13,18 +13,17 @@
 
 namespace phpseclib3\Crypt\RSA;
 
-use phpseclib3\Crypt\RSA;
-use phpseclib3\Math\BigInteger;
-use phpseclib3\File\ASN1;
 use phpseclib3\Common\Functions\Strings;
-use phpseclib3\Crypt\Hash;
-use phpseclib3\Exception\NoKeyLoadedException;
-use phpseclib3\Exception\UnsupportedFormatException;
-use phpseclib3\Exception\UnsupportedAlgorithmException;
-use phpseclib3\Crypt\Random;
 use phpseclib3\Crypt\Common;
-use phpseclib3\File\ASN1\Maps\DigestInfo;
+use phpseclib3\Crypt\Hash;
+use phpseclib3\Crypt\Random;
+use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\Formats\Keys\PSS;
+use phpseclib3\Exception\UnsupportedAlgorithmException;
+use phpseclib3\Exception\UnsupportedFormatException;
+use phpseclib3\File\ASN1;
+use phpseclib3\File\ASN1\Maps\DigestInfo;
+use phpseclib3\Math\BigInteger;
 
 /**
  * Raw RSA Key Handler
@@ -350,7 +349,7 @@ class PublicKey extends RSA implements Common\PublicKey
         while (strlen($ps) != $psLen) {
             $temp = Random::string($psLen - strlen($ps));
             $temp = str_replace("\x00", '', $temp);
-            $ps.= $temp;
+            $ps .= $temp;
         }
         $type = 2;
         $em = chr(0) . chr($type) . $ps . chr(0) . $m;
@@ -493,7 +492,7 @@ class PublicKey extends RSA implements Common\PublicKey
 
         if ($type == PSS::class) {
             if ($this->signaturePadding == self::SIGNATURE_PSS) {
-                $options+= [
+                $options += [
                     'hash' => $this->hash->getHash(),
                     'MGFHash' => $this->mgfHash->getHash(),
                     'saltLength' => $this->getSaltLength()
@@ -513,7 +512,7 @@ class PublicKey extends RSA implements Common\PublicKey
      */
     public function asPrivateKey()
     {
-        $new = new PrivateKey;
+        $new = new PrivateKey();
         $new->exponent = $this->exponent;
         $new->modulus = $this->modulus;
         $new->k = $this->k;

@@ -15,9 +15,9 @@
 namespace phpseclib3\Crypt\EC\Curves;
 
 use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards;
-use phpseclib3\Math\BigInteger;
 use phpseclib3\Crypt\Hash;
 use phpseclib3\Crypt\Random;
+use phpseclib3\Math\BigInteger;
 
 class Ed25519 extends TwistedEdwards
 {

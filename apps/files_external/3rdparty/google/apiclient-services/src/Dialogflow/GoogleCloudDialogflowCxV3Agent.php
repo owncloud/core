@@ -47,6 +47,10 @@ class GoogleCloudDialogflowCxV3Agent extends \Google\Collection
    */
   public $enableStackdriverLogging;
   /**
+   * @var bool
+   */
+  public $locked;
+  /**
    * @var string
    */
   public $name;
@@ -166,6 +170,20 @@ class GoogleCloudDialogflowCxV3Agent extends \Google\Collection
   public function getEnableStackdriverLogging()
   {
     return $this->enableStackdriverLogging;
+  }
+  /**
+   * @param bool
+   */
+  public function setLocked($locked)
+  {
+    $this->locked = $locked;
+  }
+  /**
+   * @return bool
+   */
+  public function getLocked()
+  {
+    return $this->locked;
   }
   /**
    * @param string

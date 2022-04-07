@@ -29,6 +29,8 @@ class LiveChatMessageSnippet extends \Google\Model
   public $displayMessage;
   protected $fanFundingEventDetailsType = LiveChatFanFundingEventDetails::class;
   protected $fanFundingEventDetailsDataType = '';
+  protected $giftMembershipReceivedDetailsType = LiveChatGiftMembershipReceivedDetails::class;
+  protected $giftMembershipReceivedDetailsDataType = '';
   /**
    * @var bool
    */
@@ -39,6 +41,8 @@ class LiveChatMessageSnippet extends \Google\Model
   public $liveChatId;
   protected $memberMilestoneChatDetailsType = LiveChatMemberMilestoneChatDetails::class;
   protected $memberMilestoneChatDetailsDataType = '';
+  protected $membershipGiftingDetailsType = LiveChatMembershipGiftingDetails::class;
+  protected $membershipGiftingDetailsDataType = '';
   protected $messageDeletedDetailsType = LiveChatMessageDeletedDetails::class;
   protected $messageDeletedDetailsDataType = '';
   protected $messageRetractedDetailsType = LiveChatMessageRetractedDetails::class;
@@ -105,6 +109,20 @@ class LiveChatMessageSnippet extends \Google\Model
     return $this->fanFundingEventDetails;
   }
   /**
+   * @param LiveChatGiftMembershipReceivedDetails
+   */
+  public function setGiftMembershipReceivedDetails(LiveChatGiftMembershipReceivedDetails $giftMembershipReceivedDetails)
+  {
+    $this->giftMembershipReceivedDetails = $giftMembershipReceivedDetails;
+  }
+  /**
+   * @return LiveChatGiftMembershipReceivedDetails
+   */
+  public function getGiftMembershipReceivedDetails()
+  {
+    return $this->giftMembershipReceivedDetails;
+  }
+  /**
    * @param bool
    */
   public function setHasDisplayContent($hasDisplayContent)
@@ -145,6 +163,20 @@ class LiveChatMessageSnippet extends \Google\Model
   public function getMemberMilestoneChatDetails()
   {
     return $this->memberMilestoneChatDetails;
+  }
+  /**
+   * @param LiveChatMembershipGiftingDetails
+   */
+  public function setMembershipGiftingDetails(LiveChatMembershipGiftingDetails $membershipGiftingDetails)
+  {
+    $this->membershipGiftingDetails = $membershipGiftingDetails;
+  }
+  /**
+   * @return LiveChatMembershipGiftingDetails
+   */
+  public function getMembershipGiftingDetails()
+  {
+    return $this->membershipGiftingDetails;
   }
   /**
    * @param LiveChatMessageDeletedDetails

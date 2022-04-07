@@ -134,7 +134,7 @@ class ProjectsLocationsTargetProjects extends \Google\Service\Resource
    * global resource; hence the only supported value for location is `global`.
    * (targetProjects.patch)
    *
-   * @param string $name The name of the target project.
+   * @param string $name Output only. The name of the target project.
    * @param TargetProject $postBody
    * @param array $optParams Optional parameters.
    *

@@ -111,7 +111,7 @@ class ProjectsLocationsBuilds extends \Google\Service\Resource
    * (builds.listProjectsLocationsBuilds)
    *
    * @param string $parent The parent of the collection of `Builds`. Format:
-   * `projects/{project}/locations/location`
+   * `projects/{project}/locations/{location}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter The raw filter text to constrain the results.

@@ -19,6 +19,25 @@ namespace Google\Service\MyBusinessVerifications;
 
 class ComplyWithGuidelines extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $recommendationReason;
+
+  /**
+   * @param string
+   */
+  public function setRecommendationReason($recommendationReason)
+  {
+    $this->recommendationReason = $recommendationReason;
+  }
+  /**
+   * @return string
+   */
+  public function getRecommendationReason()
+  {
+    return $this->recommendationReason;
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

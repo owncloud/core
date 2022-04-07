@@ -24,6 +24,10 @@ class BackendServiceConnectionTrackingPolicy extends \Google\Model
    */
   public $connectionPersistenceOnUnhealthyBackends;
   /**
+   * @var bool
+   */
+  public $enableStrongAffinity;
+  /**
    * @var int
    */
   public $idleTimeoutSec;
@@ -45,6 +49,20 @@ class BackendServiceConnectionTrackingPolicy extends \Google\Model
   public function getConnectionPersistenceOnUnhealthyBackends()
   {
     return $this->connectionPersistenceOnUnhealthyBackends;
+  }
+  /**
+   * @param bool
+   */
+  public function setEnableStrongAffinity($enableStrongAffinity)
+  {
+    $this->enableStrongAffinity = $enableStrongAffinity;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableStrongAffinity()
+  {
+    return $this->enableStrongAffinity;
   }
   /**
    * @param int

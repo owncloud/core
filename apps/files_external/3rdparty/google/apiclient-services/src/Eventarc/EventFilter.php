@@ -26,6 +26,10 @@ class EventFilter extends \Google\Model
   /**
    * @var string
    */
+  public $operator;
+  /**
+   * @var string
+   */
   public $value;
 
   /**
@@ -41,6 +45,20 @@ class EventFilter extends \Google\Model
   public function getAttribute()
   {
     return $this->attribute;
+  }
+  /**
+   * @param string
+   */
+  public function setOperator($operator)
+  {
+    $this->operator = $operator;
+  }
+  /**
+   * @return string
+   */
+  public function getOperator()
+  {
+    return $this->operator;
   }
   /**
    * @param string

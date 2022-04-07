@@ -15,8 +15,6 @@
 
 namespace phpseclib3\Math\BigInteger\Engines;
 
-use ParagonIE\ConstantTime\Hex;
-
 /**
  * Pure-PHP 64-bit Engine.
  *
@@ -46,49 +44,6 @@ class PHP64 extends PHP
      */
     const MAX10LEN = 9;
     const MAX_DIGIT2 = 4611686018427387904;
-    /**#@-*/
-
-    /**
-     * Modular Exponentiation Engine
-     *
-     * @var string
-     */
-    protected static $modexpEngine;
-
-    /**
-     * Engine Validity Flag
-     *
-     * @var bool
-     */
-    protected static $isValidEngine;
-
-    /**
-     * Primes > 2 and < 1000
-     *
-     * @var array
-     */
-    protected static $primes;
-
-    /**
-     * BigInteger(0)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP64
-     */
-    protected static $zero;
-
-    /**
-     * BigInteger(1)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP64
-     */
-    protected static $one;
-
-    /**
-     * BigInteger(2)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP64
-     */
-    protected static $two;
 
     /**
      * Initialize a PHP64 BigInteger Engine instance
@@ -111,7 +66,7 @@ class PHP64 extends PHP
         }
 
         while (true) {
-            $i-= 4;
+            $i -= 4;
             if ($i < 0) {
                 if ($i == -4) {
                     break;
@@ -126,15 +81,15 @@ class PHP64 extends PHP
             list(, $digit) = unpack('N', substr($val, $i, 4));
             $step = count($vals) & 7;
             if (!$step) {
-                $digit&= static::MAX_DIGIT;
+                $digit &= static::MAX_DIGIT;
                 $i++;
             } else {
                 $shift = 8 - $step;
-                $digit>>= $shift;
+                $digit >>= $shift;
                 $shift = 32 - $shift;
-                $digit&= (1 << $shift) - 1;
+                $digit &= (1 << $shift) - 1;
                 $temp = $i > 0 ? ord($val[$i - 1]) : 0;
-                $digit|= ($temp << $shift) & 0x7F000000;
+                $digit |= ($temp << $shift) & 0x7F000000;
             }
             $vals[] = $digit;
         }
@@ -203,7 +158,7 @@ class PHP64 extends PHP
      * and the divisor (basically, the "common residue" is the first positive modulo).
      *
      * @param PHP64 $y
-     * @return PHP64
+     * @return array{PHP64, PHP64}
      */
     public function divide(PHP64 $y)
     {
@@ -336,7 +291,7 @@ class PHP64 extends PHP
      *
      * @param PHP64 $e
      * @param PHP64 $n
-     * @return PHP64
+     * @return PHP64|false
      */
     public function powMod(PHP64 $e, PHP64 $n)
     {

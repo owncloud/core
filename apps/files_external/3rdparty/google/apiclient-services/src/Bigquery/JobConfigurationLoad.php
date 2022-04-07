@@ -77,6 +77,10 @@ class JobConfigurationLoad extends \Google\Collection
   protected $parquetOptionsType = ParquetOptions::class;
   protected $parquetOptionsDataType = '';
   /**
+   * @var bool
+   */
+  public $preserveAsciiControlCharacters;
+  /**
    * @var string[]
    */
   public $projectionFields;
@@ -360,6 +364,20 @@ class JobConfigurationLoad extends \Google\Collection
   public function getParquetOptions()
   {
     return $this->parquetOptions;
+  }
+  /**
+   * @param bool
+   */
+  public function setPreserveAsciiControlCharacters($preserveAsciiControlCharacters)
+  {
+    $this->preserveAsciiControlCharacters = $preserveAsciiControlCharacters;
+  }
+  /**
+   * @return bool
+   */
+  public function getPreserveAsciiControlCharacters()
+  {
+    return $this->preserveAsciiControlCharacters;
   }
   /**
    * @param string[]

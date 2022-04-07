@@ -28,6 +28,10 @@ class AccountItemUpdates extends \Google\Model
   /**
    * @var bool
    */
+  public $effectiveAllowConditionUpdates;
+  /**
+   * @var bool
+   */
   public $effectiveAllowPriceUpdates;
   /**
    * @var bool
@@ -61,6 +65,20 @@ class AccountItemUpdates extends \Google\Model
   public function getEffectiveAllowAvailabilityUpdates()
   {
     return $this->effectiveAllowAvailabilityUpdates;
+  }
+  /**
+   * @param bool
+   */
+  public function setEffectiveAllowConditionUpdates($effectiveAllowConditionUpdates)
+  {
+    $this->effectiveAllowConditionUpdates = $effectiveAllowConditionUpdates;
+  }
+  /**
+   * @return bool
+   */
+  public function getEffectiveAllowConditionUpdates()
+  {
+    return $this->effectiveAllowConditionUpdates;
   }
   /**
    * @param bool

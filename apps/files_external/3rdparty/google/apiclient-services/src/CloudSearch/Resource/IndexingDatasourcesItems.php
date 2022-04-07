@@ -59,10 +59,9 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * version of the queued Item using lexical ordering. Cloud Search Indexing
    * won't delete any queued item with a version value that is less than or equal
    * to the version of the currently indexed item. The maximum length for this
-   * field is 1024 bytes. See [this
-   * guide](https://developers.devsite.corp.google.com/cloud-
-   * search/docs/guides/operations) to understand how item version affects
-   * reindexing after delete item.
+   * field is 1024 bytes. For information on how item version affects the deletion
+   * process, refer to [Handle revisions after manual
+   * deletes](https://developers.google.com/cloud-search/docs/guides/operations).
    * @return Operation
    */
   public function delete($name, $optParams = [])

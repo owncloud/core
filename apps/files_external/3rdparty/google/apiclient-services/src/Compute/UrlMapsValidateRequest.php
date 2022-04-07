@@ -17,11 +17,30 @@
 
 namespace Google\Service\Compute;
 
-class UrlMapsValidateRequest extends \Google\Model
+class UrlMapsValidateRequest extends \Google\Collection
 {
+  protected $collection_key = 'loadBalancingSchemes';
+  /**
+   * @var string[]
+   */
+  public $loadBalancingSchemes;
   protected $resourceType = UrlMap::class;
   protected $resourceDataType = '';
 
+  /**
+   * @param string[]
+   */
+  public function setLoadBalancingSchemes($loadBalancingSchemes)
+  {
+    $this->loadBalancingSchemes = $loadBalancingSchemes;
+  }
+  /**
+   * @return string[]
+   */
+  public function getLoadBalancingSchemes()
+  {
+    return $this->loadBalancingSchemes;
+  }
   /**
    * @param UrlMap
    */

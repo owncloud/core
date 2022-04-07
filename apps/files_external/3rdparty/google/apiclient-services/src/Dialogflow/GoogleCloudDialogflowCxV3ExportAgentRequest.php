@@ -26,6 +26,10 @@ class GoogleCloudDialogflowCxV3ExportAgentRequest extends \Google\Model
   /**
    * @var string
    */
+  public $dataFormat;
+  /**
+   * @var string
+   */
   public $environment;
 
   /**
@@ -41,6 +45,20 @@ class GoogleCloudDialogflowCxV3ExportAgentRequest extends \Google\Model
   public function getAgentUri()
   {
     return $this->agentUri;
+  }
+  /**
+   * @param string
+   */
+  public function setDataFormat($dataFormat)
+  {
+    $this->dataFormat = $dataFormat;
+  }
+  /**
+   * @return string
+   */
+  public function getDataFormat()
+  {
+    return $this->dataFormat;
   }
   /**
    * @param string

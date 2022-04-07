@@ -19,6 +19,8 @@ namespace Google\Service\Texttospeech;
 
 class VoiceSelectionParams extends \Google\Model
 {
+  protected $customVoiceType = CustomVoiceParams::class;
+  protected $customVoiceDataType = '';
   /**
    * @var string
    */
@@ -32,6 +34,20 @@ class VoiceSelectionParams extends \Google\Model
    */
   public $ssmlGender;
 
+  /**
+   * @param CustomVoiceParams
+   */
+  public function setCustomVoice(CustomVoiceParams $customVoice)
+  {
+    $this->customVoice = $customVoice;
+  }
+  /**
+   * @return CustomVoiceParams
+   */
+  public function getCustomVoice()
+  {
+    return $this->customVoice;
+  }
   /**
    * @param string
    */

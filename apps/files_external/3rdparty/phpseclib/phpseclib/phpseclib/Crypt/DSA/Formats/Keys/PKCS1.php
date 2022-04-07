@@ -29,11 +29,11 @@
 
 namespace phpseclib3\Crypt\DSA\Formats\Keys;
 
-use phpseclib3\Math\BigInteger;
+use ParagonIE\ConstantTime\Base64;
 use phpseclib3\Crypt\Common\Formats\Keys\PKCS1 as Progenitor;
 use phpseclib3\File\ASN1;
 use phpseclib3\File\ASN1\Maps;
-use ParagonIE\ConstantTime\Base64;
+use phpseclib3\Math\BigInteger;
 
 /**
  * PKCS#1 Formatted DSA Key Handler

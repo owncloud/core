@@ -119,6 +119,11 @@ class CustomersChromePrinters extends \Google\Service\Resource
    *
    * @opt_param string filter Search query. Search syntax is shared between this
    * api and Admin Console printers pages.
+   * @opt_param string orderBy The order to sort results by. Must be one of
+   * display_name, description, make_and_model, or create_time. Default order is
+   * ascending, but descending order can be returned by appending "desc" to the
+   * order_by field. For instance, "description desc" will return the printers
+   * sorted by description in descending order.
    * @opt_param string orgUnitId Organization Unit that we want to list the
    * printers for. When org_unit is not present in the request then all printers
    * of the customer are returned (or filtered). When org_unit is present in the

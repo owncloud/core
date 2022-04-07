@@ -22,11 +22,19 @@ class Reservation extends \Google\Model
   /**
    * @var string
    */
+  public $concurrency;
+  /**
+   * @var string
+   */
   public $creationTime;
   /**
    * @var bool
    */
   public $ignoreIdleSlots;
+  /**
+   * @var bool
+   */
+  public $multiRegionAuxiliary;
   /**
    * @var string
    */
@@ -40,6 +48,20 @@ class Reservation extends \Google\Model
    */
   public $updateTime;
 
+  /**
+   * @param string
+   */
+  public function setConcurrency($concurrency)
+  {
+    $this->concurrency = $concurrency;
+  }
+  /**
+   * @return string
+   */
+  public function getConcurrency()
+  {
+    return $this->concurrency;
+  }
   /**
    * @param string
    */
@@ -67,6 +89,20 @@ class Reservation extends \Google\Model
   public function getIgnoreIdleSlots()
   {
     return $this->ignoreIdleSlots;
+  }
+  /**
+   * @param bool
+   */
+  public function setMultiRegionAuxiliary($multiRegionAuxiliary)
+  {
+    $this->multiRegionAuxiliary = $multiRegionAuxiliary;
+  }
+  /**
+   * @return bool
+   */
+  public function getMultiRegionAuxiliary()
+  {
+    return $this->multiRegionAuxiliary;
   }
   /**
    * @param string

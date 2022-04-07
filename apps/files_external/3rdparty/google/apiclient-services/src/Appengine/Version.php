@@ -22,6 +22,10 @@ class Version extends \Google\Collection
   protected $collection_key = 'zones';
   protected $apiConfigType = ApiConfigHandler::class;
   protected $apiConfigDataType = '';
+  /**
+   * @var bool
+   */
+  public $appEngineApis;
   protected $automaticScalingType = AutomaticScaling::class;
   protected $automaticScalingDataType = '';
   protected $basicScalingType = BasicScaling::class;
@@ -158,6 +162,20 @@ class Version extends \Google\Collection
   public function getApiConfig()
   {
     return $this->apiConfig;
+  }
+  /**
+   * @param bool
+   */
+  public function setAppEngineApis($appEngineApis)
+  {
+    $this->appEngineApis = $appEngineApis;
+  }
+  /**
+   * @return bool
+   */
+  public function getAppEngineApis()
+  {
+    return $this->appEngineApis;
   }
   /**
    * @param AutomaticScaling

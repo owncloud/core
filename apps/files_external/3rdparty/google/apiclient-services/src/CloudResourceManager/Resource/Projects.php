@@ -211,7 +211,7 @@ class Projects extends \Google\Service\Resource
    * continue.
    * @opt_param string query Optional. A query string for searching for projects
    * that the caller has `resourcemanager.projects.get` permission to. If multiple
-   * fields are included in the query, the it will return results that match any
+   * fields are included in the query, then it will return results that match any
    * of the fields. Some eligible fields are: ``` | Field | Description |
    * |-------------------------|----------------------------------------------| |
    * displayName, name | Filters by displayName. | | parent | Project's parent

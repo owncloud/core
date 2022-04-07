@@ -19,7 +19,7 @@ namespace Google\Service\Compute;
 
 class FirewallPolicyRuleMatcher extends \Google\Collection
 {
-  protected $collection_key = 'srcIpRanges';
+  protected $collection_key = 'srcSecureTags';
   /**
    * @var string[]
    */
@@ -30,6 +30,8 @@ class FirewallPolicyRuleMatcher extends \Google\Collection
    * @var string[]
    */
   public $srcIpRanges;
+  protected $srcSecureTagsType = FirewallPolicyRuleSecureTag::class;
+  protected $srcSecureTagsDataType = 'array';
 
   /**
    * @param string[]
@@ -72,6 +74,20 @@ class FirewallPolicyRuleMatcher extends \Google\Collection
   public function getSrcIpRanges()
   {
     return $this->srcIpRanges;
+  }
+  /**
+   * @param FirewallPolicyRuleSecureTag[]
+   */
+  public function setSrcSecureTags($srcSecureTags)
+  {
+    $this->srcSecureTags = $srcSecureTags;
+  }
+  /**
+   * @return FirewallPolicyRuleSecureTag[]
+   */
+  public function getSrcSecureTags()
+  {
+    return $this->srcSecureTags;
   }
 }
 

@@ -31,6 +31,10 @@ class AdClient extends \Google\Model
    * @var string
    */
   public $reportingDimensionId;
+  /**
+   * @var string
+   */
+  public $state;
 
   /**
    * @param string
@@ -73,6 +77,20 @@ class AdClient extends \Google\Model
   public function getReportingDimensionId()
   {
     return $this->reportingDimensionId;
+  }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
   }
 }
 

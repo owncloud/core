@@ -33,6 +33,8 @@ class MigrationJob extends \Google\Model
    * @var string
    */
   public $displayName;
+  protected $dumpFlagsType = DumpFlags::class;
+  protected $dumpFlagsDataType = '';
   /**
    * @var string
    */
@@ -139,6 +141,20 @@ class MigrationJob extends \Google\Model
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param DumpFlags
+   */
+  public function setDumpFlags(DumpFlags $dumpFlags)
+  {
+    $this->dumpFlags = $dumpFlags;
+  }
+  /**
+   * @return DumpFlags
+   */
+  public function getDumpFlags()
+  {
+    return $this->dumpFlags;
   }
   /**
    * @param string

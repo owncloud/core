@@ -17,6 +17,7 @@
 
 namespace Google\Service\Baremetalsolution\Resource;
 
+use Google\Service\Baremetalsolution\ListNetworkUsageResponse;
 use Google\Service\Baremetalsolution\ListNetworksResponse;
 use Google\Service\Baremetalsolution\Network;
 use Google\Service\Baremetalsolution\Operation;
@@ -64,6 +65,20 @@ class ProjectsLocationsNetworks extends \Google\Service\Resource
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListNetworksResponse::class);
+  }
+  /**
+   * List all Networks (and used IPs for each Network) in the vendor account
+   * associated with the specified project. (networks.listNetworkUsage)
+   *
+   * @param string $location Required. Parent value (project and location).
+   * @param array $optParams Optional parameters.
+   * @return ListNetworkUsageResponse
+   */
+  public function listNetworkUsage($location, $optParams = [])
+  {
+    $params = ['location' => $location];
+    $params = array_merge($params, $optParams);
+    return $this->call('listNetworkUsage', [$params], ListNetworkUsageResponse::class);
   }
   /**
    * Update details of a single network. (networks.patch)

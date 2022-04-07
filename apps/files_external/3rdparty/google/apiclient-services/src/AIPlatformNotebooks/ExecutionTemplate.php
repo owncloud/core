@@ -67,6 +67,10 @@ class ExecutionTemplate extends \Google\Model
    * @var string
    */
   public $serviceAccount;
+  /**
+   * @var string
+   */
+  public $tensorboard;
   protected $vertexAiParametersType = VertexAIParameters::class;
   protected $vertexAiParametersDataType = '';
 
@@ -251,6 +255,20 @@ class ExecutionTemplate extends \Google\Model
   public function getServiceAccount()
   {
     return $this->serviceAccount;
+  }
+  /**
+   * @param string
+   */
+  public function setTensorboard($tensorboard)
+  {
+    $this->tensorboard = $tensorboard;
+  }
+  /**
+   * @return string
+   */
+  public function getTensorboard()
+  {
+    return $this->tensorboard;
   }
   /**
    * @param VertexAIParameters

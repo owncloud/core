@@ -47,28 +47,32 @@ class ProjectsLocationsTransferConfigs extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string authorizationCode Optional OAuth2 authorization code to use
-   * with this transfer configuration. This is required if new credentials are
+   * with this transfer configuration. This is required only if
+   * `transferConfig.dataSourceId` is 'youtube_channel' and new credentials are
    * needed, as indicated by `CheckValidCreds`. In order to obtain
-   * authorization_code, please make a request to
-   * https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id==_uri= *
-   * client_id should be OAuth client_id of BigQuery DTS API for the given data
-   * source returned by ListDataSources method. * data_source_scopes are the
-   * scopes returned by ListDataSources method. * redirect_uri is an optional
-   * parameter. If not specified, then authorization code is posted to the opener
-   * of authorization flow window. Otherwise it will be sent to the redirect uri.
-   * A special value of urn:ietf:wg:oauth:2.0:oob means that authorization code
-   * should be returned in the title bar of the browser, with the page text
-   * prompting the user to copy the code and paste it in the application.
+   * authorization_code, please make a request to https://www.gstatic.com/bigquery
+   * datatransfer/oauthz/auth?client_id==_uri=urn:ietf:wg:oauth:2.0:oob_type=autho
+   * rization_code * client_id should be OAuth client_id of BigQuery DTS API for
+   * the given data source returned by ListDataSources method. *
+   * data_source_scopes are the scopes returned by ListDataSources method. Note
+   * that this should not be set when `service_account_name` is used to create the
+   * transfer config.
    * @opt_param string serviceAccountName Optional service account name. If this
    * field is set, transfer config will be created with this service account
-   * credentials. It requires that requesting user calling this API has
-   * permissions to act as this service account.
-   * @opt_param string versionInfo Optional version info. If users want to find a
-   * very recent access token, that is, immediately after approving access, users
-   * have to set the version_info claim in the token request. To obtain the
-   * version_info, users must use the "none+gsession" response type. which be
-   * return a version_info back in the authorization response which be be put in a
-   * JWT claim in the token request.
+   * credential. It requires that requesting user calling this API has permissions
+   * to act as this service account. Note that not all data sources support
+   * service account credentials when creating transfer config. Please refer to
+   * this public guide for the latest list of data sources with service account
+   * support: https://cloud.google.com/bigquery-transfer/docs/use-service-accounts
+   * @opt_param string versionInfo Optional version info. This is required only if
+   * `transferConfig.dataSourceId` is anything else but 'youtube_channel' and new
+   * credentials are needed, as indicated by `CheckValidCreds`. In order to obtain
+   * version info, please make a request to https://www.gstatic.com/bigquerydatatr
+   * ansfer/oauthz/auth?client_id==_uri=urn:ietf:wg:oauth:2.0:oob_type=version_inf
+   * o * client_id should be OAuth client_id of BigQuery DTS API for the given
+   * data source returned by ListDataSources method. * data_source_scopes are the
+   * scopes returned by ListDataSources method. Note that this should not be set
+   * when `service_account_name` is used to create the transfer config.
    * @return TransferConfig
    */
   public function create($parent, TransferConfig $postBody, $optParams = [])
@@ -148,31 +152,35 @@ class ProjectsLocationsTransferConfigs extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string authorizationCode Optional OAuth2 authorization code to use
-   * with this transfer configuration. If it is provided, the transfer
-   * configuration will be associated with the authorizing user. In order to
-   * obtain authorization_code, please make a request to
-   * https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id==_uri= *
-   * client_id should be OAuth client_id of BigQuery DTS API for the given data
-   * source returned by ListDataSources method. * data_source_scopes are the
-   * scopes returned by ListDataSources method. * redirect_uri is an optional
-   * parameter. If not specified, then authorization code is posted to the opener
-   * of authorization flow window. Otherwise it will be sent to the redirect uri.
-   * A special value of urn:ietf:wg:oauth:2.0:oob means that authorization code
-   * should be returned in the title bar of the browser, with the page text
-   * prompting the user to copy the code and paste it in the application.
+   * with this transfer configuration. This is required only if
+   * `transferConfig.dataSourceId` is 'youtube_channel' and new credentials are
+   * needed, as indicated by `CheckValidCreds`. In order to obtain
+   * authorization_code, please make a request to https://www.gstatic.com/bigquery
+   * datatransfer/oauthz/auth?client_id==_uri=urn:ietf:wg:oauth:2.0:oob_type=autho
+   * rization_code * client_id should be OAuth client_id of BigQuery DTS API for
+   * the given data source returned by ListDataSources method. *
+   * data_source_scopes are the scopes returned by ListDataSources method. Note
+   * that this should not be set when `service_account_name` is used to create the
+   * transfer config.
    * @opt_param string serviceAccountName Optional service account name. If this
    * field is set and "service_account_name" is set in update_mask, transfer
-   * config will be updated to use this service account credentials. It requires
-   * that requesting user calling this API has permissions to act as this service
-   * account.
+   * config will be created with this service account credential. It requires that
+   * requesting user calling this API has permissions to act as this service
+   * account. Note that not all data sources support service account credentials
+   * when creating transfer config. Please refer to this public guide for the
+   * latest list of data sources with service account support:
+   * https://cloud.google.com/bigquery-transfer/docs/use-service-accounts
    * @opt_param string updateMask Required. Required list of fields to be updated
    * in this request.
-   * @opt_param string versionInfo Optional version info. If users want to find a
-   * very recent access token, that is, immediately after approving access, users
-   * have to set the version_info claim in the token request. To obtain the
-   * version_info, users must use the "none+gsession" response type. which be
-   * return a version_info back in the authorization response which be be put in a
-   * JWT claim in the token request.
+   * @opt_param string versionInfo Optional version info. This is required only if
+   * `transferConfig.dataSourceId` is anything else but 'youtube_channel' and new
+   * credentials are needed, as indicated by `CheckValidCreds`. In order to obtain
+   * version info, please make a request to https://www.gstatic.com/bigquerydatatr
+   * ansfer/oauthz/auth?client_id==_uri=urn:ietf:wg:oauth:2.0:oob_type=version_inf
+   * o * client_id should be OAuth client_id of BigQuery DTS API for the given
+   * data source returned by ListDataSources method. * data_source_scopes are the
+   * scopes returned by ListDataSources method. Note that this should not be set
+   * when `service_account_name` is used to create the transfer config.
    * @return TransferConfig
    */
   public function patch($name, TransferConfig $postBody, $optParams = [])

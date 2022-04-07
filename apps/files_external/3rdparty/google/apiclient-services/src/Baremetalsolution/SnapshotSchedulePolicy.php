@@ -38,6 +38,10 @@ class SnapshotSchedulePolicy extends \Google\Collection
   public $name;
   protected $schedulesType = Schedule::class;
   protected $schedulesDataType = 'array';
+  /**
+   * @var string
+   */
+  public $state;
 
   /**
    * @param string
@@ -108,6 +112,20 @@ class SnapshotSchedulePolicy extends \Google\Collection
   public function getSchedules()
   {
     return $this->schedules;
+  }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
   }
 }
 

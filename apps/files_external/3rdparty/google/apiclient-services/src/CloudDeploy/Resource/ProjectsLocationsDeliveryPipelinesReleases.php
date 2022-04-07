@@ -86,7 +86,7 @@ class ProjectsLocationsDeliveryPipelinesReleases extends \Google\Service\Resourc
    * collection of `Release` objects.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. Filter builds to be returned. See
+   * @opt_param string filter Optional. Filter releases to be returned. See
    * https://google.aip.dev/160 for more details.
    * @opt_param string orderBy Optional. Field to sort by. See
    * https://google.aip.dev/132#ordering for more details.

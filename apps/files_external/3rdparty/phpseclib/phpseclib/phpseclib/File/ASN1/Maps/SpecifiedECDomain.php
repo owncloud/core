@@ -29,7 +29,7 @@ use phpseclib3\File\ASN1;
 abstract class SpecifiedECDomain
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
             'version' => [
                 'type' => ASN1::TYPE_INTEGER,

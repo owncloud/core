@@ -31,10 +31,6 @@ class Actor extends \Google\Model
    * @var bool
    */
   public $googleSupport;
-  /**
-   * @var string
-   */
-  public $principalId;
 
   /**
    * @param string
@@ -77,20 +73,6 @@ class Actor extends \Google\Model
   public function getGoogleSupport()
   {
     return $this->googleSupport;
-  }
-  /**
-   * @param string
-   */
-  public function setPrincipalId($principalId)
-  {
-    $this->principalId = $principalId;
-  }
-  /**
-   * @return string
-   */
-  public function getPrincipalId()
-  {
-    return $this->principalId;
   }
 }
 

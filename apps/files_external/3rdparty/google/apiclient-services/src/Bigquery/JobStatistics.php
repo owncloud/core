@@ -24,6 +24,8 @@ class JobStatistics extends \Google\Collection
         "reservationId" => "reservation_id",
   ];
   public $completionRatio;
+  protected $copyType = JobStatistics5::class;
+  protected $copyDataType = '';
   /**
    * @var string
    */
@@ -84,6 +86,20 @@ class JobStatistics extends \Google\Collection
   public function getCompletionRatio()
   {
     return $this->completionRatio;
+  }
+  /**
+   * @param JobStatistics5
+   */
+  public function setCopy(JobStatistics5 $copy)
+  {
+    $this->copy = $copy;
+  }
+  /**
+   * @return JobStatistics5
+   */
+  public function getCopy()
+  {
+    return $this->copy;
   }
   /**
    * @param string

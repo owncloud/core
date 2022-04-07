@@ -83,6 +83,38 @@ class Folders extends \Google\Service\Resource
     $params = array_merge($params, $optParams);
     return $this->call('getSettings', [$params], Settings::class);
   }
+  /**
+   * Updates the Log Router settings for the given resource.Note: Settings for the
+   * Log Router can currently only be configured for Google Cloud organizations.
+   * Once configured, it applies to all projects and folders in the Google Cloud
+   * organization.UpdateSettings will fail if 1) kms_key_name is invalid, or 2)
+   * the associated service account does not have the required
+   * roles/cloudkms.cryptoKeyEncrypterDecrypter role assigned for the key, or 3)
+   * access to the key is disabled. 4) location_id is not supported by Logging. 5)
+   * location_id violate OrgPolicy.See Enabling CMEK for Log Router
+   * (https://cloud.google.com/logging/docs/routing/managed-encryption) for more
+   * information. (folders.updateSettings)
+   *
+   * @param string $name Required. The resource name for the settings to update.
+   * "organizations/[ORGANIZATION_ID]/settings" For
+   * example:"organizations/12345/settings"Note: Settings for the Log Router can
+   * currently only be configured for Google Cloud organizations. Once configured,
+   * it applies to all projects and folders in the Google Cloud organization.
+   * @param Settings $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Optional. Field mask identifying which fields
+   * from settings should be updated. A field will be overwritten if and only if
+   * it is in the update mask. Output only fields cannot be updated.See FieldMask
+   * for more information.For example: "updateMask=kmsKeyName"
+   * @return Settings
+   */
+  public function updateSettings($name, Settings $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('updateSettings', [$params], Settings::class);
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

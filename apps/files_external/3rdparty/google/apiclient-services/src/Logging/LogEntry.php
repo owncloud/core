@@ -61,6 +61,8 @@ class LogEntry extends \Google\Model
    * @var string
    */
   public $spanId;
+  protected $splitType = LogSplit::class;
+  protected $splitDataType = '';
   /**
    * @var string
    */
@@ -259,6 +261,20 @@ class LogEntry extends \Google\Model
   public function getSpanId()
   {
     return $this->spanId;
+  }
+  /**
+   * @param LogSplit
+   */
+  public function setSplit(LogSplit $split)
+  {
+    $this->split = $split;
+  }
+  /**
+   * @return LogSplit
+   */
+  public function getSplit()
+  {
+    return $this->split;
   }
   /**
    * @param string

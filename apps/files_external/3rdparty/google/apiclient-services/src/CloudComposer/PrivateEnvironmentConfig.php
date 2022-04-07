@@ -22,6 +22,10 @@ class PrivateEnvironmentConfig extends \Google\Model
   /**
    * @var string
    */
+  public $cloudComposerConnectionSubnetwork;
+  /**
+   * @var string
+   */
   public $cloudComposerNetworkIpv4CidrBlock;
   /**
    * @var string
@@ -46,6 +50,20 @@ class PrivateEnvironmentConfig extends \Google\Model
    */
   public $webServerIpv4ReservedRange;
 
+  /**
+   * @param string
+   */
+  public function setCloudComposerConnectionSubnetwork($cloudComposerConnectionSubnetwork)
+  {
+    $this->cloudComposerConnectionSubnetwork = $cloudComposerConnectionSubnetwork;
+  }
+  /**
+   * @return string
+   */
+  public function getCloudComposerConnectionSubnetwork()
+  {
+    return $this->cloudComposerConnectionSubnetwork;
+  }
   /**
    * @param string
    */

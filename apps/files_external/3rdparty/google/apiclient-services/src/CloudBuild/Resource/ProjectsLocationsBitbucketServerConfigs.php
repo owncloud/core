@@ -17,8 +17,6 @@
 
 namespace Google\Service\CloudBuild\Resource;
 
-use Google\Service\CloudBuild\AddBitbucketServerConnectedRepositoryRequest;
-use Google\Service\CloudBuild\AddBitbucketServerConnectedRepositoryResponse;
 use Google\Service\CloudBuild\BitbucketServerConfig;
 use Google\Service\CloudBuild\CloudbuildEmpty;
 use Google\Service\CloudBuild\ListBitbucketServerConfigsResponse;
@@ -35,24 +33,6 @@ use Google\Service\CloudBuild\RemoveBitbucketServerConnectedRepositoryRequest;
  */
 class ProjectsLocationsBitbucketServerConfigs extends \Google\Service\Resource
 {
-  /**
-   * Add a Bitbucket Server repository to a given BitbucketServerConfig's
-   * connected repositories. This API is experimental.
-   * (bitbucketServerConfigs.addBitbucketServerConnectedRepository)
-   *
-   * @param string $config Required. The name of the `BitbucketServerConfig` to
-   * add a connected repository. Format:
-   * `projects/{project}/locations/{location}/bitbucketServerConfigs/{config}`
-   * @param AddBitbucketServerConnectedRepositoryRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return AddBitbucketServerConnectedRepositoryResponse
-   */
-  public function addBitbucketServerConnectedRepository($config, AddBitbucketServerConnectedRepositoryRequest $postBody, $optParams = [])
-  {
-    $params = ['config' => $config, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('addBitbucketServerConnectedRepository', [$params], AddBitbucketServerConnectedRepositoryResponse::class);
-  }
   /**
    * Creates a new `BitbucketServerConfig`. This API is experimental.
    * (bitbucketServerConfigs.create)

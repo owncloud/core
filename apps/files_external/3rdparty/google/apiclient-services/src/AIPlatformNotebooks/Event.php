@@ -20,6 +20,10 @@ namespace Google\Service\AIPlatformNotebooks;
 class Event extends \Google\Model
 {
   /**
+   * @var string[]
+   */
+  public $details;
+  /**
    * @var string
    */
   public $reportTime;
@@ -28,6 +32,20 @@ class Event extends \Google\Model
    */
   public $type;
 
+  /**
+   * @param string[]
+   */
+  public function setDetails($details)
+  {
+    $this->details = $details;
+  }
+  /**
+   * @return string[]
+   */
+  public function getDetails()
+  {
+    return $this->details;
+  }
   /**
    * @param string
    */

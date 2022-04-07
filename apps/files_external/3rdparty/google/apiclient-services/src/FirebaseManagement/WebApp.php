@@ -23,6 +23,10 @@ class WebApp extends \Google\Collection
   /**
    * @var string
    */
+  public $apiKeyId;
+  /**
+   * @var string
+   */
   public $appId;
   /**
    * @var string[]
@@ -45,6 +49,20 @@ class WebApp extends \Google\Collection
    */
   public $webId;
 
+  /**
+   * @param string
+   */
+  public function setApiKeyId($apiKeyId)
+  {
+    $this->apiKeyId = $apiKeyId;
+  }
+  /**
+   * @return string
+   */
+  public function getApiKeyId()
+  {
+    return $this->apiKeyId;
+  }
   /**
    * @param string
    */

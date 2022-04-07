@@ -23,7 +23,7 @@ use Google\Client;
  * Service definition for AuthorizedBuyersMarketplace (v1).
  *
  * <p>
- * The Authorized Buyers Marketplace API allows buyers programmatically discover
+ * The Authorized Buyers Marketplace API lets buyers programmatically discover
  * inventory; propose, retrieve and negotiate deals with publishers.</p>
  *
  * <p>
