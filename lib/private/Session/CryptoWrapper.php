@@ -118,7 +118,7 @@ class CryptoWrapper {
 	/**
 	 * Refresh the cookie expiration time
 	 */
-	public function refreshCookie(IConfig $config) {
+	public function refreshCookie(IConfig $config, $expire = null) {
 		if ($this->request->getCookie(self::COOKIE_NAME) === null) {
 			return;
 		}
@@ -127,6 +127,9 @@ class CryptoWrapper {
 		// FIXME: Required for CI
 		if (!\defined('PHPUNIT_RUN')) {
 			$options = $this->prepareOptions($config);
+			if ($expire !== null) {
+				$options['expires'] = $this->timeFactory->getTime() + $expire;
+			}
 			$this->sendCookieToBrowser($this->passphrase, $options);
 		}
 	}

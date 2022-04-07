@@ -185,6 +185,7 @@ $array = [
 	"oc_config" => [
 			'session_lifetime'	=> \min(\OC::$server->getConfig()->getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
 			'session_keepalive'	=> \OC::$server->getConfig()->getSystemValue('session_keepalive', true),
+			'session_force_logout_on_exit'	=> \OC::$server->getConfig()->getSystemValue('session_force_logout_on_exit', false),
 			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
 			'lost_password_link'	=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
 			'modRewriteWorking'	=> (\getenv('front_controller_active') === 'true'),

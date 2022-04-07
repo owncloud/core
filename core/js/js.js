@@ -1646,6 +1646,17 @@ function initCore() {
 		initMouseTrack();
 	}
 
+	if (oc_config.session_force_logout_on_exit !== undefined && oc_config.session_force_logout_on_exit) {
+		$(window).on('beforeunload', function() {
+			$.ajax({
+				method: 'POST',
+				url: OC.generateUrl('/heartbeat'),
+				data: {t: 10},
+				async: false
+			});
+		});
+	}
+
 	OC.registerMenu($('#expand'), $('#expanddiv'));
 
 	/**
