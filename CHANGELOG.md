@@ -220,6 +220,11 @@ Details
    symfony/polyfill-php72 v1.25.0 - symfony/polyfill-php73 v1.25.0 -
    symfony/polyfill-php80 v1.25.0
 
+   The following Symfony contract components have been updated to: -
+   symfony/deprecation-contracts (v2.5.0 to v2.5.1) - symfony/event-dispatcher-contracts
+   (v1.1.11 to v1.1.12) - symfony/service-contracts (v2.5.0 to v2.5.1) -
+   symfony/translation-contracts (v2.5.0 to v2.5.1)
+
    https://github.com/owncloud/core/pull/39526
    https://github.com/owncloud/core/pull/39631
    https://github.com/owncloud/core/pull/39646
@@ -227,6 +232,7 @@ Details
    https://github.com/owncloud/core/pull/39838
    https://github.com/owncloud/core/pull/39855
    https://github.com/owncloud/core/pull/39940
+   https://github.com/owncloud/core/pull/39955
    https://symfony.com/blog/symfony-4-4-34-released
    https://symfony.com/blog/symfony-4-4-36-released
    https://symfony.com/blog/symfony-4-4-37-released
