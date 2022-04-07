@@ -1,0 +1,5 @@
+Bugfix: Limit the width of the form on login page
+
+The login form breaks if error messages and info messages are longer.
+
+https://github.com/owncloud/core/pull/39962
