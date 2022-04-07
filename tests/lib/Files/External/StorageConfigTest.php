@@ -55,7 +55,7 @@ class StorageConfigTest extends \Test\TestCase {
 		$storageConfig->setMountPoint('test');
 		$storageConfig->setBackend($backend);
 		$storageConfig->setAuthMechanism($authMech);
-		$storageConfig->setBackendOptions(['user' => 'test', 'password' => 'password123', 'secure' => true, 'key' => "12345\r\n"]);
+		$storageConfig->setBackendOptions(['user' => 'test', 'password' => 'password123', 'secure' => true, 'key' => "12345"]);
 		$storageConfig->setPriority(128);
 		$storageConfig->setApplicableUsers(['user1', 'user2']);
 		$storageConfig->setApplicableGroups(['group1', 'group2']);
