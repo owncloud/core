@@ -24,6 +24,7 @@ Summary
 * Bugfix - Avoid sending unneeded passwords in the files_external app: [#39841](https://github.com/owncloud/core/pull/39841)
 * Bugfix - Fix issue with requesting an invalid share id: [#39868](https://github.com/owncloud/core/issues/39868)
 * Bugfix - Remove fr_FR language variant: [#39931](https://github.com/owncloud/core/issues/39931)
+* Bugfix - Limit the width of the form on login page: [#39962](https://github.com/owncloud/core/pull/39962)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -149,6 +150,12 @@ Details
 
    https://github.com/owncloud/core/issues/39931
    https://github.com/owncloud/core/pull/39939
+
+* Bugfix - Limit the width of the form on login page: [#39962](https://github.com/owncloud/core/pull/39962)
+
+   The login form breaks if error messages and info messages are longer.
+
+   https://github.com/owncloud/core/pull/39962
 
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 
