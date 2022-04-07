@@ -1632,7 +1632,7 @@ function initCore() {
 		}, interval * 1000);
 
 		// set a couple of variables to indicate that the mouse has moved
-		$(window).on('mousemove', function() {
+		$(window).on('mousemove.sessiontrack', function() {
 			mouseMoved = true;
 			extendableMouseMoved = true;
 		});
@@ -1646,12 +1646,12 @@ function initCore() {
 		initMouseTrack();
 	}
 
-	if (oc_config.session_force_logout_on_exit !== undefined && oc_config.session_force_logout_on_exit) {
-		$(window).on('beforeunload', function() {
+	if (oc_config.session_forced_logout_timeout !== undefined && oc_config.session_forced_logout_timeout > 0) {
+		$(window).on('beforeunload.sessiontrack', function() {
 			$.ajax({
 				method: 'POST',
 				url: OC.generateUrl('/heartbeat'),
-				data: {t: 10},
+				data: {t: oc_config.session_forced_logout_timeout},
 				async: false
 			});
 		});
