@@ -277,7 +277,7 @@ a.two-factor-cancel {
 #body-login form {
 	position: relative;
 	margin: 32px auto;
-	min-width: 300px;
+	width: 300px;
 }
 
 #body-login form fieldset {
