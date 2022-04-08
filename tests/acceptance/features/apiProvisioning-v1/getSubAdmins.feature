@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS @skipOnGraph
 Feature: get subadmins
   As an admin
   I want to be able to get the list of subadmins of a group

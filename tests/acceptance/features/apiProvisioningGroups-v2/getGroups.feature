@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @rememberGroupsThatExist @skipOnLDAP
+@api @provisioning_api-app-required @rememberGroupsThatExist @skipOnLDAP @skipOnGraph
 Feature: get groups
   As an admin
   I want to be able to get groups
