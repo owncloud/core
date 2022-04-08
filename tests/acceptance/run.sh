@@ -404,7 +404,7 @@ function run_behat_tests() {
 		cat ${SCRIPT_PATH}/usernames.json
 	fi
 
-	${BEHAT} --colors --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+	${BEHAT} --colors --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
@@ -589,7 +589,7 @@ function run_behat_tests() {
 				fi
 
 				echo "Rerun failed scenario: ${FAILED_SCENARIO_PATH}"
-				${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+				${BEHAT} --colors --strict -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 				if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 				then
@@ -619,7 +619,7 @@ function run_behat_tests() {
 		# Big red error output is displayed if there are no matching scenarios - send it to null
 		DRY_RUN_FILE=$(mktemp)
 		SKIP_TAGS="${TEST_TYPE_TAG}&&@skip"
-		${BEHAT} --dry-run --colors -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
+		${BEHAT} --dry-run --colors -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
 		if grep -q -m 1 'No scenarios' "${DRY_RUN_FILE}"
 		then
 			# If there are no skip scenarios, then no need to report that
