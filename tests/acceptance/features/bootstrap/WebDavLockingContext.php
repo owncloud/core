@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcsApiHelper;
@@ -287,6 +288,80 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
+	 *
+	 * @param string $user
+	 * @param string $itemToUnlock
+	 *
+	 * @return int|void
+	 *
+	 * @throws Exception|GuzzleException
+	 */
+	private function countLockOfResources(
+		string $user,
+		string $itemToUnlock
+	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$password = $this->featureContext->getPasswordForUser($user);
+		$body
+			= "<?xml version='1.0' encoding='UTF-8'?>" .
+			"<d:propfind xmlns:d='DAV:'> " .
+			"<d:prop><d:lockdiscovery/></d:prop>" .
+			"</d:propfind>";
+		$response = WebDavHelper::makeDavRequest(
+			$baseUrl,
+			$user,
+			$password,
+			"PROPFIND",
+			$itemToUnlock,
+			null,
+			$this->featureContext->getStepLineRef(),
+			$body,
+			$this->featureContext->getDavPathVersion()
+		);
+		$responseXml = $this->featureContext->getResponseXml($response, __METHOD__);
+		$xmlPart = $responseXml->xpath("//d:response//d:lockdiscovery/d:activelock");
+		if (\is_array($xmlPart)) {
+			return \count($xmlPart);
+		} else {
+			throw new Exception("xmlPart for 'd:activelock' was expected to be array but found: $xmlPart");
+		}
+	}
+
+	/**
+	 * @Given user :user has unlocked file/folder :itemToUnlock with the last created lock of file/folder :itemToUseLockOf of user :lockOwner using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $itemToUnlock
+	 * @param string $lockOwner
+	 * @param string $itemToUseLockOf
+	 * @param boolean $public
+	 *
+	 * @return void
+	 * @throws Exception|GuzzleException
+	 */
+	public function hasUnlockItemWithTheLastCreatedLock(
+		$user,
+		$itemToUnlock,
+		$lockOwner,
+		$itemToUseLockOf,
+		$public = false
+	) {
+		$lockCount = $this->countLockOfResources($user, $itemToUnlock);
+
+		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
+			$user,
+			$itemToUnlock,
+			$lockOwner,
+			$itemToUseLockOf,
+			$public
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe(204);
+
+		$this->numberOfLockShouldBeReported($lockCount - 1, $itemToUnlock, $user);
+	}
+
+	/**
 	 * @When user :user unlocks file/folder :itemToUnlock with the last created lock of file/folder :itemToUseLockOf of user :lockOwner using the WebDAV API
 	 *
 	 * @param string $user
@@ -298,11 +373,11 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
-		$user,
-		$itemToUnlock,
-		$lockOwner,
-		$itemToUseLockOf,
-		$public = false
+		string $user,
+		string $itemToUnlock,
+		string $lockOwner,
+		string $itemToUseLockOf,
+		bool $public = false
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$lockOwner = $this->featureContext->getActualUsername($lockOwner);
@@ -337,6 +412,7 @@ class WebDavLockingContext implements Context {
 				$type
 			)
 		);
+		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -544,33 +620,14 @@ class WebDavLockingContext implements Context {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function numberOfLockShouldBeReported($count, $file, $user) {
-		$user = $this->featureContext->getActualUsername($user);
-		$baseUrl = $this->featureContext->getBaseUrl();
-		$password = $this->featureContext->getPasswordForUser($user);
-		$body
-			= "<?xml version='1.0' encoding='UTF-8'?>" .
-			"<d:propfind xmlns:d='DAV:'> " .
-			"<d:prop><d:lockdiscovery/></d:prop>" .
-			"</d:propfind>";
-		$response = WebDavHelper::makeDavRequest(
-			$baseUrl,
-			$user,
-			$password,
-			"PROPFIND",
-			$file,
-			null,
-			$this->featureContext->getStepLineRef(),
-			$body,
-			$this->featureContext->getDavPathVersion()
-		);
-		$responseXml = $this->featureContext->getResponseXml($response, __METHOD__);
-		$xmlPart = $responseXml->xpath("//d:response//d:lockdiscovery/d:activelock");
-		Assert::assertCount(
-			(int) $count,
-			$xmlPart,
-			"expected $count lock(s) for '$file' but found " . \count($xmlPart)
+		$lockCount = $this->countLockOfResources($user, $file);
+		Assert::assertEquals(
+			$count,
+			$lockCount,
+			"Expected $count lock(s) for '$file' but found '$lockCount'"
 		);
 	}
 
