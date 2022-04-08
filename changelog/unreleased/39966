@@ -1,0 +1,8 @@
+Bugfix: Allow re-uploading the same folder after being renamed
+
+Previously, you couldn't upload a folder, rename it in the web UI and then
+re-upload the same folder.
+
+This behavior is fixed, so you can now re-upload the folder after renaming it
+
+https://github.com/owncloud/core/pull/39966
