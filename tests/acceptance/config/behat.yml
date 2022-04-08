@@ -1231,10 +1231,6 @@ default:
         - WebUIFileActionsMenuContext:
 
   extensions:
-    jarnaiz\JUnitFormatter\JUnitFormatterExtension:
-      filename: report.xml
-      outputDir: '%paths.base%/../output/'
-
     rdx\behatvars\BehatVariablesExtension: ~
 
     Cjm\Behat\StepThroughExtension: ~
