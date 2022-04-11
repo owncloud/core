@@ -22,7 +22,8 @@ Feature: resharing can be done on a reshared resource
     And user "Carol" has shared file "/Shares/textfile0_shared.txt" with user "David"
     And user "David" has accepted share "<pending_share_path>" offered by user "Carol"
     When user "Brian" deletes file "/textfile0_shared.txt" using the WebDAV API
-    Then the content of file "/Shares/textfile0_shared.txt" for user "Carol" should be "ownCloud test text file 0"
+    Then the HTTP status code should be "204"
+    And the content of file "/Shares/textfile0_shared.txt" for user "Carol" should be "ownCloud test text file 0"
     And the content of file "/Shares/textfile0_shared.txt" for user "David" should be "ownCloud test text file 0"
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
@@ -47,5 +48,6 @@ Feature: resharing can be done on a reshared resource
     And user "Carol" has shared file "/Shares/textfile0.txt" with user "David"
     And user "David" has accepted share "/textfile0.txt" offered by user "Carol"
     When user "Brian" deletes file "/Shares/textfile0.txt" using the WebDAV API
-    Then the content of file "/Shares/textfile0.txt" for user "Carol" should be "ownCloud test text file 0"
+    Then the HTTP status code should be "204"
+    And the content of file "/Shares/textfile0.txt" for user "Carol" should be "ownCloud test text file 0"
     And the content of file "/Shares/textfile0.txt" for user "David" should be "ownCloud test text file 0"
