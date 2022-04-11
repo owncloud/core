@@ -1648,12 +1648,29 @@ function initCore() {
 
 	if (oc_config.session_forced_logout_timeout !== undefined && oc_config.session_forced_logout_timeout > 0) {
 		$(window).on('beforeunload.sessiontrack', function() {
-			$.ajax({
+			var requestData = {
 				method: 'POST',
-				url: OC.generateUrl('/heartbeat'),
-				data: {t: oc_config.session_forced_logout_timeout},
-				async: false
-			});
+				headers: {
+					'Content-Type': 'application/json',
+					'X-Requested-With': 'XMLHttpRequest'
+				},
+				body: JSON.stringify({t: oc_config.session_forced_logout_timeout}),
+				credentials: 'same-origin',
+				keepalive: true
+			};
+			var r = new Request(OC.generateUrl('/heartbeat'), requestData);
+			if (r.keepalive === undefined) {
+				// firefox doesn't support keepalive (checked 4th Apr 2022)
+				// try a sync ajax call instead
+				$.ajax({
+					method: 'POST',
+					url: OC.generateUrl('/heartbeat'),
+					data: {t: oc_config.session_forced_logout_timeout},
+					async: false
+				});
+			} else {
+				fetch(r);
+			}
 		});
 	}
 
