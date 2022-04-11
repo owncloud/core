@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "feda99650b3d0e81c72ae95086049cb7",
+    "content-hash": "6415f3c3b348bf70068b33801450a15a",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -65,24 +65,24 @@
         },
         {
             "name": "google/apiclient",
-            "version": "v2.12.1",
+            "version": "v2.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client.git",
-                "reference": "1530583a711f4414407112c4068464bcbace1c71"
+                "reference": "a18b0e1ef5618523c607c01a41ec137c7f9af3b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/1530583a711f4414407112c4068464bcbace1c71",
-                "reference": "1530583a711f4414407112c4068464bcbace1c71",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/a18b0e1ef5618523c607c01a41ec137c7f9af3b1",
+                "reference": "a18b0e1ef5618523c607c01a41ec137c7f9af3b1",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0",
+                "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0||~6.0",
                 "google/apiclient-services": "~0.200",
                 "google/auth": "^1.10",
                 "guzzlehttp/guzzle": "~5.3.3||~6.0||~7.0",
-                "guzzlehttp/psr7": "^1.7||^2.0.0",
+                "guzzlehttp/psr7": "^1.8.4||^2.2.1",
                 "monolog/monolog": "^1.17||^2.0",
                 "php": "^5.6|^7.0|^8.0",
                 "phpseclib/phpseclib": "~2.0||^3.0.2"
@@ -130,22 +130,22 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client/issues",
-                "source": "https://github.com/googleapis/google-api-php-client/tree/v2.12.1"
+                "source": "https://github.com/googleapis/google-api-php-client/tree/v2.12.2"
             },
-            "time": "2021-12-02T03:34:25+00:00"
+            "time": "2022-04-05T16:19:05+00:00"
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.242.0",
+            "version": "v0.243.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "73d4c0ed4b241e7396699e0ee1d1cdebabac25e8"
+                "reference": "d42d368b73a26e1d2a5250ac91cf89bb19e0730b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/73d4c0ed4b241e7396699e0ee1d1cdebabac25e8",
-                "reference": "73d4c0ed4b241e7396699e0ee1d1cdebabac25e8",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/d42d368b73a26e1d2a5250ac91cf89bb19e0730b",
+                "reference": "d42d368b73a26e1d2a5250ac91cf89bb19e0730b",
                 "shasum": ""
             },
             "require": {
@@ -174,9 +174,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.242.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.243.0"
             },
-            "time": "2022-04-03T01:24:10+00:00"
+            "time": "2022-04-10T01:14:37+00:00"
         },
         {
             "name": "google/auth",
@@ -606,16 +606,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.4.0",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "d7fd7450628561ba697b7097d86db72662f54aef"
+                "reference": "4192345e260f1d51b365536199744b987e160edc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/d7fd7450628561ba697b7097d86db72662f54aef",
-                "reference": "d7fd7450628561ba697b7097d86db72662f54aef",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/4192345e260f1d51b365536199744b987e160edc",
+                "reference": "4192345e260f1d51b365536199744b987e160edc",
                 "shasum": ""
             },
             "require": {
@@ -689,7 +689,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.4.0"
+                "source": "https://github.com/Seldaek/monolog/tree/2.5.0"
             },
             "funding": [
                 {
@@ -701,7 +701,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-14T12:44:37+00:00"
+            "time": "2022-04-08T15:43:54+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -1215,5 +1215,5 @@
     "platform-overrides": {
         "php": "7.2"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
