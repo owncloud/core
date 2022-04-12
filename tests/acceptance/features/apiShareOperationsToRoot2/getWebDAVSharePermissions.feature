@@ -15,7 +15,8 @@ Feature: sharing
     When user "Alice" gets the following properties of file "/tmp.txt" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "19"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "ocs:share-permissions" with value "19"
     Examples:
       | dav-path |
       | old      |
@@ -28,7 +29,8 @@ Feature: sharing
     When user "Brian" gets the following properties of file "/tmp.txt" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "19"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "19"
     Examples:
       | dav-path |
       | old      |
@@ -47,7 +49,8 @@ Feature: sharing
     When user "Brian" gets the following properties of file "/tmp.txt" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "19"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "19"
     Examples:
       | dav-path |
       | old      |
@@ -59,7 +62,8 @@ Feature: sharing
     And user "Alice" has shared file "tmp.txt" with user "Brian"
     When user "Alice" updates the last share using the sharing API with
       | permissions | update,read |
-    Then as user "Brian" file "/tmp.txt" should contain a property "ocs:share-permissions" with value "3"
+    Then the HTTP status code should be "200"
+    And as user "Brian" file "/tmp.txt" should contain a property "ocs:share-permissions" with value "3"
     Examples:
       | dav-path |
       | old      |
@@ -78,7 +82,8 @@ Feature: sharing
     When user "Brian" gets the following properties of file "/tmp.txt" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "3"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "3"
     Examples:
       | dav-path |
       | old      |
@@ -90,7 +95,8 @@ Feature: sharing
     And user "Alice" has shared file "tmp.txt" with user "Brian"
     When user "Alice" updates the last share using the sharing API with
       | permissions | share,read |
-    Then as user "Brian" file "/tmp.txt" should contain a property "ocs:share-permissions" with value "17"
+    Then the HTTP status code should be "200"
+    And as user "Brian" file "/tmp.txt" should contain a property "ocs:share-permissions" with value "17"
     Examples:
       | dav-path |
       | old      |
@@ -109,7 +115,8 @@ Feature: sharing
     When user "Brian" gets the following properties of file "/tmp.txt" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "17"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "17"
     Examples:
       | dav-path |
       | old      |
@@ -122,7 +129,8 @@ Feature: sharing
     When user "Alice" gets the following properties of folder "/" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "31"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "ocs:share-permissions" with value "31"
     Examples:
       | dav-path |
       | old      |
@@ -135,7 +143,8 @@ Feature: sharing
     When user "Brian" gets the following properties of folder "/tmp" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "31"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "31"
     Examples:
       | dav-path |
       | old      |
@@ -153,7 +162,8 @@ Feature: sharing
     When user "Brian" gets the following properties of folder "/tmp" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "31"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "31"
     Examples:
       | dav-path |
       | old      |
@@ -165,7 +175,8 @@ Feature: sharing
     And user "Alice" has shared file "/tmp" with user "Brian"
     When user "Alice" updates the last share using the sharing API with
       | permissions | share,delete,create,read |
-    Then as user "Brian" folder "/tmp" should contain a property "ocs:share-permissions" with value "29"
+    Then the HTTP status code should be "200"
+    And as user "Brian" folder "/tmp" should contain a property "ocs:share-permissions" with value "29"
     Examples:
       | dav-path |
       | old      |
@@ -184,7 +195,8 @@ Feature: sharing
     When user "Brian" gets the following properties of folder "/tmp" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "29"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "29"
     Examples:
       | dav-path |
       | old      |
@@ -196,7 +208,8 @@ Feature: sharing
     And user "Alice" has shared file "/tmp" with user "Brian"
     When user "Alice" updates the last share using the sharing API with
       | permissions | share,delete,update,read |
-    Then as user "Brian" folder "/tmp" should contain a property "ocs:share-permissions" with value "27"
+    Then the HTTP status code should be "200"
+    And as user "Brian" folder "/tmp" should contain a property "ocs:share-permissions" with value "27"
     Examples:
       | dav-path |
       | old      |
@@ -215,7 +228,8 @@ Feature: sharing
     When user "Brian" gets the following properties of folder "/tmp" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "27"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "27"
     Examples:
       | dav-path |
       | old      |
@@ -227,7 +241,8 @@ Feature: sharing
     And user "Alice" has shared file "/tmp" with user "Brian"
     When user "Alice" updates the last share using the sharing API with
       | permissions | share,create,update,read |
-    Then as user "Brian" folder "/tmp" should contain a property "ocs:share-permissions" with value "23"
+    Then the HTTP status code should be "200"
+    And as user "Brian" folder "/tmp" should contain a property "ocs:share-permissions" with value "23"
     Examples:
       | dav-path |
       | old      |
@@ -246,7 +261,8 @@ Feature: sharing
     When user "Brian" gets the following properties of folder "/tmp" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "23"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "23"
     Examples:
       | dav-path |
       | old      |
@@ -258,7 +274,8 @@ Feature: sharing
     And user "Alice" has shared file "/tmp" with user "Brian"
     When user "Alice" updates the last share using the sharing API with
       | permissions | change |
-    Then as user "Brian" folder "/tmp" should contain a property "ocs:share-permissions" with value "15"
+    Then the HTTP status code should be "200"
+    And as user "Brian" folder "/tmp" should contain a property "ocs:share-permissions" with value "15"
     Examples:
       | dav-path |
       | old      |
@@ -277,7 +294,8 @@ Feature: sharing
     When user "Brian" gets the following properties of folder "/tmp" using the WebDAV API
       | propertyName          |
       | ocs:share-permissions |
-    Then the single response should contain a property "ocs:share-permissions" with value "15"
+    Then the HTTP status code should be "200"
+    And the single response should contain a property "ocs:share-permissions" with value "15"
     Examples:
       | dav-path |
       | old      |
