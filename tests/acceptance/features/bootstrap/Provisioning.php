@@ -1371,8 +1371,7 @@ trait Provisioning {
 		string $user,
 		string $password
 	):void {
-		$useGraph = OcisHelper::isTestingWithGraphApi();
-		if ($useGraph) {
+		if (OcisHelper::isTestingWithGraphApi()) {
 			$this->graphContext->adminChangesPasswordOfUserToUsingTheGraphApi(
 				$user,
 				$password
@@ -2907,8 +2906,8 @@ trait Provisioning {
 	 */
 	public function theseGroupsShouldNotExist(string $shouldOrNot, TableNode $table):void {
 		$should = ($shouldOrNot !== "not");
-		$graphMode = OcisHelper::isTestingWithGraphApi();
-		if ($graphMode) {
+		$useGraph = OcisHelper::isTestingWithGraphApi();
+		if ($useGraph) {
 			$groups = $this->graphContext->adminHasRetrievedGroupListUsingTheGraphApi();
 		} else {
 			$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
@@ -2916,7 +2915,7 @@ trait Provisioning {
 
 		$this->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
-			if ($graphMode) {
+			if ($useGraph) {
 				$exists = false;
 				foreach ($groups as $group) {
 					if ($group['displayName'] === $row['groupname']) {
@@ -3574,7 +3573,6 @@ trait Provisioning {
 				$this->getAdminUsername(),
 				$this->getAdminPassword()
 			);
-			// TODO: user do not belong in group
 			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 			\sort($respondedArray);
 			Assert::assertNotContains($group, $respondedArray);
@@ -3878,7 +3876,7 @@ trait Provisioning {
 	 * @param string $group
 	 * @param bool $shouldExist - true if the group should exist
 	 * @param bool $possibleToDelete - true if it is possible to delete the group
-	 * @param string|null $id - id of the group, only required for the graph api created groups
+	 * @param string|null $id - id of the group, only required for the groups created using the Graph API
 	 *
 	 * @return void
 	 */
