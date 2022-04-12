@@ -1658,9 +1658,13 @@ function initCore() {
 				credentials: 'same-origin',
 				keepalive: true
 			};
-			var r = new Request(OC.generateUrl('/heartbeat'), requestData);
-			if (r.keepalive === undefined) {
-				// firefox doesn't support keepalive (checked 4th Apr 2022)
+			var r = undefined;
+			if (typeof Request !== "undefined") {
+				// IE 11 doesn't have support "Request", so we'll fallback to ajax
+				r = new Request(OC.generateUrl('/heartbeat'), requestData);
+			}
+			if (r === undefined || r.keepalive === undefined) {
+				// firefox doesn't support keepalive (checked 11th Apr 2022)
 				// try a sync ajax call instead
 				$.ajax({
 					method: 'POST',
