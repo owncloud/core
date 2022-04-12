@@ -83,7 +83,7 @@ class Cache implements ICache {
 	protected $connection;
 
 	/**
-	 * we use a static cache for the path lookup by id because to filecache already knows about all storages
+	 * we use a static cache for the path lookup by id because the filecache already knows about all storages
 	 * and a single trip to the db is sufficient to answer subsequent calls.
 	 * Each entry will contain a storage and a path, such as:
 	 *
