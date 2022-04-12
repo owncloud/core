@@ -2087,12 +2087,13 @@ trait Provisioning {
 	 */
 	public function adminHasChangedTheEmailOfUserTo(string $user, string $email):void {
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$updatedUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
+			$this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$user,
 				null,
 				null,
 				$email
 			);
+			$updatedUserData = $this->getJsonDecodedResponse();
 			Assert::assertEquals(
 				$email,
 				$updatedUserData['mail']
@@ -2213,7 +2214,7 @@ trait Provisioning {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$updateUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
+			$this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$targetUser,
 				null,
 				null,
@@ -2222,9 +2223,10 @@ trait Provisioning {
 				$requestingUser,
 				$this->getPasswordForUser($requestingUser)
 			);
+			$updatedUserData = $this->getJsonDecodedResponse();
 			Assert::assertEquals(
 				$email,
-				$updateUserData['mail'],
+				$updatedUserData['mail'],
 			);
 		} else {
 			$this->userChangesUserEmailUsingProvisioningApi(
@@ -2285,16 +2287,17 @@ trait Provisioning {
 				$displayName
 			);
 		} elseif (OcisHelper::isTestingWithGraphApi()) {
-			$updateUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
+			$this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$user,
 				null,
 				null,
 				null,
 				$displayName
 			);
+			$updatedUserData = $this->getJsonDecodedResponse();
 			Assert::assertEquals(
 				$displayName,
-				$updateUserData['displayName']
+				$updatedUserData['displayName']
 			);
 		} else {
 			$this->adminChangesTheDisplayNameOfUserUsingKey(
@@ -2488,7 +2491,7 @@ trait Provisioning {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$updatedUserData = $this->graphContext->userHasBeenEditedUsingTheGraphApi(
+			$this->graphContext->userHasBeenEditedUsingTheGraphApi(
 				$targetUser,
 				null,
 				null,
@@ -2497,6 +2500,7 @@ trait Provisioning {
 				$requestingUser,
 				$this->getPasswordForUser($requestingUser)
 			);
+			$updatedUserData = $this->getJsonDecodedResponse();
 			Assert::assertEquals(
 				$displayName,
 				$updatedUserData['displayName']
@@ -4578,7 +4582,6 @@ trait Provisioning {
 			return false;
 		}
 		$group = \rawurlencode($group);
-		$base = '';
 		if (OcisHelper::isTestingWithGraphApi()) {
 			$base = '/graph/v1.0';
 			$group = $this->getAttributeOfCreatedGroup($group, "id");
