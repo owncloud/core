@@ -3203,7 +3203,6 @@ trait WebDav {
 			$fileId = $this->userHasUploadedAFileWithContentTo($user, $content, $destination["path"])[0];
 			\array_push($fileIds, $fileId);
 		}
-
 		return $fileIds;
 	}
 
@@ -3571,6 +3570,7 @@ trait WebDav {
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
+		$this->pushToLastHttpStatusCodesArray((string) $this->getResponse()->getStatusCode());
 	}
 
 	/**
@@ -3588,6 +3588,7 @@ trait WebDav {
 			["201", "204"],
 			"HTTP status code was not 201 or 204 while trying to create folder '$destination' for user '$user'"
 		);
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**

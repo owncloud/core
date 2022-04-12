@@ -23,7 +23,9 @@ Feature: write directly into the folder for received shares
   Scenario: the Shares folder does not exist if no share has been accepted
     Given user "Alice" has created folder "/shared"
     When user "Alice" shares folder "/shared" with user "Brian" using the sharing API
-    Then as "Brian" folder "/Shares" should not exist
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/Shares" should not exist
     And as "Alice" folder "/Shares" should not exist
 
 
@@ -31,7 +33,9 @@ Feature: write directly into the folder for received shares
     Given user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "/shared" with user "Brian"
     When user "Brian" accepts share "/shared" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares" should exist
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/Shares" should exist
     But as "Alice" folder "/Shares" should not exist
 
 
@@ -40,7 +44,9 @@ Feature: write directly into the folder for received shares
     And user "Alice" has shared folder "/shared" with user "Brian"
     And user "Brian" has accepted share "/shared" offered by user "Alice"
     When user "Alice" deletes the last share using the sharing API
-    Then as "Brian" folder "/Shares" should exist
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/Shares" should exist
     But as "Alice" folder "/Shares" should not exist
 
 
@@ -50,7 +56,10 @@ Feature: write directly into the folder for received shares
     And user "Brian" creates folder "/Shares/aFolder" using the WebDAV API
     And user "Alice" shares folder "/shared" with user "Brian" using the sharing API
     And user "Brian" accepts share "/shared" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares" should exist
+    #OCS status code is checked only for Sharing API request
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on each endpoint should be "201, 201, 200, 200" respectively
+    And as "Brian" folder "/Shares" should exist
     And as "Brian" folder "/Shares/shared" should exist
 
 
@@ -62,7 +71,9 @@ Feature: write directly into the folder for received shares
     And user "Brian" has uploaded file with content "data of Brian" to "/Shares/shared/aFile.txt"
     When user "Alice" shares folder "/shared" with user "Brian" using the sharing API
     And user "Brian" accepts share "/shared" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" folder "/Shares" should exist
     And as "Brian" folder "/Shares/shared" should exist
     And as "Brian" folder "/Shares/shared (2)" should exist
     And the content of file "/Shares/shared/aFile.txt" for user "Brian" should be "data of Brian"
@@ -76,7 +87,8 @@ Feature: write directly into the folder for received shares
     When user "Brian" uploads file with content "some data" to "/Shares/textfile.txt" using the WebDAV API
     And user "Brian" creates folder "/Shares/aFolder" using the WebDAV API
     And user "Brian" uploads file with content "more data" to "/Shares/aFolder/aFile.txt" using the WebDAV API
-    Then as "Brian" file "/Shares/textfile.txt" should exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Brian" file "/Shares/textfile.txt" should exist
     And the content of file "/Shares/textfile.txt" for user "Brian" should be "some data"
     And as "Brian" file "/Shares/aFolder/aFile.txt" should exist
     And the content of file "Shares/aFolder/aFile.txt" for user "Brian" should be "more data"
@@ -88,7 +100,8 @@ Feature: write directly into the folder for received shares
     And user "Brian" has accepted share "/shared" offered by user "Alice"
     And user "Brian" has uploaded file with content "some data" to "/textfile.txt"
     When user "Brian" moves file "/textfile.txt" to "/Shares/textfile.txt" using the WebDAV API
-    Then as "Brian" file "/Shares/textfile.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Brian" file "/Shares/textfile.txt" should exist
     And the content of file "Shares/textfile.txt" for user "Brian" should be "some data"
 
 
@@ -100,6 +113,7 @@ Feature: write directly into the folder for received shares
     And user "Brian" has created folder "/Shares/aFolder"
     When user "Brian" deletes file "/Shares/textfile.txt" using the WebDAV API
     And user "Brian" deletes folder "/Shares/aFolder" using the WebDAV API
-    Then as "Brian" folder "/Shares" should exist
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Brian" folder "/Shares" should exist
     But as "Brian" file "/Shares/textfile.txt" should not exist
     And as "Brian" folder "/Shares/aFolder" should not exist

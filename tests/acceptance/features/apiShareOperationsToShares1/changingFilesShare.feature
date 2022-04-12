@@ -17,7 +17,8 @@ Feature: sharing
     And user "Brian" has accepted share "/shared" offered by user "Alice"
     And user "Brian" has uploaded file with content "some data" to "/textfile0.txt"
     When user "Brian" moves file "textfile0.txt" to "/Shares/shared/shared_file.txt" using the WebDAV API
-    Then as "Brian" file "/Shares/shared/shared_file.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Brian" file "/Shares/shared/shared_file.txt" should exist
     And as "Alice" file "/shared/shared_file.txt" should exist
     Examples:
       | dav_version |
@@ -39,7 +40,8 @@ Feature: sharing
     And user "Brian" has accepted share "/shared" offered by user "Alice"
     And user "Brian" has moved folder "/Shares/shared" to "/shared_renamed"
     When user "Brian" moves file "/shared_renamed/shared_file.txt" to "/taken_out.txt" using the WebDAV API
-    Then as "Brian" file "/taken_out.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Brian" file "/taken_out.txt" should exist
     And as "Alice" file "/shared/shared_file.txt" should not exist
     And as "Alice" file "/shared_file.txt" should exist in the trashbin
     Examples:
@@ -58,7 +60,8 @@ Feature: sharing
     And user "Brian" has accepted share "/shared" offered by user "Alice"
     And user "Brian" has moved folder "/Shares/shared" to "/shared_renamed"
     When user "Brian" moves folder "/shared_renamed/sub" to "/taken_out" using the WebDAV API
-    Then as "Brian" folder "/taken_out" should exist
+    Then the HTTP status code should be "201"
+    And as "Brian" folder "/taken_out" should exist
     And as "Alice" folder "/shared/sub" should not exist
     And as "Alice" folder "/sub" should exist in the trashbin
     And as "Alice" file "/sub/shared_file.txt" should exist in the trashbin
@@ -105,10 +108,11 @@ Feature: sharing
     And user "Brian" has accepted share "/share1" offered by user "Alice"
     And user "Brian" has accepted share "/share2" offered by user "Alice"
     When user "Brian" moves file "textfile0.txt" to "/Shares/share1/shared_file.txt" using the WebDAV API
-    Then as "Brian" file "/Shares/share1/shared_file.txt" should exist
-    And as "Alice" file "share1/shared_file.txt" should exist
-    When user "Brian" moves file "/Shares/share1/shared_file.txt" to "/Shares/share2/shared_file.txt" using the WebDAV API
-    Then as "Brian" file "/Shares/share2/shared_file.txt" should exist
+    And user "Brian" moves file "/Shares/share1/shared_file.txt" to "/Shares/share2/shared_file.txt" using the WebDAV API
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Brian" file "/Shares/share1/shared_file.txt" should not exist
+    And as "Alice" file "share1/shared_file.txt" should not exist
+    But as "Brian" file "/Shares/share2/shared_file.txt" should exist
     And as "Alice" file "share2/shared_file.txt" should exist
     Examples:
       | dav_version |
