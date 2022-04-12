@@ -1130,7 +1130,8 @@ trait Provisioning {
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 			// Check all requests to inspect failures.
 			foreach ($results as $key => $e) {
-				// TODO: remove server exception after fix in graph api
+				// TODO: remove "ServerException" after fix in graph api
+				// https://github.com/owncloud/ocis/issues/3516
 				// currently the server returns a 500 error code if user already exists
 				if ($e instanceof ClientException || $e instanceof ServerException) {
 					if ($useGraph) {
