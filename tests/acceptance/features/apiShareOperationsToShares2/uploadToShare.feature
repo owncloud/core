@@ -170,7 +170,7 @@ Feature: sharing
       | dav-path |
       | spaces   |
 
-  @smokeTest
+  @smokeTest @skipOnGraph
   Scenario Outline: Check quota of owners parent directory of a shared file
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -198,7 +198,7 @@ Feature: sharing
       | dav-path |
       | spaces   |
 
-
+  @skipOnGraph
   Scenario Outline: Uploading to a user shared folder with read/write permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and small skeleton files
@@ -250,7 +250,7 @@ Feature: sharing
       | dav-path |
       | spaces   |
 
-
+  @skipOnGraph
   Scenario Outline: Uploading to a user shared folder with upload-only permission when the sharer has insufficient quota does not work
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -275,7 +275,7 @@ Feature: sharing
       | dav-path |
       | spaces   |
 
-
+  @skipOnGraph
   Scenario Outline: Uploading to a group shared folder with upload-only permission when the sharer has insufficient quota does not work
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

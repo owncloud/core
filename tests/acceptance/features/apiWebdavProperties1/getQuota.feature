@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-101
+@api @issue-ocis-reva-101 @skipOnGraph
 Feature: get quota
   As a user
   I want to be able to find out my available storage quota

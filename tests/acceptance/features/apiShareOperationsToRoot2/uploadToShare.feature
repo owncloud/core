@@ -127,7 +127,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @smokeTest
+  @smokeTest @skipOnGraph
   Scenario Outline: Check quota of owners parent directory of a shared file
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
