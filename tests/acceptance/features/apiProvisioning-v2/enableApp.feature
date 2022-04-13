@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @comments-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @comments-app-required @skipOnLDAP @notToImplementOnOCIS @skipOnGraph
 Feature: enable an app
   As an admin
   I want to be able to enable a disabled app

@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP
+@api @provisioning_api-app-required @skipOnLDAP @skipOnGraph
 Feature: edit users
   As an admin, subadmin or as myself
   I want to be able to edit user information

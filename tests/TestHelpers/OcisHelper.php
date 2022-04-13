@@ -69,6 +69,13 @@ class OcisHelper {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public static function isTestingWithGraphApi(): bool {
+		return \getenv('TEST_WITH_GRAPH_API') === 'true';
+	}
+
+	/**
 	 * @return bool|string false if no command given or the command as string
 	 */
 	public static function getDeleteUserDataCommand() {

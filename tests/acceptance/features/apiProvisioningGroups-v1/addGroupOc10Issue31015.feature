@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS @skipOnGraph
 Feature: add groups
   As an admin
   I want to be able to add groups

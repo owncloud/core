@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP
+@api @provisioning_api-app-required @skipOnLDAP @skipOnGraph
 Feature: delete users
   As an admin
   I want to be able to delete users

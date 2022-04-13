@@ -283,6 +283,12 @@ class FeatureContext extends BehatVariablesContext {
 
 	/**
 	 *
+	 * @var GraphContext
+	 */
+	public $graphContext;
+
+	/**
+	 *
 	 * @var AppConfigurationContext
 	 */
 	public $appConfigurationContext;
@@ -3540,6 +3546,12 @@ class FeatureContext extends BehatVariablesContext {
 		if ($this->isTestingWithLdap()) {
 			$suiteParameters = SetupHelper::getSuiteParameters($scope);
 			$this->connectToLdap($suiteParameters);
+		}
+
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext = new GraphContext();
+			$this->graphContext->before($scope);
+			$environment->registerContext($this->graphContext);
 		}
 	}
 
