@@ -40,8 +40,10 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /TEXTFILE.txt     |
       | /TEXT_FILE.txt    |
       | /123TEXTFILE.txt  |
-      | /TEXTFILE.xyz.txt  |
-    Then as "Brian" the following files should exist
+      | /TEXTFILE.xyz.txt |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following files should exist
       | path                     |
       | /Shares/textfile.txt     |
       | /Shares/text_file.txt    |
@@ -84,7 +86,9 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /f_o    |
       | /123fo  |
       | /fo.xyz |
-    Then as "Brian" the following folders should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following folders should exist
       | path           |
       | /Shares/FO     |
       | /Shares/F_O    |
@@ -131,7 +135,9 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /CASE_SENSITIVE        |
       | /123case_sensitive     |
       | /CASESENSITIVE.xyz     |
-    Then as "Brian" the following files should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following files should exist
       | path                          |
       | /Shares/casesensitive.txt     |
       | /Shares/case_sensitive.txt    |
@@ -177,8 +183,10 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /TEXTFILE.txt     |
       | /TEXT_FILE.txt    |
       | /123TEXTFILE.txt  |
-      | /TEXTFILE.xyz.txt  |
-    Then as "Brian" the following files should exist
+      | /TEXTFILE.xyz.txt |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following files should exist
       | path                     |
       | /Shares/textfile.txt     |
       | /Shares/text_file.txt    |
@@ -223,7 +231,9 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /f_o    |
       | /123fo  |
       | /fo.xyz |
-    Then as "Brian" the following folders should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following folders should exist
       | path           |
       | /Shares/FO     |
       | /Shares/F_O    |
@@ -272,7 +282,9 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /CASE_SENSITIVE        |
       | /123case_sensitive     |
       | /CASESENSITIVE.xyz     |
-    Then as "Brian" the following files should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" the following files should exist
       | path                          |
       | /Shares/casesensitive.txt     |
       | /Shares/case_sensitive.txt    |
