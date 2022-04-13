@@ -22,7 +22,6 @@
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
@@ -1130,10 +1129,7 @@ trait Provisioning {
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 			// Check all requests to inspect failures.
 			foreach ($results as $key => $e) {
-				// TODO: remove "ServerException" after fix in graph api
-				// https://github.com/owncloud/ocis/issues/3516
-				// currently the server returns a 500 error code if user already exists
-				if ($e instanceof ClientException || $e instanceof ServerException) {
+				if ($e instanceof ClientException) {
 					if ($useGraph) {
 						$responseBody = $this->getJsonDecodedResponse($e->getResponse());
 						$httpStatusCode = $e->getResponse()->getStatusCode();
@@ -2911,32 +2907,20 @@ trait Provisioning {
 	 */
 	public function theseGroupsShouldNotExist(string $shouldOrNot, TableNode $table):void {
 		$should = ($shouldOrNot !== "not");
+		$this->verifyTableNodeColumns($table, ['groupname']);
 		$useGraph = OcisHelper::isTestingWithGraphApi();
 		if ($useGraph) {
-			$groups = $this->graphContext->adminHasRetrievedGroupListUsingTheGraphApi();
+			$this->graphContext->theseGroupsShouldNotExist($shouldOrNot, $table);
 		} else {
 			$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
-		}
-
-		$this->verifyTableNodeColumns($table, ['groupname']);
-		foreach ($table as $row) {
-			if ($useGraph) {
-				$exists = false;
-				foreach ($groups as $group) {
-					if ($group['displayName'] === $row['groupname']) {
-						$exists = true;
-						break;
-					}
+			foreach ($table as $row) {
+				if (\in_array($row['groupname'], $groups, true) !== $should) {
+					throw new Exception(
+						"group '" . $row['groupname'] .
+						"' does" . ($should ? " not" : "") .
+						" exist but should" . ($should ? "" : " not")
+					);
 				}
-			} else {
-				$exists = \in_array($row['groupname'], $groups, true);
-			}
-			if ($exists !== $should) {
-				throw new Exception(
-					"group '" . $row['groupname'] .
-					"' does" . ($should ? " not" : "") .
-					" exist but should" . ($should ? "" : " not")
-				);
 			}
 		}
 	}
@@ -3374,12 +3358,13 @@ trait Provisioning {
 				}
 				break;
 			case "graph":
-				$newUser = $this->graphContext->theAdminHasCreatedUser(
+				$this->graphContext->theAdminHasCreatedUser(
 					$user,
 					$password,
 					$email,
 					$displayName,
 				);
+				$newUser = $this->getJsonDecodedResponse();
 				$userId = $newUser['id'];
 				break;
 			default:
@@ -5889,11 +5874,23 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			$this->cleanupGroup((string)$group);
+			if (OcisHelper::isTestingWithGraphApi()) {
+				$this->graphContext->adminDeletesGroupWithGroupId(
+					$groupData['id']
+				);
+			} else {
+				$this->cleanupGroup((string)$group);
+			}
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
-			$this->cleanupGroup($remoteGroup);
+			if (OcisHelper::isTestingWithGraphApi()) {
+				$this->graphContext->adminDeletesGroupWithGroupId(
+					$groupData['id']
+				);
+			} else {
+				$this->cleanupGroup((string)$remoteGroup);
+			}
 		}
 		$this->usingServer($previousServer);
 	}
