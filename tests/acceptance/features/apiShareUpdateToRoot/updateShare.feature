@@ -18,6 +18,7 @@ Feature: sharing
     When user "Brian" updates the last share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     And user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "TMP/textfile.txt"
     Examples:
@@ -125,8 +126,8 @@ Feature: sharing
     And user "Alice" has shared folder "/folder1" with user "Brian" with permissions "all"
     And user "Brian" has shared folder "/folder1/folder2" with user "Carol" with permissions "all"
     When user "Brian" moves folder "/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
-    And user "Brian" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Brian" sharing with user "Carol" should include
+    Then the HTTP status code should be "201"
+    And the response when user "Brian" gets the info of the last share should include
       | id                | A_STRING             |
       | item_type         | folder               |
       | item_source       | A_STRING             |
@@ -154,8 +155,8 @@ Feature: sharing
     And user "Alice" has shared folder "/Alice-folder" with user "Brian" with permissions "all"
     And user "Carol" has shared folder "/Carol-folder" with user "Brian" with permissions "all"
     When user "Brian" moves folder "/Alice-folder/folder2" to "/Carol-folder/folder2" using the WebDAV API
-    And user "Carol" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Carol" sharing with user "Brian" should include
+    Then the HTTP status code should be "201"
+    And the response when user "Carol" gets the info of the last share should include
       | id                | A_STRING             |
       | item_type         | folder               |
       | item_source       | A_STRING             |
@@ -216,8 +217,7 @@ Feature: sharing
       | permissions | read, create |
     Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
-    When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" sharing with group "grp1" should include
+    And the response when user "Alice" gets the info of the last share should include
       | item_type         | file                |
       | item_source       | A_STRING            |
       | share_type        | group               |
@@ -238,14 +238,16 @@ Feature: sharing
     And user "Alice" has shared file "textfile0.txt" with group "grp1"
     And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
     When user "Alice" deletes the last share using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
     When user "Alice" gets the info of the last share using the sharing API
-    Then the last response should be empty
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "404"
+    And the last response should be empty
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 404              |
 
   Scenario Outline: user can update the role in an existing share after the system maximum expiry date has been reduced
     Given using OCS API version "<ocs_api_version>"
@@ -254,20 +256,18 @@ Feature: sharing
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    When user "Alice" creates a share using the sharing API with settings
+    And user "Alice" has created a share with settings
       | path        | textfile0.txt |
       | shareType   | user          |
       | shareWith   | Brian         |
       | permissions | read,share    |
       | expireDate  | +30 days      |
-    Then the HTTP status code should be "200"
-    When the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "5"
-    And user "Alice" updates the last share using the sharing API with
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "5"
+    When user "Alice" updates the last share using the sharing API with
       | permissions | read |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
+    And the response when user "Alice" gets the info of the last share should include
       | permissions | read     |
       | expiration  | +30 days |
     Examples:
@@ -289,15 +289,14 @@ Feature: sharing
       | shareWith   | Brian         |
       | permissions | read,share    |
       | expireDate  | +30 days      |
-    When the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "10"
-    And user "Alice" updates the last share using the sharing API with
-      | permissions | read |
+    And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "10"
+    When user "Alice" updates the last share using the sharing API with
+      | permissions | read     |
       | expireDate  | +28 days |
     Then the OCS status message should be "Cannot set expiration date more than 10 days in the future"
     And the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
-    When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
+    And the response when user "Brian" gets the info of the last share should include
       | permissions | read, share |
       | expiration  | +30 days    |
     Examples:
