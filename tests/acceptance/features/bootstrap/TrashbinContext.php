@@ -55,16 +55,17 @@ class TrashbinContext implements Context {
 	 */
 	public function emptyTrashbin(?string $user):ResponseInterface {
 		$user = $this->featureContext->getActualUsername($user);
+		$davPathVersion = $this->featureContext->getDavPathVersion();
 		$response = WebDavHelper::makeDavRequest(
 			$this->featureContext->getBaseUrl(),
 			$user,
 			$this->featureContext->getPasswordForUser($user),
 			'DELETE',
-			"/trash-bin/$user/",
+			null,
 			[],
 			$this->featureContext->getStepLineRef(),
 			null,
-			2,
+			$davPathVersion,
 			'trash-bin'
 		);
 
@@ -152,11 +153,12 @@ class TrashbinContext implements Context {
 		$path = $path ?? '/';
 		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
 		$depth = (string) $depth;
+		$davPathVersion = $this->featureContext->getDavPathVersion();
 		$response = WebDavHelper::listFolder(
 			$this->featureContext->getBaseUrl(),
 			$asUser,
 			$password,
-			"/trash-bin/$user/$path",
+			$path,
 			$depth,
 			$this->featureContext->getStepLineRef(),
 			[
@@ -165,7 +167,8 @@ class TrashbinContext implements Context {
 				'oc:trashbin-delete-timestamp',
 				'd:getlastmodified'
 			],
-			'trash-bin'
+			'trash-bin',
+			$davPathVersion
 		);
 		$this->featureContext->setResponse($response);
 		$responseXml = HttpRequestHelper::getResponseXml(
@@ -486,11 +489,9 @@ class TrashbinContext implements Context {
 	private function convertTrashbinHref(string $href):string {
 		$trashItemHRef = \trim($href, '/');
 		$trashItemHRef = \strstr($trashItemHRef, '/trash-bin');
+		$trashItemHRef = \trim($trashItemHRef, '/');
 		$parts = \explode('/', $trashItemHRef);
-		$decodedParts = [];
-		foreach ($parts as $part) {
-			$decodedParts[] = urldecode($part);
-		}
+		$decodedParts = \array_slice($parts, 2);
 		return '/' . \join('/', $decodedParts);
 	}
 
@@ -523,9 +524,11 @@ class TrashbinContext implements Context {
 					[],
 					null,
 					'trash-bin',
-					'2',
+					null,
 					false,
-					$password
+					$password,
+					[],
+					$user
 				);
 				$this->featureContext->setResponse($response);
 				$numItemsDeleted++;

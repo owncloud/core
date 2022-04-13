@@ -534,7 +534,11 @@ class WebDavHelper {
 		$spaceId = null;
 		// get space id if testing with spaces dav
 		if ($davPathVersionToUse === self::DAV_VERSION_SPACES) {
-			$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
+			if ($doDavRequestAsUser === null) {
+				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
+			} else {
+				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $doDavRequestAsUser, $password, $xRequestId);
+			}
 		}
 
 		if ($doDavRequestAsUser === null) {
@@ -633,15 +637,19 @@ class WebDavHelper {
 					__METHOD__ . " A spaceId must be passed when using DAV path version 3 (spaces)"
 				);
 			}
+			if ($type === "trash-bin") {
+				return "/remote.php/dav/spaces/trash-bin/" . $spaceId . '/';
+			}
 			return "dav/spaces/" . $spaceId . '/';
 		} else {
 			if ($davPathVersionToUse === self::DAV_VERSION_OLD) {
-				$path = "remote.php/webdav/";
-				return $path;
+				return "remote.php/webdav/";
 			} elseif ($davPathVersionToUse === self::DAV_VERSION_NEW) {
 				if ($type === "files") {
 					$path = 'remote.php/dav/files/';
 					return $path . $user . '/';
+				} elseif ($type === "trash-bin") {
+					return "remote.php/dav/trash-bin/" . $user . '/';
 				} else {
 					return "remote.php/dav";
 				}
