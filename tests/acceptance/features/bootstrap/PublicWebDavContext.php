@@ -1038,7 +1038,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^the public upload to the last publicly shared file using the (old|new) public WebDAV API should fail with HTTP status code "([^"]*)"$/
+	 * @Then /^the public upload to the last publicly shared file using the (old|new) public WebDAV API should (?:fail|pass) with HTTP status code "([^"]*)"$/
 	 *
 	 * @param string $publicWebDAVAPIVersion
 	 * @param string $expectedHttpCode

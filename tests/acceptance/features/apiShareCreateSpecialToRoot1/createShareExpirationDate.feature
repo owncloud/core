@@ -836,3 +836,39 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "404"
     And user "Alice" should not see the share id of the last share
     And as "Alice" file "/textfile0.txt" should exist
+
+
+  Scenario Outline: sharing file with edit permissions
+    Given using OCS API version "<ocs_api_version>"
+    And auto-accept shares has been disabled
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "Random data" to "/file.txt"
+    When user "Alice" creates a share using the sharing API with settings
+      | path        | file.txt    |
+      | shareType   | user        |
+      | shareWith   | Brian       |
+      | permissions | read,update |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | item_type   | file        |
+      | mimetype    | text/plain  |
+      | share_type  | user        |
+      | file_target | /file.txt   |
+      | uid_owner   | %username%  |
+      | share_with  | %username%  |
+      | permissions | read,update |
+    When user "Brian" accepts share "/file.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" uploads the following files with content "new content"
+      | path      |
+      | /file.txt |
+    Then the content of the following files for user "Brian" should be "new content"
+      | path      |
+      | /file.txt |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
