@@ -63,16 +63,28 @@ class CleanupChunks extends Command {
 				'only delete chunks that exist on the local filesystem, 
 				this applies to setups with multiple servers connected to the same database and 
 				chunk folder is not shared among'
+			)
+			->addOption(
+				'orphaned',
+				'o',
+				InputOption::VALUE_NONE,
+				'check the storage directly if any chunks exist on the underlying filesystem which 
+				might not be in the database and clear them. This applies to setups with multiple 
+				servers connected to the same database and  chunk folder is not shared among and 
+				a previous (implicit) file-scan removed the files from the database as 
+				they could not be found on the local disk.'
 			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$checkUploadExistsLocal = $input->getOption('local') === true;
+		$cleanOrphaned = $input->getOption('orphaned') === true;
+
 		$d = $input->getArgument('minimum-age-in-days');
 		$d = \max(2, \min($d, 100));
 		$cutOffTime = new \DateTime("$d days ago");
 		$output->writeln("Cleaning chunks older than $d days({$cutOffTime->format('c')})");
-		$this->userManager->callForSeenUsers(function (IUser $user) use ($output, $cutOffTime, $checkUploadExistsLocal) {
+		$this->userManager->callForSeenUsers(function (IUser $user) use ($output, $cutOffTime, $checkUploadExistsLocal, $cleanOrphaned) {
 			\OC_Util::tearDownFS();
 			\OC_Util::setupFS($user->getUID());
 
@@ -95,7 +107,7 @@ class CleanupChunks extends Command {
 				$filteredUploads[] = $upload;
 			}
 
-			if (empty($filteredUploads)) {
+			if (empty($filteredUploads) && !$cleanOrphaned) {
 				return;
 			}
 
@@ -108,9 +120,28 @@ class CleanupChunks extends Command {
 				$p->advance();
 				/** @var UploadFolder $upload */
 				$upload->delete();
+
+				if ($output->isVerbose()) {
+					$output->writeln($upload->getName());
+				}
 			}
 
 			$p->finish();
+
+			if ($checkUploadExistsLocal) {
+				$iter = new \RecursiveDirectoryIterator($view->getLocalFolder('/'));
+				$output->writeln(sprintf("\nCleaning orphaned chunks for %s", $user->getUID()));
+				$cutOffTs = $cutOffTime->getTimestamp();
+				foreach (new \RecursiveIteratorIterator($iter) as $file) {
+					if ($file->isFile() && ((\time() - $file->getMTime()) >= $cutOffTs)) {
+						if ($output->isVerbose()) {
+							$output->writeln($file->getRealPath());
+						}
+						\unlink($file->getRealPath());
+					}
+				}
+			}
+
 			$output->writeln('');
 		});
 		return 0;
