@@ -246,6 +246,9 @@ $CONFIG = [
  * (having valid access) if the timeout hasn't been reached.
  * The recommended minimum value is 5 or 10 seconds. Using a lower value
  * might cause unwanted logouts for the users.
+ * Also note that this feature works properly if the user uses only one
+ * tab. If a user uses multiple tabs, closing one of them will likely
+ * force the rest to re-authenticate.
  */
 'session_forced_logout_timeout' => 0,
 
