@@ -250,11 +250,18 @@ trait Provisioning {
 		$usersList = $this->getCreatedUsers();
 		$normalizedUsername = $this->normalizeUsername($user);
 		if (\array_key_exists($normalizedUsername, $usersList)) {
-			if (\array_key_exists($attribute, $usersList[$normalizedUsername])) {
-				return $usersList[$normalizedUsername][$attribute];
+			// provide attributes only if the user exists
+			if ($usersList[$normalizedUsername]["shouldExist"]) {
+				if (\array_key_exists($attribute, $usersList[$normalizedUsername])) {
+					return $usersList[$normalizedUsername][$attribute];
+				} else {
+					throw new Exception(
+						__METHOD__ . ": User '$user' has no any attribute with name '$attribute'."
+					);
+				}
 			} else {
 				throw new Exception(
-					__METHOD__ . ": User '$user' has no any attribute with name '$attribute'."
+					__METHOD__ . ": User '$user' has been deleted."
 				);
 			}
 		} else {
