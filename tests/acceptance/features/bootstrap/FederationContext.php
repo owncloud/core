@@ -75,6 +75,7 @@ class FederationContext implements Context {
 			null,
 			$expireDate
 		);
+		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**

@@ -31,8 +31,9 @@ Feature: Save public shares created by oC users
     And as "Brian" folder "/PARENT" should not exist
 
 
-  Scenario: Mount public share and sharer unshares the share (local server share)
-    Given user "Brian" has been created with default attributes and without skeleton files
+  Scenario Outline: Mount public share and sharer unshares the share (local server share)
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT    |
@@ -40,8 +41,13 @@ Feature: Save public shares created by oC users
       | name        | sharedlink |
     And user "Brian" has added the public share created from server "LOCAL" using the sharing API
     When user "Alice" deletes public link share named "sharedlink" in file "/PARENT" using the sharing API
-    Then the HTTP status code should be "200"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     And as "Brian" folder "/PARENT" should not exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
 
   Scenario Outline: Mount public share and try to reshare (local server share)
@@ -91,8 +97,9 @@ Feature: Save public shares created by oC users
     And as "Alice" folder "/PARENT" should not exist
 
 
-  Scenario: Mount public share and sharer unshares the share (remote server share)
-    Given using server "REMOTE"
+  Scenario Outline: Mount public share and sharer unshares the share (remote server share)
+    Given using OCS API version "<ocs_api_version>"
+    And using server "REMOTE"
     And user "RemoteAlice" has been created with default attributes and without skeleton files
     And user "RemoteAlice" has created folder "/PARENT"
     And user "RemoteAlice" has created a public link share with settings
@@ -103,8 +110,15 @@ Feature: Save public shares created by oC users
     And user "Alice" has added the public share created from server "REMOTE" using the sharing API
     And using server "REMOTE"
     When user "RemoteAlice" deletes public link share named "sharedlink" in file "/PARENT" using the sharing API
-    And using server "LOCAL"
-    Then as "Alice" folder "/PARENT" should not exist
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When using server "LOCAL"
+    Then the HTTP status code should be "200"
+    And as "Alice" folder "/PARENT" should not exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
 
   Scenario Outline: Mount public share and try to reshare (remote server share)
