@@ -1,0 +1,5 @@
+Enhancement: Ignore thumbnails when propagating in home
+
+We no longer needlessly propagate the etag and mtime for thumbnails in the filecache.
+
+https://github.com/owncloud/core/pull/39988
