@@ -433,6 +433,7 @@ trait Provisioning {
 			true,
 			'api'
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -3803,8 +3804,6 @@ trait Provisioning {
 		$method = \trim(\strtolower($method));
 		switch ($method) {
 			case "api":
-				$this->emptyLastHTTPStatusCodesArray();
-				$this->emptyLastOCSStatusCodesArray();
 				$result = UserHelper::addUserToGroup(
 					$this->getBaseUrl(),
 					$user,
@@ -4494,6 +4493,7 @@ trait Provisioning {
 	 */
 	public function adminDeletesGroup(string $group):void {
 		$this->deleteGroup($group);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -4631,6 +4631,7 @@ trait Provisioning {
 			$user,
 			$group
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
