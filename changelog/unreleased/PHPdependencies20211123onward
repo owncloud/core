@@ -9,7 +9,7 @@ The following have been updated:
 - laminas/laminas-validator (2.15.0 to 2.17.0)
 - laminas/laminas-zendframework-bridge (1.4.0 to 1.4.1)
 - league/flysystem (1.1.5 to 1.1.9)
-- league/mime-type-detection (1.8.0 to 1.9.0)
+- league/mime-type-detection (1.8.0 to 1.11.0)
 - opis/closure (3.6.2 to 3.6.3)
 - paragonie/constant_time_encoding (2.4.0 to 2.5.0)
 - phpseclib/phpseclib (3.0.11 to 3.0.14)
@@ -38,6 +38,7 @@ https://github.com/owncloud/core/pull/39717
 https://github.com/owncloud/core/pull/39731
 https://github.com/owncloud/core/pull/39780
 https://github.com/owncloud/core/pull/39838
+https://github.com/owncloud/core/pull/39839
 https://github.com/owncloud/core/pull/39859
 https://github.com/owncloud/core/pull/39949
 https://github.com/owncloud/core/pull/39956
