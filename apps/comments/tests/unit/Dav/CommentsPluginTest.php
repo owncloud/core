@@ -27,18 +27,27 @@ namespace OCA\DAV\Tests\unit\Comments;
 use OC\Comments\Comment;
 use OCA\Comments\Dav\CommentsPlugin as CommentsPluginImplementation;
 use OCP\Comments\IComment;
+use OCP\Comments\ICommentsManager;
+use OCP\IUserSession;
+use Sabre\DAV\Exception\BadRequest;
+use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Exception\ReportNotSupported;
+use Sabre\DAV\Exception\UnsupportedMediaType;
+use Sabre\DAV\Server;
+use Sabre\DAV\Tree;
+use Test\TestCase;
 
-class CommentsPluginTest extends \Test\TestCase {
-	/** @var \Sabre\DAV\Server */
+class CommentsPluginTest extends TestCase {
+	/** @var Server */
 	private $server;
 
-	/** @var \Sabre\DAV\Tree */
+	/** @var Tree */
 	private $tree;
 
-	/** @var \OCP\Comments\ICommentsManager */
+	/** @var ICommentsManager */
 	private $commentsManager;
 
-	/** @var  \OCP\IUserSession */
+	/** @var  IUserSession */
 	private $userSession;
 
 	/** @var CommentsPluginImplementation */
@@ -157,7 +166,7 @@ class CommentsPluginTest extends \Test\TestCase {
 	/**
 	 */
 	public function testCreateCommentInvalidObject() {
-		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
+		$this->expectException(NotFound::class);
 
 		$commentData = [
 			'actorType' => 'users',
@@ -200,7 +209,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/' . $path)
-			->will($this->throwException(new \Sabre\DAV\Exception\NotFound()));
+			->will($this->throwException(new NotFound()));
 
 		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
 			->disableOriginalConstructor()
@@ -238,7 +247,7 @@ class CommentsPluginTest extends \Test\TestCase {
 	/**
 	 */
 	public function testCreateCommentInvalidActor() {
-		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
+		$this->expectException(BadRequest::class);
 
 		$commentData = [
 			'actorType' => 'robots',
@@ -325,7 +334,7 @@ class CommentsPluginTest extends \Test\TestCase {
 	/**
 	 */
 	public function testCreateCommentUnsupportedMediaType() {
-		$this->expectException(\Sabre\DAV\Exception\UnsupportedMediaType::class);
+		$this->expectException(UnsupportedMediaType::class);
 
 		$commentData = [
 			'actorType' => 'users',
@@ -412,7 +421,7 @@ class CommentsPluginTest extends \Test\TestCase {
 	/**
 	 */
 	public function testCreateCommentInvalidPayload() {
-		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
+		$this->expectException(BadRequest::class);
 
 		$commentData = [
 			'actorType' => 'users',
@@ -505,7 +514,7 @@ class CommentsPluginTest extends \Test\TestCase {
 	/**
 	 */
 	public function testCreateCommentMessageTooLong() {
-		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
+		$this->expectException(BadRequest::class);
 		$this->expectExceptionMessage('Message exceeds allowed character limit of');
 
 		$commentData = [
@@ -598,7 +607,7 @@ class CommentsPluginTest extends \Test\TestCase {
 	/**
 	 */
 	public function testOnReportInvalidNode() {
-		$this->expectException(\Sabre\DAV\Exception\ReportNotSupported::class);
+		$this->expectException(ReportNotSupported::class);
 
 		$path = 'totally/unrelated/13';
 
@@ -618,7 +627,7 @@ class CommentsPluginTest extends \Test\TestCase {
 	/**
 	 */
 	public function testOnReportInvalidReportName() {
-		$this->expectException(\Sabre\DAV\Exception\ReportNotSupported::class);
+		$this->expectException(ReportNotSupported::class);
 
 		$path = 'comments/files/42';
 
