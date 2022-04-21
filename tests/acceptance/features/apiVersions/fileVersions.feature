@@ -9,38 +9,44 @@ Feature: dav-versions
 
   Scenario: Upload file and no version is available
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
+    Then the HTTP status code should be "201"
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
 
   @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario: Upload file and no version is available using various chunking methods (except new chunking)
     When user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms except new chunking using the WebDAV API
-    Then the version folder of file "/davtest.txt-olddav-regular" for user "Alice" should contain "0" elements
+    Then the HTTP status code should be "200"
+    And the version folder of file "/davtest.txt-olddav-regular" for user "Alice" should contain "0" elements
     And the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "0" elements
     And the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "0" elements
 
   @issue-ocis-reva-17 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload file and no version is available using new chunking
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
+    Then the HTTP status code should be "201"
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
 
   @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload file and no version is available using async upload
     Given the administrator has enabled async operations
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 3 chunks with new chunking and using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
+    Then the HTTP status code should be "202"
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
 
   @smokeTest
   Scenario: Upload a file twice and versions are available
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
     And user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
+    Then the HTTP status code of responses on each endpoint should be "201, 204" respectively
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
     And the content length of file "/davtest.txt" with version index "1" for user "Alice" in versions folder should be "8"
 
   @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario: Upload a file twice and versions are available using various chunking methods (except new chunking)
     When user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms except new chunking using the WebDAV API
     And user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms except new chunking using the WebDAV API
-    Then the version folder of file "/davtest.txt-olddav-regular" for user "Alice" should contain "1" element
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the version folder of file "/davtest.txt-olddav-regular" for user "Alice" should contain "1" element
     And the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "1" element
     And the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "1" element
 
@@ -48,14 +54,16 @@ Feature: dav-versions
   Scenario: Upload a file twice and versions are available using new chunking
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     And user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
+    Then the HTTP status code of responses on each endpoint should be "201, 204" respectively
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
 
   @issue-ocis-reva-17 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload a file twice and versions are available using async upload
     Given the administrator has enabled async operations
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     And user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 3 chunks with new chunking and using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
+    Then the HTTP status code of responses on all endpoints should be "202"
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
 
   @smokeTest
   Scenario: Remove a file
@@ -64,7 +72,8 @@ Feature: dav-versions
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
     And user "Alice" has deleted file "/davtest.txt"
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
+    Then the HTTP status code should be "201"
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
 
   @smokeTest
   Scenario: Restore a file and check, if the content is now in the current file
@@ -72,7 +81,8 @@ Feature: dav-versions
     And user "Alice" has uploaded file with content "Content Test Updated." to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
     When user "Alice" restores version index "1" of file "/davtest.txt" using the WebDAV API
-    Then the content of file "/davtest.txt" for user "Alice" should be "Test Content."
+    Then the HTTP status code should be "204"
+    And the content of file "/davtest.txt" for user "Alice" should be "Test Content."
 
   @smokeTest @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-278
   Scenario: Restore a file back to bigger content and check, if the content is now in the current file
@@ -80,7 +90,8 @@ Feature: dav-versions
     And user "Alice" has uploaded file with content "Update Content." to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
     When user "Alice" restores version index "1" of file "/davtest.txt" using the WebDAV API
-    Then the content of file "/davtest.txt" for user "Alice" should be "Back To The Future."
+    Then the HTTP status code should be "204"
+    And the content of file "/davtest.txt" for user "Alice" should be "Back To The Future."
 
   @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161
   @issue-ocis-reva-17 @issue-ocis-reva-56
@@ -89,16 +100,19 @@ Feature: dav-versions
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/textfile0.txt" in 2 chunks using the WebDAV API
     And user "Alice" uploads file "filesForUpload/lorem.txt" to "/textfile0.txt" in 3 chunks using the WebDAV API
-    Then the version folder of file "/textfile0.txt" for user "Alice" should contain "2" elements
+#    HTTP status code is different for old (201) and new (204) WebDav API when uploading in chunks
+    Then the HTTP status code of responses on all endpoints should be "<status-code>"
+    And the version folder of file "/textfile0.txt" for user "Alice" should contain "2" elements
     When user "Alice" restores version index "1" of file "/textfile0.txt" using the WebDAV API
-    Then the content of file "/textfile0.txt" for user "Alice" should be "Dav-Test"
+    Then the HTTP status code should be "<status-code>"
+    And the content of file "/textfile0.txt" for user "Alice" should be "Dav-Test"
     Examples:
-      | dav-path |
-      | old      |
+      | dav-path | status-code |
+      | old      | 201         |
     @notToImplementOnOCIS @newChunking @issue-ocis-1321
     Examples:
-      | dav-path |
-      | new      |
+      | dav-path | status-code |
+      | new      | 204         |
 
   @skipOnStorage:ceph @files_primary_s3-issue-161 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   @issue-ocis-reva-17 @issue-ocis-reva-56
@@ -107,9 +121,10 @@ Feature: dav-versions
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "textfile0.txt" in 2 chunks using the WebDAV API
     And user "Alice" uploads file "filesForUpload/lorem.txt" asynchronously to "textfile0.txt" in 2 chunks using the WebDAV API
-    Then the version folder of file "/textfile0.txt" for user "Alice" should contain "2" elements
-    When user "Alice" restores version index "1" of file "/textfile0.txt" using the WebDAV API
-    Then the content of file "/textfile0.txt" for user "Alice" should be "Dav-Test"
+    And user "Alice" restores version index "1" of file "/textfile0.txt" using the WebDAV API
+    Then the HTTP status code of responses on all endpoints should be "202"
+    And the version folder of file "/textfile0.txt" for user "Alice" should contain "2" elements
+    And the content of file "/textfile0.txt" for user "Alice" should be "Dav-Test"
 
   @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-156
   Scenario: Restore a file and check, if the content and correct checksum is now in the current file
@@ -117,7 +132,8 @@ Feature: dav-versions
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/davtest.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
     When user "Alice" restores version index "1" of file "/davtest.txt" using the WebDAV API
-    Then the content of file "/davtest.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
+    Then the HTTP status code should be "204"
+    And the content of file "/davtest.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
     And as user "Alice" the webdav checksum of "/davtest.txt" via propfind should match "SHA1:acfa6b1565f9710d4d497c6035d5c069bd35a8e8 MD5:45a72715acdd5019c5be30bdbb75233e ADLER32:1ecd03df"
 
 
@@ -139,7 +155,8 @@ Feature: dav-versions
       | shareType   | user         |
       | shareWith   | Brian        |
       | permissions | read         |
-    Then the version folder of fileId "<<FILEID>>" for user "Brian" should contain "1" element
+    Then the HTTP status code should be "200"
+    And the version folder of fileId "<<FILEID>>" for user "Brian" should contain "1" element
 
   @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharer of a file can see the old version information when the sharee changes the content of the file
@@ -410,7 +427,8 @@ Feature: dav-versions
   Scenario: Original file has version number 0
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
-    Then the number of versions should be "0"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "0"
 
   @issue-ocis-1234
   Scenario: the number of etag elements in response changes according to version of the file
