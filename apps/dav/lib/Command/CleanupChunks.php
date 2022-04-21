@@ -26,6 +26,7 @@ use OCA\DAV\Upload\UploadFolder;
 use OCA\DAV\Upload\UploadHome;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\Files\Cache\IScanner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -60,8 +61,8 @@ class CleanupChunks extends Command {
 				'local',
 				'l',
 				InputOption::VALUE_NONE,
-				'only delete chunks that exist on the local filesystem, 
-				this applies to setups with multiple servers connected to the same database and 
+				'only delete chunks that exist on the local filesystem,
+				this applies to setups with multiple servers connected to the same database and
 				chunk folder is not shared among'
 			);
 	}
@@ -78,6 +79,13 @@ class CleanupChunks extends Command {
 
 			$view = new View('/' . $user->getUID() . '/uploads');
 			$home = new UploadHome(['user' => $user]);
+
+			if ($checkUploadExistsLocal) {
+				// if checking local, force a scan in the uploads folder to ensure
+				// we have the data in the DB
+				$view->putFileInfo('', ['size' => IScanner::SIZE_NEEDS_SCAN]);
+			}
+
 			$uploads = $home->getChildren();
 			$filteredUploads = [];
 
@@ -87,8 +95,7 @@ class CleanupChunks extends Command {
 					continue;
 				}
 
-				if ($checkUploadExistsLocal === true &&
-					$view->file_exists($upload->getName()) !== true) {
+				if ($checkUploadExistsLocal && $view->file_exists($upload->getName()) !== true) {
 					continue;
 				}
 
