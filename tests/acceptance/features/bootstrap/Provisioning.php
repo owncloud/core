@@ -281,11 +281,18 @@ trait Provisioning {
 	public function getAttributeOfCreatedGroup(string $group, string $attribute) {
 		$groupsList = $this->getCreatedGroups();
 		if (\array_key_exists($group, $groupsList)) {
-			if (\array_key_exists($attribute, $groupsList[$group])) {
-				return $groupsList[$group][$attribute];
+			// provide attributes only if the group exists
+			if ($groupsList[$group]["shouldExist"]) {
+				if (\array_key_exists($attribute, $groupsList[$group])) {
+					return $groupsList[$group][$attribute];
+				} else {
+					throw new Exception(
+						__METHOD__ . ": Group '$group' has no any attribute with name '$attribute'."
+					);
+				}
 			} else {
 				throw new Exception(
-					__METHOD__ . ": Group '$group' has no any attribute with name '$attribute'."
+					__METHOD__ . ": Group '$group' has been deleted."
 				);
 			}
 		} else {
@@ -4574,13 +4581,13 @@ trait Provisioning {
 			}
 			return false;
 		}
-		$group = \rawurlencode($group);
 		if (OcisHelper::isTestingWithGraphApi()) {
 			$base = '/graph/v1.0';
 			$group = $this->getAttributeOfCreatedGroup($group, "id");
 		} else {
 			$base = '/ocs/v2.php/cloud';
 		}
+		$group = \rawurlencode($group);
 		$fullUrl = $this->getBaseUrl() . "$base/groups/$group";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
