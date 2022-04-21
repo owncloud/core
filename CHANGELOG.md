@@ -166,10 +166,11 @@ Details
 
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 
-   The following have been updated: - ansi-regex (3.0.0 to 3.0.1) - bower_components/showdown
-   (1.9.1 to 2.0.0) - bower_components/underscore (1.13.1 to 1.13.2) - follow-redirects
-   (1.14.2 to 1.14.8) - karma (6.3.8 to 6.3.16) - karma-coverage (2.0.3 to 2.2.0) - log4js (6.3.0
-   to 6.4.1) - minimist (1.2.5 to 1.2.6)
+   The following have been updated: - ansi-regex (3.0.0 to 3.0.1) - bower_components/backbone
+   (1.4.0 to 1.4.1) - bower_components/showdown (1.9.1 to 2.0.0) -
+   bower_components/underscore (1.13.1 to 1.13.2) - follow-redirects (1.14.2 to 1.14.8) -
+   karma (6.3.8 to 6.3.16) - karma-coverage (2.0.3 to 2.2.0) - log4js (6.3.0 to 6.4.1) - minimist
+   (1.2.5 to 1.2.6)
 
    https://github.com/owncloud/core/pull/39709
    https://github.com/owncloud/core/pull/39763
@@ -179,6 +180,7 @@ Details
    https://github.com/owncloud/core/pull/39814
    https://github.com/owncloud/core/pull/39816
    https://github.com/owncloud/core/pull/39838
+   https://github.com/owncloud/core/pull/39839
    https://github.com/owncloud/core/pull/39926
    https://github.com/owncloud/core/pull/39941
 
@@ -189,9 +191,9 @@ Details
    laminas/laminas-inputfilter (2.12.0 to 2.12.1) - laminas/laminas-stdlib (3.6.1 to 3.7.1)
    - laminas/laminas-validator (2.15.0 to 2.17.0) - laminas/laminas-zendframework-bridge
    (1.4.0 to 1.4.1) - league/flysystem (1.1.5 to 1.1.9) - league/mime-type-detection (1.8.0 to
-   1.9.0) - opis/closure (3.6.2 to 3.6.3) - paragonie/constant_time_encoding (2.4.0 to 2.5.0)
-   - phpseclib/phpseclib (3.0.11 to 3.0.14) - sabre/dav (4.2.0 to 4.3.1) - sabre/vobject (4.4.0
-   to 4.4.1)
+   1.11.0) - opis/closure (3.6.2 to 3.6.3) - paragonie/constant_time_encoding (2.4.0 to
+   2.5.0) - phpseclib/phpseclib (3.0.11 to 3.0.14) - sabre/dav (4.2.0 to 4.3.1) - sabre/vobject
+   (4.4.0 to 4.4.1)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
    (2.11.0 to 2.12.1) - google/apiclient-services (0.231.0 to 0.242.0) - guzzlehttp/psr7
@@ -211,6 +213,7 @@ Details
    https://github.com/owncloud/core/pull/39731
    https://github.com/owncloud/core/pull/39780
    https://github.com/owncloud/core/pull/39838
+   https://github.com/owncloud/core/pull/39839
    https://github.com/owncloud/core/pull/39859
    https://github.com/owncloud/core/pull/39949
    https://github.com/owncloud/core/pull/39956
