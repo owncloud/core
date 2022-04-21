@@ -207,7 +207,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	}
 
 	/**
-	 * Returns a list of properties for this nodes.
+	 * Returns a list of properties for this node.
 	 *
 	 * The properties list is a list of propertynames the client requested,
 	 * encoded in clark-notation {xmlnamespace}tagname
