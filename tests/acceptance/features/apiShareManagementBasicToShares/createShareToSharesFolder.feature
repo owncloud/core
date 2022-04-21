@@ -438,7 +438,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @skipOnGraph
   Scenario Outline: share with a group and then add a user to that group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:

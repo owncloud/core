@@ -256,7 +256,7 @@ trait Provisioning {
 					return $usersList[$normalizedUsername][$attribute];
 				} else {
 					throw new Exception(
-						__METHOD__ . ": User '$user' has no any attribute with name '$attribute'."
+						__METHOD__ . ": User '$user' has no attribute with name '$attribute'."
 					);
 				}
 			} else {
@@ -287,7 +287,7 @@ trait Provisioning {
 					return $groupsList[$group][$attribute];
 				} else {
 					throw new Exception(
-						__METHOD__ . ": Group '$group' has no any attribute with name '$attribute'."
+						__METHOD__ . ": Group '$group' has no attribute with name '$attribute'."
 					);
 				}
 			} else {

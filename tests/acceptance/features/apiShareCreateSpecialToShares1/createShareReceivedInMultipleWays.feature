@@ -202,7 +202,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | /zzzfolder    | /zzzfolder (2) | 100             |
       | 2               | /zzzfolder    | /zzzfolder (2) | 200             |
 
-  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
+  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP @skipOnGraph
   Scenario Outline: share with a group and then add a user to that group that already has a file with the shared name
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
