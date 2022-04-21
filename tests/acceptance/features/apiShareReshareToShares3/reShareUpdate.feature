@@ -145,6 +145,7 @@ Feature: sharing
       | permissions | create,update,read |
     When user "Brian" deletes the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     And user "Carol" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code |
