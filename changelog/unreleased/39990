@@ -1,0 +1,10 @@
+Bugfix: Upload chunks might not get cleaned up if data is missing from the DB
+
+There might be cases where the upload data has been removed from the DB, but
+the chunks are still present in the FS.
+Previously, those chunks couldn't be cleaned up normally, so you had to remove
+them manually.
+Now, with the help of the "-l" option, a scan will be performed to ensure the
+data is present in the DB before performing the cleanup operation.
+
+https://github.com/owncloud/core/pull/39990
