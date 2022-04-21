@@ -89,6 +89,18 @@ class ResourceSearchResult extends \Google\Collection
    */
   public $state;
   /**
+   * @var string[]
+   */
+  public $tagKeys;
+  /**
+   * @var string[]
+   */
+  public $tagValueIds;
+  /**
+   * @var string[]
+   */
+  public $tagValues;
+  /**
    * @var string
    */
   public $updateTime;
@@ -346,6 +358,48 @@ class ResourceSearchResult extends \Google\Collection
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param string[]
+   */
+  public function setTagKeys($tagKeys)
+  {
+    $this->tagKeys = $tagKeys;
+  }
+  /**
+   * @return string[]
+   */
+  public function getTagKeys()
+  {
+    return $this->tagKeys;
+  }
+  /**
+   * @param string[]
+   */
+  public function setTagValueIds($tagValueIds)
+  {
+    $this->tagValueIds = $tagValueIds;
+  }
+  /**
+   * @return string[]
+   */
+  public function getTagValueIds()
+  {
+    return $this->tagValueIds;
+  }
+  /**
+   * @param string[]
+   */
+  public function setTagValues($tagValues)
+  {
+    $this->tagValues = $tagValues;
+  }
+  /**
+   * @return string[]
+   */
+  public function getTagValues()
+  {
+    return $this->tagValues;
   }
   /**
    * @param string

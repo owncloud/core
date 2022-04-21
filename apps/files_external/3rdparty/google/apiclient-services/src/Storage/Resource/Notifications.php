@@ -37,8 +37,6 @@ class Notifications extends \Google\Service\Resource
    * @param string $notification ID of the notification to delete.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    */
@@ -55,8 +53,6 @@ class Notifications extends \Google\Service\Resource
    * @param string $notification Notification ID
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return Notification
@@ -75,8 +71,6 @@ class Notifications extends \Google\Service\Resource
    * @param Notification $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return Notification
@@ -94,8 +88,6 @@ class Notifications extends \Google\Service\Resource
    * @param string $bucket Name of a Google Cloud Storage bucket.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return NotificationsModel

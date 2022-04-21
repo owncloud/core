@@ -42,8 +42,6 @@ class Buckets extends \Google\Service\Resource
    * its metageneration matches this value.
    * @opt_param string ifMetagenerationNotMatch If set, only deletes the bucket if
    * its metageneration does not match this value.
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    */
@@ -66,8 +64,6 @@ class Buckets extends \Google\Service\Resource
    * metadata conditional on whether the bucket's current metageneration does not
    * match the given value.
    * @opt_param string projection Set of properties to return. Defaults to noAcl.
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return Bucket
@@ -87,8 +83,6 @@ class Buckets extends \Google\Service\Resource
    * @opt_param int optionsRequestedPolicyVersion The IAM policy format version to
    * be returned. If the optionsRequestedPolicyVersion is for an older version
    * that doesn't support part of the requested IAM policy, the request fails.
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return Policy
@@ -113,8 +107,6 @@ class Buckets extends \Google\Service\Resource
    * @opt_param string projection Set of properties to return. Defaults to noAcl,
    * unless the bucket resource specifies acl or defaultObjectAcl properties, when
    * it defaults to full.
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * @return Bucket
    */
@@ -138,8 +130,6 @@ class Buckets extends \Google\Service\Resource
    * @opt_param string prefix Filter results to buckets whose names begin with
    * this prefix.
    * @opt_param string projection Set of properties to return. Defaults to noAcl.
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * @return BucketsModel
    */
@@ -157,8 +147,6 @@ class Buckets extends \Google\Service\Resource
    * whether bucket's current metageneration matches the given value.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return Bucket
@@ -189,8 +177,6 @@ class Buckets extends \Google\Service\Resource
    * @opt_param string predefinedDefaultObjectAcl Apply a predefined set of
    * default object access controls to this bucket.
    * @opt_param string projection Set of properties to return. Defaults to full.
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return Bucket
@@ -208,8 +194,6 @@ class Buckets extends \Google\Service\Resource
    * @param Policy $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return Policy
@@ -228,8 +212,6 @@ class Buckets extends \Google\Service\Resource
    * @param string|array $permissions Permissions to test.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return TestIamPermissionsResponse
@@ -260,8 +242,6 @@ class Buckets extends \Google\Service\Resource
    * @opt_param string predefinedDefaultObjectAcl Apply a predefined set of
    * default object access controls to this bucket.
    * @opt_param string projection Set of properties to return. Defaults to full.
-   * @opt_param string provisionalUserProject The project to be billed for this
-   * request if the target bucket is requester-pays bucket.
    * @opt_param string userProject The project to be billed for this request.
    * Required for Requester Pays buckets.
    * @return Bucket

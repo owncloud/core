@@ -17,8 +17,9 @@
 
 namespace Google\Service\Apigee;
 
-class GoogleCloudApigeeV1OperationMetadata extends \Google\Model
+class GoogleCloudApigeeV1OperationMetadata extends \Google\Collection
 {
+  protected $collection_key = 'warnings';
   /**
    * @var string
    */
@@ -33,6 +34,10 @@ class GoogleCloudApigeeV1OperationMetadata extends \Google\Model
    * @var string
    */
   public $targetResourceName;
+  /**
+   * @var string[]
+   */
+  public $warnings;
 
   /**
    * @param string
@@ -89,6 +94,20 @@ class GoogleCloudApigeeV1OperationMetadata extends \Google\Model
   public function getTargetResourceName()
   {
     return $this->targetResourceName;
+  }
+  /**
+   * @param string[]
+   */
+  public function setWarnings($warnings)
+  {
+    $this->warnings = $warnings;
+  }
+  /**
+   * @return string[]
+   */
+  public function getWarnings()
+  {
+    return $this->warnings;
   }
 }
 

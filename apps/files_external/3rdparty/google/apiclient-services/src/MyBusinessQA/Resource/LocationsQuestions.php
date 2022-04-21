@@ -60,21 +60,6 @@ class LocationsQuestions extends \Google\Service\Resource
     return $this->call('delete', [$params], MybusinessqandaEmpty::class);
   }
   /**
-   * Deletes the answer written by the current user to a question.
-   * (questions.deleteAnswers)
-   *
-   * @param string $name Required. The name of the question to delete an answer
-   * for.
-   * @param array $optParams Optional parameters.
-   * @return MybusinessqandaEmpty
-   */
-  public function deleteAnswers($name, $optParams = [])
-  {
-    $params = ['name' => $name];
-    $params = array_merge($params, $optParams);
-    return $this->call('deleteAnswers', [$params], MybusinessqandaEmpty::class);
-  }
-  /**
    * Returns the paginated list of questions and some of its answers for a
    * specified location. This operation is only valid if the specified location is
    * verified. (questions.listLocationsQuestions)

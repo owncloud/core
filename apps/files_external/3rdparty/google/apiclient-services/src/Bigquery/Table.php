@@ -19,6 +19,16 @@ namespace Google\Service\Bigquery;
 
 class Table extends \Google\Model
 {
+  protected $internal_gapi_mappings = [
+        "numActiveLogicalBytes" => "num_active_logical_bytes",
+        "numActivePhysicalBytes" => "num_active_physical_bytes",
+        "numLongTermLogicalBytes" => "num_long_term_logical_bytes",
+        "numLongTermPhysicalBytes" => "num_long_term_physical_bytes",
+        "numPartitions" => "num_partitions",
+        "numTimeTravelPhysicalBytes" => "num_time_travel_physical_bytes",
+        "numTotalLogicalBytes" => "num_total_logical_bytes",
+        "numTotalPhysicalBytes" => "num_total_physical_bytes",
+  ];
   protected $cloneDefinitionType = CloneDefinition::class;
   protected $cloneDefinitionDataType = '';
   protected $clusteringType = Clustering::class;
@@ -91,6 +101,38 @@ class Table extends \Google\Model
    * @var string
    */
   public $numRows;
+  /**
+   * @var string
+   */
+  public $numActiveLogicalBytes;
+  /**
+   * @var string
+   */
+  public $numActivePhysicalBytes;
+  /**
+   * @var string
+   */
+  public $numLongTermLogicalBytes;
+  /**
+   * @var string
+   */
+  public $numLongTermPhysicalBytes;
+  /**
+   * @var string
+   */
+  public $numPartitions;
+  /**
+   * @var string
+   */
+  public $numTimeTravelPhysicalBytes;
+  /**
+   * @var string
+   */
+  public $numTotalLogicalBytes;
+  /**
+   * @var string
+   */
+  public $numTotalPhysicalBytes;
   protected $rangePartitioningType = RangePartitioning::class;
   protected $rangePartitioningDataType = '';
   /**
@@ -411,6 +453,118 @@ class Table extends \Google\Model
   public function getNumRows()
   {
     return $this->numRows;
+  }
+  /**
+   * @param string
+   */
+  public function setNumActiveLogicalBytes($numActiveLogicalBytes)
+  {
+    $this->numActiveLogicalBytes = $numActiveLogicalBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getNumActiveLogicalBytes()
+  {
+    return $this->numActiveLogicalBytes;
+  }
+  /**
+   * @param string
+   */
+  public function setNumActivePhysicalBytes($numActivePhysicalBytes)
+  {
+    $this->numActivePhysicalBytes = $numActivePhysicalBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getNumActivePhysicalBytes()
+  {
+    return $this->numActivePhysicalBytes;
+  }
+  /**
+   * @param string
+   */
+  public function setNumLongTermLogicalBytes($numLongTermLogicalBytes)
+  {
+    $this->numLongTermLogicalBytes = $numLongTermLogicalBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getNumLongTermLogicalBytes()
+  {
+    return $this->numLongTermLogicalBytes;
+  }
+  /**
+   * @param string
+   */
+  public function setNumLongTermPhysicalBytes($numLongTermPhysicalBytes)
+  {
+    $this->numLongTermPhysicalBytes = $numLongTermPhysicalBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getNumLongTermPhysicalBytes()
+  {
+    return $this->numLongTermPhysicalBytes;
+  }
+  /**
+   * @param string
+   */
+  public function setNumPartitions($numPartitions)
+  {
+    $this->numPartitions = $numPartitions;
+  }
+  /**
+   * @return string
+   */
+  public function getNumPartitions()
+  {
+    return $this->numPartitions;
+  }
+  /**
+   * @param string
+   */
+  public function setNumTimeTravelPhysicalBytes($numTimeTravelPhysicalBytes)
+  {
+    $this->numTimeTravelPhysicalBytes = $numTimeTravelPhysicalBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getNumTimeTravelPhysicalBytes()
+  {
+    return $this->numTimeTravelPhysicalBytes;
+  }
+  /**
+   * @param string
+   */
+  public function setNumTotalLogicalBytes($numTotalLogicalBytes)
+  {
+    $this->numTotalLogicalBytes = $numTotalLogicalBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getNumTotalLogicalBytes()
+  {
+    return $this->numTotalLogicalBytes;
+  }
+  /**
+   * @param string
+   */
+  public function setNumTotalPhysicalBytes($numTotalPhysicalBytes)
+  {
+    $this->numTotalPhysicalBytes = $numTotalPhysicalBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getNumTotalPhysicalBytes()
+  {
+    return $this->numTotalPhysicalBytes;
   }
   /**
    * @param RangePartitioning

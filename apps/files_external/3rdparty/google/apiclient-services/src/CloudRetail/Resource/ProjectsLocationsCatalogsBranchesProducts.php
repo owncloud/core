@@ -236,7 +236,10 @@ class ProjectsLocationsCatalogsBranchesProducts extends \Google\Service\Resource
    * to update. The immutable and output only fields are NOT supported. If not
    * set, all supported fields (the fields that are neither immutable nor output
    * only) are updated. If an unsupported or unknown field is provided, an
-   * INVALID_ARGUMENT error is returned.
+   * INVALID_ARGUMENT error is returned. The attribute key can be updated by
+   * setting the mask path as "attributes.${key_name}". If a key name is present
+   * in the mask but not in the patching product from the request, this key will
+   * be deleted after the update.
    * @return GoogleCloudRetailV2Product
    */
   public function patch($name, GoogleCloudRetailV2Product $postBody, $optParams = [])

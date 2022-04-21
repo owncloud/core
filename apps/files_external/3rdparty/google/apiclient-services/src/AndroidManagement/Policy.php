@@ -298,6 +298,8 @@ class Policy extends \Google\Collection
    * @var bool
    */
   public $unmuteMicrophoneDisabled;
+  protected $usageLogType = UsageLog::class;
+  protected $usageLogDataType = '';
   /**
    * @var bool
    */
@@ -1456,6 +1458,20 @@ class Policy extends \Google\Collection
   public function getUnmuteMicrophoneDisabled()
   {
     return $this->unmuteMicrophoneDisabled;
+  }
+  /**
+   * @param UsageLog
+   */
+  public function setUsageLog(UsageLog $usageLog)
+  {
+    $this->usageLog = $usageLog;
+  }
+  /**
+   * @return UsageLog
+   */
+  public function getUsageLog()
+  {
+    return $this->usageLog;
   }
   /**
    * @param bool

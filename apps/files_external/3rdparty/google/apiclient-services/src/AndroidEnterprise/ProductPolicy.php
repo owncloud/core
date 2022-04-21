@@ -26,6 +26,8 @@ class ProductPolicy extends \Google\Collection
    * @var string
    */
   public $autoUpdateMode;
+  protected $enterpriseAuthenticationAppLinkConfigsType = EnterpriseAuthenticationAppLinkConfig::class;
+  protected $enterpriseAuthenticationAppLinkConfigsDataType = 'array';
   protected $managedConfigurationType = ManagedConfiguration::class;
   protected $managedConfigurationDataType = '';
   /**
@@ -68,6 +70,20 @@ class ProductPolicy extends \Google\Collection
   public function getAutoUpdateMode()
   {
     return $this->autoUpdateMode;
+  }
+  /**
+   * @param EnterpriseAuthenticationAppLinkConfig[]
+   */
+  public function setEnterpriseAuthenticationAppLinkConfigs($enterpriseAuthenticationAppLinkConfigs)
+  {
+    $this->enterpriseAuthenticationAppLinkConfigs = $enterpriseAuthenticationAppLinkConfigs;
+  }
+  /**
+   * @return EnterpriseAuthenticationAppLinkConfig[]
+   */
+  public function getEnterpriseAuthenticationAppLinkConfigs()
+  {
+    return $this->enterpriseAuthenticationAppLinkConfigs;
   }
   /**
    * @param ManagedConfiguration

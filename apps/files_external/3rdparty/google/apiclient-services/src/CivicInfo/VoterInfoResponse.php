@@ -46,6 +46,8 @@ class VoterInfoResponse extends \Google\Collection
    * @var string
    */
   public $precinctId;
+  protected $precinctsType = Precinct::class;
+  protected $precinctsDataType = 'array';
   protected $stateType = AdministrationRegion::class;
   protected $stateDataType = 'array';
 
@@ -188,6 +190,20 @@ class VoterInfoResponse extends \Google\Collection
   public function getPrecinctId()
   {
     return $this->precinctId;
+  }
+  /**
+   * @param Precinct[]
+   */
+  public function setPrecincts($precincts)
+  {
+    $this->precincts = $precincts;
+  }
+  /**
+   * @return Precinct[]
+   */
+  public function getPrecincts()
+  {
+    return $this->precincts;
   }
   /**
    * @param AdministrationRegion[]

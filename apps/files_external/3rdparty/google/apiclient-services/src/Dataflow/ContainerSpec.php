@@ -25,6 +25,18 @@ class ContainerSpec extends \Google\Model
    * @var string
    */
   public $image;
+  /**
+   * @var string
+   */
+  public $imageRepositoryCertPath;
+  /**
+   * @var string
+   */
+  public $imageRepositoryPasswordSecretId;
+  /**
+   * @var string
+   */
+  public $imageRepositoryUsernameSecretId;
   protected $metadataType = TemplateMetadata::class;
   protected $metadataDataType = '';
   protected $sdkInfoType = SDKInfo::class;
@@ -57,6 +69,48 @@ class ContainerSpec extends \Google\Model
   public function getImage()
   {
     return $this->image;
+  }
+  /**
+   * @param string
+   */
+  public function setImageRepositoryCertPath($imageRepositoryCertPath)
+  {
+    $this->imageRepositoryCertPath = $imageRepositoryCertPath;
+  }
+  /**
+   * @return string
+   */
+  public function getImageRepositoryCertPath()
+  {
+    return $this->imageRepositoryCertPath;
+  }
+  /**
+   * @param string
+   */
+  public function setImageRepositoryPasswordSecretId($imageRepositoryPasswordSecretId)
+  {
+    $this->imageRepositoryPasswordSecretId = $imageRepositoryPasswordSecretId;
+  }
+  /**
+   * @return string
+   */
+  public function getImageRepositoryPasswordSecretId()
+  {
+    return $this->imageRepositoryPasswordSecretId;
+  }
+  /**
+   * @param string
+   */
+  public function setImageRepositoryUsernameSecretId($imageRepositoryUsernameSecretId)
+  {
+    $this->imageRepositoryUsernameSecretId = $imageRepositoryUsernameSecretId;
+  }
+  /**
+   * @return string
+   */
+  public function getImageRepositoryUsernameSecretId()
+  {
+    return $this->imageRepositoryUsernameSecretId;
   }
   /**
    * @param TemplateMetadata

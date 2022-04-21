@@ -24,6 +24,10 @@ class GoogleCloudRunV2BinaryAuthorization extends \Google\Model
    */
   public $breakglassJustification;
   /**
+   * @var string
+   */
+  public $policy;
+  /**
    * @var bool
    */
   public $useDefault;
@@ -41,6 +45,20 @@ class GoogleCloudRunV2BinaryAuthorization extends \Google\Model
   public function getBreakglassJustification()
   {
     return $this->breakglassJustification;
+  }
+  /**
+   * @param string
+   */
+  public function setPolicy($policy)
+  {
+    $this->policy = $policy;
+  }
+  /**
+   * @return string
+   */
+  public function getPolicy()
+  {
+    return $this->policy;
   }
   /**
    * @param bool

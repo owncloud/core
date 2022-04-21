@@ -17,8 +17,9 @@
 
 namespace Google\Service\SecurityCommandCenter;
 
-class Finding extends \Google\Model
+class Finding extends \Google\Collection
 {
+  protected $collection_key = 'iamBindings';
   protected $accessType = Access::class;
   protected $accessDataType = '';
   /**
@@ -47,6 +48,8 @@ class Finding extends \Google\Model
    * @var string
    */
   public $findingClass;
+  protected $iamBindingsType = IamBinding::class;
+  protected $iamBindingsDataType = 'array';
   protected $indicatorType = Indicator::class;
   protected $indicatorDataType = '';
   protected $mitreAttackType = MitreAttack::class;
@@ -67,6 +70,10 @@ class Finding extends \Google\Model
    * @var string
    */
   public $name;
+  /**
+   * @var string
+   */
+  public $nextSteps;
   /**
    * @var string
    */
@@ -205,6 +212,20 @@ class Finding extends \Google\Model
     return $this->findingClass;
   }
   /**
+   * @param IamBinding[]
+   */
+  public function setIamBindings($iamBindings)
+  {
+    $this->iamBindings = $iamBindings;
+  }
+  /**
+   * @return IamBinding[]
+   */
+  public function getIamBindings()
+  {
+    return $this->iamBindings;
+  }
+  /**
    * @param Indicator
    */
   public function setIndicator(Indicator $indicator)
@@ -287,6 +308,20 @@ class Finding extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setNextSteps($nextSteps)
+  {
+    $this->nextSteps = $nextSteps;
+  }
+  /**
+   * @return string
+   */
+  public function getNextSteps()
+  {
+    return $this->nextSteps;
   }
   /**
    * @param string

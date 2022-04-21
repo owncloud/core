@@ -31,7 +31,9 @@ class SpacesMessagesAttachments extends \Google\Service\Resource
 {
   /**
    * Gets the metadata of a message attachment. The attachment data is fetched
-   * using the media API. (attachments.get)
+   * using the media API. Requires [service account
+   * authentication](https://developers.google.com/chat/api/guides/auth/service-
+   * accounts). (attachments.get)
    *
    * @param string $name Required. Resource name of the attachment, in the form
    * "spaces/messages/attachments".

@@ -50,10 +50,6 @@ class Message extends \Google\Collection
    * @var string
    */
   public $name;
-  /**
-   * @var string
-   */
-  public $previewText;
   protected $senderType = User::class;
   protected $senderDataType = '';
   protected $slashCommandType = SlashCommand::class;
@@ -206,20 +202,6 @@ class Message extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param string
-   */
-  public function setPreviewText($previewText)
-  {
-    $this->previewText = $previewText;
-  }
-  /**
-   * @return string
-   */
-  public function getPreviewText()
-  {
-    return $this->previewText;
   }
   /**
    * @param User

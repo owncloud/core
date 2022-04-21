@@ -34,7 +34,8 @@ use Google\Service\Dataflow\LaunchTemplateResponse;
 class ProjectsTemplates extends \Google\Service\Resource
 {
   /**
-   * Creates a Cloud Dataflow job from a template. (templates.create)
+   * Creates a Cloud Dataflow job from a template. Do not enter confidential
+   * information when you supply string values using the API. (templates.create)
    *
    * @param string $projectId Required. The ID of the Cloud Platform project that
    * the job belongs to.

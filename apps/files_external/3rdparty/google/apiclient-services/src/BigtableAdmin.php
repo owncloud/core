@@ -68,6 +68,7 @@ class BigtableAdmin extends \Google\Service
   public $projects_instances_appProfiles;
   public $projects_instances_clusters;
   public $projects_instances_clusters_backups;
+  public $projects_instances_clusters_hotTablets;
   public $projects_instances_tables;
   public $projects_locations;
 
@@ -545,6 +546,42 @@ class BigtableAdmin extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_instances_clusters_hotTablets = new BigtableAdmin\Resource\ProjectsInstancesClustersHotTablets(
+        $this,
+        $this->serviceName,
+        'hotTablets',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v2/{+parent}/hotTablets',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'endTime' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'startTime' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],

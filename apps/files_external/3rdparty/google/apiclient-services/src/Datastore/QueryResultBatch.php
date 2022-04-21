@@ -37,6 +37,10 @@ class QueryResultBatch extends \Google\Collection
   /**
    * @var string
    */
+  public $readTime;
+  /**
+   * @var string
+   */
   public $skippedCursor;
   /**
    * @var int
@@ -102,6 +106,20 @@ class QueryResultBatch extends \Google\Collection
   public function getMoreResults()
   {
     return $this->moreResults;
+  }
+  /**
+   * @param string
+   */
+  public function setReadTime($readTime)
+  {
+    $this->readTime = $readTime;
+  }
+  /**
+   * @return string
+   */
+  public function getReadTime()
+  {
+    return $this->readTime;
   }
   /**
    * @param string

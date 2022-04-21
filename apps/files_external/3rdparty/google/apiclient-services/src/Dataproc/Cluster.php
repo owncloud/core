@@ -44,6 +44,8 @@ class Cluster extends \Google\Collection
   protected $statusDataType = '';
   protected $statusHistoryType = ClusterStatus::class;
   protected $statusHistoryDataType = 'array';
+  protected $virtualClusterConfigType = VirtualClusterConfig::class;
+  protected $virtualClusterConfigDataType = '';
 
   /**
    * @param string
@@ -156,6 +158,20 @@ class Cluster extends \Google\Collection
   public function getStatusHistory()
   {
     return $this->statusHistory;
+  }
+  /**
+   * @param VirtualClusterConfig
+   */
+  public function setVirtualClusterConfig(VirtualClusterConfig $virtualClusterConfig)
+  {
+    $this->virtualClusterConfig = $virtualClusterConfig;
+  }
+  /**
+   * @return VirtualClusterConfig
+   */
+  public function getVirtualClusterConfig()
+  {
+    return $this->virtualClusterConfig;
   }
 }
 

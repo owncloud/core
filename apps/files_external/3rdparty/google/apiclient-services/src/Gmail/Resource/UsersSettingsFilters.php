@@ -47,7 +47,7 @@ class UsersSettingsFilters extends \Google\Service\Resource
     return $this->call('create', [$params], Filter::class);
   }
   /**
-   * Deletes a filter. (filters.delete)
+   * Immediately and permanently deletes the specified filter. (filters.delete)
    *
    * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.

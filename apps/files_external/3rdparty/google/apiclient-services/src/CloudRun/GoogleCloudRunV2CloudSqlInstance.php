@@ -19,25 +19,25 @@ namespace Google\Service\CloudRun;
 
 class GoogleCloudRunV2CloudSqlInstance extends \Google\Collection
 {
-  protected $collection_key = 'connections';
+  protected $collection_key = 'instances';
   /**
    * @var string[]
    */
-  public $connections;
+  public $instances;
 
   /**
    * @param string[]
    */
-  public function setConnections($connections)
+  public function setInstances($instances)
   {
-    $this->connections = $connections;
+    $this->instances = $instances;
   }
   /**
    * @return string[]
    */
-  public function getConnections()
+  public function getInstances()
   {
-    return $this->connections;
+    return $this->instances;
   }
 }
 

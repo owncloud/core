@@ -43,8 +43,8 @@ class ServicesRollouts extends \Google\Service\Resource
    * be deleted eventually. Operation (rollouts.create)
    *
    * @param string $serviceName Required. The name of the service. See the
-   * [overview](/service-management/overview) for naming requirements. For
-   * example: `example.googleapis.com`.
+   * [overview](https://cloud.google.com/service-management/overview) for naming
+   * requirements. For example: `example.googleapis.com`.
    * @param Rollout $postBody
    * @param array $optParams Optional parameters.
    * @return Operation
@@ -59,8 +59,8 @@ class ServicesRollouts extends \Google\Service\Resource
    * Gets a service configuration rollout. (rollouts.get)
    *
    * @param string $serviceName Required. The name of the service. See the
-   * [overview](/service-management/overview) for naming requirements. For
-   * example: `example.googleapis.com`.
+   * [overview](https://cloud.google.com/service-management/overview) for naming
+   * requirements. For example: `example.googleapis.com`.
    * @param string $rolloutId Required. The id of the rollout resource.
    * @param array $optParams Optional parameters.
    * @return Rollout
@@ -76,16 +76,15 @@ class ServicesRollouts extends \Google\Service\Resource
    * service, from the newest to the oldest. (rollouts.listServicesRollouts)
    *
    * @param string $serviceName Required. The name of the service. See the
-   * [overview](/service-management/overview) for naming requirements. For
-   * example: `example.googleapis.com`.
+   * [overview](https://cloud.google.com/service-management/overview) for naming
+   * requirements. For example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Required. Use `filter` to return subset of rollouts.
    * The following filters are supported: -- To limit the results to only those in
-   * [status](google.api.servicemanagement.v1.RolloutStatus) 'SUCCESS', use
-   * filter='status=SUCCESS' -- To limit the results to those in
-   * [status](google.api.servicemanagement.v1.RolloutStatus) 'CANCELLED' or
-   * 'FAILED', use filter='status=CANCELLED OR status=FAILED'
+   * status 'SUCCESS', use filter='status=SUCCESS' -- To limit the results to
+   * those in status 'CANCELLED' or 'FAILED', use filter='status=CANCELLED OR
+   * status=FAILED'
    * @opt_param int pageSize The max number of items to include in the response
    * list. Page size is 50 if not specified. Maximum value is 100.
    * @opt_param string pageToken The token of the page to retrieve.

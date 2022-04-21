@@ -450,12 +450,12 @@ class V1 extends \Google\Service\Resource
    * snake_case and camelCase are supported. Examples: `"*"`, `"name,location"`,
    * `"name,versionedResources"`. The read_mask paths must be valid field paths
    * listed but not limited to (both snake_case and camelCase are supported): *
-   * name * assetType * project * displayName * description * location * labels *
-   * networkTags * kmsKey * createTime * updateTime * state * additionalAttributes
-   * * versionedResources If read_mask is not specified, all fields except
-   * versionedResources will be returned. If only '*' is specified, all fields
-   * including versionedResources will be returned. Any invalid field path will
-   * trigger INVALID_ARGUMENT error.
+   * name * assetType * project * displayName * description * location * tagKeys *
+   * tagValues * tagValueIds * labels * networkTags * kmsKey * createTime *
+   * updateTime * state * additionalAttributes * versionedResources If read_mask
+   * is not specified, all fields except versionedResources will be returned. If
+   * only '*' is specified, all fields including versionedResources will be
+   * returned. Any invalid field path will trigger INVALID_ARGUMENT error.
    * @return SearchAllResourcesResponse
    */
   public function searchAllResources($scope, $optParams = [])

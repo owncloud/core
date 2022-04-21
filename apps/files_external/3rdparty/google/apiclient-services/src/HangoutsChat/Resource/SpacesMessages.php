@@ -31,7 +31,9 @@ use Google\Service\HangoutsChat\Message;
 class SpacesMessages extends \Google\Service\Resource
 {
   /**
-   * Creates a message. (messages.create)
+   * Creates a message. Requires [service account
+   * authentication](https://developers.google.com/chat/api/guides/auth/service-
+   * accounts). (messages.create)
    *
    * @param string $parent Required. Space resource name, in the form "spaces".
    * Example: spaces/AAAAAAAAAAA
@@ -45,10 +47,10 @@ class SpacesMessages extends \Google\Service\Resource
    * can be specified to group messages into a single thread. If this is the first
    * message with a given thread identifier, a new thread is created. Subsequent
    * messages with the same thread identifier will be posted into the same thread.
-   * This relieves bots and webhooks from having to store the Google Chat thread
-   * ID of a thread (created earlier by them) to post further updates to it. Has
-   * no effect if thread field, corresponding to an existing thread, is set in
-   * message.
+   * This relieves Chat apps and webhooks from having to store the Google Chat
+   * thread ID of a thread (created earlier by them) to post further updates to
+   * it. Has no effect if thread field, corresponding to an existing thread, is
+   * set in message.
    * @return Message
    */
   public function create($parent, Message $postBody, $optParams = [])
@@ -58,7 +60,9 @@ class SpacesMessages extends \Google\Service\Resource
     return $this->call('create', [$params], Message::class);
   }
   /**
-   * Deletes a message. (messages.delete)
+   * Deletes a message. Requires [service account
+   * authentication](https://developers.google.com/chat/api/guides/auth/service-
+   * accounts). (messages.delete)
    *
    * @param string $name Required. Resource name of the message to be deleted, in
    * the form "spaces/messages" Example:
@@ -73,7 +77,9 @@ class SpacesMessages extends \Google\Service\Resource
     return $this->call('delete', [$params], ChatEmpty::class);
   }
   /**
-   * Returns a message. (messages.get)
+   * Returns a message. Requires [service account
+   * authentication](https://developers.google.com/chat/api/guides/auth/service-
+   * accounts). (messages.get)
    *
    * @param string $name Required. Resource name of the message to be retrieved,
    * in the form "spaces/messages". Example:
@@ -88,7 +94,9 @@ class SpacesMessages extends \Google\Service\Resource
     return $this->call('get', [$params], Message::class);
   }
   /**
-   * Updates a message. (messages.update)
+   * Updates a message. Requires [service account
+   * authentication](https://developers.google.com/chat/api/guides/auth/service-
+   * accounts). (messages.update)
    *
    * @param string $name Resource name in the form `spaces/messages`. Example:
    * `spaces/AAAAAAAAAAA/messages/BBBBBBBBBBB.BBBBBBBBBBB`

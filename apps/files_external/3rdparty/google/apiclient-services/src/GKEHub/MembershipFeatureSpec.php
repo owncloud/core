@@ -21,6 +21,8 @@ class MembershipFeatureSpec extends \Google\Model
 {
   protected $configmanagementType = ConfigManagementMembershipSpec::class;
   protected $configmanagementDataType = '';
+  protected $meshType = ServiceMeshMembershipSpec::class;
+  protected $meshDataType = '';
 
   /**
    * @param ConfigManagementMembershipSpec
@@ -35,6 +37,20 @@ class MembershipFeatureSpec extends \Google\Model
   public function getConfigmanagement()
   {
     return $this->configmanagement;
+  }
+  /**
+   * @param ServiceMeshMembershipSpec
+   */
+  public function setMesh(ServiceMeshMembershipSpec $mesh)
+  {
+    $this->mesh = $mesh;
+  }
+  /**
+   * @return ServiceMeshMembershipSpec
+   */
+  public function getMesh()
+  {
+    return $this->mesh;
   }
 }
 

@@ -32,7 +32,9 @@ use Google\Service\HangoutsChat\Space;
 class Spaces extends \Google\Service\Resource
 {
   /**
-   * Returns a space. (spaces.get)
+   * Returns a space. Requires [service account
+   * authentication](https://developers.google.com/chat/api/guides/auth/service-
+   * accounts). (spaces.get)
    *
    * @param string $name Required. Resource name of the space, in the form
    * "spaces". Example: spaces/AAAAAAAAAAAA
@@ -46,7 +48,9 @@ class Spaces extends \Google\Service\Resource
     return $this->call('get', [$params], Space::class);
   }
   /**
-   * Lists spaces the caller is a member of. (spaces.listSpaces)
+   * Lists spaces the caller is a member of. Requires [service account
+   * authentication](https://developers.google.com/chat/api/guides/auth/service-
+   * accounts). (spaces.listSpaces)
    *
    * @param array $optParams Optional parameters.
    *
@@ -79,10 +83,10 @@ class Spaces extends \Google\Service\Resource
    * can be specified to group messages into a single thread. If this is the first
    * message with a given thread identifier, a new thread is created. Subsequent
    * messages with the same thread identifier will be posted into the same thread.
-   * This relieves bots and webhooks from having to store the Google Chat thread
-   * ID of a thread (created earlier by them) to post further updates to it. Has
-   * no effect if thread field, corresponding to an existing thread, is set in
-   * message.
+   * This relieves Chat apps and webhooks from having to store the Google Chat
+   * thread ID of a thread (created earlier by them) to post further updates to
+   * it. Has no effect if thread field, corresponding to an existing thread, is
+   * set in message.
    * @return Message
    */
   public function webhooks($parent, Message $postBody, $optParams = [])

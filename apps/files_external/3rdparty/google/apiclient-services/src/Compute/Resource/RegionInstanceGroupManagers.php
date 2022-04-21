@@ -102,12 +102,12 @@ class RegionInstanceGroupManagers extends \Google\Service\Resource
     return $this->call('applyUpdatesToInstances', [$params], Operation::class);
   }
   /**
-   * Creates instances with per-instance configs in this regional managed instance
-   * group. Instances are created using the current instance template. The create
-   * instances operation is marked DONE if the createInstances request is
-   * successful. The underlying actions take additional time. You must separately
-   * verify the status of the creating or actions with the listmanagedinstances
-   * method. (regionInstanceGroupManagers.createInstances)
+   * Creates instances with per-instance configurations in this regional managed
+   * instance group. Instances are created using the current instance template.
+   * The create instances operation is marked DONE if the createInstances request
+   * is successful. The underlying actions take additional time. You must
+   * separately verify the status of the creating or actions with the
+   * listmanagedinstances method. (regionInstanceGroupManagers.createInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region where the managed instance group
@@ -201,7 +201,7 @@ class RegionInstanceGroupManagers extends \Google\Service\Resource
     return $this->call('deleteInstances', [$params], Operation::class);
   }
   /**
-   * Deletes selected per-instance configs for the managed instance group.
+   * Deletes selected per-instance configurations for the managed instance group.
    * (regionInstanceGroupManagers.deletePerInstanceConfigs)
    *
    * @param string $project Project ID for this request.
@@ -444,8 +444,8 @@ class RegionInstanceGroupManagers extends \Google\Service\Resource
     return $this->call('listManagedInstances', [$params], RegionInstanceGroupManagersListInstancesResponse::class);
   }
   /**
-   * Lists all of the per-instance configs defined for the managed instance group.
-   * The orderBy query parameter is not supported.
+   * Lists all of the per-instance configurations defined for the managed instance
+   * group. The orderBy query parameter is not supported.
    * (regionInstanceGroupManagers.listPerInstanceConfigs)
    *
    * @param string $project Project ID for this request.
@@ -540,9 +540,10 @@ class RegionInstanceGroupManagers extends \Google\Service\Resource
     return $this->call('patch', [$params], Operation::class);
   }
   /**
-   * Inserts or patches per-instance configs for the managed instance group.
-   * perInstanceConfig.name serves as a key used to distinguish whether to perform
-   * insert or patch. (regionInstanceGroupManagers.patchPerInstanceConfigs)
+   * Inserts or patches per-instance configurations for the managed instance
+   * group. perInstanceConfig.name serves as a key used to distinguish whether to
+   * perform insert or patch.
+   * (regionInstanceGroupManagers.patchPerInstanceConfigs)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request, should conform
@@ -703,9 +704,10 @@ class RegionInstanceGroupManagers extends \Google\Service\Resource
     return $this->call('setTargetPools', [$params], Operation::class);
   }
   /**
-   * Inserts or updates per-instance configs for the managed instance group.
-   * perInstanceConfig.name serves as a key used to distinguish whether to perform
-   * insert or patch. (regionInstanceGroupManagers.updatePerInstanceConfigs)
+   * Inserts or updates per-instance configurations for the managed instance
+   * group. perInstanceConfig.name serves as a key used to distinguish whether to
+   * perform insert or patch.
+   * (regionInstanceGroupManagers.updatePerInstanceConfigs)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request, should conform

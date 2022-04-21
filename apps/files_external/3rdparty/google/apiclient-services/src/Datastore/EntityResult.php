@@ -28,6 +28,10 @@ class EntityResult extends \Google\Model
   /**
    * @var string
    */
+  public $updateTime;
+  /**
+   * @var string
+   */
   public $version;
 
   /**
@@ -57,6 +61,20 @@ class EntityResult extends \Google\Model
   public function getEntity()
   {
     return $this->entity;
+  }
+  /**
+   * @param string
+   */
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  /**
+   * @return string
+   */
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
   /**
    * @param string

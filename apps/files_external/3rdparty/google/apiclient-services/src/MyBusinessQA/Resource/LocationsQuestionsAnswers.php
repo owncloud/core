@@ -19,6 +19,7 @@ namespace Google\Service\MyBusinessQA\Resource;
 
 use Google\Service\MyBusinessQA\Answer;
 use Google\Service\MyBusinessQA\ListAnswersResponse;
+use Google\Service\MyBusinessQA\MybusinessqandaEmpty;
 use Google\Service\MyBusinessQA\UpsertAnswerRequest;
 
 /**
@@ -31,6 +32,21 @@ use Google\Service\MyBusinessQA\UpsertAnswerRequest;
  */
 class LocationsQuestionsAnswers extends \Google\Service\Resource
 {
+  /**
+   * Deletes the answer written by the current user to a question.
+   * (answers.delete)
+   *
+   * @param string $name Required. The name of the question to delete an answer
+   * for.
+   * @param array $optParams Optional parameters.
+   * @return MybusinessqandaEmpty
+   */
+  public function delete($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', [$params], MybusinessqandaEmpty::class);
+  }
   /**
    * Returns the paginated list of answers for a specified question.
    * (answers.listLocationsQuestionsAnswers)

@@ -82,16 +82,6 @@ class MyBusinessQA extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'deleteAnswers' => [
-              'path' => 'v1/{+name}/answers',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],'list' => [
               'path' => 'v1/{+parent}',
               'httpMethod' => 'GET',
@@ -146,8 +136,18 @@ class MyBusinessQA extends \Google\Service
         'answers',
         [
           'methods' => [
-            'list' => [
-              'path' => 'v1/{+parent}',
+            'delete' => [
+              'path' => 'v1/{+name}/answers:delete',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/answers',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
