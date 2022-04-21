@@ -323,6 +323,7 @@ trait Sharing {
 			$user,
 			$body
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -931,6 +932,7 @@ trait Sharing {
 	 */
 	public function userUpdatesTheLastShareWith(string $user, ?TableNode $body):void {
 		$this->updateLastShareWithSettings($user, $body);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -1876,6 +1878,7 @@ trait Sharing {
 	 */
 	public function userDeletesLastShareUsingTheSharingApi(string $user):void {
 		$this->deleteLastShareUsingSharingApi($user);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
