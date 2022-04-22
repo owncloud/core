@@ -4,8 +4,8 @@ This repository contains a full [PSR-7](http://www.php-fig.org/psr/psr-7/)
 message implementation, several stream decorators, and some helpful
 functionality like query string parsing.
 
-
-[![Build Status](https://travis-ci.org/guzzle/psr7.svg?branch=master)](https://travis-ci.org/guzzle/psr7)
+![CI](https://github.com/guzzle/psr7/workflows/CI/badge.svg)
+![Static analysis](https://github.com/guzzle/psr7/workflows/Static%20analysis/badge.svg)
 
 
 # Stream implementation
@@ -130,10 +130,9 @@ $fnStream->rewind();
 
 `GuzzleHttp\Psr7\InflateStream`
 
-Uses PHP's zlib.inflate filter to inflate deflate or gzipped content.
+Uses PHP's zlib.inflate filter to inflate zlib (HTTP deflate, RFC1950) or gzipped (RFC1952) content.
 
-This stream decorator skips the first 10 bytes of the given stream to remove
-the gzip header, converts the provided stream to a PHP stream resource,
+This stream decorator converts the provided stream to a PHP stream resource,
 then appends the zlib.inflate filter. The stream is then converted back
 to a Guzzle stream resource to be used as a Guzzle stream.
 
@@ -555,7 +554,7 @@ Maps a file extensions to a mimetype.
 
 ## Upgrading from Function API
 
-The static API was first introduced in 1.7.0, in order to mitigate problems with functions conflicting between global and local copies of the package. The function API will be removed in 2.0.0. A migration table has been provided here for your convenience:
+The static API was first introduced in 1.7.0, in order to mitigate problems with functions conflicting between global and local copies of the package. The function API was removed in 2.0.0. A migration table has been provided here for your convenience:
 
 | Original Function | Replacement Method |
 |----------------|----------------|
