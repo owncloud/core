@@ -18,7 +18,6 @@ Feature: using trashbin together with sharing
     And as "Brian" the folder with original path "/renamed_shared" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -35,7 +34,6 @@ Feature: using trashbin together with sharing
     And as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -56,7 +54,6 @@ Feature: using trashbin together with sharing
     And as "Carol" the file with original path "/shared/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -77,7 +74,6 @@ Feature: using trashbin together with sharing
     And as "Carol" the file with original path "/shared/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -99,7 +95,6 @@ Feature: using trashbin together with sharing
     And as "Carol" the file with original path "/shared/sub/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -121,7 +116,6 @@ Feature: using trashbin together with sharing
     And as "Carol" the file with original path "/shared/sub/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -144,11 +138,10 @@ Feature: using trashbin together with sharing
     And the content of file "/renamed_shared/shared_file.txt" for user "Brian" should be "to delete"
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-  Scenario Outline: restoring a file to a read-only folder
+  Scenario Outline: restoring a file to a read-only folder is not allowed
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "shareFolderParent"
@@ -163,11 +156,10 @@ Feature: using trashbin together with sharing
     And as "Brian" file "/shareFolderParent/textfile0.txt" should not exist
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-  Scenario Outline: restoring a file to a read-only sub-folder
+  Scenario Outline: restoring a file to a read-only sub-folder is not allowed
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "shareFolderParent"
@@ -183,5 +175,4 @@ Feature: using trashbin together with sharing
     And as "Brian" file "/shareFolderParent/shareFolderChild/textfile0.txt" should not exist
     Examples:
       | dav-path |
-      | old      |
       | new      |
