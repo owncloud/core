@@ -310,15 +310,15 @@ Feature: resharing a resource with an expiration date
     And the OCS status code should be "<ocs_status_code>"
     And user "Carol" should be able to accept pending share "/textfile0.txt" offered by user "Brian"
     And the information of the last share of user "Brian" should include
-      | expiration | <expected-expire-date> |
+      | expiration | +20 days |
     And the response when user "Carol" gets the info of the last share should include
-      | expiration | <expected-expire-date> |
+      | expiration | +20 days |
     Examples:
-      | ocs_api_version | default-expire-date | expected-expire-date | ocs_status_code |
-      | 1               | yes                 | +20 days             | 100             |
-      | 2               | yes                 | +20 days             | 200             |
-      | 1               | no                  | +20 days             | 100             |
-      | 2               | no                  | +20 days             | 200             |
+      | ocs_api_version | default-expire-date | ocs_status_code |
+      | 1               | yes                 | 100             |
+      | 2               | yes                 | 200             |
+      | 1               | no                  | 100             |
+      | 2               | no                  | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: resharing using the sharing API with default expire date set but not enforced
