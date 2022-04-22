@@ -29,6 +29,7 @@ use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcisHelper;
+use TestHelpers\WebDavHelper;
 use Laminas\Ldap\Exception\LdapException;
 use Laminas\Ldap\Ldap;
 
@@ -2001,6 +2002,7 @@ trait Provisioning {
 	public function theAdministratorHasDeletedUserUsingTheProvisioningApi(?string $user):void {
 		$user = $this->getActualUsername($user);
 		$this->deleteTheUserUsingTheProvisioningApi($user);
+		WebDavHelper::removeSpaceIdForUser($user);
 		$this->userShouldNotExist($user);
 	}
 

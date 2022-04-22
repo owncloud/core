@@ -301,11 +301,12 @@ class TrashbinContext implements Context {
 	public function sendTrashbinListRequest(string $user, ?string $asUser = null, ?string $password = null):void {
 		$asUser = $asUser ?? $user;
 		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
+		$davPathVersion = $this->featureContext->getDavPathVersion();
 		$response = WebDavHelper::propfind(
 			$this->featureContext->getBaseUrl(),
 			$asUser,
 			$password,
-			"/trash-bin/$user/",
+			null,
 			[
 				'oc:trashbin-original-filename',
 				'oc:trashbin-original-location',
@@ -315,14 +316,19 @@ class TrashbinContext implements Context {
 			$this->featureContext->getStepLineRef(),
 			'1',
 			'trash-bin',
-			2
+			$davPathVersion,
+			$user
 		);
 		$this->featureContext->setResponse($response);
-		$responseXmlObject = HttpRequestHelper::getResponseXml(
-			$response,
-			__METHOD__
-		);
-		$this->featureContext->setResponseXmlObject($responseXmlObject);
+		try {
+			$responseXmlObject = HttpRequestHelper::getResponseXml(
+				$response,
+				__METHOD__
+			);
+			$this->featureContext->setResponseXmlObject($responseXmlObject);
+		} catch (Exception $e) {
+			$this->featureContext->clearResponseXmlObject();
+		}
 	}
 
 	/**

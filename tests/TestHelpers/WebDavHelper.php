@@ -47,6 +47,22 @@ class WebDavHelper {
 	public static $spacesIdRef = [];
 
 	/**
+	 * clear space id reference for user
+	 *
+	 * @param string|null $user
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function removeSpaceIdForUser(
+		?string $user
+	):void {
+		if (\array_key_exists($user, self::$spacesIdRef) && \array_key_exists("personal", self::$spacesIdRef[$user])) {
+			unset(self::$spacesIdRef[$user]);
+		}
+	}
+
+	/**
 	 * returns the id of a file
 	 *
 	 * @param string|null $baseUrl
@@ -118,6 +134,7 @@ class WebDavHelper {
 	 * @param string|null $folderDepth
 	 * @param string|null $type
 	 * @param int|null $davPathVersionToUse
+	 * @param string|null $doDavRequestAsUser
 	 *
 	 * @return ResponseInterface
 	 */
@@ -130,7 +147,8 @@ class WebDavHelper {
 		?string $xRequestId = '',
 		?string $folderDepth = '0',
 		?string $type = "files",
-		?int $davPathVersionToUse = self::DAV_VERSION_NEW
+		?int $davPathVersionToUse = self::DAV_VERSION_NEW,
+		?string $doDavRequestAsUser = null
 	):ResponseInterface {
 		$propertyBody = "";
 		$extraNamespaces = "";
@@ -178,7 +196,14 @@ class WebDavHelper {
 			$xRequestId,
 			$body,
 			$davPathVersionToUse,
-			$type
+			$type,
+			null,
+			null,
+			false,
+			null,
+			null,
+			[],
+			$doDavRequestAsUser
 		);
 	}
 
