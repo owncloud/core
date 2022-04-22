@@ -7,14 +7,14 @@
 		"optimize-autoloader": true,
 		"classmap-authoritative": true,
 		"platform": {
-			"php": "7.2.5"
+			"php": "7.4"
 		}
 	},
 	"replace": {
 		"guzzlehttp/guzzle": "*"
 	},
 	"require": {
-		"php": ">=7.2",
+		"php": ">=7.4",
 		"icewind/smb": "3.5.4",
 		"icewind/streams": "0.7.5",
 		"google/apiclient": "2.12.6",
