@@ -40,6 +40,8 @@ class Instance extends \Google\Collection
    * @var string[]
    */
   public $labels;
+  protected $logicalInterfacesType = GoogleCloudBaremetalsolutionV2LogicalInterface::class;
+  protected $logicalInterfacesDataType = 'array';
   protected $lunsType = Lun::class;
   protected $lunsDataType = 'array';
   /**
@@ -50,6 +52,10 @@ class Instance extends \Google\Collection
    * @var string
    */
   public $name;
+  /**
+   * @var string
+   */
+  public $networkTemplate;
   protected $networksType = Network::class;
   protected $networksDataType = 'array';
   /**
@@ -140,6 +146,20 @@ class Instance extends \Google\Collection
     return $this->labels;
   }
   /**
+   * @param GoogleCloudBaremetalsolutionV2LogicalInterface[]
+   */
+  public function setLogicalInterfaces($logicalInterfaces)
+  {
+    $this->logicalInterfaces = $logicalInterfaces;
+  }
+  /**
+   * @return GoogleCloudBaremetalsolutionV2LogicalInterface[]
+   */
+  public function getLogicalInterfaces()
+  {
+    return $this->logicalInterfaces;
+  }
+  /**
    * @param Lun[]
    */
   public function setLuns($luns)
@@ -180,6 +200,20 @@ class Instance extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setNetworkTemplate($networkTemplate)
+  {
+    $this->networkTemplate = $networkTemplate;
+  }
+  /**
+   * @return string
+   */
+  public function getNetworkTemplate()
+  {
+    return $this->networkTemplate;
   }
   /**
    * @param Network[]

@@ -17,7 +17,9 @@
 
 namespace Google\Service\DisplayVideo\Resource;
 
+use Google\Service\DisplayVideo\EditInventorySourceReadWriteAccessorsRequest;
 use Google\Service\DisplayVideo\InventorySource;
+use Google\Service\DisplayVideo\InventorySourceAccessors;
 use Google\Service\DisplayVideo\ListInventorySourcesResponse;
 
 /**
@@ -30,6 +32,42 @@ use Google\Service\DisplayVideo\ListInventorySourcesResponse;
  */
 class InventorySources extends \Google\Service\Resource
 {
+  /**
+   * Creates a new inventory source. Returns the newly created inventory source if
+   * successful. (inventorySources.create)
+   *
+   * @param InventorySource $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string advertiserId The ID of the advertiser that the request is
+   * being made within.
+   * @opt_param string partnerId The ID of the partner that the request is being
+   * made within.
+   * @return InventorySource
+   */
+  public function create(InventorySource $postBody, $optParams = [])
+  {
+    $params = ['postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], InventorySource::class);
+  }
+  /**
+   * Edits read/write accessors of an inventory source. Returns the updated
+   * read_write_accessors for the inventory source.
+   * (inventorySources.editInventorySourceReadWriteAccessors)
+   *
+   * @param string $inventorySourceId Required. The ID of inventory source to
+   * update.
+   * @param EditInventorySourceReadWriteAccessorsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return InventorySourceAccessors
+   */
+  public function editInventorySourceReadWriteAccessors($inventorySourceId, EditInventorySourceReadWriteAccessorsRequest $postBody, $optParams = [])
+  {
+    $params = ['inventorySourceId' => $inventorySourceId, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('editInventorySourceReadWriteAccessors', [$params], InventorySourceAccessors::class);
+  }
   /**
    * Gets an inventory source. (inventorySources.get)
    *
@@ -87,6 +125,29 @@ class InventorySources extends \Google\Service\Resource
     $params = [];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListInventorySourcesResponse::class);
+  }
+  /**
+   * Updates an existing inventory source. Returns the updated inventory source if
+   * successful. (inventorySources.patch)
+   *
+   * @param string $inventorySourceId Output only. The unique ID of the inventory
+   * source. Assigned by the system.
+   * @param InventorySource $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string advertiserId The ID of the advertiser that the request is
+   * being made within.
+   * @opt_param string partnerId The ID of the partner that the request is being
+   * made within.
+   * @opt_param string updateMask Required. The mask to control which fields to
+   * update.
+   * @return InventorySource
+   */
+  public function patch($inventorySourceId, InventorySource $postBody, $optParams = [])
+  {
+    $params = ['inventorySourceId' => $inventorySourceId, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], InventorySource::class);
   }
 }
 

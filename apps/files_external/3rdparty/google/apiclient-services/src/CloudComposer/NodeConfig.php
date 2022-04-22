@@ -24,6 +24,10 @@ class NodeConfig extends \Google\Collection
    * @var int
    */
   public $diskSizeGb;
+  /**
+   * @var bool
+   */
+  public $enableIpMasqAgent;
   protected $ipAllocationPolicyType = IPAllocationPolicy::class;
   protected $ipAllocationPolicyDataType = '';
   /**
@@ -68,6 +72,20 @@ class NodeConfig extends \Google\Collection
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
+  }
+  /**
+   * @param bool
+   */
+  public function setEnableIpMasqAgent($enableIpMasqAgent)
+  {
+    $this->enableIpMasqAgent = $enableIpMasqAgent;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableIpMasqAgent()
+  {
+    return $this->enableIpMasqAgent;
   }
   /**
    * @param IPAllocationPolicy

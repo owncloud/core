@@ -23,6 +23,10 @@ class AutoscalingTargets extends \Google\Model
    * @var int
    */
   public $cpuUtilizationPercent;
+  /**
+   * @var int
+   */
+  public $storageUtilizationGibPerNode;
 
   /**
    * @param int
@@ -37,6 +41,20 @@ class AutoscalingTargets extends \Google\Model
   public function getCpuUtilizationPercent()
   {
     return $this->cpuUtilizationPercent;
+  }
+  /**
+   * @param int
+   */
+  public function setStorageUtilizationGibPerNode($storageUtilizationGibPerNode)
+  {
+    $this->storageUtilizationGibPerNode = $storageUtilizationGibPerNode;
+  }
+  /**
+   * @return int
+   */
+  public function getStorageUtilizationGibPerNode()
+  {
+    return $this->storageUtilizationGibPerNode;
   }
 }
 
