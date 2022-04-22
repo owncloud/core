@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "feda99650b3d0e81c72ae95086049cb7",
+    "content-hash": "8eb9f1f9c51ae7994504a3ca4c4a85da",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -65,24 +65,24 @@
         },
         {
             "name": "google/apiclient",
-            "version": "v2.12.1",
+            "version": "v2.12.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client.git",
-                "reference": "1530583a711f4414407112c4068464bcbace1c71"
+                "reference": "702eed9ae7022ba20dc7118c8161060cb50ee9f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/1530583a711f4414407112c4068464bcbace1c71",
-                "reference": "1530583a711f4414407112c4068464bcbace1c71",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/702eed9ae7022ba20dc7118c8161060cb50ee9f8",
+                "reference": "702eed9ae7022ba20dc7118c8161060cb50ee9f8",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0",
+                "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0||~6.0",
                 "google/apiclient-services": "~0.200",
                 "google/auth": "^1.10",
                 "guzzlehttp/guzzle": "~5.3.3||~6.0||~7.0",
-                "guzzlehttp/psr7": "^1.7||^2.0.0",
+                "guzzlehttp/psr7": "^1.8.4||^2.2.1",
                 "monolog/monolog": "^1.17||^2.0",
                 "php": "^5.6|^7.0|^8.0",
                 "phpseclib/phpseclib": "~2.0||^3.0.2"
@@ -130,9 +130,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client/issues",
-                "source": "https://github.com/googleapis/google-api-php-client/tree/v2.12.1"
+                "source": "https://github.com/googleapis/google-api-php-client/tree/v2.12.4"
             },
-            "time": "2021-12-02T03:34:25+00:00"
+            "time": "2022-04-20T16:44:03+00:00"
         },
         {
             "name": "google/apiclient-services",
@@ -1215,5 +1215,5 @@
     "platform-overrides": {
         "php": "7.2"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
