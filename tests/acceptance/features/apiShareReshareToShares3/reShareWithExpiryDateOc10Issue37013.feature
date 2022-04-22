@@ -31,9 +31,7 @@ Feature: resharing a resource with an expiration date
       | shareWith   | Carol                 |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
-    Then the HTTP status code should be "200"
-    And the OCS status code should be "<ocs_status_code>"
+    And user "Carol" should be able to accept pending share "/textfile0.txt" offered by user "Brian"
     And the information of the last share of user "Alice" should include
       | expiration | +20 days |
     And the response when user "Carol" gets the info of the last share should include
@@ -69,9 +67,7 @@ Feature: resharing a resource with an expiration date
       | expireDate  | +40 days              |
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
-    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
-    Then the HTTP status code should be "200"
-    And the OCS status code should be "<ocs_status_code>"
+    And user "Carol" should be able to accept pending share "/textfile0.txt" offered by user "Brian"
     And the information of the last share of user "Alice" should include
       | expiration | +20 days |
     And the response when user "Carol" gets the info of the last share should include
@@ -86,7 +82,7 @@ Feature: resharing a resource with an expiration date
   @skipOnOcV10.3 @issue-37013
   Scenario Outline: reshare cannot extend the received expiry date past the default when the default is enforced
     Given using OCS API version "<ocs_api_version>"
-    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
+    And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Carol" has been created with default attributes and without skeleton files
@@ -105,9 +101,10 @@ Feature: resharing a resource with an expiration date
       | expireDate  | +40 days              |
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
+    And the sharing API should report to user "Carol" that no shares are in the pending state
     And the information of the last share of user "Alice" should include
       | expiration | +20 days |
     Examples:
-      | ocs_api_version | default-expire-date | http_status_code |
-      | 1               | yes                 | 200              |
-      | 2               | yes                 | 404              |
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
