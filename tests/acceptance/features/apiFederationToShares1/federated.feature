@@ -543,16 +543,18 @@ Feature: federated
     And user "Brian" has created folder "/zzzfolder"
     And user "Brian" has created folder "zzzfolder/local"
     And user "Brian" has uploaded file with content "local content" to "/randomfile.txt"
-    When user "Alice" from server "REMOTE" shares "zzzfolder" with user "Carol" from server "LOCAL" using the sharing API
+    And user "Alice" from server "REMOTE" has shared "zzzfolder" with user "Carol" from server "LOCAL"
+    And user "Alice" from server "REMOTE" has shared "randomfile.txt" with user "Carol" from server "LOCAL"
+    And user "Brian" has shared folder "zzzfolder" with user "Carol"
+    And user "Brian" has shared folder "randomfile.txt" with user "Carol"
+    When user "Carol" from server "LOCAL" accepts the last pending share using the sharing API
     And user "Carol" from server "LOCAL" accepts the last pending share using the sharing API
-    And user "Alice" from server "REMOTE" shares "randomfile.txt" with user "Carol" from server "LOCAL" using the sharing API
-    And user "Carol" from server "LOCAL" accepts the last pending share using the sharing API
-    And user "Brian" shares folder "zzzfolder" with user "Carol" using the sharing API
     And user "Carol" accepts share "/zzzfolder" offered by user "Brian" using the sharing API
-    And user "Brian" shares folder "randomfile.txt" with user "Carol" using the sharing API
     And user "Carol" accepts share "/randomfile.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
     # local shares are taking priority at the moment
-    Then as "Carol" folder "/Shares/zzzfolder/remote" should exist
+    And as "Carol" folder "/Shares/zzzfolder/remote" should exist
     And as "Carol" folder "/Shares/zzzfolder (2)/local" should exist
     And the content of file "/Shares/randomfile.txt" for user "Carol" on server "LOCAL" should be "remote content"
     And the content of file "/Shares/randomfile (2).txt" for user "Carol" on server "LOCAL" should be "local content"
@@ -568,15 +570,17 @@ Feature: federated
     And user "Brian" has created folder "/zzzfolder"
     And user "Brian" has created folder "zzzfolder/local"
     And user "Brian" has uploaded file with content "local content" to "/randomfile.txt"
-    When user "Brian" shares folder "zzzfolder" with user "Carol" using the sharing API
-    And user "Carol" accepts share "/zzzfolder" offered by user "Brian" using the sharing API
-    And user "Brian" shares folder "randomfile.txt" with user "Carol" using the sharing API
+    And user "Brian" has shared folder "zzzfolder" with user "Carol"
+    And user "Brian" has shared folder "randomfile.txt" with user "Carol"
+    And user "Alice" from server "REMOTE" has shared "zzzfolder" with user "Carol" from server "LOCAL"
+    And user "Alice" from server "REMOTE" has shared "randomfile.txt" with user "Carol" from server "LOCAL"
+    When user "Carol" accepts share "/zzzfolder" offered by user "Brian" using the sharing API
     And user "Carol" accepts share "/randomfile.txt" offered by user "Brian" using the sharing API
-    And user "Alice" from server "REMOTE" shares "zzzfolder" with user "Carol" from server "LOCAL" using the sharing API
     And user "Carol" from server "LOCAL" accepts the last pending share using the sharing API
-    And user "Alice" from server "REMOTE" shares "randomfile.txt" with user "Carol" from server "LOCAL" using the sharing API
     And user "Carol" from server "LOCAL" accepts the last pending share using the sharing API
-    Then as "Carol" folder "Shares/zzzfolder/local" should exist
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    And as "Carol" folder "Shares/zzzfolder/local" should exist
     And as "Carol" folder "Shares/zzzfolder (2)/remote" should exist
     And the content of file "/Shares/randomfile.txt" for user "Carol" on server "LOCAL" should be "local content"
     And the content of file "/Shares/randomfile (2).txt" for user "Carol" on server "LOCAL" should be "remote content"

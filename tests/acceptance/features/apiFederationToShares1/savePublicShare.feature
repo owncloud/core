@@ -42,6 +42,7 @@ Feature: Save public shares created by oC users
     And user "Brian" has added the public share created from server "LOCAL" using the sharing API
     When user "Alice" deletes public link share named "sharedlink" in file "/PARENT" using the sharing API
     Then the HTTP status code should be "200"
+    And the OCS status code should be "100"
     And as "Brian" folder "/Shares/PARENT" should not exist
 
 
@@ -104,7 +105,8 @@ Feature: Save public shares created by oC users
     And user "Alice" has added the public share created from server "REMOTE" using the sharing API
     And using server "REMOTE"
     When user "RemoteAlice" deletes public link share named "sharedlink" in file "/PARENT" using the sharing API
-    And using server "LOCAL"
+    Then the HTTP status code should be "200"
+    When using server "LOCAL"
     Then as "Alice" folder "/Shares/PARENT" should not exist
 
 
