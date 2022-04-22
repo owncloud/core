@@ -1,0 +1,8 @@
+Change: Drop PHP 7.3 support across the platform
+
+Support for security fixes for PHP 7.3 ended in Dec 2021
+ownCloud core no longer supports PHP 7.3.
+Ensure that you are using PHP 7.4.
+
+https://github.com/owncloud/core/pull/40394
+https://www.php.net/supported-versions.php
