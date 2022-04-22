@@ -3,7 +3,7 @@
         'name' => 'files_external/3rdparty',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'f286ca1849f54f90a5ca2f32cb7f683d63131311',
+        'reference' => '912353d5bb25bf85a50d2c0bf0aa5baa43310821',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'files_external/3rdparty' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'f286ca1849f54f90a5ca2f32cb7f683d63131311',
+            'reference' => '912353d5bb25bf85a50d2c0bf0aa5baa43310821',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
