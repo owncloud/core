@@ -23,6 +23,8 @@ class GoogleCloudDocumentaiV1ProcessorVersion extends \Google\Model
    * @var string
    */
   public $createTime;
+  protected $deprecationInfoType = GoogleCloudDocumentaiV1ProcessorVersionDeprecationInfo::class;
+  protected $deprecationInfoDataType = '';
   /**
    * @var string
    */
@@ -61,6 +63,20 @@ class GoogleCloudDocumentaiV1ProcessorVersion extends \Google\Model
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param GoogleCloudDocumentaiV1ProcessorVersionDeprecationInfo
+   */
+  public function setDeprecationInfo(GoogleCloudDocumentaiV1ProcessorVersionDeprecationInfo $deprecationInfo)
+  {
+    $this->deprecationInfo = $deprecationInfo;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1ProcessorVersionDeprecationInfo
+   */
+  public function getDeprecationInfo()
+  {
+    return $this->deprecationInfo;
   }
   /**
    * @param string

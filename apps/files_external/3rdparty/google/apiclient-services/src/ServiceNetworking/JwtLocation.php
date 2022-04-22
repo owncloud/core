@@ -22,6 +22,10 @@ class JwtLocation extends \Google\Model
   /**
    * @var string
    */
+  public $cookie;
+  /**
+   * @var string
+   */
   public $header;
   /**
    * @var string
@@ -32,6 +36,20 @@ class JwtLocation extends \Google\Model
    */
   public $valuePrefix;
 
+  /**
+   * @param string
+   */
+  public function setCookie($cookie)
+  {
+    $this->cookie = $cookie;
+  }
+  /**
+   * @return string
+   */
+  public function getCookie()
+  {
+    return $this->cookie;
+  }
   /**
    * @param string
    */

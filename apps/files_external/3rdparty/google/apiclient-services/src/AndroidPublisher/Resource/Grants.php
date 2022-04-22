@@ -62,7 +62,9 @@ class Grants extends \Google\Service\Resource
    * Updates access for the user to the given package. (grants.patch)
    *
    * @param string $name Required. Resource name for this grant, following the
-   * pattern "developers/{developer}/users/{email}/grants/{package_name}".
+   * pattern "developers/{developer}/users/{email}/grants/{package_name}". If this
+   * grant is for a draft app, the app ID will be used in this resource name
+   * instead of the package name.
    * @param Grant $postBody
    * @param array $optParams Optional parameters.
    *

@@ -63,8 +63,8 @@ class Services extends \Google\Service\Resource
    * permanently deleted. Operation (services.delete)
    *
    * @param string $serviceName Required. The name of the service. See the
-   * [overview](/service-management/overview) for naming requirements. For
-   * example: `example.googleapis.com`.
+   * [overview](https://cloud.google.com/service-management/overview) for naming
+   * requirements. For example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    * @return Operation
    */
@@ -116,8 +116,8 @@ class Services extends \Google\Service\Resource
    * (services.getConfig)
    *
    * @param string $serviceName Required. The name of the service. See the
-   * [overview](/service-management/overview) for naming requirements. For
-   * example: `example.googleapis.com`.
+   * [overview](https://cloud.google.com/service-management/overview) for naming
+   * requirements. For example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string configId Required. The id of the service configuration
@@ -219,8 +219,8 @@ class Services extends \Google\Service\Resource
    * Operation (services.undelete)
    *
    * @param string $serviceName Required. The name of the service. See the
-   * [overview](/service-management/overview) for naming requirements. For
-   * example: `example.googleapis.com`.
+   * [overview](https://cloud.google.com/service-management/overview) for naming
+   * requirements. For example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    * @return Operation
    */

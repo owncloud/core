@@ -283,9 +283,9 @@ class Files extends \Google\Service\Resource
     return $this->call('update', [$params], DriveFile::class);
   }
   /**
-   * Subscribes to changes to a file. While you can establish a channel forchanges
-   * to a file on a shared drive, a change to a shared drive file won't create a
-   * notification. (files.watch)
+   * Subscribes to changes to a file. While you can establish a channel for
+   * changes to a file on a shared drive, a change to a shared drive file won't
+   * create a notification. (files.watch)
    *
    * @param string $fileId The ID of the file.
    * @param Channel $postBody

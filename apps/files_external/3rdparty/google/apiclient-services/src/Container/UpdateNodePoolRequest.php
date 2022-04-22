@@ -34,6 +34,8 @@ class UpdateNodePoolRequest extends \Google\Collection
   public $imageType;
   protected $kubeletConfigType = NodeKubeletConfig::class;
   protected $kubeletConfigDataType = '';
+  protected $labelsType = NodeLabels::class;
+  protected $labelsDataType = '';
   protected $linuxNodeConfigType = LinuxNodeConfig::class;
   protected $linuxNodeConfigDataType = '';
   /**
@@ -56,6 +58,10 @@ class UpdateNodePoolRequest extends \Google\Collection
    * @var string
    */
   public $projectId;
+  protected $tagsType = NetworkTags::class;
+  protected $tagsDataType = '';
+  protected $taintsType = NodeTaints::class;
+  protected $taintsDataType = '';
   protected $upgradeSettingsType = UpgradeSettings::class;
   protected $upgradeSettingsDataType = '';
   protected $workloadMetadataConfigType = WorkloadMetadataConfig::class;
@@ -134,6 +140,20 @@ class UpdateNodePoolRequest extends \Google\Collection
   public function getKubeletConfig()
   {
     return $this->kubeletConfig;
+  }
+  /**
+   * @param NodeLabels
+   */
+  public function setLabels(NodeLabels $labels)
+  {
+    $this->labels = $labels;
+  }
+  /**
+   * @return NodeLabels
+   */
+  public function getLabels()
+  {
+    return $this->labels;
   }
   /**
    * @param LinuxNodeConfig
@@ -218,6 +238,34 @@ class UpdateNodePoolRequest extends \Google\Collection
   public function getProjectId()
   {
     return $this->projectId;
+  }
+  /**
+   * @param NetworkTags
+   */
+  public function setTags(NetworkTags $tags)
+  {
+    $this->tags = $tags;
+  }
+  /**
+   * @return NetworkTags
+   */
+  public function getTags()
+  {
+    return $this->tags;
+  }
+  /**
+   * @param NodeTaints
+   */
+  public function setTaints(NodeTaints $taints)
+  {
+    $this->taints = $taints;
+  }
+  /**
+   * @return NodeTaints
+   */
+  public function getTaints()
+  {
+    return $this->taints;
   }
   /**
    * @param UpgradeSettings

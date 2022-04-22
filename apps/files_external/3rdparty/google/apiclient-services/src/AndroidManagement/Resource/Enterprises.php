@@ -40,15 +40,26 @@ class Enterprises extends \Google\Service\Resource
    *
    * @opt_param bool agreementAccepted Whether the enterprise admin has seen and
    * agreed to the managed Google Play Agreement
-   * (https://www.android.com/enterprise/terms/). Always set this to true when
-   * creating an EMM-managed enterprise. Do not create the enterprise until the
-   * admin has viewed and accepted the agreement.
+   * (https://www.android.com/enterprise/terms/). Do not set this field for any
+   * customer-managed enterprise (https://developers.google.com/android/management
+   * /create-enterprise#customer-managed_enterprises). Set this to field to true
+   * for all EMM-managed enterprises
+   * (https://developers.google.com/android/management/create-enterprise#emm-
+   * managed_enterprises).
    * @opt_param string enterpriseToken The enterprise token appended to the
-   * callback URL. Only set this when creating a customer-managed enterprise.
+   * callback URL. Set this when creating a customer-managed enterprise
+   * (https://developers.google.com/android/management/create-enterprise#customer-
+   * managed_enterprises) and not when creating a deprecated EMM-managed
+   * enterprise (https://developers.google.com/android/management/create-
+   * enterprise#emm-managed_enterprises).
    * @opt_param string projectId The ID of the Google Cloud Platform project which
    * will own the enterprise.
    * @opt_param string signupUrlName The name of the SignupUrl used to sign up for
-   * the enterprise. Only set this when creating a customer-managed enterprise.
+   * the enterprise. Set this when creating a customer-managed enterprise
+   * (https://developers.google.com/android/management/create-enterprise#customer-
+   * managed_enterprises) and not when creating a deprecated EMM-managed
+   * enterprise (https://developers.google.com/android/management/create-
+   * enterprise#emm-managed_enterprises).
    * @return Enterprise
    */
   public function create(Enterprise $postBody, $optParams = [])

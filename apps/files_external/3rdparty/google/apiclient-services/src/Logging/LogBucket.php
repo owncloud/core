@@ -30,6 +30,8 @@ class LogBucket extends \Google\Collection
    * @var string
    */
   public $description;
+  protected $indexConfigsType = IndexConfig::class;
+  protected $indexConfigsDataType = 'array';
   /**
    * @var string
    */
@@ -96,6 +98,20 @@ class LogBucket extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  /**
+   * @param IndexConfig[]
+   */
+  public function setIndexConfigs($indexConfigs)
+  {
+    $this->indexConfigs = $indexConfigs;
+  }
+  /**
+   * @return IndexConfig[]
+   */
+  public function getIndexConfigs()
+  {
+    return $this->indexConfigs;
   }
   /**
    * @param string

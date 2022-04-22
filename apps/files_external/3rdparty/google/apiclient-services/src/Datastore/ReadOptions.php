@@ -26,6 +26,10 @@ class ReadOptions extends \Google\Model
   /**
    * @var string
    */
+  public $readTime;
+  /**
+   * @var string
+   */
   public $transaction;
 
   /**
@@ -41,6 +45,20 @@ class ReadOptions extends \Google\Model
   public function getReadConsistency()
   {
     return $this->readConsistency;
+  }
+  /**
+   * @param string
+   */
+  public function setReadTime($readTime)
+  {
+    $this->readTime = $readTime;
+  }
+  /**
+   * @return string
+   */
+  public function getReadTime()
+  {
+    return $this->readTime;
   }
   /**
    * @param string

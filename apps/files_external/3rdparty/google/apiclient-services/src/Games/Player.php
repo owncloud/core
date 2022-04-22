@@ -44,6 +44,10 @@ class Player extends \Google\Model
   /**
    * @var string
    */
+  public $gamePlayerId;
+  /**
+   * @var string
+   */
   public $kind;
   protected $nameType = PlayerName::class;
   protected $nameDataType = '';
@@ -145,6 +149,20 @@ class Player extends \Google\Model
   public function getFriendStatus()
   {
     return $this->friendStatus;
+  }
+  /**
+   * @param string
+   */
+  public function setGamePlayerId($gamePlayerId)
+  {
+    $this->gamePlayerId = $gamePlayerId;
+  }
+  /**
+   * @return string
+   */
+  public function getGamePlayerId()
+  {
+    return $this->gamePlayerId;
   }
   /**
    * @param string

@@ -128,7 +128,7 @@ class ProjectsLocationsBitbucketServerConfigs extends \Google\Service\Resource
     return $this->call('patch', [$params], Operation::class);
   }
   /**
-   * Remove a Bitbucket Server repository from an given BitbucketServerConfig’s
+   * Remove a Bitbucket Server repository from a given BitbucketServerConfig's
    * connected repositories. This API is experimental.
    * (bitbucketServerConfigs.removeBitbucketServerConnectedRepository)
    *

@@ -96,10 +96,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -119,10 +115,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -137,10 +129,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -154,10 +142,6 @@ class Storage extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -178,10 +162,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -200,10 +180,6 @@ class Storage extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -237,10 +213,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -267,10 +239,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -288,10 +256,6 @@ class Storage extends \Google\Service
                 'optionsRequestedPolicyVersion' => [
                   'location' => 'query',
                   'type' => 'integer',
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -316,10 +280,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                 ],
                 'projection' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -353,10 +313,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -375,10 +331,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -414,10 +366,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -431,10 +379,6 @@ class Storage extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -455,10 +399,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'repeated' => true,
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -491,10 +431,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                 ],
                 'projection' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -541,10 +477,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -564,10 +496,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -581,10 +509,6 @@ class Storage extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -608,10 +532,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -631,10 +551,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -653,10 +569,6 @@ class Storage extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -687,10 +599,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -710,10 +618,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -728,10 +632,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -745,10 +645,6 @@ class Storage extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',
@@ -788,10 +684,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -820,10 +712,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -847,10 +735,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -871,10 +755,6 @@ class Storage extends \Google\Service
                   'required' => true,
                 ],
                 'generation' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -906,10 +786,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -935,10 +811,6 @@ class Storage extends \Google\Service
                   'required' => true,
                 ],
                 'generation' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -984,10 +856,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                 ],
                 'kmsKeyName' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -1064,10 +932,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'sourceGeneration' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -1108,10 +972,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                 ],
                 'ifMetagenerationNotMatch' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -1158,10 +1018,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -1182,10 +1038,6 @@ class Storage extends \Google\Service
                   'required' => true,
                 ],
                 'generation' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -1239,10 +1091,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -1282,10 +1130,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                 ],
                 'projection' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -1341,10 +1185,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                 ],
                 'projection' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -1425,10 +1265,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'rewriteToken' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -1460,10 +1296,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -1490,10 +1322,6 @@ class Storage extends \Google\Service
                   'required' => true,
                 ],
                 'generation' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -1544,10 +1372,6 @@ class Storage extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'userProject' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -1587,10 +1411,6 @@ class Storage extends \Google\Service
                   'type' => 'string',
                 ],
                 'projection' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'provisionalUserProject' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -1741,10 +1561,6 @@ class Storage extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'provisionalUserProject' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'userProject' => [
                   'location' => 'query',

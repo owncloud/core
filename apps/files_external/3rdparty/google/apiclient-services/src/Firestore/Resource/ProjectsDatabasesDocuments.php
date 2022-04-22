@@ -35,6 +35,8 @@ use Google\Service\Firestore\ListenResponse;
 use Google\Service\Firestore\PartitionQueryRequest;
 use Google\Service\Firestore\PartitionQueryResponse;
 use Google\Service\Firestore\RollbackRequest;
+use Google\Service\Firestore\RunAggregationQueryRequest;
+use Google\Service\Firestore\RunAggregationQueryResponse;
 use Google\Service\Firestore\RunQueryRequest;
 use Google\Service\Firestore\RunQueryResponse;
 use Google\Service\Firestore\WriteRequest;
@@ -344,6 +346,28 @@ class ProjectsDatabasesDocuments extends \Google\Service\Resource
     $params = ['database' => $database, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('rollback', [$params], FirestoreEmpty::class);
+  }
+  /**
+   * Runs an aggregation query. Rather than producing Document results like
+   * Firestore.RunQuery, this API allows running an aggregation to produce a
+   * series of AggregationResult server-side. High-Level Example: ``` -- Return
+   * the number of documents in table given a filter. SELECT COUNT(*) FROM (
+   * SELECT * FROM k where a = true ); ``` (documents.runAggregationQuery)
+   *
+   * @param string $parent Required. The parent resource name. In the format:
+   * `projects/{project_id}/databases/{database_id}/documents` or
+   * `projects/{project_id}/databases/{database_id}/documents/{document_path}`.
+   * For example: `projects/my-project/databases/my-database/documents` or
+   * `projects/my-project/databases/my-database/documents/chatrooms/my-chatroom`
+   * @param RunAggregationQueryRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return RunAggregationQueryResponse
+   */
+  public function runAggregationQuery($parent, RunAggregationQueryRequest $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('runAggregationQuery', [$params], RunAggregationQueryResponse::class);
   }
   /**
    * Runs a query. (documents.runQuery)

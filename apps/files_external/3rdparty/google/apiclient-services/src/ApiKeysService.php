@@ -106,17 +106,7 @@ class ApiKeysService extends \Google\Service
         'keys',
         [
           'methods' => [
-            'clone' => [
-              'path' => 'v2/{+name}:clone',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'create' => [
+            'create' => [
               'path' => 'v2/{+parent}/keys',
               'httpMethod' => 'POST',
               'parameters' => [
@@ -172,10 +162,6 @@ class ApiKeysService extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'pageSize' => [
                   'location' => 'query',

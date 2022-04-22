@@ -211,8 +211,8 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * `targetedNegativeKeywordListId=789 AND targetedChannelId=12345` The length of
    * this field should be no more than 500 characters.
    * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * "displayName" (default) * "entityStatus" * “flight.dateRange.endDate”
-   * * "updateTime" The default sorting order is ascending. To specify descending
+   * are: * `displayName` (default) * `entityStatus` * `flight.dateRange.endDate`
+   * * `updateTime` The default sorting order is ascending. To specify descending
    * order for a field, a suffix "desc" should be added to the field name.
    * Example: `displayName desc`.
    * @opt_param int pageSize Requested page size. Must be between `1` and `100`.

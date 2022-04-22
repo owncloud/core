@@ -17,8 +17,9 @@
 
 namespace Google\Service\CloudDataplex;
 
-class GoogleCloudDataplexV1DiscoveryEventPartitionDetails extends \Google\Model
+class GoogleCloudDataplexV1DiscoveryEventPartitionDetails extends \Google\Collection
 {
+  protected $collection_key = 'sampledDataLocations';
   /**
    * @var string
    */
@@ -27,6 +28,10 @@ class GoogleCloudDataplexV1DiscoveryEventPartitionDetails extends \Google\Model
    * @var string
    */
   public $partition;
+  /**
+   * @var string[]
+   */
+  public $sampledDataLocations;
   /**
    * @var string
    */
@@ -59,6 +64,20 @@ class GoogleCloudDataplexV1DiscoveryEventPartitionDetails extends \Google\Model
   public function getPartition()
   {
     return $this->partition;
+  }
+  /**
+   * @param string[]
+   */
+  public function setSampledDataLocations($sampledDataLocations)
+  {
+    $this->sampledDataLocations = $sampledDataLocations;
+  }
+  /**
+   * @return string[]
+   */
+  public function getSampledDataLocations()
+  {
+    return $this->sampledDataLocations;
   }
   /**
    * @param string
