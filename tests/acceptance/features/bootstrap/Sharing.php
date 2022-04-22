@@ -994,6 +994,8 @@ trait Sharing {
 	 * @param string $sharingApp
 	 *
 	 * @return void
+	 * @throws JsonException
+	 * @throws Exception
 	 */
 	public function createShare(
 		string $user,

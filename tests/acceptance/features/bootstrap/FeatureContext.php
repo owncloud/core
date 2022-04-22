@@ -372,12 +372,16 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @param string $httpStatusCode
+	 * @param string|null $httpStatusCode
 	 *
 	 * @return void
 	 */
-	public function pushToLastHttpStatusCodesArray(string $httpStatusCode):void {
-		\array_push($this->lastHttpStatusCodesArray, $httpStatusCode);
+	public function pushToLastHttpStatusCodesArray(?string $httpStatusCode=null):void {
+		if ($httpStatusCode !== null) {
+			$this->lastHttpStatusCodesArray[] = $httpStatusCode;
+		} elseif ($this->getResponse()->getStatusCode() !== null) {
+			$this->lastHttpStatusCodesArray[] = (string)$this->getResponse()->getStatusCode();
+		}
 	}
 
 	/**
@@ -393,6 +397,15 @@ class FeatureContext extends BehatVariablesContext {
 	public function emptyLastOCSStatusCodesArray():void {
 		$this->lastOCSStatusCodesArray = [];
 	}
+
+	/**
+	 * @return void
+	 */
+	public function clearStatusCodeArrays():void {
+		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
+	}
+
 	/**
 	 * @param string $ocsStatusCode
 	 *
@@ -1580,6 +1593,7 @@ class FeatureContext extends BehatVariablesContext {
 				$message
 			);
 		}
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**

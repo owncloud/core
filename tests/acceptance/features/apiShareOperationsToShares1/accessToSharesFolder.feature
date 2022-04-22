@@ -56,7 +56,7 @@ Feature: write directly into the folder for received shares
     And user "Brian" creates folder "/Shares/aFolder" using the WebDAV API
     And user "Alice" shares folder "/shared" with user "Brian" using the sharing API
     And user "Brian" accepts share "/shared" offered by user "Alice" using the sharing API
-    #OCS status code is checked only for Sharing API request
+    # OCS status code is available only for the Sharing API request
     Then the OCS status code of responses on all endpoints should be "100"
     And the HTTP status code of responses on each endpoint should be "201, 201, 200, 200" respectively
     And as "Brian" folder "/Shares" should exist

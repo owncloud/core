@@ -57,6 +57,7 @@ class FederationContext implements Context {
 	 * @param string|null $expireDate
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function userFromServerSharesWithUserFromServerUsingTheSharingAPI(
 		string $sharerUser,
@@ -75,7 +76,6 @@ class FederationContext implements Context {
 			null,
 			$expireDate
 		);
-		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -90,6 +90,7 @@ class FederationContext implements Context {
 	 * @param string|null $expireDate
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
 		string $sharerUser,
@@ -121,6 +122,7 @@ class FederationContext implements Context {
 			null,
 			$expireDate
 		);
+		$this->featureContext->pushToLastStatusCodesArrays();
 		$this->featureContext->usingServer($previous);
 	}
 
@@ -156,6 +158,7 @@ class FederationContext implements Context {
 				$this->featureContext->getResponse()
 			) . '"'
 		);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**
@@ -255,6 +258,7 @@ class FederationContext implements Context {
 			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
 			null
 		);
+		$this->featureContext->pushToLastStatusCodesArrays();
 		$this->featureContext->usingServer($previous);
 	}
 
@@ -273,6 +277,7 @@ class FederationContext implements Context {
 			$server
 		);
 		$this->ocsContext->assertOCSResponseIndicatesSuccess();
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**
@@ -303,6 +308,7 @@ class FederationContext implements Context {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userShouldHaveNoLastPendingFederatedCloudShare(string $user):void {
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
@@ -313,6 +319,7 @@ class FederationContext implements Context {
 			__METHOD__
 			. " No pending federated cloud shares were expected, but got unexpectedly."
 		);
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**

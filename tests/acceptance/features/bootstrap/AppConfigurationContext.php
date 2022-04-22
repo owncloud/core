@@ -23,6 +23,7 @@
  */
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\OcsApiHelper;
@@ -47,6 +48,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $value
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminSetsServerParameterToUsingAPI(
 		string $parameter,
@@ -68,6 +70,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $value
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function serverParameterHasBeenSetTo(string $parameter, string $app, string $value):void {
 		// The capturing group of the regex always includes the quotes at each
@@ -77,6 +80,7 @@ class AppConfigurationContext implements Context {
 		}
 		$value = \trim($value, $value[0]);
 		$this->modifyAppConfig($app, $parameter, $value);
+		$this->featureContext->clearStatusCodeArrays();
 	}
 
 	/**
@@ -111,6 +115,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $capabilitiesPath the path to the element
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getAppParameter(string $capabilitiesApp, string $capabilitiesPath):string {
 		return $this->getParameterValueFromXml(
@@ -126,6 +131,8 @@ class AppConfigurationContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws GuzzleException
+	 * @throws JsonException
 	 */
 	public function userGetsCapabilities(string $username):void {
 		$user = $this->featureContext->getActualUsername($username);
@@ -184,6 +191,7 @@ class AppConfigurationContext implements Context {
 
 	/**
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getAdminUsernameForCapabilitiesCheck():string {
 		if (\TestHelpers\OcisHelper::isTestingOnReva()) {
@@ -225,6 +233,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $exceptionText text to put at the front of exception messages
 	 *
 	 * @return SimpleXMLElement latest retrieved capabilities in XML format
+	 * @throws Exception
 	 */
 	public function getCapabilitiesXml(string $exceptionText = ''): SimpleXMLElement {
 		if ($exceptionText === '') {
@@ -237,6 +246,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $exceptionText text to put at the front of exception messages
 	 *
 	 * @return SimpleXMLElement latest retrieved version data in XML format
+	 * @throws Exception
 	 */
 	public function getVersionXml(string $exceptionText = ''): SimpleXMLElement {
 		if ($exceptionText === '') {
@@ -326,6 +336,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $value
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function modifyAppConfig(string $app, string $parameter, string $value):void {
 		AppConfigHelper::modifyAppConfig(
@@ -344,6 +355,7 @@ class AppConfigurationContext implements Context {
 	 * @param array $appParameterValues
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function modifyAppConfigs(array $appParameterValues):void {
 		AppConfigHelper::modifyAppConfigs(
@@ -362,6 +374,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $url
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi(string $url):void {
 		$adminUser = $this->featureContext->getAdminUsername();
@@ -375,6 +388,7 @@ class AppConfigurationContext implements Context {
 			['url' => $this->featureContext->substituteInLineCodes($url)]
 		);
 		$this->featureContext->setResponse($response);
+		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -456,6 +470,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function theAdministratorHasAddedUrlAsTrustedServer(string $url):void {
 		$this->theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url);
@@ -475,6 +490,7 @@ class AppConfigurationContext implements Context {
 	 * @param string $url
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function theAdministratorDeletesUrlFromTrustedServersUsingTheTestingApi(string $url):void {
 		$adminUser = $this->featureContext->getAdminUsername();
@@ -514,6 +530,7 @@ class AppConfigurationContext implements Context {
 	 * @When the administrator deletes all trusted servers using the testing API
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function theAdministratorDeletesAllTrustedServersUsingTheTestingApi():void {
 		$adminUser = $this->featureContext->getAdminUsername();
@@ -564,6 +581,7 @@ class AppConfigurationContext implements Context {
 	 * Expires last created share using the testing API
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function expireLastCreatedUserShare():void {
 		$adminUser = $this->featureContext->getAdminUsername();
@@ -585,6 +603,7 @@ class AppConfigurationContext implements Context {
 	 * @Given the administrator has expired the last created share using the testing API
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function theAdministratorHasExpiredTheLastCreatedShare():void {
 		$this->expireLastCreatedUserShare();
@@ -599,6 +618,7 @@ class AppConfigurationContext implements Context {
 	 * @When the administrator expires the last created share using the testing API
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function theAdministratorExpiresTheLastCreatedShare():void {
 		$this->expireLastCreatedUserShare();

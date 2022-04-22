@@ -759,6 +759,7 @@ class OCSContext implements Context {
 				$statusCodes,
 				$message
 			);
+			$this->featureContext->emptyLastOCSStatusCodesArray();
 		} else {
 			if ($message === "") {
 				$message = "OCS status code is not the expected value " . $statusCodes . " got " . $responseStatusCode;
