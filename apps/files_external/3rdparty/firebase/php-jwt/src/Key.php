@@ -2,10 +2,13 @@
 
 namespace Firebase\JWT;
 
-use InvalidArgumentException;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use TypeError;
+<<<<<<< HEAD
+=======
+use InvalidArgumentException;
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
 
 class Key
 {
@@ -23,10 +26,17 @@ class Key
         string $algorithm
     ) {
         if (
+<<<<<<< HEAD
             !\is_string($keyMaterial)
             && !$keyMaterial instanceof OpenSSLAsymmetricKey
             && !$keyMaterial instanceof OpenSSLCertificate
             && !\is_resource($keyMaterial)
+=======
+            !is_string($keyMaterial)
+            && !$keyMaterial instanceof OpenSSLAsymmetricKey
+            && !$keyMaterial instanceof OpenSSLCertificate
+            && !is_resource($keyMaterial)
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
         ) {
             throw new TypeError('Key material must be a string, resource, or OpenSSLAsymmetricKey');
         }

@@ -203,6 +203,7 @@ $jwks = ['keys' => []];
 JWT::decode($payload, JWK::parseKeySet($jwks));
 ```
 
+<<<<<<< HEAD
 Using Cached Key Sets
 ---------------------
 
@@ -242,6 +243,8 @@ $jwt = 'eyJhbGci...'; // Some JWT signed by a key from the $jwkUri above
 $decoded = JWT::decode($jwt, $keySet);
 ```
 
+=======
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
 Miscellaneous
 -------------
 
