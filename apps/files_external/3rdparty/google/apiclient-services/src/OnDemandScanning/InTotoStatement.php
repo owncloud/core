@@ -35,8 +35,8 @@ class InTotoStatement extends \Google\Collection
   protected $provenanceDataType = '';
   protected $slsaProvenanceType = SlsaProvenance::class;
   protected $slsaProvenanceDataType = '';
-  protected $slsaProvenance02Type = SlsaProvenance02::class;
-  protected $slsaProvenance02DataType = '';
+  protected $slsaProvenanceZeroTwoType = SlsaProvenanceZeroTwo::class;
+  protected $slsaProvenanceZeroTwoDataType = '';
   protected $subjectType = Subject::class;
   protected $subjectDataType = 'array';
 
@@ -97,18 +97,18 @@ class InTotoStatement extends \Google\Collection
     return $this->slsaProvenance;
   }
   /**
-   * @param SlsaProvenance02
+   * @param SlsaProvenanceZeroTwo
    */
-  public function setSlsaProvenance02(SlsaProvenance02 $slsaProvenance02)
+  public function setSlsaProvenanceZeroTwo(SlsaProvenanceZeroTwo $slsaProvenanceZeroTwo)
   {
-    $this->slsaProvenance02 = $slsaProvenance02;
+    $this->slsaProvenanceZeroTwo = $slsaProvenanceZeroTwo;
   }
   /**
-   * @return SlsaProvenance02
+   * @return SlsaProvenanceZeroTwo
    */
-  public function getSlsaProvenance02()
+  public function getSlsaProvenanceZeroTwo()
   {
-    return $this->slsaProvenance02;
+    return $this->slsaProvenanceZeroTwo;
   }
   /**
    * @param Subject[]

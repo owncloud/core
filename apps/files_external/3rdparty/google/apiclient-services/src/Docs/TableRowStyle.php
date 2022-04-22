@@ -21,6 +21,14 @@ class TableRowStyle extends \Google\Model
 {
   protected $minRowHeightType = Dimension::class;
   protected $minRowHeightDataType = '';
+  /**
+   * @var bool
+   */
+  public $preventOverflow;
+  /**
+   * @var bool
+   */
+  public $tableHeader;
 
   /**
    * @param Dimension
@@ -35,6 +43,34 @@ class TableRowStyle extends \Google\Model
   public function getMinRowHeight()
   {
     return $this->minRowHeight;
+  }
+  /**
+   * @param bool
+   */
+  public function setPreventOverflow($preventOverflow)
+  {
+    $this->preventOverflow = $preventOverflow;
+  }
+  /**
+   * @return bool
+   */
+  public function getPreventOverflow()
+  {
+    return $this->preventOverflow;
+  }
+  /**
+   * @param bool
+   */
+  public function setTableHeader($tableHeader)
+  {
+    $this->tableHeader = $tableHeader;
+  }
+  /**
+   * @return bool
+   */
+  public function getTableHeader()
+  {
+    return $this->tableHeader;
   }
 }
 

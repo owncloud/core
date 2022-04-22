@@ -24,8 +24,7 @@ use Google\Client;
  *
  * <p>
  * Enables apps to fetch information and perform actions in Google Chat.
- * Authentication using a service account is a prerequisite for using the Google
- * Chat REST API.</p>
+ * Authentication is a prerequisite for using the Google Chat REST API.</p>
  *
  * <p>
  * For more information about this service, see the API

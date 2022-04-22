@@ -17,8 +17,9 @@
 
 namespace Google\Service\Connectors;
 
-class ConfigVariableTemplate extends \Google\Model
+class ConfigVariableTemplate extends \Google\Collection
 {
+  protected $collection_key = 'enumOptions';
   /**
    * @var string
    */
@@ -27,6 +28,8 @@ class ConfigVariableTemplate extends \Google\Model
    * @var string
    */
   public $displayName;
+  protected $enumOptionsType = EnumOption::class;
+  protected $enumOptionsDataType = 'array';
   /**
    * @var string
    */
@@ -73,6 +76,20 @@ class ConfigVariableTemplate extends \Google\Model
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param EnumOption[]
+   */
+  public function setEnumOptions($enumOptions)
+  {
+    $this->enumOptions = $enumOptions;
+  }
+  /**
+   * @return EnumOption[]
+   */
+  public function getEnumOptions()
+  {
+    return $this->enumOptions;
   }
   /**
    * @param string

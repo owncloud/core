@@ -336,6 +336,14 @@ class VMMigrationService extends \Google\Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
               ],
             ],'get' => [
               'path' => 'v1/{+name}',

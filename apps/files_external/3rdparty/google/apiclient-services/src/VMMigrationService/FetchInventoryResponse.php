@@ -22,10 +22,28 @@ class FetchInventoryResponse extends \Google\Model
   /**
    * @var string
    */
+  public $nextPageToken;
+  /**
+   * @var string
+   */
   public $updateTime;
   protected $vmwareVmsType = VmwareVmsDetails::class;
   protected $vmwareVmsDataType = '';
 
+  /**
+   * @param string
+   */
+  public function setNextPageToken($nextPageToken)
+  {
+    $this->nextPageToken = $nextPageToken;
+  }
+  /**
+   * @return string
+   */
+  public function getNextPageToken()
+  {
+    return $this->nextPageToken;
+  }
   /**
    * @param string
    */
