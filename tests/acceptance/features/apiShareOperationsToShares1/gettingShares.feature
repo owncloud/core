@@ -197,7 +197,8 @@ Feature: sharing
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Carol" has accepted share "/PARENT" offered by user "Alice"
     When the administrator removes user "Carol" from group "group0" using the provisioning API
-    Then user "Brian" should see the following elements
+    Then the HTTP status code should be "200"
+    And user "Brian" should see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
     But user "Carol" should not see the following elements
