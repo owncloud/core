@@ -24,8 +24,11 @@ class JWK
      * Parse a set of JWK keys
      *
      * @param array<mixed> $jwks The JSON Web Key Set as an associative array
+<<<<<<< HEAD
      * @param string       $defaultAlg The algorithm for the Key object if "alg" is not set in the
      *                                 JSON Web Key Set
+=======
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
      *
      * @return array<string, Key> An associative array of key IDs (kid) to Key objects
      *
@@ -35,7 +38,11 @@ class JWK
      *
      * @uses parseKey
      */
+<<<<<<< HEAD
     public static function parseKeySet(array $jwks, string $defaultAlg = null): array
+=======
+    public static function parseKeySet(array $jwks): array
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
     {
         $keys = [];
 
@@ -49,7 +56,11 @@ class JWK
 
         foreach ($jwks['keys'] as $k => $v) {
             $kid = isset($v['kid']) ? $v['kid'] : $k;
+<<<<<<< HEAD
             if ($key = self::parseKey($v, $defaultAlg)) {
+=======
+            if ($key = self::parseKey($v)) {
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
                 $keys[(string) $kid] = $key;
             }
         }
@@ -65,8 +76,11 @@ class JWK
      * Parse a JWK key
      *
      * @param array<mixed> $jwk An individual JWK
+<<<<<<< HEAD
      * @param string       $defaultAlg The algorithm for the Key object if "alg" is not set in the
      *                                 JSON Web Key Set
+=======
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
      *
      * @return Key The key object for the JWK
      *
@@ -76,7 +90,11 @@ class JWK
      *
      * @uses createPemFromModulusAndExponent
      */
+<<<<<<< HEAD
     public static function parseKey(array $jwk, string $defaultAlg = null): ?Key
+=======
+    public static function parseKey(array $jwk): ?Key
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
     {
         if (empty($jwk)) {
             throw new InvalidArgumentException('JWK must not be empty');
@@ -87,6 +105,7 @@ class JWK
         }
 
         if (!isset($jwk['alg'])) {
+<<<<<<< HEAD
             if (\is_null($defaultAlg)) {
                 // The "alg" parameter is optional in a KTY, but an algorithm is required
                 // for parsing in this library. Use the $defaultAlg parameter when parsing the
@@ -95,6 +114,12 @@ class JWK
                 throw new UnexpectedValueException('JWK must contain an "alg" parameter');
             }
             $jwk['alg'] = $defaultAlg;
+=======
+            // The "alg" parameter is optional in a KTY, but is required for parsing in
+            // this library. Add it manually to your JWK array if it doesn't already exist.
+            // @see https://datatracker.ietf.org/doc/html/rfc7517#section-4.4
+            throw new UnexpectedValueException('JWK must contain an "alg" parameter');
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
         }
 
         switch ($jwk['kty']) {
