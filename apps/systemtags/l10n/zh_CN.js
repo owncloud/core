@@ -7,6 +7,7 @@ OC.L10N.register(
     "Please select tags to filter by" : "请选择标签来筛选",
     "No files found for the selected tags" : "该标签下没有任何文件",
     "<strong>System tags</strong> for a file have been modified" : "已更改的文件的<strong>系统标签</strong> ",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "由于自动化规则，系统标签 %3$s 被分配给 %2$s",
     "You assigned system tag %3$s" : "你分配了系统标签%3$s",
     "%1$s assigned system tag %3$s" : "%1$s 分配了系统标签 %3$s",
     "You unassigned system tag %3$s" : "你取消分配了系统标签%3$s",

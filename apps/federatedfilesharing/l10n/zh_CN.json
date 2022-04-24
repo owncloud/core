@@ -1,6 +1,8 @@
 { "translations": {
     "Federated sharing" : "联合云共享",
+    "Add to" : "添加",
     "Loading..." : "载入中....",
+    "Change server..." : "更换服务器...",
     "Invalid Federated Cloud ID" : "联合云ID不正确",
     "Sharing %s failed, because this item is already shared with %s" : "共享 %s 失败，因为它已经共享给 %s",
     "Not allowed to create a federated share with the same user" : "不能给你自己分享文件",
@@ -17,6 +19,7 @@
     "Share with me through my #ownCloud Federated Cloud ID" : "通过我的 #ownCloud 联合云 ID 与我共享",
     "Federated Cloud Sharing" : "联合云共享",
     "Open documentation" : "打开文档",
+    "Periodically synchronize outdated federated shares for active users" : "定期为活跃用户同步过时的联合共享",
     "Allow users on this server to send shares to other servers" : "允许用户分享文件给其他服务器上的用户",
     "Allow users on this server to receive shares from other servers" : "允许用户从其他服务器接收分享",
     "Automatically accept federated shares from trusted servers" : "自动接受已信任服务器发送的联合云共享",

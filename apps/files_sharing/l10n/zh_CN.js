@@ -21,6 +21,7 @@ OC.L10N.register(
     "An error occurred while updating share state: {message}" : "更新共享状态时发生错误: {message}",
     "Accept Share" : "接受分享",
     "Decline Share" : "拒绝分享",
+    "Federated share" : "联合共享",
     "Cancel" : "取消",
     "You can upload into this folder" : "您可以上传文件至此文件夹",
     "Add" : "增加",
