@@ -36,6 +36,7 @@ Summary
 * Enhancement - Allow files_external app to be disabled: [#39856](https://github.com/owncloud/core/pull/39856)
 * Enhancement - Improve FileDrop view: [#39900](https://github.com/owncloud/core/pull/39900)
 * Enhancement - Align "close" for messages: [#39907](https://github.com/owncloud/core/pull/39907)
+* Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
 
 Details
 -------
@@ -304,6 +305,10 @@ Details
    The close button for messages (yellow banner) was slightly displaced.
 
    https://github.com/owncloud/core/pull/39907
+
+* Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
+
+   https://github.com/owncloud/core/pull/40013
 
 Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
