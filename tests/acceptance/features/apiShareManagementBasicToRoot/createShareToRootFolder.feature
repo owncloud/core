@@ -16,6 +16,7 @@ Feature: sharing
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with             | %username%        |
       | share_with_displayname | %displayname%     |
+      | share_with_user_type   | 0                 |
       | file_target            | /textfile0.txt    |
       | path                   | /textfile0.txt    |
       | permissions            | share,read,update |
