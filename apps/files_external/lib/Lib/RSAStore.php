@@ -56,6 +56,9 @@ class RSAStore {
 	 * Set a new RSAStore instance as a global instance overwriting whatever
 	 * instance was there.
 	 * This shouldn't be needed outside of unit tests
+	 * @param RSAStore|null The RSAStore to be set as global instance, or null
+	 * to destroy the global instance (destroying the global instance will allow
+	 * getting the default one again)
 	 */
 	public static function setGlobalInstance(?RSAStore $rsaStore) {
 		self::$rsaStore = $rsaStore;

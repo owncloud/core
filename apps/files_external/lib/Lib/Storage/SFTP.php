@@ -94,6 +94,8 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 		$this->user = $params['user'];
 
 		if (isset($params['private_key'])) {
+			// The $params['private_key'] contains the token to get the private key, not the key.
+			// The actual private key is fetched from the RSAStore using that token.
 			$rsaStore = RSAStore::getGlobalInstance();
 			$this->auth = $rsaStore->retrieveData($params['private_key']);
 		} elseif (isset($params['password'])) {
