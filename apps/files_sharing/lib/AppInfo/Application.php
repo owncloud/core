@@ -101,7 +101,7 @@ class Application extends App {
 				$server->getEventDispatcher(),
 				$c->query(SharingBlacklist::class),
 				$c->query(SharingAllowlist::class),
-				new UserTypeHelper(),
+				$c->query(UserTypeHelper::class)
 			);
 		});
 
