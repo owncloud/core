@@ -46,12 +46,15 @@ class AppConfig implements IAppConfig {
 
 	private $configLoaded;
 
+	private $encryptKey;
+
 	/**
 	 * @param IDBConnection $conn
 	 */
 	public function __construct(IDBConnection $conn) {
 		$this->conn = $conn;
 		$this->configLoaded = false;
+		$this->encryptKey = ['search_elastic' => 'server_password'];
 	}
 
 	/**
@@ -152,6 +155,9 @@ class AppConfig implements IAppConfig {
 	public function setValue($app, $key, $value) {
 		if ($value === null) {
 			$value = '';
+		}
+		if (isset($this->encryptKey[$app]) && $this->encryptKey[$app] === $key) {
+			$value = \OC::$server->getCrypto()->encrypt($value);
 		}
 
 		return $this->emittingCall(function (&$afterArray) use (&$app, &$key, &$value) {

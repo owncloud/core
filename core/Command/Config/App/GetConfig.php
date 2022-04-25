@@ -32,12 +32,15 @@ class GetConfig extends Base {
 	/** * @var IConfig */
 	protected $config;
 
+	private $encryptKey;
+
 	/**
 	 * @param IConfig $config
 	 */
 	public function __construct(IConfig $config) {
 		parent::__construct();
 		$this->config = $config;
+		$this->encryptKey = ['search_elastic' => 'server_password'];
 	}
 
 	protected function configure() {
@@ -87,6 +90,9 @@ class GetConfig extends Base {
 			$configValue = $this->config->getAppValue($appName, $configName);
 		}
 
+		if (isset($this->encryptKey[$appName]) && $this->encryptKey[$appName] === $configName) {
+			$configValue = IConfig::SENSITIVE_VALUE;
+		}
 		$this->writeMixedInOutputFormat($input, $output, $configValue);
 		return 0;
 	}
