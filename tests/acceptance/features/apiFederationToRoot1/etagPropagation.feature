@@ -17,7 +17,8 @@ Feature: propagation of etags between federated and local server
     And user "Alice" has stored etag of element "/PARENT (2)"
     And using server "LOCAL"
     When user "Brian" uploads file "filesForUpload/file_to_overwrite.txt" to "/PARENT/textfile0.txt" using the WebDAV API
-    Then the etag of element "/PARENT (2)" of user "Alice" on server "REMOTE" should have changed
+    Then the HTTP status code should be "201"
+    And the etag of element "/PARENT (2)" of user "Alice" on server "REMOTE" should have changed
 
   @issue-enterprise-2848
   Scenario: Overwrite a federated shared folder as sharer propagates etag to root folder for recipient
