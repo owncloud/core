@@ -28,6 +28,7 @@
  */
 
 namespace OCA\Files_Sharing\Tests;
+use OC\Helper\UserTypeHelper;
 use OCP\Constants;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -112,6 +113,11 @@ class ApiTest extends TestCase {
 		$currentUser = \OC::$server->getUserManager()->get($userId);
 		$userSession = $this->createMock(IUserSession::class);
 		$userSession->method('getUser')->willReturn($currentUser);
+		$userTypeHelper = $this->createMock(UserTypeHelper::class);
+		$userTypeHelper
+			->expects($this->any())
+			->method('getUserType')
+			->willReturn(\OCP\User\Constants::USER_TYPE_USER);
 
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')
@@ -133,7 +139,8 @@ class ApiTest extends TestCase {
 			\OC::$server->getAppContainer('files_sharing')->query(NotificationPublisher::class),
 			\OC::$server->getEventDispatcher(),
 			\OC::$server->getAppContainer('files_sharing')->query(SharingBlacklist::class),
-			\OC::$server->getAppContainer('files_sharing')->query(SharingAllowlist::class)
+			\OC::$server->getAppContainer('files_sharing')->query(SharingAllowlist::class),
+			$userTypeHelper
 		);
 	}
 

@@ -27,7 +27,6 @@ use OCA\Files_Sharing\SharingAllowlist;
 use OCP\Constants;
 use OC\OCS\Result;
 use OCP\AppFramework\OCSController;
-use OCP\Defaults;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -53,6 +52,7 @@ use OCA\Files_Sharing\Helper;
 use OCA\Files_Sharing\SharingBlacklist;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\Helper\UserTypeHelper;
 
 /**
  * Class Share20OcsController
@@ -89,6 +89,9 @@ class Share20OcsController extends OCSController {
 	 */
 	private $additionalInfoField;
 
+	/** @var UserTypeHelper */
+	private $userTypeHelper;
+
 	/** @var Folder[] */
 	private $currentUserFolder;
 
@@ -106,7 +109,8 @@ class Share20OcsController extends OCSController {
 		NotificationPublisher $notificationPublisher,
 		EventDispatcher $eventDispatcher,
 		SharingBlacklist $sharingBlacklist,
-		SharingAllowlist $sharingAllowlist
+		SharingAllowlist $sharingAllowlist,
+		UserTypeHelper $userTypeHelper
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
@@ -123,6 +127,7 @@ class Share20OcsController extends OCSController {
 		$this->sharingAllowlist = $sharingAllowlist;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
 		$this->userSession = $userSession;
+		$this->userTypeHelper = $userTypeHelper;
 	}
 
 	/**
@@ -241,6 +246,7 @@ class Share20OcsController extends OCSController {
 			$sharedWith = $this->userManager->get($share->getSharedWith());
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $sharedWith !== null ? $sharedWith->getDisplayName() : $share->getSharedWith();
+			$result['share_with_user_type'] = $this->userTypeHelper->getUserType($share->getSharedWith());
 			if ($sharedWith !== null) {
 				$result['share_with_additional_info'] = $this->getAdditionalUserInfo($sharedWith);
 			}
