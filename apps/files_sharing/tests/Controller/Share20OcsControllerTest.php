@@ -24,6 +24,7 @@
  */
 namespace OCA\Files_Sharing\Tests\Controller;
 
+use OC\Helper\UserTypeHelper;
 use OC\OCS\Result;
 use OC\Share20\Manager;
 use OCA\Files_Sharing\Controller\Share20OcsController;
@@ -44,6 +45,8 @@ use OCP\IUserSession;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Share;
+use OCP\User;
+use OCP\User\Constants;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -105,6 +108,8 @@ class Share20OcsControllerTest extends TestCase {
 	private $config;
 	/** @var IUser */
 	private $sharee;
+	/** @var UserTypeHelper */
+	private $userTypeHelper;
 
 	protected function setUp(): void {
 		$this->shareManager = $this->getMockBuilder(IManager::class)
@@ -148,6 +153,11 @@ class Share20OcsControllerTest extends TestCase {
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
 		$this->sharingBlacklist = $this->createMock(SharingBlacklist::class);
 		$this->sharingAllowlist= $this->createMock(SharingAllowlist::class);
+		$this->userTypeHelper = $this->createMock(UserTypeHelper::class);
+		$this->userTypeHelper
+			->expects($this->any())
+			->method('getUserType')
+			->willReturn(Constants::USER_TYPE_USER);
 
 		$this->ocs = new Share20OcsController(
 			'files_sharing',
@@ -163,7 +173,8 @@ class Share20OcsControllerTest extends TestCase {
 			$this->notificationPublisher,
 			$this->eventDispatcher,
 			$this->sharingBlacklist,
-			$this->sharingAllowlist
+			$this->sharingAllowlist,
+			$this->userTypeHelper
 		);
 	}
 
@@ -186,7 +197,8 @@ class Share20OcsControllerTest extends TestCase {
 				$this->notificationPublisher,
 				$this->eventDispatcher,
 				$this->sharingBlacklist,
-				$this->sharingAllowlist
+				$this->sharingAllowlist,
+				$this->userTypeHelper
 			])->setMethods(['formatShare'])
 			->getMock();
 	}
@@ -421,6 +433,7 @@ class Share20OcsControllerTest extends TestCase {
 			'share_type' => Share::SHARE_TYPE_USER,
 			'share_with' => 'userId',
 			'share_with_displayname' => 'userDisplay',
+			'share_with_user_type' => Constants::USER_TYPE_USER,
 			'share_with_additional_info' => null,
 			'uid_owner' => 'initiatorId',
 			'displayname_owner' => 'initiatorDisplay',
@@ -570,6 +583,7 @@ class Share20OcsControllerTest extends TestCase {
 					$this->eventDispatcher,
 					$this->sharingBlacklist,
 					$this->sharingAllowlist,
+					$this->userTypeHelper
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
@@ -2417,6 +2431,7 @@ class Share20OcsControllerTest extends TestCase {
 				'share_type' => Share::SHARE_TYPE_USER,
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiator',
+				'share_with_user_type' => Constants::USER_TYPE_USER,
 				'permissions' => 1,
 				'attributes' => $shareAttributesReturnJson,
 				'stime' => 946684862,
@@ -2447,6 +2462,7 @@ class Share20OcsControllerTest extends TestCase {
 				'share_type' => Share::SHARE_TYPE_USER,
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiatorDN',
+				'share_with_user_type' => Constants::USER_TYPE_USER,
 				'additional_info_owner' => null,
 				'permissions' => 1,
 				'attributes' => $shareAttributesReturnJson,
@@ -2493,6 +2509,7 @@ class Share20OcsControllerTest extends TestCase {
 			[
 				'id' => 42,
 				'share_type' => Share::SHARE_TYPE_USER,
+				'share_with_user_type' => Constants::USER_TYPE_USER,
 				'uid_owner' => 'initiator',
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
@@ -2771,7 +2788,8 @@ class Share20OcsControllerTest extends TestCase {
 			$this->notificationPublisher,
 			$this->eventDispatcher,
 			$this->sharingBlacklist,
-			$this->sharingAllowlist
+			$this->sharingAllowlist,
+			$this->userTypeHelper
 		);
 	}
 
@@ -2872,7 +2890,8 @@ class Share20OcsControllerTest extends TestCase {
 			$this->notificationPublisher,
 			$this->eventDispatcher,
 			$this->sharingBlacklist,
-			$this->sharingAllowlist
+			$this->sharingAllowlist,
+			$this->userTypeHelper
 		);
 
 		list($file, ) = $this->getMockFileFolder();

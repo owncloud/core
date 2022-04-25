@@ -29,6 +29,7 @@ namespace OCA\Files_Sharing\AppInfo;
 
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\Files\Filesystem;
+use OC\Helper\UserTypeHelper;
 use OCA\Files_Sharing\Controller\RemoteOcsController;
 use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Controllers\ExternalSharesController;
@@ -99,7 +100,8 @@ class Application extends App {
 				$c->query(NotificationPublisher::class),
 				$server->getEventDispatcher(),
 				$c->query(SharingBlacklist::class),
-				$c->query(SharingAllowlist::class)
+				$c->query(SharingAllowlist::class),
+				new UserTypeHelper(),
 			);
 		});
 

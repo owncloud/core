@@ -109,7 +109,8 @@ class Share20OcsController extends OCSController {
 		NotificationPublisher $notificationPublisher,
 		EventDispatcher $eventDispatcher,
 		SharingBlacklist $sharingBlacklist,
-		SharingAllowlist $sharingAllowlist
+		SharingAllowlist $sharingAllowlist,
+		UserTypeHelper $userTypeHelper
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
@@ -126,7 +127,7 @@ class Share20OcsController extends OCSController {
 		$this->sharingAllowlist = $sharingAllowlist;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
 		$this->userSession = $userSession;
-		$this->userTypeHelper = new UserTypeHelper($this->config);
+		$this->userTypeHelper = $userTypeHelper;
 	}
 
 	/**
