@@ -320,9 +320,9 @@ Feature: get file properties
 
     @skipOnOcV10
     Examples:
-      | url                                  | message1                                 | message2                              |
-      | /remote.php/dav/files/does-not-exist | Resource /users/does-not-exist not found | Resource /oc/does-not-exist not found |
-      | /remote.php/dav/does-not-exist       | File not found in root                   |                                       |
+      | url                                  | message1               | message2           |
+      | /remote.php/dav/files/does-not-exist | Resource not found     | Resource not found |
+      | /remote.php/dav/does-not-exist       | File not found in root |                    |
 
     @skipOnOcis
     Examples:
@@ -332,9 +332,9 @@ Feature: get file properties
 
     @skipOnOcV10 @personalSpace
     Examples:
-      | url                                             | message1                           | message2 |
-      | /remote.php/dav/spaces/%spaceid%/does-not-exist | Resource /does-not-exist not found |          |
-      | /remote.php/dav/spaces/%spaceid%/file1.txt      | Resource /file1.txt not found      |          |
+      | url                                             | message1           | message2 |
+      | /remote.php/dav/spaces/%spaceid%/does-not-exist | Resource not found |          |
+      | /remote.php/dav/spaces/%spaceid%/file1.txt      | Resource not found |          |
 
   @issue-ocis-reva-217
   Scenario Outline: add, receive multiple custom meta properties to a file
