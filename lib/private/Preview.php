@@ -58,8 +58,7 @@ class Preview {
 	private $configMaxHeight;
 
 	//fileview object
-	private $fileView = null;
-	private $userView = null;
+	private $userView;
 
 	//vars
 	/** @var Node | null */
@@ -81,11 +80,6 @@ class Preview {
 	/** @var int $previewHeight calculated height of the preview we're looking for */
 	private $previewHeight;
 
-	// filemapper used for deleting previews
-	// index is path, value is fileinfo
-	public static $deleteFileMapper = [];
-	public static $deleteChildrenMapper = [];
-
 	/**
 	 * preview images object
 	 *
@@ -99,8 +93,7 @@ class Preview {
 	 * check if thumbnail or bigger version of thumbnail of file is cached
 	 *
 	 * @param string $user userid - if no user is given, OC_User::getUser will be used
-	 * @param string $root path of root
-	 * @param Node $file The path to the file where you want a thumbnail from
+	 * @param Node|null $file The path to the file where you want a thumbnail from
 	 * @param int $maxX The maximum X size of the thumbnail. It can be smaller depending on the
 	 *     shape of the image
 	 * @param int $maxY The maximum Y size of the thumbnail. It can be smaller depending on the
@@ -122,7 +115,6 @@ class Preview {
 		if ($user === '') {
 			$user = \OC_User::getUser();
 		}
-		$this->fileView = new View('/' . $user . '/' . $root);
 		$this->userView = new View('/' . $user);
 
 		//set config
@@ -138,8 +130,6 @@ class Preview {
 		$this->setMaxX((int)$maxX);
 		$this->setMaxY((int)$maxY);
 		$this->setScalingup($scalingUp);
-
-		$this->preview = null;
 
 		//check if there are preview backends
 		if (!\OC::$server->getPreviewManager()
@@ -222,20 +212,6 @@ class Preview {
 	 */
 	public function getConfigMaxY() {
 		return $this->configMaxHeight;
-	}
-
-	/**
-	 * @return array|null
-	 */
-	private function getChildren() {
-		$absPath = $this->file->getPath();
-		$absPath = Files\Filesystem::normalizePath($absPath);
-
-		if (\array_key_exists($absPath, self::$deleteChildrenMapper)) {
-			return self::$deleteChildrenMapper[$absPath];
-		}
-
-		return null;
 	}
 
 	/**
@@ -400,40 +376,6 @@ class Preview {
 	}
 
 	/**
-	 * Deletes all previews of a file including version previews
-	 *
-	 * @param int|null $versionId (optional) - delete all previews of the specified versionId
-	 */
-	public function deleteAllPreviews($versionId = null) {
-		$thumbnailMount = $this->userView->getMount($this->getThumbnailsFolder());
-		$propagator = $thumbnailMount->getStorage()->getPropagator();
-		$propagator->beginBatch();
-
-		$toDelete = $this->getChildren();
-		$toDelete[] = $this->getFile();
-
-		foreach ($toDelete as $delete) {
-			if ($delete instanceof FileInfo) {
-				/** @var \OCP\Files\FileInfo $delete */
-				$fileId = $delete->getId();
-
-				// getId() might return null, e.g. when the file is a
-				// .ocTransferId*.part file from chunked file upload.
-				if (!empty($fileId)) {
-					$previewPath = $this->getPreviewPath($fileId);
-					if ($versionId !== null) {
-						$versionId = \intval($versionId);
-						$previewPath = "$previewPath/$versionId";
-					}
-					$this->userView->rmdir($previewPath);
-				}
-			}
-		}
-
-		$propagator->commitBatch();
-	}
-
-	/**
 	 * Checks if a preview matching the asked dimensions or a bigger version is already cached
 	 *
 	 *    * We first retrieve the size of the max preview since this is what we be used to create
@@ -496,11 +438,11 @@ class Preview {
 				// The preview we-re looking for is the exact size or larger than the max preview,
 				// so return that
 				return $this->buildCachePath($maxPreviewWidth, $maxPreviewHeight);
-			} else {
-				// The last resort is to look for something bigger than what we've calculated,
-				// but still smaller than the max preview
-				return $this->isCachedBigger($allThumbnails);
 			}
+
+			// The last resort is to look for something bigger than what we've calculated,
+			// but still smaller than the max preview
+			return $this->isCachedBigger($allThumbnails);
 		}
 
 		return false;
@@ -659,9 +601,9 @@ class Preview {
 		foreach ($possibleThumbnails as $width => $path) {
 			if ($width < $maxX) {
 				continue;
-			} else {
-				return $path;
 			}
+
+			return $path;
 		}
 
 		// At this stage, we didn't find a preview, so we return the max preview
@@ -877,8 +819,8 @@ class Preview {
 
 			return;
 		}
-		$previewWidth = (int)$image->width();
-		$previewHeight = (int)$image->height();
+		$previewWidth = $image->width();
+		$previewHeight = $image->height();
 		$askedWidth = $this->getMaxX();
 		$askedHeight = $this->getMaxY();
 
@@ -1277,34 +1219,25 @@ class Preview {
 	}
 
 	/**
-	 * @param array $args
+	 * @param string[] $args
 	 */
-	public static function post_write($args) {
-		self::post_delete(
-			\array_merge($args, ['keep_versions' => true]),
-			'files/'
-		);
-	}
-
-	/**
-	 * @param array $args
-	 */
-	public static function prepare_delete_files($args) {
-		self::prepare_delete($args, 'files/');
-	}
-
-	/**
-	 * @param array $args
-	 * @param string $prefix
-	 */
-	public static function prepare_delete(array $args, $prefix = '') {
-		// override path for versions
-		if (isset($args['original_path'])) {
-			$args['path'] = $args['original_path'];
+	private static function getUserFolder($args): ?Folder {
+		$user = $args['user'] ?? \OC_User::getUser();
+		if ($user === false) {
+			try {
+				$path = Files\Filesystem::normalizePath($args['path']);
+				$user = Filesystem::getOwner($path);
+			} catch (NotFoundException $e) {
+				return null;
+			}
 		}
+		return \OC::$server->getUserFolder($user);
+	}
+
+	public static function post_write($args) {
 		$path = Files\Filesystem::normalizePath($args['path']);
 		$userFolder = self::getUserFolder($args);
-		if ($userFolder === false) {
+		if (!$userFolder) {
 			return;
 		}
 		if (\strpos($path, '/files_trashbin/') === 0) {
@@ -1313,110 +1246,7 @@ class Preview {
 			$node = $userFolder->get($path);
 		}
 
-		self::addPathToDeleteFileMapper($path, $node);
-		if ($node->getType() === FileInfo::TYPE_FOLDER) {
-			$children = self::getAllChildren($node);
-			self::$deleteChildrenMapper[$node->getPath()] = $children;
-		}
-	}
-
-	/**
-	 * @param string $absolutePath
-	 * @param \OCP\Files\FileInfo $info
-	 */
-	private static function addPathToDeleteFileMapper($absolutePath, $info) {
-		self::$deleteFileMapper[$absolutePath] = $info;
-	}
-
-	/**
-	 * @param Folder $node
-	 *
-	 * @return array
-	 */
-	private static function getAllChildren($node) {
-		$children = $node->getDirectoryListing();
-		$childrenFiles = [];
-
-		foreach ($children as $child) {
-			if ($child->getType() === FileInfo::TYPE_FOLDER) {
-				$childrenFiles = \array_merge(
-					$childrenFiles,
-					self::getAllChildren($child)
-				);
-			} else {
-				$childrenFiles[] = $child;
-			}
-		}
-
-		return $childrenFiles;
-	}
-
-	/**
-	 * @param array $args
-	 */
-	public static function post_delete_files($args) {
-		self::post_delete($args, 'files/');
-	}
-
-	/**
-	 * @param array $args
-	 */
-	public static function post_delete_versions($args) {
-		if (isset($args['original_path'])) {
-			$args['path'] = $args['original_path'];
-		}
-		self::post_delete($args, 'files/');
-	}
-
-	/**
-	 * @param array $args
-	 * @param string $prefix
-	 */
-	public static function post_delete($args, $prefix = '') {
-		$path = Files\Filesystem::normalizePath($args['path']);
-
-		if (!isset(self::$deleteFileMapper[$path])) {
-			$userFolder = self::getUserFolder($args);
-			if ($userFolder === false) {
-				return;
-			}
-			if (\strpos($path, '/files_trashbin/') === 0) {
-				$node = $userFolder->getParent()->get($path);
-			} else {
-				$node = $userFolder->get($path);
-			}
-		} else {
-			/** @var FileInfo $node */
-			$node = self::$deleteFileMapper[$path];
-		}
-
-		$preview = new Preview($node->getOwner()->getUID(), $prefix, $node);
-		$versionId = isset($args['deleted_revision']) ? $args['deleted_revision'] : null;
-		if (isset($args['keep_versions'])) {
-			// PostWrite hook - delete main preview keeping versions previews
-			$preview->deletePreview(false);
-		} else {
-			// "true" PostDelete
-			$preview->deleteAllPreviews($versionId);
-		}
-		unset(self::$deleteFileMapper[$path], self::$deleteChildrenMapper[$node->getPath()]);
-	}
-
-	/**
-	 * @param string[] $args
-	 * @return Folder|bool
-	 */
-	private static function getUserFolder($args) {
-		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
-		if ($user === false) {
-			try {
-				$path = Files\Filesystem::normalizePath($args['path']);
-				$user = Filesystem::getOwner($path);
-			} catch (NotFoundException $e) {
-				return false;
-			}
-		}
-		$userFolder = \OC::$server->getUserFolder($user);
-		return $userFolder === null ? false : $userFolder;
+		$preview = new Preview($node->getOwner()->getUID(), '', $node);
+		$preview->deletePreview(false);
 	}
 }

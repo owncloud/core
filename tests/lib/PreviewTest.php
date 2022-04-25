@@ -82,7 +82,7 @@ class PreviewTest extends TestCase {
 		parent::setUp();
 
 		$this->createUser(self::TEST_PREVIEW_USER1, self::TEST_PREVIEW_USER1);
-		$this->loginAsUser(self::TEST_PREVIEW_USER1);
+		self::loginAsUser(self::TEST_PREVIEW_USER1);
 
 		$storage = new Temporary([]);
 		Filesystem::mount($storage, [], '/' . self::TEST_PREVIEW_USER1 . '/');
@@ -129,7 +129,7 @@ class PreviewTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->logout();
+		self::logout();
 
 		parent::tearDown();
 	}
@@ -146,7 +146,7 @@ class PreviewTest extends TestCase {
 		$y = 50;
 
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('test.txt');
-		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $file, $x, $y);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $file, $x, $y);
 		$preview->getPreview();
 
 		$fileInfo = $this->rootView->getFileInfo($sampleFile);
@@ -159,106 +159,6 @@ class PreviewTest extends TestCase {
 		$preview->deletePreview();
 
 		$this->assertFalse($this->rootView->file_exists($thumbCacheFile));
-	}
-
-	/**
-	 * Tests if all previews can be deleted
-	 *
-	 * We test this first to make sure we'll be able to cleanup after each preview generating test
-	 */
-	public function testAreAllPreviewsDeleted() {
-		$sampleFile = '/' . self::TEST_PREVIEW_USER1 . '/files/test.txt';
-
-		$this->rootView->file_put_contents($sampleFile, 'dummy file data');
-
-		$x = 50;
-		$y = 50;
-
-		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('test.txt');
-		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $file, $x, $y);
-		$preview->getPreview();
-
-		$fileInfo = $this->rootView->getFileInfo($sampleFile);
-		/** @var int $fileId */
-		$fileId = $fileInfo['fileid'];
-
-		$thumbCacheFolder = '/' . self::TEST_PREVIEW_USER1 . '/' . Preview::THUMBNAILS_FOLDER .
-			'/' . $fileId . '/';
-
-		$this->assertTrue($this->rootView->is_dir($thumbCacheFolder), "$thumbCacheFolder \n");
-
-		$preview->deleteAllPreviews();
-
-		$this->assertFalse($this->rootView->is_dir($thumbCacheFolder));
-	}
-
-	public function testVersionPreviewsDeleted() {
-		$x = 50;
-		$y = 50;
-		$sampleFile = '/' . self::TEST_PREVIEW_USER1 . '/files/test.txt';
-		$versionPath = '/' . self::TEST_PREVIEW_USER1 . '/files_versions/test.txt';
-		$timestamp1 = 12345678;
-		$timestamp2 = 22222222;
-		$timestamp3 = 45678901;
-
-		$this->rootView->file_put_contents($sampleFile, "dummy data");
-		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('test.txt');
-		$preview = new Preview(
-			self::TEST_PREVIEW_USER1,
-			'files/',
-			$file,
-			$x,
-			$y,
-			null
-		);
-		$preview->getPreview();
-		$this->rootView->mkdir(self::TEST_PREVIEW_USER1 . '/files_versions');
-		foreach ([$timestamp1, $timestamp2, $timestamp3] as $versionId) {
-			$this->rootView->file_put_contents("$versionPath.v$versionId", "file data $versionId");
-			$versionPreview = new Preview(
-				self::TEST_PREVIEW_USER1,
-				'files/',
-				$file,
-				$x,
-				$y,
-				null,
-				$versionId
-			);
-			$versionPreview->getPreview();
-		}
-
-		$thumbCacheFolder = '/' . self::TEST_PREVIEW_USER1 . '/' . Preview::THUMBNAILS_FOLDER .
-			'/' . $file->getId() . '/';
-
-		foreach ([$timestamp1, $timestamp2, $timestamp3] as $versionId) {
-			$this->assertTrue(
-				$this->rootView->is_dir("$thumbCacheFolder/$versionId"),
-				"version preview $versionId was not created \n"
-			);
-		}
-
-		// Delete  preview for one version and check that others still exist
-		Preview::post_delete_versions(
-			[
-				'user' => self::TEST_PREVIEW_USER1,
-				'path' => '/test.txt.v' . $timestamp2,
-				'original_path' => '/test.txt',
-				'deleted_revision' => $timestamp2
-			]
-		);
-
-		$this->assertFalse(
-			$this->rootView->is_dir("$thumbCacheFolder/$timestamp2"),
-			"version preview $timestamp2 still exists \n"
-		);
-		foreach ([$timestamp1, $timestamp3] as $versionId) {
-			$this->assertTrue(
-				$this->rootView->is_dir("$thumbCacheFolder/$versionId"),
-				"version preview $versionId was deleted \n"
-			);
-		}
-
-		$preview->deleteAllPreviews();
 	}
 
 	public function txtBlacklist() {
@@ -285,7 +185,7 @@ class PreviewTest extends TestCase {
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get("test.$extension");
 		$preview = new Preview(
 			self::TEST_PREVIEW_USER1,
-			'files/',
+			'',
 			$file,
 			$x,
 			$y
@@ -316,7 +216,7 @@ class PreviewTest extends TestCase {
 		$this->rootView->file_put_contents($imgPath, $imgData);
 
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.odt');
-		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $file, $width, $height);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $file, $width, $height);
 		$preview->getPreview();
 		$image = $preview->getPreview();
 
@@ -396,7 +296,7 @@ class PreviewTest extends TestCase {
 		$heightAdjustment,
 		$keepAspect = false,
 		$scalingUp = false
-	) {
+	): void {
 		// Get the right sample for the experiment
 		$this->getSample($sampleId);
 		$sampleWidth = $this->sampleWidth;
@@ -452,8 +352,6 @@ class PreviewTest extends TestCase {
 
 		// And it should be cached
 		$this->checkCache($sampleFileId, $limitedPreviewWidth, $limitedPreviewHeight);
-
-		$preview->deleteAllPreviews();
 	}
 
 	/**
@@ -503,27 +401,6 @@ class PreviewTest extends TestCase {
 			'-max'
 		);
 		$this->assertSame($cachedMaxPreview, $isCached);
-	}
-
-	/**
-	 * Make sure that the max preview can never be deleted
-	 *
-	 * For this test to work, the preview we generate first has to be the size of max preview
-	 */
-	public function testMaxPreviewCannotBeDeleted() {
-		//$this->markTestSkipped('Not testing this at this time');
-
-		$this->keepAspect = true;
-		$this->getSample(0);
-
-		//Creates the Max preview which we will try to delete
-		$preview = $this->createMaxPreview();
-
-		// We try to deleted the preview
-		$preview->deletePreview();
-		$this->assertNotFalse($preview->isCached());
-
-		$preview->deleteAllPreviews();
 	}
 
 	public static function aspectDataProvider() {
@@ -598,8 +475,6 @@ class PreviewTest extends TestCase {
 			$postfix
 		);
 		$this->assertFalse($this->rootView->file_exists($thumbCacheFile), "$thumbCacheFile \n");
-
-		$preview->deleteAllPreviews();
 	}
 
 	/**
@@ -658,7 +533,6 @@ class PreviewTest extends TestCase {
 
 		// We create a preview in order to be able to delete the cache
 		$preview = $this->createPreview(\rand(), \rand());
-		$preview->deleteAllPreviews();
 		$this->cachedBigger = [];
 	}
 
@@ -674,7 +548,7 @@ class PreviewTest extends TestCase {
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get($this->sampleFilename);
 		$preview = new Preview(
 			self::TEST_PREVIEW_USER1,
-			'files/',
+			'',
 			$file,
 			$width,
 			$height
@@ -999,7 +873,7 @@ class PreviewTest extends TestCase {
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.jpg');
 		$preview = new Preview(
 			self::TEST_PREVIEW_USER1,
-			'files/',
+			'',
 			$file,
 			150,
 			150
@@ -1022,7 +896,7 @@ class PreviewTest extends TestCase {
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.jpg');
 		$preview = new Preview(
 			self::TEST_PREVIEW_USER1,
-			'files/',
+			'',
 			$file,
 			150,
 			150
@@ -1040,7 +914,7 @@ class PreviewTest extends TestCase {
 
 	public function testIsCached() {
 		$sourceFile = __DIR__ . '/../data/testimage.png';
-		$userId = $this->getUniqueID();
+		$userId = self::getUniqueID();
 		$this->createUser($userId, 'pass');
 
 		$storage = new Temporary();
@@ -1049,7 +923,7 @@ class PreviewTest extends TestCase {
 
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($userId);
-		$preview = new Preview($userId, 'files');
+		$preview = new Preview($userId);
 		$view = new View('/' . $userId . '/files');
 		$view->file_put_contents('test.png', \file_get_contents($sourceFile));
 		$file = \OC::$server->getUserFolder($userId)->get('test.png');
@@ -1068,14 +942,14 @@ class PreviewTest extends TestCase {
 	public function testPreviewReGenerationForSharee() {
 		$x = 50;
 		$y = 50;
-		$shareeeUserId = $this->getUniqueID();
+		$shareeeUserId = self::getUniqueID();
 		$this->createUser($shareeeUserId, 'pass');
 
 		// Create preview for share owner and sharee
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.jpg');
-		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $file, $x, $y);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $file, $x, $y);
 		$preview->getPreview();
-		$preview = new Preview($shareeeUserId, 'files/', $file, $x, $y);
+		$preview = new Preview($shareeeUserId, '', $file, $x, $y);
 		$shareePreview = $preview->getPreview();
 
 		// Update file for share owner
@@ -1084,7 +958,7 @@ class PreviewTest extends TestCase {
 		$shareOwnerView->file_put_contents($file->getInternalPath(), $newFileContent);
 
 		// Re-generate new preview for share owner
-		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $file, $x, $y);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $file, $x, $y);
 		$preview->deletePreview();
 		$preview->getPreview();
 
@@ -1102,7 +976,7 @@ class PreviewTest extends TestCase {
 		$fileMock->expects($this->any())->method('getOwner')->willReturn($ownerMock);
 
 		// Get preview for sharee -> should be re-generated although it already exists
-		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $fileMock, $x, $y);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $fileMock, $x, $y);
 		$updatedShareePreview = $preview->getPreview();
 
 		$this->assertNotFalse($updatedShareePreview);
