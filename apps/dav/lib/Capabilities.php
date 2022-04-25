@@ -45,7 +45,7 @@ class Capabilities implements ICapability {
 					'search-files',
 				],
 				'propfind' => [
-					'depth_infinity' => $this->config->getSystemValue('dav.propfind.depth_infinity', true),
+					'depth_infinity' => $this->config->getSystemValue('dav.propfind.depth_infinity', false),
 				]
 			]
 		];

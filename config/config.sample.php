@@ -1696,11 +1696,11 @@ $CONFIG = [
 /**
  * Allow propfind depth infinity
  *
- * With this setting that defaults to true, propfind requests will now be streamed to reduce memory usage
+ * With this setting enabled propfind requests can be streamed to reduce memory usage
  * with large responses. It tells the clients whether `depth=infinity` is allowed for propfind requests.
  * For details see: https://datatracker.ietf.org/doc/html/rfc4918#section-10.2
  */
-'dav.propfind.depth_infinity' => true,
+'dav.propfind.depth_infinity' => false,
 
 /**
  * Show the grace period popup
