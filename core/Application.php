@@ -41,6 +41,7 @@ use OC\Core\Controller\TokenController;
 use OC\Core\Controller\TwoFactorChallengeController;
 use OC\Core\Controller\UserController;
 use OC\Core\Controller\UserSyncController;
+use OC\Core\Jobs\PreviewCleanupJob;
 use OC\User\AccountMapper;
 use OC\User\SyncService;
 use OC_Defaults;
@@ -242,5 +243,8 @@ class Application extends App {
 		$container->registerService('TwoFactorAuthManager', static function (SimpleContainer $c) {
 			return $c->query('ServerContainer')->getTwoFactorAuthManager();
 		});
+
+		# add preview cleanup job
+		$container->getServer()->getJobList()->add(new PreviewCleanupJob());
 	}
 }
