@@ -2003,7 +2003,7 @@ trait WebDav {
 		$responseXmlObject = $this->listFolderAndReturnResponseXml(
 			$user,
 			"/",
-			"infinity"
+			"1"
 		);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
