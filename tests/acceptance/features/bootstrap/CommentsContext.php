@@ -529,6 +529,7 @@ class CommentsContext implements Context {
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
 		$responses = $responseXmlObject->xpath("//d:response");
 		$found = false;
+		$savedResponseXml = "UNKNOWN";
 		foreach ($responses as $response) {
 			foreach ($expectedProperties as $expectedProperty) {
 				$expectedProperty['propertyValue'] = $this->featureContext->substituteInLineCodes(
@@ -548,8 +549,9 @@ class CommentsContext implements Context {
 			if ($found) {
 				break;
 			}
+			$savedResponseXml = $response->asXML();
 		}
-		Assert::assertTrue($found, "Could not find expected properties in" . $response->asXML());
+		Assert::assertTrue($found, "Could not find expected properties in response " . $savedResponseXml);
 	}
 
 	/**
