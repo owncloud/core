@@ -148,7 +148,7 @@ class TrashbinContext implements Context {
 	 * @return array response
 	 * @throws Exception
 	 */
-	public function listTrashbinFolder(?string $user, ?string $path, ?string $asUser = null, ?string $password = null, string $depth = "infinity"):array {
+	public function listTrashbinFolder(?string $user, ?string $path, ?string $asUser = null, ?string $password = null, string $depth = "1"):array {
 		$asUser = $asUser ?? $user;
 		$path = $path ?? '/';
 		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
