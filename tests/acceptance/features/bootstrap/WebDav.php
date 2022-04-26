@@ -3603,7 +3603,7 @@ trait WebDav {
 			["201", "204"],
 			"HTTP status code was not 201 or 204 while trying to create folder '$destination' for user '$user'"
 		);
-		$this->clearStatusCodeArrays();
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**
