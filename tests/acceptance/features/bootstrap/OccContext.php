@@ -1040,16 +1040,22 @@ class OccContext implements Context {
 	/**
 	 * @When the administrator has set depth_infinity_allowed to :depth_infinity_allowed
 	 *
-	 * @param int $depth_infinity_allowed
+	 * @param int $depthInfinityAllowed
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasSetDepthInfinityAllowedTo($depth_infinity_allowed) {
+	public function theAdministratorHasSetDepthInfinityAllowedTo($depthInfinityAllowed) {
+		$depthInfinityAllowedString = (string) $depthInfinityAllowed;
 		$this->addSystemConfigKeyUsingTheOccCommand(
 			"dav.propfind.depth_infinity",
-			(string) $depth_infinity_allowed
+			$depthInfinityAllowedString
 		);
+		if ($depthInfinityAllowedString === "0") {
+			$this->featureContext->davPropfindDepthInfinityDisabled();
+		} else {
+			$this->featureContext->davPropfindDepthInfinityEnabled();
+		}
 	}
 
 	/**

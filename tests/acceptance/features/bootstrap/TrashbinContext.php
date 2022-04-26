@@ -116,10 +116,17 @@ class TrashbinContext implements Context {
 
 					$name = $successPropStat->xpath('./d:prop/oc:trashbin-original-filename');
 					$mtime = $successPropStat->xpath('./d:prop/oc:trashbin-delete-timestamp');
+					$resourcetype = $successPropStat->xpath('./d:prop/d:resourcetype');
+					if (\array_key_exists(0, $resourcetype) && ($resourcetype[0]->asXML() === "<d:resourcetype><d:collection/></d:resourcetype>")) {
+						$collection[0] = true;
+					} else {
+						$collection[0] = false;
+					}
 					$originalLocation = $successPropStat->xpath('./d:prop/oc:trashbin-original-location');
 				} else {
 					$name = [];
 					$mtime = [];
+					$collection = [];
 					$originalLocation = [];
 				}
 
@@ -127,6 +134,7 @@ class TrashbinContext implements Context {
 					'href' => (string) $href,
 					'name' => isset($name[0]) ? (string) $name[0] : null,
 					'mtime' => isset($mtime[0]) ? (string) $mtime[0] : null,
+					'collection' => isset($collection[0]) ? $collection[0] : false,
 					'original-location' => isset($originalLocation[0]) ? (string) $originalLocation[0] : null
 				];
 			},
@@ -137,28 +145,22 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * List trashbin folder
+	 * List the top of the trashbin folder for a user
 	 *
 	 * @param string|null $user user
-	 * @param string|null $path path
-	 * @param string|null $asUser - To send request as another user
-	 * @param string|null $password
 	 * @param string $depth
 	 *
 	 * @return array response
 	 * @throws Exception
 	 */
-	public function listTrashbinFolder(?string $user, ?string $path, ?string $asUser = null, ?string $password = null, string $depth = "infinity"):array {
-		$asUser = $asUser ?? $user;
-		$path = $path ?? '/';
-		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
-		$depth = (string) $depth;
+	public function listTopOfTrashbinFolder(?string $user, string $depth = "infinity"):array {
+		$password = $this->featureContext->getPasswordForUser($user);
 		$davPathVersion = $this->featureContext->getDavPathVersion();
 		$response = WebDavHelper::listFolder(
 			$this->featureContext->getBaseUrl(),
-			$asUser,
+			$user,
 			$password,
-			$path,
+			"",
 			$depth,
 			$this->featureContext->getStepLineRef(),
 			[
@@ -181,59 +183,116 @@ class TrashbinContext implements Context {
 		// filter root element
 		$files = \array_filter(
 			$files,
-			static function ($element) use ($user, $path) {
-				$path = \ltrim($path, '/');
-				if ($path !== '') {
-					$path .= '/';
-				}
-				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$path");
+			static function ($element) use ($user) {
+				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/");
 			}
 		);
 		return $files;
 	}
 
 	/**
-	 * @When user :user lists the resources in the trashbin path :path with depth :depth using the WebDAV API
+	 * List trashbin folder
+	 *
+	 * @param string|null $user user
+	 * @param string $depth
+	 *
+	 * @return array of all the items in the trashbin of the user
+	 * @throws Exception
+	 */
+	public function listTrashbinFolder(?string $user, string $depth = "1"):array {
+		return $this->listTrashbinFolderCollection(
+			$user,
+			"",
+			$depth
+		);
+	}
+
+	/**
+	 * List a collection in the trashbin
+	 *
+	 * @param string|null $user user
+	 * @param string|null $collectionPath the string of ids of the folder and sub-folders
+	 * @param string $depth
+	 *
+	 * @return array response
+	 * @throws Exception
+	 */
+	public function listTrashbinFolderCollection(?string $user, ?string $collectionPath = "", string $depth = "1"):array {
+		// $collectionPath should be some list of file-ids like 2147497661/2147497662
+		// or the empty string, which will list the whole trashbin from the top.
+		$collectionPath = \trim($collectionPath, "/");
+		$password = $this->featureContext->getPasswordForUser($user);
+		$davPathVersion = $this->featureContext->getDavPathVersion();
+		$response = WebDavHelper::listFolder(
+			$this->featureContext->getBaseUrl(),
+			$user,
+			$password,
+			$collectionPath,
+			$depth,
+			$this->featureContext->getStepLineRef(),
+			[
+				'oc:trashbin-original-filename',
+				'oc:trashbin-original-location',
+				'oc:trashbin-delete-timestamp',
+				'd:resourcetype',
+				'd:getlastmodified'
+			],
+			'trash-bin',
+			$davPathVersion
+		);
+		$responseXml = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__ . " $collectionPath"
+		);
+
+		$files = $this->getTrashbinContentFromResponseXml($responseXml);
+		// filter out the collection itself, we only want to return the members
+		$files = \array_filter(
+			$files,
+			static function ($element) use ($user, $collectionPath) {
+				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$collectionPath/");
+			}
+		);
+
+		foreach ($files as $file) {
+			if ($file["collection"]) {
+				$trashbinRef = $file["href"];
+				$trimmedHref = \trim($trashbinRef, "/");
+				$explodedHref = \explode("/", $trimmedHref);
+				$trashbinId = $collectionPath . "/" . end($explodedHref);
+				$nextFiles = $this->listTrashbinFolderCollection(
+					$user,
+					$trashbinId,
+					$depth
+				);
+				// filter the collection element. We only want the members.
+				$nextFiles = \array_filter(
+					$nextFiles,
+					static function ($element) use ($user, $trashbinRef) {
+						return ($element['href'] !== $trashbinRef);
+					}
+				);
+				\array_push($files, ...$nextFiles);
+			}
+		}
+		return $files;
+	}
+
+	/**
+	 * @When user :user lists the resources in the trashbin with depth :depth using the WebDAV API
 	 *
 	 * @param string $user
-	 * @param string $path
 	 * @param string $depth
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userGetsFilesInTheTrashbinWithDepthUsingTheWebdavApi(string $user, string $path, string $depth):void {
-		if ($path === "/" || $path ===  "") {
-			$this->listTrashbinFolder($user, $path, null, null, $depth);
-			return;
-		}
+	public function userGetsFilesInTheTrashbinWithDepthUsingTheWebdavApi(string $user, string $depth):void {
 		$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
-		$listing = $this->listTrashbinFolder($user, null);
+		$this->listTopOfTrashbinFolder($user, $depth);
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
 		}
-		$originalPath = \trim($path, '/');
-		if ($originalPath == "") {
-			$originalPath = null;
-		}
-
-		$trashEntry = null;
-		foreach ($listing as $entry) {
-			if ($entry['original-location'] === $originalPath) {
-				$trashEntry = $entry;
-				break;
-			}
-		}
-
-		Assert::assertNotNull(
-			$trashEntry,
-			"The first trash entry was not found while looking for trashbin entry '$path' of user '$user'"
-		);
-		$topPath = "/" . $this->featureContext->getBasePath() . "/remote.php/dav/trash-bin/$user";
-		$topPath = WebDavHelper::sanitizeUrl($topPath);
-		$path = str_replace($topPath, "", $trashEntry["href"]);
-
-		$this->listTrashbinFolder($user, $path, null, null, $depth);
 	}
 
 	/**
@@ -516,7 +575,7 @@ class TrashbinContext implements Context {
 	public function tryToDeleteFileFromTrashbin(?string $user, ?string $originalPath, ?string $asUser = null, ?string $password = null):int {
 		$user = $this->featureContext->getActualUsername($user);
 		$asUser = $asUser ?? $user;
-		$listing = $this->listTrashbinFolder($user, null);
+		$listing = $this->listTrashbinFolder($user);
 		$originalPath = \trim($originalPath, '/');
 		$numItemsDeleted = 0;
 
@@ -610,7 +669,7 @@ class TrashbinContext implements Context {
 
 		if (\count($sections) !== 1) {
 			// TODO: handle deeper structures
-			$listing = $this->listTrashbinFolder($user, \basename(\rtrim($firstEntry['href'], '/')));
+			$listing = $this->listTrashbinFolderCollection($user, \basename(\rtrim($firstEntry['href'], '/')));
 		}
 
 		if ($techPreviewHadToBeEnabled) {
@@ -652,7 +711,7 @@ class TrashbinContext implements Context {
 	private function isInTrash(?string $user, ?string $originalPath):bool {
 		$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		$res = $this->featureContext->getResponse();
-		$listing = $this->listTrashbinFolder($user, null);
+		$listing = $this->listTrashbinFolder($user);
 
 		$this->featureContext->setResponse($res);
 		if ($techPreviewHadToBeEnabled) {
@@ -716,7 +775,7 @@ class TrashbinContext implements Context {
 	 */
 	private function restoreElement(string $user, string $originalPath, ?string $destinationPath = null, bool $throwExceptionIfNotFound = true, ?string $asUser = null, ?string $password = null):?ResponseInterface {
 		$asUser = $asUser ?? $user;
-		$listing = $this->listTrashbinFolder($user, null);
+		$listing = $this->listTrashbinFolder($user);
 		$originalPath = \trim($originalPath, '/');
 		if ($destinationPath === null) {
 			$destinationPath = $originalPath;
@@ -755,7 +814,7 @@ class TrashbinContext implements Context {
 	 */
 	public function restoreFileWithoutDestination(string $user, string $originalPath):ResponseInterface {
 		$asUser = $asUser ?? $user;
-		$listing = $this->listTrashbinFolder($user, null);
+		$listing = $this->listTrashbinFolder($user);
 		$originalPath = \trim($originalPath, '/');
 
 		foreach ($listing as $entry) {
@@ -997,7 +1056,7 @@ class TrashbinContext implements Context {
 	 * @throws Exception
 	 */
 	private function findFirstTrashedEntry(string $user, string $name):?array {
-		$listing = $this->listTrashbinFolder($user, '/');
+		$listing = $this->listTrashbinFolder($user);
 
 		foreach ($listing as $entry) {
 			if ($entry['name'] === $name) {
