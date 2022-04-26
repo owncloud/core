@@ -15,9 +15,9 @@ Feature: shares are received in the default folder for received shares
     And user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
     And user "Brian" unshares folder "Shares/FOLDER" using the WebDAV API
     And user "Brian" shares folder "/Shares" with user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
+    Then the OCS status code of responses on each endpoint should be "<ocs_status_code>" respectively
+    And the HTTP status code of responses on each endpoint should be "<http_status_code>" respectively
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 404             | 200              |
-      | 2               | 404             | 404              |
+      | ocs_api_version | ocs_status_code | http_status_code   |
+      | 1               | 100, 100, 404   | 200, 200, 204, 200 |
+      | 2               | 200, 200, 404   | 200, 200, 204, 404 |

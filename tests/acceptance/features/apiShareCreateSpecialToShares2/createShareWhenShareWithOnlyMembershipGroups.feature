@@ -36,17 +36,15 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "Alice" has been added to group "grp0"
     And user "Alice" has created folder "PARENT"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
-    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
     And as "Brian" folder "/Shares/PARENT" should exist
     But as "Brian" folder "/PARENT" should not exist
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 100             | 200              |
-      | 2               | 200             | 200              |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: sharer should be able to share a folder to a group which he/she is member of when share with only member group is enabled
@@ -58,17 +56,15 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "Brian" has been added to group "grp0"
     And user "Alice" has created folder "PARENT"
     When user "Alice" shares folder "/PARENT" with group "grp0" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
-    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
     And as "Brian" folder "/Shares/PARENT" should exist
     But as "Brian" folder "/PARENT" should not exist
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 100             | 200              |
-      | 2               | 200             | 200              |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @issue-ocis-1328
   Scenario Outline: sharer should not be able to share a file to a group which he/she is not member of when share with only member group is enabled
@@ -101,17 +97,15 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "Brian" has been added to group "grp0"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares folder "/textfile0.txt" with group "grp0" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
-    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
     And as "Brian" file "/Shares/textfile0.txt" should exist
     But as "Brian" file "/textfile0.txt" should not exist
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 100             | 200              |
-      | 2               | 200             | 200              |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: sharer should be able to share a file to a user who is not a member of sharer group when share with only member group is enabled
@@ -122,14 +116,12 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "Alice" has been added to group "grp0"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares folder "/textfile0.txt" with user "Brian" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
-    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
     And as "Brian" file "/Shares/textfile0.txt" should exist
     But as "Brian" file "/textfile0.txt" should not exist
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 100             | 200              |
-      | 2               | 200             | 200              |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |

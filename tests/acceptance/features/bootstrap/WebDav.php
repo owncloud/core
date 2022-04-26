@@ -3387,7 +3387,7 @@ trait WebDav {
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		$this->lastUploadDeleteTime = \time();
-		$this->pushToLastStatusCodesArrays();
+		$this->pushToLastHttpStatusCodesArray((string) $this->getResponse()->getStatusCode());
 	}
 
 	/**
