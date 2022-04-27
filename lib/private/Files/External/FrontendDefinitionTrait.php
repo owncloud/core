@@ -141,11 +141,7 @@ trait FrontendDefinitionTrait {
 				if (!$parameter->validateValue($value)) {
 					return false;
 				}
-				if (($name === 'public_key') || ($name === 'private_key')) {
-					$storage->setBackendOption($name, \base64_encode($value));
-				} else {
-					$storage->setBackendOption($name, $value);
-				}
+				$storage->setBackendOption($name, $value);
 			}
 		}
 		return true;

@@ -13,7 +13,7 @@
 		<admin>admin-external-storage</admin>
 	</documentation>
 	<rememberlogin>false</rememberlogin>
-	<version>0.8.0</version>
+	<version>0.9.0</version>
 	<types>
 		<filesystem/>
 	</types>
