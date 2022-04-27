@@ -695,7 +695,9 @@ class TrashbinContext implements Context {
 			'trash-bin',
 			'2',
 			false,
-			$password
+			$password,
+			[],
+			$user
 		);
 		$this->featureContext->setResponse($response);
 		return $response;
