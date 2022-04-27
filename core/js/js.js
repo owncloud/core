@@ -1647,7 +1647,51 @@ function initCore() {
 	}
 
 	if (oc_config.session_forced_logout_timeout !== undefined && oc_config.session_forced_logout_timeout > 0) {
+		var bc = false;
+		if (typeof BroadcastChannel !== "undefined") {
+			// BroadcastChannel isn't supported in IE11
+			bc = new BroadcastChannel('sessiontrack');
+			bc.onmessage = function(ev) {
+				if (this.queuedHeartbeats === undefined) {
+					this.queuedHeartbeats = {};
+				}
+
+				if (ev.data.state === 'closed') {
+					if (this.queuedHeartbeats[ev.data.messageId] === undefined) {
+						var self = this;
+						// Delay the heartbeat up to 100 ms to have time to cancel it if needed
+						var timeoutHearbeat = setTimeout(function() {
+							// Send a broadcast message to indicate we'll be sending the heartbeat.
+							// Race conditions might happen, but it isn't critical.
+							bc.postMessage({messageId: ev.data.messageId, state: 'sending'});
+							$.post(OC.generateUrl('/heartbeat')).always(function() {
+								delete self.queuedHeartbeats[ev.data.eventId];
+							});
+						}, Math.floor(Math.random() * 100));
+						// Save the "queued" state with the timeout id.
+						this.queuedHeartbeats[ev.data.messageId] = {messageId: ev.data.messageId, state: 'queued', tid: timeoutHearbeat};
+					} else {
+						delete this.queuedHeartbeats[ev.data.messageId];
+					}
+				} else if (ev.data.state === 'sending') {
+					// someone else is sending the heartbeat now.
+					if (this.queuedHeartbeats[ev.data.messageId] === undefined) {
+						// This case shouldn't happen because it requires that the "sending" message
+						// reaches before the "closed" message, but there isn't any guarantee.
+						// Save the "sending" state, so we can ignore the next "closed" message for the same messageId
+						this.queuedHeartbeats[ev.data.messageId] = {messageId: ev.data.messageId, state: 'sending'};
+					} else {
+						// if we have queued the heartbeat, cancel it. Someone else has sent the heartbeat.
+						if (this.queuedHeartbeats[ev.data.messageId]['state'] === 'queued') {
+							clearTimeout(this.queuedHeartbeats[ev.data.messageId]['tid']);
+						}
+						delete this.queuedHeartbeats[ev.data.messageId];
+					}
+				}
+			};
+		}
 		$(window).on('beforeunload.sessiontrack', function() {
+			var messageId = Math.random().toString();
 			var requestData = {
 				method: 'POST',
 				headers: {
@@ -1671,9 +1715,17 @@ function initCore() {
 					url: OC.generateUrl('/heartbeat'),
 					data: {t: oc_config.session_forced_logout_timeout},
 					async: false
+				}).then(function () {
+					if (bc) {
+						bc.postMessage({messageId: messageId, state: 'closed'});
+					}
 				});
 			} else {
-				fetch(r);
+				fetch(r).then(function() {
+					if (bc) {
+						bc.postMessage({messageId: messageId, state: 'closed'});
+					}
+				});
 			}
 		});
 	}
