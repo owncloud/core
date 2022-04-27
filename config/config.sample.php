@@ -1718,7 +1718,7 @@ $CONFIG = [
  * Allow propfind depth infinity
  *
  * It tells the clients whether `depth=infinity` is allowed for propfind requests.
- * Streamed infinite depth propfind requests can reduce memory usage 
+ * Streamed infinite depth propfind requests can reduce memory usage
  * with large responses.
  * For details see: https://datatracker.ietf.org/doc/html/rfc4918#section-10.2
  */
