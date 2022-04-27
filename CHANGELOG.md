@@ -26,6 +26,7 @@ Summary
 * Bugfix - Remove fr_FR language variant: [#39931](https://github.com/owncloud/core/issues/39931)
 * Bugfix - Limit the width of the form on login page: [#39962](https://github.com/owncloud/core/pull/39962)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
+* Change - Private keys for SFTP storage will be stored in credentials table: [#39935](https://github.com/owncloud/core/pull/39935)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -164,6 +165,22 @@ Details
    Previously it was 60 milliseconds.
 
    https://github.com/owncloud/core/pull/39143
+
+* Change - Private keys for SFTP storage will be stored in credentials table: [#39935](https://github.com/owncloud/core/pull/39935)
+
+   Previously, both private and public keys were part of the configuration of the SFTP mount
+   point. Although encrypted, there were some scenarios where the private key could be visible.
+
+   The following changes have been implemented: * The private key will never leave the ownCloud
+   server. * The private key will be stored encrypted inside the oc_credentials table. * A random
+   token will be created to refer to the private key. This token will be part of the SFTP mount point
+   configuration. * The public key will be treated as a normal configuration parameter. This
+   means that it won't be neither encrypted nor encoded in any way.
+
+   The overall behavior remains the same. ownCloud will generate a key pair, whose public key will
+   need to be placed in the SFTP server.
+
+   https://github.com/owncloud/core/pull/39935
 
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 

@@ -24,6 +24,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Remove fr_FR language variant: <a href="https://github.com/owncloud/core/issues/39931">#39931</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Limit the width of the form on login page: <a href="https://github.com/owncloud/core/pull/39962">#39962</a></li>
         <li class="type-change changelog-item">Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></li>
+        <li class="type-change changelog-item">Change - Private keys for SFTP storage will be stored in credentials table: <a href="https://github.com/owncloud/core/pull/39935">#39935</a></li>
         <li class="type-change changelog-item">Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
@@ -167,6 +168,18 @@
    Previously it was 60 milliseconds.
             </p>
             <p>https://github.com/owncloud/core/pull/39143<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Private keys for SFTP storage will be stored in credentials table: <a href="https://github.com/owncloud/core/pull/39935">#39935</a></p>
+            <p>Previously, both private and public keys were part of the configuration of the SFTP mount
+   point. Although encrypted, there were some scenarios where the private key could be visible.The following changes have been implemented: * The private key will never leave the ownCloud
+   server. * The private key will be stored encrypted inside the oc_credentials table. * A random
+   token will be created to refer to the private key. This token will be part of the SFTP mount point
+   configuration. * The public key will be treated as a normal configuration parameter. This
+   means that it won't be neither encrypted nor encoded in any way.The overall behavior remains the same. ownCloud will generate a key pair, whose public key will
+   need to be placed in the SFTP server.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39935<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></p>
