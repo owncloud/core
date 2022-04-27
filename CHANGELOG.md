@@ -37,6 +37,7 @@ Summary
 * Enhancement - Allow files_external app to be disabled: [#39856](https://github.com/owncloud/core/pull/39856)
 * Enhancement - Improve FileDrop view: [#39900](https://github.com/owncloud/core/pull/39900)
 * Enhancement - Align "close" for messages: [#39907](https://github.com/owncloud/core/pull/39907)
+* Enhancement - Changes regarding cookie handling: [#39916](https://github.com/owncloud/core/pull/39916)
 * Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
 
 Details
@@ -322,6 +323,22 @@ Details
    The close button for messages (yellow banner) was slightly displaced.
 
    https://github.com/owncloud/core/pull/39907
+
+* Enhancement - Changes regarding cookie handling: [#39916](https://github.com/owncloud/core/pull/39916)
+
+   The following changes have been implemented: * The expiration set for the passphrase cookie
+   will be refreshed each time a page is loaded or when the "heartbeat" endpoint is hit * If the
+   "session_keepalive" config option is set to true, a periodic request to the "heartbeat"
+   endpoint will be made automatically regardless of any activity going on. This will extend the
+   session lifetime preventing its expiration. * If the "session_keepalive" config option is
+   set to false, a "heartbeat" will be sent based on activity in order to extend the session
+   lifetime. If we don't detect any activity, the session might expire, and the user will need to
+   login again. * The new "session_forced_logout_timeout" option has been added to the
+   config.php. It's disabled by default, and setting a positive (non-zero) value will enable the
+   feature. If it's enabled, the passphrase cookie will expire after those number of seconds
+   pass, when the tab or the browser closes. This will force the user to login again.
+
+   https://github.com/owncloud/core/pull/39916
 
 * Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
 
