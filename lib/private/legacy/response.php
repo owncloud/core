@@ -423,6 +423,7 @@ class OC_Response {
 			'Accept-Language',
 			'Access-Control-Request-Method',
 			'Access-Control-Allow-Origin',
+			'Cache-Control',
 			'ETag',
 			'OC-Autorename',
 			'OC-CalDav-Import',
