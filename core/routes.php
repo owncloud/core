@@ -144,7 +144,8 @@ $this->create('files_sharing.sharecontroller.downloadShare', '/s/{token}/downloa
 
 // used for heartbeat
 $this->create('heartbeat', '/heartbeat')->action(function () {
-	// do nothing
+	$expire = \OC::$server->getRequest()->getParam('t');
+	\OC::$server->getSessionCryptoWrapper()->refreshCookie(\OC::$server->getConfig(), $expire);
 });
 
 /**

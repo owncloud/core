@@ -809,7 +809,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 
 			return new CryptoWrapper(
-				$c->getConfig(),
 				$c->getCrypto(),
 				$c->getSecureRandom(),
 				$request,

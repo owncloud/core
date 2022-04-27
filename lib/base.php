@@ -434,6 +434,7 @@ class OC {
 			}
 
 			$cryptoWrapper = \OC::$server->getSessionCryptoWrapper();
+			$cryptoWrapper->sendCookie(self::$server->getConfig());
 			$session = $cryptoWrapper->wrapSession($session);
 			self::$server->setSession($session);
 
