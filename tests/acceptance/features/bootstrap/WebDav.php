@@ -2495,6 +2495,7 @@ trait WebDav {
 					'Responses did not return expected HTTP status code'
 				);
 			}
+			$this->emptyLastHTTPStatusCodesArray();
 		} else {
 			throw new Exception(
 				'Expected HTTP status codes: "' . \implode(',', $statusCodes) .

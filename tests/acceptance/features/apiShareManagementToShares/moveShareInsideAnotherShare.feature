@@ -58,7 +58,7 @@ Feature: moving a share inside another share
     And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"
     When user "Brian" moves folder "Shares/folderB" to "localFolder/folderB" using the WebDAV API
     And user "Brian" moves folder "localFolder" to "Shares/folderA/localFolder" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code of responses on all endpoints should be "201"
     And as "Alice" folder "/folderA/localFolder" should exist
     And as "Brian" folder "/Shares/folderA/localFolder" should exist
     And as "Alice" file "/folderA/localFolder/localFile.txt" should exist
@@ -75,7 +75,7 @@ Feature: moving a share inside another share
     And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"
     When user "Brian" moves folder "Shares/folderB" to "localFolder/folderB" using the WebDAV API
     And user "Brian" moves folder "localFolder/folderB" to "Shares/folderA/folderB" using the WebDAV API
-    Then the HTTP status code should be "403"
+    Then the HTTP status code of responses on each endpoint should be "201, 403" respectively
     And as "Alice" file "/folderB/fileB.txt" should exist
     And as "Brian" folder "/localFolder/folderB" should exist
     And as "Brian" file "/localFolder/folderB/fileB.txt" should exist
@@ -85,9 +85,9 @@ Feature: moving a share inside another share
 
   Scenario: share receiver moves a local folder inside a received share (local folder does not have a share in it)
     Given user "Brian" has created folder "localFolder"
-    Given user "Brian" has created folder "localFolder/subFolder"
+    And user "Brian" has created folder "localFolder/subFolder"
     And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"
-    And user "Brian" moves folder "localFolder" to "Shares/folderA/localFolder" using the WebDAV API
+    When user "Brian" moves folder "localFolder" to "Shares/folderA/localFolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" folder "/folderA/localFolder" should exist
     And as "Brian" folder "/Shares/folderA/localFolder" should exist
