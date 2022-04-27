@@ -106,6 +106,7 @@ Feature: Save public shares created by oC users
     And using server "REMOTE"
     When user "RemoteAlice" deletes public link share named "sharedlink" in file "/PARENT" using the sharing API
     Then the HTTP status code should be "200"
+    And the OCS status code should be "100"
     When using server "LOCAL"
     Then as "Alice" folder "/Shares/PARENT" should not exist
 
