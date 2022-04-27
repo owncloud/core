@@ -21,8 +21,12 @@ Feature: using trashbin together with sharing
     And as "Brian" the folder with original path "/Shares/renamed_shared" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: deleting a file in a received folder moves it to trashbin of both users
@@ -39,8 +43,12 @@ Feature: using trashbin together with sharing
     And as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: sharee deleting a file in a group-shared folder moves it to the trashbin of sharee and sharer only
@@ -62,8 +70,12 @@ Feature: using trashbin together with sharing
     And as "Carol" the file with original path "/Shares/shared/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: sharer deleting a file in a group-shared folder moves it to the trashbin of sharer only
@@ -85,8 +97,12 @@ Feature: using trashbin together with sharing
     And as "Carol" the file with original path "/Shares/shared/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: sharee deleting a folder in a group-shared folder moves it to the trashbin of sharee and sharer only
@@ -109,8 +125,12 @@ Feature: using trashbin together with sharing
     And as "Carol" the file with original path "/Shares/sub/shared/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: sharer deleting a folder in a group-shared folder moves it to the trashbin of sharer only
@@ -133,8 +153,12 @@ Feature: using trashbin together with sharing
     And as "Carol" the file with original path "/Shares/shared/sub/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path
@@ -157,8 +181,12 @@ Feature: using trashbin together with sharing
     And the content of file "/Shares/renamed_shared/shared_file.txt" for user "Brian" should be "file to delete"
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: restoring a file to a read-only folder
@@ -176,8 +204,12 @@ Feature: using trashbin together with sharing
     And as "Brian" file "/shareFolderParent/textfile0.txt" should not exist
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: restoring a file to a read-only sub-folder
@@ -196,5 +228,9 @@ Feature: using trashbin together with sharing
     And as "Brian" file "/shareFolderParent/shareFolderChild/textfile0.txt" should not exist
     Examples:
       | dav-path |
-      | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |

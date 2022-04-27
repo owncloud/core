@@ -102,7 +102,7 @@ Feature: files and folders can be deleted from the trashbin
       | dav-path |
       | new      |
 
-    @issue-ocis-3544 @skipOnOcV10 @personalSpace
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav-path |
       | spaces   |
