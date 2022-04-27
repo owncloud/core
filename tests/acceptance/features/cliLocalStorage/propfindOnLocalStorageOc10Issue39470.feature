@@ -18,6 +18,7 @@ Feature: get file info using PROPFIND
   @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on external storage that is currently unavailable
     Given using <dav_version> DAV path
+    And the administrator has set depth_infinity_allowed to 1
     When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
     And user "Alice" lists the resources in "/local_storage2" with depth "infinity" using the WebDAV API
     Then the HTTP status code should be "207"
@@ -34,6 +35,7 @@ Feature: get file info using PROPFIND
   @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on root folder with depth infinity when the external storage folder is unavailable
     Given using <dav_version> DAV path
+    And the administrator has set depth_infinity_allowed to 1
     When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
     And user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
     Then the HTTP status code should be "207"

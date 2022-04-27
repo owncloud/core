@@ -104,6 +104,36 @@ trait WebDav {
 	private $chunkingToUse = null;
 
 	/**
+	 * The ability to do requests with depth infinity is disabled by default.
+	 * This remembers when the setting dav.propfind.depth_infinity has been
+	 * enabled, so that test code can make use of it as appropriate.
+	 *
+	 * @var bool
+	 */
+	private $davPropfindDepthInfinityEnabled = false;
+
+	/**
+	 * @return void
+	 */
+	public function davPropfindDepthInfinityEnabled():void {
+		$this->davPropfindDepthInfinityEnabled = true;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function davPropfindDepthInfinityDisabled():void {
+		$this->davPropfindDepthInfinityEnabled = false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function davPropfindDepthInfinityIsEnabled():bool {
+		return $this->davPropfindDepthInfinityEnabled;
+	}
+
+	/**
 	 * @param int $lastUploadDeleteTime
 	 *
 	 * @return void
@@ -1996,7 +2026,7 @@ trait WebDav {
 	}
 
 	/**
-	 * asserts that a the user can or cannot see a list of files/folders by propfind
+	 * asserts that the user can or cannot see a list of files/folders by propfind
 	 *
 	 * @param string $user
 	 * @param TableNode $elements
@@ -2014,34 +2044,73 @@ trait WebDav {
 	):void {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($elements, 1);
-		$responseXmlObject = $this->listFolderAndReturnResponseXml(
-			$user,
-			"/",
-			"1"
-		);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
-		foreach ($elementsSimplified as $expectedElement) {
-			// Allow the table of expected elements to have entries that do
-			// not have to specify the "implied" leading slash, or have multiple
-			// leading slashes, to make scenario outlines more flexible
-			$expectedElement = $this->encodePath($expectedElement);
-			$expectedElement = "/" . \ltrim($expectedElement, "/");
-			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
-			$element = $responseXmlObject->xpath(
-				"//d:response/d:href[text() = \"$webdavPath\"]"
+		if ($this->davPropfindDepthInfinityIsEnabled()) {
+			// get a full "infinite" list of the user's root folder in one request
+			// and process that to check the elements (resources)
+			$responseXmlObject = $this->listFolderAndReturnResponseXml(
+				$user,
+				"/",
+				"infinity"
 			);
-			if ($expectedToBeListed
-				&& (!isset($element[0]) || $element[0]->__toString() !== $webdavPath)
-			) {
-				Assert::fail(
-					"$webdavPath is not in propfind answer but should be"
+			foreach ($elementsSimplified as $expectedElement) {
+				// Allow the table of expected elements to have entries that do
+				// not have to specify the "implied" leading slash, or have multiple
+				// leading slashes, to make scenario outlines more flexible
+				$expectedElement = $this->encodePath($expectedElement);
+				$expectedElement = "/" . \ltrim($expectedElement, "/");
+				$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
+				$element = $responseXmlObject->xpath(
+					"//d:response/d:href[text() = \"$webdavPath\"]"
 				);
-			} elseif (!$expectedToBeListed && isset($element[0])
-			) {
-				Assert::fail(
-					"$webdavPath is in propfind answer but should not be"
+				if ($expectedToBeListed
+					&& (!isset($element[0]) || $element[0]->__toString() !== $webdavPath)
+				) {
+					Assert::fail(
+						"$webdavPath is not in propfind answer but should be"
+					);
+				} elseif (!$expectedToBeListed && isset($element[0])
+				) {
+					Assert::fail(
+						"$webdavPath is in propfind answer but should not be"
+					);
+				}
+			}
+		} else {
+			// do a PROPFIND for each element
+			foreach ($elementsSimplified as $elementToRequest) {
+				// Allow the table of expected elements to have entries that do
+				// not have to specify the "implied" leading slash, or have multiple
+				// leading slashes, to make scenario outlines more flexible
+				$elementToRequest = "/" . \ltrim($elementToRequest, "/");
+				// Note: in the request we ask to do a PROPFIND on a resource like:
+				//       /some-folder with spaces/sub-folder
+				// but the response has encoded values for the special characters like:
+				//       /some-folder%20with%20spaces/sub-folder
+				// So we need both $elementToRequest and $expectedElement
+				$expectedElement = $this->encodePath($elementToRequest);
+				$responseXmlObject = $this->listFolderAndReturnResponseXml(
+					$user,
+					$elementToRequest,
+					"1"
 				);
+				$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
+				$element = $responseXmlObject->xpath(
+					"//d:response/d:href[text() = \"$webdavPath\"]"
+				);
+				if ($expectedToBeListed
+					&& (!isset($element[0]) || $element[0]->__toString() !== $webdavPath)
+				) {
+					Assert::fail(
+						"$webdavPath is not in propfind answer but should be"
+					);
+				} elseif (!$expectedToBeListed && isset($element[0])
+				) {
+					Assert::fail(
+						"$webdavPath is in propfind answer but should not be"
+					);
+				}
 			}
 		}
 	}

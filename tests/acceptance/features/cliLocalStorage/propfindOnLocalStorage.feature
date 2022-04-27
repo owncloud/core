@@ -34,6 +34,7 @@ Feature: get file info using PROPFIND
   @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on root folder with external storage using depth infinity
     Given using <dav_version> DAV path
+    And the administrator has set depth_infinity_allowed to 1
     When user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
     Then the HTTP status code should be "207"
     And the propfind result of user "Alice" should contain only these entries:
@@ -69,6 +70,7 @@ Feature: get file info using PROPFIND
   @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on external storage with depth infinity
     Given using <dav_version> DAV path
+    And the administrator has set depth_infinity_allowed to 1
     When user "Alice" lists the resources in "/local_storage2" with depth "infinity" using the WebDAV API
     Then the HTTP status code should be "207"
     And the propfind result of user "Alice" should contain only these entries:
