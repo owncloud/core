@@ -243,9 +243,9 @@ Details
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
-   The following Symfony components have been updated to: - console 4.4.40 - event-dispatcher
-   4.4.37 - event-dispatcher-contracts 4.4.34 - process 4.4.40 - routing 4.4.37 -
-   service-contracts 4.4.34 - translation 4.4.37 - translation-contracts 2.5.0
+   The following Symfony components have been updated to: - console 4.4.41 - event-dispatcher
+   4.4.37 - event-dispatcher-contracts 4.4.34 - process 4.4.41 - routing 4.4.41 -
+   service-contracts 4.4.34 - translation 4.4.41 - translation-contracts 2.5.0
 
    The following Symfony polyfill components have been updated to: - symfony/polyfill-ctype
    v1.25.0 - symfony/polyfill-iconv v1.25.0 - symfony/polyfill-intl-idn v1.25.0 -
@@ -266,11 +266,13 @@ Details
    https://github.com/owncloud/core/pull/39855
    https://github.com/owncloud/core/pull/39940
    https://github.com/owncloud/core/pull/39955
+   https://github.com/owncloud/core/pull/40026
    https://symfony.com/blog/symfony-4-4-34-released
    https://symfony.com/blog/symfony-4-4-36-released
    https://symfony.com/blog/symfony-4-4-37-released
    https://symfony.com/blog/symfony-4-4-38-released
    https://symfony.com/blog/symfony-4-4-40-released
+   https://symfony.com/blog/symfony-4-4-41-released
 
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 
