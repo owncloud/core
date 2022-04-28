@@ -54,10 +54,10 @@ class WebDavHelper {
 	 * @return void
 	 * @throws Exception
 	 */
-	public static function removeSpaceIdForUser(
+	public static function removeSpaceIdReferenceForUser(
 		?string $user
 	):void {
-		if (\array_key_exists($user, self::$spacesIdRef) && \array_key_exists("personal", self::$spacesIdRef[$user])) {
+		if (\array_key_exists($user, self::$spacesIdRef)) {
 			unset(self::$spacesIdRef[$user]);
 		}
 	}
@@ -644,6 +644,7 @@ class WebDavHelper {
 		?string $type = "files",
 		?string $spaceId = null
 	):string {
+		$newTrashbinDavPath = "remote.php/dav/trash-bin/$user/";
 		if ($type === "public-files" || $type === "public-files-old") {
 			return "public.php/webdav/";
 		}
@@ -669,7 +670,8 @@ class WebDavHelper {
 		} else {
 			if ($davPathVersionToUse === self::DAV_VERSION_OLD) {
 				if ($type === "trash-bin") {
-					return "remote.php/dav/trash-bin/" . $user . '/';
+					// Since there is no trash bin endpoint for old dav version, new dav version's endpoint is used here.
+					return $newTrashbinDavPath;
 				}
 				return "remote.php/webdav/";
 			} elseif ($davPathVersionToUse === self::DAV_VERSION_NEW) {
@@ -677,7 +679,7 @@ class WebDavHelper {
 					$path = 'remote.php/dav/files/';
 					return $path . $user . '/';
 				} elseif ($type === "trash-bin") {
-					return "remote.php/dav/trash-bin/" . $user . '/';
+					return $newTrashbinDavPath;
 				} else {
 					return "remote.php/dav";
 				}

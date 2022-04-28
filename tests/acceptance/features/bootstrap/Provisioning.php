@@ -2002,7 +2002,7 @@ trait Provisioning {
 	public function theAdministratorHasDeletedUserUsingTheProvisioningApi(?string $user):void {
 		$user = $this->getActualUsername($user);
 		$this->deleteTheUserUsingTheProvisioningApi($user);
-		WebDavHelper::removeSpaceIdForUser($user);
+		WebDavHelper::removeSpaceIdReferenceForUser($user);
 		$this->userShouldNotExist($user);
 	}
 
