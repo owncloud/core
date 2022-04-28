@@ -18,7 +18,9 @@ Feature: sharing
     When user "Alice" shares folder "/merge-test-outside" with group "grp1" using the sharing API
     And user "Alice" shares folder "/merge-test-outside" with user "Brian" using the sharing API
     And user "Brian" accepts share "/merge-test-outside" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares/merge-test-outside" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" folder "/Shares/merge-test-outside" should exist
     And as "Brian" folder "/Shares/merge-test-outside (2)" should not exist
 
   Scenario: Merging shares for recipient when shared from outside with group and member with different permissions
@@ -26,7 +28,9 @@ Feature: sharing
     When user "Alice" shares folder "/merge-test-outside-perms" with group "grp1" with permissions "read" using the sharing API
     And user "Alice" shares folder "/merge-test-outside-perms" with user "Brian" with permissions "all" using the sharing API
     And user "Brian" accepts share "/merge-test-outside-perms" offered by user "Alice" using the sharing API
-    Then as user "Brian" folder "/Shares/merge-test-outside-perms" should contain a property "oc:permissions" with value "SRDNVCK"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as user "Brian" folder "/Shares/merge-test-outside-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-perms (2)" should not exist
 
   Scenario: Merging shares for recipient when shared from outside with two groups
@@ -36,7 +40,9 @@ Feature: sharing
     When user "Alice" shares folder "/merge-test-outside-twogroups" with group "grp1" using the sharing API
     And user "Alice" shares folder "/merge-test-outside-twogroups" with group "grp2" using the sharing API
     And user "Brian" accepts share "/merge-test-outside-twogroups" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares/merge-test-outside-twogroups" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" folder "/Shares/merge-test-outside-twogroups" should exist
     And as "Brian" folder "/Shares/merge-test-outside-twogroups (2)" should not exist
 
   Scenario: Merging shares for recipient when shared from outside with two groups with different permissions
@@ -46,7 +52,9 @@ Feature: sharing
     When user "Alice" shares folder "/merge-test-outside-twogroups-perms" with group "grp1" with permissions "read" using the sharing API
     And user "Alice" shares folder "/merge-test-outside-twogroups-perms" with group "grp2" with permissions "all" using the sharing API
     And user "Brian" accepts share "/merge-test-outside-twogroups-perms" offered by user "Alice" using the sharing API
-    Then as user "Brian" folder "/Shares/merge-test-outside-twogroups-perms" should contain a property "oc:permissions" with value "SRDNVCK"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as user "Brian" folder "/Shares/merge-test-outside-twogroups-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-twogroups-perms (2)" should not exist
 
   Scenario: Merging shares for recipient when shared from outside with two groups and member
@@ -57,13 +65,17 @@ Feature: sharing
     And user "Alice" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp2" with permissions "all" using the sharing API
     And user "Alice" shares folder "/merge-test-outside-twogroups-member-perms" with user "Brian" with permissions "read" using the sharing API
     And user "Brian" accepts share "/merge-test-outside-twogroups-member-perms" offered by user "Alice" using the sharing API
-    Then as user "Brian" folder "/Shares/merge-test-outside-twogroups-member-perms" should contain a property "oc:permissions" with value "SRDNVCK"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as user "Brian" folder "/Shares/merge-test-outside-twogroups-member-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-twogroups-member-perms (2)" should not exist
 
   Scenario: Merging shares for recipient when shared from inside with group
     Given user "Brian" has created folder "/merge-test-inside-group"
     When user "Brian" shares folder "/merge-test-inside-group" with group "grp1" using the sharing API
-    Then as "Brian" folder "/merge-test-inside-group" should exist
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/merge-test-inside-group" should exist
     And as "Brian" folder "/Shares/merge-test-inside-group" should not exist
 
   Scenario: Merging shares for recipient when shared from inside with two groups
@@ -72,7 +84,9 @@ Feature: sharing
     And user "Brian" has created folder "/merge-test-inside-twogroups"
     When user "Brian" shares folder "/merge-test-inside-twogroups" with group "grp1" using the sharing API
     And user "Brian" shares folder "/merge-test-inside-twogroups" with group "grp2" using the sharing API
-    Then as "Brian" folder "/merge-test-inside-twogroups" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" folder "/merge-test-inside-twogroups" should exist
     And as "Brian" folder "/Shares/merge-test-inside-twogroups" should not exist
     And as "Brian" folder "/Shares/merge-test-inside-twogroups (2)" should not exist
 
@@ -82,7 +96,9 @@ Feature: sharing
     And user "Brian" has created folder "/merge-test-inside-twogroups-perms"
     When user "Brian" shares folder "/merge-test-inside-twogroups-perms" with group "grp1" using the sharing API
     And user "Brian" shares folder "/merge-test-inside-twogroups-perms" with group "grp2" using the sharing API
-    Then as user "Brian" folder "/merge-test-inside-twogroups-perms" should contain a property "oc:permissions" with value "RDNVCK" or with value "RMDNVCK"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as user "Brian" folder "/merge-test-inside-twogroups-perms" should contain a property "oc:permissions" with value "RDNVCK" or with value "RMDNVCK"
     And as "Brian" folder "/Shares/merge-test-inside-twogroups-perms" should not exist
     And as "Brian" folder "/Shares/merge-test-inside-twogroups-perms (2)" should not exist
 
@@ -92,13 +108,17 @@ Feature: sharing
     When user "Alice" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with group "grp1" using the sharing API
     And user "Brian" accepts share "/merge-test-outside-groups-renamebeforesecondshare" offered by user "Alice" using the sharing API
     And user "Brian" moves folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the WebDAV API
-    Then as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should not exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on each endpoint should be "200, 200, 201" respectively
+    And as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should not exist
     But as "Brian" folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should exist
     # Section 2: Brian receives and accepts the user share from Alice. Brian now has 2 shares of the same folder owned by Alice
     # The server "merges" the 2 shares and presents them to Brian as a single folder inside the "Shares" folder
-    And user "Alice" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "Brian" using the sharing API
+    When user "Alice" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "Brian" using the sharing API
     And user "Brian" accepts share "/merge-test-outside-groups-renamebeforesecondshare" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should exist
     But as "Brian" folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should not exist
 
   Scenario: Merging shares for recipient when shared from outside with user then group and recipient renames in between
@@ -107,11 +127,15 @@ Feature: sharing
     When user "Alice" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "Brian" using the sharing API
     And user "Brian" accepts share "/merge-test-outside-groups-renamebeforesecondshare" offered by user "Alice" using the sharing API
     And user "Brian" moves folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the WebDAV API
-    Then as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should not exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on each endpoint should be "200, 200, 201" respectively
+    And as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should not exist
     But as "Brian" folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should exist
     # Section 2: Brian receives and accepts the group share from Alice. Brian now has 2 shares of the same folder owned by Alice
     # The server "merges" the 2 shares and presents them to Brian as a single folder inside the "Shares" folder
     When user "Alice" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with group "grp1" using the sharing API
     And user "Brian" accepts share "/merge-test-outside-groups-renamebeforesecondshare" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should exist
     But as "Brian" folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should not exist

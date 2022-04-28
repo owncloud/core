@@ -23,7 +23,9 @@ Feature: sharing
     And user "Brian" creates folder "/myFOLDER" using the WebDAV API
     And user "Brian" moves folder "/Shares/TMP" to "/myFOLDER/myTMP" using the WebDAV API
     And the administrator deletes user "Carol" using the provisioning API
-    Then user "Brian" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /myFOLDER/myTMP/ |
 
 
@@ -37,7 +39,9 @@ Feature: sharing
     And user "Carol" accepts share "/TMP" offered by user "Alice" using the sharing API
     And user "Brian" moves folder "/Shares/TMP" to "/Shares/new" using the WebDAV API
     And the administrator deletes user "Carol" using the provisioning API
-    Then user "Brian" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /Shares/new/|
 
   @issue-ocis-2141 @notToImplementOnOCIS
@@ -48,7 +52,8 @@ Feature: sharing
     And user "Brian" has accepted share "/sharefile.txt" offered by user "Alice"
     And user "Carol" has accepted share "/sharefile.txt" offered by user "Alice"
     When user "Carol" moves file "/Shares/sharefile.txt" to "/renamedsharefile.txt" using the WebDAV API
-    Then as "Carol" file "/renamedsharefile.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Carol" file "/renamedsharefile.txt" should exist
     And as "Alice" file "/sharefile.txt" should exist
     And as "Brian" file "/Shares/sharefile.txt" should exist
 
@@ -60,7 +65,8 @@ Feature: sharing
     And user "Brian" has accepted share "/sharefile.txt" offered by user "Alice"
     And user "Carol" has accepted share "/sharefile.txt" offered by user "Alice"
     When user "Carol" moves file "/Shares/sharefile.txt" to "/Shares/renamedsharefile.txt" using the WebDAV API
-    Then as "Carol" file "/Shares/renamedsharefile.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Carol" file "/Shares/renamedsharefile.txt" should exist
     And as "Alice" file "/sharefile.txt" should exist
     And as "Brian" file "/Shares/sharefile.txt" should exist
 
@@ -73,7 +79,8 @@ Feature: sharing
     And user "Carol" has accepted share "/sharefile.txt" offered by user "Alice"
     And user "Carol" has created folder "newfolder"
     When user "Carol" moves file "/Shares/sharefile.txt" to "/newfolder/sharefile.txt" using the WebDAV API
-    Then as "Carol" file "/newfolder/sharefile.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Carol" file "/newfolder/sharefile.txt" should exist
     And as "Alice" file "/sharefile.txt" should exist
     And as "Brian" file "/Shares/sharefile.txt" should exist
 
@@ -88,12 +95,14 @@ Feature: sharing
     And user "Alice" has shared folder "<sharer_folder>" with user "Brian"
     And user "Brian" has accepted share "/<sharer_folder>" offered by user "Alice"
     When user "Brian" moves folder "<receiver_folder>" to "/Shares/<sharer_folder>/<receiver_folder>" using the WebDAV API
-    Then as "Alice" folder "<sharer_folder>/<receiver_folder>" should exist
-    And as "Brian" folder "/Shares/<sharer_folder>/<receiver_folder>" should exist
-    When user "Alice" shares folder "<group_folder>" with group "grp1" using the sharing API
+    And user "Alice" shares folder "<group_folder>" with group "grp1" using the sharing API
     And user "Carol" accepts share "/<group_folder>" offered by user "Alice" using the sharing API
     And user "Carol" moves folder "/<receiver_folder>" to "/Shares/<group_folder>/<receiver_folder>" using the WebDAV API
-    Then as "Alice" folder "<group_folder>/<receiver_folder>" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on each endpoint should be "201, 200, 200, 201" respectively
+    And as "Alice" folder "<sharer_folder>/<receiver_folder>" should exist
+    And as "Brian" folder "/Shares/<sharer_folder>/<receiver_folder>" should exist
+    And as "Alice" folder "<group_folder>/<receiver_folder>" should exist
     And as "Carol" folder "/Shares/<group_folder>/<receiver_folder>" should exist
     Examples:
       | sharer_folder | group_folder    | receiver_folder |
@@ -360,7 +369,7 @@ Feature: sharing
     And user "Brian" has accepted share "/folderToShare" offered by user "Alice"
     When user "Brian" moves file "/Shares/folderToShare/fileToShare1.txt" to "/FOLDER/fileToShare1.txt" using the WebDAV API
     And user "Brian" moves file "/Shares/folderToShare/fileToShare2.txt" to "/FOLDER/fileToShare2.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code of responses on all endpoints should be "201"
     And as "Brian" file "/FOLDER/fileToShare1.txt" should exist
     And as "Brian" file "/FOLDER/fileToShare2.txt" should exist
     But as "Alice" file "/folderToShare/fileToShare1.txt" should not exist

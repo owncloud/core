@@ -33,8 +33,8 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And user "Brian" should see the following elements
       | /FOLDER/       |
       | /PARENT/       |
@@ -73,8 +73,8 @@ Feature: accept/decline shares coming from internal users
   Scenario Outline: share a file & folder with another internal user when auto accept is disabled
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And user "Brian" should see the following elements
       | /FOLDER/       |
       | /PARENT/       |
@@ -102,11 +102,9 @@ Feature: accept/decline shares coming from internal users
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                     | A_STRING                      |
       | share_type             | user                          |
@@ -145,11 +143,9 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                     | A_STRING                                      |
       | share_type             | user                                          |
@@ -208,8 +204,8 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" declines share "/PARENT" offered by user "Alice" using the sharing API
     And user "Brian" declines share "/textfile0.txt" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And user "Brian" should see the following elements
       | /FOLDER/       |
       | /PARENT/       |
@@ -239,11 +235,9 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" declines share "/Shares/PARENT" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
     And user "Brian" declines share "/Shares/textfile0.txt" offered by user "Alice" using the sharing API
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And user "Brian" should not see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
@@ -268,18 +262,17 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Alice" deletes folder "/PARENT" using the WebDAV API
     And user "Alice" deletes file "/textfile0.txt" using the WebDAV API
-    Then the sharing API should report that no shares are shared with user "Brian"
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And the sharing API should report that no shares are shared with user "Brian"
 
 
   Scenario Outline: only one user in a group accepts a share
     Given user "Alice" has shared folder "/PARENT" with group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with group "grp1"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And user "Carol" should not see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
@@ -316,11 +309,9 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has shared folder "/shared" with user "Carol"
     And user "Brian" has shared folder "/shared" with user "Carol"
     When user "Carol" accepts share "/shared" offered by user "Brian" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
     And user "Carol" accepts share "/shared" offered by user "Alice" using the sharing API
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And user "Carol" should see the following elements
       | /Shares/shared/Brian/     |
       | /Shares/shared (2)/Alice/ |
@@ -360,7 +351,9 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" shares file "/testfile.txt" with user "Carol" using the sharing API
     And user "Carol" accepts share "/testfile.txt" offered by user "Brian" using the sharing API
     And user "Carol" accepts share "<accepted_share_path>" offered by user "Alice" using the sharing API
-    Then the sharing API should report to user "Carol" that these shares are in the accepted state
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the sharing API should report to user "Carol" that these shares are in the accepted state
       | path                         |
       | /Shares/testfile (2).txt     |
       | /Shares/testfile (2) (2).txt |
@@ -396,7 +389,9 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" accepts share "/PARENT" offered by user "David" using the sharing API
     And user "Alice" accepts share "<accepted_share_path_1>" offered by user "Carol" using the sharing API
     And user "Alice" accepts share "<accepted_share_path_2>" offered by user "Brian" using the sharing API
-    Then the sharing API should report to user "Alice" that these shares are in the accepted state
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the sharing API should report to user "Alice" that these shares are in the accepted state
       | path                        | uid_owner |
       | /Shares/PARENT (2)/         | David     |
       | /Shares/PARENT (2) (2)/     | Carol     |
@@ -417,11 +412,11 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /FOLDER/               |
       | /PARENT/               |
       | /Shares/PARENT/        |
@@ -442,13 +437,13 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" has created folder "FOLDER"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/FOLDER" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /FOLDER/               |
       | /PARENT/               |
       | /Shares/PARENT/        |
@@ -481,13 +476,13 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile1.txt" with group "grp1" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /textfile0.txt        |
       | /textfile1.txt        |
       | /Shares/textfile0.txt |
@@ -502,8 +497,8 @@ Feature: accept/decline shares coming from internal users
   Scenario: user shares resource with matching resource-name with another user when auto accept is disabled
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
     And user "Brian" should see the following elements
       | /PARENT/       |
       | /textfile0.txt |
@@ -512,7 +507,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/       |
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /PARENT/              |
       | /textfile0.txt        |
       | /Shares/PARENT/       |
@@ -533,11 +530,13 @@ Feature: accept/decline shares coming from internal users
     But user "Carol" should not see the following elements
       | /Shares/textfile0.txt |
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /textfile0.txt        |
       | /Shares/textfile0.txt |
-    When user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    Then user "Carol" should see the following elements
+    And user "Carol" should see the following elements
       | /textfile0.txt        |
       | /Shares/textfile0.txt |
 
@@ -549,7 +548,9 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
     When user "Alice" shares folder "/PARENT" with user "David" using the sharing API
     And user "David" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then user "David" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "David" should see the following elements
       | /Shares/PARENT/        |
       | /Shares/PARENT/abc.txt |
       | /FOLDER/               |
@@ -590,7 +591,8 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has shared file "/toShareFile.txt" with user "Brian"
     And user "Brian" has accepted share "/toShareFile.txt" offered by user "Alice"
     When user "Alice" restores version index "1" of file "/toShareFile.txt" using the WebDAV API
-    Then the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
+    Then the HTTP status code should be "200"
+    And the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
     And the content of file "/Shares/toShareFile.txt" for user "Brian" should be "Test Content."
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2131
@@ -624,7 +626,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT     |
       | /PaRent     |
       | /PARENT.txt |
-    Then user "Brian" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /PARENT/           |
       | /Shares/PARENT/    |
       | /Shares/PaRent/    |
@@ -642,7 +646,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT     |
       | /PARENT.txt |
       | /parent.txt |
-    Then user "Brian" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Brian" should see the following elements
       | /PARENT/               |
       | /Shares/PARENT/        |
       | /Shares/PARENT (2)/    |
@@ -683,7 +689,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT     |
       | /PaRent     |
       | /PARENT.txt |
-    Then user "Carol" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Carol" should see the following elements
       | /PARENT/           |
       | /Shares/PARENT/    |
       | /Shares/PaRent/    |
@@ -700,7 +708,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT     |
       | /PARENT.txt |
       | /parent.txt |
-    Then user "Carol" should see the following elements
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And user "Carol" should see the following elements
       | /PARENT/               |
       | /Shares/PARENT/        |
       | /Shares/PARENT (2)/    |
