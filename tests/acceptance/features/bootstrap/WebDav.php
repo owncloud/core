@@ -766,7 +766,9 @@ trait WebDav {
 			$this->setResponseXml(
 				HttpRequestHelper::parseResponseAsXml($this->response)
 			);
-			$this->pushToLastStatusCodesArrays();
+			$this->pushToLastHttpStatusCodesArray(
+				(string) $this->getResponse()->getStatusCode()
+			);
 		} catch (ConnectException $e) {
 		}
 	}
@@ -897,6 +899,9 @@ trait WebDav {
 		);
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
+		$this->pushToLastHttpStatusCodesArray(
+			(string) $this->getResponse()->getStatusCode()
 		);
 	}
 
@@ -1802,6 +1807,7 @@ trait WebDav {
 		} elseif ($entry === "file") {
 			Assert::assertEquals(\count($isCollection), 0, "Unexpectedly, `$path` is not a file");
 		}
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**
@@ -2057,7 +2063,9 @@ trait WebDav {
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
-		$this->pushToLastStatusCodesArrays();
+		$this->pushToLastHttpStatusCodesArray(
+			(string) $this->getResponse()->getStatusCode()
+		);
 	}
 
 	/**
@@ -2076,7 +2084,6 @@ trait WebDav {
 			"HTTP status code was not 201 or 204 while trying to upload file '$source' to '$destination' for user '$user'"
 		);
 		$this->emptyLastHTTPStatusCodesArray();
-		$this->emptyLastOCSStatusCodesArray();
 	}
 
 	/**
