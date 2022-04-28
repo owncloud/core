@@ -38,7 +38,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "/sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -69,7 +68,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "/PARENT/sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -115,7 +113,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "/sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
   Scenario Outline: Skip trashbin based on extensions when deleting the parent folder - skip-by-extension rules should not be applied
@@ -139,7 +136,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "PARENT/sample.go" should exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -169,7 +165,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "simple-folder/sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -190,7 +185,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     But as "Alice" the file with original path "simple-folder/s.txt" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -206,7 +200,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "/PARENT/sample.dat" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -221,7 +214,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "skipFile" should exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -236,7 +228,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "PARENT/lorem.txt" should exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -252,7 +243,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     But as "Alice" the file with original path "lorem.dat" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -268,7 +258,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     But as "Alice" the file with original path "PARENT/lorem.dat" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -283,7 +272,6 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "PARENT/lorem.dat" should exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |
 
 
@@ -331,5 +319,4 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And as "Alice" the file with original path "PARENT/sample.dat" should not exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |

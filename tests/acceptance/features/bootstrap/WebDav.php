@@ -136,6 +136,13 @@ trait WebDav {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function clearResponseXmlObject():void {
+		$this->responseXmlObject = null;
+	}
+
+	/**
 	 *
 	 * @return string the etag or an empty string if the getetag property does not exist
 	 */
