@@ -140,7 +140,7 @@ OC.L10N.register(
     "A valid email must be provided" : "Podaj poprawny adres email",
     "Use the following link to confirm your changes to the email address: {link}" : "Użyj tego odnośnika by potwierdzić zmianę adresu email: {link}",
     "Email address changed to {mailAddress} successfully." : "Pomyślnie zmieniono adres email na {mailAddress}.",
-    "Hey there,<br><br>just letting you know that you now have an %s account.<br><br>Your username: %s<br>Please set the password by accessing it: <a href=\"%s\">Here</a><br><br>" : "Hej,<br><br> chcemy żebyś wiedział, że od teraz masz konto %s.<br><br> Twoja nazwa użytkownika: %s<br>Ustaw swoje hasło na<a href=\"%s\">tej stronie</a><br><br>",
+    "Hey there,<br><br>just letting you know that you now have an %s account.<br><br>Your username: %s<br>Please set the password by accessing it: <a href=\"%s\">Here</a><br><br>" : "Hej,<br><br> chcemy żebyś wiedział, że od teraz masz konto %s.<br><br> Twoja nazwa użytkownika: %s<br>Ustaw swoje hasło na <a href=\"%s\">tej stronie</a><br><br>",
     "Cheers!" : "Dzięki!",
     "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Witaj,\n\ninformujemy, że teraz masz konto na %s .\n\nTwoja nazwa użytkownika:: %s\nDostęp pod adresem: %s\n\n",
     "Language" : "Język",
