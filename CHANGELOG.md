@@ -26,6 +26,7 @@ Summary
 * Bugfix - Remove fr_FR language variant: [#39931](https://github.com/owncloud/core/issues/39931)
 * Bugfix - Limit the width of the form on login page: [#39962](https://github.com/owncloud/core/pull/39962)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
+* Change - Private keys for SFTP storage will be stored in credentials table: [#39935](https://github.com/owncloud/core/pull/39935)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -36,6 +37,7 @@ Summary
 * Enhancement - Allow files_external app to be disabled: [#39856](https://github.com/owncloud/core/pull/39856)
 * Enhancement - Improve FileDrop view: [#39900](https://github.com/owncloud/core/pull/39900)
 * Enhancement - Align "close" for messages: [#39907](https://github.com/owncloud/core/pull/39907)
+* Enhancement - Changes regarding cookie handling: [#39916](https://github.com/owncloud/core/pull/39916)
 * Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
 
 Details
@@ -165,6 +167,22 @@ Details
 
    https://github.com/owncloud/core/pull/39143
 
+* Change - Private keys for SFTP storage will be stored in credentials table: [#39935](https://github.com/owncloud/core/pull/39935)
+
+   Previously, both private and public keys were part of the configuration of the SFTP mount
+   point. Although encrypted, there were some scenarios where the private key could be visible.
+
+   The following changes have been implemented: * The private key will never leave the ownCloud
+   server. * The private key will be stored encrypted inside the oc_credentials table. * A random
+   token will be created to refer to the private key. This token will be part of the SFTP mount point
+   configuration. * The public key will be treated as a normal configuration parameter. This
+   means that it won't be neither encrypted nor encoded in any way.
+
+   The overall behavior remains the same. ownCloud will generate a key pair, whose public key will
+   need to be placed in the SFTP server.
+
+   https://github.com/owncloud/core/pull/39935
+
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 
    The following have been updated: - ansi-regex (3.0.0 to 3.0.1) - bower_components/backbone
@@ -225,9 +243,9 @@ Details
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
-   The following Symfony components have been updated to: - console 4.4.40 - event-dispatcher
-   4.4.37 - event-dispatcher-contracts 4.4.34 - process 4.4.40 - routing 4.4.37 -
-   service-contracts 4.4.34 - translation 4.4.37 - translation-contracts 2.5.0
+   The following Symfony components have been updated to: - console 4.4.41 - event-dispatcher
+   4.4.37 - event-dispatcher-contracts 4.4.34 - process 4.4.41 - routing 4.4.41 -
+   service-contracts 4.4.34 - translation 4.4.41 - translation-contracts 2.5.0
 
    The following Symfony polyfill components have been updated to: - symfony/polyfill-ctype
    v1.25.0 - symfony/polyfill-iconv v1.25.0 - symfony/polyfill-intl-idn v1.25.0 -
@@ -248,11 +266,13 @@ Details
    https://github.com/owncloud/core/pull/39855
    https://github.com/owncloud/core/pull/39940
    https://github.com/owncloud/core/pull/39955
+   https://github.com/owncloud/core/pull/40026
    https://symfony.com/blog/symfony-4-4-34-released
    https://symfony.com/blog/symfony-4-4-36-released
    https://symfony.com/blog/symfony-4-4-37-released
    https://symfony.com/blog/symfony-4-4-38-released
    https://symfony.com/blog/symfony-4-4-40-released
+   https://symfony.com/blog/symfony-4-4-41-released
 
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 
@@ -305,6 +325,22 @@ Details
    The close button for messages (yellow banner) was slightly displaced.
 
    https://github.com/owncloud/core/pull/39907
+
+* Enhancement - Changes regarding cookie handling: [#39916](https://github.com/owncloud/core/pull/39916)
+
+   The following changes have been implemented: * The expiration set for the passphrase cookie
+   will be refreshed each time a page is loaded or when the "heartbeat" endpoint is hit * If the
+   "session_keepalive" config option is set to true, a periodic request to the "heartbeat"
+   endpoint will be made automatically regardless of any activity going on. This will extend the
+   session lifetime preventing its expiration. * If the "session_keepalive" config option is
+   set to false, a "heartbeat" will be sent based on activity in order to extend the session
+   lifetime. If we don't detect any activity, the session might expire, and the user will need to
+   login again. * The new "session_forced_logout_timeout" option has been added to the
+   config.php. It's disabled by default, and setting a positive (non-zero) value will enable the
+   feature. If it's enabled, the passphrase cookie will expire after those number of seconds
+   pass, when the tab or the browser closes. This will force the user to login again.
+
+   https://github.com/owncloud/core/pull/39916
 
 * Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
 

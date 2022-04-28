@@ -54,7 +54,7 @@ Feature: moving a share inside another share
     And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"
     When user "Brian" moves folder "folderB" to "localFolder/folderB" using the WebDAV API
     And user "Brian" moves folder "localFolder" to "folderA/localFolder" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code of responses on all endpoints should be "201"
     And as "Alice" folder "/folderA/localFolder" should exist
     And as "Brian" folder "/folderA/localFolder" should exist
     And as "Alice" file "/folderA/localFolder/localFile.txt" should exist
@@ -71,7 +71,7 @@ Feature: moving a share inside another share
     And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"
     When user "Brian" moves folder "folderB" to "localFolder/folderB" using the WebDAV API
     And user "Brian" moves folder "localFolder/folderB" to "folderA/folderB" using the WebDAV API
-    Then the HTTP status code should be "403"
+    Then the HTTP status code of responses on each endpoint should be "201, 403" respectively
     And as "Alice" file "/folderB/fileB.txt" should exist
     And as "Brian" folder "/localFolder/folderB" should exist
     And as "Brian" file "/localFolder/folderB/fileB.txt" should exist

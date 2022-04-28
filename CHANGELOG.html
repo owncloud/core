@@ -24,6 +24,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Remove fr_FR language variant: <a href="https://github.com/owncloud/core/issues/39931">#39931</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Limit the width of the form on login page: <a href="https://github.com/owncloud/core/pull/39962">#39962</a></li>
         <li class="type-change changelog-item">Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></li>
+        <li class="type-change changelog-item">Change - Private keys for SFTP storage will be stored in credentials table: <a href="https://github.com/owncloud/core/pull/39935">#39935</a></li>
         <li class="type-change changelog-item">Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
@@ -34,6 +35,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Allow files_external app to be disabled: <a href="https://github.com/owncloud/core/pull/39856">#39856</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve FileDrop view: <a href="https://github.com/owncloud/core/pull/39900">#39900</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Align "close" for messages: <a href="https://github.com/owncloud/core/pull/39907">#39907</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Changes regarding cookie handling: <a href="https://github.com/owncloud/core/pull/39916">#39916</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Expose user type of share receiver in share api: <a href="https://github.com/owncloud/core/pull/40013">#40013</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
@@ -169,6 +171,18 @@
             <p>https://github.com/owncloud/core/pull/39143<br></p>
         </li>
         <li class="type-change changelog-item">
+            <p>Change - Private keys for SFTP storage will be stored in credentials table: <a href="https://github.com/owncloud/core/pull/39935">#39935</a></p>
+            <p>Previously, both private and public keys were part of the configuration of the SFTP mount
+   point. Although encrypted, there were some scenarios where the private key could be visible.The following changes have been implemented: * The private key will never leave the ownCloud
+   server. * The private key will be stored encrypted inside the oc_credentials table. * A random
+   token will be created to refer to the private key. This token will be part of the SFTP mount point
+   configuration. * The public key will be treated as a normal configuration parameter. This
+   means that it won't be neither encrypted nor encoded in any way.The overall behavior remains the same. ownCloud will generate a key pair, whose public key will
+   need to be placed in the SFTP server.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39935<br></p>
+        </li>
+        <li class="type-change changelog-item">
             <p>Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></p>
             <p>The following have been updated: - ansi-regex (3.0.0 to 3.0.1) - bower_components/backbone
    (1.4.0 to 1.4.1) - bower_components/showdown (1.9.1 to 2.0.0) -
@@ -197,9 +211,9 @@
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></p>
-            <p>The following Symfony components have been updated to: - console 4.4.40 - event-dispatcher
-   4.4.37 - event-dispatcher-contracts 4.4.34 - process 4.4.40 - routing 4.4.37 -
-   service-contracts 4.4.34 - translation 4.4.37 - translation-contracts 2.5.0The following Symfony polyfill components have been updated to: - symfony/polyfill-ctype
+            <p>The following Symfony components have been updated to: - console 4.4.41 - event-dispatcher
+   4.4.37 - event-dispatcher-contracts 4.4.34 - process 4.4.41 - routing 4.4.41 -
+   service-contracts 4.4.34 - translation 4.4.41 - translation-contracts 2.5.0The following Symfony polyfill components have been updated to: - symfony/polyfill-ctype
    v1.25.0 - symfony/polyfill-iconv v1.25.0 - symfony/polyfill-intl-idn v1.25.0 -
    symfony/polyfill-intl-normalizer v1.25.0 - symfony/polyfill-mbstring v1.25.0 -
    symfony/polyfill-php72 v1.25.0 - symfony/polyfill-php73 v1.25.0 -
@@ -208,8 +222,8 @@
    (v1.1.11 to v1.1.12) - symfony/service-contracts (v2.5.0 to v2.5.1) -
    symfony/translation-contracts (v2.5.0 to v2.5.1)
             </p>
-            <p>https://github.com/owncloud/core/pull/39526<br>https://github.com/owncloud/core/pull/39631<br>https://github.com/owncloud/core/pull/39646<br>https://github.com/owncloud/core/pull/39731<br>https://github.com/owncloud/core/pull/39838<br>https://github.com/owncloud/core/pull/39855<br>https://github.com/owncloud/core/pull/39940<br>https://github.com/owncloud/core/pull/39955<br></p>
-            <p>https://symfony.com/blog/symfony-4-4-34-released<br>https://symfony.com/blog/symfony-4-4-36-released<br>https://symfony.com/blog/symfony-4-4-37-released<br>https://symfony.com/blog/symfony-4-4-38-released<br>https://symfony.com/blog/symfony-4-4-40-released<br></p>
+            <p>https://github.com/owncloud/core/pull/39526<br>https://github.com/owncloud/core/pull/39631<br>https://github.com/owncloud/core/pull/39646<br>https://github.com/owncloud/core/pull/39731<br>https://github.com/owncloud/core/pull/39838<br>https://github.com/owncloud/core/pull/39855<br>https://github.com/owncloud/core/pull/39940<br>https://github.com/owncloud/core/pull/39955<br>https://github.com/owncloud/core/pull/40026<br></p>
+            <p>https://symfony.com/blog/symfony-4-4-34-released<br>https://symfony.com/blog/symfony-4-4-36-released<br>https://symfony.com/blog/symfony-4-4-37-released<br>https://symfony.com/blog/symfony-4-4-38-released<br>https://symfony.com/blog/symfony-4-4-40-released<br>https://symfony.com/blog/symfony-4-4-41-released<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></p>
@@ -259,6 +273,22 @@
             <p>The close button for messages (yellow banner) was slightly displaced.
             </p>
             <p>https://github.com/owncloud/core/pull/39907<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Changes regarding cookie handling: <a href="https://github.com/owncloud/core/pull/39916">#39916</a></p>
+            <p>The following changes have been implemented: * The expiration set for the passphrase cookie
+   will be refreshed each time a page is loaded or when the "heartbeat" endpoint is hit * If the
+   "session_keepalive" config option is set to true, a periodic request to the "heartbeat"
+   endpoint will be made automatically regardless of any activity going on. This will extend the
+   session lifetime preventing its expiration. * If the "session_keepalive" config option is
+   set to false, a "heartbeat" will be sent based on activity in order to extend the session
+   lifetime. If we don't detect any activity, the session might expire, and the user will need to
+   login again. * The new "session_forced_logout_timeout" option has been added to the
+   config.php. It's disabled by default, and setting a positive (non-zero) value will enable the
+   feature. If it's enabled, the passphrase cookie will expire after those number of seconds
+   pass, when the tab or the browser closes. This will force the user to login again.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39916<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Expose user type of share receiver in share api: <a href="https://github.com/owncloud/core/pull/40013">#40013</a></p>

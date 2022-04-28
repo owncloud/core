@@ -220,16 +220,37 @@ $CONFIG = [
 'remember_login_cookie_lifetime' => 60*60*24*15,
 
 /**
- * Define the lifetime of a session after inactivity
+ * Define the lifetime of a session after inactivity.
+ * The web UI might send a "heartbeat" based on the activity happening
+ * in order to extend the session lifetime and keeping it from timing out
+ * prematurely. If there is no activity happening and the lifetime is
+ * reached, you'll have to login again.
  * The default is 20 minutes, expressed in seconds.
  */
 'session_lifetime' => 60 * 20,
 
 /**
  * Enable or disable session keep-alive when a user is logged in to the Web UI
- * Enabling this sends a "heartbeat" to the server to keep it from timing out.
+ * Enabling this sends a "heartbeat" to the server to keep it from
+ * timing out regardless of any activity happening. This heartbeat will
+ * keep extending the session over again, so the user won't be logged out
+ * even if he isn't active in the web UI.
  */
 'session_keepalive' => true,
+
+/**
+ * Force the user to logout when he closes the tab or the browser, after
+ * the specified number of seconds. A negative or 0 value disables this
+ * feature.
+ * Note that the user can still access the page without re-authenticating
+ * (having valid access) if the timeout hasn't been reached.
+ * The recommended minimum value is 5 or 10 seconds. Using a lower value
+ * might cause unwanted logouts for the users.
+ * Also note that this feature works properly if the user uses only one
+ * tab. If a user uses multiple tabs, closing one of them will likely
+ * force the rest to re-authenticate.
+ */
+'session_forced_logout_timeout' => 0,
 
 /**
  * Enforce token only authentication for apps and clients connecting to ownCloud

@@ -389,8 +389,7 @@ trait Sharing {
 		$this->userCreatesAPublicLinkShareWithSettings($user, $body);
 		$this->ocsContext->theOCSStatusCodeShouldBe("100,200");
 		$this->theHTTPStatusCodeShouldBe(200);
-		$this->emptyLastHTTPStatusCodesArray();
-		$this->emptyLastOCSStatusCodesArray();
+		$this->clearStatusCodeArrays();
 	}
 
 	/**
@@ -994,6 +993,8 @@ trait Sharing {
 	 * @param string $sharingApp
 	 *
 	 * @return void
+	 * @throws JsonException
+	 * @throws Exception
 	 */
 	public function createShare(
 		string $user,
@@ -1437,6 +1438,7 @@ trait Sharing {
 	 * @param string|int|string[]|int[] $permissions
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userHasSharedFileWithUserUsingTheSharingApi(
 		string $user1,
@@ -1452,6 +1454,9 @@ trait Sharing {
 			$user2,
 			$permissions,
 			true
+		);
+		$this->ocsContext->assertOCSResponseIndicatesSuccess(
+			'The ocs share response does not indicate success.',
 		);
 		// this is expected to fail if a file is shared with create and delete permissions, which is not possible
 		Assert::assertTrue(

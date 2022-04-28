@@ -153,8 +153,8 @@ Feature: sharing
     And user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "shared" with user "Brian" with permissions "create"
     And user "Brian" has accepted share "/shared" offered by user "Alice"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/shared/textfile.txt" using the WebDAV API
-    And user "Brian" deletes file "/Shares/shared/textfile.txt" using the WebDAV API
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "/Shares/shared/textfile.txt"
+    When user "Brian" deletes file "/Shares/shared/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/shared/textfile.txt" should exist
     # Note: for Brian, the file does not "exist" because he only has "create" permission, not "read"

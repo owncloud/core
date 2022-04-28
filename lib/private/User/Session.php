@@ -1119,6 +1119,7 @@ class Session implements IUserSession, Emitter {
 			$this->setUser(null);
 			$this->setLoginName(null);
 			$this->unsetMagicInCookie();
+			OC::$server->getSessionCryptoWrapper()->deleteCookie();
 			$this->session->clear();
 			$this->manager->emit('\OC\User', 'postLogout');
 			return true;

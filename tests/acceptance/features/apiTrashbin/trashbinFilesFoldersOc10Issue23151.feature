@@ -40,5 +40,4 @@ Feature: files and folders exist in the trashbin after being deleted
     And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
     Examples:
       | dav-path |
-      | old      |
       | new      |

@@ -136,6 +136,13 @@ trait WebDav {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function clearResponseXmlObject():void {
+		$this->responseXmlObject = null;
+	}
+
+	/**
 	 *
 	 * @return string the etag or an empty string if the getetag property does not exist
 	 */
@@ -725,6 +732,8 @@ trait WebDav {
 	 * @param string $fileDestination
 	 *
 	 * @return void
+	 * @throws JsonException
+	 * @throws GuzzleException
 	 */
 	public function userMovesFileUsingTheAPI(
 		string $user,
@@ -751,7 +760,6 @@ trait WebDav {
 			}
 		}
 		try {
-			$this->emptyLastHTTPStatusCodesArray();
 			$this->response = $this->makeDavRequest(
 				$user,
 				"MOVE",
@@ -765,7 +773,9 @@ trait WebDav {
 			$this->setResponseXml(
 				HttpRequestHelper::parseResponseAsXml($this->response)
 			);
-			$this->pushToLastStatusCodesArrays();
+			$this->pushToLastHttpStatusCodesArray(
+				(string) $this->getResponse()->getStatusCode()
+			);
 		} catch (ConnectException $e) {
 		}
 	}
@@ -896,6 +906,9 @@ trait WebDav {
 		);
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
+		$this->pushToLastHttpStatusCodesArray(
+			(string) $this->getResponse()->getStatusCode()
 		);
 	}
 
@@ -1801,6 +1814,7 @@ trait WebDav {
 		} elseif ($entry === "file") {
 			Assert::assertEquals(\count($isCollection), 0, "Unexpectedly, `$path` is not a file");
 		}
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**
@@ -2056,7 +2070,9 @@ trait WebDav {
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
-		$this->pushToLastStatusCodesArrays();
+		$this->pushToLastHttpStatusCodesArray(
+			(string) $this->getResponse()->getStatusCode()
+		);
 	}
 
 	/**
@@ -2075,7 +2091,6 @@ trait WebDav {
 			"HTTP status code was not 201 or 204 while trying to upload file '$source' to '$destination' for user '$user'"
 		);
 		$this->emptyLastHTTPStatusCodesArray();
-		$this->emptyLastOCSStatusCodesArray();
 	}
 
 	/**
@@ -2452,6 +2467,7 @@ trait WebDav {
 				\intval($duplicateRemovedStatusCodes[0]),
 				'Responses did not return expected http status code'
 			);
+			$this->emptyLastHTTPStatusCodesArray();
 		} else {
 			throw new Exception(
 				'Expected same but found different http status codes of last requested responses.' .
@@ -2479,6 +2495,7 @@ trait WebDav {
 					'Responses did not return expected HTTP status code'
 				);
 			}
+			$this->emptyLastHTTPStatusCodesArray();
 		} else {
 			throw new Exception(
 				'Expected HTTP status codes: "' . \implode(',', $statusCodes) .
@@ -2536,7 +2553,7 @@ trait WebDav {
 	/**
 	 * @Then the OCS status code of responses on all endpoints should be :statusCode
 	 *
-	 * @param $statusCode
+	 * @param string $statusCode
 	 *
 	 * @return void
 	 * @throws Exception
@@ -2549,6 +2566,7 @@ trait WebDav {
 				\intval($duplicateRemovedStatusCodes[0]),
 				'Responses did not return expected ocs status code'
 			);
+			$this->emptyLastOCSStatusCodesArray();
 		} else {
 			throw new Exception(
 				'Expected same but found different ocs status codes of last requested responses.' .
@@ -2860,6 +2878,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function userUploadsFilesWithContentTo(
 		string $user,
@@ -2891,6 +2910,8 @@ trait WebDav {
 	 * @param string $destination
 	 *
 	 * @return string[]
+	 * @throws JsonException
+	 * @throws GuzzleException
 	 */
 	public function uploadFileWithContent(
 		string $user,
@@ -2955,14 +2976,17 @@ trait WebDav {
 	 * @param string|null $content
 	 * @param string $destination
 	 *
-	 * @return string[]
+	 * @return void
+	 * @throws GuzzleException
+	 * @throws JsonException
 	 */
 	public function userUploadsAFileWithContentTo(
 		string $user,
 		?string $content,
 		string $destination
-	):array {
-		return $this->uploadFileWithContent($user, $content, $destination);
+	):void {
+		$this->uploadFileWithContent($user, $content, $destination);
+		$this->pushToLastHttpStatusCodesArray();
 	}
 
 	/**
@@ -2973,7 +2997,7 @@ trait WebDav {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public function userUploadsFollowingFilesWithContentTo(
 		string $user,
@@ -3378,7 +3402,7 @@ trait WebDav {
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		$this->lastUploadDeleteTime = \time();
-		$this->pushToLastStatusCodesArrays();
+		$this->pushToLastHttpStatusCodesArray((string) $this->getResponse()->getStatusCode());
 	}
 
 	/**
@@ -3560,6 +3584,7 @@ trait WebDav {
 	 * @param string $destination
 	 *
 	 * @return void
+	 * @throws JsonException | GuzzleException
 	 */
 	public function userCreatesFolder(string $user, string $destination):void {
 		$user = $this->getActualUsername($user);
@@ -3573,7 +3598,7 @@ trait WebDav {
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
-		$this->pushToLastHttpStatusCodesArray((string) $this->getResponse()->getStatusCode());
+		$this->pushToLastHttpStatusCodesArray();
 	}
 
 	/**
@@ -3583,6 +3608,8 @@ trait WebDav {
 	 * @param string $destination
 	 *
 	 * @return void
+	 * @throws JsonException
+	 * @throws GuzzleException
 	 */
 	public function userHasCreatedFolder(string $user, string $destination):void {
 		$user = $this->getActualUsername($user);

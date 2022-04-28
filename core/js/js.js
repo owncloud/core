@@ -1567,14 +1567,115 @@ function initCore() {
 				$.post(url);
 			}, interval * 1000);
 		};
-		$(document).ajaxComplete(heartBeat);
 		heartBeat();
+	}
+
+	/**
+	 * Check mouse movement to send a heartbeat if the mouse moved
+	 */
+	function initMouseTrack() {
+		var interval = 120;  // 2 minutes
+		if (oc_config.session_lifetime) {
+			interval = Math.floor(oc_config.session_lifetime / 2);
+		}
+		interval = Math.min(Math.max(interval, 60), 3600);  // ensure interval is in [60, 3600]
+
+		var extendableHeartbeat = null;
+		var extendableMouseMoved = false;
+		var mouseMoved = false;
+		var heartbeatTimestamp = 0;
+
+		// If the mouse has moved within this interval, set a timeout to send
+		// a heartbeat request. If the mouse moves again in the next interval,
+		// the timeout will be extended. Note that the heartbeat request might
+		// be delayed indefinitely.
+		setInterval(function() {
+			if (extendableMouseMoved) {
+				clearTimeout(extendableHeartbeat);
+				extendableHeartbeat = setTimeout(function() {
+					if (!extendableMouseMoved) {
+						// if the mouse has moved, either this timeout has been cleared and
+						// a new one is being created, or a new timeout will be created soon
+						// (if this timeout is executed before the setInterval function)
+						var currentTimestamp = Date.now();
+						if (currentTimestamp > heartbeatTimestamp + (30 * 1000)) {
+							// if a heartbeat has been sent recently, don't send a new one
+							console.log('I1 sending heartbeat');
+							$.post(OC.generateUrl('/heartbeat'));
+							heartbeatTimestamp = currentTimestamp;
+						} else {
+							console.log('I1 skipping heartbeat');
+						}
+					} else {
+						console.log('I1 delaying hearbeat because mouse moved.');
+					}
+				}, 30 * 1000);
+			}
+			extendableMouseMoved = false;
+		}, 30 * 1000);
+
+		// If the mouse has been moved within this interval, send a heartbeat
+		// immediately. This will prevent the session to expire.
+		setInterval(function() {
+			if (mouseMoved) {
+				var currentTimestamp = Date.now();
+				if (currentTimestamp > heartbeatTimestamp + (interval * 1000)) {
+					// if a heartbeat has been sent recently, don't send a new one
+					console.log('I2 sending heartbeat');
+					$.post(OC.generateUrl('/heartbeat'));
+					heartbeatTimestamp = currentTimestamp;
+				} else {
+					console.log('I2 skipping heartbeat');
+				}
+			}
+			mouseMoved = false;  // no need to wait for the response
+		}, interval * 1000);
+
+		// set a couple of variables to indicate that the mouse has moved
+		$(window).on('mousemove.sessiontrack', function() {
+			mouseMoved = true;
+			extendableMouseMoved = true;
+		});
 	}
 
 	// session heartbeat (defaults to enabled)
 	if (typeof(oc_config.session_keepalive) === 'undefined' || !!oc_config.session_keepalive) {
 
 		initSessionHeartBeat();
+	} else {
+		initMouseTrack();
+	}
+
+	if (oc_config.session_forced_logout_timeout !== undefined && oc_config.session_forced_logout_timeout > 0) {
+		$(window).on('beforeunload.sessiontrack', function() {
+			var requestData = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-Requested-With': 'XMLHttpRequest'
+				},
+				body: JSON.stringify({t: oc_config.session_forced_logout_timeout}),
+				credentials: 'same-origin',
+				keepalive: true
+			};
+			var r = undefined;
+			if (typeof Request !== "undefined") {
+				// IE 11 doesn't have support "Request", so we'll fallback to ajax
+				r = new Request(OC.generateUrl('/heartbeat'), requestData);
+			}
+			if (r === undefined || r.keepalive === undefined) {
+				// firefox doesn't support keepalive (checked 11th Apr 2022)
+				// try a sync ajax call instead
+				$.ajax({
+					method: 'POST',
+					url: OC.generateUrl('/heartbeat'),
+					data: {t: oc_config.session_forced_logout_timeout},
+					async: false
+				});
+			} else {
+				fetch(r);
+			}
+		});
 	}
 
 	OC.registerMenu($('#expand'), $('#expanddiv'));

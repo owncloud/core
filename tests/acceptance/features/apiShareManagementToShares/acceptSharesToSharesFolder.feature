@@ -18,7 +18,9 @@ Feature: accept/decline shares coming from internal users to the Shares folder
     Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    Then the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
 
   Scenario: When accepting a share of a folder, the received folder is accessible
     Given user "Alice" has created folder "/PARENT"
