@@ -41,15 +41,15 @@ Feature: cannot share resources with invalid permissions
       | shareWith   | Brian         |
       | shareType   | user          |
       | permissions | create        |
-    Then the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
     And as "Brian" entry "/Shares/textfile0.txt" should not exist
     And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 400             | 200              |
-      | 2               | 400             | 400              |
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 400              |
 
 
   Scenario Outline: Cannot create a share of a file with a user with only (create,delete) permission
@@ -60,17 +60,17 @@ Feature: cannot share resources with invalid permissions
       | shareWith   | Brian         |
       | shareType   | user          |
       | permissions | <permissions> |
-    Then the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
     And as "Brian" entry "/Shares/textfile0.txt" should not exist
     And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code | permissions   |
-      | 1               | 400             | 200              | delete        |
-      | 2               | 400             | 400              | delete        |
-      | 1               | 400             | 200              | create,delete |
-      | 2               | 400             | 400              | create,delete |
+      | ocs_api_version | http_status_code | permissions   |
+      | 1               | 200              | delete        |
+      | 2               | 400              | delete        |
+      | 1               | 200              | create,delete |
+      | 2               | 400              | create,delete |
 
   @issue-ocis-reva-34
   Scenario Outline: Cannot create a share of a file with a group with only create permission
@@ -83,15 +83,15 @@ Feature: cannot share resources with invalid permissions
       | shareWith   | grp1          |
       | shareType   | group         |
       | permissions | create        |
-    Then the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
     And as "Brian" entry "/Shares/textfile0.txt" should not exist
     And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code |
-      | 1               | 400             | 200              |
-      | 2               | 400             | 400              |
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 400              |
 
   @issue-ocis-reva-34
   Scenario Outline: Cannot create a share of a file with a group with only (create,delete) permission
@@ -104,14 +104,14 @@ Feature: cannot share resources with invalid permissions
       | shareWith   | grp1          |
       | shareType   | group         |
       | permissions | <permissions> |
-    Then the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "400"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
     And as "Brian" entry "/Shares/textfile0.txt" should not exist
     And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code | permissions   |
-      | 1               | 400             | 200              | delete        |
-      | 2               | 400             | 400              | delete        |
-      | 1               | 400             | 200              | create,delete |
-      | 2               | 400             | 400              | create,delete |
+      | ocs_api_version | http_status_code | permissions   |
+      | 1               | 200              | delete        |
+      | 2               | 400              | delete        |
+      | 1               | 200              | create,delete |
+      | 2               | 400              | create,delete |
