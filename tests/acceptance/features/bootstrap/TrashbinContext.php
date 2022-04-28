@@ -117,7 +117,7 @@ class TrashbinContext implements Context {
 					$name = $successPropStat->xpath('./d:prop/oc:trashbin-original-filename');
 					$mtime = $successPropStat->xpath('./d:prop/oc:trashbin-delete-timestamp');
 					$resourcetype = $successPropStat->xpath('./d:prop/d:resourcetype');
-					if ($resourcetype[0]->asXML() === "<d:resourcetype><d:collection/></d:resourcetype>") {
+					if (\array_key_exists(0, $resourcetype) && ($resourcetype[0]->asXML() === "<d:resourcetype><d:collection/></d:resourcetype>")) {
 						$collection[0] = true;
 					} else {
 						$collection[0] = false;
