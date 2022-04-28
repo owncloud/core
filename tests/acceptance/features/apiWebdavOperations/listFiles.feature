@@ -301,7 +301,7 @@ Feature: list files
       | textfile0.txt  |
       | welcome.txt    |
       | simple-folder/ |
-    When user "Alice" lists the resources in the trashbin path "/" with depth "0" using the WebDAV API
+    When user "Alice" lists the resources in the trashbin with depth "0" using the WebDAV API
     Then the HTTP status code should be "207"
     And the trashbin DAV response should not contain these nodes
       | name                                                      |
@@ -332,7 +332,7 @@ Feature: list files
       | textfile0.txt  |
       | welcome.txt    |
       | simple-folder/ |
-    When user "Alice" lists the resources in the trashbin path "/" with depth "1" using the WebDAV API
+    When user "Alice" lists the resources in the trashbin with depth "1" using the WebDAV API
     Then the HTTP status code should be "207"
     And the trashbin DAV response should contain these nodes
       | name           |
@@ -366,7 +366,7 @@ Feature: list files
       | textfile0.txt  |
       | welcome.txt    |
       | simple-folder/ |
-    When user "Alice" lists the resources in the trashbin path "/" with depth "infinity" using the WebDAV API
+    When user "Alice" lists the resources in the trashbin with depth "infinity" using the WebDAV API
     Then the HTTP status code should be "207"
     And the trashbin DAV response should contain these nodes
       | name                                                      |
