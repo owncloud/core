@@ -830,6 +830,7 @@ class WebDavPropertiesContext implements Context {
 					// space id from our helper is returned as d8c029e0\-2bc9\-4b9a\-8613\-c727e5417f05
 					// so we've to remove "\" before every "-"
 					$expectedHref = str_replace('\-', '-', $expectedHref);
+					$expectedHref = str_replace('\$', '$', $expectedHref);
 				}
 				if ($actualHrefPart === $expectedHref) {
 					break;
