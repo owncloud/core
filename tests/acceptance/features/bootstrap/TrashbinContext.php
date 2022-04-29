@@ -145,6 +145,52 @@ class TrashbinContext implements Context {
 	}
 
 	/**
+	 * List the top of the trashbin folder for a user
+	 *
+	 * @param string|null $user user
+	 * @param string $depth
+	 *
+	 * @return array response
+	 * @throws Exception
+	 */
+	public function listTopOfTrashbinFolder(?string $user, string $depth = "infinity"):array {
+		$password = $this->featureContext->getPasswordForUser($user);
+		$davPathVersion = $this->featureContext->getDavPathVersion();
+		$response = WebDavHelper::listFolder(
+			$this->featureContext->getBaseUrl(),
+			$user,
+			$password,
+			"",
+			$depth,
+			$this->featureContext->getStepLineRef(),
+			[
+				'oc:trashbin-original-filename',
+				'oc:trashbin-original-location',
+				'oc:trashbin-delete-timestamp',
+				'd:getlastmodified'
+			],
+			'trash-bin',
+			$davPathVersion
+		);
+		$this->featureContext->setResponse($response);
+		$responseXml = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
+
+		$this->featureContext->setResponseXmlObject($responseXml);
+		$files = $this->getTrashbinContentFromResponseXml($responseXml);
+		// filter root element
+		$files = \array_filter(
+			$files,
+			static function ($element) use ($user) {
+				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/");
+			}
+		);
+		return $files;
+	}
+
+	/**
 	 * List trashbin folder
 	 *
 	 * @param string|null $user user
@@ -173,7 +219,7 @@ class TrashbinContext implements Context {
 	 */
 	public function listTrashbinFolderCollection(?string $user, ?string $collectionPath = "", string $depth = "1"):array {
 		// $collectionPath should be some list of file-ids like 2147497661/2147497662
-		// or the empty string, which will list the wwhole trashbin from the top.
+		// or the empty string, which will list the whole trashbin from the top.
 		$collectionPath = \trim($collectionPath, "/");
 		$password = $this->featureContext->getPasswordForUser($user);
 		$davPathVersion = $this->featureContext->getDavPathVersion();
@@ -243,16 +289,10 @@ class TrashbinContext implements Context {
 	 */
 	public function userGetsFilesInTheTrashbinWithDepthUsingTheWebdavApi(string $user, string $depth):void {
 		$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
-		$listing = $this->listTrashbinFolder($user);
+		$this->listTopOfTrashbinFolder($user, $depth);
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
 		}
-
-		Assert::assertGreaterThan(
-			0,
-			\count($listing),
-			"Nothing was found in the trachbin of user '$user'"
-		);
 	}
 
 	/**

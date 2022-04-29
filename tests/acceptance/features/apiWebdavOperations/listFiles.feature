@@ -294,7 +294,7 @@ Feature: list files
       | spaces      |
 
 
-  Scenario Outline: Get the list of files in a folder in the trashbin with depth 0
+  Scenario Outline: Get the list of files in the trashbin with depth 0
     Given using <dav_version> DAV path
     And user "Alice" has deleted the following resources
       | path           |
@@ -325,7 +325,7 @@ Feature: list files
       | spaces      |
 
 
-  Scenario Outline: Get the list of files in a folder in the trashbin with depth 1
+  Scenario Outline: Get the list of files in the trashbin with depth 1
     Given using <dav_version> DAV path
     And user "Alice" has deleted the following resources
       | path           |
@@ -358,7 +358,7 @@ Feature: list files
       | spaces      |
 
 
-  Scenario Outline: Get the list of files in a folder in the trashbin with depth infinity
+  Scenario Outline: Get the list of files in the trashbin with depth infinity
     Given using <dav_version> DAV path
     And the administrator has set depth_infinity_allowed to 1
     And user "Alice" has deleted the following resources
