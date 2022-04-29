@@ -23,6 +23,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix issue with requesting an invalid share id: <a href="https://github.com/owncloud/core/issues/39868">#39868</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Remove fr_FR language variant: <a href="https://github.com/owncloud/core/issues/39931">#39931</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Limit the width of the form on login page: <a href="https://github.com/owncloud/core/pull/39962">#39962</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Default for propfind depth infinity adjusted: <a href="https://github.com/owncloud/core/pull/40016">#40016</a></li>
         <li class="type-change changelog-item">Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></li>
         <li class="type-change changelog-item">Change - Private keys for SFTP storage will be stored in credentials table: <a href="https://github.com/owncloud/core/pull/39935">#39935</a></li>
         <li class="type-change changelog-item">Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></li>
@@ -162,6 +163,15 @@
             <p>The login form breaks if error messages and info messages are longer.
             </p>
             <p>https://github.com/owncloud/core/pull/39962<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Default for propfind depth infinity adjusted: <a href="https://github.com/owncloud/core/pull/40016">#40016</a></p>
+            <p>Fixed potential cause for performance issues under certain conditions with infinite
+   propfind being enabled by default.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5154<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40016<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></p>

@@ -25,6 +25,7 @@ Summary
 * Bugfix - Fix issue with requesting an invalid share id: [#39868](https://github.com/owncloud/core/issues/39868)
 * Bugfix - Remove fr_FR language variant: [#39931](https://github.com/owncloud/core/issues/39931)
 * Bugfix - Limit the width of the form on login page: [#39962](https://github.com/owncloud/core/pull/39962)
+* Bugfix - Default for propfind depth infinity adjusted: [#40016](https://github.com/owncloud/core/pull/40016)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Private keys for SFTP storage will be stored in credentials table: [#39935](https://github.com/owncloud/core/pull/39935)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
@@ -159,6 +160,14 @@ Details
    The login form breaks if error messages and info messages are longer.
 
    https://github.com/owncloud/core/pull/39962
+
+* Bugfix - Default for propfind depth infinity adjusted: [#40016](https://github.com/owncloud/core/pull/40016)
+
+   Fixed potential cause for performance issues under certain conditions with infinite
+   propfind being enabled by default.
+
+   https://github.com/owncloud/enterprise/issues/5154
+   https://github.com/owncloud/core/pull/40016
 
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 
