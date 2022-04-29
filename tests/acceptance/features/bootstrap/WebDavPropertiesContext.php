@@ -117,10 +117,7 @@ class WebDavPropertiesContext implements Context {
 				$properties[] = $row["propertyName"];
 			}
 		}
-		$depth = '0';
-		if (\count($properties) > 1) {
-			$depth = 'infinity';
-		}
+		$depth = "1";
 		$this->featureContext->setResponseXmlObject(
 			$this->featureContext->listFolderAndReturnResponseXml(
 				$user,
@@ -136,11 +133,17 @@ class WebDavPropertiesContext implements Context {
 	 * @param string $user
 	 * @param string $path
 	 * @param TableNode $propertiesTable
+	 * @param string $depth
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function getFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi(string $user, string $path, TableNode $propertiesTable):void {
+	public function getFollowingCommentPropertiesOfFileUsingWebDAVPropfindApi(
+		string $user,
+		string $path,
+		TableNode $propertiesTable,
+		string $depth = "1"
+	):void {
 		$properties = null;
 		$this->featureContext->verifyTableNodeColumns($propertiesTable, ["propertyName"]);
 		$this->featureContext->verifyTableNodeColumnsCount($propertiesTable, 1);
@@ -149,15 +152,10 @@ class WebDavPropertiesContext implements Context {
 				$properties[] = $row["propertyName"];
 			}
 		}
-		$depth = 0;
 
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
-		if (\count($properties) > 1) {
-			$depth = 'infinity';
-			$this->featureContext->usingNewDavPath();
-		}
 		$this->featureContext->setResponseXmlObject(
 			$this->featureContext->listFolderAndReturnResponseXml(
 				$user,

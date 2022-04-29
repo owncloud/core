@@ -1,0 +1,7 @@
+Bugfix: default for propfind depth infinity adjusted
+
+Fixed potential cause for performance issues under certain conditions 
+with infinite propfind being enabled by default. 
+
+https://github.com/owncloud/core/pull/40016
+https://github.com/owncloud/enterprise/issues/5154
