@@ -831,6 +831,7 @@ class WebDavPropertiesContext implements Context {
 					// so we've to remove "\" before every "-"
 					$expectedHref = str_replace('\-', '-', $expectedHref);
 					$expectedHref = str_replace('\$', '$', $expectedHref);
+					$expectedHref = str_replace('\!', '!', $expectedHref);
 				}
 				if ($actualHrefPart === $expectedHref) {
 					break;
