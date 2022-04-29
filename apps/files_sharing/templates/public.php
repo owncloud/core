@@ -58,7 +58,7 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 		 data-owner-display-name="<?php p($_['displayName']) ?>" data-owner="<?php p($_['owner']) ?>" data-name="<?php p($_['filename']) ?>">
 		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" title="" id="owncloud-public">
 			<h1 class="logo-icon">
-				<?php p($theme->getName()); ?>
+				<?php p($theme->getHTMLName()); ?>
 			</h1>
 		</a>
 
