@@ -359,7 +359,7 @@ class Filesystem {
 		}
 	}
 
-	public static function init($user, $root) {
+	public static function init($user, $root, $partial = false) {
 		if (self::$defaultInstance) {
 			return false;
 		}
@@ -371,7 +371,7 @@ class Filesystem {
 		}
 
 		//load custom mount config
-		self::initMountPoints($user);
+		self::initMountPoints($user, $partial);
 
 		self::$loaded = true;
 
@@ -390,7 +390,7 @@ class Filesystem {
 	 * @param string $user
 	 * @throws \OC\User\NoUserException if the user is not available
 	 */
-	public static function initMountPoints($user = '') {
+	public static function initMountPoints($user = '', $partial = false) {
 		if ($user == '') {
 			$user = \OC_User::getUser();
 		}
@@ -441,16 +441,18 @@ class Filesystem {
 
 		\OC\Files\Filesystem::getStorage($user);
 
-		// Chance to mount for other storages
-		if ($userObject) {
-			$mounts = $mountConfigManager->getMountsForUser($userObject);
-			\array_walk($mounts, [self::$mounts, 'addMount']);
-			$mounts[] = $homeMount;
-			$mountConfigManager->registerMounts($userObject, $mounts);
-		}
+		if (!$partial) {
+			// Chance to mount for other storages
+			if ($userObject) {
+				$mounts = $mountConfigManager->getMountsForUser($userObject);
+				\array_walk($mounts, [self::$mounts, 'addMount']);
+				$mounts[] = $homeMount;
+				$mountConfigManager->registerMounts($userObject, $mounts);
+			}
 
-		self::listenForNewMountProviders($mountConfigManager, $userManager);
-		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', ['user' => $user]);
+			self::listenForNewMountProviders($mountConfigManager, $userManager);
+			\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', ['user' => $user]);
+		}
 	}
 
 	/**

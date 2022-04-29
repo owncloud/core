@@ -141,7 +141,7 @@ class ExpireTrash extends TimedJob {
 	 */
 	protected function setupFS($user) {
 		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($user);
+		\OC_Util::setupFS($user, true);
 
 		// Check if this user has a trashbin directory
 		$view = new \OC\Files\View('/' . $user);
