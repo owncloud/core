@@ -248,7 +248,8 @@ $CONFIG = [
  * might cause unwanted logouts for the users.
  * Also note that this feature works properly if the user uses only one
  * tab. If a user uses multiple tabs, closing one of them will likely
- * force the rest to re-authenticate.
+ * force the rest to re-authenticate in IE11 and Safari < 15.4 (other browsers
+ * work fine)
  */
 'session_forced_logout_timeout' => 0,
 
