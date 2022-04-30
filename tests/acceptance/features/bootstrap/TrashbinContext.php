@@ -250,7 +250,11 @@ class TrashbinContext implements Context {
 		$files = \array_filter(
 			$files,
 			static function ($element) use ($user, $collectionPath) {
-				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$collectionPath/");
+				$path = $collectionPath;
+				if ($path !== "") {
+					$path = $path . "/";
+				}
+				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$path");
 			}
 		);
 
