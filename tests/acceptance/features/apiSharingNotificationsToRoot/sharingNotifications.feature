@@ -69,7 +69,7 @@ Feature: Display notifications when receiving a share
     When the administrator sets parameter "shareapi_auto_accept_share" of app "core" to "no"
     And the administrator creates user "David" using the provisioning API
     And the administrator adds user "David" to group "grp1" using the provisioning API
-    Then the OCS status code of responses on each endpoint should be "100, 200, 100" respectively
+    Then the OCS status code of responses on each endpoint should be "200, 100" respectively
     And the HTTP status code of responses on all endpoints should be "200"
     And user "Brian" should have 0 notifications
     And user "Carol" should have 0 notifications
@@ -113,7 +113,7 @@ Feature: Display notifications when receiving a share
     When the administrator sets parameter "shareapi_auto_accept_share" of app "core" to "yes"
     And the administrator creates user "David" using the provisioning API
     And the administrator adds user "David" to group "grp1" using the provisioning API
-    Then the OCS status code of responses on each endpoint should be "100, 200, 100" respectively
+    Then the OCS status code of responses on each endpoint should be "200, 100" respectively
     And the HTTP status code of responses on all endpoints should be "200"
     And user "Brian" should have 1 notification
     And the last notification of user "Brian" should match these regular expressions about user "Alice"

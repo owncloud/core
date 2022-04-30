@@ -6,7 +6,7 @@ Feature: sharing
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @smokeTest @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   @skipOnEncryptionType:user-keys @issue-32322
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
