@@ -101,7 +101,7 @@ Feature: Display notifications when receiving a share
     And the administrator creates user "David" using the provisioning API
     And the administrator adds user "David" to group "grp1" using the provisioning API
     Then the HTTP status code of responses on all endpoints should be "200"
-    And the OCS status code of responses on each endpoint should be "100,200,100" respectively
+    And the OCS status code of responses on each endpoint should be "200,100" respectively
     And user "Brian" should have 1 notification
     And the last notification of user "Brian" should match these regular expressions about user "Alice"
       | key         | regex                                            |

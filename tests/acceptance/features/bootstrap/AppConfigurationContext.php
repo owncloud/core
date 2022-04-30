@@ -59,7 +59,6 @@ class AppConfigurationContext implements Context {
 		// end of the captured string, so trim them.
 		$value = \trim($value, $value[0]);
 		$this->modifyAppConfig($app, $parameter, $value);
-		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**
