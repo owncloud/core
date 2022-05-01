@@ -250,7 +250,22 @@ class TrashbinContext implements Context {
 		$files = \array_filter(
 			$files,
 			static function ($element) use ($user, $collectionPath) {
-				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$collectionPath/");
+				if (\trim($element['href'], "/") === "remote.php/dav/trash-bin") {
+					// This is a bug in oCIS. The root-level trashbin href should be like:
+					// /remote.php/dav/trash-bin/Alice/
+					// But it is missing the username, so is like:
+					// /remote.php/dav/trash-bin/
+					// We don't want to fail almost every trashbin test because of this.
+					// We filter out this entry here, and just echo a warning that this
+					// problem has happened, so that it can be seen in the test log output.
+					echo __METHOD__ . "Warning: unexpected href in trashbin propfind: " . $element['href'] . "\n";
+					return false;
+				}
+				$path = $collectionPath;
+				if ($path !== "") {
+					$path = $path . "/";
+				}
+				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/$path");
 			}
 		);
 
