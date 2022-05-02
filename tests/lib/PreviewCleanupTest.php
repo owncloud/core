@@ -23,8 +23,9 @@ namespace Test;
 
 use OC\Core\Command\Previews\Cleanup;
 use OC\Files\Filesystem;
-use OC\Files\ObjectStore\ObjectStoreStorage;
+use OC\Files\Node\File;
 use OCP\Files\Folder;
+use OCP\Share;
 use Test\Traits\UserTrait;
 
 /**
@@ -38,6 +39,7 @@ class PreviewCleanupTest extends TestCase {
 	use UserTrait;
 
 	public const TEST_PREVIEW_USER1 = "test-preview-cleanup-user1";
+	public const TEST_PREVIEW_USER2 = "test-preview-cleanup-user2";
 	private $trashWasEnabled;
 
 	protected function setUp(): void {
@@ -49,13 +51,11 @@ class PreviewCleanupTest extends TestCase {
 			\OC::$server->getAppManager()->disableApp('files_trashbin');
 		}
 
-		# create test user
-		$this->createUser(self::TEST_PREVIEW_USER1, self::TEST_PREVIEW_USER1);
-		self::loginAsUser(self::TEST_PREVIEW_USER1);
+		# create test user 2
+		$this->createUser(self::TEST_PREVIEW_USER2, self::TEST_PREVIEW_USER2);
 
-		# properly initialize the file system
-		Filesystem::clearMounts();
-		Filesystem::initMountPoints(self::TEST_PREVIEW_USER1);
+		# create test user 1
+		$this->createUser(self::TEST_PREVIEW_USER1, self::TEST_PREVIEW_USER1);
 	}
 
 	protected function tearDown(): void {
@@ -67,33 +67,74 @@ class PreviewCleanupTest extends TestCase {
 	}
 
 	public function test(): void {
+		# user 1
+		$this->login(self::TEST_PREVIEW_USER1);
+
 		$rootFolder = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1);
 
 		# create test file
-		/** @var \OC\Files\Node\File $textFile */
+		/** @var File $textFile */
 		$textFile = $rootFolder->newFile('welcome.txt');
 		$textFile->putContent('1234567890');
 		$textFileId = (string)$textFile->getId();
+		$thumbnailFolderUser1 = $this->createPreview($textFile, $rootFolder, $textFileId);
 
+		# file is shared with another user
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setNode($textFile);
+		$share->setSharedWith(self::TEST_PREVIEW_USER2);
+		$share->setShareType(Share::SHARE_TYPE_USER);
+		$share->setSharedBy(self::TEST_PREVIEW_USER1);
+		$share->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		$share = \OC::$server->getShareManager()->createShare($share);
+
+		# login as user 2
+		$this->login(self::TEST_PREVIEW_USER2);
+		$rootFolder = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1);
+		/** @var File $sharedTextFile */
+		$sharedTextFile = $rootFolder->get('welcome.txt');
+		$sharedTextFileId = (string)$sharedTextFile->getId();
 		# create preview
-		$textFile->getThumbnail([]);
-
-		# assert thumbnail exists
-		/** @var Folder $thumbnailFolder */
-		$thumbnailFolder = $rootFolder->getParent()->get('thumbnails');
-		self::assertTrue($thumbnailFolder->nodeExists($textFileId));
+		$thumbnailFolderUser2 = $this->createPreview($sharedTextFile, $rootFolder, $sharedTextFileId);
 
 		# delete file
 		$textFile->delete();
 
 		# assert thumbnail still exists - no hooks are triggered
-		self::assertTrue($thumbnailFolder->nodeExists($textFileId));
+		self::assertTrue($thumbnailFolderUser1->nodeExists($textFileId));
+		self::assertTrue($thumbnailFolderUser2->nodeExists($sharedTextFileId));
 
 		# run cleanup command
 		$cmd = new Cleanup(\OC::$server->getDatabaseConnection());
 		$cmd->process();
 
 		# assert thumbnail NO LONGER exists
-		self::assertFalse($thumbnailFolder->nodeExists($textFileId));
+		self::assertFalse($thumbnailFolderUser1->nodeExists($textFileId));
+		self::assertFalse($thumbnailFolderUser2->nodeExists($sharedTextFileId));
+	}
+
+	/**
+	 * @throws \OC\User\NoUserException
+	 */
+	private function login(string $user): void {
+		self::logout();
+		self::loginAsUser($user);
+
+		# properly initialize the file system
+		Filesystem::clearMounts();
+		Filesystem::initMountPoints($user);
+	}
+
+	/**
+	 * @throws \OCP\Files\NotFoundException
+	 */
+	private function createPreview(File $textFile, ?Folder $rootFolder, string $textFileId): Folder {
+		$textFile->getThumbnail([]);
+
+		# assert thumbnail exists
+		/** @var Folder $thumbnailFolder */
+		$thumbnailFolder = $rootFolder->getParent()->get('thumbnails');
+		self::assertTrue($thumbnailFolder->nodeExists($textFileId));
+		return $thumbnailFolder;
 	}
 }

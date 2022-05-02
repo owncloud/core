@@ -60,19 +60,29 @@ class Cleanup extends Base {
 		$root = \OC::$server->getLazyRootFolder();
 		$count = 0;
 
+		$lastFileId = 0;
 		while (true) {
 			# get 1000 previews to delete
-			$rows = $this->queryPreviewsToDelete();
+			echo 'Next 1000:' . PHP_EOL;
+			$rows = $this->queryPreviewsToDelete($lastFileId);
 			foreach ($rows as $row) {
 				$name = $row['name'];
 				$userId = $row['user_id'];
+				$lastFileId = $row['fileid'];
+
+				echo $name . ', ';
 
 				$userFiles = $root->getUserFolder($userId);
-				/** @var Folder $thumbnailsFolder */
-				$thumbnailsFolder = $userFiles->getParent()->get('thumbnails');
-				if ($thumbnailsFolder instanceof Folder && $thumbnailsFolder->nodeExists($name)) {
-					$notExistingPreview = $thumbnailsFolder->get($name);
-					$notExistingPreview->delete();
+				if ($userFiles->getParent()->nodeExists('thumbnails')) {
+					/** @var Folder $thumbnailsFolder */
+					$thumbnailsFolder = $userFiles->getParent()->get('thumbnails');
+					if ($thumbnailsFolder instanceof Folder && $thumbnailsFolder->nodeExists($name)) {
+						$notExistingPreview = $thumbnailsFolder->get($name);
+						$notExistingPreview->delete();
+					} else {
+						# cleanup cache
+						$this->cleanFileCache($name);
+					}
 				}
 			}
 			$count += \count($rows);
@@ -84,16 +94,22 @@ class Cleanup extends Base {
 		return $count;
 	}
 
-	private function queryPreviewsToDelete(): array {
+	private function queryPreviewsToDelete(int $startFileId = 0): array {
 		$isMysql = ($this->connection->getDatabasePlatform() instanceof MySqlPlatform);
 		$intDataType = $isMysql ? 'UNSIGNED' : 'INT';
 
-		$sql = "select `name`, `user_id` from `*PREFIX*filecache` `fc`
+		$sql = "select `fileid`, `name`, `user_id` from `*PREFIX*filecache` `fc`
 		join `*PREFIX*mounts` on `storage` = `storage_id`
 		where `parent` in (select `fileid` from `*PREFIX*filecache` where `storage` in (select `numeric_id` from `oc_storages` where `id` like 'home::%' or `id` like 'object::user:%') and `path` = 'thumbnails')
 		  and not exists(select `fileid` from `*PREFIX*filecache` where CAST(`fc`.`name` as $intDataType) = `*PREFIX*filecache`.`fileid`)
+		  and `fc`.`fileid` > ?
 		  order by `user_id` limit 1000";
 
-		return $this->connection->executeQuery($sql)->fetchAll(\PDO::FETCH_ASSOC);
+		return $this->connection->executeQuery($sql, [$startFileId])->fetchAll(\PDO::FETCH_ASSOC);
+	}
+
+	private function cleanFileCache($name) {
+		$sql = "delete from `*PREFIX*filecache` where path like 'thumbnails/$name/%'";
+		return $this->connection->executeQuery($sql)->rowCount();
 	}
 }
