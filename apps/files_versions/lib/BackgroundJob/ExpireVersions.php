@@ -82,7 +82,7 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 	 */
 	protected function setupFS($user) {
 		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($user, true);
+		\OC_Util::setupFS($user, false);
 
 		// Check if this user has a versions directory
 		$view = new \OC\Files\View('/' . $user);

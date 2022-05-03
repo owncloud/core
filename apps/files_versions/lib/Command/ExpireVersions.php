@@ -115,7 +115,7 @@ class ExpireVersions extends Command {
 	 */
 	protected function setupFS($user) {
 		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($user, true);
+		\OC_Util::setupFS($user, false);
 
 		// Check if this user has a version directory
 		$view = new \OC\Files\View('/' . $user);

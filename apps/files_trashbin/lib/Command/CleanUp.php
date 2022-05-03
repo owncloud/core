@@ -106,7 +106,7 @@ class CleanUp extends Command {
 	 */
 	protected function removeDeletedFiles($uid) {
 		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($uid, true);
+		\OC_Util::setupFS($uid, false);
 		if ($this->rootFolder->nodeExists('/' . $uid . '/files_trashbin')) {
 			$this->rootFolder->get('/' . $uid . '/files_trashbin')->delete();
 			$query = $this->dbConnection->getQueryBuilder();

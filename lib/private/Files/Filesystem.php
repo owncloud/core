@@ -359,7 +359,7 @@ class Filesystem {
 		}
 	}
 
-	public static function init($user, $root, $partial = false) {
+	public static function init($user, $root, $fullInit = true) {
 		if (self::$defaultInstance) {
 			return false;
 		}
@@ -371,7 +371,7 @@ class Filesystem {
 		}
 
 		//load custom mount config
-		self::initMountPoints($user, $partial);
+		self::initMountPoints($user, $fullInit);
 
 		self::$loaded = true;
 
@@ -390,7 +390,7 @@ class Filesystem {
 	 * @param string $user
 	 * @throws \OC\User\NoUserException if the user is not available
 	 */
-	public static function initMountPoints($user = '', $partial = false) {
+	public static function initMountPoints($user = '', $fullInit = true) {
 		if ($user == '') {
 			$user = \OC_User::getUser();
 		}
@@ -441,7 +441,7 @@ class Filesystem {
 
 		\OC\Files\Filesystem::getStorage($user);
 
-		if (!$partial) {
+		if ($fullInit) {
 			// Chance to mount for other storages
 			if ($userObject) {
 				$mounts = $mountConfigManager->getMountsForUser($userObject);

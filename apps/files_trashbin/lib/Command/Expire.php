@@ -60,7 +60,7 @@ class Expire implements ICommand {
 		}
 
 		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($this->user, true);
+		\OC_Util::setupFS($this->user, false);
 
 		$trashExpiryManager->expireTrash($this->user);
 

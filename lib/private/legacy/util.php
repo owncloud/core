@@ -131,7 +131,7 @@ class OC_Util {
 	 * @return boolean
 	 * @description configure the initial filesystem based on the configuration
 	 */
-	public static function setupFS($user = '', $partial = false) {
+	public static function setupFS($user = '', $fullInit = true) {
 		//setting up the filesystem twice can only lead to trouble
 		if (self::$fsSetup) {
 			return false;
@@ -308,7 +308,7 @@ class OC_Util {
 			$userDir = '/' . $user . '/files';
 
 			//jail the user into his "home" directory
-			\OC\Files\Filesystem::init($user, $userDir, $partial);
+			\OC\Files\Filesystem::init($user, $userDir, $fullInit);
 
 			OC_Hook::emit('OC_Filesystem', 'setup', ['user' => $user, 'user_dir' => $userDir]);
 		}
