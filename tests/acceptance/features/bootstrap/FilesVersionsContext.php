@@ -114,12 +114,12 @@ class FilesVersionsContext implements Context {
 		$fileId = $this->featureContext->getFileIdForPath($user, $file);
 		Assert::assertNotNull($fileId, __METHOD__ . " fileid of file $file user $user not found (the file may not exist)");
 		$body = '<?xml version="1.0"?>
-<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:prop>
-    <oc:meta-version-edited-by />
-    <oc:meta-version-edited-by-name />
-  </d:prop>
-</d:propfind>';
+                <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+                  <d:prop>
+                    <oc:meta-version-edited-by />
+                    <oc:meta-version-edited-by-name />
+                  </d:prop>
+                </d:propfind>';
 		$response = $this->featureContext->makeDavRequest(
 			$user,
 			"PROPFIND",
@@ -332,6 +332,52 @@ class FilesVersionsContext implements Context {
 		$this->downloadVersion($user, $path, $index);
 		$this->featureContext->theHTTPStatusCodeShouldBe("200");
 		$this->featureContext->downloadedContentShouldBe($content);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" retrieves the meta information of (file|fileId) "([^"]*)" using the meta API$/
+	 *
+	 * @param string $user
+	 * @param string $fileOrFileId
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userGetMetaInfo(string $user, string $fileOrFileId, string $path):void {
+		$user = $this->featureContext->getActualUsername($user);
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$password = $this->featureContext->getPasswordForUser($user);
+
+		if ($fileOrFileId === "file") {
+			$fileId = $this->featureContext->getFileIdForPath($user, $path);
+			$metaPath = "/meta/$fileId/";
+		} else {
+			$metaPath = "/meta/$path/";
+		}
+
+		$body
+			= "<?xml version='1.0' encoding='utf-8' ?>\n" .
+			"	<a:propfind xmlns:a='DAV:' xmlns:oc='http://owncloud.org/ns' >\n" .
+			"		<a:prop><oc:meta-path-for-user/></a:prop>\n" .
+			"   </a:propfind>\n";
+		$response = WebDavHelper::makeDavRequest(
+			$baseUrl,
+			$user,
+			$password,
+			"PROPFIND",
+			$metaPath,
+			['Content-Type' => 'text/xml','Depth' => '0'],
+			$this->featureContext->getStepLineRef(),
+			$body,
+			$this->featureContext->getDavPathVersion(),
+			null
+		);
+		$this->featureContext->setResponse($response);
+		$responseXml = HttpRequestHelper::getResponseXml(
+			$response,
+			__METHOD__
+		);
+		$this->featureContext->setResponseXmlObject($responseXml);
 	}
 
 	/**
