@@ -242,12 +242,12 @@ $CONFIG = [
  * Enable to force user logout
  * Force the user to get logged out after the specified number of seconds when
  * the tab or browser gets closed. A negative or 0 value disables this feature.
- * 
+ *
  * Note that the user can still access the page without re-authenticating
  * (having valid access) if the timeout has not been reached.
  * The recommended minimum value is 5 or 10 seconds. Using a lower value
  * might cause unwanted logouts for users.
- * 
+ *
  * Note that this feature works properly if the user uses one tab only.
  * If a user uses multiple tabs, closing one of them will likely
  * force the rest to re-authenticate.
@@ -1654,7 +1654,7 @@ $CONFIG = [
 'upgrade.automatic-app-update' => true,
 
 /**
- * Enable debugging mode for this ownCloud instance 
+ * Enable debugging mode for this ownCloud instance
  * Only enable this for local development and not in production environments
  * This will disable the minifier and outputs some additional debug information
  *
