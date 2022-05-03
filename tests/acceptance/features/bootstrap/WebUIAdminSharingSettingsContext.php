@@ -228,6 +228,24 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @Then the blocked domains from sharing with guests should set to :blockedDomains on the webUI
+	 *
+	 * @param string $blockedDomains
+	 *
+	 * @return void
+	 */
+	public function blockedDomainsFromSharingWithGuestsShouldBeSetTo(string $blockedDomains):void {
+		$blockedDomainsFromSharingWithGuests = $this->adminSharingSettingsPage->getBlockedDomainsFromSharingWithGuests();
+		Assert::assertEquals(
+			$blockedDomains,
+			$blockedDomainsFromSharingWithGuests,
+			__METHOD__
+			. " The blocked domains from sharing with guests was expected to be set to '$blockedDomains', "
+			. "but was actually set to '$blockedDomainsFromSharingWithGuests'"
+		);
+	}
+
+	/**
 	 * @When /^the administrator (enables|disables) public uploads using the webUI$/
 	 *
 	 * @param string $action

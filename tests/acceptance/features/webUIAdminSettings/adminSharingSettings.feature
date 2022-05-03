@@ -273,3 +273,10 @@ Feature: admin sharing settings
     And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "5"
     When the administrator browses to the admin sharing settings page
     Then the expiration date for federated shares should set to "5" days on the webUI
+
+
+  Scenario: check blocked domains set from command line for guests in webUI
+    Given the administrator invokes occ command "config:app:set guests blockdomains --value='something.com,qwerty.org'"
+    When the administrator browses to the admin sharing settings page
+    Then the blocked domains from sharing with guests should set to "something.com,qwerty.org" on the webUI
+
