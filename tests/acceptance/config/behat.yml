@@ -692,6 +692,15 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
     
+    cliCreateLocalStorage:
+      paths:
+        - '%paths.base%/../features/cliCreateLocalStorage'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - AuthContext:
+
     cliDbConversion:
       paths:
         - '%paths.base%/../features/cliDbConversion'

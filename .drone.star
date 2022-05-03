@@ -224,6 +224,7 @@ config = {
         },
         "cli": {
             "suites": [
+                "cliCreateLocalStorage",
                 "cliBackground",
                 "cliLocalStorage",
                 "cliMain",
