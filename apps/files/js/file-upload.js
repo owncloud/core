@@ -653,6 +653,11 @@ OC.Uploader.prototype = _.extend({
 			promise = deferred.promise();
 			this._knownDirs[fullPath] = promise;
 
+			// once the promise ends, we'll remove it from the this._knownDirs
+			promise.always(function() {
+				delete self._knownDirs[fullPath];
+			});
+
 			// make sure all parents already exist
 			var parentPath = OC.dirname(fullPath);
 			var parentPromise = this._knownDirs[parentPath];
