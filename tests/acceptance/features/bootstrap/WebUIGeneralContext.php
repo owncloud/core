@@ -22,8 +22,11 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\DriverException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use GuzzleHttp\Exception\GuzzleException;
 use Page\LoginPage;
@@ -915,6 +918,31 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			\exec('curl -X PUT -s -d "{\"passed\": ' . $passed . '}" -u ' . $sauceUsername . ':' . $sauceAccessKey . ' https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/' . $jobId);
 		} else {
 			\error_log("SCENARIO RESULT: ($passOrFail)");
+		}
+	}
+
+	/**
+	 * @AfterStep
+	 *
+	 * @param AfterStepScope $scope
+	 *
+	 * @return void
+	 */
+	public function takeScreenShotAfterFailedStep(AfterStepScope $scope):void {
+		$failCode = 99;
+		$featureTitle = $scope->getFeature()->getFile();
+		$explodedFeatureTitle = explode("/", $featureTitle);
+		$featureFileName = array_pop($explodedFeatureTitle);
+		$scenarioLine = $scope->getStep()->getLine();
+		$screenshotsHome = getcwd() . '/tests/acceptance/screenshots/';
+		$newDate = new DateTime();
+		$uniquePart = $newDate->getTimestamp() . '.png';
+		$fileName = $featureFileName . '-L' . $scenarioLine . '-' . $uniquePart;
+		if (!\is_dir($screenshotsHome)) {
+			\mkdir($screenshotsHome);
+		}
+		if ($failCode === $scope->getTestResult()->getResultCode()) {
+			$this->saveScreenshot($fileName, $screenshotsHome);
 		}
 	}
 }

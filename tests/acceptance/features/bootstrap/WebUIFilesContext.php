@@ -685,6 +685,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		);
 		$itemsCount = $this->filesPage->getSizeOfFileFolderList();
 		$lastItemCoordinates['top'] = 0;
+		Assert::assertEquals(
+			1,
+			2
+		);
 		if ($itemsCount > 0) {
 			$lastItemCoordinates = $this->filesPage->getCoordinatesOfElement(
 				$this->getSession(),
@@ -1934,7 +1938,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$currentTime = \microtime(true);
 			}
 
-			Assert::assertLessThanOrEqual(
+			Assert::assertGreaterThan(
 				$windowHeight,
 				$deleteBtnCoordinates ["top"],
 				__METHOD__
