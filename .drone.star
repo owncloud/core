@@ -239,7 +239,7 @@ config = {
             },
             "filterTags": "@files_external-app-required",
             "runAllSuites": True,
-            "numberOfParts": 1,
+            "numberOfParts": 2,
             "extraApps": {
                 "files_external": "",
             },
