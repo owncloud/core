@@ -6,4 +6,4 @@ This can cause problems with branding.
 The string HTMLName from defaults.php is now only used for the header.
 Name is used exclusively for the mail templates.
 
-https://github.com/owncloud/core/pull/40021
+https://github.com/owncloud/core/pull/40032
