@@ -146,7 +146,7 @@ class PreviewTest extends TestCase {
 		$y = 50;
 
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('test.txt');
-		$preview = new Preview(self::TEST_PREVIEW_USER1, $file, $x, $y);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $file, $x, $y);
 		$preview->getPreview();
 
 		$fileInfo = $this->rootView->getFileInfo($sampleFile);
@@ -185,6 +185,7 @@ class PreviewTest extends TestCase {
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get("test.$extension");
 		$preview = new Preview(
 			self::TEST_PREVIEW_USER1,
+			'',
 			$file,
 			$x,
 			$y
@@ -215,7 +216,7 @@ class PreviewTest extends TestCase {
 		$this->rootView->file_put_contents($imgPath, $imgData);
 
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.odt');
-		$preview = new Preview(self::TEST_PREVIEW_USER1, $file, $width, $height);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $file, $width, $height);
 		$preview->getPreview();
 		$image = $preview->getPreview();
 
@@ -547,6 +548,7 @@ class PreviewTest extends TestCase {
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get($this->sampleFilename);
 		$preview = new Preview(
 			self::TEST_PREVIEW_USER1,
+			'',
 			$file,
 			$width,
 			$height
@@ -871,6 +873,7 @@ class PreviewTest extends TestCase {
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.jpg');
 		$preview = new Preview(
 			self::TEST_PREVIEW_USER1,
+			'',
 			$file,
 			150,
 			150
@@ -893,6 +896,7 @@ class PreviewTest extends TestCase {
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.jpg');
 		$preview = new Preview(
 			self::TEST_PREVIEW_USER1,
+			'',
 			$file,
 			150,
 			150
@@ -943,9 +947,9 @@ class PreviewTest extends TestCase {
 
 		// Create preview for share owner and sharee
 		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.jpg');
-		$preview = new Preview(self::TEST_PREVIEW_USER1, $file, $x, $y);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $file, $x, $y);
 		$preview->getPreview();
-		$preview = new Preview($shareeeUserId, $file, $x, $y);
+		$preview = new Preview($shareeeUserId, '', $file, $x, $y);
 		$shareePreview = $preview->getPreview();
 
 		// Update file for share owner
@@ -954,7 +958,7 @@ class PreviewTest extends TestCase {
 		$shareOwnerView->file_put_contents($file->getInternalPath(), $newFileContent);
 
 		// Re-generate new preview for share owner
-		$preview = new Preview(self::TEST_PREVIEW_USER1, $file, $x, $y);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $file, $x, $y);
 		$preview->deletePreview();
 		$preview->getPreview();
 
@@ -972,7 +976,7 @@ class PreviewTest extends TestCase {
 		$fileMock->expects($this->any())->method('getOwner')->willReturn($ownerMock);
 
 		// Get preview for sharee -> should be re-generated although it already exists
-		$preview = new Preview(self::TEST_PREVIEW_USER1, $fileMock, $x, $y);
+		$preview = new Preview(self::TEST_PREVIEW_USER1, '', $fileMock, $x, $y);
 		$updatedShareePreview = $preview->getPreview();
 
 		$this->assertNotFalse($updatedShareePreview);
