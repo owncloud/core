@@ -23,6 +23,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix issue with requesting an invalid share id: <a href="https://github.com/owncloud/core/issues/39868">#39868</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Remove fr_FR language variant: <a href="https://github.com/owncloud/core/issues/39931">#39931</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Limit the width of the form on login page: <a href="https://github.com/owncloud/core/pull/39962">#39962</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Allow re-uploading the same folder after being renamed: <a href="https://github.com/owncloud/core/pull/39966">#39966</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Default for propfind depth infinity adjusted: <a href="https://github.com/owncloud/core/pull/40016">#40016</a></li>
         <li class="type-change changelog-item">Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></li>
         <li class="type-change changelog-item">Change - Private keys for SFTP storage will be stored in credentials table: <a href="https://github.com/owncloud/core/pull/39935">#39935</a></li>
@@ -32,6 +33,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Unify API responses when setting permissions for public links: <a href="https://github.com/owncloud/core/pull/39194">#39194</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add warnings for commands that are incompatible with object storage: <a href="https://github.com/owncloud/core/pull/39604">#39604</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Cache some data in memory from the filecache: <a href="https://github.com/owncloud/core/pull/39847">#39847</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add product to version in capabilities response: <a href="https://github.com/owncloud/core/pull/39851">#39851</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow files_external app to be disabled: <a href="https://github.com/owncloud/core/pull/39856">#39856</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve FileDrop view: <a href="https://github.com/owncloud/core/pull/39900">#39900</a></li>
@@ -165,6 +167,13 @@
             <p>https://github.com/owncloud/core/pull/39962<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Allow re-uploading the same folder after being renamed: <a href="https://github.com/owncloud/core/pull/39966">#39966</a></p>
+            <p>Previously, you couldn't upload a folder, rename it in the web UI and then re-upload the same
+   folder.This behavior is fixed, so you can now re-upload the folder after renaming it
+            </p>
+            <p>https://github.com/owncloud/core/pull/39966<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - Default for propfind depth infinity adjusted: <a href="https://github.com/owncloud/core/pull/40016">#40016</a></p>
             <p>Fixed potential cause for performance issues under certain conditions with infinite
    propfind being enabled by default.
@@ -256,6 +265,13 @@
             <p>https://github.com/owncloud/core/issues/39590<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39604<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Cache some data in memory from the filecache: <a href="https://github.com/owncloud/core/pull/39847">#39847</a></p>
+            <p>Some data from the filecache will be cached from the DB after accessing. This will improve the
+   performance a bit.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39847<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add product to version in capabilities response: <a href="https://github.com/owncloud/core/pull/39851">#39851</a></p>

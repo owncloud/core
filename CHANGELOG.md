@@ -25,6 +25,7 @@ Summary
 * Bugfix - Fix issue with requesting an invalid share id: [#39868](https://github.com/owncloud/core/issues/39868)
 * Bugfix - Remove fr_FR language variant: [#39931](https://github.com/owncloud/core/issues/39931)
 * Bugfix - Limit the width of the form on login page: [#39962](https://github.com/owncloud/core/pull/39962)
+* Bugfix - Allow re-uploading the same folder after being renamed: [#39966](https://github.com/owncloud/core/pull/39966)
 * Bugfix - Default for propfind depth infinity adjusted: [#40016](https://github.com/owncloud/core/pull/40016)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Private keys for SFTP storage will be stored in credentials table: [#39935](https://github.com/owncloud/core/pull/39935)
@@ -34,6 +35,7 @@ Summary
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 * Enhancement - Unify API responses when setting permissions for public links: [#39194](https://github.com/owncloud/core/pull/39194)
 * Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
+* Enhancement - Cache some data in memory from the filecache: [#39847](https://github.com/owncloud/core/pull/39847)
 * Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
 * Enhancement - Allow files_external app to be disabled: [#39856](https://github.com/owncloud/core/pull/39856)
 * Enhancement - Improve FileDrop view: [#39900](https://github.com/owncloud/core/pull/39900)
@@ -160,6 +162,15 @@ Details
    The login form breaks if error messages and info messages are longer.
 
    https://github.com/owncloud/core/pull/39962
+
+* Bugfix - Allow re-uploading the same folder after being renamed: [#39966](https://github.com/owncloud/core/pull/39966)
+
+   Previously, you couldn't upload a folder, rename it in the web UI and then re-upload the same
+   folder.
+
+   This behavior is fixed, so you can now re-upload the folder after renaming it
+
+   https://github.com/owncloud/core/pull/39966
 
 * Bugfix - Default for propfind depth infinity adjusted: [#40016](https://github.com/owncloud/core/pull/40016)
 
@@ -306,6 +317,13 @@ Details
 
    https://github.com/owncloud/core/issues/39590
    https://github.com/owncloud/core/pull/39604
+
+* Enhancement - Cache some data in memory from the filecache: [#39847](https://github.com/owncloud/core/pull/39847)
+
+   Some data from the filecache will be cached from the DB after accessing. This will improve the
+   performance a bit.
+
+   https://github.com/owncloud/core/pull/39847
 
 * Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
 
