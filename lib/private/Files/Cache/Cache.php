@@ -36,6 +36,7 @@
 namespace OC\Files\Cache;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use OC\Cache\CappedMemoryCache;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\IScanner;
@@ -82,9 +83,25 @@ class Cache implements ICache {
 	protected $connection;
 
 	/**
+	 * we use a static cache for the path lookup by id because the filecache already knows about all storages
+	 * and a single trip to the db is sufficient to answer subsequent calls.
+	 * Each entry will contain a storage and a path, such as:
+	 *
+	 * $path_cache = [
+	 *   <fileid1> => ['storage' => 7, 'path' => '/path/to/file'],
+	 *   <fileid2> => ['storage' => 4, 'path' => '/another/path/to/file'],
+	 * ]
+	 */
+	private static $path_cache = null;
+
+	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
 	 */
 	public function __construct($storage) {
+		if (self::$path_cache === null) {
+			self::$path_cache = new CappedMemoryCache();
+		}
+
 		if ($storage instanceof \OC\Files\Storage\Storage) {
 			$this->storageId = $storage->getId();
 		} else {
@@ -324,6 +341,7 @@ class Cache implements ICache {
 	 * @param array $data [$key => $value] the metadata to update, only the fields provided in the array will be updated, non-provided values will remain unchanged
 	 */
 	public function update($id, array $data) {
+		unset(self::$path_cache[(int)$id]);
 		if (isset($data['path'])) {
 			// normalize path
 			$data['path'] = $this->normalize($data['path']);
@@ -507,6 +525,7 @@ class Cache implements ICache {
 	public function remove($file) {
 		$entry = $this->get($file);
 		if ($entry !== false) {
+			unset(self::$path_cache[(int)$entry['fileid']]);
 			$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 			$this->connection->executeQuery($sql, [$entry['fileid']]);
 			if ($entry['mimetype'] === 'httpd/unix-directory') {
@@ -532,6 +551,7 @@ class Cache implements ICache {
 	 * @throws \OC\DatabaseException
 	 */
 	private function removeChildren($entry) {
+		self::$path_cache->clear();
 		$subFolders = $this->getSubFolders($entry);
 		foreach ($subFolders as $folder) {
 			$this->removeChildren($folder);
@@ -570,6 +590,7 @@ class Cache implements ICache {
 	 * @throws \Exception if the given storages have an invalid id
 	 */
 	public function moveFromCache(ICache $sourceCache, $sourcePath, $targetPath) {
+		self::$path_cache->clear();
 		if ($sourceCache instanceof Cache) {
 			// normalize source and target
 			$sourcePath = $this->normalize($sourcePath);
@@ -672,6 +693,7 @@ class Cache implements ICache {
 	 * remove all entries for files that are stored on the storage from the cache
 	 */
 	public function clear() {
+		self::$path_cache->clear();
 		Storage::remove($this->storageId);
 	}
 
@@ -929,17 +951,31 @@ class Cache implements ICache {
 	 * @return string|null the path of the file (relative to the storage) or null if a file with the given id does not exists within this cache
 	 */
 	public function getPathById($id) {
-		$sql = 'SELECT `path` FROM `*PREFIX*filecache` WHERE `fileid` = ? AND `storage` = ?';
-		$result = $this->connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
-		if ($row = $result->fetch()) {
-			// Oracle stores empty strings as null...
-			if ($row['path'] === null) {
-				return '';
+		if (!isset(self::$path_cache[(int)$id])) {
+			$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
+			$result = $this->connection->executeQuery($sql, [$id]);
+			if ($row = $result->fetch()) {
+				$entryStorage = (int)$row['storage'];
+				// Oracle stores empty strings as null...
+				if ($row['path'] === null) {
+					$entryPath = '';
+				} else {
+					$entryPath = $row['path'];
+				}
+				$entry = [
+					'storage' => $entryStorage,
+					'path' => $entryPath,
+				];
+				self::$path_cache[(int)$id] = $entry;
+			} else {
+				return null;
 			}
-			return $row['path'];
-		} else {
-			return null;
 		}
+		
+		if (self::$path_cache[(int)$id]['storage'] === (int)$this->getNumericStorageId()) {
+			return self::$path_cache[(int)$id]['path'];
+		}
+		return null;
 	}
 
 	/**

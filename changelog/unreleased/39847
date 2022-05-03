@@ -1,0 +1,6 @@
+Enhancement: Cache some data in memory from the filecache
+
+Some data from the filecache will be cached from the DB after accessing.
+This will improve the performance a bit.
+
+https://github.com/owncloud/core/pull/39847
