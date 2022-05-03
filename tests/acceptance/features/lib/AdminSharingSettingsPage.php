@@ -101,7 +101,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $enforceExpirationDateGroupShareCheckboxId = 'shareapiEnforceExpireDateGroupShare';
 	protected $enforceExpirationDateFederatedShareCheckboxXpath = '//span[@id="setDefaultExpireDateFederatedShare"]//label[contains(text(),"expiration date")]';
 	protected $enforceExpirationDateFederatedShareCheckboxId = 'shareapiEnforceExpireDateFederatedShare';
-	protected $guestSharingBlockDomainsInputFieldId = "guestSharingBlockDomains";
+	protected $guestSharingBlockDomainsInputFieldId = 'guestSharingBlockDomains';
 
 	/**
 	 * toggle the Share API
@@ -868,4 +868,22 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		);
 		return $blockedDomainsSharingWithGuests->getValue();
 	}
+
+    /**
+     * Set the blocked domains from sharing with guests
+     *
+     * @param string $blockedDomains
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function setBlockedDomainsFromSharingWithGuests(string $blockedDomains): void {
+        $blockedDomainsSharingWithGuests = $this->findById($this->guestSharingBlockDomainsInputFieldId);
+        $this->assertElementNotNull(
+            $blockedDomainsSharingWithGuests,
+            __METHOD__ .
+            " id $this->guestSharingBlockDomainsInputFieldId could not find input field for blocked domains from sharing with guests"
+        );
+        $this->fillField($this->guestSharingBlockDomainsInputFieldId, $blockedDomains);
+    }
 }

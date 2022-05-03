@@ -259,6 +259,17 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 		);
 	}
 
+    /**
+     * @When the administrator sets blocked domains sharing from guests to :blockedDomains using webUI
+     *
+     * @param string $blockedDomains
+     *
+     * @return void
+     */
+    public function adminSetsBlockedDomainsSharingFromGuestsTo(string $blockedDomains):void {
+        $this->adminSharingSettingsPage->setBlockedDomainsFromSharingWithGuests($blockedDomains);
+    }
+
 	/**
 	 * @When /^the administrator (enables|disables) mail notification on public link share using the webUI$/
 	 *

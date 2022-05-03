@@ -280,3 +280,12 @@ Feature: admin sharing settings
     When the administrator browses to the admin sharing settings page
     Then the blocked domains from sharing with guests should set to "something.com,qwerty.org" on the webUI
 
+
+  Scenario:  check blocked domains set from webUI for guests in command line
+    Given the administrator browses to the admin sharing settings page
+    When the administrator sets blocked domains sharing from guests to "something.com,qwerty.org,something.gov,hello.au" using webUI
+    And the administrator invokes occ command "config:app:get guests blockdomains"
+    Then the command should have been successful
+    And the command output should be the text "something.com,qwerty.org,something.gov,hello.au"
+
+
