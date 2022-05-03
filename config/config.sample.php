@@ -220,7 +220,7 @@ $CONFIG = [
 'remember_login_cookie_lifetime' => 60*60*24*15,
 
 /**
- * Define the lifetime of a session after inactivity.
+ * Define the lifetime of a session after inactivity
  * The web UI might send a "heartbeat" based on the activity happening
  * in order to extend the session lifetime and keeping it from timing out
  * prematurely. If there is no activity happening and the lifetime is
@@ -230,7 +230,7 @@ $CONFIG = [
 'session_lifetime' => 60 * 20,
 
 /**
- * Enable or disable session keep-alive when a user is logged in to the Web UI
+ * Enable session keep-alive when a user is logged in to the Web UI
  * Enabling this sends a "heartbeat" to the server to keep it from
  * timing out regardless of any activity happening. This heartbeat will
  * keep extending the session over again, so the user won't be logged out
@@ -239,15 +239,17 @@ $CONFIG = [
 'session_keepalive' => true,
 
 /**
- * Force the user to logout when he closes the tab or the browser, after
- * the specified number of seconds. A negative or 0 value disables this
- * feature.
+ * Enable to force user logout
+ * Force the user to get logged out after the specified number of seconds when
+ * the tab or browser gets closed. A negative or 0 value disables this feature.
+ * 
  * Note that the user can still access the page without re-authenticating
- * (having valid access) if the timeout hasn't been reached.
+ * (having valid access) if the timeout has not been reached.
  * The recommended minimum value is 5 or 10 seconds. Using a lower value
- * might cause unwanted logouts for the users.
- * Also note that this feature works properly if the user uses only one
- * tab. If a user uses multiple tabs, closing one of them will likely
+ * might cause unwanted logouts for users.
+ * 
+ * Note that this feature works properly if the user uses one tab only.
+ * If a user uses multiple tabs, closing one of them will likely
  * force the rest to re-authenticate.
  */
 'session_forced_logout_timeout' => 0,
@@ -291,7 +293,6 @@ $CONFIG = [
 
 /**
  * Define how to relax same site cookie settings
- *
  * Possible values: `Strict`, `Lax` or `None`.
  * Setting the same site cookie to `None` is necessary in case of OpenID Connect.
  * For more information about the impact of the values see:
@@ -509,7 +510,6 @@ $CONFIG = [
 
 /**
  * Define the Web base URL
- *
  * This key is necessary for the navigation item to the new ownCloud Web UI and for redirecting
  * public and private links.
  */
@@ -517,7 +517,6 @@ $CONFIG = [
 
 /**
  * Define rewrite private and public links
- *
  * Rewrite private and public links to the new ownCloud Web UI (if available).
  * If web.rewriteLinks is set to 'true', public and private links will be redirected to this url.
  * The Web UI will handle these links accordingly.
@@ -530,7 +529,6 @@ $CONFIG = [
 
 /**
  * Define clean URLs without `/index.php`
- *
  * This parameter will be written as `RewriteBase` on update and installation of
  * ownCloud to your `.htaccess` file. While this value is often simply the URL
  * path of the ownCloud installation it cannot be set automatically properly in
@@ -1015,7 +1013,6 @@ $CONFIG = [
 
 /**
  * Define the jpeg preview quality
- *
  * This setting defines the JP(E)G image quality in [%] for displaying thumbnails and image
  * previews for apps like 'files_mediaviewer'. Note that this setting is for displaying
  * only and has no impact on the stored thumbnail / preview quality or size.
@@ -1063,7 +1060,6 @@ $CONFIG = [
 
 /**
  * Enable maintenance mode to disable ownCloud
- *
  * If you want to prevent users from logging in to ownCloud before you start
  * doing some maintenance work, you need to set the value of the maintenance
  * parameter to true. Please keep in mind that users who are already logged-in
@@ -1096,7 +1092,6 @@ $CONFIG = [
 
 /**
  * Memory caching backend configuration
- *
  * Available cache backends:
  *
  * * `\OC\Memcache\APCu`       APC user backend
@@ -1158,16 +1153,15 @@ $CONFIG = [
 
 /**
  * Define Redis Cluster connection details
- *
  * Only for use with Redis Clustering, for Sentinel-based setups use the single
  * server configuration above, and perform HA on the hostname.
  *
  * Redis Cluster support requires the php module phpredis in version 3.0.0 or higher.
  *
  * Available failover modes:
- *  - \RedisCluster::FAILOVER_NONE       - only send commands to master nodes (default)
- *  - \RedisCluster::FAILOVER_ERROR      - failover to slaves for read commands if master is unavailable
- *  - \RedisCluster::FAILOVER_DISTRIBUTE - randomly distribute read commands across master and slaves
+ *  - \RedisCluster::FAILOVER_NONE       - only send commands to primary nodes (default)
+ *  - \RedisCluster::FAILOVER_ERROR      - failover to replicas for read commands if primary is unavailable
+ *  - \RedisCluster::FAILOVER_DISTRIBUTE - randomly distribute read commands across primary and replica nodes
  */
 'redis.cluster' => [
 	'seeds' => [ // provide some/all of the cluster servers to bootstrap discovery, port required
@@ -1349,7 +1343,7 @@ $CONFIG = [
 'mysql.utf8mb4' => false,
 
 /**
- * Force a specific database platform class.
+ * Force a specific database platform class
  * False means that autodetection will take place.
  *
  * E.g. to fix MariaDB 1.2.7+ taken for MySQL
@@ -1660,8 +1654,7 @@ $CONFIG = [
 'upgrade.automatic-app-update' => true,
 
 /**
- * Place this ownCloud instance into debugging mode
- *
+ * Enable debugging mode for this ownCloud instance 
  * Only enable this for local development and not in production environments
  * This will disable the minifier and outputs some additional debug information
  *
@@ -1674,7 +1667,6 @@ $CONFIG = [
 
 /**
  * Define the data-fingerprint of the current data served
- *
  * This is a property used by the clients to find out if a backup has been
  * restored on the server. Once a backup is restored run
  * {occ-command-example-prefix} maintenance:data-fingerprint
@@ -1715,9 +1707,8 @@ $CONFIG = [
 'dav.enable.async' => false,
 
 /**
- * Allow propfind depth infinity
- *
- * It tells the clients whether `depth=infinity` is allowed for propfind requests.
+ * Enable propfind depth infinity requests
+ * Tell the clients whether `depth=infinity` is allowed for propfind requests.
  * Streamed infinite depth propfind requests can reduce memory usage
  * with large responses.
  * For details see: https://datatracker.ietf.org/doc/html/rfc4918#section-10.2
