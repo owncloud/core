@@ -158,7 +158,7 @@ class FederationContext implements Context {
 				$this->featureContext->getResponse()
 			) . '"'
 		);
-		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->clearStatusCodeArrays();
 	}
 
 	/**
@@ -277,7 +277,7 @@ class FederationContext implements Context {
 			$server
 		);
 		$this->ocsContext->assertOCSResponseIndicatesSuccess();
-		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->clearStatusCodeArrays();
 	}
 
 	/**

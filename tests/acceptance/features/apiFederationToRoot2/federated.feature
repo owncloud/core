@@ -17,7 +17,9 @@ Feature: federated
     When the administrator adds url "%remote_server%" as trusted server using the testing API
     And user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
-    Then as "Brian" file "textfile1 (2).txt" should exist
+    Then the OCS status code of responses on each endpoint should be "201, 100" respectively
+    And the HTTP status code of responses on each endpoint should be "201, 200" respectively
+    And as "Brian" file "textfile1 (2).txt" should exist
     And url "%remote_server%" should be a trusted server
 
   @issue-35839 @skipOnOcV10
@@ -30,7 +32,9 @@ Feature: federated
     When the administrator adds url "%remote_server%" as trusted server using the testing API
     And user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
-    Then as "Brian" file "textfile1.txt" should not exist
+    Then the OCS status code of responses on each endpoint should be "201, 100" respectively
+    And the HTTP status code of responses on each endpoint should be "201, 200" respectively
+    And as "Brian" file "textfile1.txt" should not exist
     And url "%remote_server%" should be a trusted server
 
   Scenario: Federated share with "Auto add server" enabled
@@ -40,9 +44,11 @@ Feature: federated
     And the trusted server list is cleared
     And parameter "autoAddServers" of app "federation" has been set to "1"
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
-    And user "Brian" from server "LOCAL" has accepted the last pending share
+    And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
     And using server "LOCAL"
-    Then as "Brian" file "textfile1.txt" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" file "textfile1.txt" should exist
     And url "%remote_server%" should be a trusted server
 
   Scenario: Federated share with "Auto add server" disabled
@@ -52,9 +58,11 @@ Feature: federated
     And the trusted server list is cleared
     And parameter "autoAddServers" of app "federation" has been set to "0"
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
-    And user "Brian" from server "LOCAL" has accepted the last pending share
+    And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
     And using server "LOCAL"
-    Then as "Brian" file "textfile1.txt" should exist
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Brian" file "textfile1.txt" should exist
     And url "%remote_server%" should not be a trusted server
 
   @issue-35839 @skipOnOcV10
@@ -66,11 +74,15 @@ Feature: federated
     And parameter "autoAddServers" of app "federation" has been set to "1"
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     When user "Alice" from server "REMOTE" shares "/textfile0.txt" with user "Brian" from server "LOCAL" using the sharing API
-    And user "Brian" from server "LOCAL" has accepted the last pending share
+    And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
     And using server "LOCAL"
-    Then url "%remote_server%" should be a trusted server
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And url "%remote_server%" should be a trusted server
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
-    Then as "Brian" file "textfile1.txt" should exist
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And as "Brian" file "textfile1.txt" should exist
 
   @issue-35839 @skipOnOcV10
   Scenario: disable "Add server automatically" once a federated share was created successfully
@@ -82,10 +94,14 @@ Feature: federated
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     When user "Alice" from server "REMOTE" shares "/textfile0.txt" with user "Brian" from server "LOCAL" using the sharing API
-    And user "Brian" from server "LOCAL" has accepted the last pending share
+    And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
     And using server "LOCAL"
-    Then url "%remote_server%" should not be a trusted server
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And url "%remote_server%" should not be a trusted server
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
     And as "Brian" file "textfile1.txt" should not exist
 
   Scenario Outline: federated share receiver sees the original content of a received file
@@ -127,7 +143,8 @@ Feature: federated
     When user "Alice" uploads file with content "thisContentIsFinal" to "/RandomFolder/new-file" using the WebDAV API
     And user "Alice" creates folder "/RandomFolder/sub-folder" using the WebDAV API
     And using server "LOCAL"
-    Then as "Brian" file "/PARENT/RandomFolder/new-file" should exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Brian" file "/PARENT/RandomFolder/new-file" should exist
     And as "Brian" file "/PARENT/RandomFolder/file-to-share" should exist
     And as "Brian" folder "/PARENT/RandomFolder/sub-folder" should exist
     And the content of file "/PARENT/RandomFolder/new-file" for user "Brian" should be "thisContentIsFinal"
@@ -148,7 +165,8 @@ Feature: federated
     When user "Brian" uploads file with content "thisContentIsFinal" to "/RandomFolder/new-file" using the WebDAV API
     And user "Brian" creates folder "/RandomFolder/sub-folder" using the WebDAV API
     And using server "REMOTE"
-    Then as "Alice" file "/PARENT/RandomFolder/new-file" should exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" file "/PARENT/RandomFolder/new-file" should exist
     And as "Alice" file "/PARENT/RandomFolder/file-to-share" should exist
     And as "Alice" folder "/PARENT/RandomFolder/sub-folder" should exist
     And the content of file "/PARENT/RandomFolder/new-file" for user "Alice" should be "thisContentIsFinal"
@@ -170,7 +188,8 @@ Feature: federated
     When user "Brian" deletes folder "/RandomFolder/sub-folder" using the WebDAV API
     And user "Brian" deletes file "/RandomFolder/file-to-share" using the WebDAV API
     And using server "REMOTE"
-    Then as "Alice" file "/PARENT/RandomFolder/file-to-share" should not exist
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" file "/PARENT/RandomFolder/file-to-share" should not exist
     And as "Alice" folder "/PARENT/RandomFolder/sub-folder" should not exist
     But as "Alice" folder "/PARENT/RandomFolder" should exist
     Examples:
@@ -190,7 +209,8 @@ Feature: federated
     When user "Alice" deletes folder "/RandomFolder/sub-folder" using the WebDAV API
     And user "Alice" deletes file "/RandomFolder/file-to-share" using the WebDAV API
     And using server "LOCAL"
-    Then as "Brian" file "/PARENT/RandomFolder/file-to-share" should not exist
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Brian" file "/PARENT/RandomFolder/file-to-share" should not exist
     And as "Brian" folder "/PARENT/RandomFolder/sub-folder" should not exist
     But as "Brian" folder "/PARENT/RandomFolder" should exist
     Examples:
@@ -211,7 +231,8 @@ Feature: federated
     When user "Brian" moves folder "/RandomFolder/sub-folder" to "/RandomFolder/renamed-sub-folder" using the WebDAV API
     And user "Brian" moves file "/RandomFolder/file-to-share" to "/RandomFolder/renamedFile" using the WebDAV API
     And using server "REMOTE"
-    Then as "Alice" file "/PARENT/RandomFolder/file-to-share" should not exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" file "/PARENT/RandomFolder/file-to-share" should not exist
     But as "Alice" file "/PARENT/RandomFolder/renamedFile" should exist
     And the content of file "/PARENT/RandomFolder/renamedFile" for user "Alice" should be "thisContentShouldBeVisible"
     And as "Alice" folder "/PARENT/RandomFolder/sub-folder" should not exist
@@ -233,7 +254,8 @@ Feature: federated
     When user "Alice" moves folder "/RandomFolder/sub-folder" to "/RandomFolder/renamed-sub-folder" using the WebDAV API
     And user "Alice" moves file "/RandomFolder/file-to-share" to "/RandomFolder/renamedFile" using the WebDAV API
     And using server "LOCAL"
-    Then as "Brian" file "/PARENT/RandomFolder/file-to-share" should not exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Brian" file "/PARENT/RandomFolder/file-to-share" should not exist
     But as "Brian" file "/PARENT/RandomFolder/renamedFile" should exist
     And the content of file "/PARENT/RandomFolder/renamedFile" for user "Brian" should be "thisContentShouldBeVisible"
     And as "Brian" folder "/PARENT/RandomFolder/sub-folder" should not exist
@@ -253,7 +275,8 @@ Feature: federated
     And using OCS API version "<ocs-api-version>"
     When user "Alice" uploads file with content "thisContentIsFinal" to "/PARENT/RandomFolder/file-to-share" using the WebDAV API
     And using server "LOCAL"
-    Then the content of file "/file-to-share" for user "Brian" should be "thisContentIsFinal"
+    Then the HTTP status code should be "204"
+    And the content of file "/file-to-share" for user "Brian" should be "thisContentIsFinal"
     Examples:
       | ocs-api-version |
       | 1               |
@@ -270,7 +293,8 @@ Feature: federated
     When user "Alice" uploads file with content "thisContentIsFinal" to "/PARENT/RandomFolder/new-file" using the WebDAV API
     And user "Alice" creates folder "/PARENT/RandomFolder/sub-folder" using the WebDAV API
     And using server "LOCAL"
-    Then as "Brian" file "/RandomFolder/new-file" should exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Brian" file "/RandomFolder/new-file" should exist
     And as "Brian" file "/RandomFolder/file-to-share" should exist
     And as "Brian" folder "/RandomFolder/sub-folder" should exist
     And the content of file "/RandomFolder/new-file" for user "Brian" should be "thisContentIsFinal"
@@ -291,7 +315,8 @@ Feature: federated
     When user "Alice" deletes folder "/PARENT/RandomFolder/sub-folder" using the WebDAV API
     And user "Alice" deletes file "/PARENT/RandomFolder/file-to-share" using the WebDAV API
     And using server "LOCAL"
-    Then as "Brian" file "/RandomFolder/file-to-share" should not exist
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Brian" file "/RandomFolder/file-to-share" should not exist
     And as "Brian" folder "/RandomFolder/sub-folder" should not exist
     But as "Brian" folder "/RandomFolder" should exist
     Examples:
@@ -311,7 +336,8 @@ Feature: federated
     When user "Alice" moves folder "/PARENT/RandomFolder/sub-folder" to "/PARENT/RandomFolder/renamed-sub-folder" using the WebDAV API
     And user "Alice" moves file "/PARENT/RandomFolder/file-to-share" to "/PARENT/RandomFolder/renamedFile" using the WebDAV API
     And using server "LOCAL"
-    Then as "Brian" file "/RandomFolder/file-to-share" should not exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Brian" file "/RandomFolder/file-to-share" should not exist
     But as "Brian" file "/RandomFolder/renamedFile" should exist
     And the content of file "/RandomFolder/renamedFile" for user "Brian" should be "thisContentShouldBeVisible"
     And as "Brian" folder "/RandomFolder/sub-folder" should not exist
@@ -330,12 +356,14 @@ Feature: federated
     And using OCS API version "<ocs-api-version>"
     When user "Brian" deletes the last share using the sharing API
     And using server "REMOTE"
-    Then as "Alice" file "/RandomFolder/file-to-share" should not exist
+    Then the OCS status code should be "<ocs-status-code>"
+    And the HTTP status code should be "200"
+    And as "Alice" file "/RandomFolder/file-to-share" should not exist
     And as "Alice" folder "/RandomFolder" should not exist
     Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
+      | ocs-api-version | ocs-status-code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: federated share receiver can move the location of the received share and changes are correctly seen at both ends
     Given user "Brian" has created folder "/PARENT"
@@ -348,13 +376,15 @@ Feature: federated
     When user "Alice" creates folder "/CHILD" using the WebDAV API
     And user "Alice" creates folder "/CHILD/newRandomFolder" using the WebDAV API
     And user "Alice" moves folder "/RandomFolder" to "/CHILD/newRandomFolder/RandomFolder" using the WebDAV API
-    Then as "Alice" file "/CHILD/newRandomFolder/RandomFolder/file-to-share" should exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" file "/CHILD/newRandomFolder/RandomFolder/file-to-share" should exist
     When using server "LOCAL"
     Then as "Brian" file "/PARENT/RandomFolder/file-to-share" should exist
     When user "Brian" uploads file with content "thisIsTheContentOfNewFile" to "/PARENT/RandomFolder/newFile" using the WebDAV API
     And user "Brian" uploads file with content "theContentIsChanged" to "/PARENT/RandomFolder/file-to-share" using the WebDAV API
     And using server "REMOTE"
-    Then as "Alice" file "/CHILD/newRandomFolder/RandomFolder/newFile" should exist
+    Then the HTTP status code of responses on each endpoint should be "201, 204" respectively
+    And as "Alice" file "/CHILD/newRandomFolder/RandomFolder/newFile" should exist
     And the content of file "/CHILD/newRandomFolder/RandomFolder/file-to-share" for user "Alice" should be "theContentIsChanged"
     Examples:
       | ocs-api-version |
@@ -371,13 +401,15 @@ Feature: federated
     When user "Brian" creates folder "/CHILD" using the WebDAV API
     And user "Brian" creates folder "/CHILD/newRandomFolder" using the WebDAV API
     And user "Brian" moves folder "PARENT/RandomFolder" to "/CHILD/newRandomFolder/RandomFolder" using the WebDAV API
-    Then as "Brian" file "/CHILD/newRandomFolder/RandomFolder/file-to-share" should exist
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Brian" file "/CHILD/newRandomFolder/RandomFolder/file-to-share" should exist
     When using server "REMOTE"
     Then as "Alice" file "/RandomFolder/file-to-share" should exist
     When user "Alice" uploads file with content "thisIsTheContentOfNewFile" to "/RandomFolder/newFile" using the WebDAV API
     And user "Alice" uploads file with content "theContentIsChanged" to "/RandomFolder/file-to-share" using the WebDAV API
-    And using server "LOCAL"
-    Then as "Brian" file "/CHILD/newRandomFolder/RandomFolder/newFile" should exist
+    When using server "LOCAL"
+    Then the HTTP status code of responses on each endpoint should be "201, 204" respectively
+    And as "Brian" file "/CHILD/newRandomFolder/RandomFolder/newFile" should exist
     And the content of file "/CHILD/newRandomFolder/RandomFolder/file-to-share" for user "Brian" should be "theContentIsChanged"
     Examples:
       | ocs-api-version |
@@ -392,18 +424,22 @@ Feature: federated
     When user "Brian" from server "LOCAL" shares "file-to-share" with user "Alice" from server "REMOTE" using the sharing API
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     And using server "REMOTE"
+    Then the OCS status code of responses on all endpoints should be "<ocs-status-code>"
+    And the HTTP status code of responses on all endpoints should be "200"
     Then as "Alice" file "/file-to-share" should exist
     And the content of file "/file-to-share" for user "Alice" should be "thisContentIsVisible"
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
     And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
-    Then as "Brian" file "/newFile" should exist
+    Then the OCS status code of responses on all endpoints should be "<ocs-status-code>"
+    And the HTTP status code of responses on each endpoint should be "201, 200, 200" respectively
+    And as "Brian" file "/newFile" should exist
     And the content of file "/newFile" for user "Brian" should be "thisFileIsShared"
     Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
+      | ocs-api-version | ocs-status-code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: Incoming federation shares are allowed but outgoing federation shares are restricted
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
@@ -412,55 +448,64 @@ Feature: federated
     And using OCS API version "<ocs-api-version>"
     When user "Brian" from server "LOCAL" shares "file-to-share" with user "Alice" from server "REMOTE" using the sharing API
     And using server "REMOTE"
-    Then user "Alice" should not have any pending federated cloud share
+    Then the OCS status code should be "403"
+    And the HTTP status code should be "<http-status-code>"
+    And user "Alice" should not have any pending federated cloud share
     And as "Alice" file "/file-to-share" should not exist
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
     And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
-    Then as "Brian" file "/newFile" should exist
+    Then the OCS status code of responses on all endpoints should be "<ocs-status-code>"
+    And the HTTP status code of responses on each endpoint should be "201, 200, 200" respectively
+    And as "Brian" file "/newFile" should exist
     Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
+      | ocs-api-version | ocs-status-code | http-status-code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 403              |
 
   Scenario Outline: Incoming federation shares are restricted but outgoing federation shares are allowed
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
     And user "Brian" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
     And using OCS API version "<ocs-api-version>"
-    When user "Brian" from server "LOCAL" shares "/file-to-share" with user "Alice" from server "REMOTE" using the sharing API
+    And user "Brian" from server "LOCAL" has shared "/file-to-share" with user "Alice" from server "REMOTE"
     And using server "REMOTE"
-    And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
-    Then as "Alice" file "/file-to-share" should exist
+    And user "Alice" from server "REMOTE" has accepted the last pending share
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
-    Then user "Brian" should not have any pending federated cloud share
+    Then the OCS status code of responses on all endpoints should be "403"
+    And the HTTP status code of responses on each endpoint should be "<http-status-code>" respectively
+    And user "Brian" should not have any pending federated cloud share
     And as "Brian" file "/newFile" should not exist
     Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
+      | ocs-api-version | http-status-code |
+      | 1               | 201, 200         |
+      | 2               | 201, 403         |
 
   Scenario Outline: Both Incoming and outgoing federation shares are restricted
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
-    And user "Brian" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
     And using OCS API version "<ocs-api-version>"
-    When user "Brian" from server "LOCAL" shares "/file-to-share" with user "Alice" from server "REMOTE" using the sharing API
+    When user "Brian" uploads file with content "thisContentIsVisible" to "/file-to-share" using the WebDAV API
+    And user "Brian" from server "LOCAL" shares "/file-to-share" with user "Alice" from server "REMOTE" using the sharing API
     And using server "REMOTE"
-    Then user "Alice" should not have any pending federated cloud share
+    Then the OCS status code should be "403"
+    And the HTTP status code of responses on each endpoint should be "<http-status-code>" respectively
+    And user "Alice" should not have any pending federated cloud share
     And as "Alice" file "/file-to-share" should not exist
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
-    Then user "Brian" should not have any pending federated cloud share
+    Then the OCS status code should be "403"
+    And the HTTP status code of responses on each endpoint should be "<http-status-code>" respectively
+    And user "Brian" should not have any pending federated cloud share
     And as "Brian" file "/newFile" should not exist
     Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
+      | ocs-api-version | http-status-code |
+      | 1               | 201, 200         |
+      | 2               | 201, 403         |
 
   Scenario Outline: Incoming and outgoing federation shares are enabled for local server but incoming federation shares are restricted for remote server
     Given using server "REMOTE"
@@ -469,21 +514,25 @@ Feature: federated
     And using server "LOCAL"
     And parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
-    And user "Brian" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
     And using OCS API version "<ocs-api-version>"
-    When user "Brian" from server "LOCAL" shares "/file-to-share" with user "Alice" from server "REMOTE" using the sharing API
+    When user "Brian" uploads file with content "thisContentIsVisible" to "/file-to-share" using the WebDAV API
+    And user "Brian" from server "LOCAL" shares "/file-to-share" with user "Alice" from server "REMOTE" using the sharing API
     And using server "REMOTE"
-    Then user "Alice" should not have any pending federated cloud share
+    Then the OCS status code should be "403"
+    And the HTTP status code of responses on each endpoint should be "<http-status-code>" respectively
+    And user "Alice" should not have any pending federated cloud share
     And as "Alice" file "/file-to-share" should not exist
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
+    Then the OCS status code should be "<ocs-status-code>"
+    And the HTTP status code of responses on each endpoint should be "201, 200" respectively
     And using server "LOCAL"
     And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
     Then as "Brian" file "/newFile" should exist
     Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
+      | ocs-api-version | ocs-status-code | http-status-code |
+      | 1               | 100             | 201, 200         |
+      | 2               | 200             | 201, 403         |
 
   Scenario Outline: Incoming and outgoing federation shares are enabled for local server but outgoing federation shares are restricted for remote server
     Given using server "REMOTE"
@@ -497,16 +546,20 @@ Feature: federated
     When user "Brian" from server "LOCAL" shares "/file-to-share" with user "Alice" from server "REMOTE" using the sharing API
     And using server "REMOTE"
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
-    Then as "Alice" file "/file-to-share" should exist
+    Then the OCS status code of responses on all endpoints should be "<ocs-status-code>"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And as "Alice" file "/file-to-share" should exist
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
-    Then user "Brian" should not have any pending federated cloud share
+    Then the OCS status code should be "403"
+    And the HTTP status code of responses on each endpoint should be "<http-status-code>" respectively
+    And user "Brian" should not have any pending federated cloud share
     And as "Brian" file "/newFile" should not exist
     Examples:
-      | ocs-api-version |
-      | 1               |
-      | 2               |
+      | ocs-api-version | ocs-status-code | http-status-code |
+      | 1               | 100             | 201, 200         |
+      | 2               | 200             | 201, 403         |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
   Scenario Outline: Federated share a file with another server with expiration date
