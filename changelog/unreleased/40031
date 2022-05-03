@@ -1,0 +1,17 @@
+Bugfix: Allow partial initialization of the FS
+
+Previously, when the FS was initialized, we needed to make a request
+to the LDAP server in order to fetch the possible group shares of the
+user. Some commands only accessed to the trashbin or versions, and
+operated for a target user, so accessing to the LDAP server to fetch
+groups that wouldn't be used doesn't make much sense.
+
+Now, the commands have the ability to initialize the FS partially,
+meaning that no additional mount point other than the home one will
+be mounted. In particular, this affects shares and external storages.
+Anyway, the commands that have been modified don't need such access. The
+main advantage is that now, those commands can operate without a working
+connection to the LDAP server because the users will be fetched from the
+DB and they don't operate with groups.
+
+https://github.com/owncloud/core/pull/40031
