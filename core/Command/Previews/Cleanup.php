@@ -63,7 +63,6 @@ class Cleanup extends Base {
 		$lastFileId = 0;
 		while (true) {
 			# get 1000 previews to delete
-			echo 'Next 1000:' . PHP_EOL;
 			$rows = $this->queryPreviewsToDelete($lastFileId);
 			foreach ($rows as $row) {
 				$name = $row['name'];
