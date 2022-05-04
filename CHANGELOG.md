@@ -35,6 +35,7 @@ Summary
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 * Enhancement - Unify API responses when setting permissions for public links: [#39194](https://github.com/owncloud/core/pull/39194)
+* Enhancement - Show detailed error message if moving a mount into another fails: [#39584](https://github.com/owncloud/core/pull/39584)
 * Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
 * Enhancement - Cache some data in memory from the filecache: [#39847](https://github.com/owncloud/core/pull/39847)
 * Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
@@ -325,6 +326,15 @@ Details
    https://github.com/owncloud/core/issues/36442
    https://github.com/owncloud/core/issues/36443
    https://github.com/owncloud/core/pull/39194
+
+* Enhancement - Show detailed error message if moving a mount into another fails: [#39584](https://github.com/owncloud/core/pull/39584)
+
+   With this change, a detailed error message is shown when moving a mount point into another mount
+   point fails. This is for example the case while moving a shared folder into a SFTP external
+   storage.
+
+   https://github.com/owncloud/core/issues/39550
+   https://github.com/owncloud/core/pull/39584
 
 * Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
 
