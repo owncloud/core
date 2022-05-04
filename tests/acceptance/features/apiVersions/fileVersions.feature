@@ -121,9 +121,10 @@ Feature: dav-versions
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "textfile0.txt" in 2 chunks using the WebDAV API
     And user "Alice" uploads file "filesForUpload/lorem.txt" asynchronously to "textfile0.txt" in 2 chunks using the WebDAV API
-    And user "Alice" restores version index "1" of file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code of responses on all endpoints should be "202"
     And the version folder of file "/textfile0.txt" for user "Alice" should contain "2" elements
+    When user "Alice" restores version index "1" of file "/textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "202"
     And the content of file "/textfile0.txt" for user "Alice" should be "Dav-Test"
 
   @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-156
