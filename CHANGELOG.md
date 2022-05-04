@@ -27,6 +27,7 @@ Summary
 * Bugfix - Limit the width of the form on login page: [#39962](https://github.com/owncloud/core/pull/39962)
 * Bugfix - Allow re-uploading the same folder after being renamed: [#39966](https://github.com/owncloud/core/pull/39966)
 * Bugfix - Default for propfind depth infinity adjusted: [#40016](https://github.com/owncloud/core/pull/40016)
+* Bugfix - Allow partial initialization of the FS: [#40031](https://github.com/owncloud/core/pull/40031)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Private keys for SFTP storage will be stored in credentials table: [#39935](https://github.com/owncloud/core/pull/39935)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
@@ -180,6 +181,21 @@ Details
 
    https://github.com/owncloud/enterprise/issues/5154
    https://github.com/owncloud/core/pull/40016
+
+* Bugfix - Allow partial initialization of the FS: [#40031](https://github.com/owncloud/core/pull/40031)
+
+   Previously, when the FS was initialized, we needed to make a request to the LDAP server in order
+   to fetch the possible group shares of the user. Some commands only accessed to the trashbin or
+   versions, and operated for a target user, so accessing to the LDAP server to fetch groups that
+   wouldn't be used doesn't make much sense.
+
+   Now, the commands have the ability to initialize the FS partially, meaning that no additional
+   mount point other than the home one will be mounted. In particular, this affects shares and
+   external storages. Anyway, the commands that have been modified don't need such access. The
+   main advantage is that now, those commands can operate without a working connection to the LDAP
+   server because the users will be fetched from the DB and they don't operate with groups.
+
+   https://github.com/owncloud/core/pull/40031
 
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 

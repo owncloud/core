@@ -25,6 +25,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Limit the width of the form on login page: <a href="https://github.com/owncloud/core/pull/39962">#39962</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow re-uploading the same folder after being renamed: <a href="https://github.com/owncloud/core/pull/39966">#39966</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Default for propfind depth infinity adjusted: <a href="https://github.com/owncloud/core/pull/40016">#40016</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Allow partial initialization of the FS: <a href="https://github.com/owncloud/core/pull/40031">#40031</a></li>
         <li class="type-change changelog-item">Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></li>
         <li class="type-change changelog-item">Change - Private keys for SFTP storage will be stored in credentials table: <a href="https://github.com/owncloud/core/pull/39935">#39935</a></li>
         <li class="type-change changelog-item">Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></li>
@@ -182,6 +183,19 @@
             <p>https://github.com/owncloud/enterprise/issues/5154<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40016<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Allow partial initialization of the FS: <a href="https://github.com/owncloud/core/pull/40031">#40031</a></p>
+            <p>Previously, when the FS was initialized, we needed to make a request to the LDAP server in order
+   to fetch the possible group shares of the user. Some commands only accessed to the trashbin or
+   versions, and operated for a target user, so accessing to the LDAP server to fetch groups that
+   wouldn't be used doesn't make much sense.Now, the commands have the ability to initialize the FS partially, meaning that no additional
+   mount point other than the home one will be mounted. In particular, this affects shares and
+   external storages. Anyway, the commands that have been modified don't need such access. The
+   main advantage is that now, those commands can operate without a working connection to the LDAP
+   server because the users will be fetched from the DB and they don't operate with groups.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40031<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></p>
