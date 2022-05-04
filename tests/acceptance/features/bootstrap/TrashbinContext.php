@@ -261,6 +261,7 @@ class TrashbinContext implements Context {
 		foreach ($files as $file) {
 			if ($file["collection"]) {
 				$trashbinRef = $file["href"];
+				echo "TrashbinTestInfo: collection has href: '$trashbinRef'\n";
 				$trimmedHref = \trim($trashbinRef, "/");
 				$explodedHref = \explode("/", $trimmedHref);
 				$trashbinId = $collectionPath . "/" . end($explodedHref);
