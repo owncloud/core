@@ -342,6 +342,18 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
+    apiSharePublicLink3:
+      paths:
+        - '%paths.base%/../features/apiSharePublicLink3'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+        - AppConfigurationContext:
+
     apiShareReshareToRoot1:
       paths:
         - '%paths.base%/../features/apiShareReshareToRoot1'
@@ -497,6 +509,20 @@ default:
         - WebDavPropertiesContext:
         - OccContext:
         - AppConfigurationContext:
+
+    apiWebdavDelete:
+      paths:
+        - '%paths.base%/../features/apiWebdavDelete'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+        - OccContext:
+        - SearchContext:
+        - PublicWebDavContext:
+        - WebDavPropertiesContext:
+        - TagsContext:
+        - TrashbinContext:
 
     apiWebdavLocks:
       paths:
