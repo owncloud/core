@@ -1,0 +1,9 @@
+Enhancement: Show detailed error message if moving a mount into another fails
+
+With this change, a detailed error message is shown when moving a mount point
+into another mount point fails.
+This is for example the case while moving a shared folder into a SFTP
+external storage.
+
+https://github.com/owncloud/core/pull/39584
+https://github.com/owncloud/core/issues/39550
