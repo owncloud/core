@@ -267,8 +267,21 @@ class TrashbinContext implements Context {
 		);
 
 		foreach ($files as $file) {
+			// check for unexpected/invalid href values and fail early in order to
+			// avoid "common" situations that could cause infinite recursion.
+			$trashbinRef = $file["href"];
+			$trimmedTrashbinRef = \trim($trashbinRef, "/");
+			$expectedStart = "remote.php/dav/trash-bin/$user";
+			$expectedStartLength = \strlen($expectedStart);
+			if ((\substr($trimmedTrashbinRef, 0, $expectedStartLength) !== $expectedStart)
+				|| (\strlen($trimmedTrashbinRef) === $expectedStartLength)
+			) {
+				// A top-level href (maybe without even the username) has been returned
+				// in the response. That should never happen, or have been filtered out
+				// by code above.
+				throw new Exception(__METHOD__ . " Error: unexpected href in trashbin propfind: $trashbinRef");
+			}
 			if ($file["collection"]) {
-				$trashbinRef = $file["href"];
 				if ($debug) {
 					echo "TrashbinTestInfo: collection has href: '$trashbinRef'\n";
 				}
