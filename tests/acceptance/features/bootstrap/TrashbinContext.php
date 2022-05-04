@@ -216,11 +216,12 @@ class TrashbinContext implements Context {
 	 * @param string|null $collectionPath the string of ids of the folder and sub-folders
 	 * @param string $depth
 	 * @param bool $debug
+	 * @param int $level
 	 *
 	 * @return array response
 	 * @throws Exception
 	 */
-	public function listTrashbinFolderCollection(?string $user, ?string $collectionPath = "", string $depth = "1", bool $debug = false):array {
+	public function listTrashbinFolderCollection(?string $user, ?string $collectionPath = "", string $depth = "1", bool $debug = false, int $level = 1):array {
 		// $collectionPath should be some list of file-ids like 2147497661/2147497662
 		// or the empty string, which will list the whole trashbin from the top.
 		$collectionPath = \trim($collectionPath, "/");
@@ -250,7 +251,7 @@ class TrashbinContext implements Context {
 
 		$files = $this->getTrashbinContentFromResponseXml($responseXml);
 		if ($debug) {
-			echo "listFolder for collectionPath '$collectionPath' returned:\n";
+			echo "listFolder for collectionPath '$collectionPath' level $level returned:\n";
 			\var_dump($files);
 		}
 		// filter out the collection itself, we only want to return the members
@@ -268,14 +269,21 @@ class TrashbinContext implements Context {
 		foreach ($files as $file) {
 			if ($file["collection"]) {
 				$trashbinRef = $file["href"];
-				echo "TrashbinTestInfo: collection has href: '$trashbinRef'\n";
+				if ($debug) {
+					echo "TrashbinTestInfo: collection has href: '$trashbinRef'\n";
+				}
 				$trimmedHref = \trim($trashbinRef, "/");
 				$explodedHref = \explode("/", $trimmedHref);
 				$trashbinId = $collectionPath . "/" . end($explodedHref);
+				if ($debug) {
+					echo "recursive call to listTrashbinFolderCollection: '$user' '$trashbinId' '$depth'\n";
+				}
 				$nextFiles = $this->listTrashbinFolderCollection(
 					$user,
 					$trashbinId,
-					$depth
+					$depth,
+					$debug,
+					$level + 1
 				);
 				// filter the collection element. We only want the members.
 				$nextFiles = \array_filter(
