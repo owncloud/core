@@ -195,15 +195,17 @@ class TrashbinContext implements Context {
 	 *
 	 * @param string|null $user user
 	 * @param string $depth
+	 * @param bool $debug
 	 *
 	 * @return array of all the items in the trashbin of the user
 	 * @throws Exception
 	 */
-	public function listTrashbinFolder(?string $user, string $depth = "1"):array {
+	public function listTrashbinFolder(?string $user, string $depth = "1", bool $debug = false):array {
 		return $this->listTrashbinFolderCollection(
 			$user,
 			"",
-			$depth
+			$depth,
+			$debug
 		);
 	}
 
@@ -213,11 +215,12 @@ class TrashbinContext implements Context {
 	 * @param string|null $user user
 	 * @param string|null $collectionPath the string of ids of the folder and sub-folders
 	 * @param string $depth
+	 * @param bool $debug
 	 *
 	 * @return array response
 	 * @throws Exception
 	 */
-	public function listTrashbinFolderCollection(?string $user, ?string $collectionPath = "", string $depth = "1"):array {
+	public function listTrashbinFolderCollection(?string $user, ?string $collectionPath = "", string $depth = "1", bool $debug = false):array {
 		// $collectionPath should be some list of file-ids like 2147497661/2147497662
 		// or the empty string, which will list the whole trashbin from the top.
 		$collectionPath = \trim($collectionPath, "/");
@@ -246,6 +249,10 @@ class TrashbinContext implements Context {
 		);
 
 		$files = $this->getTrashbinContentFromResponseXml($responseXml);
+		if ($debug) {
+			echo "listFolder for collectionPath '$collectionPath' returned:\n";
+			\var_dump($files);
+		}
 		// filter out the collection itself, we only want to return the members
 		$files = \array_filter(
 			$files,
@@ -580,7 +587,7 @@ class TrashbinContext implements Context {
 	public function tryToDeleteFileFromTrashbin(?string $user, ?string $originalPath, ?string $asUser = null, ?string $password = null):int {
 		$user = $this->featureContext->getActualUsername($user);
 		$asUser = $asUser ?? $user;
-		$listing = $this->listTrashbinFolder($user);
+		$listing = $this->listTrashbinFolder($user, 1, true);
 		$originalPath = \trim($originalPath, '/');
 		$numItemsDeleted = 0;
 
