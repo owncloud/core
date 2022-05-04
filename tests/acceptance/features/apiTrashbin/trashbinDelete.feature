@@ -322,3 +322,20 @@ Feature: files and folders can be deleted from the trashbin
     Examples:
       | dav-path |
       | spaces   |
+
+
+  Scenario: temp test - delete a folder that contains a file from the trashbin
+    Given using new DAV path
+    And user "Alice" has created folder "FOLDER"
+    And user "Alice" has created folder "FOLDER/CHILD"
+    And user "Alice" has uploaded file with content "to delete" to "/FOLDER/parent.txt"
+    And user "Alice" has uploaded file with content "to delete" to "/FOLDER/CHILD/child.txt"
+    And user "Alice" has deleted folder "/PARENT"
+    And user "Alice" has deleted folder "/FOLDER"
+    When user "Alice" deletes the folder with original path "/PARENT" from the trashbin using the trashbin API
+    Then the HTTP status code should be "204"
+    And as "Alice" the file with original path "/PARENT/parent.txt" should not exist in the trashbin
+    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should not exist in the trashbin
+    And as "Alice" the folder with original path "/PARENT/CHILD/" should not exist in the trashbin
+    But as "Alice" the file with original path "/FOLDER/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "/FOLDER/CHILD/child.txt" should exist in the trashbin
