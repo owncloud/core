@@ -173,7 +173,7 @@ class ChangeKeyStorageRoot extends Command {
 	 */
 	protected function setupUserFS($uid) {
 		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($uid);
+		\OC_Util::setupFS($uid, false);
 	}
 
 	/**

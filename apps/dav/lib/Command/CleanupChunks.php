@@ -60,8 +60,8 @@ class CleanupChunks extends Command {
 				'local',
 				'l',
 				InputOption::VALUE_NONE,
-				'only delete chunks that exist on the local filesystem, 
-				this applies to setups with multiple servers connected to the same database and 
+				'only delete chunks that exist on the local filesystem,
+				this applies to setups with multiple servers connected to the same database and
 				chunk folder is not shared among'
 			);
 	}
@@ -74,7 +74,7 @@ class CleanupChunks extends Command {
 		$output->writeln("Cleaning chunks older than $d days({$cutOffTime->format('c')})");
 		$this->userManager->callForSeenUsers(function (IUser $user) use ($output, $cutOffTime, $checkUploadExistsLocal) {
 			\OC_Util::tearDownFS();
-			\OC_Util::setupFS($user->getUID());
+			\OC_Util::setupFS($user->getUID(), false);
 
 			$view = new View('/' . $user->getUID() . '/uploads');
 			$home = new UploadHome(['user' => $user]);
