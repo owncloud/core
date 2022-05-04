@@ -162,6 +162,7 @@ config = {
                 "apiShareOperationsToShares2",
                 "apiSharePublicLink1",
                 "apiSharePublicLink2",
+                "apiSharePublicLink3",
                 "apiShareReshareToRoot1",
                 "apiShareReshareToShares1",
                 "apiShareReshareToRoot2",
@@ -175,6 +176,7 @@ config = {
                 "apiTrashbin",
                 "apiTrashbinRestore",
                 "apiVersions",
+                "apiWebdavDelete",
                 "apiWebdavEtagPropagation1",
                 "apiWebdavEtagPropagation2",
                 "apiWebdavLocks",
@@ -224,6 +226,7 @@ config = {
         },
         "cli": {
             "suites": [
+                "cliCreateLocalStorage",
                 "cliBackground",
                 "cliLocalStorage",
                 "cliMain",
@@ -239,14 +242,14 @@ config = {
             },
             "filterTags": "@files_external-app-required",
             "runAllSuites": True,
-            "numberOfParts": 1,
+            "numberOfParts": 2,
             "extraApps": {
                 "files_external": "",
             },
         },
-        "cliAppManagement": {
+        "cliManageApps": {
             "suites": [
-                "cliAppManagement",
+                "cliManageApps",
             ],
             "testingRemoteSystem": False,
         },
