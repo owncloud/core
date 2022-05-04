@@ -929,20 +929,25 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function takeScreenShotAfterFailedStep(AfterStepScope $scope):void {
-		$failCode = 99;
-		$featureTitle = $scope->getFeature()->getFile();
-		$explodedFeatureTitle = explode("/", $featureTitle);
-		$featureFileName = array_pop($explodedFeatureTitle);
-		$scenarioLine = $scope->getStep()->getLine();
-		$screenshotsHome = getcwd() . '/tests/acceptance/screenshots/';
-		$newDate = new DateTime();
-		$uniquePart = $newDate->getTimestamp() . '.png';
-		$fileName = $featureFileName . '-L' . $scenarioLine . '-' . $uniquePart;
-		if (!\is_dir($screenshotsHome)) {
-			\mkdir($screenshotsHome);
-		}
-		if ($failCode === $scope->getTestResult()->getResultCode()) {
-			$this->saveScreenshot($fileName, $screenshotsHome);
+		if (getenv('SCREENSHOTS') === 'true') {
+			$failCode = 99;
+			if ($failCode === $scope->getTestResult()->getResultCode()) {
+				$featureTitle = $scope->getFeature()->getFile();
+				$explodedFeatureTitle = explode("/", $featureTitle);
+				$featureFileName = array_pop($explodedFeatureTitle);
+				$scenarioLine = $scope->getStep()->getLine();
+
+				$newDate = new DateTime();
+				$uniquePart = $newDate->getTimestamp() . '.png';
+				$fileName = $featureFileName . '-L' . $scenarioLine . '-' . $uniquePart;
+
+				$screenshotsHome = getcwd() . '/tests/acceptance/reports/screenshots/';
+				if (!\is_dir($screenshotsHome)) {
+					\mkdir($screenshotsHome);
+				}
+
+				$this->saveScreenshot($fileName, $screenshotsHome);
+			}
 		}
 	}
 }
