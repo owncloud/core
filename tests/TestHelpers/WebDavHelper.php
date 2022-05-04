@@ -648,7 +648,7 @@ class WebDavHelper {
 		if ($type === "public-files" || $type === "public-files-old") {
 			return "public.php/webdav/";
 		}
-		if ($type === "public-files-new") {
+		if ($type === "public-files-new" || $type === "public-files-spaces") {
 			return "remote.php/dav/public-files/$user/";
 		}
 		if ($type === "archive") {
