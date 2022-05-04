@@ -587,7 +587,7 @@ class TrashbinContext implements Context {
 	public function tryToDeleteFileFromTrashbin(?string $user, ?string $originalPath, ?string $asUser = null, ?string $password = null):int {
 		$user = $this->featureContext->getActualUsername($user);
 		$asUser = $asUser ?? $user;
-		$listing = $this->listTrashbinFolder($user, 1, true);
+		$listing = $this->listTrashbinFolder($user, "1", true);
 		$originalPath = \trim($originalPath, '/');
 		$numItemsDeleted = 0;
 
