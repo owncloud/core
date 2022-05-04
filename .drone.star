@@ -245,9 +245,9 @@ config = {
                 "files_external": "",
             },
         },
-        "cliAppManagement": {
+        "cliManageApps": {
             "suites": [
-                "cliAppManagement",
+                "cliManageApps",
             ],
             "testingRemoteSystem": False,
         },
