@@ -42,6 +42,7 @@ Summary
 * Enhancement - Align "close" for messages: [#39907](https://github.com/owncloud/core/pull/39907)
 * Enhancement - Changes regarding cookie handling: [#39916](https://github.com/owncloud/core/pull/39916)
 * Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
+* Enhancement - Use the same string in the header also in public view: [#40032](https://github.com/owncloud/core/pull/40032)
 
 Details
 -------
@@ -373,6 +374,16 @@ Details
 * Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
 
    https://github.com/owncloud/core/pull/40013
+
+* Enhancement - Use the same string in the header also in public view: [#40032](https://github.com/owncloud/core/pull/40032)
+
+   In the public view, a different string was used next to the logo than in the internal header. This
+   can cause problems with branding.
+
+   The string HTMLName from defaults.php is now only used for the header. Name is used exclusively
+   for the mail templates.
+
+   https://github.com/owncloud/core/pull/40032
 
 Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
