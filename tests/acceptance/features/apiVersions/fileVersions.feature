@@ -115,7 +115,7 @@ Feature: dav-versions
       | new      | 204         |
 
   @skipOnStorage:ceph @files_primary_s3-issue-161 @notToImplementOnOCIS @newChunking @issue-ocis-1321
-  @issue-ocis-reva-17 @issue-ocis-reva-56
+  @issue-ocis-reva-17 @issue-ocis-reva-56 @skipOnStorage:scality
   Scenario: Uploading a file asynchronously does create the correct version that can be restored
     Given the administrator has enabled async operations
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
