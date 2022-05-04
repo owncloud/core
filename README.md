@@ -29,7 +29,7 @@ https://owncloud.com/contribute/
 Learn about the different ways you can get support for ownCloud: https://owncloud.com/support/
 
 ## Get in touch
-* :clipboard: [Forum](https://central.owncloud.com)
+* :clipboard: [Forum](https://central.owncloud.org)
 * :hash: [IRC channel](https://web.libera.chat/?channels=#owncloud)
 * :busts_in_silhouette: [Facebook](https://facebook.com/ownclouders)
 * :hatching_chick: [Twitter](https://twitter.com/ownCloud)
