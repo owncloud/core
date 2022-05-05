@@ -942,8 +942,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$fileName = $featureFileName . '-L' . $scenarioLine . '-' . $uniquePart;
 
 				$screenshotsHome = getcwd() . '/tests/acceptance/reports/screenshots/';
+				var_dump($screenshotsHome);
 				if (!\is_dir($screenshotsHome)) {
-					\mkdir($screenshotsHome);
+					\mkdir($screenshotsHome, 0777, true);
 				}
 
 				$this->saveScreenshot($fileName, $screenshotsHome);
