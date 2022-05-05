@@ -857,6 +857,26 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Then /^the command output should be the text ((?:'[^']*')|(?:"[^"]*"))$/
+	 *
+	 * @param string $text
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theCommandOutputShouldBeTheText(string $text):void {
+		$text = \trim($text, $text[0]);
+		$commandOutput = \trim($this->featureContext->getStdOutOfOccCommand());
+		Assert::assertEquals(
+			$text,
+			$commandOutput,
+			"The command output did not match the expected text on stdout '$text'\n" .
+			"The command output on stdout was:\n" .
+			$commandOutput
+		);
+	}
+
+	/**
 	 * @Then /^the command should have failed with exception text "([^"]*)"$/
 	 *
 	 * @param string $exceptionText
