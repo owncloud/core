@@ -213,11 +213,12 @@ class TrashbinContext implements Context {
 	 * @param string|null $user user
 	 * @param string|null $collectionPath the string of ids of the folder and sub-folders
 	 * @param string $depth
+	 * @param int $level
 	 *
 	 * @return array response
 	 * @throws Exception
 	 */
-	public function listTrashbinFolderCollection(?string $user, ?string $collectionPath = "", string $depth = "1"):array {
+	public function listTrashbinFolderCollection(?string $user, ?string $collectionPath = "", string $depth = "1", int $level = 1):array {
 		// $collectionPath should be some list of file-ids like 2147497661/2147497662
 		// or the empty string, which will list the whole trashbin from the top.
 		$collectionPath = \trim($collectionPath, "/");
@@ -250,17 +251,6 @@ class TrashbinContext implements Context {
 		$files = \array_filter(
 			$files,
 			static function ($element) use ($user, $collectionPath) {
-				if (\trim($element['href'], "/") === "remote.php/dav/trash-bin") {
-					// This is a bug in oCIS. The root-level trashbin href should be like:
-					// /remote.php/dav/trash-bin/Alice/
-					// But it is missing the username, so is like:
-					// /remote.php/dav/trash-bin/
-					// We don't want to fail almost every trashbin test because of this.
-					// We filter out this entry here, and just echo a warning that this
-					// problem has happened, so that it can be seen in the test log output.
-					echo __METHOD__ . "Warning: unexpected href in trashbin propfind: " . $element['href'] . "\n";
-					return false;
-				}
 				$path = $collectionPath;
 				if ($path !== "") {
 					$path = $path . "/";
@@ -270,15 +260,31 @@ class TrashbinContext implements Context {
 		);
 
 		foreach ($files as $file) {
+			// check for unexpected/invalid href values and fail early in order to
+			// avoid "common" situations that could cause infinite recursion.
+			$trashbinRef = $file["href"];
+			$trimmedTrashbinRef = \trim($trashbinRef, "/");
+			$expectedStart = "remote.php/dav/trash-bin/$user";
+			$expectedStartLength = \strlen($expectedStart);
+			if ((\substr($trimmedTrashbinRef, 0, $expectedStartLength) !== $expectedStart)
+				|| (\strlen($trimmedTrashbinRef) === $expectedStartLength)
+			) {
+				// A top href (maybe without even the username) has been returned
+				// in the response. That should never happen, or have been filtered out
+				// by code above.
+				throw new Exception(
+					__METHOD__ . " Error: unexpected href in trashbin propfind at level $level: '$trashbinRef'"
+				);
+			}
 			if ($file["collection"]) {
-				$trashbinRef = $file["href"];
 				$trimmedHref = \trim($trashbinRef, "/");
 				$explodedHref = \explode("/", $trimmedHref);
 				$trashbinId = $collectionPath . "/" . end($explodedHref);
 				$nextFiles = $this->listTrashbinFolderCollection(
 					$user,
 					$trashbinId,
-					$depth
+					$depth,
+					$level + 1
 				);
 				// filter the collection element. We only want the members.
 				$nextFiles = \array_filter(
