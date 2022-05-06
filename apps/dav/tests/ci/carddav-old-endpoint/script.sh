@@ -13,7 +13,7 @@ sleep 30
 
 # run the tests
 cd "$SCRIPTPATH/CalDAVTester"
-PYTHONPATH="$SCRIPTPATH/pycalendar/src" python testcaldav.py --print-details-onfail --basedir "$SCRIPTPATH/../caldavtest/" -o cdt.txt \
+PYTHONPATH="$SCRIPTPATH/pycalendar/src" python2 testcaldav.py --print-details-onfail --basedir "$SCRIPTPATH/../caldavtest/" -o cdt.txt \
 	"CardDAV/current-user-principal.xml" \
 	"CardDAV/sync-report.xml"
 
