@@ -108,3 +108,203 @@ Feature: scroll menu of actions that can be done on a file into view
   Scenario: scroll the file actions menu into view
     When the user creates so many files/folders that they do not fit in one browser page
     Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+  
+    @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
+
+  @skipOnINTERNETEXPLORER @focus
+  Scenario: scroll the file actions menu into view
+    When the user creates so many files/folders that they do not fit in one browser page
+    Then the files action menu should be completely visible after opening it using the webUI
