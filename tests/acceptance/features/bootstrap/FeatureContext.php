@@ -2655,20 +2655,31 @@ class FeatureContext extends BehatVariablesContext {
 			);
 		}
 
+		$product = $this->appConfigurationContext->getParameterValueFromXml(
+			$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
+			'core',
+			'status@@@product'
+		);
+		if (!\strlen($product)) {
+			Assert::fail(
+				"Cannot get product from core capabilities"
+			);
+		}
+
 		$productName = $this->appConfigurationContext->getParameterValueFromXml(
 			$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
 			'core',
 			'status@@@productname'
 		);
 
-		if (!\strlen($edition)) {
+		if (!\strlen($productName)) {
 			Assert::fail(
 				"Cannot get productname from core capabilities"
 			);
 		}
 
 		$jsonExpectedDecoded['edition'] = $edition;
-		$jsonExpectedDecoded['product'] = $productName;
+		$jsonExpectedDecoded['product'] = $product;
 		$jsonExpectedDecoded['productname'] = $productName;
 
 		if (OcisHelper::isTestingOnOc10()) {
