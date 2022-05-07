@@ -2753,9 +2753,15 @@ class FeatureContext extends BehatVariablesContext {
 			$version,
 			"version should be in a form like 10.9.8.1 but is $version"
 		);
-		if (\preg_match("/^\d+\.\d+\.\d+/", $version, $matches)) {
+		if (\preg_match("/^(\d+\.\d+\.\d+)\.\d+(-[0-9A-Za-z-]+)?(\+[0-9A-Za-z-]+)?$/", $version, $matches)) {
 			// We should have matched something like 10.9.8 - the first 3 numbers in the version.
-			$majorMinorPatchVersion = $matches[0];
+			// Ignore pre-releases and meta information
+			Assert::assertArrayHasKey(
+				1,
+				$matches,
+				"version $version could not match the pattern Major.Minor.Patch"
+			);
+			$majorMinorPatchVersion = $matches[1];
 		} else {
 			Assert::fail("version '$version' does not start in a form like 10.9.8");
 		}
