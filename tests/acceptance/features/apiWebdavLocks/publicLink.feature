@@ -15,33 +15,33 @@ Feature: persistent-locking in case of a public link
     And user "Alice" has created a public link share of folder "FOLDER" with change permission
     And user "Alice" has locked folder "FOLDER" setting the following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "/test.txt" with content "test" using the <webdav_api_version> public WebDAV API
+    When the public uploads file "/test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And as "Alice" file "/FOLDER/test.txt" should not exist
 
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | dav-path | lock-scope | webdav_api_version |
-      | old      | shared     | old                |
-      | old      | exclusive  | old                |
-      | new      | shared     | old                |
-      | new      | exclusive  | old                |
+      | dav-path | lock-scope | public-webdav-api-version |
+      | old      | shared     | old                       |
+      | old      | exclusive  | old                       |
+      | new      | shared     | old                       |
+      | new      | exclusive  | old                       |
 
     @skipOnOcV10.6 @skipOnOcV10.7
     Examples:
-      | dav-path | lock-scope | webdav_api_version |
-      | old      | shared     | new                |
-      | old      | exclusive  | new                |
-      | new      | shared     | new                |
-      | new      | exclusive  | new                |
+      | dav-path | lock-scope | public-webdav-api-version |
+      | old      | shared     | new                       |
+      | old      | exclusive  | new                       |
+      | new      | shared     | new                       |
+      | new      | exclusive  | new                       |
 
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav-path | lock-scope | webdav_api_version |
-      | spaces   | shared     | old                |
-      | spaces   | exclusive  | old                |
-      | spaces   | shared     | new                |
-      | spaces   | exclusive  | new                |
+      | dav-path | lock-scope | public-webdav-api-version |
+      | spaces   | shared     | old                       |
+      | spaces   | exclusive  | old                       |
+      | spaces   | shared     | new                       |
+      | spaces   | exclusive  | new                       |
 
   @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
