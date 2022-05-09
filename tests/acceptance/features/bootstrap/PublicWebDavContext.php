@@ -612,7 +612,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public uploads file "([^"]*)" with content "([^"]*)" using the (old|new|spaces) public WebDAV API$/
+	 * @When /^the public uploads file "([^"]*)" with content "([^"]*)" using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload

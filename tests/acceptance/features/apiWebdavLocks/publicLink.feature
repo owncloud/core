@@ -42,8 +42,6 @@ Feature: persistent-locking in case of a public link
       | spaces   | exclusive  | old                |
       | spaces   | shared     | new                |
       | spaces   | exclusive  | new                |
-      | spaces   | shared     | spaces             |
-      | spaces   | exclusive  | spaces             |
 
   @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
