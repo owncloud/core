@@ -54,3 +54,25 @@ Feature: get file info using PROPFIND
       | dav_version |
       | old         |
       | new         |
+
+  @skipOnEncryptionType:user-keys @issue-encryption-320
+  Scenario Outline: list files on external storage that is currently unavailable when depth infinity is not allowed
+    Given using <dav_version> DAV path
+    When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
+    And user "Alice" lists the resources in "/local_storage2" with depth "infinity" using the WebDAV API
+    Then the HTTP status code should be "412"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @skipOnEncryptionType:user-keys @issue-encryption-320
+  Scenario Outline: list files on root folder with depth infinity not allowed when the external storage folder is unavailable
+    Given using <dav_version> DAV path
+    When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
+    And user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
+    Then the HTTP status code should be "412"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

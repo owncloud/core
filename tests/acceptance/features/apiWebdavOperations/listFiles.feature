@@ -278,7 +278,6 @@ Feature: list files
       | /simple-folder1/simple-folder2/welcome.txt                   |
       | /simple-folder1/simple-folder2/simple-folder3                |
       | /simple-folder1/simple-folder2/simple-folder3/simple-folder4 |
-
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | dav_version |
@@ -379,6 +378,65 @@ Feature: list files
       | simple-folder/simple-folder1/welcome.txt                  |
       | simple-folder/simple-folder1/simple-folder2/textfile0.txt |
       | simple-folder/simple-folder1/simple-folder2/welcome.txt   |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
+  Scenario Outline: Get the list of resources in the root folder with depth infinity when depth infinity is not allowed
+    Given using <dav_version> DAV path
+    When user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
+    Then the HTTP status code should be "412"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
+  Scenario Outline: Get the list of resources in a folder shared through public link with depth infinity when depth infinity is not allowed
+    Given using <dav_version> DAV path
+    And user "Alice" has created the following folders
+      | path                                                                       |
+      | /simple-folder/simple-folder1/simple-folder2/simple-folder3                |
+      | /simple-folder/simple-folder1/simple-folder2/simple-folder3/simple-folder4 |
+    And user "Alice" has created a public link share of folder "simple-folder"
+    When the public lists the resources in the last created public link with depth "infinity" using the WebDAV API
+    Then the HTTP status code should be "412"
+    @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | dav_version |
+      | old         |
+
+    Examples:
+      | dav_version |
+      | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
+  Scenario Outline: Get the list of files in the trashbin with depth infinity when depth infinity is not allowed
+    Given using <dav_version> DAV path
+    And user "Alice" has deleted the following resources
+      | path           |
+      | textfile0.txt  |
+      | welcome.txt    |
+      | simple-folder/ |
+    When user "Alice" lists the resources in the trashbin with depth "infinity" using the WebDAV API
+    Then the HTTP status code should be "412"
     Examples:
       | dav_version |
       | old         |
