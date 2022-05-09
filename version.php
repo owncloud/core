@@ -28,7 +28,7 @@
 $OC_Version = [10, 10, 0, 1];
 
 // The human readable string
-$OC_VersionString = '10.10.0 rc2 ';
+$OC_VersionString = '10.10.0 rc2';
 
 $OC_VersionCanBeUpgradedFrom = [[8, 2, 11],[9, 0, 9],[9, 1]];
 
