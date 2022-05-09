@@ -48,11 +48,6 @@ class ManagerTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
-	private function isFilesExternalActive() {
-		// TODO: Improve detection
-		return \class_exists('\OCA\Files_External\AppInfo\Application');
-	}
-
 	/**
 	 * @return IAppConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
@@ -395,12 +390,8 @@ class ManagerTest extends TestCase {
 			'federatedfilesharing',
 			'files',
 			'test1',
-			'test3'
+			'test3',
 		];
-		if ($this->isFilesExternalActive()) {
-			$expectedApps[] = 'files_external';
-		}
-
 		$this->assertEquals($expectedApps, $this->manager->getInstalledApps());
 	}
 
@@ -421,11 +412,8 @@ class ManagerTest extends TestCase {
 			'federatedfilesharing',
 			'files',
 			'test1',
-			'test3'
+			'test3',
 		];
-		if ($this->isFilesExternalActive()) {
-			$expectedApps[] = 'files_external';
-		}
 
 		$this->assertEquals($expectedApps, $this->manager->getEnabledAppsForUser($user));
 	}
