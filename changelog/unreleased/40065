@@ -1,0 +1,7 @@
+Bugfix: get file size using cURL on Ubuntu 20.04 and 22.04
+
+Local file size using the php-curl functions did not work on Ubuntu 20.04 or 22.04.
+The code has been enhanced so that the file size can be determined using php-curl
+on these operating system releases.
+
+https://github.com/owncloud/core/pull/40065

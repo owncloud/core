@@ -113,6 +113,7 @@ class LargeFileHelper {
 	*                        null on failure.
 	*/
 	public function getFileSizeViaCurl($fileName) {
+		global $fileSizeFromContentLength;
 		if (\OC::$server->getIniWrapper()->getString('open_basedir') === '') {
 			$pathParts = \explode('/', $fileName);
 			$encodedPathParts = \array_map('rawurlencode', $pathParts);
@@ -120,7 +121,17 @@ class LargeFileHelper {
 			$ch = \curl_init("file://$encodedFileName");
 			\curl_setopt($ch, CURLOPT_NOBODY, true);
 			\curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			// The php-curl extension uses the libcurl library to actually do the work.
+			// On some Ubuntu releases (for example, 20.04 and 22.04), the php-curl
+			// extension is somehow using the libcurl library in a way that CURLOPT_HEADER
+			// does not work, or libcurl itself does not correctly respect CURLOPT_HEADER.
+			// In those cases, the data returned by curl_exec is empty. (The header items
+			// like Content-Length are missing)
+			// So we also define a CURLOPT_HEADERFUNCTION. That gets called for each header
+			// that curl_exec processes internally. That is working, and so we use that as
+			// an alternative way to access Content-Length.
 			\curl_setopt($ch, CURLOPT_HEADER, true);
+			\curl_setopt($ch, CURLOPT_HEADERFUNCTION, ['OC\LargeFileHelper', 'curlHeaderCallback']);
 			$data = \curl_exec($ch);
 			\curl_close($ch);
 			if ($data !== false) {
@@ -129,9 +140,21 @@ class LargeFileHelper {
 				if (isset($matches[1])) {
 					return 0 + $matches[1];
 				}
+				if (isset($fileSizeFromContentLength)) {
+					return $fileSizeFromContentLength;
+				}
 			}
 		}
 		return null;
+	}
+
+	public static function curlHeaderCallback($ch, $header_line) {
+		global $fileSizeFromContentLength;
+		\preg_match('/Content-Length: (\d+)/', $header_line, $matches);
+		if (isset($matches[1])) {
+			$fileSizeFromContentLength = 0 + $matches[1];
+		}
+		return \strlen($header_line);
 	}
 
 	/**
