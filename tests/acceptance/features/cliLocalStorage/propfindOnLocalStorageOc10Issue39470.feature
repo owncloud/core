@@ -15,7 +15,7 @@ Feature: get file info using PROPFIND
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has uploaded file with content "some data" to "/local_storage3/PARENT/PARENT.txt"
 
-  @skipOnEncryptionType:user-keys @issue-encryption-320
+  @skipOnEncryptionType:user-keys @issue-encryption-320 @depthInfinityPropfindEnabled
   Scenario Outline: list files on external storage that is currently unavailable
     Given using <dav_version> DAV path
     And the administrator has set depth_infinity_allowed to 1
@@ -32,7 +32,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @skipOnEncryptionType:user-keys @issue-encryption-320
+  @depthInfinityPropfindEnabled @skipOnEncryptionType:user-keys @issue-encryption-320 @depthInfinityPropfindEnabled
   Scenario Outline: list files on root folder with depth infinity when the external storage folder is unavailable
     Given using <dav_version> DAV path
     And the administrator has set depth_infinity_allowed to 1
@@ -55,7 +55,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @skipOnEncryptionType:user-keys @issue-encryption-320
+  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on external storage that is currently unavailable when depth infinity is not allowed
     Given using <dav_version> DAV path
     When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
@@ -66,7 +66,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @skipOnEncryptionType:user-keys @issue-encryption-320
+  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on root folder with depth infinity not allowed when the external storage folder is unavailable
     Given using <dav_version> DAV path
     When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"

@@ -23,23 +23,28 @@ Feature: PROPFIND
       | header | value   |
       | depth  | <depth> |
     Then the HTTP status code should be "<http_status>"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS @depthInfinityPropfindEnabled
     Examples:
       | dav_path                    | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/files/alice | 1                      | 0        | 207         |
       | /remote.php/dav/files/alice | 1                      | infinity | 207         |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS @depthInfinityPropfindDisabled
+    Examples:
+      | dav_path                    | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/files/alice | 0                      | 0        | 207         |
       | /remote.php/dav/files/alice | 0                      | infinity | 412         |
-    @skipOnOcV10
+    @skipOnOcV10 @depthInfinityPropfindEnabled
     Examples:
       | dav_path                    | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/files/alice | 1                      | 0        | 207         |
       | /remote.php/dav/files/alice | 1                      | infinity | 207         |
-
-    @skipOnOcV10 @personalSpace
+    @skipOnOcV10 @personalSpace @depthInfinityPropfindDisabled
     Examples:
       | dav_path                         | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/spaces/%spaceid% | 0                      | 0        | 207         |
       | /remote.php/dav/spaces/%spaceid% | 0                      | infinity | 207         |
+    @skipOnOcV10 @personalSpace @depthInfinityPropfindEnabled
+    Examples:
+      | dav_path                         | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/spaces/%spaceid% | 1                      | 0        | 207         |
       | /remote.php/dav/spaces/%spaceid% | 1                      | infinity | 207         |
