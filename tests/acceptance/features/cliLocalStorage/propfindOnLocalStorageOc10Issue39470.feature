@@ -15,7 +15,7 @@ Feature: get file info using PROPFIND
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has uploaded file with content "some data" to "/local_storage3/PARENT/PARENT.txt"
 
-  @skipOnEncryptionType:user-keys @issue-encryption-320
+  @skipOnEncryptionType:user-keys @issue-encryption-320 @depthInfinityPropfindEnabled
   Scenario Outline: list files on external storage that is currently unavailable
     Given using <dav_version> DAV path
     And the administrator has set depth_infinity_allowed to 1
@@ -32,7 +32,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @skipOnEncryptionType:user-keys @issue-encryption-320
+  @depthInfinityPropfindEnabled @skipOnEncryptionType:user-keys @issue-encryption-320 @depthInfinityPropfindEnabled
   Scenario Outline: list files on root folder with depth infinity when the external storage folder is unavailable
     Given using <dav_version> DAV path
     And the administrator has set depth_infinity_allowed to 1
@@ -50,6 +50,28 @@ Feature: get file info using PROPFIND
       | /local_storage2/textfile0.txt               |
       | /local_storage2/simple-folder               |
       | /local_storage2/simple-folder/textfile1.txt |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320
+  Scenario Outline: list files on external storage that is currently unavailable when depth infinity is not allowed
+    Given using <dav_version> DAV path
+    When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
+    And user "Alice" lists the resources in "/local_storage2" with depth "infinity" using the WebDAV API
+    Then the HTTP status code should be "412"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320
+  Scenario Outline: list files on root folder with depth infinity not allowed when the external storage folder is unavailable
+    Given using <dav_version> DAV path
+    When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
+    And user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
+    Then the HTTP status code should be "412"
     Examples:
       | dav_version |
       | old         |
