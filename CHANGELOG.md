@@ -28,6 +28,7 @@ Summary
 * Bugfix - Allow re-uploading the same folder after being renamed: [#39966](https://github.com/owncloud/core/pull/39966)
 * Bugfix - Default for propfind depth infinity adjusted: [#40016](https://github.com/owncloud/core/pull/40016)
 * Bugfix - Allow partial initialization of the FS: [#40031](https://github.com/owncloud/core/pull/40031)
+* Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Private keys for SFTP storage will be stored in credentials table: [#39935](https://github.com/owncloud/core/pull/39935)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
@@ -197,6 +198,10 @@ Details
    server because the users will be fetched from the DB and they don't operate with groups.
 
    https://github.com/owncloud/core/pull/40031
+
+* Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
+
+   https://github.com/owncloud/core/pull/40066
 
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 
