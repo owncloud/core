@@ -81,6 +81,7 @@ class Log implements ILogger {
 		'updatePrivateKeyPassword',
 		'validateUserPass',
 		'loginWithPassword',
+		'createSessionToken',
 
 		// TokenProvider
 		'getToken',

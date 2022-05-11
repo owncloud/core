@@ -1,0 +1,3 @@
+Bugfix: Filter sensitive data in log for Session::createSessionToken
+
+https://github.com/owncloud/core/pull/40066

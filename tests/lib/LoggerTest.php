@@ -8,6 +8,7 @@
 
 namespace Test;
 
+use OC\AppFramework\Http\Request;
 use OC\Log;
 use OC\User\AccountMapper;
 use OC\User\Manager;
@@ -17,35 +18,43 @@ use OCP\ILogger;
 use OCP\IUserSession;
 use OCP\Util;
 use OCP\Util\UserSearch;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\SystemConfig;
 
 class LoggerTest extends TestCase {
-	/** @var \OCP\ILogger */
+	/** @var ILogger */
 	private $logger;
 	private static $logs = [];
 
-	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IConfig | MockObject */
 	private $config;
 
-	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var EventDispatcherInterface | MockObject */
 	private $eventDispatcher;
+
+	public function providesCreateSessionToken(): array {
+		return [
+			[ new Request(), 'carlos', 'carlos', 'myCarlos']
+		];
+	}
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		self::$logs = [];
 		$this->config = $this->getMockBuilder(
-			'\OC\SystemConfig'
+			SystemConfig::class
 		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->eventDispatcher = new EventDispatcher();
-		$this->logger = new Log('Test\LoggerTest', $this->config, null, $this->eventDispatcher);
+		$this->logger = new Log(__CLASS__, $this->config, null, $this->eventDispatcher);
 	}
 
-	public function testInterpolation() {
+	public function testInterpolation(): void {
 		$logger = $this->logger;
 		$logger->warning('{Message {nothing} {user} {foo.bar} a}', ['user' => 'Bob', 'foo.bar' => 'Bar']);
 
@@ -53,8 +62,8 @@ class LoggerTest extends TestCase {
 		$this->assertEquals($expected, $this->getLogs());
 	}
 
-	public function testAppCondition() {
-		$this->config->expects($this->any())
+	public function testAppCondition(): void {
+		$this->config
 			->method('getValue')
 			->will(($this->returnValueMap([
 				['loglevel', Util::WARN, Util::WARN],
@@ -73,8 +82,8 @@ class LoggerTest extends TestCase {
 		$this->assertEquals($expected, $this->getLogs());
 	}
 
-	public function testAppLogCondition() {
-		$this->config->expects($this->any())
+	public function testAppLogCondition(): void {
+		$this->config
 			->method('getValue')
 			->will(($this->returnValueMap([
 				['loglevel', Util::WARN, Util::WARN],
@@ -91,12 +100,12 @@ class LoggerTest extends TestCase {
 		$this->assertEquals($expected, $this->getLogs());
 	}
 
-	public function testNullUserSession() {
+	public function testNullUserSession(): void {
 		$userSession = $this->createMock(IUserSession::class);
-		$userSession->expects($this->any())
+		$userSession
 			->method('getUser')
 			->willReturn(null);
-		$this->config->expects($this->any())
+		$this->config
 			->method('getValue')
 			->will(($this->returnValueMap([
 				['loglevel', Util::WARN, Util::WARN],
@@ -112,20 +121,20 @@ class LoggerTest extends TestCase {
 		$this->assertEquals($expected, $this->getLogs());
 	}
 
-	private function getLogs() {
+	private function getLogs(): array {
 		return self::$logs;
 	}
 
-	public static function write($app, $message, $level) {
+	public static function write($app, $message, $level): void {
 		self::$logs[]= "$level $message";
 	}
 
-	public static function writeExtra($app, $message, $level, $logConditionFile, $extraFields) {
+	public static function writeExtra($app, $message, $level, $logConditionFile, $extraFields): void {
 		$encodedFields = \json_encode($extraFields);
 		self::$logs[]= "$level $message fields=$encodedFields";
 	}
 
-	public function userAndPasswordData() {
+	public function userAndPasswordData(): array {
 		return [
 			['abc', 'def'],
 			['mySpecialUsername', 'MySuperSecretPassword'],
@@ -142,7 +151,7 @@ class LoggerTest extends TestCase {
 	/**
 	 * @dataProvider userAndPasswordData
 	 */
-	public function testDetectlogin($user, $password) {
+	public function testDetectlogin($user, $password): void {
 		$e = new \Exception('test');
 		$this->logger->logException($e);
 
@@ -160,7 +169,7 @@ class LoggerTest extends TestCase {
 	/**
 	 * @dataProvider userAndPasswordData
 	 */
-	public function testDetectcheckPassword($user, $password) {
+	public function testDetectcheckPassword($user, $password): void {
 		$e = new \Exception('test');
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
@@ -178,7 +187,7 @@ class LoggerTest extends TestCase {
 	/**
 	 * @dataProvider userAndPasswordData
 	 */
-	public function testDetectvalidateUserPass($user, $password) {
+	public function testDetectvalidateUserPass($user, $password): void {
 		$e = new \Exception('test');
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
@@ -196,7 +205,7 @@ class LoggerTest extends TestCase {
 	/**
 	 * @dataProvider userAndPasswordData
 	 */
-	public function testDetecttryLogin($user, $password) {
+	public function testDetecttryLogin($user, $password): void {
 		$e = new \Exception('test');
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
@@ -214,7 +223,7 @@ class LoggerTest extends TestCase {
 	/**
 	 * @dataProvider userAndPasswordData
 	 */
-	public function testDetectloginWithPassword($user, $password) {
+	public function testDetectloginWithPassword($user, $password): void {
 		$e = new \Exception('test');
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
@@ -229,7 +238,26 @@ class LoggerTest extends TestCase {
 		}
 	}
 
-	public function testPasswordInCallback() {
+	/**
+	 * @dataProvider providesCreateSessionToken
+	 */
+	public function testDetectcreateSessionToken($request, $uid, $loginName, $password): void {
+		$e = new \Exception('test');
+		$this->logger->logException($e);
+		$logLines = $this->getLogs();
+
+		foreach ($logLines as $logLine) {
+			$this->assertStringNotContainsString($uid, $logLine);
+			$this->assertStringNotContainsString($loginName, $logLine);
+			$this->assertStringNotContainsString($password, $logLine);
+			$this->assertStringContainsString(
+				'createSessionToken(*** sensitive parameters replaced ***)',
+				$logLine
+			);
+		}
+	}
+
+	public function testPasswordInCallback(): void {
 		$config = $this->createMock(IConfig::class);
 		$logger = $this->createMock(ILogger::class);
 		$accountMapper = $this->createMock(AccountMapper::class);
@@ -263,7 +291,7 @@ class LoggerTest extends TestCase {
 		$manager->emit('\OC\User', 'preLogin', [$login, $password]);
 	}
 
-	public function testExtraFields() {
+	public function testExtraFields(): void {
 		$extraFields = [
 			'one' => 'un',
 			'two' => 'deux',
@@ -287,8 +315,8 @@ class LoggerTest extends TestCase {
 		$this->assertEquals('1 no fields', $logLines[1]);
 	}
 
-	public function testEvents() {
-		$this->config->expects($this->any())
+	public function testEvents(): void {
+		$this->config
 			->method('getValue')
 			->will(($this->returnValueMap([
 				['loglevel', Util::WARN, Util::WARN],
@@ -338,7 +366,7 @@ class LoggerTest extends TestCase {
 		$this->assertEquals($expectedArgs, $afterWriteEvent->getArguments(), 'after event arguments match');
 	}
 
-	public function testOriginalExceptionIsProvidedAsExtraField() {
+	public function testOriginalExceptionIsProvidedAsExtraField(): void {
 		$e = new \Exception('test');
 
 		$beforeWriteEvent = null;
