@@ -252,6 +252,36 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | spaces   |
 
+  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore
+  Scenario Outline: Listing other user's empty unused trashbin is prohibited
+    Given using <dav-path> DAV path
+    And user "testtrashbinempty" has been created with default attributes and without skeleton files
+    And user "testtrashbinempty" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
+    When user "Alice" tries to list the trashbin content for user "testtrashbinempty"
+    Then the HTTP status code should be "401"
+    Examples:
+      | dav-path |
+      | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
+
+  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore
+  Scenario Outline: Listing non-existent user's trashbin is prohibited
+    Given using <dav-path> DAV path
+    When user "Alice" tries to list the trashbin content for user "testtrashbinnotauser"
+    Then the HTTP status code should be "404"
+    Examples:
+      | dav-path |
+      | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
+
   @smokeTest
   Scenario Outline: Get trashbin content with wrong password
     Given using <dav-path> DAV path
