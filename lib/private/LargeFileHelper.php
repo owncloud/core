@@ -113,7 +113,6 @@ class LargeFileHelper {
 	*                        null on failure.
 	*/
 	public function getFileSizeViaCurl($fileName) {
-		global $fileSizeFromContentLength;
 		if (\OC::$server->getIniWrapper()->getString('open_basedir') === '') {
 			$pathParts = \explode('/', $fileName);
 			$encodedPathParts = \array_map('rawurlencode', $pathParts);
@@ -131,7 +130,14 @@ class LargeFileHelper {
 			// that curl_exec processes internally. That is working, and so we use that as
 			// an alternative way to access Content-Length.
 			\curl_setopt($ch, CURLOPT_HEADER, true);
-			\curl_setopt($ch, CURLOPT_HEADERFUNCTION, ['OC\LargeFileHelper', 'curlHeaderCallback']);
+			$fileSizeFromContentLength = -1;
+			\curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($ch, $header_line) use (&$fileSizeFromContentLength) {
+				\preg_match('/Content-Length: (\d+)/', $header_line, $matches);
+				if (isset($matches[1])) {
+					$fileSizeFromContentLength = 0 + $matches[1];
+				}
+				return \strlen($header_line);
+			});
 			$data = \curl_exec($ch);
 			\curl_close($ch);
 			if ($data !== false) {
@@ -140,21 +146,15 @@ class LargeFileHelper {
 				if (isset($matches[1])) {
 					return 0 + $matches[1];
 				}
-				if (isset($fileSizeFromContentLength)) {
+				// If the CURLOPT_HEADERFUNCTION detected a Content-Length
+				// then it should have set $fileSizeFromContentLength to
+				// something greater than or equal to zero. If so, return it.
+				if ($fileSizeFromContentLength >= 0) {
 					return $fileSizeFromContentLength;
 				}
 			}
 		}
 		return null;
-	}
-
-	public static function curlHeaderCallback($ch, $header_line) {
-		global $fileSizeFromContentLength;
-		\preg_match('/Content-Length: (\d+)/', $header_line, $matches);
-		if (isset($matches[1])) {
-			$fileSizeFromContentLength = 0 + $matches[1];
-		}
-		return \strlen($header_line);
 	}
 
 	/**
