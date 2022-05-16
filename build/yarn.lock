@@ -1079,6 +1079,11 @@ jasmine-core@^2.99.1:
   resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-2.99.1.tgz#e6400df1e6b56e130b61c4bcd093daa7f6e8ca15"
   integrity sha1-5kAN8ea1bhMLYcS80JPap/boyhU=
 
+jasmine-core@^4.1.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-4.1.1.tgz#1045091e16f4f19e1d72416eef5db01e64d5fbeb"
+  integrity sha512-lmUfT5XcK9KKvt3lLYzn93hc4MGzlUBowExFVgzbSW0ZCrdeyS574dfsyfRhxbg81Wj4gk+RxUiTnj7KBfDA1g==
+
 jasmine-sinon@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/jasmine-sinon/-/jasmine-sinon-0.4.0.tgz#8040a179a01ae0349b234aee438c24191239ae98"
@@ -1170,10 +1175,12 @@ karma-jasmine-sinon@^1.0.4:
   resolved "https://registry.yarnpkg.com/karma-jasmine-sinon/-/karma-jasmine-sinon-1.0.4.tgz#fe8996604137946900a706c06229679500734c40"
   integrity sha1-/omWYEE3lGkApwbAYilnlQBzTEA=
 
-karma-jasmine@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-1.1.2.tgz#394f2b25ffb4a644b9ada6f22d443e2fd08886c3"
-  integrity sha1-OU8rJf+0pkS5rabyLUQ+L9CIhsM=
+karma-jasmine@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-5.0.1.tgz#854e9204b62cfa07242a8c66b8ab83751a896d02"
+  integrity sha512-FkL1Kk+JAKmim8VWU8RXKZBpl0lLI7J8LijM0/q7oP7emfB6QMZV1Az+JgqGKSLpF0tYaav+KUVFQroZUxQTHA==
+  dependencies:
+    jasmine-core "^4.1.0"
 
 karma-junit-reporter@*:
   version "2.0.1"
