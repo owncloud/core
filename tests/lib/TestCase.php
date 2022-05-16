@@ -485,19 +485,9 @@ abstract class TestCase extends BaseTestCase {
 
 		$t = new Base($template, $requestToken, $l10n, null, $theme);
 		$buf = $t->fetchPage($vars);
-		$this->assertHtmlStringIsEquivalentToHtmlString($expectedHtml, $buf);
-	}
-
-	/**
-	 * @param string $expectedHtml
-	 * @param string $actualHtml
-	 * @param string $message
-	 */
-	protected function assertHtmlStringIsEquivalentToHtmlString($expectedHtml, $actualHtml, $message = '') {
-		self::assertSame(
+		$this->assertXmlStringEqualsXmlString(
 			$this->normalizeHTML($expectedHtml),
-			$this->normalizeHTML($actualHtml),
-			$message
+			$this->normalizeHTML($buf)
 		);
 	}
 
