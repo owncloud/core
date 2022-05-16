@@ -2631,7 +2631,7 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @Then the status.php response should match with
+	 * @Then the status.php response should include
 	 *
 	 * @param PyStringNode $jsonExpected
 	 *
@@ -2640,7 +2640,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected):void {
 		$jsonExpectedDecoded = \json_decode($jsonExpected->getRaw(), true);
-		$jsonRespondedEncoded = \json_encode($this->getJsonDecodedResponse());
+		$jsonRespondedDecoded = $this->getJsonDecodedResponse();
 
 		$this->appConfigurationContext->theAdministratorGetsCapabilitiesCheckResponse();
 		$edition = $this->appConfigurationContext->getParameterValueFromXml(
@@ -2736,12 +2736,21 @@ class FeatureContext extends BehatVariablesContext {
 			$jsonExpectedDecoded['version'] = $version;
 			$jsonExpectedDecoded['versionstring'] = $versionString;
 		}
-		$jsonExpectedEncoded = \json_encode($jsonExpectedDecoded);
-		Assert::assertEquals(
-			$jsonExpectedEncoded,
-			$jsonRespondedEncoded,
-			"The json responded: $jsonRespondedEncoded does not match with json expected: $jsonExpectedEncoded"
-		);
+		$errorMessage = "";
+		$errorFound = false;
+		foreach ($jsonExpectedDecoded as $key => $expectedValue) {
+			if (\array_key_exists($key, $jsonRespondedDecoded)) {
+				$actualValue = $jsonRespondedDecoded[$key];
+				if ($actualValue !== $expectedValue) {
+					$errorMessage .= "$key expected value was $expectedValue but actual value was $actualValue\n";
+					$errorFound = true;
+				}
+			} else {
+				$errorMessage .= "$key was not found in the status response\n";
+				$errorFound = true;
+			}
+		}
+		Assert::assertFalse($errorFound, $errorMessage);
 		// We have checked that the status.php response has data that matches up with
 		// data found in the capabilities response and/or the "occ status" command output.
 		// But the output might be reported wrongly in all of these in the same way.
