@@ -46,7 +46,7 @@ OC.L10N.register(
     "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "Das freigegebene Verzeichnis \"{dir}\" ist nicht verfügbar. Entfernen Sie die Freigabe oder wenden Sie sich an den Eigentümer, um sie erneut zu teilen.",
     "Directory \"{dir}\" not found" : "Verzeichnis \"{dir}\" nicht gefunden",
     "group" : "Gruppe",
-    "Federated share" : "Federated-Freigaben",
+    "Federated share" : "Federated-Freigabe",
     "via" : "via",
     "Could not move \"{file}\", target exists" : "\"{file}\" konnte nicht verschoben werden: Ziel existiert bereits",
     "Could not move \"{file}\" because either the file or the target are locked." : "Die Datei \"{file}\" konnte nicht verschoben werden, weil die Datei oder das Ziel gesperrt ist.",
