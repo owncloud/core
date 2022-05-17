@@ -178,6 +178,10 @@ $CONFIG = [
  * Possible keys: `wopi.office-online.server` URL
  *
  * Possible keys: `wopi_group` STRING
+ *
+ * Possible keys: `wopi.proxy.url` URL
+ *
+ * Possible keys: `wopi.business-flow.enabled` STRING
  */
 
 /**
@@ -203,6 +207,24 @@ $CONFIG = [
  * Restrict access to Microsoft Office Online to a defined group. Please note, only one group can be defined. Default = empty = no restriction.
  */
 'wopi_group' => '',
+
+/**
+ * Define the Proxy URL
+ * This global option defines the proxy URL if you are a Microsoft Business user.
+ * Note that you will get a working URL from ownCloud Support after you provide a written
+ * declaration that your company has an eligible Microsoft Business contract.
+ */
+'wopi.proxy.url' => 'https://o365.example.com',
+
+/**
+ * Define if Business Flow Is Enabled
+ * This global option defines if Office users are business users.
+ * In that case, Office Online will check if the user logged in has an Office 365 business account.
+ * If not, the user must sign in and Office Online will check if the subscription is valid.
+ * Use yes to enable it and no to disable it or remove the key completely.
+ * To use this option, you need at least ownCloud’s Microsoft Office Online app version 1.6.0.
+ */
+'wopi.business-flow.enabled' => 'no',
 
 /**
  * App: Microsoft Teams Bridge
