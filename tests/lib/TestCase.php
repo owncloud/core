@@ -485,41 +485,28 @@ abstract class TestCase extends BaseTestCase {
 
 		$t = new Base($template, $requestToken, $l10n, null, $theme);
 		$buf = $t->fetchPage($vars);
-		$this->assertHtmlStringEqualsHtmlString($expectedHtml, $buf);
+		$this->assertXmlStringEqualsXmlString(
+			$this->normalizeHTML($expectedHtml),
+			$this->normalizeHTML($buf)
+		);
 	}
 
 	/**
-	 * @param string $expectedHtml
-	 * @param string $actualHtml
-	 * @param string $message
+	 * Takes a string that might be formatted with new-lines and indented with spaces or tabs.
+	 * Returns a one-line string without the new-lines or indenting.
+	 * The returned string has equivalent functionality as HTML.
+	 *
+	 * @param string $inputHtml
+	 *
+	 * @return string
 	 */
-	protected function assertHtmlStringEqualsHtmlString($expectedHtml, $actualHtml, $message = '') {
-		$expected = new DOMDocument();
-		$expected->preserveWhiteSpace = false;
-		$expected->formatOutput = true;
-		$expected->loadHTML($expectedHtml);
-
-		$actual = new DOMDocument();
-		$actual->preserveWhiteSpace = false;
-		$actual->formatOutput = true;
-		$actual->loadHTML($actualHtml);
-		$this->removeWhitespaces($actual);
-
-		$expectedHtml1 = $expected->saveHTML();
-		$actualHtml1 = $actual->saveHTML();
-		self::assertEquals($expectedHtml1, $actualHtml1, $message);
-	}
-
-	private function removeWhitespaces(DOMNode $domNode) {
-		foreach ($domNode->childNodes as $node) {
-			if ($node->hasChildNodes()) {
-				$this->removeWhitespaces($node);
-			} else {
-				if ($node instanceof \DOMText && $node->isWhitespaceInElementContent()) {
-					$domNode->removeChild($node);
-				}
-			}
+	private function normalizeHTML(string $inputHtml):string {
+		$inputLines = \explode("\n", $inputHtml);
+		$trimmedLines = [];
+		foreach ($inputLines as $inputLine) {
+			$trimmedLines[] = \trim($inputLine);
 		}
+		return \implode("", $trimmedLines);
 	}
 
 	public function getCurrentUser() {
