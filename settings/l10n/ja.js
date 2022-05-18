@@ -105,6 +105,7 @@ OC.L10N.register(
     "So-so password" : "まずまずのパスワード",
     "Good password" : "良好なパスワード",
     "Strong password" : "強いパスワード",
+    "Passwords do not match" : "パスワードが一致しません",
     "Groups" : "グループ",
     "Unable to delete {objName}" : "{objName} を削除できません",
     "Error creating group: {message}" : "グループの作成エラー: {message}",
