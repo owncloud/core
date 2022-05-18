@@ -1646,6 +1646,11 @@ def acceptance(ctx):
             for federatedServerVersion in params["federatedServerVersions"]:
                 for browser in params["browsers"]:
                     for phpVersion in params["phpVersions"]:
+                        # Get the first 3 characters of the PHP version (7.4 or 8.0 etc)
+                        # And use that for constructing the pipeline name
+                        # That helps shorten pipeline names when using owncloud-ci images
+                        # that have longer names like 7.4-ubuntu20.04
+                        phpMinorVersion = phpVersion[0:3]
                         for db in params["databases"]:
                             for runPart in range(1, params["numberOfParts"] + 1):
                                 debugPartsEnabled = (len(params["skipExceptParts"]) != 0)
@@ -1667,7 +1672,7 @@ def acceptance(ctx):
                                     keyString = "-" + category if params["includeKeyInMatrixName"] else ""
                                     partString = "" if params["numberOfParts"] == 1 else "-%d-%d" % (params["numberOfParts"], runPart)
                                     federatedServerVersionString = "-" + federatedServerVersion.replace("daily-", "").replace("-qa", "") if (federatedServerVersion != "") else ""
-                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersion)
+                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpMinorVersion)
                                     maxLength = 50
                                     nameLength = len(name)
                                     if nameLength > maxLength:
