@@ -120,7 +120,24 @@ class LargeFileHelper {
 			$ch = \curl_init("file://$encodedFileName");
 			\curl_setopt($ch, CURLOPT_NOBODY, true);
 			\curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			// The php-curl extension uses the libcurl library to actually do the work.
+			// On some Ubuntu releases (for example, 20.04 and 22.04), the php-curl
+			// extension is somehow using the libcurl library in a way that CURLOPT_HEADER
+			// does not work, or libcurl itself does not correctly respect CURLOPT_HEADER.
+			// In those cases, the data returned by curl_exec is empty. (The header items
+			// like Content-Length are missing)
+			// So we also define a CURLOPT_HEADERFUNCTION. That gets called for each header
+			// that curl_exec processes internally. That is working, and so we use that as
+			// an alternative way to access Content-Length.
 			\curl_setopt($ch, CURLOPT_HEADER, true);
+			$fileSizeFromContentLength = -1;
+			\curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($ch, $header_line) use (&$fileSizeFromContentLength) {
+				\preg_match('/Content-Length: (\d+)/', $header_line, $matches);
+				if (isset($matches[1])) {
+					$fileSizeFromContentLength = 0 + $matches[1];
+				}
+				return \strlen($header_line);
+			});
 			$data = \curl_exec($ch);
 			\curl_close($ch);
 			if ($data !== false) {
@@ -128,6 +145,12 @@ class LargeFileHelper {
 				\preg_match('/Content-Length: (\d+)/', $data, $matches);
 				if (isset($matches[1])) {
 					return 0 + $matches[1];
+				}
+				// If the CURLOPT_HEADERFUNCTION detected a Content-Length
+				// then it should have set $fileSizeFromContentLength to
+				// something greater than or equal to zero. If so, return it.
+				if ($fileSizeFromContentLength >= 0) {
+					return $fileSizeFromContentLength;
 				}
 			}
 		}
