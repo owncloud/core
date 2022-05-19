@@ -2,9 +2,54 @@
 <h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
     <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.9.1...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.10.0...master">Full list of changes in unreleased </a>
     </p>
     <h3 id="unreleased-summary">Summary</h3>
+    <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - List apps only once: <a href="https://github.com/owncloud/core/issues/39930">#39930</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: <a href="https://github.com/owncloud/core/pull/40065">#40065</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Filter sensitive data in log for Session::createSessionToken: <a href="https://github.com/owncloud/core/pull/40066">#40066</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Correct Executed Unavailable Migrations and New Migrations: <a href="https://github.com/owncloud/core/issues/40084">#40084</a></li>
+    </ul>
+    <h3 id="unreleased-details">Details</h3>
+    <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - List apps only once: <a href="https://github.com/owncloud/core/issues/39930">#39930</a></p>
+            <p>`occ app:list --minimal` could display apps twice in the listing. Each app is now displayed
+   only once.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39930<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40081<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: <a href="https://github.com/owncloud/core/pull/40065">#40065</a></p>
+            <p>Local file size using the php-curl functions did not work on Ubuntu 20.04 or 22.04. The code has
+   been enhanced so that the file size can be determined using php-curl on these operating system
+   releases.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40065<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Filter sensitive data in log for Session::createSessionToken: <a href="https://github.com/owncloud/core/pull/40066">#40066</a></p>
+            <p>https://github.com/owncloud/core/pull/40066<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Correct Executed Unavailable Migrations and New Migrations: <a href="https://github.com/owncloud/core/issues/40084">#40084</a></p>
+            <p>`occ migrations:status` was reporting an incorrect value for these items. The problem has
+   been corrected.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40084<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40085<br></p>
+        </li>
+    </ul>
+    <h2 id="10.10.0" class="version"> Changelog for ownCloud Core [10.10.0] (2022-05-16)</h2>
+    <p>The following sections list the changes in ownCloud core 10.10.0 relevant to ownCloud admins and users.</p>
+    <p>
+    <a href="https://github.com/owncloud/core/compare/v10.9.1...v10.10.0">Full list of changes in 10.10.0</a>
+    </p>
+    <h3 id="10.10.0-summary">Summary</h3>
     <ul class="summary">
         <li class="type-security changelog-item">Security - Prevent stored mail settings password from showing in the webUI: <a href="https://github.com/owncloud/core/pull/39833">#39833</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></li>
@@ -45,7 +90,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Expose user type of share receiver in share api: <a href="https://github.com/owncloud/core/pull/40013">#40013</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Use the same string in the header also in public view: <a href="https://github.com/owncloud/core/pull/40032">#40032</a></li>
     </ul>
-    <h3 id="unreleased-details">Details</h3>
+    <h3 id="10.10.0-details">Details</h3>
     <ul class="details">
         <li class="type-security changelog-item">
             <p>Security - Prevent stored mail settings password from showing in the webUI: <a href="https://github.com/owncloud/core/pull/39833">#39833</a></p>
@@ -291,7 +336,7 @@
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add warnings for commands that are incompatible with object storage: <a href="https://github.com/owncloud/core/pull/39604">#39604</a></p>
-            <p>The following commands are affected:* `user:home:list-users` * `user:home:list-homes` * `user:move` * `user:report`
+            <p>The following commands are affected:* `user:home:list-users` * `user:home:list-dirs` * `user:move` * `user:report`
             </p>
             <p>https://github.com/owncloud/core/issues/39590<br>
             </p>

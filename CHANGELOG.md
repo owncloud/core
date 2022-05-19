@@ -3,7 +3,53 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.9.1...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.10.0...master
+
+Summary
+-------
+
+* Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
+* Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
+* Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
+* Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
+
+Details
+-------
+
+* Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
+
+   `occ app:list --minimal` could display apps twice in the listing. Each app is now displayed
+   only once.
+
+   https://github.com/owncloud/core/issues/39930
+   https://github.com/owncloud/core/pull/40081
+
+* Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
+
+   Local file size using the php-curl functions did not work on Ubuntu 20.04 or 22.04. The code has
+   been enhanced so that the file size can be determined using php-curl on these operating system
+   releases.
+
+   https://github.com/owncloud/core/pull/40065
+
+* Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
+
+   https://github.com/owncloud/core/pull/40066
+
+* Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
+
+   `occ migrations:status` was reporting an incorrect value for these items. The problem has
+   been corrected.
+
+   https://github.com/owncloud/core/issues/40084
+   https://github.com/owncloud/core/pull/40085
+
+Changelog for ownCloud Core [10.10.0] (2022-05-16)
+=======================================
+The following sections list the changes in ownCloud core 10.10.0 relevant to
+ownCloud admins and users.
+
+[10.10.0]: https://github.com/owncloud/core/compare/v10.9.1...v10.10.0
 
 Summary
 -------
@@ -345,7 +391,7 @@ Details
 
    The following commands are affected:
 
-   * `user:home:list-users` * `user:home:list-homes` * `user:move` * `user:report`
+   * `user:home:list-users` * `user:home:list-dirs` * `user:move` * `user:report`
 
    https://github.com/owncloud/core/issues/39590
    https://github.com/owncloud/core/pull/39604
