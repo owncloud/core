@@ -122,7 +122,7 @@ class ListApps extends Base {
 				$appDetailRecord = [];
 
 				if ($minimalView) {
-					$apps['enabled'][] = sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
+					$apps['enabled'][$app] = sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
 					continue;
 				}
 
@@ -141,7 +141,7 @@ class ListApps extends Base {
 				$appDetailRecord = [];
 
 				if ($minimalView) {
-					$apps['disabled'][] = sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
+					$apps['disabled'][$app] = sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
 					continue;
 				}
 
@@ -152,6 +152,14 @@ class ListApps extends Base {
 				$appDetailRecord['Path'] = \OC_App::getAppPath($app);
 				$apps['disabled'][$app] = $appDetailRecord;
 			}
+		}
+
+		if ($minimalView) {
+			// For minimal view we do not want writeArrayInOutputFormat to write a key-value format
+			// The app name and version are already formatted in the string that is the array value.
+			// So just keep the array values.
+			$apps['enabled'] = \array_values($apps['enabled']);
+			$apps['disabled'] = \array_values($apps['disabled']);
 		}
 
 		$this->writeAppList($input, $output, $apps);
