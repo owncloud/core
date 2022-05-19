@@ -1,0 +1,3 @@
+Enhancement: Add language prop to /cloud/user and /cloud/users/{userid} endpoint
+
+https://github.com/owncloud/core/pull/40087

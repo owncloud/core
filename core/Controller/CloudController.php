@@ -70,6 +70,7 @@ class CloudController extends OCSController {
 			'id' => $userObject->getUID(),
 			'display-name' => $userObject->getDisplayName(),
 			'email' => $userObject->getEMailAddress(),
+			'language' => \OC::$server->getConfig()->getUserValue($userObject->getUID(), 'core', 'lang', \OC::$server->getConfig()->getSystemValue('default_language', 'en'))
 		];
 		return ['data' => $data];
 	}
