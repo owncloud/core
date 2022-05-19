@@ -20,7 +20,7 @@
 	<ocsid>166048</ocsid>
 	<use-migrations>true</use-migrations>
 	<namespace>Files_External</namespace>
-
+	<default_enable/>
 	<dependencies>
 		<owncloud min-version="10" max-version="10" />
 	</dependencies>

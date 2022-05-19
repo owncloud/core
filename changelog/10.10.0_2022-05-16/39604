@@ -3,7 +3,7 @@ Enhancement: Add warnings for commands that are incompatible with object storage
 The following commands are affected:
 
 * `user:home:list-users`
-* `user:home:list-homes`
+* `user:home:list-dirs`
 * `user:move`
 * `user:report`
 

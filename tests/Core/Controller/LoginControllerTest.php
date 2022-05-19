@@ -86,7 +86,7 @@ class LoginControllerTest extends TestCase {
 
 	private function getExpectedRememberLoginAllowedState() {
 		// TODO: Improve detection
-		if (\class_exists('\OCA\Files_Extenal\AppInfo\Application')) {
+		if (\OC_App::isEnabled('files_external')) {
 			return false;
 		}
 		return true;
