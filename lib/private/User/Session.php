@@ -455,10 +455,10 @@ class Session implements IUserSession, Emitter {
 		$user = $this->getUser()->getUID();
 		OC_Util::setupFS($user);
 
+		//trigger creation of user home and /files folder
+		$userFolder = \OC::$server->getUserFolder($user);
 		if ($firstTimeLogin) {
 			// TODO: lock necessary?
-			//trigger creation of user home and /files folder
-			$userFolder = \OC::$server->getUserFolder($user);
 
 			try {
 				// copy skeleton
@@ -544,13 +544,14 @@ class Session implements IUserSession, Emitter {
 		if ($user->isEnabled()) {
 			$this->setUser($user);
 			$this->setLoginName($login);
-			$firstTimeLogin = $user->updateLastLoginTimestamp();
+			$firstTimeLogin = $user->getLastLogin() === 0;
 			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 			$afterEvent = new GenericEvent(null, ['loginType' => 'password', 'user' => $user, 'uid' => $user->getUID(), 'password' => $password]);
 			$this->eventDispatcher->dispatch($afterEvent, 'user.afterlogin');
 
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
+				$user->updateLastLoginTimestamp();
 				return true;
 			}
 
@@ -702,12 +703,13 @@ class Session implements IUserSession, Emitter {
 			// For example encryption needs to initialize the users keys first
 			// before we can create the user folder with the skeleton files
 
-			$firstTimeLogin = $user->updateLastLoginTimestamp();
+			$firstTimeLogin = $user->getLastLogin() === 0;
 			$this->manager->emit('\OC\User', 'postLogin', [$user, '']);
 			$afterEvent = new GenericEvent(null, ['loginType' => 'apache', 'user' => $user, 'login' => $user->getUID(), 'uid' => $user->getUID(), 'password' => '']);
 			$this->eventDispatcher->dispatch($afterEvent, 'user.afterlogin');
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
+				$user->updateLastLoginTimestamp();
 				return true;
 			}
 
@@ -1033,12 +1035,13 @@ class Session implements IUserSession, Emitter {
 
 				$this->setUser($user);
 				$this->setLoginName($user->getDisplayName());
-				$firstTimeLogin = $user->updateLastLoginTimestamp();
+				$firstTimeLogin = $user->getLastLogin() === 0;
 
 				$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
 				if ($this->isLoggedIn()) {
 					$this->prepareUserLogin($firstTimeLogin);
+					$user->updateLastLoginTimestamp();
 				} else {
 					$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 					throw new LoginException($message);

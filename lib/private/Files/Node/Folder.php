@@ -126,8 +126,8 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return \OC\Files\Node\Node
 	 * @throws \OCP\Files\NotFoundException
 	 */
-	public function get($path) {
-		return $this->root->get($this->getFullPath($path));
+	public function get($path, $ensureExists = false) {
+		return $this->root->get($this->getFullPath($path), $ensureExists);
 	}
 
 	/**
