@@ -70,7 +70,7 @@ class StatusCommand extends Command {
 		$executedUnavailableMigrations = \array_diff($executedMigrations, $availableMigrations);
 
 		$numExecutedUnavailableMigrations = \count($executedUnavailableMigrations);
-		$numNewMigrations = \count(\array_diff(\array_keys($availableMigrations), $executedMigrations));
+		$numNewMigrations = \count(\array_diff($availableMigrations, $executedMigrations));
 
 		$infos = [
 			'App'								=> $ms->getApp(),

@@ -1,6 +1,6 @@
-Bugfix: correct Executed Unavailable Migrations
+Bugfix: correct Executed Unavailable Migrations and New Migrations
 
-`occ migrations:status` was reporting an incorrect value for Executed Unavailable Migrations.
+`occ migrations:status` was reporting an incorrect value for these items.
 The problem has been corrected.
 
 https://github.com/owncloud/core/issues/40084
