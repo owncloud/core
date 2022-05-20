@@ -476,3 +476,37 @@ Feature: dav-versions
       | header              | value                                                                |
       | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
     And the downloaded content should be "uploaded content"
+
+
+  Scenario: User can retrieve meta information of a file
+    Given user "Alice" has uploaded file with content "123" to "/davtest.txt"
+    When user "Alice" retrieves the meta information of file "/davtest.txt" using the meta API
+    Then the HTTP status code should be "207"
+    And the single response should contain a property "oc:meta-path-for-user" with value "/davtest.txt"
+
+
+  Scenario: User can retrieve meta information of a file inside folder
+    Given user "Alice" has created folder "testFolder"
+    And user "Alice" has uploaded file with content "123" to "/testFolder/davtest.txt"
+    When user "Alice" retrieves the meta information of file "/testFolder/davtest.txt" using the meta API
+    Then the HTTP status code should be "207"
+    And the single response should contain a property "oc:meta-path-for-user" with value "/testFolder/davtest.txt"
+
+
+  Scenario: User cannot retrieve meta information of a file which is owned by somebody else
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "123" to "/davtest.txt "
+    And we save it into "FILEID"
+    When user "Brian" retrieves the meta information of fileId "<<FILEID>>" using the meta API
+    Then the HTTP status code should be "404"
+
+
+  Scenario Outline: User cannot retrieve meta information of a file that does not exist
+    When user "Alice" retrieves the meta information of fileId "<file-id>" using the meta API
+    Then the HTTP status code should be "400" or "404"
+    Examples:
+      | file-id                                                                                              | decoded-value                                                             | comment            |
+      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3PThjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bdc4-0b0000009157=8ccd2751-90a4-40f2-b9f3-61edf84421f4 | with = sign        |
+      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3OGNjZDI3NTEtOTBhNC00MGYyLWI5ZjMtNjFlZGY4NDQyMWY0     | 1284d238-aa92-42ce-bdc4-0b00000091578ccd2751-90a4-40f2-b9f3-61edf84421f4  | no = sign          |
+      | c29tZS1yYW5kb20tZmlsZUlkPWFub3RoZXItcmFuZG9tLWZpbGVJZA==                                             | some-random-fileId=another-random-fileId                                  | some random string |
+      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkxzQtMGIwMDAwMDA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bd�4-0b0000009156:8ccd2751-90a4-40f2-b9f3-61edf84421f4 | with : and  � sign |
