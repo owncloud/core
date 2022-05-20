@@ -695,7 +695,6 @@ class UsersTest extends OriginalTest {
 			->with('UserToGet')
 			->will($this->returnValue(['DummyValue']));
 		$targetUser
-			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('UserToGet'));
 		$targetUser
@@ -710,6 +709,11 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getLastLogin')
 			->willReturn('1618230656');
+		$this->config
+			->expects($this->once())
+			->method('getUserValue')
+			->with($targetUser->getUID(), 'core', 'lang')
+			->willReturn('de');
 
 		$expected = new Result(
 			[
@@ -719,7 +723,8 @@ class UsersTest extends OriginalTest {
 				'displayname' => 'Demo User',
 				'home' => '/var/ocdata/UserToGet',
 				'two_factor_auth_enabled' => 'false',
-				'last_login' => '1618230656'
+				'last_login' => '1618230656',
+				'language' => 'de'
 			]
 		);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
@@ -764,7 +769,6 @@ class UsersTest extends OriginalTest {
 			->method('getDisplayName')
 			->will($this->returnValue('Demo User'));
 		$targetUser
-			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('UserToGet'));
 		$targetUser
@@ -775,6 +779,11 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getLastLogin')
 			->willReturn('1618230656');
+		$this->config
+			->expects($this->once())
+			->method('getUserValue')
+			->with($targetUser->getUID(), 'core', 'lang')
+			->willReturn('de');
 
 		$expected = new Result(
 			[
@@ -784,7 +793,8 @@ class UsersTest extends OriginalTest {
 				'home' => '/var/ocdata/UserToGet',
 				'displayname' => 'Demo User',
 				'two_factor_auth_enabled' => 'false',
-				'last_login' => '1618230656'
+				'last_login' => '1618230656',
+				'language' => 'de'
 			]
 		);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
@@ -852,7 +862,6 @@ class UsersTest extends OriginalTest {
 			->method('getDisplayName')
 			->will($this->returnValue('Subadmin User'));
 		$targetUser
-			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser
@@ -863,6 +872,11 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getLastLogin')
 			->willReturn('1618230656');
+		$this->config
+			->expects($this->once())
+			->method('getUserValue')
+			->with($targetUser->getUID(), 'core', 'lang')
+			->willReturn('de');
 
 		$expected = new Result([
 			'quota' => ['DummyValue', 'definition' => null],
@@ -870,7 +884,8 @@ class UsersTest extends OriginalTest {
 			'displayname' => 'Subadmin User',
 			'home' => '/var/ocdata/UserToGet',
 			'two_factor_auth_enabled' => 'false',
-			'last_login' => '1618230656'
+			'last_login' => '1618230656',
+			'language' => 'de'
 		]);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'subadmin']));
 	}
