@@ -355,11 +355,13 @@ class FilesVersionsContext implements Context {
 			$metaPath = "/meta/$path/";
 		}
 
-		$body
-			= "<?xml version='1.0' encoding='utf-8' ?>\n" .
-			"	<a:propfind xmlns:a='DAV:' xmlns:oc='http://owncloud.org/ns' >\n" .
-			"		<a:prop><oc:meta-path-for-user/></a:prop>\n" .
-			"   </a:propfind>\n";
+		$body = '<?xml version="1.0" encoding="utf-8"?>
+			<a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
+		    	<a:prop>
+		    		<oc:meta-path-for-user />
+		    	</a:prop>
+			</a:propfind>';
+
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl,
 			$user,

@@ -487,7 +487,7 @@ Feature: dav-versions
 
   Scenario: User can retrieve meta information of a file inside folder
     Given user "Alice" has created folder "testFolder"
-    Given user "Alice" has uploaded file with content "123" to "/testFolder/davtest.txt"
+    And user "Alice" has uploaded file with content "123" to "/testFolder/davtest.txt"
     When user "Alice" retrieves the meta information of file "/testFolder/davtest.txt" using the meta API
     Then the HTTP status code should be "207"
     And the single response should contain a property "oc:meta-path-for-user" with value "/testFolder/davtest.txt"
@@ -501,8 +501,7 @@ Feature: dav-versions
     Then the HTTP status code should be "404"
 
 
-  Scenario Outline: User cannot retrieve meta folder of a file which does not exist
-    Given user "Alice" has uploaded file with content "123" to "/davtest.txt"
+  Scenario Outline: User cannot retrieve meta information of a file that does not exist
     When user "Alice" retrieves the meta information of fileId "<file-id>" using the meta API
     Then the HTTP status code should be "400" or "404"
     Examples:
