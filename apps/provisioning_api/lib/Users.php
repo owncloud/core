@@ -225,6 +225,7 @@ class Users {
 		$data['home'] = $targetUserObject->getHome();
 		$data['two_factor_auth_enabled'] = $this->twoFactorAuthManager->isTwoFactorAuthenticated($targetUserObject) ? 'true' : 'false';
 		$data['last_login'] = $targetUserObject->getLastLogin();
+		$data['language'] =  $this->config->getUserValue($targetUserObject->getUID(), 'core', 'lang', $this->config->getSystemValue('default_language', 'en'));
 
 		return new Result($data);
 	}
