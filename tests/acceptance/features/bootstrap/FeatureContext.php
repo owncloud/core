@@ -1042,6 +1042,17 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * set the normal output of the last occ command
+	 *
+	 * @param string $stdOut
+	 *
+	 * @return void
+	 */
+	public function setStdOutOfOccCommand(string $stdOut): void {
+		$this->lastStdOut = $stdOut;
+	}
+
+	/**
 	 * get the error output of the last occ command
 	 * app acceptance tests that have their own step code may need to process this
 	 *
