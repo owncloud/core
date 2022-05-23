@@ -11,7 +11,7 @@ Feature: update a public link share
     And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share with settings
       | path | FOLDER |
-    When user "Alice" updates the last share using the sharing API with
+    When user "Alice" updates the last public link share using the sharing API with
       | expireDate | +3 days |
     Then the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be ""

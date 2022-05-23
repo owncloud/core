@@ -735,7 +735,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
 		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 
-		$this->featureContext->resetLastShareData();
+		$this->featureContext->resetLastPublicShareData();
 	}
 
 	/**

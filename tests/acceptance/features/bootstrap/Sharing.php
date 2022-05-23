@@ -46,7 +46,22 @@ trait Sharing {
 	/**
 	 * @var SimpleXMLElement
 	 */
-	private $lastShareData = null;
+	private $lastShareDataByUser = [];
+
+	/**
+	 * @var string
+	 */
+	private $userWhoCreatedLastShare = null;
+
+	/**
+	 * @var string
+	 */
+	private $userWhoCreatedLastPublicShare = null;
+
+	/**
+	 * @var SimpleXMLElement
+	 */
+	private $lastPublicShareData = null;
 
 	/**
 	 * @var int
@@ -95,10 +110,37 @@ trait Sharing {
 	}
 
 	/**
+	 * @return SimpleXMLElement|null
+	 */
+	public function getLastPublicShareData():?SimpleXMLElement {
+		return $this->lastPublicShareData;
+	}
+
+	/**
 	 * @return SimpleXMLElement
+	 * @throws Exception
 	 */
 	public function getLastShareData():SimpleXMLElement {
-		return $this->lastShareData;
+		return $this->getLastShareDataForUser($this->userWhoCreatedLastShare);
+	}
+
+	/**
+	 * @param string|null $user
+	 *
+	 * @return SimpleXMLElement
+	 * @throws Exception
+	 */
+	public function getLastShareDataForUser(?string $user):SimpleXMLElement {
+		if ($user === null) {
+			throw new Exception(
+				__METHOD__ . " user not specified. Probably no user or group shares have been created yet in the test scenario."
+			);
+		}
+		if (isset($this->lastShareDataByUser[$user])) {
+			return $this->lastShareDataByUser[$user];
+		} else {
+			throw new Exception(__METHOD__ . " last share data for user '$user' was not found");
+		}
 	}
 
 	/**
@@ -111,8 +153,20 @@ trait Sharing {
 	/**
 	 * @return void
 	 */
-	public function resetLastShareData():void {
-		$this->lastShareData = null;
+	public function resetLastPublicShareData():void {
+		$this->lastPublicShareData = null;
+		$this->userWhoCreatedLastPublicShare = null;
+	}
+
+	/**
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function resetLastShareDataForUser(string $user):void {
+		if (isset($this->lastShareDataByUser[$user])) {
+			unset($this->lastShareDataByUser[$user]);
+		}
 	}
 
 	/**
@@ -126,7 +180,7 @@ trait Sharing {
 	 * @return int
 	 */
 	public function getServerLastShareTime():int {
-		return (int) $this->lastShareData->data->stime;
+		return (int) $this->getLastShareData()->data->stime;
 	}
 
 	/**
@@ -752,7 +806,7 @@ trait Sharing {
 	 * @return string
 	 */
 	public function getMimeTypeOfLastSharedFile():string {
-		return \json_decode(\json_encode($this->lastShareData->data->mimetype), true)[0];
+		return \json_decode(\json_encode($this->getLastShareData()->data->mimetype), true)[0];
 	}
 
 	/**
@@ -873,17 +927,27 @@ trait Sharing {
 	 * @param string $user
 	 * @param TableNode|null $body
 	 * @param string|null $shareOwner
+	 * @param bool $updateLastPublicLink
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function updateLastShareWithSettings(string $user, ?TableNode $body, ?string $shareOwner = null):void {
+	public function updateLastShareWithSettings(
+		string $user,
+		?TableNode $body,
+		?string $shareOwner = null,
+		?bool $updateLastPublicLink = false
+	):void {
 		$user = $this->getActualUsername($user);
 
-		if ($shareOwner === null) {
-			$share_id = $this->lastShareData->data[0]->id;
+		if ($updateLastPublicLink) {
+			$share_id = $this->getLastPublicLinkShareId();
 		} else {
-			$share_id = $this->getLastShareIdOf($shareOwner);
+			if ($shareOwner === null) {
+				$share_id = $this->getLastShareData()->data[0]->id;
+			} else {
+				$share_id = $this->getLastShareIdOf($shareOwner);
+			}
 		}
 
 		$this->verifyTableNodeRows(
@@ -935,6 +999,20 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" updates the last public link share using the sharing API with$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userUpdatesTheLastPublicLinkShareWith(string $user, ?TableNode $body):void {
+		$this->updateLastShareWithSettings($user, $body, null, true);
+		$this->pushToLastStatusCodesArrays();
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has updated the last share with$/
 	 *
 	 * @param string $user
@@ -945,6 +1023,20 @@ trait Sharing {
 	 */
 	public function userHasUpdatedTheLastShareWith(string $user, ?TableNode $body):void {
 		$this->updateLastShareWithSettings($user, $body);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has updated the last public link share with$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userHasUpdatedTheLastPublicLinkShareWith(string $user, ?TableNode $body):void {
+		$this->updateLastShareWithSettings($user, $body, null, true);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
@@ -1032,13 +1124,24 @@ trait Sharing {
 		);
 		// In case of HTTP status code 204, there is no content in response payload body.
 		if ($this->response->getStatusCode() === 204) {
-			$this->lastShareData = null;
+			if ($shareType === 'public_link') {
+				$this->lastPublicShareData = null;
+				$this->userWhoCreatedLastPublicShare = null;
+			} else {
+				$this->resetLastShareDataForUser($user);
+			}
 		} else {
-			$this->lastShareData = $this->getResponseXml(null, __METHOD__);
-			if ($shareType === 'public_link' && isset($this->lastShareData->data)) {
-				$linkName = (string) $this->lastShareData->data[0]->name;
-				$linkUrl = (string) $this->lastShareData->data[0]->url;
-				$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+			if ($shareType === 'public_link') {
+				$this->lastPublicShareData = $this->getResponseXml(null, __METHOD__);
+				$this->userWhoCreatedLastPublicShare = $user;
+				if (isset($this->lastPublicShareData->data)) {
+					$linkName = (string) $this->lastPublicShareData->data[0]->name;
+					$linkUrl = (string) $this->lastPublicShareData->data[0]->url;
+					$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+				}
+			} else {
+				$this->lastShareDataByUser[$user] = $this->getResponseXml(null, __METHOD__);
+				$this->userWhoCreatedLastShare = $user;
 			}
 		}
 		$this->localLastShareTime = \microtime(true);
@@ -1747,6 +1850,19 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" tries to update the last public link share using the sharing API with$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userTriesToUpdateTheLastPublicLinkShareUsingTheSharingApiWith(string $user, ?TableNode $body):void {
+		$this->updateLastShareWithSettings($user, $body, null, true);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should not be able to share (file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
 	 * @Then /^user "([^"]*)" should not be able to share (file|folder|entry) "([^"]*)" with (user|group) "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
@@ -1850,13 +1966,17 @@ trait Sharing {
 
 	/**
 	 * @param string $user
+	 * @param string|null $sharer
 	 *
 	 * @return void
 	 */
-	public function deleteLastShareUsingSharingApi(string $user):void {
+	public function deleteLastShareUsingSharingApi(string $user, string $sharer = null):void {
 		$user = $this->getActualUsername($user);
-		$share_id = $this->lastShareData->data[0]->id;
-		$url = $this->getSharesEndpointPath("/$share_id");
+		if ($sharer === null) {
+			$sharer = $user;
+		}
+		$shareId = $this->getLastShareIdForUser($sharer);
+		$url = $this->getSharesEndpointPath("/$shareId");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			"DELETE",
@@ -1882,6 +2002,20 @@ trait Sharing {
 	 */
 	public function userDeletesLastShareUsingTheSharingApi(string $user):void {
 		$this->deleteLastShareUsingSharingApi($user);
+		$this->pushToLastStatusCodesArrays();
+	}
+
+	/**
+	 * @When /^user "([^"]*)" deletes the last share of user "([^"]*)" using the sharing API$/
+	 * @When /^user "([^"]*)" tries to delete the last share of user "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $sharer
+	 *
+	 * @return void
+	 */
+	public function userDeletesLastShareOfUserUsingTheSharingApi(string $user, string $sharer):void {
+		$this->deleteLastShareUsingSharingApi($user, $sharer);
 		$this->pushToLastStatusCodesArrays();
 	}
 
@@ -1918,13 +2052,47 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi(string $user, ?string $language = null):void {
-		if (isset($this->lastShareData->data[0]->id)) {
-			$share_id = $this->lastShareData->data[0]->id;
+		if (isset($this->getLastShareData()->data[0]->id)) {
+			$share_id = $this->getLastShareData()->data[0]->id;
 		} else {
 			$share_id = $this->getLastShareIdOf($user);
 		}
 		$language = TranslationHelper::getLanguage($language);
 		$this->getShareData($user, (string)$share_id, $language);
+		$this->pushToLastStatusCodesArrays();
+	}
+
+	/**
+	 * @When /^the user gets the info of the last public link share using the sharing API$/
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserGetsInfoOfLastPublicLinkShareUsingTheSharingApi():void {
+		$this->userGetsInfoOfLastPublicLinkShareUsingTheSharingApi($this->userWhoCreatedLastPublicShare);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the info of the last public link share in language "([^"]*)" using the sharing API$/
+	 * @When /^user "([^"]*)" gets the info of the last public link share using the sharing API$/
+	 *
+	 * @param string $user username that requests the information (might not be the user that has initiated the share)
+	 * @param string|null $language
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsInfoOfLastPublicLinkShareUsingTheSharingApi(string $user, ?string $language = null):void {
+		$lastPublicShareData = $this->getLastPublicShareData();
+		if ($lastPublicShareData !== null) {
+			$shareId = (string) $lastPublicShareData->data[0]->id;
+		} else {
+			// ToDo: what should we do here? Throw an exception? PDD
+			//       We really need to already have knowledge of the last public share
+			$shareId = $this->getLastShareIdOf($user);
+		}
+		$language = TranslationHelper::getLanguage($language);
+		$this->getShareData($user, $shareId, $language);
 		$this->pushToLastStatusCodesArrays();
 	}
 
@@ -1992,16 +2160,43 @@ trait Sharing {
 	}
 
 	/**
+	 * Retrieves the id of the last public link shared file
+	 *
+	 * @return string|null
+	 */
+	public function getLastPublicLinkShareId():?string {
+		$shareData = $this->getLastPublicShareData();
+		if ($shareData->data) {
+			// id is a SimpleXMLElement object that contains the share id
+			// which is a string.
+			// (It might be a numeric string or might not, either is fine.)
+			return (string) $shareData->data[0]->id;
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Retrieves the id of the last shared file
 	 *
 	 * @return string|null
 	 */
 	public function getLastShareId():?string {
-		if ($this->lastShareData && $this->lastShareData->data) {
+		return $this->getLastShareIdForUser($this->userWhoCreatedLastShare);
+	}
+
+	/**
+	 * @param string $user
+	 *
+	 * @return string|null
+	 */
+	public function getLastShareIdForUser(string $user):?string {
+		$shareData = $this->getLastShareDataForUser($user);
+		if ($shareData->data) {
 			// id is a SimpleXMLElement object that contains the share id
 			// which is a string.
 			// (It might be a numeric string or might not, either is fine.)
-			return (string) $this->lastShareData->data[0]->id;
+			return (string) $shareData->data[0]->id;
 		} else {
 			return null;
 		}
@@ -2037,7 +2232,8 @@ trait Sharing {
 	public function extractLastSharedIdFromLastResponse():?string {
 		// extract max id
 		$xpath = '/ocs/data/element/id[not (. < ../../element/id)][1]';
-		$id = $this->getResponseXml(null, __METHOD__)->xpath($xpath);
+		$responseXml = $this->getResponseXml(null, __METHOD__);
+		$id = $responseXml->xpath($xpath);
 		if ((bool) $id) {
 			return (string) $id[0];
 		}
@@ -2286,7 +2482,7 @@ trait Sharing {
 	):void {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
-		$this->getShareData($user, (string)$this->lastShareData->data[0]->id);
+		$this->getShareData($user, (string)$this->getLastShareData()->data[0]->id);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
 			"Error getting info of last share for user $user"
@@ -2396,10 +2592,10 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function checkingLastShareIDIsIncluded():void {
-		$share_id = (string)$this->lastShareData->data[0]->id;
-		if (!$this->isFieldInResponse('id', $share_id)) {
+		$shareId = $this->getLastShareId();
+		if (!$this->isFieldInResponse('id', $shareId)) {
 			Assert::fail(
-				"Share id $share_id not found in response"
+				"Share id $shareId not found in response"
 			);
 		}
 	}
@@ -2411,10 +2607,10 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function checkLastShareIDIsNotIncluded():void {
-		$share_id = (string) $this->lastShareData->data[0]->id;
-		if ($this->isFieldInResponse('id', $share_id, false)) {
+		$shareId = $this->getLastShareId();
+		if ($this->isFieldInResponse('id', $shareId, false)) {
 			Assert::fail(
-				"Share id $share_id has been found in response"
+				"Share id $shareId has been found in response"
 			);
 		}
 	}
@@ -3387,12 +3583,12 @@ trait Sharing {
 	/**
 	 * @return string authorization token
 	 */
-	public function getLastShareToken():string {
-		if (\count($this->lastShareData->data->element) > 0) {
-			return (string)$this->lastShareData->data[0]->token;
+	public function getLastPublicShareToken():string {
+		if (\count($this->lastPublicShareData->data->element) > 0) {
+			return (string)$this->lastPublicShareData->data[0]->token;
 		}
 
-		return (string)$this->lastShareData->data->token;
+		return (string)$this->lastPublicShareData->data->token;
 	}
 
 	/**
@@ -3422,7 +3618,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function thePublicAccessesThePreviewOfTheSharedFileUsingTheSharingApi(string $path):void {
-		$shareData = $this->getLastShareData();
+		$shareData = $this->getLastPublicShareData();
 		$token = (string) $shareData->data->token;
 		$this->getPublicPreviewOfFile($path, $token);
 		$this->pushToLastStatusCodesArrays();
@@ -3444,7 +3640,7 @@ trait Sharing {
 		$this->emptyLastHTTPStatusCodesArray();
 		$this->emptyLastOCSStatusCodesArray();
 		foreach ($paths as $path) {
-			$shareData = $this->getLastShareData();
+			$shareData = $this->getLastPublicShareData();
 			$token = (string) $shareData->data->token;
 			$this->getPublicPreviewOfFile($path["path"], $token);
 			$this->pushToLastStatusCodesArrays();
@@ -3466,7 +3662,7 @@ trait Sharing {
 		$user = $this->getActualUsername($user);
 		$userPassword = $this->getPasswordForUser($user);
 
-		$shareData = $this->getLastShareData();
+		$shareData = $this->getLastPublicShareData();
 		$owner = (string) $shareData->data->uid_owner;
 		$name = $this->encodePath((string) $shareData->data->file_target);
 		$name = \trim($name, "/");

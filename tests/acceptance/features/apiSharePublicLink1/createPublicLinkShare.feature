@@ -331,7 +331,7 @@ Feature: create a public link share
       | path        | /afolder |
       | permissions | read     |
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    When user "Alice" tries to update the last share using the sharing API with
+    When user "Alice" tries to update the last public link share using the sharing API with
       | permissions | read,create |
     Then the OCS status code should be "<ocs_status_code>"
 
@@ -541,7 +541,7 @@ Feature: create a public link share
       | permissions | read            |
       | uid_owner   | %username%      |
       | expiration  | +7 days         |
-    When user "Alice" gets the info of the last share using the sharing API
+    When user "Alice" gets the info of the last public link share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response to user "Alice" should include
@@ -684,7 +684,7 @@ Feature: create a public link share
       | path               | /textfile0.txt |
       | name               | link2          |
       | expireDateAsString | +5 days        |
-    And the administrator expires the last created share using the testing API
+    And the administrator expires the last created public link share using the testing API
     Then the HTTP status code should be "<http_status_code>"
     When user "Alice" gets all the shares from the file "textfile0.txt" using the sharing API
     Then the HTTP status code should be "<http_status_code>"

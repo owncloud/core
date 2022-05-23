@@ -2683,7 +2683,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function publicLinkWithLastShareTokenShouldBeListedAsShareReceiverViaOnTheWebUI(string $item):void {
-		$token = (string)$this->featureContext->getLastShareData()->data->token;
+		$token = (string)$this->featureContext->getLastPublicShareData()->data->token;
 		$sharingDialog = $this->filesPage->getSharingDialog();
 		$shareTreeItem = $sharingDialog->getShareTreeItem("public link", $token, $item);
 		Assert::assertTrue(

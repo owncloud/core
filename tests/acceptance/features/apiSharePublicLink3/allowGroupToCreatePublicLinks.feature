@@ -48,7 +48,7 @@ Feature: public share sharers groups setting
       | permissions | read             |
     And parameter "public_share_sharers_groups_allowlist_enabled" of app "files_sharing" has been set to "yes"
     And parameter "public_share_sharers_groups_allowlist" of app "files_sharing" has been set to '["grp1"]'
-    When user "Alice" updates the last share using the sharing API with
+    When user "Alice" updates the last public link share using the sharing API with
       | expireDate | +3 days |
     Then the HTTP status code should be "200"
     And the OCS status code should be "100"
