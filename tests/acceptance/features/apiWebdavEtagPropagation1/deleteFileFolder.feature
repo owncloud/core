@@ -240,7 +240,7 @@ Feature: propagation of etags when deleting a file or folder
       | permissions | change |
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/upload"
-    When the public deletes file "file.txt" from the last public share using the new public WebDAV API
+    When the public deletes file "file.txt" from the last public link share using the new public WebDAV API
     Then the HTTP status code should be "204"
     And these etags should have changed:
       | user  | path    |
@@ -265,7 +265,7 @@ Feature: propagation of etags when deleting a file or folder
       | permissions | change |
     And user "Alice" has stored etag of element "/"
     And user "Alice" has stored etag of element "/upload"
-    When the public deletes folder "sub" from the last public share using the new public WebDAV API
+    When the public deletes folder "sub" from the last public link share using the new public WebDAV API
     Then the HTTP status code should be "204"
     And these etags should have changed:
       | user  | path    |

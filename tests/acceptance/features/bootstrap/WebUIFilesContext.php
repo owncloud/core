@@ -145,6 +145,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private $currentFile = "";
 
 	/**
+	 * variable to remember the path of a received share that has been moved
+	 *
+	 * @var string
+	 */
+	private $pathOfMovedReceivedShare = "";
+
+	/**
 	 *
 	 * @var FeatureContext
 	 */
@@ -225,6 +232,15 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	private function getCurrentFolderFilePath():string {
 		return \rtrim($this->currentFolder, '/') . '/' . $this->currentFile;
+	}
+
+	/**
+	 * get the new path of a moved received share (if any, it might be an empty string)
+	 *
+	 * @return string
+	 */
+	public function getPathOfMovedReceivedShare():string {
+		return $this->pathOfMovedReceivedShare;
 	}
 
 	/**
@@ -888,6 +904,22 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserMovesFileFolderIntoFolderUsingTheWebUI($name, $destination):void {
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->moveFileTo($name, $destination, $this->getSession());
+	}
+
+	/**
+	 * @When the user moves received file/folder :name into folder :destination using the webUI
+	 *
+	 * @param string|array $name
+	 * @param string|array $destination
+	 *
+	 * @return void
+	 */
+	public function theUserMovesReceivedFileFolderIntoFolderUsingTheWebUI($name, $destination):void {
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->moveFileTo($name, $destination, $this->getSession());
+		// A received share has been moved. Remember that this exists as a new share path,
+		// so that other steps can be aware of it.
+		$this->pathOfMovedReceivedShare = "$destination/$name";
 	}
 
 	/**
@@ -2683,7 +2715,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function publicLinkWithLastShareTokenShouldBeListedAsShareReceiverViaOnTheWebUI(string $item):void {
-		$token = (string)$this->featureContext->getLastShareData()->data->token;
+		$token = $this->featureContext->getLastPublicShareToken();
 		$sharingDialog = $this->filesPage->getSharingDialog();
 		$shareTreeItem = $sharingDialog->getShareTreeItem("public link", $token, $item);
 		Assert::assertTrue(

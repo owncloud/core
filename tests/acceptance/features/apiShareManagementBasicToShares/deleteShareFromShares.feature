@@ -173,7 +173,7 @@ Feature: sharing
     And user "Alice" has shared entry "<entry_to_share>" with group "grp1"
     And user "Brian" has accepted share "<pending_entry>" offered by user "Alice"
     And user "Carol" has accepted share "<pending_entry>" offered by user "Alice"
-    When user "Brian" deletes the last share using the sharing API
+    When user "Brian" deletes the last share of user "Alice" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Alice" entry "<entry_to_share>" should exist
@@ -201,7 +201,7 @@ Feature: sharing
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared entry "<entry_to_share>" with user "Brian"
     And user "Brian" has accepted share "<pending_entry>" offered by user "Alice"
-    When user "Brian" deletes the last share using the sharing API
+    When user "Brian" deletes the last share of user "Alice" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Alice" entry "<entry_to_share>" should exist
@@ -242,7 +242,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
-    When user "Brian" tries to delete the last share using the sharing API
+    When user "Brian" tries to delete the last share of user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     Examples:

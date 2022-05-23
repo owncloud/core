@@ -29,7 +29,7 @@ Feature: multilinksharing
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink3 |
-    When user "Alice" updates the last share using the sharing API with
+    When user "Alice" updates the last public link share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -64,7 +64,7 @@ Feature: multilinksharing
       | expireDate  | +3 days       |
       | permissions | read          |
       | name        | sharedlink3   |
-    When user "Alice" updates the last share using the sharing API with
+    When user "Alice" updates the last public link share using the sharing API with
       | permissions | read |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -95,7 +95,7 @@ Feature: multilinksharing
       | publicUpload | true        |
       | permissions  | change      |
       | name         | sharedlink2 |
-    When user "Alice" updates the last share using the sharing API with
+    When user "Alice" updates the last public link share using the sharing API with
       | password | %alt1% |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"

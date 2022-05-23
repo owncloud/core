@@ -11,7 +11,7 @@ Feature: create a public link share
 
   @issue-37605
   Scenario: Get the mtime of a file inside a folder shared by public link using new webDAV version
-    When the public uploads file "file.txt" to the last shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
+    When the public uploads file "file.txt" to the last public link shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "testFolder/file.txt" should exist
     And as "Alice" the mtime of the file "testFolder/file.txt" should not be "Thu, 08 Aug 2019 04:18:13 GMT"
@@ -22,7 +22,7 @@ Feature: create a public link share
   @issue-37605
   Scenario: overwriting a file changes its mtime (new public webDAV API)
     Given user "Alice" has uploaded file with content "uploaded content for file name ending with a dot" to "testFolder/file.txt"
-    When the public uploads file "file.txt" to the last shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
+    When the public uploads file "file.txt" to the last public link shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" file "/testFolder/file.txt" should exist
     And as "Alice" the mtime of the file "testFolder/file.txt" should not be "Thu, 08 Aug 2019 04:18:13 GMT"

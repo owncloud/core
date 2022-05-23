@@ -131,7 +131,7 @@ Feature: sharing
     And user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
     And user "Alice" has shared entry "<entry_to_share>" with group "grp1"
-    When user "Brian" deletes the last share using the sharing API
+    When user "Brian" deletes the last share of user "Alice" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Alice" entry "<entry_to_share>" should exist
@@ -149,7 +149,7 @@ Feature: sharing
     And user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
     And user "Alice" has shared entry "<entry_to_share>" with user "Brian"
-    When user "Brian" deletes the last share using the sharing API
+    When user "Brian" deletes the last share of user "Alice" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Alice" entry "<entry_to_share>" should exist
@@ -165,7 +165,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     And user "Alice" has shared file "fileToShare.txt" with user "Brian"
-    When user "Brian" tries to delete the last share using the sharing API
+    When user "Brian" tries to delete the last share of user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     Examples:

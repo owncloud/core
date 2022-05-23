@@ -924,7 +924,6 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function deleteLdapUsersAndGroups():void {
-		// pdd
 		$isOcisOrReva = OcisHelper::isTestingOnOcisOrReva();
 		foreach ($this->ldapCreatedUsers as $user) {
 			if ($isOcisOrReva) {
