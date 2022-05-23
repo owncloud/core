@@ -172,6 +172,21 @@ class Doubleclicksearch extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'getIdMappingFile' => [
+              'path' => 'doubleclicksearch/v2/agency/{agencyId}/advertiser/{advertiserId}/idmapping',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'agencyId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'advertiserId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'request' => [
               'path' => 'doubleclicksearch/v2/reports',
               'httpMethod' => 'POST',

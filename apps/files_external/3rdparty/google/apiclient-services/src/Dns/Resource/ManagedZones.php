@@ -35,8 +35,6 @@ class ManagedZones extends \Google\Service\Resource
    * Creates a new ManagedZone. (managedZones.create)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param ManagedZone $postBody
    * @param array $optParams Optional parameters.
    *
@@ -45,9 +43,9 @@ class ManagedZones extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return ManagedZone
    */
-  public function create($project, $location, ManagedZone $postBody, $optParams = [])
+  public function create($project, ManagedZone $postBody, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'postBody' => $postBody];
+    $params = ['project' => $project, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('create', [$params], ManagedZone::class);
   }
@@ -55,8 +53,6 @@ class ManagedZones extends \Google\Service\Resource
    * Deletes a previously created ManagedZone. (managedZones.delete)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $managedZone Identifies the managed zone addressed by this
    * request. Can be the managed zone name or ID.
    * @param array $optParams Optional parameters.
@@ -65,9 +61,9 @@ class ManagedZones extends \Google\Service\Resource
    * optional identifier specified by the client. Must be unique for operation
    * resources in the Operations collection.
    */
-  public function delete($project, $location, $managedZone, $optParams = [])
+  public function delete($project, $managedZone, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'managedZone' => $managedZone];
+    $params = ['project' => $project, 'managedZone' => $managedZone];
     $params = array_merge($params, $optParams);
     return $this->call('delete', [$params]);
   }
@@ -75,8 +71,6 @@ class ManagedZones extends \Google\Service\Resource
    * Fetches the representation of an existing ManagedZone. (managedZones.get)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $managedZone Identifies the managed zone addressed by this
    * request. Can be the managed zone name or ID.
    * @param array $optParams Optional parameters.
@@ -86,9 +80,9 @@ class ManagedZones extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return ManagedZone
    */
-  public function get($project, $location, $managedZone, $optParams = [])
+  public function get($project, $managedZone, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'managedZone' => $managedZone];
+    $params = ['project' => $project, 'managedZone' => $managedZone];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], ManagedZone::class);
   }
@@ -97,8 +91,6 @@ class ManagedZones extends \Google\Service\Resource
    * (managedZones.listManagedZones)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string dnsName Restricts the list to return only zones with this
@@ -110,9 +102,9 @@ class ManagedZones extends \Google\Service\Resource
    * request.
    * @return ManagedZonesListResponse
    */
-  public function listManagedZones($project, $location, $optParams = [])
+  public function listManagedZones($project, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location];
+    $params = ['project' => $project];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ManagedZonesListResponse::class);
   }
@@ -120,8 +112,6 @@ class ManagedZones extends \Google\Service\Resource
    * Applies a partial update to an existing ManagedZone. (managedZones.patch)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $managedZone Identifies the managed zone addressed by this
    * request. Can be the managed zone name or ID.
    * @param ManagedZone $postBody
@@ -132,9 +122,9 @@ class ManagedZones extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return Operation
    */
-  public function patch($project, $location, $managedZone, ManagedZone $postBody, $optParams = [])
+  public function patch($project, $managedZone, ManagedZone $postBody, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'managedZone' => $managedZone, 'postBody' => $postBody];
+    $params = ['project' => $project, 'managedZone' => $managedZone, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], Operation::class);
   }
@@ -142,8 +132,6 @@ class ManagedZones extends \Google\Service\Resource
    * Updates an existing ManagedZone. (managedZones.update)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $managedZone Identifies the managed zone addressed by this
    * request. Can be the managed zone name or ID.
    * @param ManagedZone $postBody
@@ -154,9 +142,9 @@ class ManagedZones extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return Operation
    */
-  public function update($project, $location, $managedZone, ManagedZone $postBody, $optParams = [])
+  public function update($project, $managedZone, ManagedZone $postBody, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'managedZone' => $managedZone, 'postBody' => $postBody];
+    $params = ['project' => $project, 'managedZone' => $managedZone, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('update', [$params], Operation::class);
   }

@@ -1,0 +1,9 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+
+The following have been updated in apps/files_external/3rdparty:
+- google/apiclient-services (0.244.0 to 0.250.0)
+- monolog/monolog (2.5.0 to 2.6.0)
+
+https://github.com/owncloud/core/pull/40092

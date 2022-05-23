@@ -17,6 +17,9 @@
 
 namespace Google\Service\Eventarc\Resource;
 
+use Google\Service\Eventarc\Channel;
+use Google\Service\Eventarc\GoogleLongrunningOperation;
+use Google\Service\Eventarc\ListChannelsResponse;
 use Google\Service\Eventarc\Policy;
 use Google\Service\Eventarc\SetIamPolicyRequest;
 use Google\Service\Eventarc\TestIamPermissionsRequest;
@@ -32,6 +35,55 @@ use Google\Service\Eventarc\TestIamPermissionsResponse;
  */
 class ProjectsLocationsChannels extends \Google\Service\Resource
 {
+  /**
+   * Create a new channel in a particular project and location. (channels.create)
+   *
+   * @param string $parent Required. The parent collection in which to add this
+   * channel.
+   * @param Channel $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string channelId Required. The user-provided ID to be assigned to
+   * the channel.
+   * @opt_param bool validateOnly Required. If set, validate the request and
+   * preview the review, but do not post it.
+   * @return GoogleLongrunningOperation
+   */
+  public function create($parent, Channel $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
+   * Delete a single channel. (channels.delete)
+   *
+   * @param string $name Required. The name of the channel to be deleted.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param bool validateOnly Required. If set, validate the request and
+   * preview the review, but do not post it.
+   * @return GoogleLongrunningOperation
+   */
+  public function delete($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
+   * Get a single Channel. (channels.get)
+   *
+   * @param string $name Required. The name of the channel to get.
+   * @param array $optParams Optional parameters.
+   * @return Channel
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], Channel::class);
+  }
   /**
    * Gets the access control policy for a resource. Returns an empty policy if the
    * resource exists and does not have a policy set. (channels.getIamPolicy)
@@ -60,6 +112,52 @@ class ProjectsLocationsChannels extends \Google\Service\Resource
     $params = ['resource' => $resource];
     $params = array_merge($params, $optParams);
     return $this->call('getIamPolicy', [$params], Policy::class);
+  }
+  /**
+   * List channels. (channels.listProjectsLocationsChannels)
+   *
+   * @param string $parent Required. The parent collection to list channels on.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string orderBy The sorting order of the resources returned. Value
+   * should be a comma-separated list of fields. The default sorting order is
+   * ascending. To specify descending order for a field, append a `desc` suffix;
+   * for example: `name desc, channel_id`.
+   * @opt_param int pageSize The maximum number of channels to return on each
+   * page. Note: The service may send fewer.
+   * @opt_param string pageToken The page token; provide the value from the
+   * `next_page_token` field in a previous `ListChannels` call to retrieve the
+   * subsequent page. When paginating, all other parameters provided to
+   * `ListChannels` must match the call that provided the page token.
+   * @return ListChannelsResponse
+   */
+  public function listProjectsLocationsChannels($parent, $optParams = [])
+  {
+    $params = ['parent' => $parent];
+    $params = array_merge($params, $optParams);
+    return $this->call('list', [$params], ListChannelsResponse::class);
+  }
+  /**
+   * Update a single channel. (channels.patch)
+   *
+   * @param string $name Required. The resource name of the channel. Must be
+   * unique within the location on the project and must be in
+   * `projects/{project}/locations/{location}/channels/{channel_id}` format.
+   * @param Channel $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The fields to be updated; only fields explicitly
+   * provided are updated. If no field mask is provided, all provided fields in
+   * the request are updated. To update all fields, provide a field mask of "*".
+   * @opt_param bool validateOnly Required. If set, validate the request and
+   * preview the review, but do not post it.
+   * @return GoogleLongrunningOperation
+   */
+  public function patch($name, Channel $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], GoogleLongrunningOperation::class);
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any

@@ -67,6 +67,10 @@ class BuildTrigger extends \Google\Collection
    */
   public $ignoredFiles;
   /**
+   * @var string
+   */
+  public $includeBuildLogs;
+  /**
    * @var string[]
    */
   public $includedFiles;
@@ -294,6 +298,20 @@ class BuildTrigger extends \Google\Collection
   public function getIgnoredFiles()
   {
     return $this->ignoredFiles;
+  }
+  /**
+   * @param string
+   */
+  public function setIncludeBuildLogs($includeBuildLogs)
+  {
+    $this->includeBuildLogs = $includeBuildLogs;
+  }
+  /**
+   * @return string
+   */
+  public function getIncludeBuildLogs()
+  {
+    return $this->includeBuildLogs;
   }
   /**
    * @param string[]

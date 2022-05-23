@@ -39,6 +39,10 @@ class PrivateEnvironmentConfig extends \Google\Model
    * @var bool
    */
   public $enablePrivateEnvironment;
+  /**
+   * @var bool
+   */
+  public $enablePrivatelyUsedPublicIps;
   protected $privateClusterConfigType = PrivateClusterConfig::class;
   protected $privateClusterConfigDataType = '';
   /**
@@ -119,6 +123,20 @@ class PrivateEnvironmentConfig extends \Google\Model
   public function getEnablePrivateEnvironment()
   {
     return $this->enablePrivateEnvironment;
+  }
+  /**
+   * @param bool
+   */
+  public function setEnablePrivatelyUsedPublicIps($enablePrivatelyUsedPublicIps)
+  {
+    $this->enablePrivatelyUsedPublicIps = $enablePrivatelyUsedPublicIps;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnablePrivatelyUsedPublicIps()
+  {
+    return $this->enablePrivatelyUsedPublicIps;
   }
   /**
    * @param PrivateClusterConfig

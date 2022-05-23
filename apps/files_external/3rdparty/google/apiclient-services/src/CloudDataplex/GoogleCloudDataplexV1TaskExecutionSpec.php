@@ -30,6 +30,10 @@ class GoogleCloudDataplexV1TaskExecutionSpec extends \Google\Model
   /**
    * @var string
    */
+  public $project;
+  /**
+   * @var string
+   */
   public $serviceAccount;
 
   /**
@@ -59,6 +63,20 @@ class GoogleCloudDataplexV1TaskExecutionSpec extends \Google\Model
   public function getMaxJobExecutionLifetime()
   {
     return $this->maxJobExecutionLifetime;
+  }
+  /**
+   * @param string
+   */
+  public function setProject($project)
+  {
+    $this->project = $project;
+  }
+  /**
+   * @return string
+   */
+  public function getProject()
+  {
+    return $this->project;
   }
   /**
    * @param string

@@ -20,6 +20,10 @@ namespace Google\Service\Document;
 class GoogleCloudDocumentaiV1beta2DocumentPageMatrix extends \Google\Model
 {
   /**
+   * @var bool
+   */
+  public $applied;
+  /**
    * @var int
    */
   public $cols;
@@ -36,6 +40,20 @@ class GoogleCloudDocumentaiV1beta2DocumentPageMatrix extends \Google\Model
    */
   public $type;
 
+  /**
+   * @param bool
+   */
+  public function setApplied($applied)
+  {
+    $this->applied = $applied;
+  }
+  /**
+   * @return bool
+   */
+  public function getApplied()
+  {
+    return $this->applied;
+  }
   /**
    * @param int
    */

@@ -97,9 +97,9 @@ class LicenseAssignments extends \Google\Service\Resource
    *
    * @param string $productId A product's unique identifier. For more information
    * about products in this version of the API, see Products and SKUs.
-   * @param string $customerId Customer's `customerId`. A previous version of this
-   * API accepted the primary domain name as a value for this field. If the
-   * customer is suspended, the server returns an error.
+   * @param string $customerId The customer's unique ID as defined in the Admin
+   * console, such as `C00000000`. If the customer is suspended, the server
+   * returns an error.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string maxResults The `maxResults` query string determines how
@@ -125,9 +125,9 @@ class LicenseAssignments extends \Google\Service\Resource
    * about products in this version of the API, see Products and SKUs.
    * @param string $skuId A product SKU's unique identifier. For more information
    * about available SKUs in this version of the API, see Products and SKUs.
-   * @param string $customerId Customer's `customerId`. A previous version of this
-   * API accepted the primary domain name as a value for this field. If the
-   * customer is suspended, the server returns an error.
+   * @param string $customerId The customer's unique ID as defined in the Admin
+   * console, such as `C00000000`. If the customer is suspended, the server
+   * returns an error.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string maxResults The `maxResults` query string determines how

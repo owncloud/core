@@ -97,8 +97,9 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * (services.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * requested. See the operation documentation for the appropriate value for this
-   * field.
+   * requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The maximum policy
@@ -155,7 +156,6 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * @opt_param bool allowMissing If set to true, and if the Service does not
    * exist, it will create a new one. Caller must have both create and update
    * permissions for this call if this is set to true.
-   * @opt_param string updateMask The list of fields to be updated.
    * @opt_param bool validateOnly Indicates that the request should be validated
    * and default values populated, without persisting the request or updating any
    * resources.
@@ -172,8 +172,9 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * existing policy. (services.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * specified. See the operation documentation for the appropriate value for this
-   * field.
+   * specified. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param GoogleIamV1SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleIamV1Policy
@@ -189,8 +190,9 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * permissions required for making this API call. (services.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
-   * being requested. See the operation documentation for the appropriate value
-   * for this field.
+   * being requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param GoogleIamV1TestIamPermissionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleIamV1TestIamPermissionsResponse

@@ -39,7 +39,7 @@ class ProjectsAlertPolicies extends \Google\Service\Resource
    * the alerting policy. The format is: projects/[PROJECT_ID_OR_NUMBER] Note that
    * this field names the parent container in which the alerting policy will be
    * written, not the name of the created policy. |name| must be a host project of
-   * a workspace, otherwise INVALID_ARGUMENT error will return. The alerting
+   * a Metrics Scope, otherwise INVALID_ARGUMENT error will return. The alerting
    * policy that is returned will have a name that contains a normalized
    * representation of this name as a prefix but adds a suffix of the form
    * /alertPolicies/[ALERT_POLICY_ID], identifying the policy in the container.
@@ -126,9 +126,9 @@ class ProjectsAlertPolicies extends \Google\Service\Resource
    * @param string $name Required if the policy exists. The resource name for this
    * policy. The format is:
    * projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
-   * [ALERT_POLICY_ID] is assigned by Stackdriver Monitoring when the policy is
-   * created. When calling the alertPolicies.create method, do not include the
-   * name field in the alerting policy passed as part of the request.
+   * [ALERT_POLICY_ID] is assigned by Cloud Monitoring when the policy is created.
+   * When calling the alertPolicies.create method, do not include the name field
+   * in the alerting policy passed as part of the request.
    * @param AlertPolicy $postBody
    * @param array $optParams Optional parameters.
    *

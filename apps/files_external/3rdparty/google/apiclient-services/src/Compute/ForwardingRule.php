@@ -99,6 +99,10 @@ class ForwardingRule extends \Google\Collection
    */
   public $networkTier;
   /**
+   * @var bool
+   */
+  public $noAutomateDnsZone;
+  /**
    * @var string
    */
   public $portRange;
@@ -406,6 +410,20 @@ class ForwardingRule extends \Google\Collection
   public function getNetworkTier()
   {
     return $this->networkTier;
+  }
+  /**
+   * @param bool
+   */
+  public function setNoAutomateDnsZone($noAutomateDnsZone)
+  {
+    $this->noAutomateDnsZone = $noAutomateDnsZone;
+  }
+  /**
+   * @return bool
+   */
+  public function getNoAutomateDnsZone()
+  {
+    return $this->noAutomateDnsZone;
   }
   /**
    * @param string

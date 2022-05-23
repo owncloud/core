@@ -27,6 +27,10 @@ class TargetHttpsProxy extends \Google\Collection
   /**
    * @var string
    */
+  public $certificateMap;
+  /**
+   * @var string
+   */
   public $creationTimestamp;
   /**
    * @var string
@@ -94,6 +98,20 @@ class TargetHttpsProxy extends \Google\Collection
   public function getAuthorizationPolicy()
   {
     return $this->authorizationPolicy;
+  }
+  /**
+   * @param string
+   */
+  public function setCertificateMap($certificateMap)
+  {
+    $this->certificateMap = $certificateMap;
+  }
+  /**
+   * @return string
+   */
+  public function getCertificateMap()
+  {
+    return $this->certificateMap;
   }
   /**
    * @param string

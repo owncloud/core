@@ -19,7 +19,7 @@ namespace Google\Service\Baremetalsolution;
 
 class Network extends \Google\Collection
 {
-  protected $collection_key = 'macAddress';
+  protected $collection_key = 'reservations';
   /**
    * @var string
    */
@@ -44,6 +44,8 @@ class Network extends \Google\Collection
    * @var string
    */
   public $name;
+  protected $reservationsType = NetworkAddressReservation::class;
+  protected $reservationsDataType = 'array';
   /**
    * @var string
    */
@@ -146,6 +148,20 @@ class Network extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param NetworkAddressReservation[]
+   */
+  public function setReservations($reservations)
+  {
+    $this->reservations = $reservations;
+  }
+  /**
+   * @return NetworkAddressReservation[]
+   */
+  public function getReservations()
+  {
+    return $this->reservations;
   }
   /**
    * @param string

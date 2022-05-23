@@ -46,6 +46,7 @@ class DataFusion extends \Google\Service
 
   public $projects_locations;
   public $projects_locations_instances;
+  public $projects_locations_instances_dnsPeerings;
   public $projects_locations_operations;
   public $projects_locations_versions;
 
@@ -233,6 +234,58 @@ class DataFusion extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_instances_dnsPeerings = new DataFusion\Resource\ProjectsLocationsInstancesDnsPeerings(
+        $this,
+        $this->serviceName,
+        'dnsPeerings',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/{+parent}/dnsPeerings',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'dnsPeeringId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/dnsPeerings',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],

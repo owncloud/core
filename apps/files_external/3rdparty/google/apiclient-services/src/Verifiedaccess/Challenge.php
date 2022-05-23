@@ -19,34 +19,38 @@ namespace Google\Service\Verifiedaccess;
 
 class Challenge extends \Google\Model
 {
-  protected $alternativeChallengeType = SignedData::class;
-  protected $alternativeChallengeDataType = '';
-  protected $challengeType = SignedData::class;
-  protected $challengeDataType = '';
+  /**
+   * @var string
+   */
+  public $alternativeChallenge;
+  /**
+   * @var string
+   */
+  public $challenge;
 
   /**
-   * @param SignedData
+   * @param string
    */
-  public function setAlternativeChallenge(SignedData $alternativeChallenge)
+  public function setAlternativeChallenge($alternativeChallenge)
   {
     $this->alternativeChallenge = $alternativeChallenge;
   }
   /**
-   * @return SignedData
+   * @return string
    */
   public function getAlternativeChallenge()
   {
     return $this->alternativeChallenge;
   }
   /**
-   * @param SignedData
+   * @param string
    */
-  public function setChallenge(SignedData $challenge)
+  public function setChallenge($challenge)
   {
     $this->challenge = $challenge;
   }
   /**
-   * @return SignedData
+   * @return string
    */
   public function getChallenge()
   {

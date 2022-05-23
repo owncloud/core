@@ -47,6 +47,8 @@ class WorkloadIdentityPoolProvider extends \Google\Model
   public $name;
   protected $oidcType = Oidc::class;
   protected $oidcDataType = '';
+  protected $samlType = Saml::class;
+  protected $samlDataType = '';
   /**
    * @var string
    */
@@ -163,6 +165,20 @@ class WorkloadIdentityPoolProvider extends \Google\Model
   public function getOidc()
   {
     return $this->oidc;
+  }
+  /**
+   * @param Saml
+   */
+  public function setSaml(Saml $saml)
+  {
+    $this->saml = $saml;
+  }
+  /**
+   * @return Saml
+   */
+  public function getSaml()
+  {
+    return $this->saml;
   }
   /**
    * @param string

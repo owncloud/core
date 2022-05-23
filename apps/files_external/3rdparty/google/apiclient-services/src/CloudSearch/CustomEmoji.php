@@ -26,9 +26,17 @@ class CustomEmoji extends \Google\Model
   /**
    * @var string
    */
+  public $contentType;
+  /**
+   * @var string
+   */
   public $createTimeMicros;
   protected $creatorUserIdType = UserId::class;
   protected $creatorUserIdDataType = '';
+  /**
+   * @var string
+   */
+  public $ephemeralUrl;
   protected $ownerCustomerIdType = CustomerId::class;
   protected $ownerCustomerIdDataType = '';
   /**
@@ -69,6 +77,20 @@ class CustomEmoji extends \Google\Model
   /**
    * @param string
    */
+  public function setContentType($contentType)
+  {
+    $this->contentType = $contentType;
+  }
+  /**
+   * @return string
+   */
+  public function getContentType()
+  {
+    return $this->contentType;
+  }
+  /**
+   * @param string
+   */
   public function setCreateTimeMicros($createTimeMicros)
   {
     $this->createTimeMicros = $createTimeMicros;
@@ -93,6 +115,20 @@ class CustomEmoji extends \Google\Model
   public function getCreatorUserId()
   {
     return $this->creatorUserId;
+  }
+  /**
+   * @param string
+   */
+  public function setEphemeralUrl($ephemeralUrl)
+  {
+    $this->ephemeralUrl = $ephemeralUrl;
+  }
+  /**
+   * @return string
+   */
+  public function getEphemeralUrl()
+  {
+    return $this->ephemeralUrl;
   }
   /**
    * @param CustomerId

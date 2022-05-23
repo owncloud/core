@@ -44,6 +44,8 @@ class CustomBiddingAlgorithm extends \Google\Collection
    * @var string
    */
   public $entityStatus;
+  protected $modelReadinessType = CustomBiddingModelReadinessState::class;
+  protected $modelReadinessDataType = 'array';
   /**
    * @var string
    */
@@ -140,6 +142,20 @@ class CustomBiddingAlgorithm extends \Google\Collection
   public function getEntityStatus()
   {
     return $this->entityStatus;
+  }
+  /**
+   * @param CustomBiddingModelReadinessState[]
+   */
+  public function setModelReadiness($modelReadiness)
+  {
+    $this->modelReadiness = $modelReadiness;
+  }
+  /**
+   * @return CustomBiddingModelReadinessState[]
+   */
+  public function getModelReadiness()
+  {
+    return $this->modelReadiness;
   }
   /**
    * @param string

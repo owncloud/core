@@ -37,6 +37,10 @@ class ComputeEngineTargetDefaults extends \Google\Collection
    */
   public $diskType;
   /**
+   * @var string
+   */
+  public $hostname;
+  /**
    * @var string[]
    */
   public $labels;
@@ -152,6 +156,20 @@ class ComputeEngineTargetDefaults extends \Google\Collection
   public function getDiskType()
   {
     return $this->diskType;
+  }
+  /**
+   * @param string
+   */
+  public function setHostname($hostname)
+  {
+    $this->hostname = $hostname;
+  }
+  /**
+   * @return string
+   */
+  public function getHostname()
+  {
+    return $this->hostname;
   }
   /**
    * @param string[]

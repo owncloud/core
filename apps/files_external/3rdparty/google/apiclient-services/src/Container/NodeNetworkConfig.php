@@ -23,6 +23,8 @@ class NodeNetworkConfig extends \Google\Model
    * @var bool
    */
   public $createPodRange;
+  protected $networkPerformanceConfigType = NetworkPerformanceConfig::class;
+  protected $networkPerformanceConfigDataType = '';
   /**
    * @var string
    */
@@ -45,6 +47,20 @@ class NodeNetworkConfig extends \Google\Model
   public function getCreatePodRange()
   {
     return $this->createPodRange;
+  }
+  /**
+   * @param NetworkPerformanceConfig
+   */
+  public function setNetworkPerformanceConfig(NetworkPerformanceConfig $networkPerformanceConfig)
+  {
+    $this->networkPerformanceConfig = $networkPerformanceConfig;
+  }
+  /**
+   * @return NetworkPerformanceConfig
+   */
+  public function getNetworkPerformanceConfig()
+  {
+    return $this->networkPerformanceConfig;
   }
   /**
    * @param string

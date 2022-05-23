@@ -34,15 +34,15 @@ class ProjectsIapTunnelLocationsDestGroups extends \Google\Service\Resource
   /**
    * Creates a new TunnelDestGroup. (destGroups.create)
    *
-   * @param string $parent Required. GCP Project number/id and location. In the
+   * @param string $parent Required. Google Cloud Project ID and location. In the
    * following format:
-   * projects/{project_number/id}/iap_tunnel/locations/{location}.
+   * `projects/{project_number/id}/iap_tunnel/locations/{location}`.
    * @param TunnelDestGroup $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string tunnelDestGroupId Required. The ID to use for the
-   * TunnelDestGroup, which will become the final component of the resource name.
-   * This value should be 4-63 characters, and valid characters are /a-z-/.
+   * TunnelDestGroup, which becomes the final component of the resource name. This
+   * value must be 4-63 characters, and valid characters are `a-z-`.
    * @return TunnelDestGroup
    */
   public function create($parent, TunnelDestGroup $postBody, $optParams = [])
@@ -54,9 +54,9 @@ class ProjectsIapTunnelLocationsDestGroups extends \Google\Service\Resource
   /**
    * Deletes a TunnelDestGroup. (destGroups.delete)
    *
-   * @param string $name Required. Name of the TunnelDestGroup to be deleted. In
-   * the following format: projects/{project_number/id}/iap_tunnel/locations/{loca
-   * tion}/destGroups/{dest_group}.
+   * @param string $name Required. Name of the TunnelDestGroup to delete. In the
+   * following format: `projects/{project_number/id}/iap_tunnel/locations/{locatio
+   * n}/destGroups/{dest_group}`.
    * @param array $optParams Optional parameters.
    * @return IapEmpty
    */
@@ -70,8 +70,8 @@ class ProjectsIapTunnelLocationsDestGroups extends \Google\Service\Resource
    * Retrieves an existing TunnelDestGroup. (destGroups.get)
    *
    * @param string $name Required. Name of the TunnelDestGroup to be fetched. In
-   * the following format: projects/{project_number/id}/iap_tunnel/locations/{loca
-   * tion}/destGroups/{dest_group}.
+   * the following format: `projects/{project_number/id}/iap_tunnel/locations/{loc
+   * ation}/destGroups/{dest_group}`.
    * @param array $optParams Optional parameters.
    * @return TunnelDestGroup
    */
@@ -84,19 +84,18 @@ class ProjectsIapTunnelLocationsDestGroups extends \Google\Service\Resource
   /**
    * Lists the existing TunnelDestGroups. To group across all locations, use a `-`
    * as the location ID. For example:
-   * /v1/projects/123/iap_tunnel/locations/-/destGroups
+   * `/v1/projects/123/iap_tunnel/locations/-/destGroups`
    * (destGroups.listProjectsIapTunnelLocationsDestGroups)
    *
-   * @param string $parent Required. GCP Project number/id and location. In the
+   * @param string $parent Required. Google Cloud Project ID and location. In the
    * following format:
-   * projects/{project_number/id}/iap_tunnel/locations/{location}. A `-` can be
+   * `projects/{project_number/id}/iap_tunnel/locations/{location}`. A `-` can be
    * used for the location to group across all locations.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of groups to return. The service
-   * may return fewer than this value. If unspecified, at most 100 groups will be
-   * returned. The maximum value is 1000; values above 1000 will be coerced to
-   * 1000.
+   * might return fewer than this value. If unspecified, at most 100 groups are
+   * returned. The maximum value is 1000; values above 1000 are coerced to 1000.
    * @opt_param string pageToken A page token, received from a previous
    * `ListTunnelDestGroups` call. Provide this to retrieve the subsequent page.
    * When paginating, all other parameters provided to `ListTunnelDestGroups` must
@@ -117,8 +116,8 @@ class ProjectsIapTunnelLocationsDestGroups extends \Google\Service\Resource
    * @param TunnelDestGroup $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask The field mask specifying which IAP settings
-   * should be updated. If omitted, then all of the settings are updated. See
+   * @opt_param string updateMask A field mask that specifies which IAP settings
+   * to update. If omitted, then all of the settings are updated. See
    * https://developers.google.com/protocol-
    * buffers/docs/reference/google.protobuf#fieldmask
    * @return TunnelDestGroup

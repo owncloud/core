@@ -42,7 +42,7 @@ class ProjectsGithubEnterpriseConfigs extends \Google\Service\Resource
    *
    * @opt_param string gheConfigId Optional. The ID to use for the
    * GithubEnterpriseConfig, which will become the final component of the
-   * GithubEnterpriseConfig’s resource name. ghe_config_id must meet the following
+   * GithubEnterpriseConfig's resource name. ghe_config_id must meet the following
    * requirements: + They must contain only alphanumeric characters and dashes. +
    * They can be 1-64 characters long. + They must begin and end with an
    * alphanumeric character

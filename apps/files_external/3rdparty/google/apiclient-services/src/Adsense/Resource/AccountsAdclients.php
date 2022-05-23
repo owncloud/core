@@ -17,6 +17,7 @@
 
 namespace Google\Service\Adsense\Resource;
 
+use Google\Service\Adsense\AdClient;
 use Google\Service\Adsense\AdClientAdCode;
 use Google\Service\Adsense\ListAdClientsResponse;
 
@@ -30,6 +31,20 @@ use Google\Service\Adsense\ListAdClientsResponse;
  */
 class AccountsAdclients extends \Google\Service\Resource
 {
+  /**
+   * Gets the ad client from the given resource name. (adclients.get)
+   *
+   * @param string $name Required. The name of the ad client to retrieve. Format:
+   * accounts/{account}/adclients/{adclient}
+   * @param array $optParams Optional parameters.
+   * @return AdClient
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], AdClient::class);
+  }
   /**
    * Gets the AdSense code for a given ad client. This returns what was previously
    * known as the 'auto ad code'. This is only supported for ad clients with a

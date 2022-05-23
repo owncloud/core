@@ -26,14 +26,6 @@ class GoogleCloudRunV2Revision extends \Google\Collection
   public $annotations;
   protected $conditionsType = GoogleCloudRunV2Condition::class;
   protected $conditionsDataType = 'array';
-  /**
-   * @var bool
-   */
-  public $confidential;
-  /**
-   * @var int
-   */
-  public $containerConcurrency;
   protected $containersType = GoogleCloudRunV2Container::class;
   protected $containersDataType = 'array';
   /**
@@ -76,6 +68,10 @@ class GoogleCloudRunV2Revision extends \Google\Collection
    * @var string
    */
   public $logUri;
+  /**
+   * @var int
+   */
+  public $maxInstanceRequestConcurrency;
   /**
    * @var string
    */
@@ -142,34 +138,6 @@ class GoogleCloudRunV2Revision extends \Google\Collection
   public function getConditions()
   {
     return $this->conditions;
-  }
-  /**
-   * @param bool
-   */
-  public function setConfidential($confidential)
-  {
-    $this->confidential = $confidential;
-  }
-  /**
-   * @return bool
-   */
-  public function getConfidential()
-  {
-    return $this->confidential;
-  }
-  /**
-   * @param int
-   */
-  public function setContainerConcurrency($containerConcurrency)
-  {
-    $this->containerConcurrency = $containerConcurrency;
-  }
-  /**
-   * @return int
-   */
-  public function getContainerConcurrency()
-  {
-    return $this->containerConcurrency;
   }
   /**
    * @param GoogleCloudRunV2Container[]
@@ -324,6 +292,20 @@ class GoogleCloudRunV2Revision extends \Google\Collection
   public function getLogUri()
   {
     return $this->logUri;
+  }
+  /**
+   * @param int
+   */
+  public function setMaxInstanceRequestConcurrency($maxInstanceRequestConcurrency)
+  {
+    $this->maxInstanceRequestConcurrency = $maxInstanceRequestConcurrency;
+  }
+  /**
+   * @return int
+   */
+  public function getMaxInstanceRequestConcurrency()
+  {
+    return $this->maxInstanceRequestConcurrency;
   }
   /**
    * @param string

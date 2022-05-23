@@ -39,6 +39,10 @@ class AccountUser extends \Google\Model
    * @var bool
    */
   public $paymentsManager;
+  /**
+   * @var bool
+   */
+  public $reportingManager;
 
   /**
    * @param bool
@@ -109,6 +113,20 @@ class AccountUser extends \Google\Model
   public function getPaymentsManager()
   {
     return $this->paymentsManager;
+  }
+  /**
+   * @param bool
+   */
+  public function setReportingManager($reportingManager)
+  {
+    $this->reportingManager = $reportingManager;
+  }
+  /**
+   * @return bool
+   */
+  public function getReportingManager()
+  {
+    return $this->reportingManager;
   }
 }
 

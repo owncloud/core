@@ -17,12 +17,15 @@
 
 namespace Google\Service\BigQueryReservation;
 
-class BiReservation extends \Google\Model
+class BiReservation extends \Google\Collection
 {
+  protected $collection_key = 'preferredTables';
   /**
    * @var string
    */
   public $name;
+  protected $preferredTablesType = TableReference::class;
+  protected $preferredTablesDataType = 'array';
   /**
    * @var string
    */
@@ -45,6 +48,20 @@ class BiReservation extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param TableReference[]
+   */
+  public function setPreferredTables($preferredTables)
+  {
+    $this->preferredTables = $preferredTables;
+  }
+  /**
+   * @return TableReference[]
+   */
+  public function getPreferredTables()
+  {
+    return $this->preferredTables;
   }
   /**
    * @param string

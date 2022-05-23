@@ -41,6 +41,8 @@ class EnvironmentConfig extends \Google\Model
   public $gkeCluster;
   protected $maintenanceWindowType = MaintenanceWindow::class;
   protected $maintenanceWindowDataType = '';
+  protected $masterAuthorizedNetworksConfigType = MasterAuthorizedNetworksConfig::class;
+  protected $masterAuthorizedNetworksConfigDataType = '';
   protected $nodeConfigType = NodeConfig::class;
   protected $nodeConfigDataType = '';
   /**
@@ -155,6 +157,20 @@ class EnvironmentConfig extends \Google\Model
   public function getMaintenanceWindow()
   {
     return $this->maintenanceWindow;
+  }
+  /**
+   * @param MasterAuthorizedNetworksConfig
+   */
+  public function setMasterAuthorizedNetworksConfig(MasterAuthorizedNetworksConfig $masterAuthorizedNetworksConfig)
+  {
+    $this->masterAuthorizedNetworksConfig = $masterAuthorizedNetworksConfig;
+  }
+  /**
+   * @return MasterAuthorizedNetworksConfig
+   */
+  public function getMasterAuthorizedNetworksConfig()
+  {
+    return $this->masterAuthorizedNetworksConfig;
   }
   /**
    * @param NodeConfig

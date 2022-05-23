@@ -33,7 +33,6 @@ class Projects extends \Google\Service\Resource
    * Fetches the representation of an existing Project. (projects.get)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location
    * @param array $optParams Optional parameters.
    *
    * @opt_param string clientOperationId For mutating operation requests only. An
@@ -41,9 +40,9 @@ class Projects extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return Project
    */
-  public function get($project, $location, $optParams = [])
+  public function get($project, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location];
+    $params = ['project' => $project];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], Project::class);
   }

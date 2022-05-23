@@ -139,9 +139,9 @@ class ProjectsLocationsCapacityCommitments extends \Google\Service\Resource
    *
    * @param string $name Output only. The resource name of the capacity
    * commitment, e.g., `projects/myproject/locations/US/capacityCommitments/123`
-   * For the commitment id, it must only contain lower case alphanumeric
-   * characters or dashes.It must start with a letter and must not end with a
-   * dash. Its maximum length is 64 characters.
+   * The commitment_id must only contain lower case alphanumeric characters or
+   * dashes. It must start with a letter and must not end with a dash. Its maximum
+   * length is 64 characters.
    * @param CapacityCommitment $postBody
    * @param array $optParams Optional parameters.
    *
@@ -160,8 +160,8 @@ class ProjectsLocationsCapacityCommitments extends \Google\Service\Resource
    * `commitment_end_time`. A common use case is to enable downgrading
    * commitments. For example, in order to downgrade from 10000 slots to 8000, you
    * might split a 10000 capacity commitment into commitments of 2000 and 8000.
-   * Then, you would change the plan of the first one to `FLEX` and then delete
-   * it. (capacityCommitments.split)
+   * Then, you delete the first one after the commitment end time passes.
+   * (capacityCommitments.split)
    *
    * @param string $name Required. The resource name e.g.,:
    * `projects/myproject/locations/US/capacityCommitments/123`

@@ -169,6 +169,10 @@ class Apigee extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
+                'retention' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
               ],
             ],'get' => [
               'path' => 'v1/{+name}',
@@ -192,6 +196,16 @@ class Apigee extends \Google\Service
                 'view' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],'getProjectMapping' => [
+              'path' => 'v1/{+name}:getProjectMapping',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],'getRuntimeConfig' => [

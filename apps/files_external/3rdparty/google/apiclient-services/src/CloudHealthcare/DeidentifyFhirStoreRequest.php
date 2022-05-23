@@ -25,6 +25,10 @@ class DeidentifyFhirStoreRequest extends \Google\Model
    * @var string
    */
   public $destinationStore;
+  /**
+   * @var string
+   */
+  public $gcsConfigUri;
   protected $resourceFilterType = FhirFilter::class;
   protected $resourceFilterDataType = '';
 
@@ -55,6 +59,20 @@ class DeidentifyFhirStoreRequest extends \Google\Model
   public function getDestinationStore()
   {
     return $this->destinationStore;
+  }
+  /**
+   * @param string
+   */
+  public function setGcsConfigUri($gcsConfigUri)
+  {
+    $this->gcsConfigUri = $gcsConfigUri;
+  }
+  /**
+   * @return string
+   */
+  public function getGcsConfigUri()
+  {
+    return $this->gcsConfigUri;
   }
   /**
    * @param FhirFilter

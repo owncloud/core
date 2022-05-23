@@ -17,7 +17,7 @@
 
 namespace Google\Service\Firebaseappcheck\Resource;
 
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaPublicJwkSet;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1PublicJwkSet;
 
 /**
  * The "jwks" collection of methods.
@@ -38,13 +38,13 @@ class Jwks extends \Google\Service\Resource
    * @param string $name Required. The relative resource name to the public JWK
    * set. Must always be exactly the string `jwks`.
    * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1betaPublicJwkSet
+   * @return GoogleFirebaseAppcheckV1PublicJwkSet
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleFirebaseAppcheckV1betaPublicJwkSet::class);
+    return $this->call('get', [$params], GoogleFirebaseAppcheckV1PublicJwkSet::class);
   }
 }
 

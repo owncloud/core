@@ -17,8 +17,8 @@
 
 namespace Google\Service\Firebaseappcheck\Resource;
 
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaBatchGetPlayIntegrityConfigsResponse;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaPlayIntegrityConfig;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1BatchGetPlayIntegrityConfigsResponse;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1PlayIntegrityConfig;
 
 /**
  * The "playIntegrityConfig" collection of methods.
@@ -45,13 +45,13 @@ class ProjectsAppsPlayIntegrityConfig extends \Google\Service\Resource
    * PlayIntegrityConfigs to retrieve, in the format ```
    * projects/{project_number}/apps/{app_id}/playIntegrityConfig ``` A maximum of
    * 100 objects can be retrieved in a batch.
-   * @return GoogleFirebaseAppcheckV1betaBatchGetPlayIntegrityConfigsResponse
+   * @return GoogleFirebaseAppcheckV1BatchGetPlayIntegrityConfigsResponse
    */
   public function batchGet($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1betaBatchGetPlayIntegrityConfigsResponse::class);
+    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1BatchGetPlayIntegrityConfigsResponse::class);
   }
   /**
    * Gets the PlayIntegrityConfig for the specified app. (playIntegrityConfig.get)
@@ -60,13 +60,13 @@ class ProjectsAppsPlayIntegrityConfig extends \Google\Service\Resource
    * PlayIntegrityConfig, in the format: ```
    * projects/{project_number}/apps/{app_id}/playIntegrityConfig ```
    * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1betaPlayIntegrityConfig
+   * @return GoogleFirebaseAppcheckV1PlayIntegrityConfig
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleFirebaseAppcheckV1betaPlayIntegrityConfig::class);
+    return $this->call('get', [$params], GoogleFirebaseAppcheckV1PlayIntegrityConfig::class);
   }
   /**
    * Updates the PlayIntegrityConfig for the specified app. While this
@@ -76,18 +76,18 @@ class ProjectsAppsPlayIntegrityConfig extends \Google\Service\Resource
    * @param string $name Required. The relative resource name of the Play
    * Integrity configuration object, in the format: ```
    * projects/{project_number}/apps/{app_id}/playIntegrityConfig ```
-   * @param GoogleFirebaseAppcheckV1betaPlayIntegrityConfig $postBody
+   * @param GoogleFirebaseAppcheckV1PlayIntegrityConfig $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. A comma-separated list of names of
    * fields in the PlayIntegrityConfig Gets to update. Example: `token_ttl`.
-   * @return GoogleFirebaseAppcheckV1betaPlayIntegrityConfig
+   * @return GoogleFirebaseAppcheckV1PlayIntegrityConfig
    */
-  public function patch($name, GoogleFirebaseAppcheckV1betaPlayIntegrityConfig $postBody, $optParams = [])
+  public function patch($name, GoogleFirebaseAppcheckV1PlayIntegrityConfig $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1betaPlayIntegrityConfig::class);
+    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1PlayIntegrityConfig::class);
   }
 }
 

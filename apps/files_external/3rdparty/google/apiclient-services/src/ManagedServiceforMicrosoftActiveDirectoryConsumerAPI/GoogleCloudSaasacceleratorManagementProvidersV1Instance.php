@@ -48,10 +48,8 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
    * @var string
    */
   public $name;
-  /**
-   * @var string[]
-   */
-  public $notificationParameters;
+  protected $notificationParametersType = GoogleCloudSaasacceleratorManagementProvidersV1NotificationParameter::class;
+  protected $notificationParametersDataType = 'map';
   /**
    * @var string[]
    */
@@ -194,14 +192,14 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
     return $this->name;
   }
   /**
-   * @param string[]
+   * @param GoogleCloudSaasacceleratorManagementProvidersV1NotificationParameter[]
    */
   public function setNotificationParameters($notificationParameters)
   {
     $this->notificationParameters = $notificationParameters;
   }
   /**
-   * @return string[]
+   * @return GoogleCloudSaasacceleratorManagementProvidersV1NotificationParameter[]
    */
   public function getNotificationParameters()
   {

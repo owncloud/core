@@ -27,6 +27,10 @@ class GoogleCloudApigeeV1Organization extends \Google\Collection
    */
   public $analyticsRegion;
   /**
+   * @var string
+   */
+  public $apigeeProjectId;
+  /**
    * @var string[]
    */
   public $attributes;
@@ -132,6 +136,20 @@ class GoogleCloudApigeeV1Organization extends \Google\Collection
   public function getAnalyticsRegion()
   {
     return $this->analyticsRegion;
+  }
+  /**
+   * @param string
+   */
+  public function setApigeeProjectId($apigeeProjectId)
+  {
+    $this->apigeeProjectId = $apigeeProjectId;
+  }
+  /**
+   * @return string
+   */
+  public function getApigeeProjectId()
+  {
+    return $this->apigeeProjectId;
   }
   /**
    * @param string[]

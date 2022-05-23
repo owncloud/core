@@ -72,6 +72,10 @@ class PaymentsResellerSubscription extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'pageSize' => [
                   'location' => 'query',
                   'type' => 'integer',
@@ -91,7 +95,17 @@ class PaymentsResellerSubscription extends \Google\Service
         'promotions',
         [
           'methods' => [
-            'list' => [
+            'findEligible' => [
+              'path' => 'v1/{+parent}/promotions:findEligible',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
               'path' => 'v1/{+parent}/promotions',
               'httpMethod' => 'GET',
               'parameters' => [

@@ -83,6 +83,10 @@ class ParagraphStyleSuggestionState extends \Google\Model
    * @var bool
    */
   public $namedStyleTypeSuggested;
+  /**
+   * @var bool
+   */
+  public $pageBreakBeforeSuggested;
   protected $shadingSuggestionStateType = ShadingSuggestionState::class;
   protected $shadingSuggestionStateDataType = '';
   /**
@@ -321,6 +325,20 @@ class ParagraphStyleSuggestionState extends \Google\Model
   public function getNamedStyleTypeSuggested()
   {
     return $this->namedStyleTypeSuggested;
+  }
+  /**
+   * @param bool
+   */
+  public function setPageBreakBeforeSuggested($pageBreakBeforeSuggested)
+  {
+    $this->pageBreakBeforeSuggested = $pageBreakBeforeSuggested;
+  }
+  /**
+   * @return bool
+   */
+  public function getPageBreakBeforeSuggested()
+  {
+    return $this->pageBreakBeforeSuggested;
   }
   /**
    * @param ShadingSuggestionState

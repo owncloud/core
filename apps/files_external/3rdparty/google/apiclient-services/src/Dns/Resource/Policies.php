@@ -36,8 +36,6 @@ class Policies extends \Google\Service\Resource
    * Creates a new Policy. (policies.create)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param Policy $postBody
    * @param array $optParams Optional parameters.
    *
@@ -46,9 +44,9 @@ class Policies extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return Policy
    */
-  public function create($project, $location, Policy $postBody, $optParams = [])
+  public function create($project, Policy $postBody, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'postBody' => $postBody];
+    $params = ['project' => $project, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('create', [$params], Policy::class);
   }
@@ -57,8 +55,6 @@ class Policies extends \Google\Service\Resource
    * referenced by a network. (policies.delete)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $policy User given friendly name of the policy addressed by
    * this request.
    * @param array $optParams Optional parameters.
@@ -67,9 +63,9 @@ class Policies extends \Google\Service\Resource
    * optional identifier specified by the client. Must be unique for operation
    * resources in the Operations collection.
    */
-  public function delete($project, $location, $policy, $optParams = [])
+  public function delete($project, $policy, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'policy' => $policy];
+    $params = ['project' => $project, 'policy' => $policy];
     $params = array_merge($params, $optParams);
     return $this->call('delete', [$params]);
   }
@@ -77,8 +73,6 @@ class Policies extends \Google\Service\Resource
    * Fetches the representation of an existing Policy. (policies.get)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $policy User given friendly name of the policy addressed by
    * this request.
    * @param array $optParams Optional parameters.
@@ -88,9 +82,9 @@ class Policies extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return Policy
    */
-  public function get($project, $location, $policy, $optParams = [])
+  public function get($project, $policy, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'policy' => $policy];
+    $params = ['project' => $project, 'policy' => $policy];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], Policy::class);
   }
@@ -98,8 +92,6 @@ class Policies extends \Google\Service\Resource
    * Enumerates all Policies associated with a project. (policies.listPolicies)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int maxResults Optional. Maximum number of results to be returned.
@@ -109,9 +101,9 @@ class Policies extends \Google\Service\Resource
    * request.
    * @return PoliciesListResponse
    */
-  public function listPolicies($project, $location, $optParams = [])
+  public function listPolicies($project, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location];
+    $params = ['project' => $project];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], PoliciesListResponse::class);
   }
@@ -119,8 +111,6 @@ class Policies extends \Google\Service\Resource
    * Applies a partial update to an existing Policy. (policies.patch)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $policy User given friendly name of the policy addressed by
    * this request.
    * @param Policy $postBody
@@ -131,9 +121,9 @@ class Policies extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return PoliciesPatchResponse
    */
-  public function patch($project, $location, $policy, Policy $postBody, $optParams = [])
+  public function patch($project, $policy, Policy $postBody, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'policy' => $policy, 'postBody' => $postBody];
+    $params = ['project' => $project, 'policy' => $policy, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], PoliciesPatchResponse::class);
   }
@@ -141,8 +131,6 @@ class Policies extends \Google\Service\Resource
    * Updates an existing Policy. (policies.update)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $policy User given friendly name of the policy addressed by
    * this request.
    * @param Policy $postBody
@@ -153,9 +141,9 @@ class Policies extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return PoliciesUpdateResponse
    */
-  public function update($project, $location, $policy, Policy $postBody, $optParams = [])
+  public function update($project, $policy, Policy $postBody, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'policy' => $policy, 'postBody' => $postBody];
+    $params = ['project' => $project, 'policy' => $policy, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('update', [$params], PoliciesUpdateResponse::class);
   }

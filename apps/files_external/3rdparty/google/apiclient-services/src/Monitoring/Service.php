@@ -23,6 +23,8 @@ class Service extends \Google\Model
   protected $appEngineDataType = '';
   protected $cloudEndpointsType = CloudEndpoints::class;
   protected $cloudEndpointsDataType = '';
+  protected $cloudRunType = CloudRun::class;
+  protected $cloudRunDataType = '';
   protected $clusterIstioType = ClusterIstio::class;
   protected $clusterIstioDataType = '';
   protected $customType = Custom::class;
@@ -31,6 +33,12 @@ class Service extends \Google\Model
    * @var string
    */
   public $displayName;
+  protected $gkeNamespaceType = GkeNamespace::class;
+  protected $gkeNamespaceDataType = '';
+  protected $gkeServiceType = GkeService::class;
+  protected $gkeServiceDataType = '';
+  protected $gkeWorkloadType = GkeWorkload::class;
+  protected $gkeWorkloadDataType = '';
   protected $istioCanonicalServiceType = IstioCanonicalService::class;
   protected $istioCanonicalServiceDataType = '';
   protected $meshIstioType = MeshIstio::class;
@@ -75,6 +83,20 @@ class Service extends \Google\Model
     return $this->cloudEndpoints;
   }
   /**
+   * @param CloudRun
+   */
+  public function setCloudRun(CloudRun $cloudRun)
+  {
+    $this->cloudRun = $cloudRun;
+  }
+  /**
+   * @return CloudRun
+   */
+  public function getCloudRun()
+  {
+    return $this->cloudRun;
+  }
+  /**
    * @param ClusterIstio
    */
   public function setClusterIstio(ClusterIstio $clusterIstio)
@@ -115,6 +137,48 @@ class Service extends \Google\Model
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param GkeNamespace
+   */
+  public function setGkeNamespace(GkeNamespace $gkeNamespace)
+  {
+    $this->gkeNamespace = $gkeNamespace;
+  }
+  /**
+   * @return GkeNamespace
+   */
+  public function getGkeNamespace()
+  {
+    return $this->gkeNamespace;
+  }
+  /**
+   * @param GkeService
+   */
+  public function setGkeService(GkeService $gkeService)
+  {
+    $this->gkeService = $gkeService;
+  }
+  /**
+   * @return GkeService
+   */
+  public function getGkeService()
+  {
+    return $this->gkeService;
+  }
+  /**
+   * @param GkeWorkload
+   */
+  public function setGkeWorkload(GkeWorkload $gkeWorkload)
+  {
+    $this->gkeWorkload = $gkeWorkload;
+  }
+  /**
+   * @return GkeWorkload
+   */
+  public function getGkeWorkload()
+  {
+    return $this->gkeWorkload;
   }
   /**
    * @param IstioCanonicalService

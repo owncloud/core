@@ -23,6 +23,8 @@ class Subscription extends \Google\Model
    * @var int
    */
   public $ackDeadlineSeconds;
+  protected $bigqueryConfigType = BigQueryConfig::class;
+  protected $bigqueryConfigDataType = '';
   protected $deadLetterPolicyType = DeadLetterPolicy::class;
   protected $deadLetterPolicyDataType = '';
   /**
@@ -89,6 +91,20 @@ class Subscription extends \Google\Model
   public function getAckDeadlineSeconds()
   {
     return $this->ackDeadlineSeconds;
+  }
+  /**
+   * @param BigQueryConfig
+   */
+  public function setBigqueryConfig(BigQueryConfig $bigqueryConfig)
+  {
+    $this->bigqueryConfig = $bigqueryConfig;
+  }
+  /**
+   * @return BigQueryConfig
+   */
+  public function getBigqueryConfig()
+  {
+    return $this->bigqueryConfig;
   }
   /**
    * @param DeadLetterPolicy

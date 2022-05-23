@@ -14476,6 +14476,25 @@ class Compute extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'setCertificateMap' => [
+              'path' => 'projects/{project}/global/targetHttpsProxies/{targetHttpsProxy}/setCertificateMap',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'project' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'targetHttpsProxy' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'requestId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
             ],'setQuicOverride' => [
               'path' => 'projects/{project}/global/targetHttpsProxies/{targetHttpsProxy}/setQuicOverride',
               'httpMethod' => 'POST',
@@ -15070,6 +15089,25 @@ class Compute extends \Google\Service
               ],
             ],'setBackendService' => [
               'path' => 'projects/{project}/global/targetSslProxies/{targetSslProxy}/setBackendService',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'project' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'targetSslProxy' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'requestId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'setCertificateMap' => [
+              'path' => 'projects/{project}/global/targetSslProxies/{targetSslProxy}/setCertificateMap',
               'httpMethod' => 'POST',
               'parameters' => [
                 'project' => [

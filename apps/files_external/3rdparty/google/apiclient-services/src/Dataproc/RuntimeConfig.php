@@ -27,6 +27,8 @@ class RuntimeConfig extends \Google\Model
    * @var string[]
    */
   public $properties;
+  protected $sessionAuthenticationConfigType = AuthenticationConfig::class;
+  protected $sessionAuthenticationConfigDataType = '';
   /**
    * @var string
    */
@@ -59,6 +61,20 @@ class RuntimeConfig extends \Google\Model
   public function getProperties()
   {
     return $this->properties;
+  }
+  /**
+   * @param AuthenticationConfig
+   */
+  public function setSessionAuthenticationConfig(AuthenticationConfig $sessionAuthenticationConfig)
+  {
+    $this->sessionAuthenticationConfig = $sessionAuthenticationConfig;
+  }
+  /**
+   * @return AuthenticationConfig
+   */
+  public function getSessionAuthenticationConfig()
+  {
+    return $this->sessionAuthenticationConfig;
   }
   /**
    * @param string

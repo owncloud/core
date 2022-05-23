@@ -21,6 +21,7 @@ use Google\Service\CloudMemorystoreforMemcached\ApplyParametersRequest;
 use Google\Service\CloudMemorystoreforMemcached\Instance;
 use Google\Service\CloudMemorystoreforMemcached\ListInstancesResponse;
 use Google\Service\CloudMemorystoreforMemcached\Operation;
+use Google\Service\CloudMemorystoreforMemcached\RescheduleMaintenanceRequest;
 use Google\Service\CloudMemorystoreforMemcached\UpdateParametersRequest;
 
 /**
@@ -154,6 +155,22 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], Operation::class);
+  }
+  /**
+   * Reschedules upcoming maintenance event. (instances.rescheduleMaintenance)
+   *
+   * @param string $instance Required. Memcache instance resource name using the
+   * form: `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+   * where `location_id` refers to a GCP region.
+   * @param RescheduleMaintenanceRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function rescheduleMaintenance($instance, RescheduleMaintenanceRequest $postBody, $optParams = [])
+  {
+    $params = ['instance' => $instance, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('rescheduleMaintenance', [$params], Operation::class);
   }
   /**
    * Updates the defined Memcached parameters for an existing instance. This

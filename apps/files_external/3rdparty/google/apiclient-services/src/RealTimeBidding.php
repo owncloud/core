@@ -45,6 +45,7 @@ class RealTimeBidding extends \Google\Service
   public $bidders_creatives;
   public $bidders_endpoints;
   public $bidders_pretargetingConfigs;
+  public $bidders_publisherConnections;
   public $buyers;
   public $buyers_creatives;
   public $buyers_userLists;
@@ -342,6 +343,72 @@ class RealTimeBidding extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->bidders_publisherConnections = new RealTimeBidding\Resource\BiddersPublisherConnections(
+        $this,
+        $this->serviceName,
+        'publisherConnections',
+        [
+          'methods' => [
+            'batchApprove' => [
+              'path' => 'v1/{+parent}/publisherConnections:batchApprove',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'batchReject' => [
+              'path' => 'v1/{+parent}/publisherConnections:batchReject',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/publisherConnections',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],

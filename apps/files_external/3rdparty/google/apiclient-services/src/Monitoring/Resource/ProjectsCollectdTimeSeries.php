@@ -31,9 +31,9 @@ use Google\Service\Monitoring\CreateCollectdTimeSeriesResponse;
 class ProjectsCollectdTimeSeries extends \Google\Service\Resource
 {
   /**
-   * Stackdriver Monitoring Agent only: Creates a new time series.This method is
-   * only for use by the Stackdriver Monitoring Agent. Use
-   * projects.timeSeries.create instead. (collectdTimeSeries.create)
+   * Cloud Monitoring Agent only: Creates a new time series.This method is only
+   * for use by the Cloud Monitoring Agent. Use projects.timeSeries.create
+   * instead. (collectdTimeSeries.create)
    *
    * @param string $name The project
    * (https://cloud.google.com/monitoring/api/v3#project_name) in which to create

@@ -19,20 +19,20 @@ namespace Google\Service\Datastore;
 
 class TransactionOptions extends \Google\Model
 {
-  protected $readOnlyType = ReadOnly::class;
+  protected $readOnlyType = DatastoreReadOnly::class;
   protected $readOnlyDataType = '';
   protected $readWriteType = ReadWrite::class;
   protected $readWriteDataType = '';
 
   /**
-   * @param ReadOnly
+   * @param DatastoreReadOnly
    */
-  public function setReadOnly(ReadOnly $readOnly)
+  public function setReadOnly(DatastoreReadOnly $readOnly)
   {
     $this->readOnly = $readOnly;
   }
   /**
-   * @return ReadOnly
+   * @return DatastoreReadOnly
    */
   public function getReadOnly()
   {

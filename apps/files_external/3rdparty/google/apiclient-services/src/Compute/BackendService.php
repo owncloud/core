@@ -19,7 +19,7 @@ namespace Google\Service\Compute;
 
 class BackendService extends \Google\Collection
 {
-  protected $collection_key = 'localityLbPolicies';
+  protected $collection_key = 'serviceBindings';
   /**
    * @var int
    */
@@ -130,6 +130,10 @@ class BackendService extends \Google\Collection
    * @var string
    */
   public $selfLink;
+  /**
+   * @var string[]
+   */
+  public $serviceBindings;
   /**
    * @var string
    */
@@ -616,6 +620,20 @@ class BackendService extends \Google\Collection
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param string[]
+   */
+  public function setServiceBindings($serviceBindings)
+  {
+    $this->serviceBindings = $serviceBindings;
+  }
+  /**
+   * @return string[]
+   */
+  public function getServiceBindings()
+  {
+    return $this->serviceBindings;
   }
   /**
    * @param string

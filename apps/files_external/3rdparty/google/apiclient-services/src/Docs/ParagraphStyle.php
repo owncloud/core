@@ -68,6 +68,10 @@ class ParagraphStyle extends \Google\Collection
    * @var string
    */
   public $namedStyleType;
+  /**
+   * @var bool
+   */
+  public $pageBreakBefore;
   protected $shadingType = Shading::class;
   protected $shadingDataType = '';
   protected $spaceAboveType = Dimension::class;
@@ -304,6 +308,20 @@ class ParagraphStyle extends \Google\Collection
   public function getNamedStyleType()
   {
     return $this->namedStyleType;
+  }
+  /**
+   * @param bool
+   */
+  public function setPageBreakBefore($pageBreakBefore)
+  {
+    $this->pageBreakBefore = $pageBreakBefore;
+  }
+  /**
+   * @return bool
+   */
+  public function getPageBreakBefore()
+  {
+    return $this->pageBreakBefore;
   }
   /**
    * @param Shading

@@ -39,15 +39,15 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * Creates a new BackupPlan in a given location. (backupPlans.create)
    *
    * @param string $parent Required. The location within which to create the
-   * BackupPlan. Format: projects/{project}/locations/{location}
+   * BackupPlan. Format: projects/locations
    * @param BackupPlan $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string backupPlanId Required. The client-provided short name for
-   * the BackupPlan resource. This name must: a. be between 1 and 63 characters
-   * long (inclusive) b. consist of only lower-case ASCII letters, numbers, and
-   * dashes c. start with a lower-case letter d. end with a lower-case letter or
-   * number e. be unique within the set of BackupPlans in this location
+   * the BackupPlan resource. This name must: - be between 1 and 63 characters
+   * long (inclusive) - consist of only lower-case ASCII letters, numbers, and
+   * dashes - start with a lower-case letter - end with a lower-case letter or
+   * number - be unique within the set of BackupPlans in this location
    * @return GoogleLongrunningOperation
    */
   public function create($parent, BackupPlan $postBody, $optParams = [])
@@ -60,11 +60,11 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * Deletes an existing BackupPlan. (backupPlans.delete)
    *
    * @param string $name Required. Fully qualified BackupPlan name. Format:
-   * projects/{project}/locations/{location}/backupPlans/{backup_plan}
+   * projects/locations/backupPlans
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string etag If provided, this value must match the value currently
-   * assigned to the target resource.
+   * @opt_param string etag If provided, this value must match the current value
+   * of the target BackupPlan's etag field or the request is rejected.
    * @return GoogleLongrunningOperation
    */
   public function delete($name, $optParams = [])
@@ -77,7 +77,7 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * Retrieve the details of a single BackupPlan. (backupPlans.get)
    *
    * @param string $name Required. Fully qualified BackupPlan name. Format:
-   * projects/{project}/locations/{location}/backupPlans/{backup_plan}
+   * projects/locations/backupPlans
    * @param array $optParams Optional parameters.
    * @return BackupPlan
    */
@@ -92,8 +92,9 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * resource exists and does not have a policy set. (backupPlans.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * requested. See the operation documentation for the appropriate value for this
-   * field.
+   * requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The maximum policy
@@ -121,11 +122,11 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * (backupPlans.listProjectsLocationsBackupPlans)
    *
    * @param string $parent Required. The location that contains the BackupPlans to
-   * list. Format: projects/{project}/locations/{location}
+   * list. Format: projects/locations
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter List filter.
-   * @opt_param string orderBy Sort results.
+   * @opt_param string filter Field match expression used to filter the results.
+   * @opt_param string orderBy Field by which to sort the results.
    * @opt_param int pageSize The target number of results to return in a single
    * response. If not specified, a default value will be chosen by the service.
    * Note that the response may inclue a partial list and a caller should only
@@ -147,8 +148,8 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
   /**
    * Update a BackupPlan. (backupPlans.patch)
    *
-   * @param string $name Output only. [Output Only] The full name of the
-   * BackupPlan resource. Format: projects/locations/backupPlans
+   * @param string $name Output only. The full name of the BackupPlan resource.
+   * Format: projects/locations/backupPlans
    * @param BackupPlan $postBody
    * @param array $optParams Optional parameters.
    *
@@ -174,8 +175,9 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * `PERMISSION_DENIED` errors. (backupPlans.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * specified. See the operation documentation for the appropriate value for this
-   * field.
+   * specified. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Policy
@@ -195,8 +197,9 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * (backupPlans.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
-   * being requested. See the operation documentation for the appropriate value
-   * for this field.
+   * being requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param TestIamPermissionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return TestIamPermissionsResponse

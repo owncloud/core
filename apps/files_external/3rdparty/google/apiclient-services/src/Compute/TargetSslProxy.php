@@ -23,6 +23,10 @@ class TargetSslProxy extends \Google\Collection
   /**
    * @var string
    */
+  public $certificateMap;
+  /**
+   * @var string
+   */
   public $creationTimestamp;
   /**
    * @var string
@@ -61,6 +65,20 @@ class TargetSslProxy extends \Google\Collection
    */
   public $sslPolicy;
 
+  /**
+   * @param string
+   */
+  public function setCertificateMap($certificateMap)
+  {
+    $this->certificateMap = $certificateMap;
+  }
+  /**
+   * @return string
+   */
+  public function getCertificateMap()
+  {
+    return $this->certificateMap;
+  }
   /**
    * @param string
    */

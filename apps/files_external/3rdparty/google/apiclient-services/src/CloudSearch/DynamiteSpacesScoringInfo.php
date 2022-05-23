@@ -28,7 +28,11 @@ class DynamiteSpacesScoringInfo extends \Google\Model
   /**
    * @var string
    */
-  public $lastMessagePostedTimestampMicros;
+  public $lastMessagePostedTimestampSecs;
+  /**
+   * @var string
+   */
+  public $lastReadTimestampSecs;
   public $memberMetadataCount;
   public $messageScore;
   /**
@@ -41,7 +45,7 @@ class DynamiteSpacesScoringInfo extends \Google\Model
   /**
    * @var string
    */
-  public $spaceCreationTimestampMicros;
+  public $spaceCreationTimestampSecs;
   public $topicalityScore;
 
   public function setAffinityScore($affinityScore)
@@ -95,16 +99,30 @@ class DynamiteSpacesScoringInfo extends \Google\Model
   /**
    * @param string
    */
-  public function setLastMessagePostedTimestampMicros($lastMessagePostedTimestampMicros)
+  public function setLastMessagePostedTimestampSecs($lastMessagePostedTimestampSecs)
   {
-    $this->lastMessagePostedTimestampMicros = $lastMessagePostedTimestampMicros;
+    $this->lastMessagePostedTimestampSecs = $lastMessagePostedTimestampSecs;
   }
   /**
    * @return string
    */
-  public function getLastMessagePostedTimestampMicros()
+  public function getLastMessagePostedTimestampSecs()
   {
-    return $this->lastMessagePostedTimestampMicros;
+    return $this->lastMessagePostedTimestampSecs;
+  }
+  /**
+   * @param string
+   */
+  public function setLastReadTimestampSecs($lastReadTimestampSecs)
+  {
+    $this->lastReadTimestampSecs = $lastReadTimestampSecs;
+  }
+  /**
+   * @return string
+   */
+  public function getLastReadTimestampSecs()
+  {
+    return $this->lastReadTimestampSecs;
   }
   public function setMemberMetadataCount($memberMetadataCount)
   {
@@ -163,16 +181,16 @@ class DynamiteSpacesScoringInfo extends \Google\Model
   /**
    * @param string
    */
-  public function setSpaceCreationTimestampMicros($spaceCreationTimestampMicros)
+  public function setSpaceCreationTimestampSecs($spaceCreationTimestampSecs)
   {
-    $this->spaceCreationTimestampMicros = $spaceCreationTimestampMicros;
+    $this->spaceCreationTimestampSecs = $spaceCreationTimestampSecs;
   }
   /**
    * @return string
    */
-  public function getSpaceCreationTimestampMicros()
+  public function getSpaceCreationTimestampSecs()
   {
-    return $this->spaceCreationTimestampMicros;
+    return $this->spaceCreationTimestampSecs;
   }
   public function setTopicalityScore($topicalityScore)
   {

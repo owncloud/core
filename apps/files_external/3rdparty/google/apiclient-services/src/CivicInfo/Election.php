@@ -35,6 +35,10 @@ class Election extends \Google\Model
    * @var string
    */
   public $ocdDivisionId;
+  /**
+   * @var string
+   */
+  public $shapeLookupBehavior;
 
   /**
    * @param string
@@ -91,6 +95,20 @@ class Election extends \Google\Model
   public function getOcdDivisionId()
   {
     return $this->ocdDivisionId;
+  }
+  /**
+   * @param string
+   */
+  public function setShapeLookupBehavior($shapeLookupBehavior)
+  {
+    $this->shapeLookupBehavior = $shapeLookupBehavior;
+  }
+  /**
+   * @return string
+   */
+  public function getShapeLookupBehavior()
+  {
+    return $this->shapeLookupBehavior;
   }
 }
 

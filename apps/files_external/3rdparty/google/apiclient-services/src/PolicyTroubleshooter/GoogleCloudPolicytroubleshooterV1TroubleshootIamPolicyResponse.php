@@ -24,6 +24,8 @@ class GoogleCloudPolicytroubleshooterV1TroubleshootIamPolicyResponse extends \Go
    * @var string
    */
   public $access;
+  protected $errorsType = GoogleRpcStatus::class;
+  protected $errorsDataType = 'array';
   protected $explainedPoliciesType = GoogleCloudPolicytroubleshooterV1ExplainedPolicy::class;
   protected $explainedPoliciesDataType = 'array';
 
@@ -40,6 +42,20 @@ class GoogleCloudPolicytroubleshooterV1TroubleshootIamPolicyResponse extends \Go
   public function getAccess()
   {
     return $this->access;
+  }
+  /**
+   * @param GoogleRpcStatus[]
+   */
+  public function setErrors($errors)
+  {
+    $this->errors = $errors;
+  }
+  /**
+   * @return GoogleRpcStatus[]
+   */
+  public function getErrors()
+  {
+    return $this->errors;
   }
   /**
    * @param GoogleCloudPolicytroubleshooterV1ExplainedPolicy[]

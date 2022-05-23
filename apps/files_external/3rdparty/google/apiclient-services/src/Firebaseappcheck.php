@@ -20,7 +20,7 @@ namespace Google\Service;
 use Google\Client;
 
 /**
- * Service definition for Firebaseappcheck (v1beta).
+ * Service definition for Firebaseappcheck (v1).
  *
  * <p>
  * Firebase App Check works alongside other Firebase services to help protect
@@ -47,7 +47,7 @@ class Firebaseappcheck extends \Google\Service
   public $projects_apps_appAttestConfig;
   public $projects_apps_debugTokens;
   public $projects_apps_deviceCheckConfig;
-  public $projects_apps_recaptchaConfig;
+  public $projects_apps_playIntegrityConfig;
   public $projects_apps_recaptchaEnterpriseConfig;
   public $projects_apps_recaptchaV3Config;
   public $projects_apps_safetyNetConfig;
@@ -66,7 +66,7 @@ class Firebaseappcheck extends \Google\Service
     $this->rootUrl = $rootUrl ?: 'https://firebaseappcheck.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1beta';
+    $this->version = 'v1';
     $this->serviceName = 'firebaseappcheck';
 
     $this->jwks = new Firebaseappcheck\Resource\Jwks(
@@ -76,7 +76,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -96,7 +96,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'exchangeAppAttestAssertion' => [
-              'path' => 'v1beta/{+app}:exchangeAppAttestAssertion',
+              'path' => 'v1/{+app}:exchangeAppAttestAssertion',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -106,7 +106,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'exchangeAppAttestAttestation' => [
-              'path' => 'v1beta/{+app}:exchangeAppAttestAttestation',
+              'path' => 'v1/{+app}:exchangeAppAttestAttestation',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -116,7 +116,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'exchangeCustomToken' => [
-              'path' => 'v1beta/{+app}:exchangeCustomToken',
+              'path' => 'v1/{+app}:exchangeCustomToken',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -126,7 +126,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'exchangeDebugToken' => [
-              'path' => 'v1beta/{+app}:exchangeDebugToken',
+              'path' => 'v1/{+app}:exchangeDebugToken',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -136,7 +136,17 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'exchangeDeviceCheckToken' => [
-              'path' => 'v1beta/{+app}:exchangeDeviceCheckToken',
+              'path' => 'v1/{+app}:exchangeDeviceCheckToken',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'app' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'exchangePlayIntegrityToken' => [
+              'path' => 'v1/{+app}:exchangePlayIntegrityToken',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -146,17 +156,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'exchangeRecaptchaEnterpriseToken' => [
-              'path' => 'v1beta/{+app}:exchangeRecaptchaEnterpriseToken',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'app' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'exchangeRecaptchaToken' => [
-              'path' => 'v1beta/{+app}:exchangeRecaptchaToken',
+              'path' => 'v1/{+app}:exchangeRecaptchaEnterpriseToken',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -166,7 +166,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'exchangeRecaptchaV3Token' => [
-              'path' => 'v1beta/{+app}:exchangeRecaptchaV3Token',
+              'path' => 'v1/{+app}:exchangeRecaptchaV3Token',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -176,7 +176,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'exchangeSafetyNetToken' => [
-              'path' => 'v1beta/{+app}:exchangeSafetyNetToken',
+              'path' => 'v1/{+app}:exchangeSafetyNetToken',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -186,7 +186,17 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'generateAppAttestChallenge' => [
-              'path' => 'v1beta/{+app}:generateAppAttestChallenge',
+              'path' => 'v1/{+app}:generateAppAttestChallenge',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'app' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'generatePlayIntegrityChallenge' => [
+              'path' => 'v1/{+app}:generatePlayIntegrityChallenge',
               'httpMethod' => 'POST',
               'parameters' => [
                 'app' => [
@@ -206,7 +216,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'batchGet' => [
-              'path' => 'v1beta/{+parent}/apps/-/appAttestConfig:batchGet',
+              'path' => 'v1/{+parent}/apps/-/appAttestConfig:batchGet',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -221,7 +231,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -231,7 +241,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -255,7 +265,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'create' => [
-              'path' => 'v1beta/{+parent}/debugTokens',
+              'path' => 'v1/{+parent}/debugTokens',
               'httpMethod' => 'POST',
               'parameters' => [
                 'parent' => [
@@ -265,7 +275,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'delete' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'name' => [
@@ -275,7 +285,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -285,7 +295,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'v1beta/{+parent}/debugTokens',
+              'path' => 'v1/{+parent}/debugTokens',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -303,7 +313,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -327,7 +337,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'batchGet' => [
-              'path' => 'v1beta/{+parent}/apps/-/deviceCheckConfig:batchGet',
+              'path' => 'v1/{+parent}/apps/-/deviceCheckConfig:batchGet',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -342,7 +352,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -352,7 +362,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -369,14 +379,14 @@ class Firebaseappcheck extends \Google\Service
           ]
         ]
     );
-    $this->projects_apps_recaptchaConfig = new Firebaseappcheck\Resource\ProjectsAppsRecaptchaConfig(
+    $this->projects_apps_playIntegrityConfig = new Firebaseappcheck\Resource\ProjectsAppsPlayIntegrityConfig(
         $this,
         $this->serviceName,
-        'recaptchaConfig',
+        'playIntegrityConfig',
         [
           'methods' => [
             'batchGet' => [
-              'path' => 'v1beta/{+parent}/apps/-/recaptchaConfig:batchGet',
+              'path' => 'v1/{+parent}/apps/-/playIntegrityConfig:batchGet',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -391,7 +401,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -401,7 +411,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -425,7 +435,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'batchGet' => [
-              'path' => 'v1beta/{+parent}/apps/-/recaptchaEnterpriseConfig:batchGet',
+              'path' => 'v1/{+parent}/apps/-/recaptchaEnterpriseConfig:batchGet',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -440,7 +450,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -450,7 +460,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -474,7 +484,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'batchGet' => [
-              'path' => 'v1beta/{+parent}/apps/-/recaptchaV3Config:batchGet',
+              'path' => 'v1/{+parent}/apps/-/recaptchaV3Config:batchGet',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -489,7 +499,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -499,7 +509,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -523,7 +533,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'batchGet' => [
-              'path' => 'v1beta/{+parent}/apps/-/safetyNetConfig:batchGet',
+              'path' => 'v1/{+parent}/apps/-/safetyNetConfig:batchGet',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -538,7 +548,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -548,7 +558,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -572,7 +582,7 @@ class Firebaseappcheck extends \Google\Service
         [
           'methods' => [
             'batchUpdate' => [
-              'path' => 'v1beta/{+parent}/services:batchUpdate',
+              'path' => 'v1/{+parent}/services:batchUpdate',
               'httpMethod' => 'POST',
               'parameters' => [
                 'parent' => [
@@ -582,7 +592,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -592,7 +602,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'v1beta/{+parent}/services',
+              'path' => 'v1/{+parent}/services',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -610,7 +620,7 @@ class Firebaseappcheck extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [

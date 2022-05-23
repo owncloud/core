@@ -35,9 +35,8 @@ class SpacesMembers extends \Google\Service\Resource
    * authentication](https://developers.google.com/chat/api/guides/auth/service-
    * accounts). (members.get)
    *
-   * @param string $name Required. Resource name of the membership to be
-   * retrieved, in the form "spaces/members". Example:
-   * spaces/AAAAAAAAAAAA/members/111111111111111111111
+   * @param string $name Required. Resource name of the membership to retrieve.
+   * Format: spaces/{space}/members/{member}
    * @param array $optParams Optional parameters.
    * @return Membership
    */
@@ -52,9 +51,8 @@ class SpacesMembers extends \Google\Service\Resource
    * authentication](https://developers.google.com/chat/api/guides/auth/service-
    * accounts). (members.listSpacesMembers)
    *
-   * @param string $parent Required. The resource name of the space for which
-   * membership list is to be fetched, in the form "spaces". Example:
-   * spaces/AAAAAAAAAAAA
+   * @param string $parent Required. The resource name of the space for which to
+   * fetch a membership list. Format: spaces/{space}
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Requested page size. The value is capped at 1000.
