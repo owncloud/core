@@ -1,0 +1,8 @@
+Bugfix: Keep pagination active with empty search queries
+
+Before this fix, an empty search string would pre-render all rows in
+the file list, ignoring the pagination. This fix ensures that the 
+file list is paginated correctly in combination with an empty search query.
+
+https://github.com/owncloud/core/pull/39155
+https://github.com/owncloud/enterprise/issues/4615

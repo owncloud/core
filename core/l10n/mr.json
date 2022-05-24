@@ -1,0 +1,9 @@
+{ "translations": {
+    "Settings" : "सेटिंग्ज",
+    "Name" : "नाव",
+    "Share" : "वाटा",
+    "can edit" : "बदलू शकतो",
+    "Rename" : "नाव बदला",
+    "Delete" : "का"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

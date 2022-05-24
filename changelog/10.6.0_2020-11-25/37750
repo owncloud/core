@@ -1,0 +1,5 @@
+Bugfix: fix decoding of calendars uri
+
+In case an user had calendars uri containing special characters, for instance "persönlich", and this user was then invited to a calendar event, the event could not be created and a 404 was shown in the stack trace. Reason for this was the uri not being properly decoded. The behavior has now been fixed.
+
+https://github.com/owncloud/core/pull/37750

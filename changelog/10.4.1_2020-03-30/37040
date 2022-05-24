@@ -1,0 +1,5 @@
+Change: Lookup email subject in correct translation context
+
+Use 'lib' instead of 'core' to get the translations.
+
+https://github.com/owncloud/core/issues/37040

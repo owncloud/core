@@ -1,0 +1,8 @@
+Bugfix: Prevent files:checksum:verify from crashing on exception
+
+The command now skips files with exceptions instead of crashing.
+A proper message will be displayed to the user who fires the command.
+
+https://github.com/owncloud/core/pull/38785
+https://github.com/owncloud/core/pull/39005
+https://github.com/owncloud/core/issues/38782

@@ -1,0 +1,8 @@
+Bugfix: Adjust user:sync --uid to use user backend iterator
+
+It fixes the behavior for user:sync --uid that attempts to retrieve all
+user backend users without limit at offset, that is not supported by LDAP backend.
+Instead, proper iterator and search query has been used
+
+https://github.com/owncloud/core/pull/37398
+https://github.com/owncloud/enterprise/issues/3981

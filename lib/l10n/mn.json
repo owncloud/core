@@ -1,0 +1,10 @@
+{ "translations": {
+    "Username" : "Хэрэглэгчийн нэр",
+    "Password" : "Нууц үг",
+    "General" : "Ерөнхий",
+    "Security" : "Аюулгүй байдал",
+    "Sharing" : "Түгээлт",
+    "Settings" : "Тохиргоо",
+    "Authentication error" : "Нотолгооны алдаа"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

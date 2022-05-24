@@ -1,0 +1,7 @@
+Bugfix: List apps only once
+
+`occ app:list --minimal`
+could display apps twice in the listing. Each app is now displayed only once.
+
+https://github.com/owncloud/core/issues/39930
+https://github.com/owncloud/core/pull/40081

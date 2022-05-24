@@ -1,0 +1,10 @@
+Enhancement: Improve systemtags UI for delete and fix case sensitivity problem
+
+Previously, a system tag could be deleted within the rename step.
+Now, users can delete tags directly from the system tags tab view dropdown menu.
+Also, inconsistency on tag name casing has been fixed.
+
+https://github.com/owncloud/core/pull/38498
+https://github.com/owncloud/core/issues/38494
+https://github.com/owncloud/core/issues/38495
+https://github.com/owncloud/core/issues/38496

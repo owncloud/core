@@ -1,0 +1,8 @@
+Enhancement: Regex version for blacklisted_files and excluded_directories
+
+Adds two config options blacklisted_files_regex and excluded_directories_regex
+to enable more flexible pattern matches. With this you can, for example, disable
+the upload of Microsoft Outlook .pst files or the creation of directories
+containing <yourdate>_backup.
+
+https://github.com/owncloud/core/pull/36360

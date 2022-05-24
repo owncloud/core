@@ -1,0 +1,11 @@
+Bugfix: Stop writing data to the output buffer when the connection is not alive
+
+Publicly shared video playback is sending a range http request to get the video
+content. In cases where the user is seeking to different positions of the video
+will result in a pretty high server load because all the video content is sent
+to the browser. Without detecting the connection state on server side all data
+is put to the output buffer.
+With this change the server processes will stop sending data as soon as the
+connection is detected as non-active.
+
+https://github.com/owncloud/core/pull/37219

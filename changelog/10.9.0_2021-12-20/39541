@@ -1,0 +1,10 @@
+Change: Allow setting multiple default file actions
+
+This change allows a mime type to have multiple default file actions. In the
+past, registering an action as default would overwrite existing defaults.
+
+In case multiple file actions apply to a mime type, clicking on a file will
+show the app drawer context menu.
+
+https://github.com/owncloud/core/pull/39541
+https://github.com/owncloud/enterprise/issues/4634

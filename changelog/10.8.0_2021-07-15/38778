@@ -1,0 +1,7 @@
+Bugfix: Image preview for file versions
+
+Changed the way how preview thumbnails are being rendered so they will
+be rendered properly for file versions.
+
+https://github.com/owncloud/core/pull/38778
+https://github.com/owncloud/core/issues/38766

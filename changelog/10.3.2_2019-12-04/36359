@@ -1,0 +1,7 @@
+Bugfix: Fix sharing behavior to distinguish user and group having the same name
+
+Sharing a node with user and group having the same name was impossible.
+This bug was resolved by adding a share type check for share creation controls.
+
+https://github.com/owncloud/core/issues/35488
+https://github.com/owncloud/core/pull/36359

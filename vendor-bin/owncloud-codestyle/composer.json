@@ -1,0 +1,5 @@
+{
+    "require": {
+      "owncloud/coding-standard": "^3.0"
+    }
+  }

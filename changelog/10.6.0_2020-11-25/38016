@@ -1,0 +1,8 @@
+Bugfix: Do not emit "share.failedpasswordcheck" events for authenticated links
+
+ShareManager was checking password of already authenticated public links.
+This situation led to wrong "share.failedpasswordcheck" events emitting in already authenticated links.
+This problem has been resolved by first checking link already authenticated.
+
+https://github.com/owncloud/brute_force_protection/issues/138
+https://github.com/owncloud/core/pull/38016

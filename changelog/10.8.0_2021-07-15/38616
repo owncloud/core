@@ -1,0 +1,5 @@
+Enhancement: Add html template for calens
+
+Added an html template to render the changelog also in html format. This will give us better control over the rendering on the website.
+
+https://github.com/owncloud/core/pull/38616

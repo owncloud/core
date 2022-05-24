@@ -1,0 +1,14 @@
+Change: Update symfony/polyfill (1.13.1 => 1.14.0)
+
+The following symfony/polyfill components have been updated to version 1.14.0:
+
+symfony/polyfill-ctype
+symfony/polyfill-iconv
+symfony/polyfill-intl-idn
+symfony/polyfill-mbstring
+symfony/polyfill-php56
+symfony/polyfill-php72
+symfony/polyfill-php73
+symfony/polyfill-util
+
+https://github.com/owncloud/core/pull/36955

@@ -1,0 +1,10 @@
+Enhancement: Improve login form
+
+This adjustment improves the overall look and feel of the login form.
+Furthermore, the placeholders have been replaced in favor of labels,
+the confirm button has been expunged from the password field and placed under
+the input fields.
+
+https://github.com/owncloud/core/pull/38506
+https://github.com/owncloud/core/pull/38853
+https://github.com/owncloud/core/pull/38894

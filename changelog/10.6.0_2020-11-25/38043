@@ -1,0 +1,9 @@
+Change: Update google/apiclient from 2.7.1 to 2.8.0 and related dependencies
+
+This change updates the 3rd-party dependencies of files_external:
+  - google/apiclient (v2.7.1 => v2.8.0)
+  - google/apiclient-services (v0.146 => v0.152)
+  - google/auth (v1.12.0 => v1.14.3)
+  - guzzlehttp/psr7 (1.6.1 => 1.7.0)
+
+https://github.com/owncloud/core/pull/38043

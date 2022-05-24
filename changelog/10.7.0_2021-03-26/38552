@@ -1,0 +1,8 @@
+Bugfix: Fix mispositioned ui elements after leaving viewerMode
+
+Until today, after leaving the viewer mode (e.G Pdf viewer)
+the action header table in the files list was mispositioned while checking an item.
+The download action and following items went out of sight.
+
+https://github.com/owncloud/core/issues/38547
+https://github.com/owncloud/core/pull/38552

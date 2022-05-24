@@ -1,0 +1,7 @@
+Bugfix: Determine unencrypted block size after begin operation
+
+Unencrypted block size of encrypted file can change with different encoding types.
+Unencrypted block size determination has been moved after begin operation in stream opening.
+In this way, EncryptionModule can decide block size after reading the header of the file.
+
+https://github.com/owncloud/core/pull/38249

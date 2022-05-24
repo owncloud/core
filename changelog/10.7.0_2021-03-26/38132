@@ -1,0 +1,11 @@
+Enhancement: Context menu for files in case multiple actions apply
+
+When triggering the default action for a file which can be opened or edited
+with more than one app, a new context menu is displayed. This menu will
+ask the user with which app the corresponding file should be opened.
+
+This also solves the problem with some apps which set themselves as
+default without asking or even informing the user.
+
+https://github.com/owncloud/core/pull/38132
+https://github.com/owncloud/enterprise/issues/4261

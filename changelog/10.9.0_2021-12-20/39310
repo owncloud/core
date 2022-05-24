@@ -1,0 +1,14 @@
+Enhancement: Trim spaces while creating, uploading or renaming entities in webUI
+
+With this change starting or trailing spaces will be removed while:
+* Creating files and folders in the webUI
+* Uploading files using the 'Upload' button in the webUI
+* Uploading files and folders using drag & drop in the webUI
+* Renaming files and folders in the webUI
+
+This also solves problems when the sync client can't sync files and folders
+with trailing spaces based on the underlying file system.
+
+https://github.com/owncloud/core/pull/39310
+https://github.com/owncloud/enterprise/issues/4772
+https://github.com/owncloud/core/issues/35017

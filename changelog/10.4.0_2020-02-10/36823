@@ -1,0 +1,8 @@
+Enhancement: Additional share owner and initiator info in shares API response
+
+We've extended the OCS Share API response for share recipients to also include
+additional fields for the share owner and initiator.
+Additional fields are configured in the admin settings and can be set to email or user id
+and are useful to distinguish users who have the same display name.
+
+https://github.com/owncloud/core/issues/36823

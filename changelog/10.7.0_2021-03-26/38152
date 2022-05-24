@@ -1,0 +1,7 @@
+Change: API changes to remove shares pointing to missing files
+
+If a file was completely deleted without unsharing first, the share
+would still exist in the DB even though it wouldn't be shown to the users.
+This change prepares a way to remove those shares.
+
+https://github.com/owncloud/core/pull/38152

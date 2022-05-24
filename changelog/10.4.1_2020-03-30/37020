@@ -1,0 +1,6 @@
+Change: Allow dot in database name
+
+When installing ownCloud the database name is now allowed to contain a dot.
+
+https://github.com/owncloud/core/issues/20381
+https://github.com/owncloud/core/pull/37020

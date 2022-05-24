@@ -1,0 +1,9 @@
+Enhancement: Optimized preview for text files
+
+Previews for text files are generated a bit faster. The preview will be
+generated based on the first 2 KB of content. In addition to common Latin
+script, texts using Han, Hiragana, Katakana, Hangul, Devanagari and Arabic
+scripts will also be shown. Note that a text with mixed scripts won't be
+previewed properly.
+
+https://github.com/owncloud/core/pull/39296

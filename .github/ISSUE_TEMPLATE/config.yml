@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask question / Support
+    url: https://central.owncloud.org/
+    about: If you have any support question. Please ask and answer questions here.
+  - name: Report security issue
+    url: https://owncloud.com/security/
+    about: For reporting potential security issues.

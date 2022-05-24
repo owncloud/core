@@ -1,0 +1,6 @@
+Change: Update handlebars library to 4.5.3
+
+The @bower_components/handlebars library has been updated from 4.1.2 to 4.5.3.
+
+https://github.com/owncloud/core/pull/36439
+https://github.com/owncloud/core/pull/36438

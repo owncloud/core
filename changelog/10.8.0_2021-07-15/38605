@@ -1,0 +1,9 @@
+Enhancement: Automations in activity stream
+
+This adjustment provides a way to handle the activity stream for actions that
+were triggered by an automation (like the workflow app e.g.).
+
+https://github.com/owncloud/core/pull/38605
+https://github.com/owncloud/core/pull/38630
+https://github.com/owncloud/core/pull/38970
+https://github.com/owncloud/enterprise/issues/4222

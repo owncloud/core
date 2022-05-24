@@ -1,0 +1,7 @@
+Enhancement: Display clickable links during web UI upgrade process
+
+Before this PR, error messages can contain links that have not been clickable.
+With this PR, links are clickable and open them in a new tab.
+
+https://github.com/owncloud/core/pull/39184
+https://github.com/owncloud/core/issues/39178

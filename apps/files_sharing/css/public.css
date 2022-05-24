@@ -1,0 +1,153 @@
+#content {
+    height: initial;
+    min-height: calc(100vh - 140px);
+}
+
+/* force layout to make sure the content element's height matches its contents' height */
+.ie #content {
+    display: inline-block;
+}
+
+#preview {
+    background: #fff;
+    text-align: center;
+}
+
+#preview .notCreatable {
+    display: none;
+}
+
+#noPreview {
+    display: none;
+    padding-top: 80px;
+}
+
+#imgframe {
+    height: 75%;
+    padding-bottom: 32px;
+    padding-top: 32px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+#imgframe img,
+#imgframe video {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#imgframe .text-preview {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    white-space: pre-wrap;
+    overflow-y: hidden;
+    height: auto;
+    min-height: 200px;
+    max-height: 800px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#imgframe .ellipsis {
+    font-size: 1.2em;
+}
+
+/* fix multiselect bar offset on shared page */
+thead {
+    left: 0 !important;
+}
+
+#data-upload-form {
+    position: relative;
+    right: 0;
+    height: 32px;
+    overflow: hidden;
+    padding: 0;
+    float: right;
+    display: inline;
+    margin: 0;
+}
+
+
+.directDownload,
+.directLink {
+    margin-bottom: 20px;
+}
+
+/* keep long file names in one line to not overflow download button on mobile */
+.directDownload #downloadFile {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.directLink label {
+    font-weight: normal;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=50);
+    opacity: .5;
+}
+
+.directLink input {
+    margin-left: 5px;
+    width: 500px;
+    max-width: 90%;
+}
+
+/* within #save */
+
+#save {
+    margin: 0 5px;
+}
+
+#save #save-to-oc-button {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border-right: 1px solid;
+}
+
+#save #save-to-oc-button-expand {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+
+#save #save-to-oc-button {
+    margin-right: 0;
+}
+
+#save #save-to-oc-button-text span {
+    margin-left: 3px;
+}
+
+#save #save-to-oc-button img {
+    margin-left: 5px;
+}
+
+#save #expanddiv {
+    right: -14px;
+    top: 36px;
+}
+
+#save #save-to-oc-expand-container {
+    position: relative;
+    display: inline-block;
+}
+
+.icon-fed-change-server {
+    background-image: url('../img/fed-change-server.svg');
+}
+
+.icon-fed-current-server {
+    background-image: url('../img/fed-current-server.svg');
+}
+

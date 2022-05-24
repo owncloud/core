@@ -1,0 +1,8 @@
+Bugfix: Include incoming and parent permissions in Share UI subfolder reshares
+
+Before this fix SharePanel in Share UI did not include permissions of both incoming and parent shares 
+for subfolder reshares. It caused lack of possibility of resharing such files/folder even 
+though server-side permissions allowed it.
+
+https://github.com/owncloud/core/pull/38788
+https://github.com/owncloud/enterprise/issues/4497

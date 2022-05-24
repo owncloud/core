@@ -1,0 +1,79 @@
+{
+    "name": "owncloud/core",
+    "description": "A safe home for all your data",
+    "license": "AGPL-1.0",
+    "config" : {
+        "vendor-dir": "lib/composer",
+        "optimize-autoloader": true,
+        "classmap-authoritative": false,
+        "platform": {
+            "php": "7.3"
+        },
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true,
+            "dg/composer-cleaner": true
+        }
+    },
+    "autoload" : {
+        "psr-4": {
+            "OC\\": "lib/private",
+            "OC\\Core\\": "core/",
+            "OC\\Settings\\": "settings/",
+            "OCP\\": "lib/public"
+        },
+        "classmap": ["lib/private/legacy"]
+    },
+    "autoload-dev" : {
+        "files": ["tests/lib/TestCase.php"]
+    },
+    "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.4",
+        "jakub-onderka/php-console-highlighter": "^0.4",
+        "mikey179/vfsstream": "^1.6",
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-master"
+    },
+    "require": {
+        "php": ">=7.3",
+        "doctrine/dbal": "^2.10",
+        "phpseclib/phpseclib": "^3.0",
+        "opis/closure": "^3.5",
+        "bantu/ini-get-wrapper": "v1.0.1",
+        "punic/punic": "^3.5",
+        "pear/archive_tar": "1.4.14",
+        "symfony/console": "^4.4",
+        "symfony/event-dispatcher": "^4.4",
+        "symfony/routing": "^4.4",
+        "symfony/process": "^4.4",
+        "pimple/pimple": "^3.4",
+        "nikic/php-parser": "^4.4",
+        "icewind/streams": "0.7.5",
+        "swiftmailer/swiftmailer": "^6.2",
+        "guzzlehttp/guzzle": "^5.3",
+        "league/flysystem": "^1.0",
+        "pear/pear-core-minimal": "^v1.10",
+        "interfasys/lognormalizer": "^v1.0",
+        "owncloud/tarstreamer": "v2.0.0",
+        "patchwork/jsqueeze": "^2.0",
+        "christophwurst/id3parser": "^0.1.1",
+        "sabre/dav": "^4.1",
+        "sabre/http": "^5.1",
+        "deepdiver/zipstreamer": "^2.0",
+        "symfony/translation": "^4.4",
+        "laminas/laminas-inputfilter": "^2.10",
+        "laminas/laminas-servicemanager": "^3.4",
+        "laminas/laminas-validator": "^2.13",
+        "composer/semver": "^3.0",
+        "ext-json": "*",
+        "sabre/vobject": "^4.3",
+        "dg/composer-cleaner": "^2.1"
+    },
+    "extra": {
+        "bamarni-bin": {
+            "bin-links": false
+        },
+        "cleaner-ignore": {
+            "phpunit/phpunit": true
+        }
+    }
+}

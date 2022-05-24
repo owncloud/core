@@ -1,0 +1,5 @@
+Bugfix: Add metrics shared secret to the sensitive values list
+
+The metrics api shared secret was printed as is in the config report. Now it is masked.
+
+https://github.com/owncloud/core/pull/37848

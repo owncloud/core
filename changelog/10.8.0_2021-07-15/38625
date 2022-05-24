@@ -1,0 +1,11 @@
+Bugfix: When validating rereshare permission make sure to check parent mountpoint
+
+When receiving reshare for a group from parent folder and subfolder of that folder with lower permission,
+further reshares were subject to subfolder reshare permissions due to issue with resolving parent mountpoint.
+With this change we now ensure to take parent mountpoint out of received mountpoints
+
+https://github.com/owncloud/enterprise/issues/4497
+https://github.com/owncloud/enterprise/issues/4382
+https://github.com/owncloud/core/pull/38625
+https://github.com/owncloud/core/pull/38651
+https://github.com/owncloud/core/pull/38862

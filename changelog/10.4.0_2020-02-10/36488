@@ -1,0 +1,6 @@
+Bugfix: Fix Trash-bin api access
+
+Trash-bin API had allowed users to see the trash-bin content of other users.
+
+https://github.com/owncloud/core/issues/36378
+https://github.com/owncloud/core/pull/36488

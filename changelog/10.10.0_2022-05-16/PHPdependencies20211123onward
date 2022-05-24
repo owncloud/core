@@ -1,0 +1,48 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- christophwurst/id3parser (v0.1.3 to v0.1.4)
+- doctrine/dbal (2.13.5 to 2.13.9)
+- doctrine/lexer (1.2.1 to 1.2.3)
+- laminas/laminas-inputfilter (2.12.0 to 2.12.1)
+- laminas/laminas-stdlib (3.6.1 to 3.7.1)
+- laminas/laminas-validator (2.15.0 to 2.17.0)
+- laminas/laminas-zendframework-bridge (1.4.0 to 1.4.1)
+- league/flysystem (1.1.5 to 1.1.9)
+- league/mime-type-detection (1.8.0 to 1.11.0)
+- opis/closure (3.6.2 to 3.6.3)
+- paragonie/constant_time_encoding (2.4.0 to 2.5.0)
+- phpseclib/phpseclib (3.0.11 to 3.0.14)
+- sabre/dav (4.2.0 to 4.3.1)
+- sabre/vobject (4.4.0 to 4.4.1)
+
+The following have been updated in apps/files_external/3rdparty:
+- google/apiclient (2.11.0 to 2.12.4)
+- google/apiclient-services (0.231.0 to 0.244.0)
+- guzzlehttp/psr7 (1.8.3 to 1.8.5)
+- icewind/smb (3.5.1 to 3.5.2)
+- monolog/monolog (2.3.5 to 2.5.0)
+- paragonie/constant_time_encoding (v2.4.0 to v2.5.0)
+- phpseclib/phpseclib (3.0.11 to 3.0.14)
+- react/promise (v2.8.0 to v2.9.0)
+
+https://github.com/owncloud/core/pull/39526
+https://github.com/owncloud/core/pull/39567
+https://github.com/owncloud/core/pull/39631
+https://github.com/owncloud/core/pull/39649
+https://github.com/owncloud/core/pull/39693
+https://github.com/owncloud/core/pull/39695
+https://github.com/owncloud/core/pull/39703
+https://github.com/owncloud/core/pull/39713
+https://github.com/owncloud/core/pull/39717
+https://github.com/owncloud/core/pull/39731
+https://github.com/owncloud/core/pull/39780
+https://github.com/owncloud/core/pull/39838
+https://github.com/owncloud/core/pull/39839
+https://github.com/owncloud/core/pull/39859
+https://github.com/owncloud/core/pull/39949
+https://github.com/owncloud/core/pull/39956
+https://github.com/owncloud/core/pull/39999
+https://github.com/owncloud/core/pull/40001
+https://github.com/owncloud/core/pull/40003
+https://github.com/owncloud/core/pull/40038

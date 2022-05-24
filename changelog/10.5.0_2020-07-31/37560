@@ -1,0 +1,7 @@
+Bugfix: Show error message at Settings Personal CORS
+
+Skipping a protocol at Settings Personal CORS silently refused to add the domain.
+Proper error message added.
+
+
+https://github.com/owncloud/core/pull/37560

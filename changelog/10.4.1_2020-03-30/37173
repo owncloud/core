@@ -1,0 +1,8 @@
+Change: Proper error handling on preview endpoint
+
+Preview requests for folders now return 400/Bad Request and any false parameters
+of the preview generation now return 400/Bad Request as well.
+
+https://github.com/owncloud/core/pull/37173
+https://github.com/owncloud/core/issues/37164
+https://github.com/owncloud/core/issues/37165

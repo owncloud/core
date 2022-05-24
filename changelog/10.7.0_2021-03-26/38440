@@ -1,0 +1,8 @@
+Enhancement: Indicate existing guest-user as a guest in the share tab
+
+Previously, after sharing a file via email with a guest, enter the same email
+in the tab view on another file, indicates the guest as a user.
+With this fix, we will see guest instead of user.
+
+https://github.com/owncloud/core/pull/38440
+https://github.com/owncloud/core/issues/38422

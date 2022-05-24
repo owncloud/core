@@ -1,0 +1,5 @@
+Bugfix: Hide add to your OC at the public page when it's not allowed
+
+'Add to your ownCloud' button was removed from the public link page if outgoing federated sharing is disabled.
+
+https://github.com/owncloud/core/pull/37232

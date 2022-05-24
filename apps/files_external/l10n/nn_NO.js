@@ -1,0 +1,26 @@
+OC.L10N.register(
+    "files_external",
+    {
+    "Step 1 failed. Exception: %s" : "Steg 1 feila. Feil: %s",
+    "Step 2 failed. Exception: %s" : "Steg 2 feila. Feil: %s",
+    "Google Drive App Configuration" : "Google Drive program konfigurasjon",
+    "Error verifying OAuth2 Code for " : "Feil ved verifisering av OAuth2 kode for",
+    "Personal" : "Personleg",
+    "Saved" : "Lagra",
+    "Username" : "Brukarnamn",
+    "Password" : "Passord",
+    "Save" : "Lagra",
+    "WebDAV" : "WebDAV",
+    "URL" : "Nettstad",
+    "Google Drive" : "Google Drive",
+    "Location" : "Stad",
+    "ownCloud" : "ownCloud",
+    "Host" : "Tenar",
+    "Root" : "Rot",
+    "Share" : "Del",
+    "Name" : "Namn",
+    "Folder name" : "Mappenamn",
+    "Configuration" : "Innstillingar",
+    "Delete" : "Slett"
+},
+"nplurals=2; plural=(n != 1);");

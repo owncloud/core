@@ -1,0 +1,28 @@
+{ "translations": {
+    "See %s" : "Տեսնել %s",
+    "Unknown filetype" : "Անհայտ ֆայլի տիպ",
+    "Invalid image" : "Անվավեր նկար",
+    "today" : "այսօր",
+    "yesterday" : "երեկ",
+    "_%n day ago_::_%n days ago_" : ["%n օր առաջ","%n օր առաջ"],
+    "last month" : "անցած ամիս",
+    "_%n month ago_::_%n months ago_" : ["%n ամիս առաջ","%n ամիս առաջ"],
+    "last year" : "անցած տարի",
+    "_%n year ago_::_%n years ago_" : ["%n տարի առաջ","%n տարի առաջ"],
+    "_%n hour ago_::_%n hours ago_" : ["%n ժամ առաջ","%n ժամ առաջ"],
+    "_%n minute ago_::_%n minutes ago_" : ["%n րոպե առաջ","%n րոպե առաջ"],
+    "seconds ago" : "վրկ. առաջ",
+    "Username and password" : "Օգտանուն և գաղտնաբառ",
+    "Username" : "Օգտանուն",
+    "Password" : "Գաղտնաբառ",
+    "File name contains at least one invalid character" : "Ֆայլի անունը առնվազն մի անվավեր նիշ է պարունակում",
+    "Apps" : "Ափփեր",
+    "General" : "Ընդհանուր",
+    "Security" : "Անվտանգություն",
+    "Search" : "Փնտրել",
+    "Settings" : "Կարգավորումներ",
+    "Users" : "Օգտատերեր",
+    "Unknown user" : "Անհայտ օգտատեր",
+    "PostgreSQL >= 9 required" : "Պահանջվում է PostgreSQL >= 9"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

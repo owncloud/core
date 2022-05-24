@@ -1,0 +1,6 @@
+Enhancement: Add very verbose mode to remote shares polling
+
+Additional output to the incoming-shares:poll command has been added when it is
+run with -vv
+
+https://github.com/owncloud/core/pull/36832

@@ -1,0 +1,6 @@
+Change: Don't write potential sensitive data to the log file
+
+Sensitive data like passwords are not written to the log when the exception
+is thrown from within a closure.
+
+https://github.com/owncloud/core/pull/36961

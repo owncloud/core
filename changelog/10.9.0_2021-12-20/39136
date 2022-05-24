@@ -1,0 +1,5 @@
+Enhancement: Add console command to move a user's home folder
+
+occ user:move-home <user_id> <new_location>
+
+https://github.com/owncloud/core/pull/39136

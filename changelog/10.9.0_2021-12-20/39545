@@ -1,0 +1,5 @@
+Security: Patch jquery ui CVE-2016-7103
+
+Patched a CVE regarding the jquery dialog widget. This widget is currently not being used so this is a preventive patch.
+
+https://github.com/owncloud/core/pull/39545

@@ -1,0 +1,9 @@
+{ "translations": {
+    "Contact birthdays" : "تاریخ تولد افراد",
+    "Personal" : "شخصی",
+    "Contacts" : "ارتباط‌ها",
+    "Technical details" : "جزئیات فنی",
+    "Remote Address: %s" : "آدرس راه‌دور: %s",
+    "Request ID: %s" : "ID درخواست: %s"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

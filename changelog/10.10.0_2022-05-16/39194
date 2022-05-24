@@ -1,0 +1,10 @@
+Enhancement: Unify API responses when setting permissions for public links
+
+Setting (and changing) the permissions of public links via the OCS API
+will now return proper and unified API responses. Adding create
+permissions while public uploading is disabled globally will always
+return a 403 response.
+
+https://github.com/owncloud/core/pull/39194
+https://github.com/owncloud/core/issues/36442
+https://github.com/owncloud/core/issues/36443

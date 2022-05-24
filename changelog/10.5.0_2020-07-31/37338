@@ -1,0 +1,5 @@
+Bugfix: Fix error messages
+
+Fixed printing of unescaped messages.
+
+https://github.com/owncloud/core/issues/37338

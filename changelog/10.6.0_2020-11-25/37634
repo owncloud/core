@@ -1,0 +1,14 @@
+Enhancement: Support pre-signed urls
+
+ocis-web (Phoenix) doesn't use cookies for authentication but the "Bearer" header.
+
+This means that we can only fetch data using XHR or the fetch API but cannot use URLs directly in image tags, also cannot download files directly.
+
+To solve this, we now support pre-signed URLs. This means that before creating an image tag or starting a download, we send an authenticated request to the server (OC 10 or OCIS) to ask for a pre-signed URL pointing at a specific resource. Then said URL can be forwarded either to an image tag (for thumbnails) or to another browser window to trigger a download.
+
+https://github.com/owncloud/core/pull/37634
+https://github.com/owncloud/core/pull/38029
+https://github.com/owncloud/phoenix/pull/3797
+https://github.com/owncloud/owncloud-sdk/pull/504
+https://github.com/owncloud/owncloud-sdk/pull/616
+https://github.com/owncloud/ocis-proxy/pull/75

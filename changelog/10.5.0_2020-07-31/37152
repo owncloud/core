@@ -1,0 +1,7 @@
+Change: Add index on addressbookid
+
+Added index for addressbookid_name_value that allows to improve
+scan performance of search addressbook query when medial search is off
+
+https://github.com/owncloud/enterprise/issues/3625
+https://github.com/owncloud/core/pull/37152

@@ -1,0 +1,13 @@
+Change: Update Symfony polyfill components to 1.13.0
+
+The following Symfony polyfill components have been updated to version 1.13.0:
+- polyfill-iconv
+- polyfill-php72
+- polyfill-mbstring
+- polyfill-intl-idn
+- polyfill-util
+- polyfill-php56
+- polyfill-ctype
+
+https://github.com/symfony/polyfill/releases/tag/v1.13.0
+https://github.com/owncloud/core/pull/36485

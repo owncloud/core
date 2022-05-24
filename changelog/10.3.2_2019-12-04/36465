@@ -1,0 +1,5 @@
+Bugfix: the authentication header can also hold an empty string
+
+In some setups a not set authentication header can not only hold null but also an empty string
+
+https://github.com/owncloud/core/pull/36465

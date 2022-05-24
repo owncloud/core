@@ -1,0 +1,7 @@
+Enhancement: Add 3 new events (before-fail-after) for share password validations
+
+'share.beforepasswordcheck', 'share.afterpasswordcheck' and 'share.failedpasswordcheck'
+events have been added for share password validations.
+Needs an update of brute_force_protection app to at least 1.1.0
+
+https://github.com/owncloud/core/pull/37438

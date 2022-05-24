@@ -1,0 +1,8 @@
+Enhancement: Add command to verify all available doc links
+
+All available doc links can now be tested and verified via `make test-doc-links`. It is also possible to 
+specify the ownCloud version to look for in the docs via `make test-doc-links DOC_LINK_VERSION=10.7`.
+It defaults to the ownCloud version of the current installation.
+
+https://github.com/owncloud/core/pull/39026
+https://github.com/owncloud/enterprise/issues/4671

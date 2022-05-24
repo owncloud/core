@@ -1,0 +1,9 @@
+Change: Use a debug log level if a share download is aborted
+
+If a client was downloading a file through a public link share
+and he decided to disconnect and abort the download, ownCloud was
+logging that exception.
+Now ownCloud will log a message with a debug level instead of logging
+the exception in order to reduce the noise.
+
+https://github.com/owncloud/core/pull/37856

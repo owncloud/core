@@ -1,0 +1,13 @@
+Bugfix: Delay getting the file info until it's going to be used
+
+Some operations require getting the file info to perform the action.
+Previously, this file info was fetched and stored before any operation. In
+some cases fetching the file info triggered a file scan that could delay
+the whole request considerably.
+
+Now, we fetch the file info only in those operations that require it. There
+are some node operations such as getting the file path that don't require
+fetching the file info, so those operation won't fetch it, and so a potential
+file scan is prevented (for those operations)
+
+https://github.com/owncloud/core/pull/38767

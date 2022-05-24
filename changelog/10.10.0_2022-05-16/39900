@@ -1,0 +1,10 @@
+Enhancement: Improve FileDrop view
+
+Small change in the design and behavior of the FileDrop view of Public Links.
+
+- The font is bigger and thicker
+- Background color was added to the list of files
+- The text in the "Dropbox" is wrapped properly, line-height was removed
+- Don't hide the logo on small resolutions
+
+https://github.com/owncloud/core/pull/39900

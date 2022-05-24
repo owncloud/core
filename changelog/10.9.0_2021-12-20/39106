@@ -1,0 +1,7 @@
+Bugfix: Clarify the description of the manual file locking option
+
+The administrator can enable manual file locking in the admin settings.
+That enables manual file locking on the web interface, not on all clients.
+The text has been changed to describe this correctly.
+
+https://github.com/owncloud/core/pull/39106

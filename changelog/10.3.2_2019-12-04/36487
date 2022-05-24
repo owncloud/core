@@ -1,0 +1,5 @@
+Bugfix: Remove query and/or anchor part in remote url
+
+Remote server URL may potentially contain query or anchor part. This pull request strips these parts for proper server name detection.
+
+https://github.com/owncloud/core/pull/36487

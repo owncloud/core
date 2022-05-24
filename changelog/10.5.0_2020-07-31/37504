@@ -1,0 +1,6 @@
+Bugfix: Align the cancel button on public uploads
+
+The cancel button on the public upload progress bar was not aligned.
+The alignment has been corrected.
+
+https://github.com/owncloud/core/pull/37504

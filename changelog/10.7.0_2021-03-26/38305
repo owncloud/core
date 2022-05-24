@@ -1,0 +1,11 @@
+Change: Change X-XSS-Protection "1; block" -> "0"
+
+OWASP/CheatSheetSeries#376 (comment)
+  https://github.com/OWASP/CheatSheetSeries/issues/376#issuecomment-602663932
+Suggest remove vs. "0"
+  https://github.com/helmetjs/helmet/issues/230#issuecomment-614106165
+X-XSS-Protection header has been deprecated
+  https://owasp.org/www-project-secure-headers/#x-xss-protection
+
+https://github.com/owncloud/core/issues/38236
+https://github.com/owncloud/core/pull/38305

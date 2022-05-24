@@ -1,0 +1,15 @@
+Enhancement: Improve public share federation user interface
+
+This adjustment provides a new way to add a public share to ownCloud.
+A new button will be displayed where you can easily add the share to the current
+server without entering the string, this requires less user input.
+Next to this button, a dropdown menu will be displayed,
+where you can see the current server or change the server.
+Hitting change a server will now display a prompt with a detailed explanation
+and more space to enter another server address.
+
+https://github.com/owncloud/enterprise/issues/4393
+https://github.com/owncloud/core/pull/38712
+https://github.com/owncloud/core/pull/38928
+https://github.com/owncloud/core/pull/38942
+https://github.com/owncloud/core/pull/38948

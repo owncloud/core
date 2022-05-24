@@ -1,0 +1,16 @@
+Enhancement: Add new grace period and license management into core
+
+The new grace period allows you to try enterprise apps for 24 hours without
+having a valid license key. This grace period will be available only once, and
+it will start just right after enabling the first enterprise app. Once the grace
+period ends, the enterprise apps will be disabled (unless you have a valid license).
+
+License management has been moved into core and it will replace the enterprise_key
+app. There is no big change in the functionality other than a couple of improvements:
+The settings page (admin's general section) now has a field to enter your license
+key from there, and it will take into account whether the config.php is read-only.
+You can also enter a license key from the grace period popup.
+
+https://github.com/owncloud/core/pull/36814
+https://github.com/owncloud/core/pull/37711
+https://github.com/owncloud/core/pull/37731

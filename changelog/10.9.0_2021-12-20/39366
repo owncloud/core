@@ -1,0 +1,4 @@
+Enhancement: Add show-all-attributes option to occ user:list command
+
+https://github.com/owncloud/core/pull/39366
+https://github.com/owncloud/enterprise/issues/4794

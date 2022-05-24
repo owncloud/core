@@ -1,0 +1,11 @@
+Bugfix: Disallow sharing share_folder or it's parents
+
+share_folder had share permission so it was possible for the user to share it along with some received shares.
+It caused weird behavior. So sharing share_folder (or any of it's parent folders) was prohibited.
+Deleting share_folder was already prohibited, but, the server did not return the correct node permissions.
+This situation led to dysfunctionality in client sides. This problem has been fixed.
+
+https://github.com/owncloud/core/issues/36241
+https://github.com/owncloud/core/issues/36252
+https://github.com/owncloud/core/pull/36337
+https://github.com/owncloud/core/pull/36297

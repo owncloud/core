@@ -1,0 +1,6 @@
+Enhancement: Boost performance of external storages
+
+We've cached some additional information that will boost the performance of
+external storages. This boost will be particularly noticeable for SMB connections
+
+https://github.com/owncloud/core/pull/37451

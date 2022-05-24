@@ -1,0 +1,11 @@
+Bugfix: Fix provisioning API request for user information in mixed case
+
+When a user requested their own user information using the provisioning API,
+the request URL had to contain the UID in exactly the same case as was used
+when the user was created.
+
+The issue has been fixed so that the UID in the request URL is no longer
+case-sensitive.
+
+https://github.com/owncloud/core/issues/36822
+https://github.com/owncloud/core/pull/36878

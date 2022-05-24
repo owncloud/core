@@ -1,0 +1,5 @@
+Bugfix: Add openid client secret to the sensitive values list
+
+Openid client secret was printed as is in the config report. Now it is masked.
+
+https://github.com/owncloud/core/pull/37782

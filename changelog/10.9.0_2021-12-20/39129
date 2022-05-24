@@ -1,0 +1,6 @@
+Bugfix: Fix logo size on login screen
+
+The previous fixed logo size resulted in a cut off logo in some cases. This
+was fixed by using a dynamically logo resize css rule.
+
+https://github.com/owncloud/core/pull/39129

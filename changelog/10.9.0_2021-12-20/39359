@@ -1,0 +1,7 @@
+Enhancement: Add priority for JavaScript plugins
+
+JavaScript plugins can now be registered with a specific priority.
+A higher priority means the plugin will be attached/detached before
+others.
+
+https://github.com/owncloud/core/pull/39359

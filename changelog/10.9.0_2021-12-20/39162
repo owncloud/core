@@ -1,0 +1,9 @@
+Bugfix: File conflict dialog when dragging a file into a folder
+
+When dragging a file into a folder, while another file with an identical 
+name exists in the parent directory, the UI falsely showed a conflict 
+dialog alert. This has been fixed.
+
+https://github.com/owncloud/core/pull/39162
+https://github.com/owncloud/core/pull/39170
+https://github.com/owncloud/core/issues/39133

@@ -1,0 +1,6 @@
+Bugfix: Fix links in setupchecks.js
+
+Security tips at Settings -> Admin -> General had two broken links to the owncloud docs in the messages performing HTTPS and HSTS checks
+
+https://github.com/owncloud/core/pull/36315
+https://github.com/owncloud/core/issues/36238

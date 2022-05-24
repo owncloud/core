@@ -1,0 +1,8 @@
+Bugfix: Fix move operation from encrypted storage to unencrypted storage
+
+On a move operation from encrypted storage to unencrypted storage, the moved file was remaining encrypted.
+This problem has been fixed.
+
+https://github.com/owncloud/core/pull/38567
+https://github.com/owncloud/encryption/issues/256
+https://github.com/owncloud/encryption/issues/257

@@ -1,0 +1,9 @@
+Enhancement: Allow files_external app to be disabled
+
+Previously, the files_external app couldn't be disabled. The corresponding
+section in the settings page had a checkbox to show or not the settings
+for the files_external app.
+Now, if the app is disabled, that section won't appear. The behavior will
+be the same as any other disabled app.
+
+https://github.com/owncloud/core/pull/39856

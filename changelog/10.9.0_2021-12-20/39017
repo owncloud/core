@@ -1,0 +1,3 @@
+Enhancement: Include new DB index to speed up addressbook searches
+
+https://github.com/owncloud/core/pull/39017

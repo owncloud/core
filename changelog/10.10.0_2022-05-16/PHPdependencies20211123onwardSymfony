@@ -1,0 +1,43 @@
+Change: Update Symfony components
+
+The following Symfony components have been updated to:
+- console 4.4.41
+- event-dispatcher 4.4.37
+- event-dispatcher-contracts 4.4.34
+- process 4.4.41
+- routing 4.4.41
+- service-contracts 4.4.34
+- translation 4.4.41
+- translation-contracts 2.5.0
+
+The following Symfony polyfill components have been updated to:
+- symfony/polyfill-ctype v1.25.0
+- symfony/polyfill-iconv v1.25.0
+- symfony/polyfill-intl-idn v1.25.0
+- symfony/polyfill-intl-normalizer v1.25.0
+- symfony/polyfill-mbstring v1.25.0
+- symfony/polyfill-php72 v1.25.0
+- symfony/polyfill-php73 v1.25.0
+- symfony/polyfill-php80 v1.25.0
+
+The following Symfony contract components have been updated to:
+- symfony/deprecation-contracts (v2.5.0 to v2.5.1)
+- symfony/event-dispatcher-contracts (v1.1.11 to v1.1.12)
+- symfony/service-contracts (v2.5.0 to v2.5.1)
+- symfony/translation-contracts (v2.5.0 to v2.5.1)
+
+https://symfony.com/blog/symfony-4-4-34-released
+https://github.com/owncloud/core/pull/39526
+https://symfony.com/blog/symfony-4-4-36-released
+https://github.com/owncloud/core/pull/39631
+https://github.com/owncloud/core/pull/39646
+https://symfony.com/blog/symfony-4-4-37-released
+https://github.com/owncloud/core/pull/39731
+https://symfony.com/blog/symfony-4-4-38-released
+https://github.com/owncloud/core/pull/39838
+https://github.com/owncloud/core/pull/39855
+https://symfony.com/blog/symfony-4-4-40-released
+https://github.com/owncloud/core/pull/39940
+https://github.com/owncloud/core/pull/39955
+https://symfony.com/blog/symfony-4-4-41-released
+https://github.com/owncloud/core/pull/40026

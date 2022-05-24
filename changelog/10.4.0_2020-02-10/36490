@@ -1,0 +1,5 @@
+Change: Update sabre/http (5.0.2 => 5.0.5)
+
+Includes functionality to significantly improve file download speed by enabling mmap based stream_copy_to_stream.
+
+https://github.com/owncloud/core/pull/36490

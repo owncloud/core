@@ -1,0 +1,8 @@
+Bugfix: Fix exit codes of security:certificates commands
+
+If there is an error when doing occ security:certificates:import or
+occ security:certificates:remove then the command will exit with status 1.
+This allows the caller to reliably detect if there was a problem.
+
+https://github.com/owncloud/core/issues/35364
+https://github.com/owncloud/core/pull/37783

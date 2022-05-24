@@ -1,0 +1,6 @@
+Bugfix: Correctly parse different ocm-provider api responses
+
+Some WebDAV service providers returns different responses for ocm-provider API
+and we were not able to parse these responses. This problem has been fixed.
+
+https://github.com/owncloud/core/pull/38751

@@ -1,0 +1,6 @@
+Bugfix: Fix SMB access denied error while listing the contents of the folder
+
+This happened in a DFS Replication (DFSr) folder, where such folder was visible even though the user didn't have permissions to read the folder.
+Using SMB2, windows threw an access denied error when a normal user was accessing that file.
+
+https://github.com/owncloud/core/pull/36242

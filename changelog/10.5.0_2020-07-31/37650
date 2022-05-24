@@ -1,0 +1,6 @@
+Change: New CI color and background image
+
+CI color was changed system wide and a new background image for the login screen was added.
+This will adapt ownCloud to the new style guide.
+
+https://github.com/owncloud/core/pull/37650

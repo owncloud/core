@@ -1,0 +1,10 @@
+Change: Update sabre dependencies
+
+The following sabre dependencies have been updated:
+- sabre/uri (2.1.3 => 2.2.0)
+- sabre/event (5.0.3 => 5.1.0)
+- sabre/http (5.0.5 => 5.1.0)
+- sabre/xml (2.1.3 => 2.2.0)
+- sabre/vobject (4.2.2 => 4.3.0)
+
+https://github.com/owncloud/core/pull/36866

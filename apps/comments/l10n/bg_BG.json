@@ -1,0 +1,24 @@
+{ "translations": {
+    "Type in a new comment..." : "Напиши нов коментар...",
+    "Delete comment" : "Изтрий коментар",
+    "Post" : "Публикация",
+    "Cancel" : "Отказ",
+    "Edit comment" : "Редактирай коментра",
+    "[Deleted user]" : "[Изтрит потребител]",
+    "Comments" : "Коментари",
+    "No other comments available" : "Няма други коментари",
+    "More comments..." : "Още коментари...",
+    "Save" : "Запазване",
+    "Allowed characters {count} of {max}" : "Позволени символи {count} от {max}",
+    "Error occurred while retrieving comment with id {id}" : "Възникна грешка при извличането на коментар с id {id}",
+    "Error occurred while updating comment with id {id}" : "Възникна грешка при обновяване на коментар с id {id}",
+    "Error occurred while posting comment" : "Възникна грешка при публикуването на коментара",
+    "{count} unread comments" : "{count} нечетени коментари",
+    "Comment" : "Коментар",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Коментари</strong> на файлове <em>(винаги изписвани в stream-а)</em>",
+    "You commented" : "Вие коментирахте",
+    "%1$s commented" : "%1$s коментира",
+    "You commented on %2$s" : "Вие коментирахте по %2$s",
+    "%1$s commented on %2$s" : "%1$s коментира по %2$s"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

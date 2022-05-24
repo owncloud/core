@@ -1,0 +1,16 @@
+Bugfix: Fix problem with the market app installing an app using OpenIDConnect
+
+The OpenIDConnect app uses an in-memory cache to store an OpenID session
+in order to avoid hitting the OpenID provider too much.
+After an app was installed, the prefix used to store information in the cache was
+changing. This was causing problems because the OpenIDConnect app thought the
+OpenID session was no longer valid and, as a consequence, it was logging out the
+user. In practice, installing an new app with the market app having logged in via
+OpenIDConnect would cause the user to logout.
+
+Now, the cache prefix only changes after an ownCloud upgrade. Installing an app
+won't cause the cache prefix to change, so this will fix the problem.
+The OpenIDConnect app will still find the stored session information after the
+new apps are installed.
+
+https://github.com/owncloud/core/pull/37715

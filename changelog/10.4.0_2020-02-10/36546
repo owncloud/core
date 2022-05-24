@@ -1,0 +1,8 @@
+Bugfix: stream_read not returning requested length for encrypted remote storage
+
+stream_read was not always returning the requested length for encrypted remote
+storage. This could result in errors when downloading files. The issue has been
+corrected.
+
+https://github.com/owncloud/core/issues/34599
+https://github.com/owncloud/core/pull/36546

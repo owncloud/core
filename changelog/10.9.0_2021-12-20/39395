@@ -1,0 +1,5 @@
+Bugfix: Adjust text of occ encryption command messages
+
+The text of some encryption command messages has been improved.
+
+https://github.com/owncloud/core/pull/39395

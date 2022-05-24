@@ -1,0 +1,17 @@
+Enhancement: Redesign group list in the user settings view
+
+Before this PR, the group list settings were confusing as the user needs to
+click on a group first before the trash bin icon appears to delete a group.
+As well the user count was nondescript.
+With this PR, a redesign takes care of those issues and also fixes the problem
+that while deleting a group in the group list,
+it was still available in the user group list.
+Furthermore, after deleting a group, the user will be redirected to the
+'Everyone' group summary view.
+Also fixes an issue where the 'active'-class on a newly created group
+was duplicated.
+
+https://github.com/owncloud/core/pull/39262
+https://github.com/owncloud/core/pull/39307
+https://github.com/owncloud/core/issues/36273
+https://github.com/owncloud/core/issues/29057

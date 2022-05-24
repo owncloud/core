@@ -1,0 +1,23 @@
+#app-content-sharingin td > .share-state {
+	display: block;
+	float: left;
+	width: 30px;
+	line-height: 100%;
+	text-align: center;
+	padding: 17px 8px;
+	opacity: 0.3;
+}
+
+/* @TODO: Don't render this in the first place */
+tr[class*='share-state-'] .action-favorite {
+	display: none !important;
+}
+
+.share-state-pending .thumbnail {
+	background-image: url("../img/folder-waiting.svg") !important;
+}
+
+.share-state-rejected .thumbnail {
+	background-image: url("../../../core/img/filetypes/folder.svg") !important;
+	filter: grayscale(1) brightness(1.5);
+}

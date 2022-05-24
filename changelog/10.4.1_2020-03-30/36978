@@ -1,0 +1,10 @@
+Bugfix: Avoid unneeded DB connections after a long download
+
+After a long download, we needed to return the filesize, which needed a connection
+to the DB. The DB could have ended the connection due to an inactivity timeout.
+Now, the filesize is fetched before starting the download, so this timeout shouldn't
+happen any longer.
+We still need to update the checksum after the download is finished. In this case,
+we just log an error message and keep going.
+
+https://github.com/owncloud/core/pull/36978

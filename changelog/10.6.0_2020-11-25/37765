@@ -1,0 +1,5 @@
+Change: Add values to the invalid uid list
+
+Enhancement of the invalid uid list added by https://github.com/owncloud/core/pull/37268.
+
+https://github.com/owncloud/core/issues/37765

@@ -1,0 +1,11 @@
+Bugfix: Creating self group-reshare should not not share to self
+
+In a scenario where resharing with group that user belongs to, 
+permissions and attributes were incorrectly handled in share mount logic when 
+permissions for that share got adjusted, or that share got again reshared to another user 
+that again reshared with prior user. 
+This bugfix prevents creation of self share mount in root folder of the user
+
+
+https://github.com/owncloud/core/pull/38581
+https://github.com/owncloud/enterprise/issues/4382

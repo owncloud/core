@@ -1,0 +1,17 @@
+Change: Update Symfony components to 4.4.20
+
+The following Symfony components have been updated from 4.4.16 to 4.4.20
+- console
+- event-dispatcher
+- process
+- routing
+- translation
+
+https://symfony.com/blog/symfony-4-4-20-released
+https://github.com/owncloud/core/pull/38462
+https://symfony.com/blog/symfony-4-4-19-released
+https://github.com/owncloud/core/pull/38355
+https://symfony.com/blog/symfony-4-4-18-released
+https://github.com/owncloud/core/pull/38234
+https://symfony.com/blog/symfony-4-4-17-released
+https://github.com/owncloud/core/pull/38163

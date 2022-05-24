@@ -1,0 +1,182 @@
+<?php
+/**
+ * Copyright (c) 2014 Lukas Reschke <lukas@owncloud.com>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later.
+ * See the COPYING-README file.
+ */
+
+namespace Test\Mail;
+
+use OC\Mail\Message;
+use Swift_Message;
+use Test\TestCase;
+
+class MessageTest extends TestCase {
+	/** @var Swift_Message */
+	private $swiftMessage;
+	/** @var Message */
+	private $message;
+
+	/**
+	 * @return array
+	 */
+	public function mailAddressProvider() {
+		return [
+			[['lukas@owncloud.com' => 'Lukas Reschke'], ['lukas@owncloud.com' => 'Lukas Reschke']],
+			[['lukas@owncloud.com' => 'Lukas Reschke', 'lukas@öwnclöüd.com', 'lukäs@owncloud.örg' => 'Lükäs Réschke'],
+				['lukas@owncloud.com' => 'Lukas Reschke', 'lukas@xn--wncld-iuae2c.com', 'lukäs@owncloud.xn--rg-eka' => 'Lükäs Réschke']],
+			[['lukas@öwnclöüd.com'], ['lukas@xn--wncld-iuae2c.com']]
+		];
+	}
+
+	public function setUp(): void {
+		parent::setUp();
+
+		$this->swiftMessage = $this->getMockBuilder('\Swift_Message')
+			->disableOriginalConstructor()->getMock();
+
+		$this->message = new Message($this->swiftMessage);
+	}
+
+	/**
+	 * @requires function idn_to_ascii
+	 * @dataProvider mailAddressProvider
+	 *
+	 * @param string $unconverted
+	 * @param string $expected
+	 */
+	public function testConvertAddresses($unconverted, $expected) {
+		$this->assertSame($expected, self::invokePrivate($this->message, 'convertAddresses', [$unconverted]));
+	}
+
+	public function testSetFrom() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('setFrom')
+			->with(['lukas@owncloud.com']);
+		$this->message->setFrom(['lukas@owncloud.com']);
+	}
+
+	public function testGetFrom() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('getFrom')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
+		$this->assertSame(['lukas@owncloud.com'], $this->message->getFrom());
+	}
+
+	public function testSetReplyTo() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('setReplyTo')
+			->with(['lukas@owncloud.com']);
+		$this->message->setReplyTo(['lukas@owncloud.com']);
+	}
+
+	public function testGetReplyTo() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('getReplyTo')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
+		$this->assertSame(['lukas@owncloud.com'], $this->message->getReplyTo());
+	}
+
+	public function testSetTo() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('setTo')
+			->with(['lukas@owncloud.com']);
+		$this->message->setTo(['lukas@owncloud.com']);
+	}
+
+	public function testGetTo() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('getTo')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
+		$this->assertSame(['lukas@owncloud.com'], $this->message->getTo());
+	}
+
+	public function testSetCc() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('setCc')
+			->with(['lukas@owncloud.com']);
+		$this->message->setCc(['lukas@owncloud.com']);
+	}
+
+	public function testGetCc() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('getCc')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
+		$this->assertSame(['lukas@owncloud.com'], $this->message->getCc());
+	}
+
+	public function testSetBcc() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('setBcc')
+			->with(['lukas@owncloud.com']);
+		$this->message->setBcc(['lukas@owncloud.com']);
+	}
+
+	public function testGetBcc() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('getBcc')
+			->will($this->returnValue(['lukas@owncloud.com']));
+
+		$this->assertSame(['lukas@owncloud.com'], $this->message->getBcc());
+	}
+
+	public function testSetSubject() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('setSubject')
+			->with('Fancy Subject');
+
+		$this->message->setSubject('Fancy Subject');
+	}
+
+	public function testGetSubject() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('getSubject')
+			->will($this->returnValue('Fancy Subject'));
+
+		$this->assertSame('Fancy Subject', $this->message->getSubject());
+	}
+
+	public function testSetPlainBody() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('setBody')
+			->with('Fancy Body');
+
+		$this->message->setPlainBody('Fancy Body');
+	}
+
+	public function testGetPlainBody() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('getBody')
+			->will($this->returnValue('Fancy Body'));
+
+		$this->assertSame('Fancy Body', $this->message->getPlainBody());
+	}
+
+	public function testSetHtmlBody() {
+		$this->swiftMessage
+			->expects($this->once())
+			->method('addPart')
+			->with('<blink>Fancy Body</blink>', 'text/html');
+
+		$this->message->setHtmlBody('<blink>Fancy Body</blink>');
+	}
+}

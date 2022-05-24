@@ -1,0 +1,9 @@
+Enhancement: Use the same string in the header also in public view
+
+In the public view, a different string was used next to the logo than in the internal header.
+This can cause problems with branding.
+
+The string HTMLName from defaults.php is now only used for the header.
+Name is used exclusively for the mail templates.
+
+https://github.com/owncloud/core/pull/40032

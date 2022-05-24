@@ -1,0 +1,4 @@
+Bugfix: Set page title for the tags file list
+
+https://github.com/owncloud/core/issues/39556
+https://github.com/owncloud/core/pull/39585

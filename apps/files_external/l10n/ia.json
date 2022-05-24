@@ -1,0 +1,14 @@
+{ "translations": {
+    "Personal" : "Personal",
+    "Saved" : "Salveguardate",
+    "Username" : "Nomine de usator",
+    "Password" : "Contrasigno",
+    "Save" : "Salveguardar",
+    "URL" : "URL",
+    "Location" : "Loco",
+    "Share" : "Compartir",
+    "Name" : "Nomine",
+    "Folder name" : "Nomine de dossier",
+    "Delete" : "Deler"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

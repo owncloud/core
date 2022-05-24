@@ -1,0 +1,9 @@
+{ "translations": {
+    "Loading..." : "Laai tans…",
+    "File is already shared with %s" : "Lêer is reeds met %s gedeel",
+    "Accept" : "Aanvaar",
+    "Decline" : "Verwerp",
+    "Open documentation" : "Open dokumentasie",
+    "Share it:" : "Deel dit:"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

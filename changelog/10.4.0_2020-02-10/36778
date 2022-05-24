@@ -1,0 +1,4 @@
+Bugfix: Return correct file size in the public files webdav API
+
+https://github.com/owncloud/core/issues/36741
+https://github.com/owncloud/core/pull/36778

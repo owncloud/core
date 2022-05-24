@@ -1,0 +1,10 @@
+Security: Patch jquery ui
+
+Patched jquery ui issues:
+
+* CVE-2021-41182
+* CVE-2021-41183
+* CVE-2021-41184
+
+
+https://github.com/owncloud/core/pull/39451

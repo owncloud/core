@@ -1,0 +1,3 @@
+Bugfix: Remove console logging of un-escaped data
+
+https://github.com/owncloud/core/pull/37256

@@ -1,0 +1,15 @@
+Change: Update symfony (3.4.37 => 4.4.4)
+
+The following symfony components have been updated to version 4.4.4:
+
+symfony/console
+symfony/event-dispatcher
+symfony/process
+symfony/routing
+symfony/translation
+
+Symfony EventDispatcher->dispatch() events have been adjusted to conform to the
+Symfony4 standard.
+
+https://github.com/owncloud/core/pull/36881
+https://github.com/owncloud/core/pull/36897

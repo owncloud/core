@@ -1,0 +1,8 @@
+Bugfix: Fix wrong formatted XML in public-files dav endpoint
+
+Previously, trying to perform a PROPFIND over the public-files endpoint
+could cause an exception to be thrown, which would generate a wrong formatted
+XML response. Now, the XML response is properly formatted and can be parsed
+without problems.
+
+https://github.com/owncloud/core/pull/39797

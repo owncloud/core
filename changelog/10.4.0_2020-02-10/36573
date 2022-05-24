@@ -1,0 +1,15 @@
+Enhancement: expiration date for user and group shares
+
+Shares with users and/or groups can now be given an expiration date.
+If the default expiration date is enabled then the default expiration is 7 days
+in the future. The default expiration date can be modified by the administrator.
+The default expiration date can be enforced as the maximum expiration date of a
+share. In that case the user can select a shorter expiration, but not longer.
+
+The settings are disabled by default, preserving the existing behavior. They can
+be enabled on the admin sharing settings page. They can be set independently for
+user and group shares.
+
+https://github.com/owncloud/core/pull/36573
+https://github.com/owncloud/core/pull/36766
+https://github.com/owncloud/core/pull/36847

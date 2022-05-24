@@ -1,0 +1,6 @@
+Enhancement: support Oracle connection strings
+
+To be able to use Oracle specific configuration settings like fail over support for Oracle connection strings has been added.
+https://docs.oracle.com/database/121/HABPT/config_fcf.htm#HABPT4967
+
+https://github.com/owncloud/core/pull/36489

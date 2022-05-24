@@ -1,0 +1,8 @@
+Change: Add index.html to invalid username list
+
+With this PR the invalid username list gets expanded with
+"index.html". As well the error message has been updated in favor of
+the known translation scheme.
+
+https://github.com/owncloud/core/pull/39206
+https://github.com/owncloud/core/issues/39205

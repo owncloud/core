@@ -1,0 +1,8 @@
+Bugfix: Clicking the eye icon in password input field does not show the password
+
+During the installation, the user should be able to click the eye icon in the admin
+user and database password field to see the password, this recently
+stopped to work and has been fixed with this change.
+
+https://github.com/owncloud/core/pull/39528
+https://github.com/owncloud/core/issues/39527

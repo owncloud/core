@@ -1,0 +1,10 @@
+Bugfix: Prevent multiple calls by not registering the same listener twice
+
+Going back and forth among the file sections ("all files", "shared with you",
+etc) was making some event listeners to be registered twice or more times.
+This was causing the same ajax request to be called several times causing
+unnecessary load in the server.
+
+Now, these additional requests won't happen
+
+https://github.com/owncloud/core/pull/38385

@@ -1,0 +1,7 @@
+Bugfix: Fix null for empty path on Oracle
+
+An empty path was fetched as null and not as an empty string. Due to 
+the strict comparison it caused the list of mounts for the existing fileId to be empty.
+So the higher level code relaying on the mounts list got an empty list and did nothing.
+
+https://github.com/owncloud/core/pull/36610

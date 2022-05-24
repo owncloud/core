@@ -1,0 +1,6 @@
+{ "translations": {
+    "Personal" : "ສ່ວນບຸກຄົນ",
+    "Technical details" : "ລາຍລະອຽດເຕັກນິກ",
+    "Remote Address: %s" : "ທີ່ຢູ່ໄລຍະໄກ (ລີໂມດ): %s"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

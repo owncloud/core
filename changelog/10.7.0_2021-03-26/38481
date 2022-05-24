@@ -1,0 +1,4 @@
+Enhancement: Add exception messages whenever a node cannot be moved
+
+https://github.com/owncloud/core/pull/38481
+https://github.com/owncloud/enterprise/issues/4427

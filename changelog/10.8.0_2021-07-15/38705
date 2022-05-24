@@ -1,0 +1,6 @@
+Enhancement: Remove google+ share button from personal settings
+
+Due to the google+ service has been declined, we won't show the google+ share
+button anymore.
+
+https://github.com/owncloud/core/pull/38705

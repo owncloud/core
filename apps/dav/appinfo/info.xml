@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<info>
+	<id>dav</id>
+	<name>WebDAV</name>
+	<description>ownCloud WebDAV endpoint</description>
+	<licence>AGPL</licence>
+	<author>owncloud.com</author>
+	<version>0.7.0</version>
+	<default_enable/>
+	<use-migrations>true</use-migrations>
+	<types>
+		<filesystem/>
+	</types>
+	<namespace>DAV</namespace>
+	<public>
+		<webdav>appinfo/v1/publicwebdav.php</webdav>
+	</public>
+	<dependencies>
+		<owncloud min-version="10" max-version="10" />
+	</dependencies>
+	<background-jobs>
+		<job>OCA\DAV\CardDAV\SyncJob</job>
+		<job>OCA\DAV\BackgroundJob\CleanProperties</job>
+	</background-jobs>
+	<commands>
+		<command>OCA\DAV\Command\CreateAddressBook</command>
+		<command>OCA\DAV\Command\CreateCalendar</command>
+		<command>OCA\DAV\Command\SyncBirthdayCalendar</command>
+		<command>OCA\DAV\Command\SyncSystemAddressBook</command>
+		<command>OCA\DAV\Command\CleanupChunks</command>
+	</commands>
+	<repair-steps>
+		<post-migration>
+			<step>OCA\DAV\Repair\RemoveInvalidShares</step>
+		</post-migration>
+	</repair-steps>
+</info>

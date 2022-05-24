@@ -1,0 +1,5 @@
+Change: Reduce the log level of locked exceptions
+
+Log level of locked exceptions will be "debug" by default instead of "fatal"
+
+https://github.com/owncloud/core/pull/37907

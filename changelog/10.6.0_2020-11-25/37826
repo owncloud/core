@@ -1,0 +1,5 @@
+Bugfix: "Passwords do not match" message was not being translated
+
+This message is now able to be translated.
+
+https://github.com/owncloud/core/pull/37826

@@ -1,0 +1,7 @@
+Enhancement: Improve tab headers UI
+
+With this change, tab headers will have a similar style to other nav elements,
+like the side nav. Also improved the UI on small display ratio, where elements
+in the second row were not properly left-aligned.
+
+https://github.com/owncloud/core/pull/38653

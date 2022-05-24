@@ -1,0 +1,5 @@
+Bugfix: Follow single-bucket initialization for multi-bucket setup
+
+In multi-bucket object store configurations, store version information in the object storage the same as for single-bucket configurations.
+
+https://github.com/owncloud/core/pull/36329

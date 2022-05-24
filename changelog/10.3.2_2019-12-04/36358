@@ -1,0 +1,18 @@
+Change: Update Symfony components to 3.4.33 and other dependencies
+
+The following Symfony components have been updated to version 3.4.33:
+- debug
+- console
+- event-dispatcher
+- process
+- routing
+- translation
+
+The following other dependencies have been updated:
+- psr/log (1.1.1 => 1.1.2)
+- guzzlehttp/guzzle (5.3.3 => 5.3.4)
+- zendframework/zend-validator (2.12.1 => 2.12.2)
+- mikey179/vfsstream (v1.6.7 => v1.6.8)
+
+https://symfony.com/blog/symfony-3-4-33-released
+https://github.com/owncloud/core/pull/36358

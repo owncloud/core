@@ -1,0 +1,153 @@
+# the default generated dir + db file
+/data
+/owncloud
+/config/config.php
+/config/*.config.php
+/config/config.json
+/config/mount.php
+/config/mimetypealiases.json
+/config/mimetypemapping.json
+/apps/inc.php
+/assets
+/build/composer.phar
+/build/dist
+/build/phan.phar
+/build/phpstan.phar*
+/core/vendor
+
+# ignore all apps except core ones
+/apps*/*
+!/apps/comments
+!/apps/dav
+!/apps/files
+!/apps/federatedfilesharing
+!/apps/federation
+!/apps/files_external
+!/apps/files_sharing
+!/apps/files_trashbin
+!/apps/files_versions
+!/apps/provisioning_api
+!/apps/systemtags
+!/apps/updatenotification
+/apps/files_external/3rdparty/irodsphp/PHPUnitTest
+/apps/files_external/3rdparty/irodsphp/web
+/apps/files_external/3rdparty/irodsphp/prods/test
+/apps/files_external/3rdparty/irodsphp/prods/tutorials
+/apps/files_external/3rdparty/irodsphp/prods/test*
+/apps/files_external/tests/config.*.php
+
+/lib/composer
+
+# ignore themes except the example and the README
+/themes/*
+!/themes/example
+!/themes/README
+
+# just sane ignores
+.*.sw[po]
+*.bak
+*.BAK
+*~
+*.orig
+*.class
+.cvsignore
+Thumbs.db
+*.py[co]
+_darcs/*
+CVS/*
+.svn/*
+RCS/*
+*.backup*
+
+# kdevelop
+.kdev
+*.kdev4
+*.kate-swp
+
+# Lokalize
+*lokalize*
+
+# eclipse
+.project
+.settings
+
+# netbeans
+nbproject
+
+# phpStorm
+.idea
+*.iml
+
+# geany
+*.geany
+
+# Cloud9IDE
+.settings.xml
+.c9revisions
+
+# VS Code
+.vscode
+
+# vim ex mode
+.vimrc
+
+# ack(-grep)
+.ackrc
+
+# Mac OS
+.DS_Store
+
+# WebFinger
+.well-known
+/.buildpath
+
+# Tests
+/tests/phpunit.xml
+
+# Node Modules
+/build/yarn-error.log
+/build/node_modules/
+
+# nodejs
+/build/lib/
+/build/jsdocs/
+/npm-debug.log
+
+# puphpet
+puphpet
+
+# vagrant
+.vagrant
+Vagrantfile
+
+# Composer
+vendor-bin/**/vendor
+vendor-bin/**/composer.lock
+
+# Tests - auto-generated files
+/data-autotest
+/tests/coverage*
+/tests/karma-coverage
+/tests/acceptance/server_tmp
+/tests/autoconfig*
+/tests/autotest*
+/tests/data/lorem-copy.txt
+/tests/data/testimage-copy.png
+/config/config-autotest-backup.php
+/config/autoconfig.php
+clover.xml
+/tests/output
+.php-cs-fixer.cache
+.phpunit.result.cache
+# old php-cs-fixer v2 files
+.php_cs.cache
+.php_cs
+
+# CI
+.cache
+
+# Generated from .drone.star
+.drone.yml
+
+# SonarCloud scanner
+.scannerwork

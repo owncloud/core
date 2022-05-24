@@ -1,0 +1,6 @@
+Bugfix: Earlier detection of connection status
+
+On public video streaming the connection is detected to reduce server load #37219
+To optimize this the connection status is queried after flush()
+
+https://github.com/owncloud/core/pull/37291

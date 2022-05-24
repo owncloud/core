@@ -1,0 +1,12 @@
+Enhancement: Add user-sync OCS API
+
+We added a new user sync ocs api to provide an http api for external user provisioning systems to trigger a user-sync for a specific user.
+
+Authorization: The http API can only be executed by a user with admin privileges. Suggestion is to create a technical user who is in the admin group.
+
+Route:
+`curl -X POST http://your.domain/ocs/v2.php/cloud/user-sync/admin -v -u admin`
+
+Response: 200 - if sync was executed, 404 - given userId is unknown, 409 - multiple users have been found for the given user id - not unique user criteria
+
+https://github.com/owncloud/core/pull/36428

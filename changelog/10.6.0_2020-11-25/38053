@@ -1,0 +1,10 @@
+Enhancement: getShare API request's "subfiles" parameter allows new interactions
+
+Previously, the "subfiles" parameter required only the "path" parameter, and
+the rest of the parameters were ignored.
+
+Now, the "subfiles" parameter still requires the "path" parameter, but it also
+interacts with the "reshares" parameter as well as the "share_types" parameter
+to provide additional filtering capabilities
+
+https://github.com/owncloud/core/pull/38053

@@ -1,0 +1,6 @@
+Enhancement: Implement pre-signed download urls for public links
+
+Added pre-signed download urls for password protected public links to support clients which don't use cookies.
+
+https://github.com/owncloud/core/pull/38376
+https://github.com/owncloud/core/pull/38532

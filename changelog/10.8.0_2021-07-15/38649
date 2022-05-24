@@ -1,0 +1,10 @@
+Change: Improve performance for the MOVE operation
+
+Previously, in order to move a folder, we needed to get all the content
+and replace the path of each one one by one.
+Now we replace the path of all the content in one DB query, which reduces
+the network traffic and allows better optimization in the DB.
+This change affects MySQL, MariaDB, Postgresql, and Oracle. Sqlite is excluded
+from this optimization and will use the previous behaviour.
+
+https://github.com/owncloud/core/pull/38649

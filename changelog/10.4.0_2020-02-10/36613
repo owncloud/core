@@ -1,0 +1,5 @@
+Enhancement: Allow plus sign in username
+
+The plus sign is now allowed in a username, e.g. John+Smith
+
+https://github.com/owncloud/core/pull/36613

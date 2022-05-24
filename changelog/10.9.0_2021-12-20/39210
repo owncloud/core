@@ -1,0 +1,7 @@
+Bugfix: Add permission check when restoring from trashbin
+
+This fixes an issue where a user was able to restore a file or folder
+into a read-only shared folder.
+
+https://github.com/owncloud/core/pull/39210
+https://github.com/owncloud/core/issues/35900

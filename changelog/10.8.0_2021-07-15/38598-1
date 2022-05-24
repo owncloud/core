@@ -1,0 +1,32 @@
+Change: Update Symfony components
+
+The following Symfony components have been updated from 4.4.20 to:
+- console 4.4.26
+- event-dispatcher 4.4.25
+- process 4.4.26
+- routing 4.4.25
+- translation 4.4.25
+
+The following Symfony polyfill components have been updated :
+- symfony/polyfill-ctype (v1.22.1 to v1.23.0)
+- symfony/polyfill-iconv (v1.22.1 to v1.23.0)
+- symfony/polyfill-intl-idn (v1.22.1 to v1.23.0)
+- symfony/polyfill-intl-normalizer (v1.22.1 to v1.23.0)
+- symfony/polyfill-mbstring (v1.22.1 to v1.23.0)
+- symfony/polyfill-php72 (v1.22.1 to v1.23.0)
+- symfony/polyfill-php73 (v1.22.1 to v1.23.0)
+- symfony/polyfill-php80 (v1.22.1 to v1.23.0)
+
+https://symfony.com/blog/symfony-4-4-26-released
+https://github.com/owncloud/core/pull/38924
+https://symfony.com/blog/symfony-4-4-25-released
+https://github.com/owncloud/core/pull/38797
+https://symfony.com/blog/symfony-4-4-24-released
+https://github.com/owncloud/core/pull/38755
+https://symfony.com/blog/symfony-4-4-23-released
+https://github.com/owncloud/core/pull/38730
+https://symfony.com/blog/symfony-4-4-22-released
+https://github.com/owncloud/core/pull/38680
+https://symfony.com/blog/symfony-4-4-21-released
+https://github.com/owncloud/core/pull/38598
+https://github.com/owncloud/core/pull/38786

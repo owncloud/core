@@ -1,0 +1,7 @@
+Bugfix: Respect accounts.enable_medial_search setting for remote search
+
+Users taken from a federated instance were always searched with medial search
+in the share autocomplete box. Config option accounts.enable_medial_search
+was not taken into account.
+
+https://github.com/owncloud/core/pull/36225

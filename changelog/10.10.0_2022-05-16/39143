@@ -1,0 +1,6 @@
+Change: Update the default poll-interval in capabilities
+
+The default pollinterval advertised in capabilities has been set to
+30000 milliseconds. Previously it was 60 milliseconds.
+
+https://github.com/owncloud/core/pull/39143

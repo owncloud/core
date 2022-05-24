@@ -1,0 +1,11 @@
+Enhancement: Add warnings for commands that are incompatible with object storage
+
+The following commands are affected:
+
+* `user:home:list-users`
+* `user:home:list-dirs`
+* `user:move`
+* `user:report`
+
+https://github.com/owncloud/core/pull/39604
+https://github.com/owncloud/core/issues/39590

@@ -1,0 +1,46 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- christophwurst/id3parser (v0.1.1 to v0.1.2)
+- egulias/email-validator (2.1.24 to 3.1.0)
+- icewind/streams from (0.7.2 to 0.7.3)
+- laminas/laminas-validator (2.13.4 to 2.13.5)
+- laminas/laminas-servicemanager (3.4.1 to 3.5.2)
+- nikic/php-parser (4.10.2 to 4.10.4)
+- pear/archive_tar (1.4.11 to 1.4.13)
+- phpseclib/phpseclib (2.0.29 to 3.0.6)
+- psr/container (1.0.0 to 1.1.1)
+- sabre/dav (4.1.3 to 4.1.5)
+- sabre/vobject (4.3.3 to 4.3.5)
+- swiftmailer/swiftmailer (v6.2.3 to v6.2.7)
+- webmozart/assert (1.9.1 to 1.10.0)
+
+The following have been updated in files_external/3rdparty:
+- google/apiclient (v2.8.3 to v2.9.1)
+- firebase/php-jwt (v5.2.0 to v5.2.1)
+- google/apiclient-services (v0.153 to v0.163.0)
+- google/auth (v1.14.3 to v1.15.0)
+- icewind/smb (3.2.7 to 3.3.1)
+- icewind/streams (0.7.2 to 0.7.3)
+- monolog/monolog (2.1.1 to 2.2.0)
+- phpseclib/phpseclib (2.0.29 to 3.0.6)
+
+https://github.com/owncloud/core/pull/38188
+https://github.com/owncloud/core/pull/38191
+https://github.com/owncloud/core/pull/38198
+https://github.com/owncloud/core/pull/38238
+https://github.com/owncloud/core/pull/38244
+https://github.com/owncloud/core/pull/38255
+https://github.com/owncloud/core/pull/38275
+https://github.com/owncloud/core/pull/38285
+https://github.com/owncloud/core/pull/38306
+https://github.com/owncloud/core/pull/38312
+https://github.com/owncloud/core/pull/38344
+https://github.com/owncloud/core/pull/38380
+https://github.com/owncloud/core/pull/38387
+https://github.com/owncloud/core/pull/38399
+https://github.com/owncloud/core/pull/38434
+https://github.com/owncloud/core/pull/38453
+https://github.com/owncloud/core/pull/38462
+https://github.com/owncloud/core/pull/38487
+https://github.com/owncloud/core/pull/38508

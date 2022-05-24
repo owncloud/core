@@ -1,0 +1,9 @@
+Bugfix: Expire shares at end of day
+
+The Expire Share background job was immediately expiring shares that had an
+expiration date of today. But those shares should continue to work for the rest
+of the day. The behaviour has been corrected. All shares will now work until
+the end of the day that they expire.
+
+https://github.com/owncloud/enterprise/issues/4324
+https://github.com/owncloud/core/pull/38775

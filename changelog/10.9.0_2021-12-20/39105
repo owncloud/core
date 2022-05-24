@@ -1,0 +1,10 @@
+Bugfix: Prevent unneeded call to LDAP during login with local users
+
+Previously, when the user_ldap app was enabled, any login with a local user
+would check the LDAP server for that user even though it shouldn't be needed.
+
+Now, such call won't happen if it has been handled by a different component.
+In particular, login with a local user won't trigger that request to LDAP.
+
+https://github.com/owncloud/core/pull/39105
+https://github.com/owncloud/user_ldap/pull/675

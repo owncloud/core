@@ -1,0 +1,7 @@
+Bugfix: Fix storage lookup in versions when storing a new version
+
+Versioning has been integrated with the new storage based versioning IVersionedStorage.
+Until today this was only tested with objectstore versioning which is hooked up as primary storage.
+When trying to access a versioned storage which is mounted as non-root this logic did not work out.
+
+https://github.com/owncloud/core/pull/38430

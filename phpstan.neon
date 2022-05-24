@@ -1,0 +1,24 @@
+parameters:
+  bootstrapFiles:
+    - %currentWorkingDirectory%/lib/base.php
+  excludePaths:
+    - %currentWorkingDirectory%/core/ajax/update.php
+    - %currentWorkingDirectory%/apps/*/tests*
+    - %currentWorkingDirectory%/apps/*/composer/*
+    - %currentWorkingDirectory%/apps/*/3rdparty/*
+    - %currentWorkingDirectory%/apps/files_external/ajax/oauth2.php
+    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/Google.php
+    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/SMB.php
+    - %currentWorkingDirectory%/settings/templates/*
+  ignoreErrors:
+    - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
+    - '#Undefined variable: \$vendor#'
+    - '#Instantiated class Test\\Util\\User\\Dummy not found.#'
+    # errors below are to be addressed by own pull requests - non trivial changes required
+    - '#Unsafe usage of new static\(\).#'
+    - '#Instantiated class OCA\\Encryption\\Crypto\\Crypt not found.#'
+    - '#Instantiated class OCA\\Encryption\\Util not found.#'
+    - '#Instantiated class OCA\\Encryption\\KeyManager not found.#'
+    - '#Instantiated class OCA\\Encryption\\Session not found.#'
+    - '#Instantiated class OCA\\Encryption\\Recovery not found.#'
+

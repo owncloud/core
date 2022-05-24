@@ -1,0 +1,6 @@
+Bugfix: Fix a php error for occ command files_external:list --output
+
+Fix a php error of occ command files_external:list --output=json respectively --output=json_pretty,
+when using in conjunction with option --all
+
+https://github.com/owncloud/core/pull/36420

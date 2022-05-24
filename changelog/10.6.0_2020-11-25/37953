@@ -1,0 +1,6 @@
+Change: DropOldTables repair job won't show a progress bar
+
+The "DropOldTables" repair job that happens during upgrade won't show
+a progress bar any longer.
+
+https://github.com/owncloud/core/pull/37953

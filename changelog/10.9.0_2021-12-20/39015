@@ -1,0 +1,6 @@
+Enhancement: Log number of mounts when moving encryption keys fails
+
+Due to wrong configuration or bugs it is possible that more than one mount
+is returned. In this case we should log the mount-count for easier debugging.
+
+https://github.com/owncloud/core/pull/39015

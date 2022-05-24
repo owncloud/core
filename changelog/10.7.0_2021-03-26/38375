@@ -1,0 +1,14 @@
+Bugfix: Fix broken signature when a backup copy is generated
+
+Previously, when a user uploaded a file and then moved it to a shared folder
+in order for a second user to get the file, a copy of the file was generated
+inside the share owner's trashbin. This allowed the share owner to restore
+the file into the share again if needed.
+Using encryption, that backup copy was wrongly generated and couldn't be
+decrypted due to a wrong signature.
+
+This issue is now fixed, and the backup copy can be restored normally.
+
+https://github.com/owncloud/core/pull/38375
+https://github.com/owncloud/core/pull/38452
+https://github.com/owncloud/encryption/issues/244

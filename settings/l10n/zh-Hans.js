@@ -1,0 +1,9 @@
+OC.L10N.register(
+    "settings",
+    {
+    "Authentication error" : "验证错误",
+    "Please provide an admin recovery password; otherwise, all user data will be lost." : "请提供管理员恢复密码；否则所有用户数据将会被删除。",
+    "Enterprise license key" : "企业授权许可证",
+    "Test receiver email" : "用于测试的邮件地址"
+},
+"nplurals=1; plural=0;");

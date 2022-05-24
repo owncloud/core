@@ -1,0 +1,11 @@
+Change: Keep the mtime of files and folders inside the tarball
+
+Previously, when a folder or several files were downloaded, a tarball (.tar for
+mac, .zip for windows and linux) was created. Such tarball had the mtime of the
+files and folders inside with the time they were added into the tarball, not the
+one shown in ownCloud.
+
+This change makes the mtime of the files and folders inside the tarball to be
+maintained as they're shown in the ownCloud's FS.
+
+https://github.com/owncloud/core/pull/37222

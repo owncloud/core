@@ -1,0 +1,8 @@
+Enhancement: Resend invitation email
+
+Implemented an action to resend the invitation email for a user that has
+never been logged in yet.
+
+https://github.com/owncloud/core/pull/38774
+https://github.com/owncloud/core/pull/38963
+https://github.com/owncloud/enterprise/issues/4577

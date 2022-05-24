@@ -1,0 +1,11 @@
+Enhancement: reduce memory footprint of trash expiry jobs
+
+The trash expiry job now expires the files in batches of users per script execution,
+instead of all users at once. This prevents growing memory related to how PHP PDO
+handles memory for many consecutive large queries. The trash expiry has been also
+moved to a dedicated trash expiry manager class that is optimized for
+background job access, while trash manager is used for online queries. Also some
+other minor memory optimizations have been applied.
+
+https://github.com/owncloud/core/pull/36602
+https://github.com/owncloud/core/pull/36565

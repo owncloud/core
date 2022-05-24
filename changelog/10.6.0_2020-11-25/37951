@@ -1,0 +1,7 @@
+Bugfix: properly exit and log during error in user sync command
+
+If there is an error when doing occ user:sync then the command will exit with
+return 1 and properly log the error.
+
+https://github.com/owncloud/core/pull/37951
+https://github.com/owncloud/enterprise/issues/4218

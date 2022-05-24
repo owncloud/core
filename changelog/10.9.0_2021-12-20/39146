@@ -1,0 +1,10 @@
+Bugfix: Fix display of tag selection in sidebar
+
+This PR add small CSS fixes to the Tags selection dialogue:
+- Fixed grey tag space if clear icon (x) is not displayed
+- Align checkmark in selection list vertically
+- Use correct HTML elements (div instead of span)
+
+https://github.com/owncloud/core/pull/39146
+https://github.com/owncloud/core/pull/39517
+https://github.com/owncloud/core/pull/39563

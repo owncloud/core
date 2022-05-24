@@ -1,0 +1,9 @@
+Bugfix: Show the correct expiring date in 'Shared by link' files list
+
+Before this PR the "Expiration date" column did not respect that shares
+expiration is set to the end of date and showing wrong values.
+This has been fixed with this PR
+
+https://github.com/owncloud/core/pull/39238
+https://github.com/owncloud/core/pull/39246
+https://github.com/owncloud/core/issues/39234

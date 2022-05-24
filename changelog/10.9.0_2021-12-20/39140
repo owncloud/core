@@ -1,0 +1,8 @@
+Bugfix: Image orientation
+
+Fix the retrieval an image's exif information to ensure it's rotated
+correctly in thumbnails and preview.
+
+https://github.com/owncloud/core/pull/39140
+https://github.com/owncloud/core/issues/39114
+https://github.com/owncloud/enterprise/issues/4666

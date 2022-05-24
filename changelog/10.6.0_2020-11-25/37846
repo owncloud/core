@@ -1,0 +1,6 @@
+Bugfix: Fix application id used for sharing settings translation
+
+"Owner language" and permission titles "Create", "Change", "Delete", "Share" were not being translated.
+Now it is translated.
+
+https://github.com/owncloud/core/pull/37846

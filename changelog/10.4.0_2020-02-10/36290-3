@@ -1,0 +1,6 @@
+Enhancement: PostgreSQL 10 support
+
+PostgreSQL 10 is now supported
+
+https://github.com/owncloud/core/issues/33187
+https://github.com/owncloud/core/pull/36290

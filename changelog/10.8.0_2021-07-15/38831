@@ -1,0 +1,9 @@
+Bugfix: Adjust position of the share autocomplete element
+
+We now append the share autocomplete element to #shareTabView to prevent the
+autocomplete dialog from being hidden in certain scenarios. This happened
+with Safari for example as soon as the filelist was long enough to have a
+vertical scrollbar.
+
+https://github.com/owncloud/core/pull/38831
+https://github.com/owncloud/enterprise/issues/4603

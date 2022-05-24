@@ -1,0 +1,7 @@
+Bugfix: No sensitive data on exception page
+
+In debug mode any exception stack trace is rendered to the browser which can
+hold sensitive data like passwords as method arguments.
+They are now filtered and no longer exposed to the user.
+
+https://github.com/owncloud/core/pull/39334

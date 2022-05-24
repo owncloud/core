@@ -1,0 +1,7 @@
+Bugfix: Cannot share with user name that has only numbers in the UI
+
+A regression in 10.4.0 meant that new shares with user names that were numbers
+could not be created in the UI. This regression has been fixed.
+
+https://github.com/owncloud/core/issues/37324
+https://github.com/owncloud/core/pull/37336

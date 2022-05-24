@@ -1,0 +1,6 @@
+Bugfix: allow re-sharer to send an e-mail for public link
+
+Sending an e-mail when creating public links from received shares was impossible. This problem fixed.
+
+https://github.com/owncloud/core/issues/36386
+https://github.com/owncloud/core/pull/36393

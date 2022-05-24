@@ -1,0 +1,11 @@
+Bugfix: Clicking in the middle of the row in the file list downloads the file
+
+This change addresses the issue if the user clicks in on a row in the file list,
+the file gets downloaded or open with the default viewer.
+This was not intended, the download or default opening should only happen if
+the user clicks directly on the file name.
+Problems with mobile devices, where the file name was too long to display,
+has been also solved.
+
+https://github.com/owncloud/core/pull/39361
+https://github.com/owncloud/core/issues/39329

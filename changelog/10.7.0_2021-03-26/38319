@@ -1,0 +1,6 @@
+Bugfix: Fix rendering of leading/trailing spaces in the file name
+
+Leading and trailing spaces in the file name were stripped in the Web UI
+
+https://github.com/owncloud/core/issues/38316
+https://github.com/owncloud/core/pull/38319

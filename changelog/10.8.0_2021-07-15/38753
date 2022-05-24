@@ -1,0 +1,7 @@
+Bugfix: Move files_antivirus executable mode config options into config.php
+
+Executable mode of the files_antivirus app is now configured in the core 
+config.php file.
+
+https://github.com/owncloud/core/pull/38753
+https://github.com/owncloud/files_antivirus/pull/442

@@ -1,0 +1,12 @@
+Enhancement: Extend occ dav:cleanup-chunks command with local option
+
+If an admin runs a setup with multiple servers, connected to the same database
+and sets the configuration for the chunking directory 'dav.chunk_base_dir' to a
+unique place on the server, the command occ dav:cleanup-chunks might fail.
+This happens as the oc_filecache table doesn't give us the information on which
+server the directory is.
+Therefore the local option has been added to the command, with this precondition
+only files that are on the local filesystem will be removed.
+
+https://github.com/owncloud/core/pull/39394
+https://github.com/owncloud/enterprise/issues/4824

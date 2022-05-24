@@ -1,0 +1,8 @@
+Bugfix: Handle exceptions for deleted share nodes while transfering ownership
+
+Adds exception handling while collecting shares in files:transfer-ownership.
+Additionally, new option "accept-skipped-shares" has been added to
+automatically confirm to skip shares that cannot be transferred.
+
+https://github.com/owncloud/enterprise/issues/4023
+https://github.com/owncloud/core/pull/37568

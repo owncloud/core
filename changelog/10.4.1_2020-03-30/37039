@@ -1,0 +1,3 @@
+Change: Respect default_language when sending email notifications
+
+https://github.com/owncloud/core/issues/37039

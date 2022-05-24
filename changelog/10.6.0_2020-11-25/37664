@@ -1,0 +1,5 @@
+Bugfix: Only allow http/https protocol on CORS
+
+Adding a white-listed domain allowed strange protocols like ftp://owncloud.com, restricted to http/https
+
+https://github.com/owncloud/core/pull/38101

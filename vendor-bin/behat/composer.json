@@ -1,0 +1,18 @@
+{
+    "require": {
+        "behat/behat": "^3.8",
+        "behat/gherkin": "4.7.1",
+        "behat/mink": "1.7.1",
+        "behat/mink-extension": "^2.3",
+        "behat/mink-selenium2-driver": "^1.4",
+        "ciaranmcnulty/behat-stepthroughextension" : "dev-master",
+        "rdx/behat-variables": "^1.2",
+        "sensiolabs/behat-page-object-extension": "^2.3",
+        "symfony/translation": "^4.4",
+        "sabre/xml": "^2.2",
+        "guzzlehttp/guzzle": "^7.2",
+        "phpunit/phpunit": "^9.4",
+        "laminas/laminas-ldap": "^2.10",
+        "ankitpokhrel/tus-php": "^2.1"
+    }
+}

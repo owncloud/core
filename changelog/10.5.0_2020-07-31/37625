@@ -1,0 +1,6 @@
+Bugfix: Return HTTP 404 for upload attempt to nonexistent public folders
+
+Public files WebDAV API has been fixed to return HTTP status code 404 for upload attempt to nonexistent public folders.
+
+https://github.com/owncloud/core/pull/37625
+https://github.com/owncloud/core/issues/36055

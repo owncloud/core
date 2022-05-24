@@ -1,0 +1,83 @@
+on: [push, pull_request]
+
+name: CI
+
+jobs:
+  php-cs-fixer:
+    name: PHP-CS-Fixer
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+      - name: PHP-CS-Fixer
+        uses: OskarStark/php-cs-fixer-ga@2.16.7
+        with:
+          args: --diff --dry-run --allow-risky yes --stop-on-violation --using-cache=no --path-mode=intersection
+
+  phpstan:
+    name: PHPStan Static Analysis
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+      - name: Composer
+        run: composer install
+      - env:
+          BACKEND: smbclient
+        run: php ./vendor/bin/phpstan analyse --level 5 src
+
+  phpunit:
+    runs-on: ubuntu-20.04
+    name: Unit tests
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.3"
+          - "7.4"
+          - "8.0"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: pcov
+      - name: Composer
+        run: composer install
+      - name: PHPUnit Tests
+        run: php ./vendor/bin/phpunit tests  -c tests/phpunit.xml --coverage-clover=coverage.xml
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage.xml
+
+  phpunit-8:
+    runs-on: ubuntu-20.04
+    name: Unit tests
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.1"
+          - "7.2"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+      - name: Composer
+        run: |
+          echo '{"autoload": {"psr-4": {"Icewind\\Streams\\": "src/"}},"autoload-dev": {"psr-4": {"Icewind\\Streams\\Tests\\": "tests/"}}}' > composer.json
+          composer require --dev phpunit/phpunit ^6
+      - name: PHPUnit Tests
+        run: php ./vendor/bin/phpunit tests  -c tests/phpunit.xml

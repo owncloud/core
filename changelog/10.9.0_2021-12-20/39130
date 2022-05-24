@@ -1,0 +1,10 @@
+Enhancement: Quick action for creating public links
+
+This feature introduces a quick action in the filelist for creating read-only
+public links. It can be enabled via 'sharing.showPublicLinkQuickAction'
+in the config.php.
+
+https://github.com/owncloud/enterprise/issues/4718
+https://github.com/owncloud/core/pull/39130
+https://github.com/owncloud/core/pull/39163
+https://github.com/owncloud/core/pull/39167

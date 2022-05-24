@@ -1,0 +1,25 @@
+{ "translations": {
+    "Email sent" : "ارسال شدہ ای میل ",
+    "Delete" : "حذف کریں",
+    "Share" : "اشتراک",
+    "Invalid request" : "غلط درخواست",
+    "Very weak password" : "بہت کمزور پاسورڈ",
+    "Weak password" : "کمزور پاسورڈ",
+    "So-so password" : "نص نص پاسورڈ",
+    "Good password" : "اچھا پاسورڈ",
+    "Strong password" : "مضبوط پاسورڈ",
+    "Cheers!" : "واہ!",
+    "Save" : "حفظ",
+    "Add" : "شامل کریں",
+    "Cancel" : "منسوخ کریں",
+    "Password" : "پاسورڈ",
+    "New password" : "نیا پاسورڈ",
+    "Name" : "اسم",
+    "Username" : "یوزر نیم",
+    "Personal" : "شخصی",
+    "Admin" : "ایڈمن",
+    "Settings" : "ترتیبات",
+    "Group" : "گروپ",
+    "Other" : "دیگر"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

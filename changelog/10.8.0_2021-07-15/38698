@@ -1,0 +1,8 @@
+Bugfix: Add check when updating the permissions of a federated share
+
+This fixes a security issue where a federated share recipient could
+increase permissions on his share. We now limit the permission updates
+to federated re-shares only.
+
+https://github.com/owncloud/core/pull/38698
+https://github.com/owncloud/enterprise/issues/4537

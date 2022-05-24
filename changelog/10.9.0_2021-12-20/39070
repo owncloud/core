@@ -1,0 +1,11 @@
+Bugfix: Do not try to delete the folder twice
+
+Previously, when a folder was moved to the trashbin from an external storage, the usual
+action was to copy the contents to the trashbin and then remove them from the source, and
+additionally another remove operation on the source was triggered. This second delete
+request was performed but the result was ignored, and the storages didn't log anything.
+
+With this change, this second delete request won't happen. The behaviour is still the same:
+copy to the trashbin and then remove from the source.
+
+https://github.com/owncloud/core/pull/39070

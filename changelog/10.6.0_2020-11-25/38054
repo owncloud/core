@@ -1,0 +1,6 @@
+Enhancement: Add new method in the PHP API interface
+
+The share manager interface in the PHP API has a new "getSharesByPath"
+method available
+
+https://github.com/owncloud/core/pull/38054

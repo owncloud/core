@@ -1,0 +1,7 @@
+Bugfix: Return proper error when destination header is missing
+
+Move- and copy-requests without destination header now give a proper
+error response: "The destination header was not supplied"
+
+https://github.com/owncloud/core/pull/39235
+https://github.com/owncloud/core/issues/38898

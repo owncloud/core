@@ -1,0 +1,7 @@
+Bugfix: Fix public link upload remaining time estimation
+
+Public link upload wrong remaining time estimation problem has been resolved.
+Also, the remaining time calculation logic has been changed for smoother performance.
+
+https://github.com/owncloud/core/pull/37053
+https://github.com/owncloud/core/issues/25053

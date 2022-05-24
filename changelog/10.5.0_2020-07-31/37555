@@ -1,0 +1,6 @@
+Bugfix: Use relative path in shared_with_email activity
+
+"shared_with_email" activity email was including the complete path of the shared node.
+This path has changed with the relative path of the sender user folder.
+
+https://github.com/owncloud/core/pull/37555

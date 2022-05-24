@@ -1,0 +1,10 @@
+Enhancement: Show notification if video playback is not possible on public share
+
+Before this PR no error notification was shown if a video can't be played due
+to browser incompatibility, for example, mov files on chrome.
+(https://stackoverflow.com/questions/28746645)
+
+Now we will show a dedicated notification.
+
+https://github.com/owncloud/enterprise/issues/4632
+https://github.com/owncloud/core/pull/38858

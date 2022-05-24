@@ -1,0 +1,7 @@
+Enhancement: Add excludeActions parameter to registerDefaultActions function
+
+With this change we can pass now excludeActions to the registerDefaultActions
+function in fileactions.js, this allows us technically to omit specific
+file actions.
+
+https://github.com/owncloud/core/pull/38643

@@ -1,0 +1,3 @@
+Bugfix: Fix favicon, cloud symbol on Safari not visible
+
+https://github.com/owncloud/core/pull/39506

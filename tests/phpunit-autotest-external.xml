@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit bootstrap="bootstrap.php"
+		 verbose="true"
+		 failOnRisky="true"
+		 failOnWarning="true"
+		 timeoutForSmallTests="900"
+		 timeoutForMediumTests="900"
+		 timeoutForLargeTests="900"
+>
+  <testsuites>
+    <testsuite name='ownCloud files external'>
+      <directory suffix=".php">../apps/files_external/tests</directory>
+      <!-- exclude backends as they are called separately -->
+      <exclude>../apps/files_external/tests/Storage/</exclude>
+    </testsuite>
+  </testsuites>
+  <!-- filters for code coverage -->
+  <coverage>
+    <!-- whitelist processUncoveredFilesFromWhitelist="true" -->
+    <include>
+      <file>../lib/private/Files/Storage/DAV.php</file>
+      <directory suffix=".php">../apps/files_external</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">../apps/files_external/l10n</directory>
+      <directory suffix=".php">../apps/files_external/3rdparty</directory>
+      <directory suffix=".php">../apps/files_external/tests</directory>
+    </exclude>
+  </coverage>
+</phpunit>

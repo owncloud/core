@@ -1,0 +1,14 @@
+Bugfix: Decouple change email from 'allow_user_to_change_display_name' setting
+
+Before this change, with setting 'allow_user_to_change_display_name' false,
+the user was not able to change the mail address in Settings->Personal->General
+via the webUI.
+
+With this change, the setting 'allow_user_to_change_mail_address' has been
+introduced and change mail address has been decoupled from  setting
+`allow_user_to_change_display_name`.
+
+'allow_user_to_change_mail_address' must be set explicitly to false, to take effect.
+
+https://github.com/owncloud/core/pull/39288
+https://github.com/owncloud/core/issues/35103

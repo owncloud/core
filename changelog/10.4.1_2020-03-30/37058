@@ -1,0 +1,4 @@
+Change: Return correct custom dav properties for folder contents
+
+https://github.com/owncloud/core/pull/37058
+https://github.com/owncloud/core/issues/36920

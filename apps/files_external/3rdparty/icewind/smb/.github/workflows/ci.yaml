@@ -1,0 +1,257 @@
+on: [push, pull_request]
+
+name: CI
+
+jobs:
+  php-cs-fixer:
+    name: PHP-CS-Fixer
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: apcu
+      - name: PHP-CS-Fixer
+        uses: OskarStark/php-cs-fixer-ga@2.16.7
+        with:
+          args: --diff --dry-run --allow-risky yes --stop-on-violation --using-cache=no --path-mode=intersection
+
+  php-versions:
+    runs-on: ubuntu-20.04
+    name: Unit tests
+
+    strategy:
+      fail-fast: false
+      matrix:
+        backend:
+          - smbclient
+          - libsmbclient
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+
+    services:
+      samba:
+        image: "servercontainers/samba"
+        env:
+          ACCOUNT_test: test
+          UID_test: 1000
+          SAMBA_VOLUME_CONFIG_test: "[test]; path=/tmp; valid users = test; guest ok = no; read only = no; browseable = yes"
+        ports:
+          - 139:139
+          - 445:445
+
+    steps:
+      - name: Install packages
+        run: |
+          sudo apt-get install smbclient
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: apcu, smbclient
+          coverage: pcov
+      - name: Composer
+        run: composer install
+      - name: Config
+        run: |
+          echo '{"host": "localhost","user": "test","password": "test","share": "test","root": ""}' > tests/config.json
+      - name: PHPUnit Tests
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          retry_on: timeout
+          command: php ./vendor/bin/phpunit tests -c tests/phpunit.xml --coverage-clover=coverage.xml
+        env:
+          BACKEND: ${{ matrix.backend }}
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage.xml
+
+  smb-versions:
+    runs-on: ubuntu-20.04
+    name: Unit tests
+
+    strategy:
+      fail-fast: false
+      matrix:
+        client-version:
+          - "4.15.1"
+          - "4.14.9"
+          - "4.11.17"
+          - "4.10.18"
+          - "4.9.18"
+          - "4.8.12"
+          - "4.7.12"
+        server-version:
+          - "latest"
+          - "4.9.4"
+          - "4.8.5"
+
+    services:
+      samba:
+        image: "servercontainers/samba:${{ matrix.server-version }}"
+        env:
+          ACCOUNT_test: test
+          UID_test: 1000
+          SAMBA_VOLUME_CONFIG_test: "[test]; path=/tmp; valid users = test; guest ok = no; read only = no; browseable = yes"
+        ports:
+          - 139:139
+          - 445:445
+
+    steps:
+      - name: Setup smbclient
+        run: |
+          sudo apt install libjansson4 libcap2 libbsd0 libreadline8 libicu66
+          sudo mkdir -p /etc/samba /var/lib/samba/private
+          echo "[global]\nclient min protocol = SMB2\nclient max protocol = SMB3" | sudo tee /etc/samba/smb.conf
+          sudo wget "https://github.com/icewind1991/smbclient-builder/releases/download/v0.1.0/smbclient-${{ matrix.client-version }}" -O /usr/local/bin/smbclient
+          sudo chmod +x /usr/local/bin/smbclient
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          extensions: apcu, smbclient
+          coverage: pcov
+      - name: Composer
+        run: composer install
+      - name: Config
+        run: |
+          echo '{"host": "localhost","user": "test","password": "test","share": "test","root": ""}' > tests/config.json
+      - name: PHPUnit Tests
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          retry_on: timeout
+          command: php ./vendor/bin/phpunit tests -c tests/phpunit.xml --coverage-clover=coverage.xml
+        env:
+          BACKEND: smbclient
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage.xml
+
+  alpine-test:
+    runs-on: ubuntu-20.04
+    name: Unit tests (alpine)
+
+    services:
+      samba:
+        image: "servercontainers/samba"
+        env:
+          ACCOUNT_test: test
+          UID_test: 1000
+          SAMBA_VOLUME_CONFIG_test: "[test]; path=/tmp; valid users = test; guest ok = no; read only = no; browseable = yes"
+        ports:
+          - 139:139
+          - 445:445
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: Composer
+        run: composer install
+      - name: Pull images
+        run: |
+          docker pull icewind1991/smbclient-php-alpine
+      - name: Config
+        run: |
+          echo '{"host": "localhost","user": "test","password": "test","share": "test","root": ""}' > tests/config.json
+      - name: PHPUnit Tests
+        run: |
+          docker run --network "host" --rm -v $PWD:/smb icewind1991/smbclient-php-alpine /smb/vendor/bin/phpunit -c /smb/tests/phpunit.xml /smb/tests
+
+  kerberos-sso:
+    runs-on: ubuntu-20.04
+    name: Kerberos SSO tests
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: Composer
+        run: composer install
+      - name: Pull images
+        run: |
+          docker pull icewind1991/samba-krb-test-dc
+          docker pull icewind1991/samba-krb-test-apache
+          docker pull icewind1991/samba-krb-test-client
+      - name: Setup AD-DC
+        run: |
+          tests/setup-krb.sh
+      - name: Test kerberos auth
+        run: |
+          DC_IP=$(docker inspect dc --format '{{.NetworkSettings.IPAddress}}')
+          LIST=$(docker run --rm --name client -v /tmp/shared:/shared --dns $DC_IP --hostname client.domain.test icewind1991/samba-krb-test-client \
+            curl -s --negotiate -u testuser@DOMAIN.TEST: --delegation always http://httpd.domain.test/example-apache-kerberos.php)
+          echo $LIST
+          LIST=$(echo $LIST | tr -d '[:space:]')
+          [[ $LIST == "test.txt" ]]
+      - name: Apache logs
+        if: always()
+        run: |
+          docker logs apache
+
+  static-psalm-analysis:
+    runs-on: ubuntu-latest
+    name: Psalm static analysis
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+
+    steps:
+      - name: krb5-dev
+        run: sudo apt-get install -y libkrb5-dev
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Set up php
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: "${{ matrix.php-version }}"
+          tools: composer:v1
+          coverage: none
+          extensions: apcu, smbclient, krb5
+        env:
+          fail-fast: true
+      - name: Install dependencies
+        run: composer i
+      - name: Run coding standards check
+        run: composer run psalm
+
+  phpstan:
+    name: PHPStan Static Analysis
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: krb5-dev
+        run: sudo apt-get install -y libkrb5-dev
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: apcu, smbclient, krb5
+        env:
+          fail-fast: true
+      - name: Composer
+        run: composer install
+      - env:
+          BACKEND: smbclient
+        run: php ./vendor/bin/phpstan analyse --level 6 src

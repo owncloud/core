@@ -1,0 +1,4 @@
+Change: Remove package patchwork/utf8
+
+https://github.com/owncloud/core/pull/38286
+https://github.com/owncloud/core/pull/38315

@@ -1,0 +1,9 @@
+{ "translations": {
+    "Tags" : "Etiquetas",
+    "Tagged files" : "Archivos etiquetados",
+    "No entries found in this folder" : "No se encontraron entradas en esta carpeta",
+    "Name" : "Nombre",
+    "Size" : "Tamaño",
+    "Modified" : "Modificado"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

@@ -1,0 +1,8 @@
+Enhancement: Introduce the patch for CVE-2019-11358
+
+Patched jQuery's `$.extend` method. The code in core doesn't contain any vulnerable invocations of `$.extend` this is just a preventive patch. 
+
+https://nvd.nist.gov/vuln/detail/CVE-2019-11358
+https://blog.jquery.com/2019/04/10/jquery-3-4-0-released/
+https://github.com/DanielRuf/snyk-js-jquery-174006?files=1
+https://github.com/owncloud/core/pull/38841

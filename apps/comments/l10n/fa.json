@@ -1,0 +1,24 @@
+{ "translations": {
+    "Type in a new comment..." : "نوشتن دیدگاه جدید ...",
+    "Delete comment" : "حذف نظر",
+    "Post" : "ارسال",
+    "Cancel" : "منصرف شدن",
+    "Edit comment" : "ویرایش دیدگاه",
+    "[Deleted user]" : "[کاربر حذف شده]",
+    "Comments" : "دیدگاه‌ها",
+    "No other comments available" : "هیچ دیدگاه دیگری وجود ندارد",
+    "More comments..." : "دیدگاه‌های بیشتر",
+    "Save" : "ذخیره",
+    "Allowed characters {count} of {max}" : "{count} کاراکتر از {max} کاراکتر مجاز",
+    "Error occurred while retrieving comment with id {id}" : "خطایی هنگام بازیابی دیدگاه با شناسه‌ی {id} بوجود آمده است",
+    "Error occurred while updating comment with id {id}" : "خطایی هنگام بروزرسانی دیدگاه با شناسه‌ی {id} بوجود آمده است",
+    "Error occurred while posting comment" : "خطایی هنگام ارسال دیدگاه بوجود آمده است",
+    "{count} unread comments" : "{count} دیدگاه خوانده نشده",
+    "Comment" : "دیدگاه",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "دیدگاه‌ها برای فایل‌ها <em>(برای لیست‌های استریم مجاز)</em>",
+    "You commented" : "شما دیدگاهی ارسال کردید",
+    "%1$s commented" : "%1$s دیدگاه ارسال شد",
+    "You commented on %2$s" : "شما بر %2$s دیدگاهی ارسال کردید",
+    "%1$s commented on %2$s" : "%1$s دیدگاهی در %2$s ارسال کرده است"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

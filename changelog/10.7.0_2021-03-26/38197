@@ -1,0 +1,11 @@
+Enhancement: Improve file list tag management
+
+1. Introduce a new tab, where the tag input field will be displayed
+1.1 Keyboard navigation in the input field's dropdown works now proper, in the past the user needed to hover over on item in the dropdown before the arrow keys could be used
+
+2. Replace the tag input field in the file list by a read only tag list
+2.1 Improving tag appearance to clarify that these are tags and no shares
+2.2 Clicking on a tag opens the tag tab
+2.3 Tag tab and tag list are in sync, means that editing (select, unselect, rename, remove) tags will appear in the tag list immediately
+
+https://github.com/owncloud/core/pull/38197

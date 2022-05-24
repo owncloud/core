@@ -1,0 +1,59 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- christophwurst/id3parser (0.1.2 to 0.1.3)
+- doctrine/cache (2.0.3 to 2.1.1)
+- doctrine/dbal (2.13.2 to 2.13.5)
+- egulias/email-validator (3.1.1 to 3.1.2)
+- laminas/laminas-filter (2.11.1 to 2.12.0)
+- laminas/laminas-stdlib (3.5.0 to 3.6.1)
+- laminas/laminas-validator (2.14.5 to 2.15.0)
+- laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0)
+- league/flysystem (1.1.4 to 1.1.5)
+- mikey179/vfsstream (v1.6.8 to v1.6.9)
+- nikic/php-parser (v4.11.0 to v4.13.0)
+- pear/archive_tar (1.4.13 to 1.4.14)
+- phpseclib/phpseclib (3.0.9 to 3.0.11)
+- pimple/pimple (3.2.3 to 3.5.0)
+- punic/punic (3.6.0 to 3.7.0)
+- sabre/dav (4.1.5 to 4.2.0)
+- sabre/event (5.1.2 to 5.1.4)
+- sabre/http (5.1.1 to 5.1.3)
+- sabre/vobject (4.3.5 to 4.4.0)
+- sabre/uri (2.2.1 to 2.2.2)
+- sabre/xml (2.2.3 to 2.2.5)
+- swiftmailer/swiftmailer (v6.2.7 to v6.3.0)
+
+The following have been updated in files_external/3rdparty:
+- firebase/php-jwt (v5.4.0 to v5.5.1)
+- google/apiclient (v2.9.2 to v2.11.0)
+- google/apiclient-services (v0.213.0 to v0.221.0)
+- guzzlehttp/psr7 (1.8.2 to 1.8.3)
+- icewind/smb (v3.4.1 to v3.5.1)
+- monolog/monolog (2.3.4 to 2.3.5)
+- phpseclib/phpseclib (3.0.10 to 3.0.11)
+
+https://github.com/owncloud/core/pull/38907
+https://github.com/owncloud/core/pull/39030
+https://github.com/owncloud/core/pull/39047
+https://github.com/owncloud/core/pull/39065
+https://github.com/owncloud/core/pull/39116
+https://github.com/owncloud/core/pull/39124
+https://github.com/owncloud/core/pull/39201
+https://github.com/owncloud/core/pull/39214
+https://github.com/owncloud/core/pull/39259
+https://github.com/owncloud/core/pull/39317
+https://github.com/owncloud/core/pull/39369
+https://github.com/owncloud/core/pull/39422
+https://github.com/owncloud/core/pull/39427
+https://github.com/owncloud/core/pull/39433
+https://github.com/owncloud/core/pull/39434
+https://github.com/owncloud/core/pull/39453
+https://github.com/owncloud/core/pull/39456
+https://github.com/owncloud/core/pull/39466
+https://github.com/owncloud/core/pull/39479
+https://github.com/owncloud/core/pull/39485
+https://github.com/owncloud/core/pull/39487
+https://github.com/owncloud/core/pull/39492
+https://github.com/owncloud/core/pull/39495
+https://github.com/owncloud/core/pull/39496

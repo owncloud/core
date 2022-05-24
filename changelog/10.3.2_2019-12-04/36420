@@ -1,0 +1,5 @@
+Enhancement: New option in occ command files_external:list --mount-options
+
+Using --mount-options shows all mount options independent if they are set to their default value or not.
+
+https://github.com/owncloud/core/pull/36420

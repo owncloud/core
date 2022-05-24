@@ -1,0 +1,6 @@
+Bugfix: Fix a regression with theming of settings menu icons
+
+Default icons were loaded instead of the overrides from the enabled app-theme
+in the settings menu.
+
+https://github.com/owncloud/core/pull/38246

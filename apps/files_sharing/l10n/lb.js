@@ -1,0 +1,21 @@
+OC.L10N.register(
+    "files_sharing",
+    {
+    "Uploading..." : "Lueden erop...",
+    "Nothing shared yet" : "Nach näischt gedeelt",
+    "No shared links" : "Keng gedeelte Linken",
+    "Cancel" : "Ofbriechen",
+    "Add" : "Dobäisetzen",
+    "Share" : "Deelen",
+    "Shared by" : "Gedeelt vun",
+    "Sharing" : "Gedeelt",
+    "Password" : "Passwuert",
+    "The password is wrong. Try again." : "Den Passwuert ass incorrect. Probeier ed nach eng keier.",
+    "Proceed" : "Fuer weider",
+    "No entries found in this folder" : "Keng Elementer an dësem Dossier fonnt",
+    "Name" : "Numm",
+    "Expiration date" : "Verfallsdatum",
+    "Download" : "Download",
+    "Direct link" : "Direkte Link"
+},
+"nplurals=2; plural=(n != 1);");

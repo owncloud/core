@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<ruleset name="ownCloud Standard">
+	<description>ownCloud coding standard</description>
+	<arg name="colors" />
+	<arg value="sp" />
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/3rdparty/*</exclude-pattern>
+
+	<!-- make sure we use tabs for indent and not spaces -->
+	<arg name="tab-width" value="4" />
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent" />
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<properties>
+			<property name="indent" value="4" />
+			<property name="tabIndent" value="true" />
+		</properties>
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent.TabsUsed" />
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent.NonIndentTabsUsed" />
+	</rule>
+
+	<rule ref="Generic.Files.LineLength">
+		<exclude name="Generic.Files.LineLength.TooLong" />
+	</rule>
+
+	<rule ref="PEAR">
+		<exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
+		<exclude name="Generic.Commenting.DocComment.SpacingAfter" />
+		<exclude name="Generic.Commenting.DocComment.MissingShort" />
+		<exclude name="Generic.Commenting.DocComment.TagValueIndent" />
+		<exclude name="Generic.Commenting.DocComment.ParamNotFirst" />
+		<exclude name="PEAR.Commenting.FileComment.IncompleteCopyright" />
+		<exclude name="PEAR.Commenting.FileComment.IncompleteLicense" />
+		<exclude name="PEAR.Commenting.FileComment.MissingVersion" />
+		<exclude name="PEAR.Commenting.FileComment.MissingCategoryTag" />
+		<exclude name="PEAR.Commenting.FileComment.MissingPackageTag" />
+		<exclude name="PEAR.Commenting.FileComment.MissingLicenseTag" />
+		<exclude name="PEAR.Commenting.FileComment.MissingLinkTag" />
+		<exclude name="PEAR.Commenting.ClassComment.MissingCategoryTag" />
+		<exclude name="PEAR.Commenting.ClassComment.MissingPackageTag" />
+		<exclude name="PEAR.Commenting.ClassComment.MissingAuthorTag" />
+		<exclude name="PEAR.Commenting.ClassComment.MissingLicenseTag" />
+		<exclude name="PEAR.Commenting.ClassComment.MissingLinkTag" />
+		<exclude name="PEAR.Commenting.FunctionComment.MissingParamComment" />
+		<exclude name="PEAR.Commenting.FunctionComment.SpacingAfterParamType" />
+		<exclude name="PEAR.Commenting.FunctionComment.SpacingAfterParamName" />
+		<exclude
+			name="PEAR.NamingConventions.ValidVariableName.PrivateNoUnderscore" />
+		<exclude
+			name="PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore" />
+		<exclude name="PEAR.WhiteSpace.ScopeIndent.IncorrectExact" />
+		<exclude name="PEAR.Functions.FunctionDeclaration.BraceOnSameLine" />
+		<exclude name="PEAR.Classes.ClassDeclaration.OpenBraceNewLine" />
+	</rule>
+	<rule ref="Zend.Files.ClosingTag"/>
+	<rule ref="Squiz.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
+	<rule ref="Squiz.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
+	<rule ref="Squiz.Commenting.DocCommentAlignment" />
+	<rule ref="Generic.WhiteSpace.ScopeIndent" />
+	<rule ref="Squiz.Strings.ConcatenationSpacing">
+		<properties>
+			<property name="spacing" value="1" />
+			<property name="ignoreNewlines" value="true" />
+		</properties>
+	</rule>
+	<rule ref="PSR2.ControlStructures.SwitchDeclaration.BreakIndent">
+		<exclude
+			name="PSR2.ControlStructures.SwitchDeclaration.SpaceBeforeColonDEFAULT" />
+		<exclude
+			name="PSR2.ControlStructures.SwitchDeclaration.SpaceBeforeColonCASE" />
+	</rule>
+	<rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+	<rule ref="Generic.Classes.OpeningBraceSameLine" />
+
+	<!-- storage wrapper uses php function names to wrap them -->
+	<rule ref="PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps">
+		<exclude-pattern>*/lib/storagewrapper.php</exclude-pattern>
+	</rule>
+
+</ruleset>

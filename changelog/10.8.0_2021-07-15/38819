@@ -1,0 +1,10 @@
+Enhancement: Improve performance of the SMB log when it is inactive
+
+The SMB connector includes very verbose logs to trace what could have
+gone wrong. These logs are disabled by default, but although they're disabled
+we still need to check the state to decide whether we want to log or not.
+
+Now, the state check is faster and it takes less time to decide, so the
+overall performance of the connector is improved.
+
+https://github.com/owncloud/core/pull/38819

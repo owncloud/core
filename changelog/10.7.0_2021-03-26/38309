@@ -1,0 +1,6 @@
+Enhancement: Display path in the occ app:list command
+
+occ app:list
+Additionally displays the located app path
+
+https://github.com/owncloud/core/pull/38309

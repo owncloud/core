@@ -1,0 +1,3 @@
+Change: Fix ini_set error spamming the log
+
+https://github.com/owncloud/core/pull/36749

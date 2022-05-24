@@ -1,0 +1,10 @@
+Bugfix: Fix issue restoring versions from the trashbin after sharing
+
+Previously, having encryption enabled, if a user shared a folder with
+another user, and that new user removed a file inside that shared folder,
+that file ended up in the new user's trashbin along with the file's versions.
+Restoring that file from the trashbin caused the versions of that file
+to get broken due to a bad signature. The file was restored correctly.
+Now, the versions are also restored correctly from the trashbin too.
+
+https://github.com/owncloud/core/pull/39822

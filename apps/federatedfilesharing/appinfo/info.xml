@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<info>
+    <id>federatedfilesharing</id>
+    <name>Federated File Sharing</name>
+    <description>Provide federated file sharing across ownCloud servers</description>
+    <licence>AGPL</licence>
+    <author>Bjoern Schiessle, Roeland Jago Douma</author>
+    <version>0.5.0</version>
+    <namespace>FederatedFileSharing</namespace>
+    <use-migrations>true</use-migrations>
+    <category>other</category>
+    <types>
+        <filesystem/>
+    </types>
+    <dependencies>
+		<owncloud min-version="10.0.2.4" max-version="10" />
+    </dependencies>
+    <settings>
+        <admin>OCA\FederatedFileSharing\Panels\AdminPanel</admin>
+        <personal>OCA\FederatedFileSharing\Panels\GeneralPersonalPanel</personal>
+        <personal>OCA\FederatedFileSharing\Panels\SharingPersonalPanel</personal>
+    </settings>
+    <commands>
+        <command>OCA\FederatedFileSharing\Command\PollIncomingShares</command>
+    </commands>
+</info>

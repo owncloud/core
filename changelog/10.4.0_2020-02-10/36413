@@ -1,0 +1,11 @@
+Bugfix: Set 599 HTTP code on error
+
+Previously, a hard crash, such as DB being down, was being reported with a stacktrace
+and a 200 HTTP code. In order to homogenize the behaviour with all the endpoints, we've
+changed the behaviour to return a 599 HTTP code and an empty content.
+
+In addition, we've included a new option in the config.php, "crashdirectory", which
+defaults to the "datadirectory" set, where the crash logs will be created. Note that
+normal errors will still be reported normally and will log into the owncloud.log file.
+
+https://github.com/owncloud/core/pull/36413

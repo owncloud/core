@@ -1,0 +1,7 @@
+Bugfix: Check quota on the necessary move operations
+
+When encryption is active, a move operation between two different storages was
+leading to a broken copy on target storage if the target has not enough quota.
+This data loss problem has been resolved.
+
+https://github.com/owncloud/core/pull/38591

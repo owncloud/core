@@ -1,0 +1,26 @@
+OC.L10N.register(
+    "comments",
+    {
+    "Type in a new comment..." : "Type een nieuwe reactie...",
+    "Delete comment" : "Verwijder reactie",
+    "Post" : "Reageer",
+    "Cancel" : "Annuleren",
+    "Edit comment" : "Bewerk reactie",
+    "[Deleted user]" : "[Verwijderde gebruiker]",
+    "Comments" : "Reacties",
+    "No other comments available" : "Geen andere reacties beschikbaar",
+    "More comments..." : "Meer reacties...",
+    "Save" : "Opslaan",
+    "Allowed characters {count} of {max}" : "{count} van de {max} toegestane tekens",
+    "Error occurred while retrieving comment with id {id}" : "Er trad een fout op bij het ophalen van reactie met id {id}",
+    "Error occurred while updating comment with id {id}" : "Er trad een fout op bij het bijwerken van reactie met id {id}",
+    "Error occurred while posting comment" : "Er trad een fout op bij het plaatsten van een reactie",
+    "{count} unread comments" : "{count} ongelezen reacties",
+    "Comment" : "Reactie",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Reacties</strong> voor bestanden <em>(altijd getoond in de stroom)</em>",
+    "You commented" : "U heeft gereageerd",
+    "%1$s commented" : "%1$s heeft gereageerd",
+    "You commented on %2$s" : "U heeft gereageerd op %2$s",
+    "%1$s commented on %2$s" : "%1$s heeft gereageerd op %2$s"
+},
+"nplurals=2; plural=(n != 1);");

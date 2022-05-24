@@ -1,0 +1,10 @@
+Bugfix: Checksums will be kept when a file is uploaded or a version is created
+
+Previously, reuploading the same file caused the checksum of the file to be
+reset. In addition, the checksum weren't being carried away when a new version
+of the file was created. This means that the versions didn't have a checksum.
+
+Both problems are now solved.
+
+https://github.com/owncloud/core/pull/37934
+

@@ -1,0 +1,8 @@
+Enhancement: Add trashbin skip list to config
+
+With this change new config parameters has been introduced.
+Admins can now decide, based on file extensions, directory names and size,
+if a resource should not be observed by the trashbin and deleted immediately.
+
+https://github.com/owncloud/core/pull/38704
+https://github.com/owncloud/core/pull/38960

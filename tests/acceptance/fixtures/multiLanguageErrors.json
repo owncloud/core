@@ -1,0 +1,8 @@
+{
+  "Wrong share ID, share doesn't exist": {
+    "de-DE": "Fehlerhafte Freigabe-ID, Freigabe existiert nicht",
+    "zh-CN": "错误的共享 ID，共享不存在",
+    "fr-FR": "Mauvais ID de partage, le partage n'existe pas",
+    "es-ES": "El ID del recurso compartido no es correcto, el recurso compartido no existe"
+  }
+}

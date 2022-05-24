@@ -1,0 +1,5 @@
+Enhancement: Add more properties to the REPORT result
+
+File Search should be done in the future via WebDAV REPORT requests. ownCloud web is using it. In some cases with other search backends we have more properties to return. `<oc:search-highlights />` => returns am html formatted excerpt of the file content which is highlighting the matching words. `<oc:search-score />` returns a float number score value.
+
+https://github.com/owncloud/core/pull/38787

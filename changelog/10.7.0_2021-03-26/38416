@@ -1,0 +1,8 @@
+Bugfix: Show non-generic messages for 403 HTTP status to end user
+
+The real reason why 3rd party app canceled upload was ignored by Web UI and a generic
+'You are not allowed to upload here' message was shown instead. Now 'You are not allowed
+to upload here' is shown only if a real reason is empty.
+
+https://github.com/owncloud/files_antivirus/issues/395
+https://github.com/owncloud/core/pull/38416

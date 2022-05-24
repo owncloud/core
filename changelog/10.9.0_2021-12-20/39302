@@ -1,0 +1,7 @@
+Enhancement: Hide the "Remove Password" button on public links
+
+This change hides the "Remove Password" button when editing a
+public link if a password in mandatory.
+
+https://github.com/owncloud/core/pull/39302
+https://github.com/owncloud/core/issues/35684

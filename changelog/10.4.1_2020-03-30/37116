@@ -1,0 +1,6 @@
+Change: Fix UX in files app
+
+Some translations are now properly displayed and in an empty readonly folder a message is
+displayed that no files can be uploaded.
+
+https://github.com/owncloud/core/pull/37116

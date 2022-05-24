@@ -1,0 +1,7 @@
+Bugfix: Allow unlimited access to PUT body if content length is 0
+
+It was not possible to read more than one URL param of the PUT request with the empty body.
+This change checks Content-Length and do not throw the exception on empty request body if 
+Content-Length states that the empty body had been sent. 
+
+https://github.com/owncloud/core/pull/37394

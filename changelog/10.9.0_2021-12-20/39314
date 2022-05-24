@@ -1,0 +1,9 @@
+Bugfix: File version names for share recipients
+
+With this fix, file version names now match with the actual
+file name for share recipients. Before, the name has been the
+timestamp of the version file.
+
+https://github.com/owncloud/core/pull/39314
+https://github.com/owncloud/core/pull/39415
+https://github.com/owncloud/core/issues/36228

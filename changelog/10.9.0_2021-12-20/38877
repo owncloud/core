@@ -1,0 +1,11 @@
+Change: Use "federated" rather than "remote" for shares
+
+Shares from one ownCloud to another ownCloud were referred to in some places as
+remote shares and in other places as federated shares. References to remote
+shares in error messages and on the user interface have been changed to
+references to federated shares. All user-facing text now calls these federated
+shares.
+
+https://github.com/owncloud/core/pull/39578
+https://github.com/owncloud/core/pull/38877
+https://github.com/owncloud/core/issues/38871

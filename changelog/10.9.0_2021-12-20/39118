@@ -1,0 +1,8 @@
+Enhancement: Extend transfer ownership cmd with option to transfer entire user
+
+Command occ files:transfer-ownership now includes flag --destination-use-user-folder <user-id>
+that allows to transfer all user files and shares to destination user that has never logged in. 
+This is helpful in situation when users need to be migrated to new accounts.
+
+https://github.com/owncloud/core/pull/39118
+https://github.com/owncloud/enterprise/issues/4686

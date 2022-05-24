@@ -1,0 +1,9 @@
+Bugfix: Set file name to download.zip while downloading the whole user directory
+
+Before this PR, selecting all files and folders in the webUI and clicking the
+download button, resulted in a file downloaded with the name ".zip".
+With this PR the file name is now "download.zip".
+
+https://github.com/owncloud/core/pull/39198
+https://github.com/owncloud/core/pull/39239
+https://github.com/owncloud/core/issues/39187

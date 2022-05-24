@@ -1,0 +1,7 @@
+Enhancement: Don't show updater if setting 'upgrade.disable-web' is set to true
+
+With this PR the update section in Settings->Admin->General will be not shown
+if setting 'upgrade.disable-web' is set to true.
+
+https://github.com/owncloud/core/pull/39185
+https://github.com/owncloud/core/issues/39183

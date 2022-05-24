@@ -1,0 +1,11 @@
+{ "translations": {
+    "Contact birthdays" : "Kişi doğum günleri",
+    "User unknown" : "Bilinmeyen kullanıcı",
+    "User disabled" : "Kullanıcı devre dışı",
+    "Personal" : "Kişisel",
+    "Contacts" : "Kişiler",
+    "Technical details" : "Teknik ayrıntılar",
+    "Remote Address: %s" : "Uzak Adres: %s",
+    "Request ID: %s" : "İstek Kimliği: %s"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

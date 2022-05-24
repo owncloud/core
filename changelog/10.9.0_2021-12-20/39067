@@ -1,0 +1,9 @@
+Bugfix: Show previews in profile picture setting, select from files
+
+Before this PR, image previews was not shown anymore in
+Settings->Personal->Profile picture->Select from Files,
+as well the UI was cropped.
+This has been fixed with this PR.
+
+https://github.com/owncloud/core/pull/39067
+https://github.com/owncloud/enterprise/issues/4689

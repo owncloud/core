@@ -1,0 +1,8 @@
+Bugfix: Fix federated share accepting problem which occurs with some apps enabled
+
+Filesystem may not set already for shared user in some cases when accepting a federated share.
+This situation broke accept federated share api. This problem has been resolved.
+
+https://github.com/owncloud/core/issues/37719
+https://github.com/owncloud/music/issues/778
+https://github.com/owncloud/core/pull/37834

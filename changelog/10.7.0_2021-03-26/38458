@@ -1,0 +1,8 @@
+Enhancement: Add config parameter 'http.cookie.samesite'
+
+Allows to relax ownClouds same site cookie settings.
+Possible values: Strict, Lax or None
+Setting the same site cookie to none is necessary in case of OpenID Connect.
+
+https://github.com/owncloud/core/pull/38458
+https://github.com/owncloud/core/pull/38477

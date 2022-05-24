@@ -1,0 +1,5 @@
+Enhancement: Display error/success message while changing the log level
+
+In order to provide instant user feedback, changing the log level in settings->administration->general will display an error/success message next to the select box.
+
+https://github.com/owncloud/core/pull/38340

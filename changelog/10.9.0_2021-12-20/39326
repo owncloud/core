@@ -1,0 +1,3 @@
+Enhancement: Bring back minimalistic view to occ app:list with '-m' option
+
+https://github.com/owncloud/core/pull/39326

@@ -1,0 +1,8 @@
+Bugfix: Prevent getting a version expiry list when no versions available
+
+Previous to this fix, when getting a version expiry list with an empty
+version array, ownCloud ran into an error. Not a critical one, but still
+not nice and spams the owncloud.log file.
+
+https://github.com/owncloud/core/pull/38390
+https://github.com/owncloud/core/issues/38373

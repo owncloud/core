@@ -1,0 +1,13 @@
+Change: Added federated shares scan cronjob depreciating incoming-shares:poll
+
+We've fixed the behavior for federated shares poll command that in certain conditions
+was producing stale filecache entries, and replaced it by fed shares scan cronjob.
+
+ScanExternalShares that was added is a background job used to scan external shares
+(federated shares) that are eligible for scanning to ensure integrity of the
+file cache - i.e. satisfy preconditions as last user login,
+last scan and whether root storage updated.
+
+https://github.com/owncloud/core/pull/37391
+https://github.com/owncloud/enterprise/issues/3902
+https://doc.owncloud.com/server/admin_manual/configuration/files/federated_cloud_sharing_configuration.html

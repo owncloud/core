@@ -1,0 +1,7 @@
+Enhancement: Added additional connection parameters to redis config
+
+In order to provide redis SLL/TLS support a new section connection_parameters added to redis and redis.cluster configuration in config.php.
+Requirements for connection_parameters: php-redis extension >= 5.3.0
+Requirements for redis ssl/tls: redis server >= 6.0
+
+https://github.com/owncloud/core/pull/38386

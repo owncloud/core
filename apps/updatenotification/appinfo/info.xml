@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<info>
+	<id>updatenotification</id>
+	<name>Update notification</name>
+	<description>Displays update notifications for ownCloud and provides the SSO for the updater.</description>
+	<licence>AGPL</licence>
+	<author>Lukas Reschke</author>
+	<version>0.2.1</version>
+	<namespace>UpdateNotification</namespace>
+	<default_enable/>
+	<dependencies>
+		<owncloud min-version="10" max-version="10" />
+	</dependencies>
+
+	<background-jobs>
+		<job>OCA\UpdateNotification\Notification\BackgroundJob</job>
+	</background-jobs>
+	<settings>
+		<admin>OCA\UpdateNotification\Controller\AdminController</admin>
+	</settings>
+</info>

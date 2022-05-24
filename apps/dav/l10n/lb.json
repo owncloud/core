@@ -1,0 +1,9 @@
+{ "translations": {
+    "Contact birthdays" : "Gebuertsdeeg vun de Kontakter",
+    "Personal" : "Perséinlech",
+    "Contacts" : "Kontakter",
+    "Technical details" : "Technesch Detailer",
+    "Remote Address: %s" : "D'Adress op Distanz: %s",
+    "Request ID: %s" : "ID ufroen: %s"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

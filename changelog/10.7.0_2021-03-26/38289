@@ -1,0 +1,7 @@
+Bugfix: Fix the position of the user afterLogin-event
+
+Move the emitting event "user.afterlogin" in the method loginWithPassword.
+Previously it was placed after the prepareUserLogin-call which caused
+some issues with the encryption app using Symfony event listeners.
+
+https://github.com/owncloud/core/pull/38289

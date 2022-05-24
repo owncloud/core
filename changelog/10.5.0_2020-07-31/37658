@@ -1,0 +1,8 @@
+Change: Update Symfony contracts components to 1.1.9
+
+The following Symfony components have been updated to version 1.1.9:
+- event-dispatcher-contracts
+- service-contracts
+- event-dispatcher-contracts
+
+https://github.com/owncloud/core/pull/37658

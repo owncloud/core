@@ -1,0 +1,11 @@
+Enhancement: Trigger file scan after accepting a federated share
+
+This is necessary as we need the fileId to pass it to the `remoteshare.accepted`
+event. The activity app can then hook onto this event and update the activity
+by setting the correct fileId.
+
+Also added a short translation for the SUBJECT_REMOTE_SHARE_RECEIVED activity.
+
+https://github.com/owncloud/core/pull/38880
+https://github.com/owncloud/core/pull/38889
+https://github.com/owncloud/activity/issues/970

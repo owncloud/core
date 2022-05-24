@@ -1,0 +1,4 @@
+Bugfix: Translate public link sharing email subject
+
+https://github.com/owncloud/core/issues/37321
+https://github.com/owncloud/core/pull/37322

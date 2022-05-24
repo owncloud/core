@@ -1,0 +1,60 @@
+{
+  "name": "owncloud-js-dev",
+  "description": "ownCloud tests",
+  "version": "0.0.1",
+  "author": {
+    "name": "Vincent Petry",
+    "email": "pvince81@owncloud.com"
+  },
+  "private": true,
+  "homepage": "https://github.com/owncloud/",
+  "contributors": [],
+  "dependencies": {
+    "@bower_components/backbone": "jashkenas/backbone#1.4.1",
+    "@bower_components/base64": "davidchambers/Base64.js#1.1.0",
+    "@bower_components/blueimp-md5": "blueimp/JavaScript-MD5#1.0.1",
+    "@bower_components/bootstrap": "twbs/bootstrap#3.4.1",
+    "@bower_components/bowser": "ded/bowser#1.9.4",
+    "@bower_components/browser-update": "Graffino/Browser-Update#v2.0.5",
+    "@bower_components/clipboard": "zenorocha/clipboard.js#v2.0.6",
+    "@bower_components/davclient.js": "owncloud/davclient.js#0.1.3",
+    "@bower_components/es6-promise": "components/es6-promise#4.2.4",
+    "@bower_components/handlebars": "components/handlebars.js#v4.7.7",
+    "@bower_components/jcrop": "tapmodo/Jcrop#0.9.12",
+    "@bower_components/jquery": "jquery/jquery-dist#2.1.4",
+    "@bower_components/jquery-migrate": "appleboy/jquery-migrate#1.4.0",
+    "@bower_components/jquery-ui": "components/jqueryui#1.10.0",
+    "@bower_components/jsTimezoneDetect": "HenningM/jstimezonedetect#v1.0.6",
+    "@bower_components/moment": "moment/moment#2.29.1",
+    "@bower_components/select2": "ivaynberg/select2#3.5.4",
+    "@bower_components/showdown": "showdownjs/showdown#2.0.0",
+    "@bower_components/snapjs": "jakiestfu/Snap.js#2.0.0-rc1",
+    "@bower_components/strengthify": "MorrisJobke/strengthify#0.5.9",
+    "@bower_components/underscore": "jashkenas/underscore#1.13.2",
+    "@bower_components/zxcvbn": "dropbox/zxcvbn#4.4.2",
+    "minimist": "1.2.6",
+    "modclean": "^3.0.0-beta.1",
+    "modclean-patterns-owncloud": "./modclean-patterns-owncloud/"
+  },
+  "devDependencies": {
+    "handlebars": "^4.7.2",
+    "jasmine-core": "^2.99.1",
+    "jasmine-sinon": "^0.4.0",
+    "jsdoc": "~3.6.10",
+    "karma": "^6.3.19",
+    "karma-coverage": "*",
+    "karma-firefox-launcher": "^2.1.2",
+    "karma-jasmine": "^1.1.2",
+    "karma-jasmine-sinon": "^1.0.4",
+    "karma-junit-reporter": "*",
+    "sinon": "^12.0.1"
+  },
+  "engines": {
+    "node": ">= 14.17.0",
+    "yarn": ">= 1.0.0"
+  },
+  "scripts": {
+    "clean-modules": "modclean -r --patterns=\"default:safe,owncloud:basic\"",
+    "postinstall": "modclean -r --patterns=\"default:safe\" && node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), '../core/vendor', 'junction') } catch (e) { }\""
+  }
+}

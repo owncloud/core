@@ -1,0 +1,11 @@
+Bugfix: Show all shares in the "shared with you" section
+
+Previously, when a user received some shares from multiple remote servers
+and one of them was removed, the "shared with you" section didn't show any
+share even though the user still had other shares that were accessible in
+other remote servers.
+
+This is now fixed by ignoring those non-accessible remote shares. The rest
+of the shares will be shown.
+
+https://github.com/owncloud/core/pull/37786

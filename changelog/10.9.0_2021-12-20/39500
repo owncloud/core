@@ -1,0 +1,7 @@
+Bugfix: Fix issue searching inside a shared external storage
+
+Previously, if an external storage was shared with a user, that user wasn't
+able to search files inside that share.
+Now, such user can search inside that share
+
+https://github.com/owncloud/core/pull/39500

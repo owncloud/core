@@ -1,0 +1,6 @@
+Bugfix: show re-share public links to share-owner
+
+Public links created by share-recipient were not visible to share-owner.
+This problem has been resolved.
+
+https://github.com/owncloud/core/pull/36865

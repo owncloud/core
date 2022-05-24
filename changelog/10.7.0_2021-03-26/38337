@@ -1,0 +1,9 @@
+Enhancement: New config parameter to define the encrypted file format
+
+A new config parameter has been introduced to define if encrypted files
+are written in the old or new format. The new format has a significant
+reduced filesize and is set to default. Files in the old format are still
+readable, only new encrypted files are written in the new format. 
+
+https://github.com/owncloud/core/pull/38337
+https://github.com/owncloud/encryption/pull/224

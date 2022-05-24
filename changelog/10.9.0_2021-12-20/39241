@@ -1,0 +1,7 @@
+Bugfix: Hide share owner file path for share receiver
+
+This fixes an issue where a share receiver could see the share
+owner's full file path before accepting the share.
+
+https://github.com/owncloud/core/pull/39241
+https://github.com/owncloud/core/issues/38027

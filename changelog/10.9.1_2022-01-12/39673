@@ -1,0 +1,7 @@
+Bugfix: Prevent version author from being overwritten with wrong uid
+
+Fixed an issue where restoring a previous version could lead to a wrong
+version author being saved, basically overwriting the correct author.
+
+https://github.com/owncloud/core/pull/39673
+https://github.com/owncloud/core/issues/39672

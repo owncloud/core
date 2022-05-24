@@ -1,0 +1,10 @@
+Bugfix: Don't redirect if the browser ask for a .properties file
+
+In order to provide translations, the files_pdfviewer app requested a
+.properties file. This request failed because the server redirected it to
+the default page (the files view), so the app couldn't get the translations
+
+This redirection doesn't happen any longer, and the app can translate the
+UI elements now.
+
+https://github.com/owncloud/core/pull/38181

@@ -1,0 +1,7 @@
+Enhancement: Add activity translations for rename and move actions
+
+https://github.com/owncloud/core/pull/39430
+https://github.com/owncloud/core/pull/39438
+https://github.com/owncloud/core/pull/39450
+https://github.com/owncloud/enterprise/issues/4806
+https://github.com/owncloud/activity/issues/375

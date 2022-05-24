@@ -1,0 +1,6 @@
+Enhancement: MariaDB 10.4 support
+
+MariaDB 10.4 is now supported
+
+https://github.com/owncloud/core/issues/36799
+https://github.com/owncloud/core/pull/36800

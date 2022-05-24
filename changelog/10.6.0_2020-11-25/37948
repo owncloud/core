@@ -1,0 +1,7 @@
+Bugfix: OCS and Public WebDAV Apis should handle LoginException
+
+OCS api and new public webdav api was not handle LoginException.
+This situation was causing HTTP 500 error in response. This bug has been resolved.
+
+https://github.com/owncloud/brute_force_protection/issues/112
+https://github.com/owncloud/core/pull/37948

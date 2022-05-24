@@ -1,0 +1,7 @@
+Bugfix: Send max number of steps as integer in RepairUnmergedShares
+
+RepairUnmergedShares repair step dispatched an array as a number of steps.
+It is fixed to be integer.
+
+https://github.com/owncloud/core/issues/37241
+https://github.com/owncloud/core/pull/37246

@@ -1,0 +1,15 @@
+Change: Update Symfony components to 3.4.34
+
+The following Symfony components have been updated to version 3.4.34:
+- console
+- event-dispatcher
+- process
+- translation
+- routing
+
+https://symfony.com/blog/symfony-3-4-34-released
+https://github.com/owncloud/core/pull/36405
+https://github.com/owncloud/core/pull/36406
+https://github.com/owncloud/core/pull/36407
+https://github.com/owncloud/core/pull/36408
+https://github.com/owncloud/core/pull/36409

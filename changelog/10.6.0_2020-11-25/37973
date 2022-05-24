@@ -1,0 +1,11 @@
+Bugfix: Fix file target in the accept share API call
+
+If you had a custom share_folder set in the config.php file and the auto-accept
+feature for the internal user sharing was disabled, when a user accepted the
+user share, the file target in the API response contained the share_folder
+duplicated. This was limited to the API response.
+
+Now the API responds correctly, and the file target doesn't have
+the share_folder duplicated
+
+https://github.com/owncloud/core/pull/37973

@@ -1,0 +1,5 @@
+Bugfix: Prevent renaming or deleting a SMB mount point
+
+Renaming or deleting a SMB mount point will throw a 403 error code
+
+https://github.com/owncloud/core/pull/38709

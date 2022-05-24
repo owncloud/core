@@ -1,0 +1,6 @@
+Enhancement: Allow force set DB patforms
+
+A new 'db.platform' option added to config.php. It allows using a specific
+database platform and do not rely on autodetection.
+
+https://github.com/owncloud/core/pull/38379

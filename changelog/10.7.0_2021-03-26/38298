@@ -1,0 +1,9 @@
+Enhancement: Prevent group assignment in Web UI if not supported
+
+This enhancement checks if users can be assigned to (or removed from)
+groups via Web UI. All group backends which do not support this
+functionality will be disabled in corresponding menus.
+
+https://github.com/owncloud/core/pull/38298
+https://github.com/owncloud/guests/issues/431
+https://github.com/owncloud/core/issues/38580

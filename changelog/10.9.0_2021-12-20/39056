@@ -1,0 +1,11 @@
+Enhancement: Show create and cancel buttons in the 'New file menu'
+
+If the user hits the '+' button in the UI, a context menu will be shown,
+where the user is able to choose for example 'Folder'.
+A form will show up to set the new folder name, the user needs to confirm
+by hitting the enter key.
+This might not been understood by every user at the first glance.
+Therefore, with this PR a create and cancel button has been added.
+
+https://github.com/owncloud/core/pull/39056
+https://github.com/owncloud/enterprise/issues/4684
