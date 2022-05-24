@@ -37,6 +37,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 use OCP\Authentication\IApacheBackend;
 use OCP\UserInterface;
+use OCP\Files\IRootFolder;
+use OCP\Files\Folder;
 
 /**
  * @group DB
@@ -61,6 +63,9 @@ class SessionTest extends TestCase {
 	/** @var  EventDispatcher */
 	protected $eventDispatcher;
 
+	private $rootNode;
+	private $userNode;
+
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -74,6 +79,17 @@ class SessionTest extends TestCase {
 		$this->serviceLoader = $this->createMock(IServiceLoader::class);
 		$this->userSyncService = $this->createMock(\OC\User\SyncService::class);
 		$this->eventDispatcher = new EventDispatcher();
+
+		// need to overwrite the getUserFolder for the login tests
+		$this->userNode = $this->createMock(Folder::class);
+		$this->rootNode = $this->createMock(IRootFolder::class);
+		$this->rootNode->method('getUserFolder')->willReturn($this->userNode);
+		$this->overwriteService('RootFolder', $this->rootNode);
+	}
+
+	protected function tearDown(): void {
+		$this->restoreService('RootFolder');
+		parent::tearDown();
 	}
 
 	public function testGetUser() {
