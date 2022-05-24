@@ -12,6 +12,7 @@ Summary
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
 * Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
 * Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
+* Change - Update PHP dependencies: [#40092](https://github.com/owncloud/core/pull/40092)
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 
 Details
@@ -44,6 +45,15 @@ Details
 
    https://github.com/owncloud/core/issues/40084
    https://github.com/owncloud/core/pull/40085
+
+* Change - Update PHP dependencies: [#40092](https://github.com/owncloud/core/pull/40092)
+
+   The following have been updated: - doctrine/cache (2.1.1 to 2.2.0)
+
+   The following have been updated in apps/files_external/3rdparty: -
+   google/apiclient-services (0.244.0 to 0.250.0) - monolog/monolog (2.5.0 to 2.6.0)
+
+   https://github.com/owncloud/core/pull/40092
 
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 
