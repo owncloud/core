@@ -1566,7 +1566,6 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function publicGetsSizeOfLastSharedPublicLinkUsingTheWebdavApi():void {
-		// pdd - this looks crap
 		$tokenArray = $this->getLastPublicShareData()->data->token;
 		$token = (string)$tokenArray[0];
 		$url = $this->getBaseUrl() . "/remote.php/dav/public-files/{$token}";
