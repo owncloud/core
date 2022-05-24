@@ -17,10 +17,13 @@
 
 namespace Google\Service\Document;
 
-class GoogleCloudDocumentaiUiv1beta3BatchDeleteDocumentsMetadata extends \Google\Model
+class GoogleCloudDocumentaiUiv1beta3BatchDeleteDocumentsMetadata extends \Google\Collection
 {
+  protected $collection_key = 'individualBatchDeleteStatuses';
   protected $commonMetadataType = GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata::class;
   protected $commonMetadataDataType = '';
+  protected $individualBatchDeleteStatusesType = GoogleCloudDocumentaiUiv1beta3BatchDeleteDocumentsMetadataIndividualBatchDeleteStatus::class;
+  protected $individualBatchDeleteStatusesDataType = 'array';
 
   /**
    * @param GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata
@@ -35,6 +38,20 @@ class GoogleCloudDocumentaiUiv1beta3BatchDeleteDocumentsMetadata extends \Google
   public function getCommonMetadata()
   {
     return $this->commonMetadata;
+  }
+  /**
+   * @param GoogleCloudDocumentaiUiv1beta3BatchDeleteDocumentsMetadataIndividualBatchDeleteStatus[]
+   */
+  public function setIndividualBatchDeleteStatuses($individualBatchDeleteStatuses)
+  {
+    $this->individualBatchDeleteStatuses = $individualBatchDeleteStatuses;
+  }
+  /**
+   * @return GoogleCloudDocumentaiUiv1beta3BatchDeleteDocumentsMetadataIndividualBatchDeleteStatus[]
+   */
+  public function getIndividualBatchDeleteStatuses()
+  {
+    return $this->individualBatchDeleteStatuses;
   }
 }
 

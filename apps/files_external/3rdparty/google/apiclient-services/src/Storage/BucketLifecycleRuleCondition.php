@@ -19,7 +19,7 @@ namespace Google\Service\Storage;
 
 class BucketLifecycleRuleCondition extends \Google\Collection
 {
-  protected $collection_key = 'matchesStorageClass';
+  protected $collection_key = 'matchesSuffix';
   /**
    * @var int
    */
@@ -51,7 +51,15 @@ class BucketLifecycleRuleCondition extends \Google\Collection
   /**
    * @var string[]
    */
+  public $matchesPrefix;
+  /**
+   * @var string[]
+   */
   public $matchesStorageClass;
+  /**
+   * @var string[]
+   */
+  public $matchesSuffix;
   /**
    * @var string
    */
@@ -162,6 +170,20 @@ class BucketLifecycleRuleCondition extends \Google\Collection
   /**
    * @param string[]
    */
+  public function setMatchesPrefix($matchesPrefix)
+  {
+    $this->matchesPrefix = $matchesPrefix;
+  }
+  /**
+   * @return string[]
+   */
+  public function getMatchesPrefix()
+  {
+    return $this->matchesPrefix;
+  }
+  /**
+   * @param string[]
+   */
   public function setMatchesStorageClass($matchesStorageClass)
   {
     $this->matchesStorageClass = $matchesStorageClass;
@@ -172,6 +194,20 @@ class BucketLifecycleRuleCondition extends \Google\Collection
   public function getMatchesStorageClass()
   {
     return $this->matchesStorageClass;
+  }
+  /**
+   * @param string[]
+   */
+  public function setMatchesSuffix($matchesSuffix)
+  {
+    $this->matchesSuffix = $matchesSuffix;
+  }
+  /**
+   * @return string[]
+   */
+  public function getMatchesSuffix()
+  {
+    return $this->matchesSuffix;
   }
   /**
    * @param string

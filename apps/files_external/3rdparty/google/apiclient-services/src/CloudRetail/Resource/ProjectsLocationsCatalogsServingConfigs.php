@@ -42,7 +42,7 @@ class ProjectsLocationsCatalogsServingConfigs extends \Google\Service\Resource
    * resource. The ID of the Recommendations AI serving config or placement.
    * Before you can request predictions from your model, you must create at least
    * one serving config or placement for it. For more information, see [Managing
-   * serving configurations]. (https://cloud.google.com/retail/docs/manage-
+   * serving configurations] (https://cloud.google.com/retail/docs/manage-
    * configs). The full list of available serving configs can be seen at
    * https://console.cloud.google.com/ai/retail/catalogs/default_catalog/configs
    * @param GoogleCloudRetailV2PredictRequest $postBody

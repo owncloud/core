@@ -36,7 +36,7 @@ class Services extends \Google\Service\Resource
    *
    * @param string $parent Required. Resource name
    * (https://cloud.google.com/monitoring/api/v3#project_name) of the parent
-   * workspace. The format is: projects/[PROJECT_ID_OR_NUMBER]
+   * Metrics Scope. The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param Service $postBody
    * @param array $optParams Optional parameters.
    *
@@ -80,27 +80,30 @@ class Services extends \Google\Service\Resource
     return $this->call('get', [$params], Service::class);
   }
   /**
-   * List Services for this workspace. (services.listServices)
+   * List Services for this Metrics Scope. (services.listServices)
    *
    * @param string $parent Required. Resource name of the parent containing the
    * listed services, either a project
    * (https://cloud.google.com/monitoring/api/v3#project_name) or a Monitoring
-   * Workspace. The formats are: projects/[PROJECT_ID_OR_NUMBER]
+   * Metrics Scope. The formats are: projects/[PROJECT_ID_OR_NUMBER]
    * workspaces/[HOST_PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter A filter specifying what Services to return. The
-   * filter currently supports the following fields: - `identifier_case` -
-   * `app_engine.module_id` - `cloud_endpoints.service` (reserved for future use)
-   * - `mesh_istio.mesh_uid` - `mesh_istio.service_namespace` -
-   * `mesh_istio.service_name` - `cluster_istio.location` (deprecated) -
-   * `cluster_istio.cluster_name` (deprecated) - `cluster_istio.service_namespace`
-   * (deprecated) - `cluster_istio.service_name` (deprecated) identifier_case
-   * refers to which option in the identifier oneof is populated. For example, the
-   * filter identifier_case = "CUSTOM" would match all services with a value for
-   * the custom field. Valid options are "CUSTOM", "APP_ENGINE", "MESH_ISTIO",
-   * plus "CLUSTER_ISTIO" (deprecated) and "CLOUD_ENDPOINTS" (reserved for future
-   * use).
+   * filter supports filtering on a particular service-identifier type or one of
+   * its attributes.To filter on a particular service-identifier type, the
+   * identifier_case refers to which option in the identifier field is populated.
+   * For example, the filter identifier_case = "CUSTOM" would match all services
+   * with a value for the custom field. Valid options include "CUSTOM",
+   * "APP_ENGINE", "MESH_ISTIO", and the other options listed at
+   * https://cloud.google.com/monitoring/api/ref_v3/rest/v3/services#ServiceTo
+   * filter on an attribute of a service-identifier type, apply the filter name by
+   * using the snake case of the service-identifier type and the attribute of that
+   * service-identifier type, and join the two with a period. For example, to
+   * filter by the meshUid field of the MeshIstio service-identifier type, you
+   * must filter on mesh_istio.mesh_uid = "123" to match all services with mesh
+   * UID "123". Service-identifier types and their attributes are described at
+   * https://cloud.google.com/monitoring/api/ref_v3/rest/v3/services#Service
    * @opt_param int pageSize A non-negative number that is the maximum number of
    * results to return. When 0, use default page size.
    * @opt_param string pageToken If this field is not empty then it must contain

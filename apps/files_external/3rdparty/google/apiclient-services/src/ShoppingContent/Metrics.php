@@ -25,6 +25,12 @@ class Metrics extends \Google\Model
    * @var string
    */
   public $clicks;
+  public $conversionRate;
+  /**
+   * @var string
+   */
+  public $conversionValueMicros;
+  public $conversions;
   public $ctr;
   public $daysToShip;
   /**
@@ -102,6 +108,36 @@ class Metrics extends \Google\Model
   public function getClicks()
   {
     return $this->clicks;
+  }
+  public function setConversionRate($conversionRate)
+  {
+    $this->conversionRate = $conversionRate;
+  }
+  public function getConversionRate()
+  {
+    return $this->conversionRate;
+  }
+  /**
+   * @param string
+   */
+  public function setConversionValueMicros($conversionValueMicros)
+  {
+    $this->conversionValueMicros = $conversionValueMicros;
+  }
+  /**
+   * @return string
+   */
+  public function getConversionValueMicros()
+  {
+    return $this->conversionValueMicros;
+  }
+  public function setConversions($conversions)
+  {
+    $this->conversions = $conversions;
+  }
+  public function getConversions()
+  {
+    return $this->conversions;
   }
   public function setCtr($ctr)
   {

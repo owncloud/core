@@ -17,8 +17,8 @@
 
 namespace Google\Service\Firebaseappcheck\Resource;
 
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaBatchGetSafetyNetConfigsResponse;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaSafetyNetConfig;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1BatchGetSafetyNetConfigsResponse;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1SafetyNetConfig;
 
 /**
  * The "safetyNetConfig" collection of methods.
@@ -44,13 +44,13 @@ class ProjectsAppsSafetyNetConfig extends \Google\Service\Resource
    * SafetyNetConfigs to retrieve, in the format ```
    * projects/{project_number}/apps/{app_id}/safetyNetConfig ``` A maximum of 100
    * objects can be retrieved in a batch.
-   * @return GoogleFirebaseAppcheckV1betaBatchGetSafetyNetConfigsResponse
+   * @return GoogleFirebaseAppcheckV1BatchGetSafetyNetConfigsResponse
    */
   public function batchGet($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1betaBatchGetSafetyNetConfigsResponse::class);
+    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1BatchGetSafetyNetConfigsResponse::class);
   }
   /**
    * Gets the SafetyNetConfig for the specified app. (safetyNetConfig.get)
@@ -59,13 +59,13 @@ class ProjectsAppsSafetyNetConfig extends \Google\Service\Resource
    * SafetyNetConfig, in the format: ```
    * projects/{project_number}/apps/{app_id}/safetyNetConfig ```
    * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1betaSafetyNetConfig
+   * @return GoogleFirebaseAppcheckV1SafetyNetConfig
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleFirebaseAppcheckV1betaSafetyNetConfig::class);
+    return $this->call('get', [$params], GoogleFirebaseAppcheckV1SafetyNetConfig::class);
   }
   /**
    * Updates the SafetyNetConfig for the specified app. While this configuration
@@ -75,18 +75,18 @@ class ProjectsAppsSafetyNetConfig extends \Google\Service\Resource
    * @param string $name Required. The relative resource name of the SafetyNet
    * configuration object, in the format: ```
    * projects/{project_number}/apps/{app_id}/safetyNetConfig ```
-   * @param GoogleFirebaseAppcheckV1betaSafetyNetConfig $postBody
+   * @param GoogleFirebaseAppcheckV1SafetyNetConfig $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. A comma-separated list of names of
    * fields in the SafetyNetConfig Gets to update. Example: `token_ttl`.
-   * @return GoogleFirebaseAppcheckV1betaSafetyNetConfig
+   * @return GoogleFirebaseAppcheckV1SafetyNetConfig
    */
-  public function patch($name, GoogleFirebaseAppcheckV1betaSafetyNetConfig $postBody, $optParams = [])
+  public function patch($name, GoogleFirebaseAppcheckV1SafetyNetConfig $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1betaSafetyNetConfig::class);
+    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1SafetyNetConfig::class);
   }
 }
 

@@ -53,6 +53,10 @@ class GoogleAppsCloudidentityDevicesV1Device extends \Google\Collection
   /**
    * @var string
    */
+  public $deviceId;
+  /**
+   * @var string
+   */
   public $deviceType;
   /**
    * @var bool
@@ -242,6 +246,20 @@ class GoogleAppsCloudidentityDevicesV1Device extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setDeviceId($deviceId)
+  {
+    $this->deviceId = $deviceId;
+  }
+  /**
+   * @return string
+   */
+  public function getDeviceId()
+  {
+    return $this->deviceId;
   }
   /**
    * @param string

@@ -19,9 +19,27 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2OtherInfoTypeSummary extends \Google\Model
 {
+  /**
+   * @var int
+   */
+  public $estimatedPrevalence;
   protected $infoTypeType = GooglePrivacyDlpV2InfoType::class;
   protected $infoTypeDataType = '';
 
+  /**
+   * @param int
+   */
+  public function setEstimatedPrevalence($estimatedPrevalence)
+  {
+    $this->estimatedPrevalence = $estimatedPrevalence;
+  }
+  /**
+   * @return int
+   */
+  public function getEstimatedPrevalence()
+  {
+    return $this->estimatedPrevalence;
+  }
   /**
    * @param GooglePrivacyDlpV2InfoType
    */

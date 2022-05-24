@@ -40,7 +40,7 @@ class ProjectsLocationsReservations extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string reservationId The reservation ID. It must only contain
-   * lower case alphanumeric characters or dashes.It must start with a letter and
+   * lower case alphanumeric characters or dashes. It must start with a letter and
    * must not end with a dash. Its maximum length is 64 characters.
    * @return Reservation
    */
@@ -102,9 +102,9 @@ class ProjectsLocationsReservations extends \Google\Service\Resource
    * Updates an existing reservation resource. (reservations.patch)
    *
    * @param string $name The resource name of the reservation, e.g.,
-   * `projects/locations/reservations/team1-prod`. For the reservation id, it must
-   * only contain lower case alphanumeric characters or dashes.It must start with
-   * a letter and must not end with a dash. Its maximum length is 64 characters.
+   * `projects/locations/reservations/team1-prod`. The reservation_id must only
+   * contain lower case alphanumeric characters or dashes. It must start with a
+   * letter and must not end with a dash. Its maximum length is 64 characters.
    * @param Reservation $postBody
    * @param array $optParams Optional parameters.
    *

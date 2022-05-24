@@ -30,6 +30,10 @@ class MaterializedViewDefinition extends \Google\Model
   /**
    * @var string
    */
+  public $maxStaleness;
+  /**
+   * @var string
+   */
   public $query;
   /**
    * @var string
@@ -63,6 +67,20 @@ class MaterializedViewDefinition extends \Google\Model
   public function getLastRefreshTime()
   {
     return $this->lastRefreshTime;
+  }
+  /**
+   * @param string
+   */
+  public function setMaxStaleness($maxStaleness)
+  {
+    $this->maxStaleness = $maxStaleness;
+  }
+  /**
+   * @return string
+   */
+  public function getMaxStaleness()
+  {
+    return $this->maxStaleness;
   }
   /**
    * @param string

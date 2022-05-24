@@ -25,6 +25,10 @@ class DeidentifyDatasetRequest extends \Google\Model
    * @var string
    */
   public $destinationDataset;
+  /**
+   * @var string
+   */
+  public $gcsConfigUri;
 
   /**
    * @param DeidentifyConfig
@@ -53,6 +57,20 @@ class DeidentifyDatasetRequest extends \Google\Model
   public function getDestinationDataset()
   {
     return $this->destinationDataset;
+  }
+  /**
+   * @param string
+   */
+  public function setGcsConfigUri($gcsConfigUri)
+  {
+    $this->gcsConfigUri = $gcsConfigUri;
+  }
+  /**
+   * @return string
+   */
+  public function getGcsConfigUri()
+  {
+    return $this->gcsConfigUri;
   }
 }
 

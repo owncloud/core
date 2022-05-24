@@ -85,7 +85,7 @@ class Dataset extends \Google\Collection
   /**
    * @var bool
    */
-  public $satisfiesPZS;
+  public $satisfiesPzs;
   /**
    * @var string
    */
@@ -334,16 +334,16 @@ class Dataset extends \Google\Collection
   /**
    * @param bool
    */
-  public function setSatisfiesPZS($satisfiesPZS)
+  public function setSatisfiesPzs($satisfiesPzs)
   {
-    $this->satisfiesPZS = $satisfiesPZS;
+    $this->satisfiesPzs = $satisfiesPzs;
   }
   /**
    * @return bool
    */
-  public function getSatisfiesPZS()
+  public function getSatisfiesPzs()
   {
-    return $this->satisfiesPZS;
+    return $this->satisfiesPzs;
   }
   /**
    * @param string

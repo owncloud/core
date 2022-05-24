@@ -35,8 +35,6 @@ class ManagedZoneOperations extends \Google\Service\Resource
    * (managedZoneOperations.get)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $managedZone Identifies the managed zone addressed by this
    * request.
    * @param string $operation Identifies the operation addressed by this request
@@ -48,9 +46,9 @@ class ManagedZoneOperations extends \Google\Service\Resource
    * resources in the Operations collection.
    * @return Operation
    */
-  public function get($project, $location, $managedZone, $operation, $optParams = [])
+  public function get($project, $managedZone, $operation, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'managedZone' => $managedZone, 'operation' => $operation];
+    $params = ['project' => $project, 'managedZone' => $managedZone, 'operation' => $operation];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], Operation::class);
   }
@@ -59,8 +57,6 @@ class ManagedZoneOperations extends \Google\Service\Resource
    * (managedZoneOperations.listManagedZoneOperations)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $managedZone Identifies the managed zone addressed by this
    * request.
    * @param array $optParams Optional parameters.
@@ -74,9 +70,9 @@ class ManagedZoneOperations extends \Google\Service\Resource
    * START_TIME and ID.
    * @return ManagedZoneOperationsListResponse
    */
-  public function listManagedZoneOperations($project, $location, $managedZone, $optParams = [])
+  public function listManagedZoneOperations($project, $managedZone, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'managedZone' => $managedZone];
+    $params = ['project' => $project, 'managedZone' => $managedZone];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ManagedZoneOperationsListResponse::class);
   }

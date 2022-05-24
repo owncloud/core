@@ -81,10 +81,9 @@ class ServicesRollouts extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Required. Use `filter` to return subset of rollouts.
-   * The following filters are supported: -- To limit the results to only those in
-   * status 'SUCCESS', use filter='status=SUCCESS' -- To limit the results to
-   * those in status 'CANCELLED' or 'FAILED', use filter='status=CANCELLED OR
-   * status=FAILED'
+   * The following filters are supported: -- By status. For example,
+   * `filter='status=SUCCESS'` -- By strategy. For example,
+   * `filter='strategy=TrafficPercentStrategy'`
    * @opt_param int pageSize The max number of items to include in the response
    * list. Page size is 50 if not specified. Maximum value is 100.
    * @opt_param string pageToken The token of the page to retrieve.

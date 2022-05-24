@@ -26,6 +26,10 @@ class ExecutionConfig extends \Google\Collection
   public $artifactStorage;
   protected $defaultPoolType = DefaultPool::class;
   protected $defaultPoolDataType = '';
+  /**
+   * @var string
+   */
+  public $executionTimeout;
   protected $privatePoolType = PrivatePool::class;
   protected $privatePoolDataType = '';
   /**
@@ -68,6 +72,20 @@ class ExecutionConfig extends \Google\Collection
   public function getDefaultPool()
   {
     return $this->defaultPool;
+  }
+  /**
+   * @param string
+   */
+  public function setExecutionTimeout($executionTimeout)
+  {
+    $this->executionTimeout = $executionTimeout;
+  }
+  /**
+   * @return string
+   */
+  public function getExecutionTimeout()
+  {
+    return $this->executionTimeout;
   }
   /**
    * @param PrivatePool

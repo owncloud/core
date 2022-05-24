@@ -86,6 +86,10 @@ class DriveCapabilities extends \Google\Model
   /**
    * @var bool
    */
+  public $canResetDriveRestrictions;
+  /**
+   * @var bool
+   */
   public $canShare;
   /**
    * @var bool
@@ -315,6 +319,20 @@ class DriveCapabilities extends \Google\Model
   public function getCanRenameDrive()
   {
     return $this->canRenameDrive;
+  }
+  /**
+   * @param bool
+   */
+  public function setCanResetDriveRestrictions($canResetDriveRestrictions)
+  {
+    $this->canResetDriveRestrictions = $canResetDriveRestrictions;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanResetDriveRestrictions()
+  {
+    return $this->canResetDriveRestrictions;
   }
   /**
    * @param bool

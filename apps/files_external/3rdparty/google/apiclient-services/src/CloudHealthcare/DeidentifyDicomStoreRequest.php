@@ -27,6 +27,10 @@ class DeidentifyDicomStoreRequest extends \Google\Model
   public $destinationStore;
   protected $filterConfigType = DicomFilterConfig::class;
   protected $filterConfigDataType = '';
+  /**
+   * @var string
+   */
+  public $gcsConfigUri;
 
   /**
    * @param DeidentifyConfig
@@ -69,6 +73,20 @@ class DeidentifyDicomStoreRequest extends \Google\Model
   public function getFilterConfig()
   {
     return $this->filterConfig;
+  }
+  /**
+   * @param string
+   */
+  public function setGcsConfigUri($gcsConfigUri)
+  {
+    $this->gcsConfigUri = $gcsConfigUri;
+  }
+  /**
+   * @return string
+   */
+  public function getGcsConfigUri()
+  {
+    return $this->gcsConfigUri;
   }
 }
 

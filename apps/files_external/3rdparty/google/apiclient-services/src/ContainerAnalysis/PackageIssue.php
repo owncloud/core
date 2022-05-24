@@ -17,8 +17,9 @@
 
 namespace Google\Service\ContainerAnalysis;
 
-class PackageIssue extends \Google\Model
+class PackageIssue extends \Google\Collection
 {
+  protected $collection_key = 'fileLocation';
   /**
    * @var string
    */
@@ -33,6 +34,8 @@ class PackageIssue extends \Google\Model
    * @var string
    */
   public $effectiveSeverity;
+  protected $fileLocationType = GrafeasV1FileLocation::class;
+  protected $fileLocationDataType = 'array';
   /**
    * @var bool
    */
@@ -107,6 +110,20 @@ class PackageIssue extends \Google\Model
   public function getEffectiveSeverity()
   {
     return $this->effectiveSeverity;
+  }
+  /**
+   * @param GrafeasV1FileLocation[]
+   */
+  public function setFileLocation($fileLocation)
+  {
+    $this->fileLocation = $fileLocation;
+  }
+  /**
+   * @return GrafeasV1FileLocation[]
+   */
+  public function getFileLocation()
+  {
+    return $this->fileLocation;
   }
   /**
    * @param bool

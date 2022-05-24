@@ -17,10 +17,10 @@
 
 namespace Google\Service\Firebaseappcheck\Resource;
 
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaBatchUpdateServicesRequest;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaBatchUpdateServicesResponse;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaListServicesResponse;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaService;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1BatchUpdateServicesRequest;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1BatchUpdateServicesResponse;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1ListServicesResponse;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1Service;
 
 /**
  * The "services" collection of methods.
@@ -40,15 +40,15 @@ class ProjectsServices extends \Google\Service\Resource
    * configurations being updated, in the format ``` projects/{project_number} ```
    * The parent collection in the `name` field of any resource being updated must
    * match this field, or the entire batch fails.
-   * @param GoogleFirebaseAppcheckV1betaBatchUpdateServicesRequest $postBody
+   * @param GoogleFirebaseAppcheckV1BatchUpdateServicesRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1betaBatchUpdateServicesResponse
+   * @return GoogleFirebaseAppcheckV1BatchUpdateServicesResponse
    */
-  public function batchUpdate($parent, GoogleFirebaseAppcheckV1betaBatchUpdateServicesRequest $postBody, $optParams = [])
+  public function batchUpdate($parent, GoogleFirebaseAppcheckV1BatchUpdateServicesRequest $postBody, $optParams = [])
   {
     $params = ['parent' => $parent, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('batchUpdate', [$params], GoogleFirebaseAppcheckV1betaBatchUpdateServicesResponse::class);
+    return $this->call('batchUpdate', [$params], GoogleFirebaseAppcheckV1BatchUpdateServicesResponse::class);
   }
   /**
    * Gets the Service configuration for the specified service name. (services.get)
@@ -61,13 +61,13 @@ class ProjectsServices extends \Google\Service\Resource
    * `firebasedatabase.googleapis.com` (Firebase Realtime Database) *
    * `firestore.googleapis.com` (Cloud Firestore)
    * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1betaService
+   * @return GoogleFirebaseAppcheckV1Service
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleFirebaseAppcheckV1betaService::class);
+    return $this->call('get', [$params], GoogleFirebaseAppcheckV1Service::class);
   }
   /**
    * Lists all Service configurations for the specified project. Only Services
@@ -88,13 +88,13 @@ class ProjectsServices extends \Google\Service\Resource
    * Provide this to retrieve the subsequent page. When paginating, all other
    * parameters provided to ListServices must match the call that provided the
    * page token; if they do not match, the result is undefined.
-   * @return GoogleFirebaseAppcheckV1betaListServicesResponse
+   * @return GoogleFirebaseAppcheckV1ListServicesResponse
    */
   public function listProjectsServices($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('list', [$params], GoogleFirebaseAppcheckV1betaListServicesResponse::class);
+    return $this->call('list', [$params], GoogleFirebaseAppcheckV1ListServicesResponse::class);
   }
   /**
    * Updates the specified Service configuration. (services.patch)
@@ -106,18 +106,18 @@ class ProjectsServices extends \Google\Service\Resource
    * service IDs are supported: * `firebasestorage.googleapis.com` (Cloud Storage
    * for Firebase) * `firebasedatabase.googleapis.com` (Firebase Realtime
    * Database) * `firestore.googleapis.com` (Cloud Firestore)
-   * @param GoogleFirebaseAppcheckV1betaService $postBody
+   * @param GoogleFirebaseAppcheckV1Service $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. A comma-separated list of names of
    * fields in the Service to update. Example: `enforcement_mode`.
-   * @return GoogleFirebaseAppcheckV1betaService
+   * @return GoogleFirebaseAppcheckV1Service
    */
-  public function patch($name, GoogleFirebaseAppcheckV1betaService $postBody, $optParams = [])
+  public function patch($name, GoogleFirebaseAppcheckV1Service $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1betaService::class);
+    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1Service::class);
   }
 }
 

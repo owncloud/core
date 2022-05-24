@@ -17,8 +17,8 @@
 
 namespace Google\Service\Firebaseappcheck\Resource;
 
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaBatchGetDeviceCheckConfigsResponse;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaDeviceCheckConfig;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1BatchGetDeviceCheckConfigsResponse;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1DeviceCheckConfig;
 
 /**
  * The "deviceCheckConfig" collection of methods.
@@ -46,13 +46,13 @@ class ProjectsAppsDeviceCheckConfig extends \Google\Service\Resource
    * DeviceCheckConfigs to retrieve, in the format ```
    * projects/{project_number}/apps/{app_id}/deviceCheckConfig ``` A maximum of
    * 100 objects can be retrieved in a batch.
-   * @return GoogleFirebaseAppcheckV1betaBatchGetDeviceCheckConfigsResponse
+   * @return GoogleFirebaseAppcheckV1BatchGetDeviceCheckConfigsResponse
    */
   public function batchGet($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1betaBatchGetDeviceCheckConfigsResponse::class);
+    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1BatchGetDeviceCheckConfigsResponse::class);
   }
   /**
    * Gets the DeviceCheckConfig for the specified app. For security reasons, the
@@ -63,13 +63,13 @@ class ProjectsAppsDeviceCheckConfig extends \Google\Service\Resource
    * DeviceCheckConfig, in the format: ```
    * projects/{project_number}/apps/{app_id}/deviceCheckConfig ```
    * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1betaDeviceCheckConfig
+   * @return GoogleFirebaseAppcheckV1DeviceCheckConfig
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleFirebaseAppcheckV1betaDeviceCheckConfig::class);
+    return $this->call('get', [$params], GoogleFirebaseAppcheckV1DeviceCheckConfig::class);
   }
   /**
    * Updates the DeviceCheckConfig for the specified app. While this configuration
@@ -80,19 +80,19 @@ class ProjectsAppsDeviceCheckConfig extends \Google\Service\Resource
    * @param string $name Required. The relative resource name of the DeviceCheck
    * configuration object, in the format: ```
    * projects/{project_number}/apps/{app_id}/deviceCheckConfig ```
-   * @param GoogleFirebaseAppcheckV1betaDeviceCheckConfig $postBody
+   * @param GoogleFirebaseAppcheckV1DeviceCheckConfig $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. A comma-separated list of names of
    * fields in the DeviceCheckConfig Gets to update. Example:
    * `key_id,private_key`.
-   * @return GoogleFirebaseAppcheckV1betaDeviceCheckConfig
+   * @return GoogleFirebaseAppcheckV1DeviceCheckConfig
    */
-  public function patch($name, GoogleFirebaseAppcheckV1betaDeviceCheckConfig $postBody, $optParams = [])
+  public function patch($name, GoogleFirebaseAppcheckV1DeviceCheckConfig $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1betaDeviceCheckConfig::class);
+    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1DeviceCheckConfig::class);
   }
 }
 

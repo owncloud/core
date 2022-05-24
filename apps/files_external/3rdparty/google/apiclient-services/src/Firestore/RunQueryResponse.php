@@ -22,6 +22,10 @@ class RunQueryResponse extends \Google\Model
   protected $documentType = Document::class;
   protected $documentDataType = '';
   /**
+   * @var bool
+   */
+  public $done;
+  /**
    * @var string
    */
   public $readTime;
@@ -47,6 +51,20 @@ class RunQueryResponse extends \Google\Model
   public function getDocument()
   {
     return $this->document;
+  }
+  /**
+   * @param bool
+   */
+  public function setDone($done)
+  {
+    $this->done = $done;
+  }
+  /**
+   * @return bool
+   */
+  public function getDone()
+  {
+    return $this->done;
   }
   /**
    * @param string

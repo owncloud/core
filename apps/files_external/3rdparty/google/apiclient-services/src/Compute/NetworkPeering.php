@@ -58,6 +58,10 @@ class NetworkPeering extends \Google\Model
   /**
    * @var string
    */
+  public $stackType;
+  /**
+   * @var string
+   */
   public $state;
   /**
    * @var string
@@ -189,6 +193,20 @@ class NetworkPeering extends \Google\Model
   public function getPeerMtu()
   {
     return $this->peerMtu;
+  }
+  /**
+   * @param string
+   */
+  public function setStackType($stackType)
+  {
+    $this->stackType = $stackType;
+  }
+  /**
+   * @return string
+   */
+  public function getStackType()
+  {
+    return $this->stackType;
   }
   /**
    * @param string

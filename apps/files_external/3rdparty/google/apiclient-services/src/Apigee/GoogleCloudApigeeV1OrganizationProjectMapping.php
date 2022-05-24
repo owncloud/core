@@ -23,6 +23,10 @@ class GoogleCloudApigeeV1OrganizationProjectMapping extends \Google\Collection
   /**
    * @var string
    */
+  public $location;
+  /**
+   * @var string
+   */
   public $organization;
   /**
    * @var string
@@ -33,6 +37,20 @@ class GoogleCloudApigeeV1OrganizationProjectMapping extends \Google\Collection
    */
   public $projectIds;
 
+  /**
+   * @param string
+   */
+  public function setLocation($location)
+  {
+    $this->location = $location;
+  }
+  /**
+   * @return string
+   */
+  public function getLocation()
+  {
+    return $this->location;
+  }
   /**
    * @param string
    */

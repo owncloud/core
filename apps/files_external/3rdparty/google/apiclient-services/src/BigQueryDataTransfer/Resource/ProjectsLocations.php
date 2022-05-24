@@ -35,10 +35,11 @@ class ProjectsLocations extends \Google\Service\Resource
   /**
    * Enroll data sources in a user project. This allows users to create transfer
    * configurations for these data sources. They will also appear in the
-   * ListDataSources RPC and as such, will appear in the BigQuery UI
-   * 'https://bigquery.cloud.google.com' (and the documents can be found at
-   * https://cloud.google.com/bigquery/bigquery-web-ui and
-   * https://cloud.google.com/bigquery/docs/working-with-transfers).
+   * ListDataSources RPC and as such, will appear in the [BigQuery
+   * UI](https://console.cloud.google.com/bigquery), and the documents can be
+   * found in the public guide for [BigQuery Web
+   * UI](https://cloud.google.com/bigquery/bigquery-web-ui) and [Data Transfer
+   * Service](https://cloud.google.com/bigquery/docs/working-with-transfers).
    * (locations.enrollDataSources)
    *
    * @param string $name The name of the project resource in the form:
@@ -75,8 +76,8 @@ class ProjectsLocations extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter A filter to narrow down results to a preferred
-   * subset. The filtering language accepts strings like "displayName=tokyo", and
-   * is documented in more detail in [AIP-160](https://google.aip.dev/160).
+   * subset. The filtering language accepts strings like `"displayName=tokyo"`,
+   * and is documented in more detail in [AIP-160](https://google.aip.dev/160).
    * @opt_param int pageSize The maximum number of results to return. If not set,
    * the service selects a default.
    * @opt_param string pageToken A page token received from the `next_page_token`

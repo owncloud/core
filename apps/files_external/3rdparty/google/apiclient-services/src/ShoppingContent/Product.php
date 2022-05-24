@@ -240,6 +240,10 @@ class Product extends \Google\Collection
   /**
    * @var string
    */
+  public $pause;
+  /**
+   * @var string
+   */
   public $pickupMethod;
   /**
    * @var string
@@ -1129,6 +1133,20 @@ class Product extends \Google\Collection
   public function getPattern()
   {
     return $this->pattern;
+  }
+  /**
+   * @param string
+   */
+  public function setPause($pause)
+  {
+    $this->pause = $pause;
+  }
+  /**
+   * @return string
+   */
+  public function getPause()
+  {
+    return $this->pause;
   }
   /**
    * @param string

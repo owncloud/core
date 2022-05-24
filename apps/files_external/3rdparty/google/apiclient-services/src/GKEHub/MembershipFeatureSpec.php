@@ -19,11 +19,29 @@ namespace Google\Service\GKEHub;
 
 class MembershipFeatureSpec extends \Google\Model
 {
+  protected $anthosvmType = AnthosVMMembershipSpec::class;
+  protected $anthosvmDataType = '';
   protected $configmanagementType = ConfigManagementMembershipSpec::class;
   protected $configmanagementDataType = '';
+  protected $identityserviceType = IdentityServiceMembershipSpec::class;
+  protected $identityserviceDataType = '';
   protected $meshType = ServiceMeshMembershipSpec::class;
   protected $meshDataType = '';
 
+  /**
+   * @param AnthosVMMembershipSpec
+   */
+  public function setAnthosvm(AnthosVMMembershipSpec $anthosvm)
+  {
+    $this->anthosvm = $anthosvm;
+  }
+  /**
+   * @return AnthosVMMembershipSpec
+   */
+  public function getAnthosvm()
+  {
+    return $this->anthosvm;
+  }
   /**
    * @param ConfigManagementMembershipSpec
    */
@@ -37,6 +55,20 @@ class MembershipFeatureSpec extends \Google\Model
   public function getConfigmanagement()
   {
     return $this->configmanagement;
+  }
+  /**
+   * @param IdentityServiceMembershipSpec
+   */
+  public function setIdentityservice(IdentityServiceMembershipSpec $identityservice)
+  {
+    $this->identityservice = $identityservice;
+  }
+  /**
+   * @return IdentityServiceMembershipSpec
+   */
+  public function getIdentityservice()
+  {
+    return $this->identityservice;
   }
   /**
    * @param ServiceMeshMembershipSpec

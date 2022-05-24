@@ -136,8 +136,11 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * @param HttpBody $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string profile A profile that this resource should be validated
-   * against.
+   * @opt_param string profile The canonical URL of a profile that this resource
+   * should be validated against. For example, to validate a Patient resource
+   * against the US Core Patient profile this parameter would be
+   * `http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient`. A
+   * StructureDefinition with this canonical URL must exist in the FHIR store.
    * @return HttpBody
    */
   public function ResourceValidate($parent, $type, HttpBody $postBody, $optParams = [])

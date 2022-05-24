@@ -34,8 +34,9 @@ class ProjectsZones extends \Google\Service\Resource
    * (zones.getServerconfig)
    *
    * @param string $projectId Deprecated. The Google Developers Console [project
-   * ID or project number](https://support.google.com/cloud/answer/6158840). This
-   * field has been deprecated and replaced by the name field.
+   * ID or project number](https://cloud.google.com/resource-manager/docs
+   * /creating-managing-projects). This field has been deprecated and replaced by
+   * the name field.
    * @param string $zone Deprecated. The name of the Google Compute Engine
    * [zone](https://cloud.google.com/compute/docs/zones#available) to return
    * operations for. This field has been deprecated and replaced by the name

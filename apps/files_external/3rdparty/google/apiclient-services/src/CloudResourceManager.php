@@ -42,6 +42,7 @@ class CloudResourceManager extends \Google\Service
   const CLOUD_PLATFORM_READ_ONLY =
       "https://www.googleapis.com/auth/cloud-platform.read-only";
 
+  public $effectiveTags;
   public $folders;
   public $liens;
   public $operations;
@@ -68,6 +69,33 @@ class CloudResourceManager extends \Google\Service
     $this->version = 'v3';
     $this->serviceName = 'cloudresourcemanager';
 
+    $this->effectiveTags = new CloudResourceManager\Resource\EffectiveTags(
+        $this,
+        $this->serviceName,
+        'effectiveTags',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v3/effectiveTags',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'parent' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->folders = new CloudResourceManager\Resource\Folders(
         $this,
         $this->serviceName,

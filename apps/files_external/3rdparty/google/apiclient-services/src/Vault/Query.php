@@ -53,6 +53,8 @@ class Query extends \Google\Model
   public $searchMethod;
   protected $sharedDriveInfoType = SharedDriveInfo::class;
   protected $sharedDriveInfoDataType = '';
+  protected $sitesUrlInfoType = SitesUrlInfo::class;
+  protected $sitesUrlInfoDataType = '';
   /**
    * @var string
    */
@@ -237,6 +239,20 @@ class Query extends \Google\Model
   public function getSharedDriveInfo()
   {
     return $this->sharedDriveInfo;
+  }
+  /**
+   * @param SitesUrlInfo
+   */
+  public function setSitesUrlInfo(SitesUrlInfo $sitesUrlInfo)
+  {
+    $this->sitesUrlInfo = $sitesUrlInfo;
+  }
+  /**
+   * @return SitesUrlInfo
+   */
+  public function getSitesUrlInfo()
+  {
+    return $this->sitesUrlInfo;
   }
   /**
    * @param string

@@ -38,6 +38,13 @@ class ProjectsLocationsLakesEnvironmentsSessions extends \Google\Service\Resourc
    * /{environment_id}
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. Filter request. The following mode filter
+   * is supported to return only the sessions belonging to the requester when the
+   * mode is USER and return sessions of all the users when the mode is ADMIN.
+   * When no filter is sent default to USER mode. NOTE: When the mode is ADMIN,
+   * the requester should have dataplex.environments.listAllSessions permission to
+   * list all sessions, in absence of the permission, the request fails.mode =
+   * ADMIN | USER
    * @opt_param int pageSize Optional. Maximum number of sessions to return. The
    * service may return fewer than this value. If unspecified, at most 10 sessions
    * will be returned. The maximum value is 1000; values above 1000 will be

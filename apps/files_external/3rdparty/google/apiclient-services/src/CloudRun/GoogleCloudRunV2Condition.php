@@ -22,15 +22,7 @@ class GoogleCloudRunV2Condition extends \Google\Model
   /**
    * @var string
    */
-  public $domainMappingReason;
-  /**
-   * @var string
-   */
   public $executionReason;
-  /**
-   * @var string
-   */
-  public $internalReason;
   /**
    * @var string
    */
@@ -63,20 +55,6 @@ class GoogleCloudRunV2Condition extends \Google\Model
   /**
    * @param string
    */
-  public function setDomainMappingReason($domainMappingReason)
-  {
-    $this->domainMappingReason = $domainMappingReason;
-  }
-  /**
-   * @return string
-   */
-  public function getDomainMappingReason()
-  {
-    return $this->domainMappingReason;
-  }
-  /**
-   * @param string
-   */
   public function setExecutionReason($executionReason)
   {
     $this->executionReason = $executionReason;
@@ -87,20 +65,6 @@ class GoogleCloudRunV2Condition extends \Google\Model
   public function getExecutionReason()
   {
     return $this->executionReason;
-  }
-  /**
-   * @param string
-   */
-  public function setInternalReason($internalReason)
-  {
-    $this->internalReason = $internalReason;
-  }
-  /**
-   * @return string
-   */
-  public function getInternalReason()
-  {
-    return $this->internalReason;
   }
   /**
    * @param string

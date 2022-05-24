@@ -34,8 +34,6 @@ class DnsKeys extends \Google\Service\Resource
    * Fetches the representation of an existing DnsKey. (dnsKeys.get)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $managedZone Identifies the managed zone addressed by this
    * request. Can be the managed zone name or ID.
    * @param string $dnsKeyId The identifier of the requested DnsKey.
@@ -49,9 +47,9 @@ class DnsKeys extends \Google\Service\Resource
    * digest type is computed and displayed.
    * @return DnsKey
    */
-  public function get($project, $location, $managedZone, $dnsKeyId, $optParams = [])
+  public function get($project, $managedZone, $dnsKeyId, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'managedZone' => $managedZone, 'dnsKeyId' => $dnsKeyId];
+    $params = ['project' => $project, 'managedZone' => $managedZone, 'dnsKeyId' => $dnsKeyId];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], DnsKey::class);
   }
@@ -59,8 +57,6 @@ class DnsKeys extends \Google\Service\Resource
    * Enumerates DnsKeys to a ResourceRecordSet collection. (dnsKeys.listDnsKeys)
    *
    * @param string $project Identifies the project addressed by this request.
-   * @param string $location Specifies the location of the resource. This
-   * information will be used for routing and will be part of the resource name.
    * @param string $managedZone Identifies the managed zone addressed by this
    * request. Can be the managed zone name or ID.
    * @param array $optParams Optional parameters.
@@ -75,9 +71,9 @@ class DnsKeys extends \Google\Service\Resource
    * request.
    * @return DnsKeysListResponse
    */
-  public function listDnsKeys($project, $location, $managedZone, $optParams = [])
+  public function listDnsKeys($project, $managedZone, $optParams = [])
   {
-    $params = ['project' => $project, 'location' => $location, 'managedZone' => $managedZone];
+    $params = ['project' => $project, 'managedZone' => $managedZone];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], DnsKeysListResponse::class);
   }

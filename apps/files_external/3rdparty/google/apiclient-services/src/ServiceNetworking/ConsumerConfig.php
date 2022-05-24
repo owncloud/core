@@ -19,7 +19,7 @@ namespace Google\Service\ServiceNetworking;
 
 class ConsumerConfig extends \Google\Collection
 {
-  protected $collection_key = 'reservedRanges';
+  protected $collection_key = 'usedIpRanges';
   /**
    * @var bool
    */
@@ -58,6 +58,10 @@ class ConsumerConfig extends \Google\Collection
   public $producerNetwork;
   protected $reservedRangesType = GoogleCloudServicenetworkingV1ConsumerConfigReservedRange::class;
   protected $reservedRangesDataType = 'array';
+  /**
+   * @var string[]
+   */
+  public $usedIpRanges;
   /**
    * @var bool
    */
@@ -202,6 +206,20 @@ class ConsumerConfig extends \Google\Collection
   public function getReservedRanges()
   {
     return $this->reservedRanges;
+  }
+  /**
+   * @param string[]
+   */
+  public function setUsedIpRanges($usedIpRanges)
+  {
+    $this->usedIpRanges = $usedIpRanges;
+  }
+  /**
+   * @return string[]
+   */
+  public function getUsedIpRanges()
+  {
+    return $this->usedIpRanges;
   }
   /**
    * @param bool

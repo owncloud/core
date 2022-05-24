@@ -19,6 +19,10 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1ProcessRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $fieldMask;
   protected $inlineDocumentType = GoogleCloudDocumentaiV1Document::class;
   protected $inlineDocumentDataType = '';
   protected $rawDocumentType = GoogleCloudDocumentaiV1RawDocument::class;
@@ -28,6 +32,20 @@ class GoogleCloudDocumentaiV1ProcessRequest extends \Google\Model
    */
   public $skipHumanReview;
 
+  /**
+   * @param string
+   */
+  public function setFieldMask($fieldMask)
+  {
+    $this->fieldMask = $fieldMask;
+  }
+  /**
+   * @return string
+   */
+  public function getFieldMask()
+  {
+    return $this->fieldMask;
+  }
   /**
    * @param GoogleCloudDocumentaiV1Document
    */

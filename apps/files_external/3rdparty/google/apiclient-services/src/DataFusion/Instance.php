@@ -62,6 +62,8 @@ class Instance extends \Google\Collection
    * @var bool
    */
   public $enableStackdriverMonitoring;
+  protected $eventPublishConfigType = EventPublishConfig::class;
+  protected $eventPublishConfigDataType = '';
   /**
    * @var string
    */
@@ -292,6 +294,20 @@ class Instance extends \Google\Collection
   public function getEnableStackdriverMonitoring()
   {
     return $this->enableStackdriverMonitoring;
+  }
+  /**
+   * @param EventPublishConfig
+   */
+  public function setEventPublishConfig(EventPublishConfig $eventPublishConfig)
+  {
+    $this->eventPublishConfig = $eventPublishConfig;
+  }
+  /**
+   * @return EventPublishConfig
+   */
+  public function getEventPublishConfig()
+  {
+    return $this->eventPublishConfig;
   }
   /**
    * @param string

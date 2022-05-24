@@ -30,14 +30,20 @@ use Google\Service\PaymentsResellerSubscription\GoogleCloudPaymentsResellerSubsc
 class PartnersProducts extends \Google\Service\Resource
 {
   /**
-   * Used by partners to list products that can be resold to their customers. It
-   * should be called directly by the partner using service accounts.
-   * (products.listPartnersProducts)
+   * To retrieve the products that can be resold by the partner. It should be
+   * autenticated with a service account. (products.listPartnersProducts)
    *
    * @param string $parent Required. The parent, the partner that can resell.
    * Format: partners/{partner}
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. Specifies the filters for the products
+   * results. The syntax defined in the EBNF grammar:
+   * https://google.aip.dev/assets/misc/ebnf-filtering.txt. An error will be
+   * thrown if any specified parameter is not supported. Currently, it can only be
+   * used by Youtube partners. Allowed parameters are: - regionCodes - zipCode -
+   * eligibilityId Multiple parameters can be specified, for example:
+   * "regionCodes=US zipCode=94043 eligibilityId=2022H1Campaign"
    * @opt_param int pageSize Optional. The maximum number of products to return.
    * The service may return fewer than this value. If unspecified, at most 50
    * products will be returned. The maximum value is 1000; values above 1000 will

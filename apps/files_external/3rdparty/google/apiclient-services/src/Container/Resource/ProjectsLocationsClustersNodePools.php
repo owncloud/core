@@ -66,9 +66,9 @@ class ProjectsLocationsClustersNodePools extends \Google\Service\Resource
    * @opt_param string nodePoolId Deprecated. The name of the node pool to delete.
    * This field has been deprecated and replaced by the name field.
    * @opt_param string projectId Deprecated. The Google Developers Console
-   * [project ID or project
-   * number](https://developers.google.com/console/help/new/#projectnumber). This
-   * field has been deprecated and replaced by the name field.
+   * [project ID or project number](https://cloud.google.com/resource-manager/docs
+   * /creating-managing-projects). This field has been deprecated and replaced by
+   * the name field.
    * @opt_param string zone Deprecated. The name of the Google Compute Engine
    * [zone](https://cloud.google.com/compute/docs/zones#available) in which the
    * cluster resides. This field has been deprecated and replaced by the name
@@ -94,9 +94,9 @@ class ProjectsLocationsClustersNodePools extends \Google\Service\Resource
    * @opt_param string nodePoolId Deprecated. The name of the node pool. This
    * field has been deprecated and replaced by the name field.
    * @opt_param string projectId Deprecated. The Google Developers Console
-   * [project ID or project
-   * number](https://developers.google.com/console/help/new/#projectnumber). This
-   * field has been deprecated and replaced by the name field.
+   * [project ID or project number](https://cloud.google.com/resource-manager/docs
+   * /creating-managing-projects). This field has been deprecated and replaced by
+   * the name field.
    * @opt_param string zone Deprecated. The name of the Google Compute Engine
    * [zone](https://cloud.google.com/compute/docs/zones#available) in which the
    * cluster resides. This field has been deprecated and replaced by the name
@@ -121,9 +121,9 @@ class ProjectsLocationsClustersNodePools extends \Google\Service\Resource
    * @opt_param string clusterId Deprecated. The name of the cluster. This field
    * has been deprecated and replaced by the parent field.
    * @opt_param string projectId Deprecated. The Google Developers Console
-   * [project ID or project
-   * number](https://developers.google.com/console/help/new/#projectnumber). This
-   * field has been deprecated and replaced by the parent field.
+   * [project ID or project number](https://cloud.google.com/resource-manager/docs
+   * /creating-managing-projects). This field has been deprecated and replaced by
+   * the parent field.
    * @opt_param string zone Deprecated. The name of the Google Compute Engine
    * [zone](https://cloud.google.com/compute/docs/zones#available) in which the
    * cluster resides. This field has been deprecated and replaced by the parent

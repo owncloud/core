@@ -30,10 +30,16 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $category;
+  protected $connectionsType = Connection::class;
+  protected $connectionsDataType = 'array';
   /**
    * @var string
    */
   public $createTime;
+  /**
+   * @var string
+   */
+  public $description;
   /**
    * @var string
    */
@@ -142,6 +148,20 @@ class Finding extends \Google\Collection
     return $this->category;
   }
   /**
+   * @param Connection[]
+   */
+  public function setConnections($connections)
+  {
+    $this->connections = $connections;
+  }
+  /**
+   * @return Connection[]
+   */
+  public function getConnections()
+  {
+    return $this->connections;
+  }
+  /**
    * @param string
    */
   public function setCreateTime($createTime)
@@ -154,6 +174,20 @@ class Finding extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setDescription($description)
+  {
+    $this->description = $description;
+  }
+  /**
+   * @return string
+   */
+  public function getDescription()
+  {
+    return $this->description;
   }
   /**
    * @param string

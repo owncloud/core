@@ -33,6 +33,10 @@ class RouterNat extends \Google\Collection
    */
   public $enableEndpointIndependentMapping;
   /**
+   * @var string[]
+   */
+  public $endpointTypes;
+  /**
    * @var int
    */
   public $icmpIdleTimeoutSec;
@@ -124,6 +128,20 @@ class RouterNat extends \Google\Collection
   public function getEnableEndpointIndependentMapping()
   {
     return $this->enableEndpointIndependentMapping;
+  }
+  /**
+   * @param string[]
+   */
+  public function setEndpointTypes($endpointTypes)
+  {
+    $this->endpointTypes = $endpointTypes;
+  }
+  /**
+   * @return string[]
+   */
+  public function getEndpointTypes()
+  {
+    return $this->endpointTypes;
   }
   /**
    * @param int

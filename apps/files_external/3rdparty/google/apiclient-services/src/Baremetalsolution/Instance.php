@@ -55,6 +55,14 @@ class Instance extends \Google\Collection
   /**
    * @var string
    */
+  public $osImage;
+  /**
+   * @var string
+   */
+  public $pod;
+  /**
+   * @var string
+   */
   public $state;
   /**
    * @var string
@@ -186,6 +194,34 @@ class Instance extends \Google\Collection
   public function getNetworks()
   {
     return $this->networks;
+  }
+  /**
+   * @param string
+   */
+  public function setOsImage($osImage)
+  {
+    $this->osImage = $osImage;
+  }
+  /**
+   * @return string
+   */
+  public function getOsImage()
+  {
+    return $this->osImage;
+  }
+  /**
+   * @param string
+   */
+  public function setPod($pod)
+  {
+    $this->pod = $pod;
+  }
+  /**
+   * @return string
+   */
+  public function getPod()
+  {
+    return $this->pod;
   }
   /**
    * @param string

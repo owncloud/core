@@ -44,6 +44,12 @@ class ServicesProjectsServicenetworkingGlobalNetworks extends \Google\Service\Re
    * a project number e.g. `12345` that contains the service consumer's VPC
    * network. {network} is the name of the service consumer's VPC network.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param bool includeUsedIpRanges Optional. When true, include the used IP
+   * ranges as part of the GetConsumerConfig output. This includes routes created
+   * inside the service networking network, consumer network, peers of the
+   * consumer network, and reserved ranges inside the service networking network.
+   * By default, this is false
    * @return ConsumerConfig
    */
   public function get($name, $optParams = [])

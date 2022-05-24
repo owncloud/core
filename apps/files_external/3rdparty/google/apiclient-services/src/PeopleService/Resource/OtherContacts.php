@@ -93,7 +93,11 @@ class OtherContacts extends \Google\Service\Resource
    * incremental changes since the last request by setting it on the request
    * `sync_token`. More details about sync behavior at `otherContacts.list`.
    * @opt_param string sources Optional. A mask of what source types to return.
-   * Defaults to READ_SOURCE_TYPE_CONTACT if not set.
+   * Defaults to READ_SOURCE_TYPE_CONTACT if not set. Possible values for this
+   * field are: * READ_SOURCE_TYPE_CONTACT *
+   * READ_SOURCE_TYPE_CONTACT,READ_SOURCE_TYPE_PROFILE Specifying
+   * READ_SOURCE_TYPE_PROFILE without specifying READ_SOURCE_TYPE_CONTACT is not
+   * permitted.
    * @opt_param string syncToken Optional. A sync token, received from a previous
    * response `next_sync_token` Provide this to retrieve only the resources
    * changed since the last request. When syncing, all other parameters provided

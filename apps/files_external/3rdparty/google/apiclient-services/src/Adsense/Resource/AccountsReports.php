@@ -19,6 +19,7 @@ namespace Google\Service\Adsense\Resource;
 
 use Google\Service\Adsense\HttpBody;
 use Google\Service\Adsense\ReportResult;
+use Google\Service\Adsense\SavedReport;
 
 /**
  * The "reports" collection of methods.
@@ -141,6 +142,20 @@ class AccountsReports extends \Google\Service\Resource
     $params = ['account' => $account];
     $params = array_merge($params, $optParams);
     return $this->call('generateCsv', [$params], HttpBody::class);
+  }
+  /**
+   * Gets the saved report from the given resource name. (reports.getSaved)
+   *
+   * @param string $name Required. The name of the saved report to retrieve.
+   * Format: accounts/{account}/reports/{report}
+   * @param array $optParams Optional parameters.
+   * @return SavedReport
+   */
+  public function getSaved($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getSaved', [$params], SavedReport::class);
   }
 }
 

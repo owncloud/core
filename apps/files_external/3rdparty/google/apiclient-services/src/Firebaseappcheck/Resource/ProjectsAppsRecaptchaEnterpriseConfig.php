@@ -17,8 +17,8 @@
 
 namespace Google\Service\Firebaseappcheck\Resource;
 
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaBatchGetRecaptchaEnterpriseConfigsResponse;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaRecaptchaEnterpriseConfig;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1BatchGetRecaptchaEnterpriseConfigsResponse;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1RecaptchaEnterpriseConfig;
 
 /**
  * The "recaptchaEnterpriseConfig" collection of methods.
@@ -45,13 +45,13 @@ class ProjectsAppsRecaptchaEnterpriseConfig extends \Google\Service\Resource
    * RecaptchaEnterpriseConfigs to retrieve, in the format: ```
    * projects/{project_number}/apps/{app_id}/recaptchaEnterpriseConfig ``` A
    * maximum of 100 objects can be retrieved in a batch.
-   * @return GoogleFirebaseAppcheckV1betaBatchGetRecaptchaEnterpriseConfigsResponse
+   * @return GoogleFirebaseAppcheckV1BatchGetRecaptchaEnterpriseConfigsResponse
    */
   public function batchGet($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1betaBatchGetRecaptchaEnterpriseConfigsResponse::class);
+    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1BatchGetRecaptchaEnterpriseConfigsResponse::class);
   }
   /**
    * Gets the RecaptchaEnterpriseConfig for the specified app.
@@ -61,13 +61,13 @@ class ProjectsAppsRecaptchaEnterpriseConfig extends \Google\Service\Resource
    * RecaptchaEnterpriseConfig, in the format: ```
    * projects/{project_number}/apps/{app_id}/recaptchaEnterpriseConfig ```
    * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1betaRecaptchaEnterpriseConfig
+   * @return GoogleFirebaseAppcheckV1RecaptchaEnterpriseConfig
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleFirebaseAppcheckV1betaRecaptchaEnterpriseConfig::class);
+    return $this->call('get', [$params], GoogleFirebaseAppcheckV1RecaptchaEnterpriseConfig::class);
   }
   /**
    * Updates the RecaptchaEnterpriseConfig for the specified app. While this
@@ -78,18 +78,18 @@ class ProjectsAppsRecaptchaEnterpriseConfig extends \Google\Service\Resource
    * @param string $name Required. The relative resource name of the reCAPTCHA
    * Enterprise configuration object, in the format: ```
    * projects/{project_number}/apps/{app_id}/recaptchaEnterpriseConfig ```
-   * @param GoogleFirebaseAppcheckV1betaRecaptchaEnterpriseConfig $postBody
+   * @param GoogleFirebaseAppcheckV1RecaptchaEnterpriseConfig $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. A comma-separated list of names of
    * fields in the RecaptchaEnterpriseConfig to update. Example: `site_key`.
-   * @return GoogleFirebaseAppcheckV1betaRecaptchaEnterpriseConfig
+   * @return GoogleFirebaseAppcheckV1RecaptchaEnterpriseConfig
    */
-  public function patch($name, GoogleFirebaseAppcheckV1betaRecaptchaEnterpriseConfig $postBody, $optParams = [])
+  public function patch($name, GoogleFirebaseAppcheckV1RecaptchaEnterpriseConfig $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1betaRecaptchaEnterpriseConfig::class);
+    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1RecaptchaEnterpriseConfig::class);
   }
 }
 

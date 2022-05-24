@@ -23,7 +23,8 @@ use Google\Client;
  * Service definition for AlertCenter (v1beta1).
  *
  * <p>
- * Manages alerts on issues affecting your domain.</p>
+ * Manages alerts on issues affecting your domain. Note: The current version of
+ * this API (v1beta1) is available to all Google Workspace customers.</p>
  *
  * <p>
  * For more information about this service, see the API

@@ -33,10 +33,11 @@ class Projects extends \Google\Service\Resource
   /**
    * Enroll data sources in a user project. This allows users to create transfer
    * configurations for these data sources. They will also appear in the
-   * ListDataSources RPC and as such, will appear in the BigQuery UI
-   * 'https://bigquery.cloud.google.com' (and the documents can be found at
-   * https://cloud.google.com/bigquery/bigquery-web-ui and
-   * https://cloud.google.com/bigquery/docs/working-with-transfers).
+   * ListDataSources RPC and as such, will appear in the [BigQuery
+   * UI](https://console.cloud.google.com/bigquery), and the documents can be
+   * found in the public guide for [BigQuery Web
+   * UI](https://cloud.google.com/bigquery/bigquery-web-ui) and [Data Transfer
+   * Service](https://cloud.google.com/bigquery/docs/working-with-transfers).
    * (projects.enrollDataSources)
    *
    * @param string $name The name of the project resource in the form:

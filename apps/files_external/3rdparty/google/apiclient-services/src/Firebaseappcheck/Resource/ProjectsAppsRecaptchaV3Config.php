@@ -17,8 +17,8 @@
 
 namespace Google\Service\Firebaseappcheck\Resource;
 
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaBatchGetRecaptchaV3ConfigsResponse;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaRecaptchaV3Config;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1BatchGetRecaptchaV3ConfigsResponse;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1RecaptchaV3Config;
 
 /**
  * The "recaptchaV3Config" collection of methods.
@@ -46,13 +46,13 @@ class ProjectsAppsRecaptchaV3Config extends \Google\Service\Resource
    * RecaptchaV3Configs to retrieve, in the format: ```
    * projects/{project_number}/apps/{app_id}/recaptchaV3Config ``` A maximum of
    * 100 objects can be retrieved in a batch.
-   * @return GoogleFirebaseAppcheckV1betaBatchGetRecaptchaV3ConfigsResponse
+   * @return GoogleFirebaseAppcheckV1BatchGetRecaptchaV3ConfigsResponse
    */
   public function batchGet($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1betaBatchGetRecaptchaV3ConfigsResponse::class);
+    return $this->call('batchGet', [$params], GoogleFirebaseAppcheckV1BatchGetRecaptchaV3ConfigsResponse::class);
   }
   /**
    * Gets the RecaptchaV3Config for the specified app. For security reasons, the
@@ -63,35 +63,35 @@ class ProjectsAppsRecaptchaV3Config extends \Google\Service\Resource
    * RecaptchaV3Config, in the format: ```
    * projects/{project_number}/apps/{app_id}/recaptchaV3Config ```
    * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1betaRecaptchaV3Config
+   * @return GoogleFirebaseAppcheckV1RecaptchaV3Config
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleFirebaseAppcheckV1betaRecaptchaV3Config::class);
+    return $this->call('get', [$params], GoogleFirebaseAppcheckV1RecaptchaV3Config::class);
   }
   /**
    * Updates the RecaptchaV3Config for the specified app. While this configuration
-   * is incomplete or invalid, the app will be unable to exchange reCAPTCHA V3
-   * tokens for App Check tokens. For security reasons, the `site_secret` field is
-   * never populated in the response. (recaptchaV3Config.patch)
+   * is incomplete or invalid, the app will be unable to exchange reCAPTCHA tokens
+   * for App Check tokens. For security reasons, the `site_secret` field is never
+   * populated in the response. (recaptchaV3Config.patch)
    *
    * @param string $name Required. The relative resource name of the reCAPTCHA v3
    * configuration object, in the format: ```
    * projects/{project_number}/apps/{app_id}/recaptchaV3Config ```
-   * @param GoogleFirebaseAppcheckV1betaRecaptchaV3Config $postBody
+   * @param GoogleFirebaseAppcheckV1RecaptchaV3Config $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. A comma-separated list of names of
    * fields in the RecaptchaV3Config to update. Example: `site_secret`.
-   * @return GoogleFirebaseAppcheckV1betaRecaptchaV3Config
+   * @return GoogleFirebaseAppcheckV1RecaptchaV3Config
    */
-  public function patch($name, GoogleFirebaseAppcheckV1betaRecaptchaV3Config $postBody, $optParams = [])
+  public function patch($name, GoogleFirebaseAppcheckV1RecaptchaV3Config $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1betaRecaptchaV3Config::class);
+    return $this->call('patch', [$params], GoogleFirebaseAppcheckV1RecaptchaV3Config::class);
   }
 }
 

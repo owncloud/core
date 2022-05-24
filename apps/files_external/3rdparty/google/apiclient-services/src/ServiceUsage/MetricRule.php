@@ -22,12 +22,30 @@ class MetricRule extends \Google\Model
   /**
    * @var string[]
    */
+  public $dynamicMetricCosts;
+  /**
+   * @var string[]
+   */
   public $metricCosts;
   /**
    * @var string
    */
   public $selector;
 
+  /**
+   * @param string[]
+   */
+  public function setDynamicMetricCosts($dynamicMetricCosts)
+  {
+    $this->dynamicMetricCosts = $dynamicMetricCosts;
+  }
+  /**
+   * @return string[]
+   */
+  public function getDynamicMetricCosts()
+  {
+    return $this->dynamicMetricCosts;
+  }
   /**
    * @param string[]
    */

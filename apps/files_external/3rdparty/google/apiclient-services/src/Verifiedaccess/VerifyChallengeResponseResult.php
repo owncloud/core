@@ -22,34 +22,20 @@ class VerifyChallengeResponseResult extends \Google\Model
   /**
    * @var string
    */
-  public $deviceEnrollmentId;
-  /**
-   * @var string
-   */
   public $devicePermanentId;
   /**
    * @var string
    */
-  public $signedPublicKeyAndChallenge;
+  public $deviceSignal;
   /**
    * @var string
    */
-  public $verificationOutput;
+  public $keyTrustLevel;
+  /**
+   * @var string
+   */
+  public $signedPublicKeyAndChallenge;
 
-  /**
-   * @param string
-   */
-  public function setDeviceEnrollmentId($deviceEnrollmentId)
-  {
-    $this->deviceEnrollmentId = $deviceEnrollmentId;
-  }
-  /**
-   * @return string
-   */
-  public function getDeviceEnrollmentId()
-  {
-    return $this->deviceEnrollmentId;
-  }
   /**
    * @param string
    */
@@ -67,6 +53,34 @@ class VerifyChallengeResponseResult extends \Google\Model
   /**
    * @param string
    */
+  public function setDeviceSignal($deviceSignal)
+  {
+    $this->deviceSignal = $deviceSignal;
+  }
+  /**
+   * @return string
+   */
+  public function getDeviceSignal()
+  {
+    return $this->deviceSignal;
+  }
+  /**
+   * @param string
+   */
+  public function setKeyTrustLevel($keyTrustLevel)
+  {
+    $this->keyTrustLevel = $keyTrustLevel;
+  }
+  /**
+   * @return string
+   */
+  public function getKeyTrustLevel()
+  {
+    return $this->keyTrustLevel;
+  }
+  /**
+   * @param string
+   */
   public function setSignedPublicKeyAndChallenge($signedPublicKeyAndChallenge)
   {
     $this->signedPublicKeyAndChallenge = $signedPublicKeyAndChallenge;
@@ -77,20 +91,6 @@ class VerifyChallengeResponseResult extends \Google\Model
   public function getSignedPublicKeyAndChallenge()
   {
     return $this->signedPublicKeyAndChallenge;
-  }
-  /**
-   * @param string
-   */
-  public function setVerificationOutput($verificationOutput)
-  {
-    $this->verificationOutput = $verificationOutput;
-  }
-  /**
-   * @return string
-   */
-  public function getVerificationOutput()
-  {
-    return $this->verificationOutput;
   }
 }
 

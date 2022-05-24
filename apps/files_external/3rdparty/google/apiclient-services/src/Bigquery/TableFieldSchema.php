@@ -25,7 +25,11 @@ class TableFieldSchema extends \Google\Collection
   /**
    * @var string
    */
-  public $collationSpec;
+  public $collation;
+  /**
+   * @var string
+   */
+  public $defaultValueExpression;
   /**
    * @var string
    */
@@ -76,16 +80,30 @@ class TableFieldSchema extends \Google\Collection
   /**
    * @param string
    */
-  public function setCollationSpec($collationSpec)
+  public function setCollation($collation)
   {
-    $this->collationSpec = $collationSpec;
+    $this->collation = $collation;
   }
   /**
    * @return string
    */
-  public function getCollationSpec()
+  public function getCollation()
   {
-    return $this->collationSpec;
+    return $this->collation;
+  }
+  /**
+   * @param string
+   */
+  public function setDefaultValueExpression($defaultValueExpression)
+  {
+    $this->defaultValueExpression = $defaultValueExpression;
+  }
+  /**
+   * @return string
+   */
+  public function getDefaultValueExpression()
+  {
+    return $this->defaultValueExpression;
   }
   /**
    * @param string

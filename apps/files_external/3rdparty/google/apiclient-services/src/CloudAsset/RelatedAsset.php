@@ -32,6 +32,10 @@ class RelatedAsset extends \Google\Collection
    * @var string
    */
   public $assetType;
+  /**
+   * @var string
+   */
+  public $relationshipType;
 
   /**
    * @param string[]
@@ -74,6 +78,20 @@ class RelatedAsset extends \Google\Collection
   public function getAssetType()
   {
     return $this->assetType;
+  }
+  /**
+   * @param string
+   */
+  public function setRelationshipType($relationshipType)
+  {
+    $this->relationshipType = $relationshipType;
+  }
+  /**
+   * @return string
+   */
+  public function getRelationshipType()
+  {
+    return $this->relationshipType;
   }
 }
 

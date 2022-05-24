@@ -54,6 +54,8 @@ class Routine extends \Google\Collection
    * @var string
    */
   public $lastModifiedTime;
+  protected $remoteFunctionOptionsType = RemoteFunctionOptions::class;
+  protected $remoteFunctionOptionsDataType = '';
   protected $returnTableTypeType = StandardSqlTableType::class;
   protected $returnTableTypeDataType = '';
   protected $returnTypeType = StandardSqlDataType::class;
@@ -194,6 +196,20 @@ class Routine extends \Google\Collection
   public function getLastModifiedTime()
   {
     return $this->lastModifiedTime;
+  }
+  /**
+   * @param RemoteFunctionOptions
+   */
+  public function setRemoteFunctionOptions(RemoteFunctionOptions $remoteFunctionOptions)
+  {
+    $this->remoteFunctionOptions = $remoteFunctionOptions;
+  }
+  /**
+   * @return RemoteFunctionOptions
+   */
+  public function getRemoteFunctionOptions()
+  {
+    return $this->remoteFunctionOptions;
   }
   /**
    * @param StandardSqlTableType
