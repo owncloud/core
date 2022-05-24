@@ -10,10 +10,7 @@
     "today" : "hoy",
     "yesterday" : "ayer",
     "last month" : "mes pasado",
-    "_%n month ago_::_%n months ago_" : ["Hace %n mes","Hace %n meses"],
     "last year" : "año pasado",
-    "_%n hour ago_::_%n hours ago_" : ["Hace %n hora","Hace %n horas"],
-    "_%n minute ago_::_%n minutes ago_" : ["Hace %n minuto","Hace %n minutos"],
     "seconds ago" : "hace segundos",
     "None" : "Ninguno",
     "Username and password" : "Nombre de usuario y contraseña",
@@ -64,5 +61,5 @@
     "Authentication error" : "Error de autenticación",
     "Token expired. Please reload page." : "Token expirado. Por favor, recarga la página.",
     "Storage is temporarily not available" : "El almacenamiento no está disponible temporalmente"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

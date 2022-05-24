@@ -20,4 +20,4 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s borró %1$s",
     "Settings" : "Configuración"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

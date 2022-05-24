@@ -21,13 +21,13 @@
     "Avatar image is not square" : "L'immagine dell'avatar non è quadrata",
     "today" : "oggi",
     "yesterday" : "ieri",
-    "_%n day ago_::_%n days ago_" : ["%d giorno fa","%n giorni fa"],
+    "_%n day ago_::_%n days ago_" : ["%d giorno fa","%n giorni fa","%n giorni fa"],
     "last month" : "mese scorso",
-    "_%n month ago_::_%n months ago_" : ["%n mese fa","%n mesi fa"],
+    "_%n month ago_::_%n months ago_" : ["%n mese fa","%n mesi fa","%n mesi fa"],
     "last year" : "anno scorso",
-    "_%n year ago_::_%n years ago_" : ["%n anno fa","%n anni fa"],
-    "_%n hour ago_::_%n hours ago_" : ["%n ora fa","%n ore fa"],
-    "_%n minute ago_::_%n minutes ago_" : ["%n minuto fa","%n minuti fa"],
+    "_%n year ago_::_%n years ago_" : ["%n anno fa","%n anni fa","%n anni fa"],
+    "_%n hour ago_::_%n hours ago_" : ["%n ora fa","%n ore fa","%n ore fa"],
+    "_%n minute ago_::_%n minutes ago_" : ["%n minuto fa","%n minuti fa","%n minuti fa"],
     "seconds ago" : "secondi fa",
     "Module with id: %s does not exist. Please enable it in your apps settings or contact your administrator." : "Il modulo con id: %s non esiste. Abilitalo nelle impostazioni delle applicazioni o contatta il tuo amministratore.",
     "Builtin" : "Integrata",
@@ -171,5 +171,5 @@
     "Storage connection error. %s" : "Errore di connessione all'archiviazione. %s",
     "Storage is temporarily not available" : "L'archiviazione non è temporaneamente disponibile",
     "Storage connection timeout. %s" : "Timeout di connessione all'archiviazione. %s"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

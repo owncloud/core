@@ -123,7 +123,7 @@ OC.L10N.register(
     "Ok" : "Ok",
     "Error loading message template: {error}" : "Erro no carregamento de modelo de mensagem: {error}",
     "read-only" : "somente-leitura",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} conflito de arquivo","{count} conflitos de arquivos"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} conflito de arquivo","{count} conflitos de arquivos","{count} conflitos de arquivos"],
     "One file conflict" : "Conflito em um arquivo",
     "New Files" : "Novos Arquivos",
     "Already existing files" : "Arquivos já existentes",
@@ -218,7 +218,7 @@ OC.L10N.register(
     "Share details could not be loaded for this item." : "Detalhes de compartilhamento não puderam ser carregados para este item.",
     "No users or groups found for {search}" : "Nenhum usuário ou grupo encontrados para {search}",
     "No users found for {search}" : "Nenhum usuário encontrado para {search}",
-    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["Por favor, insira pelo menos {chars} caracteres para sugestões","Por favor, insira pelo menos {chars} caracteres para sugestões"],
+    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["Por favor, insira pelo menos {chars} caracteres para sugestões","Por favor, insira pelo menos {chars} caracteres para sugestões","Por favor, insira pelo menos {chars} caracteres para sugestões"],
     "An error occurred. Please try again" : "Ocorreu um erro. Por favor tente novamente",
     "User" : "Usuário",
     "Group" : "Grupo",
@@ -257,7 +257,7 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "Olá {name}, o clima está {weather}",
     "Hello {name}" : "Olá {name}",
     "new" : "novo",
-    "_download %n file_::_download %n files_" : ["baixar %n arquivo","baixar %n arquivos"],
+    "_download %n file_::_download %n files_" : ["baixar %n arquivo","baixar %n arquivos","baixar %n arquivos"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "A atualização está em andamento, deixando esta página pode haver interrupção do processo em alguns ambientes.",
     "Updating to {version}" : "Atualizando para  {version}",
     "An error occurred." : "Ocorreu um erro.",
@@ -268,7 +268,7 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "A atualização teve êxito. Você será redirecionado ao ownCloud agora.",
     "Searching other places" : "Pesquisando em outros lugares",
     "No search results in other folders" : "Nenhum resultado de pesquisa em outras pastas",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} resultado da pesquisa em outras pastas","{count} resultados da pesquisa em outras pastas"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} resultado da pesquisa em outras pastas","{count} resultados da pesquisa em outras pastas","{count} resultados da pesquisa em outras pastas"],
     "Personal" : "Pessoal",
     "Users" : "Usuários",
     "Apps" : "Aplicações",
@@ -369,4 +369,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Esta instância %s está em modo de manutenção, o que pode demorar um pouco.",
     "This page will refresh itself when the %s instance is available again." : "Esta página será atualizada automaticamente quando esta instância %s estiver disponível novamente."
 },
-"nplurals=2; plural=(n > 1);");
+"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

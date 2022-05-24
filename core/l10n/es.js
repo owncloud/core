@@ -123,7 +123,6 @@ OC.L10N.register(
     "Ok" : "Aceptar",
     "Error loading message template: {error}" : "Error al cargar plantilla del mensaje: {error}",
     "read-only" : "solo lectura",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} conflicto de archivo","{count} conflictos de archivo"],
     "One file conflict" : "Un conflicto de archivo",
     "New Files" : "Nuevos archivos",
     "Already existing files" : "Archivos ya existentes",
@@ -218,7 +217,6 @@ OC.L10N.register(
     "Share details could not be loaded for this item." : "No se han podido cargar los detalles de compartición para este elemento.",
     "No users or groups found for {search}" : "No se han encontrado usuarios ni grupos para {search}",
     "No users found for {search}" : "No se han encontrado usuarios para {search}",
-    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["Por favor introduzca al menos {chars} carácter para sugerencia","Por favor introduzca al menos {chars} carácteres para sugerencia"],
     "An error occurred. Please try again" : "Ha ocurrido un error. Por favor inténtelo de nuevo",
     "User" : "Usuario",
     "Group" : "Grupo",
@@ -257,7 +255,6 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "Hola {name}, el día es {weather}",
     "Hello {name}" : "Hola {name}",
     "new" : "Nuevo",
-    "_download %n file_::_download %n files_" : ["descargar %n ficheros","descargar %n archivos"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "La actualización está en curso, salir de esta página podrían interrumpir el proceso en algunos entornos.",
     "Updating to {version}" : "Actualizando a {version}",
     "An error occurred." : "Ocurrió un error.",
@@ -268,7 +265,6 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "La actualización se ha realizado con éxito. Redireccionando a ownCloud ahora.",
     "Searching other places" : "Buscando en otros lugares",
     "No search results in other folders" : "Ningún resultado de búsqueda en otras carpetas",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} resultado de búsqueda en otra carpeta","{count} resultados de búsqueda en otras carpetas"],
     "Personal" : "Personal",
     "Users" : "Usuarios",
     "Apps" : "Aplicaciones",
@@ -369,4 +365,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Está instancia %s está en modo mantenimiento, por lo que puede llevar un tiempo.",
     "This page will refresh itself when the %s instance is available again." : "La página se refrescará cuando la instalación %s vuelva a estar disponible."
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

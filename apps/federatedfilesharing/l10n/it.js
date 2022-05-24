@@ -29,4 +29,4 @@ OC.L10N.register(
     "HTML Code:" : "Codice HTML:",
     "Nothing to configure." : "Niente da configurare"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

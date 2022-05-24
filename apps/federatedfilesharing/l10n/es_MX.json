@@ -6,5 +6,5 @@
     "File is already shared with %s" : "El archivo ya se compartió con %s",
     "Accept" : "Aceptar",
     "Open documentation" : "Abrir documentación"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

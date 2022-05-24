@@ -45,4 +45,4 @@ OC.L10N.register(
     "Username" : "Usuario",
     "You are accessing the server from an untrusted domain." : "Usted está accediendo al servidor desde un dominio no confiable."
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

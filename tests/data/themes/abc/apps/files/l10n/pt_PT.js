@@ -49,11 +49,11 @@ OC.L10N.register(
     "Name" : "Nome",
     "Size" : "Tamanho",
     "Modified" : "Modificado",
-    "_%n folder_::_%n folders_" : ["%n pasta","%n pastas"],
-    "_%n file_::_%n files_" : ["%n ficheiro","%n ficheiros"],
+    "_%n folder_::_%n folders_" : ["%n pasta","%n pastas","%n pastas"],
+    "_%n file_::_%n files_" : ["%n ficheiro","%n ficheiros","%n ficheiros"],
     "{dirs} and {files}" : "{dirs} e {files}",
-    "_including %n hidden_::_including %n hidden_" : ["incluindo %n escondido","incluindo %n escondidos"],
-    "_Uploading %n file_::_Uploading %n files_" : ["A enviar %n ficheiro","A enviar %n ficheiros"],
+    "_including %n hidden_::_including %n hidden_" : ["incluindo %n escondido","incluindo %n escondidos","incluindo %n escondidos"],
+    "_Uploading %n file_::_Uploading %n files_" : ["A enviar %n ficheiro","A enviar %n ficheiros","A enviar %n ficheiros"],
     "New" : "Novo",
     "Unknown user" : "Utilizador desconhecido",
     "\"{name}\" is an invalid file name." : "\"{name}\" é um nome de ficheiro inválido.",
@@ -63,9 +63,9 @@ OC.L10N.register(
     "Your storage is full, files can not be updated or synced anymore!" : "O seu armazenamento está cheio, os ficheiros já não podem ser atualizados ou sincronizados.",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "O armazenamento de {owner} está quase cheio ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "O seu armazenamento está quase cheio ({usedSpacePercent}%)",
-    "_matches '{filter}'_::_match '{filter}'_" : ["corresponde a '{filter}'","correspondem a '{filter}'"],
+    "_matches '{filter}'_::_match '{filter}'_" : ["corresponde a '{filter}'","correspondem a '{filter}'","correspondem a '{filter}'"],
     "Path" : "Caminho",
-    "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
+    "_%n byte_::_%n bytes_" : ["%n byte","%n bytes","%n bytes"],
     "Favorited" : "Nos Favoritos",
     "Favorite" : "Favorito",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Hiperligação privada: Apenas as pessoas que têm acesso ao ficheiro ou pasta podem utiliza-los. Use-a como uma hiperligação para rederecionar pessoas a ficheiros dentro de partilhas.",
@@ -109,4 +109,4 @@ OC.L10N.register(
     "Text file" : "Ficheiro de Texto",
     "New text file.txt" : "Novo texto ficheiro.txt"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

@@ -120,4 +120,4 @@ OC.L10N.register(
     "Nothing to configure." : "Rien à configurer.",
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Ces groupes ne seront pas disponibles pour le partage. Les membres du groupe ne sont pas exclus du partage et peuvent recevoir le partage en tant que membres d'autres groupes."
 },
-"nplurals=2; plural=(n > 1);");
+"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

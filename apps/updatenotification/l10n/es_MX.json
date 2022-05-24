@@ -14,5 +14,5 @@
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Siempre puedes actualizar a una versión más reciente o a un canal experimental. Pero nunca puedes degradar el sistema a un canal más estable.",
     "Notify members of the following groups about available updates:" : "Notificar a miembros de los siguientes grupos sobre actualizaciones disponibles:",
     "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Solamente están disponibles notificaciones para actualización de aplicaciones, porque el canal de actualización seleccionado para el mismo ownCloud no permite notificaciones."
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

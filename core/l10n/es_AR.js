@@ -68,7 +68,6 @@ OC.L10N.register(
     "Error loading file picker template: {error}" : "Error cargando la plantilla del selector de archivo: {error}",
     "Ok" : "Aceptar",
     "Error loading message template: {error}" : "Error cargando la plantilla del mensaje: {error}",
-    "_{count} file conflict_::_{count} file conflicts_" : ["un archivo en conflicto","{count} archivos en conflicto"],
     "One file conflict" : "Un archivo en conflicto",
     "New Files" : "Nuevos archivos",
     "Already existing files" : "Archivos ya existentes",
@@ -175,4 +174,4 @@ OC.L10N.register(
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Por favor asegúrate que la base de datos, la carpeta de configuración y la de datos han sido resguardadas antes de proceder.",
     "Start update" : "Comenzar actualización"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

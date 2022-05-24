@@ -46,10 +46,7 @@ OC.L10N.register(
     "Name" : "Nombre",
     "Size" : "Tamaño",
     "Modified" : "Modificado",
-    "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetas"],
-    "_%n file_::_%n files_" : ["%n archivo","%n archivos"],
     "{dirs} and {files}" : "{dirs} y {files}",
-    "_Uploading %n file_::_Uploading %n files_" : ["Subiendo %n archivo","Subiendo %n archivos"],
     "New" : "Nuevo",
     "\"{name}\" is an invalid file name." : "\"{name}\" es un nombre de archivo inválido",
     "File name cannot be empty." : "El nombre de archivo no puede estar vacío.",
@@ -99,4 +96,4 @@ OC.L10N.register(
     "Text file" : "Archivo de texto",
     "New text file.txt" : "Nuevo texto archivo.txt"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

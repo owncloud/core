@@ -60,11 +60,11 @@
     "Name" : "Nom",
     "Size" : "Taille",
     "Modified" : "Modifié",
-    "_%n folder_::_%n folders_" : ["%n dossier","%n dossiers"],
-    "_%n file_::_%n files_" : ["%n fichier","%n fichiers"],
+    "_%n folder_::_%n folders_" : ["%n dossier","%n dossiers","%n dossiers"],
+    "_%n file_::_%n files_" : ["%n fichier","%n fichiers","%n fichiers"],
     "{dirs} and {files}" : "{dirs} et {files}",
-    "_including %n hidden_::_including %n hidden_" : ["inclure %n caché","inclure %n cachés"],
-    "_Uploading %n file_::_Uploading %n files_" : ["Téléversement de %n fichier","Téléversement de %n fichiers"],
+    "_including %n hidden_::_including %n hidden_" : ["inclure %n caché","inclure %n cachés","inclure %n cachés"],
+    "_Uploading %n file_::_Uploading %n files_" : ["Téléversement de %n fichier","Téléversement de %n fichiers","Téléversement de %n fichiers"],
     "New" : "Nouveau",
     "Unknown user" : "Utilisateur inconnu",
     "Lock status" : "État du verrouillage",
@@ -78,13 +78,13 @@
     "Your storage is full, files can not be updated or synced anymore!" : "Votre espage de stockage est plein, les fichiers ne peuvent plus être ajoutés ou synchronisés !",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "L'espace de stockage de {owner} est presque plein ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "Votre espace de stockage est presque plein ({usedSpacePercent}%)",
-    "_matches '{filter}'_::_match '{filter}'_" : ["correspond à '{filter}'","correspondent à '{filter}'"],
+    "_matches '{filter}'_::_match '{filter}'_" : ["correspond à '{filter}'","correspondent à '{filter}'","correspondent à '{filter}'"],
     "Unlock" : "Déverrouiller",
     "Unlock failed with status {status}" : "Le déverrouillage a échoué avec l'état {status}",
     "Locks" : "Verrouiller",
     "Resource is not locked" : "La ressource n'est pas verrouillée",
     "Path" : "Chemin",
-    "_%n byte_::_%n bytes_" : ["%n octet","%n octets"],
+    "_%n byte_::_%n bytes_" : ["%n octet","%n octets","%n octets"],
     "Favorited" : "Marqué comme favori",
     "Favorite" : "Favoris",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Lien privé : seules les personnes ayant accès à ce fichier/dossier peuvent l'utiliser. Utilisez le en tant que lien permanent pour vous-même ou pour désigner des fichiers dans les partages aux autres utilisateurs.",
@@ -128,5 +128,5 @@
     "Files and folders you mark as favorite will show up here" : "Les fichiers et dossiers ajoutés à vos favoris apparaîtront ici",
     "Text file" : "Fichier texte",
     "New text file.txt" : "Nouveau fichier texte.txt"
-},"pluralForm" :"nplurals=2; plural=(n > 1);"
+},"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

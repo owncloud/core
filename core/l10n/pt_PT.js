@@ -107,7 +107,7 @@ OC.L10N.register(
     "Ok" : "CONFIRMAR",
     "Error loading message template: {error}" : "Ocorreu um erro ao carregar o modelo: {error}",
     "read-only" : "só de leitura",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} conflito de ficheiro","{count} conflitos de ficheiro"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} conflito de ficheiro","{count} conflitos de ficheiro","{count} conflitos de ficheiro"],
     "One file conflict" : "Um conflito de ficheiro",
     "New Files" : "Novos Ficheiros",
     "Already existing files" : "Ficheiros já existentes",
@@ -220,7 +220,7 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "Olá {name}, o tempo está {weather}",
     "Hello {name}" : "Olá {name}",
     "new" : "novo",
-    "_download %n file_::_download %n files_" : ["transferir %n ficheiro","transferir %n ficheiros"],
+    "_download %n file_::_download %n files_" : ["transferir %n ficheiro","transferir %n ficheiros","transferir %n ficheiros"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "A atualização está em curso. Se deixar esta página agora poderá interromper o processo em alguns ambientes.",
     "Updating to {version}" : "A atualizar para {version}",
     "An error occurred." : "Ocorreu um erro.",
@@ -231,7 +231,7 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "A atualização foi bem sucedida. A redirecioná-lo agora para o ownCloud.",
     "Searching other places" : "A procurar noutros lugares",
     "No search results in other folders" : "Sem resultados de procura nas outras pastas",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} resultado de procura noutra pasta","{count} resultados de procura noutras pastas"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} resultado de procura noutra pasta","{count} resultados de procura noutras pastas","{count} resultados de procura noutras pastas"],
     "Personal" : "Pessoal",
     "Users" : "Utilizadores",
     "Apps" : "Aplicações",
@@ -319,4 +319,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Esta instância %s está atualmente no modo de manutenção, o que poderá demorar algum tempo.",
     "This page will refresh itself when the %s instance is available again." : "Esta página irá ser atualizada quando a instância %s ficar novamente disponível."
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

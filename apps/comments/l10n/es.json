@@ -20,5 +20,5 @@
     "%1$s commented" : "%1$s comentados",
     "You commented on %2$s" : "Has comentado en %2$s",
     "%1$s commented on %2$s" : "%1$s comentados en %2$s"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

@@ -154,4 +154,4 @@ OC.L10N.register(
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Esses grupos não estarão disponíveis para compartilhar. Os membros do grupo não estão restritos a iniciar ações e podem receber ações de outros grupos dos quais são membros, como de costume.",
     "Only certain groups are allowed to create public links" : "Apenas alguns grupos têm permissão para criar linques públicos "
 },
-"nplurals=2; plural=(n > 1);");
+"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

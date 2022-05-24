@@ -123,7 +123,6 @@ OC.L10N.register(
     "Ok" : "Aceptar",
     "Error loading message template: {error}" : "Error cargando plantilla del mensaje: {error}",
     "read-only" : "solo-lectura",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} conflicto de archivo","{count} conflictos de archivo"],
     "One file conflict" : "Un conflicto de archivo",
     "New Files" : "Nuevos archivos",
     "Already existing files" : "Archivos ya existentes",
@@ -230,4 +229,4 @@ OC.L10N.register(
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Contacte con su administrador de sistemas si este mensaje persiste o aparece de forma inesperada.",
     "Thank you for your patience." : "Gracias por su paciencia."
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

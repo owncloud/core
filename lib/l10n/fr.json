@@ -21,13 +21,13 @@
     "Avatar image is not square" : "L'image de l'avatar n'est pas carrée",
     "today" : "aujourd'hui",
     "yesterday" : "hier",
-    "_%n day ago_::_%n days ago_" : ["il y a %n jour","il y a %n jours"],
+    "_%n day ago_::_%n days ago_" : ["il y a %n jour","il y a %n jours","il y a %n jours"],
     "last month" : "le mois dernier",
-    "_%n month ago_::_%n months ago_" : ["Il y a %n mois","Il y a %n mois"],
+    "_%n month ago_::_%n months ago_" : ["Il y a %n mois","Il y a %n mois","Il y a %n mois"],
     "last year" : "l'année dernière",
-    "_%n year ago_::_%n years ago_" : ["il y a %n an","il y a %n ans"],
-    "_%n hour ago_::_%n hours ago_" : ["Il y a %n heure","Il y a %n heures"],
-    "_%n minute ago_::_%n minutes ago_" : ["il y a %n minute","il y a %n minutes"],
+    "_%n year ago_::_%n years ago_" : ["il y a %n an","il y a %n ans","il y a %n ans"],
+    "_%n hour ago_::_%n hours ago_" : ["Il y a %n heure","Il y a %n heures","Il y a %n heures"],
+    "_%n minute ago_::_%n minutes ago_" : ["il y a %n minute","il y a %n minutes","il y a %n minutes"],
     "seconds ago" : "il y a quelques secondes",
     "Module with id: %s does not exist. Please enable it in your apps settings or contact your administrator." : "Le module avec l'id: %s n'existe pas. Merci de l'activer dans les paramètres d'applications ou de contacter votre administrateur.",
     "Builtin" : "Intégré",
@@ -174,5 +174,5 @@
     "Storage connection error. %s" : "Erreur de connexion à l'espace stockage. %s",
     "Storage is temporarily not available" : "Espace de stockage temporairement indisponible",
     "Storage connection timeout. %s" : "Le délai d'attente pour la connexion à l'espace de stockage a été dépassé. %s"
-},"pluralForm" :"nplurals=2; plural=(n > 1);"
+},"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

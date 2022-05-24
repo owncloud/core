@@ -366,5 +366,5 @@
     "set new password" : "imposta una nuova password",
     "change email address" : "cambia l'indirizzo email",
     "Default" : "Predefinito"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

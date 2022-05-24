@@ -17,4 +17,4 @@ OC.L10N.register(
     "Notify members of the following groups about available updates:" : "Notifica i membri dei seguenti gruppi sugli aggiornamenti disponibili:",
     "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Solo le notifiche per gli aggiornamenti delle applicazioni sono disponibili, poiché il canale di aggiornamento selezionato per ownCloud non consente le notifiche."
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

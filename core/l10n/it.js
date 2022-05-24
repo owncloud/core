@@ -119,7 +119,7 @@ OC.L10N.register(
     "Ok" : "Ok",
     "Error loading message template: {error}" : "Errore durante il caricamento del modello di messaggio: {error}",
     "read-only" : "sola lettura",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} file in conflitto","{count} file in conflitto"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} file in conflitto","{count} file in conflitto","{count} file in conflitto"],
     "One file conflict" : "Un file in conflitto",
     "New Files" : "File nuovi",
     "Already existing files" : "File già esistenti",
@@ -213,7 +213,7 @@ OC.L10N.register(
     "Share details could not be loaded for this item." : "I dettagli della condivisione non possono essere caricati per questo elemento.",
     "No users or groups found for {search}" : "Nessun utente o gruppo trovato per {search}",
     "No users found for {search}" : "Nessun utente trovato per {search}",
-    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["Inserisci almeno {chars} carattere per i suggerimenti","Inserisci almeno {chars} caratteri per i suggerimenti"],
+    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["Inserisci almeno {chars} carattere per i suggerimenti","Inserisci almeno {chars} caratteri per i suggerimenti","Inserisci almeno {chars} caratteri per i suggerimenti"],
     "An error occurred. Please try again" : "Si è verificato un errore. Prova ancora",
     "User" : "Utente",
     "Group" : "Gruppo",
@@ -248,7 +248,7 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "Ciao {name}, il tempo è {weather}",
     "Hello {name}" : "Ciao {name}",
     "new" : "nuovo",
-    "_download %n file_::_download %n files_" : ["scarica %n file","scarica %s file"],
+    "_download %n file_::_download %n files_" : ["scarica %n file","scarica %s file","scarica %s file"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "L'aggiornamento è in corso, l'abbandono di questa pagina potrebbe interrompere il processo in alcuni ambienti.",
     "Updating to {version}" : "Aggiornamento a {version}",
     "An error occurred." : "Si è verificato un errore.",
@@ -259,7 +259,7 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "L'aggiornamento è stato effettuato correttamente. Stai per essere reindirizzato a ownCloud.",
     "Searching other places" : "Ricerca in altre posizioni",
     "No search results in other folders" : "Nessun risultato di ricerca in altre cartelle",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} risultato di ricerca in altre cartelle","{count} risultati di ricerca in altre cartelle"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} risultato di ricerca in altre cartelle","{count} risultati di ricerca in altre cartelle","{count} risultati di ricerca in altre cartelle"],
     "Personal" : "Personale",
     "Users" : "Utenti",
     "Apps" : "Applicazioni",
@@ -355,4 +355,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Questa istanza di %s è attualmente in manutenzione, potrebbe richiedere del tempo.",
     "This page will refresh itself when the %s instance is available again." : "Questa pagina si aggiornerà quando l'istanza di %s sarà nuovamente disponibile."
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

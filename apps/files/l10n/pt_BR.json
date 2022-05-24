@@ -64,11 +64,11 @@
     "Name" : "Nome",
     "Size" : "Tamanho",
     "Modified" : "Modificado",
-    "_%n folder_::_%n folders_" : ["%n pasta","%n pastas"],
-    "_%n file_::_%n files_" : ["%n arquivo","%n arquivos"],
+    "_%n folder_::_%n folders_" : ["%n pasta","%n pastas","%n pastas"],
+    "_%n file_::_%n files_" : ["%n arquivo","%n arquivos","%n arquivos"],
     "{dirs} and {files}" : "{dirs} e {files}",
-    "_including %n hidden_::_including %n hidden_" : ["incluindo %n escondidos","incluindo %n escondido"],
-    "_Uploading %n file_::_Uploading %n files_" : ["Enviando %n arquivo","Enviando %n arquivos"],
+    "_including %n hidden_::_including %n hidden_" : ["incluindo %n escondidos","incluindo %n escondido","incluindo %n escondido"],
+    "_Uploading %n file_::_Uploading %n files_" : ["Enviando %n arquivo","Enviando %n arquivos","Enviando %n arquivos"],
     "New" : "Novo",
     "Unknown user" : "Usuário desconhecido",
     "Lock status" : "Status de bloqueio",
@@ -84,7 +84,7 @@
     "Your storage is full, files can not be updated or synced anymore!" : "Seu armazenamento está cheio, arquivos não podem mais ser atualizados ou sincronizados!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Armazenamento do {owner} está quase cheio ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "Seu armazenamento está quase cheio ({usedSpacePercent}%)",
-    "_matches '{filter}'_::_match '{filter}'_" : ["coincide com '{filter}'","coincide com '{filter}'"],
+    "_matches '{filter}'_::_match '{filter}'_" : ["coincide com '{filter}'","coincide com '{filter}'","coincide com '{filter}'"],
     "{owner} has locked this resource via {path}" : "{owner} bloqueou este recurso via {path}",
     "Unlock" : "Desbloquear",
     "Could not unlock, please contact the lock owner {owner}" : "Não foi possível desbloquear, entre em contato com o proprietário do bloqueio {owner}",
@@ -92,7 +92,7 @@
     "Locks" : "Bloqueios",
     "Resource is not locked" : "O recurso não está bloqueado",
     "Path" : "Caminho",
-    "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
+    "_%n byte_::_%n bytes_" : ["%n byte","%n bytes","%n bytes"],
     "Favorited" : "Favorito",
     "Favorite" : "Favorito",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Link privado: Somente as pessoas que têm acesso ao arquivo/pasta podem usá-lo. Use-o como um link permanente para si mesmo ou para encaminhar outros para arquivos dentro de compartilhamentos",
@@ -145,5 +145,5 @@
     "Files and folders you mark as favorite will show up here" : "Arquivos e pastas que você marcou como favoritos são mostrados aqui",
     "Text file" : "Arquivo texto",
     "New text file.txt" : "Novo texto file.txt"
-},"pluralForm" :"nplurals=2; plural=(n > 1);"
+},"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

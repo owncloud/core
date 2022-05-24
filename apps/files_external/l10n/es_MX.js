@@ -81,4 +81,4 @@ OC.L10N.register(
     "Allow users to mount external storage" : "Permitir a los usuarios que monten un almacenamiento externo",
     "Allow users to mount the following external storage" : "Permitir a los usuarios que monten el siguiente almacenamiento externo"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

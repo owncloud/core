@@ -66,11 +66,7 @@ OC.L10N.register(
     "Name" : "Nombre",
     "Size" : "Tamaño",
     "Modified" : "Modificado",
-    "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetas"],
-    "_%n file_::_%n files_" : ["%n archivo","%n archivos"],
     "{dirs} and {files}" : "{dirs} y {files}",
-    "_including %n hidden_::_including %n hidden_" : ["incluido %n oculto","incluidos %n ocultos"],
-    "_Uploading %n file_::_Uploading %n files_" : ["Subiendo %n archivo","Subiendo %n archivos"],
     "New" : "Nuevo",
     "Unknown user" : "Usuario desconocido",
     "Lock status" : "Estado de bloqueo",
@@ -86,7 +82,6 @@ OC.L10N.register(
     "Your storage is full, files can not be updated or synced anymore!" : "Su almacenamiento está lleno, ¡los archivos no se actualizarán ni sincronizarán más!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "El almacén de {owner} está casi lleno en un ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "Su almacenamiento está casi lleno ({usedSpacePercent}%)",
-    "_matches '{filter}'_::_match '{filter}'_" : ["coincidencias '{filter}'","coincidencia '{filter}'"],
     "{owner} has locked this resource via {path}" : "{owner} ha bloqueado este recurso a través de {path}",
     "Unlock" : "Desbloquear",
     "Could not unlock, please contact the lock owner {owner}" : "No se pudo desbloquear, comuníquese con el propietario del bloqueo {owner}",
@@ -94,7 +89,6 @@ OC.L10N.register(
     "Locks" : "Bloqueos",
     "Resource is not locked" : "Recurso no esta bloqueado",
     "Path" : "Ruta",
-    "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
     "Favorited" : "Agregado a Favoritos",
     "Favorite" : "Favorito",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Enlace privado: Solo las personas con acceso al archivo/carpeta pueden usarlo. Utilízalo como enlace permanente para ti o para dirigir a otros a archivos dentro de compartidos.",
@@ -140,4 +134,4 @@ OC.L10N.register(
     "Text file" : "Archivo de texto",
     "New text file.txt" : "Nuevo archivo de texto.txt"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

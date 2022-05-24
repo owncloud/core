@@ -6,5 +6,5 @@
     "Technical details" : "Dettagli tecnici",
     "Remote Address: %s" : "Indirizzo remoto: %s",
     "Request ID: %s" : "ID richiesta: %s"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }
