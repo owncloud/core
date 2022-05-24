@@ -158,7 +158,7 @@ class WebDavLockingContext implements Context {
 	 */
 	public function publicHasLockedLastSharedFile(TableNode $properties) {
 		$this->lockFile(
-			(string) $this->featureContext->getLastPublicShareData()->data->token,
+			$this->featureContext->getLastPublicShareToken(),
 			"/",
 			$properties,
 			true
@@ -174,7 +174,7 @@ class WebDavLockingContext implements Context {
 	 */
 	public function publicLocksLastSharedFile(TableNode $properties) {
 		$this->lockFile(
-			(string) $this->featureContext->getLastPublicShareData()->data->token,
+			$this->featureContext->getLastPublicShareToken(),
 			"/",
 			$properties,
 			true,
@@ -195,7 +195,7 @@ class WebDavLockingContext implements Context {
 		TableNode $properties
 	) {
 		$this->lockFile(
-			(string) $this->featureContext->getLastPublicShareData()->data->token,
+			$this->featureContext->getLastPublicShareToken(),
 			$file,
 			$properties,
 			true
@@ -217,7 +217,7 @@ class WebDavLockingContext implements Context {
 		TableNode $properties
 	) {
 		$this->lockFile(
-			(string) $this->featureContext->getLastPublicShareData()->data->token,
+			$this->featureContext->getLastPublicShareToken(),
 			$file,
 			$properties,
 			true,
@@ -278,7 +278,7 @@ class WebDavLockingContext implements Context {
 		$itemToUnlock,
 		$itemToUseLockOf
 	) {
-		$lockOwner = (string) $this->featureContext->getLastPublicShareData()->data->token;
+		$lockOwner = $this->featureContext->getLastPublicShareToken();
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user,
 			$itemToUnlock,
@@ -429,7 +429,7 @@ class WebDavLockingContext implements Context {
 		$lockOwner,
 		$itemToUseLockOf
 	) {
-		$user = (string) $this->featureContext->getLastPublicShareData()->data->token;
+		$user = $this->featureContext->getLastPublicShareToken();
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user,
 			$itemToUnlock,
@@ -447,7 +447,7 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function unlockItemAsPublicUsingWebDavAPI($itemToUnlock) {
-		$user = (string) $this->featureContext->getLastPublicShareData()->data->token;
+		$user = $this->featureContext->getLastPublicShareToken();
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user,
 			$itemToUnlock,
@@ -602,7 +602,7 @@ class WebDavLockingContext implements Context {
 		$itemToUseLockOf,
 		$publicWebDAVAPIVersion
 	) {
-		$lockOwner = (string) $this->featureContext->getLastPublicShareData()->data->token;
+		$lockOwner = $this->featureContext->getLastPublicShareToken();
 		$this->publicUploadFileSendingLockTokenOfUser(
 			$filename,
 			$content,

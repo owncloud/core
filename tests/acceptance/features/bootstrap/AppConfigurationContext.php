@@ -584,18 +584,18 @@ class AppConfigurationContext implements Context {
 	 */
 	public function expireLastCreatedPublicLinkShare():void {
 		$shareId = $this->featureContext->getLastPublicLinkShareId();
-		$this->expireLastCreatedUserShare($shareId);
+		$this->expireShare($shareId);
 	}
 
 	/**
-	 * Expires last created share using the testing API
+	 * Expires a share using the testing API
 	 *
-	 * @param string|null $shareId optional share id
+	 * @param string|null $shareId optional share id, if null then expire the last share that was created.
 	 *
 	 * @return void
 	 * @throws GuzzleException
 	 */
-	public function expireLastCreatedUserShare(string $shareId = null):void {
+	public function expireShare(string $shareId = null):void {
 		$adminUser = $this->featureContext->getAdminUsername();
 		if ($shareId === null) {
 			$shareId = $this->featureContext->getLastShareId();
@@ -620,7 +620,7 @@ class AppConfigurationContext implements Context {
 	 * @throws GuzzleException
 	 */
 	public function theAdministratorHasExpiredTheLastCreatedShare():void {
-		$this->expireLastCreatedUserShare();
+		$this->expireShare();
 		Assert::assertSame(
 			200,
 			$this->featureContext->getResponse()->getStatusCode(),
@@ -635,7 +635,6 @@ class AppConfigurationContext implements Context {
 	 * @throws GuzzleException
 	 */
 	public function theAdministratorHasExpiredTheLastCreatedPublicLinkShare():void {
-		// pdd
 		$this->expireLastCreatedPublicLinkShare();
 		Assert::assertSame(
 			200,
@@ -651,7 +650,7 @@ class AppConfigurationContext implements Context {
 	 * @throws GuzzleException
 	 */
 	public function theAdministratorExpiresTheLastCreatedShare():void {
-		$this->expireLastCreatedUserShare();
+		$this->expireShare();
 	}
 
 	/**

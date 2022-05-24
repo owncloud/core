@@ -123,7 +123,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function deleteFileFromPublicShare(string $fileName, string $publicWebDAVAPIVersion, string $password = ""):void {
-		$token = (string) $this->featureContext->getLastPublicShareData()->data->token;
+		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -174,7 +174,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function renameFileFromPublicShare(string $fileName, string $toFileName, string $publicWebDAVAPIVersion, ?string $password = ""):void {
-		$token = (string)$this->featureContext->getLastPublicShareData()->data->token;
+		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -292,7 +292,7 @@ class PublicWebDavContext implements Context {
 	):void {
 		$path = \ltrim($path, "/");
 		$password = $this->featureContext->getActualPassword($password);
-		$token = (string) $this->featureContext->getLastPublicShareData()->data->token;
+		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -403,7 +403,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function thePublicCopiesFileUsingTheWebDAVApi(string $source, string $destination, string $publicWebDAVAPIVersion):void {
-		$token = (string) $this->featureContext->getLastPublicShareData()->data->token;
+		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -1351,6 +1351,7 @@ class PublicWebDavContext implements Context {
 		string $fileName,
 		string $mtime
 	):void {
+		// pdd - this looks crap
 		$tokenArray = $this->featureContext->getLastPublicShareData()->data->token;
 		$token = (string)$tokenArray[0];
 		$baseUrl = $this->featureContext->getBaseUrl();
@@ -1393,6 +1394,7 @@ class PublicWebDavContext implements Context {
 		string $fileName,
 		string $mtime
 	):void {
+		// pdd - this looks crap
 		$tokenArray = $this->featureContext->getLastPublicShareData()->data->token;
 		$token = (string)$tokenArray[0];
 		$baseUrl = $this->featureContext->getBaseUrl();
