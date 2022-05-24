@@ -1351,9 +1351,7 @@ class PublicWebDavContext implements Context {
 		string $fileName,
 		string $mtime
 	):void {
-		// pdd - this looks crap
-		$tokenArray = $this->featureContext->getLastPublicShareData()->data->token;
-		$token = (string)$tokenArray[0];
+		$token = $this->featureContext->getLastPublicShareToken();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		if (\TestHelpers\OcisHelper::isTestingOnOcisOrReva()) {
 			$mtime = \explode(" ", $mtime);
@@ -1394,9 +1392,7 @@ class PublicWebDavContext implements Context {
 		string $fileName,
 		string $mtime
 	):void {
-		// pdd - this looks crap
-		$tokenArray = $this->featureContext->getLastPublicShareData()->data->token;
-		$token = (string)$tokenArray[0];
+		$token = $this->featureContext->getLastPublicShareToken();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		Assert::assertNotEquals(
 			$mtime,
