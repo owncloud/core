@@ -408,10 +408,17 @@ function run_behat_tests() {
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
+	# remove nullbytes from the test log
+	TEMP_CONTENT=$(tr < ${TEST_LOG_FILE} -d '\000')
+	OLD_IFS="${IFS}"
+	IFS=""
+	echo ${TEMP_CONTENT} > ${TEST_LOG_FILE}
+	IFS="${OLD_IFS}"
+
 	if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 	then
 		# Find the count of scenarios that passed
-		SCENARIO_RESULTS_COLORED=`grep -E '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
+		SCENARIO_RESULTS_COLORED=`grep -Ea '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
 		SCENARIO_RESULTS=$(echo "${SCENARIO_RESULTS_COLORED}" | sed "s/\x1b[^m]*m//g")
 		# They all passed, so just get the first number.
 		# The text looks like "1 scenario (1 passed)" or "123 scenarios (123 passed)"
@@ -425,14 +432,14 @@ function run_behat_tests() {
 		# requesting some tag combination that does not happen frequently. Then
 		# sometimes there may not be any matching scenarios in one of the suites.
 		# In this case, consider the test has passed.
-		MATCHING_COUNT=`grep -c '^No scenarios$' ${TEST_LOG_FILE}`
+		MATCHING_COUNT=`grep -ca '^No scenarios$' ${TEST_LOG_FILE}`
 		if [ ${MATCHING_COUNT} -eq 1 ]
 		then
 			echo "Information: no matching scenarios were found."
 			BEHAT_EXIT_STATUS=0
 		else
 			# Find the count of scenarios that passed and failed
-			SCENARIO_RESULTS_COLORED=`grep -E '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
+			SCENARIO_RESULTS_COLORED=`grep -Ea '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
 			SCENARIO_RESULTS=$(echo "${SCENARIO_RESULTS_COLORED}" | sed "s/\x1b[^m]*m//g")
 			if [[ ${SCENARIO_RESULTS} =~ [0-9]+[^0-9]+([0-9]+)[^0-9]+([0-9]+)[^0-9]+ ]]
 			then
@@ -449,7 +456,7 @@ function run_behat_tests() {
 		fi
 	fi
 
-	FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+	FAILED_SCENARIO_PATHS_COLORED=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep -a feature`
 	# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
 	# Strip them out so we can pass just the ordinary feature details to Behat.
 	# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
