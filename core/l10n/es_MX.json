@@ -121,6 +121,7 @@
     "Ok" : "Aceptar",
     "Error loading message template: {error}" : "Error cargando plantilla del mensaje: {error}",
     "read-only" : "solo-lectura",
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} conflicto de archivo","{count} conflictos de archivo","{count} conflictos de archivo"],
     "One file conflict" : "Un conflicto de archivo",
     "New Files" : "Nuevos archivos",
     "Already existing files" : "Archivos ya existentes",

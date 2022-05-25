@@ -68,6 +68,7 @@ OC.L10N.register(
     "Error loading file picker template: {error}" : "Error cargando la plantilla del selector de archivo: {error}",
     "Ok" : "Aceptar",
     "Error loading message template: {error}" : "Error cargando la plantilla del mensaje: {error}",
+    "_{count} file conflict_::_{count} file conflicts_" : ["un archivo en conflicto","{count} archivos en conflicto","{count} archivos en conflicto"],
     "One file conflict" : "Un archivo en conflicto",
     "New Files" : "Nuevos archivos",
     "Already existing files" : "Archivos ya existentes",
