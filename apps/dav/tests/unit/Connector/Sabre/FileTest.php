@@ -570,21 +570,32 @@ class FileTest extends TestCase {
 					'HTTP_X_OC_MTIME' => -34.43,
 					'expected result' => -34
 			],
+			/*
+			 * The ext4 file system supports file time stamps up to 0x3fffffff
+			 * which is a time on date 2446-05-10. So test that maximum case.
+			 * We want to know that time stamps work a "reasonable" time into
+			 * the future, but we know that different file system implementations
+			 * support different maximum time stamps.
+			 *
+			 * See issue https://github.com/owncloud/core/issues/40098 for
+			 * related discussion.
+			 */
 			"long int" => [
-					'HTTP_X_OC_MTIME' => PHP_INT_MAX,
-					'expected result' => PHP_INT_MAX
+					'HTTP_X_OC_MTIME' => 0x3fffffff,
+					'expected result' => 0x3fffffff
 			],
-			"too long int" => [
-					'HTTP_X_OC_MTIME' => PHP_INT_MAX + 1,
-					'expected result' => PHP_INT_MAX
-			],
+			/*
+			 * The ext4 file system supports negative file time stamps up to -0x80000000
+			 * which is a time on date 1901-12-13. So test that maximum negative case.
+			 * Negative values allow time stamps to be recorded for times before the
+			 * "zero"  time of 1970-01-01.
+			 * We want to know that time stamps work a "reasonable" time into
+			 * the past, but we know that different file system implementations
+			 * support different maximum negative time stamps.
+			 */
 			"long negative int" => [
-					'HTTP_X_OC_MTIME' => PHP_INT_MAX * - 1,
-					'expected result' => (PHP_INT_MAX * - 1)
-			],
-			"too long negative int" => [
-					'HTTP_X_OC_MTIME' => (PHP_INT_MAX * - 1) - 1,
-					'expected result' => (PHP_INT_MAX * - 1)
+					'HTTP_X_OC_MTIME' => -0x80000000,
+					'expected result' => -0x80000000
 			],
 		];
 	}
