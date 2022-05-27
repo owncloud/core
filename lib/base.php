@@ -508,7 +508,7 @@ class OC {
 		self::$CLI = (\in_array(\php_sapi_name(), ['cli', 'phpdbg']));
 
 		// setup 3rdparty autoloader
-		$vendorAutoLoad = OC::$SERVERROOT . '/lib/composer/autoload.php';
+		$vendorAutoLoad = OC::$SERVERROOT . '/vendor/autoload.php';
 		if (!\file_exists($vendorAutoLoad)) {
 			\printf('Composer autoloader not found, unable to continue. Please run "make".');
 			exit();

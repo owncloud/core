@@ -40,7 +40,7 @@ SHELL=/bin/bash
 YARN := $(shell command -v yarn 2> /dev/null)
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
-PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
+PHPUNIT="$(shell pwd)/vendor/phpunit/phpunit/phpunit"
 COMPOSER_BIN := $(shell command -v composer 2> /dev/null)
 
 # bin file definitions
@@ -69,8 +69,8 @@ export TESTING_REMOTE_SYSTEM?=true
 RELEASE_CHANNEL=git
 
 # internal aliases
-composer_deps=lib/composer
-composer_dev_deps=lib/composer/phpunit
+composer_deps=vendor
+composer_dev_deps=vendor/phpunit
 acceptance_test_deps=vendor-bin/behat/vendor
 nodejs_deps=build/node_modules
 core_vendor=core/vendor
@@ -164,7 +164,7 @@ update-composer:
 
 .PHONY: clean-composer-deps
 clean-composer-deps:
-	rm -Rf lib/composer
+	rm -Rf vendor
 	rm -Rf vendor-bin/**/vendor vendor-bin/**/composer.lock
 
 #
@@ -285,7 +285,7 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
 	rm -Rf $@/l10n/
 	find $@/core/ -iname \*.sh -delete
-	find $@/{apps/,lib/composer/,core/vendor/} \( \
+	find $@/{apps/,vendor/,core/vendor/} \( \
 		-name bin -o \
 		-name test -o \
 		-name tests -o \
@@ -296,7 +296,7 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 		-name travis -o \
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
-	find $@/{apps/,lib/composer/} -iname \*.exe -delete
+	find $@/{apps/,vendor/} -iname \*.exe -delete
 	# Set build
 	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
 	# Replace channel in version.php
@@ -330,14 +330,14 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(c
 	cp -RL $(core_all_src) $@
 	cp -Rf $(core_test_dirs) $@
 	cp -R $(core_config_files) $@/config
-	rm -Rf $@/lib/composer/bin; cp -R lib/composer/bin $@/lib/composer/bin
+	rm -Rf $@/vendor/bin; cp -R vendor/bin $@/vendor/bin
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
 	find $@ -name no-php -delete
 	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
 	rm -Rf $@/l10n/
 	find $@/core/ -iname \*.sh -delete
-	find $@/{apps/,lib/composer/,core/vendor/} \( \
+	find $@/{apps/,vendor/,core/vendor/} \( \
 		-name test -o \
 		-name examples -o \
 		-name demo -o \
@@ -346,7 +346,7 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(c
 		-name travis -o \
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
-	find $@/{apps/,lib/composer/} -iname \*.exe -delete
+	find $@/{apps/,vendor/} -iname \*.exe -delete
 	# Set build
 	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
 	# Replace channel in version.php
@@ -388,7 +388,7 @@ changelog:
 composer.lock: composer.json
 	@echo composer.lock is not up to date.
 
-vendor: composer.lock
+composer-no-dev: composer.lock
 	composer install --no-dev
 
 vendor/bamarni/composer-bin-plugin: composer.lock

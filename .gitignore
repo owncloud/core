@@ -37,6 +37,7 @@
 /apps/files_external/tests/config.*.php
 
 /lib/composer
+/vendor
 
 # ignore themes except the example and the README
 /themes/*

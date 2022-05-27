@@ -3,7 +3,6 @@
     "description": "A safe home for all your data",
     "license": "AGPL-1.0",
     "config" : {
-        "vendor-dir": "lib/composer",
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
