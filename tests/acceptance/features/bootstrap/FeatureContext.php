@@ -484,6 +484,10 @@ class FeatureContext extends BehatVariablesContext {
 	private $ldapCreatedGroups = [];
 	private $toDeleteLdapConfigs = [];
 	private $oldLdapConfig = [];
+	/**
+	 * @var null|string
+	 */
+	private $previousStep = null;
 
 	/**
 	 * @return Ldap
@@ -3620,6 +3624,27 @@ class FeatureContext extends BehatVariablesContext {
 			$this->stepLineRef = $this->scenarioString . '-' . $scope->getStep()->getLine();
 		} else {
 			$this->stepLineRef = '';
+		}
+	}
+
+	/**
+	 * Adds the necessary oC selector cookie to HTTP requests
+	 *
+	 * @BeforeStep
+	 *
+	 * @param BeforeStepScope $scope
+	 *
+	 * @return void
+	 */
+	public function beforeEachStepChangeOCSelector(BeforeStepScope $scope): void {
+		if (OcisHelper::isTestingParallelDeployment()) {
+			$step = $scope->getStep()->getKeywordType();
+			if ($step !== $this->previousStep) {
+				$this->previousStep = $step;
+				$selector = OcisHelper::getOCSelectorForStep($step);
+				$this->setOCSelector($selector);
+				HttpRequestHelper::setOCSelectorCookie("owncloud-selector=$selector;path=/;");
+			}
 		}
 	}
 

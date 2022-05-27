@@ -361,4 +361,72 @@ class OcisHelper {
 			$password
 		);
 	}
+
+	/**
+	 *
+	 * @param string $selector
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function validateOCSelector(string $selector): void {
+		$selectorOptions = ["oc10", "ocis"];
+		if (!\in_array($selector, $selectorOptions)) {
+			throw new Exception("Invalid selector '$selector'. Please provide one of these ['$selectorOptions[0]', '$selectorOptions[1]']");
+		};
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getOCSelectorGivenStep(): string {
+		$selector = \getenv("GIVEN_OC_SELECTOR");
+		$selector = $selector ? \strtolower($selector) : "oc10";
+		OcisHelper::validateOCSelector($selector);
+
+		return $selector;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getOCSelectorWhenStep(): string {
+		$selector = \getenv("WHEN_OC_SELECTOR");
+		$selector = $selector ? \strtolower($selector) : "ocis";
+		OcisHelper::validateOCSelector($selector);
+
+		return $selector;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getOCSelectorThenStep(): string {
+		$selector = \getenv("THEN_OC_SELECTOR");
+		$selector = $selector ? \strtolower($selector) : "ocis";
+		self::validateOCSelector($selector);
+
+		return $selector;
+	}
+
+	/**
+	 * @param string $step
+	 *
+	 * @return string
+	 */
+	public static function getOCSelectorForStep(string $step): string {
+		switch ($step) {
+			case "Given":
+				return self::getOCSelectorGivenStep();
+				break;
+			case "When":
+				return self::getOCSelectorWhenStep();
+				break;
+			case "Then":
+				return self::getOCSelectorThenStep();
+				break;
+			default:
+				throw new Exception("Unknown step name '$step'");
+		}
+	}
 }
