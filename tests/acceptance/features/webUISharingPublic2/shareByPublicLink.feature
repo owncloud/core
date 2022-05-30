@@ -156,15 +156,14 @@ Feature: Share by public link
     And the fields of the last response to user "Alice" should include
       | expiration | 14-10-2038 |
 
-  Scenario: share two file with same name but different paths by public link
+  Scenario: share two files with the same name but different paths by public link
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for file "lorem.txt" using the webUI
     And the user closes the details dialog
-    And the user opens folder "simple-folder" using the webUI
-    And the user creates a new public link for file "lorem.txt" using the webUI
+    And the user creates a new public link for file "simple-folder/lorem.txt" using the webUI
     And the user browses to the shared-by-link page
     Then file "lorem.txt" with path "" should be listed in the shared with others page on the webUI
     And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI

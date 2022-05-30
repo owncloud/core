@@ -772,6 +772,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @When the user creates a new public link for file/folder :name using the webUI with
 	 * @Given the user has created a new public link for file/folder :name using the webUI with
 	 *
+	 * The name can be a whole path to the file/folder. The test step will open each folder
+	 * to reach the final list of resources, and then create the public link for the final
+	 * resource.
+	 *
 	 * @param string $name
 	 * @param TableNode|null $settings table with the settings and no header
 	 *                                 possible settings: name, permission,
@@ -787,7 +791,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		string $name,
 		?TableNode $settings = null
 	):void {
-		$linkName = $this->createPublicShareLink($name, $settings);
+		$nameParts = \explode("/", $name);
+		$numberOfNameParts = \count($nameParts);
+		foreach ($nameParts as $key => $namePart) {
+			// open each folder in the path, so that the last item should be listed
+			if ($key === ($numberOfNameParts - 1)) {
+				$finalName = $namePart;
+			} else {
+				$this->webUIFilesContext->theUserOpensFolderNamedUsingTheWebUI(
+					"",
+					"folder",
+					"'$namePart'",
+					""
+				);
+			}
+		}
+		$linkName = $this->createPublicShareLink($finalName, $settings);
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
 		$urlParts = \explode("/", $linkUrl);
 		$shareToken = \end($urlParts);
