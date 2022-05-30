@@ -11,7 +11,7 @@ Feature: update a public link share
     And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share with settings
       | path | FOLDER |
-    When user "Alice" updates the last share using the sharing API with
+    When user "Alice" updates the last public link share using the sharing API with
       | expireDate | +3 days |
     Then the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Ok"
@@ -320,7 +320,7 @@ Feature: update a public link share
     And user "Brian" has created a public link share with settings
       | path         | /Shares/test |
       | publicUpload | false        |
-    When user "Brian" updates the last share using the sharing API with
+    When user "Brian" updates the last public link share using the sharing API with
       | publicUpload | true |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
@@ -380,7 +380,7 @@ Feature: update a public link share
     And user "Brian" has created a public link share with settings
       | path        | /Shares/test |
       | permissions | read         |
-    When user "Brian" updates the last share using the sharing API with
+    When user "Brian" updates the last public link share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
@@ -439,7 +439,7 @@ Feature: update a public link share
       | permissions | read,update,create,delete |
     And user "Alice" has updated the last public link share with
       | permissions | read |
-    When the public deletes file "CHILD/child.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    When the public deletes file "CHILD/child.txt" from the last public link share using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "PARENT/CHILD/child.txt" should exist
 
@@ -467,8 +467,8 @@ Feature: update a public link share
       | permissions | read    |
     And user "Alice" has updated the last public link share with
       | permissions | read,update,create,delete |
-    When the public deletes file "CHILD/child.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
-    And the public deletes file "parent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    When the public deletes file "CHILD/child.txt" from the last public link share using the <public-webdav-api-version> public WebDAV API
+    And the public deletes file "parent.txt" from the last public link share using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code of responses on all endpoints should be "204"
     And as "Alice" file "PARENT/CHILD/child.txt" should not exist
     And as "Alice" file "PARENT/parent.txt" should not exist
@@ -583,7 +583,7 @@ Feature: update a public link share
     And user "Alice" has created a public link share with settings
       | path | lorem.txt |
     And user "Alice" has moved file "/lorem.txt" to "/new-lorem.txt"
-    When user "Alice" gets the info of the last share using the sharing API
+    When user "Alice" gets the info of the last public link share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include

@@ -99,7 +99,7 @@ Feature: persistent-locking in case of a public link
   @smokeTest @skipOnOcV10.3
   Scenario Outline: Public locking is not supported
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    When the public locks "/CHILD" in the last public shared folder using the <public-webdav-api-version> public WebDAV API setting the following properties
+    When the public locks "/CHILD" in the last public link shared folder using the <public-webdav-api-version> public WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then the HTTP status code should be "405"
     And the value of the item "//s:message" in the response should be "Locking not allowed from public endpoint"

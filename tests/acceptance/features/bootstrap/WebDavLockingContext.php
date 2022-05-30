@@ -150,7 +150,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @Given the public has locked the last public shared file/folder setting the following properties
+	 * @Given the public has locked the last public link shared file/folder setting the following properties
 	 *
 	 * @param TableNode $properties
 	 *
@@ -166,7 +166,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When the public locks the last public shared file/folder using the WebDAV API setting the following properties
+	 * @When the public locks the last public link shared file/folder using the WebDAV API setting the following properties
 	 *
 	 * @param TableNode $properties
 	 *
@@ -183,7 +183,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @Given the public has locked :file in the last public shared folder setting the following properties
+	 * @Given the public has locked :file in the last public link shared folder setting the following properties
 	 *
 	 * @param string $file
 	 * @param TableNode $properties
@@ -203,7 +203,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When /^the public locks "([^"]*)" in the last public shared folder using the (old|new) public WebDAV API setting the following properties$/
+	 * @When /^the public locks "([^"]*)" in the last public link shared folder using the (old|new) public WebDAV API setting the following properties$/
 	 *
 	 * @param string $file
 	 * @param string $publicWebDAVAPIVersion

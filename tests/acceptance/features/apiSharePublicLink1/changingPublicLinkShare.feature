@@ -14,7 +14,7 @@ Feature: changing a public link share
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT       |
       | permissions | <permissions> |
-    When the public deletes file "parent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    When the public deletes file "parent.txt" from the last public link share using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "<http-status-code>"
     And as "Alice" file "PARENT/parent.txt" <should-or-not> exist
 
@@ -35,7 +35,7 @@ Feature: changing a public link share
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public link share using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/PARENT/parent.txt" should exist
     And as "Alice" file "/PARENT/newparent.txt" should not exist
@@ -55,7 +55,7 @@ Feature: changing a public link share
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public link share using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "/PARENT/parent.txt" should not exist
     And as "Alice" file "/PARENT/newparent.txt" should exist
@@ -114,7 +114,7 @@ Feature: changing a public link share
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "parent.txt" from the last public share using the password "invalid" and <public-webdav-api-version> public WebDAV API
+    When the public deletes file "parent.txt" from the last public link share using the password "invalid" and <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "401"
     And as "Alice" file "PARENT/parent.txt" should exist
 
@@ -134,7 +134,7 @@ Feature: changing a public link share
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "parent.txt" from the last public share using the password "newpasswd" and <public-webdav-api-version> public WebDAV API
+    When the public deletes file "parent.txt" from the last public link share using the password "newpasswd" and <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" file "PARENT/parent.txt" should not exist
 
@@ -154,7 +154,7 @@ Feature: changing a public link share
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "invalid" and <public-webdav-api-version> public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public link share using the password "invalid" and <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "401"
     And as "Alice" file "/PARENT/newparent.txt" should not exist
     And as "Alice" file "/PARENT/parent.txt" should exist
@@ -175,7 +175,7 @@ Feature: changing a public link share
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "newpasswd" and <public-webdav-api-version> public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public link share using the password "newpasswd" and <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "/PARENT/newparent.txt" should exist
     And as "Alice" file "/PARENT/parent.txt" should not exist
@@ -235,7 +235,7 @@ Feature: changing a public link share
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT         |
       | permissions | uploadwriteonly |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public link share using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/PARENT/parent.txt" should exist
     And as "Alice" file "/PARENT/newparent.txt" should not exist
@@ -255,7 +255,7 @@ Feature: changing a public link share
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT         |
       | permissions | uploadwriteonly |
-    When the public deletes file "parent.txt" from the last public share using the <public-webdav-api-version> public WebDAV API
+    When the public deletes file "parent.txt" from the last public link share using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "PARENT/parent.txt" should exist
 

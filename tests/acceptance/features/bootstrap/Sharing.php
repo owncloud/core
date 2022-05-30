@@ -2087,9 +2087,9 @@ trait Sharing {
 		if ($lastPublicShareData !== null) {
 			$shareId = (string) $lastPublicShareData->data[0]->id;
 		} else {
-			// ToDo: what should we do here? Throw an exception? PDD
-			//       We really need to already have knowledge of the last public share
-			$shareId = $this->getLastShareIdOf($user);
+			throw new Exception(
+				__METHOD__ . " last public link share data was not found"
+			);
 		}
 		$language = TranslationHelper::getLanguage($language);
 		$this->getShareData($user, $shareId, $language);
