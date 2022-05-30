@@ -789,6 +789,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	):void {
 		$linkName = $this->createPublicShareLink($name, $settings);
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
+		// ToDo: need to find out the share id of the public link share that was just created on the webUI
+		$urlParts = \explode("/", $linkUrl);
+		$shareId = \end($urlParts);
+		echo "\nshare id '$shareId'\n";
+		$this->featureContext->setLastPublicLinkShareId($shareId);
 		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 	}
 

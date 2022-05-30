@@ -59,9 +59,20 @@ trait Sharing {
 	private $userWhoCreatedLastPublicShare = null;
 
 	/**
+	 * Contains the API response to the last public link share that was created
+	 * by the test-runner using the Sharing API.
+	 *
 	 * @var SimpleXMLElement
 	 */
 	private $lastPublicShareData = null;
+
+	/**
+	 * Contains the share id of the last public link share that was created by
+	 * the test-runner, either using the Sharing API or on the web UI.
+	 *
+	 * @var string
+	 */
+	private $lastPublicShareId = null;
 
 	/**
 	 * @var int
@@ -155,6 +166,7 @@ trait Sharing {
 	 */
 	public function resetLastPublicShareData():void {
 		$this->lastPublicShareData = null;
+		$this->lastPublicShareId = null;
 		$this->userWhoCreatedLastPublicShare = null;
 	}
 
@@ -1126,6 +1138,7 @@ trait Sharing {
 		if ($this->response->getStatusCode() === 204) {
 			if ($shareType === 'public_link') {
 				$this->lastPublicShareData = null;
+				$this->lastPublicShareId = null;
 				$this->userWhoCreatedLastPublicShare = null;
 			} else {
 				$this->resetLastShareDataForUser($user);
@@ -1133,6 +1146,7 @@ trait Sharing {
 		} else {
 			if ($shareType === 'public_link') {
 				$this->lastPublicShareData = $this->getResponseXml(null, __METHOD__);
+				$this->setLastPublicLinkShareId((string) $this->lastPublicShareData->data[0]->id);
 				$this->userWhoCreatedLastPublicShare = $user;
 				if (isset($this->lastPublicShareData->data)) {
 					$linkName = (string) $this->lastPublicShareData->data[0]->name;
@@ -2083,9 +2097,8 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastPublicLinkShareUsingTheSharingApi(string $user, ?string $language = null):void {
-		$lastPublicShareData = $this->getLastPublicShareData();
-		if ($lastPublicShareData !== null) {
-			$shareId = (string) $lastPublicShareData->data[0]->id;
+		if ($this->lastPublicShareId !== null) {
+			$shareId = $this->lastPublicShareId;
 		} else {
 			throw new Exception(
 				__METHOD__ . " last public link share data was not found"
@@ -2160,20 +2173,23 @@ trait Sharing {
 	}
 
 	/**
+	 * Sets the id of the last public link shared file
+	 *
+	 * @param string $shareId
+	 *
+	 * @return void
+	 */
+	public function setLastPublicLinkShareId(string $shareId):void {
+		$this->lastPublicShareId = $shareId;
+	}
+
+	/**
 	 * Retrieves the id of the last public link shared file
 	 *
 	 * @return string|null
 	 */
 	public function getLastPublicLinkShareId():?string {
-		$shareData = $this->getLastPublicShareData();
-		if ($shareData->data) {
-			// id is a SimpleXMLElement object that contains the share id
-			// which is a string.
-			// (It might be a numeric string or might not, either is fine.)
-			return (string) $shareData->data[0]->id;
-		} else {
-			return null;
-		}
+		return $this->lastPublicShareId;
 	}
 
 	/**
