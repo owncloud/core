@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '7113055a76743043344ffa1d01ecedabcbce6e8c',
+        'reference' => '47ec05bd4207d44f25c63b32f708b37dd777f890',
         'name' => 'files_external/3rdparty',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '7113055a76743043344ffa1d01ecedabcbce6e8c',
+            'reference' => '47ec05bd4207d44f25c63b32f708b37dd777f890',
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
@@ -92,12 +92,12 @@
             'dev_requirement' => false,
         ),
         'icewind/smb' => array(
-            'pretty_version' => 'v3.5.2',
-            'version' => '3.5.2.0',
+            'pretty_version' => 'v3.5.4',
+            'version' => '3.5.4.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../icewind/smb',
             'aliases' => array(),
-            'reference' => '0a425bd21acf7ae112b135dca34640e1b1a825c3',
+            'reference' => '76995aa11c14e39bccd0f2370ed63b2f8f623a6d',
             'dev_requirement' => false,
         ),
         'icewind/streams' => array(
