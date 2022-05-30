@@ -2998,7 +2998,14 @@ trait Sharing {
 	}
 
 	/**
-	 * Returns shares of a file or folders as an array of elements
+	 * Returns shares of a file or folder as a SimpleXMLElement
+	 *
+	 * Note: the "single" SimpleXMLElement may contain one or more actual
+	 * shares (to users, groups or public links etc). If you access an item directly,
+	 * for example, getShares()->id, then the value of "id" for the first element
+	 * will be returned. To access all the elements, you can loop through the
+	 * returned SimpleXMLElement with "foreach" - it will act like a PHP array
+	 * of elements.
 	 *
 	 * @param string $user
 	 * @param string $path

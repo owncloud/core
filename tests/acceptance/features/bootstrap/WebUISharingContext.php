@@ -789,10 +789,29 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	):void {
 		$linkName = $this->createPublicShareLink($name, $settings);
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
-		// ToDo: need to find out the share id of the public link share that was just created on the webUI
 		$urlParts = \explode("/", $linkUrl);
-		$shareId = \end($urlParts);
-		echo "\nshare id '$shareId'\n";
+		$shareToken = \end($urlParts);
+		// Find the share id of the share that has this share token.
+		// We want to remember it so that later "Then" steps can check
+		// attributes of the "last public link share" by using the share id to
+		// access the sharing API.
+		$currentUser = $this->featureContext->getCurrentUser();
+		$shareData = $this->featureContext->getShares($currentUser, $name);
+		$shareId = null;
+		foreach ($shareData as $shareItem) {
+			if ((string) $shareItem->token === $shareToken) {
+				$shareId = (string) $shareItem->id;
+				break;
+			}
+		}
+		if ($shareId === null) {
+			// Fail early here. We know that there was some trouble with the share.
+			// It will be confusing if we continue to later steps that try to use
+			// a non-existent share id.
+			throw new Exception(
+				__METHOD__ . " share with token '$shareToken' for user '$currentUser' could not be found."
+			);
+		}
 		$this->featureContext->setLastPublicLinkShareId($shareId);
 		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 	}
