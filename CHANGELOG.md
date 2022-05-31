@@ -52,9 +52,11 @@ Details
    The following have been updated: - doctrine/cache (2.1.1 to 2.2.0)
 
    The following have been updated in apps/files_external/3rdparty: -
-   google/apiclient-services (0.244.0 to 0.250.0) - monolog/monolog (2.5.0 to 2.6.0)
+   google/apiclient-services (0.244.0 to 0.250.0) - icewind/smb (3.5.2 to 3.5.4) -
+   monolog/monolog (2.5.0 to 2.6.0)
 
    https://github.com/owncloud/core/pull/40092
+   https://github.com/owncloud/core/pull/40110
 
 * Change - Update Symfony components: [#40111](https://github.com/owncloud/core/pull/40111)
 
