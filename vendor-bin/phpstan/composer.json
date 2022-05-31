@@ -1,5 +1,5 @@
 {
     "require": {
-        "phpstan/phpstan": "1.7.1"
+        "phpstan/phpstan": "1.7.7"
     }
 }
