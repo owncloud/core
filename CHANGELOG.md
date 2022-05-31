@@ -13,6 +13,7 @@ Summary
 * Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
 * Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
 * Change - Update PHP dependencies: [#40092](https://github.com/owncloud/core/pull/40092)
+* Change - Update Symfony components: [#40111](https://github.com/owncloud/core/pull/40111)
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 
 Details
@@ -54,6 +55,13 @@ Details
    google/apiclient-services (0.244.0 to 0.250.0) - monolog/monolog (2.5.0 to 2.6.0)
 
    https://github.com/owncloud/core/pull/40092
+
+* Change - Update Symfony components: [#40111](https://github.com/owncloud/core/pull/40111)
+
+   The following Symfony components have been updated to: - event-dispatcher 4.4.42
+
+   https://github.com/owncloud/core/pull/40111
+   https://symfony.com/blog/symfony-4-4-42-released
 
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 
