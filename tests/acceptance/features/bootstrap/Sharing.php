@@ -1134,8 +1134,10 @@ trait Sharing {
 			$this->sharingApiVersion,
 			$sharingApp
 		);
-		// In case of HTTP status code 204, there is no content in response payload body.
-		if ($this->response->getStatusCode() === 204) {
+		// In case of HTTP status code 204 "no content", or a failure code like 4xx
+		// there is no content in response payload body. Clear the test-runner's memory
+		// of "last share data" to avoid later steps accidentally using some previous share data.
+		if (($this->response->getStatusCode() === 204) || !$this->theHTTPStatusCodeWasSuccess()) {
 			if ($shareType === 'public_link') {
 				$this->lastPublicShareData = null;
 				$this->lastPublicShareId = null;
