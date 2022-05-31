@@ -187,9 +187,12 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function resetLastShareDataForUser(string $user):void {
+	public function resetLastShareInfoForUser(string $user):void {
 		if (isset($this->lastShareDataByUser[$user])) {
 			unset($this->lastShareDataByUser[$user]);
+		}
+		if (isset($this->lastShareIdByUser[$user])) {
+			unset($this->lastShareIdByUser[$user]);
 		}
 	}
 
@@ -1160,7 +1163,7 @@ trait Sharing {
 				$this->lastPublicShareId = null;
 				$this->userWhoCreatedLastPublicShare = null;
 			} else {
-				$this->resetLastShareDataForUser($user);
+				$this->resetLastShareInfoForUser($user);
 			}
 		} else {
 			if ($shareType === 'public_link') {
