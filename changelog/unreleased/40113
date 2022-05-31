@@ -1,0 +1,8 @@
+Enhancement: Add additional columns to background job queue status
+
+Command `occ background:queue:status` now shows additional columns for:
+- Last Checked
+- Reserved At
+- Execution Duration
+
+https://github.com/owncloud/core/pull/40113

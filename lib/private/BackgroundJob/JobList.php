@@ -81,6 +81,8 @@ class JobList implements IJobList {
 					'argument' => $query->createNamedParameter($argument),
 					'last_run' => $query->createNamedParameter(0, IQueryBuilder::PARAM_INT),
 					'last_checked' => $query->createNamedParameter($this->timeFactory->getTime(), IQueryBuilder::PARAM_INT),
+					'reserved_at' => $query->createNamedParameter(0, IQueryBuilder::PARAM_INT),
+					'execution_duration' => $query->createNamedParameter(-1, IQueryBuilder::PARAM_INT),
 				]);
 			$query->execute();
 		}
@@ -265,6 +267,9 @@ class JobList implements IJobList {
 			$job->setId($row['id']);
 			$job->setLastRun($row['last_run']);
 			$job->setArgument(\json_decode($row['argument'], true));
+			$job->setLastChecked($row['last_checked']);
+			$job->setReservedAt($row['reserved_at']);
+			$job->setExecutionDuration($row['execution_duration']);
 
 			return $job;
 		} catch (AutoloadNotAllowedException $e) {

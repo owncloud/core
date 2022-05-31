@@ -4,7 +4,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -41,6 +41,21 @@ abstract class Job implements IJob {
 	 * @var mixed $argument
 	 */
 	protected $argument;
+
+	/**
+	 * @var int $lastChecked
+	 */
+	protected $lastChecked;
+
+	/**
+	 * @var int $reservedAt
+	 */
+	protected $reservedAt;
+
+	/**
+	 * @var int $executionDuration
+	 */
+	protected $executionDuration;
 
 	/**
 	 * @param JobList $jobList
@@ -105,6 +120,18 @@ abstract class Job implements IJob {
 	public function setArgument($argument) {
 		$this->argument = $argument;
 	}
+	
+	public function setLastChecked(int $lastChecked): void {
+		$this->lastChecked = $lastChecked;
+	}
+	
+	public function setReservedAt(int $reservedAt): void {
+		$this->reservedAt = $reservedAt;
+	}
+
+	public function setExecutionDuration(int $executionDuration): void {
+		$this->executionDuration = $executionDuration;
+	}
 
 	public function getId() {
 		return $this->id;
@@ -116,5 +143,17 @@ abstract class Job implements IJob {
 
 	public function getArgument() {
 		return $this->argument;
+	}
+
+	public function getLastChecked(): int {
+		return $this->lastChecked;
+	}
+
+	public function getReservedAt(): int {
+		return $this->reservedAt;
+	}
+
+	public function getExecutionDuration(): int {
+		return $this->executionDuration;
 	}
 }
