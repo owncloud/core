@@ -44,9 +44,20 @@ trait Sharing {
 	private $sharingApiVersion = 1;
 
 	/**
-	 * @var SimpleXMLElement
+	 * Contains the API response to the last share that was created by each user
+	 * using the Sharing API. Shares created on the webUI do not have an entry.
+	 *
+	 * @var SimpleXMLElement[]
 	 */
 	private $lastShareDataByUser = [];
+
+	/**
+	 * Contains the share id of the last share that was created by each user,
+	 * either using the Sharing API or on the web UI.
+	 *
+	 * @var string[]
+	 */
+	private $lastShareIdByUser = [];
 
 	/**
 	 * @var string
@@ -61,6 +72,7 @@ trait Sharing {
 	/**
 	 * Contains the API response to the last public link share that was created
 	 * by the test-runner using the Sharing API.
+	 * Shares created on the webUI do not have an entry.
 	 *
 	 * @var SimpleXMLElement
 	 */
@@ -958,7 +970,7 @@ trait Sharing {
 			if ($shareOwner === null) {
 				$share_id = $this->getLastShareData()->data[0]->id;
 			} else {
-				$share_id = $this->getLastShareIdOf($shareOwner);
+				$share_id = $this->getLastShareIdForUser($shareOwner);
 			}
 		}
 
@@ -1161,8 +1173,10 @@ trait Sharing {
 					$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 				}
 			} else {
-				$this->lastShareDataByUser[$user] = $this->getResponseXml(null, __METHOD__);
-				$this->userWhoCreatedLastShare = $user;
+				$shareData = $this->getResponseXml(null, __METHOD__);
+				$this->lastShareDataByUser[$user] = $shareData;
+				$shareId = (string) $shareData->data[0]->id;
+				$this->setLastShareIdOf($user, $shareId);
 			}
 		}
 		$this->localLastShareTime = \microtime(true);
@@ -2073,13 +2087,9 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi(string $user, ?string $language = null):void {
-		if (isset($this->getLastShareData()->data[0]->id)) {
-			$share_id = $this->getLastShareData()->data[0]->id;
-		} else {
-			$share_id = $this->getLastShareIdOf($user);
-		}
+		$shareId = $this->getLastShareIdForUser($user);
 		$language = TranslationHelper::getLanguage($language);
-		$this->getShareData($user, (string)$share_id, $language);
+		$this->getShareData($user, $shareId, $language);
 		$this->pushToLastStatusCodesArrays();
 	}
 
@@ -2157,26 +2167,16 @@ trait Sharing {
 	}
 
 	/**
-	 * Get id of the last share of the user
-	 *
-	 * If lastShareData was not of $user, it fetches all shares for that user,
-	 * and extracts the id for last share from the response
+	 * Sets the id of the last shared file
 	 *
 	 * @param string $user
+	 * @param string $shareId
 	 *
-	 * @return string|null
-	 * @throws Exception
+	 * @return void
 	 */
-	public function getLastShareIdOf(string $user):?string {
-		$user = $this->getActualUsername($user);
-
-		$this->getListOfShares($user);
-		$id = $this->extractLastSharedIdFromLastResponse();
-		Assert::assertNotNull(
-			$id,
-			__METHOD__ . " Could not find id in the last response."
-		);
-		return $id;
+	public function setLastShareIdOf(string $user, string $shareId):void {
+		$this->lastShareIdByUser[$user] = $shareId;
+		$this->userWhoCreatedLastShare = $user;
 	}
 
 	/**
@@ -2214,14 +2214,15 @@ trait Sharing {
 	 * @return string|null
 	 */
 	public function getLastShareIdForUser(string $user):?string {
-		$shareData = $this->getLastShareDataForUser($user);
-		if ($shareData->data) {
-			// id is a SimpleXMLElement object that contains the share id
-			// which is a string.
-			// (It might be a numeric string or might not, either is fine.)
-			return (string) $shareData->data[0]->id;
+		if ($user === null) {
+			throw new Exception(
+				__METHOD__ . " user not specified. Probably no user or group shares have been created yet in the test scenario."
+			);
+		}
+		if (isset($this->lastShareIdByUser[$user])) {
+			return $this->lastShareIdByUser[$user];
 		} else {
-			return null;
+			throw new Exception(__METHOD__ . " last share id for user '$user' was not found");
 		}
 	}
 
@@ -2245,22 +2246,6 @@ trait Sharing {
 			$this->ocsApiVersion
 		);
 		return $this->response;
-	}
-
-	/**
-	 * Extracts `id` from responseXml
-	 *
-	 * @return string|null
-	 */
-	public function extractLastSharedIdFromLastResponse():?string {
-		// extract max id
-		$xpath = '/ocs/data/element/id[not (. < ../../element/id)][1]';
-		$responseXml = $this->getResponseXml(null, __METHOD__);
-		$id = $responseXml->xpath($xpath);
-		if ((bool) $id) {
-			return (string) $id[0];
-		}
-		return null;
 	}
 
 	/**
@@ -2534,16 +2519,11 @@ trait Sharing {
 		TableNode $body
 	):void {
 		$user = $this->getActualUsername($user);
-		$this->getListOfShares($user);
-		$share_id = $this->extractLastSharedIdFromLastResponse();
-		Assert::assertNotNull(
-			$share_id,
-			__METHOD__ . " Could not find id in the last response."
-		);
-		$this->getShareData($user, $share_id);
+		$shareId = $this->getLastShareIdForUser($user);
+		$this->getShareData($user, $shareId);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
-			"Error getting info of last share for user $user"
+			"Error getting info of last share for user $user with share id $shareId"
 		);
 		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
 		$this->checkFields($user, $body);
