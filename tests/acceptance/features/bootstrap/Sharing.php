@@ -971,7 +971,7 @@ trait Sharing {
 			$share_id = $this->getLastPublicLinkShareId();
 		} else {
 			if ($shareOwner === null) {
-				$share_id = $this->getLastShareData()->data[0]->id;
+				$share_id = $this->getLastShareId();
 			} else {
 				$share_id = $this->getLastShareIdForUser($shareOwner);
 			}
@@ -2090,7 +2090,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi(string $user, ?string $language = null):void {
-		$shareId = $this->getLastShareIdForUser($user);
+		$shareId = $this->getLastShareId();
 		$language = TranslationHelper::getLanguage($language);
 		$this->getShareData($user, $shareId, $language);
 		$this->pushToLastStatusCodesArrays();
