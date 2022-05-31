@@ -1,0 +1,7 @@
+Change: Update Symfony components
+
+The following Symfony components have been updated to:
+- event-dispatcher 4.4.42
+
+https://symfony.com/blog/symfony-4-4-42-released
+https://github.com/owncloud/core/pull/40111
