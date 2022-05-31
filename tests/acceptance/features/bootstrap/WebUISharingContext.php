@@ -349,6 +349,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * The resource can be a whole path to the file/folder. The test step will open each folder
+	 * to reach the final list of resources, and then create the public link for the final
+	 * resource.
+	 *
 	 * @param string $resource
 	 * @param string|null $userOrGroup (user|group)
 	 * @param string|null $remote (remote|federated|)
@@ -373,8 +377,25 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		} catch (Exception $e) {
 			//we don't care
 		}
+		// If the resource to share is a path with nested folders, then first
+		// open each of the folders until the last resource should be displayed.
+		$resourceParts = \explode("/", $resource);
+		$numberOfResourceParts = \count($resourceParts);
+		foreach ($resourceParts as $key => $resourcePart) {
+			// open each folder in the path, so that the last item should be listed
+			if ($key === ($numberOfResourceParts - 1)) {
+				$finalResource = $resourcePart;
+			} else {
+				$this->webUIFilesContext->theUserOpensFolderNamedUsingTheWebUI(
+					"",
+					"folder",
+					"'$resourcePart'",
+					""
+				);
+			}
+		}
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$resource,
+			$finalResource,
 			$this->getSession()
 		);
 		if ($userOrGroup === "user") {
@@ -408,9 +429,16 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$currentUser = $this->featureContext->getCurrentUser();
 		$shareData = $this->featureContext->getShares($currentUser, $resource);
 		$shareId = null;
+		// The share might have been moved somewhere else in an earlier test step
+		// If so, then getPathOfMovedReceivedShare will know the expected path.
+		$expectedPathOfShare = $this->webUIFilesContext->getPathOfMovedReceivedShare();
+		if ($expectedPathOfShare === "") {
+			// The share should be in its usual path, indicated by "resource" that was passed in.
+			$expectedPathOfShare = $resource;
+		}
 		foreach ($shareData as $shareItem) {
 			$sharePath = (string) $shareItem->path;
-			if (\trim($sharePath, "/") === \trim($resource, "/")) {
+			if (\trim($sharePath, "/") === \trim($expectedPathOfShare, "/")) {
 				$shareId = (string) $shareItem->id;
 				break;
 			}
