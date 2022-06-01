@@ -918,7 +918,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->moveFileTo($name, $destination, $this->getSession());
 		// A received share has been moved. Remember that this exists as a new share path,
-		// so that other steps can be aware of it. pdd
+		// so that other steps can be aware of it.
 		$this->pathOfMovedReceivedShare = "$destination/$name";
 	}
 
