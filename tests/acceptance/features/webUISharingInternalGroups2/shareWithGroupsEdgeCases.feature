@@ -467,15 +467,17 @@ Feature: Sharing files and folders with internal groups
     And user "Alice" has shared file "/simple-folder/simple-inner-folder" with group "grp1" with permissions "read"
     And user "Alice" has shared file "/simple-folder/simple-inner-folder/simple-inner-inner-folder" with group "grp2" with permissions "read,share,delete"
     And user "Brian" has logged in using the webUI
-    When the user shares file "simple-inner-inner-folder/textfile-2.txt" with group "grp3" using the webUI
+    When the user shares file "simple-folder/simple-inner-folder/simple-inner-inner-folder/textfile-2.txt" with group "grp3" using the webUI
     Then the following permissions are seen for "textfile-2.txt" in the sharing dialog for group "grp3"
+      | edit   | yes |
+      | change | yes |
       | share  | yes |
     And the information for user "Alice" about the received share of file "textfile-2.txt" shared with a group should include
       | share_type  | group           |
       | file_target | /textfile-2.txt |
       | uid_owner   | Brian           |
       | share_with  | grp3            |
-      | permissions | 17              |
+      | permissions | 19              |
 
   @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Reshares with groups of subfolder with lower permissions

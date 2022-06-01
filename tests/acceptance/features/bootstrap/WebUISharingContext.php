@@ -470,9 +470,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				// The share should be in its usual path, indicated by "resource" that was passed in.
 				$expectedPathOfShare = $resource;
 			}
+			$slashExpectedPathOfShare = "/" . \trim($expectedPathOfShare, "/");
 			foreach ($shareData as $shareItem) {
 				$sharePath = (string) $shareItem->path;
-				if (\trim($sharePath, "/") === \trim($expectedPathOfShare, "/")) {
+				$slashSharePath = "/" . \trim($sharePath, "/");
+				// The user might have navigated down multiple folders /a/b/c and shared "d".
+				// Normally the share path will be /a/b/c/d
+				// But the user might have received "a" as a share, but also "b" as a separate share.
+				// (maybe the two shares were to two different groups and the user is a member of both)
+				// Then the user will also have a path to "d" that is b/c/d only.
+				// And the share response actually provides that path.
+				// So match any share path like /b/c/d or /c/d if it appears at the end of the expected path,
+				// even though it is not the whole of the expected path.
+				// Note: if (str_ends_with($expectedPathOfShare, $slashSharePath)) - will work from PHP8
+				if (substr($slashExpectedPathOfShare, -strlen($slashSharePath)) === $slashSharePath) {
 					$shareId = (string) $shareItem->id;
 					break;
 				}
