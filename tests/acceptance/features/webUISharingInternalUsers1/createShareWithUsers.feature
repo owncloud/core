@@ -190,7 +190,10 @@ Feature: Sharing files and folders with internal users
     When the user uploads file "textfile.txt" using the webUI
     Then as "Alice" file "simple-folder/textfile.txt" should not exist
     And file "textfile.txt" should not be listed on the webUI
-    When the user shares file "lorem.txt" with user "Carol" using the webUI
+    # Go back to the home page so that the "user shares file" step can navigate its own way
+    # into simple-folder and will "know where it is"
+    When the user browses to the home page
+    And the user shares file "simple-folder/lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist
 
   @skipOnOcV10.3
