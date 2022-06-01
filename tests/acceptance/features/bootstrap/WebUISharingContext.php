@@ -483,7 +483,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				// So match any share path like /b/c/d or /c/d if it appears at the end of the expected path,
 				// even though it is not the whole of the expected path.
 				// Note: if (str_ends_with($expectedPathOfShare, $slashSharePath)) - will work from PHP8
-				if (substr($slashExpectedPathOfShare, -strlen($slashSharePath)) === $slashSharePath) {
+				if (substr($slashExpectedPathOfShare, -\strlen($slashSharePath)) === $slashSharePath) {
 					$shareId = (string) $shareItem->id;
 					break;
 				}
