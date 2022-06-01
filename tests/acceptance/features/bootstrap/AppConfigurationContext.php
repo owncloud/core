@@ -577,20 +577,35 @@ class AppConfigurationContext implements Context {
 	}
 
 	/**
-	 * Expires last created share using the testing API
+	 * Expires last created public link share using the testing API
 	 *
 	 * @return void
 	 * @throws GuzzleException
 	 */
-	public function expireLastCreatedUserShare():void {
+	public function expireLastCreatedPublicLinkShare():void {
+		$shareId = $this->featureContext->getLastPublicLinkShareId();
+		$this->expireShare($shareId);
+	}
+
+	/**
+	 * Expires a share using the testing API
+	 *
+	 * @param string|null $shareId optional share id, if null then expire the last share that was created.
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function expireShare(string $shareId = null):void {
 		$adminUser = $this->featureContext->getAdminUsername();
-		$share_id = $this->featureContext->getLastShareId();
+		if ($shareId === null) {
+			$shareId = $this->featureContext->getLastShareId();
+		}
 		$response = OcsApiHelper::sendRequest(
 			$this->featureContext->getBaseUrl(),
 			$adminUser,
 			$this->featureContext->getAdminPassword(),
 			'POST',
-			"/apps/testing/api/v1/expire-share/{$share_id}",
+			"/apps/testing/api/v1/expire-share/{$shareId}",
 			$this->featureContext->getStepLineRef(),
 			[],
 			$this->featureContext->getOcsApiVersion()
@@ -605,11 +620,26 @@ class AppConfigurationContext implements Context {
 	 * @throws GuzzleException
 	 */
 	public function theAdministratorHasExpiredTheLastCreatedShare():void {
-		$this->expireLastCreatedUserShare();
+		$this->expireShare();
 		Assert::assertSame(
 			200,
 			$this->featureContext->getResponse()->getStatusCode(),
 			"Request to expire last share failed."
+		);
+	}
+
+	/**
+	 * @Given the administrator has expired the last created public link share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorHasExpiredTheLastCreatedPublicLinkShare():void {
+		$this->expireLastCreatedPublicLinkShare();
+		Assert::assertSame(
+			200,
+			$this->featureContext->getResponse()->getStatusCode(),
+			"Request to expire last public link share failed."
 		);
 	}
 
@@ -620,7 +650,17 @@ class AppConfigurationContext implements Context {
 	 * @throws GuzzleException
 	 */
 	public function theAdministratorExpiresTheLastCreatedShare():void {
-		$this->expireLastCreatedUserShare();
+		$this->expireShare();
+	}
+
+	/**
+	 * @When the administrator expires the last created public link share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorExpiresTheLastCreatedPublicLinkShare():void {
+		$this->expireLastCreatedPublicLinkShare();
 	}
 
 	/**

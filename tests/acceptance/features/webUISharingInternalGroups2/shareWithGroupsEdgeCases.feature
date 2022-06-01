@@ -366,8 +366,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has shared folder "/simple-folder" with group "grp1"
     And user "Alice" has logged in using the webUI
     When the user shares folder "simple-folder" with group "grp2" using the webUI
-    And the user opens folder "simple-folder" using the webUI
-    And the user shares folder "simple-empty-folder" with group "grp2" using the webUI
+    And the user shares folder "simple-folder/simple-empty-folder" with group "grp2" using the webUI
     Then as "Alice" folder "/simple-folder" should exist
     And user "Alice" should be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
     And as "Alice" folder "/simple-empty-folder" should not exist
@@ -389,8 +388,7 @@ Feature: Sharing files and folders with internal groups
     And the user sets the sharing permissions of group "grp2" for "simple-folder" using the webUI to
       | edit   | no |
       | create | no |
-    And the user opens folder "simple-folder" using the webUI
-    And the user shares folder "simple-empty-folder" with group "grp2" using the webUI
+    And the user shares folder "simple-folder/simple-empty-folder" with group "grp2" using the webUI
     And the user sets the sharing permissions of group "grp2" for "simple-empty-folder" using the webUI to
       | edit   | no |
       | create | no |
@@ -438,8 +436,7 @@ Feature: Sharing files and folders with internal groups
     And user "Alice" has been added to group "grp1"
     And user "Carol" has uploaded file with content "some data" to "/simple-folder/simple-inner-folder/simple-inner-inner-folder/textfile-1.txt"
     And user "Carol" has logged in using the webUI
-    And the user opens folder "/simple-folder/simple-inner-folder/simple-inner-inner-folder" using the webUI
-    When the user shares file "textfile-1.txt" with group "grp1" using the webUI
+    When the user shares file "simple-folder/simple-inner-folder/simple-inner-inner-folder/textfile-1.txt" with group "grp1" using the webUI
     Then the following permissions are seen for "textfile-1.txt" in the sharing dialog for group "grp1"
       | edit   | yes |
       | change | yes |
@@ -470,8 +467,7 @@ Feature: Sharing files and folders with internal groups
     And user "Alice" has shared file "/simple-folder/simple-inner-folder" with group "grp1" with permissions "read"
     And user "Alice" has shared file "/simple-folder/simple-inner-folder/simple-inner-inner-folder" with group "grp2" with permissions "read,share,delete"
     And user "Brian" has logged in using the webUI
-    And the user opens folder "/simple-folder/simple-inner-folder/simple-inner-inner-folder" using the webUI
-    When the user shares file "textfile-2.txt" with group "grp3" using the webUI
+    When the user shares file "simple-folder/simple-inner-folder/simple-inner-inner-folder/textfile-2.txt" with group "grp3" using the webUI
     Then the following permissions are seen for "textfile-2.txt" in the sharing dialog for group "grp3"
       | edit   | yes |
       | change | yes |
@@ -501,8 +497,7 @@ Feature: Sharing files and folders with internal groups
     And user "Alice" has shared file "/simple-folder" with group "grp2" with permissions "all"
     And user "Alice" has shared file "/simple-folder/simple-inner-folder" with group "grp1" with permissions "read"
     And user "Alice" has logged in using the webUI
-    And the user opens folder "/simple-folder" using the webUI
-    When the user shares folder "simple-inner-folder" with group "grp3" using the webUI
+    When the user shares folder "simple-folder/simple-inner-folder" with group "grp3" using the webUI
     Then the following permissions are seen for "simple-inner-folder" in the sharing dialog for group "grp3"
       | edit   | yes |
       | change | yes |
@@ -530,19 +525,23 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has shared folder "/simple-folder" with user "Alice" with permissions "all"
     And user "Alice" has shared folder "/simple-folder" with group "grp2" with permissions "all"
     And user "Alice" has shared folder "/simple-folder/simple-inner-folder" with group "grp1" with permissions "read"
-    And user "Brian" has created folder "/renamed-simple-folder"
+    And user "Brian" has created folder "/other-folder"
     And user "Brian" has logged in using the webUI
     When the user opens the sharing tab from the file action menu of folder "simple-inner-folder" using the webUI
     Then the user should see an error message on the share dialog saying "Sharing is not allowed"
     # now move received simple-inner-folder into some folder
-    And the user moves folder "simple-inner-folder" into folder "renamed-simple-folder" using the webUI
-    And the user opens folder "/renamed-simple-folder" using the webUI
+    # this effectively moves the read-only share of this folder with grp1
+    # and so sharing is not allowed for /other-folder/simple-inner-folder
+    And the user moves received folder "simple-inner-folder" into folder "other-folder" using the webUI
+    And the user opens folder "/other-folder" using the webUI
     When the user opens the sharing tab from the file action menu of folder "simple-inner-folder" using the webUI
     Then the user should see an error message on the share dialog saying "Sharing is not allowed"
-    # after move, sharing folder simple-inner-folder again but with different group should be possible
+    # simple-inner-folder is also still shown in simple-folder. In that view, it is just a sub-folder
+    # of the share of simple-folder with grp2 with all permissions.
+    # So that "view" of simple-inner-folder can be reshared.
+    # This is an unusual edge case combination. The test scenario demonstrates the current behavior.
     And the user browses to the home page
-    And the user opens folder "/simple-folder" using the webUI
-    When the user shares folder "simple-inner-folder" with group "grp3" using the webUI
+    When the user shares folder "simple-folder/simple-inner-folder" with group "grp3" using the webUI
     Then the following permissions are seen for "simple-inner-folder" in the sharing dialog for group "grp3"
       | edit   | yes |
       | change | yes |

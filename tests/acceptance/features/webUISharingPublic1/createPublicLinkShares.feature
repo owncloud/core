@@ -236,7 +236,7 @@ Feature: Share by public link
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for file "lorem.txt" using the webUI with
       | expiration |  |
-    And user "Alice" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last public link share using the sharing API
     Then the fields of the last response to user "Alice" should include
       | expiration |  |
 
@@ -256,7 +256,7 @@ Feature: Share by public link
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for file "lorem.txt" using the webUI
-    And user "Alice" gets the info of the last share using the sharing API
+    And user "Alice" gets the info of the last public link share using the sharing API
     Then the fields of the last response to user "Alice" should include
       | expiration | +7 days |
 

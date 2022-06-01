@@ -298,7 +298,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function publicGetsThePropertiesOfFolder(string $path, TableNode $propertiesTable):void {
-		$user = (string) $this->featureContext->getLastShareData()->data->token;
+		$user = $this->featureContext->getLastPublicShareToken();
 		$properties = null;
 		if ($propertiesTable instanceof TableNode) {
 			foreach ($propertiesTable->getRows() as $row) {

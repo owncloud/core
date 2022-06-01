@@ -138,7 +138,7 @@ Feature: Share by public link
       | shareType  | public_link |
     And user "Alice" has logged in using the webUI
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "21-07-2038"
-    And the user gets the info of the last share using the sharing API
+    And the user gets the info of the last public link share using the sharing API
     Then the fields of the last response to user "Alice" should include
       | expiration | 21-07-2038 |
 
@@ -151,20 +151,19 @@ Feature: Share by public link
       | shareType  | public_link |
     And user "Alice" has logged in using the webUI
     When the user changes the expiration of the public link named "Public link" of file "lorem.txt" to "14-09-2017"
-    And the user gets the info of the last share using the sharing API
+    And the user gets the info of the last public link share using the sharing API
     Then the user should see an error message on the public link share dialog saying "Expiration date is in the past"
     And the fields of the last response to user "Alice" should include
       | expiration | 14-10-2038 |
 
-  Scenario: share two file with same name but different paths by public link
+  Scenario: share two files with the same name but different paths by public link
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for file "lorem.txt" using the webUI
     And the user closes the details dialog
-    And the user opens folder "simple-folder" using the webUI
-    And the user creates a new public link for file "lorem.txt" using the webUI
+    And the user creates a new public link for file "simple-folder/lorem.txt" using the webUI
     And the user browses to the shared-by-link page
     Then file "lorem.txt" with path "" should be listed in the shared with others page on the webUI
     And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI
@@ -232,7 +231,7 @@ Feature: Share by public link
     And user "Alice" has logged in using the webUI
     And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
     Then the user should see an error message on the public link popup saying "Expiration date is required"
-    And the user gets the info of the last share using the sharing API
+    And the user gets the info of the last public link share using the sharing API
     And the fields of the last response to user "Alice" should include
       | expiration | + 5 days |
 
@@ -246,7 +245,7 @@ Feature: Share by public link
       | shareType  | public_link |
     And user "Alice" has logged in using the webUI
     And the user changes the expiration of the public link named "Public link" of file "lorem.txt" to " "
-    And the user gets the info of the last share using the sharing API
+    And the user gets the info of the last public link share using the sharing API
     And the fields of the last response to user "Alice" should include
       | expiration |  |
 

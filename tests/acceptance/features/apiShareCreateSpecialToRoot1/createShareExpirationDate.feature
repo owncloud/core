@@ -831,10 +831,9 @@ Feature: a default expiration date can be specified for shares with users or gro
       | path       | /textfile0.txt  |
       | shareWith  | brand-new-group |
       | expireDate | +15 days        |
-    And the administrator has expired the last created share using the testing API
+    And the administrator has expired the last created public link share using the testing API
     When the public accesses the preview of file "textfile0.txt" from the last shared public link using the sharing API
     Then the HTTP status code should be "404"
-    And user "Alice" should not see the share id of the last share
     And as "Alice" file "/textfile0.txt" should exist
 
 

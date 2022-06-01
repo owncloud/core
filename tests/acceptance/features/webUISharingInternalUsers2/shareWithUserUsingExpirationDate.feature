@@ -253,8 +253,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | permissions | read,share     |
       | expireDate  | +15 days       |
     And user "Alice" has logged in using the webUI
-    When the user opens folder "simple-folder" using the webUI
-    And the user shares file "simple-empty-folder" with user "Brian" using the webUI without closing the share dialog
+    When the user shares file "simple-folder/simple-empty-folder" with user "Brian" using the webUI without closing the share dialog
     Then the expiration date input field should be "+30 days" for the user "Brian" in the share dialog
     When the user changes expiration date for share of user "Brian" to "+20 days" in the share dialog
     And the information of the last share of user "Alice" should include

@@ -1566,7 +1566,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function publicGetsSizeOfLastSharedPublicLinkUsingTheWebdavApi():void {
-		$tokenArray = $this->getLastShareData()->data->token;
+		$tokenArray = $this->getLastPublicShareData()->data->token;
 		$token = (string)$tokenArray[0];
 		$url = $this->getBaseUrl() . "/remote.php/dav/public-files/{$token}";
 		$this->response = HttpRequestHelper::sendRequest(
@@ -5123,7 +5123,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function theLastPublicDavResponseShouldContainTheseNodes(TableNode $table):void {
-		$user = (string) $this->getLastShareData()->data->token;
+		$user = $this->getLastPublicShareToken();
 		$this->verifyTableNodeColumns($table, ["name"]);
 		$type = $this->usingOldDavPath ? "public-files" : "public-files-new";
 		foreach ($table->getHash() as $row) {
@@ -5142,7 +5142,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function theLastPublicDavResponseShouldNotContainTheseNodes(TableNode $table):void {
-		$user = (string) $this->getLastShareData()->data->token;
+		$user = $this->getLastPublicShareToken();
 		$this->verifyTableNodeColumns($table, ["name"]);
 		$type = $this->usingOldDavPath ? "public-files" : "public-files-new";
 		foreach ($table->getHash() as $row) {
@@ -5161,7 +5161,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function thePublicListsTheResourcesInTheLastCreatedPublicLinkWithDepthUsingTheWebdavApi(string $depth):void {
-		$user = (string) $this->getLastShareData()->data->token;
+		$user = $this->getLastPublicShareToken();
 		$response = $this->listFolder(
 			$user,
 			'/',

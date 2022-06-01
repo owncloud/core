@@ -32,8 +32,7 @@ Feature: Reshare by public link
     And user "Alice" has uploaded file with content "some content" to "/simple-folder/sub-folder/randomfile.txt"
     And user "Alice" has shared folder "/simple-folder" with user "Brian" with permissions "share,read"
     And user "Brian" has logged in using the webUI
-    When the user opens folder "simple-folder" using the webUI
-    And the user creates a new public link for folder "sub-folder" using the webUI
+    When the user creates a new public link for folder "simple-folder/sub-folder" using the webUI
     And the public accesses the last created public link using the webUI
     Then file "randomfile.txt" should be listed on the webUI
 
@@ -42,8 +41,7 @@ Feature: Reshare by public link
     And user "Alice" has uploaded file with content "some content" to "/simple-folder/randomfile.txt"
     And user "Alice" has shared folder "/simple-folder" with user "Brian" with permissions "share,read"
     And user "Brian" has logged in using the webUI
-    When the user opens folder "simple-folder" using the webUI
-    And the user creates a new public link for file "randomfile.txt" using the webUI
+    When the user creates a new public link for file "simple-folder/randomfile.txt" using the webUI
     And the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "some content"
 
@@ -68,8 +66,7 @@ Feature: Reshare by public link
     And user "Alice" has shared folder "/simple-folder" with user "Brian" with permissions "share,read"
     And parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And user "Brian" has logged in using the webUI
-    When the user opens folder "simple-folder" using the webUI
-    And the user creates a new public link for file "randomfile.txt" using the webUI with
+    When the user creates a new public link for file "simple-folder/randomfile.txt" using the webUI with
       | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email from user "Brian" with the body containing
       """

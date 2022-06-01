@@ -25,7 +25,7 @@ Feature: create a public link share
       | uid_file_owner         | %username%      |
       | uid_owner              | %username%      |
       | name                   |                 |
-    When the public downloads the last public shared file using the <public-webdav-api-version> public WebDAV API
+    When the public downloads the last public link shared file using the <public-webdav-api-version> public WebDAV API
     Then the downloaded content should be "Random data"
     And the public upload to the last publicly shared file using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "403"
 
@@ -162,7 +162,7 @@ Feature: create a public link share
       | uid_file_owner         | %username%           |
       | uid_owner              | %username%           |
       | name                   |                      |
-    When the public downloads file "/randomfile.txt" from inside the last public shared folder using the <public-webdav-api-version> public WebDAV API
+    When the public downloads file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
     Then the downloaded content should be "Random data"
     And the public upload to the last publicly shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "403"
 
@@ -201,10 +201,10 @@ Feature: create a public link share
       | uid_file_owner         | %username%           |
       | uid_owner              | %username%           |
       | name                   |                      |
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the <public-webdav-api-version> public WebDAV API with password "%public%"
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API with password "%public%"
     And the downloaded content should be "Random data"
-    But the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the <public-webdav-api-version> public WebDAV API without a password
-    And the public should not be able to download file "/randomfile.txt" from inside the last public shared folder using the <public-webdav-api-version> public WebDAV API with password "%regular%"
+    But the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API without a password
+    And the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API with password "%regular%"
 
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
@@ -331,7 +331,7 @@ Feature: create a public link share
       | path        | /afolder |
       | permissions | read     |
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    When user "Alice" tries to update the last share using the sharing API with
+    When user "Alice" tries to update the last public link share using the sharing API with
       | permissions | read,create |
     Then the OCS status code should be "<ocs_status_code>"
 
@@ -461,7 +461,7 @@ Feature: create a public link share
       | uid_file_owner         | %username%           |
       | uid_owner              | %username%           |
       | name                   |                      |
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the <public-webdav-api-version> public WebDAV API
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
     And the downloaded content should be "Random data"
     And the public upload to the last publicly shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "403"
 
@@ -508,7 +508,7 @@ Feature: create a public link share
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the <public-webdav-api-version> public WebDAV API
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
     And the downloaded content should be "Random data"
 
     @notToImplementOnOCIS @issue-ocis-2079
@@ -541,7 +541,7 @@ Feature: create a public link share
       | permissions | read            |
       | uid_owner   | %username%      |
       | expiration  | +7 days         |
-    When user "Alice" gets the info of the last share using the sharing API
+    When user "Alice" gets the info of the last public link share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the fields of the last response to user "Alice" should include
@@ -574,7 +574,7 @@ Feature: create a public link share
       | path        | PARENT |
       | permissions | read   |
     When user "Alice" deletes folder "PARENT" using the WebDAV API
-    And the public download of file "/parent.txt" from inside the last public shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "404"
+    And the public download of file "/parent.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "404"
 
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
@@ -593,7 +593,7 @@ Feature: create a public link share
     And user "Alice" has created a public link share with settings
       | path        | PARENT          |
       | permissions | uploadwriteonly |
-    When the public downloads file "parent.txt" from inside the last public shared folder using the <public-webdav-api-version> public WebDAV API
+    When the public downloads file "parent.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
     Then the value of the item "//s:message" in the response should be "<response>"
     And the HTTP status code should be "404"
 
@@ -652,7 +652,7 @@ Feature: create a public link share
     And user "Alice" has created a public link share with settings
       | path        | /testFolder               |
       | permissions | read,update,create,delete |
-    When the public uploads file "file.txt" to the last shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
+    When the public uploads file "file.txt" to the last public link shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "testFolder/file.txt" should exist
     And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
@@ -665,7 +665,7 @@ Feature: create a public link share
     And user "Alice" creates a public link share using the sharing API with settings
       | path        | /testFolder               |
       | permissions | read,update,create,delete |
-    And the public uploads file "file.txt" to the last shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
+    And the public uploads file "file.txt" to the last public link shared folder with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the new public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" file "/testFolder/file.txt" should exist
     And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
@@ -684,7 +684,7 @@ Feature: create a public link share
       | path               | /textfile0.txt |
       | name               | link2          |
       | expireDateAsString | +5 days        |
-    And the administrator expires the last created share using the testing API
+    And the administrator expires the last created public link share using the testing API
     Then the HTTP status code should be "<http_status_code>"
     When user "Alice" gets all the shares from the file "textfile0.txt" using the sharing API
     Then the HTTP status code should be "<http_status_code>"

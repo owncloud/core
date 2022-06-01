@@ -24,7 +24,7 @@ Feature: reshare as public link
       | publicUpload | false        |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public shared folder using the old public WebDAV API
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API
     And the downloaded content should be "some content"
     But uploading a file should not work using the old public WebDAV API
     Examples:
@@ -44,7 +44,7 @@ Feature: reshare as public link
       | publicUpload | false        |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public shared folder using the old public WebDAV API
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API
     And the downloaded content should be "some content"
     But uploading a file should not work using the old public WebDAV API
     Examples:
@@ -65,7 +65,7 @@ Feature: reshare as public link
       | publicUpload | true                      |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public shared folder using the old public WebDAV API
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API
     And the downloaded content should be "some content"
     And uploading a file should work using the old public WebDAV API
     Examples:
@@ -84,7 +84,7 @@ Feature: reshare as public link
       | path         | /Shares/test |
       | permissions  | read         |
       | publicUpload | false        |
-    When user "Brian" updates the last share using the sharing API with
+    When user "Brian" updates the last public link share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
@@ -106,7 +106,7 @@ Feature: reshare as public link
       | permissions  | read             |
       | publicUpload | false            |
     And uploading a file should not work using the old public WebDAV API
-    When user "Brian" updates the last share using the sharing API with
+    When user "Brian" updates the last public link share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
