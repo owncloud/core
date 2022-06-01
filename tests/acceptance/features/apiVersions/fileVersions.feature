@@ -478,6 +478,12 @@ Feature: dav-versions
     And the downloaded content should be "uploaded content"
 
 
+  Scenario: User can retrieve meta information of a root folder
+    When user "Alice" retrieves the meta information of file "/" using the meta API
+    Then the HTTP status code should be "207"
+    And the single response should contain a property "oc:meta-path-for-user" with value "/"
+
+
   Scenario: User can retrieve meta information of a file
     Given user "Alice" has uploaded file with content "123" to "/davtest.txt"
     When user "Alice" retrieves the meta information of file "/davtest.txt" using the meta API
