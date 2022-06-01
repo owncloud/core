@@ -146,6 +146,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string|null $username
 	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 * @param boolean $expectedToWork
 	 *
 	 * @return void
 	 * @throws Exception
@@ -156,7 +157,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		string $user,
 		?string $username = null,
 		int $maxRetries = STANDARD_RETRY_COUNT,
-		bool $quiet = false
+		bool $quiet = false,
+		bool $expectedToWork = true
 	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		if ($remote === "remote" || $remote === "federated") {
@@ -168,7 +170,36 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$remote,
 			$user,
 			$maxRetries,
-			$quiet
+			$quiet,
+			$expectedToWork
+		);
+	}
+
+	/**
+	 * @When /^the user tries to share (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" ?(?:with displayname "([^"]*)")? using the webUI$/
+	 *
+	 * @param string $folder
+	 * @param string $remote
+	 * @param string $user
+	 * @param string|null $username
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserTriesToShareFileFolderWithUserUsingTheWebUI(
+		string $folder,
+		string $remote,
+		string $user,
+		?string $username = null
+	):void {
+		$this->theUserSharesFileFolderWithUserUsingTheWebUI(
+			$folder,
+			$remote,
+			$user,
+			$username,
+			STANDARD_RETRY_COUNT,
+			false,
+			false
 		);
 	}
 
@@ -359,6 +390,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string|null $name
 	 * @param int $maxRetries
 	 * @param bool $quiet
+	 * @param bool $expectedToWork
 	 *
 	 * @return void
 	 * @throws Exception
@@ -369,7 +401,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		?string $remote,
 		?string $name,
 		int     $maxRetries = STANDARD_RETRY_COUNT,
-		bool    $quiet = false
+		bool    $quiet = false,
+		bool    $expectedToWork = true
 	):void {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
@@ -424,34 +457,36 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$maxRetries
 			);
 		}
-		// Use the sharing API to find the share that has been created.
-		// And remember the share id so that later steps can know the latest share.
-		$currentUser = $this->featureContext->getCurrentUser();
-		$shareData = $this->featureContext->getShares($currentUser, $resource);
-		$shareId = null;
-		// The share might have been moved somewhere else in an earlier test step
-		// If so, then getPathOfMovedReceivedShare will know the expected path.
-		$expectedPathOfShare = $this->webUIFilesContext->getPathOfMovedReceivedShare();
-		if ($expectedPathOfShare === "") {
-			// The share should be in its usual path, indicated by "resource" that was passed in.
-			$expectedPathOfShare = $resource;
-		}
-		foreach ($shareData as $shareItem) {
-			$sharePath = (string) $shareItem->path;
-			if (\trim($sharePath, "/") === \trim($expectedPathOfShare, "/")) {
-				$shareId = (string) $shareItem->id;
-				break;
+		if ($expectedToWork) {
+			// Use the sharing API to find the share that has been created.
+			// And remember the share id so that later steps can know the latest share.
+			$currentUser = $this->featureContext->getCurrentUser();
+			$shareData = $this->featureContext->getShares($currentUser, $resource);
+			$shareId = null;
+			// The share might have been moved somewhere else in an earlier test step
+			// If so, then getPathOfMovedReceivedShare will know the expected path.
+			$expectedPathOfShare = $this->webUIFilesContext->getPathOfMovedReceivedShare();
+			if ($expectedPathOfShare === "") {
+				// The share should be in its usual path, indicated by "resource" that was passed in.
+				$expectedPathOfShare = $resource;
 			}
+			foreach ($shareData as $shareItem) {
+				$sharePath = (string) $shareItem->path;
+				if (\trim($sharePath, "/") === \trim($expectedPathOfShare, "/")) {
+					$shareId = (string) $shareItem->id;
+					break;
+				}
+			}
+			if ($shareId === null) {
+				// Fail early here. We know that there was some trouble with the share.
+				// It will be confusing if we continue to later steps that try to use
+				// a non-existent share id.
+				throw new Exception(
+					__METHOD__ . " share with path '$resource' for user '$currentUser' could not be found."
+				);
+			}
+			$this->featureContext->setLastShareIdOf($currentUser, $shareId);
 		}
-		if ($shareId === null) {
-			// Fail early here. We know that there was some trouble with the share.
-			// It will be confusing if we continue to later steps that try to use
-			// a non-existent share id.
-			throw new Exception(
-				__METHOD__ . " share with path '$resource' for user '$currentUser' could not be found."
-			);
-		}
-		$this->featureContext->setLastShareIdOf($currentUser, $shareId);
 	}
 
 	/**
@@ -488,6 +523,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string|null $name
 	 * @param int $maxRetries
 	 * @param bool $quiet
+	 * @param bool $expectedToWork
 	 *
 	 * @return void
 	 * @throws Exception
@@ -498,7 +534,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		?string $remote,
 		?string $name,
 		int $maxRetries = STANDARD_RETRY_COUNT,
-		bool $quiet = false
+		bool $quiet = false,
+		bool $expectedToWork = true
 	):void {
 		$this->theUserSharesUsingWebUIWithoutClosingDialog(
 			$folder,
@@ -506,7 +543,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$remote,
 			$name,
 			$maxRetries,
-			$quiet
+			$quiet,
+			$expectedToWork
 		);
 		$this->theUserClosesTheShareDialog();
 	}

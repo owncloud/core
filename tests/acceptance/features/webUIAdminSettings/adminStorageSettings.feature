@@ -178,5 +178,5 @@ Feature: admin storage settings
     And the administrator has enabled read-only for the last created local storage mount using the webUI
     And the administrator has enabled sharing for the last created local storage mount using the webUI
     And the user has re-logged in as "Alice" using the webUI
-    When the user shares folder "local_storage1" with user "Brian" using the webUI
+    When the user tries to share folder "local_storage1" with user "Brian" using the webUI
     And as "Brian" folder "local_storage1" should exist
