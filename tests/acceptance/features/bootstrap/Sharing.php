@@ -2509,6 +2509,36 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^the response when user "([^"]*)" gets the info of the last public link share should include$/
+	 *
+	 * @param string $user
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theResponseWhenUserGetsInfoOfLastPublicLinkShareShouldInclude(
+		string $user,
+		?TableNode $body
+	):void {
+		$user = $this->getActualUsername($user);
+		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
+		$this->getShareData($user, (string)$this->getLastPublicLinkShareId());
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"Error getting info of last public link share for user $user"
+		);
+		$this->ocsContext->assertOCSResponseIndicatesSuccess(
+			__METHOD__ .
+			' Error getting info of last public link share for user $user\n' .
+			$this->ocsContext->getOCSResponseStatusMessage(
+				$this->getResponse()
+			) . '"'
+		);
+		$this->checkFields($user, $body);
+	}
+
+	/**
 	 * @Then the information of the last share of user :user should include
 	 *
 	 * @param string $user
