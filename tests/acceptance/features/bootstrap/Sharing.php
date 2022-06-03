@@ -2005,15 +2005,20 @@ trait Sharing {
 	/**
 	 * @param string $user
 	 * @param string|null $sharer
+	 * @param bool $deleteLastPublicLink
 	 *
 	 * @return void
 	 */
-	public function deleteLastShareUsingSharingApi(string $user, string $sharer = null):void {
+	public function deleteLastShareUsingSharingApi(string $user, string $sharer = null, bool $deleteLastPublicLink = false):void {
 		$user = $this->getActualUsername($user);
-		if ($sharer === null) {
-			$sharer = $user;
+		if ($deleteLastPublicLink) {
+			$shareId = $this->getLastPublicLinkShareId();
+		} else {
+			if ($sharer === null) {
+				$sharer = $user;
+			}
+			$shareId = $this->getLastShareIdForUser($sharer);
 		}
-		$shareId = $this->getLastShareIdForUser($sharer);
 		$url = $this->getSharesEndpointPath("/$shareId");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
@@ -2040,6 +2045,19 @@ trait Sharing {
 	 */
 	public function userDeletesLastShareUsingTheSharingApi(string $user):void {
 		$this->deleteLastShareUsingSharingApi($user);
+		$this->pushToLastStatusCodesArrays();
+	}
+
+	/**
+	 * @When /^user "([^"]*)" deletes the last public link share using the sharing API$/
+	 * @When /^user "([^"]*)" tries to delete the last public link share using the sharing API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userDeletesLastPublicLinkShareUsingTheSharingApi(string $user):void {
+		$this->deleteLastShareUsingSharingApi($user, null, true);
 		$this->pushToLastStatusCodesArrays();
 	}
 
@@ -2617,6 +2635,21 @@ trait Sharing {
 		if ($this->isFieldInResponse('id', $shareId, false)) {
 			Assert::fail(
 				"Share id $shareId has been found in response"
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the last public link share id should not be included in the response/
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function checkLastPublicLinkShareIDIsNotIncluded():void {
+		$shareId = $this->getLastPublicLinkShareId();
+		if ($this->isFieldInResponse('id', $shareId, false)) {
+			Assert::fail(
+				"Public link share id $shareId has been found in response"
 			);
 		}
 	}
