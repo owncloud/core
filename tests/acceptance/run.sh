@@ -183,7 +183,7 @@ export LANG=C
 # sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml data
 # @return occ return code given in the xml data
 function remote_occ() {
-	if [ "${TEST_OCIS}" == "true" ] || [ "${TEST_REVA}" == "true" ]
+	if [ "${TEST_OCIS}" == "true" ] || [ "${TEST_REVA}" == "true" ] && [ "${TEST_PARALLEL_DEPLOYMENT}" != "true" ]
 	then
 		return 0
 	fi
@@ -208,7 +208,7 @@ function remote_occ() {
 # @param $3 commands
 # exists with 1 and sets $REMOTE_OCC_STDERR if any of the occ commands returned a non-zero code
 function remote_bulk_occ() {
-	if [ "${TEST_OCIS}" == "true" ] || [ "${TEST_REVA}" == "true" ]
+	if [ "${TEST_OCIS}" == "true" ] || [ "${TEST_REVA}" == "true" ] && [ "${TEST_PARALLEL_DEPLOYMENT}" != "true" ]
 	then
 		return 0
 	fi
@@ -726,7 +726,12 @@ then
 	# The endpoint to use to do occ commands via the testing app
 	# set it already here, so it can be used for remote_occ
 	# we know the TEST_SERVER_URL already
-	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
+	if [ "${TEST_PARALLEL_DEPLOYMENT}" != "true" ]
+	then
+		TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
+	else
+		TESTING_APP_URL="${TEST_OC10_URL}/ocs/v2.php/apps/testing/api/v1/"
+	fi
 	OCC_URL="${TESTING_APP_URL}occ"
 	# test that server is up and running, and testing app is enabled.
 	assert_server_up ${TEST_SERVER_URL}

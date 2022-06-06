@@ -376,7 +376,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function autoAcceptSharesHasBeenDisabled():void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
+		if (OcisHelper::isTestingOnOcisOrReva() && !OcisHelper::isTestingParallelDeployment()) {
 			// auto-accept shares is disabled by default on OCIS.
 			// so there is nothing to do, just return
 			return;

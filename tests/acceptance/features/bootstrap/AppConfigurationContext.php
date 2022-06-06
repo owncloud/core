@@ -72,12 +72,9 @@ class AppConfigurationContext implements Context {
 	 * @throws Exception
 	 */
 	public function serverParameterHasBeenSetTo(string $parameter, string $app, string $value):void {
-		// The capturing group of the regex always includes the quotes at each
-		// end of the captured string, so trim them.
-		if (\TestHelpers\OcisHelper::isTestingOnOcisOrReva()) {
+		if (\TestHelpers\OcisHelper::isTestingOnOcisOrReva() && !\TestHelpers\OcisHelper::isTestingParallelDeployment()) {
 			return;
 		}
-		$value = \trim($value, $value[0]);
 		$this->modifyAppConfig($app, $parameter, $value);
 		$this->featureContext->clearStatusCodeArrays();
 	}

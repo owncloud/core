@@ -659,13 +659,7 @@ trait Provisioning {
 		$this->ldap->bind();
 
 		$ldifFile = __DIR__ . (string)$suiteParameters['ldapInitialUserFilePath'];
-		if (OcisHelper::isTestingParallelDeployment()) {
-			$behatYml = \getenv("BEHAT_YML");
-			if ($behatYml) {
-				$configPath = \dirname($behatYml);
-				$ldifFile = $configPath . "/" . \basename($ldifFile);
-			}
-		}
+
 		if (!$this->skipImportLdif) {
 			$this->importLdifFile($ldifFile);
 		}

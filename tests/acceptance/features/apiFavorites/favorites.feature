@@ -1,4 +1,4 @@
-@api
+@api @skipOnParallelDeployment
 Feature: favorite
 
   Background:
