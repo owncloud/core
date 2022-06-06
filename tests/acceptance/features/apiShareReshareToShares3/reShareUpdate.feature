@@ -133,9 +133,9 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-
-  Scenario Outline: After losing share permissions user can still delete a previously reshared share
-    Given using OCS API version "<ocs_api_version>"
+  @reva-issue-2916
+  Scenario: After losing share permissions user can still delete a previously reshared share
+    Given using OCS API version "1"
     And user "Alice" has created folder "/TMP"
     And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
     And user "Brian" has accepted share "/TMP" offered by user "Alice"
@@ -144,10 +144,21 @@ Feature: sharing
     And user "Alice" has updated the last share of "Alice" with
       | permissions | create,update,read |
     When user "Brian" deletes the last share using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Carol" should not have any received shares
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+
+  @reva-issue-2916
+  Scenario: After losing share permissions user can still delete a previously reshared share
+    Given using OCS API version "2"
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
+    And user "Brian" has accepted share "/TMP" offered by user "Alice"
+    And user "Brian" has shared folder "Shares/TMP" with user "Carol" with permissions "share,create,update,read"
+    And user "Carol" has accepted share "/TMP" offered by user "Brian"
+    And user "Alice" has updated the last share of "Alice" with
+      | permissions | create,update,read |
+    When user "Brian" deletes the last share using the sharing API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "Carol" should not have any received shares
