@@ -35,7 +35,8 @@ class OrganizationsNotificationConfigs extends \Google\Service\Resource
    * Creates a notification config. (notificationConfigs.create)
    *
    * @param string $parent Required. Resource name of the new notification
-   * config's parent. Its format is "organizations/[organization_id]".
+   * config's parent. Its format is "organizations/[organization_id]" or
+   * "projects/[project_id]".
    * @param NotificationConfig $postBody
    * @param array $optParams Optional parameters.
    *
@@ -83,7 +84,8 @@ class OrganizationsNotificationConfigs extends \Google\Service\Resource
    * (notificationConfigs.listOrganizationsNotificationConfigs)
    *
    * @param string $parent Required. Name of the organization to list notification
-   * configs. Its format is "organizations/[organization_id]".
+   * configs. Its format is "organizations/[organization_id]" or
+   * "projects/[project_id]".
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of results to return in a single

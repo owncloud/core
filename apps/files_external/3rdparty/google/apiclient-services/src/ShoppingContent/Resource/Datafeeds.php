@@ -64,8 +64,10 @@ class Datafeeds extends \Google\Service\Resource
   }
   /**
    * Invokes a fetch for the datafeed in your Merchant Center account. If you need
-   * to call this method more than once per day, we recommend you use the Products
-   * service to update your product data. (datafeeds.fetchnow)
+   * to call this method more than once per day, we recommend you use the
+   * [Products service](https://developers.google.com/shopping-
+   * content/reference/rest/v2.1/products) to update your product data.
+   * (datafeeds.fetchnow)
    *
    * @param string $merchantId The ID of the account that manages the datafeed.
    * This account cannot be a multi-client account.

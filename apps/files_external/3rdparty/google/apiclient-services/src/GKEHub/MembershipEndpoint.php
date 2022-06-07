@@ -19,6 +19,8 @@ namespace Google\Service\GKEHub;
 
 class MembershipEndpoint extends \Google\Model
 {
+  protected $applianceClusterType = ApplianceCluster::class;
+  protected $applianceClusterDataType = '';
   protected $edgeClusterType = EdgeCluster::class;
   protected $edgeClusterDataType = '';
   protected $gkeClusterType = GkeCluster::class;
@@ -32,6 +34,20 @@ class MembershipEndpoint extends \Google\Model
   protected $onPremClusterType = OnPremCluster::class;
   protected $onPremClusterDataType = '';
 
+  /**
+   * @param ApplianceCluster
+   */
+  public function setApplianceCluster(ApplianceCluster $applianceCluster)
+  {
+    $this->applianceCluster = $applianceCluster;
+  }
+  /**
+   * @return ApplianceCluster
+   */
+  public function getApplianceCluster()
+  {
+    return $this->applianceCluster;
+  }
   /**
    * @param EdgeCluster
    */

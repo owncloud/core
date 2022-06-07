@@ -80,6 +80,8 @@ class JobStatistics2 extends \Google\Collection
   protected $reservationUsageDataType = 'array';
   protected $schemaType = TableSchema::class;
   protected $schemaDataType = '';
+  protected $searchStatisticsType = SearchStatistics::class;
+  protected $searchStatisticsDataType = '';
   /**
    * @var string
    */
@@ -416,6 +418,20 @@ class JobStatistics2 extends \Google\Collection
   public function getSchema()
   {
     return $this->schema;
+  }
+  /**
+   * @param SearchStatistics
+   */
+  public function setSearchStatistics(SearchStatistics $searchStatistics)
+  {
+    $this->searchStatistics = $searchStatistics;
+  }
+  /**
+   * @return SearchStatistics
+   */
+  public function getSearchStatistics()
+  {
+    return $this->searchStatistics;
   }
   /**
    * @param string

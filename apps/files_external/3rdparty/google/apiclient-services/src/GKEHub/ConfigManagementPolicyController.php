@@ -36,6 +36,8 @@ class ConfigManagementPolicyController extends \Google\Collection
    * @var bool
    */
   public $logDeniesEnabled;
+  protected $monitoringType = ConfigManagementPolicyControllerMonitoring::class;
+  protected $monitoringDataType = '';
   /**
    * @var bool
    */
@@ -100,6 +102,20 @@ class ConfigManagementPolicyController extends \Google\Collection
   public function getLogDeniesEnabled()
   {
     return $this->logDeniesEnabled;
+  }
+  /**
+   * @param ConfigManagementPolicyControllerMonitoring
+   */
+  public function setMonitoring(ConfigManagementPolicyControllerMonitoring $monitoring)
+  {
+    $this->monitoring = $monitoring;
+  }
+  /**
+   * @return ConfigManagementPolicyControllerMonitoring
+   */
+  public function getMonitoring()
+  {
+    return $this->monitoring;
   }
   /**
    * @param bool

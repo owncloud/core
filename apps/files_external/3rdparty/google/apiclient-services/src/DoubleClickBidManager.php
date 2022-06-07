@@ -20,7 +20,7 @@ namespace Google\Service;
 use Google\Client;
 
 /**
- * Service definition for DoubleClickBidManager (v1.1).
+ * Service definition for DoubleClickBidManager (v2).
  *
  * <p>
  * DoubleClick Bid Manager API allows users to manage and create campaigns and
@@ -40,7 +40,7 @@ class DoubleClickBidManager extends \Google\Service
       "https://www.googleapis.com/auth/doubleclickbidmanager";
 
   public $queries;
-  public $reports;
+  public $queries_reports;
 
   /**
    * Constructs the internal representation of the DoubleClickBidManager
@@ -54,9 +54,9 @@ class DoubleClickBidManager extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://doubleclickbidmanager.googleapis.com/';
-    $this->servicePath = 'doubleclickbidmanager/v1.1/';
+    $this->servicePath = 'v2/';
     $this->batchPath = 'batch';
-    $this->version = 'v1.1';
+    $this->version = 'v2';
     $this->serviceName = 'doubleclickbidmanager';
 
     $this->queries = new DoubleClickBidManager\Resource\Queries(
@@ -65,17 +65,12 @@ class DoubleClickBidManager extends \Google\Service
         'queries',
         [
           'methods' => [
-            'createquery' => [
-              'path' => 'query',
+            'create' => [
+              'path' => 'queries',
               'httpMethod' => 'POST',
-              'parameters' => [
-                'asynchronous' => [
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ],
-              ],
-            ],'deletequery' => [
-              'path' => 'query/{queryId}',
+              'parameters' => [],
+            ],'delete' => [
+              'path' => 'queries/{queryId}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'queryId' => [
@@ -84,8 +79,8 @@ class DoubleClickBidManager extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'getquery' => [
-              'path' => 'query/{queryId}',
+            ],'get' => [
+              'path' => 'queries/{queryId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'queryId' => [
@@ -94,10 +89,14 @@ class DoubleClickBidManager extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'listqueries' => [
+            ],'list' => [
               'path' => 'queries',
               'httpMethod' => 'GET',
               'parameters' => [
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'pageSize' => [
                   'location' => 'query',
                   'type' => 'integer',
@@ -107,8 +106,8 @@ class DoubleClickBidManager extends \Google\Service
                   'type' => 'string',
                 ],
               ],
-            ],'runquery' => [
-              'path' => 'query/{queryId}',
+            ],'run' => [
+              'path' => 'queries/{queryId}:run',
               'httpMethod' => 'POST',
               'parameters' => [
                 'queryId' => [
@@ -116,7 +115,7 @@ class DoubleClickBidManager extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'asynchronous' => [
+                'synchronous' => [
                   'location' => 'query',
                   'type' => 'boolean',
                 ],
@@ -125,13 +124,28 @@ class DoubleClickBidManager extends \Google\Service
           ]
         ]
     );
-    $this->reports = new DoubleClickBidManager\Resource\Reports(
+    $this->queries_reports = new DoubleClickBidManager\Resource\QueriesReports(
         $this,
         $this->serviceName,
         'reports',
         [
           'methods' => [
-            'listreports' => [
+            'get' => [
+              'path' => 'queries/{queryId}/reports/{reportId}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'queryId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'reportId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
               'path' => 'queries/{queryId}/reports',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -139,6 +153,10 @@ class DoubleClickBidManager extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
                 'pageSize' => [
                   'location' => 'query',

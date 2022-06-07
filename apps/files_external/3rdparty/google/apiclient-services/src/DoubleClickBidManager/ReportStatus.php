@@ -19,12 +19,10 @@ namespace Google\Service\DoubleClickBidManager;
 
 class ReportStatus extends \Google\Model
 {
-  protected $failureType = ReportFailure::class;
-  protected $failureDataType = '';
   /**
    * @var string
    */
-  public $finishTimeMs;
+  public $finishTime;
   /**
    * @var string
    */
@@ -35,32 +33,18 @@ class ReportStatus extends \Google\Model
   public $state;
 
   /**
-   * @param ReportFailure
-   */
-  public function setFailure(ReportFailure $failure)
-  {
-    $this->failure = $failure;
-  }
-  /**
-   * @return ReportFailure
-   */
-  public function getFailure()
-  {
-    return $this->failure;
-  }
-  /**
    * @param string
    */
-  public function setFinishTimeMs($finishTimeMs)
+  public function setFinishTime($finishTime)
   {
-    $this->finishTimeMs = $finishTimeMs;
+    $this->finishTime = $finishTime;
   }
   /**
    * @return string
    */
-  public function getFinishTimeMs()
+  public function getFinishTime()
   {
-    return $this->finishTimeMs;
+    return $this->finishTime;
   }
   /**
    * @param string

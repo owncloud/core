@@ -27,6 +27,10 @@ class AddSubnetworkRequest extends \Google\Collection
   /**
    * @var string
    */
+  public $computeIdempotencyWindow;
+  /**
+   * @var string
+   */
   public $consumer;
   /**
    * @var string
@@ -74,6 +78,10 @@ class AddSubnetworkRequest extends \Google\Collection
    * @var string[]
    */
   public $subnetworkUsers;
+  /**
+   * @var bool
+   */
+  public $useCustomComputeIdempotencyWindow;
 
   /**
    * @param bool
@@ -88,6 +96,20 @@ class AddSubnetworkRequest extends \Google\Collection
   public function getCheckServiceNetworkingUsePermission()
   {
     return $this->checkServiceNetworkingUsePermission;
+  }
+  /**
+   * @param string
+   */
+  public function setComputeIdempotencyWindow($computeIdempotencyWindow)
+  {
+    $this->computeIdempotencyWindow = $computeIdempotencyWindow;
+  }
+  /**
+   * @return string
+   */
+  public function getComputeIdempotencyWindow()
+  {
+    return $this->computeIdempotencyWindow;
   }
   /**
    * @param string
@@ -270,6 +292,20 @@ class AddSubnetworkRequest extends \Google\Collection
   public function getSubnetworkUsers()
   {
     return $this->subnetworkUsers;
+  }
+  /**
+   * @param bool
+   */
+  public function setUseCustomComputeIdempotencyWindow($useCustomComputeIdempotencyWindow)
+  {
+    $this->useCustomComputeIdempotencyWindow = $useCustomComputeIdempotencyWindow;
+  }
+  /**
+   * @return bool
+   */
+  public function getUseCustomComputeIdempotencyWindow()
+  {
+    return $this->useCustomComputeIdempotencyWindow;
   }
 }
 

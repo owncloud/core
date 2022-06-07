@@ -36,7 +36,7 @@ class ProjectsLocationsCatalogsPlacements extends \Google\Service\Resource
    * Makes a recommendation prediction. (placements.predict)
    *
    * @param string $placement Required. Full resource name of the format:
-   * {name=projects/locations/global/catalogs/default_catalog/placements} The ID
+   * `{name=projects/locations/global/catalogs/default_catalog/placements}` The ID
    * of the Recommendations AI placement. Before you can request predictions from
    * your model, you must create at least one placement for it. For more
    * information, see [Managing placements](https://cloud.google.com/retail

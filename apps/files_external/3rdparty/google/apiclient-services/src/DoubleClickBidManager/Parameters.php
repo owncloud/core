@@ -27,10 +27,6 @@ class Parameters extends \Google\Collection
    */
   public $groupBys;
   /**
-   * @var bool
-   */
-  public $includeInviteData;
-  /**
    * @var string[]
    */
   public $metrics;
@@ -68,20 +64,6 @@ class Parameters extends \Google\Collection
   public function getGroupBys()
   {
     return $this->groupBys;
-  }
-  /**
-   * @param bool
-   */
-  public function setIncludeInviteData($includeInviteData)
-  {
-    $this->includeInviteData = $includeInviteData;
-  }
-  /**
-   * @return bool
-   */
-  public function getIncludeInviteData()
-  {
-    return $this->includeInviteData;
   }
   /**
    * @param string[]

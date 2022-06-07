@@ -31,6 +31,10 @@ class ApproveDecision extends \Google\Model
    * @var string
    */
   public $expireTime;
+  /**
+   * @var string
+   */
+  public $invalidateTime;
   protected $signatureInfoType = SignatureInfo::class;
   protected $signatureInfoDataType = '';
 
@@ -75,6 +79,20 @@ class ApproveDecision extends \Google\Model
   public function getExpireTime()
   {
     return $this->expireTime;
+  }
+  /**
+   * @param string
+   */
+  public function setInvalidateTime($invalidateTime)
+  {
+    $this->invalidateTime = $invalidateTime;
+  }
+  /**
+   * @return string
+   */
+  public function getInvalidateTime()
+  {
+    return $this->invalidateTime;
   }
   /**
    * @param SignatureInfo

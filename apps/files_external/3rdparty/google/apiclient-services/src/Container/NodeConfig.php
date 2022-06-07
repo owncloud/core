@@ -28,6 +28,8 @@ class NodeConfig extends \Google\Collection
    * @var string
    */
   public $bootDiskKmsKey;
+  protected $confidentialNodesType = ConfidentialNodes::class;
+  protected $confidentialNodesDataType = '';
   /**
    * @var int
    */
@@ -144,6 +146,20 @@ class NodeConfig extends \Google\Collection
   public function getBootDiskKmsKey()
   {
     return $this->bootDiskKmsKey;
+  }
+  /**
+   * @param ConfidentialNodes
+   */
+  public function setConfidentialNodes(ConfidentialNodes $confidentialNodes)
+  {
+    $this->confidentialNodes = $confidentialNodes;
+  }
+  /**
+   * @return ConfidentialNodes
+   */
+  public function getConfidentialNodes()
+  {
+    return $this->confidentialNodes;
   }
   /**
    * @param int

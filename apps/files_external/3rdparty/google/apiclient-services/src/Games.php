@@ -405,6 +405,10 @@ class Games extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'getScopedPlayerIds' => [
+              'path' => 'games/v1/players/me/scopedIds',
+              'httpMethod' => 'GET',
+              'parameters' => [],
             ],'list' => [
               'path' => 'games/v1/players/me/players/{collection}',
               'httpMethod' => 'GET',

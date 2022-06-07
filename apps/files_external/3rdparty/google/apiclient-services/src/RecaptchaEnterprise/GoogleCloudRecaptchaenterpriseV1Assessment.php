@@ -27,6 +27,8 @@ class GoogleCloudRecaptchaenterpriseV1Assessment extends \Google\Model
    * @var string
    */
   public $name;
+  protected $privatePasswordLeakVerificationType = GoogleCloudRecaptchaenterpriseV1PrivatePasswordLeakVerification::class;
+  protected $privatePasswordLeakVerificationDataType = '';
   protected $riskAnalysisType = GoogleCloudRecaptchaenterpriseV1RiskAnalysis::class;
   protected $riskAnalysisDataType = '';
   protected $tokenPropertiesType = GoogleCloudRecaptchaenterpriseV1TokenProperties::class;
@@ -73,6 +75,20 @@ class GoogleCloudRecaptchaenterpriseV1Assessment extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param GoogleCloudRecaptchaenterpriseV1PrivatePasswordLeakVerification
+   */
+  public function setPrivatePasswordLeakVerification(GoogleCloudRecaptchaenterpriseV1PrivatePasswordLeakVerification $privatePasswordLeakVerification)
+  {
+    $this->privatePasswordLeakVerification = $privatePasswordLeakVerification;
+  }
+  /**
+   * @return GoogleCloudRecaptchaenterpriseV1PrivatePasswordLeakVerification
+   */
+  public function getPrivatePasswordLeakVerification()
+  {
+    return $this->privatePasswordLeakVerification;
   }
   /**
    * @param GoogleCloudRecaptchaenterpriseV1RiskAnalysis

@@ -20,6 +20,7 @@ namespace Google\Service\AccessApproval\Resource;
 use Google\Service\AccessApproval\ApprovalRequest;
 use Google\Service\AccessApproval\ApproveApprovalRequestMessage;
 use Google\Service\AccessApproval\DismissApprovalRequestMessage;
+use Google\Service\AccessApproval\InvalidateApprovalRequestMessage;
 use Google\Service\AccessApproval\ListApprovalRequestsResponse;
 
 /**
@@ -80,6 +81,24 @@ class ProjectsApprovalRequests extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], ApprovalRequest::class);
+  }
+  /**
+   * Invalidates an existing ApprovalRequest. Returns the updated ApprovalRequest.
+   * NOTE: This does not deny access to the resource if another request has been
+   * made and approved. It only invalidates a single approval. Returns
+   * FAILED_PRECONDITION if the request exists but is not in an approved state.
+   * (approvalRequests.invalidate)
+   *
+   * @param string $name Name of the ApprovalRequest to invalidate.
+   * @param InvalidateApprovalRequestMessage $postBody
+   * @param array $optParams Optional parameters.
+   * @return ApprovalRequest
+   */
+  public function invalidate($name, InvalidateApprovalRequestMessage $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('invalidate', [$params], ApprovalRequest::class);
   }
   /**
    * Lists approval requests associated with a project, folder, or organization.

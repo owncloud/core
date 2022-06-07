@@ -151,6 +151,16 @@ class AccessApproval extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'invalidate' => [
+              'path' => 'v1/{+name}:invalidate',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'list' => [
               'path' => 'v1/{+parent}/approvalRequests',
               'httpMethod' => 'GET',
@@ -267,6 +277,16 @@ class AccessApproval extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'invalidate' => [
+              'path' => 'v1/{+name}:invalidate',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'list' => [
               'path' => 'v1/{+parent}/approvalRequests',
               'httpMethod' => 'GET',
@@ -376,6 +396,16 @@ class AccessApproval extends \Google\Service
             ],'get' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'invalidate' => [
+              'path' => 'v1/{+name}:invalidate',
+              'httpMethod' => 'POST',
               'parameters' => [
                 'name' => [
                   'location' => 'path',
