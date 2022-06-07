@@ -215,7 +215,8 @@ class Events extends \Google\Service\Resource
    * parameter might be repeated multiple times to return events that match all
    * given constraints.
    * @opt_param string q Free text search terms to find events that match these
-   * terms in any field, except for extended properties. Optional.
+   * terms in the following fields: summary, description, location, attendee's
+   * displayName, attendee's email. Optional.
    * @opt_param string sharedExtendedProperty Extended properties constraint
    * specified as propertyName=value. Matches only shared properties. This
    * parameter might be repeated multiple times to return events that match all
@@ -431,7 +432,8 @@ class Events extends \Google\Service\Resource
    * parameter might be repeated multiple times to return events that match all
    * given constraints.
    * @opt_param string q Free text search terms to find events that match these
-   * terms in any field, except for extended properties. Optional.
+   * terms in the following fields: summary, description, location, attendee's
+   * displayName, attendee's email. Optional.
    * @opt_param string sharedExtendedProperty Extended properties constraint
    * specified as propertyName=value. Matches only shared properties. This
    * parameter might be repeated multiple times to return events that match all

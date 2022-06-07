@@ -74,12 +74,12 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * must be specified to the second and include a time zone.
    * @opt_param string _type String of comma-delimited FHIR resource types. If
    * provided, only resources of the specified resource type(s) are returned.
-   * @opt_param string end The response includes records prior to the end date. If
-   * no end date is provided, all records subsequent to the start date are in
-   * scope.
+   * @opt_param string end The response includes records prior to the end date.
+   * The date uses the format YYYY-MM-DD. If no end date is provided, all records
+   * subsequent to the start date are in scope.
    * @opt_param string start The response includes records subsequent to the start
-   * date. If no start date is provided, all records prior to the end date are in
-   * scope.
+   * date. The date uses the format YYYY-MM-DD. If no start date is provided, all
+   * records prior to the end date are in scope.
    * @return HttpBody
    */
   public function PatientEverything($name, $optParams = [])

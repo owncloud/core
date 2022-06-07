@@ -31,8 +31,7 @@ class Promotions extends \Google\Service\Resource
 {
   /**
    * Inserts a promotion for your Merchant Center account. If the promotion
-   * already exists, then it will update the promotion instead.
-   * (promotions.create)
+   * already exists, then it updates the promotion instead. (promotions.create)
    *
    * @param string $merchantId Required. The ID of the account that contains the
    * collection.

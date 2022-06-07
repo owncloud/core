@@ -71,6 +71,10 @@ class PasswordRequirements extends \Google\Model
    * @var string
    */
   public $requirePasswordUnlock;
+  /**
+   * @var string
+   */
+  public $unifiedLockSettings;
 
   /**
    * @param int
@@ -253,6 +257,20 @@ class PasswordRequirements extends \Google\Model
   public function getRequirePasswordUnlock()
   {
     return $this->requirePasswordUnlock;
+  }
+  /**
+   * @param string
+   */
+  public function setUnifiedLockSettings($unifiedLockSettings)
+  {
+    $this->unifiedLockSettings = $unifiedLockSettings;
+  }
+  /**
+   * @return string
+   */
+  public function getUnifiedLockSettings()
+  {
+    return $this->unifiedLockSettings;
   }
 }
 

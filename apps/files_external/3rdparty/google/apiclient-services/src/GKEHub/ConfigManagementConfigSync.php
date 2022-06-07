@@ -25,6 +25,8 @@ class ConfigManagementConfigSync extends \Google\Model
   public $enabled;
   protected $gitType = ConfigManagementGitConfig::class;
   protected $gitDataType = '';
+  protected $ociType = ConfigManagementOciConfig::class;
+  protected $ociDataType = '';
   /**
    * @var bool
    */
@@ -61,6 +63,20 @@ class ConfigManagementConfigSync extends \Google\Model
   public function getGit()
   {
     return $this->git;
+  }
+  /**
+   * @param ConfigManagementOciConfig
+   */
+  public function setOci(ConfigManagementOciConfig $oci)
+  {
+    $this->oci = $oci;
+  }
+  /**
+   * @return ConfigManagementOciConfig
+   */
+  public function getOci()
+  {
+    return $this->oci;
   }
   /**
    * @param bool

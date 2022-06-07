@@ -36,6 +36,10 @@ class CustomEmoji extends \Google\Model
   /**
    * @var string
    */
+  public $deleteTimeMicros;
+  /**
+   * @var string
+   */
   public $ephemeralUrl;
   protected $ownerCustomerIdType = CustomerId::class;
   protected $ownerCustomerIdDataType = '';
@@ -115,6 +119,20 @@ class CustomEmoji extends \Google\Model
   public function getCreatorUserId()
   {
     return $this->creatorUserId;
+  }
+  /**
+   * @param string
+   */
+  public function setDeleteTimeMicros($deleteTimeMicros)
+  {
+    $this->deleteTimeMicros = $deleteTimeMicros;
+  }
+  /**
+   * @return string
+   */
+  public function getDeleteTimeMicros()
+  {
+    return $this->deleteTimeMicros;
   }
   /**
    * @param string

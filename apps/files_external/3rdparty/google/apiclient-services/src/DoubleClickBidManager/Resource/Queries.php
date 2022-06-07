@@ -19,6 +19,7 @@ namespace Google\Service\DoubleClickBidManager\Resource;
 
 use Google\Service\DoubleClickBidManager\ListQueriesResponse;
 use Google\Service\DoubleClickBidManager\Query;
+use Google\Service\DoubleClickBidManager\Report;
 use Google\Service\DoubleClickBidManager\RunQueryRequest;
 
 /**
@@ -32,77 +33,82 @@ use Google\Service\DoubleClickBidManager\RunQueryRequest;
 class Queries extends \Google\Service\Resource
 {
   /**
-   * Creates a query. (queries.createquery)
+   * Creates a query. (queries.create)
    *
    * @param Query $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param bool asynchronous If true, tries to run the query asynchronously.
-   * Only applicable when the frequency is ONE_TIME.
    * @return Query
    */
-  public function createquery(Query $postBody, $optParams = [])
+  public function create(Query $postBody, $optParams = [])
   {
     $params = ['postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('createquery', [$params], Query::class);
+    return $this->call('create', [$params], Query::class);
   }
   /**
    * Deletes a stored query as well as the associated stored reports.
-   * (queries.deletequery)
+   * (queries.delete)
    *
-   * @param string $queryId Query ID to delete.
+   * @param string $queryId Required. Query ID to delete.
    * @param array $optParams Optional parameters.
    */
-  public function deletequery($queryId, $optParams = [])
+  public function delete($queryId, $optParams = [])
   {
     $params = ['queryId' => $queryId];
     $params = array_merge($params, $optParams);
-    return $this->call('deletequery', [$params]);
+    return $this->call('delete', [$params]);
   }
   /**
-   * Retrieves a stored query. (queries.getquery)
+   * Retrieves a stored query. (queries.get)
    *
-   * @param string $queryId Query ID to retrieve.
+   * @param string $queryId Required. Query ID to retrieve.
    * @param array $optParams Optional parameters.
    * @return Query
    */
-  public function getquery($queryId, $optParams = [])
+  public function get($queryId, $optParams = [])
   {
     $params = ['queryId' => $queryId];
     $params = array_merge($params, $optParams);
-    return $this->call('getquery', [$params], Query::class);
+    return $this->call('get', [$params], Query::class);
   }
   /**
-   * Retrieves stored queries. (queries.listqueries)
+   * Retrieves stored queries. (queries.listQueries)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Maximum number of results per page. Must be between 1
-   * and 100. Defaults to 100 if unspecified.
-   * @opt_param string pageToken Optional pagination token.
+   * @opt_param string orderBy Name of a field used to order results. The default
+   * sorting order is ascending. To specify descending order for a field, append a
+   * " desc" suffix. For example "metadata.title desc". Sorting is only supported
+   * for the following fields: * queryId * metadata.title
+   * @opt_param int pageSize Maximum number of results per page. Must be between
+   * `1` and `100`. Defaults to `100` if unspecified.
+   * @opt_param string pageToken A page token, received from a previous list call.
+   * Provide this to retrieve the subsequent page of queries.
    * @return ListQueriesResponse
    */
-  public function listqueries($optParams = [])
+  public function listQueries($optParams = [])
   {
     $params = [];
     $params = array_merge($params, $optParams);
-    return $this->call('listqueries', [$params], ListQueriesResponse::class);
+    return $this->call('list', [$params], ListQueriesResponse::class);
   }
   /**
-   * Runs a stored query to generate a report. (queries.runquery)
+   * Runs a stored query to generate a report. (queries.run)
    *
-   * @param string $queryId Query ID to run.
+   * @param string $queryId Required. Query ID to run.
    * @param RunQueryRequest $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool asynchronous If true, tries to run the query asynchronously.
+   * @opt_param bool synchronous Whether the query should be run synchronously.
+   * When true, this method will not return until the query has finished running.
+   * When false or not specified, this method will return immediately.
+   * @return Report
    */
-  public function runquery($queryId, RunQueryRequest $postBody, $optParams = [])
+  public function run($queryId, RunQueryRequest $postBody, $optParams = [])
   {
     $params = ['queryId' => $queryId, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('runquery', [$params]);
+    return $this->call('run', [$params], Report::class);
   }
 }
 

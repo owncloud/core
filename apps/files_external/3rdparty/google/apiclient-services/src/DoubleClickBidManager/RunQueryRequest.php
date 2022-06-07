@@ -19,78 +19,22 @@ namespace Google\Service\DoubleClickBidManager;
 
 class RunQueryRequest extends \Google\Model
 {
-  /**
-   * @var string
-   */
-  public $dataRange;
-  /**
-   * @var string
-   */
-  public $reportDataEndTimeMs;
-  /**
-   * @var string
-   */
-  public $reportDataStartTimeMs;
-  /**
-   * @var string
-   */
-  public $timezoneCode;
+  protected $dataRangeType = DataRange::class;
+  protected $dataRangeDataType = '';
 
   /**
-   * @param string
+   * @param DataRange
    */
-  public function setDataRange($dataRange)
+  public function setDataRange(DataRange $dataRange)
   {
     $this->dataRange = $dataRange;
   }
   /**
-   * @return string
+   * @return DataRange
    */
   public function getDataRange()
   {
     return $this->dataRange;
-  }
-  /**
-   * @param string
-   */
-  public function setReportDataEndTimeMs($reportDataEndTimeMs)
-  {
-    $this->reportDataEndTimeMs = $reportDataEndTimeMs;
-  }
-  /**
-   * @return string
-   */
-  public function getReportDataEndTimeMs()
-  {
-    return $this->reportDataEndTimeMs;
-  }
-  /**
-   * @param string
-   */
-  public function setReportDataStartTimeMs($reportDataStartTimeMs)
-  {
-    $this->reportDataStartTimeMs = $reportDataStartTimeMs;
-  }
-  /**
-   * @return string
-   */
-  public function getReportDataStartTimeMs()
-  {
-    return $this->reportDataStartTimeMs;
-  }
-  /**
-   * @param string
-   */
-  public function setTimezoneCode($timezoneCode)
-  {
-    $this->timezoneCode = $timezoneCode;
-  }
-  /**
-   * @return string
-   */
-  public function getTimezoneCode()
-  {
-    return $this->timezoneCode;
   }
 }
 

@@ -17,8 +17,9 @@
 
 namespace Google\Service\Baremetalsolution;
 
-class InstanceConfig extends \Google\Model
+class InstanceConfig extends \Google\Collection
 {
+  protected $collection_key = 'logicalInterfaces';
   /**
    * @var bool
    */
@@ -37,10 +38,20 @@ class InstanceConfig extends \Google\Model
    * @var string
    */
   public $instanceType;
+  protected $logicalInterfacesType = GoogleCloudBaremetalsolutionV2LogicalInterface::class;
+  protected $logicalInterfacesDataType = 'array';
   /**
    * @var string
    */
   public $name;
+  /**
+   * @var string
+   */
+  public $networkConfig;
+  /**
+   * @var string
+   */
+  public $networkTemplate;
   /**
    * @var string
    */
@@ -123,6 +134,20 @@ class InstanceConfig extends \Google\Model
     return $this->instanceType;
   }
   /**
+   * @param GoogleCloudBaremetalsolutionV2LogicalInterface[]
+   */
+  public function setLogicalInterfaces($logicalInterfaces)
+  {
+    $this->logicalInterfaces = $logicalInterfaces;
+  }
+  /**
+   * @return GoogleCloudBaremetalsolutionV2LogicalInterface[]
+   */
+  public function getLogicalInterfaces()
+  {
+    return $this->logicalInterfaces;
+  }
+  /**
    * @param string
    */
   public function setName($name)
@@ -135,6 +160,34 @@ class InstanceConfig extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setNetworkConfig($networkConfig)
+  {
+    $this->networkConfig = $networkConfig;
+  }
+  /**
+   * @return string
+   */
+  public function getNetworkConfig()
+  {
+    return $this->networkConfig;
+  }
+  /**
+   * @param string
+   */
+  public function setNetworkTemplate($networkTemplate)
+  {
+    $this->networkTemplate = $networkTemplate;
+  }
+  /**
+   * @return string
+   */
+  public function getNetworkTemplate()
+  {
+    return $this->networkTemplate;
   }
   /**
    * @param string

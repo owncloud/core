@@ -19,7 +19,7 @@ namespace Google\Service\SecurityCommandCenter;
 
 class Finding extends \Google\Collection
 {
-  protected $collection_key = 'iamBindings';
+  protected $collection_key = 'processes';
   protected $accessType = Access::class;
   protected $accessDataType = '';
   /**
@@ -30,8 +30,12 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $category;
+  protected $compliancesType = Compliance::class;
+  protected $compliancesDataType = 'array';
   protected $connectionsType = Connection::class;
   protected $connectionsDataType = 'array';
+  protected $contactsType = ContactDetails::class;
+  protected $contactsDataType = 'map';
   /**
    * @var string
    */
@@ -44,6 +48,8 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $eventTime;
+  protected $exfiltrationType = Exfiltration::class;
+  protected $exfiltrationDataType = '';
   protected $externalSystemsType = GoogleCloudSecuritycenterV1ExternalSystem::class;
   protected $externalSystemsDataType = 'map';
   /**
@@ -84,6 +90,8 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $parent;
+  protected $processesType = Process::class;
+  protected $processesDataType = 'array';
   /**
    * @var string
    */
@@ -148,6 +156,20 @@ class Finding extends \Google\Collection
     return $this->category;
   }
   /**
+   * @param Compliance[]
+   */
+  public function setCompliances($compliances)
+  {
+    $this->compliances = $compliances;
+  }
+  /**
+   * @return Compliance[]
+   */
+  public function getCompliances()
+  {
+    return $this->compliances;
+  }
+  /**
    * @param Connection[]
    */
   public function setConnections($connections)
@@ -160,6 +182,20 @@ class Finding extends \Google\Collection
   public function getConnections()
   {
     return $this->connections;
+  }
+  /**
+   * @param ContactDetails[]
+   */
+  public function setContacts($contacts)
+  {
+    $this->contacts = $contacts;
+  }
+  /**
+   * @return ContactDetails[]
+   */
+  public function getContacts()
+  {
+    return $this->contacts;
   }
   /**
    * @param string
@@ -202,6 +238,20 @@ class Finding extends \Google\Collection
   public function getEventTime()
   {
     return $this->eventTime;
+  }
+  /**
+   * @param Exfiltration
+   */
+  public function setExfiltration(Exfiltration $exfiltration)
+  {
+    $this->exfiltration = $exfiltration;
+  }
+  /**
+   * @return Exfiltration
+   */
+  public function getExfiltration()
+  {
+    return $this->exfiltration;
   }
   /**
    * @param GoogleCloudSecuritycenterV1ExternalSystem[]
@@ -370,6 +420,20 @@ class Finding extends \Google\Collection
   public function getParent()
   {
     return $this->parent;
+  }
+  /**
+   * @param Process[]
+   */
+  public function setProcesses($processes)
+  {
+    $this->processes = $processes;
+  }
+  /**
+   * @return Process[]
+   */
+  public function getProcesses()
+  {
+    return $this->processes;
   }
   /**
    * @param string

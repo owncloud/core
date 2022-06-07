@@ -74,6 +74,7 @@ class DisplayVideo extends \Google\Service
   public $firstAndThirdPartyAudiences;
   public $floodlightGroups;
   public $googleAudiences;
+  public $guaranteedOrders;
   public $inventorySourceGroups;
   public $inventorySourceGroups_assignedInventorySources;
   public $inventorySources;
@@ -2309,6 +2310,108 @@ class DisplayVideo extends \Google\Service
           ]
         ]
     );
+    $this->guaranteedOrders = new DisplayVideo\Resource\GuaranteedOrders(
+        $this,
+        $this->serviceName,
+        'guaranteedOrders',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/guaranteedOrders',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'advertiserId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'partnerId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'editGuaranteedOrderReadAccessors' => [
+              'path' => 'v1/guaranteedOrders/{+guaranteedOrderId}:editGuaranteedOrderReadAccessors',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'guaranteedOrderId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/guaranteedOrders/{+guaranteedOrderId}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'guaranteedOrderId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'advertiserId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'partnerId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/guaranteedOrders',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'advertiserId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'partnerId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/guaranteedOrders/{+guaranteedOrderId}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'guaranteedOrderId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'advertiserId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'partnerId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->inventorySourceGroups = new DisplayVideo\Resource\InventorySourceGroups(
         $this,
         $this->serviceName,
@@ -2520,7 +2623,30 @@ class DisplayVideo extends \Google\Service
         'inventorySources',
         [
           'methods' => [
-            'get' => [
+            'create' => [
+              'path' => 'v1/inventorySources',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'advertiserId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'partnerId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'editInventorySourceReadWriteAccessors' => [
+              'path' => 'v1/inventorySources/{+inventorySourceId}:editInventorySourceReadWriteAccessors',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'inventorySourceId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
               'path' => 'v1/inventorySources/{+inventorySourceId}',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -2559,6 +2685,28 @@ class DisplayVideo extends \Google\Service
                   'type' => 'string',
                 ],
                 'partnerId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/inventorySources/{+inventorySourceId}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'inventorySourceId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'advertiserId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'partnerId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],

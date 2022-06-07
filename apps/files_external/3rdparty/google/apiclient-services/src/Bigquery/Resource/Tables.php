@@ -62,6 +62,9 @@ class Tables extends \Google\Service\Resource
    *
    * @opt_param string selectedFields List of fields to return (comma-separated).
    * If unspecified, all fields are returned
+   * @opt_param string view Specifies the view that determines which table
+   * information is returned. By default, basic table information and storage
+   * statistics (STORAGE_STATS) are returned.
    * @return Table
    */
   public function get($projectId, $datasetId, $tableId, $optParams = [])

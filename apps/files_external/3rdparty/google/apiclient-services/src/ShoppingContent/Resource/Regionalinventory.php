@@ -46,7 +46,7 @@ class Regionalinventory extends \Google\Service\Resource
     return $this->call('custombatch', [$params], RegionalinventoryCustomBatchResponse::class);
   }
   /**
-   * Update the regional inventory of a product in your Merchant Center account.
+   * Updates the regional inventory of a product in your Merchant Center account.
    * If a regional inventory with the same region ID already exists, this method
    * updates that entry. (regionalinventory.insert)
    *

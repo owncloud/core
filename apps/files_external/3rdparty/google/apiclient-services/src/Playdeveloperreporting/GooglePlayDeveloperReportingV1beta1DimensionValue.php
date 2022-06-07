@@ -31,6 +31,10 @@ class GooglePlayDeveloperReportingV1beta1DimensionValue extends \Google\Model
    * @var string
    */
   public $stringValue;
+  /**
+   * @var string
+   */
+  public $valueLabel;
 
   /**
    * @param string
@@ -73,6 +77,20 @@ class GooglePlayDeveloperReportingV1beta1DimensionValue extends \Google\Model
   public function getStringValue()
   {
     return $this->stringValue;
+  }
+  /**
+   * @param string
+   */
+  public function setValueLabel($valueLabel)
+  {
+    $this->valueLabel = $valueLabel;
+  }
+  /**
+   * @return string
+   */
+  public function getValueLabel()
+  {
+    return $this->valueLabel;
   }
 }
 

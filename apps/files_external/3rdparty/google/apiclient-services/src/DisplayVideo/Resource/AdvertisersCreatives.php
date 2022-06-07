@@ -97,23 +97,24 @@ class AdvertisersCreatives extends \Google\Service\Resource
    * the form of `{field} {operator} {value}`. * The operator must be `EQUALS (=)`
    * for the following fields: - `entityStatus` - `creativeType`. - `dimensions` -
    * `minDuration` - `maxDuration` - `approvalStatus` - `exchangeReviewStatus` -
-   * `dynamic` - `creativeId` - `minModifiedTime` - `maxModifiedTime` * The
-   * operator must be `HAS (:)` for the following fields: - `lineItemIds` * For
-   * `entityStatus`, `minDuration`, `maxDuration`, `minModifiedTime`,
-   * `maxModifiedTime`, and `dynamic`, there may be at most one restriction. * For
-   * `dimensions`, the value is in the form of `"{width}x{height}"`. * For
-   * `exchangeReviewStatus`, the value is in the form of
-   * `{exchange}-{reviewStatus}`. * For `minDuration` and `maxDuration`, the value
-   * is in the form of `"{duration}s"`. Only seconds are supported with
-   * millisecond granularity. * For `minModifiedTime` and `maxModifiedTime`, the
-   * value is a unix timestamp (GMT) in seconds. The time filtered is against the
-   * update_time field in the creative, which includes system updates to the
-   * creative (e.g. creative review updates). * There may be multiple
-   * `lineItemIds` restrictions in order to search against multiple possible line
-   * item IDs. * There may be multiple `creativeId` restrictions in order to
-   * search against multiple possible creative IDs. Examples: * All native
-   * creatives: `creativeType="CREATIVE_TYPE_NATIVE"` * All active creatives with
-   * 300x400 or 50x100 dimensions: `entityStatus="ENTITY_STATUS_ACTIVE" AND
+   * `dynamic` - `creativeId` * The operator must be `HAS (:)` for the following
+   * fields: - `lineItemIds` * The operator must be `GREATER THAN OR EQUAL TO
+   * (>=)` or `LESS THAN OR EQUAL TO (<=)` for the following fields: -
+   * `updateTime` (input in ISO 8601 format, or YYYY-MM-DDTHH:MM:SSZ) * For
+   * `entityStatus`, `minDuration`, `maxDuration`, `updateTime`, `and `dynamic`,
+   * there may be at most one restriction. * For `dimensions`, the value is in the
+   * form of `"{width}x{height}"`. * For `exchangeReviewStatus`, the value is in
+   * the form of `{exchange}-{reviewStatus}`. * For `minDuration` and
+   * `maxDuration`, the value is in the form of `"{duration}s"`. Only seconds are
+   * supported with millisecond granularity. * For `updateTime`, a creative
+   * resource's field value reflects the last time that a creative has been
+   * updated, which includes updates made by the system (e.g. creative review
+   * updates). * There may be multiple `lineItemIds` restrictions in order to
+   * search against multiple possible line item IDs. * There may be multiple
+   * `creativeId` restrictions in order to search against multiple possible
+   * creative IDs. Examples: * All native creatives:
+   * `creativeType="CREATIVE_TYPE_NATIVE"` * All active creatives with 300x400 or
+   * 50x100 dimensions: `entityStatus="ENTITY_STATUS_ACTIVE" AND
    * (dimensions="300x400" OR dimensions="50x100")` * All dynamic creatives that
    * are approved by AdX or AppNexus, with a minimum duration of 5 seconds and
    * 200ms. `dynamic="true" AND minDuration="5.2s" AND (exchangeReviewStatus
@@ -121,8 +122,10 @@ class AdvertisersCreatives extends \Google\Service\Resource
    * ="EXCHANGE_APPNEXUS-REVIEW_STATUS_APPROVED")` * All video creatives that are
    * associated with line item ID 1 or 2: `creativeType="CREATIVE_TYPE_VIDEO" AND
    * (lineItemIds:1 OR lineItemIds:2)` * Find creatives by multiple creative IDs:
-   * `creativeId=1 OR creativeId=2` The length of this field should be no more
-   * than 500 characters.
+   * `creativeId=1 OR creativeId=2` * All creatives with an update time greater
+   * than or equal to `2020-11-04T18:54:47Z (format of ISO 8601)`:
+   * `updateTime>="2020-11-04T18:54:47Z"` The length of this field should be no
+   * more than 500 characters.
    * @opt_param string orderBy Field by which to sort the list. Acceptable values
    * are: * `creativeId` (default) * `createTime` * `mediaDuration` * `dimensions`
    * (sorts by width first, then by height) The default sorting order is

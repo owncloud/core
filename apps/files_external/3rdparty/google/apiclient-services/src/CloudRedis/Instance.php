@@ -19,7 +19,7 @@ namespace Google\Service\CloudRedis;
 
 class Instance extends \Google\Collection
 {
-  protected $collection_key = 'serverCaCerts';
+  protected $collection_key = 'suspensionReasons';
   /**
    * @var string
    */
@@ -47,6 +47,10 @@ class Instance extends \Google\Collection
   /**
    * @var string
    */
+  public $customerManagedKey;
+  /**
+   * @var string
+   */
   public $displayName;
   /**
    * @var string
@@ -64,10 +68,6 @@ class Instance extends \Google\Collection
   protected $maintenancePolicyDataType = '';
   protected $maintenanceScheduleType = MaintenanceSchedule::class;
   protected $maintenanceScheduleDataType = '';
-  /**
-   * @var string
-   */
-  public $maintenanceVersion;
   /**
    * @var int
    */
@@ -130,6 +130,10 @@ class Instance extends \Google\Collection
    * @var string
    */
   public $statusMessage;
+  /**
+   * @var string[]
+   */
+  public $suspensionReasons;
   /**
    * @var string
    */
@@ -226,6 +230,20 @@ class Instance extends \Google\Collection
   /**
    * @param string
    */
+  public function setCustomerManagedKey($customerManagedKey)
+  {
+    $this->customerManagedKey = $customerManagedKey;
+  }
+  /**
+   * @return string
+   */
+  public function getCustomerManagedKey()
+  {
+    return $this->customerManagedKey;
+  }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
@@ -306,20 +324,6 @@ class Instance extends \Google\Collection
   public function getMaintenanceSchedule()
   {
     return $this->maintenanceSchedule;
-  }
-  /**
-   * @param string
-   */
-  public function setMaintenanceVersion($maintenanceVersion)
-  {
-    $this->maintenanceVersion = $maintenanceVersion;
-  }
-  /**
-   * @return string
-   */
-  public function getMaintenanceVersion()
-  {
-    return $this->maintenanceVersion;
   }
   /**
    * @param int
@@ -558,6 +562,20 @@ class Instance extends \Google\Collection
   public function getStatusMessage()
   {
     return $this->statusMessage;
+  }
+  /**
+   * @param string[]
+   */
+  public function setSuspensionReasons($suspensionReasons)
+  {
+    $this->suspensionReasons = $suspensionReasons;
+  }
+  /**
+   * @return string[]
+   */
+  public function getSuspensionReasons()
+  {
+    return $this->suspensionReasons;
   }
   /**
    * @param string

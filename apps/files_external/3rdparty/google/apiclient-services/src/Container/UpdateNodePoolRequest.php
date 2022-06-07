@@ -24,6 +24,8 @@ class UpdateNodePoolRequest extends \Google\Collection
    * @var string
    */
   public $clusterId;
+  protected $confidentialNodesType = ConfidentialNodes::class;
+  protected $confidentialNodesDataType = '';
   protected $gcfsConfigType = GcfsConfig::class;
   protected $gcfsConfigDataType = '';
   protected $gvnicType = VirtualNIC::class;
@@ -84,6 +86,20 @@ class UpdateNodePoolRequest extends \Google\Collection
   public function getClusterId()
   {
     return $this->clusterId;
+  }
+  /**
+   * @param ConfidentialNodes
+   */
+  public function setConfidentialNodes(ConfidentialNodes $confidentialNodes)
+  {
+    $this->confidentialNodes = $confidentialNodes;
+  }
+  /**
+   * @return ConfidentialNodes
+   */
+  public function getConfidentialNodes()
+  {
+    return $this->confidentialNodes;
   }
   /**
    * @param GcfsConfig

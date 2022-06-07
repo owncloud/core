@@ -46,6 +46,14 @@ class TagKey extends \Google\Model
   /**
    * @var string
    */
+  public $purpose;
+  /**
+   * @var string[]
+   */
+  public $purposeData;
+  /**
+   * @var string
+   */
   public $shortName;
   /**
    * @var string
@@ -135,6 +143,34 @@ class TagKey extends \Google\Model
   public function getParent()
   {
     return $this->parent;
+  }
+  /**
+   * @param string
+   */
+  public function setPurpose($purpose)
+  {
+    $this->purpose = $purpose;
+  }
+  /**
+   * @return string
+   */
+  public function getPurpose()
+  {
+    return $this->purpose;
+  }
+  /**
+   * @param string[]
+   */
+  public function setPurposeData($purposeData)
+  {
+    $this->purposeData = $purposeData;
+  }
+  /**
+   * @return string[]
+   */
+  public function getPurposeData()
+  {
+    return $this->purposeData;
   }
   /**
    * @param string

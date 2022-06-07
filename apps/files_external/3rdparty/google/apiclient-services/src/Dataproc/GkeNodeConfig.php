@@ -23,6 +23,10 @@ class GkeNodeConfig extends \Google\Collection
   protected $acceleratorsType = GkeNodePoolAcceleratorConfig::class;
   protected $acceleratorsDataType = 'array';
   /**
+   * @var string
+   */
+  public $bootDiskKmsKey;
+  /**
    * @var int
    */
   public $localSsdCount;
@@ -56,6 +60,20 @@ class GkeNodeConfig extends \Google\Collection
   public function getAccelerators()
   {
     return $this->accelerators;
+  }
+  /**
+   * @param string
+   */
+  public function setBootDiskKmsKey($bootDiskKmsKey)
+  {
+    $this->bootDiskKmsKey = $bootDiskKmsKey;
+  }
+  /**
+   * @return string
+   */
+  public function getBootDiskKmsKey()
+  {
+    return $this->bootDiskKmsKey;
   }
   /**
    * @param int

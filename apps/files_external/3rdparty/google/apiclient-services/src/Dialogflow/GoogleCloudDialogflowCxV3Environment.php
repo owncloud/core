@@ -40,6 +40,8 @@ class GoogleCloudDialogflowCxV3Environment extends \Google\Collection
   public $updateTime;
   protected $versionConfigsType = GoogleCloudDialogflowCxV3EnvironmentVersionConfig::class;
   protected $versionConfigsDataType = 'array';
+  protected $webhookConfigType = GoogleCloudDialogflowCxV3EnvironmentWebhookConfig::class;
+  protected $webhookConfigDataType = '';
 
   /**
    * @param string
@@ -124,6 +126,20 @@ class GoogleCloudDialogflowCxV3Environment extends \Google\Collection
   public function getVersionConfigs()
   {
     return $this->versionConfigs;
+  }
+  /**
+   * @param GoogleCloudDialogflowCxV3EnvironmentWebhookConfig
+   */
+  public function setWebhookConfig(GoogleCloudDialogflowCxV3EnvironmentWebhookConfig $webhookConfig)
+  {
+    $this->webhookConfig = $webhookConfig;
+  }
+  /**
+   * @return GoogleCloudDialogflowCxV3EnvironmentWebhookConfig
+   */
+  public function getWebhookConfig()
+  {
+    return $this->webhookConfig;
   }
 }
 

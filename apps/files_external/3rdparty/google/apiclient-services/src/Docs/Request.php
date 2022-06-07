@@ -61,6 +61,8 @@ class Request extends \Google\Model
   protected $insertTextDataType = '';
   protected $mergeTableCellsType = MergeTableCellsRequest::class;
   protected $mergeTableCellsDataType = '';
+  protected $pinTableHeaderRowsType = PinTableHeaderRowsRequest::class;
+  protected $pinTableHeaderRowsDataType = '';
   protected $replaceAllTextType = ReplaceAllTextRequest::class;
   protected $replaceAllTextDataType = '';
   protected $replaceImageType = ReplaceImageRequest::class;
@@ -377,6 +379,20 @@ class Request extends \Google\Model
   public function getMergeTableCells()
   {
     return $this->mergeTableCells;
+  }
+  /**
+   * @param PinTableHeaderRowsRequest
+   */
+  public function setPinTableHeaderRows(PinTableHeaderRowsRequest $pinTableHeaderRows)
+  {
+    $this->pinTableHeaderRows = $pinTableHeaderRows;
+  }
+  /**
+   * @return PinTableHeaderRowsRequest
+   */
+  public function getPinTableHeaderRows()
+  {
+    return $this->pinTableHeaderRows;
   }
   /**
    * @param ReplaceAllTextRequest

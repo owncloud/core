@@ -26,6 +26,14 @@ class SchemaSettings extends \Google\Model
   /**
    * @var string
    */
+  public $firstRevisionId;
+  /**
+   * @var string
+   */
+  public $lastRevisionId;
+  /**
+   * @var string
+   */
   public $schema;
 
   /**
@@ -41,6 +49,34 @@ class SchemaSettings extends \Google\Model
   public function getEncoding()
   {
     return $this->encoding;
+  }
+  /**
+   * @param string
+   */
+  public function setFirstRevisionId($firstRevisionId)
+  {
+    $this->firstRevisionId = $firstRevisionId;
+  }
+  /**
+   * @return string
+   */
+  public function getFirstRevisionId()
+  {
+    return $this->firstRevisionId;
+  }
+  /**
+   * @param string
+   */
+  public function setLastRevisionId($lastRevisionId)
+  {
+    $this->lastRevisionId = $lastRevisionId;
+  }
+  /**
+   * @return string
+   */
+  public function getLastRevisionId()
+  {
+    return $this->lastRevisionId;
   }
   /**
    * @param string

@@ -162,7 +162,7 @@ class Services extends \Google\Service\Resource
    * consumer. The Google Service Management implementation accepts the following
    * forms: - project:
    * @opt_param int pageSize The max number of items to include in the response
-   * list. Page size is 50 if not specified. Maximum value is 100.
+   * list. Page size is 50 if not specified. Maximum value is 500.
    * @opt_param string pageToken Token identifying which result to start with;
    * returned by a previous list call.
    * @opt_param string producerProjectId Include services produced by the

@@ -108,6 +108,10 @@ class RequestLog extends \Google\Collection
   /**
    * @var string
    */
+  public $spanId;
+  /**
+   * @var string
+   */
   public $startTime;
   /**
    * @var int
@@ -461,6 +465,20 @@ class RequestLog extends \Google\Collection
   public function getSourceReference()
   {
     return $this->sourceReference;
+  }
+  /**
+   * @param string
+   */
+  public function setSpanId($spanId)
+  {
+    $this->spanId = $spanId;
+  }
+  /**
+   * @return string
+   */
+  public function getSpanId()
+  {
+    return $this->spanId;
   }
   /**
    * @param string

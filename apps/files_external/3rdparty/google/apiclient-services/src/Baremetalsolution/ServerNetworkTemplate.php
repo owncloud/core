@@ -24,7 +24,7 @@ class ServerNetworkTemplate extends \Google\Collection
    * @var string[]
    */
   public $applicableInstanceTypes;
-  protected $logicalInterfacesType = LogicalInterface::class;
+  protected $logicalInterfacesType = GoogleCloudBaremetalsolutionV2ServerNetworkTemplateLogicalInterface::class;
   protected $logicalInterfacesDataType = 'array';
   /**
    * @var string
@@ -46,14 +46,14 @@ class ServerNetworkTemplate extends \Google\Collection
     return $this->applicableInstanceTypes;
   }
   /**
-   * @param LogicalInterface[]
+   * @param GoogleCloudBaremetalsolutionV2ServerNetworkTemplateLogicalInterface[]
    */
   public function setLogicalInterfaces($logicalInterfaces)
   {
     $this->logicalInterfaces = $logicalInterfaces;
   }
   /**
-   * @return LogicalInterface[]
+   * @return GoogleCloudBaremetalsolutionV2ServerNetworkTemplateLogicalInterface[]
    */
   public function getLogicalInterfaces()
   {
