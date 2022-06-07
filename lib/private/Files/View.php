@@ -839,6 +839,8 @@ class View {
 						[
 							Filesystem::signal_param_oldpath => $this->getHookPath($path1),
 							Filesystem::signal_param_newpath => $this->getHookPath($path2),
+							Filesystem::signal_param_oldpath.'_abs' => $absolutePath1,
+							Filesystem::signal_param_newpath.'_abs' => $absolutePath2,
 							Filesystem::signal_param_run => &$run
 						]
 					);
