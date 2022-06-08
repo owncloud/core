@@ -31,6 +31,7 @@ TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 WEBHIPPIE_REDIS = "webhippie/redis:latest"
 
 DEFAULT_PHP_VERSION = "7.4"
+TEST_RUNNER_PHP_VERSION = "8.1"
 DEFAULT_NODEJS_VERSION = "14"
 
 dir = {
@@ -1783,11 +1784,12 @@ def acceptance(ctx):
                                              [
                                                  ({
                                                      "name": "acceptance-tests",
-                                                     "image": OC_CI_PHP % phpVersion,
+                                                     "image": OC_CI_PHP % TEST_RUNNER_PHP_VERSION,
                                                      "environment": environment,
                                                      "commands": params["extraCommandsBeforeTestRun"] + [
                                                          "touch %s/saved-settings.sh" % dir["base"],
                                                          ". %s/saved-settings.sh" % dir["base"],
+                                                         "php --version",
                                                          "%smake %s" % (suExecCommand, makeParameter),
                                                      ],
                                                      "volumes": [{
@@ -2482,11 +2484,12 @@ def vendorbinPhpstan(phpVersion):
 def vendorbinBehat():
     return [{
         "name": "vendorbin-behat",
-        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
+        "image": OC_CI_PHP % TEST_RUNNER_PHP_VERSION,
         "environment": {
             "COMPOSER_HOME": "%s/.cache/composer" % dir["server"],
         },
         "commands": [
+            "php --version",
             "make vendor-bin-behat",
         ],
     }]
