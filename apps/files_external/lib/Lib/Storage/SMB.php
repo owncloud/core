@@ -316,8 +316,11 @@ class SMB extends StorageAdapter {
 				if ($result) {
 					$this->removeFromCache($buildSource);
 					$this->removeFromCache($buildTarget);
+				} else {
+					echo "rename AlreadyExistsException unlink passed but next rename failed\n";
 				}
 			} else {
+				echo "rename AlreadyExistsException unlink failed\n";
 				$result = false;
 			}
 		} catch (ConnectException $e) {
@@ -327,7 +330,9 @@ class SMB extends StorageAdapter {
 		} catch (Exception $e) {
 			$this->swallow(__FUNCTION__, $e);
 			// Icewind\SMB\Exception\Exception, not a plain exception
-			if ($e->getCode() === 22) {
+			$code = $e->getCode();
+			$message = $e->getMessage();
+			if ($code === 22) {
 				// some servers seem to return an error code 22 instead of the expected AlreadyExistException
 				if ($this->unlink($target)) {
 					$result = $this->share->rename($buildSource, $buildTarget);
@@ -336,12 +341,17 @@ class SMB extends StorageAdapter {
 						$this->removeFromCache($buildTarget);
 					}
 				} else {
+					echo "rename Exception unlink failed code $code message '$message'\n";
 					$result = false;
 				}
 			} else {
+				echo "rename Exception (1) code $code message '$message'\n";
 				$result = false;
 			}
 		} catch (\Exception $e) {
+			$message = $e->getMessage();
+			$code = $e->getCode();
+			echo "rename Exception (2) code $code message '$message'\n";
 			$this->swallow(__FUNCTION__, $e);
 			$result = false;
 		}
