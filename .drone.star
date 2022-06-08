@@ -1152,7 +1152,6 @@ def dav():
                              installServer(phpVersion, db, params["logLevel"]) +
                              davInstall(phpVersion, scriptPath) +
                              fixPermissions(phpVersion, False) +
-                             owncloudLog("server", "src") +
                              [
                                  {
                                      "name": "dav-test",
@@ -1456,7 +1455,6 @@ def phpTests(ctx, testType, withCoverage):
                                  setupScality(phpVersion, needScality) +
                                  params["extraSetup"] +
                                  fixPermissions(phpVersion, False) +
-                                 owncloudLog("server", "src") +
                                  [
                                      {
                                          "name": "%s-tests" % testType,
