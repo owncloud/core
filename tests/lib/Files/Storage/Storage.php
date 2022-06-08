@@ -253,7 +253,8 @@ abstract class Storage extends \Test\TestCase {
 	public function testMoveOverwrite($source, $target) {
 		$this->initSourceAndTarget($source, $target);
 
-		$this->instance->rename($source, $target);
+		$success = $this->instance->rename($source, $target);
+		$this->assertTrue($success, "rename $source $target did not return true");
 
 		$this->assertTrue($this->instance->file_exists($target), $target . ' was not created');
 		$this->assertFalse($this->instance->file_exists($source), $source . ' still exists');
@@ -470,11 +471,14 @@ abstract class Storage extends \Test\TestCase {
 	}
 
 	public function testRenameOverWriteFile() {
-		$this->instance->file_put_contents('target.txt', 'foo');
-		$this->instance->file_put_contents('source.txt', 'bar');
-		$this->instance->rename('source.txt', 'target.txt');
-		$this->assertEquals('bar', $this->instance->file_get_contents('target.txt'));
-		$this->assertFalse($this->instance->file_exists('source.txt'));
+		$source = 'source.txt';
+		$target = 'target.txt';
+		$this->instance->file_put_contents($target, 'foo');
+		$this->instance->file_put_contents($source, 'bar');
+		$success = $this->instance->rename($source, $target);
+		$this->assertTrue($success, "rename $source $target did not return true");
+		$this->assertEquals('bar', $this->instance->file_get_contents($target));
+		$this->assertFalse($this->instance->file_exists($source));
 	}
 
 	public function testRenameDirectory() {
