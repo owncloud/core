@@ -556,6 +556,12 @@ class WebDavHelper {
 	):ResponseInterface {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 
+		// We need to manipulate and use path as a string.
+		// So ensure that it is a string to avoid any type-conversion errors.
+		if ($path === null) {
+			$path = "";
+		}
+
 		$spaceId = null;
 		// get space id if testing with spaces dav
 		if ($davPathVersionToUse === self::DAV_VERSION_SPACES) {
