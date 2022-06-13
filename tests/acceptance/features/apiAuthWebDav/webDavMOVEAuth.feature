@@ -14,7 +14,7 @@ Feature: MOVE file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MOVE requests to webDav endpoints as normal user with wrong password
-    When user "Alice" requests these endpoints with "MOVE" including body "doesnotmatter" using password "invalid" about user "Alice"
+    When user "Alice" requests these endpoints with "MOVE" using password "invalid" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -25,7 +25,7 @@ Feature: MOVE file/folder
 
   @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
   Scenario: send MOVE requests to webDav endpoints as normal user with wrong password using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "MOVE" including body "doesnotmatter" using password "invalid" about user "Alice"
+    When user "Alice" requests these endpoints with "MOVE" using password "invalid" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -35,7 +35,7 @@ Feature: MOVE file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MOVE requests to webDav endpoints as normal user with no password
-    When user "Alice" requests these endpoints with "MOVE" including body "doesnotmatter" using password "" about user "Alice"
+    When user "Alice" requests these endpoints with "MOVE" using password "" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -46,7 +46,7 @@ Feature: MOVE file/folder
 
   @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
   Scenario: send MOVE requests to webDav endpoints as normal user with no password using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "MOVE" including body "doesnotmatter" using password "" about user "Alice"
+    When user "Alice" requests these endpoints with "MOVE" using password "" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -55,7 +55,7 @@ Feature: MOVE file/folder
 
   @issue-ocis-reva-14
   Scenario: send MOVE requests to another user's webDav endpoints as normal user
-    When user "Brian" requests these endpoints with "MOVE" including body "doesnotmatter" about user "Alice"
+    When user "Brian" requests these endpoints with "MOVE" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/files/%username%/textfile0.txt     |
       | /remote.php/dav/files/%username%/PARENT            |
@@ -64,7 +64,7 @@ Feature: MOVE file/folder
 
   @skipOnOcV10 @personalSpace @issue-ocis-reva-14
   Scenario: send MOVE requests to another user's webDav endpoints as normal user using the spaces WebDAV API
-    When user "Brian" requests these endpoints with "MOVE" including body "doesnotmatter" about user "Alice"
+    When user "Brian" requests these endpoints with "MOVE" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -72,7 +72,7 @@ Feature: MOVE file/folder
     Then the HTTP status code of responses on all endpoints should be "403"
 
   Scenario: send MOVE requests to webDav endpoints using invalid username but correct password
-    When user "usero" requests these endpoints with "MOVE" including body "doesnotmatter" using the password of user "Alice"
+    When user "usero" requests these endpoints with "MOVE" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -83,7 +83,7 @@ Feature: MOVE file/folder
 
   @skipOnOcV10 @personalSpace
   Scenario: send MOVE requests to webDav endpoints using invalid username but correct password using the spaces WebDAV API
-    When user "usero" requests these endpoints with "MOVE" including body "doesnotmatter" using the password of user "Alice"
+    When user "usero" requests these endpoints with "MOVE" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -91,7 +91,7 @@ Feature: MOVE file/folder
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send MOVE requests to webDav endpoints using valid password and username of different user
-    When user "Brian" requests these endpoints with "MOVE" including body "doesnotmatter" using the password of user "Alice"
+    When user "Brian" requests these endpoints with "MOVE" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -102,7 +102,7 @@ Feature: MOVE file/folder
 
   @skipOnOcV10 @personalSpace
   Scenario: send MOVE requests to webDav endpoints using valid password and username of different user using the spaces WebDAV API
-    When user "Brian" requests these endpoints with "MOVE" including body "doesnotmatter" using the password of user "Alice"
+    When user "Brian" requests these endpoints with "MOVE" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -112,7 +112,7 @@ Feature: MOVE file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MOVE requests to webDav endpoints without any authentication
-    When a user requests these endpoints with "MOVE" with body "doesnotmatter" and no authentication about user "Alice"
+    When a user requests these endpoints with "MOVE" with no authentication about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -123,7 +123,7 @@ Feature: MOVE file/folder
 
   @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
   Scenario: send MOVE requests to webDav endpoints without any authentication using the spaces WebDAV API
-    When a user requests these endpoints with "MOVE" with body "doesnotmatter" and no authentication about user "Alice"
+    When a user requests these endpoints with "MOVE" with no authentication about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |

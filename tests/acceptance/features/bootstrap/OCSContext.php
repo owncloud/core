@@ -634,6 +634,34 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * @When user :user requests these endpoints with :method about user :ofUser
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userSendsRequestToTheseEndpointsWithOutBody(string $user, string $method, string $ofUser, TableNode $table):void {
+		$header = [];
+		if ($method === 'MOVE' || $method === 'COPY') {
+			$header['Destination'] = '/path/to/destination';
+		}
+
+		$this->sendRequestToTheseEndpointsAsNormalUser(
+			$user,
+			$method,
+			$ofUser,
+			$table,
+			null,
+			null,
+			$header,
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" requests these endpoints with "([^"]*)" to (?:get|set) property "([^"]*)" about user "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -707,14 +735,14 @@ class OCSContext implements Context {
 	 *
 	 * @param string $asUser
 	 * @param string $method
-	 * @param string $body
+	 * @param string|null $body
 	 * @param string $user
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser(string $asUser, string $method, string $body, string $user, TableNode $table):void {
+	public function userRequestsTheseEndpointsWithBodyUsingThePasswordOfUser(string $asUser, string $method, ?string $body, string $user, TableNode $table):void {
 		$asUser = $this->featureContext->getActualUsername($asUser);
 		$userRenamed = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
@@ -734,6 +762,27 @@ class OCSContext implements Context {
 			);
 			$this->featureContext->pushToLastStatusCodesArrays();
 		}
+	}
+
+	/**
+	 * @When user :asUser requests these endpoints with :method using the password of user :user
+	 *
+	 * @param string $asUser
+	 * @param string $method
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestsTheseEndpointsWithoutBodyUsingThePasswordOfUser(string $asUser, string $method, string $user, TableNode $table):void {
+		$this->userRequestsTheseEndpointsWithBodyUsingThePasswordOfUser(
+			$asUser,
+			$method,
+			null,
+			$user,
+			$table
+		);
 	}
 
 	/**
