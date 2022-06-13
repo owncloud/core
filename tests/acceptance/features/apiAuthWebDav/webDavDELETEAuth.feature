@@ -15,7 +15,7 @@ Feature: delete file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send DELETE requests to webDav endpoints as normal user with wrong password
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "invalid" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" using password "invalid" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -27,7 +27,7 @@ Feature: delete file/folder
 
   @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
   Scenario: send DELETE requests to webDav endpoints as normal user with wrong password using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "invalid" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" using password "invalid" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -35,7 +35,7 @@ Feature: delete file/folder
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send DELETE requests to webDav endpoints as normal user with no password
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" using password "" about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -47,7 +47,7 @@ Feature: delete file/folder
 
   @skipOnOcV10 @personalSpace
   Scenario: send DELETE requests to webDav endpoints as normal user with no password using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" using password "" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -56,7 +56,7 @@ Feature: delete file/folder
 
   @issue-ocis-reva-13
   Scenario: send DELETE requests to another user's webDav endpoints as normal user
-    When user "Brian" requests these endpoints with "DELETE" including body "doesnotmatter" about user "Alice"
+    When user "Brian" requests these endpoints with "DELETE" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/files/%username%/textfile0.txt     |
       | /remote.php/dav/files/%username%/PARENT            |
@@ -65,7 +65,7 @@ Feature: delete file/folder
 
   @issue-ocis-reva-13 @skipOnOcV10 @personalSpace
   Scenario: send DELETE requests to another user's webDav endpoints as normal user using the spaces WebDAV API
-    When user "Brian" requests these endpoints with "DELETE" including body "doesnotmatter" about user "Alice"
+    When user "Brian" requests these endpoints with "DELETE" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -74,7 +74,7 @@ Feature: delete file/folder
 
   @smokeTest
   Scenario: send DELETE requests to webDav endpoints using invalid username but correct password
-    When user "usero" requests these endpoints with "DELETE" including body "doesnotmatter" using the password of user "Alice"
+    When user "usero" requests these endpoints with "DELETE" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -85,7 +85,7 @@ Feature: delete file/folder
 
   @smokeTest @skipOnOcV10 @personalSpace
   Scenario: send DELETE requests to webDav endpoints using invalid username but correct password using the spaces WebDAV API
-    When user "usero" requests these endpoints with "DELETE" including body "doesnotmatter" using the password of user "Alice"
+    When user "usero" requests these endpoints with "DELETE" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -93,7 +93,7 @@ Feature: delete file/folder
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send DELETE requests to webDav endpoints using valid password and username of different user
-    When user "Brian" requests these endpoints with "DELETE" including body "doesnotmatter" using the password of user "Alice"
+    When user "Brian" requests these endpoints with "DELETE" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -104,7 +104,7 @@ Feature: delete file/folder
 
   @skipOnOcV10 @personalSpace
   Scenario: send DELETE requests to webDav endpoints using valid password and username of different user using the spaces WebDAV API
-    When user "Brian" requests these endpoints with "DELETE" including body "doesnotmatter" using the password of user "Alice"
+    When user "Brian" requests these endpoints with "DELETE" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -114,7 +114,7 @@ Feature: delete file/folder
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send DELETE requests to webDav endpoints without any authentication
-    When a user requests these endpoints with "DELETE" with body "doesnotmatter" and no authentication about user "Alice"
+    When a user requests these endpoints with "DELETE" with no authentication about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile0.txt     |
@@ -125,7 +125,7 @@ Feature: delete file/folder
 
   @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
   Scenario: send DELETE requests to webDav endpoints without any authentication using the spaces WebDAV API
-    When a user requests these endpoints with "DELETE" with body "doesnotmatter" and no authentication about user "Alice"
+    When a user requests these endpoints with "DELETE" with no authentication about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
@@ -163,7 +163,7 @@ Feature: delete file/folder
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"
-    When the user "Alice" requests these endpoints with "DELETE" with body "doesnotmatter" using basic auth and generated app password about user "Alice"
+    When the user "Alice" requests these endpoints with "DELETE" using basic auth and generated app password about user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |
       | /remote.php/dav/files/%username%/textfile1.txt     |
@@ -177,7 +177,7 @@ Feature: delete file/folder
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"
-    When the user "Alice" requests these endpoints with "DELETE" with body "doesnotmatter" using basic auth and generated app password about user "Alice"
+    When the user "Alice" requests these endpoints with "DELETE" using basic auth and generated app password about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |

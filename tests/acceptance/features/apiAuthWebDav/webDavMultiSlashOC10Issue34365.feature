@@ -13,12 +13,12 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send DELETE requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" using password "%regular%" about user "Alice"
       | endpoint                                            |
       | /remote.php//dav/files/%username%/PARENT/parent.txt |
       | /remote.php//webdav/PARENT                          |
     Then the HTTP status code of responses on all endpoints should be "204"
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" using password "%regular%" about user "Alice"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |

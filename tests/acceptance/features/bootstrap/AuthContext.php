@@ -189,14 +189,14 @@ class AuthContext implements Context {
 	 * @When a user requests these endpoints with :method with body :body and no authentication about user :user
 	 *
 	 * @param string $method
-	 * @param string $body
+	 * @param ?string $body
 	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithBodyAndNoAuthThenStatusCodeAboutUser(string $method, string $body, string $ofUser, TableNode $table):void {
+	public function userRequestsEndpointsWithBodyAndNoAuthThenStatusCodeAboutUser(string $method, ?string $body, ?string $ofUser, TableNode $table):void {
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastOCSStatusCodesArray();
@@ -209,6 +209,25 @@ class AuthContext implements Context {
 			$this->sendRequest($row['endpoint'], $method, null, false, $body);
 			$this->featureContext->pushToLastStatusCodesArrays();
 		}
+	}
+
+	/**
+	 * @When a user requests these endpoints with :method with no authentication about user :user
+	 *
+	 * @param string $method
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestsEndpointsWithoutBodyAndNoAuth(string $method, string $ofUser, TableNode $table):void {
+		$this->userRequestsEndpointsWithBodyAndNoAuthThenStatusCodeAboutUser(
+			$method,
+			null,
+			$ofUser,
+			$table
+		);
 	}
 
 	/**

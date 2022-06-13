@@ -11,7 +11,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send DELETE requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" using password "%regular%" about user "Alice"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -22,7 +22,7 @@ Feature: make webdav request with special urls
 
   @personalSpace
   Scenario: send DELETE requests to webDav endpoints with 2 slashes using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" using password "%regular%" about user "Alice"
       | endpoint                                             |
       | //remote.php/dav/spaces/%spaceid%/textfile0.txt      |
       | /remote.php//dav/spaces/%spaceid%/PARENT             |
