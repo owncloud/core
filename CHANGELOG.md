@@ -49,7 +49,8 @@ Details
 
 * Change - Update PHP dependencies: [#40092](https://github.com/owncloud/core/pull/40092)
 
-   The following have been updated: - doctrine/cache (2.1.1 to 2.2.0)
+   The following have been updated: - doctrine/cache (2.1.1 to 2.2.0) - laminas/laminas-stdlib
+   (3.7.1 to 3.10.1) - laminas/laminas-validator (2.17.0 to 2.19.0)
 
    The following have been updated in apps/files_external/3rdparty: -
    google/apiclient-services (0.244.0 to 0.252.0) - google/apiclient (2.12.4 to 2.12.6) -
@@ -58,6 +59,7 @@ Details
    https://github.com/owncloud/core/pull/40092
    https://github.com/owncloud/core/pull/40110
    https://github.com/owncloud/core/pull/40121
+   https://github.com/owncloud/core/pull/40135
 
 * Change - Update Symfony components: [#40111](https://github.com/owncloud/core/pull/40111)
 
