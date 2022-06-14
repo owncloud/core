@@ -55,13 +55,15 @@ Details
 
    The following have been updated in apps/files_external/3rdparty: -
    google/apiclient-services (0.244.0 to 0.252.0) - google/apiclient (2.12.4 to 2.12.6) -
-   icewind/smb (3.5.2 to 3.5.4) - monolog/monolog (2.5.0 to 2.6.0)
+   icewind/smb (3.5.2 to 3.5.4) - icewind/streams (0.7.5 to 0.7.6) - monolog/monolog (2.5.0 to
+   2.6.0)
 
    https://github.com/owncloud/core/pull/40092
    https://github.com/owncloud/core/pull/40110
    https://github.com/owncloud/core/pull/40121
    https://github.com/owncloud/core/pull/40135
    https://github.com/owncloud/core/pull/40136
+   https://github.com/owncloud/core/pull/40137
 
 * Change - Update Symfony components: [#40111](https://github.com/owncloud/core/pull/40111)
 
