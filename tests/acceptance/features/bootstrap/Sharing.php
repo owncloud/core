@@ -2003,8 +2003,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string|null $sharer
+	 * @param string $user the user who will do the delete request
+	 * @param string|null $sharer the specific user whose share will be deleted (if specified)
 	 * @param bool $deleteLastPublicLink
 	 *
 	 * @return void
@@ -2015,9 +2015,10 @@ trait Sharing {
 			$shareId = $this->getLastPublicLinkShareId();
 		} else {
 			if ($sharer === null) {
-				$sharer = $user;
+				$shareId = $this->getLastShareId();
+			} else {
+				$shareId = $this->getLastShareIdForUser($sharer);
 			}
-			$shareId = $this->getLastShareIdForUser($sharer);
 		}
 		$url = $this->getSharesEndpointPath("/$shareId");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
