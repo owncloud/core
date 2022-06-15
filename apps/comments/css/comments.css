@@ -29,6 +29,7 @@
 	width: 28px;
 	height: 28px;
 	line-height: 28px;
+	flex-shrink: 0;
 }
 
 #commentsTabView .comment {
@@ -83,28 +84,41 @@
 	vertical-align: middle;
 }
 
+#commentsTabView .authorRow>* {
+	margin: 0 5px;
+}
+
 #commentsTabView .comment .authorRow {
 	margin-bottom: 5px;
 	position: relative;
+	display: flex;
+	align-items: center;
+	max-height: 30px;
 }
 
 #commentsTabView .comment .author {
+	display: inline;
 	font-weight: bold;
+	flex-grow: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #commentsTabView .comment .date {
-	position: absolute;
-	right: 0;
+	flex-shrink: 0;
 }
 
 #commentsTabView .comment .action {
 	opacity: 0;
 	vertical-align: middle;
 	display: inline-block;
+	flex-shrink: 0;
 }
 
 #commentsTabView .comment:hover .action {
 	opacity: 0.3;
+	flex-shrink: 0;
 }
 
 #commentsTabView .comment .action:hover {
