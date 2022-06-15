@@ -21,6 +21,7 @@ OCP\Util::addScript('files', 'newfilemenu');
 OCP\Util::addScript('files', 'files');
 OCP\Util::addScript('files', 'filelist');
 OCP\Util::addScript('files', 'keyboardshortcuts');
+OCP\Util::addScript('files', 'fileactionsapplicationselectmenu');
 
 // OpenGraph Support: http://ogp.me/
 OCP\Util::addHeader('meta', ['property' => "og:title", 'content' => $theme->getName() . ' - ' . $theme->getSlogan()]);
