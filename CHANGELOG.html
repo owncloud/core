@@ -6,6 +6,7 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Trigger the right event when the filecache is updated: <a href="https://github.com/owncloud/core/pull/39844">#39844</a></li>
         <li class="type-bugfix changelog-item">Bugfix - List apps only once: <a href="https://github.com/owncloud/core/issues/39930">#39930</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: <a href="https://github.com/owncloud/core/pull/40065">#40065</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Filter sensitive data in log for Session::createSessionToken: <a href="https://github.com/owncloud/core/pull/40066">#40066</a></li>
@@ -16,6 +17,13 @@
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Trigger the right event when the filecache is updated: <a href="https://github.com/owncloud/core/pull/39844">#39844</a></p>
+            <p>When the filecache was being updated, an "addToCache" event was triggered. The event has been
+   changed to an "updateCache" event
+            </p>
+            <p>https://github.com/owncloud/core/pull/39844<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - List apps only once: <a href="https://github.com/owncloud/core/issues/39930">#39930</a></p>
             <p>`occ app:list --minimal` could display apps twice in the listing. Each app is now displayed

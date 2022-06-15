@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
 * Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
@@ -18,6 +19,13 @@ Summary
 
 Details
 -------
+
+* Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
+
+   When the filecache was being updated, an "addToCache" event was triggered. The event has been
+   changed to an "updateCache" event
+
+   https://github.com/owncloud/core/pull/39844
 
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 
