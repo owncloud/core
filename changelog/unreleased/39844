@@ -1,0 +1,6 @@
+Bugfix: Trigger the right event when the filecache is updated
+
+When the filecache was being updated, an "addToCache" event was triggered.
+The event has been changed to an "updateCache" event
+
+https://github.com/owncloud/core/pull/39844
