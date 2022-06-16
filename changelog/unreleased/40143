@@ -1,0 +1,7 @@
+Bugfix: Application selection menu now appears on shared folders
+
+An app selection menu will appear on public folder links when you click
+in a file that could be opened with multiple apps. The behavior is the
+same as in the regular file listing.
+
+https://github.com/owncloud/core/pull/40143
