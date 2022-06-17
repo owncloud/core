@@ -5,7 +5,7 @@ Feature: quota
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnEncryption
   Scenario: share receiver with insufficient quota should not be able to copy received shared file to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -23,7 +23,7 @@ Feature: quota
     #And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Brian" file "/testquota.txt" should not exist
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnEncryption
   Scenario: share receiver with insufficient quota should not be able to copy file from shared folder to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -64,7 +64,7 @@ Feature: quota
     # The copy should have failed, so Alice should still see the original content
     And the content of file "/testquota.txt" for user "Alice" should be "short"
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnEncryption
   Scenario: share receiver of a share with insufficient quota should not be able to copy file from home folder to the received shared folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
