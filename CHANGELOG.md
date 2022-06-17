@@ -13,8 +13,8 @@ Summary
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
 * Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
 * Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
-* Change - Update PHP dependencies: [#40092](https://github.com/owncloud/core/pull/40092)
-* Change - Update Symfony components: [#40111](https://github.com/owncloud/core/pull/40111)
+* Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
+* Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 
 Details
@@ -55,17 +55,20 @@ Details
    https://github.com/owncloud/core/issues/40084
    https://github.com/owncloud/core/pull/40085
 
-* Change - Update PHP dependencies: [#40092](https://github.com/owncloud/core/pull/40092)
+* Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 
-   The following have been updated: - doctrine/cache (2.1.1 to 2.2.0) - icewind/streams (0.7.5
-   to 0.7.6) - laminas/laminas-stdlib (3.7.1 to 3.10.1) - laminas/laminas-validator (2.17.0
-   to 2.19.0)
+   The following have been updated: - doctrine/cache (2.1.1 to 2.2.0) -
+   egulias/email-validator (3.1.2 to 3.2) - guzzlehttp/guzzle (v5.3.4 to v7.4.4) -
+   icewind/streams (0.7.5 to 0.7.6) - laminas/laminas-stdlib (3.7.1 to 3.10.1) -
+   laminas/laminas-validator (2.17.0 to 2.19.0) - paragonie/constant_time_encoding
+   (v2.5.0 to v2.6.3) - webmozart/assert (1.10.0 to 1.11.0)
 
    The following have been updated in apps/files_external/3rdparty: -
    google/apiclient-services (0.244.0 to 0.252.0) - google/apiclient (2.12.4 to 2.12.6) -
-   icewind/smb (3.5.2 to 3.5.4) - icewind/streams (0.7.5 to 0.7.6) - monolog/monolog (2.5.0 to
-   2.6.0)
+   guzzlehttp/guzzle (v5.3.4 to v7.4.4) - icewind/smb (3.5.2 to 3.5.4) - icewind/streams
+   (0.7.5 to 0.7.6) - monolog/monolog (2.5.0 to 2.6.0)
 
+   https://github.com/owncloud/core/pull/39368
    https://github.com/owncloud/core/pull/40092
    https://github.com/owncloud/core/pull/40110
    https://github.com/owncloud/core/pull/40121
@@ -73,10 +76,14 @@ Details
    https://github.com/owncloud/core/pull/40136
    https://github.com/owncloud/core/pull/40137
 
-* Change - Update Symfony components: [#40111](https://github.com/owncloud/core/pull/40111)
+* Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 
-   The following Symfony components have been updated to: - event-dispatcher 4.4.42
+   The following Symfony components have been updated to: - console 4.4.42 - event-dispatcher
+   4.4.42 - polyfill-iconv 1.26.0 - polyfill-intl-idn 1.26.0 - polyfill-intl-normalizer
+   1.26.0 - polyfill-mbstring 1.26.0 - polyfill-php72 1.26.0 - polyfill-php73 1.26.0 -
+   polyfill-php80 1.26.0
 
+   https://github.com/owncloud/core/pull/39368
    https://github.com/owncloud/core/pull/40111
    https://symfony.com/blog/symfony-4-4-42-released
 
