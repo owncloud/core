@@ -13,6 +13,7 @@ Summary
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
 * Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
 * Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
+* Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
@@ -54,6 +55,13 @@ Details
 
    https://github.com/owncloud/core/issues/40084
    https://github.com/owncloud/core/pull/40085
+
+* Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
+
+   An app selection menu will appear on public folder links when you click in a file that could be
+   opened with multiple apps. The behavior is the same as in the regular file listing.
+
+   https://github.com/owncloud/core/pull/40143
 
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 
