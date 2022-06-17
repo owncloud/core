@@ -76,6 +76,10 @@ class NamespacedDebugInput extends \Google\Collection
    * @var bool[]
    */
   public $forcedRollouts;
+  /**
+   * @var string
+   */
+  public $testingMode;
 
   /**
    * @param string[]
@@ -272,6 +276,20 @@ class NamespacedDebugInput extends \Google\Collection
   public function getForcedRollouts()
   {
     return $this->forcedRollouts;
+  }
+  /**
+   * @param string
+   */
+  public function setTestingMode($testingMode)
+  {
+    $this->testingMode = $testingMode;
+  }
+  /**
+   * @return string
+   */
+  public function getTestingMode()
+  {
+    return $this->testingMode;
   }
 }
 

@@ -24,7 +24,7 @@ use Google\Client;
  *
  * <p>
  * The Business Profile Performance API allows merchants to fetch performance
- * insights about their business profile on Google.</p>
+ * reports about their business profile on Google.</p>
  *
  * <p>
  * For more information about this service, see the API

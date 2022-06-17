@@ -39,6 +39,10 @@ class VideoSettings extends \Google\Model
    * @var string
    */
   public $orientation;
+  /**
+   * @var string
+   */
+  public $publisherSpecificationId;
   protected $skippableSettingsType = SkippableSetting::class;
   protected $skippableSettingsDataType = '';
   protected $transcodeSettingsType = TranscodeSetting::class;
@@ -127,6 +131,20 @@ class VideoSettings extends \Google\Model
   public function getOrientation()
   {
     return $this->orientation;
+  }
+  /**
+   * @param string
+   */
+  public function setPublisherSpecificationId($publisherSpecificationId)
+  {
+    $this->publisherSpecificationId = $publisherSpecificationId;
+  }
+  /**
+   * @return string
+   */
+  public function getPublisherSpecificationId()
+  {
+    return $this->publisherSpecificationId;
   }
   /**
    * @param SkippableSetting

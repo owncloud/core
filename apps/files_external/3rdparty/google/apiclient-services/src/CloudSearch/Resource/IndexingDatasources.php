@@ -35,7 +35,7 @@ class IndexingDatasources extends \Google\Service\Resource
    * Deletes the schema of a data source. **Note:** This API requires an admin or
    * service account to execute. (datasources.deleteSchema)
    *
-   * @param string $name Name of the data source to delete Schema. Format:
+   * @param string $name The name of the data source to delete Schema. Format:
    * datasources/{source_id}
    * @param array $optParams Optional parameters.
    *
@@ -53,7 +53,7 @@ class IndexingDatasources extends \Google\Service\Resource
    * Gets the schema of a data source. **Note:** This API requires an admin or
    * service account to execute. (datasources.getSchema)
    *
-   * @param string $name Name of the data source to get Schema. Format:
+   * @param string $name The name of the data source to get Schema. Format:
    * datasources/{source_id}
    * @param array $optParams Optional parameters.
    *
@@ -73,7 +73,7 @@ class IndexingDatasources extends \Google\Service\Resource
    * the entire schema. **Note:** This API requires an admin or service account to
    * execute. (datasources.updateSchema)
    *
-   * @param string $name Name of the data source to update Schema. Format:
+   * @param string $name The name of the data source to update Schema. Format:
    * datasources/{source_id}
    * @param UpdateSchemaRequest $postBody
    * @param array $optParams Optional parameters.

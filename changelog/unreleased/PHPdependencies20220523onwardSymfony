@@ -1,7 +1,16 @@
 Change: Update Symfony components
 
 The following Symfony components have been updated to:
+- console 4.4.42
 - event-dispatcher 4.4.42
+- polyfill-iconv 1.26.0
+- polyfill-intl-idn 1.26.0
+- polyfill-intl-normalizer 1.26.0
+- polyfill-mbstring 1.26.0
+- polyfill-php72 1.26.0
+- polyfill-php73 1.26.0
+- polyfill-php80 1.26.0
 
+https://github.com/owncloud/core/pull/39368
 https://symfony.com/blog/symfony-4-4-42-released
 https://github.com/owncloud/core/pull/40111

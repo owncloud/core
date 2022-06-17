@@ -17,6 +17,9 @@
 
 namespace Google\Service\Eventarc\Resource;
 
+use Google\Service\Eventarc\ChannelConnection;
+use Google\Service\Eventarc\GoogleLongrunningOperation;
+use Google\Service\Eventarc\ListChannelConnectionsResponse;
 use Google\Service\Eventarc\Policy;
 use Google\Service\Eventarc\SetIamPolicyRequest;
 use Google\Service\Eventarc\TestIamPermissionsRequest;
@@ -33,13 +36,59 @@ use Google\Service\Eventarc\TestIamPermissionsResponse;
 class ProjectsLocationsChannelConnections extends \Google\Service\Resource
 {
   /**
+   * Create a new ChannelConnection in a particular project and location.
+   * (channelConnections.create)
+   *
+   * @param string $parent Required. The parent collection in which to add this
+   * channel connection.
+   * @param ChannelConnection $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string channelConnectionId Required. The user-provided ID to be
+   * assigned to the channel connection.
+   * @return GoogleLongrunningOperation
+   */
+  public function create($parent, ChannelConnection $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
+   * Delete a single ChannelConnection. (channelConnections.delete)
+   *
+   * @param string $name Required. The name of the channel connection to delete.
+   * @param array $optParams Optional parameters.
+   * @return GoogleLongrunningOperation
+   */
+  public function delete($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
+   * Get a single ChannelConnection. (channelConnections.get)
+   *
+   * @param string $name Required. The name of the channel connection to get.
+   * @param array $optParams Optional parameters.
+   * @return ChannelConnection
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], ChannelConnection::class);
+  }
+  /**
    * Gets the access control policy for a resource. Returns an empty policy if the
    * resource exists and does not have a policy set.
    * (channelConnections.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * requested. See the operation documentation for the appropriate value for this
-   * field.
+   * requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The maximum policy
@@ -63,13 +112,36 @@ class ProjectsLocationsChannelConnections extends \Google\Service\Resource
     return $this->call('getIamPolicy', [$params], Policy::class);
   }
   /**
+   * List channel connections.
+   * (channelConnections.listProjectsLocationsChannelConnections)
+   *
+   * @param string $parent Required. The parent collection from which to list
+   * channel connections.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param int pageSize The maximum number of channel connections to return
+   * on each page. Note: The service may send fewer responses.
+   * @opt_param string pageToken The page token; provide the value from the
+   * `next_page_token` field in a previous `ListChannelConnections` call to
+   * retrieve the subsequent page. When paginating, all other parameters provided
+   * to `ListChannelConnetions` match the call that provided the page token.
+   * @return ListChannelConnectionsResponse
+   */
+  public function listProjectsLocationsChannelConnections($parent, $optParams = [])
+  {
+    $params = ['parent' => $parent];
+    $params = array_merge($params, $optParams);
+    return $this->call('list', [$params], ListChannelConnectionsResponse::class);
+  }
+  /**
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy. Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and
    * `PERMISSION_DENIED` errors. (channelConnections.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * specified. See the operation documentation for the appropriate value for this
-   * field.
+   * specified. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Policy
@@ -89,8 +161,9 @@ class ProjectsLocationsChannelConnections extends \Google\Service\Resource
    * (channelConnections.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
-   * being requested. See the operation documentation for the appropriate value
-   * for this field.
+   * being requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param TestIamPermissionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return TestIamPermissionsResponse

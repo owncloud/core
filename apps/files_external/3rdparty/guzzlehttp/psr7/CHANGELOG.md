@@ -1,37 +1,96 @@
 # Change Log
 
-
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
-
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
-## 1.8.5 - 2022-03-20
+## 2.3.0 - 2022-06-09
+
+### Fixed
+
+- Added `Header::splitList()`
+- Added `Utils::tryGetContents`
+- Improved `Stream::getContents()`
+- Updated mimetype mappings
+
+## 2.2.2 - 2022-06-08
+
+### Fixed
+
+- Fix `Message::parseRequestUri()` for numeric headers
+- Re-wrap exceptions thrown in `fread` into runtime exceptions
+- Throw an exception when multipart options is misformatted
+
+## 2.2.1 - 2022-03-20
 
 ### Fixed
 
 - Correct header value validation
 
-## 1.8.4 - 2022-03-20
+## 2.2.0 - 2022-03-20
+
+### Added
+
+- A more compressive list of mime types
+- Add JsonSerializable to Uri
+- Missing return types
+
+### Fixed
+
+- Bug MultipartStream no `uri` metadata
+- Bug MultipartStream with filename for `data://` streams
+- Fixed new line handling in MultipartStream
+- Reduced RAM usage when copying streams
+- Updated parsing in `Header::normalize()`
+
+## 2.1.1 - 2022-03-20
 
 ### Fixed
 
 - Validate header values properly
 
-## 1.8.3 - 2021-10-05
+## 2.1.0 - 2021-10-06
+
+### Changed
+
+- Attempting to create a `Uri` object from a malformed URI will no longer throw a generic
+  `InvalidArgumentException`, but rather a `MalformedUriException`, which inherits from the former
+  for backwards compatibility. Callers relying on the exception being thrown to detect invalid
+  URIs should catch the new exception.
 
 ### Fixed
 
 - Return `null` in caching stream size if remote size is `null`
 
-## 1.8.2 - 2021-04-26
+## 2.0.0 - 2021-06-30
+
+Identical to the RC release.
+
+## 2.0.0@RC-1 - 2021-04-29
 
 ### Fixed
 
 - Handle possibly unset `url` in `stream_get_meta_data`
+
+## 2.0.0@beta-1 - 2021-03-21
+
+### Added
+
+- PSR-17 factories
+- Made classes final
+- PHP7 type hints
+
+### Changed
+
+- When building a query string, booleans are represented as 1 and 0.
+
+### Removed
+
+- PHP < 7.2 support
+- All functions in the Guzzle\Psr7 namespace
 
 ## 1.8.1 - 2021-03-21
 

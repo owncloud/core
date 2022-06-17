@@ -44,12 +44,12 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * admin or service account to execute. The service account used is the one
    * whitelisted in the corresponding data source. (items.delete)
    *
-   * @param string $name Required. Name of the item to delete. Format:
+   * @param string $name Required. The name of the item to delete. Format:
    * datasources/{source_id}/items/{item_id}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string connectorName Name of connector making this call. Format:
-   * datasources/{source_id}/connectors/{ID}
+   * @opt_param string connectorName The name of connector making this call.
+   * Format: datasources/{source_id}/connectors/{ID}
    * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
    * help with debugging, set this field. Otherwise, ignore this field.
    * @opt_param string mode Required. The RequestMode for this request.
@@ -76,7 +76,7 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * used is the one whitelisted in the corresponding data source.
    * (items.deleteQueueItems)
    *
-   * @param string $name Name of the Data Source to delete items in a queue.
+   * @param string $name The name of the Data Source to delete items in a queue.
    * Format: datasources/{source_id}
    * @param DeleteQueueItemsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -93,12 +93,12 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * account to execute. The service account used is the one whitelisted in the
    * corresponding data source. (items.get)
    *
-   * @param string $name Name of the item to get info. Format:
+   * @param string $name The name of the item to get info. Format:
    * datasources/{source_id}/items/{item_id}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string connectorName Name of connector making this call. Format:
-   * datasources/{source_id}/connectors/{ID}
+   * @opt_param string connectorName The name of connector making this call.
+   * Format: datasources/{source_id}/connectors/{ID}
    * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
    * help with debugging, set this field. Otherwise, ignore this field.
    * @return Item
@@ -116,7 +116,7 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * an admin or service account to execute. The service account used is the one
    * whitelisted in the corresponding data source. (items.index)
    *
-   * @param string $name Name of the Item. Format:
+   * @param string $name The name of the Item. Format:
    * datasources/{source_id}/items/{item_id} This is a required field. The maximum
    * length is 1536 characters.
    * @param IndexItemRequest $postBody
@@ -134,7 +134,7 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * service account to execute. The service account used is the one whitelisted
    * in the corresponding data source. (items.listIndexingDatasourcesItems)
    *
-   * @param string $name Name of the Data Source to list Items. Format:
+   * @param string $name The name of the Data Source to list Items. Format:
    * datasources/{source_id}
    * @param array $optParams Optional parameters.
    *
@@ -145,8 +145,8 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * structured_data.hash, content.hash, itemType, itemStatus.code,
    * itemStatus.processingError.code, itemStatus.repositoryError.type, If this
    * value is false, then all the fields are populated in Item.
-   * @opt_param string connectorName Name of connector making this call. Format:
-   * datasources/{source_id}/connectors/{ID}
+   * @opt_param string connectorName The name of connector making this call.
+   * Format: datasources/{source_id}/connectors/{ID}
    * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
    * help with debugging, set this field. Otherwise, ignore this field.
    * @opt_param int pageSize Maximum number of items to fetch in a request. The
@@ -174,7 +174,7 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * API requires an admin or service account to execute. The service account used
    * is the one whitelisted in the corresponding data source. (items.poll)
    *
-   * @param string $name Name of the Data Source to poll items. Format:
+   * @param string $name The name of the Data Source to poll items. Format:
    * datasources/{source_id}
    * @param PollItemsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -191,9 +191,9 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * an admin or service account to execute. The service account used is the one
    * whitelisted in the corresponding data source. (items.push)
    *
-   * @param string $name Name of the item to push into the indexing queue. Format:
-   * datasources/{source_id}/items/{ID} This is a required field. The maximum
-   * length is 1536 characters.
+   * @param string $name The name of the item to push into the indexing queue.
+   * Format: datasources/{source_id}/items/{ID} This is a required field. The
+   * maximum length is 1536 characters.
    * @param PushItemRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Item
@@ -211,8 +211,8 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * service account used is the one whitelisted in the corresponding data source.
    * (items.unreserve)
    *
-   * @param string $name Name of the Data Source to unreserve all items. Format:
-   * datasources/{source_id}
+   * @param string $name The name of the Data Source to unreserve all items.
+   * Format: datasources/{source_id}
    * @param UnreserveItemsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Operation
@@ -229,7 +229,7 @@ class IndexingDatasourcesItems extends \Google\Service\Resource
    * API requires an admin or service account to execute. The service account used
    * is the one whitelisted in the corresponding data source. (items.upload)
    *
-   * @param string $name Name of the Item to start a resumable upload. Format:
+   * @param string $name The name of the Item to start a resumable upload. Format:
    * datasources/{source_id}/items/{item_id}. The maximum length is 1536 bytes.
    * @param StartUploadItemRequest $postBody
    * @param array $optParams Optional parameters.

@@ -19,7 +19,7 @@ namespace Google\Service\Connectors;
 
 class Connection extends \Google\Collection
 {
-  protected $collection_key = 'egressBackends';
+  protected $collection_key = 'configVariables';
   protected $authConfigType = AuthConfig::class;
   protected $authConfigDataType = '';
   protected $configVariablesType = ConfigVariable::class;
@@ -36,10 +36,6 @@ class Connection extends \Google\Collection
    * @var string
    */
   public $description;
-  /**
-   * @var string[]
-   */
-  public $egressBackends;
   /**
    * @var string
    */
@@ -146,20 +142,6 @@ class Connection extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
-  }
-  /**
-   * @param string[]
-   */
-  public function setEgressBackends($egressBackends)
-  {
-    $this->egressBackends = $egressBackends;
-  }
-  /**
-   * @return string[]
-   */
-  public function getEgressBackends()
-  {
-    return $this->egressBackends;
   }
   /**
    * @param string

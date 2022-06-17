@@ -68,7 +68,7 @@ class SettingsSearchapplications extends \Google\Service\Resource
    * Gets the specified search application. **Note:** This API requires an admin
    * account to execute. (searchapplications.get)
    *
-   * @param string $name Name of the search application. Format:
+   * @param string $name The name of the search application. Format:
    * searchapplications/{application_id}.
    * @param array $optParams Optional parameters.
    *
@@ -122,7 +122,7 @@ class SettingsSearchapplications extends \Google\Service\Resource
    * Updates a search application. **Note:** This API requires an admin account to
    * execute. (searchapplications.update)
    *
-   * @param string $name Name of the Search Application. Format:
+   * @param string $name The name of the Search Application. Format:
    * searchapplications/{application_id}.
    * @param SearchApplication $postBody
    * @param array $optParams Optional parameters.

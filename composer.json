@@ -49,7 +49,7 @@
         "nikic/php-parser": "^4.4",
         "icewind/streams": "0.7.6",
         "swiftmailer/swiftmailer": "^6.2",
-        "guzzlehttp/guzzle": "^5.3",
+        "guzzlehttp/guzzle": "^7.4",
         "league/flysystem": "^1.0",
         "pear/pear-core-minimal": "^v1.10",
         "interfasys/lognormalizer": "^v1.0",

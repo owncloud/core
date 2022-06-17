@@ -65,7 +65,8 @@ class MonetizationSubscriptions extends \Google\Service\Resource
    * the requirements on this format, see the documentation of the product_id
    * field on the Subscription resource.
    * @opt_param string regionsVersion.version Required. A string representing
-   * version of the available regions being used for the specified resource.
+   * version of the available regions being used for the specified resource. The
+   * current version is 2022/01.
    * @return Subscription
    */
   public function create($packageName, Subscription $postBody, $optParams = [])
@@ -145,7 +146,8 @@ class MonetizationSubscriptions extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string regionsVersion.version Required. A string representing
-   * version of the available regions being used for the specified resource.
+   * version of the available regions being used for the specified resource. The
+   * current version is 2022/01.
    * @opt_param string updateMask Required. The list of fields to be updated.
    * @return Subscription
    */

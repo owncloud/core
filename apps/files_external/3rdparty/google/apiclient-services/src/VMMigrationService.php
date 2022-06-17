@@ -46,6 +46,7 @@ class VMMigrationService extends \Google\Service
   public $projects_locations_sources_migratingVms;
   public $projects_locations_sources_migratingVms_cloneJobs;
   public $projects_locations_sources_migratingVms_cutoverJobs;
+  public $projects_locations_sources_migratingVms_replicationCycles;
   public $projects_locations_sources_utilizationReports;
   public $projects_locations_targetProjects;
 
@@ -751,6 +752,52 @@ class VMMigrationService extends \Google\Service
               ],
             ],'list' => [
               'path' => 'v1/{+parent}/cutoverJobs',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_sources_migratingVms_replicationCycles = new VMMigrationService\Resource\ProjectsLocationsSourcesMigratingVmsReplicationCycles(
+        $this,
+        $this->serviceName,
+        'replicationCycles',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/replicationCycles',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [

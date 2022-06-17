@@ -59,7 +59,9 @@ class OrganizationsEnvironments extends \Google\Service\Resource
     return $this->call('create', [$params], GoogleLongrunningOperation::class);
   }
   /**
-   * Deletes an environment from an organization. (environments.delete)
+   * Deletes an environment from an organization. **Note**: You must delete all
+   * key value maps and key value entries before you can delete an environment.
+   * (environments.delete)
    *
    * @param string $name Required. Name of the environment. Use the following
    * structure in your request: `organizations/{org}/environments/{env}`

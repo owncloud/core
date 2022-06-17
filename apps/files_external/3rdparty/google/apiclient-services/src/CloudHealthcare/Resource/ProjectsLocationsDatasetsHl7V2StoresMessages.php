@@ -178,8 +178,8 @@ class ProjectsLocationsDatasetsHl7V2StoresMessages extends \Google\Service\Resou
    * same keys are updated. (messages.patch)
    *
    * @param string $name Resource name of the Message, of the form `projects/{proj
-   * ect_id}/datasets/{dataset_id}/hl7V2Stores/{hl7_v2_store_id}/messages/{message
-   * _id}`. Assigned by the server.
+   * ect_id}/locations/{location_id}/datasets/{dataset_id}/hl7V2Stores/{hl7_v2_sto
+   * re_id}/messages/{message_id}`. Assigned by the server.
    * @param Message $postBody
    * @param array $optParams Optional parameters.
    *

@@ -21,6 +21,10 @@ class GoogleCloudRetailV2SearchRequestFacetSpecFacetKey extends \Google\Collecti
 {
   protected $collection_key = 'restrictedValues';
   /**
+   * @var bool
+   */
+  public $caseInsensitive;
+  /**
    * @var string[]
    */
   public $contains;
@@ -47,6 +51,20 @@ class GoogleCloudRetailV2SearchRequestFacetSpecFacetKey extends \Google\Collecti
    */
   public $restrictedValues;
 
+  /**
+   * @param bool
+   */
+  public function setCaseInsensitive($caseInsensitive)
+  {
+    $this->caseInsensitive = $caseInsensitive;
+  }
+  /**
+   * @return bool
+   */
+  public function getCaseInsensitive()
+  {
+    return $this->caseInsensitive;
+  }
   /**
    * @param string[]
    */

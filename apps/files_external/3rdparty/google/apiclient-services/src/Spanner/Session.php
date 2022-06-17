@@ -28,6 +28,10 @@ class Session extends \Google\Model
    */
   public $createTime;
   /**
+   * @var string
+   */
+  public $creatorRole;
+  /**
    * @var string[]
    */
   public $labels;
@@ -63,6 +67,20 @@ class Session extends \Google\Model
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setCreatorRole($creatorRole)
+  {
+    $this->creatorRole = $creatorRole;
+  }
+  /**
+   * @return string
+   */
+  public function getCreatorRole()
+  {
+    return $this->creatorRole;
   }
   /**
    * @param string[]

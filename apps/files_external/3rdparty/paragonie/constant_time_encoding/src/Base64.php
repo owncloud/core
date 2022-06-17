@@ -2,8 +2,12 @@
 declare(strict_types=1);
 namespace ParagonIE\ConstantTime;
 
+use InvalidArgumentException;
+use RangeException;
+use TypeError;
+
 /**
- *  Copyright (c) 2016 - 2018 Paragon Initiative Enterprises.
+ *  Copyright (c) 2016 - 2022 Paragon Initiative Enterprises.
  *  Copyright (c) 2014 Steve "Sc00bz" Thomas (steve at tobtu dot com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,7 +44,8 @@ abstract class Base64 implements EncoderInterface
      *
      * @param string $binString
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function encode(string $binString): string
     {
@@ -54,7 +59,8 @@ abstract class Base64 implements EncoderInterface
      *
      * @param string $src
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function encodeUnpadded(string $src): string
     {
@@ -65,7 +71,8 @@ abstract class Base64 implements EncoderInterface
      * @param string $src
      * @param bool $pad   Include = padding?
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     protected static function doEncode(string $src, bool $pad = true): string
     {
@@ -119,8 +126,9 @@ abstract class Base64 implements EncoderInterface
      * @param string $encodedString
      * @param bool $strictPadding
      * @return string
-     * @throws \RangeException
-     * @throws \TypeError
+     *
+     * @throws RangeException
+     * @throws TypeError
      * @psalm-suppress RedundantCondition
      */
     public static function decode(string $encodedString, bool $strictPadding = false): string
@@ -141,12 +149,12 @@ abstract class Base64 implements EncoderInterface
                 }
             }
             if (($srcLen & 3) === 1) {
-                throw new \RangeException(
+                throw new RangeException(
                     'Incorrect padding'
                 );
             }
             if ($encodedString[$srcLen - 1] === '=') {
-                throw new \RangeException(
+                throw new RangeException(
                     'Incorrect padding'
                 );
             }
@@ -189,6 +197,9 @@ abstract class Base64 implements EncoderInterface
                     ((($c1 << 4) | ($c2 >> 2)) & 0xff)
                 );
                 $err |= ($c0 | $c1 | $c2) >> 8;
+                if ($strictPadding) {
+                    $err |= ($c2 << 6) & 0xff;
+                }
             } elseif ($i + 1 < $srcLen) {
                 $c1 = static::decode6Bits($chunk[2]);
                 $dest .= \pack(
@@ -196,17 +207,50 @@ abstract class Base64 implements EncoderInterface
                     ((($c0 << 2) | ($c1 >> 4)) & 0xff)
                 );
                 $err |= ($c0 | $c1) >> 8;
+                if ($strictPadding) {
+                    $err |= ($c1 << 4) & 0xff;
+                }
             } elseif ($strictPadding) {
                 $err |= 1;
             }
         }
         $check = ($err === 0);
         if (!$check) {
-            throw new \RangeException(
+            throw new RangeException(
                 'Base64::decode() only expects characters in the correct base64 alphabet'
             );
         }
         return $dest;
+    }
+
+    /**
+     * @param string $encodedString
+     * @return string
+     */
+    public static function decodeNoPadding(string $encodedString): string
+    {
+        $srcLen = Binary::safeStrlen($encodedString);
+        if ($srcLen === 0) {
+            return '';
+        }
+        if (($srcLen & 3) === 0) {
+            if ($encodedString[$srcLen - 1] === '=') {
+                throw new InvalidArgumentException(
+                    "decodeNoPadding() doesn't tolerate padding"
+                );
+            }
+            if (($srcLen & 3) > 1) {
+                if ($encodedString[$srcLen - 2] === '=') {
+                    throw new InvalidArgumentException(
+                        "decodeNoPadding() doesn't tolerate padding"
+                    );
+                }
+            }
+        }
+        return static::decode(
+            $encodedString,
+            true
+        );
     }
 
     /**

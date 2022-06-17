@@ -8,7 +8,7 @@
 
 namespace Test\Http\Client;
 
-use GuzzleHttp\Message\Response as GuzzleResponse;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use OC\Http\Client\Response;
 
 /**
@@ -22,16 +22,15 @@ class ResponseTest extends \Test\TestCase {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->guzzleResponse = new GuzzleResponse(1337);
+		$this->guzzleResponse = new GuzzleResponse(200, ['bar' => 'foo']);
 		$this->response = new Response($this->guzzleResponse);
 	}
 
 	public function testGetStatusCode() {
-		$this->assertEquals(1337, $this->response->getStatusCode());
+		$this->assertEquals(200, $this->response->getStatusCode());
 	}
 
 	public function testGetHeader() {
-		$this->guzzleResponse->setHeader('bar', 'foo');
 		$this->assertEquals('foo', $this->response->getHeader('bar'));
 	}
 }

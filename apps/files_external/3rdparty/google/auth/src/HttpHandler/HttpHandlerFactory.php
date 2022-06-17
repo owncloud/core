@@ -36,6 +36,7 @@ class HttpHandlerFactory
         if (defined('GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
             $version = ClientInterface::MAJOR_VERSION;
         } elseif (defined('GuzzleHttp\ClientInterface::VERSION')) {
+            /** @phpstan-ignore-next-line */
             $version = (int) substr(ClientInterface::VERSION, 0, 1);
         }
 

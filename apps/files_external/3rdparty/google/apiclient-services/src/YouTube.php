@@ -87,6 +87,7 @@ class YouTube extends \Google\Service
   public $videos;
   public $watermarks;
   public $youtube_v3;
+  public $youtube_v3_liveBroadcasts_cuepoint;
 
   /**
    * Constructs the internal representation of the YouTube service.
@@ -2079,6 +2080,58 @@ class YouTube extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->youtube_v3_liveBroadcasts_cuepoint = new YouTube\Resource\YoutubeV3LiveBroadcastsCuepoint(
+        $this,
+        $this->serviceName,
+        'cuepoint',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'youtube/v3/liveBroadcasts/cuepoint',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'id' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'onBehalfOfContentOwner' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'onBehalfOfContentOwnerChannel' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'part' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ],
+                'resource.cueType' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'resource.durationSecs' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'resource.id' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'resource.insertionOffsetTimeMs' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'resource.walltimeMs' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],

@@ -487,6 +487,16 @@ class Baremetalsolution extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'resize' => [
+              'path' => 'v2/{+volume}:resize',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'volume' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],
           ]
         ]

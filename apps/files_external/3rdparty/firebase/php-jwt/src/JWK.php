@@ -23,9 +23,14 @@ class JWK
     /**
      * Parse a set of JWK keys
      *
-     * @param array $jwks The JSON Web Key Set as an associative array
+     * @param array<mixed> $jwks The JSON Web Key Set as an associative array
+<<<<<<< HEAD
+     * @param string       $defaultAlg The algorithm for the Key object if "alg" is not set in the
+     *                                 JSON Web Key Set
+=======
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
      *
-     * @return array An associative array that represents the set of keys
+     * @return array<string, Key> An associative array of key IDs (kid) to Key objects
      *
      * @throws InvalidArgumentException     Provided JWK Set is empty
      * @throws UnexpectedValueException     Provided JWK Set was invalid
@@ -33,21 +38,30 @@ class JWK
      *
      * @uses parseKey
      */
-    public static function parseKeySet(array $jwks)
+<<<<<<< HEAD
+    public static function parseKeySet(array $jwks, string $defaultAlg = null): array
+=======
+    public static function parseKeySet(array $jwks): array
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
     {
-        $keys = array();
+        $keys = [];
 
         if (!isset($jwks['keys'])) {
             throw new UnexpectedValueException('"keys" member must exist in the JWK Set');
         }
+
         if (empty($jwks['keys'])) {
             throw new InvalidArgumentException('JWK Set did not contain any keys');
         }
 
         foreach ($jwks['keys'] as $k => $v) {
             $kid = isset($v['kid']) ? $v['kid'] : $k;
+<<<<<<< HEAD
+            if ($key = self::parseKey($v, $defaultAlg)) {
+=======
             if ($key = self::parseKey($v)) {
-                $keys[$kid] = $key;
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
+                $keys[(string) $kid] = $key;
             }
         }
 
@@ -61,9 +75,14 @@ class JWK
     /**
      * Parse a JWK key
      *
-     * @param array $jwk An individual JWK
+     * @param array<mixed> $jwk An individual JWK
+<<<<<<< HEAD
+     * @param string       $defaultAlg The algorithm for the Key object if "alg" is not set in the
+     *                                 JSON Web Key Set
+=======
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
      *
-     * @return resource|array An associative array that represents the key
+     * @return Key The key object for the JWK
      *
      * @throws InvalidArgumentException     Provided JWK is empty
      * @throws UnexpectedValueException     Provided JWK was invalid
@@ -71,13 +90,36 @@ class JWK
      *
      * @uses createPemFromModulusAndExponent
      */
-    public static function parseKey(array $jwk)
+<<<<<<< HEAD
+    public static function parseKey(array $jwk, string $defaultAlg = null): ?Key
+=======
+    public static function parseKey(array $jwk): ?Key
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
     {
         if (empty($jwk)) {
             throw new InvalidArgumentException('JWK must not be empty');
         }
+
         if (!isset($jwk['kty'])) {
             throw new UnexpectedValueException('JWK must contain a "kty" parameter');
+        }
+
+        if (!isset($jwk['alg'])) {
+<<<<<<< HEAD
+            if (\is_null($defaultAlg)) {
+                // The "alg" parameter is optional in a KTY, but an algorithm is required
+                // for parsing in this library. Use the $defaultAlg parameter when parsing the
+                // key set in order to prevent this error.
+                // @see https://datatracker.ietf.org/doc/html/rfc7517#section-4.4
+                throw new UnexpectedValueException('JWK must contain an "alg" parameter');
+            }
+            $jwk['alg'] = $defaultAlg;
+=======
+            // The "alg" parameter is optional in a KTY, but is required for parsing in
+            // this library. Add it manually to your JWK array if it doesn't already exist.
+            // @see https://datatracker.ietf.org/doc/html/rfc7517#section-4.4
+            throw new UnexpectedValueException('JWK must contain an "alg" parameter');
+>>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
         }
 
         switch ($jwk['kty']) {
@@ -96,11 +138,13 @@ class JWK
                         'OpenSSL error: ' . \openssl_error_string()
                     );
                 }
-                return $publicKey;
+                return new Key($publicKey, $jwk['alg']);
             default:
                 // Currently only RSA is supported
                 break;
         }
+
+        return null;
     }
 
     /**
@@ -113,22 +157,22 @@ class JWK
      *
      * @uses encodeLength
      */
-    private static function createPemFromModulusAndExponent($n, $e)
-    {
-        $modulus = JWT::urlsafeB64Decode($n);
-        $publicExponent = JWT::urlsafeB64Decode($e);
+    private static function createPemFromModulusAndExponent(
+        string $n,
+        string $e
+    ): string {
+        $mod = JWT::urlsafeB64Decode($n);
+        $exp = JWT::urlsafeB64Decode($e);
 
-        $components = array(
-            'modulus' => \pack('Ca*a*', 2, self::encodeLength(\strlen($modulus)), $modulus),
-            'publicExponent' => \pack('Ca*a*', 2, self::encodeLength(\strlen($publicExponent)), $publicExponent)
-        );
+        $modulus = \pack('Ca*a*', 2, self::encodeLength(\strlen($mod)), $mod);
+        $publicExponent = \pack('Ca*a*', 2, self::encodeLength(\strlen($exp)), $exp);
 
         $rsaPublicKey = \pack(
             'Ca*a*a*',
             48,
-            self::encodeLength(\strlen($components['modulus']) + \strlen($components['publicExponent'])),
-            $components['modulus'],
-            $components['publicExponent']
+            self::encodeLength(\strlen($modulus) + \strlen($publicExponent)),
+            $modulus,
+            $publicExponent
         );
 
         // sequence(oid(1.2.840.113549.1.1.1), null)) = rsaEncryption.
@@ -159,7 +203,7 @@ class JWK
      * @param int $length
      * @return string
      */
-    private static function encodeLength($length)
+    private static function encodeLength(int $length): string
     {
         if ($length <= 0x7F) {
             return \chr($length);

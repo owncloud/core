@@ -284,6 +284,10 @@ class ChromeManagement extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
+                'readMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
               ],
             ],'list' => [
               'path' => 'v1/{+parent}/telemetry/devices',
