@@ -562,6 +562,13 @@ $CONFIG = [
 'proxy' => '',
 
 /**
+ * Define a list of hostnames that won't be proxied.
+ * This option only applies if the `proxy` option is used
+ * Example: `['specific.hostname.com', '.sub.domain.com']`.
+ */
+'proxy_ignore' => [],
+
+/**
  * Define proxy authentication
  * The optional authentication for the proxy to use to connect to the internet.
  * The format is: `username:password`.
