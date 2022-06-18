@@ -16,6 +16,7 @@ Summary
 * Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
+* Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 
 Details
@@ -94,6 +95,12 @@ Details
    https://github.com/owncloud/core/pull/39368
    https://github.com/owncloud/core/pull/40111
    https://symfony.com/blog/symfony-4-4-42-released
+
+* Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
+
+   We no longer needlessly propagate the etag and mtime for thumbnails in the filecache.
+
+   https://github.com/owncloud/core/pull/39988
 
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 
