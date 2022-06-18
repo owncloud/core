@@ -384,7 +384,7 @@ Feature: resharing a resource with an expiration date
       | 2               | no                  | no                  | 200             |
 
   @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10
-  Scenario Outline: reshare can extend the received expiry date further into the future
+  Scenario Outline: reshare cannot extend the received expiry date further into the future
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "no"
