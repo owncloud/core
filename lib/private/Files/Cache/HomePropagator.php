@@ -31,7 +31,7 @@ class HomePropagator extends Propagator {
 	 */
 	public function __construct(\OC\Files\Storage\Storage $storage, IDBConnection $connection) {
 		parent::__construct($storage, $connection);
-		$this->ignoredBaseFolders = ['files_encryption'];
+		$this->ignoredBaseFolders = ['files_encryption', 'thumbnails'];
 	}
 
 	/**
