@@ -851,13 +851,13 @@ class Session implements IUserSession, Emitter {
 			$this->tokenProvider->updateToken($dbToken);
 			return true;
 		}
-                
-                // in case LDAP connection is temporary unavailable we do not want to invalidate the token
-                $uid = $dbToken->getUID();
-                $user = $this->manager->get($uid);
-                if ($user->getBackendClassName() === 'LDAP' && $this->activeUser == null) {
-                        return true;
-                }
+				
+		// in case LDAP connection is temporary unavailable we do not want to invalidate the token
+		$uid = $dbToken->getUID();
+		$user = $this->manager->get($uid);
+		if ($user->getBackendClassName() === 'LDAP' && $this->activeUser == null) {
+			return true;
+		}
 
 		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false
 			|| ($this->activeUser !== null && !$this->activeUser->isEnabled())) {
