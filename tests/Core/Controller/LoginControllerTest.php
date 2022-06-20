@@ -372,7 +372,7 @@ class LoginControllerTest extends TestCase {
 			->method('canChangePassword')
 			->willReturn($canChangePassword);
 		$this->userManager
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('get')
 			->with('LdapUser')
 			->willReturn($user);
@@ -420,7 +420,7 @@ class LoginControllerTest extends TestCase {
 			->method('canChangePassword')
 			->willReturn(false);
 		$this->userManager
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('get')
 			->with('0')
 			->willReturn($user);
