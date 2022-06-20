@@ -1,6 +1,6 @@
 Bugfix: Do not crash while running the cleanup-chunks command
 
-Previosly, when you run the cleanup-chunks command, any unhandled exception
+Previously, when you run the cleanup-chunks command, any unhandled exception
 could crash the command. If this happened, there could be chunks that weren't
 deleted.
 

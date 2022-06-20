@@ -117,8 +117,8 @@ class CleanupChunks extends Command {
 
 			$p->finish();
 			$output->writeln('');
-			if ($failures) {
-				$output->writeln("<error>following folders gave problems with the deletion:</error>");
+			if (\count($failures) > 0) {
+				$output->writeln("<error>there were problems deleting the following folders:</error>");
 				foreach ($failures as $key => $value) {
 					$output->writeln("<error>{$key} -> {$value}</error>");
 				}
