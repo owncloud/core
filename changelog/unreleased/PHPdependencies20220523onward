@@ -2,7 +2,7 @@ Change: Update PHP dependencies
 
 The following have been updated:
 - doctrine/cache (2.1.1 to 2.2.0)
-- egulias/email-validator (3.1.2 to 3.2)
+- egulias/email-validator (3.1.2 to 3.2.1)
 - guzzlehttp/guzzle (v5.3.4 to v7.4.4)
 - icewind/streams (0.7.5 to 0.7.6)
 - laminas/laminas-stdlib (3.7.1 to 3.10.1)
@@ -25,3 +25,4 @@ https://github.com/owncloud/core/pull/40121
 https://github.com/owncloud/core/pull/40135
 https://github.com/owncloud/core/pull/40136
 https://github.com/owncloud/core/pull/40137
+https://github.com/owncloud/core/pull/40151
