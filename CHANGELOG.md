@@ -8,7 +8,6 @@ ownCloud admins and users.
 Summary
 -------
 
-* Bugfix - Do not invalidate app tokens in case LDAP connection is temporary unavailable: [#40152](https://github.com/owncloud/core/pull/40152)
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
@@ -22,13 +21,6 @@ Summary
 
 Details
 -------
-
-* Bugfix - Do not invalidate app tokens in case LDAP connection is temporary unavailable: [#40152](https://github.com/owncloud/core/pull/40152)
-
-   Whenever connection to the LDAP server became unavailable app tokens were getting deleted after 
-   some minutes causing disconnection of connected clients. App tokens are now remaining valid until connection is back.
-
-   https://github.com/owncloud/core/pull/40152
 
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 
