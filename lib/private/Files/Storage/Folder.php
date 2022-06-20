@@ -86,11 +86,16 @@ class Folder extends Node implements FilesFolder {
 	 * Get the node at $path
 	 *
 	 * @param string $path relative path of the file or folder
+	 * @param bool $ensureExists
 	 * @return \OCP\Files\Node
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
-	public function get($path) {
+	public function get($path, $ensureExists = false) {
 		$newPath = "$this->path/$path";
+		if ($ensureExists && !$this->storage->file_exists($newPath)) {
+			return null;
+		}
+
 		$type = $this->storage->filetype($newPath);
 		switch ($type) {
 			case 'file': return new File($this->storage, $newPath);

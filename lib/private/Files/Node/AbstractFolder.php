@@ -58,7 +58,7 @@ class AbstractFolder extends AbstractNode implements \OCP\Files\Folder {
 	/**
 	 * @inheritdoc
 	 */
-	public function get($path) {
+	public function get($path, $ensureExists = false) {
 		throw new NotPermittedException();
 	}
 

@@ -175,6 +175,7 @@ class Root extends Folder implements IRootFolder {
 
 	/**
 	 * @param string $path
+	 * @param bool $ensureExists ensure the path exists in the FS
 	 * @throws \OCP\Files\NotFoundException
 	 * @throws \OCP\Files\NotPermittedException
 	 * @return File|Folder

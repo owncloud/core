@@ -229,6 +229,8 @@ class User implements IUser {
 
 	/**
 	 * updates the timestamp of the most recent login of this user
+	 *
+	 * @return void
 	 */
 	public function updateLastLoginTimestamp() {
 		$this->account->setLastLogin(\time());

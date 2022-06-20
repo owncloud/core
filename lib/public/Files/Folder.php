@@ -77,11 +77,13 @@ interface Folder extends Node {
 	 * Get the node at $path
 	 *
 	 * @param string $path relative path of the file or folder
+	 * @param bool $ensureExists ensure the path exists in the FS, otherwise it
+	 * might exist only in the filecache (since 10.11)
 	 * @return \OCP\Files\Node
 	 * @throws \OCP\Files\NotFoundException
 	 * @since 6.0.0
 	 */
-	public function get($path);
+	public function get($path, $ensureExists = false);
 
 	/**
 	 * Check if a file or folder exists in the folder
