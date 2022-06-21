@@ -342,6 +342,39 @@ describe('OC.Share.ShareDialogView', function() {
 			expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 		});
 
+		it('fetches multiple users for batch action', function () {
+			dialog.render();
+			var response = sinon.stub();
+			dialog.autocompleteHandler({term: 'user01;user02'}, response).then(function() {
+				var expected = [{'shareType': 0, 'shareWith': 'user01'}, {'shareType': 0, 'shareWith': 'user02'}];
+				expect(response.getCall(0).args[0].osc.batch).toEqual(expected);
+			});
+
+			var getRequestResponse = function(user) {
+				return JSON.stringify({
+					'ocs' : {
+						'meta' : {
+							'status' : 'success',
+							'statuscode' : 100,
+							'message' : null
+						},
+						'data' : {
+							'exact' : {
+								'users'  : [{'label': 'user01', 'value': {'shareType': 0, 'shareWith': user}}],
+								'groups' : [],
+								'remotes': []
+							},
+							'users'  : [],
+							'groups' : [],
+							'remotes': []
+						}
+					}
+				});
+			}
+			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, getRequestResponse('user01'));
+			fakeServer.requests[1].respond(200, {'Content-Type': 'application/json'}, getRequestResponse('user02'));
+		});
+
 		describe('filter out', function() {
 			it('the current user', function () {
 				dialog.render();
