@@ -344,10 +344,9 @@ describe('OC.Share.ShareDialogView', function() {
 
 		it('fetches multiple users for batch action', function () {
 			dialog.render();
-			var response = sinon.stub();
-			dialog.autocompleteHandler({term: 'user01;user02'}, response).then(function() {
+			dialog._getUsersForBatchAction('user01;user02').then(function(users) {
 				var expected = [{'shareType': 0, 'shareWith': 'user01'}, {'shareType': 0, 'shareWith': 'user02'}];
-				expect(response.getCall(0).args[0].osc.batch).toEqual(expected);
+				expect(users).toEqual(expected);
 			});
 
 			var getRequestResponse = function(user) {
