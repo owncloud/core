@@ -1,0 +1,6 @@
+Bugfix: Convert from utf8_encode to mb_convert_encoding
+
+Function `utf8_encode` will be deprecated and removed in future PHP versions.
+It has been replaced with function mb_convert_encoding.
+
+https://github.com/owncloud/core/pull/40158

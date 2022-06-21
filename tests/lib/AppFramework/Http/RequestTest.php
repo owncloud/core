@@ -1280,9 +1280,15 @@ class RequestTest extends TestCase {
 	 * @dataProvider genericPathInfoProvider
 	 * @param string $requestUri
 	 * @param string $scriptName
-	 * @param string $expected
+	 * @param string $expectedGetPathInfo
+	 * @param string $expectedGetRawPathInfo
 	 */
-	public function testGetRawPathInfoWithoutSetEnvGeneric($requestUri, $scriptName, $expected) {
+	public function testGetRawPathInfoWithoutSetEnvGeneric($requestUri, $scriptName, $expectedGetPathInfo, $expectedGetRawPathInfo) {
+		if ($expectedGetRawPathInfo === '') {
+			$expected = $expectedGetPathInfo;
+		} else {
+			$expected = $expectedGetRawPathInfo;
+		}
 		$request = new Request(
 			[
 				'server' => [
@@ -1350,14 +1356,15 @@ class RequestTest extends TestCase {
 	 */
 	public function genericPathInfoProvider() {
 		return [
-			['/core/index.php?XDEBUG_SESSION_START=14600', '/core/index.php', ''],
-			['/index.php/apps/files/', 'index.php', '/apps/files/'],
-			['/index.php/apps/files/../&amp;/&?someQueryParameter=QueryParam', 'index.php', '/apps/files/../&amp;/&'],
-			['/remote.php/漢字編碼方法 / 汉字编码方法', 'remote.php', '/漢字編碼方法 / 汉字编码方法'],
-			['///removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/'],
-			['/remove/multiple/Slashes/In/ScriptName/', '//remote.php', '/remove/multiple/Slashes/In/ScriptName/'],
-			['/', '/', ''],
-			['', '', ''],
+			['/core/index.php?XDEBUG_SESSION_START=14600', '/core/index.php', '', ''],
+			['/index.php/apps/files/', 'index.php', '/apps/files/', ''],
+			['/index.php/apps/files/../&amp;/&?someQueryParameter=QueryParam', 'index.php', '/apps/files/../&amp;/&', ''],
+			['/remote.php/漢字編碼方法 / 汉字编码方法', 'remote.php', '/漢字編碼方法 / 汉字编码方法', ''],
+			['/remote.php/pound-cent-AE-%A3%A2%C6-in-ISO-8859-1', 'remote.php', '/pound-cent-AE-£¢Æ-in-ISO-8859-1', '/pound-cent-AE-%A3%A2%C6-in-ISO-8859-1'],
+			['///removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/', ''],
+			['/remove/multiple/Slashes/In/ScriptName/', '//remote.php', '/remove/multiple/Slashes/In/ScriptName/', ''],
+			['/', '/', '', ''],
+			['', '', '', ''],
 		];
 	}
 
