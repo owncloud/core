@@ -19,6 +19,7 @@ Summary
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 * Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
+* Enhancement - Add additional columns to background job queue status: [#40113](https://github.com/owncloud/core/pull/40113)
 
 Details
 -------
@@ -119,6 +120,13 @@ Details
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 
    https://github.com/owncloud/core/pull/40087
+
+* Enhancement - Add additional columns to background job queue status: [#40113](https://github.com/owncloud/core/pull/40113)
+
+   Command `occ background:queue:status` now shows additional columns for: - Last Checked -
+   Reserved At - Execution Duration
+
+   https://github.com/owncloud/core/pull/40113
 
 Changelog for ownCloud Core [10.10.0] (2022-05-16)
 =======================================
