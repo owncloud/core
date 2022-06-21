@@ -27,6 +27,10 @@ class ListCollectionIdsRequest extends \Google\Model
    * @var string
    */
   public $pageToken;
+  /**
+   * @var string
+   */
+  public $readTime;
 
   /**
    * @param int
@@ -55,6 +59,20 @@ class ListCollectionIdsRequest extends \Google\Model
   public function getPageToken()
   {
     return $this->pageToken;
+  }
+  /**
+   * @param string
+   */
+  public function setReadTime($readTime)
+  {
+    $this->readTime = $readTime;
+  }
+  /**
+   * @return string
+   */
+  public function getReadTime()
+  {
+    return $this->readTime;
   }
 }
 

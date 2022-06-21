@@ -30,6 +30,10 @@ class OnPremCluster extends \Google\Model
   /**
    * @var string
    */
+  public $clusterType;
+  /**
+   * @var string
+   */
   public $resourceLink;
 
   /**
@@ -59,6 +63,20 @@ class OnPremCluster extends \Google\Model
   public function getClusterMissing()
   {
     return $this->clusterMissing;
+  }
+  /**
+   * @param string
+   */
+  public function setClusterType($clusterType)
+  {
+    $this->clusterType = $clusterType;
+  }
+  /**
+   * @return string
+   */
+  public function getClusterType()
+  {
+    return $this->clusterType;
   }
   /**
    * @param string

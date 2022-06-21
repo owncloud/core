@@ -22,12 +22,30 @@ class PartitionId extends \Google\Model
   /**
    * @var string
    */
+  public $databaseId;
+  /**
+   * @var string
+   */
   public $namespaceId;
   /**
    * @var string
    */
   public $projectId;
 
+  /**
+   * @param string
+   */
+  public function setDatabaseId($databaseId)
+  {
+    $this->databaseId = $databaseId;
+  }
+  /**
+   * @return string
+   */
+  public function getDatabaseId()
+  {
+    return $this->databaseId;
+  }
   /**
    * @param string
    */

@@ -19,7 +19,7 @@ namespace Google\Service\SecurityCommandCenter;
 
 class Indicator extends \Google\Collection
 {
-  protected $collection_key = 'ipAddresses';
+  protected $collection_key = 'signatures';
   /**
    * @var string[]
    */
@@ -28,6 +28,8 @@ class Indicator extends \Google\Collection
    * @var string[]
    */
   public $ipAddresses;
+  protected $signaturesType = ProcessSignature::class;
+  protected $signaturesDataType = 'array';
 
   /**
    * @param string[]
@@ -56,6 +58,20 @@ class Indicator extends \Google\Collection
   public function getIpAddresses()
   {
     return $this->ipAddresses;
+  }
+  /**
+   * @param ProcessSignature[]
+   */
+  public function setSignatures($signatures)
+  {
+    $this->signatures = $signatures;
+  }
+  /**
+   * @return ProcessSignature[]
+   */
+  public function getSignatures()
+  {
+    return $this->signatures;
   }
 }
 

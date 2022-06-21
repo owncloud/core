@@ -34,6 +34,30 @@ use Google\Service\Firestore\GoogleLongrunningOperation;
 class ProjectsDatabases extends \Google\Service\Resource
 {
   /**
+   * Create a database. (databases.create)
+   *
+   * @param string $parent Required. A parent name of the form
+   * `projects/{project_id}`
+   * @param GoogleFirestoreAdminV1Database $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string databaseId Required. The ID to use for the database, which
+   * will become the final component of the database's resource name. This value
+   * should be 4-63 characters. Valid characters are /a-z-/ with first character a
+   * letter and the last a letter or a number. Must not be UUID-like
+   * /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/. "(default)" database id is also
+   * valid.
+   * @opt_param bool validateOnly If set, validate the request and preview the
+   * response, but do not actually create the database.
+   * @return GoogleLongrunningOperation
+   */
+  public function create($parent, GoogleFirestoreAdminV1Database $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
    * Exports a copy of all or a subset of documents from Google Cloud Firestore to
    * another storage system, such as Google Cloud Storage. Recent updates to
    * documents may not be reflected in the export. The export occurs in the

@@ -20,6 +20,8 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2InfoTypeDescription extends \Google\Collection
 {
   protected $collection_key = 'supportedBy';
+  protected $categoriesType = GooglePrivacyDlpV2InfoTypeCategory::class;
+  protected $categoriesDataType = 'array';
   /**
    * @var string
    */
@@ -37,6 +39,20 @@ class GooglePrivacyDlpV2InfoTypeDescription extends \Google\Collection
    */
   public $supportedBy;
 
+  /**
+   * @param GooglePrivacyDlpV2InfoTypeCategory[]
+   */
+  public function setCategories($categories)
+  {
+    $this->categories = $categories;
+  }
+  /**
+   * @return GooglePrivacyDlpV2InfoTypeCategory[]
+   */
+  public function getCategories()
+  {
+    return $this->categories;
+  }
   /**
    * @param string
    */

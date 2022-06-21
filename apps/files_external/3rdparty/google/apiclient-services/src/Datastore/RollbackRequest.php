@@ -22,8 +22,26 @@ class RollbackRequest extends \Google\Model
   /**
    * @var string
    */
+  public $databaseId;
+  /**
+   * @var string
+   */
   public $transaction;
 
+  /**
+   * @param string
+   */
+  public function setDatabaseId($databaseId)
+  {
+    $this->databaseId = $databaseId;
+  }
+  /**
+   * @return string
+   */
+  public function getDatabaseId()
+  {
+    return $this->databaseId;
+  }
   /**
    * @param string
    */

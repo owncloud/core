@@ -36,9 +36,9 @@ class ProjectsLocationsCatalogsServingConfigs extends \Google\Service\Resource
    * Makes a recommendation prediction. (servingConfigs.predict)
    *
    * @param string $placement Required. Full resource name of the format:
-   * {name=projects/locations/global/catalogs/default_catalog/servingConfigs} or
-   * {name=projects/locations/global/catalogs/default_catalog/placements}. We
-   * recommend using the `servingConfigs` resource. `placements` is a legacy
+   * {placement=projects/locations/global/catalogs/default_catalog/servingConfigs}
+   * or {placement=projects/locations/global/catalogs/default_catalog/placements}.
+   * We recommend using the `servingConfigs` resource. `placements` is a legacy
    * resource. The ID of the Recommendations AI serving config or placement.
    * Before you can request predictions from your model, you must create at least
    * one serving config or placement for it. For more information, see [Managing

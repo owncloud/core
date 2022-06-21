@@ -65,6 +65,10 @@ class Instance extends \Google\Collection
   /**
    * @var string
    */
+  public $keyRevocationActionType;
+  /**
+   * @var string
+   */
   public $kind;
   /**
    * @var string
@@ -338,6 +342,20 @@ class Instance extends \Google\Collection
   public function getId()
   {
     return $this->id;
+  }
+  /**
+   * @param string
+   */
+  public function setKeyRevocationActionType($keyRevocationActionType)
+  {
+    $this->keyRevocationActionType = $keyRevocationActionType;
+  }
+  /**
+   * @return string
+   */
+  public function getKeyRevocationActionType()
+  {
+    return $this->keyRevocationActionType;
   }
   /**
    * @param string

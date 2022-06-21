@@ -23,6 +23,14 @@ class GoogleCloudDocumentaiV1beta3ReviewDocumentResponse extends \Google\Model
    * @var string
    */
   public $gcsDestination;
+  /**
+   * @var string
+   */
+  public $rejectionReason;
+  /**
+   * @var string
+   */
+  public $state;
 
   /**
    * @param string
@@ -37,6 +45,34 @@ class GoogleCloudDocumentaiV1beta3ReviewDocumentResponse extends \Google\Model
   public function getGcsDestination()
   {
     return $this->gcsDestination;
+  }
+  /**
+   * @param string
+   */
+  public function setRejectionReason($rejectionReason)
+  {
+    $this->rejectionReason = $rejectionReason;
+  }
+  /**
+   * @return string
+   */
+  public function getRejectionReason()
+  {
+    return $this->rejectionReason;
+  }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
   }
 }
 

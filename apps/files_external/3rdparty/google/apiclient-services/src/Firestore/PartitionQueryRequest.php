@@ -31,6 +31,10 @@ class PartitionQueryRequest extends \Google\Model
    * @var string
    */
   public $partitionCount;
+  /**
+   * @var string
+   */
+  public $readTime;
   protected $structuredQueryType = StructuredQuery::class;
   protected $structuredQueryDataType = '';
 
@@ -75,6 +79,20 @@ class PartitionQueryRequest extends \Google\Model
   public function getPartitionCount()
   {
     return $this->partitionCount;
+  }
+  /**
+   * @param string
+   */
+  public function setReadTime($readTime)
+  {
+    $this->readTime = $readTime;
+  }
+  /**
+   * @return string
+   */
+  public function getReadTime()
+  {
+    return $this->readTime;
   }
   /**
    * @param StructuredQuery

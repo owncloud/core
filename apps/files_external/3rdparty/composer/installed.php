@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '3287259da4b954085a973b84480afb02c3ab4961',
         'name' => 'files_external/3rdparty',
         'dev' => true,
     ),
     'versions' => array(
         'files_external/3rdparty' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '3287259da4b954085a973b84480afb02c3ab4961',
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
@@ -38,12 +38,12 @@
             'dev_requirement' => false,
         ),
         'google/apiclient-services' => array(
-            'pretty_version' => 'v0.253.0',
-            'version' => '0.253.0.0',
+            'pretty_version' => 'v0.254.0',
+            'version' => '0.254.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../google/apiclient-services',
             'aliases' => array(),
-            'reference' => '70c62b17f7821526cb52c6f125254dc51f256109',
+            'reference' => 'e1b16659df899f3bdf5c798358c256a9cc01efeb',
             'dev_requirement' => false,
         ),
         'google/auth' => array(
@@ -62,12 +62,12 @@
             ),
         ),
         'guzzlehttp/psr7' => array(
-            'pretty_version' => '2.3.0',
-            'version' => '2.3.0.0',
+            'pretty_version' => '2.4.0',
+            'version' => '2.4.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
-            'reference' => '83260bb50b8fc753c72d14dc1621a2dac31877ee',
+            'reference' => '13388f00956b1503577598873fffb5ae994b5737',
             'dev_requirement' => false,
         ),
         'icewind/smb' => array(

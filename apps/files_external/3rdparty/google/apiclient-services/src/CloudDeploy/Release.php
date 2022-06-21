@@ -21,6 +21,10 @@ class Release extends \Google\Collection
 {
   protected $collection_key = 'targetSnapshots';
   /**
+   * @var bool
+   */
+  public $abandoned;
+  /**
    * @var string[]
    */
   public $annotations;
@@ -83,6 +87,20 @@ class Release extends \Google\Collection
    */
   public $uid;
 
+  /**
+   * @param bool
+   */
+  public function setAbandoned($abandoned)
+  {
+    $this->abandoned = $abandoned;
+  }
+  /**
+   * @return bool
+   */
+  public function getAbandoned()
+  {
+    return $this->abandoned;
+  }
   /**
    * @param string[]
    */

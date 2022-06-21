@@ -17,6 +17,8 @@
 
 namespace Google\Service\CloudDeploy\Resource;
 
+use Google\Service\CloudDeploy\AbandonReleaseRequest;
+use Google\Service\CloudDeploy\AbandonReleaseResponse;
 use Google\Service\CloudDeploy\ListReleasesResponse;
 use Google\Service\CloudDeploy\Operation;
 use Google\Service\CloudDeploy\Release;
@@ -31,6 +33,22 @@ use Google\Service\CloudDeploy\Release;
  */
 class ProjectsLocationsDeliveryPipelinesReleases extends \Google\Service\Resource
 {
+  /**
+   * Abandons a Release in the Delivery Pipeline. (releases.abandon)
+   *
+   * @param string $name Required. Name of the Release. Format is
+   * projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
+   * releases/{release}.
+   * @param AbandonReleaseRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return AbandonReleaseResponse
+   */
+  public function abandon($name, AbandonReleaseRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('abandon', [$params], AbandonReleaseResponse::class);
+  }
   /**
    * Creates a new Release in a given project and location. (releases.create)
    *

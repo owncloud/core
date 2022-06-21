@@ -36,6 +36,10 @@ class Job extends \Google\Model
    */
   public $inputUri;
   /**
+   * @var string[]
+   */
+  public $labels;
+  /**
    * @var string
    */
   public $name;
@@ -129,6 +133,20 @@ class Job extends \Google\Model
   public function getInputUri()
   {
     return $this->inputUri;
+  }
+  /**
+   * @param string[]
+   */
+  public function setLabels($labels)
+  {
+    $this->labels = $labels;
+  }
+  /**
+   * @return string[]
+   */
+  public function getLabels()
+  {
+    return $this->labels;
   }
   /**
    * @param string

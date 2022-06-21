@@ -41,6 +41,10 @@ class Process extends \Google\Collection
   /**
    * @var string
    */
+  public $name;
+  /**
+   * @var string
+   */
   public $parentPid;
   /**
    * @var string
@@ -132,6 +136,20 @@ class Process extends \Google\Collection
   public function getLibraries()
   {
     return $this->libraries;
+  }
+  /**
+   * @param string
+   */
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+  /**
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->name;
   }
   /**
    * @param string

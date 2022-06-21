@@ -43,6 +43,10 @@ class GoogleCloudApigeeV1EnvironmentConfig extends \Google\Collection
   /**
    * @var string
    */
+  public $forwardProxyUri;
+  /**
+   * @var string
+   */
   public $gatewayConfigLocation;
   protected $keystoresType = GoogleCloudApigeeV1KeystoreConfig::class;
   protected $keystoresDataType = 'array';
@@ -176,6 +180,20 @@ class GoogleCloudApigeeV1EnvironmentConfig extends \Google\Collection
   public function getFlowhooks()
   {
     return $this->flowhooks;
+  }
+  /**
+   * @param string
+   */
+  public function setForwardProxyUri($forwardProxyUri)
+  {
+    $this->forwardProxyUri = $forwardProxyUri;
+  }
+  /**
+   * @return string
+   */
+  public function getForwardProxyUri()
+  {
+    return $this->forwardProxyUri;
   }
   /**
    * @param string

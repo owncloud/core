@@ -18,6 +18,8 @@
 namespace Google\Service\Assuredworkloads\Resource;
 
 use Google\Service\Assuredworkloads\GoogleCloudAssuredworkloadsV1ListWorkloadsResponse;
+use Google\Service\Assuredworkloads\GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesRequest;
+use Google\Service\Assuredworkloads\GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesResponse;
 use Google\Service\Assuredworkloads\GoogleCloudAssuredworkloadsV1Workload;
 use Google\Service\Assuredworkloads\GoogleLongrunningOperation;
 use Google\Service\Assuredworkloads\GoogleProtobufEmpty;
@@ -130,6 +132,28 @@ class OrganizationsLocationsWorkloads extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], GoogleCloudAssuredworkloadsV1Workload::class);
+  }
+  /**
+   * Restrict the list of resources allowed in the Workload environment. The
+   * current list of allowed products can be found at https://cloud.google.com
+   * /assured-workloads/docs/supported-products In addition to
+   * assuredworkloads.workload.update permission, the user should also have
+   * orgpolicy.policy.set permission on the folder resource to use this
+   * functionality. (workloads.restrictAllowedResources)
+   *
+   * @param string $name Required. The resource name of the Workload. This is the
+   * workloads's relative path in the API, formatted as "organizations/{organizati
+   * on_id}/locations/{location_id}/workloads/{workload_id}". For example,
+   * "organizations/123/locations/us-east1/workloads/assured-workload-1".
+   * @param GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesResponse
+   */
+  public function restrictAllowedResources($name, GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('restrictAllowedResources', [$params], GoogleCloudAssuredworkloadsV1RestrictAllowedResourcesResponse::class);
   }
 }
 
