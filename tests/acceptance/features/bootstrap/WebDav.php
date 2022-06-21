@@ -27,6 +27,7 @@ use GuzzleHttp\Ring\Exception\ConnectException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Stream\StreamInterface;
+use TestHelpers\OcisHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -4881,7 +4882,8 @@ trait WebDav {
 		foreach ($elementRows as $expectedFile) {
 			$fileFound = $this->findEntryFromPropfindResponse(
 				$expectedFile[0],
-				$user
+				$user,
+				"REPORT"
 			);
 			if ($should) {
 				Assert::assertNotEmpty(
@@ -5128,7 +5130,7 @@ trait WebDav {
 		$type = $this->usingOldDavPath ? "public-files" : "public-files-new";
 		foreach ($table->getHash() as $row) {
 			$path = $this->substituteInLineCodes($row['name']);
-			$res = $this->findEntryFromPropfindResponse($path, $user, $type);
+			$res = $this->findEntryFromPropfindResponse($path, $user, null, $type);
 			Assert::assertNotFalse($res, "expected $path to be in DAV response but was not found");
 		}
 	}
@@ -5147,7 +5149,7 @@ trait WebDav {
 		$type = $this->usingOldDavPath ? "public-files" : "public-files-new";
 		foreach ($table->getHash() as $row) {
 			$path = $this->substituteInLineCodes($row['name']);
-			$res = $this->findEntryFromPropfindResponse($path, $user, $type);
+			$res = $this->findEntryFromPropfindResponse($path, $user, null, $type);
 			Assert::assertFalse($res, "expected $path to not be in DAV response but was found");
 		}
 	}
@@ -5254,6 +5256,7 @@ trait WebDav {
 	 *
 	 * @param string $entryNameToSearch
 	 * @param string|null $user
+	 * @param string|null $method
 	 * @param string $type
 	 *
 	 * @return string|array|boolean
@@ -5265,6 +5268,7 @@ trait WebDav {
 	public function findEntryFromPropfindResponse(
 		?string $entryNameToSearch = null,
 		?string $user = null,
+		?string $method = null,
 		string $type = "files"
 	) {
 		$trimmedEntryNameToSearch = '';
@@ -5276,6 +5280,16 @@ trait WebDav {
 		// topWebDavPath should be something like /remote.php/webdav/ or
 		// /remote.php/dav/files/alice/
 		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
+		if (OcisHelper::isTestingOnOcisOrReva() && $method === "REPORT") {
+			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				$this->getStepLineRef()
+			);
+			$splitSpaceID = explode("$", $spaceId);
+			$topWebDavPath = "/dav/spaces/" . $spaceId . "%21" . "$splitSpaceID[1]" . "/";
+		}
 
 		switch ($type) {
 			case "files":
