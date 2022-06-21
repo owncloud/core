@@ -48,6 +48,10 @@ class DeliveryPipeline extends \Google\Model
   protected $serialPipelineType = SerialPipeline::class;
   protected $serialPipelineDataType = '';
   /**
+   * @var bool
+   */
+  public $suspended;
+  /**
    * @var string
    */
   public $uid;
@@ -167,6 +171,20 @@ class DeliveryPipeline extends \Google\Model
   public function getSerialPipeline()
   {
     return $this->serialPipeline;
+  }
+  /**
+   * @param bool
+   */
+  public function setSuspended($suspended)
+  {
+    $this->suspended = $suspended;
+  }
+  /**
+   * @return bool
+   */
+  public function getSuspended()
+  {
+    return $this->suspended;
   }
   /**
    * @param string

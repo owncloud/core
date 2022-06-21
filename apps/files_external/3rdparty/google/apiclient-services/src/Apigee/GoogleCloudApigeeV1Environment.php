@@ -42,6 +42,10 @@ class GoogleCloudApigeeV1Environment extends \Google\Model
   /**
    * @var string
    */
+  public $forwardProxyUri;
+  /**
+   * @var string
+   */
   public $lastModifiedAt;
   /**
    * @var string
@@ -123,6 +127,20 @@ class GoogleCloudApigeeV1Environment extends \Google\Model
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param string
+   */
+  public function setForwardProxyUri($forwardProxyUri)
+  {
+    $this->forwardProxyUri = $forwardProxyUri;
+  }
+  /**
+   * @return string
+   */
+  public function getForwardProxyUri()
+  {
+    return $this->forwardProxyUri;
   }
   /**
    * @param string

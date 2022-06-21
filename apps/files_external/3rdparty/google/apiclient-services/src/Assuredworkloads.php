@@ -179,6 +179,16 @@ class Assuredworkloads extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'restrictAllowedResources' => [
+              'path' => 'v1/{+name}:restrictAllowedResources',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],
           ]
         ]

@@ -27,6 +27,10 @@ class Network extends \Google\Collection
   /**
    * @var string
    */
+  public $instanceIpMode;
+  /**
+   * @var string
+   */
   public $instanceTag;
   /**
    * @var string
@@ -54,6 +58,20 @@ class Network extends \Google\Collection
   public function getForwardedPorts()
   {
     return $this->forwardedPorts;
+  }
+  /**
+   * @param string
+   */
+  public function setInstanceIpMode($instanceIpMode)
+  {
+    $this->instanceIpMode = $instanceIpMode;
+  }
+  /**
+   * @return string
+   */
+  public function getInstanceIpMode()
+  {
+    return $this->instanceIpMode;
   }
   /**
    * @param string

@@ -277,7 +277,17 @@ class CloudDeploy extends \Google\Service
         'releases',
         [
           'methods' => [
-            'create' => [
+            'abandon' => [
+              'path' => 'v1/{+name}:abandon',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'create' => [
               'path' => 'v1/{+parent}/releases',
               'httpMethod' => 'POST',
               'parameters' => [

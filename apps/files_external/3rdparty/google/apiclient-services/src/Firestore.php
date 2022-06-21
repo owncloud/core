@@ -71,7 +71,25 @@ class Firestore extends \Google\Service
         'databases',
         [
           'methods' => [
-            'exportDocuments' => [
+            'create' => [
+              'path' => 'v1/{+parent}/databases',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'databaseId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'validateOnly' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
+              ],
+            ],'exportDocuments' => [
               'path' => 'v1/{+name}:exportDocuments',
               'httpMethod' => 'POST',
               'parameters' => [

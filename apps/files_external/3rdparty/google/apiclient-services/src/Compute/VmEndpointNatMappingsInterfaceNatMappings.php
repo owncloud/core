@@ -19,7 +19,7 @@ namespace Google\Service\Compute;
 
 class VmEndpointNatMappingsInterfaceNatMappings extends \Google\Collection
 {
-  protected $collection_key = 'natIpPortRanges';
+  protected $collection_key = 'ruleMappings';
   /**
    * @var string[]
    */
@@ -36,6 +36,8 @@ class VmEndpointNatMappingsInterfaceNatMappings extends \Google\Collection
    * @var int
    */
   public $numTotalNatPorts;
+  protected $ruleMappingsType = VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings::class;
+  protected $ruleMappingsDataType = 'array';
   /**
    * @var string
    */
@@ -100,6 +102,20 @@ class VmEndpointNatMappingsInterfaceNatMappings extends \Google\Collection
   public function getNumTotalNatPorts()
   {
     return $this->numTotalNatPorts;
+  }
+  /**
+   * @param VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings[]
+   */
+  public function setRuleMappings($ruleMappings)
+  {
+    $this->ruleMappings = $ruleMappings;
+  }
+  /**
+   * @return VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings[]
+   */
+  public function getRuleMappings()
+  {
+    return $this->ruleMappings;
   }
   /**
    * @param string

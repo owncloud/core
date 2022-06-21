@@ -42,6 +42,8 @@ class GoogleFirestoreAdminV1FieldOperationMetadata extends \Google\Collection
    * @var string
    */
   public $state;
+  protected $ttlConfigDeltaType = GoogleFirestoreAdminV1TtlConfigDelta::class;
+  protected $ttlConfigDeltaDataType = '';
 
   /**
    * @param string
@@ -140,6 +142,20 @@ class GoogleFirestoreAdminV1FieldOperationMetadata extends \Google\Collection
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param GoogleFirestoreAdminV1TtlConfigDelta
+   */
+  public function setTtlConfigDelta(GoogleFirestoreAdminV1TtlConfigDelta $ttlConfigDelta)
+  {
+    $this->ttlConfigDelta = $ttlConfigDelta;
+  }
+  /**
+   * @return GoogleFirestoreAdminV1TtlConfigDelta
+   */
+  public function getTtlConfigDelta()
+  {
+    return $this->ttlConfigDelta;
   }
 }
 

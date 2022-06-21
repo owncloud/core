@@ -20,9 +20,27 @@ namespace Google\Service\Datastore;
 class AllocateIdsRequest extends \Google\Collection
 {
   protected $collection_key = 'keys';
+  /**
+   * @var string
+   */
+  public $databaseId;
   protected $keysType = Key::class;
   protected $keysDataType = 'array';
 
+  /**
+   * @param string
+   */
+  public function setDatabaseId($databaseId)
+  {
+    $this->databaseId = $databaseId;
+  }
+  /**
+   * @return string
+   */
+  public function getDatabaseId()
+  {
+    return $this->databaseId;
+  }
   /**
    * @param Key[]
    */

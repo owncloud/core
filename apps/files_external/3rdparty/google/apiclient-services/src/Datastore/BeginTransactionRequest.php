@@ -19,9 +19,27 @@ namespace Google\Service\Datastore;
 
 class BeginTransactionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $databaseId;
   protected $transactionOptionsType = TransactionOptions::class;
   protected $transactionOptionsDataType = '';
 
+  /**
+   * @param string
+   */
+  public function setDatabaseId($databaseId)
+  {
+    $this->databaseId = $databaseId;
+  }
+  /**
+   * @return string
+   */
+  public function getDatabaseId()
+  {
+    return $this->databaseId;
+  }
   /**
    * @param TransactionOptions
    */

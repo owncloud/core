@@ -18,6 +18,7 @@
 namespace Google\Service\YouTube\Resource;
 
 use Google\Service\YouTube\ThirdPartyLink;
+use Google\Service\YouTube\ThirdPartyLinkListResponse;
 
 /**
  * The "thirdPartyLinks" collection of methods.
@@ -80,13 +81,13 @@ class ThirdPartyLinks extends \Google\Service\Resource
    * @opt_param string linkingToken Get a third party link with the given linking
    * token.
    * @opt_param string type Get a third party link of the given type.
-   * @return ThirdPartyLink
+   * @return ThirdPartyLinkListResponse
    */
   public function listThirdPartyLinks($part, $optParams = [])
   {
     $params = ['part' => $part];
     $params = array_merge($params, $optParams);
-    return $this->call('list', [$params], ThirdPartyLink::class);
+    return $this->call('list', [$params], ThirdPartyLinkListResponse::class);
   }
   /**
    * Updates an existing resource. (thirdPartyLinks.update)

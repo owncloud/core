@@ -34,7 +34,7 @@ use Google\Client;
  */
 class Localservices extends \Google\Service
 {
-  /** Manage your AdWords campaigns. */
+  /** See, edit, create, and delete your Google Ads accounts and data.. */
   const ADWORDS =
       "https://www.googleapis.com/auth/adwords";
 

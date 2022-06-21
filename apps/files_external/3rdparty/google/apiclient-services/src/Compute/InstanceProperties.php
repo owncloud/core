@@ -37,6 +37,10 @@ class InstanceProperties extends \Google\Collection
   protected $guestAcceleratorsType = AcceleratorConfig::class;
   protected $guestAcceleratorsDataType = 'array';
   /**
+   * @var string
+   */
+  public $keyRevocationActionType;
+  /**
    * @var string[]
    */
   public $labels;
@@ -160,6 +164,20 @@ class InstanceProperties extends \Google\Collection
   public function getGuestAccelerators()
   {
     return $this->guestAccelerators;
+  }
+  /**
+   * @param string
+   */
+  public function setKeyRevocationActionType($keyRevocationActionType)
+  {
+    $this->keyRevocationActionType = $keyRevocationActionType;
+  }
+  /**
+   * @return string
+   */
+  public function getKeyRevocationActionType()
+  {
+    return $this->keyRevocationActionType;
   }
   /**
    * @param string[]
