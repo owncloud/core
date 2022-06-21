@@ -95,6 +95,9 @@
 		/** @type {object} **/
 		shareeListView: undefined,
 
+		/** @type {string} **/
+		batchActionSeparator: ';',
+
 		events: {
 			'input .shareWithField': 'onShareWithFieldChanged',
 			'click .subTabHeader': '_onClickTabHeader'
@@ -186,13 +189,27 @@
 		autocompleteHandler: function (search, response) {
 			var view = this;
 			var $loading = this.$el.find('.shareWithLoading');
+			var trimmedSearch = search.term.trim();
 			$loading.removeClass('hidden');
 			$loading.addClass('inlineblock');
+
+			if (trimmedSearch.includes(this.batchActionSeparator)) {
+				return this._getUsersForBatchAction(trimmedSearch).then(function (foundUsers) {
+					$loading.addClass('hidden');
+					$loading.removeClass('inlineblock');
+					if (foundUsers.length) {
+						return response({osc: {batch: foundUsers, label: trimmedSearch, value: {}}});
+					}
+
+					this._displayError(t('core', 'No users found'));
+				})
+			}
+
 			$.get(
 				OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
 				{
 					format: 'json',
-					search: search.term.trim(),
+					search: trimmedSearch,
 					perPage: 200,
 					itemType: view.model.get('itemType')
 				},
@@ -292,15 +309,7 @@
 									{chars: suggestStarts}
 								);
 							}
-							$('.shareWithField').addClass('error')
-								.attr('data-original-title', title)
-								.tooltip('hide')
-								.tooltip({
-									placement: 'bottom',
-									trigger: 'manual'
-								})
-								.tooltip('fixTitle')
-								.tooltip('show');
+							this._displayError(title);
 							response(undefined, result);
 						}
 					} else {
@@ -319,6 +328,10 @@
 
 			var text = item.label;
 			var typeInfo = t('core', 'User');
+
+			if (item.batch) {
+				typeInfo = t('core', 'Add all available users');
+			}
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
 				typeInfo = t('core', 'Group');
 			}
@@ -367,18 +380,19 @@
 			$loading.removeClass('hidden')
 				.addClass('inlineblock');
 
-			this.model.addShare(s.item.value, {success: function() {
-				$(e.target).val('')
-					.attr('disabled', false);
-				$loading.addClass('hidden')
-					.removeClass('inlineblock');
-			}, error: function(obj, msg) {
-				OC.Notification.showTemporary(msg);
-				$(e.target).attr('disabled', false)
-					.autocomplete('search', $(e.target).val());
-				$loading.addClass('hidden')
-					.removeClass('inlineblock');
-			}});
+			var shares = s.item.batch || [s.item.value];
+			for (var i = 0; i < shares.length; i++) {
+				this.model.addShare(shares[i], {
+					success: function () {
+						$(e.target).val('').attr('disabled', false);
+						$loading.addClass('hidden').removeClass('inlineblock');
+					}, error: function (obj, msg) {
+						OC.Notification.showTemporary(msg);
+						$(e.target).attr('disabled', false).autocomplete('search', $(e.target).val());
+						$loading.addClass('hidden').removeClass('inlineblock');
+					}
+				});
+			}
 		},
 
 		_toggleLoading: function(state) {
@@ -514,6 +528,79 @@
 		 */
 		_getAutocompleteItemTemplate: function() {
 			return this._getTemplate('autocompleteItem', TEMPLATE_AUTOCOMPLETE_ITEM);
+		},
+
+		/**
+		 * Displays an error, e.g. when the autocomplete doesn't have results.
+		 *
+		 * @param {string} title - title of the error
+		 * @private
+		 */
+		_displayError: function(title) {
+			$('.shareWithField').addClass('error')
+				.attr('data-original-title', title)
+				.tooltip('hide')
+				.tooltip({
+					placement: 'bottom',
+					trigger: 'manual'
+				})
+				.tooltip('fixTitle')
+				.tooltip('show');
+		},
+
+		/**
+		 * Returns a promise which includes all fetched users for batch actions once resolved.
+		 *
+		 * @param {string} search - trimmed search term
+		 * @returns {Promise}
+		 * @private
+		 */
+		_getUsersForBatchAction: function(search) {
+			var view = this;
+			var foundUsers = [];
+			var promises = [];
+			var users = Array.from(new Set(search.split(this.batchActionSeparator)));
+
+			for (var i = 0; i < users.length; i++) {
+				promises.push(
+					$.get(
+						OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
+						{
+							format: 'json',
+							search: users[i],
+							perPage: 200,
+							itemType: view.model.get('itemType')
+						},
+						function (result) {
+							if (result.ocs.data.exact.users.length) {
+								var addShare = true;
+								var shares = view.model.get('shares');
+								if (!shares.length) {
+									foundUsers.push(result.ocs.data.exact.users[0].value);
+									return;
+								}
+
+								// filter out all sharees that are already shared with
+								for (j= 0; j < shares.length; j++) {
+									if (shares[j].share_type === OC.Share.SHARE_TYPE_USER
+										&& result.ocs.data.exact.users[0].value.shareWith === shares[j].share_with) {
+										addShare = false;
+										break;
+									}
+								}
+
+								if (addShare) {
+									foundUsers.push(result.ocs.data.exact.users[0].value);
+								}
+							}
+						}
+					)
+				)
+			}
+
+			return Promise.all(promises).then(function() {
+				return foundUsers;
+			});
 		}
 	});
 
