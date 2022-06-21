@@ -67,14 +67,14 @@ Details
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 
    The following have been updated: - doctrine/cache (2.1.1 to 2.2.0) -
-   egulias/email-validator (3.1.2 to 3.2.1) - guzzlehttp/guzzle (v5.3.4 to v7.4.4) -
+   egulias/email-validator (3.1.2 to 3.2.1) - guzzlehttp/guzzle (v5.3.4 to v7.4.5) -
    icewind/streams (0.7.5 to 0.7.6) - laminas/laminas-stdlib (3.7.1 to 3.10.1) -
    laminas/laminas-validator (2.17.0 to 2.19.0) - paragonie/constant_time_encoding
    (v2.5.0 to v2.6.3) - webmozart/assert (1.10.0 to 1.11.0)
 
    The following have been updated in apps/files_external/3rdparty: -
-   google/apiclient-services (0.244.0 to 0.252.0) - google/apiclient (2.12.4 to 2.12.6) -
-   guzzlehttp/guzzle (v5.3.4 to v7.4.4) - icewind/smb (3.5.2 to 3.5.4) - icewind/streams
+   google/apiclient-services (0.244.0 to 0.254.0) - google/apiclient (2.12.4 to 2.12.6) -
+   guzzlehttp/guzzle (v5.3.4 to v7.4.5) - icewind/smb (3.5.2 to 3.5.4) - icewind/streams
    (0.7.5 to 0.7.6) - monolog/monolog (2.5.0 to 2.6.0)
 
    https://github.com/owncloud/core/pull/39368
@@ -85,6 +85,7 @@ Details
    https://github.com/owncloud/core/pull/40136
    https://github.com/owncloud/core/pull/40137
    https://github.com/owncloud/core/pull/40151
+   https://github.com/owncloud/core/pull/40154
 
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 
