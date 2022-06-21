@@ -5,7 +5,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -70,7 +70,7 @@ interface IJobList {
 	public function getAll();
 
 	/**
-	 * get the next job in the list
+	 * get the next job in the list, allocating reservation to the job
 	 *
 	 * @return \OCP\BackgroundJob\IJob|null
 	 * @since 7.0.0

@@ -54,17 +54,20 @@ class StatusTest extends TestCase {
 			->willReturnCallback(function (\Closure $callBack) {
 				$job = new RegularJob();
 				$job->setId(666);
+				$job->setLastChecked(10);
+				$job->setReservedAt(0);
+				$job->setExecutionDuration(-1);
 				$callBack($job);
 			});
 
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
-+--------+------------------------------------+---------------------------+---------------+
-| Job ID | Job                                | Last Run                  | Job Arguments |
-+--------+------------------------------------+---------------------------+---------------+
-| 666    | OC\BackgroundJob\Legacy\RegularJob | 1970-01-01T00:00:00+00:00 |               |
-+--------+------------------------------------+---------------------------+---------------+
++--------+------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
+| Job ID | Job                                | Job Arguments | Last Run | Last Checked              | Reserved At | Execution Duration (s) |
++--------+------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
+| 666    | OC\BackgroundJob\Legacy\RegularJob |               | N/A      | 1970-01-01T00:00:10+00:00 | N/A         | N/A                    |
++--------+------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
 EOS;
 
 		$this->assertStringContainsString($expected, $output);
@@ -76,16 +79,44 @@ EOS;
 				$job = new RegularJob();
 				$job->setId(666);
 				$job->setArgument(['k'=> 'v','test2']);
+				$job->setLastChecked(10);
+				$job->setReservedAt(0);
+				$job->setExecutionDuration(-1);
 				$callBack($job);
 			});
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
-+--------+------------------------------------+---------------------------+-----------------------+
-| Job ID | Job                                | Last Run                  | Job Arguments         |
-+--------+------------------------------------+---------------------------+-----------------------+
-| 666    | OC\BackgroundJob\Legacy\RegularJob | 1970-01-01T00:00:00+00:00 | {"k":"v","0":"test2"} |
-+--------+------------------------------------+---------------------------+-----------------------+
++--------+------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
+| Job ID | Job                                | Job Arguments         | Last Run | Last Checked              | Reserved At | Execution Duration (s) |
++--------+------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
+| 666    | OC\BackgroundJob\Legacy\RegularJob | {"k":"v","0":"test2"} | N/A      | 1970-01-01T00:00:10+00:00 | N/A         | N/A                    |
++--------+------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
+EOS;
+
+		$this->assertStringContainsString($expected, $output);
+	}
+
+	public function testJobWithSchedulingInfo() {
+		$this->jobList->expects($this->any())->method('listJobs')
+			->willReturnCallback(function (\Closure $callBack) {
+				$job = new RegularJob();
+				$job->setId(666);
+				$job->setArgument(['k'=> 'v','test2']);
+				$job->setLastRun(10);
+				$job->setLastChecked(10);
+				$job->setReservedAt(10);
+				$job->setExecutionDuration(1);
+				$callBack($job);
+			});
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$expected = <<<EOS
++--------+------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
+| Job ID | Job                                | Job Arguments         | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) |
++--------+------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
+| 666    | OC\BackgroundJob\Legacy\RegularJob | {"k":"v","0":"test2"} | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1                      |
++--------+------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
 EOS;
 
 		$this->assertStringContainsString($expected, $output);

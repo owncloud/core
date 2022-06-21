@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -58,9 +58,17 @@ class Status extends Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$t = new Table($output);
-		$t->setHeaders(['Job ID', 'Job', 'Last Run', 'Job Arguments']);
+		$t->setHeaders(['Job ID', 'Job', 'Job Arguments', 'Last Run', 'Last Checked', 'Reserved At', 'Execution Duration (s)']);
 		$this->jobList->listJobs(function (IJob $job) use ($t) {
-			$t->addRow([$job->getId(), \get_class($job), \date('c', $job->getLastRun()), $this->getJobArgumentAsString($job->getArgument())]);
+			$t->addRow([
+				$job->getId(),
+				\get_class($job),
+				$this->getJobArgumentAsString($job->getArgument()),
+				$job->getLastRun() == 0 ? 'N/A' : \date('c', $job->getLastRun()),
+				\date('c', $job->getLastChecked()),
+				$job->getReservedAt() == 0 ? 'N/A' : \date('c', $job->getReservedAt()),
+				$job->getExecutionDuration() == -1 ? 'N/A' : $job->getExecutionDuration(),
+			]);
 		});
 		$t->render();
 	}

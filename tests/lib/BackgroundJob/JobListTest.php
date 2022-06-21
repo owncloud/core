@@ -85,6 +85,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testAddRemove($argument) {
+		$this->timeFactory->method('getTime')->willReturn(164419800);
 		$existingJobs = $this->getAllSorted();
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
@@ -107,6 +108,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testRemoveDifferentArgument($argument) {
+		$this->timeFactory->method('getTime')->willReturn(164419800);
 		$existingJobs = $this->getAllSorted();
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
@@ -128,6 +130,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testHas($argument) {
+		$this->timeFactory->method('getTime')->willReturn(164419800);
 		$job = new TestJob();
 		$this->assertFalse($this->instance->has($job, $argument));
 		$this->instance->add($job, $argument);
@@ -144,6 +147,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testHasDifferentArgument($argument) {
+		$this->timeFactory->method('getTime')->willReturn(164419800);
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
 
@@ -172,6 +176,7 @@ class JobListTest extends TestCase {
 				'last_run' => $query->createNamedParameter(0, IQueryBuilder::PARAM_INT),
 				'last_checked' => $query->createNamedParameter($lastChecked, IQueryBuilder::PARAM_INT),
 				'reserved_at' => $query->createNamedParameter($reservedTime, IQueryBuilder::PARAM_INT),
+				'execution_duration' => $query->createNamedParameter(-1, IQueryBuilder::PARAM_INT),
 			]);
 		$query->execute();
 	}
@@ -225,6 +230,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testGetById($argument) {
+		$this->timeFactory->method('getTime')->willReturn(164419800);
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
 
@@ -236,6 +242,7 @@ class JobListTest extends TestCase {
 	}
 
 	public function testSetLastRun() {
+		$this->timeFactory->method('getTime')->willReturn(164419800);
 		$job = new TestJob();
 		$this->instance->add($job);
 
