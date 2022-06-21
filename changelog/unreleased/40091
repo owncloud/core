@@ -1,0 +1,11 @@
+Bugfix: Ensure user's directory is always present
+
+There are some scenarios where the user's directory might not be created.
+This leads to a state where the user can't upload any file, so the admin
+might need to remove the account and create a new one.
+
+While this scenario might still happen, we're now ensuring that the
+user's directory is created at some point, so the user can upload files
+into his account at any time.
+
+https://github.com/owncloud/core/pull/40091

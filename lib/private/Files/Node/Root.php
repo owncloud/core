@@ -175,11 +175,12 @@ class Root extends Folder implements IRootFolder {
 
 	/**
 	 * @param string $path
+	 * @param bool $ensureExists ensure the path exists in the FS
 	 * @throws \OCP\Files\NotFoundException
 	 * @throws \OCP\Files\NotPermittedException
 	 * @return File|Folder
 	 */
-	public function get($path) {
+	public function get($path, $ensureExists = false) {
 		$path = $this->normalizePath($path);
 		if ($this->isValidPath($path)) {
 			$fullPath = $this->getFullPath($path);
@@ -191,6 +192,9 @@ class Root extends Folder implements IRootFolder {
 			if ($fileExists) {
 				return $this->createNode($fullPath);
 			} else {
+				if ($ensureExists) {
+					throw new NotFoundException($path);
+				}
 				// try getting the fileinfo in case we have data in the filecache
 				$fileInfo = $this->view->getFileInfo($fullPath);
 				if (!$fileInfo) {
@@ -365,14 +369,14 @@ class Root extends Folder implements IRootFolder {
 		$folder = null;
 
 		try {
-			$folder = $this->get($dir);
+			$folder = $this->get($dir, true);
 		} catch (NotFoundException $e) {
 			$folder = $this->newFolder($dir);
 		}
 
 		$dir = '/files';
 		try {
-			$folder = $folder->get($dir);
+			$folder = $folder->get($dir, true);
 		} catch (NotFoundException $e) {
 			'@phan-var \OC\Files\Node\Folder $folder';
 			$folder = $folder->newFolder($dir);

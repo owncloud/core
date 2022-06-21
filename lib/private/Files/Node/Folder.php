@@ -123,11 +123,12 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * Get the node at $path
 	 *
 	 * @param string $path
+	 * @param bool $ensureExists ensure the path exists in the FS
 	 * @return \OC\Files\Node\Node
 	 * @throws \OCP\Files\NotFoundException
 	 */
-	public function get($path) {
-		return $this->root->get($this->getFullPath($path));
+	public function get($path, $ensureExists = false) {
+		return $this->root->get($this->getFullPath($path), $ensureExists);
 	}
 
 	/**

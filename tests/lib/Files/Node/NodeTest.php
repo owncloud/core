@@ -496,8 +496,8 @@ abstract class NodeTest extends TestCase {
 		$root->expects($this->exactly(2))
 			->method('get')
 			->will($this->returnValueMap([
-				['/bar/asd', $newNode],
-				['/bar', $parentNode]
+				['/bar/asd', false, $newNode],
+				['/bar', false, $parentNode]
 			]));
 
 		$target = $node->copy('/bar/asd');
@@ -615,7 +615,7 @@ abstract class NodeTest extends TestCase {
 
 		$root->expects($this->any())
 			->method('get')
-			->will($this->returnValueMap([['/bar', $parentNode], ['/bar/asd', $targetTestNode]]));
+			->will($this->returnValueMap([['/bar', false, $parentNode], ['/bar/asd', false, $targetTestNode]]));
 
 		$target = $node->move('/bar/asd');
 		$this->assertInstanceOf($this->nodeClass, $target);
@@ -662,7 +662,7 @@ abstract class NodeTest extends TestCase {
 
 		$root->expects($this->any())
 			->method('get')
-			->will($this->returnValueMap([['/bar', $parentNode], ['/bar/asd', $targetTestNode]]));
+			->will($this->returnValueMap([['/bar', false, $parentNode], ['/bar/asd', false, $targetTestNode]]));
 
 		$hooksRun = 0;
 		/**

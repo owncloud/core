@@ -40,7 +40,7 @@ class DeleteTest extends RequestTest {
 		$internalPath = $view->getAbsolutePath();
 
 		// create a ghost file
-		$mount->getStorage()->unlink($mount->getInternalPath($internalPath));
+		$mount->getStorage()->unlink($mount->getInternalPath($internalPath) . '/foo.txt');  // delete just the file
 
 		// cache entry still exists
 		$this->assertInstanceOf('\OCP\Files\FileInfo', $view->getFileInfo('foo.txt'));

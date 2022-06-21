@@ -91,6 +91,8 @@ interface IUser {
 
 	/**
 	 * updates the timestamp of the most recent login of this user
+	 *
+	 * @return void
 	 * @since 8.0.0
 	 */
 	public function updateLastLoginTimestamp();
