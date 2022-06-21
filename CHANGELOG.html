@@ -13,6 +13,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Correct Executed Unavailable Migrations and New Migrations: <a href="https://github.com/owncloud/core/issues/40084">#40084</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Ensure user's directory is always present: <a href="https://github.com/owncloud/core/pull/40091">#40091</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Application selection menu now appears on shared folders: <a href="https://github.com/owncloud/core/pull/40143">#40143</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Convert from utf8_encode to mb_convert_encoding: <a href="https://github.com/owncloud/core/pull/40158">#40158</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Ignore thumbnails when propagating in home: <a href="https://github.com/owncloud/core/pull/39988">#39988</a></li>
@@ -73,6 +74,13 @@
    opened with multiple apps. The behavior is the same as in the regular file listing.
             </p>
             <p>https://github.com/owncloud/core/pull/40143<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Convert from utf8_encode to mb_convert_encoding: <a href="https://github.com/owncloud/core/pull/40158">#40158</a></p>
+            <p>Function `utf8_encode` will be deprecated and removed in future PHP versions. It has been
+   replaced with function mb_convert_encoding.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40158<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></p>

@@ -15,6 +15,7 @@ Summary
 * Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
 * Bugfix - Ensure user's directory is always present: [#40091](https://github.com/owncloud/core/pull/40091)
 * Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
+* Bugfix - Convert from utf8_encode to mb_convert_encoding: [#40158](https://github.com/owncloud/core/pull/40158)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 * Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
@@ -76,6 +77,13 @@ Details
    opened with multiple apps. The behavior is the same as in the regular file listing.
 
    https://github.com/owncloud/core/pull/40143
+
+* Bugfix - Convert from utf8_encode to mb_convert_encoding: [#40158](https://github.com/owncloud/core/pull/40158)
+
+   Function `utf8_encode` will be deprecated and removed in future PHP versions. It has been
+   replaced with function mb_convert_encoding.
+
+   https://github.com/owncloud/core/pull/40158
 
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 
