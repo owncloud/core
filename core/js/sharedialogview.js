@@ -195,13 +195,55 @@
 
 			if (trimmedSearch.includes(this.batchActionSeparator)) {
 				return this._getUsersForBatchAction(trimmedSearch).then(function (foundUsers) {
-					$loading.addClass('hidden');
-					$loading.removeClass('inlineblock');
-					if (foundUsers.length) {
-						return response({osc: {batch: foundUsers, label: trimmedSearch, value: {}}});
-					}
+					$.get(
+						OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
+						{
+							format: 'json',
+							search: trimmedSearch,
+							perPage: 200,
+							itemType: view.model.get('itemType')
+						},
+						function (result) {
+							var batchItem;
+							if (foundUsers.length) {
+								batchItem = { batch: foundUsers, label: trimmedSearch, value: {} };
+							}
 
-					view._displayError(t('core', 'No users found'));
+							// add groups beginning with this exact name because they can contain ";"
+							var groups = result.ocs.data.exact.groups.concat(result.ocs.data.groups);
+							if (groups.length) {
+								var shares = view.model.get('shares');
+
+								// filter out all groups that are already shared with
+								for (i = 0; i < shares.length; i++) {
+									var share = shares[i];
+
+									if (share.share_type === OC.Share.SHARE_TYPE_GROUP) {
+										var groupsLength = groups.length;
+										for (j = 0; j < groupsLength; j++) {
+											if (groups[j].value.shareWith === share.share_with) {
+												groups.splice(j, 1);
+												break;
+											}
+										}
+									}
+								}
+							}
+
+							var suggestions = groups;
+							if (batchItem) {
+								suggestions.push(batchItem);
+							}
+
+							$loading.addClass('hidden');
+							$loading.removeClass('inlineblock');
+							if (suggestions.length) {
+								return response(suggestions, result);
+							}
+
+							view._displayError(t('core', 'No users found'));
+						}
+					)
 				})
 			}
 
