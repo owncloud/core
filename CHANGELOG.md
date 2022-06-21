@@ -13,6 +13,7 @@ Summary
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
 * Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
 * Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
+* Bugfix - Ensure user's directory is always present: [#40091](https://github.com/owncloud/core/pull/40091)
 * Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -56,6 +57,17 @@ Details
 
    https://github.com/owncloud/core/issues/40084
    https://github.com/owncloud/core/pull/40085
+
+* Bugfix - Ensure user's directory is always present: [#40091](https://github.com/owncloud/core/pull/40091)
+
+   There are some scenarios where the user's directory might not be created. This leads to a state
+   where the user can't upload any file, so the admin might need to remove the account and create a
+   new one.
+
+   While this scenario might still happen, we're now ensuring that the user's directory is
+   created at some point, so the user can upload files into his account at any time.
+
+   https://github.com/owncloud/core/pull/40091
 
 * Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
 
