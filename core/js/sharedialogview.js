@@ -201,7 +201,7 @@
 						return response({osc: {batch: foundUsers, label: trimmedSearch, value: {}}});
 					}
 
-					this._displayError(t('core', 'No users found'));
+					view._displayError(t('core', 'No users found'));
 				})
 			}
 
@@ -309,7 +309,7 @@
 									{chars: suggestStarts}
 								);
 							}
-							this._displayError(title);
+							view._displayError(title);
 							response(undefined, result);
 						}
 					} else {
