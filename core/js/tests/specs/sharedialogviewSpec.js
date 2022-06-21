@@ -748,6 +748,16 @@ describe('OC.Share.ShareDialogView', function() {
 				expect(el.is('li')).toEqual(true);
 				expect(el.hasClass('user')).toEqual(true);
 			});
+
+			it('renders a batch element', function() {
+				dialog.render();
+				var el = dialog.autocompleteRenderItem(
+						$("<ul></ul>"),
+						{label: "1", batch: [], value: { shareType: OC.Share.SHARE_TYPE_USER }}
+				);
+				expect(el.is('li')).toEqual(true);
+				expect(el.hasClass('user')).toEqual(true);
+			});
 		});
 
 		it('calls addShare after selection', function() {
