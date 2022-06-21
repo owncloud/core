@@ -689,15 +689,13 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 
 		$pathInfo = $this->getRawPathInfo();
-		// following is taken from \Sabre\HTTP\URLUtil::decodePathSegment
 		$pathInfo = \rawurldecode($pathInfo);
 		$encoding = \mb_detect_encoding($pathInfo, ['UTF-8', 'ISO-8859-1']);
 
 		switch ($encoding) {
 			case 'ISO-8859-1':
-				$pathInfo = \utf8_encode($pathInfo);
+				$pathInfo = \mb_convert_encoding($pathInfo, 'UTF-8', $encoding);
 		}
-		// end copy
 
 		return $pathInfo;
 	}
