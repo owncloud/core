@@ -76,3 +76,7 @@ Feature: Add group
     Then the user count of group "grp1" should display 3 users on the webUI
     When the administrator reloads the users page
     Then the user count of group "grp1" should display 3 users on the webUI
+
+  Scenario: Cannot add group with white-space in the name
+    When the administrator adds group "whitespace " using the webUI
+    Then a notification should be displayed on the webUI with the text "Error creating group: Unable to add group."
