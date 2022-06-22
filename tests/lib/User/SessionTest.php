@@ -123,8 +123,7 @@ class SessionTest extends TestCase {
 		$expectedUser->expects($this->once())
 			->method('isEnabled')
 			->will($this->returnValue(true));
-                
-
+				
 		$this->tokenProvider->expects($this->once())
 			->method('updateTokenActivity')
 			->with($token);
@@ -1054,11 +1053,11 @@ class SessionTest extends TestCase {
 			->with('APP-PASSWORD');
 		$userSession->expects($this->once())
 			->method('logout');
-               
-                $user->method('getBackendClassName')
-                        ->will($this->returnValue('LDAP'));
-                $userManager->method('get')
-                        ->will($this->returnValue($user));
+			   
+		$user->method('getBackendClassName')
+						->will($this->returnValue('LDAP'));
+		$userManager->method('get')
+						->will($this->returnValue($user));
 
 		$userSession->setUser($user);
 		$userSession->validateSession();
