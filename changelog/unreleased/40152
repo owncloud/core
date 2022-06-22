@@ -1,0 +1,6 @@
+Bugfix: Do not invalidate app tokens when no LDAP connection
+
+Whenever connection to the LDAP server became unavailable app tokens were getting deleted after some 
+time causing disconnection of connected clients. App tokens are now remaining valid until connection is back.
+
+https://github.com/owncloud/core/pull/40152
