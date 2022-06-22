@@ -1,0 +1,7 @@
+Bugfix: Display error message when a group cannot be created
+
+If a new group could not be created on the user-management UI, the error message
+text was not displayed. This problem has been fixed.
+
+https://github.com/owncloud/core/issues/40162
+https://github.com/owncloud/core/pull/40163

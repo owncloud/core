@@ -156,7 +156,9 @@ var GroupList;
 					}
 					GroupList.toggleAddGroup();
 				}).fail(function(result) {
-					OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {message: result.responseJSON.message}));
+					OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {
+						message: result.responseJSON.data.message
+					}));
 				});
 		},
 
