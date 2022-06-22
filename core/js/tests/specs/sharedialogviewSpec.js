@@ -344,8 +344,11 @@ describe('OC.Share.ShareDialogView', function() {
 
 		it('fetches multiple users for batch action', function () {
 			dialog.render();
-			dialog._getUsersForBatchAction('user01;user02').then(function(users) {
-				var expected = [{'shareType': 0, 'shareWith': 'user01'}, {'shareType': 0, 'shareWith': 'user02'}];
+			dialog._getUsersForBatchAction('user01, user02').then(function(users) {
+				var expected = {
+					found: [{'shareType': 0, 'shareWith': 'user01'}, {'shareType': 0, 'shareWith': 'user02'}],
+					notFound: []
+				};
 				expect(users).toEqual(expected);
 			});
 

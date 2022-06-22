@@ -96,7 +96,7 @@
 		shareeListView: undefined,
 
 		/** @type {string} **/
-		batchActionSeparator: ';',
+		batchActionSeparator: ', ',
 
 		events: {
 			'input .shareWithField': 'onShareWithFieldChanged',
@@ -192,7 +192,6 @@
 			var trimmedSearch = search.term.trim();
 			$loading.removeClass('hidden');
 			$loading.addClass('inlineblock');
-
 			$.get(
 				OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
 				{
@@ -270,14 +269,14 @@
 						}
 
 						var suggestions = users.concat(groups);
-						if (suggestions.length < 1) {
+						if (suggestions.length < 1 && !trimmedSearch.includes(view.batchActionSeparator)) {
 							suggestions = suggestions.concat(remotes);
 						}
 
 						if (trimmedSearch.includes(view.batchActionSeparator)) {
-							return view._getUsersForBatchAction(trimmedSearch).then(function (foundUsers) {
-								if (foundUsers.length) {
-									suggestions.push({ batch: foundUsers, label: trimmedSearch, value: {} });
+							return view._getUsersForBatchAction(trimmedSearch).then(function (res) {
+								if (res.found.length) {
+									suggestions.push({ batch: res.found, failedBatch: res.notFound, label: trimmedSearch, value: {} });
 								}
 
 								$loading.addClass('hidden');
@@ -334,7 +333,7 @@
 			var typeInfo = t('core', 'User');
 
 			if (item.batch) {
-				typeInfo = t('core', 'Add all available users');
+				typeInfo = this._getBatchActionLabel();
 			}
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
 				typeInfo = t('core', 'Group');
@@ -383,6 +382,10 @@
 			var $loading = this.$el.find('.shareWithLoading');
 			$loading.removeClass('hidden')
 				.addClass('inlineblock');
+
+			if (s.item.failedBatch && s.item.failedBatch.length) {
+				this._showFailedBatchSharees(s.item.failedBatch);
+			}
 
 			var shares = s.item.batch || [s.item.value];
 			for (var i = 0; i < shares.length; i++) {
@@ -535,6 +538,30 @@
 		},
 
 		/**
+		 * Shows all users with whom the batch share action failed.
+		 *
+		 * @param {Array.<String>} users
+		 * @private
+		 */
+		_showFailedBatchSharees: function(users) {
+			var failedUsersStr = users.join(', ')
+			OC.Notification.show(
+				t('core', 'Could not be shared with the following users: {users}', {users: failedUsersStr}),
+				{type: 'error'}
+			);
+		},
+
+		/**
+		 * Returns the label for the batch action
+		 *
+		 * @returns {string}
+		 * @private
+		 */
+		_getBatchActionLabel: function() {
+			return t('core', 'Add multiple users');
+		},
+
+		/**
 		 * Displays an error, e.g. when the autocomplete doesn't have results.
 		 *
 		 * @param {string} title - title of the error
@@ -562,48 +589,54 @@
 		_getUsersForBatchAction: function(search) {
 			var view = this;
 			var foundUsers = [];
-			var promises = [];
+			var notFound = [];
+			var promises= [];
 			var users = Array.from(new Set(search.split(this.batchActionSeparator)));
 
 			for (var i = 0; i < users.length; i++) {
 				promises.push(
-					$.get(
-						OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
-						{
+					$.ajax({
+						url: OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
+						contentType: 'application/json',
+						dataType: 'json',
+						data: {
 							format: 'json',
 							search: users[i],
 							perPage: 200,
 							itemType: view.model.get('itemType')
 						},
-						function (result) {
-							if (result.ocs.data.exact.users.length) {
-								var addShare = true;
-								var shares = view.model.get('shares');
-								if (!shares.length) {
-									foundUsers.push(result.ocs.data.exact.users[0].value);
-									return;
-								}
+						context: { user: users[i] }
+					})
+					.done(function (result) {
+						if (result.ocs.data.exact.users.length) {
+							var addShare = true;
+							var shares = view.model.get('shares');
+							if (!shares.length) {
+								foundUsers.push(result.ocs.data.exact.users[0].value);
+								return;
+							}
 
-								// filter out all sharees that are already shared with
-								for (j= 0; j < shares.length; j++) {
-									if (shares[j].share_type === OC.Share.SHARE_TYPE_USER
-										&& result.ocs.data.exact.users[0].value.shareWith === shares[j].share_with) {
-										addShare = false;
-										break;
-									}
-								}
-
-								if (addShare) {
-									foundUsers.push(result.ocs.data.exact.users[0].value);
+							// filter out all sharees that are already shared with
+							for (j= 0; j < shares.length; j++) {
+								if (shares[j].share_type === OC.Share.SHARE_TYPE_USER
+									&& result.ocs.data.exact.users[0].value.shareWith === shares[j].share_with) {
+									addShare = false;
+									break;
 								}
 							}
+
+							if (addShare) {
+								foundUsers.push(result.ocs.data.exact.users[0].value);
+							}
+						} else {
+							notFound.push(this.user);
 						}
-					)
-				)
+					})
+				);
 			}
 
 			return Promise.all(promises).then(function() {
-				return foundUsers;
+				return {found: foundUsers, notFound: notFound};
 			});
 		}
 	});
