@@ -16,6 +16,7 @@ Summary
 * Bugfix - Ensure user's directory is always present: [#40091](https://github.com/owncloud/core/pull/40091)
 * Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
 * Bugfix - Convert from utf8_encode to mb_convert_encoding: [#40158](https://github.com/owncloud/core/pull/40158)
+* Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 * Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
@@ -84,6 +85,14 @@ Details
    replaced with function mb_convert_encoding.
 
    https://github.com/owncloud/core/pull/40158
+
+* Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
+
+   If a new group could not be created on the user-management UI, the error message text was not
+   displayed. This problem has been fixed.
+
+   https://github.com/owncloud/core/issues/40162
+   https://github.com/owncloud/core/pull/40163
 
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 
