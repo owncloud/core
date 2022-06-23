@@ -268,12 +268,13 @@
 							}
 						}
 
+						var isBatch = trimmedSearch.indexOf(view.batchActionSeparator) !== -1;
 						var suggestions = users.concat(groups);
-						if (suggestions.length < 1 && !trimmedSearch.includes(view.batchActionSeparator)) {
+						if (suggestions.length < 1 && !isBatch) {
 							suggestions = suggestions.concat(remotes);
 						}
 
-						if (trimmedSearch.includes(view.batchActionSeparator)) {
+						if (isBatch) {
 							return view._getUsersForBatchAction(trimmedSearch).then(function (res) {
 								if (res.found.length) {
 									suggestions.push({ batch: res.found, failedBatch: res.notFound, label: trimmedSearch, value: {} });
@@ -544,7 +545,7 @@
 		 * @private
 		 */
 		_showFailedBatchSharees: function(users) {
-			var failedUsersStr = users.join(', ')
+			var failedUsersStr = users.join(', ');
 			OC.Notification.show(
 				t('core', 'Could not be shared with the following users: {users}', {users: failedUsersStr}),
 				{type: 'error'}
@@ -590,7 +591,7 @@
 			var view = this;
 			var foundUsers = [];
 			var notFound = [];
-			var promises= [];
+			var promises = [];
 			var users = Array.from(new Set(search.split(this.batchActionSeparator)));
 
 			for (var i = 0; i < users.length; i++) {
