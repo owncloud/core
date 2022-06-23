@@ -8,6 +8,7 @@
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Trigger the right event when the filecache is updated: <a href="https://github.com/owncloud/core/pull/39844">#39844</a></li>
         <li class="type-bugfix changelog-item">Bugfix - List apps only once: <a href="https://github.com/owncloud/core/issues/39930">#39930</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Do not crash while running the cleanup-chunks command: <a href="https://github.com/owncloud/core/pull/40000">#40000</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: <a href="https://github.com/owncloud/core/pull/40065">#40065</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Filter sensitive data in log for Session::createSessionToken: <a href="https://github.com/owncloud/core/pull/40066">#40066</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Correct Executed Unavailable Migrations and New Migrations: <a href="https://github.com/owncloud/core/issues/40084">#40084</a></li>
@@ -16,11 +17,13 @@
         <li class="type-bugfix changelog-item">Bugfix - Do not invalidate app tokens when no LDAP connection: <a href="https://github.com/owncloud/core/pull/40152">#40152</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Convert from utf8_encode to mb_convert_encoding: <a href="https://github.com/owncloud/core/pull/40158">#40158</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Display error message when a group cannot be created: <a href="https://github.com/owncloud/core/issues/40162">#40162</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Error responses to add group API requests are inconsistent: <a href="https://github.com/owncloud/core/issues/40164">#40164</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Ignore thumbnails when propagating in home: <a href="https://github.com/owncloud/core/pull/39988">#39988</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: <a href="https://github.com/owncloud/core/pull/40087">#40087</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add additional columns to background job queue status: <a href="https://github.com/owncloud/core/pull/40113">#40113</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add config option to bypass the proxy setting by domain: <a href="https://github.com/owncloud/core/pull/40148">#40148</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -39,6 +42,14 @@
             <p>https://github.com/owncloud/core/issues/39930<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40081<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Do not crash while running the cleanup-chunks command: <a href="https://github.com/owncloud/core/pull/40000">#40000</a></p>
+            <p>Previously, when you run the cleanup-chunks command, any unhandled exception could crash the
+   command. If this happened, there could be chunks that weren't deleted.Now, the command runs through all the chunks. If some chunks give problems, a message is
+   displayed indicating what error happened in which file.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40000<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: <a href="https://github.com/owncloud/core/pull/40065">#40065</a></p>
@@ -101,6 +112,15 @@
             </p>
             <p>https://github.com/owncloud/core/pull/40163<br></p>
         </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Error responses to add group API requests are inconsistent: <a href="https://github.com/owncloud/core/issues/40164">#40164</a></p>
+            <p>Some response error messages were contained in a `data` structure. Others were not. They have
+   now been made consistent. They are not contained in a `data` structure.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40164<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40165<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></p>
             <p>The following have been updated: - doctrine/cache (2.1.1 to 2.2.0) -
@@ -140,6 +160,13 @@
    Reserved At - Execution Duration
             </p>
             <p>https://github.com/owncloud/core/pull/40113<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add config option to bypass the proxy setting by domain: <a href="https://github.com/owncloud/core/pull/40148">#40148</a></p>
+            <p>The new "proxy_ignore" option allows the admin to set a list of domains that won't go through the
+   proxy set via the "proxy" option
+            </p>
+            <p>https://github.com/owncloud/core/pull/40148<br></p>
         </li>
     </ul>
     <h2 id="10.10.0" class="version"> Changelog for ownCloud Core [10.10.0] (2022-05-16)</h2>

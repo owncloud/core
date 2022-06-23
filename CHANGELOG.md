@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
+* Bugfix - Do not crash while running the cleanup-chunks command: [#40000](https://github.com/owncloud/core/pull/40000)
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
 * Bugfix - Filter sensitive data in log for Session::createSessionToken: [#40066](https://github.com/owncloud/core/pull/40066)
 * Bugfix - Correct Executed Unavailable Migrations and New Migrations: [#40084](https://github.com/owncloud/core/issues/40084)
@@ -18,11 +19,13 @@ Summary
 * Bugfix - Do not invalidate app tokens when no LDAP connection: [#40152](https://github.com/owncloud/core/pull/40152)
 * Bugfix - Convert from utf8_encode to mb_convert_encoding: [#40158](https://github.com/owncloud/core/pull/40158)
 * Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
+* Bugfix - Error responses to add group API requests are inconsistent: [#40164](https://github.com/owncloud/core/issues/40164)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 * Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 * Enhancement - Add additional columns to background job queue status: [#40113](https://github.com/owncloud/core/pull/40113)
+* Enhancement - Add config option to bypass the proxy setting by domain: [#40148](https://github.com/owncloud/core/pull/40148)
 
 Details
 -------
@@ -41,6 +44,16 @@ Details
 
    https://github.com/owncloud/core/issues/39930
    https://github.com/owncloud/core/pull/40081
+
+* Bugfix - Do not crash while running the cleanup-chunks command: [#40000](https://github.com/owncloud/core/pull/40000)
+
+   Previously, when you run the cleanup-chunks command, any unhandled exception could crash the
+   command. If this happened, there could be chunks that weren't deleted.
+
+   Now, the command runs through all the chunks. If some chunks give problems, a message is
+   displayed indicating what error happened in which file.
+
+   https://github.com/owncloud/core/pull/40000
 
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
 
@@ -103,6 +116,14 @@ Details
    https://github.com/owncloud/core/issues/40162
    https://github.com/owncloud/core/pull/40163
 
+* Bugfix - Error responses to add group API requests are inconsistent: [#40164](https://github.com/owncloud/core/issues/40164)
+
+   Some response error messages were contained in a `data` structure. Others were not. They have
+   now been made consistent. They are not contained in a `data` structure.
+
+   https://github.com/owncloud/core/issues/40164
+   https://github.com/owncloud/core/pull/40165
+
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 
    The following have been updated: - doctrine/cache (2.1.1 to 2.2.0) -
@@ -153,6 +174,13 @@ Details
    Reserved At - Execution Duration
 
    https://github.com/owncloud/core/pull/40113
+
+* Enhancement - Add config option to bypass the proxy setting by domain: [#40148](https://github.com/owncloud/core/pull/40148)
+
+   The new "proxy_ignore" option allows the admin to set a list of domains that won't go through the
+   proxy set via the "proxy" option
+
+   https://github.com/owncloud/core/pull/40148
 
 Changelog for ownCloud Core [10.10.0] (2022-05-16)
 =======================================
