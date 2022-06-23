@@ -1,0 +1,7 @@
+Bugfix: Error responses to add group API requests are inconsistent
+
+Some response error messages were contained in a `data` structure. Others were not.
+They have now been made consistent. They are not contained in a `data` structure.
+
+https://github.com/owncloud/core/issues/40164
+https://github.com/owncloud/core/pull/40165
