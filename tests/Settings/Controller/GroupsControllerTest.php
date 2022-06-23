@@ -245,6 +245,7 @@ class GroupsControllerTest extends \Test\TestCase {
 
 		$expectedResponse = new DataResponse(
 			[
+				'status' => 'error',
 				'message' => 'Group already exists.'
 			],
 			Http::STATUS_CONFLICT
@@ -290,7 +291,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$expectedResponse = new DataResponse(
 			[
 				'status' => 'error',
-				'data' => ['message' => 'Unable to add group.']
+				'message' => 'Unable to add group.'
 			],
 			Http::STATUS_FORBIDDEN
 		);

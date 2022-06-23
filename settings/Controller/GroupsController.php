@@ -104,6 +104,7 @@ class GroupsController extends Controller {
 		if ($this->groupManager->groupExists($id)) {
 			return new DataResponse(
 				[
+					'status' => 'error',
 					'message' => (string)$this->l10n->t('Group already exists.')
 				],
 				Http::STATUS_CONFLICT
@@ -121,9 +122,7 @@ class GroupsController extends Controller {
 		return new DataResponse(
 			[
 				'status' => 'error',
-				'data' => [
-					'message' => (string)$this->l10n->t('Unable to add group.')
-				]
+				'message' => (string)$this->l10n->t('Unable to add group.')
 			],
 			Http::STATUS_FORBIDDEN
 		);
