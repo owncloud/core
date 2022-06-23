@@ -1,0 +1,6 @@
+Enhancement: Add config option to bypass the proxy setting by domain
+
+The new "proxy_ignore" option allows the admin to set a list of domains
+that won't go through the proxy set via the "proxy" option
+
+https://github.com/owncloud/core/pull/40148

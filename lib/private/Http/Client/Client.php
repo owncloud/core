@@ -74,7 +74,10 @@ class Client implements IClient {
 			$proxyHost = $this->config->getSystemValue('proxy', null);
 
 			if ($proxyHost !== null && !isset($options[RequestOptions::PROXY])) {
-				$options[RequestOptions::PROXY] = 'tcp://' . $proxyHost;
+				$options[RequestOptions::PROXY] = [
+					'http' => 'tcp://' . $proxyHost,
+					'https' => 'tcp://' . $proxyHost,
+				];
 			}
 
 			if ($proxyHost !== null && !isset($options['config']['stream_context']['http']['request_fulluri'])) {
@@ -111,8 +114,17 @@ class Client implements IClient {
 		}
 
 		$options[RequestOptions::HEADERS]['User-Agent'] = 'ownCloud Server Crawler';
-		if ($this->getProxyUri() !== '') {
-			$options[RequestOptions::PROXY] = $this->getProxyUri();
+		$proxyUri = $this->getProxyUri();
+		if ($proxyUri !== '') {
+			$noProxyList = $this->config->getSystemValue('proxy_ignore', []);
+			if (!\is_array($noProxyList)) {
+				$noProxyList = [];
+			}
+			$options[RequestOptions::PROXY] = [
+				'http' => $proxyUri,
+				'https' => $proxyUri,
+				'no' => $noProxyList,
+			];
 		}
 
 		$this->defaultOptions = $options;
