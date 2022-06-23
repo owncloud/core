@@ -104,14 +104,25 @@ class CleanupChunks extends Command {
 			$p = new ProgressBar($output);
 			$p->start(\count($filteredUploads));
 
+			$failures = [];
 			foreach ($filteredUploads as $upload) {
 				$p->advance();
 				/** @var UploadFolder $upload */
-				$upload->delete();
+				try {
+					$upload->delete();
+				} catch (\Exception $e) {
+					$failures[$upload->getName()] = $e->getMessage();
+				}
 			}
 
 			$p->finish();
 			$output->writeln('');
+			if (\count($failures) > 0) {
+				$output->writeln("<error>there were problems deleting the following folders:</error>");
+				foreach ($failures as $key => $value) {
+					$output->writeln("<error>{$key} -> {$value}</error>");
+				}
+			}
 		});
 		return 0;
 	}

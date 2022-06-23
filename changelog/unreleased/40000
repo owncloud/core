@@ -1,0 +1,10 @@
+Bugfix: Do not crash while running the cleanup-chunks command
+
+Previously, when you run the cleanup-chunks command, any unhandled exception
+could crash the command. If this happened, there could be chunks that weren't
+deleted.
+
+Now, the command runs through all the chunks. If some chunks give problems,
+a message is displayed indicating what error happened in which file.
+
+https://github.com/owncloud/core/pull/40000
