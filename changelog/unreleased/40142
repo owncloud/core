@@ -1,0 +1,12 @@
+Change: Improve visualization of author's comment in the comments section
+
+Previously, a long display name for the author's comment could overlap
+with the "edit" action and the date. Worst case, the comment might not be
+edited because the "edit" action was below the author's display name, so
+you might not be able to click the action.
+
+Right now, the author's display name won't overlap with the rest of the
+elements. The display name will be cut if needed, but both the "edit"
+action and the date will be clearly visible.
+
+https://github.com/owncloud/core/pull/40142
