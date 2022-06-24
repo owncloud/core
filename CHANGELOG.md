@@ -20,6 +20,7 @@ Summary
 * Bugfix - Convert from utf8_encode to mb_convert_encoding: [#40158](https://github.com/owncloud/core/pull/40158)
 * Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
 * Bugfix - Error responses to add group API requests are inconsistent: [#40164](https://github.com/owncloud/core/issues/40164)
+* Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 * Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
@@ -123,6 +124,17 @@ Details
 
    https://github.com/owncloud/core/issues/40164
    https://github.com/owncloud/core/pull/40165
+
+* Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
+
+   Previously, a long display name for the author's comment could overlap with the "edit" action
+   and the date. Worst case, the comment might not be edited because the "edit" action was below the
+   author's display name, so you might not be able to click the action.
+
+   Right now, the author's display name won't overlap with the rest of the elements. The display
+   name will be cut if needed, but both the "edit" action and the date will be clearly visible.
+
+   https://github.com/owncloud/core/pull/40142
 
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 

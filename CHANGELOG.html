@@ -18,6 +18,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Convert from utf8_encode to mb_convert_encoding: <a href="https://github.com/owncloud/core/pull/40158">#40158</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Display error message when a group cannot be created: <a href="https://github.com/owncloud/core/issues/40162">#40162</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Error responses to add group API requests are inconsistent: <a href="https://github.com/owncloud/core/issues/40164">#40164</a></li>
+        <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Ignore thumbnails when propagating in home: <a href="https://github.com/owncloud/core/pull/39988">#39988</a></li>
@@ -120,6 +121,15 @@
             <p>https://github.com/owncloud/core/issues/40164<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40165<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></p>
+            <p>Previously, a long display name for the author's comment could overlap with the "edit" action
+   and the date. Worst case, the comment might not be edited because the "edit" action was below the
+   author's display name, so you might not be able to click the action.Right now, the author's display name won't overlap with the rest of the elements. The display
+   name will be cut if needed, but both the "edit" action and the date will be clearly visible.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40142<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></p>
