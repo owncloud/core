@@ -5280,15 +5280,15 @@ trait WebDav {
 		// topWebDavPath should be something like /remote.php/webdav/ or
 		// /remote.php/dav/files/alice/
 		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
-		if (OcisHelper::isTestingOnOcisOrReva() && $method === "REPORT") {
+		if (OcisHelper::isTestingOnOcis() && $method === "REPORT") {
 			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
 				$this->getBaseUrl(),
 				$user,
 				$this->getPasswordForUser($user),
 				$this->getStepLineRef()
 			);
-			$splitSpaceID = explode("$", $spaceId);
-			$topWebDavPath = "/dav/spaces/" . $spaceId . "%21" . "$splitSpaceID[1]" . "/";
+			$userId = $this->getAttributeOfCreatedUser($user, "id");
+			$topWebDavPath = "/dav/spaces/" . $spaceId . "%21" . $userId . "/";
 		}
 
 		switch ($type) {
