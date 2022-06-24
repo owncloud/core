@@ -60,7 +60,7 @@ class SearchContext implements Context {
 		TableNode $properties = null
 	):void {
 		// Because indexing of newly uploaded files or directories with ocis is decoupled and occurs asynchronously, a 1 second wait is necessary while searching files or folders.
-		if (OcisHelper::isTestingOnOcisOrReva()) {
+		if (OcisHelper::isTestingOnOcis()) {
 			sleep(1);
 		}
 		$user = $this->featureContext->getActualUsername($user);
