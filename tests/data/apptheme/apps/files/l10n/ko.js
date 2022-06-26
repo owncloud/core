@@ -69,6 +69,7 @@ OC.L10N.register(
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "{owner}의 저장 공간이 거의 가득 찼습니다({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "저장 공간이 거의 가득 찼습니다({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["'{filter}'와(과) 일치"],
+    "Unlock" : "잠금 해제",
     "Path" : "경로",
     "_%n byte_::_%n bytes_" : ["%n 바이트"],
     "Favorited" : "즐겨찾기에 추가됨",
