@@ -142,8 +142,8 @@ Details
    egulias/email-validator (3.1.2 to 3.2.1) - guzzlehttp/guzzle (v5.3.4 to v7.4.5) -
    icewind/streams (0.7.5 to 0.7.6) - laminas/laminas-stdlib (3.7.1 to 3.10.1) -
    laminas/laminas-validator (2.17.0 to 2.19.0) - paragonie/constant_time_encoding
-   (v2.5.0 to v2.6.3) - sabre/http (5.1.3 to 5.1.4) - sabre/vobject (4.4.1 to 4.4.2) -
-   webmozart/assert (1.10.0 to 1.11.0)
+   (v2.5.0 to v2.6.3) - sabre/dav (4.3.1 to 4.4.0) - sabre/http (5.1.3 to 5.1.4) - sabre/vobject
+   (4.4.1 to 4.4.2) - webmozart/assert (1.10.0 to 1.11.0)
 
    The following have been updated in apps/files_external/3rdparty: -
    google/apiclient-services (0.244.0 to 0.254.0) - google/apiclient (2.12.4 to 2.12.6) -
@@ -160,6 +160,7 @@ Details
    https://github.com/owncloud/core/pull/40151
    https://github.com/owncloud/core/pull/40154
    https://github.com/owncloud/core/pull/40169
+   https://github.com/owncloud/core/pull/40171
 
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 
