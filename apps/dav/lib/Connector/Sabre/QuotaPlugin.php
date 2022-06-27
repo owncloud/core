@@ -76,15 +76,7 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		$server->on('beforeWriteContent', [$this, 'handleBeforeWriteContent'], 10);
 		$server->on('beforeCreateFile', [$this, 'handleBeforeCreateFile'], 10);
 		$server->on('beforeMove', [$this, 'handleBeforeMove'], 10);
-
-		// QuotaPlugin is initialized during the processing of the "beforeMethod:*" event handling, which
-		// means that we can't listen on a "beforeMethod:*" event at this point because it's too late
-		// There is no "beforeCopy" event we can listen to neither.
-		// We'll assume the "beforeMethod:*" is being processed, so we'll process our "handleBeforeCopy"
-		// right away.
-		if ($server->httpRequest->getMethod() === 'COPY') {
-			$this->handleBeforeCopy($server->httpRequest);
-		}
+		$server->on('beforeCopy', [$this, 'handleBeforeCopy'], 10);
 	}
 
 	/**
@@ -129,26 +121,27 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		return $this->checkQuota($path, $sourceNode->getSize(), $destinationSize);
 	}
 
-	public function handleBeforeCopy(RequestInterface $request) {
-		if ($request->getMethod() !== 'COPY') {
-			return true;
-		}
-
-		$requestedPath = $request->getPath();
-		$sourceNode = $this->server->tree->getNodeForPath($requestedPath); // might throw a NotFound exception
+	public function handleBeforeCopy($source, $destination) {
+		$sourceNode = $this->server->tree->getNodeForPath($source); // might throw a NotFound exception
 
 		$sourceSize = null;
 		if ($sourceNode instanceof Node) {
 			$sourceSize = $sourceNode->getSize();
 		}
 
-		$copyInfo = $this->server->getCopyAndMoveInfo($request);  // it might throw exceptions
-		$path = $copyInfo['destination'];
-
 		$destinationSize = 0;
-		if ($copyInfo['destinationExists'] && $copyInfo['destinationNode'] instanceof Node) {
-			$destinationSize = $copyInfo['destinationNode']->getSize() ?? 0;
+		if ($this->server->tree->nodeExists($destination)) {
+			$targetNode = $this->server->tree->getNodeForPath($destination);
+			if ($targetNode instanceof Node) {
+				$destinationSize = $targetNode->getSize() ?? 0;
+			}
+		} else {
+			$dirname = \dirname($destination);
+			$dirname = $dirname === '.' ? '/' : $dirname;
+			$targetNode = $this->server->tree->getNodeForPath($dirname);
 		}
+
+		$path = $targetNode->getPath();
 		return $this->checkQuota($path, $sourceSize, $destinationSize);
 	}
 

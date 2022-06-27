@@ -356,37 +356,6 @@ class QuotaPluginTest extends TestCase {
 		$server->emit('beforeMove', [$source, $destination]);
 	}
 
-	public function handleBeforeCopyNotCopyMethodProvider() {
-		return [
-			['GET'],
-			['POST'],
-			['PUT'],
-			['DELETE'],
-			['MOVE'],
-			['PROPFIND'],
-		];
-	}
-
-	/**
-	 * @dataProvider handleBeforeCopyNotCopyMethodProvider
-	 */
-	public function testHandleBeforeCopyNotCopyMethod($method) {
-		$view = $this->createMock(View::class);
-		$plugin = new QuotaPlugin($view);
-
-		$server = $this->createMock(Server::class);
-		$server->tree = $this->createMock(Tree::class);
-		$server->httpRequest = $this->createMock(RequestInterface::class);
-		$server->httpRequest->method('getMethod')->willReturn($method);
-
-		$server->httpRequest->expects($this->never())
-			->method('getPath');
-
-		$server->expects($this->never())
-			->method('getCopyAndMoveInfo');
-		$plugin->initialize($server); // it will trigger the handleBeforeCopy method
-	}
-
 	public function handleBeforeCopyProvider() {
 		return [
 			['/files/admin/path/to/text.txt', 4096, '/files/admin/newpath/text.txt', 4096, true, 5120],  // overwrite existing file
@@ -415,24 +384,35 @@ class QuotaPluginTest extends TestCase {
 
 		$node = $this->createMock(Node::class);
 		$node->method('getSize')->willReturn($requestSize);
-		$server->tree->method('getNodeForPath')
-			->with($requestPath)
-			->willReturn($node);
 
 		$destinationNode = $this->createMock(Node::class);
 		$destinationNode->method('getSize')->willReturn($destinationSize);
-		$server->expects($this->once())
-			->method('getCopyAndMoveInfo')
-			->willReturn([
-				'destination' => $destinationPath,
-				'destinationExists' => $destinationExists,
-				'destinationNode' => $destinationNode,
-			]);
+		$destinationNode->method('getPath')->willReturn($destinationPath);
+
+		$parentDestinationNode = $this->createMock(Node::class);
+		$parentDestinationNode->method('getPath')->willReturn(\dirname($destinationPath));
+
+		$server->tree->method('getNodeForPath')
+			->will($this->returnValueMap([
+				[$requestPath, $node],
+				[$destinationPath, $destinationNode],
+				[\dirname($destinationPath), $parentDestinationNode],
+			]));
+
+		$server->tree->method('nodeExists')
+			->will($this->returnValueMap([
+				[$requestPath, true],
+				[$destinationPath, $destinationExists],
+			]));
 
 		$view->method('free_space')
-			->with(\ltrim($destinationPath, '/'))
-			->willReturn($freeSize);
-		$this->assertNull($plugin->initialize($server)); // it will trigger the handleBeforeCopy method
+			->will($this->returnValueMap([
+				[\ltrim($destinationPath, '/'), $freeSize],
+				[\ltrim(\dirname($destinationPath), '/'), $freeSize],
+			]));
+
+		$plugin->initialize($server);
+		$this->assertTrue($plugin->handleBeforeCopy($requestPath, $destinationPath));
 	}
 
 	public function handleBeforeCopyExceptionProvider() {
@@ -460,23 +440,34 @@ class QuotaPluginTest extends TestCase {
 
 		$node = $this->createMock(Node::class);
 		$node->method('getSize')->willReturn($requestSize);
-		$server->tree->method('getNodeForPath')
-			->with($requestPath)
-			->willReturn($node);
 
 		$destinationNode = $this->createMock(Node::class);
 		$destinationNode->method('getSize')->willReturn($destinationSize);
-		$server->expects($this->once())
-			->method('getCopyAndMoveInfo')
-			->willReturn([
-				'destination' => $destinationPath,
-				'destinationExists' => $destinationExists,
-				'destinationNode' => $destinationNode,
-			]);
+		$destinationNode->method('getPath')->willReturn($destinationPath);
+
+		$parentDestinationNode = $this->createMock(Node::class);
+		$parentDestinationNode->method('getPath')->willReturn(\dirname($destinationPath));
+
+		$server->tree->method('getNodeForPath')
+			->will($this->returnValueMap([
+				[$requestPath, $node],
+				[$destinationPath, $destinationNode],
+				[\dirname($destinationPath), $parentDestinationNode],
+			]));
+
+		$server->tree->method('nodeExists')
+			->will($this->returnValueMap([
+				[$requestPath, true],
+				[$destinationPath, $destinationExists],
+			]));
 
 		$view->method('free_space')
-			->with(\ltrim($destinationPath, '/'))
-			->willReturn($freeSize);
-		$this->assertNull($plugin->initialize($server)); // it will trigger the handleBeforeCopy method
+			->will($this->returnValueMap([
+				[\ltrim($destinationPath, '/'), $freeSize],
+				[\ltrim(\dirname($destinationPath), '/'), $freeSize],
+			]));
+
+		$plugin->initialize($server);
+		$plugin->handleBeforeCopy($requestPath, $destinationPath);
 	}
 }
