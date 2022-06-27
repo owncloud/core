@@ -142,7 +142,8 @@ Details
    egulias/email-validator (3.1.2 to 3.2.1) - guzzlehttp/guzzle (v5.3.4 to v7.4.5) -
    icewind/streams (0.7.5 to 0.7.6) - laminas/laminas-stdlib (3.7.1 to 3.10.1) -
    laminas/laminas-validator (2.17.0 to 2.19.0) - paragonie/constant_time_encoding
-   (v2.5.0 to v2.6.3) - webmozart/assert (1.10.0 to 1.11.0)
+   (v2.5.0 to v2.6.3) - sabre/http (5.1.3 to 5.1.4) - sabre/vobject (4.4.1 to 4.4.2) -
+   webmozart/assert (1.10.0 to 1.11.0)
 
    The following have been updated in apps/files_external/3rdparty: -
    google/apiclient-services (0.244.0 to 0.254.0) - google/apiclient (2.12.4 to 2.12.6) -
@@ -158,17 +159,20 @@ Details
    https://github.com/owncloud/core/pull/40137
    https://github.com/owncloud/core/pull/40151
    https://github.com/owncloud/core/pull/40154
+   https://github.com/owncloud/core/pull/40169
 
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 
-   The following Symfony components have been updated to: - console 4.4.42 - event-dispatcher
+   The following Symfony components have been updated to: - console 4.4.43 - event-dispatcher
    4.4.42 - polyfill-iconv 1.26.0 - polyfill-intl-idn 1.26.0 - polyfill-intl-normalizer
    1.26.0 - polyfill-mbstring 1.26.0 - polyfill-php72 1.26.0 - polyfill-php73 1.26.0 -
    polyfill-php80 1.26.0
 
    https://github.com/owncloud/core/pull/39368
    https://github.com/owncloud/core/pull/40111
+   https://github.com/owncloud/core/pull/40169
    https://symfony.com/blog/symfony-4-4-42-released
+   https://symfony.com/blog/symfony-4-4-43-released
 
 * Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
 
