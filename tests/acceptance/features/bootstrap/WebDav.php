@@ -5277,20 +5277,6 @@ trait WebDav {
 			$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 		}
 
-		// topWebDavPath should be something like /remote.php/webdav/ or
-		// /remote.php/dav/files/alice/
-		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
-		if (OcisHelper::isTestingOnOcis() && $method === "REPORT") {
-			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$this->getStepLineRef()
-			);
-			$userId = $this->getAttributeOfCreatedUser($user, "id");
-			$topWebDavPath = "/dav/spaces/" . $spaceId . "%21" . $userId . "/";
-		}
-
 		switch ($type) {
 			case "files":
 				break;
@@ -5307,11 +5293,18 @@ trait WebDav {
 		if ($multistatusResults !== null) {
 			foreach ($multistatusResults as $multistatusResult) {
 				$entryPath = $multistatusResult['value'][0]['value'];
-				$entryName = \str_replace($topWebDavPath, "", $entryPath);
-				$entryName = \rawurldecode($entryName);
-				$entryName = \trim($entryName, "/");
-				if ($trimmedEntryNameToSearch === $entryName) {
-					return $multistatusResult;
+				if (OcisHelper::isTestingOnOcis() && $method === "REPORT") {
+					$entryName = \rawurldecode($entryPath);
+					if (str_ends_with($entryName, $entryNameToSearch)) {
+						return $multistatusResult;
+					}
+				} else {
+					$entryName = \str_replace($topWebDavPath, "", $entryPath);
+					$entryName = \rawurldecode($entryName);
+					$entryName = \trim($entryName, "/");
+					if ($trimmedEntryNameToSearch === $entryName) {
+						return $multistatusResult;
+					}
 				}
 				\array_push($results, $entryName);
 			}
