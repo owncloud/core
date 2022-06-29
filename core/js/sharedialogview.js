@@ -277,16 +277,25 @@
 						if (isBatch) {
 							return view._getUsersForBatchAction(trimmedSearch).then(function (res) {
 								if (res.found.length) {
-									suggestions.push({ batch: res.found, failedBatch: res.notFound, label: trimmedSearch, value: {} });
+									var labelArray = [];
+									for (i = 0; i < res.found.length; i++) {
+										labelArray.push(res.found[i].shareWith)
+									}
+
+									suggestions.push({ batch: res.found, failedBatch: res.notFound, label: labelArray.join(', '), value: {} });
 								}
 
 								$loading.addClass('hidden');
 								$loading.removeClass('inlineblock');
 								if (suggestions.length) {
+									$('.shareWithField').removeClass('error')
+										.tooltip('hide')
+										.autocomplete("option", "autoFocus", true);
 									return response(suggestions, result);
 								}
 
 								view._displayError(t('core', 'No users or groups found'));
+								return response(undefined, result);
 							})
 						}
 
