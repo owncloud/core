@@ -96,7 +96,7 @@
 		shareeListView: undefined,
 
 		/** @type {string} **/
-		batchActionSeparator: ', ',
+		batchActionSeparator: ',',
 
 		events: {
 			'input .shareWithField': 'onShareWithFieldChanged',
@@ -604,6 +604,8 @@
 			var users = Array.from(new Set(search.split(this.batchActionSeparator)));
 
 			for (var i = 0; i < users.length; i++) {
+				if (!users[i]) continue;
+				var user = users[i].trim();
 				promises.push(
 					$.ajax({
 						url: OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
@@ -611,11 +613,11 @@
 						dataType: 'json',
 						data: {
 							format: 'json',
-							search: users[i],
+							search: user,
 							perPage: 200,
 							itemType: view.model.get('itemType')
 						},
-						context: { user: users[i] }
+						context: { user: user }
 					})
 					.done(function (result) {
 						if (result.ocs.data.exact.users.length) {
