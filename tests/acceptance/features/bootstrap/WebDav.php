@@ -5276,6 +5276,9 @@ trait WebDav {
 		if ($entryNameToSearch != null) {
 			$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 		}
+		// topWebDavPath should be something like /remote.php/webdav/ or
+		// /remote.php/dav/files/alice/
+		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
 
 		switch ($type) {
 			case "files":
