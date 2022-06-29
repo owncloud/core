@@ -167,11 +167,13 @@ Details
    The following Symfony components have been updated to: - console 4.4.43 - event-dispatcher
    4.4.42 - polyfill-iconv 1.26.0 - polyfill-intl-idn 1.26.0 - polyfill-intl-normalizer
    1.26.0 - polyfill-mbstring 1.26.0 - polyfill-php72 1.26.0 - polyfill-php73 1.26.0 -
-   polyfill-php80 1.26.0
+   polyfill-php80 1.26.0 - deprecation-contracts v2.5.2 - service-contracts v2.5.2 -
+   translation-contracts v2.5.2 - event-dispatcher-contracts v1.1.13
 
    https://github.com/owncloud/core/pull/39368
    https://github.com/owncloud/core/pull/40111
    https://github.com/owncloud/core/pull/40169
+   https://github.com/owncloud/core/pull/40175
    https://symfony.com/blog/symfony-4-4-42-released
    https://symfony.com/blog/symfony-4-4-43-released
 
