@@ -98,9 +98,9 @@ class LoginControllerTest extends TestCase {
 			->method('getCookie')
 			->with('oc_token')
 			->willReturn(null);
-		$this->config
+		$this->userSession
 			->expects($this->never())
-			->method('deleteUserValue');
+			->method('clearRememberMeTokensForLoggedInUser');
 		$this->urlGenerator
 			->expects($this->once())
 			->method('linkToRouteAbsolute')
@@ -117,19 +117,9 @@ class LoginControllerTest extends TestCase {
 			->method('getCookie')
 			->with('oc_token')
 			->willReturn('MyLoginToken');
-		$user = $this->createMock(IUser::class);
-		$user
-			->expects($this->once())
-			->method('getUID')
-			->willReturn('JohnDoe');
 		$this->userSession
 			->expects($this->once())
-			->method('getUser')
-			->willReturn($user);
-		$this->config
-			->expects($this->once())
-			->method('deleteUserValue')
-			->with('JohnDoe', 'login_token', 'MyLoginToken');
+			->method('clearRememberMeTokensForLoggedInUser');
 		$this->urlGenerator
 			->expects($this->once())
 			->method('linkToRouteAbsolute')
