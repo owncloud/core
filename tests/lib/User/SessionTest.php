@@ -663,11 +663,11 @@ class SessionTest extends TestCase {
 		$token = 'goodToken';
 		$this->config->method('getUserValue')
 			->will($this->returnValueMap([
-				['foo', 'login_token', \sha1($token), null, \time()],
+				['foo', 'login_token', \hash('snefru', $token), null, \time()],
 			]));
 		$this->config->expects($this->once())
 			->method('deleteUserValue')
-			->with('foo', 'login_token', \sha1($token));
+			->with('foo', 'login_token', \hash('snefru', $token));
 
 		/** @var Session | \PHPUnit\Framework\MockObject\MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
@@ -770,11 +770,11 @@ class SessionTest extends TestCase {
 		$token = 'goodToken';
 		$this->config->method('getUserValue')
 			->will($this->returnValueMap([
-				['foo', 'login_token', \sha1($token), null, "50"],
+				['foo', 'login_token', \hash('snefru', $token), null, "50"],
 			]));
 		$this->config->expects($this->once())
 			->method('deleteUserValue')
-			->with('foo', 'login_token', \sha1($token));
+			->with('foo', 'login_token', \hash('snefru', $token));
 
 		$userSession = new Session(
 			$manager,

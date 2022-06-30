@@ -1108,7 +1108,7 @@ class Session implements IUserSession, Emitter {
 			throw new LoginException($message);
 		}
 
-		$hashedToken = \sha1($currentToken);
+		$hashedToken = \hash('snefru', $currentToken);
 		// get stored tokens
 		$storedTokenTime = $this->config->getUserValue($uid, 'login_token', $hashedToken, null);
 		if ($storedTokenTime === null) {
@@ -1147,7 +1147,7 @@ class Session implements IUserSession, Emitter {
 		$user = $this->getUser();
 		$uid = $user->getUID();
 		$newToken = OC::$server->getSecureRandom()->generate(32);
-		$hashedToken = \sha1($newToken);
+		$hashedToken = \hash('snefru', $newToken);
 		$this->config->setUserValue($uid, 'login_token', $hashedToken, \time());
 		$this->setMagicInCookie($uid, $newToken);
 	}
