@@ -103,9 +103,7 @@ class LoginController extends Controller {
 	 */
 	public function logout() {
 		$loginToken = $this->request->getCookie('oc_token');
-		if ($loginToken !== null) {
-			$this->userSession->clearRememberMeTokensForLoggedInUser();
-		}
+		$this->userSession->clearRememberMeTokensForLoggedInUser($loginToken);
 		$this->userSession->logout();
 
 		return new RedirectResponse($this->urlGenerator->linkToRouteAbsolute('core.login.showLoginForm'));

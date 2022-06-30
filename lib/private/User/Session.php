@@ -1152,12 +1152,32 @@ class Session implements IUserSession, Emitter {
 		$this->setMagicInCookie($uid, $newToken);
 	}
 
-	public function clearRememberMeTokensForLoggedInUser() {
+	/**
+	 * Removes the remember me tokens associated to the current logged in user
+	 * from the DB.
+	 * This function will remove any obsolete token for the current logged in user.
+	 * If a targetToken is passed, that token will also be removed (if it belongs to
+	 * the current logged in user)
+	 * @params string|null $targetToken if null, only obsolete tokens for the user
+	 * will be removed, if a token is provided, obsolete tokens plus that token will
+	 * be removed (always for the current user)
+	 */
+	public function clearRememberMeTokensForLoggedInUser($targetToken) {
 		$user = $this->getUser();
 		$uid = $user->getUID();
+		$hashedToken = \hash('snefru', $targetToken);
+
 		$keys = $this->config->getUserKeys($uid, 'login_token');
 		foreach ($keys as $key) {
-			$this->config->deleteUserValue($uid, 'login_token', $key);
+			if ($key === $hashedToken) {
+				$this->config->deleteUserValue($uid, 'login_token', $key);
+			} else {
+				$storedTokenTime = $this->config->getUserValue($uid, 'login_token', $key, null);
+				$cutoff = \time() - $this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+				if (\intval($storedTokenTime) < $cutoff) {
+					$this->config->deleteUserValue($uid, 'login_token', $key);
+				}
+			}
 		}
 	}
 

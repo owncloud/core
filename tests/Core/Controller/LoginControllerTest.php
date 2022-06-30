@@ -99,7 +99,7 @@ class LoginControllerTest extends TestCase {
 			->with('oc_token')
 			->willReturn(null);
 		$this->userSession
-			->expects($this->never())
+			->expects($this->once())
 			->method('clearRememberMeTokensForLoggedInUser');
 		$this->urlGenerator
 			->expects($this->once())
