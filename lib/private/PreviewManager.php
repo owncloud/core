@@ -141,7 +141,7 @@ class PreviewManager implements IPreview {
 			throw new NotLoggedInException();
 		}
 		$file = $this->rootFolder->getUserFolder($user->getUID())->getParent()->get($file);
-		$preview = new Preview('', '/', $file, $maxX, $maxY, $scaleUp);
+		$preview = new Preview('', '', $file, $maxX, $maxY, $scaleUp);
 		return $preview->getPreview();
 	}
 

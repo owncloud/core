@@ -22,6 +22,7 @@
 		<job>OCA\Files\BackgroundJob\DeleteOrphanedItems</job>
 		<job>OCA\Files\BackgroundJob\CleanupFileLocks</job>
 		<job>OCA\Files\BackgroundJob\CleanupPersistentFileLocks</job>
+		<job>OCA\Files\BackgroundJob\PreviewCleanupJob</job>
 	</background-jobs>
 
 	<commands>

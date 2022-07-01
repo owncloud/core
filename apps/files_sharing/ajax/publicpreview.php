@@ -105,12 +105,8 @@ if ($maxX === 0 || $maxY === 0) {
 	exit;
 }
 
-// $path is relative to the data directory but Preview expects it to be relative to the user's
-// so strip the first component
-$root = \substr($path, \strpos($path, '/') + 1);
-
 try {
-	$preview = new \OC\Preview($userId, $root);
+	$preview = new \OC\Preview($userId);
 	$preview->setFile($sharedFile);
 	$preview->setMaxX($maxX);
 	$preview->setMaxY($maxY);
