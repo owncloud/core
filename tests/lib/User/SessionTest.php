@@ -1304,6 +1304,117 @@ class SessionTest extends TestCase {
 		$userSession->updateSessionTokenPassword($password);
 	}
 
+	public function testClearRememberMeTokensForLoggedInUser() {
+		$manager = $this->createMock(IUserManager::class);
+		$session = $this->createMock(ISession::class);
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
+
+		$uid = 'mockedUser';
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn($uid);
+
+		$userSession->setUser($user);
+
+		$timeFactory->method('getTime')->willReturn(60*60*24*366);
+
+		$hash1 = \hash('snefru', 'token1');
+		$hash2 = \hash('snefru', 'token2');
+		$hash3 = \hash('snefru', 'token3');
+		$tokenList = [
+			$hash1 => \strval(60 * 60 * 24 * 365),
+			$hash2 => "30",
+			$hash3 => \strval(60 * 60 * 24 * 365),
+		];
+
+		$this->config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['remember_login_cookie_lifetime', 60*60*24*15, 60*60*24*15]
+			]));
+		$this->config->method('getUserKeys')
+			->with($uid, 'login_token')
+			->willReturn(\array_keys($tokenList));
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				[$uid, 'login_token', $hash1, null, $tokenList[$hash1]],
+				[$uid, 'login_token', $hash2, null, $tokenList[$hash2]],
+				[$uid, 'login_token', $hash3, null, $tokenList[$hash3]],
+			]));
+
+		$this->config->expects($this->exactly(1))
+			->method('deleteUserValue')
+			->withConsecutive(
+				[$uid, 'login_token', $hash2]
+			);
+		$userSession->clearRememberMeTokensForLoggedInUser(null);
+	}
+
+	public function testClearRememberMeTokensForLoggedInUserWithToken() {
+		$manager = $this->createMock(IUserManager::class);
+		$session = $this->createMock(ISession::class);
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
+
+		$uid = 'mockedUser';
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn($uid);
+
+		$userSession->setUser($user);
+
+		$timeFactory->method('getTime')->willReturn(60*60*24*366);
+
+		$hash1 = \hash('snefru', 'token1');
+		$hash2 = \hash('snefru', 'token2');
+		$hash3 = \hash('snefru', 'token3');
+		$tokenList = [
+			$hash1 => \strval(60 * 60 * 24 * 365),
+			$hash2 => "30",
+			$hash3 => \strval(60 * 60 * 24 * 365),
+		];
+
+		$this->config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['remember_login_cookie_lifetime', 60*60*24*15, 60*60*24*15]
+			]));
+		$this->config->method('getUserKeys')
+			->with($uid, 'login_token')
+			->willReturn(\array_keys($tokenList));
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				[$uid, 'login_token', $hash1, null, $tokenList[$hash1]],
+				[$uid, 'login_token', $hash2, null, $tokenList[$hash2]],
+				[$uid, 'login_token', $hash3, null, $tokenList[$hash3]],
+			]));
+
+		$this->config->expects($this->exactly(2))
+			->method('deleteUserValue')
+			->withConsecutive(
+				[$uid, 'login_token', $hash1],
+				[$uid, 'login_token', $hash2]
+			);
+		$userSession->clearRememberMeTokensForLoggedInUser('token1');
+	}
+
 	public function testCancelLogout() {
 		/** @var ISession | \PHPUnit\Framework\MockObject\MockObject $session */
 		$session = $this->createMock(Memory::class);

@@ -1118,7 +1118,7 @@ class Session implements IUserSession, Emitter {
 
 		// the current token will be deleted regardless success of failure
 		$this->config->deleteUserValue($uid, 'login_token', $hashedToken);
-		$cutoff = \time() - $this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+		$cutoff = $this->timeFactory->getTime() - $this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
 		if (\intval($storedTokenTime) < $cutoff) {
 			// expired token already deleted
 			$this->emitFailedLogin($uid);
@@ -1148,7 +1148,7 @@ class Session implements IUserSession, Emitter {
 		$uid = $user->getUID();
 		$newToken = OC::$server->getSecureRandom()->generate(32);
 		$hashedToken = \hash('snefru', $newToken);
-		$this->config->setUserValue($uid, 'login_token', $hashedToken, \time());
+		$this->config->setUserValue($uid, 'login_token', $hashedToken, $this->timeFactory->getTime());
 		$this->setMagicInCookie($uid, $newToken);
 	}
 
@@ -1173,7 +1173,7 @@ class Session implements IUserSession, Emitter {
 				$this->config->deleteUserValue($uid, 'login_token', $key);
 			} else {
 				$storedTokenTime = $this->config->getUserValue($uid, 'login_token', $key, null);
-				$cutoff = \time() - $this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+				$cutoff = $this->timeFactory->getTime() - $this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
 				if (\intval($storedTokenTime) < $cutoff) {
 					$this->config->deleteUserValue($uid, 'login_token', $key);
 				}
@@ -1225,7 +1225,7 @@ class Session implements IUserSession, Emitter {
 			$webRoot = '/';
 		}
 		$secureCookie = OC::$server->getRequest()->getServerProtocol() === 'https';
-		$expires = \time() + OC::$server->getConfig()->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+		$expires = $this->timeFactory->getTime() + OC::$server->getConfig()->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
 		$cookieOpts = [
 			'expires' => $expires,
 			'path' => $webRoot,
@@ -1254,7 +1254,7 @@ class Session implements IUserSession, Emitter {
 		unset($_COOKIE['oc_username'], $_COOKIE['oc_token'], $_COOKIE['oc_remember_login']); //TODO: DI
 
 		$cookieOpts = [
-			'expires' => \time() - 3600,
+			'expires' => $this->timeFactory->getTime() - 3600,
 			'path' => $webRoot,
 			'domain' => '',
 			'secure' => $secureCookie,
