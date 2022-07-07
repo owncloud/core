@@ -1260,7 +1260,9 @@ class WebDavPropertiesContext implements Context {
 			$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
 			do {
 				// wait for a second before retrying
-				if($sentRequestsCount > 0) \sleep(1);
+				if ($sentRequestsCount > 0) {
+					\sleep(1);
+				}
 				$actualEtag = $this->getCurrentEtagOfElement($path, $user);
 				$loopAgain = $storedEtag !== $actualEtag && ++$sentRequestsCount < $maxRetries;
 			} while ($loopAgain);
@@ -1289,7 +1291,7 @@ class WebDavPropertiesContext implements Context {
 		$sentRequestsCount = 0;
 		do {
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-		} while($actualEtag !== $storedEtag && ++$sentRequestsCount < $maxRetries);
+		} while ($actualEtag !== $storedEtag && ++$sentRequestsCount < $maxRetries);
 		Assert::assertEquals(
 			$storedEtag,
 			$actualEtag,
@@ -1321,11 +1323,13 @@ class WebDavPropertiesContext implements Context {
 			$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
 			do {
 				// wait for second before retrying
-				if ($sentRequestsCount > 0) \sleep(1);
+				if ($sentRequestsCount > 0) {
+					\sleep(1);
+				}
 				$actualEtag = $this->getCurrentEtagOfElement($path, $user);
 				// loop again if the etag has not changed and we have not exceeded the max retries
 				$loopAgain = $actualEtag === $storedEtag && ++$sentRequestsCount < $maxRetries ;
-			} while($loopAgain);
+			} while ($loopAgain);
 			if ($actualEtag === $storedEtag) {
 				$unchangedEtagCount = $unchangedEtagCount + 1;
 				$unchangedEtagMessage
@@ -1351,7 +1355,7 @@ class WebDavPropertiesContext implements Context {
 		$sentRequestsCount = 0;
 		do {
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-		} while($actualEtag === $storedEtag && ++$sentRequestsCount < $maxRetries);
+		} while ($actualEtag === $storedEtag && ++$sentRequestsCount < $maxRetries);
 
 		Assert::assertNotEquals(
 			$storedEtag,
