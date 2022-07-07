@@ -275,6 +275,12 @@ $CONFIG = [
  * MUST declare this with `['enabled' => false]` like shown in the Easy Setup example.
  * `auto-provision` holds several sub keys, see the example setup with the explanations below.
  *
+ * auto-update::
+ * When using the provisioning mode `auto-update`, user account info will update with the current
+ * information provided by the OpenID Connect provider upon each user log in. In sub-key `update`,
+ * more config options like `enabled` or `attributes` can be set. Account attributes that
+ * will be updated can be specified in the `attributes` key.
+ *
  * insecure::
  * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
  * IdP - **DO NOT use in production!**
@@ -365,13 +371,25 @@ $CONFIG = [
 		'picture-claim' => 'picture',
 		  // defines a list of groups to which the newly created user will be added automatically
 		'groups' => ['admin', 'guests', 'employees'],
-		  // sets a claim which is defined at the IDP. the IDP will return a single value or an array like:
+		  // sets a claim which is defined at the IDP.
+		  // the IDP will return a single value or an array like:
 		  // "allowed_applications": ["erp", "owncloud"],
 		'provisioning-claim' => 'allowed_applications',
-		  // defines the matching case for the provisioning. the attribute can only be a single value
-		  // in case no match is found against the IDP response, no provisioning will be made,
-		  // "User not found" will be returned
-		'provisioning-attribute' => 'owncloud'
+		  // defines the matching case for the provisioning. the attribute can only be a
+		  // single value in case no match is found against the IDP response,
+		  // no provisioning will be made, "User not found" will be returned
+		'provisioning-attribute' => 'owncloud',
+		  // auto-update user account info with current information provided by the
+		  // OpenID Connect provider account attributes, that will be updated,
+		  // can be specified in `attributes` config option
+		'auto-provision' => [
+			'update' => [
+				  // enable the user info auto-update mode
+				'enabled' => true,
+				  // defines account attributes that will be auto-updated
+				'attributes' => ['email', 'display-name'],
+			],
+		],
 	],
 	  // `mode` and `search-attribute` will be used to create a unique user in ownCloud
 	'mode' => 'email',
