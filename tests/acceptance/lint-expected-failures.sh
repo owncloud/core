@@ -24,6 +24,7 @@ then
 	# In most cases the features that are being run are in owncloud/core,
 	# so assume that by default.
 	FEATURE_FILE_REPO="owncloud/core"
+	FEATURE_FILE_PATH="tests/acceptance/features"
 	while read INPUT_LINE
 		do
 			# Ignore comment lines (starting with hash)
@@ -36,9 +37,18 @@ then
 			# "The expected failures in this file are from features in the owncloud/ocis repo."
 			# Write a line near the top of the expected-failures file to "declare" this,
 			# overriding the default "owncloud/core"
+			FEATURE_FILE_SPEC_LINE_FOUND="false"
 			if [[ "${INPUT_LINE}" =~ features[[:blank:]]in[[:blank:]]the[[:blank:]]([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)[[:blank:]]repo ]]; then
 				FEATURE_FILE_REPO="${BASH_REMATCH[1]}"
 				echo "Features are expected to be in the ${FEATURE_FILE_REPO} repo"
+  			FEATURE_FILE_SPEC_LINE_FOUND="true"
+			fi
+			if [[ "${INPUT_LINE}" =~ repo[[:blank:]]in[[:blank:]]the[[:blank:]]([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)[[:blank:]]folder[[:blank:]]tree ]]; then
+				FEATURE_FILE_PATH="${BASH_REMATCH[1]}"
+				echo "Features are expected to be in the ${FEATURE_FILE_PATH} folder tree"
+  			FEATURE_FILE_SPEC_LINE_FOUND="true"
+			fi
+			if [[ $FEATURE_FILE_SPEC_LINE_FOUND == "true" ]]; then
 				continue
 			fi
 			# Match lines that have [someSuite/someName.feature:n] - the part inside the
@@ -63,7 +73,7 @@ then
 			IFS=${OLD_IFS}
 			SUITE_FEATURE="${FEATURE_PARTS[0]}"
 			FEATURE_LINE="${FEATURE_PARTS[1]}"
-			EXPECTED_LINK="https://github.com/${FEATURE_FILE_REPO}/blob/master/tests/acceptance/features/${SUITE_FEATURE}#L${FEATURE_LINE}"
+			EXPECTED_LINK="https://github.com/${FEATURE_FILE_REPO}/blob/master/${FEATURE_FILE_PATH}/${SUITE_FEATURE}#L${FEATURE_LINE}"
 			if [[ "${ACTUAL_LINK}" != "${EXPECTED_LINK}" ]]; then
 				echo "Link is not correct for ${SUITE_SCENARIO_LINE}"
 				echo "  Actual link: ${ACTUAL_LINK}"
