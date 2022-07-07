@@ -1,0 +1,7 @@
+Bugfix: replace userid with username in login form
+
+The login form now replaces a user id with the user name.
+
+https://github.com/owncloud/core/pull/39870
+https://github.com/owncloud/oauth2/pull/286
+
