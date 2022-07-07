@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
+* Bugfix - Replace userid with username in login form: [#39870](https://github.com/owncloud/core/pull/39870)
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 * Bugfix - Do not crash while running the cleanup-chunks command: [#40000](https://github.com/owncloud/core/pull/40000)
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
@@ -37,6 +38,13 @@ Details
    changed to an "updateCache" event
 
    https://github.com/owncloud/core/pull/39844
+
+* Bugfix - Replace userid with username in login form: [#39870](https://github.com/owncloud/core/pull/39870)
+
+   The login form now replaces a user id with the user name.
+
+   https://github.com/owncloud/core/pull/39870
+   https://github.com/owncloud/oauth2/pull/286
 
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 
