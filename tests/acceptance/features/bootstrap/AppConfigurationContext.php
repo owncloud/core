@@ -75,6 +75,13 @@ class AppConfigurationContext implements Context {
 		if (\TestHelpers\OcisHelper::isTestingOnOcisOrReva() && !\TestHelpers\OcisHelper::isTestingParallelDeployment()) {
 			return;
 		}
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		// Also, sometimes the value can be without quotes
+		// so only trim if the value has a quote.
+		if ($value[0] === "\"" || $value[0] === "'") {
+			$value = \trim($value, $value[0]);
+		}
 		$this->modifyAppConfig($app, $parameter, $value);
 		$this->featureContext->clearStatusCodeArrays();
 	}
