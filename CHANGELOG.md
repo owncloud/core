@@ -24,6 +24,7 @@ Summary
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
+* Enhancement - Add default app setting on a user basis: [#39600](https://github.com/owncloud/core/pull/39600)
 * Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 * Enhancement - Add additional columns to background job queue status: [#40113](https://github.com/owncloud/core/pull/40113)
@@ -184,6 +185,10 @@ Details
    https://github.com/owncloud/core/pull/40175
    https://symfony.com/blog/symfony-4-4-42-released
    https://symfony.com/blog/symfony-4-4-43-released
+
+* Enhancement - Add default app setting on a user basis: [#39600](https://github.com/owncloud/core/pull/39600)
+
+   https://github.com/owncloud/core/pull/39600
 
 * Enhancement - Ignore thumbnails when propagating in home: [#39988](https://github.com/owncloud/core/pull/39988)
 
