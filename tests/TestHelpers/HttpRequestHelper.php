@@ -40,6 +40,7 @@ use GuzzleHttp\Pool;
  * Helper for HTTP requests
  */
 class HttpRequestHelper {
+	public const HTTP_TOO_EARLY = 425;
 
 	/**
 	 * @var string
@@ -60,6 +61,27 @@ class HttpRequestHelper {
 	 */
 	public static function setOCSelectorCookie(string $oCSelectorCookie): void {
 		self::$oCSelectorCookie = $oCSelectorCookie;
+	}
+
+	/**
+	 * Some systems-under-test do async post-processing of operations like upload,
+	 * move etc. If a client does a request on the resource before the post-processing
+	 * is finished, then the server should return HTTP_TOO_EARLY "425". Clients are
+	 * expected to retry the request "some time later" (tm).
+	 *
+	 * On such systems, when HTTP_TOO_EARLY status is received, the test code will
+	 * retry the request at 1-second intervals until either some other HTTP status
+	 * is received or the retry-limit is reached.
+	 *
+	 * @return int
+	 */
+	public static function numRetriesOnHttpTooEarly():int {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently reva and oCIS may return HTTP_TOO_EARLY
+			// So try up to 10 times before giving up.
+			return 10;
+		}
+		return 0;
 	}
 
 	/**
@@ -132,25 +154,40 @@ class HttpRequestHelper {
 			self::debugRequest($request, $user, $password);
 		}
 
-		// The exceptions that might happen here include:
-		// ConnectException - in that case there is no response. Don't catch the exception.
-		// RequestException - if there is something in the response then pass it back.
-		//                    otherwise re-throw the exception.
-		// GuzzleException - something else unexpected happened. Don't catch the exception.
-		try {
-			$response = $client->send($request);
-		} catch (RequestException $ex) {
-			$response = $ex->getResponse();
+		$sendRetryLimit = self::numRetriesOnHttpTooEarly();
+		$sendCount = 0;
+		$sendExceptionHappened = false;
 
-			//if the response was null for some reason do not return it but re-throw
-			if ($response === null) {
-				throw $ex;
+		do {
+			// The exceptions that might happen here include:
+			// ConnectException - in that case there is no response. Don't catch the exception.
+			// RequestException - if there is something in the response then pass it back.
+			//                    otherwise re-throw the exception.
+			// GuzzleException - something else unexpected happened. Don't catch the exception.
+			try {
+				$response = $client->send($request);
+			} catch (RequestException $ex) {
+				$sendExceptionHappened = true;
+				$response = $ex->getResponse();
+
+				//if the response was null for some reason do not return it but re-throw
+				if ($response === null) {
+					throw $ex;
+				}
 			}
-		}
 
-		if ($debugResponses) {
-			self::debugResponse($response);
-		}
+			if ($debugResponses) {
+				self::debugResponse($response);
+			}
+			$sendCount = $sendCount + 1;
+			$loopAgain = !$sendExceptionHappened && ($response->getStatusCode() === self::HTTP_TOO_EARLY) && ($sendCount <= $sendRetryLimit);
+			if ($loopAgain) {
+				// we need to repeat the send request, because we got HTTP_TOO_EARLY
+				// wait 1 second before sending again, to give the server some time
+				// to finish whatever post-processing it might be doing.
+				\sleep(1);
+			}
+		} while ($loopAgain);
 
 		return $response;
 	}
