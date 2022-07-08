@@ -1251,7 +1251,6 @@ class WebDavPropertiesContext implements Context {
 		$this->featureContext->verifyTableNodeColumnsCount($etagTable, 2);
 		$changedEtagCount = 0;
 		$changedEtagMessage = __METHOD__;
-		$maxRetries = 10;
 		foreach ($etagTable->getColumnsHash() as $row) {
 			$sentRequestsCount = 0;
 			$user = $row["user"];
@@ -1264,8 +1263,7 @@ class WebDavPropertiesContext implements Context {
 					\sleep(1);
 				}
 				$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-				$loopAgain = $storedEtag !== $actualEtag && ++$sentRequestsCount < $maxRetries;
-			} while ($loopAgain);
+			} while ($storedEtag !== $actualEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
 			if ($actualEtag !== $storedEtag) {
 				$changedEtagCount = $changedEtagCount + 1;
 				$changedEtagMessage
@@ -1287,11 +1285,14 @@ class WebDavPropertiesContext implements Context {
 	public function etagOfElementOfUserShouldNotHaveChanged(string $path, string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
-		$maxRetries = 10;
 		$sentRequestsCount = 0;
 		do {
+			// wait for a second before retrying
+			if ($sentRequestsCount > 0) {
+				\sleep(1);
+			}
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-		} while ($actualEtag !== $storedEtag && ++$sentRequestsCount < $maxRetries);
+		} while ($actualEtag !== $storedEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
 		Assert::assertEquals(
 			$storedEtag,
 			$actualEtag,
@@ -1314,7 +1315,6 @@ class WebDavPropertiesContext implements Context {
 		$this->featureContext->verifyTableNodeColumnsCount($etagTable, 2);
 		$unchangedEtagCount = 0;
 		$unchangedEtagMessage = __METHOD__;
-		$maxRetries = 10;
 		foreach ($etagTable->getColumnsHash() as $row) {
 			$sentRequestsCount = 0;
 			$user = $row["user"];
@@ -1327,9 +1327,7 @@ class WebDavPropertiesContext implements Context {
 					\sleep(1);
 				}
 				$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-				// loop again if the etag has not changed and we have not exceeded the max retries
-				$loopAgain = $actualEtag === $storedEtag && ++$sentRequestsCount < $maxRetries ;
-			} while ($loopAgain);
+			} while ($actualEtag === $storedEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
 			if ($actualEtag === $storedEtag) {
 				$unchangedEtagCount = $unchangedEtagCount + 1;
 				$unchangedEtagMessage
@@ -1351,11 +1349,14 @@ class WebDavPropertiesContext implements Context {
 	public function etagOfElementOfUserShouldHaveChanged(string $path, string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
-		$maxRetries = 10;
 		$sentRequestsCount = 0;
 		do {
+			// wait for second before retrying
+			if ($sentRequestsCount > 0) {
+				\sleep(1);
+			}
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-		} while ($actualEtag === $storedEtag && ++$sentRequestsCount < $maxRetries);
+		} while ($actualEtag === $storedEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
 
 		Assert::assertNotEquals(
 			$storedEtag,
