@@ -47,6 +47,8 @@ class WebDavPropertiesContext implements Context {
 	 */
 	private $storedETAG = null;
 
+	public $maxRetriesForEtagComparison = 20;
+
 	/**
 	 * @When /^user "([^"]*)" gets the properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
 	 *
@@ -1097,15 +1099,24 @@ class WebDavPropertiesContext implements Context {
 	 */
 	public function userStoresEtagOfElementOnPath(string $user, string $path, string $storePath):void {
 		$user = $this->featureContext->getActualUsername($user);
-		$this->storeEtagOfElement(
-			$user,
-			$path,
-			$storePath
-		);
-		if ($storePath == "") {
-			$storePath = $path;
-		}
-		if ($this->storedETAG[$user][$storePath] === null || $this->storedETAG[$user][$path] === "") {
+		$sentRequests = 0;
+		do {
+			if ($sentRequests > 0) {
+				echo "waiting for a second before fetching etag again\n";
+				\sleep(1);
+			}
+			$this->storeEtagOfElement(
+				$user,
+				$path,
+				$storePath
+			);
+			if ($storePath == "") {
+				$storePath = $path;
+			}
+			$emptyEtagCondition = $this->storedETAG[$user][$storePath] === null || $this->storedETAG[$user][$path] === "";
+		} while ($emptyEtagCondition && ++$sentRequests < $this->maxRetriesForEtagComparison);
+
+		if ($emptyEtagCondition) {
 			throw new Exception("Expected stored etag for user $user at $path to be some string but found null!");
 		}
 	}
@@ -1121,11 +1132,19 @@ class WebDavPropertiesContext implements Context {
 	 */
 	public function userHasStoredEtagOfElement(string $user, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
-		$this->storeEtagOfElement(
-			$user,
-			$path
-		);
-		if ($this->storedETAG[$user][$path] === "" || $this->storedETAG[$user][$path] === null) {
+		$sentRequests = 0;
+		do {
+			if ($sentRequests > 0) {
+				echo "waiting for a second before fetching etag again\n";
+				\sleep(1);
+			}
+			$this->storeEtagOfElement(
+				$user,
+				$path
+			);
+			$emptyEtagCondition = $this->storedETAG[$user][$path] === "" || $this->storedETAG[$user][$path] === null;
+		} while ($emptyEtagCondition && ++$sentRequests < $this->maxRetriesForEtagComparison);
+		if ($emptyEtagCondition) {
 			throw new Exception("Expected stored etag for user $user at $path to be some string but found null!");
 		}
 	}
@@ -1265,7 +1284,7 @@ class WebDavPropertiesContext implements Context {
 					\sleep(1);
 				}
 				$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-			} while ($storedEtag !== $actualEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
+			} while ($storedEtag !== $actualEtag && ++$sentRequestsCount < $this->maxRetriesForEtagComparison);
 
 			if ($actualEtag !== $storedEtag) {
 				$changedEtagCount = $changedEtagCount + 1;
@@ -1296,7 +1315,7 @@ class WebDavPropertiesContext implements Context {
 				\sleep(1);
 			}
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-		} while ($actualEtag !== $storedEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
+		} while ($actualEtag !== $storedEtag && ++$sentRequestsCount < $this->maxRetriesForEtagComparison);
 		Assert::assertEquals(
 			$storedEtag,
 			$actualEtag,
@@ -1332,7 +1351,7 @@ class WebDavPropertiesContext implements Context {
 					\sleep(1);
 				}
 				$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-			} while ($actualEtag === $storedEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
+			} while ($actualEtag === $storedEtag && ++$sentRequestsCount < $this->maxRetriesForEtagComparison);
 			if ($actualEtag === $storedEtag) {
 				$unchangedEtagCount = $unchangedEtagCount + 1;
 				$unchangedEtagMessage
@@ -1362,7 +1381,7 @@ class WebDavPropertiesContext implements Context {
 				\sleep(1);
 			}
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
-		} while ($actualEtag === $storedEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
+		} while ($actualEtag === $storedEtag && ++$sentRequestsCount < $this->maxRetriesForEtagComparison);
 
 		Assert::assertNotEquals(
 			$storedEtag,
