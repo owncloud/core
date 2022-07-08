@@ -1106,7 +1106,7 @@ class WebDavPropertiesContext implements Context {
 			$storePath = $path;
 		}
 		if ($this->storedETAG[$user][$storePath] === null || $this->storedETAG[$user][$path] === "") {
-			throw new Exception("Expected stored etag to be some string but found null!");
+			throw new Exception("Expected stored etag for user $user at $path to be some string but found null!");
 		}
 	}
 
@@ -1126,7 +1126,7 @@ class WebDavPropertiesContext implements Context {
 			$path
 		);
 		if ($this->storedETAG[$user][$path] === "" || $this->storedETAG[$user][$path] === null) {
-			throw new Exception("Expected stored etag to be some string but found null!");
+			throw new Exception("Expected stored etag for user $user at $path to be some string but found null!");
 		}
 	}
 
@@ -1257,13 +1257,16 @@ class WebDavPropertiesContext implements Context {
 			$path = $row["path"];
 			$user = $this->featureContext->getActualUsername($user);
 			$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
+
 			do {
 				// wait for a second before retrying
 				if ($sentRequestsCount > 0) {
+					echo "waiting for a second before retrying\n";
 					\sleep(1);
 				}
 				$actualEtag = $this->getCurrentEtagOfElement($path, $user);
 			} while ($storedEtag !== $actualEtag && ++$sentRequestsCount < HttpRequestHelper::numRetriesOnHttpTooEarly());
+
 			if ($actualEtag !== $storedEtag) {
 				$changedEtagCount = $changedEtagCount + 1;
 				$changedEtagMessage
@@ -1289,6 +1292,7 @@ class WebDavPropertiesContext implements Context {
 		do {
 			// wait for a second before retrying
 			if ($sentRequestsCount > 0) {
+				echo "waiting for a second before retrying\n";
 				\sleep(1);
 			}
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
@@ -1324,6 +1328,7 @@ class WebDavPropertiesContext implements Context {
 			do {
 				// wait for second before retrying
 				if ($sentRequestsCount > 0) {
+					echo "waiting for a second before retrying\n";
 					\sleep(1);
 				}
 				$actualEtag = $this->getCurrentEtagOfElement($path, $user);
@@ -1353,6 +1358,7 @@ class WebDavPropertiesContext implements Context {
 		do {
 			// wait for second before retrying
 			if ($sentRequestsCount > 0) {
+				echo "waiting for a second before retrying\n";
 				\sleep(1);
 			}
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
