@@ -26,7 +26,7 @@ For installing ownCloud, see the official
 ## Development Build Prerequisites
 Note that when doing a local development build, you need to have **Composer v2** installed. If your OS provides a lower version than v2, you can install Composer v2 manually. As an example, which may be valid for other releases/distros too, see [How to install Composer on Ubuntu 22.04 | 20.04 LTS](https://www.how2shout.com/linux/how-to-install-composer-on-ubuntu-22-04-20-04-lts/).
 
-You also must have installed `yarn` and `node`.
+You also must have installed `yarn` and `node` (v14 or higher).
 
 ## Contribution Guidelines
 https://owncloud.com/contribute/
