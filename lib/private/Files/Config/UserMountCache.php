@@ -23,6 +23,7 @@
 
 namespace OC\Files\Config;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Config\ICachedMountInfo;
 use OCP\Files\Config\IUserMountCache;
@@ -128,15 +129,32 @@ class UserMountCache implements IUserMountCache {
 
 	private function addToCache(ICachedMountInfo $mount) {
 		if ($mount->getStorageId() !== -1) {
-			$this->connection->insertIfNotExist('*PREFIX*mounts', [
-				'storage_id' => $mount->getStorageId(),
-				'root_id' => $mount->getRootId(),
-				'user_id' => $mount->getUser()->getUID(),
-				'mount_point' => $mount->getMountPoint()
-			], ['root_id', 'user_id']);
+			try {
+				$rows = $this->connection->insertIfNotExist(
+					'*PREFIX*mounts',
+					[
+					'storage_id' => $mount->getStorageId(),
+					'root_id' => $mount->getRootId(),
+					'user_id' => $mount->getUser()->getUID(),
+					'mount_point' => $mount->getMountPoint()
+				],
+				// NOTE: see {ocprefix}mounts/mounts_user_root_index
+				['root_id', 'user_id']
+				);
+			} catch (UniqueConstraintViolationException $e) {
+				$this->logger->logException($e);
+				$rows = 0;
+			}
+
+			if ($rows === 0) {
+				// most likely race condition but make sure to log the error in case it is application level error
+				$this->logger->error(
+					"Attempt to add mount to cache where mount {$mount->getRootId()}/{$mount->getUser()->getUID()} already exists"
+				);
+			}
 		} else {
 			// in some cases this is legitimate, like orphaned shares
-			$this->logger->debug('Could not get storage info for mount at ' . $mount->getMountPoint());
+			$this->logger->warning('Could not get storage info for mount at ' . $mount->getMountPoint());
 		}
 	}
 
