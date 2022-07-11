@@ -808,6 +808,7 @@ trait Provisioning {
 			$entry['ownCloudUUID'] = $this->generateUUIDv4();
 		}
 		if (OcisHelper::isTestingParallelDeployment()) {
+			$entry['uidNumber'] = 30000 + $this->getLdapEntriesCount($this->ldapUsersOU) + 1;
 			$entry['ownCloudSelector'] = $this->getOCSelector();
 		}
 
@@ -820,6 +821,16 @@ trait Provisioning {
 		}
 		$this->ldapCreatedUsers[] = $setting["userid"];
 		$this->theLdapUsersHaveBeenReSynced();
+	}
+
+	/**
+	 * @param string $ou
+	 *
+	 * @return int
+	 * @throws LdapException
+	 */
+	public function getLdapEntriesCount(string $ou): int {
+		return $this->ldap->countChildren("ou=" . $ou . "," . $this->getLdapBaseDN());
 	}
 
 	/**
@@ -6161,7 +6172,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	private function setSkeletonDir(string $skeletonDir): string {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
+		if (OcisHelper::isTestingOnOcisOrReva() && !OcisHelper::isTestingParallelDeployment()) {
 			$originalSkeletonPath = \getenv("SKELETON_DIR");
 			if ($skeletonDir !== '') {
 				\putenv("SKELETON_DIR=" . $skeletonDir);
