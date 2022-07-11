@@ -3112,16 +3112,16 @@
         },
         {
             "name": "sabre/http",
-            "version": "5.1.4",
+            "version": "5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/http.git",
-                "reference": "84a83642c3b877da9d0e265fba7258157c0bdc37"
+                "reference": "164725c2d2e248384e5b6115510c545e9c47cff9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/http/zipball/84a83642c3b877da9d0e265fba7258157c0bdc37",
-                "reference": "84a83642c3b877da9d0e265fba7258157c0bdc37",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/164725c2d2e248384e5b6115510c545e9c47cff9",
+                "reference": "164725c2d2e248384e5b6115510c545e9c47cff9",
                 "shasum": ""
             },
             "require": {
@@ -3171,7 +3171,7 @@
                 "issues": "https://github.com/sabre-io/http/issues",
                 "source": "https://github.com/fruux/sabre-http"
             },
-            "time": "2022-06-24T08:39:23+00:00"
+            "time": "2022-07-09T08:38:22+00:00"
         },
         {
             "name": "sabre/uri",
