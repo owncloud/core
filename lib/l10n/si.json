@@ -7,6 +7,7 @@
     "None" : "කිසිවක් නැත",
     "Username" : "පරිශීලක නම",
     "Password" : "මුර පදය",
+    "File name contains at least one invalid character" : "ගොනු නාමයේ අවම වශයෙන් එක් අවලංගු අක්ෂරයක්වත් අඩංගු වේ",
     "Apps" : "යෙදුම්",
     "General" : "සාමාන්‍යයෙන්",
     "Encryption" : "ගුප්ත කේතනය",
