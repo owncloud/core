@@ -16,4 +16,4 @@ The first index in the mapped array is assumed to be the correct mimetype. The s
 To add a custom mimetype mapping, create a `mimetypemapping.json` file in the `/config` directory.
 
 ## updating/generating current ca-bundle.crt
-Use: https://github.com/curl/curl/blob/master/lib/mk-ca-bundle.pl
+Use: https://github.com/curl/curl/blob/master/scripts/mk-ca-bundle.pl
