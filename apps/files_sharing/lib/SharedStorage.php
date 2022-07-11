@@ -228,18 +228,18 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 						return false;
 					}
 
-					$exists = $this->file_exists($path);
-					// if a file exists, updatable permissions are required
-					if ($exists && !$updatable) {
+				$exists = $this->file_exists($path);
+				// if a file exists, updatable permissions are required
+				if ($exists && !$updatable) {
+					return false;
+				}
+
+				// part file is allowed if !$creatable but the final file is $updatable
+				if (\pathinfo($path, PATHINFO_EXTENSION) !== 'part') {
+					if (!$exists && !$creatable) {
 						return false;
 					}
-
-					// part file is allowed if !$creatable but the final file is $updatable
-					if (\pathinfo($path, PATHINFO_EXTENSION) !== 'part') {
-						if (!$exists && !$creatable) {
-							return false;
-						}
-					}
+				}
 			}
 			$info = [
 				'target' => $this->getMountPoint() . $path,

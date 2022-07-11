@@ -194,7 +194,7 @@ class Activity implements IExtension {
 				if ($this->actorIsAutomation($params[1])) {
 					return (string) $l->t('%1$s was deleted due to automation rule', $params);
 				}
-				return (string) $l->t('%2$s deleted %1$s', $params);
+			return (string) $l->t('%2$s deleted %1$s', $params);
 			case 'restored_self':
 				return (string) $l->t('You restored %1$s', $params);
 			case 'restored_by':

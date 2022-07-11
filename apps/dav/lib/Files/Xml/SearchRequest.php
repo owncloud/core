@@ -64,10 +64,10 @@ class SearchRequest implements XmlDeserializable {
 					if (isset($value['{http://owncloud.org/ns}pattern'])) {
 						$newProps['searchInfo']['pattern'] = $value['{http://owncloud.org/ns}pattern'];
 					}
-					if (isset($value['{http://owncloud.org/ns}limit'])) {
-						$newProps['searchInfo']['limit'] = (int)$value['{http://owncloud.org/ns}limit'];
-					}
-					break;
+				if (isset($value['{http://owncloud.org/ns}limit'])) {
+					$newProps['searchInfo']['limit'] = (int)$value['{http://owncloud.org/ns}limit'];
+				}
+				break;
 			}
 		}
 

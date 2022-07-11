@@ -3351,7 +3351,7 @@ trait Provisioning {
 						__METHOD__ . " could not create user. {$result['stdOut']} {$result['stdErr']}"
 					);
 				}
-				break;
+			break;
 			case "api":
 			case "ldap":
 				$settings = [];
@@ -3820,12 +3820,12 @@ trait Provisioning {
 						. $result->getStatusCode() . " " . $result->getBody()
 					);
 				}
-				$this->response = $result;
-				if (!$checkResult) {
-					// for when step only
-					$this->pushToLastStatusCodesArrays();
-				}
-				break;
+			$this->response = $result;
+			if (!$checkResult) {
+				// for when step only
+				$this->pushToLastStatusCodesArrays();
+			}
+			break;
 			case "occ":
 				$result = SetupHelper::addUserToGroup(
 					$group,
@@ -3837,7 +3837,7 @@ trait Provisioning {
 						"could not add user to group. {$result['stdOut']} {$result['stdErr']}"
 					);
 				}
-				break;
+			break;
 			case "ldap":
 				try {
 					$this->addUserToLdapGroup(
@@ -3849,7 +3849,7 @@ trait Provisioning {
 						"User " . $user . " cannot be added to " . $group . " . Error: {$exception}"
 					);
 				};
-				break;
+			break;
 			case "graph":
 				$this->graphContext->adminHasAddedUserToGroupUsingTheGraphApi(
 					$user,
@@ -4086,7 +4086,7 @@ trait Provisioning {
 						. $result->getStatusCode() . " " . $result->getBody()
 					);
 				}
-				break;
+			break;
 			case "occ":
 				$result = SetupHelper::createGroup(
 					$group,
@@ -4099,7 +4099,7 @@ trait Provisioning {
 						"could not create group '$group'. {$result['stdOut']} {$result['stdErr']}"
 					);
 				}
-				break;
+			break;
 			case "ldap":
 				try {
 					$this->createLdapGroup($group);

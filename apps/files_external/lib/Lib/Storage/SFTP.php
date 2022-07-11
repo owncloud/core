@@ -371,7 +371,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 					if (!$this->file_exists($path)) {
 						return false;
 					}
-					// no break
+				// no break
 				case 'w':
 				case 'wb':
 				case 'a':

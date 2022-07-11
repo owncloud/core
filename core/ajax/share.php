@@ -79,11 +79,11 @@ if (isset($_GET['fetch'])) {
 				$return = OCP\Share::getItemsShared((string)$_GET['itemType'], OCP\Share::FORMAT_STATUSES);
 				\is_array($return) ? OC_JSON::success(['data' => $return]) : OC_JSON::error();
 			}
-			break;
+		break;
 		case 'getItem':
 			if (isset($_GET['itemType'], $_GET['itemSource'], $_GET['checkReshare'], $_GET['checkShares'])
 				 
-				 ) {
+			) {
 				if ($_GET['checkReshare'] == 'true') {
 					$reshare = OCP\Share::getItemSharedWithBySource(
 						(string)$_GET['itemType'],
@@ -108,7 +108,7 @@ if (isset($_GET['fetch'])) {
 				}
 				OC_JSON::success(['data' => ['reshare' => $reshare, 'shares' => $shares]]);
 			}
-			break;
+		break;
 		case 'getShareWithEmail':
 			$result = [];
 			if (isset($_GET['search'])) {
@@ -149,8 +149,8 @@ if (isset($_GET['fetch'])) {
 					}
 				}
 			}
-			OC_JSON::success(['data' => $result]);
-			break;
+		OC_JSON::success(['data' => $result]);
+		break;
 		case 'getShareWith':
 			if (isset($_GET['search'])) {
 				$shareWithinGroupOnly = OC\Share\Share::shareWithGroupMembersOnly();
@@ -289,6 +289,6 @@ if (isset($_GET['fetch'])) {
 				\usort($shareWith, [$sorter, 'sort']);
 				OC_JSON::success(['data' => $shareWith]);
 			}
-			break;
+		break;
 	}
 }

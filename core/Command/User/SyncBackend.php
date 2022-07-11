@@ -413,33 +413,33 @@ class SyncBackend extends Command {
 						$writeNotExisting
 					);
 
-					$helper = $this->getHelper('question');
-					$question = new ChoiceQuestion(
-						'What do you want to do with their accounts? (removing the account will also remove its data)',
-						self::VALID_ACTIONS,
-						0
-					);
-					$missingAccountsAction2 = $helper->ask($input, $output, $question);
-					switch ($missingAccountsAction2) {
-						// if "nothing" is selected, just ignore and finish
-						case 'disable':
-							$output->writeln('Disabling accounts');
-							$this->doActionForAccountUids(
-								$removedUsers,
-								$disableAction,
-								$writeNotExisting
-							);
-							break;
-						case 'remove':
-							$output->writeln('Deleting accounts:');
-							$this->doActionForAccountUids(
-								$removedUsers,
-								$deleteAction,
-								$writeNotExisting
-							);
-							break;
-					}
-					break;
+				$helper = $this->getHelper('question');
+				$question = new ChoiceQuestion(
+					'What do you want to do with their accounts? (removing the account will also remove its data)',
+					self::VALID_ACTIONS,
+					0
+				);
+				$missingAccountsAction2 = $helper->ask($input, $output, $question);
+				switch ($missingAccountsAction2) {
+					// if "nothing" is selected, just ignore and finish
+					case 'disable':
+						$output->writeln('Disabling accounts');
+						$this->doActionForAccountUids(
+							$removedUsers,
+							$disableAction,
+							$writeNotExisting
+						);
+						break;
+					case 'remove':
+						$output->writeln('Deleting accounts:');
+						$this->doActionForAccountUids(
+							$removedUsers,
+							$deleteAction,
+							$writeNotExisting
+						);
+						break;
+				}
+				break;
 			}
 		}
 	}

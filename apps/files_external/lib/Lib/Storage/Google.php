@@ -555,7 +555,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 						}
 					}
 				}
-				return false;
+			return false;
 			case 'w':
 			case 'wb':
 			case 'a':
@@ -574,8 +574,8 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					$source = $this->fopen($path, 'rb');
 					\file_put_contents($tmpFile, $source);
 				}
-				self::$tempFiles[$tmpFile] = $path;
-				return \fopen('close://'.$tmpFile, $mode);
+			self::$tempFiles[$tmpFile] = $path;
+			return \fopen('close://'.$tmpFile, $mode);
 		}
 	}
 

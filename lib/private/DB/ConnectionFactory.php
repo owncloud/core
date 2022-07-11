@@ -128,7 +128,7 @@ class ConnectionFactory {
 				if (isset($additionalConnectionParams['driverOptions'])) {
 					$additionalConnectionParams = \array_merge($additionalConnectionParams, $additionalConnectionParams['driverOptions']);
 				}
-				break;
+			break;
 			case 'sqlite3':
 				$journalMode = $additionalConnectionParams['sqlite.journal_mode'];
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));

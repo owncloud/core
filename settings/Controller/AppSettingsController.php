@@ -89,22 +89,22 @@ class AppSettingsController extends Controller {
 					}
 					return ($a < $b) ? -1 : 1;
 				});
-				break;
+			break;
 			// not-installed apps
 			case 'disabled':
 				$apps = \OC_App::listAllApps();
 				$apps = \array_filter($apps, function ($app) {
 					return !$app['active'];
 				});
-				\usort($apps, function ($a, $b) {
-					$a = (string)$a['name'];
-					$b = (string)$b['name'];
-					if ($a === $b) {
-						return 0;
-					}
-					return ($a < $b) ? -1 : 1;
-				});
-				break;
+			\usort($apps, function ($a, $b) {
+				$a = (string)$a['name'];
+				$b = (string)$b['name'];
+				if ($a === $b) {
+					return 0;
+				}
+				return ($a < $b) ? -1 : 1;
+			});
+			break;
 			default:
 				$apps = [];
 

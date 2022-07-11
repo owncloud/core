@@ -47,8 +47,8 @@ translation('settings');
 				<p>
 					<input type="checkbox" name="IsEnabled" value="IsEnabled" id="CheckboxIsEnabled"
 						class="checkbox" <?php if ($_['show_is_enabled'] === 'true') {
-	print_unescaped('checked="checked"');
-} ?> />
+							print_unescaped('checked="checked"');
+						} ?> />
 					<label for="CheckboxIsEnabled">
 						<?php p($l->t('Show enabled/disabled option')) ?>
 					</label>
@@ -56,8 +56,8 @@ translation('settings');
 				<p>
 					<input type="checkbox" name="StorageLocation" value="StorageLocation" id="CheckboxStorageLocation"
 						class="checkbox" <?php if ($_['show_storage_location'] === 'true') {
-	print_unescaped('checked="checked"');
-} ?> />
+							print_unescaped('checked="checked"');
+						} ?> />
 					<label for="CheckboxStorageLocation">
 						<?php p($l->t('Show storage location')) ?>
 					</label>
@@ -65,8 +65,8 @@ translation('settings');
 				<p>
 					<input type="checkbox" name="LastLogin" value="LastLogin" id="CheckboxLastLogin"
 						class="checkbox" <?php if ($_['show_last_login'] === 'true') {
-	print_unescaped('checked="checked"');
-} ?> />
+							print_unescaped('checked="checked"');
+						} ?> />
 					<label for="CheckboxLastLogin">
 						<?php p($l->t('Show last log in')) ?>
 					</label>
@@ -74,8 +74,8 @@ translation('settings');
 				<p>
 					<input type="checkbox" name="UserBackend" value="UserBackend" id="CheckboxUserBackend"
 						class="checkbox" <?php if ($_['show_backend'] === 'true') {
-	print_unescaped('checked="checked"');
-} ?> />
+							print_unescaped('checked="checked"');
+						} ?> />
 					<label for="CheckboxUserBackend">
 						<?php p($l->t('Show user backend')) ?>
 					</label>
@@ -83,8 +83,8 @@ translation('settings');
 				<p>
 					<input type="checkbox" name="AddPasswordOnUserCreate" value="AddPasswordOnUserCreate" id="CheckBoxPasswordOnUserCreate"
 						class="checkbox" <?php if ($_['set_password'] === 'true') {
-	print_unescaped('checked="checked"');
-} ?> />
+							print_unescaped('checked="checked"');
+						} ?> />
 					<label for="CheckBoxPasswordOnUserCreate">
 						<?php p($l->t('Set password for new users')) ?>
 					</label>
@@ -92,8 +92,8 @@ translation('settings');
 				<p>
 					<input type="checkbox" name="EmailAddress" value="EmailAddress" id="CheckboxEmailAddress"
 						class="checkbox" <?php if ($_['show_email'] === 'true') {
-	print_unescaped('checked="checked"');
-} ?> />
+							print_unescaped('checked="checked"');
+						} ?> />
 					<label for="CheckboxEmailAddress">
 						<?php p($l->t('Show email address')) ?>
 					</label>
@@ -101,8 +101,8 @@ translation('settings');
 				<p>
 					<input type="checkbox" name="Password" value="Password" id="CheckboxPassword"
 						   class="checkbox" <?php if ($_['show_password'] === 'true') {
-	print_unescaped('checked="checked"');
-} ?> />
+						   	print_unescaped('checked="checked"');
+						   } ?> />
 					<label for="CheckboxPassword">
 						<?php p($l->t('Show password field')) ?>
 					</label>
@@ -110,8 +110,8 @@ translation('settings');
 				<p>
 					<input type="checkbox" name="Quota" value="Quota" id="CheckboxQuota"
 						   class="checkbox" <?php if ($_['show_quota'] === 'true') {
-	print_unescaped('checked="checked"');
-} ?> />
+						   	print_unescaped('checked="checked"');
+						   } ?> />
 					<label for="CheckboxQuota">
 						<?php p($l->t('Show quota field')) ?>
 					</label>

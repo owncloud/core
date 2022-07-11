@@ -310,8 +310,8 @@ class Users {
 					}
 					$quota = Util::humanFileSize($quota);
 				}
-				$targetUser->setQuota($quota);
-				break;
+			$targetUser->setQuota($quota);
+			break;
 			case 'password':
 				try {
 					$targetUser->setPassword($parameters['_put']['value']);
@@ -325,7 +325,7 @@ class Users {
 				} else {
 					$this->twoFactorAuthManager->disableTwoFactorAuthentication($targetUser);
 				}
-				break;
+			break;
 			case 'email':
 				$emailAddress = $parameters['_put']['value'];
 				if (($emailAddress === '') || \filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
@@ -333,7 +333,7 @@ class Users {
 				} else {
 					return new Result(null, 102);
 				}
-				break;
+			break;
 			default:
 				return new Result(null, 103);
 				break;

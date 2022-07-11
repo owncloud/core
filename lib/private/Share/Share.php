@@ -1113,8 +1113,8 @@ class Share extends Constants {
 			if ((int)$item['share_type'] === (int)$shareType && $item['uid_owner'] === $currentUser) {
 				$toDelete = $item;
 			// if there is more then one result we don't have to delete the children
-				// but update their parent. For group shares the new parent should always be
-				// the original group share and not the db entry with the unique name
+			// but update their parent. For group shares the new parent should always be
+			// the original group share and not the db entry with the unique name
 			} elseif ((int)$item['share_type'] === self::$shareTypeGroupUserUnique) {
 				$newParent = $item['parent'];
 			} else {

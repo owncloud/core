@@ -1,38 +1,38 @@
 <div class="update" data-productname="<?php p($_['productName']) ?>" data-version="<?php p($_['version']) ?>">
 	<div class="updateOverview">
 		<?php if ($_['isAppsOnlyUpgrade']) {
-	?>
+			?>
 		<h2 class="title"><?php p($l->t('App update required')); ?></h2>
 		<?php
-} else {
-		?>
+		} else {
+			?>
 		<h2 class="title"><?php p($l->t(
-			'%s will be updated to version %s',
-			[$_['productName'], $_['version']]
-		)); ?></h2>
+				'%s will be updated to version %s',
+				[$_['productName'], $_['version']]
+			)); ?></h2>
 		<?php
-	} ?>
+		} ?>
 		<?php if (!empty($_['appsToUpgrade'])) {
-		?>
+			?>
 		<div class="infogroup">
 			<span><?php p($l->t('These apps will be updated:')); ?></span>
 			<ul class="content appList">
 				<?php foreach ($_['appsToUpgrade'] as $appInfo) {
-			?>
+					?>
 				<li><?php p($appInfo['name']) ?> (<?php p($appInfo['id']) ?>)</li>
 				<?php
-		} ?>
+				} ?>
 			</ul>
 		</div>
 		<?php
-	} ?>
+		} ?>
 		<?php if (!empty($_['oldTheme'])) {
-		?>
+			?>
 		<div class="infogroup">
 			<?php p($l->t('The theme %s has been disabled.', [$_['oldTheme']])) ?>
 		</div>
 		<?php
-	} ?>
+		} ?>
 		<div class="infogroup bold">
 			<?php p($l->t('Please make sure that the database, the config folder and the data folder have been backed up before proceeding.')) ?>
 		</div>

@@ -202,12 +202,12 @@ class DefinitionParameter implements \JsonSerializable {
 							return false;
 					}
 				}
-				break;
+			break;
 			default:
 				if (!$value && !$this->isOptional()) {
 					return false;
 				}
-				break;
+			break;
 		}
 		return true;
 	}

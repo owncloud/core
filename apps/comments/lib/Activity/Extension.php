@@ -156,7 +156,7 @@ class Extension implements IExtension {
 				if ($this->authorIsCurrentUser($params[0])) {
 					return (string) $l->t('You commented');
 				}
-				return (string) $l->t('%1$s commented', $params);
+			return (string) $l->t('%1$s commented', $params);
 			case self::ADD_COMMENT_MESSAGE:
 				return $this->convertParameterToComment($params[0]);
 		}
@@ -176,7 +176,7 @@ class Extension implements IExtension {
 				if ($this->authorIsCurrentUser($params[0])) {
 					return (string) $l->t('You commented on %2$s', $params);
 				}
-				return (string) $l->t('%1$s commented on %2$s', $params);
+			return (string) $l->t('%1$s commented on %2$s', $params);
 			case self::ADD_COMMENT_MESSAGE:
 				return $this->convertParameterToComment($params[0]);
 		}

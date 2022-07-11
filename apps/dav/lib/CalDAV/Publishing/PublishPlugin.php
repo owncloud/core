@@ -170,10 +170,10 @@ class PublishPlugin extends ServerPlugin {
 
 			case '{'.self::NS_CALENDARSERVER.'}publish-calendar':
 
-			// We can only deal with IShareableCalendar objects
-			if (!$node instanceof Calendar) {
-				return;
-			}
+				// We can only deal with IShareableCalendar objects
+				if (!$node instanceof Calendar) {
+					return;
+				}
 			$this->server->transactionType = 'post-publish-calendar';
 
 			// Getting ACL info
@@ -199,10 +199,10 @@ class PublishPlugin extends ServerPlugin {
 
 			case '{'.self::NS_CALENDARSERVER.'}unpublish-calendar':
 
-			// We can only deal with IShareableCalendar objects
-			if (!$node instanceof Calendar) {
-				return;
-			}
+				// We can only deal with IShareableCalendar objects
+				if (!$node instanceof Calendar) {
+					return;
+				}
 			$this->server->transactionType = 'post-unpublish-calendar';
 
 			// Getting ACL info

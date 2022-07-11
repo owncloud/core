@@ -476,14 +476,14 @@ class SMB extends StorageAdapter {
 					if ($this->file_exists($path)) {
 						$result = $this->share->read($fullPath);
 					}
-					break;
+				break;
 				case 'w':
 				case 'wb':
 					$source = $this->share->write($fullPath);
 					$result = CallBackWrapper::wrap($source, null, null, function () use ($fullPath) {
 						unset($this->statCache[$fullPath]);
 					});
-					break;
+				break;
 				case 'a':
 				case 'ab':
 				case 'r+':
@@ -500,24 +500,24 @@ class SMB extends StorageAdapter {
 					} else {
 						$ext = '';
 					}
-					if ($this->file_exists($path)) {
-						if (!$this->isUpdatable($path)) {
-							break;
-						}
-						$tmpFile = $this->getCachedFile($path);
-					} else {
-						if (!$this->isCreatable(\dirname($path))) {
-							break;
-						}
-						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
+				if ($this->file_exists($path)) {
+					if (!$this->isUpdatable($path)) {
+						break;
 					}
-					$source = \fopen($tmpFile, $mode);
-					$share = $this->share;
-					$result = CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
-						unset($this->statCache[$fullPath]);
-						$share->put($tmpFile, $fullPath);
-						\unlink($tmpFile);
-					});
+					$tmpFile = $this->getCachedFile($path);
+				} else {
+					if (!$this->isCreatable(\dirname($path))) {
+						break;
+					}
+					$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
+				}
+				$source = \fopen($tmpFile, $mode);
+				$share = $this->share;
+				$result = CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
+					unset($this->statCache[$fullPath]);
+					$share->put($tmpFile, $fullPath);
+					\unlink($tmpFile);
+				});
 			}
 		} catch (ConnectException $e) {
 			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);

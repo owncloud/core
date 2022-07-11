@@ -85,7 +85,7 @@ class Base extends Command {
 						$output->writeln($prefix . $this->valueToString($item));
 					}
 				}
-				break;
+			break;
 		}
 	}
 

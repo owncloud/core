@@ -200,7 +200,7 @@ class Activity implements IExtension {
 					// New activity ownCloud 8.2+
 					return (string) $l->t('You received a new federated share %2$s from %1$s', $params);
 				}
-				return (string) $l->t('You received a new federated share from %s', $params);
+			return (string) $l->t('You received a new federated share from %s', $params);
 			case self::SUBJECT_REMOTE_SHARE_ACCEPTED:
 				return (string) $l->t('%1$s accepted federated share %2$s', $params);
 			case self::SUBJECT_REMOTE_SHARE_DECLINED:
@@ -251,7 +251,7 @@ class Activity implements IExtension {
 				if ($this->actorIsAutomation($params[1]) && $this->shareIsExpired($params[2])) {
 					return (string) $l->t('The share for %1$s expired', $params);
 				}
-				return (string) $l->t('%2$s removed the share for %1$s', $params);
+			return (string) $l->t('%2$s removed the share for %1$s', $params);
 			case self::SUBJECT_SHARED_EMAIL:
 				return (string) $l->t('You shared %1$s with %2$s', $params);
 		}
@@ -314,7 +314,7 @@ class Activity implements IExtension {
 					// New activity ownCloud 8.2+
 					return (string) $l->t('Received federated share from %1$s', $params);
 				}
-				return (string) $l->t('Received federated share from %s', $params);
+			return (string) $l->t('Received federated share from %s', $params);
 
 			default:
 				return false;

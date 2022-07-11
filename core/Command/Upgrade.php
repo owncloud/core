@@ -159,9 +159,9 @@ class Upgrade extends Command {
 						if (!empty($desc)) {
 							$progress->setMessage($desc);
 						}
-						$progress->advance($event->getArgument(0));
+					$progress->advance($event->getArgument(0));
 
-						break;
+					break;
 					case '\OC\Repair::finishProgress':
 						$progress->setMessage('Done');
 						$progress->finish();
@@ -171,12 +171,12 @@ class Upgrade extends Command {
 						if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
 							$output->writeln('<info>Repair step: ' . $event->getArgument(0) . '</info>');
 						}
-						break;
+					break;
 					case '\OC\Repair::info':
 						if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
 							$output->writeln('<info>Repair info: ' . $event->getArgument(0) . '</info>');
 						}
-						break;
+					break;
 					case '\OC\Repair::warning':
 						$output->writeln('<error>Repair warning: ' . $event->getArgument(0) . '</error>');
 						break;

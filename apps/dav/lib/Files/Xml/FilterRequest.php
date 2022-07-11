@@ -83,19 +83,19 @@ class FilterRequest implements XmlDeserializable {
 							$newProps['filters']['favorite'] = true;
 						}
 					}
-					break;
+				break;
 				case '{http://owncloud.org/ns}search':
 					$value = $elem['value'];
 					if (isset($value['{http://owncloud.org/ns}pattern'])) {
 						$newProps['search']['pattern'] = $value['{http://owncloud.org/ns}pattern'];
 					}
-					if (isset($value['{http://owncloud.org/ns}limit'])) {
-						$newProps['search']['limit'] = (int)$value['{http://owncloud.org/ns}limit'];
-					}
-					if (isset($value['{http://owncloud.org/ns}offset'])) {
-						$newProps['search']['offset'] = (int)$value['{http://owncloud.org/ns}offset'];
-					}
-					break;
+				if (isset($value['{http://owncloud.org/ns}limit'])) {
+					$newProps['search']['limit'] = (int)$value['{http://owncloud.org/ns}limit'];
+				}
+				if (isset($value['{http://owncloud.org/ns}offset'])) {
+					$newProps['search']['offset'] = (int)$value['{http://owncloud.org/ns}offset'];
+				}
+				break;
 			}
 		}
 

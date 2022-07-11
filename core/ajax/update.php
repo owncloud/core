@@ -69,8 +69,8 @@ class FeedBackHandler {
 				if (empty($desc)) {
 					$desc = $this->currentStep;
 				}
-				$this->eventSource->send('success', (string)$this->l10n->t('[%d / %d]: %s', [$this->progressStateStep, $this->progressStateMax, $desc]));
-				break;
+			$this->eventSource->send('success', (string)$this->l10n->t('[%d / %d]: %s', [$this->progressStateStep, $this->progressStateMax, $desc]));
+			break;
 			case '\OC\Repair::finishProgress':
 				$this->progressStateMax = $this->progressStateStep;
 				$this->eventSource->send('success', (string)$this->l10n->t('[%d / %d]: %s', [$this->progressStateStep, $this->progressStateMax, $this->currentStep]));

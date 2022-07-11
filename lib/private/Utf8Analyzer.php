@@ -392,12 +392,12 @@ class Utf8Analyzer {
 				if ($lastProcessedChar !== "\r") {
 					$data['linesNumber']++;
 				}
-				break;
+			break;
 			case "\r":
 				if ($lastProcessedChar !== "\n") {
 					$data['linesNumber']++;
 				}
-				break;
+			break;
 			default:
 				$data['lines'][$lineIndex][] = $params['str'];
 		}

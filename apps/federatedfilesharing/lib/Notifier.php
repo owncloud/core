@@ -64,37 +64,37 @@ class Notifier implements INotifier {
 					);
 				}
 
-				$messageParams = $notification->getMessageParameters();
-				if ($messageParams[0] !== $messageParams[1] && $messageParams[1] !== null) {
-					$notification->setParsedMessage(
-						(string) $l->t('"%1$s" invited you to view "%3$s" (on behalf of "%2$s")', $messageParams)
-					);
-				} else {
-					$notification->setParsedMessage(
-						(string) $l->t('"%1$s" invited you to view "%3$s"', $messageParams)
-					);
+			$messageParams = $notification->getMessageParameters();
+			if ($messageParams[0] !== $messageParams[1] && $messageParams[1] !== null) {
+				$notification->setParsedMessage(
+					(string) $l->t('"%1$s" invited you to view "%3$s" (on behalf of "%2$s")', $messageParams)
+				);
+			} else {
+				$notification->setParsedMessage(
+					(string) $l->t('"%1$s" invited you to view "%3$s"', $messageParams)
+				);
+			}
+
+			// Deal with the actions for a known subject
+			foreach ($notification->getActions() as $action) {
+				switch ($action->getLabel()) {
+					case 'accept':
+						$action->setParsedLabel(
+							(string) $l->t('Accept')
+						)
+						->setPrimary(true);
+						break;
+
+					case 'decline':
+						$action->setParsedLabel(
+							(string) $l->t('Decline')
+						);
+						break;
 				}
 
-				// Deal with the actions for a known subject
-				foreach ($notification->getActions() as $action) {
-					switch ($action->getLabel()) {
-						case 'accept':
-							$action->setParsedLabel(
-								(string) $l->t('Accept')
-							)
-							->setPrimary(true);
-							break;
-
-						case 'decline':
-							$action->setParsedLabel(
-								(string) $l->t('Decline')
-							);
-							break;
-					}
-
-					$notification->addParsedAction($action);
-				}
-				return $notification;
+				$notification->addParsedAction($action);
+			}
+			return $notification;
 
 			default:
 				// Unknown subject => Unknown notification => throw

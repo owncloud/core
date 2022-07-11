@@ -157,9 +157,9 @@ try {
 			if (!\OC::$server->getAppManager()->isInstalled($app)) {
 				throw new RemoteException('App not installed: ' . $app);
 			}
-			OC_App::loadApp($app);
-			$file = OC_App::getAppPath($app) .'/'. $parts[1];
-			break;
+		OC_App::loadApp($app);
+		$file = OC_App::getAppPath($app) .'/'. $parts[1];
+		break;
 	}
 	$baseuri = OC::$WEBROOT . '/remote.php/'.$service.'/';
 	require_once $file;

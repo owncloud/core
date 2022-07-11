@@ -121,20 +121,20 @@ class SetConfig extends Base {
 				if (!\is_numeric($value)) {
 					throw new \InvalidArgumentException('Non-numeric value specified');
 				}
-				return [
-					'value' => (int) $value,
-					'readable-value' => 'integer ' . (int) $value,
-				];
+			return [
+				'value' => (int) $value,
+				'readable-value' => 'integer ' . (int) $value,
+			];
 
 			case 'double':
 			case 'float':
 				if (!\is_numeric($value)) {
 					throw new \InvalidArgumentException('Non-numeric value specified');
 				}
-				return [
-					'value' => (double) $value,
-					'readable-value' => 'double ' . (double) $value,
-				];
+			return [
+				'value' => (double) $value,
+				'readable-value' => 'double ' . (double) $value,
+			];
 
 			case 'boolean':
 			case 'bool':
@@ -175,10 +175,10 @@ class SetConfig extends Base {
 				if ($decodedJson === null) {
 					throw new \InvalidArgumentException('Unable to parse value as json');
 				}
-				return [
-					'value' => $decodedJson,
-					'readable-value' => 'json ' . $value,
-				];
+			return [
+				'value' => $decodedJson,
+				'readable-value' => 'json ' . $value,
+			];
 
 			default:
 				throw new \InvalidArgumentException('Invalid type');

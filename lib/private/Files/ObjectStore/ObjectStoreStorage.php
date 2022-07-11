@@ -318,7 +318,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				} else {
 					return false;
 				}
-				// no break
+			// no break
 			case 'w':
 			case 'wb':
 			case 'a':
@@ -336,21 +336,21 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				} else {
 					$ext = '';
 				}
-				$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
-				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
-				if ($this->file_exists($path)) {
-					$source = $this->fopen($path, 'r');
-					\file_put_contents($tmpFile, $source);
-				}
-				self::$tmpFiles[$tmpFile] = $path;
-				if (isset($this->movingBetweenBuckets[$this->getBucket()])) {
-					// if we're moving files, mark the path we're moving. This is needed because
-					// we need to know the fileid of the file we're moving in order to create
-					// the new file with the same name in the other bucket
-					$this->movingBetweenBuckets[$this->getBucket()]['paths'][$path] = true;
-				}
+			$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
+			\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
+			if ($this->file_exists($path)) {
+				$source = $this->fopen($path, 'r');
+				\file_put_contents($tmpFile, $source);
+			}
+			self::$tmpFiles[$tmpFile] = $path;
+			if (isset($this->movingBetweenBuckets[$this->getBucket()])) {
+				// if we're moving files, mark the path we're moving. This is needed because
+				// we need to know the fileid of the file we're moving in order to create
+				// the new file with the same name in the other bucket
+				$this->movingBetweenBuckets[$this->getBucket()]['paths'][$path] = true;
+			}
 
-				return \fopen('close://' . $tmpFile, $mode);
+			return \fopen('close://' . $tmpFile, $mode);
 		}
 		return false;
 	}

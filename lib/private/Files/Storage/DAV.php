@@ -397,24 +397,24 @@ class DAV extends Common {
 				} else {
 					$ext = '';
 				}
-				if ($this->file_exists($path)) {
-					if (!$this->isUpdatable($path)) {
-						return false;
-					}
-					if ($mode === 'w' or $mode === 'w+') {
-						$tmpFile = $tempManager->getTemporaryFile($ext);
-					} else {
-						$tmpFile = $this->getCachedFile($path);
-					}
-				} else {
-					if (!$this->isCreatable(\dirname($path))) {
-						return false;
-					}
-					$tmpFile = $tempManager->getTemporaryFile($ext);
+			if ($this->file_exists($path)) {
+				if (!$this->isUpdatable($path)) {
+					return false;
 				}
-				Close::registerCallback($tmpFile, [$this, 'writeBack']);
-				self::$tempFiles[$tmpFile] = $path;
-				return \fopen('close://' . $tmpFile, $mode);
+				if ($mode === 'w' or $mode === 'w+') {
+					$tmpFile = $tempManager->getTemporaryFile($ext);
+				} else {
+					$tmpFile = $this->getCachedFile($path);
+				}
+			} else {
+				if (!$this->isCreatable(\dirname($path))) {
+					return false;
+				}
+				$tmpFile = $tempManager->getTemporaryFile($ext);
+			}
+			Close::registerCallback($tmpFile, [$this, 'writeBack']);
+			self::$tempFiles[$tmpFile] = $path;
+			return \fopen('close://' . $tmpFile, $mode);
 		}
 		return false;
 	}

@@ -13,7 +13,7 @@
 					<td style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">
 						<?php
 						p($l->t('Password changed successfully'));
-						?>
+					?>
 					</td>
 				</tr>
 				<tr><td colspan="2">&nbsp;</td></tr>

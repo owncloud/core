@@ -76,8 +76,8 @@ class BackendUsersIteratorTest extends TestCase {
 			->method('getUsers')
 			->with(
 				$this->equalTo(''),					// all users
-					$this->equalTo(UsersIterator::LIMIT),	// limit 500
-					$this->equalTo(0)						// at the beginning
+				$this->equalTo(UsersIterator::LIMIT),	// limit 500
+				$this->equalTo(0)						// at the beginning
 			)
 			->willReturn([]);
 

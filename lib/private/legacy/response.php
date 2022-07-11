@@ -87,7 +87,7 @@ class OC_Response {
 					$status = self::STATUS_FOUND;
 					// fallthrough
 				}
-				// no break
+			// no break
 			case self::STATUS_FOUND:
 				$status = $status . ' Found';
 				break;

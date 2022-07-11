@@ -340,7 +340,7 @@ class OC_API {
 						return false;
 					}
 				}
-				// no break
+			// no break
 			case API::ADMIN_AUTH:
 				// Check for admin
 				$user = self::loginUser();
@@ -349,7 +349,7 @@ class OC_API {
 				} else {
 					return OC_User::isAdminUser($user);
 				}
-				// no break
+			// no break
 			default:
 				// oops looks like invalid level supplied
 				return false;

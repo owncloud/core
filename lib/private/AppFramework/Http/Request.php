@@ -246,7 +246,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 				if ($this->method !== \strtoupper($name)) {
 					throw new \LogicException(\sprintf('%s cannot be accessed in a %s request.', $name, $this->method));
 				}
-				return $this->getContent();
+			return $this->getContent();
 			case 'files':
 			case 'server':
 			case 'env':
@@ -306,7 +306,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 				if (isset($this->server[$name])) {
 					return $this->server[$name];
 				}
-				break;
+			break;
 
 		}
 
@@ -428,7 +428,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 				}
 			}
 
-			// Handle application/x-www-form-urlencoded for methods other than GET
+		// Handle application/x-www-form-urlencoded for methods other than GET
 		// or post correctly
 		} elseif ($this->method !== 'GET'
 				&& $this->method !== 'POST'

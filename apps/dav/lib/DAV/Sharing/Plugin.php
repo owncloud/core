@@ -150,27 +150,27 @@ class Plugin extends ServerPlugin {
 					return;
 				}
 
-				$this->server->transactionType = 'post-oc-resource-share';
+			$this->server->transactionType = 'post-oc-resource-share';
 
-				// Getting ACL info
-				$acl = $this->server->getPlugin('acl');
+			// Getting ACL info
+			$acl = $this->server->getPlugin('acl');
 
-				// If there's no ACL support, we allow everything
-				if ($acl) {
-					/** @var \Sabre\DAVACL\Plugin $acl */
-					'@phan-var \Sabre\DAVACL\Plugin $acl';
-					$acl->checkPrivileges($path, '{DAV:}write');
-				}
+			// If there's no ACL support, we allow everything
+			if ($acl) {
+				/** @var \Sabre\DAVACL\Plugin $acl */
+				'@phan-var \Sabre\DAVACL\Plugin $acl';
+				$acl->checkPrivileges($path, '{DAV:}write');
+			}
 
-				$node->updateShares($message->set, $message->remove);
+			$node->updateShares($message->set, $message->remove);
 
-				$response->setStatus(200);
-				// Adding this because sending a response body may cause issues,
-				// and I wanted some type of indicator the response was handled.
-				$response->setHeader('X-Sabre-Status', 'everything-went-well');
+			$response->setStatus(200);
+			// Adding this because sending a response body may cause issues,
+			// and I wanted some type of indicator the response was handled.
+			$response->setHeader('X-Sabre-Status', 'everything-went-well');
 
-				// Breaking the event chain
-				return false;
+			// Breaking the event chain
+			return false;
 		}
 	}
 

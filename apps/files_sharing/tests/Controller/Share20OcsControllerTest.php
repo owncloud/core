@@ -3055,7 +3055,7 @@ class Share20OcsControllerTest extends TestCase {
 					if ($fedAllowed) {
 						$this->assertContains($federatedShare, $result->getData(), 'result contains federated share');
 					}
-					break;
+				break;
 			}
 		}
 		if ($fedAllowed && \in_array(\OCP\Share::SHARE_TYPE_REMOTE, $shareTypes, true)) {

@@ -49,7 +49,7 @@ class RequestStream {
 				} else {
 					return false;
 				}
-				break;
+			break;
 
 			case SEEK_CUR:
 				if ($offset >= 0) {
@@ -58,7 +58,7 @@ class RequestStream {
 				} else {
 					return false;
 				}
-				break;
+			break;
 
 			case SEEK_END:
 				if (\strlen($GLOBALS[$this->varname]) + $offset >= 0) {
@@ -67,7 +67,7 @@ class RequestStream {
 				} else {
 					return false;
 				}
-				break;
+			break;
 
 			default:
 				return false;

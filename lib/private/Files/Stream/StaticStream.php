@@ -53,9 +53,9 @@ class StaticStream {
 				if (!isset(self::$data[$path])) {
 					return false;
 				}
-				$this->path = $path;
-				$this->writable = isset($mode[1]) && $mode[1] == '+';
-				break;
+			$this->path = $path;
+			$this->writable = isset($mode[1]) && $mode[1] == '+';
+			break;
 			case 'w':
 				self::$data[$path] = '';
 				$this->path = $path;
@@ -65,24 +65,24 @@ class StaticStream {
 				if (!isset(self::$data[$path])) {
 					self::$data[$path] = '';
 				}
-				$this->path = $path;
-				$this->writable = true;
-				$this->pointer = \strlen(self::$data[$path]);
-				break;
+			$this->path = $path;
+			$this->writable = true;
+			$this->pointer = \strlen(self::$data[$path]);
+			break;
 			case 'x':
 				if (isset(self::$data[$path])) {
 					return false;
 				}
-				$this->path = $path;
-				$this->writable = true;
-				break;
+			$this->path = $path;
+			$this->writable = true;
+			break;
 			case 'c':
 				if (!isset(self::$data[$path])) {
 					self::$data[$path] = '';
 				}
-				$this->path = $path;
-				$this->writable = true;
-				break;
+			$this->path = $path;
+			$this->writable = true;
+			break;
 			default:
 				return false;
 		}
@@ -105,19 +105,19 @@ class StaticStream {
 					$this->pointer = $offset;
 					return true;
 				}
-				break;
+			break;
 			case SEEK_CUR:
 				if ($this->pointer + $offset <= $len) {
 					$this->pointer += $offset;
 					return true;
 				}
-				break;
+			break;
 			case SEEK_END:
 				if ($len + $offset <= $len) {
 					$this->pointer = $len + $offset;
 					return true;
 				}
-				break;
+			break;
 		}
 		return false;
 	}

@@ -84,7 +84,7 @@ class PlatformRepository {
 						$prettyVersion = $matches[1];
 					}
 
-					break;
+				break;
 
 				case 'libxml':
 					$prettyVersion = LIBXML_DOTTED_VERSION;
@@ -94,7 +94,7 @@ class PlatformRepository {
 					$prettyVersion = \preg_replace_callback('{^(?:OpenSSL\s*)?([0-9.]+)([a-z]?).*}', function ($match) {
 						return $match[1] . (empty($match[2]) ? '' : '.' . (\ord($match[2]) - 96));
 					}, OPENSSL_VERSION_TEXT);
-					break;
+				break;
 
 				case 'pcre':
 					$prettyVersion = \preg_replace('{^(\S+).*}', '$1', PCRE_VERSION);

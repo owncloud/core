@@ -104,32 +104,32 @@ class MDB2SchemaWriter {
 				if ($default === null && $column->getAutoincrement()) {
 					$default = '0';
 				}
-				$xml->addChild('default', $default);
-				$xml->addChild('notnull', self::toBool($column->getNotnull()));
-				if ($column->getAutoincrement()) {
-					$xml->addChild('autoincrement', '1');
-				}
-				if ($column->getUnsigned()) {
-					$xml->addChild('unsigned', 'true');
-				}
-				$length = '4';
-				if ($column->getType() == 'SmallInt') {
-					$length = '2';
-				} elseif ($column->getType() == 'BigInt') {
-					$length = '8';
-				}
-				$xml->addChild('length', $length);
-				break;
+			$xml->addChild('default', $default);
+			$xml->addChild('notnull', self::toBool($column->getNotnull()));
+			if ($column->getAutoincrement()) {
+				$xml->addChild('autoincrement', '1');
+			}
+			if ($column->getUnsigned()) {
+				$xml->addChild('unsigned', 'true');
+			}
+			$length = '4';
+			if ($column->getType() == 'SmallInt') {
+				$length = '2';
+			} elseif ($column->getType() == 'BigInt') {
+				$length = '8';
+			}
+			$xml->addChild('length', $length);
+			break;
 			case 'String':
 				$xml->addChild('type', 'text');
 				$default = \trim($column->getDefault());
 				if ($default === '') {
 					$default = false;
 				}
-				$xml->addChild('default', $default);
-				$xml->addChild('notnull', self::toBool($column->getNotnull()));
-				$xml->addChild('length', $column->getLength());
-				break;
+			$xml->addChild('default', $default);
+			$xml->addChild('notnull', self::toBool($column->getNotnull()));
+			$xml->addChild('length', $column->getLength());
+			break;
 			case 'Text':
 				$xml->addChild('type', 'clob');
 				$xml->addChild('notnull', self::toBool($column->getNotnull()));

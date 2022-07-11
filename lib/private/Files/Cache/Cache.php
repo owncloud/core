@@ -657,7 +657,7 @@ class Cache implements ICache {
 						WHERE `storage` = :sourceStorageId
 						AND `path` LIKE :sourcePathLike';
 				}
-				break;
+			break;
 			case 'mysql':
 			case 'postgresql':
 				$sql = 'UPDATE `*PREFIX*filecache`

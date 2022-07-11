@@ -105,8 +105,8 @@ class MDB2SchemaReader {
 					if ($table === null) {
 						throw new \DomainException('Table declaration before table name');
 					}
-					$this->loadDeclaration($table, $child);
-					break;
+				$this->loadDeclaration($table, $child);
+				break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
 
@@ -296,7 +296,7 @@ class MDB2SchemaReader {
 
 						}
 					}
-					break;
+				break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
 
