@@ -1,6 +1,7 @@
 { "translations": {
     "Delete" : "මකා දමන්න",
     "Error" : "දෝෂයක්",
-    "Name" : "නම"
+    "Name" : "නම",
+    "Deleted" : "මකා දමන ලදී"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

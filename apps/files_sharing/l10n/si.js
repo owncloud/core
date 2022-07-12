@@ -6,6 +6,7 @@ OC.L10N.register(
     "Add" : "එකතු කරන්න",
     "Share" : "බෙදා හදා ගන්න",
     "Sharing" : "හුවමාරු කිරීම",
+    "Public link" : "පොදු සබැඳිය",
     "Password" : "මුර පදය",
     "Name" : "නම",
     "Expiration date" : "කල් ඉකුත් විමේ දිනය",

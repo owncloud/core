@@ -37,6 +37,7 @@ OC.L10N.register(
     "Name" : "නම",
     "Username" : "පරිශීලක නම",
     "Version" : "අනුවාදය",
+    "Set password" : "මුරපදය සකසන්න",
     "Personal" : "පෞද්ගලික",
     "Admin" : "පරිපාලක",
     "Settings" : "සිටුවම්",
