@@ -575,7 +575,7 @@ def dependencies(ctx):
                 "steps": cacheRestore() +
                          cacheClearOnEventPush(phpVersion) +
                          composerInstall(phpVersion) +
-                         vendorbinCodestyle(phpVersion) +
+                         vendorbinCodestyle("7.4") +
                          vendorbinCodesniffer(phpVersion) +
                          vendorbinPhan(phpVersion) +
                          vendorbinPhpstan(phpVersion) +
