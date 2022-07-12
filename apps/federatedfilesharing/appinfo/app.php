@@ -30,12 +30,12 @@ $manager->registerNotifier(function () {
 	return new Notifier(
 		\OC::$server->getL10NFactory()
 	);
-}, function () {
-	$l = \OC::$server->getL10N('files_sharing');
-	return [
-		'id' => 'files_sharing',
-		'name' => $l->t('Federated sharing'),
-	];
-});
+	}, function () {
+		$l = \OC::$server->getL10N('files_sharing');
+		return [
+				'id' => 'files_sharing',
+				'name' => $l->t('Federated sharing'),
+			];
+	});
 
 $app->registerListeners();

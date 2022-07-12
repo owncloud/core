@@ -241,14 +241,14 @@ class SessionTest extends TestCase {
 			->method('set')
 			->with($this->callback(function ($key) {
 				switch ($key) {
-						case 'user_id':
-						case 'loginname':
-							return true;
-							break;
-						default:
-							return false;
-							break;
-					}
+					case 'user_id':
+					case 'loginname':
+						return true;
+						break;
+					default:
+						return false;
+						break;
+				}
 			}));
 
 		$managerMethods = \get_class_methods(Manager::class);
@@ -636,11 +636,11 @@ class SessionTest extends TestCase {
 			->method('set')
 			->with($this->callback(function ($key) {
 				switch ($key) {
-						case 'user_id':
-							return true;
-						default:
-							return false;
-					}
+					case 'user_id':
+						return true;
+					default:
+						return false;
+				}
 			}));
 		$session->expects($this->once())
 			->method('regenerateId');

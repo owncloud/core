@@ -428,7 +428,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 				}
 			}
 
-			// Handle application/x-www-form-urlencoded for methods other than GET
+		// Handle application/x-www-form-urlencoded for methods other than GET
 		// or post correctly
 		} elseif ($this->method !== 'GET'
 				&& $this->method !== 'POST'

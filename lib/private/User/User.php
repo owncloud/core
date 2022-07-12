@@ -324,10 +324,10 @@ class User implements IUser {
 			} else {
 				return false;
 			}
-		}, [
-			'before' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword],
-			'after' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword]
-		], 'user', 'setpassword');
+			}, [
+					'before' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword],
+					'after' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword]
+				], 'user', 'setpassword');
 	}
 
 	/**

@@ -520,14 +520,14 @@ class ManagerTest extends TestCase {
 
 		$this->manager->registerNotifier(function () use ($notifier) {
 			return $notifier;
-		}, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+			}, function () {
+				return ['id' => 'test1', 'name' => 'Test One'];
+			});
 		$this->manager->registerNotifier(function () use ($notifier2) {
 			return $notifier2;
-		}, function () {
-			return ['id' => 'test2', 'name' => 'Test Two'];
-		});
+			}, function () {
+				return ['id' => 'test2', 'name' => 'Test Two'];
+			});
 
 		$this->assertEquals($notification2, $this->manager->prepare($notification, 'en'));
 	}
@@ -556,9 +556,9 @@ class ManagerTest extends TestCase {
 
 		$this->manager->registerNotifier(function () use ($notifier) {
 			return $notifier;
-		}, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+			}, function () {
+				return ['id' => 'test1', 'name' => 'Test One'];
+			});
 
 		$this->manager->prepare($notification, 'de');
 	}
@@ -583,9 +583,9 @@ class ManagerTest extends TestCase {
 
 		$this->manager->registerNotifier(function () use ($notifier) {
 			return $notifier;
-		}, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+			}, function () {
+				return ['id' => 'test1', 'name' => 'Test One'];
+			});
 
 		$this->assertEquals($notification, $this->manager->prepare($notification, 'de'));
 	}

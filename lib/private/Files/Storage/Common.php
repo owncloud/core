@@ -711,9 +711,9 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		return \array_map(function ($version) use ($internalPath) {
 			$version['mimetype'] = $this->getMimeType($internalPath);
 			return $version;
-		}, \array_values(
-			\OCA\Files_Versions\Storage::getVersions($uid, $filename)
-		));
+			}, \array_values(
+				\OCA\Files_Versions\Storage::getVersions($uid, $filename)
+			));
 	}
 
 	/**
