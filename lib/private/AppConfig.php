@@ -213,9 +213,9 @@ class AppConfig implements IAppConfig {
 
 			return $changedRow;
 			}, [
-					'before' => ['key' => $key, 'value' => $value, 'app' => $app],
-					'after' => ['key' => $key, 'value' => $value, 'app' => $app, 'update' => false, 'oldvalue' => null]
-				], 'appconfig', 'setvalue');
+						'before' => ['key' => $key, 'value' => $value, 'app' => $app],
+						'after' => ['key' => $key, 'value' => $value, 'app' => $app, 'update' => false, 'oldvalue' => null]
+					], 'appconfig', 'setvalue');
 	}
 
 	/**
@@ -240,9 +240,9 @@ class AppConfig implements IAppConfig {
 			unset($this->cache[$app][$key]);
 			return true;
 			}, [
-					'before' => ['app' => $app, 'key' => $key],
-					'after' => ['app' => $app, 'key' => $key]
-				], 'appconfig', 'deletevalue');
+						'before' => ['app' => $app, 'key' => $key],
+						'after' => ['app' => $app, 'key' => $key]
+					], 'appconfig', 'deletevalue');
 	}
 
 	/**
@@ -266,9 +266,9 @@ class AppConfig implements IAppConfig {
 			unset($this->cache[$app]);
 			return true;
 			}, [
-					'before' => ['app' => $app],
-					'after' => ['app' => $app]
-				], 'appconfig', 'deleteapp');
+						'before' => ['app' => $app],
+						'after' => ['app' => $app]
+					], 'appconfig', 'deleteapp');
 	}
 
 	/**
