@@ -108,9 +108,9 @@
 							<?php p($l->t('Add storage')); ?>
 						</option>
 						<?php
-																				$sortedBackends = \array_filter($_['backends'], function ($backend) use ($_) {
-																					return $backend->isVisibleFor($_['visibilityType']);
-																				});
+																							$sortedBackends = \array_filter($_['backends'], function ($backend) use ($_) {
+																								return $backend->isVisibleFor($_['visibilityType']);
+																							});
 
 	\uasort($sortedBackends, function ($a, $b) {
 		return \strcasecmp($a->getText(), $b->getText());
@@ -170,9 +170,9 @@
 		<p id="userMountingBackends"<?php if ($_['allowUserMounting'] != 'yes'): ?> class="hidden"<?php endif; ?>>
 			<?php p($l->t('Allow users to mount the following external storage')); ?><br />
 			<?php
-										$userBackends = \array_filter($_['backends'], function ($backend) {
-											return $backend->isAllowedVisibleFor(IStoragesBackendService::VISIBILITY_PERSONAL);
-										});
+												$userBackends = \array_filter($_['backends'], function ($backend) {
+													return $backend->isAllowedVisibleFor(IStoragesBackendService::VISIBILITY_PERSONAL);
+												});
 		\uasort($userBackends, function ($a, $b) {
 			return \strcasecmp($a->getText(), $b->getText());
 		});

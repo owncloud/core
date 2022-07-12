@@ -174,9 +174,9 @@ class Config {
 
 			return false;
 			}, [
-							'before' => ['key' => $key, 'value' => $value],
-							'after' => ['key' => $key, 'value' => $value, 'update' => false, 'oldvalue' => null]
-						], 'config', 'setvalue');
+								'before' => ['key' => $key, 'value' => $value],
+								'after' => ['key' => $key, 'value' => $value, 'update' => false, 'oldvalue' => null]
+							], 'config', 'setvalue');
 	}
 
 	/**
@@ -211,9 +211,9 @@ class Config {
 			}
 			return false;
 			}, [
-							'before' => ['key' => $key, 'value' => null],
-							'after' => ['key' => $key, 'value' => null]
-						], 'config', 'deletevalue');
+								'before' => ['key' => $key, 'value' => null],
+								'after' => ['key' => $key, 'value' => null]
+							], 'config', 'deletevalue');
 	}
 
 	/**
