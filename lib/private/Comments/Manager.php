@@ -514,9 +514,9 @@ class Manager implements ICommentsManager {
 
 			return ($affectedRows > 0);
 			}, [
-						'before' => ['commentId' => $id],
-						'after' => ['commentId' => $id, 'objectId' => $this->get($id)->getObjectId()]
-					], 'comment', 'delete');
+							'before' => ['commentId' => $id],
+							'after' => ['commentId' => $id, 'objectId' => $this->get($id)->getObjectId()]
+						], 'comment', 'delete');
 	}
 
 	/**
@@ -556,9 +556,9 @@ class Manager implements ICommentsManager {
 
 			return $result;
 			}, [
-						'before' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage(), 'status' => $createOrUpdate],
-						'after' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId() , 'message' => $comment->getMessage(), 'status' => $createOrUpdate]
-					], 'comment', 'save');
+							'before' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage(), 'status' => $createOrUpdate],
+							'after' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId() , 'message' => $comment->getMessage(), 'status' => $createOrUpdate]
+						], 'comment', 'save');
 	}
 
 	/**
@@ -597,9 +597,9 @@ class Manager implements ICommentsManager {
 		return $this->emittingCall(function () use ($affectedRows) {
 			return $affectedRows > 0;
 			}, [
-						'before' => ['objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()],
-						'after' => ['commentId' => $comment->getId(), 'objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()]
-					], 'comment', 'create');
+							'before' => ['objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()],
+							'after' => ['commentId' => $comment->getId(), 'objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()]
+						], 'comment', 'create');
 	}
 
 	/**
@@ -640,9 +640,9 @@ class Manager implements ICommentsManager {
 
 			return $affectedRows > 0;
 			}, [
-						'before' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage()],
-						'after' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage()]
-					], 'comment', 'update');
+							'before' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage()],
+							'after' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage()]
+						], 'comment', 'update');
 	}
 
 	/**
