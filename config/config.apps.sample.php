@@ -277,9 +277,7 @@ $CONFIG = [
  *
  * auto-update::
  * When using the provisioning mode `auto-update`, user account info will update with the current
- * information provided by the OpenID Connect provider upon each user log in. In sub-key `update`,
- * more config options like `enabled` or `attributes` can be set. Account attributes that
- * will be updated can be specified in the `attributes` key.
+ * information provided by the OpenID Connect provider upon each user log in.
  *
  * insecure::
  * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
@@ -386,8 +384,6 @@ $CONFIG = [
 			'update' => [
 				  // enable the user info auto-update mode
 				'enabled' => true,
-				  // defines account attributes that will be auto-updated
-				'attributes' => ['email', 'display-name'],
 			],
 		],
 	],
