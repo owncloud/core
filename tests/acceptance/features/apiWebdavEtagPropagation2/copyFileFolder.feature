@@ -1,4 +1,4 @@
-@api
+@api @focus
 Feature: propagation of etags when copying files or folders
 
   Background:
