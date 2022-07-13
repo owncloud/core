@@ -29,6 +29,7 @@ Summary
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 * Enhancement - Add additional columns to background job queue status: [#40113](https://github.com/owncloud/core/pull/40113)
 * Enhancement - Add config option to bypass the proxy setting by domain: [#40148](https://github.com/owncloud/core/pull/40148)
+* Enhancement - Allow sharing with multiple users at once: [#40155](https://github.com/owncloud/core/pull/40155)
 
 Details
 -------
@@ -214,6 +215,14 @@ Details
    proxy set via the "proxy" option
 
    https://github.com/owncloud/core/pull/40148
+
+* Enhancement - Allow sharing with multiple users at once: [#40155](https://github.com/owncloud/core/pull/40155)
+
+   It is now possible to share resources with multiple users at once via the following format:
+   user1, user2, user3.
+
+   https://github.com/owncloud/enterprise/issues/2865
+   https://github.com/owncloud/core/pull/40155
 
 Changelog for ownCloud Core [10.10.0] (2022-05-16)
 =======================================
