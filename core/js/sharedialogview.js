@@ -277,12 +277,27 @@
 						if (isBatch) {
 							return view._getUsersForBatchAction(trimmedSearch).then(function (res) {
 								if (res.found.length) {
+									//Filter out the current user
+									for (i = 0; i < res.found.length; i++) {
+										if (res.found[i].shareWith === OC.currentUser) {
+											res.found.splice(i, 1);
+											continue;
+										}
+									}
+								}
+								if (res.found.length) {
+									// Build the label for the list of users to be batch-added
 									var labelArray = [];
 									for (i = 0; i < res.found.length; i++) {
 										labelArray.push(res.found[i].shareWith)
 									}
 
-									suggestions.push({ batch: res.found, failedBatch: res.notFound, label: labelArray.join(', '), value: {} });
+									suggestions.push({
+										batch: res.found,
+										failedBatch: res.notFound,
+										label: labelArray.join(', '),
+										value: {}
+									});
 								}
 
 								$loading.addClass('hidden');
@@ -604,7 +619,9 @@
 			var users = Array.from(new Set(search.split(this.batchActionSeparator)));
 
 			for (var i = 0; i < users.length; i++) {
-				if (!users[i]) continue;
+				if (!users[i] || users[i] === OC.currentUser) {
+					continue;
+				}
 				var user = users[i].trim();
 				promises.push(
 					$.ajax({
