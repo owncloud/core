@@ -29,6 +29,7 @@ use OC\Authentication\TwoFactorAuth\Manager;
 use OC\User\Session;
 use OC_App;
 use OC_Util;
+use OC_User;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -122,10 +123,32 @@ class LoginController extends Controller {
 	 * @return TemplateResponse|RedirectResponse
 	 */
 	public function showLoginForm($user, $redirect_url, $remember_login) {
-		if (\OC_User::handleApacheAuth() || $this->userSession->isLoggedIn()) {
-			return new RedirectResponse($this->getDefaultUrl());
+		// check if there is apache auth backend available and try to obtain session,
+		// if apache backend not registered or failed to login, proceed with show login form
+		if ($this->handleApacheAuth()) {
+			// apache auth was completed server-side and there is active session,
+			// initiate login success redirect on client-side
+			//
+			// NOTE: as of https://github.com/owncloud/core/pull/31054 to allow alternative login methods
+			// one needs to setup https://doc.owncloud.com/server/next/admin_manual/enterprise/user_management/user_auth_shibboleth.html#other-login-mechanisms
+			// so that on first login there is no valid apache session, and on click to alternative login from config 'login.alternatives'
+			// code reaches handleApacheAuth here after redirect from SSO/SAML provider
+			// NOTE: this redirect page is required to correctly preserve session on client, doing redirect using RedirectResponse could cause
+			// some apps not being able to load correctly (https://github.com/owncloud/enterprise/issues/5225).
+			return new TemplateResponse(
+				'core',
+				'apacheauthredirect',
+				[],
+				'guest'
+			);
 		}
 
+		// check if user logged in already and has active session
+		if ($this->userSession->isLoggedIn()) {
+			// most likely user manually entered this page, redirect to default url
+			return new RedirectResponse($this->getDefaultUrl());
+		}
+		
 		$parameters = [];
 		$loginMessages = $this->session->get('loginMessages');
 		$errors = [];
@@ -219,6 +242,7 @@ class LoginController extends Controller {
 
 		$parameters['strictLoginEnforced'] = $this->config->getSystemValue('strict_login_enforced', false);
 
+		// start the login flow for auth backends (including alternative logins if registered)
 		return new TemplateResponse(
 			$this->appName,
 			'login',
@@ -300,6 +324,13 @@ class LoginController extends Controller {
 		}
 
 		return new RedirectResponse($this->getDefaultUrl());
+	}
+
+	/**
+	 * @return boolean|null
+	 */
+	protected function handleApacheAuth() {
+		return OC_User::handleApacheAuth();
 	}
 
 	/**

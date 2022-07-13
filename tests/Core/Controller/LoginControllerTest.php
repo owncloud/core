@@ -449,6 +449,37 @@ class LoginControllerTest extends TestCase {
 		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('0', '', ''));
 	}
 
+	public function testShowLoginFormWithApacheBackend() {
+		$this->userSession
+			->expects($this->never())
+			->method('isLoggedIn');
+		$this->loginController = $this->getMockBuilder(LoginController::class)
+			->setMethods(['handleApacheAuth'])
+			->setConstructorArgs([
+				'core',
+				$this->request,
+				$this->userManager,
+				$this->config,
+				$this->session,
+				$this->userSession,
+				$this->urlGenerator,
+				$this->twoFactorManager,
+				$this->licenseManager
+			])
+			->getMock();
+		$this->loginController->expects($this->once())
+			->method('handleApacheAuth')
+			->willReturn(true);
+
+		$expectedResponse = new TemplateResponse(
+			'core',
+			'apacheauthredirect',
+			[],
+			'guest'
+		);
+		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('0', '', ''));
+	}
+
 	public function dataLoginWithInvalidCredentials() {
 		return [
 			[false, 1],
