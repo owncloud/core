@@ -19,6 +19,7 @@ Summary
 * Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
 * Bugfix - Do not invalidate app tokens when no LDAP connection: [#40152](https://github.com/owncloud/core/pull/40152)
 * Bugfix - Convert from utf8_encode to mb_convert_encoding: [#40158](https://github.com/owncloud/core/pull/40158)
+* Bugfix - Apps requiring SAML/SSO session now load correctly at first page: [#40161](https://github.com/owncloud/core/pull/40161)
 * Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
 * Bugfix - Error responses to add group API requests are inconsistent: [#40164](https://github.com/owncloud/core/issues/40164)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
@@ -118,6 +119,18 @@ Details
    replaced with function mb_convert_encoding.
 
    https://github.com/owncloud/core/pull/40158
+
+* Bugfix - Apps requiring SAML/SSO session now load correctly at first page: [#40161](https://github.com/owncloud/core/pull/40161)
+
+   Apps that require session to load some content at request start, could not be loaded due to
+   missing SAML/SSO session objects that could only be obtained after the app loaded or at next
+   visited page when that object was correctly persisted. Now, after handling apache backend
+   session, auth success confirmation page is shown that redirects to the owncloud landing page.
+
+   https://github.com/owncloud/enterprise/issues/4712
+   https://github.com/owncloud/enterprise/issues/5225
+   https://github.com/owncloud/core/issues/31052
+   https://github.com/owncloud/core/pull/40161
 
 * Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
 
@@ -223,6 +236,7 @@ Details
 
    https://github.com/owncloud/enterprise/issues/2865
    https://github.com/owncloud/core/pull/40155
+   https://github.com/owncloud/core/pull/40199
 
 Changelog for ownCloud Core [10.10.0] (2022-05-16)
 =======================================

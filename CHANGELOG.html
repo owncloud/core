@@ -17,6 +17,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Application selection menu now appears on shared folders: <a href="https://github.com/owncloud/core/pull/40143">#40143</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Do not invalidate app tokens when no LDAP connection: <a href="https://github.com/owncloud/core/pull/40152">#40152</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Convert from utf8_encode to mb_convert_encoding: <a href="https://github.com/owncloud/core/pull/40158">#40158</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Apps requiring SAML/SSO session now load correctly at first page: <a href="https://github.com/owncloud/core/pull/40161">#40161</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Display error message when a group cannot be created: <a href="https://github.com/owncloud/core/issues/40162">#40162</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Error responses to add group API requests are inconsistent: <a href="https://github.com/owncloud/core/issues/40164">#40164</a></li>
         <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
@@ -114,6 +115,17 @@
             <p>https://github.com/owncloud/core/pull/40158<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Apps requiring SAML/SSO session now load correctly at first page: <a href="https://github.com/owncloud/core/pull/40161">#40161</a></p>
+            <p>Apps that require session to load some content at request start, could not be loaded due to
+   missing SAML/SSO session objects that could only be obtained after the app loaded or at next
+   visited page when that object was correctly persisted. Now, after handling apache backend
+   session, auth success confirmation page is shown that redirects to the owncloud landing page.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4712<br>https://github.com/owncloud/enterprise/issues/5225<br>https://github.com/owncloud/core/issues/31052<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40161<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - Display error message when a group cannot be created: <a href="https://github.com/owncloud/core/issues/40162">#40162</a></p>
             <p>If a new group could not be created on the user-management UI, the error message text was not
    displayed. This problem has been fixed.
@@ -200,7 +212,7 @@
             </p>
             <p>https://github.com/owncloud/enterprise/issues/2865<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/40155<br></p>
+            <p>https://github.com/owncloud/core/pull/40155<br>https://github.com/owncloud/core/pull/40199<br></p>
         </li>
     </ul>
     <h2 id="10.10.0" class="version"> Changelog for ownCloud Core [10.10.0] (2022-05-16)</h2>
