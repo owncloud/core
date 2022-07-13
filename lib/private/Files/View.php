@@ -869,14 +869,14 @@ class View {
 						} else {
 							$result = false;
 						}
-						// moving a file/folder within the same mount point
+					// moving a file/folder within the same mount point
 					} elseif ($storage1 === $storage2) {
 						if ($storage1) {
 							$result = $storage1->rename($internalPath1, $internalPath2);
 						} else {
 							$result = false;
 						}
-						// moving a file/folder between storages (from $storage1 to $storage2)
+					// moving a file/folder between storages (from $storage1 to $storage2)
 					} else {
 						$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
 					}
@@ -915,12 +915,12 @@ class View {
 				$this->unlockFile($path2, ILockingProvider::LOCK_SHARED, true);
 			}
 			return $result;
-		}, [
-			'before' => ['oldpath' => $this->getAbsolutePath($path1),
-				'newpath' => $this->getAbsolutePath($path2)],
-			'after' => ['oldpath' => $this->getAbsolutePath($path1),
-				'newpath' => $this->getAbsolutePath($path2)]
-		], 'file', 'rename');
+			}, [
+				'before' => ['oldpath' => $this->getAbsolutePath($path1),
+					'newpath' => $this->getAbsolutePath($path2)],
+				'after' => ['oldpath' => $this->getAbsolutePath($path1),
+					'newpath' => $this->getAbsolutePath($path2)]
+			], 'file', 'rename');
 	}
 
 	/**
@@ -1020,16 +1020,16 @@ class View {
 				$this->unlockFile($path1, $lockTypePath1);
 			}
 			return $result;
-		}, [
-			'before' => [
-				'oldpath' => $absolutePath1,
-				'newpath' => $absolutePath2
-			],
-			'after' => [
-				'oldpath' => $absolutePath1,
-				'newpath' => $absolutePath2
-			]
-		], 'file', 'copy');
+			}, [
+				'before' => [
+					'oldpath' => $absolutePath1,
+					'newpath' => $absolutePath2
+				],
+				'after' => [
+					'oldpath' => $absolutePath1,
+					'newpath' => $absolutePath2
+				]
+			], 'file', 'copy');
 	}
 
 	/**

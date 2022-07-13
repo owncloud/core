@@ -17,10 +17,10 @@ $template = $_['template'];
 </fieldset>
 <?php if ($error): ?>
 	<?php if ($error_message) {
-	?>
+		?>
 		<span class="warning"><?php p($l->t($error_message)); ?></span>
 	<?php
-} else {
+	} else {
 		?>
 		<span class="warning"><?php p($l->t('An error occurred while verifying the token')); ?></span>
 	<?php

@@ -362,7 +362,7 @@ class Encryption extends Wrapper {
 					$length += $remainingLength;
 					$data = '';
 				// if $data doesn't fit the current block, the fill the current block and reiterate
-					// after the block is filled, it is flushed and $data is updatedxxx
+				// after the block is filled, it is flushed and $data is updatedxxx
 				} else {
 					$this->cache = \substr($this->cache, 0, $blockPosition) .
 						\substr($data, 0, $this->unencryptedBlockSize - $blockPosition);

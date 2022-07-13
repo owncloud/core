@@ -68,7 +68,7 @@ class OracleMigrator extends Migrator {
 	 */
 	protected function quoteIndex($index) {
 		return new Index(
-		//TODO migrate existing uppercase indexes, then $this->connection->quoteIdentifier($index->getName()),
+			//TODO migrate existing uppercase indexes, then $this->connection->quoteIdentifier($index->getName()),
 			$index->getName(),
 			\array_map(function ($columnName) {
 				return $this->connection->quoteIdentifier($columnName);

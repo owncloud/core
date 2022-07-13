@@ -51,7 +51,7 @@ class MoveHome extends Command {
 			->setDescription('Move a user\'s home folder to a new location.')
 			->addArgument('user_id', InputArgument::REQUIRED, 'Id of the user whose home folder is to be moved. ')
 			->addArgument('new_location', InputArgument::REQUIRED, 'Absolute path to the parent folder of the new location of the home folder.')
-			;
+		;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

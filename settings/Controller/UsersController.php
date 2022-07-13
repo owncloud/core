@@ -1075,7 +1075,7 @@ class UsersController extends Controller {
 				!$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user) &&
 				$currentUser->getUID() !== $user->getUID()
 			)
-			) {
+		) {
 			return new DataResponse([
 				'status' => 'error',
 				'data' => [

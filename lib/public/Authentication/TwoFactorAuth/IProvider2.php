@@ -27,13 +27,13 @@ namespace OCP\Authentication\TwoFactorAuth;
  */
 interface IProvider2 extends IProvider {
 
-	 /**
-	 * Get the Content Security Policy for the template (required for showing external content, otherwise optional)
-	 *
-	 * @since 10.0
-	 *
-	 * @return \OCP\AppFramework\Http\ContentSecurityPolicy
-	 */
+	/**
+	* Get the Content Security Policy for the template (required for showing external content, otherwise optional)
+	*
+	* @since 10.0
+	*
+	* @return \OCP\AppFramework\Http\ContentSecurityPolicy
+	*/
 
 	public function getCSP();
 }
