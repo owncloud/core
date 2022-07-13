@@ -285,7 +285,7 @@ class Factory implements IFactory {
 				|| \OC_Helper::isSubDirectory($transFile, $this->serverRoot . '/settings/l10n/')
 				|| \OC_Helper::isSubDirectory($transFile, \OC_App::getAppPath($app) . '/l10n/')
 		)
-						&& \file_exists($transFile)) {
+							&& \file_exists($transFile)) {
 			// load the translations file
 			$languageFiles[] = $transFile;
 		}

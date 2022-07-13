@@ -54,11 +54,11 @@ script('core', [
 			echo ' shake';
 		} ?>">
 	<?php
-				if ($_['strictLoginEnforced'] === true) {
-					$label = $l->t('Login');
-				} else {
-					$label = $l->t('Username or email');
-				}
+					if ($_['strictLoginEnforced'] === true) {
+						$label = $l->t('Login');
+					} else {
+						$label = $l->t('Username or email');
+					}
 ?>
 			<label for="user" class=""><?php p($label); ?></label>
 			
@@ -115,7 +115,7 @@ script('core', [
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
 			<?php
-									$stayLoggedInText = $l->t('Stay logged in');
+											$stayLoggedInText = $l->t('Stay logged in');
 
 			if ($_['rememberLoginState'] === 0) {
 				?>

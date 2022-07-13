@@ -33,9 +33,9 @@ $manager->registerNotifier(function () {
 	}, function () {
 		$l = \OC::$server->getL10N('files_sharing');
 		return [
-					'id' => 'files_sharing',
-					'name' => $l->t('Federated sharing'),
-				];
+						'id' => 'files_sharing',
+						'name' => $l->t('Federated sharing'),
+					];
 	});
 
 $app->registerListeners();
