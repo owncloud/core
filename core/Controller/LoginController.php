@@ -130,7 +130,7 @@ class LoginController extends Controller {
 			// initiate login success redirect on client-side
 			//
 			// NOTE: as of https://github.com/owncloud/core/pull/31054 to allow alternative login methods
-			// one needs to setup https://doc.owncloud.com/server/10.10/admin_manual/enterprise/user_management/user_auth_shibboleth.html#other-login-mechanisms
+			// one needs to setup https://doc.owncloud.com/server/next/admin_manual/enterprise/user_management/user_auth_shibboleth.html#other-login-mechanisms
 			// so that on first login there is no valid apache session, and on click to alternative login from config 'login.alternatives'
 			// code reaches handleApacheAuth here after redirect from SSO/SAML provider
 			// NOTE: this redirect page is required to correctly preserve session on client, doing redirect using RedirectResponse could cause
