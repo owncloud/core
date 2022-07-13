@@ -808,7 +808,7 @@ trait Provisioning {
 			$entry['ownCloudUUID'] = $this->generateUUIDv4();
 		}
 		if (OcisHelper::isTestingParallelDeployment()) {
-			$entry['uidNumber'] = 30000 + $this->getLdapEntriesCount($this->ldapUsersOU) + 1;
+			$entry['uidNumber'] = 30000 + $this->getLdapEntriesCount($this->ldapUsersOU);
 			$entry['ownCloudSelector'] = $this->getOCSelector();
 		}
 
@@ -849,7 +849,8 @@ trait Provisioning {
 
 		if ($this->ldapGroupSchema == "rfc2307") {
 			$entry['objectclass'][] = 'posixGroup';
-			$entry['gidNumber'] = 5000;
+			$entry['gidNumber'] = 5000 + $this->getLdapEntriesCount($this->ldapGroupsOU);
+			;
 		} else {
 			$entry['objectclass'][] = 'groupOfNames';
 			$entry['member'] = "";
@@ -857,6 +858,12 @@ trait Provisioning {
 		if (OcisHelper::isTestingOnOcis()) {
 			$entry['objectclass'][] = 'ownCloud';
 			$entry['ownCloudUUID'] = $this->generateUUIDv4();
+		}
+		if (OcisHelper::isTestingParallelDeployment()) {
+			$entry['description'] = $group;
+			$entry['objectclass'][] = 'groupOfUniqueNames';
+			// without any uniqueMember, a group cannot be created
+			$entry['uniqueMember'] = 'uid=admin,ou=' . $this->ldapUsersOU . ',' . $baseDN;
 		}
 		$this->ldap->add($newDN, $entry);
 		$this->ldapCreatedGroups[] = $group;
