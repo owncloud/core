@@ -916,11 +916,11 @@ class View {
 			}
 			return $result;
 			}, [
-				'before' => ['oldpath' => $this->getAbsolutePath($path1),
-					'newpath' => $this->getAbsolutePath($path2)],
-				'after' => ['oldpath' => $this->getAbsolutePath($path1),
-					'newpath' => $this->getAbsolutePath($path2)]
-			], 'file', 'rename');
+					'before' => ['oldpath' => $this->getAbsolutePath($path1),
+						'newpath' => $this->getAbsolutePath($path2)],
+					'after' => ['oldpath' => $this->getAbsolutePath($path1),
+						'newpath' => $this->getAbsolutePath($path2)]
+				], 'file', 'rename');
 	}
 
 	/**
@@ -1021,15 +1021,15 @@ class View {
 			}
 			return $result;
 			}, [
-				'before' => [
-					'oldpath' => $absolutePath1,
-					'newpath' => $absolutePath2
-				],
-				'after' => [
-					'oldpath' => $absolutePath1,
-					'newpath' => $absolutePath2
-				]
-			], 'file', 'copy');
+					'before' => [
+						'oldpath' => $absolutePath1,
+						'newpath' => $absolutePath2
+					],
+					'after' => [
+						'oldpath' => $absolutePath1,
+						'newpath' => $absolutePath2
+					]
+				], 'file', 'copy');
 	}
 
 	/**

@@ -90,9 +90,9 @@ class SubAdmin extends PublicEmitter {
 			\OC_Hook::emit("OC_SubAdmin", "post_createSubAdmin", ["gid" => $group->getGID()]);
 			return true;
 			}, [
-				'before' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'create', 'group' => $group],
-				'after' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'create', 'group' => $group]
-			], 'user', 'featurechange');
+					'before' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'create', 'group' => $group],
+					'after' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'create', 'group' => $group]
+				], 'user', 'featurechange');
 	}
 
 	/**
@@ -114,9 +114,9 @@ class SubAdmin extends PublicEmitter {
 			\OC_Hook::emit("OC_SubAdmin", "post_deleteSubAdmin", ["gid" => $group->getGID()]);
 			return true;
 			}, [
-				'before' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'remove', 'group' => $group],
-				'after' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'remove', 'group' => $group]
-			], 'user', 'featurechange');
+					'before' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'remove', 'group' => $group],
+					'after' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'remove', 'group' => $group]
+				], 'user', 'featurechange');
 	}
 
 	/**

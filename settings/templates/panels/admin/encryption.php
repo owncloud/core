@@ -35,10 +35,10 @@
 			p('hidden');
 		} ?>">
 			<?php
-					if (empty($_['encryptionModules'])) {
-						p($l->t('No encryption module loaded, please enable an encryption module in the app menu.'));
-					} else {
-						?>
+							if (empty($_['encryptionModules'])) {
+								p($l->t('No encryption module loaded, please enable an encryption module in the app menu.'));
+							} else {
+								?>
 				<h3><?php p($l->t('Select default encryption module:')) ?></h3>
 				<fieldset id='encryptionModules'>
 					<?php foreach ($_['encryptionModules'] as $id => $module): ?>
@@ -54,7 +54,7 @@
 					<?php endforeach; ?>
 				</fieldset>
 			<?php
-					} ?>
+							} ?>
 		</div>
 		<div id="migrationWarning" class="<?php if ($_['encryptionReady']) {
 			p('hidden');
