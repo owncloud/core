@@ -22,6 +22,7 @@ Summary
 * Bugfix - Apps requiring SAML/SSO session now load correctly at first page: [#40161](https://github.com/owncloud/core/pull/40161)
 * Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
 * Bugfix - Error responses to add group API requests are inconsistent: [#40164](https://github.com/owncloud/core/issues/40164)
+* Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -147,6 +148,15 @@ Details
 
    https://github.com/owncloud/core/issues/40164
    https://github.com/owncloud/core/pull/40165
+
+* Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
+
+   The list of allowed domains was not being correctly decoded, resulting in failure to recognise
+   a valid domain, and thus failure to send the relevant CORS headers. The decoding of the domains
+   list has been corrected.
+
+   https://github.com/owncloud/core/issues/40203
+   https://github.com/owncloud/core/pull/40204
 
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 
