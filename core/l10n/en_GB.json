@@ -266,6 +266,7 @@
     "The share will expire on %s." : "The share will expire on %s.",
     "Personal note from the sender: \n %s." : "Personal note from the sender: \n %s.",
     "Cheers!" : "Cheers!",
+    "The application was authorized successfully. You can now close this window." : "The application was authorised successfully. You can now close this window.",
     "Internal Server Error" : "Internal Server Error",
     "The server encountered an internal error and was unable to complete your request." : "The server encountered an internal error and was unable to complete your request.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report.",

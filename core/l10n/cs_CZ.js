@@ -272,6 +272,7 @@ OC.L10N.register(
     "The share will expire on %s." : "Sdílení vyprší %s.",
     "Personal note from the sender: \n %s." : "Osobní poznámka odesílatele: \n %s.",
     "Cheers!" : "Ať slouží!",
+    "The application was authorized successfully. You can now close this window." : "Aplikace byla úspěšně autorizována. Můžete nyní zavřít toto okno.",
     "Internal Server Error" : "Vnitřní chyba serveru",
     "The server encountered an internal error and was unable to complete your request." : "Server zaznamenal interní chybu a nebyl schopen dokončit váš požadavek.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Pokud se tato chyba objeví víckrát, kontaktujte prosím správce systému a přiložte do zprávy technické detaily zobrazené níže.",

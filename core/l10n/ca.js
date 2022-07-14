@@ -210,6 +210,7 @@ OC.L10N.register(
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Ei,\n\nnomés fer-te saber que %s ha compartit %s amb tu.\nMira-ho a: %s\n\n",
     "The share will expire on %s." : "La compartició venç el %s.",
     "Cheers!" : "Salut!",
+    "The application was authorized successfully. You can now close this window." : "L'aplicació s'ha autoritzat correctament. Ara podeu tancar aquesta finestra.",
     "Internal Server Error" : "Error Intern del Servidor",
     "The server encountered an internal error and was unable to complete your request." : "El servidor ha trobat un error intern i no pot finalitzar la teva petició.",
     "Technical details" : "Detalls tècnics",

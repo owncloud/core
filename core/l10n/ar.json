@@ -276,6 +276,7 @@
     "The share will expire on %s." : "تنتهي المشاركة في %s.",
     "Personal note from the sender: \n %s." : "ملاحظة شخصية من المُرسِل: \n %s.",
     "Cheers!" : "هتاف!",
+    "The application was authorized successfully. You can now close this window." : "تمت مصادقة التطبيق بنجاح. يمكنك إغلاق هذه النافذة الآن.",
     "Internal Server Error" : "خطأ داخلي في الخادم",
     "The server encountered an internal error and was unable to complete your request." : "حدث خطأ داخلي في الخادم ولا يمكن إكمال طلبك.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "يُرجى الاتصال بمسؤول الخادم إذا ظهر هذا الخطأ أكثر من مرة، وضع التفاصيل التقنية في تقريرك أدناه.",

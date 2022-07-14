@@ -267,6 +267,7 @@
     "The share will expire on %s." : "Bu paylaşım %s tarihinde sona erecek.",
     "Personal note from the sender: \n %s." : "Göndericiden kişisel mesaj:\n%s.",
     "Cheers!" : "Hoşça kalın!",
+    "The application was authorized successfully. You can now close this window." : "Uygulama başarıyla yetkilendirildi. Şimdi bu pencereyi kapatabilirsiniz.",
     "Internal Server Error" : "Dahili Sunucu Hatası",
     "The server encountered an internal error and was unable to complete your request." : "Sunucu dahili bir hatayla karşılaştı ve isteğinizi tamamlayamadı.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Eğer bu hata birden çok kez oluştuysa, sunucu yöneticisine aşağıdaki teknik ayrıntılar ile birlikte iletişime geçin.",

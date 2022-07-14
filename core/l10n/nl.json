@@ -256,6 +256,7 @@
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Hallo,\n\n%s deelt %s met u.\nBekijk hier: %s\n\n",
     "The share will expire on %s." : "De share vervalt op %s.",
     "Cheers!" : "Met vriendelijke groet",
+    "The application was authorized successfully. You can now close this window." : "De applicatie is geauthenticeerd. U kunt dit venster nu sluiten.",
     "Internal Server Error" : "Interne serverfout",
     "The server encountered an internal error and was unable to complete your request." : "De server ontdekte een interne fout en kon uw aanvraag niet verder uitvoeren.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Neem contact op met de serverbeheerder als deze fout meerdere keren opnieuw optreedt en neem de onderstaande technische details op in uw melding.",

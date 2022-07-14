@@ -282,6 +282,7 @@ OC.L10N.register(
     "The share will expire on %s." : "Ο διαμοιρασμός θα λήξει σε %s.",
     "Personal note from the sender: \n %s." : "Προσωπικό σημείωμα από τον αποστολέα:\n %s.",
     "Cheers!" : "Με εκτίμηση!",
+    "The application was authorized successfully. You can now close this window." : "Η εφαρμογή εγκρίθηκε με επιτυχία. Τώρα μπορείτε να κλείσετε αυτό το παράθυρο.",
     "Internal Server Error" : "Εσωτερικό σφάλμα διακομιστή",
     "The server encountered an internal error and was unable to complete your request." : "Ο διακομιστής αντιμετώπισε ένα εσωτερικό σφάλμα και δεν μπόρεσε να ολοκληρώσει το αίτημά σας.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Παρακαλούμε επικοινωνήστε με το διαχειριστή του διακομιστή αν αυτό το σφάλμα επανεμφανιστεί πολλές φορές και συμπεριλάβετε τις τεχνικές λεπτομέρειες παρακάτω στην αναφορά σας.",

@@ -279,6 +279,7 @@
     "The share will expire on %s." : "การแชร์จะหมดอายุในวันที่ %s",
     "Personal note from the sender: \n %s." : "บันทึกส่วนบุคคลจากผู้ส่ง: %s",
     "Cheers!" : "ไชโย!",
+    "The application was authorized successfully. You can now close this window." : "แอปฯได้รับอนุญาตเรียบร้อยแล้ว ขณะนี้คุณสามารถปิดหน้าต่างนี้ได้เลย",
     "Internal Server Error" : "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์",
     "The server encountered an internal error and was unable to complete your request." : "พบข้อผิดพลาดภายในเซิร์ฟเวอร์และไม่สามารถดำเนินการตามคำขอของคุณ",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "โปรดติดต่อผู้ดูแลระบบเซิร์ฟเวอร์หากเกิดข้อผิดพลาดนี้อีก และกรอกรายละเอียดในรายงานของคุณ",

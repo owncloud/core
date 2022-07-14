@@ -240,6 +240,7 @@ OC.L10N.register(
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Hej\n\nDette blot for at lade dig vide, at %s har delt %s med dig.\n\nSe det her: %s\n\n",
     "The share will expire on %s." : "Delingen vil udløbe om %s.",
     "Cheers!" : "Hav en fortsat god dag.",
+    "The application was authorized successfully. You can now close this window." : "Applikationen var succesfuldt autoriseret. Du kan nu lukke dette vindue.",
     "Internal Server Error" : "Intern serverfejl",
     "The server encountered an internal error and was unable to complete your request." : "Servern stødte på en intern fejl og var ikke i stand til at fuldføre din forespørgsel.",
     "Technical details" : "Tekniske detaljer",

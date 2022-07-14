@@ -282,6 +282,7 @@ OC.L10N.register(
     "The share will expire on %s." : "O compartilhamento irá expirar em %s.",
     "Personal note from the sender: \n %s." : "Nota pessoal do remetente: \n %s.",
     "Cheers!" : "Saudações!",
+    "The application was authorized successfully. You can now close this window." : "O aplicativo foi autorizado com sucesso. Você já pode fechar esta janela.",
     "Internal Server Error" : "Erro Interno do Servidor",
     "The server encountered an internal error and was unable to complete your request." : "O servidor encontrou um erro interno e não conseguiu concluir o seu pedido.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Entre em contato com o administrador do servidor se este erro reaparecer várias vezes e inclua os detalhes técnicos abaixo no seu relatório.",

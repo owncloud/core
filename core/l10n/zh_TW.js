@@ -278,6 +278,7 @@ OC.L10N.register(
     "The share will expire on %s." : "這個分享將會於 %s 過期",
     "Personal note from the sender: \n %s." : "寄件人的個人註解：\n%s",
     "Cheers!" : "太棒了！",
+    "The application was authorized successfully. You can now close this window." : "該應用程式已成功授權。 您現在可以關閉此窗口。",
     "Internal Server Error" : "內部伺服器錯誤",
     "The server encountered an internal error and was unable to complete your request." : "伺服器遭遇內部錯誤，無法完成您的要求",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "如果此錯誤多次出現，請與伺服器管理員聯絡，並在報告中包括以下技術詳細資訊。",
