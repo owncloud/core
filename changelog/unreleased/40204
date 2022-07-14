@@ -1,0 +1,8 @@
+Bugfix: CORS on WebDAV is not working
+
+The list of allowed domains was not being correctly decoded, resulting in failure
+to recognise a valid domain, and thus failure to send the relevant CORS headers.
+The decoding of the domains list has been corrected.
+
+https://github.com/owncloud/core/pull/40204
+https://github.com/owncloud/core/issues/40203
