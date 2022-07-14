@@ -1,0 +1,8 @@
+Bugfix: WebDAV not working using browser js
+
+WebDAV verbs did not send CORS headers and so the whole
+functionality could not be used by javascript in browser
+context.
+
+https://github.com/owncloud/core/issues/40203
+https://github.com/owncloud/core/pull/40204
