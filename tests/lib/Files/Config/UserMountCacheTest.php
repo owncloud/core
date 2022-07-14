@@ -8,6 +8,8 @@
 
 namespace Test\Files\Config;
 
+use Doctrine\DBAL\Driver\AbstractDriverException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Statement;
 use OC\DB\QueryBuilder\Literal;
 use OC\Files\Config\UserMountCache;
@@ -20,6 +22,7 @@ use OC\User\SyncService;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Config\ICachedMountInfo;
+use OCP\IUser;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\ILogger;
@@ -464,5 +467,29 @@ class UserMountCacheTest extends TestCase {
 		$cache = new UserMountCache($conn, $userManager, $logger);
 		$cacheInfo = $this->invokePrivate($cache, 'getCacheInfoFromFileId', [55]);
 		$this->assertEquals([55, ''], $cacheInfo);
+	}
+
+	/**
+	 * Make sure addToCache call properly handles UniqueConstraintViolation
+	 */
+	public function testAddToCacheUniqueConstraintViolationException() {
+		$userManager = $this->createMock(IUserManager::class);
+		$logger = $this->createMock(ILogger::class);
+		$user = $this->createMock(IUser::class);
+		$driverExceptionMock = $this->createMock(AbstractDriverException::class);
+
+		$conn = $this->createMock(IDBConnection::class);
+		$conn->method('insertIfNotExist')->will($this->throwException(
+			new UniqueConstraintViolationException("violation", $driverExceptionMock)
+		));
+
+		$mountInfo = $this->createMock(ICachedMountInfo::class);
+		$mountInfo->method('getStorageId')->willReturn(1);
+		$mountInfo->method('getUser')->willReturn($user);
+
+		$cache = new UserMountCache($conn, $userManager, $logger);
+		
+		$this->invokePrivate($cache, 'addToCache', [$mountInfo]);
+		$this->assertTrue(true);
 	}
 }
