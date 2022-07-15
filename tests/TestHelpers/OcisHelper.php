@@ -404,7 +404,7 @@ class OcisHelper {
 	public static function getOCSelectorThenStep(): string {
 		$selector = \getenv("THEN_OC_SELECTOR");
 		$selector = $selector ? \strtolower($selector) : "ocis";
-		self::validateOCSelector($selector);
+		OcisHelper::validateOCSelector($selector);
 
 		return $selector;
 	}

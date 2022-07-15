@@ -484,6 +484,8 @@ class FeatureContext extends BehatVariablesContext {
 	private $ldapCreatedGroups = [];
 	private $toDeleteLdapConfigs = [];
 	private $oldLdapConfig = [];
+	private $ldapUidNumber = 30000;
+	private $ldapGidNumber = 5000;
 	/**
 	 * @var null|string
 	 */
