@@ -71,6 +71,7 @@ OC.L10N.register(
     "Public link expired" : "Collegamento pubblico scaduto",
     "Public link of %2$s expired" : "il collegamento pubblico di %2$s è scaduto",
     "Shared by %2$s" : "Condivisa da %2$s",
+    "Received federated share from %1$s" : "Condivisione federata ricevuta da %1$s",
     "Shares" : "Condivisioni",
     "File sharing" : "Condivisione file",
     "Public link" : "Collegamento pubblico",
