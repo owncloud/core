@@ -22,6 +22,7 @@ Summary
 * Bugfix - Apps requiring SAML/SSO session now load correctly at first page: [#40161](https://github.com/owncloud/core/pull/40161)
 * Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
 * Bugfix - Error responses to add group API requests are inconsistent: [#40164](https://github.com/owncloud/core/issues/40164)
+* Bugfix - Handle exception when adding mount to existing cache or lock: [#40192](https://github.com/owncloud/core/pull/40192)
 * Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -148,6 +149,15 @@ Details
 
    https://github.com/owncloud/core/issues/40164
    https://github.com/owncloud/core/pull/40165
+
+* Bugfix - Handle exception when adding mount to existing cache or lock: [#40192](https://github.com/owncloud/core/pull/40192)
+
+   In some cases there are can be multiple parallel requests that could in their logic attempt to
+   create shared file mountpoint for the file or to create lock, e.g. collaboration software.
+   Exception to add cache or lock that already exists is now handled
+
+   https://github.com/owncloud/enterprise/issues/5198
+   https://github.com/owncloud/core/pull/40192
 
 * Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
 

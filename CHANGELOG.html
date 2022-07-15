@@ -20,6 +20,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Apps requiring SAML/SSO session now load correctly at first page: <a href="https://github.com/owncloud/core/pull/40161">#40161</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Display error message when a group cannot be created: <a href="https://github.com/owncloud/core/issues/40162">#40162</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Error responses to add group API requests are inconsistent: <a href="https://github.com/owncloud/core/issues/40164">#40164</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Handle exception when adding mount to existing cache or lock: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-bugfix changelog-item">Bugfix - CORS on WebDAV is not working: <a href="https://github.com/owncloud/core/pull/40204">#40204</a></li>
         <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
@@ -143,6 +144,16 @@
             <p>https://github.com/owncloud/core/issues/40164<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40165<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Handle exception when adding mount to existing cache or lock: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>
+            <p>In some cases there are can be multiple parallel requests that could in their logic attempt to
+   create shared file mountpoint for the file or to create lock, e.g. collaboration software.
+   Exception to add cache or lock that already exists is now handled
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5198<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40192<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - CORS on WebDAV is not working: <a href="https://github.com/owncloud/core/pull/40204">#40204</a></p>
