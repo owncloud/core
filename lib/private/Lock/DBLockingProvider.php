@@ -25,6 +25,7 @@
 
 namespace OC\Lock;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\DB\QueryBuilder\Literal;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -115,7 +116,29 @@ class DBLockingProvider extends AbstractLockingProvider {
 
 	protected function initLockField($path, $lock = 0) {
 		$expire = $this->getExpireTime();
-		return $this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => $lock, 'ttl' => $expire], ['key']);
+
+		try {
+			$rows = $this->connection->insertIfNotExist(
+				'*PREFIX*file_locks',
+				['key' => $path, 'lock' => $lock, 'ttl' => $expire],
+				['key'] // NOTE: see *PREFIX*file_locks/lock_key_index
+			);
+
+			if ($rows === 0) {
+				// likely to happen when called multiple times
+				$this->logger->debug(
+					"Lock {$path}/{$lock} already exists"
+				);
+			}
+			return $rows;
+		} catch (UniqueConstraintViolationException $e) {
+			// most likely race condition but make sure to log the error in case it is application level error
+			$this->logger->error(
+				"Attempt to add lock {$path}/{$lock} failed"
+			);
+			$this->logger->logException($e);
+			return 0;
+		}
 	}
 
 	/**

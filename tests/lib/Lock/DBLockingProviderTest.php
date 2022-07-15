@@ -21,6 +21,11 @@
 
 namespace Test\Lock;
 
+use Doctrine\DBAL\Driver\AbstractDriverException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use OC\Lock\DBLockingProvider;
+use OCP\IDBConnection;
+use OCP\ILogger;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -66,7 +71,7 @@ class DBLockingProviderTest extends LockingProvider {
 	 */
 	protected function getInstance() {
 		$this->connection = \OC::$server->getDatabaseConnection();
-		return new \OC\Lock\DBLockingProvider($this->connection, \OC::$server->getLogger(), $this->timeFactory, 3600);
+		return new DBLockingProvider($this->connection, \OC::$server->getLogger(), $this->timeFactory, 3600);
 	}
 
 	public function tearDown(): void {
@@ -90,6 +95,24 @@ class DBLockingProviderTest extends LockingProvider {
 		$this->instance->cleanExpiredLocks();
 
 		$this->assertLocks(['asd', 'bar']);
+	}
+
+	/**
+	 * Make sure initLockField call properly handles UniqueConstraintViolation
+	 */
+	public function testInitLockFieldUniqueConstraintViolationException() {
+		$logger = $this->createMock(ILogger::class);
+		$driverExceptionMock = $this->createMock(AbstractDriverException::class);
+
+		$conn = $this->createMock(IDBConnection::class);
+		$conn->method('insertIfNotExist')->will($this->throwException(
+			new UniqueConstraintViolationException("violation", $driverExceptionMock)
+		));
+
+		$dbLockProv = new DBLockingProvider($conn, $logger, $this->timeFactory, 3600);
+		
+		$this->invokePrivate($dbLockProv, 'initLockField', ['/test', 0]);
+		$this->assertTrue(true);
 	}
 
 	private function getLockEntries() {
