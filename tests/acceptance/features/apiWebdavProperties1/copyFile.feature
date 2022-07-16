@@ -906,7 +906,7 @@ Feature: copy file
       | dav_version |
       | spaces      |
 
-
+  @issue-ocis-3023
   Scenario Outline: Copying a folder into a sub-folder of itself
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/PARENT"
