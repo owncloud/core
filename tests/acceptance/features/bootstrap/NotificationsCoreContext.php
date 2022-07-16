@@ -235,7 +235,7 @@ class NotificationsCoreContext implements Context {
 		$lastNotifications = $this->getLastNotificationIds();
 		if ($notification === 'first') {
 			$notificationId = \reset($lastNotifications);
-		} else { /* if ($notification === 'last')*/ 
+		} else { /* if ($notification === 'last')*/
 			$notificationId = \end($lastNotifications);
 		}
 
