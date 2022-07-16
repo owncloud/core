@@ -28,6 +28,6 @@
 		</p>
 		<input type="submit" id="submit" value="<?php
 			p($l->t('Resend activation link'));
-		?>" />
+?>" />
 	</fieldset>
 </form>

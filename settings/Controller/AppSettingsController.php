@@ -90,7 +90,7 @@ class AppSettingsController extends Controller {
 					return ($a < $b) ? -1 : 1;
 				});
 				break;
-			// not-installed apps
+				// not-installed apps
 			case 'disabled':
 				$apps = \OC_App::listAllApps();
 				$apps = \array_filter($apps, function ($app) {

@@ -778,7 +778,7 @@ class ManagerTest extends \Test\TestCase {
 					case 'user33': return true;
 					default:
 						return null;
-					}
+				}
 			}));
 
 		$this->userManager->expects($this->any())
@@ -829,14 +829,14 @@ class ManagerTest extends \Test\TestCase {
 			->method('inGroup')
 			->will($this->returnCallback(function ($uid, $gid) {
 				switch ($uid) {
-						case 'user1': return false;
-						case 'user2': return true;
-						case 'user3': return false;
-						case 'user33': return true;
-						case 'user333': return true;
-						default:
-							return null;
-					}
+					case 'user1': return false;
+					case 'user2': return true;
+					case 'user3': return false;
+					case 'user33': return true;
+					case 'user333': return true;
+					default:
+						return null;
+				}
 			}));
 
 		$this->userManager->expects($this->any())
@@ -889,14 +889,14 @@ class ManagerTest extends \Test\TestCase {
 			->method('inGroup')
 			->will($this->returnCallback(function ($uid) {
 				switch ($uid) {
-						case 'user1': return false;
-						case 'user2': return true;
-						case 'user3': return false;
-						case 'user33': return true;
-						case 'user333': return true;
-						default:
-							return null;
-					}
+					case 'user1': return false;
+					case 'user2': return true;
+					case 'user3': return false;
+					case 'user33': return true;
+					case 'user333': return true;
+					default:
+						return null;
+				}
 			}));
 
 		$this->userManager->expects($this->any())
@@ -904,13 +904,13 @@ class ManagerTest extends \Test\TestCase {
 			->with('user3')
 			->will($this->returnCallback(function ($search, $limit, $offset) {
 				switch ($offset) {
-						case 0:
-							return [
-								'user3' => $this->getTestUser('user3'),
-								'user33' => $this->getTestUser('user33'),
-								'user333' => $this->getTestUser('user333')
-							];
-					}
+					case 0:
+						return [
+							'user3' => $this->getTestUser('user3'),
+							'user33' => $this->getTestUser('user33'),
+							'user333' => $this->getTestUser('user333')
+						];
+				}
 			}));
 
 		$this->userManager->expects($this->any())
