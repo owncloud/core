@@ -17,6 +17,7 @@
     "Share with me through my #ownCloud Federated Cloud ID" : "Condividi con me attraverso il mio ID di cloud federata #ownCloud",
     "Federated Cloud Sharing" : "Condivisione cloud federata",
     "Open documentation" : "Apri la documentazione",
+    "Periodically synchronize outdated federated shares for active users" : "Sincronizza periodicamente condivisioni federate datate per gli utenti attivi",
     "Allow users on this server to send shares to other servers" : "Consenti agli utenti su questo server di inviare condivisioni ad altri server",
     "Allow users on this server to receive shares from other servers" : "Consenti agli utenti su questo server di ricevere condivisioni da altri server",
     "Federated Cloud" : "Cloud federata",

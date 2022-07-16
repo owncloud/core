@@ -109,6 +109,7 @@
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "I tuoi file sono cifrati. Se non hai precedentemente abilitato la chiave di ripristino, non sarà più possibile ritrovare i tuoi dati una volta che la password sarà reimpostata.<br />Se non sei sicuro, contatta l'amministratore prima di proseguire.<br />Vuoi davvero continuare?",
     "I know what I'm doing" : "So cosa sto facendo",
     "Password can not be changed. Please contact your administrator." : "La password non può essere cambiata. Contatta il tuo amministratore.",
+    "Passwords do not match" : "Le password non corrispondono",
     "Error adding {addItem}: {addItem} already exists" : "Errore nell'aggiunta di {addItem}: {addItem} esiste già",
     "No" : "No",
     "Yes" : "Sì",
