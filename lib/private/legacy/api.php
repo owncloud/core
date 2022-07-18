@@ -402,7 +402,8 @@ class OC_API {
 				self::$logoutRequired = false;
 			} elseif ($userSession->tryTokenLogin($request)
 				|| $userSession->tryAuthModuleLogin($request)
-				|| $userSession->tryBasicAuthLogin($request)) {
+				|| $userSession->tryBasicAuthLogin($request)
+				|| $userSession->tryRememberMeLogin($request)) {
 				self::$logoutRequired = true;
 			} else {
 				return false;
