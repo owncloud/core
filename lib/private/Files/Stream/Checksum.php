@@ -24,6 +24,7 @@ namespace OC\Files\Stream;
 
 use Icewind\Streams\Wrapper;
 use OC\Cache\CappedMemoryCache;
+use OC_Util;
 
 /**
  * Computes the checksum of the wrapped stream. The checksum can be retrieved with
@@ -131,30 +132,6 @@ class Checksum extends Wrapper {
 	}
 
 	/**
-	 * Remove .part extension from a file path
-	 * @param string $path Path that may identify a .part file
-	 * @return string File path without .part extension
-	 */
-	private function stripPartialFileExtension($path) {
-		$extension = \pathinfo($path, PATHINFO_EXTENSION);
-
-		if ($extension === 'part') {
-			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
-			$fPath = \substr($path, 0, $newLength);
-
-			// if path also contains a transaction id, we remove it too
-			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
-			if (\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
-				$newLength = \strlen($fPath) - \strlen($extension) -1;
-				$fPath = \substr($fPath, 0, $newLength);
-			}
-			return $fPath;
-		} else {
-			return $path;
-		}
-	}
-
-	/**
 	 * Make checksums available for part files and the original file for which part file has been created
 	 * @return bool
 	 */
@@ -166,7 +143,7 @@ class Checksum extends Wrapper {
 		// If current path belongs to part file, save checksum for original file
 		// As a result, call to getChecksums for original file (of this part file) will
 		// fetch checksum from cache
-		$originalFilePath = $this->stripPartialFileExtension($currentPath);
+		$originalFilePath = OC_Util::stripPartialFileExtension($currentPath);
 		if ($originalFilePath !== $currentPath) {
 			self::$checksums[$originalFilePath] = $checksum;
 		}
