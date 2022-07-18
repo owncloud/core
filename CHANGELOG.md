@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 * Bugfix - Replace userid with username in login form: [#39870](https://github.com/owncloud/core/pull/39870)
+* Bugfix - Quota can be exceeded by user: [#40140](https://github.com/owncloud/core/issues/40140)
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 * Bugfix - Do not crash while running the cleanup-chunks command: [#40000](https://github.com/owncloud/core/pull/40000)
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
@@ -50,6 +51,15 @@ Details
 
    https://github.com/owncloud/core/pull/39870
    https://github.com/owncloud/oauth2/pull/286
+
+* Bugfix - Quota can be exceeded by user: [#40140](https://github.com/owncloud/core/issues/40140)
+
+   Copying a file in or out of a received share could succeed even if there was not enough storage
+   quota allowed at the target location. This problem has been fixed. Copies will now return 507
+   "Insufficient storage" in this case.
+
+   https://github.com/owncloud/core/issues/40140
+   https://github.com/owncloud/core/pull/39895
 
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 
