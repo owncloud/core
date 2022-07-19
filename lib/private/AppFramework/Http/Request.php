@@ -610,6 +610,10 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 */
 	public function getRequestUri() {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
+		// remove too many leading slashes - can be caused by reverse proxy configuration
+		if (\strpos($uri, '/') === 0) {
+			$uri = '/' . \ltrim($uri, '/');
+		}
 		if ($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
 			$uri = $this->getScriptName() . \substr($uri, \strlen($this->server['SCRIPT_NAME']));
 		} else {
