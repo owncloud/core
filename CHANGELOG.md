@@ -25,6 +25,7 @@ Summary
 * Bugfix - Error responses to add group API requests are inconsistent: [#40164](https://github.com/owncloud/core/issues/40164)
 * Bugfix - Handle exception when adding mount to existing cache or lock: [#40192](https://github.com/owncloud/core/pull/40192)
 * Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
+* Bugfix - Handle extra slashes at start of URI path: [#40216](https://github.com/owncloud/core/pull/40216)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -177,6 +178,16 @@ Details
 
    https://github.com/owncloud/core/issues/40203
    https://github.com/owncloud/core/pull/40204
+
+* Bugfix - Handle extra slashes at start of URI path: [#40216](https://github.com/owncloud/core/pull/40216)
+
+   If extra slashes were present in a request URI before the path then a 500 server error was
+   returned. For example, https://example.com//remote.php/webdav/file.txt
+
+   Any extra slashes are now removed and the request works.
+
+   https://github.com/owncloud/core/issues/34365
+   https://github.com/owncloud/core/pull/40216
 
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 
