@@ -1,0 +1,9 @@
+Bugfix: Handle extra slashes at start of URI path
+
+If extra slashes were present in a request URI before the path then a 500 server
+error was returned. For example, https://example.com//remote.php/webdav/file.txt
+
+Any extra slashes are now removed and the request works.
+
+https://github.com/owncloud/core/pull/40216
+https://github.com/owncloud/core/issues/34365
