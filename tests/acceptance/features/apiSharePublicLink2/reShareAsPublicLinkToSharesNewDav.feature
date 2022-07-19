@@ -151,13 +151,13 @@ Feature: reshare as public link
       | publicUpload | false        |
     When user "Brian" updates the last public link share using the sharing API with
       | permissions | read,update,create,delete |
-    Then the OCS status code should be "404"
-    And the HTTP status code should be "<http_status_code>"
+    Then the OCS status code should be "404" or "403"
+    And the HTTP status code should be "<http_status_code1>" or "<http_status_code2>"
     And uploading a file should not work using the new public WebDAV API
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
+      | ocs_api_version | http_status_code1 | http_status_code2 |
+      | 1               | 200               | 200               |
+      | 2               | 404               | 403               |
 
 
   Scenario Outline: increasing permissions of a public link from a sub-folder of a share with share+read only permissions is not allowed
@@ -173,10 +173,10 @@ Feature: reshare as public link
     And uploading a file should not work using the new public WebDAV API
     When user "Brian" updates the last public link share using the sharing API with
       | permissions | read,update,create,delete |
-    Then the OCS status code should be "404"
-    And the HTTP status code should be "<http_status_code>"
+    Then the OCS status code should be "404" or "403"
+    And the HTTP status code should be "<http_status_code1>" or "<http_status_code2>"
     And uploading a file should not work using the new public WebDAV API
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
+      | ocs_api_version | http_status_code1 | http_status_code2 |
+      | 1               | 200               | 200               |
+      | 2               | 404               | 403               |
