@@ -359,7 +359,7 @@ Feature: create a public link share
       | 2               | 403             |
 
 
-  @issue-ocis-reva-41
+  @issue-ocis-reva-41 @skipOnOcis
   Scenario Outline: Creating a link share with update permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -559,10 +559,6 @@ Feature: create a public link share
       | ocs_api_version | ocs_status_code | http_status_code | public-webdav-api-version |
       | 1               | 100             | 200              | old                       |
       | 2               | 200             | 200              | old                       |
-
-
-    Examples:
-      | ocs_api_version | ocs_status_code | http_status_code | public-webdav-api-version |
       | 1               | 100             | 200              | new                       |
       | 2               | 200             | 200              | new                       |
 

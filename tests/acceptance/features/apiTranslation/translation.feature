@@ -1,4 +1,4 @@
-@api @skipOnLDAP
+@api @skipOnLDAP @skipOnOcis
 Feature: translate messages in api response to preferred language
   As a user
   I want response messages to be translated in preferred language
