@@ -3636,7 +3636,11 @@ class FeatureContext extends BehatVariablesContext {
 			$storageName,
 			$this->getStepLineRef()
 		);
-		var_dump($result);
+		Assert::assertEquals(
+			"0",
+			$result["code"],
+			"Could not create local storage mount.\nError:\n" . $result["stdout"] . "\n" . $result["stderr"]
+		);
 		$storageId = $result['storageId'];
 		if (!is_numeric($storageId)) {
 			throw new Exception(
@@ -3653,7 +3657,13 @@ class FeatureContext extends BehatVariablesContext {
 			],
 			$this->getStepLineRef()
 		);
-		var_dump($resp);
+		Assert::assertEquals(
+			"0",
+			$resp["code"],
+			"Sharing is not enabled for local storage.\nError:\n"
+			. $resp["stdOut"]
+			. "\n" . $resp["stdErr"]
+		);
 	}
 
 	/**
@@ -3689,7 +3699,14 @@ class FeatureContext extends BehatVariablesContext {
 				],
 				$this->getStepLineRef()
 			);
-			var_dump($resp);
+			Assert::assertEquals(
+				'0',
+				$resp['code'],
+				"Deleting storage '$storageId' failed.\nError:\n"
+				. $resp['stdOut']
+				. "\n"
+				. $resp['stdErr']
+			);
 		}
 		$this->storageIds = [];
 	}
