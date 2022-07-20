@@ -82,7 +82,6 @@ Feature: upload file to shared folder
     Then the HTTP status code should be "200"
     And as "Alice" file "/FOLDER/textfile.txt" should exist
     And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "overwritten content"
-    @skipOnOcis
     Examples:
       | dav_version |
       | old         |
@@ -342,7 +341,6 @@ Feature: upload file to shared folder
       | Upload-Metadata | filename L1NoYXJlcy90ZXh0RmlsZS50eHQ= |
     Then the HTTP status code should be "204"
     And the content of file "/textFile.txt" for user "Alice" should be "overwritten content"
-    @skipOnOcis
     Examples:
       | dav_version |
       | old         |
