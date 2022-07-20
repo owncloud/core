@@ -1,0 +1,11 @@
+Bugfix: Apps requiring SAML/SSO session now load correctly at first page
+
+Apps that require session to load some content at request start, could not be loaded due 
+to missing SAML/SSO session objects that could only be obtained after the app loaded or at next visited page
+when that object was correctly persisted. Now, after handling apache backend session, auth success 
+confirmation page is shown that redirects to the owncloud landing page.
+
+https://github.com/owncloud/core/pull/40161
+https://github.com/owncloud/enterprise/issues/4712
+https://github.com/owncloud/enterprise/issues/5225
+https://github.com/owncloud/core/issues/31052

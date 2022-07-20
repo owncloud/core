@@ -1,0 +1,8 @@
+Bugfix: Quota can be exceeded by user
+
+Copying a file in or out of a received share could succeed even if there was not
+enough storage quota allowed at the target location. This problem has been fixed.
+Copies will now return 507 "Insufficient storage" in this case.
+
+https://github.com/owncloud/core/issues/40140
+https://github.com/owncloud/core/pull/39895

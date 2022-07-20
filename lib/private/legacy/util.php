@@ -227,7 +227,12 @@ class OC_Util {
 					$user = $storage->getUser()->getUID();
 					$quota = OC_Util::getUserQuota($user);
 					if ($quota !== \OCP\Files\FileInfo::SPACE_UNLIMITED) {
-						return new \OC\Files\Storage\Wrapper\Quota(['storage' => $storage, 'quota' => $quota, 'root' => 'files']);
+						return new \OC\Files\Storage\Wrapper\Quota([
+							'mountPoint' => $mountPoint,
+							'storage' => $storage,
+							'quota' => $quota,
+							'root' => 'files'
+						]);
 					}
 				}
 			}
@@ -1462,6 +1467,32 @@ class OC_Util {
 		$file = \rtrim($file, '/');
 		$t = \explode('/', $file);
 		return \array_pop($t);
+	}
+
+	/**
+	 * Remove the ".part" extension from the path. The "ocTransferId" part added for the uploads
+	 * can also be removed.
+	 * @params string $path the path to be cleaned up
+	 * @params bool $stripTransferId whether the method should also remove the "ocTransferId" if it exists
+	 * @return string the cleaned path
+	 */
+	public static function stripPartialFileExtension(string $path, bool $stripTransferId = true): string {
+		$extension = \pathinfo($path, PATHINFO_EXTENSION);
+
+		if ($extension === 'part') {
+			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
+			$fPath = \substr($path, 0, $newLength);
+
+			// if path also contains a transaction id, we remove it too
+			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
+			if ($stripTransferId && \substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
+				$newLength = \strlen($fPath) - \strlen($extension) -1;
+				$fPath = \substr($fPath, 0, $newLength);
+			}
+			return $fPath;
+		} else {
+			return $path;
+		}
 	}
 
 	/**

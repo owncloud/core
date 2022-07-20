@@ -56,7 +56,7 @@
         "owncloud/tarstreamer": "v2.0.0",
         "patchwork/jsqueeze": "^2.0",
         "christophwurst/id3parser": "^0.1.1",
-        "sabre/dav": "^4.1",
+        "sabre/dav": "^4.4",
         "sabre/http": "^5.1",
         "deepdiver/zipstreamer": "^2.0",
         "symfony/translation": "^4.4",

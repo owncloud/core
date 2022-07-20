@@ -294,7 +294,7 @@ class OC_Response {
 		$isCorsRequest = (\is_array($globalAllowedDomains) && \in_array($domain, $globalAllowedDomains, true));
 		if (!$isCorsRequest && $userId !== null) {
 			// check if any of the user specific CORS domains matches
-			$allowedDomains = \json_decode($config->getUserValue($userId, 'core', 'domains'));
+			$allowedDomains = \json_decode($config->getUserValue($userId, 'core', 'domains'), true);
 			$isCorsRequest = (\is_array($allowedDomains) && \in_array($domain, $allowedDomains, true));
 		}
 		if ($isCorsRequest) {

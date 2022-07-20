@@ -208,6 +208,7 @@
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Kaixo,\n\n%s-ek %s zurekin partekatu duela jakin dezazun.\nIkusi ezazu: %s\n\n",
     "The share will expire on %s." : "Elkarbanaketa %s-n iraungiko da.",
     "Cheers!" : "Ongi izan!",
+    "The application was authorized successfully. You can now close this window." : "Aplikazioa baimendua izan da. Leiho hau itxi dezakezu.",
     "Internal Server Error" : "Zerbitzariaren Barne Errorea",
     "The server encountered an internal error and was unable to complete your request." : "Zerbitzariak barne errore bat izan du eta ez da gai izan zure eskaria osatzeko.",
     "Technical details" : "Arazo teknikoak",

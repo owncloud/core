@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 * Bugfix - Replace userid with username in login form: [#39870](https://github.com/owncloud/core/pull/39870)
+* Bugfix - Quota can be exceeded by user: [#40140](https://github.com/owncloud/core/issues/40140)
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 * Bugfix - Do not crash while running the cleanup-chunks command: [#40000](https://github.com/owncloud/core/pull/40000)
 * Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: [#40065](https://github.com/owncloud/core/pull/40065)
@@ -19,8 +20,12 @@ Summary
 * Bugfix - Application selection menu now appears on shared folders: [#40143](https://github.com/owncloud/core/pull/40143)
 * Bugfix - Do not invalidate app tokens when no LDAP connection: [#40152](https://github.com/owncloud/core/pull/40152)
 * Bugfix - Convert from utf8_encode to mb_convert_encoding: [#40158](https://github.com/owncloud/core/pull/40158)
+* Bugfix - Apps requiring SAML/SSO session now load correctly at first page: [#40161](https://github.com/owncloud/core/pull/40161)
 * Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
 * Bugfix - Error responses to add group API requests are inconsistent: [#40164](https://github.com/owncloud/core/issues/40164)
+* Bugfix - Handle exception when adding mount to existing cache or lock: [#40192](https://github.com/owncloud/core/pull/40192)
+* Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
+* Bugfix - Handle extra slashes at start of URI path: [#40216](https://github.com/owncloud/core/pull/40216)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -29,6 +34,7 @@ Summary
 * Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: [#40087](https://github.com/owncloud/core/pull/40087)
 * Enhancement - Add additional columns to background job queue status: [#40113](https://github.com/owncloud/core/pull/40113)
 * Enhancement - Add config option to bypass the proxy setting by domain: [#40148](https://github.com/owncloud/core/pull/40148)
+* Enhancement - Allow sharing with multiple users at once: [#40155](https://github.com/owncloud/core/pull/40155)
 
 Details
 -------
@@ -46,6 +52,15 @@ Details
 
    https://github.com/owncloud/core/pull/39870
    https://github.com/owncloud/oauth2/pull/286
+
+* Bugfix - Quota can be exceeded by user: [#40140](https://github.com/owncloud/core/issues/40140)
+
+   Copying a file in or out of a received share could succeed even if there was not enough storage
+   quota allowed at the target location. This problem has been fixed. Copies will now return 507
+   "Insufficient storage" in this case.
+
+   https://github.com/owncloud/core/issues/40140
+   https://github.com/owncloud/core/pull/39895
 
 * Bugfix - List apps only once: [#39930](https://github.com/owncloud/core/issues/39930)
 
@@ -118,6 +133,18 @@ Details
 
    https://github.com/owncloud/core/pull/40158
 
+* Bugfix - Apps requiring SAML/SSO session now load correctly at first page: [#40161](https://github.com/owncloud/core/pull/40161)
+
+   Apps that require session to load some content at request start, could not be loaded due to
+   missing SAML/SSO session objects that could only be obtained after the app loaded or at next
+   visited page when that object was correctly persisted. Now, after handling apache backend
+   session, auth success confirmation page is shown that redirects to the owncloud landing page.
+
+   https://github.com/owncloud/enterprise/issues/4712
+   https://github.com/owncloud/enterprise/issues/5225
+   https://github.com/owncloud/core/issues/31052
+   https://github.com/owncloud/core/pull/40161
+
 * Bugfix - Display error message when a group cannot be created: [#40162](https://github.com/owncloud/core/issues/40162)
 
    If a new group could not be created on the user-management UI, the error message text was not
@@ -133,6 +160,34 @@ Details
 
    https://github.com/owncloud/core/issues/40164
    https://github.com/owncloud/core/pull/40165
+
+* Bugfix - Handle exception when adding mount to existing cache or lock: [#40192](https://github.com/owncloud/core/pull/40192)
+
+   In some cases there are can be multiple parallel requests that could in their logic attempt to
+   create shared file mountpoint for the file or to create lock, e.g. collaboration software.
+   Exception to add cache or lock that already exists is now handled
+
+   https://github.com/owncloud/enterprise/issues/5198
+   https://github.com/owncloud/core/pull/40192
+
+* Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
+
+   The list of allowed domains was not being correctly decoded, resulting in failure to recognise
+   a valid domain, and thus failure to send the relevant CORS headers. The decoding of the domains
+   list has been corrected.
+
+   https://github.com/owncloud/core/issues/40203
+   https://github.com/owncloud/core/pull/40204
+
+* Bugfix - Handle extra slashes at start of URI path: [#40216](https://github.com/owncloud/core/pull/40216)
+
+   If extra slashes were present in a request URI before the path then a 500 server error was
+   returned. For example, https://example.com//remote.php/webdav/file.txt
+
+   Any extra slashes are now removed and the request works.
+
+   https://github.com/owncloud/core/issues/34365
+   https://github.com/owncloud/core/pull/40216
 
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 
@@ -151,8 +206,8 @@ Details
    egulias/email-validator (3.1.2 to 3.2.1) - guzzlehttp/guzzle (v5.3.4 to v7.4.5) -
    icewind/streams (0.7.5 to 0.7.6) - laminas/laminas-stdlib (3.7.1 to 3.10.1) -
    laminas/laminas-validator (2.17.0 to 2.19.0) - paragonie/constant_time_encoding
-   (v2.5.0 to v2.6.3) - sabre/dav (4.3.1 to 4.4.0) - sabre/http (5.1.3 to 5.1.5) - sabre/vobject
-   (4.4.1 to 4.4.2) - webmozart/assert (1.10.0 to 1.11.0)
+   (v2.5.0 to v2.6.3) - sabre/dav (4.3.1 to 4.4.0) - sabre/http (5.1.3 to 5.1.6) - sabre/vobject
+   (4.4.1 to 4.4.3) - webmozart/assert (1.10.0 to 1.11.0)
 
    The following have been updated in apps/files_external/3rdparty: -
    google/apiclient-services (0.244.0 to 0.254.0) - google/apiclient (2.12.4 to 2.12.6) -
@@ -171,6 +226,7 @@ Details
    https://github.com/owncloud/core/pull/40169
    https://github.com/owncloud/core/pull/40171
    https://github.com/owncloud/core/pull/40191
+   https://github.com/owncloud/core/pull/40212
 
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 
@@ -214,6 +270,15 @@ Details
    proxy set via the "proxy" option
 
    https://github.com/owncloud/core/pull/40148
+
+* Enhancement - Allow sharing with multiple users at once: [#40155](https://github.com/owncloud/core/pull/40155)
+
+   It is now possible to share resources with multiple users at once via the following format:
+   user1, user2, user3.
+
+   https://github.com/owncloud/enterprise/issues/2865
+   https://github.com/owncloud/core/pull/40155
+   https://github.com/owncloud/core/pull/40199
 
 Changelog for ownCloud Core [10.10.0] (2022-05-16)
 =======================================

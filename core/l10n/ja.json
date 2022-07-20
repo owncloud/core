@@ -273,6 +273,7 @@
     "The share will expire on %s." : "共有は %s で有効期限が切れます。",
     "Personal note from the sender: \n %s." : "送信者からの個人的なお知らせ:\n%s",
     "Cheers!" : "それでは！",
+    "The application was authorized successfully. You can now close this window." : "アプリケーションの認証に成功しました。このウインドウは閉じることができます。",
     "Internal Server Error" : "内部サーバーエラー",
     "The server encountered an internal error and was unable to complete your request." : "サーバー内でエラーが発生したため、リクエストを完了できませんでした。",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "エラーが複数回繰り返される場合は、以下の技術的な詳細を含めてサーバーの管理者に問い合わせてください。",

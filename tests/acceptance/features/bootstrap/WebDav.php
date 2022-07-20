@@ -5054,7 +5054,7 @@ trait WebDav {
 			},
 			$elementRows
 		);
-		$resultEntries = $this->findEntryFromPropfindResponse(null, $user);
+		$resultEntries = $this->findEntryFromPropfindResponse(null, $user, "REPORT");
 		foreach ($resultEntries as $resultEntry) {
 			Assert::assertContains($resultEntry, $expectedEntries);
 		}
@@ -5297,17 +5297,24 @@ trait WebDav {
 			foreach ($multistatusResults as $multistatusResult) {
 				$entryPath = $multistatusResult['value'][0]['value'];
 				if (OcisHelper::isTestingOnOcis() && $method === "REPORT") {
-					$entryName = \rawurldecode($entryPath);
-					if (str_ends_with($entryName, $entryNameToSearch)) {
-						return $multistatusResult;
+					if ($entryNameToSearch !== null && str_ends_with($entryPath, $entryNameToSearch)) {
+						return $multistatusResults;
+					} else {
+						$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
+							$this->getBaseUrl(),
+							$user,
+							$this->getPasswordForUser($user),
+							$this->getStepLineRef()
+						);
+						$splitSpaceID = explode("$", $spaceId);
+						$topWebDavPath = "/dav/spaces/" . $splitSpaceID[0] . "%21" . "$splitSpaceID[1]" . "/";
 					}
-				} else {
-					$entryName = \str_replace($topWebDavPath, "", $entryPath);
-					$entryName = \rawurldecode($entryName);
-					$entryName = \trim($entryName, "/");
-					if ($trimmedEntryNameToSearch === $entryName) {
-						return $multistatusResult;
-					}
+				}
+				$entryName = \str_replace($topWebDavPath, "", $entryPath);
+				$entryName = \rawurldecode($entryName);
+				$entryName = \trim($entryName, "/");
+				if ($trimmedEntryNameToSearch === $entryName) {
+					return $multistatusResult;
 				}
 				\array_push($results, $entryName);
 			}

@@ -98,9 +98,9 @@ class LoginControllerTest extends TestCase {
 			->method('getCookie')
 			->with('oc_token')
 			->willReturn(null);
-		$this->config
-			->expects($this->never())
-			->method('deleteUserValue');
+		$this->userSession
+			->expects($this->once())
+			->method('clearRememberMeTokensForLoggedInUser');
 		$this->urlGenerator
 			->expects($this->once())
 			->method('linkToRouteAbsolute')
@@ -117,19 +117,9 @@ class LoginControllerTest extends TestCase {
 			->method('getCookie')
 			->with('oc_token')
 			->willReturn('MyLoginToken');
-		$user = $this->createMock(IUser::class);
-		$user
-			->expects($this->once())
-			->method('getUID')
-			->willReturn('JohnDoe');
 		$this->userSession
 			->expects($this->once())
-			->method('getUser')
-			->willReturn($user);
-		$this->config
-			->expects($this->once())
-			->method('deleteUserValue')
-			->with('JohnDoe', 'login_token', 'MyLoginToken');
+			->method('clearRememberMeTokensForLoggedInUser');
 		$this->urlGenerator
 			->expects($this->once())
 			->method('linkToRouteAbsolute')
@@ -144,6 +134,20 @@ class LoginControllerTest extends TestCase {
 		$this->userSession
 			->expects($this->once())
 			->method('isLoggedIn')
+			->willReturn(true);
+
+		$expectedResponse = new RedirectResponse(\OC_Util::getDefaultPageUrl());
+		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('', '', ''));
+	}
+
+	public function testShowLoginFormForRememberMe() {
+		$this->userSession
+			->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(false);
+		$this->userSession
+			->expects($this->once())
+			->method('tryRememberMeLogin')
 			->willReturn(true);
 
 		$expectedResponse = new RedirectResponse(\OC_Util::getDefaultPageUrl());
@@ -449,6 +453,37 @@ class LoginControllerTest extends TestCase {
 		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('0', '', ''));
 	}
 
+	public function testShowLoginFormWithApacheBackend() {
+		$this->userSession
+			->expects($this->never())
+			->method('isLoggedIn');
+		$this->loginController = $this->getMockBuilder(LoginController::class)
+			->setMethods(['handleApacheAuth'])
+			->setConstructorArgs([
+				'core',
+				$this->request,
+				$this->userManager,
+				$this->config,
+				$this->session,
+				$this->userSession,
+				$this->urlGenerator,
+				$this->twoFactorManager,
+				$this->licenseManager
+			])
+			->getMock();
+		$this->loginController->expects($this->once())
+			->method('handleApacheAuth')
+			->willReturn(true);
+
+		$expectedResponse = new TemplateResponse(
+			'core',
+			'apacheauthredirect',
+			[],
+			'guest'
+		);
+		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('0', '', ''));
+	}
+
 	public function dataLoginWithInvalidCredentials() {
 		return [
 			[false, 1],
@@ -480,6 +515,8 @@ class LoginControllerTest extends TestCase {
 			->will($this->returnValue($loginPageUrl));
 
 		$this->userSession->expects($this->never())
+			->method('setNewRememberMeTokenForLoggedInUser');
+		$this->userSession->expects($this->never())
 			->method('createSessionToken');
 		$this->userManager->expects($this->exactly($expectedGetByEmailCalls))
 			->method('getByEmail')->willReturn([]);
@@ -501,6 +538,8 @@ class LoginControllerTest extends TestCase {
 		$this->userSession->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($user));
+		$this->userSession->expects($this->never())
+			->method('setNewRememberMeTokenForLoggedInUser');
 		$this->userSession->expects($this->once())
 			->method('createSessionToken')
 			->with($this->request, $user->getUID(), $user, $password);
@@ -532,6 +571,51 @@ class LoginControllerTest extends TestCase {
 		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, null));
 	}
 
+	public function testLoginWithValidCredentialsAndRememberMe() {
+		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
+		$user = $this->createMock(IUser::class);
+		$password = 'secret';
+		$indexPageUrl = 'some url';
+
+		$this->userSession->expects($this->once())
+			->method('login')
+			->with($user, $password)
+			->will($this->returnValue(true));
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
+		$this->userSession->expects($this->once())
+			->method('setNewRememberMeTokenForLoggedInUser');
+		$this->userSession->expects($this->once())
+			->method('createSessionToken')
+			->with($this->request, $user->getUID(), $user, $password);
+		$this->twoFactorManager->expects($this->once())
+			->method('isTwoFactorAuthenticated')
+			->with($user)
+			->will($this->returnValue(false));
+
+		$expected = new RedirectResponse($indexPageUrl);
+
+		$this->loginController = $this->getMockBuilder(LoginController::class)
+			->setMethods(['getDefaultUrl'])
+			->setConstructorArgs([
+				'core',
+				$this->request,
+				$this->userManager,
+				$this->config,
+				$this->session,
+				$this->userSession,
+				$this->urlGenerator,
+				$this->twoFactorManager,
+				$this->licenseManager
+			])
+			->getMock();
+		$this->loginController->expects($this->once())
+			->method('getDefaultUrl')
+			->willReturn($indexPageUrl);
+
+		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, null, null, "1")); // "1" is expected as rememberMe value
+	}
 	public function testLoginWithValidCredentialsAndRedirectUrl() {
 		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
 		$user = $this->createMock(IUser::class);
@@ -549,6 +633,8 @@ class LoginControllerTest extends TestCase {
 		$this->userSession->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($user));
+		$this->userSession->expects($this->never())
+			->method('setNewRememberMeTokenForLoggedInUser');
 		$this->userSession->expects($this->once())
 			->method('createSessionToken')
 			->with($this->request, $user->getUID(), 'Jane', $password);
@@ -583,6 +669,8 @@ class LoginControllerTest extends TestCase {
 		$this->userSession->expects($this->once())
 			->method('login')
 			->with('john@doe.com', $password);
+		$this->userSession->expects($this->never())
+			->method('setNewRememberMeTokenForLoggedInUser');
 		$this->userSession->expects($this->once())
 			->method('createSessionToken')
 			->with($this->request, $user->getUID(), 'john@doe.com', $password);

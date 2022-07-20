@@ -650,6 +650,7 @@ class SessionTest extends TestCase {
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('foo'));
+		$user->method('isEnabled')->willReturn(true);
 		$user->expects($this->once())
 			->method('updateLastLoginTimestamp');
 
@@ -660,7 +661,13 @@ class SessionTest extends TestCase {
 
 		//prepare login token
 		$token = 'goodToken';
-		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				['foo', 'login_token', \hash('snefru', $token), null, \time()],
+			]));
+		$this->config->expects($this->once())
+			->method('deleteUserValue')
+			->with('foo', 'login_token', \hash('snefru', $token));
 
 		/** @var Session | \PHPUnit\Framework\MockObject\MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
@@ -670,9 +677,7 @@ class SessionTest extends TestCase {
 			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $this->eventDispatcher])
 			->getMock();
 
-		$granted = $userSession->loginWithCookie('foo', $token);
-
-		$this->assertTrue($granted);
+		$this->assertTrue($userSession->loginWithCookie('foo', $token));
 	}
 
 	public function testRememberLoginInvalidToken() {
@@ -689,6 +694,7 @@ class SessionTest extends TestCase {
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('foo'));
+		$user->method('isEnabled')->willReturn(true);
 		$user->expects($this->never())
 			->method('updateLastLoginTimestamp');
 
@@ -699,7 +705,13 @@ class SessionTest extends TestCase {
 
 		//prepare login token
 		$token = 'goodToken';
-		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				['foo', 'login_token', \sha1($token), null, \time()],
+			]));
+		$this->config->expects($this->never())
+			->method('deleteUserValue')
+			->with('foo', 'login_token', \sha1($token));
 
 		$userSession = new Session(
 			$manager,
@@ -723,6 +735,69 @@ class SessionTest extends TestCase {
 		);
 
 		$granted = $userSession->loginWithCookie('foo', 'badToken');
+
+		$this->assertFalse($granted);
+		$this->assertEquals('user.loginfailed', $calledLoginFailedEvent[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledLoginFailedEvent[1]);
+		$this->assertArrayHasKey('user', $calledLoginFailedEvent[1]);
+		$this->assertEquals('foo', $calledLoginFailedEvent[1]->getArgument('user'));
+	}
+
+	public function testRememberLoginExpiredToken() {
+		/** @var ISession | \PHPUnit\Framework\MockObject\MockObject $session */
+		$session = $this->createMock(Memory::class);
+		$session->expects($this->never())
+			->method('set');
+		$session->expects($this->once())
+			->method('regenerateId');
+
+		/** @var Manager | \PHPUnit\Framework\MockObject\MockObject $manager */
+		$manager = $this->createMock(Manager::class);
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('foo'));
+		$user->method('isEnabled')->willReturn(true);
+		$user->expects($this->never())
+			->method('updateLastLoginTimestamp');
+
+		$manager->expects($this->once())
+			->method('get')
+			->with('foo')
+			->will($this->returnValue($user));
+
+		//prepare login token
+		$token = 'goodToken';
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				['foo', 'login_token', \hash('snefru', $token), null, "50"],
+			]));
+		$this->config->expects($this->once())
+			->method('deleteUserValue')
+			->with('foo', 'login_token', \hash('snefru', $token));
+
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
+
+		$calledLoginFailedEvent = [];
+		$this->eventDispatcher->addListener(
+			'user.loginfailed',
+			function (GenericEvent $event) use (&$calledLoginFailedEvent) {
+				$calledLoginFailedEvent[] = 'user.loginfailed';
+				$calledLoginFailedEvent[] = $event;
+			}
+		);
+
+		$granted = $userSession->loginWithCookie('foo', $token);
 
 		$this->assertFalse($granted);
 		$this->assertEquals('user.loginfailed', $calledLoginFailedEvent[0]);
@@ -1069,7 +1144,6 @@ class SessionTest extends TestCase {
 			->with('APP-PASSWORD');
 		$userSession->expects($this->once())
 			->method('logout');
-			   
 		$user->method('getBackendClassName')
 						->will($this->returnValue('LDAP'));
 		$userManager->method('get')
@@ -1228,6 +1302,117 @@ class SessionTest extends TestCase {
 			->will($this->throwException(new InvalidTokenException()));
 
 		$userSession->updateSessionTokenPassword($password);
+	}
+
+	public function testClearRememberMeTokensForLoggedInUser() {
+		$manager = $this->createMock(IUserManager::class);
+		$session = $this->createMock(ISession::class);
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
+
+		$uid = 'mockedUser';
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn($uid);
+
+		$userSession->setUser($user);
+
+		$timeFactory->method('getTime')->willReturn(60*60*24*366);
+
+		$hash1 = \hash('snefru', 'token1');
+		$hash2 = \hash('snefru', 'token2');
+		$hash3 = \hash('snefru', 'token3');
+		$tokenList = [
+			$hash1 => \strval(60 * 60 * 24 * 365),
+			$hash2 => "30",
+			$hash3 => \strval(60 * 60 * 24 * 365),
+		];
+
+		$this->config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['remember_login_cookie_lifetime', 60*60*24*15, 60*60*24*15]
+			]));
+		$this->config->method('getUserKeys')
+			->with($uid, 'login_token')
+			->willReturn(\array_keys($tokenList));
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				[$uid, 'login_token', $hash1, null, $tokenList[$hash1]],
+				[$uid, 'login_token', $hash2, null, $tokenList[$hash2]],
+				[$uid, 'login_token', $hash3, null, $tokenList[$hash3]],
+			]));
+
+		$this->config->expects($this->exactly(1))
+			->method('deleteUserValue')
+			->withConsecutive(
+				[$uid, 'login_token', $hash2]
+			);
+		$userSession->clearRememberMeTokensForLoggedInUser(null);
+	}
+
+	public function testClearRememberMeTokensForLoggedInUserWithToken() {
+		$manager = $this->createMock(IUserManager::class);
+		$session = $this->createMock(ISession::class);
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
+
+		$uid = 'mockedUser';
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn($uid);
+
+		$userSession->setUser($user);
+
+		$timeFactory->method('getTime')->willReturn(60*60*24*366);
+
+		$hash1 = \hash('snefru', 'token1');
+		$hash2 = \hash('snefru', 'token2');
+		$hash3 = \hash('snefru', 'token3');
+		$tokenList = [
+			$hash1 => \strval(60 * 60 * 24 * 365),
+			$hash2 => "30",
+			$hash3 => \strval(60 * 60 * 24 * 365),
+		];
+
+		$this->config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['remember_login_cookie_lifetime', 60*60*24*15, 60*60*24*15]
+			]));
+		$this->config->method('getUserKeys')
+			->with($uid, 'login_token')
+			->willReturn(\array_keys($tokenList));
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				[$uid, 'login_token', $hash1, null, $tokenList[$hash1]],
+				[$uid, 'login_token', $hash2, null, $tokenList[$hash2]],
+				[$uid, 'login_token', $hash3, null, $tokenList[$hash3]],
+			]));
+
+		$this->config->expects($this->exactly(2))
+			->method('deleteUserValue')
+			->withConsecutive(
+				[$uid, 'login_token', $hash1],
+				[$uid, 'login_token', $hash2]
+			);
+		$userSession->clearRememberMeTokensForLoggedInUser('token1');
 	}
 
 	public function testCancelLogout() {

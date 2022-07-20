@@ -26,6 +26,8 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\Cache\ICacheEntry;
+use OC\Files\Filesystem;
+use OC_Util;
 
 class Quota extends Wrapper {
 
@@ -39,6 +41,9 @@ class Quota extends Wrapper {
 	 */
 	protected $sizeRoot;
 
+	/** @var string $mountPoint */
+	protected $mountPoint;
+
 	/**
 	 * @param array $parameters
 	 */
@@ -46,6 +51,7 @@ class Quota extends Wrapper {
 		parent::__construct($parameters);
 		$this->quota = $parameters['quota'];
 		$this->sizeRoot = isset($parameters['root']) ? $parameters['root'] : '';
+		$this->mountPoint = $parameters['mountPoint'] ?? '';
 	}
 
 	/**
@@ -142,14 +148,32 @@ class Quota extends Wrapper {
 	public function fopen($path, $mode) {
 		$source = $this->storage->fopen($path, $mode);
 
-		// don't apply quota for part files
-		if (!$this->isPartFile($path)) {
-			$free = $this->free_space('');
-			if ($source && $free >= 0 && $mode !== 'r' && $mode !== 'rb') {
-				// only apply quota for files, not metadata, trash or others
-				if (\strpos(\ltrim($path, '/'), 'files/') === 0) {
-					return \OC\Files\Stream\Quota::wrap($source, $free);
-				}
+		$used = \OCP\Files\FileInfo::SPACE_NOT_COMPUTED;
+		$free = $this->free_space('');
+		// if it's a .part file, check if we're trying to overwrite a file
+		if ($this->isPartFile($path)) {
+			$strippedPath = OC_Util::stripPartialFileExtension($path);
+			$used = $this->getSize($strippedPath);
+
+			$view = new \OC\Files\View();
+			$fullPath = Filesystem::normalizePath("{$this->mountPoint}/{$strippedPath}", true, true, true);
+
+			$fInfo = $view->getFileInfo($fullPath);
+			if ($fInfo && $fInfo->isShared()) {
+				$free = $view->free_space($fullPath);
+				$used = $fInfo->getSize();
+			}
+		}
+
+		if ($used >= 0) {
+			// if we're overwriting a file, add the size of that file to the available space
+			// so it's possible to overwrite in case the quota is limited
+			$free += $used;
+		}
+		if ($source && $free >= 0 && $mode !== 'r' && $mode !== 'rb') {
+			// only apply quota for files, not metadata, trash or others
+			if (\strpos(\ltrim($path, '/'), 'files/') === 0) {
+				return \OC\Files\Stream\Quota::wrap($source, $free);
 			}
 		}
 		return $source;

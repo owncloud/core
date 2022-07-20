@@ -48,6 +48,29 @@ Feature: external-storage
     And as "Alice" file "/local_storage/foo2/textfile0.txt" should not exist
     And as "Brian" file "/local.txt" should exist
 
+  @skipOnEncryptionType:user-keys
+  Scenario: Copy a file into storage
+    Given these users have been created with default attributes and small skeleton files:
+      | username |
+      | Alice    |
+    And user "Alice" has created folder "/local_storage/foo1"
+    When user "Alice" copies file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/local_storage/foo1/textfile0.txt" should exist
+    And as "Alice" file "/textfile0.txt" should exist
+
+
+  Scenario: Copy a file out of storage
+    Given these users have been created with default attributes and small skeleton files:
+      | username |
+      | Alice    |
+    And user "Alice" has created folder "/local_storage/foo1"
+    And user "Alice" has uploaded file with content "ownCloud test text file inside localstorage" to "/local_storage/foo1/fileInsideLocalStorage.txt"
+    When user "Alice" copies file "/local_storage/foo1/fileInsideLocalStorage.txt" to "/fileInsideLocalStorage.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/fileInsideLocalStorage.txt" should exist
+    And as "Alice" file "/local_storage/foo1/fileInsideLocalStorage.txt" should exist
+
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/local_storage/foo3"

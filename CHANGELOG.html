@@ -8,6 +8,7 @@
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Trigger the right event when the filecache is updated: <a href="https://github.com/owncloud/core/pull/39844">#39844</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Replace userid with username in login form: <a href="https://github.com/owncloud/core/pull/39870">#39870</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Quota can be exceeded by user: <a href="https://github.com/owncloud/core/issues/40140">#40140</a></li>
         <li class="type-bugfix changelog-item">Bugfix - List apps only once: <a href="https://github.com/owncloud/core/issues/39930">#39930</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Do not crash while running the cleanup-chunks command: <a href="https://github.com/owncloud/core/pull/40000">#40000</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Get file size using cURL on Ubuntu 20.04 and 22.04: <a href="https://github.com/owncloud/core/pull/40065">#40065</a></li>
@@ -17,8 +18,12 @@
         <li class="type-bugfix changelog-item">Bugfix - Application selection menu now appears on shared folders: <a href="https://github.com/owncloud/core/pull/40143">#40143</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Do not invalidate app tokens when no LDAP connection: <a href="https://github.com/owncloud/core/pull/40152">#40152</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Convert from utf8_encode to mb_convert_encoding: <a href="https://github.com/owncloud/core/pull/40158">#40158</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Apps requiring SAML/SSO session now load correctly at first page: <a href="https://github.com/owncloud/core/pull/40161">#40161</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Display error message when a group cannot be created: <a href="https://github.com/owncloud/core/issues/40162">#40162</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Error responses to add group API requests are inconsistent: <a href="https://github.com/owncloud/core/issues/40164">#40164</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Handle exception when adding mount to existing cache or lock: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - CORS on WebDAV is not working: <a href="https://github.com/owncloud/core/pull/40204">#40204</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Handle extra slashes at start of URI path: <a href="https://github.com/owncloud/core/pull/40216">#40216</a></li>
         <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
@@ -27,6 +32,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Add language prop to /cloud/user and /cloud/users/{userid} endpoint: <a href="https://github.com/owncloud/core/pull/40087">#40087</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add additional columns to background job queue status: <a href="https://github.com/owncloud/core/pull/40113">#40113</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add config option to bypass the proxy setting by domain: <a href="https://github.com/owncloud/core/pull/40148">#40148</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Allow sharing with multiple users at once: <a href="https://github.com/owncloud/core/pull/40155">#40155</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -42,6 +48,16 @@
             <p>The login form now replaces a user id with the user name.
             </p>
             <p>https://github.com/owncloud/core/pull/39870<br>https://github.com/owncloud/oauth2/pull/286<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Quota can be exceeded by user: <a href="https://github.com/owncloud/core/issues/40140">#40140</a></p>
+            <p>Copying a file in or out of a received share could succeed even if there was not enough storage
+   quota allowed at the target location. This problem has been fixed. Copies will now return 507
+   "Insufficient storage" in this case.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40140<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39895<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - List apps only once: <a href="https://github.com/owncloud/core/issues/39930">#39930</a></p>
@@ -113,6 +129,17 @@
             <p>https://github.com/owncloud/core/pull/40158<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Apps requiring SAML/SSO session now load correctly at first page: <a href="https://github.com/owncloud/core/pull/40161">#40161</a></p>
+            <p>Apps that require session to load some content at request start, could not be loaded due to
+   missing SAML/SSO session objects that could only be obtained after the app loaded or at next
+   visited page when that object was correctly persisted. Now, after handling apache backend
+   session, auth success confirmation page is shown that redirects to the owncloud landing page.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4712<br>https://github.com/owncloud/enterprise/issues/5225<br>https://github.com/owncloud/core/issues/31052<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40161<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - Display error message when a group cannot be created: <a href="https://github.com/owncloud/core/issues/40162">#40162</a></p>
             <p>If a new group could not be created on the user-management UI, the error message text was not
    displayed. This problem has been fixed.
@@ -130,6 +157,35 @@
             </p>
             <p>https://github.com/owncloud/core/pull/40165<br></p>
         </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Handle exception when adding mount to existing cache or lock: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>
+            <p>In some cases there are can be multiple parallel requests that could in their logic attempt to
+   create shared file mountpoint for the file or to create lock, e.g. collaboration software.
+   Exception to add cache or lock that already exists is now handled
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5198<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40192<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - CORS on WebDAV is not working: <a href="https://github.com/owncloud/core/pull/40204">#40204</a></p>
+            <p>The list of allowed domains was not being correctly decoded, resulting in failure to recognise
+   a valid domain, and thus failure to send the relevant CORS headers. The decoding of the domains
+   list has been corrected.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40203<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40204<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Handle extra slashes at start of URI path: <a href="https://github.com/owncloud/core/pull/40216">#40216</a></p>
+            <p>If extra slashes were present in a request URI before the path then a 500 server error was
+   returned. For example, https://example.com//remote.php/webdav/file.txtAny extra slashes are now removed and the request works.
+            </p>
+            <p>https://github.com/owncloud/core/issues/34365<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40216<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></p>
             <p>Previously, a long display name for the author's comment could overlap with the "edit" action
@@ -145,13 +201,13 @@
    egulias/email-validator (3.1.2 to 3.2.1) - guzzlehttp/guzzle (v5.3.4 to v7.4.5) -
    icewind/streams (0.7.5 to 0.7.6) - laminas/laminas-stdlib (3.7.1 to 3.10.1) -
    laminas/laminas-validator (2.17.0 to 2.19.0) - paragonie/constant_time_encoding
-   (v2.5.0 to v2.6.3) - sabre/dav (4.3.1 to 4.4.0) - sabre/http (5.1.3 to 5.1.5) - sabre/vobject
-   (4.4.1 to 4.4.2) - webmozart/assert (1.10.0 to 1.11.0)The following have been updated in apps/files_external/3rdparty: -
+   (v2.5.0 to v2.6.3) - sabre/dav (4.3.1 to 4.4.0) - sabre/http (5.1.3 to 5.1.6) - sabre/vobject
+   (4.4.1 to 4.4.3) - webmozart/assert (1.10.0 to 1.11.0)The following have been updated in apps/files_external/3rdparty: -
    google/apiclient-services (0.244.0 to 0.254.0) - google/apiclient (2.12.4 to 2.12.6) -
    guzzlehttp/guzzle (v5.3.4 to v7.4.5) - icewind/smb (3.5.2 to 3.5.4) - icewind/streams
    (0.7.5 to 0.7.6) - monolog/monolog (2.5.0 to 2.6.0)
             </p>
-            <p>https://github.com/owncloud/core/pull/39368<br>https://github.com/owncloud/core/pull/40092<br>https://github.com/owncloud/core/pull/40110<br>https://github.com/owncloud/core/pull/40121<br>https://github.com/owncloud/core/pull/40135<br>https://github.com/owncloud/core/pull/40136<br>https://github.com/owncloud/core/pull/40137<br>https://github.com/owncloud/core/pull/40151<br>https://github.com/owncloud/core/pull/40154<br>https://github.com/owncloud/core/pull/40169<br>https://github.com/owncloud/core/pull/40171<br>https://github.com/owncloud/core/pull/40191<br></p>
+            <p>https://github.com/owncloud/core/pull/39368<br>https://github.com/owncloud/core/pull/40092<br>https://github.com/owncloud/core/pull/40110<br>https://github.com/owncloud/core/pull/40121<br>https://github.com/owncloud/core/pull/40135<br>https://github.com/owncloud/core/pull/40136<br>https://github.com/owncloud/core/pull/40137<br>https://github.com/owncloud/core/pull/40151<br>https://github.com/owncloud/core/pull/40154<br>https://github.com/owncloud/core/pull/40169<br>https://github.com/owncloud/core/pull/40171<br>https://github.com/owncloud/core/pull/40191<br>https://github.com/owncloud/core/pull/40212<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></p>
@@ -191,6 +247,15 @@
    proxy set via the "proxy" option
             </p>
             <p>https://github.com/owncloud/core/pull/40148<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Allow sharing with multiple users at once: <a href="https://github.com/owncloud/core/pull/40155">#40155</a></p>
+            <p>It is now possible to share resources with multiple users at once via the following format:
+   user1, user2, user3.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/2865<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40155<br>https://github.com/owncloud/core/pull/40199<br></p>
         </li>
     </ul>
     <h2 id="10.10.0" class="version"> Changelog for ownCloud Core [10.10.0] (2022-05-16)</h2>

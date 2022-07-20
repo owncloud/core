@@ -342,6 +342,41 @@ describe('OC.Share.ShareDialogView', function() {
 			expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 		});
 
+		it('fetches multiple users for batch action', function () {
+			dialog.render();
+			dialog._getUsersForBatchAction('user01, user02').then(function(users) {
+				var expected = {
+					found: [{'shareType': 0, 'shareWith': 'user01'}, {'shareType': 0, 'shareWith': 'user02'}],
+					notFound: []
+				};
+				expect(users).toEqual(expected);
+			});
+
+			var getRequestResponse = function(user) {
+				return JSON.stringify({
+					'ocs' : {
+						'meta' : {
+							'status' : 'success',
+							'statuscode' : 100,
+							'message' : null
+						},
+						'data' : {
+							'exact' : {
+								'users'  : [{'label': 'user01', 'value': {'shareType': 0, 'shareWith': user}}],
+								'groups' : [],
+								'remotes': []
+							},
+							'users'  : [],
+							'groups' : [],
+							'remotes': []
+						}
+					}
+				});
+			}
+			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, getRequestResponse('user01'));
+			fakeServer.requests[1].respond(200, {'Content-Type': 'application/json'}, getRequestResponse('user02'));
+		});
+
 		describe('filter out', function() {
 			it('the current user', function () {
 				dialog.render();
@@ -712,6 +747,16 @@ describe('OC.Share.ShareDialogView', function() {
 				var el = dialog.autocompleteRenderItem(
 						$("<ul></ul>"),
 						{label: "1", value: { shareType: OC.Share.SHARE_TYPE_REMOTE }}
+				);
+				expect(el.is('li')).toEqual(true);
+				expect(el.hasClass('user')).toEqual(true);
+			});
+
+			it('renders a batch element', function() {
+				dialog.render();
+				var el = dialog.autocompleteRenderItem(
+						$("<ul></ul>"),
+						{label: "1", batch: [], value: { shareType: OC.Share.SHARE_TYPE_USER }}
 				);
 				expect(el.is('li')).toEqual(true);
 				expect(el.hasClass('user')).toEqual(true);

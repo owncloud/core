@@ -276,6 +276,7 @@
     "The share will expire on %s." : "Die Freigabe wird am %s ablaufen.",
     "Personal note from the sender: \n %s." : "Persönliche Notiz vom Absender:\n%s.",
     "Cheers!" : "Noch einen schönen Tag!",
+    "The application was authorized successfully. You can now close this window." : "Die Anwendung wurde erfolgreich autorisiert. Du kannst das Fenster nun schliessen.",
     "Internal Server Error" : "Interner Serverfehler",
     "The server encountered an internal error and was unable to complete your request." : "Der Server hat einen internen Fehler und konnte Ihre Anfrage nicht vervollständigen.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Bitte wende dich an den Serveradministrator, sollte dieser Fehler mehrfach auftreten und füge deiner Anfrage die unten stehenden technischen Details bei.",

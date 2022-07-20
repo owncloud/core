@@ -984,6 +984,25 @@ class Session implements IUserSession, Emitter {
 		return true;
 	}
 
+	public function tryRememberMeLogin(IRequest $request) {
+		$isRememberMe = $request->getCookie('oc_remember_login');
+		$token = $request->getCookie('oc_token');
+		$username = $request->getCookie('oc_username');
+		if (!isset($isRememberMe, $token, $username)) {
+			return false;
+		}
+
+		if (!\OC_Util::rememberLoginAllowed() || !$this->loginWithCookie($username, $token)) {
+			$this->unsetMagicInCookie();
+			return false;
+		}
+
+		$loggedInUser = $this->getUser();
+		$this->createSessionToken($request, $loggedInUser->getUID(), $loggedInUser->getDisplayName());
+		$this->logger->debug("{$loggedInUser->getUID()} logged in via rememberme token", ['app' => __METHOD__]);
+		return true;
+	}
+
 	/**
 	 * Tries to login with an AuthModule provided by an app
 	 *
@@ -1084,24 +1103,82 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 
+		if (!$user->isEnabled()) {
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}
+
+		$hashedToken = \hash('snefru', $currentToken);
 		// get stored tokens
-		$tokens = OC::$server->getConfig()->getUserKeys($uid, 'login_token');
-		// test cookies token against stored tokens
-		if (!\in_array($currentToken, $tokens, true)) {
+		$storedTokenTime = $this->config->getUserValue($uid, 'login_token', $hashedToken, null);
+		if ($storedTokenTime === null) {
 			$this->emitFailedLogin($uid);
 			return false;
 		}
-		// replace successfully used token with a new one
-		OC::$server->getConfig()->deleteUserValue($uid, 'login_token', $currentToken);
-		$newToken = OC::$server->getSecureRandom()->generate(32);
-		OC::$server->getConfig()->setUserValue($uid, 'login_token', $newToken, \time());
-		$this->setMagicInCookie($user->getUID(), $newToken);
+
+		// the current token will be deleted regardless success of failure
+		$this->config->deleteUserValue($uid, 'login_token', $hashedToken);
+		$cutoff = $this->timeFactory->getTime() - $this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+		if (\intval($storedTokenTime) < $cutoff) {
+			// expired token already deleted
+			$this->emitFailedLogin($uid);
+			return false;
+		}
 
 		//login
 		$this->setUser($user);
-		$user->updateLastLoginTimestamp();
+		$this->setLoginName($user->getDisplayName());
 		$this->manager->emit('\OC\User', 'postRememberedLogin', [$user]);
+
+		if (!$this->isLoggedIn()) {
+			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+			throw new LoginException($message);
+		}
+
+		// replace successfully used token with a new one
+		$this->setNewRememberMeTokenForLoggedInUser();
+
+		$this->prepareUserLogin(); // this shouldn't be the first time logging in.
+		$user->updateLastLoginTimestamp();
 		return true;
+	}
+
+	public function setNewRememberMeTokenForLoggedInUser() {
+		$user = $this->getUser();
+		$uid = $user->getUID();
+		$newToken = OC::$server->getSecureRandom()->generate(32);
+		$hashedToken = \hash('snefru', $newToken);
+		$this->config->setUserValue($uid, 'login_token', $hashedToken, $this->timeFactory->getTime());
+		$this->setMagicInCookie($uid, $newToken);
+	}
+
+	/**
+	 * Removes the remember me tokens associated to the current logged in user
+	 * from the DB.
+	 * This function will remove any obsolete token for the current logged in user.
+	 * If a targetToken is passed, that token will also be removed (if it belongs to
+	 * the current logged in user)
+	 * @params string|null $targetToken if null, only obsolete tokens for the user
+	 * will be removed, if a token is provided, obsolete tokens plus that token will
+	 * be removed (always for the current user)
+	 */
+	public function clearRememberMeTokensForLoggedInUser($targetToken) {
+		$user = $this->getUser();
+		$uid = $user->getUID();
+		$hashedToken = \hash('snefru', $targetToken);
+
+		$keys = $this->config->getUserKeys($uid, 'login_token');
+		foreach ($keys as $key) {
+			if ($key === $hashedToken) {
+				$this->config->deleteUserValue($uid, 'login_token', $key);
+			} else {
+				$storedTokenTime = $this->config->getUserValue($uid, 'login_token', $key, null);
+				$cutoff = $this->timeFactory->getTime() - $this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+				if (\intval($storedTokenTime) < $cutoff) {
+					$this->config->deleteUserValue($uid, 'login_token', $key);
+				}
+			}
+		}
 	}
 
 	/**
@@ -1143,11 +1220,23 @@ class Session implements IUserSession, Emitter {
 	 * @param string $token
 	 */
 	public function setMagicInCookie($username, $token) {
+		$webRoot = \OC::$WEBROOT;
+		if ($webRoot === '') {
+			$webRoot = '/';
+		}
 		$secureCookie = OC::$server->getRequest()->getServerProtocol() === 'https';
-		$expires = \time() + OC::$server->getConfig()->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
-		\setcookie('oc_username', $username, $expires, OC::$WEBROOT, '', $secureCookie, true);
-		\setcookie('oc_token', $token, $expires, OC::$WEBROOT, '', $secureCookie, true);
-		\setcookie('oc_remember_login', '1', $expires, OC::$WEBROOT, '', $secureCookie, true);
+		$expires = $this->timeFactory->getTime() + OC::$server->getConfig()->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+		$cookieOpts = [
+			'expires' => $expires,
+			'path' => $webRoot,
+			'domain' => '',
+			'secure' => $secureCookie,
+			'httponly' => true,
+			'samesite' => 'strict',
+		];
+		\setcookie('oc_username', $username, $cookieOpts);
+		\setcookie('oc_token', $token, $cookieOpts);
+		\setcookie('oc_remember_login', '1', $cookieOpts);
 	}
 
 	/**
@@ -1155,18 +1244,26 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function unsetMagicInCookie() {
 		//TODO: DI for cookies and IRequest
+		$webRoot = \OC::$WEBROOT;
+		if ($webRoot === '') {
+			$webRoot = '/';
+		}
+
 		$secureCookie = OC::$server->getRequest()->getServerProtocol() === 'https';
 
 		unset($_COOKIE['oc_username'], $_COOKIE['oc_token'], $_COOKIE['oc_remember_login']); //TODO: DI
 
-		\setcookie('oc_username', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
-		\setcookie('oc_token', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
-		\setcookie('oc_remember_login', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
-		// old cookies might be stored under /webroot/ instead of /webroot
-		// and Firefox doesn't like it!
-		\setcookie('oc_username', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
-		\setcookie('oc_token', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
-		\setcookie('oc_remember_login', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
+		$cookieOpts = [
+			'expires' => $this->timeFactory->getTime() - 3600,
+			'path' => $webRoot,
+			'domain' => '',
+			'secure' => $secureCookie,
+			'httponly' => true,
+			'samesite' => 'strict',
+		];
+		\setcookie('oc_username', '', $cookieOpts);
+		\setcookie('oc_token', '', $cookieOpts);
+		\setcookie('oc_remember_login', '', $cookieOpts);
 	}
 
 	/**

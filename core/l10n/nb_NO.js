@@ -257,6 +257,7 @@ OC.L10N.register(
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Hei,\n\nDette er en beskjed om at %s delte %s med deg.\nVis den: %s\n\n",
     "The share will expire on %s." : "Delingen vil opphøre %s.",
     "Cheers!" : "Ha det!",
+    "The application was authorized successfully. You can now close this window." : "Programmet ble autorisert. Du kan nå lukke dette vinduet. ",
     "Internal Server Error" : "Intern serverfeil.",
     "The server encountered an internal error and was unable to complete your request." : "Serveren støtte på en intern feil og kunne ikke fullføre forespørselen din.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Ta kontakt med serveradministratoren hvis denne feilen vises flere ganger, inkluder de tekniske detaljene nedenfor i rapporten.",

@@ -971,6 +971,9 @@ class OC {
 		if ($userSession->tryBasicAuthLogin($request)) {
 			return true;
 		}
+		if ($userSession->tryRememberMeLogin($request)) {
+			return true;
+		}
 		return false;
 	}
 

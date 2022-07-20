@@ -258,6 +258,7 @@
     "The share will expire on %s." : "A megosztás lejár ekkor: %s.",
     "Personal note from the sender: \n %s." : "A küldő személyes megjegyzése: \n %s.",
     "Cheers!" : "Üdv.",
+    "The application was authorized successfully. You can now close this window." : "Az alkalmazás sikeresen engedélyezett. Most bezárhatja ezt az ablakot.",
     "Internal Server Error" : "Belső szerver hiba",
     "The server encountered an internal error and was unable to complete your request." : "A szerver belső hibával találkozott és nem tudja teljesíteni a kérést.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Kérjük, lépjen kapcsolatba a szerver rendszergazdájával, ha ez a hiba többször megjelenik újra, és tartalmazza az alábbi technikai részleteket a jelentésben.",

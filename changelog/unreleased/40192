@@ -1,0 +1,9 @@
+Bugfix: Handle exception when adding mount to existing cache or lock
+
+In some cases there are can be multiple parallel requests that could in
+their logic attempt to create shared file mountpoint for the file or 
+to create lock, e.g. collaboration software. Exception to add cache or 
+lock that already exists is now handled
+
+https://github.com/owncloud/core/pull/40192
+https://github.com/owncloud/enterprise/issues/5198

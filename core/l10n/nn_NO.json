@@ -239,6 +239,7 @@
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Hei du!\n\n%s har delt %s med deg.\nSjå det på %s\n\n",
     "The share will expire on %s." : "Deling har gyldigheit til %s.",
     "Cheers!" : "Skål!",
+    "The application was authorized successfully. You can now close this window." : "Programmet er godkjend for tilgang. Du kan stenge dette vindauget.",
     "Internal Server Error" : "Intern feil i tenaren",
     "The server encountered an internal error and was unable to complete your request." : "Tenaren fekk ein intern feil og kan ikkje fullføre din førespurnad.",
     "Technical details" : "Tekniske detaljer",
