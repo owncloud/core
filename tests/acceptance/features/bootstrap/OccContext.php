@@ -2431,7 +2431,6 @@ class OccContext implements Context {
 				$mount_id = $key;
 			}
 		}
-
 		return (int) $mount_id;
 	}
 
@@ -2452,7 +2451,6 @@ class OccContext implements Context {
 			return false;
 		}
 		$this->invokingTheCommand('files_external:delete --yes ' . $mount_id);
-		$this->theCommandShouldHaveBeenSuccessful();
 		return $mount_id;
 	}
 

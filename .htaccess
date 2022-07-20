@@ -94,3 +94,35 @@ Options -Indexes
 <IfModule pagespeed_module>
   ModPagespeed Off
 </IfModule>
+#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####
+
+ErrorDocument 403 /core/templates/403.php
+ErrorDocument 404 /core/templates/404.php
+<IfModule mod_rewrite.c>
+  Options -MultiViews
+  RewriteRule ^favicon.ico$ core/img/favicon.ico [L]
+  RewriteRule ^core/js/oc.js$ index.php [PT,E=PATH_INFO:$1]
+  RewriteRule ^core/preview.png$ index.php [PT,E=PATH_INFO:$1]
+  RewriteCond %{REQUEST_FILENAME} !\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json|properties)$
+  RewriteCond %{REQUEST_FILENAME} !core/img/favicon.ico$
+  RewriteCond %{REQUEST_FILENAME} !/robots.txt
+  RewriteCond %{REQUEST_FILENAME} !/remote.php
+  RewriteCond %{REQUEST_FILENAME} !/public.php
+  RewriteCond %{REQUEST_FILENAME} !/cron.php
+  RewriteCond %{REQUEST_FILENAME} !/core/ajax/update.php
+  RewriteCond %{REQUEST_FILENAME} !/status.php
+  RewriteCond %{REQUEST_FILENAME} !/ocs/v1.php
+  RewriteCond %{REQUEST_FILENAME} !/ocs/v2.php
+  RewriteCond %{REQUEST_FILENAME} !/updater/
+  RewriteCond %{REQUEST_FILENAME} !/ocs-provider/
+  RewriteCond %{REQUEST_FILENAME} !/ocm-provider/
+  RewriteCond %{REQUEST_URI} !^/.well-known/(acme-challenge|pki-validation)/.*
+  RewriteRule . index.php [PT,E=PATH_INFO:$1]
+  RewriteBase /owncloud/core/
+  <IfModule mod_env.c>
+    SetEnv front_controller_active true
+    <IfModule mod_dir.c>
+      DirectorySlash off
+    </IfModule>
+  </IfModule>
+</IfModule>

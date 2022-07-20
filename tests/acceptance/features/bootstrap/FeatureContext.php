@@ -3639,7 +3639,7 @@ class FeatureContext extends BehatVariablesContext {
 		Assert::assertEquals(
 			"0",
 			$result["code"],
-			"Could not create local storage mount.\nError:\n" . $result["stdout"] . "\n" . $result["stderr"]
+			"Could not create local storage mount"
 		);
 		$storageId = $result['storageId'];
 		if (!is_numeric($storageId)) {
@@ -3702,10 +3702,7 @@ class FeatureContext extends BehatVariablesContext {
 			Assert::assertEquals(
 				'0',
 				$resp['code'],
-				"Deleting storage '$storageId' failed.\nError:\n"
-				. $resp['stdOut']
-				. "\n"
-				. $resp['stdErr']
+				"Deleting storage '$storageId' failed."
 			);
 		}
 		$this->storageIds = [];
@@ -3719,7 +3716,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws GuzzleException
 	 */
 	public function removeLocalStorageAfter():void {
-		$this->removeExternalStorage();
+		$this->deleteAllStorages();
 		$this->removeTemporaryStorageOnServerAfter();
 	}
 
