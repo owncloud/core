@@ -3628,6 +3628,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function setupLocalStorageBefore():void {
 		$storageName = "local_storage";
@@ -3635,6 +3636,7 @@ class FeatureContext extends BehatVariablesContext {
 			$storageName,
 			$this->getStepLineRef()
 		);
+		var_dump($result);
 		$storageId = $result['storageId'];
 		if (!is_numeric($storageId)) {
 			throw new Exception(
@@ -3642,7 +3644,7 @@ class FeatureContext extends BehatVariablesContext {
 			);
 		}
 		$this->addStorageId($storageName, (int) $storageId);
-		SetupHelper::runOcc(
+		$resp = SetupHelper::runOcc(
 			[
 				'files_external:option',
 				$storageId,
@@ -3651,6 +3653,7 @@ class FeatureContext extends BehatVariablesContext {
 			],
 			$this->getStepLineRef()
 		);
+		var_dump($resp);
 	}
 
 	/**
@@ -3673,11 +3676,12 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function deleteAllStorages():void {
 		$allStorageIds = \array_keys($this->getStorageIds());
 		foreach ($allStorageIds as $storageId) {
-			SetupHelper::runOcc(
+			$resp = SetupHelper::runOcc(
 				[
 					'files_external:delete',
 					'-y',
@@ -3685,6 +3689,7 @@ class FeatureContext extends BehatVariablesContext {
 				],
 				$this->getStepLineRef()
 			);
+			var_dump($resp);
 		}
 		$this->storageIds = [];
 	}
@@ -3694,6 +3699,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function removeLocalStorageAfter():void {
 		$this->removeExternalStorage();
@@ -3707,6 +3713,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function removeExternalStorage():void {
 		if ($this->getStorageIds() !== null) {
@@ -3731,6 +3738,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function removeTemporaryStorageOnServerAfter():void {
 		SetupHelper::rmDirOnServer(
