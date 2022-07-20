@@ -1,4 +1,4 @@
-@api
+@api @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10.0
 Feature: make webdav request with special urls
 
   Background:
