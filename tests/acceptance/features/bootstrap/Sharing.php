@@ -140,6 +140,15 @@ trait Sharing {
 	}
 
 	/**
+	 * @param SimpleXMLElement $responseXml
+	 *
+	 * @return void
+	 */
+	public function setLastPublicShareData(SimpleXMLElement $responseXml): void {
+		$this->lastPublicShareData = $responseXml;
+	}
+
+	/**
 	 * @return SimpleXMLElement
 	 * @throws Exception
 	 */
@@ -1167,7 +1176,7 @@ trait Sharing {
 			}
 		} else {
 			if ($shareType === 'public_link') {
-				$this->lastPublicShareData = $this->getResponseXml(null, __METHOD__);
+				$this->setLastPublicShareData($this->getResponseXml(null, __METHOD__));
 				$this->setLastPublicLinkShareId((string) $this->lastPublicShareData->data[0]->id);
 				$this->userWhoCreatedLastPublicShare = $user;
 				if (isset($this->lastPublicShareData->data)) {
