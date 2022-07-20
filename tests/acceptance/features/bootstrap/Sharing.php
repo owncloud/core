@@ -1168,9 +1168,7 @@ trait Sharing {
 			|| (($httpStatusCode === 200) && ($this->ocsContext->getOCSResponseStatusCode($this->response) > 299))
 		) {
 			if ($shareType === 'public_link') {
-				$this->lastPublicShareData = null;
-				$this->lastPublicShareId = null;
-				$this->userWhoCreatedLastPublicShare = null;
+				$this->resetLastPublicShareData();
 			} else {
 				$this->resetLastShareInfoForUser($user);
 			}
@@ -1178,7 +1176,7 @@ trait Sharing {
 			if ($shareType === 'public_link') {
 				$this->setLastPublicShareData($this->getResponseXml(null, __METHOD__));
 				$this->setLastPublicLinkShareId((string) $this->lastPublicShareData->data[0]->id);
-				$this->userWhoCreatedLastPublicShare = $user;
+				$this->setUserWhoCreatedLastPublicShare($user);
 				if (isset($this->lastPublicShareData->data)) {
 					$linkName = (string) $this->lastPublicShareData->data[0]->name;
 					$linkUrl = (string) $this->lastPublicShareData->data[0]->url;
@@ -2131,7 +2129,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function theUserGetsInfoOfLastPublicLinkShareUsingTheSharingApi():void {
-		$this->userGetsInfoOfLastPublicLinkShareUsingTheSharingApi($this->userWhoCreatedLastPublicShare);
+		$this->userGetsInfoOfLastPublicLinkShareUsingTheSharingApi($this->getUserWhoCreatedLastPublicShare());
 	}
 
 	/**
@@ -2228,6 +2226,26 @@ trait Sharing {
 	 */
 	public function getLastPublicLinkShareId():?string {
 		return $this->lastPublicShareId;
+	}
+
+	/**
+	 * Sets the user who created the last public link share
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function setUserWhoCreatedLastPublicShare(string $user):void {
+		$this->userWhoCreatedLastPublicShare = $user;
+	}
+
+	/**
+	 * Gets the user who created the last public link share
+	 *
+	 * @return string|null
+	 */
+	public function getUserWhoCreatedLastPublicShare():?string {
+		return $this->userWhoCreatedLastPublicShare;
 	}
 
 	/**
