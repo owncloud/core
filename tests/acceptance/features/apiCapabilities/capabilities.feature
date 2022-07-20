@@ -144,7 +144,7 @@ Feature: capabilities
       | capability    | path_to_element        | value |
       | files_sharing | user@@@profile_picture | 1     |
 
-  @files_trashbin-app-required
+  @files_trashbin-app-required @skipOnReva
   Scenario: getting trashbin app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -153,7 +153,7 @@ Feature: capabilities
       | capability | path_to_element | value |
       | files      | undelete        | 1     |
 
-  @files_versions-app-required
+  @files_versions-app-required @skipOnReva
   Scenario: getting versions app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
