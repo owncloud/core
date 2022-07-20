@@ -48,7 +48,7 @@ Feature: external-storage
     And as "Alice" file "/local_storage/foo2/textfile0.txt" should not exist
     And as "Brian" file "/local.txt" should exist
 
-
+  @skipOnEncryptionType:user-keys
   Scenario: Copy a file into storage
     Given these users have been created with default attributes and small skeleton files:
       | username |
