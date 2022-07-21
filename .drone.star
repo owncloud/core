@@ -134,317 +134,318 @@ config = {
             ],
             "coverage": True,
         },
+        "skip": True,
     },
     "acceptance": {
         "api": {
             "suites": [
-                "apiAuth",
-                "apiAuthOcs",
-                "apiAuthWebDav",
-                "apiCapabilities",
-                "apiComments",
-                "apiFavorites",
-                "apiMain",
-                "apiProvisioning-v1",
-                "apiProvisioning-v2",
-                "apiProvisioningGroups-v1",
-                "apiProvisioningGroups-v2",
-                "apiShareCreateSpecialToRoot1",
-                "apiShareCreateSpecialToShares1",
-                "apiShareCreateSpecialToRoot2",
-                "apiShareCreateSpecialToShares2",
-                "apiSharees",
-                "apiShareManagementToRoot",
-                "apiShareManagementToShares",
-                "apiShareManagementBasicToRoot",
-                "apiShareManagementBasicToShares",
-                "apiShareOperationsToRoot1",
-                "apiShareOperationsToRoot2",
-                "apiShareOperationsToShares1",
-                "apiShareOperationsToShares2",
-                "apiSharePublicLink1",
-                "apiSharePublicLink2",
-                "apiSharePublicLink3",
-                "apiShareReshareToRoot1",
-                "apiShareReshareToShares1",
-                "apiShareReshareToRoot2",
-                "apiShareReshareToShares2",
-                "apiShareReshareToRoot3",
-                "apiShareReshareToShares3",
-                "apiShareUpdateToRoot",
-                "apiShareUpdateToShares",
-                "apiTags",
-                "apiTranslation",
-                "apiTrashbin",
-                "apiTrashbinRestore",
-                "apiVersions",
-                "apiWebdavDelete",
-                "apiWebdavEtagPropagation1",
-                "apiWebdavEtagPropagation2",
-                "apiWebdavLocks",
-                "apiWebdavLocks2",
-                "apiWebdavLocks3",
-                "apiWebdavLocksUnlock",
-                "apiWebdavMove1",
+#                "apiAuth",
+#                "apiAuthOcs",
+#                "apiAuthWebDav",
+#                "apiCapabilities",
+#                "apiComments",
+#                "apiFavorites",
+#                "apiMain",
+#                "apiProvisioning-v1",
+#                "apiProvisioning-v2",
+#                "apiProvisioningGroups-v1",
+#                "apiProvisioningGroups-v2",
+#                "apiShareCreateSpecialToRoot1",
+#                "apiShareCreateSpecialToShares1",
+#                "apiShareCreateSpecialToRoot2",
+#                "apiShareCreateSpecialToShares2",
+#                "apiSharees",
+#                "apiShareManagementToRoot",
+#                "apiShareManagementToShares",
+#                "apiShareManagementBasicToRoot",
+#                "apiShareManagementBasicToShares",
+#                "apiShareOperationsToRoot1",
+#                "apiShareOperationsToRoot2",
+#                "apiShareOperationsToShares1",
+#                "apiShareOperationsToShares2",
+#                "apiSharePublicLink1",
+#                "apiSharePublicLink2",
+#                "apiSharePublicLink3",
+#                "apiShareReshareToRoot1",
+#                "apiShareReshareToShares1",
+#                "apiShareReshareToRoot2",
+#                "apiShareReshareToShares2",
+#                "apiShareReshareToRoot3",
+#                "apiShareReshareToShares3",
+#                "apiShareUpdateToRoot",
+#                "apiShareUpdateToShares",
+#                "apiTags",
+#                "apiTranslation",
+#                "apiTrashbin",
+#                "apiTrashbinRestore",
+#                "apiVersions",
+#                "apiWebdavDelete",
+#                "apiWebdavEtagPropagation1",
+#                "apiWebdavEtagPropagation2",
+#                "apiWebdavLocks",
+#                "apiWebdavLocks2",
+#                "apiWebdavLocks3",
+#                "apiWebdavLocksUnlock",
+#                "apiWebdavMove1",
                 "apiWebdavMove2",
-                "apiWebdavOperations",
-                "apiWebdavPreviews",
-                "apiWebdavProperties1",
-                "apiWebdavProperties2",
-                "apiWebdavUpload1",
-                "apiWebdavUpload2",
+#                "apiWebdavOperations",
+#                "apiWebdavPreviews",
+#                "apiWebdavProperties1",
+#                "apiWebdavProperties2",
+#                "apiWebdavUpload1",
+#                "apiWebdavUpload2",
             ],
             "filterTags": "~@local_storage&&~@files_external-app-required",
         },
-        "apiFilesExternal": {
-            "suites": {
-                "apiFilesExternal": "apiFilesExt",
-            },
-            "filterTags": "@files_external-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 1,
-            "extraApps": {
-                "files_external": "",
-            },
-        },
-        "apiNotifications": {
-            "suites": [
-                "apiSharingNotificationsToRoot",
-                "apiSharingNotificationsToShares",
-            ],
-            "extraApps": {
-                "notifications": 'if [ -f "composer.json" ]; then composer install; fi',
-            },
-        },
-        "apiFederation": {
-            "suites": [
-                "apiFederationToRoot1",
-                "apiFederationToRoot2",
-                "apiFederationToShares1",
-                "apiFederationToShares2",
-            ],
-            "federatedServerNeeded": True,
-            "federatedServerVersions": ["git", "latest", "10.8.0"],
-        },
-        "cli": {
-            "suites": [
-                "cliCreateLocalStorage",
-                "cliBackground",
-                "cliLocalStorage",
-                "cliMain",
-                "cliProvisioning",
-                "cliTrashbin",
-            ],
-            "filterTags": "~@local_storage&&~@files_external-app-required",
-            "emailNeeded": True,
-        },
-        "cliFilesExternal": {
-            "suites": {
-                "cliFilesExternal": "cliFilesExt",
-            },
-            "filterTags": "@files_external-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 2,
-            "extraApps": {
-                "files_external": "",
-            },
-        },
-        "cliManageApps": {
-            "suites": [
-                "cliManageApps",
-            ],
-            "testingRemoteSystem": False,
-        },
-        "cliEncryption": {
-            "suites": [
-                "cliEncryption",
-            ],
-            "extraApps": {
-                "encryption": "composer install",
-            },
-            "testingRemoteSystem": False,
-            "extraSetup": [{
-                "name": "configure-encryption",
-                "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
-                "commands": [
-                    "php occ maintenance:singleuser --on",
-                    "php occ encryption:enable",
-                    "php occ encryption:select-encryption-type masterkey --yes",
-                    "php occ encryption:encrypt-all --yes",
-                    "php occ encryption:status",
-                    "php occ maintenance:singleuser --off",
-                ],
-            }],
-            "extraCommandsBeforeTestRun": [
-                "mkdir data/owncloud-keys",
-                "chown -R www-data data/owncloud-keys",
-                "chmod -R 0770 data/owncloud-keys",
-            ],
-        },
-        "cliDbConversion": {
-            "suites": [
-                "cliDbConversion",
-            ],
-            "databases": [
-                "sqlite",
-            ],
-            "dbServices": [
-                "sqlite",
-                "mysql:8.0",
-                "postgres:10.20",
-            ],
-        },
-        "cliExternalStorage": {
-            "suites": [
-                "cliExternalStorage",
-            ],
-            "federatedServerNeeded": True,
-            "federatedServerVersions": ["git", "latest", "10.8.0"],
-            "extraApps": {
-                "files_external": "",
-            },
-        },
-        "webUI": {
-            "suites": {
-                "webUIAddUsers": "",
-                "webUIAdminSettings": "",
-                "webUIComments": "",
-                "webUICreateDelete": "",
-                "webUIFavorites": "",
-                "webUIFiles": "",
-                "webUILogin": "",
-                "webUIManageQuota": "",
-                "webUIManageUsersGroups": "webUIManageUsersGrps",
-                "webUIMoveFilesFolders": "webUIMoveFilesFolder",
-                "webUIPersonalSettings": "webUIPersonalSetting",
-                "webUIRenameFiles": "",
-                "webUIRenameFolders": "",
-                "webUIRestrictSharing": "",
-                "webUISettingsMenu": "",
-                "webUISharingAcceptShares": "webUISharingAcceptSh",
-                "webUISharingAutocompletion1": "webUISharingAutocomp1",
-                "webUISharingAutocompletion2": "webUISharingAutocomp2",
-                "webUISharingInternalGroups1": "webUISharingIntGroup1",
-                "webUISharingInternalGroups2": "webUISharingIntGroup2",
-                "webUISharingInternalUsers1": "webUISharingIntUsers1",
-                "webUISharingInternalUsers2": "webUISharingIntUsers2",
-                "webUISharingPublic1": "",
-                "webUISharingPublic2": "",
-                "webUITags": "",
-                "webUITrashbin": "",
-                "webUIUpload": "",
-                "webUIWebdavLockProtection": "webUIWebdavLockProt",
-                "webUIWebdavLocks": "",
-            },
-            "filterTags": "~@local_storage&&~@files_external-app-required",
-            "emailNeeded": True,
-            "useHttps": False,
-            "selUserNeeded": True,
-        },
-        "webUIFilesExternal": {
-            "suites": {
-                "webUIFilesExternal": "webUIFilesExt",
-            },
-            "filterTags": "@files_external-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 1,
-            "extraApps": {
-                "files_external": "",
-            },
-        },
-        "webUINotifications": {
-            "suites": {
-                "webUISharingNotifications": "webUISharingNotify",
-            },
-            "emailNeeded": True,
-            "useHttps": False,
-            "extraApps": {
-                "notifications": "composer install",
-            },
-        },
-        "webUIFileActionsMenu": {
-            "suites": {
-                "webUIFileActionsMenu": "",
-            },
-            "useHttps": False,
-            "extraApps": {
-                "files_texteditor": "make vendor",
-                "richdocuments": "make vendor",
-            },
-        },
-        "webUIFederation": {
-            "suites": {
-                "webUISharingExternal1": "webUISharingExt1",
-                "webUISharingExternal2": "webUISharingExt2",
-            },
-            "federatedServerNeeded": True,
-            "federatedServerVersions": ["git", "latest", "10.8.0"],
-        },
-        "webUIFirefox": {
-            "suites": {
-                "webUIFirefoxSmoketest": "webUIFfSmoke",
-            },
-            "browsers": [
-                "firefox",
-            ],
-            "emailNeeded": True,
-            "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 3,
-        },
-        "webUIProxy": {
-            "suites": {
-                "webUIProxySmoketest": "webUIProxySmoke",
-            },
-            "browsers": [
-                "chrome",
-            ],
-            "emailNeeded": True,
-            "proxyNeeded": True,
-            "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 3,
-        },
-        "webUIMobileSize": {
-            "suites": {
-                "webUIMobileSize": "",
-            },
-            "browsers": [
-                "chrome",
-            ],
-            "emailNeeded": True,
-            "useHttps": False,
-            "filterTags": "@mobileResolutionTest&&~@notifications-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 3,
-            "extraEnvironment": {
-                "MOBILE_RESOLUTION": "375x812",
-                "OC_LANGUAGE": "en-EN",
-            },
-        },
-        "apiProxy": {
-            "suites": {
-                "apiProxySmoketest": "apiProxySmoke",
-            },
-            "proxyNeeded": True,
-            "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 8,
-        },
-        "apiOnSqlite": {
-            "suites": {
-                "apiOnSqlite": "apiOnSqlite",
-            },
-            "databases": ["sqlite"],
-            "useHttps": False,
-            "filterTags": "@sqliteDB",
-            "runAllSuites": True,
-        },
+#        "apiFilesExternal": {
     },
 }
+#            "suites": {
+#                "apiFilesExternal": "apiFilesExt",
+#            },
+#            "filterTags": "@files_external-app-required",
+#            "runAllSuites": True,
+#            "numberOfParts": 1,
+#            "extraApps": {
+#                "files_external": "",
+#            },
+#        },
+#        "apiNotifications": {
+#            "suites": [
+#                "apiSharingNotificationsToRoot",
+#                "apiSharingNotificationsToShares",
+#            ],
+#            "extraApps": {
+#                "notifications": 'if [ -f "composer.json" ]; then composer install; fi',
+#            },
+#        },
+#        "apiFederation": {
+#            "suites": [
+#                "apiFederationToRoot1",
+#                "apiFederationToRoot2",
+#                "apiFederationToShares1",
+#                "apiFederationToShares2",
+#            ],
+#            "federatedServerNeeded": True,
+#            "federatedServerVersions": ["git", "latest", "10.8.0"],
+#        },
+#        "cli": {
+#            "suites": [
+#                "cliCreateLocalStorage",
+#                "cliBackground",
+#                "cliLocalStorage",
+#                "cliMain",
+#                "cliProvisioning",
+#                "cliTrashbin",
+#            ],
+#            "filterTags": "~@local_storage&&~@files_external-app-required",
+#            "emailNeeded": True,
+#        },
+#        "cliFilesExternal": {
+#            "suites": {
+#                "cliFilesExternal": "cliFilesExt",
+#            },
+#            "filterTags": "@files_external-app-required",
+#            "runAllSuites": True,
+#            "numberOfParts": 2,
+#            "extraApps": {
+#                "files_external": "",
+#            },
+#        },
+#        "cliManageApps": {
+#            "suites": [
+#                "cliManageApps",
+#            ],
+#            "testingRemoteSystem": False,
+#        },
+#        "cliEncryption": {
+#            "suites": [
+#                "cliEncryption",
+#            ],
+#            "extraApps": {
+#                "encryption": "composer install",
+#            },
+#            "testingRemoteSystem": False,
+#            "extraSetup": [{
+#                "name": "configure-encryption",
+#                "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
+#                "commands": [
+#                    "php occ maintenance:singleuser --on",
+#                    "php occ encryption:enable",
+#                    "php occ encryption:select-encryption-type masterkey --yes",
+#                    "php occ encryption:encrypt-all --yes",
+#                    "php occ encryption:status",
+#                    "php occ maintenance:singleuser --off",
+#                ],
+#            }],
+#            "extraCommandsBeforeTestRun": [
+#                "mkdir data/owncloud-keys",
+#                "chown -R www-data data/owncloud-keys",
+#                "chmod -R 0770 data/owncloud-keys",
+#            ],
+#        },
+#        "cliDbConversion": {
+#            "suites": [
+#                "cliDbConversion",
+#            ],
+#            "databases": [
+#                "sqlite",
+#            ],
+#            "dbServices": [
+#                "sqlite",
+#                "mysql:8.0",
+#                "postgres:10.20",
+#            ],
+#        },
+#        "cliExternalStorage": {
+#            "suites": [
+#                "cliExternalStorage",
+#            ],
+#            "federatedServerNeeded": True,
+#            "federatedServerVersions": ["git", "latest", "10.8.0"],
+#            "extraApps": {
+#                "files_external": "",
+#            },
+#        },
+#        "webUI": {
+#            "suites": {
+#                "webUIAddUsers": "",
+#                "webUIAdminSettings": "",
+#                "webUIComments": "",
+#                "webUICreateDelete": "",
+#                "webUIFavorites": "",
+#                "webUIFiles": "",
+#                "webUILogin": "",
+#                "webUIManageQuota": "",
+#                "webUIManageUsersGroups": "webUIManageUsersGrps",
+#                "webUIMoveFilesFolders": "webUIMoveFilesFolder",
+#                "webUIPersonalSettings": "webUIPersonalSetting",
+#                "webUIRenameFiles": "",
+#                "webUIRenameFolders": "",
+#                "webUIRestrictSharing": "",
+#                "webUISettingsMenu": "",
+#                "webUISharingAcceptShares": "webUISharingAcceptSh",
+#                "webUISharingAutocompletion1": "webUISharingAutocomp1",
+#                "webUISharingAutocompletion2": "webUISharingAutocomp2",
+#                "webUISharingInternalGroups1": "webUISharingIntGroup1",
+#                "webUISharingInternalGroups2": "webUISharingIntGroup2",
+#                "webUISharingInternalUsers1": "webUISharingIntUsers1",
+#                "webUISharingInternalUsers2": "webUISharingIntUsers2",
+#                "webUISharingPublic1": "",
+#                "webUISharingPublic2": "",
+#                "webUITags": "",
+#                "webUITrashbin": "",
+#                "webUIUpload": "",
+#                "webUIWebdavLockProtection": "webUIWebdavLockProt",
+#                "webUIWebdavLocks": "",
+#            },
+#            "filterTags": "~@local_storage&&~@files_external-app-required",
+#            "emailNeeded": True,
+#            "useHttps": False,
+#            "selUserNeeded": True,
+#        },
+#        "webUIFilesExternal": {
+#            "suites": {
+#                "webUIFilesExternal": "webUIFilesExt",
+#            },
+#            "filterTags": "@files_external-app-required",
+#            "runAllSuites": True,
+#            "numberOfParts": 1,
+#            "extraApps": {
+#                "files_external": "",
+#            },
+#        },
+#        "webUINotifications": {
+#            "suites": {
+#                "webUISharingNotifications": "webUISharingNotify",
+#            },
+#            "emailNeeded": True,
+#            "useHttps": False,
+#            "extraApps": {
+#                "notifications": "composer install",
+#            },
+#        },
+#        "webUIFileActionsMenu": {
+#            "suites": {
+#                "webUIFileActionsMenu": "",
+#            },
+#            "useHttps": False,
+#            "extraApps": {
+#                "files_texteditor": "make vendor",
+#                "richdocuments": "make vendor",
+#            },
+#        },
+#        "webUIFederation": {
+#            "suites": {
+#                "webUISharingExternal1": "webUISharingExt1",
+#                "webUISharingExternal2": "webUISharingExt2",
+#            },
+#            "federatedServerNeeded": True,
+#            "federatedServerVersions": ["git", "latest", "10.8.0"],
+#        },
+#        "webUIFirefox": {
+#            "suites": {
+#                "webUIFirefoxSmoketest": "webUIFfSmoke",
+#            },
+#            "browsers": [
+#                "firefox",
+#            ],
+#            "emailNeeded": True,
+#            "useHttps": False,
+#            "filterTags": "@smokeTest&&~@notifications-app-required",
+#            "runAllSuites": True,
+#            "numberOfParts": 3,
+#        },
+#        "webUIProxy": {
+#            "suites": {
+#                "webUIProxySmoketest": "webUIProxySmoke",
+#            },
+#            "browsers": [
+#                "chrome",
+#            ],
+#            "emailNeeded": True,
+#            "proxyNeeded": True,
+#            "useHttps": False,
+#            "filterTags": "@smokeTest&&~@notifications-app-required",
+#            "runAllSuites": True,
+#            "numberOfParts": 3,
+#        },
+#        "webUIMobileSize": {
+#            "suites": {
+#                "webUIMobileSize": "",
+#            },
+#            "browsers": [
+#                "chrome",
+#            ],
+#            "emailNeeded": True,
+#            "useHttps": False,
+#            "filterTags": "@mobileResolutionTest&&~@notifications-app-required",
+#            "runAllSuites": True,
+#            "numberOfParts": 3,
+#            "extraEnvironment": {
+#                "MOBILE_RESOLUTION": "375x812",
+#                "OC_LANGUAGE": "en-EN",
+#            },
+#        },
+#        "apiProxy": {
+#            "suites": {
+#                "apiProxySmoketest": "apiProxySmoke",
+#            },
+#            "proxyNeeded": True,
+#            "useHttps": False,
+#            "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
+#            "runAllSuites": True,
+#            "numberOfParts": 8,
+#        },
+#        "apiOnSqlite": {
+#            "suites": {
+#                "apiOnSqlite": "apiOnSqlite",
+#            },
+#            "databases": ["sqlite"],
+#            "useHttps": False,
+#            "filterTags": "@sqliteDB",
+#            "runAllSuites": True,
+#        },
 
 def main(ctx):
     initial = initialPipelines(ctx)
@@ -512,13 +513,7 @@ def nonCoveragePipelines(ctx):
 
 def stagePipelines(ctx):
     # Pipelines that do not produce coverage or other test analysis reports
-    litmusPipelines = litmus()
-    davPipelines = dav()
-    acceptancePipelines = acceptance(ctx)
-    if (litmusPipelines == False) or (davPipelines == False) or (acceptancePipelines == False):
-        return False
-
-    return litmusPipelines + davPipelines + acceptancePipelines
+    return acceptancePipelines
 
 def afterCoveragePipelines(ctx):
     return [
