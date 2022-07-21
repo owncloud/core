@@ -79,11 +79,6 @@ Feature: propagation of etags when creating folders
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as sharer creating a folder inside a folder received as a share changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -109,11 +104,6 @@ Feature: propagation of etags when creating folders
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: creating a folder in a publicly shared folder changes its etag for the sharer
