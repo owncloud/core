@@ -248,6 +248,9 @@ class EncryptionTest extends TestCase {
 			['lorem-big.txt'],
 			['block-aligned.txt'],
 			['block-aligned-plus-one.txt'],
+			['string-zero.txt'],
+			['string-zero-6073.txt'],
+			['string-zero-2269944.txt'],
 		];
 	}
 
