@@ -354,7 +354,7 @@ Feature: quota
       | 0 B   | four            |
       | 10 B  | test-content-15 |
 
-  @files_sharing-app-required @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10
+  @files_sharing-app-required @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10 @skipOnEncryption @issue-encryption-357
   Scenario: share receiver of a share with insufficient quota should not be able to copy from home folder to the received shared file
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
