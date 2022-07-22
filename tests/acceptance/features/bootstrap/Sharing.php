@@ -996,7 +996,9 @@ trait Sharing {
 			$dateModification = $bodyRows['expireDate'];
 			if (!empty($bodyRows['expireDate'])) {
 				$bodyRows['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
-			} else $bodyRows['expireDate'] = '';
+			} else {
+				$bodyRows['expireDate'] = '';
+			}
 		}
 		if (\array_key_exists('password', $bodyRows)) {
 			$bodyRows['password'] = $this->getActualPassword($bodyRows['password']);
