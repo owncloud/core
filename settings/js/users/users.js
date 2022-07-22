@@ -56,7 +56,7 @@ var UserList = {
 	 * @returns table row created for this user
 	 */
 	add: function (user, sort) {
-		if (this.currentGid && this.currentGid !== '_everyone' && _.indexOf(user.groups, this.currentGid) < 0) {
+		if (this.currentGid && this.currentGid !== '_everyone' && user.groups[this.currentGid] === undefined) {
 			return;
 		}
 
@@ -94,11 +94,11 @@ var UserList = {
 		 * groups and subadmins
 		 */
 		var $tdGroups = $tr.find('td.groups');
-		this._updateGroupListLabel($tdGroups, user.groups);
+		this._updateGroupListLabel($tdGroups, _.pluck(user.groups, 'name'));
 		$tdGroups.find('.action').tooltip({placement: 'top'});
 
 		var $tdSubadmins = $tr.find('td.subadmins');
-		this._updateGroupListLabel($tdSubadmins, user.subadmin);
+		this._updateGroupListLabel($tdSubadmins, _.pluck(user.subadmin, 'name'));
 		$tdSubadmins.find('.action').tooltip({placement: 'top'});
 
 		/**
