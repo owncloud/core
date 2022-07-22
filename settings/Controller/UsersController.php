@@ -43,6 +43,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IGroupManager;
+use OCP\IGroup;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\InvalidUserTokenException;
@@ -329,7 +330,6 @@ class UsersController extends Controller {
 			$groupManager = $this->groupManager;
 			'@phan-var \OC\Group\Manager $groupManager';
 			$subAdminOfGroups = $groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
-			// New class returns IGroup[] so convert back
 			$gids = [];
 			foreach ($subAdminOfGroups as $group) {
 				$gids[$group->getGID()] = [
@@ -340,7 +340,7 @@ class UsersController extends Controller {
 			$subAdminOfGroups = $gids;
 
 			// Set the $gid parameter to an empty value if the subadmin has no rights to access a specific group
-			if ($gid !== '' && !isset($gids[$gid])) {
+			if ($gid !== '' && !isset($subAdminOfGroups[$gid])) {
 				$gid = '';
 			}
 

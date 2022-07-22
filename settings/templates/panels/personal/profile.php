@@ -97,7 +97,9 @@ if ($_['mailAddressChangeSupported']) {
 	?>
 		<p><?php p($l->t('You are member of the following groups:')); ?></p>
 		<p>
-			<?php p(\implode(', ', \array_map(function($group) { return $group->getDisplayName(); }, $_['groups']))); ?>
+			<?php p(\implode(', ', \array_map(function ($group) {
+		return $group->getDisplayName();
+	}, $_['groups']))); ?>
 		</p>
 	<?php
 } else {
