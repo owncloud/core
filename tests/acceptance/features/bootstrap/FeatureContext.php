@@ -2370,6 +2370,8 @@ class FeatureContext extends BehatVariablesContext {
 			return $this->alternateAdminPassword;
 		} elseif ($functionalPassword === "%public%") {
 			return $this->publicLinkSharePassword;
+		} elseif ($functionalPassword === "%remove%") {
+			return "";
 		} else {
 			return $functionalPassword;
 		}
