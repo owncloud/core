@@ -147,6 +147,23 @@ Feature: update a public link share
       | 1               | 100             | new                       |
       | 2               | 200             | new                       |
 
+  Scenario Outline: Creating a new public link share with password and removing (updating) it to make the resources accessible without password using public API
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
+    And user "Alice" has created a public link share with settings
+      | path     | randomfile.txt |
+      | password | %public%       |
+    When user "Alice" updates the last public link share using the sharing API with
+    #removing password is basically making password empty
+      | password | %remove% |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the public should be able to download the last publicly shared file using the <public-webdav-api-version> public WebDAV API without a password and the content should be "Random data"
+    Examples:
+      | ocs_api_version | ocs_status_code | public-webdav-api-version |
+      | 1               | 100             | old                       |
+      | 2               | 200             | new                       |
+
   @issue-ocis-reva-336
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info (ocis Bug demonstration)
     Given using OCS API version "<ocs_api_version>"

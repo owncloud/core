@@ -1007,7 +1007,6 @@ trait Sharing {
 				$bodyRows['permissions'] = SharingHelper::getPermissionSum($bodyRows['permissions']);
 			}
 		}
-
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user,
