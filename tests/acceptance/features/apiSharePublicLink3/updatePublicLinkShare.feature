@@ -147,6 +147,7 @@ Feature: update a public link share
       | 1               | 100             | new                       |
       | 2               | 200             | new                       |
 
+
   Scenario Outline: Creating a new public link share with password and removing (updating) it to make the resources accessible without password using public API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
