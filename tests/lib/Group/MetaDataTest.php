@@ -22,6 +22,8 @@
 
 namespace Test\Group;
 
+use OCP\IGroup;
+
 class MetaDataTest extends \Test\TestCase {
 	/** @var \OC\Group\Manager */
 	private $groupManager;
@@ -46,36 +48,21 @@ class MetaDataTest extends \Test\TestCase {
 		);
 	}
 
-	private function getGroupMock($countCallCount = 0) {
-		$group = $this->getMockBuilder('\OC\Group\Group')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$group->expects($this->exactly(9))
-			->method('getGID')
-			->will($this->onConsecutiveCalls(
-				'admin',
-				'admin',
-				'admin',
-				'g2',
-				'g2',
-				'g2',
-				'g3',
-				'g3',
-				'g3'
-			));
-
-		$group->expects($this->exactly($countCallCount))
-			->method('count')
-			->with('')
-			->will($this->onConsecutiveCalls(2, 3, 5));
-
-		return $group;
-	}
-
 	public function testGet() {
-		$group = $this->getGroupMock();
-		$groups = \array_fill(0, 3, $group);
+		$group1 = $this->createMock(IGroup::class);
+		$group1->method('getGID')->willReturn('admin');
+		$group1->method('getDisplayName')->willReturn('admin group');
+		$group1->method('count')->willReturn(2);
+		$group2 = $this->createMock(IGroup::class);
+		$group2->method('getGID')->willReturn('g2');
+		$group2->method('getDisplayName')->willReturn('group 2');
+		$group2->method('count')->willReturn(3);
+		$group3 = $this->createMock(IGroup::class);
+		$group3->method('getGID')->willReturn('g3');
+		$group3->method('getDisplayName')->willReturn('group 3');
+		$group3->method('count')->willReturn(5);
+
+		$groups = [$group1, $group2, $group3];
 
 		$this->groupManager->expects($this->once())
 			->method('search')
@@ -87,15 +74,28 @@ class MetaDataTest extends \Test\TestCase {
 		$this->assertCount(1, $adminGroups);
 		$this->assertCount(2, $ordinaryGroups);
 
-		$this->assertSame('g2', $ordinaryGroups[0]['name']);
+		$this->assertSame('g2', $ordinaryGroups[0]['id']);
 		// user count is not loaded
 		$this->assertSame(0, $ordinaryGroups[0]['usercount']);
 	}
 
 	public function testGetWithSorting() {
+		$group1 = $this->createMock(IGroup::class);
+		$group1->method('getGID')->willReturn('admin');
+		$group1->method('getDisplayName')->willReturn('admin group');
+		$group1->method('count')->willReturn(2);
+		$group2 = $this->createMock(IGroup::class);
+		$group2->method('getGID')->willReturn('g2');
+		$group2->method('getDisplayName')->willReturn('group 2');
+		$group2->method('count')->willReturn(3);
+		$group3 = $this->createMock(IGroup::class);
+		$group3->method('getGID')->willReturn('g3');
+		$group3->method('getDisplayName')->willReturn('group 3');
+		$group3->method('count')->willReturn(5);
+
+		$groups = [$group1, $group2, $group3];
+
 		$this->groupMetadata->setSorting(1);
-		$group = $this->getGroupMock(3);
-		$groups = \array_fill(0, 3, $group);
 
 		$this->groupManager->expects($this->once())
 			->method('search')
@@ -107,13 +107,25 @@ class MetaDataTest extends \Test\TestCase {
 		$this->assertCount(1, $adminGroups);
 		$this->assertCount(2, $ordinaryGroups);
 
-		$this->assertSame('g3', $ordinaryGroups[0]['name']);
+		$this->assertSame('g3', $ordinaryGroups[0]['id']);
 		$this->assertSame(5, $ordinaryGroups[0]['usercount']);
 	}
 
 	public function testGetWithCache() {
-		$group = $this->getGroupMock();
-		$groups = \array_fill(0, 3, $group);
+		$group1 = $this->createMock(IGroup::class);
+		$group1->expects($this->exactly(2))->method('getGID')->willReturn('admin');
+		$group1->method('getDisplayName')->willReturn('admin group');
+		$group1->method('count')->willReturn(2);
+		$group2 = $this->createMock(IGroup::class);
+		$group2->expects($this->exactly(2))->method('getGID')->willReturn('g2');
+		$group2->method('getDisplayName')->willReturn('group 2');
+		$group2->method('count')->willReturn(3);
+		$group3 = $this->createMock(IGroup::class);
+		$group3->expects($this->exactly(2))->method('getGID')->willReturn('g3');
+		$group3->method('getDisplayName')->willReturn('group 3');
+		$group3->method('count')->willReturn(5);
+
+		$groups = [$group1, $group2, $group3];
 
 		$this->groupManager->expects($this->once())
 			->method('search')

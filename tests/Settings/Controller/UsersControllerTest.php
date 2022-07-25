@@ -20,6 +20,7 @@ use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IGroupManager;
+use OCP\IGroup;
 use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use OCP\IL10N;
@@ -209,6 +210,19 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('getBackendClassName')
 			->will($this->returnValue('\Test\Util\User\Dummy'));
 
+		$group1 = $this->createMock(IGroup::class);
+		$group1->method('getGID')->willReturn('abc-cde-123-456');
+		$group1->method('getDisplayName')->willReturn('Users');
+		$group2 = $this->createMock(IGroup::class);
+		$group2->method('getGID')->willReturn('aaa-ddd-123-456');
+		$group2->method('getDisplayName')->willReturn('Support');
+		$group3 = $this->createMock(IGroup::class);
+		$group3->method('getGID')->willReturn('000-eee-000-eee');
+		$group3->method('getDisplayName')->willReturn('admins');
+		$group4 = $this->createMock(IGroup::class);
+		$group4->method('getGID')->willReturn('eee-eee-000-eee');
+		$group4->method('getDisplayName')->willReturn('External Users');
+
 		$this->container['GroupManager']
 			->expects($this->once())
 			->method('displayNamesInGroup')
@@ -216,8 +230,8 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue(['foo' => 'M. Foo', 'admin' => 'S. Admin', 'bar' => 'B. Ar']));
 		$this->container['GroupManager']
 			->expects($this->exactly(3))
-			->method('getUserGroupIds')
-			->will($this->onConsecutiveCalls(['Users', 'Support'], ['admins', 'Support'], ['External Users']));
+			->method('getUserGroups')
+			->will($this->onConsecutiveCalls([$group1, $group2], [$group3, $group2], [$group4]));
 
 		$this->container['UserManager']
 			->method('get')
@@ -260,7 +274,16 @@ class UsersControllerTest extends \Test\TestCase {
 				0 => [
 					'name' => 'foo',
 					'displayname' => 'M. Foo',
-					'groups' => ['Users', 'Support'],
+					'groups' => [
+						'abc-cde-123-456' => [
+							'id' => 'abc-cde-123-456',
+							'name' => 'Users',
+						],
+						'aaa-ddd-123-456' => [
+							'id' => 'aaa-ddd-123-456',
+							'name' => 'Support',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => true,
 					'quota' => 1024,
@@ -275,7 +298,16 @@ class UsersControllerTest extends \Test\TestCase {
 				1 => [
 					'name' => 'admin',
 					'displayname' => 'S. Admin',
-					'groups' => ['admins', 'Support'],
+					'groups' => [
+						'000-eee-000-eee' => [
+							'id' => '000-eee-000-eee',
+							'name' => 'admins',
+						],
+						'aaa-ddd-123-456' => [
+							'id' => 'aaa-ddd-123-456',
+							'name' => 'Support',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => true,
 					'quota' => 404,
@@ -290,7 +322,12 @@ class UsersControllerTest extends \Test\TestCase {
 				2 => [
 					'name' => 'bar',
 					'displayname' => 'B. Ar',
-					'groups' => ['External Users'],
+					'groups' => [
+						'eee-eee-000-eee' => [
+							'id' => 'eee-eee-000-eee',
+							'name' => 'External Users',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => false,
 					'quota' => 2323,
@@ -417,19 +454,35 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['GroupManager']
 			->expects($this->exactly(2))
 			->method('displayNamesInGroup')
-			->withConsecutive(['SubGroup1', 'pattern'], ['SubGroup2', 'pattern'])
+			->withConsecutive(['abc-cde-123-456', 'pattern'], ['aaa-ddd-123-456', 'pattern'])
 			->willReturnOnConsecutiveCalls(
 				['bar' => 'B. Ar'],
 				['foo' => 'M. Foo', 'admin' => 'S. Admin'],
 			);
 
+		$group1 = $this->createMock(IGroup::class);
+		$group1->method('getGID')->willReturn('abc-cde-123-456');
+		$group1->method('getDisplayName')->willReturn('SubGroup1');
+		$group2 = $this->createMock(IGroup::class);
+		$group2->method('getGID')->willReturn('aaa-ddd-123-456');
+		$group2->method('getDisplayName')->willReturn('SubGroup2');
+		$group3 = $this->createMock(IGroup::class);
+		$group3->method('getGID')->willReturn('000-eee-000-eee');
+		$group3->method('getDisplayName')->willReturn('admin');
+		$group4 = $this->createMock(IGroup::class);
+		$group4->method('getGID')->willReturn('ecd-dce-553-787');
+		$group4->method('getDisplayName')->willReturn('Foo');
+		$group5 = $this->createMock(IGroup::class);
+		$group5->method('getGID')->willReturn('ecd-dce-909-101');
+		$group5->method('getDisplayName')->willReturn('testGroup');
+
 		$this->container['GroupManager']
 			->expects($this->exactly(3))
-			->method('getUserGroupIds')
+			->method('getUserGroups')
 			->will($this->onConsecutiveCalls(
-				['admin', 'SubGroup1', 'testGroup'],
-				['SubGroup2', 'SubGroup1'],
-				['SubGroup2', 'Foo']
+				[$group3, $group1, $group5],
+				[$group2, $group1],
+				[$group2, $group4]
 			));
 		$this->container['UserManager']
 			->expects($this->exactly(3))
@@ -445,18 +498,6 @@ class UsersControllerTest extends \Test\TestCase {
 				$admin,
 			);
 
-		$subgroup1 = $this->getMockBuilder('\OCP\IGroup')
-			->disableOriginalConstructor()
-			->getMock();
-		$subgroup1->expects($this->any())
-			->method('getGID')
-			->will($this->returnValue('SubGroup1'));
-		$subgroup2 = $this->getMockBuilder('\OCP\IGroup')
-			->disableOriginalConstructor()
-			->getMock();
-		$subgroup2->expects($this->any())
-			->method('getGID')
-			->will($this->returnValue('SubGroup2'));
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
 			->getMock();
@@ -464,7 +505,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->exactly(4))
 			->method('getSubAdminsGroups')
 			->willReturnOnConsecutiveCalls(
-				[$subgroup1, $subgroup2],
+				[$group1, $group2],
 				[],
 				[],
 				[],
@@ -480,7 +521,12 @@ class UsersControllerTest extends \Test\TestCase {
 				0 => [
 					'name' => 'bar',
 					'displayname' => 'B. Ar',
-					'groups' => ['SubGroup1'],
+					'groups' => [
+						'abc-cde-123-456' => [
+							'id' => 'abc-cde-123-456',
+							'name' => 'SubGroup1',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => false,
 					'quota' => 2323,
@@ -495,7 +541,16 @@ class UsersControllerTest extends \Test\TestCase {
 				1=> [
 					'name' => 'foo',
 					'displayname' => 'M. Foo',
-					'groups' => ['SubGroup2', 'SubGroup1'],
+					'groups' => [
+						'aaa-ddd-123-456' => [
+							'id' => 'aaa-ddd-123-456',
+							'name' => 'SubGroup2',
+						],
+						'abc-cde-123-456' => [
+							'id' => 'abc-cde-123-456',
+							'name' => 'SubGroup1',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => true,
 					'quota' => 1024,
@@ -510,7 +565,12 @@ class UsersControllerTest extends \Test\TestCase {
 				2 => [
 					'name' => 'admin',
 					'displayname' => 'S. Admin',
-					'groups' => ['SubGroup2'],
+					'groups' => [
+						'aaa-ddd-123-456' => [
+							'id' => 'aaa-ddd-123-456',
+							'name' => 'SubGroup2',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => true,
 					'quota' => 404,
@@ -638,10 +698,24 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('find')
 			->with('pattern', 10, 0)
 			->will($this->returnValue([$foo, $admin, $bar]));
+
+		$group1 = $this->createMock(IGroup::class);
+		$group1->method('getGID')->willReturn('abc-cde-123-456');
+		$group1->method('getDisplayName')->willReturn('Users');
+		$group2 = $this->createMock(IGroup::class);
+		$group2->method('getGID')->willReturn('aaa-ddd-123-456');
+		$group2->method('getDisplayName')->willReturn('Support');
+		$group3 = $this->createMock(IGroup::class);
+		$group3->method('getGID')->willReturn('000-eee-000-eee');
+		$group3->method('getDisplayName')->willReturn('admins');
+		$group4 = $this->createMock(IGroup::class);
+		$group4->method('getGID')->willReturn('eee-eee-000-eee');
+		$group4->method('getDisplayName')->willReturn('External Users');
+
 		$this->container['GroupManager']
 			->expects($this->exactly(3))
-			->method('getUserGroupIds')
-			->will($this->onConsecutiveCalls(['Users', 'Support'], ['admins', 'Support'], ['External Users']));
+			->method('getUserGroups')
+			->will($this->onConsecutiveCalls([$group1, $group2], [$group3, $group2], [$group4]));
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -659,7 +733,16 @@ class UsersControllerTest extends \Test\TestCase {
 				0 => [
 					'name' => 'foo',
 					'displayname' => 'M. Foo',
-					'groups' => ['Users', 'Support'],
+					'groups' => [
+						'abc-cde-123-456' => [
+							'id' => 'abc-cde-123-456',
+							'name' => 'Users',
+						],
+						'aaa-ddd-123-456' => [
+							'id' => 'aaa-ddd-123-456',
+							'name' => 'Support',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => true,
 					'quota' => 1024,
@@ -674,7 +757,16 @@ class UsersControllerTest extends \Test\TestCase {
 				1 => [
 					'name' => 'admin',
 					'displayname' => 'S. Admin',
-					'groups' => ['admins', 'Support'],
+					'groups' => [
+						'000-eee-000-eee' => [
+							'id' => '000-eee-000-eee',
+							'name' => 'admins',
+						],
+						'aaa-ddd-123-456' => [
+							'id' => 'aaa-ddd-123-456',
+							'name' => 'Support',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => true,
 					'quota' => 404,
@@ -689,7 +781,12 @@ class UsersControllerTest extends \Test\TestCase {
 				2 => [
 					'name' => 'bar',
 					'displayname' => 'B. Ar',
-					'groups' => ['External Users'],
+					'groups' => [
+						'eee-eee-000-eee' => [
+							'id' => 'eee-eee-000-eee',
+							'name' => 'External Users',
+						],
+					],
 					'subadmin' => [],
 					'isEnabled' => false,
 					'quota' => 2323,
@@ -764,13 +861,17 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('getUserGroups')
+			->willReturn([]);
 
 		$expectedResponse = new DataResponse(
 			[
 				0 => [
 					'name' => 'foo',
 					'displayname' => 'M. Foo',
-					'groups' => null,
+					'groups' => [],
 					'subadmin' => [],
 					'isEnabled' => true,
 					'quota' => 'none',
@@ -839,11 +940,15 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('getUserGroups')
+			->willReturn([]);
 
 		$expectedResponse = new DataResponse(
 			[
 				'name' => 'foo',
-				'groups' => null,
+				'groups' => [],
 				'storageLocation' => '/home/user',
 				'backend' => 'bar',
 				'lastLogin' => null,
@@ -888,16 +993,17 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('bar'));
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
-		$subGroup1 = $this->getMockBuilder('\OCP\IGroup')
-			->disableOriginalConstructor()->getMock();
-		$subGroup1
-			->expects($this->once())
+
+		$group1 = $this->createMock(IGroup::class);
+		$group1->method('getGID')->willReturn('abc-cde-123-456');
+		$group1->method('getDisplayName')->willReturn('SubGroup1');
+		$group1->expects($this->once())
 			->method('addUser')
 			->with($newUser);
-		$subGroup2 = $this->getMockBuilder('\OCP\IGroup')
-			->disableOriginalConstructor()->getMock();
-		$subGroup2
-			->expects($this->once())
+		$group2 = $this->createMock(IGroup::class);
+		$group2->method('getGID')->willReturn('aaa-ddd-123-456');
+		$group2->method('getDisplayName')->willReturn('SubGroup2');
+		$group2->expects($this->once())
 			->method('addUser')
 			->with($newUser);
 
@@ -908,12 +1014,12 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['GroupManager']
 			->expects($this->exactly(2))
 			->method('get')
-			->will($this->onConsecutiveCalls($subGroup1, $subGroup2));
+			->will($this->onConsecutiveCalls($group1, $group2));
 		$this->container['GroupManager']
 			->expects($this->once())
-			->method('getUserGroupIds')
+			->method('getUserGroups')
 			->with($user)
-			->will($this->onConsecutiveCalls(['SubGroup1', 'SubGroup2']));
+			->will($this->onConsecutiveCalls([$group1, $group2]));
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -922,7 +1028,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->exactly(2))
 			->method('getSubAdminsGroups')
 			->willReturnOnConsecutiveCalls(
-				[$subGroup1, $subGroup2],
+				[$group1, $group2],
 				[],
 			);
 
@@ -934,7 +1040,16 @@ class UsersControllerTest extends \Test\TestCase {
 		$expectedResponse = new DataResponse(
 			[
 				'name' => 'foo',
-				'groups' => ['SubGroup1', 'SubGroup2'],
+				'groups' => [
+					'abc-cde-123-456' => [
+						'id' => 'abc-cde-123-456',
+						'name' => 'SubGroup1',
+					],
+					'aaa-ddd-123-456' => [
+						'id' => 'aaa-ddd-123-456',
+						'name' => 'SubGroup2',
+					],
+				],
 				'storageLocation' => '/home/user',
 				'backend' => 'bar',
 				'lastLogin' => 0,
@@ -971,14 +1086,16 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getBackendClassName')
 			->will($this->returnValue('bar'));
-		$existingGroup = $this->getMockBuilder('\OCP\IGroup')
-			->disableOriginalConstructor()->getMock();
+		$existingGroup = $this->createMock(IGroup::class);
+		$existingGroup->method('getGID')->willReturn('eac-aaa-645-223');
+		$existingGroup->method('getDisplayName')->willReturn('ExistingGroup');
 		$existingGroup
 			->expects($this->once())
 			->method('addUser')
 			->with($user);
-		$newGroup = $this->getMockBuilder('\OCP\IGroup')
-			->disableOriginalConstructor()->getMock();
+		$newGroup = $this->createMock(IGroup::class);
+		$newGroup->method('getGID')->willReturn('bbb-aaa-111-222');
+		$newGroup->method('getDisplayName')->willReturn('NewGroup');
 		$newGroup
 			->expects($this->once())
 			->method('addUser')
@@ -999,9 +1116,9 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->onConsecutiveCalls($newGroup));
 		$this->container['GroupManager']
 			->expects($this->once())
-			->method('getUserGroupIds')
+			->method('getUserGroups')
 			->with($user)
-			->will($this->onConsecutiveCalls(['NewGroup', 'ExistingGroup']));
+			->will($this->onConsecutiveCalls([$newGroup, $existingGroup]));
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -1019,7 +1136,16 @@ class UsersControllerTest extends \Test\TestCase {
 		$expectedResponse = new DataResponse(
 			[
 				'name' => 'foo',
-				'groups' => ['NewGroup', 'ExistingGroup'],
+				'groups' => [
+					'bbb-aaa-111-222' => [
+						'id' => 'bbb-aaa-111-222',
+						'name' => 'NewGroup',
+					],
+					'eac-aaa-645-223' => [
+						'id' => 'eac-aaa-645-223',
+						'name' => 'ExistingGroup',
+					],
+				],
 				'storageLocation' => '/home/user',
 				'backend' => 'bar',
 				'lastLogin' => null,
@@ -1063,12 +1189,9 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getBackendClassName')
 			->will($this->returnValue('bar'));
-		$subGroup1 = $this->getMockBuilder('\OCP\IGroup')
-			->disableOriginalConstructor()->getMock();
-		$subGroup1
-			->expects($this->any())
-			->method('getGID')
-			->will($this->returnValue('SubGroup1'));
+		$subGroup1 = $this->createMock(IGroup::class);
+		$subGroup1->method('getGID')->willReturn('def-abc-748-992');
+		$subGroup1->method('getDisplayName')->willReturn('SubGroup1');
 		$subGroup1
 			->expects($this->once())
 			->method('addUser')
@@ -1081,9 +1204,9 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->exactly(3))
 			->method('get')
 			->withConsecutive(
-				['SubGroup1'],
+				['def-abc-748-992'],
 				['ExistingGroup'],
-				['SubGroup1'],
+				['def-abc-748-992'],
 			)
 			->willReturnOnConsecutiveCalls(
 				$subGroup1,
@@ -1093,14 +1216,14 @@ class UsersControllerTest extends \Test\TestCase {
 
 		$this->container['GroupManager']
 			->expects($this->once())
-			->method('getUserGroupIds')
+			->method('getUserGroups')
 			->with($user)
-			->will($this->onConsecutiveCalls(['SubGroup1']));
+			->will($this->onConsecutiveCalls([$subGroup1]));
 		$this->container['GroupManager']
 			->expects($this->once())
-			->method('getUserGroupIds')
+			->method('getUserGroups')
 			->with($newUser)
-			->will($this->onConsecutiveCalls(['SubGroup1']));
+			->will($this->onConsecutiveCalls([$subGroup1]));
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -1121,7 +1244,12 @@ class UsersControllerTest extends \Test\TestCase {
 		$expectedResponse = new DataResponse(
 			[
 				'name' => 'foo',
-				'groups' => ['SubGroup1'],
+				'groups' => [
+					'def-abc-748-992' => [
+						'id' => 'def-abc-748-992',
+						'name' => 'SubGroup1',
+					],
+				],
 				'storageLocation' => '/home/user',
 				'backend' => 'bar',
 				'lastLogin' => 0,
@@ -1136,7 +1264,7 @@ class UsersControllerTest extends \Test\TestCase {
 			],
 			Http::STATUS_CREATED
 		);
-		$response = $this->container['UsersController']->create('foo', 'password', ['SubGroup1', 'ExistingGroup']);
+		$response = $this->container['UsersController']->create('foo', 'password', ['def-abc-748-992', 'ExistingGroup']);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -1591,6 +1719,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
+		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
 		$response = $this->container['UsersController']->create('foo', 'password', [], 'validMail@Adre.ss');
 		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
@@ -1631,7 +1760,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$result = [
 			'name' => $userId,
 			'displayname' => $displayName,
-			'groups' => null,
+			'groups' => [],
 			'subadmin' => [],
 			'isEnabled' => $isEnabled,
 			'quota' => null,
@@ -1663,6 +1792,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
+		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
 		$result = self::invokePrivate($this->container['UsersController'], 'formatUserForIndex', [$user]);
 		$this->assertEquals($expectedResult, $result);
@@ -1720,6 +1850,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
+		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
 		$result = self::invokePrivate($this->container['UsersController'], 'formatUserForIndex', [$user]);
 		$this->assertEquals($expectedResult, $result);
@@ -1751,6 +1882,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
+		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
 		$result = self::invokePrivate($this->container['UsersController'], 'formatUserForIndex', [$user]);
 		$this->assertEquals($expectedResult, $result);
@@ -1810,6 +1942,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
+		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
 		$result = self::invokePrivate($this->container['UsersController'], 'formatUserForIndex', [$user]);
 		$this->assertEquals($expectedResult, $result);
@@ -1832,6 +1965,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
+		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
 		$this->container['OCP\\IAvatarManager']
 			->method('getAvatar')
@@ -2804,6 +2938,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('isAdmin')
 			->will($this->returnValue(true));
+		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
 		$this->container['UserManager']
 			->expects($this->once())
@@ -3561,6 +3696,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['GroupManager']->expects($this->any())
 			->method('getSubAdmin')
 			->willReturn($subAdmin);
+		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
 		$this->container['UserManager']->expects($this->any())
 			->method('userExists')

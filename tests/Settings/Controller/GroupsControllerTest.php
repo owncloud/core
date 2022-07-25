@@ -60,6 +60,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$firstGroup
 			->method('getGID')
 			->will($this->returnValue('firstGroup'));
+		$firstGroup->method('getDisplayName')->willReturn('first name');
 		$firstGroup
 			->method('count')
 			->will($this->returnValue(12));
@@ -68,6 +69,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$secondGroup
 			->method('getGID')
 			->will($this->returnValue('secondGroup'));
+		$secondGroup->method('getDisplayName')->willReturn('second name');
 		$secondGroup
 			->method('count')
 			->will($this->returnValue(25));
@@ -76,6 +78,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$thirdGroup
 			->method('getGID')
 			->will($this->returnValue('thirdGroup'));
+		$thirdGroup->method('getDisplayName')->willReturn('third name');
 		$thirdGroup
 			->method('count')
 			->will($this->returnValue(14));
@@ -84,6 +87,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$fourthGroup
 			->method('getGID')
 			->will($this->returnValue('admin'));
+		$fourthGroup->method('getDisplayName')->willReturn('admin name');
 		$fourthGroup
 			->method('count')
 			->will($this->returnValue(18));
@@ -114,7 +118,7 @@ class GroupsControllerTest extends \Test\TestCase {
 				'adminGroups' => [
 					0 => [
 						'id' => 'admin',
-						'name' => 'admin',
+						'name' => 'admin name',
 						'usercount' => 0,//User count disabled 18,
 					]
 				],
@@ -122,17 +126,17 @@ class GroupsControllerTest extends \Test\TestCase {
 					[
 						0 => [
 							'id' => 'firstGroup',
-							'name' => 'firstGroup',
+							'name' => 'first name',
 							'usercount' => 0,//User count disabled 12,
 						],
 						1 => [
 							'id' => 'secondGroup',
-							'name' => 'secondGroup',
+							'name' => 'second name',
 							'usercount' => 0,//User count disabled 25,
 						],
 						2 => [
 							'id' => 'thirdGroup',
-							'name' => 'thirdGroup',
+							'name' => 'third name',
 							'usercount' => 0,//User count disabled 14,
 						],
 					]
@@ -153,6 +157,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$firstGroup
 			->method('getGID')
 			->will($this->returnValue('firstGroup'));
+		$firstGroup->method('getDisplayName')->willReturn('first name');
 		$firstGroup
 			->method('count')
 			->will($this->returnValue(12));
@@ -161,6 +166,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$secondGroup
 			->method('getGID')
 			->will($this->returnValue('secondGroup'));
+		$secondGroup->method('getDisplayName')->willReturn('second name');
 		$secondGroup
 			->method('count')
 			->will($this->returnValue(25));
@@ -169,6 +175,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$thirdGroup
 			->method('getGID')
 			->will($this->returnValue('thirdGroup'));
+		$thirdGroup->method('getDisplayName')->willReturn('third name');
 		$thirdGroup
 			->method('count')
 			->will($this->returnValue(14));
@@ -177,6 +184,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$fourthGroup
 			->method('getGID')
 			->will($this->returnValue('admin'));
+		$fourthGroup->method('getDisplayName')->willReturn('admin name');
 		$fourthGroup
 			->method('count')
 			->will($this->returnValue(18));
@@ -207,7 +215,7 @@ class GroupsControllerTest extends \Test\TestCase {
 				'adminGroups' => [
 					0 => [
 						'id' => 'admin',
-						'name' => 'admin',
+						'name' => 'admin name',
 						'usercount' => 18,
 					]
 				],
@@ -215,17 +223,17 @@ class GroupsControllerTest extends \Test\TestCase {
 					[
 						0 => [
 							'id' => 'secondGroup',
-							'name' => 'secondGroup',
+							'name' => 'second name',
 							'usercount' => 25,
 						],
 						1 => [
 							'id' => 'thirdGroup',
-							'name' => 'thirdGroup',
+							'name' => 'third name',
 							'usercount' => 14,
 						],
 						2 => [
 							'id' => 'firstGroup',
-							'name' => 'firstGroup',
+							'name' => 'first name',
 							'usercount' => 12,
 						],
 					]
