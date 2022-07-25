@@ -1,23 +1,35 @@
 #!/usr/bin/env bash
 
+log_error() {
+    echo -e "\e[31m$1\e[0m"
+}
+
+log_info() {
+    echo -e "\e[34m$1\e[0m"
+}
+
+log_success() {
+    echo -e "\e[32m$1\e[0m"
+}
+
 if [ -n "${EXPECTED_FAILURES_FILE}" ]
 then
 	if [ -f "${EXPECTED_FAILURES_FILE}" ]
 	then
-		echo "Checking expected failures in ${EXPECTED_FAILURES_FILE}"
+		log_info "Checking expected failures in ${EXPECTED_FAILURES_FILE}"
 	else
-		echo "Expected failures file ${EXPECTED_FAILURES_FILE} not found"
-		echo "Check the setting of EXPECTED_FAILURES_FILE environment variable"
+		log_error "Expected failures file ${EXPECTED_FAILURES_FILE} not found"
+		log_error "Check the setting of EXPECTED_FAILURES_FILE environment variable"
 		exit 1
 	fi
 	FINAL_EXIT_STATUS=0
 	# If the last line of the expected-failures file ends without a newline character
 	# then that line may not get processed by some of the bash code in this script
 	# So check that the last character in the file is a newline
-	if [ $(tail -c1 "${EXPECTED_FAILURES_FILE}" | wc -l) -eq 0 ]
+	if [ "$(tail -c1 "${EXPECTED_FAILURES_FILE}" | wc -l)" -eq 0 ]
 	then
-		echo "Expected failures file ${EXPECTED_FAILURES_FILE} must end with a newline"
-		echo "Put a newline at the end of the last line and try again"
+		log_error "Expected failures file ${EXPECTED_FAILURES_FILE} must end with a newline"
+		log_error "Put a newline at the end of the last line and try again"
 		FINAL_EXIT_STATUS=1
 	fi
 	# Check the expected-failures file to ensure that the lines are self-consistent
@@ -25,8 +37,11 @@ then
 	# so assume that by default.
 	FEATURE_FILE_REPO="owncloud/core"
 	FEATURE_FILE_PATH="tests/acceptance/features"
-	while read INPUT_LINE
+	LINE_NUMBER=0
+	while read -r INPUT_LINE
 		do
+			LINE_NUMBER=$(("$LINE_NUMBER" + 1))
+
 			# Ignore comment lines (starting with hash)
 			if [[ "${INPUT_LINE}" =~ ^# ]]
 			then
@@ -40,12 +55,12 @@ then
 			FEATURE_FILE_SPEC_LINE_FOUND="false"
 			if [[ "${INPUT_LINE}" =~ features[[:blank:]]in[[:blank:]]the[[:blank:]]([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)[[:blank:]]repo ]]; then
 				FEATURE_FILE_REPO="${BASH_REMATCH[1]}"
-				echo "Features are expected to be in the ${FEATURE_FILE_REPO} repo"
+				log_info "Features are expected to be in the ${FEATURE_FILE_REPO} repo\n"
   			FEATURE_FILE_SPEC_LINE_FOUND="true"
 			fi
 			if [[ "${INPUT_LINE}" =~ repo[[:blank:]]in[[:blank:]]the[[:blank:]]([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)[[:blank:]]folder[[:blank:]]tree ]]; then
 				FEATURE_FILE_PATH="${BASH_REMATCH[1]}"
-				echo "Features are expected to be in the ${FEATURE_FILE_PATH} folder tree"
+				log_info "Features are expected to be in the ${FEATURE_FILE_PATH} folder tree\n"
   			FEATURE_FILE_SPEC_LINE_FOUND="true"
 			fi
 			if [[ $FEATURE_FILE_SPEC_LINE_FOUND == "true" ]]; then
@@ -56,6 +71,12 @@ then
 			# Else ignore the line.
 			if [[ "${INPUT_LINE}" =~ \[([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+)] ]]; then
 				SUITE_SCENARIO_LINE="${BASH_REMATCH[1]}"
+			elif [[ "${INPUT_LINE}" =~ ^[[:space:]]*-[[:space:]][a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+[[:space:]]*$ ]]; then
+				log_error "> Line ${LINE_NUMBER}: Not in the correct format."
+				log_error "  + Actual Line     : '${INPUT_LINE}'"
+				log_error "  - Expected Format : '- [suite/scenario.feature:line_number]'"
+				FINAL_EXIT_STATUS=1
+				continue
 			else
 				continue
 			fi
@@ -63,7 +84,7 @@ then
 			if [[ "${INPUT_LINE}" =~ \(([a-zA-Z0-9:/.#_-]+)\) ]]; then
 				ACTUAL_LINK="${BASH_REMATCH[1]}"
 			else
-				echo "Link not found in ${INPUT_LINE}"
+				log_error "Line ${LINE_NUMBER}: ${INPUT_LINE} : Link is empty"
 				FINAL_EXIT_STATUS=1
 				continue
 			fi
@@ -75,22 +96,22 @@ then
 			FEATURE_LINE="${FEATURE_PARTS[1]}"
 			EXPECTED_LINK="https://github.com/${FEATURE_FILE_REPO}/blob/master/${FEATURE_FILE_PATH}/${SUITE_FEATURE}#L${FEATURE_LINE}"
 			if [[ "${ACTUAL_LINK}" != "${EXPECTED_LINK}" ]]; then
-				echo "Link is not correct for ${SUITE_SCENARIO_LINE}"
-				echo "  Actual link: ${ACTUAL_LINK}"
-				echo "Expected link: ${EXPECTED_LINK}"
+				log_error "> Line ${LINE_NUMBER}: Link is not correct for ${SUITE_SCENARIO_LINE}"
+				log_error "  + Actual link   : ${ACTUAL_LINK}"
+				log_error "  - Expected link : ${EXPECTED_LINK}"
 				FINAL_EXIT_STATUS=1
 			fi
 
-		done < ${EXPECTED_FAILURES_FILE}
+		done < "${EXPECTED_FAILURES_FILE}"
 else
-	echo "Environment variable EXPECTED_FAILURES_FILE must be defined to be the file to check"
+	log_error "Environment variable EXPECTED_FAILURES_FILE must be defined to be the file to check"
 	exit 1
 fi
 
 if [ ${FINAL_EXIT_STATUS} == 1 ]
 then
-	echo "Errors were found in the expected failures file - see the messages above"
+	log_error "\nErrors were found in the expected failures file - see the messages above!"
 else
-	echo "No problems were found in the expected failures file"
+	log_success "\nNo problems were found in the expected failures file."
 fi
 exit ${FINAL_EXIT_STATUS}
