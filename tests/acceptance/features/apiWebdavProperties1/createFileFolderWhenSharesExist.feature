@@ -31,13 +31,6 @@ Feature: create file or folder named similar to Shares folder
       | new         | /shares     |
       | new         | /Shares1    |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | folder_name |
-      | spaces      | /Share      |
-      | spaces      | /shares     |
-      | spaces      | /Shares1    |
-
 
   Scenario Outline: create a file with a name similar to Shares
     Given using <dav_version> DAV path
@@ -54,13 +47,6 @@ Feature: create file or folder named similar to Shares folder
       | new         | /shares   |
       | new         | /Shares1  |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | file_name |
-      | spaces      | /Share    |
-      | spaces      | /shares   |
-      | spaces      | /Shares1  |
-
 
   Scenario Outline: try to create a folder named Shares
     Given using <dav_version> DAV path
@@ -73,11 +59,6 @@ Feature: create file or folder named similar to Shares folder
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: try to create a file named Shares
     Given using <dav_version> DAV path
@@ -89,8 +70,3 @@ Feature: create file or folder named similar to Shares folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
