@@ -66,18 +66,23 @@ then
 			if [[ $FEATURE_FILE_SPEC_LINE_FOUND == "true" ]]; then
 				continue
 			fi
-			# Match lines that have [someSuite/someName.feature:n] - the part inside the
-			# brackets is the suite, feature and line number of the expected failure.
-			# Else ignore the line.
-			if [[ "${INPUT_LINE}" =~ \[([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+)] ]]; then
+			# Match lines that have "- [someSuite/someName.feature:n]" pattern on start
+			# the part inside the brackets is the suite, feature and line number of the expected failure.
+			if [[ "${INPUT_LINE}" =~ ^-[[:space:]]\[([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+)] ]]; then
 				SUITE_SCENARIO_LINE="${BASH_REMATCH[1]}"
-			elif [[ "${INPUT_LINE}" =~ ^[[:space:]]*-[[:space:]][a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+[[:space:]]*$ ]]; then
+			elif [[
+			  # report for lines like: " - someSuite/someName.feature:n"
+			  "${INPUT_LINE}" =~ ^[[:space:]]*-[[:space:]][a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+[[:space:]]*$ ||
+			  # report for lines starting with: "[someSuite/someName.feature:n]"
+			  "${INPUT_LINE}" =~ ^[[:space:]]*\[([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+)]
+			]]; then
 				log_error "> Line ${LINE_NUMBER}: Not in the correct format."
 				log_error "  + Actual Line     : '${INPUT_LINE}'"
-				log_error "  - Expected Format : '- [suite/scenario.feature:line_number]'"
+				log_error "  - Expected Format : '- [suite/scenario.feature:line_number](scenario_line_url)'"
 				FINAL_EXIT_STATUS=1
 				continue
 			else
+				# otherwise, ignore the line
 				continue
 			fi
 			# Find the link in round-brackets that should be after the SUITE_SCENARIO_LINE
