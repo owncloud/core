@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4edfdbce0555f9782b36910bb4180b5d",
+    "content-hash": "a29dcf3f8a348fdddb696f0f47211f50",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -5004,16 +5004,16 @@
         },
         {
             "name": "mikey179/vfsstream",
-            "version": "v1.6.10",
+            "version": "v1.6.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/vfsStream.git",
-                "reference": "250c0825537d501e327df879fb3d4cd751933b85"
+                "reference": "17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/250c0825537d501e327df879fb3d4cd751933b85",
-                "reference": "250c0825537d501e327df879fb3d4cd751933b85",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f",
+                "reference": "17d16a85e6c26ce1f3e2fa9ceeacdc2855db1e9f",
                 "shasum": ""
             },
             "require": {
@@ -5051,7 +5051,7 @@
                 "source": "https://github.com/bovigo/vfsStream/tree/master",
                 "wiki": "https://github.com/bovigo/vfsStream/wiki"
             },
-            "time": "2021-09-25T08:05:01+00:00"
+            "time": "2022-02-23T02:02:42+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5876,12 +5876,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "0144c1225b5e4da02cf2c27a0e2cb2705168c47c"
+                "reference": "13587f393de35e82081d102217f46284d3beb4f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0144c1225b5e4da02cf2c27a0e2cb2705168c47c",
-                "reference": "0144c1225b5e4da02cf2c27a0e2cb2705168c47c",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/13587f393de35e82081d102217f46284d3beb4f7",
+                "reference": "13587f393de35e82081d102217f46284d3beb4f7",
                 "shasum": ""
             },
             "conflict": {
@@ -5961,7 +5961,7 @@
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1|>=2.8.3,<2.8.4",
                 "dolibarr/dolibarr": "<16|= 12.0.5|>= 3.3.beta1, < 13.0.2",
                 "dompdf/dompdf": "<2",
-                "drupal/core": ">=7,<7.88|>=8,<9.2.13|>=9.3,<9.3.6",
+                "drupal/core": ">=7,<7.91|>=8,<9.3.19|>=9.4,<9.4.3",
                 "drupal/drupal": ">=7,<7.80|>=8,<8.9.16|>=9,<9.1.12|>=9.2,<9.2.4",
                 "dweeves/magmi": "<=0.7.24",
                 "ecodev/newsletter": "<=4",
@@ -6043,6 +6043,7 @@
                 "in2code/femanager": "<5.5.1|>=6,<6.3.1",
                 "in2code/lux": "<17.6.1|>=18,<24.0.2",
                 "intelliants/subrion": "<=4.2.1",
+                "islandora/islandora": ">=2,<2.4.1",
                 "ivankristianto/phpwhois": "<=4.3",
                 "jackalope/jackalope-doctrine-dbal": "<1.7.4",
                 "james-heinrich/getid3": "<1.9.21",
@@ -6209,7 +6210,7 @@
                 "simplito/elliptic-php": "<1.0.6",
                 "slim/slim": "<2.6",
                 "smarty/smarty": "<3.1.45|>=4,<4.1.1",
-                "snipe/snipe-it": "<5.4.4|>= 6.0.0-RC-1, <= 6.0.0-RC-5",
+                "snipe/snipe-it": "<=6.0.2|>= 6.0.0-RC-1, <= 6.0.0-RC-5",
                 "socalnick/scn-social-auth": "<1.15.2",
                 "socialiteproviders/steam": "<1.1",
                 "spipu/html2pdf": "<5.2.4",
@@ -6300,6 +6301,7 @@
                 "wikimedia/parsoid": "<0.12.2",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "wintercms/winter": "<1.0.475|>=1.1,<1.1.9",
+                "woocommerce/woocommerce": "<6.6",
                 "wp-cli/wp-cli": "<2.5",
                 "wp-graphql/wp-graphql": "<0.3.5",
                 "wpanel/wpanel4-cms": "<=4.3.1",
@@ -6378,7 +6380,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-15T22:04:13+00:00"
+            "time": "2022-07-26T09:04:23+00:00"
         },
         {
             "name": "sebastian/cli-parser",
