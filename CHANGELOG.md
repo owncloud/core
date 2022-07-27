@@ -27,6 +27,7 @@ Summary
 * Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
 * Bugfix - Handle extra slashes at start of URI path: [#40216](https://github.com/owncloud/core/pull/40216)
 * Bugfix - Use group's displayname in the user's profile and user list: [#40229](https://github.com/owncloud/core/pull/40229)
+* Bugfix - Init encryption module before calculating unencrypted block-size: [#40240](https://github.com/owncloud/core/pull/40240)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -203,6 +204,14 @@ Details
    displayname. This is fixed now, and the displayname will be used as intended.
 
    https://github.com/owncloud/core/pull/40229
+
+* Bugfix - Init encryption module before calculating unencrypted block-size: [#40240](https://github.com/owncloud/core/pull/40240)
+
+   The un-encrypted blocksize was calculated before initializing the encryption- module. This
+   yields the wrong size after a file-scan if encryption.use_legacy_encoding is set to true in
+   config.php.
+
+   https://github.com/owncloud/core/pull/40240
 
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 
