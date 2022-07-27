@@ -26,6 +26,7 @@ Summary
 * Bugfix - Handle exception when adding mount to existing cache or lock: [#40192](https://github.com/owncloud/core/pull/40192)
 * Bugfix - CORS on WebDAV is not working: [#40204](https://github.com/owncloud/core/pull/40204)
 * Bugfix - Handle extra slashes at start of URI path: [#40216](https://github.com/owncloud/core/pull/40216)
+* Bugfix - Use group's displayname in the user's profile and user list: [#40229](https://github.com/owncloud/core/pull/40229)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -188,6 +189,20 @@ Details
 
    https://github.com/owncloud/core/issues/34365
    https://github.com/owncloud/core/pull/40216
+
+* Bugfix - Use group's displayname in the user's profile and user list: [#40229](https://github.com/owncloud/core/pull/40229)
+
+   Previously, the group id was being used in both the user's profile and the user list. This hasn't
+   been important because the local groups have matching group id and displayname, the same for
+   ldap groups.
+
+   Due to recent changes with the ldap app (version 0.17.0), the group id and the displayname could
+   be different, and they'll be different by default in the ldap app.
+
+   In both the user's profile and the user list, the group id was being used instead of the
+   displayname. This is fixed now, and the displayname will be used as intended.
+
+   https://github.com/owncloud/core/pull/40229
 
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 

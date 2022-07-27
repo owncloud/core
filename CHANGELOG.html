@@ -24,6 +24,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Handle exception when adding mount to existing cache or lock: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-bugfix changelog-item">Bugfix - CORS on WebDAV is not working: <a href="https://github.com/owncloud/core/pull/40204">#40204</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Handle extra slashes at start of URI path: <a href="https://github.com/owncloud/core/pull/40216">#40216</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Use group's displayname in the user's profile and user list: <a href="https://github.com/owncloud/core/pull/40229">#40229</a></li>
         <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
@@ -185,6 +186,16 @@
             <p>https://github.com/owncloud/core/issues/34365<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40216<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Use group's displayname in the user's profile and user list: <a href="https://github.com/owncloud/core/pull/40229">#40229</a></p>
+            <p>Previously, the group id was being used in both the user's profile and the user list. This hasn't
+   been important because the local groups have matching group id and displayname, the same for
+   ldap groups.Due to recent changes with the ldap app (version 0.17.0), the group id and the displayname could
+   be different, and they'll be different by default in the ldap app.In both the user's profile and the user list, the group id was being used instead of the
+   displayname. This is fixed now, and the displayname will be used as intended.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40229<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></p>
