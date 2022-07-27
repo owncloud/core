@@ -470,13 +470,17 @@ class Encryption extends Wrapper {
 		if ($this->cache === '' && !($this->position === $this->unencryptedSize && ($this->position % $this->unencryptedBlockSize) === 0)) {
 			// Get the data from the file handle
 			$data = $this->stream_read_block($this->util->getBlockSize());
-			$position = (int)\floor($this->position/$this->unencryptedBlockSize);
-			$numberOfChunks = (int)($this->unencryptedSize / $this->unencryptedBlockSize);
-			if ($numberOfChunks === $position) {
-				$position .= 'end';
-			}
-			$this->cache = $this->encryptionModule->decrypt($data, $position);
+			$this->cache = $this->encryptionModule->decrypt($data, $this->getPosition());
 		}
+	}
+
+	public function getPosition() {
+		$blockPosition = (int)\floor($this->position/$this->unencryptedBlockSize);
+		$numberOfChunks = (int)($this->unencryptedSize / $this->unencryptedBlockSize);
+		if ($numberOfChunks === $blockPosition) {
+			$blockPosition .= 'end';
+		}
+		return $blockPosition;
 	}
 
 	/**

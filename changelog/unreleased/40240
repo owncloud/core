@@ -1,0 +1,7 @@
+Bugfix: Init encryption module before calculating unencrypted block-size
+
+The un-encrypted blocksize was calculated before initializing the encryption-
+module. This yields the wrong size after a file-scan if
+encryption.use_legacy_encoding is set to true in config.php.
+
+https://github.com/owncloud/core/pull/40240
