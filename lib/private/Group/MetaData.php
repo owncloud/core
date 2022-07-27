@@ -161,7 +161,7 @@ class MetaData {
 	private function generateGroupMetaData(\OCP\IGroup $group, $userSearch) {
 		return [
 				'id' => $group->getGID(),
-				'name' => $group->getGID(),
+				'name' => $group->getDisplayName(),
 				'usercount' => $this->sorting === self::SORT_USERCOUNT ? $group->count($userSearch) : 0,
 		];
 	}

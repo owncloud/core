@@ -103,8 +103,7 @@ class Profile implements ISettings {
 		$tmpl->assign('displayNameChangeSupported', $this->userSession->getUser()->canChangeDisplayName());
 		$tmpl->assign('mailAddressChangeSupported', $this->userSession->getUser()->canChangeMailAddress());
 		$tmpl->assign('passwordChangeSupported', $this->userSession->getUser()->canChangePassword());
-		$groups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
-		\sort($groups);
+		$groups = $this->groupManager->getUserGroups($this->userSession->getUser());
 		$tmpl->assign('groups', $groups);
 		$tmpl->assign('languageSelector', $selector->fetchPage());
 		return $tmpl;

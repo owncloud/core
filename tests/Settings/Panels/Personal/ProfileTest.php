@@ -14,6 +14,7 @@ use OC\Helper\LocaleHelper;
 use OC\Settings\Panels\Personal\Profile;
 use OCP\IConfig;
 use OCP\IGroupManager;
+use OCP\IGroup;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\L10N\IFactory;
@@ -59,10 +60,16 @@ class ProfileTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
+		$group1 = $this->createMock(IGroup::class);
+		$group1->method('getGID')->willReturn('abc-def-000-111');
+		$group1->method('getDisplayName')->willReturn('group1');
+		$group2 = $this->createMock(IGroup::class);
+		$group2->method('getGID')->willReturn('bcd-efa-111-222');
+		$group2->method('getDisplayName')->willReturn('group2');
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->once())->method('getEMailAddress')->will($this->returnValue('test@example.com'));
 		$this->userSession->expects($this->exactly(8))->method('getUser')->will($this->returnValue($user));
-		$this->groupManager->expects($this->once())->method('getUserGroupIds')->will($this->returnValue(['group1', 'group2']));
+		$this->groupManager->expects($this->once())->method('getUserGroups')->willReturn([$group1, $group2]);
 		$this->lfactory->expects($this->once())->method('findLanguage')->will($this->returnValue('en'));
 		$this->config->expects($this->once())->method('getUserValue')->will($this->returnValue(''));
 		$this->lfactory->expects($this->once())->method('findAvailableLanguages')->will($this->returnValue([]));

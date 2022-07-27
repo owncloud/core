@@ -43,6 +43,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IGroupManager;
+use OCP\IGroup;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\InvalidUserTokenException;
@@ -166,7 +167,7 @@ class UsersController extends Controller {
 
 	/**
 	 * @param IUser $user
-	 * @param array $userGroups
+	 * @param IGroup[]|null $userGroups
 	 * @return array
 	 */
 	private function formatUserForIndex(IUser $user, array $userGroups = null) {
@@ -195,8 +196,12 @@ class UsersController extends Controller {
 
 		'@phan-var \OC\Group\Manager $this->groupManager';
 		$subAdminGroups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($user);
-		foreach ($subAdminGroups as $key => $subAdminGroup) {
-			$subAdminGroups[$key] = $subAdminGroup->getGID();
+		$subAdminGroupsKV = [];
+		foreach ($subAdminGroups as $subAdminGroup) {
+			$subAdminGroupsKV[$subAdminGroup->getGID()] = [
+				'id' => $subAdminGroup->getGID(),
+				'name' => $subAdminGroup->getDisplayName(),
+			];
 		}
 
 		$displayName = $user->getEMailAddress();
@@ -213,11 +218,20 @@ class UsersController extends Controller {
 			}
 		}
 
+		$groups = ($userGroups === null) ? $this->groupManager->getUserGroups($user, 'management') : $userGroups;
+		$groupsKV = [];
+		foreach ($groups as $group) {
+			$groupsKV[$group->getGID()] = [
+				'id' => $group->getGID(),
+				'name' => $group->getDisplayName(),
+			];
+		}
+
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
-			'groups' => (empty($userGroups)) ? $this->groupManager->getUserGroupIds($user, 'management') : $userGroups,
-			'subadmin' => $subAdminGroups,
+			'groups' => $groupsKV,
+			'subadmin' => $subAdminGroupsKV,
 			'isEnabled' => $user->isEnabled(),
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
@@ -316,23 +330,25 @@ class UsersController extends Controller {
 			$groupManager = $this->groupManager;
 			'@phan-var \OC\Group\Manager $groupManager';
 			$subAdminOfGroups = $groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
-			// New class returns IGroup[] so convert back
 			$gids = [];
 			foreach ($subAdminOfGroups as $group) {
-				$gids[] = $group->getGID();
+				$gids[$group->getGID()] = [
+					'id' => $group->getGID(),
+					'name' => $group->getDisplayName(),
+				];
 			}
 			$subAdminOfGroups = $gids;
 
 			// Set the $gid parameter to an empty value if the subadmin has no rights to access a specific group
-			if ($gid !== '' && !\in_array($gid, $subAdminOfGroups)) {
+			if ($gid !== '' && !isset($subAdminOfGroups[$gid])) {
 				$gid = '';
 			}
 
 			// Batch all groups the user is subadmin of when a group is specified
 			$batch = [];
 			if ($gid === '') {
-				foreach ($subAdminOfGroups as $group) {
-					$groupUsers = $this->groupManager->displayNamesInGroup($group, $pattern, $limit, $offset);
+				foreach ($subAdminOfGroups as $groupId => $groupData) {
+					$groupUsers = $this->groupManager->displayNamesInGroup($groupId, $pattern, $limit, $offset);
 
 					foreach ($groupUsers as $uid => $displayName) {
 						$batch[$uid] = $displayName;
@@ -345,11 +361,14 @@ class UsersController extends Controller {
 
 			foreach ($batch as $user) {
 				// Only add the groups, this user is a subadmin of
-				$userGroups = \array_values(\array_intersect(
-					$this->groupManager->getUserGroupIds($user),
-					$subAdminOfGroups
-				));
-				$users[] = $this->formatUserForIndex($user, $userGroups);
+				$userGroupList = $this->groupManager->getUserGroups($user);
+				$finalGroupList = [];
+				foreach ($userGroupList as $userGroup) {
+					if (isset($subAdminOfGroups[$userGroup->getGID()])) {
+						$finalGroupList[] = $userGroup;
+					}
+				}
+				$users[] = $this->formatUserForIndex($user, $finalGroupList);
 			}
 		}
 
@@ -505,7 +524,7 @@ class UsersController extends Controller {
 				}
 			}
 			// fetch users groups
-			$userGroups = $this->groupManager->getUserGroupIds($user);
+			$userGroups = $this->groupManager->getUserGroups($user);
 
 			return new DataResponse(
 				$this->formatUserForIndex($user, $userGroups),
