@@ -724,7 +724,10 @@ class PublicWebDavContext implements Context {
 			$password
 		);
 
-		$this->featureContext->downloadedContentShouldBe($expectedContent);
+		$this->featureContext->checkDownloadedContentMatches(
+			$expectedContent,
+			"Checking the content of the last public shared file after downloading with the $publicWebDAVAPIVersion public WebDAV API"
+		);
 
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
