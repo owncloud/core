@@ -1147,16 +1147,32 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentShouldBe(string $content):void {
+		$this->checkDownloadedContentMatches($content);
+	}
+
+	/**
+	 * @param string $expectedContent
+	 * @param string $extraErrorText
+	 *
+	 * @return void
+	 */
+	public function checkDownloadedContentMatches(
+		string $expectedContent,
+		string $extraErrorText = ""
+	):void {
 		$actualContent = (string) $this->response->getBody();
 		// For this test we really care about the content.
 		// A separate "Then" step can specifically check the HTTP status.
 		// But if the content is wrong (e.g. empty) then it is useful to
 		// report the HTTP status to give some clue what might be the problem.
 		$actualStatus = $this->response->getStatusCode();
+		if ($extraErrorText !== "") {
+			$extraErrorText .= "\n";
+		}
 		Assert::assertEquals(
-			$content,
+			$expectedContent,
 			$actualContent,
-			"The downloaded content was expected to be '$content', but actually is '$actualContent'. HTTP status was $actualStatus"
+			$extraErrorText . "The downloaded content was expected to be '$expectedContent', but actually is '$actualContent'. HTTP status was $actualStatus"
 		);
 	}
 
