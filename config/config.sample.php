@@ -1259,7 +1259,7 @@ $CONFIG = [
  * Define the DAV chunk base directory
  * Location of the chunk folder, defaults to `<datadirectory>/$user/uploads` where
  * `$user` is the current user and `datadirectory` is the datadirectory described here.
- * When specified, the format will change to `$dav.chunk_base_dir/$user` where 
+ * When specified, the format will change to `$dav.chunk_base_dir/$user` where
  * `$dav.chunk_base_dir` is the configured cache directory here and `$user` is the user.
  */
 'dav.chunk_base_dir' => '',
