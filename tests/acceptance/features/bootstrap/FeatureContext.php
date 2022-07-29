@@ -2795,13 +2795,13 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * send request to read a server file
+	 * send request to read a server file for core
 	 *
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function readFileInServerRoot(string $path):void {
+	public function readFileInServerRootForCore(string $path):void {
 		$response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
@@ -2811,6 +2811,23 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getStepLineRef()
 		);
 		$this->setResponse($response);
+	}
+
+	/**
+	 * read a server file for ocis
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public function readFileInServerRootForOCIS(string $path):string {
+		$pathToOcis = \getenv("PATH_TO_OCIS");
+		$targetFile = \rtrim($pathToOcis, "/") . "/" . "services/web/assets" . "/" . ltrim($path, '/');
+		if (!\file_exists($targetFile)) {
+			throw new Exception('Target File' . $targetFile . 'could not be found');
+		}
+		return \file_get_contents($targetFile);
 	}
 
 	/**
@@ -2882,19 +2899,15 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function theFileWithContentShouldExistInTheServerRoot(string $path, string $content):void {
-		$this->readFileInServerRoot($path);
-		Assert::assertSame(
-			200,
-			$this->getResponse()->getStatusCode(),
-			"Failed to read the file $path"
-		);
-		$fileContent = HttpRequestHelper::getResponseXml(
-			$this->getResponse(),
-			__METHOD__
-		);
-		$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
-		$fileContent = \urldecode($fileContent);
-
+		if (OcisHelper::isTestingOnOcis()) {
+			$fileContent = $this->readFileInServerRootForOCIS($path);
+		} else {
+			$this->readFileInServerRootForCore($path);
+			$this->theHTTPStatusCodeShouldBe(200, 'Failed to read the file $path');
+			$fileContent = $this->getResponseXml();
+			$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
+			$fileContent = \urldecode($fileContent);
+		}
 		Assert::assertSame(
 			$content,
 			$fileContent,
@@ -2923,7 +2936,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function theFileShouldNotExistInTheServerRoot(string $path):void {
-		$this->readFileInServerRoot($path);
+		$this->readFileInServerRootForCore($path);
 		Assert::assertSame(
 			404,
 			$this->getResponse()->getStatusCode(),
