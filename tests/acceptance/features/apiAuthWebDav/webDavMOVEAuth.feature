@@ -158,3 +158,24 @@ Feature: MOVE file/folder
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/FOLDER            |
     Then the HTTP status code of responses on all endpoints should be "403"
+
+  @skipOnOcV10
+  Scenario: send MOVE requests to webDav endpoints with body as normal user
+    When user "Alice" requests these endpoints with "MOVE" including body "doesnotmatter" about user "Alice"
+      | endpoint                                           |
+      | /remote.php/webdav/textfile0.txt                   |
+      | /remote.php/dav/files/%username%/textfile0.txt     |
+      | /remote.php/webdav/PARENT                          |
+      | /remote.php/dav/files/%username%/PARENT            |
+      | /remote.php/webdav/PARENT/parent.txt               |
+      | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "415"
+
+  @skipOnOcV10 @personalSpace
+  Scenario: send MOVE requests to webDav endpoints with body as normal user using the spaces WebDAV API
+    When user "Alice" requests these endpoints with "MOVE" including body "doesnotmatter" about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "415"
