@@ -1676,6 +1676,8 @@ $CONFIG = [
  * WARNING:
  *    Be warned that, if you set this to `true`, exceptions display
  *    stack traces on the web interface, *including passwords*, — **in plain text!**.
+ *    Furthermore the content-disposition header will be lost and thus files will be
+ *    displayed in the browser rather than downloaded.
  *    We strongly encourage you never to use it in production.
  */
 'debug' => false,
