@@ -57,6 +57,7 @@
     "App can't be installed because it is not compatible with this version of ownCloud" : "ownCloud sürümünüz ile uyumsuz olduğu için uygulama kurulamıyor",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Uygulama, birlikte gelmeyen uygulama olmasına rağmen <shipped>true</shipped> etiketi içerdiği için kurulamıyor",
     "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "Uygulama info.xml içindeki sürüm ile uygulama marketinde belirtilen sürüm aynı olmadığından kurulamıyor",
+    "New Design" : "Yeni Tasarım",
     "Apps" : "Uygulamalar",
     "General" : "Genel",
     "Storage" : "Depolama",

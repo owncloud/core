@@ -32,6 +32,7 @@ OC.L10N.register(
     "Delete" : "Sil",
     "Disconnect storage" : "Depolama bağlantısını kes",
     "Unshare" : "Paylaşmayı Kaldır",
+    "How do you want to open this file?" : "Bu dosyayı nasıl açmak istiyorsunuz?",
     "Could not load info for file \"{file}\"" : "\"{file}\" dosyası için bilgi yüklenemedi",
     "Files" : "Dosyalar",
     "Details" : "Ayrıntılar",
