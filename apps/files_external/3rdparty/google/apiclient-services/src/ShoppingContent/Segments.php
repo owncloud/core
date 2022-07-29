@@ -67,6 +67,10 @@ class Segments extends \Google\Model
    * @var string
    */
   public $customLabel4;
+  /**
+   * @var string
+   */
+  public $customerCountryCode;
   protected $dateType = Date::class;
   protected $dateDataType = '';
   /**
@@ -271,6 +275,20 @@ class Segments extends \Google\Model
   public function getCustomLabel4()
   {
     return $this->customLabel4;
+  }
+  /**
+   * @param string
+   */
+  public function setCustomerCountryCode($customerCountryCode)
+  {
+    $this->customerCountryCode = $customerCountryCode;
+  }
+  /**
+   * @return string
+   */
+  public function getCustomerCountryCode()
+  {
+    return $this->customerCountryCode;
   }
   /**
    * @param Date

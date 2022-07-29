@@ -9,15 +9,8 @@ use Exception;
 use InvalidArgumentException;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
-<<<<<<< HEAD
 use stdClass;
 use UnexpectedValueException;
-=======
-use TypeError;
-use UnexpectedValueException;
-use DateTime;
-use stdClass;
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
 
 /**
  * JSON Web Token implementation, based on this spec:
@@ -75,11 +68,7 @@ class JWT
      * Decodes a JWT string into a PHP object.
      *
      * @param string                 $jwt            The JWT
-<<<<<<< HEAD
      * @param Key|array<string,Key> $keyOrKeyArray  The Key or associative array of key IDs (kid) to Key objects.
-=======
-     * @param Key|array<string, Key> $keyOrKeyArray  The Key or associative array of key IDs (kid) to Key objects.
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
      *                                               If the algorithm used is asymmetric, this is the public key
      *                                               Each Key object contains an algorithm and matching key.
      *                                               Supported algorithms are 'ES384','ES256', 'HS256', 'HS384',
@@ -109,7 +98,7 @@ class JWT
             throw new InvalidArgumentException('Key may not be empty');
         }
         $tks = \explode('.', $jwt);
-        if (\count($tks) != 3) {
+        if (\count($tks) !== 3) {
             throw new UnexpectedValueException('Wrong number of segments');
         }
         list($headb64, $bodyb64, $cryptob64) = $tks;
@@ -121,7 +110,6 @@ class JWT
         if (null === ($payload = static::jsonDecode($payloadRaw))) {
             throw new UnexpectedValueException('Invalid claims encoding');
         }
-<<<<<<< HEAD
         if (\is_array($payload)) {
             // prevent PHP Fatal Error in edge-cases when payload is empty array
             $payload = (object) $payload;
@@ -129,15 +117,6 @@ class JWT
         if (!$payload instanceof stdClass) {
             throw new UnexpectedValueException('Payload must be a JSON object');
         }
-=======
-        if (is_array($payload)) {
-            // prevent PHP Fatal Error in edge-cases when payload is empty array
-            $payload = (object) $payload;
-        }
-        if (!$payload instanceof stdClass) {
-            throw new UnexpectedValueException('Payload must be a JSON object');
-        }
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
         $sig = static::urlsafeB64Decode($cryptob64);
         if (empty($header->alg)) {
             throw new UnexpectedValueException('Empty algorithm');
@@ -157,7 +136,7 @@ class JWT
             // OpenSSL expects an ASN.1 DER sequence for ES256/ES384 signatures
             $sig = self::signatureToDER($sig);
         }
-        if (!self::verify("$headb64.$bodyb64", $sig, $key->getKeyMaterial(), $header->alg)) {
+        if (!self::verify("${headb64}.${bodyb64}", $sig, $key->getKeyMaterial(), $header->alg)) {
             throw new SignatureInvalidException('Signature verification failed');
         }
 
@@ -249,11 +228,7 @@ class JWT
         list($function, $algorithm) = static::$supported_algs[$alg];
         switch ($function) {
             case 'hash_hmac':
-<<<<<<< HEAD
                 if (!\is_string($key)) {
-=======
-                if (!is_string($key)) {
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
                     throw new InvalidArgumentException('key must be a string when using hmac');
                 }
                 return \hash_hmac($algorithm, $msg, $key, true);
@@ -273,11 +248,7 @@ class JWT
                 if (!\function_exists('sodium_crypto_sign_detached')) {
                     throw new DomainException('libsodium is not available');
                 }
-<<<<<<< HEAD
                 if (!\is_string($key)) {
-=======
-                if (!is_string($key)) {
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
                     throw new InvalidArgumentException('key must be a string when using EdDSA');
                 }
                 try {
@@ -322,7 +293,8 @@ class JWT
                 $success = \openssl_verify($msg, $signature, $keyMaterial, $algorithm); // @phpstan-ignore-line
                 if ($success === 1) {
                     return true;
-                } elseif ($success === 0) {
+                }
+                if ($success === 0) {
                     return false;
                 }
                 // returns 1 on success, 0 on failure, -1 on error.
@@ -330,31 +302,23 @@ class JWT
                     'OpenSSL error: ' . \openssl_error_string()
                 );
             case 'sodium_crypto':
-              if (!\function_exists('sodium_crypto_sign_verify_detached')) {
-                  throw new DomainException('libsodium is not available');
-              }
-<<<<<<< HEAD
-              if (!\is_string($keyMaterial)) {
-=======
-              if (!is_string($keyMaterial)) {
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
-                  throw new InvalidArgumentException('key must be a string when using EdDSA');
-              }
-              try {
-                  // The last non-empty line is used as the key.
-                  $lines = array_filter(explode("\n", $keyMaterial));
-                  $key = base64_decode((string) end($lines));
-                  return sodium_crypto_sign_verify_detached($signature, $msg, $key);
-              } catch (Exception $e) {
-                  throw new DomainException($e->getMessage(), 0, $e);
-              }
+                if (!\function_exists('sodium_crypto_sign_verify_detached')) {
+                    throw new DomainException('libsodium is not available');
+                }
+                if (!\is_string($keyMaterial)) {
+                    throw new InvalidArgumentException('key must be a string when using EdDSA');
+                }
+                try {
+                    // The last non-empty line is used as the key.
+                    $lines = array_filter(explode("\n", $keyMaterial));
+                    $key = base64_decode((string) end($lines));
+                    return sodium_crypto_sign_verify_detached($signature, $msg, $key);
+                } catch (Exception $e) {
+                    throw new DomainException($e->getMessage(), 0, $e);
+                }
             case 'hash_hmac':
             default:
-<<<<<<< HEAD
                 if (!\is_string($keyMaterial)) {
-=======
-                if (!is_string($keyMaterial)) {
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
                     throw new InvalidArgumentException('key must be a string when using hmac');
                 }
                 $hash = \hash_hmac($algorithm, $msg, $keyMaterial, true);
@@ -446,11 +410,7 @@ class JWT
     /**
      * Determine if an algorithm has been provided for each Key
      *
-<<<<<<< HEAD
      * @param Key|ArrayAccess<string,Key>|array<string,Key> $keyOrKeyArray
-=======
-     * @param Key|array<string, Key> $keyOrKeyArray
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
      * @param string|null            $kid
      *
      * @throws UnexpectedValueException
@@ -465,24 +425,12 @@ class JWT
             return $keyOrKeyArray;
         }
 
-<<<<<<< HEAD
         if ($keyOrKeyArray instanceof CachedKeySet) {
             // Skip "isset" check, as this will automatically refresh if not set
             return $keyOrKeyArray[$kid];
         }
 
         if (empty($kid)) {
-=======
-        foreach ($keyOrKeyArray as $keyId => $key) {
-            if (!$key instanceof Key) {
-                throw new TypeError(
-                    '$keyOrKeyArray must be an instance of Firebase\JWT\Key key or an '
-                    . 'array of Firebase\JWT\Key keys'
-                );
-            }
-        }
-        if (!isset($kid)) {
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
             throw new UnexpectedValueException('"kid" empty, unable to lookup correct key');
         }
         if (!isset($keyOrKeyArray[$kid])) {
@@ -563,7 +511,7 @@ class JWT
     {
         // Separate the signature into r-value and s-value
         $length = max(1, (int) (\strlen($sig) / 2));
-        list($r, $s) = \str_split($sig, $length > 0 ? $length : 1);
+        list($r, $s) = \str_split($sig, $length);
 
         // Trim leading zeros
         $r = \ltrim($r, "\x00");
@@ -663,7 +611,7 @@ class JWT
         }
 
         // Value
-        if ($type == self::ASN1_BIT_STRING) {
+        if ($type === self::ASN1_BIT_STRING) {
             $pos++; // Skip the first contents octet (padding indicator)
             $data = \substr($der, $pos, $len - 1);
             $pos += $len - 1;

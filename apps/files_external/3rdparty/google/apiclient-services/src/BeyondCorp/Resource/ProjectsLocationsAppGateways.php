@@ -46,7 +46,7 @@ class ProjectsLocationsAppGateways extends \Google\Service\Resource
    *
    * @opt_param string appGatewayId Optional. User-settable AppGateway resource
    * ID. * Must start with a letter. * Must contain between 4-63 characters from
-   * (/a-z-/). * Must end with a number or a letter.
+   * `/a-z-/`. * Must end with a number or a letter.
    * @opt_param string requestId Optional. An optional request ID to identify
    * requests. Specify a unique request ID so that if you must retry your request,
    * the server will know to ignore the request if it has already been completed.

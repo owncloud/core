@@ -34,7 +34,7 @@ class ProjectsLocationsLakesZonesActions extends \Google\Service\Resource
    * (actions.listProjectsLocationsLakesZonesActions)
    *
    * @param string $parent Required. The resource name of the parent zone: project
-   * s/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}
+   * s/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. Maximum number of actions to return. The

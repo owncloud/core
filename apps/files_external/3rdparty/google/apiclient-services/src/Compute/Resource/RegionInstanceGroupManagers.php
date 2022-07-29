@@ -411,7 +411,9 @@ class RegionInstanceGroupManagers extends \Google\Service\Resource
    * Lists the instances in the managed instance group and instances that are
    * scheduled to be created. The list includes any current actions that the group
    * has scheduled for its instances. The orderBy query parameter is not
-   * supported. (regionInstanceGroupManagers.listManagedInstances)
+   * supported. The `pageToken` query parameter is supported only in the alpha and
+   * beta API and only if the group's `listManagedInstancesResults` field is set
+   * to `PAGINATED`. (regionInstanceGroupManagers.listManagedInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.

@@ -50,6 +50,10 @@ class Secret extends \Google\Collection
    * @var string
    */
   public $ttl;
+  /**
+   * @var string[]
+   */
+  public $versionAliases;
 
   /**
    * @param string
@@ -176,6 +180,20 @@ class Secret extends \Google\Collection
   public function getTtl()
   {
     return $this->ttl;
+  }
+  /**
+   * @param string[]
+   */
+  public function setVersionAliases($versionAliases)
+  {
+    $this->versionAliases = $versionAliases;
+  }
+  /**
+   * @return string[]
+   */
+  public function getVersionAliases()
+  {
+    return $this->versionAliases;
   }
 }
 

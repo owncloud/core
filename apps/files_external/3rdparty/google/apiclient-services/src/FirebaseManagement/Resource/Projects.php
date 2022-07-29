@@ -308,6 +308,8 @@ class Projects extends \Google\Service\Resource
    * its own limit. This value cannot be negative.
    * @opt_param string pageToken Token returned from a previous call to
    * `SearchFirebaseApps` indicating where in the set of Apps to resume listing.
+   * @opt_param bool showDeleted Controls whether Apps in the DELETED state should
+   * be returned. Defaults to false.
    * @return SearchFirebaseAppsResponse
    */
   public function searchApps($parent, $optParams = [])

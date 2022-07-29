@@ -20,8 +20,6 @@ namespace Google\Service\VMMigrationService;
 class MigratingVm extends \Google\Collection
 {
   protected $collection_key = 'recentCutoverJobs';
-  protected $awsSourceVmDetailsType = AwsSourceVmDetails::class;
-  protected $awsSourceVmDetailsDataType = '';
   protected $computeEngineTargetDefaultsType = ComputeEngineTargetDefaults::class;
   protected $computeEngineTargetDefaultsDataType = '';
   /**
@@ -77,20 +75,6 @@ class MigratingVm extends \Google\Collection
    */
   public $updateTime;
 
-  /**
-   * @param AwsSourceVmDetails
-   */
-  public function setAwsSourceVmDetails(AwsSourceVmDetails $awsSourceVmDetails)
-  {
-    $this->awsSourceVmDetails = $awsSourceVmDetails;
-  }
-  /**
-   * @return AwsSourceVmDetails
-   */
-  public function getAwsSourceVmDetails()
-  {
-    return $this->awsSourceVmDetails;
-  }
   /**
    * @param ComputeEngineTargetDefaults
    */

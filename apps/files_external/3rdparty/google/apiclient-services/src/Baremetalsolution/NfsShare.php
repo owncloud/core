@@ -23,6 +23,10 @@ class NfsShare extends \Google\Collection
   protected $allowedClientsType = AllowedClient::class;
   protected $allowedClientsDataType = 'array';
   /**
+   * @var string
+   */
+  public $id;
+  /**
    * @var string[]
    */
   public $labels;
@@ -60,6 +64,20 @@ class NfsShare extends \Google\Collection
   public function getAllowedClients()
   {
     return $this->allowedClients;
+  }
+  /**
+   * @param string
+   */
+  public function setId($id)
+  {
+    $this->id = $id;
+  }
+  /**
+   * @return string
+   */
+  public function getId()
+  {
+    return $this->id;
   }
   /**
    * @param string[]

@@ -34,6 +34,9 @@ use Google\Client;
  */
 class Sasportal extends \Google\Service
 {
+  /** Read, create, update, and delete your SAS Portal data.. */
+  const SASPORTAL =
+      "https://www.googleapis.com/auth/sasportal";
   /** See your primary Google Account email address. */
   const USERINFO_EMAIL =
       "https://www.googleapis.com/auth/userinfo.email";

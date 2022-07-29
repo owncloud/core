@@ -19,6 +19,8 @@ namespace Google\Service\Storagetransfer;
 
 class TransferSpec extends \Google\Model
 {
+  protected $awsS3CompatibleDataSourceType = AwsS3CompatibleData::class;
+  protected $awsS3CompatibleDataSourceDataType = '';
   protected $awsS3DataSourceType = AwsS3Data::class;
   protected $awsS3DataSourceDataType = '';
   protected $azureBlobStorageDataSourceType = AzureBlobStorageData::class;
@@ -50,6 +52,20 @@ class TransferSpec extends \Google\Model
   protected $transferOptionsType = TransferOptions::class;
   protected $transferOptionsDataType = '';
 
+  /**
+   * @param AwsS3CompatibleData
+   */
+  public function setAwsS3CompatibleDataSource(AwsS3CompatibleData $awsS3CompatibleDataSource)
+  {
+    $this->awsS3CompatibleDataSource = $awsS3CompatibleDataSource;
+  }
+  /**
+   * @return AwsS3CompatibleData
+   */
+  public function getAwsS3CompatibleDataSource()
+  {
+    return $this->awsS3CompatibleDataSource;
+  }
   /**
    * @param AwsS3Data
    */

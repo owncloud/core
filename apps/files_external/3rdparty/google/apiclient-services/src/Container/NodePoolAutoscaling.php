@@ -28,6 +28,10 @@ class NodePoolAutoscaling extends \Google\Model
    */
   public $enabled;
   /**
+   * @var string
+   */
+  public $locationPolicy;
+  /**
    * @var int
    */
   public $maxNodeCount;
@@ -35,6 +39,14 @@ class NodePoolAutoscaling extends \Google\Model
    * @var int
    */
   public $minNodeCount;
+  /**
+   * @var int
+   */
+  public $totalMaxNodeCount;
+  /**
+   * @var int
+   */
+  public $totalMinNodeCount;
 
   /**
    * @param bool
@@ -65,6 +77,20 @@ class NodePoolAutoscaling extends \Google\Model
     return $this->enabled;
   }
   /**
+   * @param string
+   */
+  public function setLocationPolicy($locationPolicy)
+  {
+    $this->locationPolicy = $locationPolicy;
+  }
+  /**
+   * @return string
+   */
+  public function getLocationPolicy()
+  {
+    return $this->locationPolicy;
+  }
+  /**
    * @param int
    */
   public function setMaxNodeCount($maxNodeCount)
@@ -91,6 +117,34 @@ class NodePoolAutoscaling extends \Google\Model
   public function getMinNodeCount()
   {
     return $this->minNodeCount;
+  }
+  /**
+   * @param int
+   */
+  public function setTotalMaxNodeCount($totalMaxNodeCount)
+  {
+    $this->totalMaxNodeCount = $totalMaxNodeCount;
+  }
+  /**
+   * @return int
+   */
+  public function getTotalMaxNodeCount()
+  {
+    return $this->totalMaxNodeCount;
+  }
+  /**
+   * @param int
+   */
+  public function setTotalMinNodeCount($totalMinNodeCount)
+  {
+    $this->totalMinNodeCount = $totalMinNodeCount;
+  }
+  /**
+   * @return int
+   */
+  public function getTotalMinNodeCount()
+  {
+    return $this->totalMinNodeCount;
   }
 }
 

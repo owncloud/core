@@ -17,6 +17,8 @@
 
 namespace Google\Service\ChromeManagement\Resource;
 
+use Google\Service\ChromeManagement\GoogleChromeManagementV1CountChromeDevicesReachingAutoExpirationDateResponse;
+use Google\Service\ChromeManagement\GoogleChromeManagementV1CountChromeDevicesThatNeedAttentionResponse;
 use Google\Service\ChromeManagement\GoogleChromeManagementV1CountChromeVersionsResponse;
 use Google\Service\ChromeManagement\GoogleChromeManagementV1CountInstalledAppsResponse;
 use Google\Service\ChromeManagement\GoogleChromeManagementV1FindInstalledAppDevicesResponse;
@@ -31,6 +33,58 @@ use Google\Service\ChromeManagement\GoogleChromeManagementV1FindInstalledAppDevi
  */
 class CustomersReports extends \Google\Service\Resource
 {
+  /**
+   * Generate report of the number of devices expiring in each month of the
+   * selected time frame. Devices are grouped by auto update expiration date and
+   * model. Further information can be found
+   * [here](https://support.google.com/chrome/a/answer/10564947).
+   * (reports.countChromeDevicesReachingAutoExpirationDate)
+   *
+   * @param string $customer Required. The customer ID or "my_customer" prefixed
+   * with "customers/".
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string maxAueDate Optional. Maximum expiration date in format
+   * yyyy-mm-dd in UTC timezone. If included returns all devices that have already
+   * expired and devices with auto expiration date equal to or earlier than the
+   * maximum date.
+   * @opt_param string minAueDate Optional. Maximum expiration date in format
+   * yyyy-mm-dd in UTC timezone. If included returns all devices that have already
+   * expired and devices with auto expiration date equal to or later than the
+   * minimum date.
+   * @opt_param string orgUnitId Optional. The organizational unit ID, if omitted,
+   * will return data for all organizational units.
+   * @return GoogleChromeManagementV1CountChromeDevicesReachingAutoExpirationDateResponse
+   */
+  public function countChromeDevicesReachingAutoExpirationDate($customer, $optParams = [])
+  {
+    $params = ['customer' => $customer];
+    $params = array_merge($params, $optParams);
+    return $this->call('countChromeDevicesReachingAutoExpirationDate', [$params], GoogleChromeManagementV1CountChromeDevicesReachingAutoExpirationDateResponse::class);
+  }
+  /**
+   * Counts of ChromeOS devices that have not synced policies or have lacked user
+   * activity in the past 28 days, are out of date, or are not complaint. Further
+   * information can be found here
+   * https://support.google.com/chrome/a/answer/10564947
+   * (reports.countChromeDevicesThatNeedAttention)
+   *
+   * @param string $customer Required. The customer ID or "my_customer" prefixed
+   * with "customers/".
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string orgUnitId Optional. The ID of the organizational unit. If
+   * omitted, all data will be returned.
+   * @opt_param string readMask Required. Mask of the fields that should be
+   * populated in the returned report.
+   * @return GoogleChromeManagementV1CountChromeDevicesThatNeedAttentionResponse
+   */
+  public function countChromeDevicesThatNeedAttention($customer, $optParams = [])
+  {
+    $params = ['customer' => $customer];
+    $params = array_merge($params, $optParams);
+    return $this->call('countChromeDevicesThatNeedAttention', [$params], GoogleChromeManagementV1CountChromeDevicesThatNeedAttentionResponse::class);
+  }
   /**
    * Generate report of installed Chrome versions. (reports.countChromeVersions)
    *

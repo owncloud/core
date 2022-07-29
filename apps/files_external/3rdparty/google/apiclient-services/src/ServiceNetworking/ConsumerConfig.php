@@ -20,6 +20,8 @@ namespace Google\Service\ServiceNetworking;
 class ConsumerConfig extends \Google\Collection
 {
   protected $collection_key = 'usedIpRanges';
+  protected $cloudsqlConfigsType = CloudSQLConfig::class;
+  protected $cloudsqlConfigsDataType = 'array';
   /**
    * @var bool
    */
@@ -67,6 +69,20 @@ class ConsumerConfig extends \Google\Collection
    */
   public $vpcScReferenceArchitectureEnabled;
 
+  /**
+   * @param CloudSQLConfig[]
+   */
+  public function setCloudsqlConfigs($cloudsqlConfigs)
+  {
+    $this->cloudsqlConfigs = $cloudsqlConfigs;
+  }
+  /**
+   * @return CloudSQLConfig[]
+   */
+  public function getCloudsqlConfigs()
+  {
+    return $this->cloudsqlConfigs;
+  }
   /**
    * @param bool
    */

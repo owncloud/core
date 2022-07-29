@@ -86,6 +86,10 @@ class DriveFileCapabilities extends \Google\Model
   /**
    * @var bool
    */
+  public $canModifyLabels;
+  /**
+   * @var bool
+   */
   public $canMoveChildrenOutOfDrive;
   /**
    * @var bool
@@ -127,6 +131,10 @@ class DriveFileCapabilities extends \Google\Model
    * @var bool
    */
   public $canReadDrive;
+  /**
+   * @var bool
+   */
+  public $canReadLabels;
   /**
    * @var bool
    */
@@ -391,6 +399,20 @@ class DriveFileCapabilities extends \Google\Model
   /**
    * @param bool
    */
+  public function setCanModifyLabels($canModifyLabels)
+  {
+    $this->canModifyLabels = $canModifyLabels;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanModifyLabels()
+  {
+    return $this->canModifyLabels;
+  }
+  /**
+   * @param bool
+   */
   public function setCanMoveChildrenOutOfDrive($canMoveChildrenOutOfDrive)
   {
     $this->canMoveChildrenOutOfDrive = $canMoveChildrenOutOfDrive;
@@ -541,6 +563,20 @@ class DriveFileCapabilities extends \Google\Model
   public function getCanReadDrive()
   {
     return $this->canReadDrive;
+  }
+  /**
+   * @param bool
+   */
+  public function setCanReadLabels($canReadLabels)
+  {
+    $this->canReadLabels = $canReadLabels;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanReadLabels()
+  {
+    return $this->canReadLabels;
   }
   /**
    * @param bool

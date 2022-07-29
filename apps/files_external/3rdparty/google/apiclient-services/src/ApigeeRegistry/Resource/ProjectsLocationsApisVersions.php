@@ -62,6 +62,10 @@ class ProjectsLocationsApisVersions extends \Google\Service\Resource
    * @param string $name Required. The name of the version to delete. Format:
    * projects/locations/apis/versions
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param bool force If set to true, any child resources will also be
+   * deleted. (Otherwise, the request will only work if there are no child
+   * resources.)
    * @return ApigeeregistryEmpty
    */
   public function delete($name, $optParams = [])

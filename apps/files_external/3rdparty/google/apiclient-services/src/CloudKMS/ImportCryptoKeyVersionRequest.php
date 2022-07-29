@@ -35,6 +35,10 @@ class ImportCryptoKeyVersionRequest extends \Google\Model
    * @var string
    */
   public $rsaAesWrappedKey;
+  /**
+   * @var string
+   */
+  public $wrappedKey;
 
   /**
    * @param string
@@ -91,6 +95,20 @@ class ImportCryptoKeyVersionRequest extends \Google\Model
   public function getRsaAesWrappedKey()
   {
     return $this->rsaAesWrappedKey;
+  }
+  /**
+   * @param string
+   */
+  public function setWrappedKey($wrappedKey)
+  {
+    $this->wrappedKey = $wrappedKey;
+  }
+  /**
+   * @return string
+   */
+  public function getWrappedKey()
+  {
+    return $this->wrappedKey;
   }
 }
 

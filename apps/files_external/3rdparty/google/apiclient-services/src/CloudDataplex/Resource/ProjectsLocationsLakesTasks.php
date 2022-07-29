@@ -39,7 +39,7 @@ class ProjectsLocationsLakesTasks extends \Google\Service\Resource
    * Creates a task resource within a lake. (tasks.create)
    *
    * @param string $parent Required. The resource name of the parent lake:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}.
    * @param GoogleCloudDataplexV1Task $postBody
    * @param array $optParams Optional parameters.
    *
@@ -57,9 +57,8 @@ class ProjectsLocationsLakesTasks extends \Google\Service\Resource
   /**
    * Delete the task resource. (tasks.delete)
    *
-   * @param string $name Required. The resource name of the task:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
-   * /task/{task_id}`
+   * @param string $name Required. The resource name of the task: projects/{projec
+   * t_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}.
    * @param array $optParams Optional parameters.
    * @return GoogleLongrunningOperation
    */
@@ -72,9 +71,8 @@ class ProjectsLocationsLakesTasks extends \Google\Service\Resource
   /**
    * Get task resource. (tasks.get)
    *
-   * @param string $name Required. The resource name of the task:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
-   * /tasks/{tasks_id}
+   * @param string $name Required. The resource name of the task: projects/{projec
+   * t_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}.
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDataplexV1Task
    */
@@ -117,7 +115,7 @@ class ProjectsLocationsLakesTasks extends \Google\Service\Resource
    * Lists tasks under the given lake. (tasks.listProjectsLocationsLakesTasks)
    *
    * @param string $parent Required. The resource name of the parent lake:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional. Filter request.

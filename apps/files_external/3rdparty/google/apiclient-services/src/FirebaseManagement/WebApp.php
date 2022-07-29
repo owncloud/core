@@ -47,6 +47,10 @@ class WebApp extends \Google\Collection
   /**
    * @var string
    */
+  public $state;
+  /**
+   * @var string
+   */
   public $webId;
 
   /**
@@ -132,6 +136,20 @@ class WebApp extends \Google\Collection
   public function getProjectId()
   {
     return $this->projectId;
+  }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
   }
   /**
    * @param string

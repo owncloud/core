@@ -32,6 +32,10 @@ class CloudSqlProperties extends \Google\Model
   /**
    * @var string
    */
+  public $serviceAccountId;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -75,6 +79,20 @@ class CloudSqlProperties extends \Google\Model
   public function getInstanceId()
   {
     return $this->instanceId;
+  }
+  /**
+   * @param string
+   */
+  public function setServiceAccountId($serviceAccountId)
+  {
+    $this->serviceAccountId = $serviceAccountId;
+  }
+  /**
+   * @return string
+   */
+  public function getServiceAccountId()
+  {
+    return $this->serviceAccountId;
   }
   /**
    * @param string

@@ -21,6 +21,7 @@ use Google\Service\FirebaseManagement\AndroidApp;
 use Google\Service\FirebaseManagement\AndroidAppConfig;
 use Google\Service\FirebaseManagement\ListAndroidAppsResponse;
 use Google\Service\FirebaseManagement\Operation;
+use Google\Service\FirebaseManagement\RemoveAndroidAppRequest;
 
 /**
  * The "androidApps" collection of methods.
@@ -111,6 +112,8 @@ class ProjectsAndroidApps extends \Google\Service\Resource
    * its own limit.
    * @opt_param string pageToken Token returned from a previous call to
    * `ListAndroidApps` indicating where in the set of Apps to resume listing.
+   * @opt_param bool showDeleted Controls whether Apps in the DELETED state should
+   * be returned. Defaults to false.
    * @return ListAndroidAppsResponse
    */
   public function listProjectsAndroidApps($parent, $optParams = [])
@@ -137,7 +140,8 @@ class ProjectsAndroidApps extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Specifies which fields to update. Note that the
-   * fields `name`, `app_id`, `project_id`, and `package_name` are all immutable.
+   * fields `name`, `app_id`, `project_id`, `package_name`, and `state` are all
+   * immutable.
    * @return AndroidApp
    */
   public function patch($name, AndroidApp $postBody, $optParams = [])
@@ -145,6 +149,25 @@ class ProjectsAndroidApps extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], AndroidApp::class);
+  }
+  /**
+   * Removes the specified AndroidApp from the project. (androidApps.remove)
+   *
+   * @param string $name Required. The resource name of the AndroidApp, in the
+   * format: projects/ PROJECT_IDENTIFIER/androidApps/APP_ID Since an APP_ID is a
+   * unique identifier, the Unique Resource from Sub-Collection access pattern may
+   * be used here, in the format: projects/-/androidApps/APP_ID Refer to the
+   * AndroidApp [name](../projects.androidApps#AndroidApp.FIELDS.name) field for
+   * details about PROJECT_IDENTIFIER and APP_ID values.
+   * @param RemoveAndroidAppRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function remove($name, RemoveAndroidAppRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('remove', [$params], Operation::class);
   }
 }
 

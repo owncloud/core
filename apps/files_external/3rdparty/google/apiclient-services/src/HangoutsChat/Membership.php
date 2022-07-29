@@ -32,6 +32,10 @@ class Membership extends \Google\Model
   /**
    * @var string
    */
+  public $role;
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -75,6 +79,20 @@ class Membership extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setRole($role)
+  {
+    $this->role = $role;
+  }
+  /**
+   * @return string
+   */
+  public function getRole()
+  {
+    return $this->role;
   }
   /**
    * @param string

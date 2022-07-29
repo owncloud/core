@@ -149,6 +149,10 @@ class Drive extends \Google\Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ],
+                'includeLabels' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'includePermissionsForView' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -206,6 +210,10 @@ class Drive extends \Google\Service
                 'includeItemsFromAllDrives' => [
                   'location' => 'query',
                   'type' => 'boolean',
+                ],
+                'includeLabels' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
                 'includePermissionsForView' => [
                   'location' => 'query',
@@ -487,6 +495,10 @@ class Drive extends \Google\Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ],
+                'includeLabels' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'includePermissionsForView' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -519,6 +531,10 @@ class Drive extends \Google\Service
                 'ignoreDefaultVisibility' => [
                   'location' => 'query',
                   'type' => 'boolean',
+                ],
+                'includeLabels' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
                 'includePermissionsForView' => [
                   'location' => 'query',
@@ -621,6 +637,10 @@ class Drive extends \Google\Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ],
+                'includeLabels' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'includePermissionsForView' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -653,6 +673,10 @@ class Drive extends \Google\Service
                 'includeItemsFromAllDrives' => [
                   'location' => 'query',
                   'type' => 'boolean',
+                ],
+                'includeLabels' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
                 'includePermissionsForView' => [
                   'location' => 'query',
@@ -695,6 +719,34 @@ class Drive extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'listLabels' => [
+              'path' => 'files/{fileId}/listLabels',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'fileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'maxResults' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'modifyLabels' => [
+              'path' => 'files/{fileId}/modifyLabels',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'fileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'update' => [
               'path' => 'files/{fileId}',
               'httpMethod' => 'PATCH',
@@ -711,6 +763,10 @@ class Drive extends \Google\Service
                 'enforceSingleParent' => [
                   'location' => 'query',
                   'type' => 'boolean',
+                ],
+                'includeLabels' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
                 'includePermissionsForView' => [
                   'location' => 'query',
@@ -753,6 +809,10 @@ class Drive extends \Google\Service
                 'acknowledgeAbuse' => [
                   'location' => 'query',
                   'type' => 'boolean',
+                ],
+                'includeLabels' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
                 'includePermissionsForView' => [
                   'location' => 'query',

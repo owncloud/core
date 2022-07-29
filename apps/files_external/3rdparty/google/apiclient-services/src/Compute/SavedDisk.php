@@ -22,6 +22,10 @@ class SavedDisk extends \Google\Model
   /**
    * @var string
    */
+  public $architecture;
+  /**
+   * @var string
+   */
   public $kind;
   /**
    * @var string
@@ -36,6 +40,20 @@ class SavedDisk extends \Google\Model
    */
   public $storageBytesStatus;
 
+  /**
+   * @param string
+   */
+  public function setArchitecture($architecture)
+  {
+    $this->architecture = $architecture;
+  }
+  /**
+   * @return string
+   */
+  public function getArchitecture()
+  {
+    return $this->architecture;
+  }
   /**
    * @param string
    */

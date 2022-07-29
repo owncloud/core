@@ -24,6 +24,14 @@ class GoogleChromeManagementV1CpuInfo extends \Google\Model
    */
   public $architecture;
   /**
+   * @var bool
+   */
+  public $keylockerConfigured;
+  /**
+   * @var bool
+   */
+  public $keylockerSupported;
+  /**
    * @var int
    */
   public $maxClockSpeed;
@@ -45,6 +53,34 @@ class GoogleChromeManagementV1CpuInfo extends \Google\Model
   public function getArchitecture()
   {
     return $this->architecture;
+  }
+  /**
+   * @param bool
+   */
+  public function setKeylockerConfigured($keylockerConfigured)
+  {
+    $this->keylockerConfigured = $keylockerConfigured;
+  }
+  /**
+   * @return bool
+   */
+  public function getKeylockerConfigured()
+  {
+    return $this->keylockerConfigured;
+  }
+  /**
+   * @param bool
+   */
+  public function setKeylockerSupported($keylockerSupported)
+  {
+    $this->keylockerSupported = $keylockerSupported;
+  }
+  /**
+   * @return bool
+   */
+  public function getKeylockerSupported()
+  {
+    return $this->keylockerSupported;
   }
   /**
    * @param int

@@ -222,6 +222,16 @@ class CloudDomains extends \Google\Service
                   'type' => 'integer',
                 ],
               ],
+            ],'import' => [
+              'path' => 'v1/{+parent}/registrations:import',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'list' => [
               'path' => 'v1/{+parent}/registrations',
               'httpMethod' => 'GET',
@@ -286,6 +296,24 @@ class CloudDomains extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],'retrieveImportableDomains' => [
+              'path' => 'v1/{+location}/registrations:retrieveImportableDomains',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'location' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],'retrieveRegisterParameters' => [

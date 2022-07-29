@@ -30,6 +30,10 @@ class Cuepoint extends \Google\Model
   /**
    * @var string
    */
+  public $etag;
+  /**
+   * @var string
+   */
   public $id;
   /**
    * @var string
@@ -67,6 +71,20 @@ class Cuepoint extends \Google\Model
   public function getDurationSecs()
   {
     return $this->durationSecs;
+  }
+  /**
+   * @param string
+   */
+  public function setEtag($etag)
+  {
+    $this->etag = $etag;
+  }
+  /**
+   * @return string
+   */
+  public function getEtag()
+  {
+    return $this->etag;
   }
   /**
    * @param string

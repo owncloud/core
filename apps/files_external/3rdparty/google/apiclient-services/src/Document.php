@@ -43,6 +43,7 @@ class Document extends \Google\Service
   public $operations;
   public $projects_locations;
   public $projects_locations_operations;
+  public $projects_locations_processorTypes;
   public $projects_locations_processors;
   public $projects_locations_processors_humanReviewConfig;
   public $projects_locations_processors_processorVersions;
@@ -176,6 +177,34 @@ class Document extends \Google\Service
                 'filter' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_processorTypes = new Document\Resource\ProjectsLocationsProcessorTypes(
+        $this,
+        $this->serviceName,
+        'processorTypes',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/processorTypes',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
                 'pageSize' => [
                   'location' => 'query',

@@ -20,9 +20,17 @@ namespace Google\Service\FirebaseManagement;
 class FirebaseProject extends \Google\Model
 {
   /**
+   * @var string[]
+   */
+  public $annotations;
+  /**
    * @var string
    */
   public $displayName;
+  /**
+   * @var string
+   */
+  public $etag;
   /**
    * @var string
    */
@@ -43,6 +51,20 @@ class FirebaseProject extends \Google\Model
   public $state;
 
   /**
+   * @param string[]
+   */
+  public function setAnnotations($annotations)
+  {
+    $this->annotations = $annotations;
+  }
+  /**
+   * @return string[]
+   */
+  public function getAnnotations()
+  {
+    return $this->annotations;
+  }
+  /**
    * @param string
    */
   public function setDisplayName($displayName)
@@ -55,6 +77,20 @@ class FirebaseProject extends \Google\Model
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param string
+   */
+  public function setEtag($etag)
+  {
+    $this->etag = $etag;
+  }
+  /**
+   * @return string
+   */
+  public function getEtag()
+  {
+    return $this->etag;
   }
   /**
    * @param string

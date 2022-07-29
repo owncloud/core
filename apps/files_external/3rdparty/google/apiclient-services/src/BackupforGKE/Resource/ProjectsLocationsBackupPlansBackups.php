@@ -39,7 +39,7 @@ class ProjectsLocationsBackupPlansBackups extends \Google\Service\Resource
    * Creates a Backup for the given BackupPlan. (backups.create)
    *
    * @param string $parent Required. The BackupPlan within which to create the
-   * Backup. Format: projects/locations/backupPlans
+   * Backup. Format: `projects/locations/backupPlans`
    * @param Backup $postBody
    * @param array $optParams Optional parameters.
    *
@@ -60,7 +60,7 @@ class ProjectsLocationsBackupPlansBackups extends \Google\Service\Resource
    * Deletes an existing Backup. (backups.delete)
    *
    * @param string $name Required. Name of the Backup resource. Format:
-   * projects/locations/backupPlans/backups
+   * `projects/locations/backupPlans/backups`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string etag If provided, this value must match the current value
@@ -80,7 +80,7 @@ class ProjectsLocationsBackupPlansBackups extends \Google\Service\Resource
    * Retrieve the details of a single Backup. (backups.get)
    *
    * @param string $name Required. Full name of the Backup resource. Format:
-   * projects/locations/backupPlans/backups
+   * `projects/locations/backupPlans/backups`
    * @param array $optParams Optional parameters.
    * @return Backup
    */
@@ -125,7 +125,7 @@ class ProjectsLocationsBackupPlansBackups extends \Google\Service\Resource
    * (backups.listProjectsLocationsBackupPlansBackups)
    *
    * @param string $parent Required. The BackupPlan that contains the Backups to
-   * list. Format: projects/locations/backupPlans
+   * list. Format: `projects/locations/backupPlans`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Field match expression used to filter the results.
@@ -151,7 +151,7 @@ class ProjectsLocationsBackupPlansBackups extends \Google\Service\Resource
    * Update a Backup. (backups.patch)
    *
    * @param string $name Output only. The fully qualified name of the Backup.
-   * projects/locations/backupPlans/backups
+   * `projects/locations/backupPlans/backups`
    * @param Backup $postBody
    * @param array $optParams Optional parameters.
    *

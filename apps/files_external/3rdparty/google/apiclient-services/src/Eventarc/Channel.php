@@ -30,6 +30,10 @@ class Channel extends \Google\Model
   /**
    * @var string
    */
+  public $cryptoKeyName;
+  /**
+   * @var string
+   */
   public $name;
   /**
    * @var string
@@ -79,6 +83,20 @@ class Channel extends \Google\Model
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setCryptoKeyName($cryptoKeyName)
+  {
+    $this->cryptoKeyName = $cryptoKeyName;
+  }
+  /**
+   * @return string
+   */
+  public function getCryptoKeyName()
+  {
+    return $this->cryptoKeyName;
   }
   /**
    * @param string

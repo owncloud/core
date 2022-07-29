@@ -36,6 +36,10 @@ class RollbackNodePoolUpgradeRequest extends \Google\Model
    */
   public $projectId;
   /**
+   * @var bool
+   */
+  public $respectPdb;
+  /**
    * @var string
    */
   public $zone;
@@ -95,6 +99,20 @@ class RollbackNodePoolUpgradeRequest extends \Google\Model
   public function getProjectId()
   {
     return $this->projectId;
+  }
+  /**
+   * @param bool
+   */
+  public function setRespectPdb($respectPdb)
+  {
+    $this->respectPdb = $respectPdb;
+  }
+  /**
+   * @return bool
+   */
+  public function getRespectPdb()
+  {
+    return $this->respectPdb;
   }
   /**
    * @param string

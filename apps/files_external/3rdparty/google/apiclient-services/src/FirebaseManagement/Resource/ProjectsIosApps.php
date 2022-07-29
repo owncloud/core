@@ -21,6 +21,7 @@ use Google\Service\FirebaseManagement\IosApp;
 use Google\Service\FirebaseManagement\IosAppConfig;
 use Google\Service\FirebaseManagement\ListIosAppsResponse;
 use Google\Service\FirebaseManagement\Operation;
+use Google\Service\FirebaseManagement\RemoveIosAppRequest;
 
 /**
  * The "iosApps" collection of methods.
@@ -109,6 +110,8 @@ class ProjectsIosApps extends \Google\Service\Resource
    * limit.
    * @opt_param string pageToken Token returned from a previous call to
    * `ListIosApps` indicating where in the set of Apps to resume listing.
+   * @opt_param bool showDeleted Controls whether Apps in the DELETED state should
+   * be returned. Defaults to false.
    * @return ListIosAppsResponse
    */
   public function listProjectsIosApps($parent, $optParams = [])
@@ -135,7 +138,8 @@ class ProjectsIosApps extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Specifies which fields to update. Note that the
-   * fields `name`, `appId`, `projectId`, and `bundleId` are all immutable.
+   * fields `name`, `appId`, `projectId`, `bundleId`, and `state` are all
+   * immutable
    * @return IosApp
    */
   public function patch($name, IosApp $postBody, $optParams = [])
@@ -143,6 +147,25 @@ class ProjectsIosApps extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], IosApp::class);
+  }
+  /**
+   * Removes the specified IosApp from the project. (iosApps.remove)
+   *
+   * @param string $name Required. The resource name of the IosApp, in the format:
+   * projects/ PROJECT_IDENTIFIER/iosApps/APP_ID Since an APP_ID is a unique
+   * identifier, the Unique Resource from Sub-Collection access pattern may be
+   * used here, in the format: projects/-/iosApps/APP_ID Refer to the IosApp
+   * [name](../projects.iosApps#IosApp.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER and APP_ID values.
+   * @param RemoveIosAppRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function remove($name, RemoveIosAppRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('remove', [$params], Operation::class);
   }
 }
 

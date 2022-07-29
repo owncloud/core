@@ -54,11 +54,11 @@ class Spaces extends \Google\Service\Resource
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Requested page size. The value is capped at 1000.
-   * Server may return fewer results than requested. If unspecified, server will
-   * default to 100.
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return.
+   * @opt_param int pageSize Optional. Requested page size. The value is capped at
+   * 1000. Server may return fewer results than requested. If unspecified, server
+   * will default to 100.
+   * @opt_param string pageToken Optional. A token identifying a page of results
+   * the server should return.
    * @return ListSpacesResponse
    */
   public function listSpaces($optParams = [])

@@ -232,6 +232,10 @@ class FirebaseManagement extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'showDeleted' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
               ],
             ],
           ]
@@ -290,6 +294,10 @@ class FirebaseManagement extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'showDeleted' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
               ],
             ],'patch' => [
               'path' => 'v1beta1/{+name}',
@@ -303,6 +311,16 @@ class FirebaseManagement extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],'remove' => [
+              'path' => 'v1beta1/{+name}:remove',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],
@@ -450,6 +468,10 @@ class FirebaseManagement extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'showDeleted' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
               ],
             ],'patch' => [
               'path' => 'v1beta1/{+name}',
@@ -463,6 +485,16 @@ class FirebaseManagement extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],'remove' => [
+              'path' => 'v1beta1/{+name}:remove',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],
@@ -522,6 +554,10 @@ class FirebaseManagement extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'showDeleted' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
               ],
             ],'patch' => [
               'path' => 'v1beta1/{+name}',
@@ -535,6 +571,16 @@ class FirebaseManagement extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],'remove' => [
+              'path' => 'v1beta1/{+name}:remove',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

@@ -51,6 +51,10 @@ class CloudsupportCase extends \Google\Collection
   /**
    * @var string
    */
+  public $projectId;
+  /**
+   * @var string
+   */
   public $severity;
   /**
    * @var string
@@ -184,6 +188,20 @@ class CloudsupportCase extends \Google\Collection
   public function getPriority()
   {
     return $this->priority;
+  }
+  /**
+   * @param string
+   */
+  public function setProjectId($projectId)
+  {
+    $this->projectId = $projectId;
+  }
+  /**
+   * @return string
+   */
+  public function getProjectId()
+  {
+    return $this->projectId;
   }
   /**
    * @param string

@@ -46,6 +46,10 @@ class Network extends \Google\Collection
   /**
    * @var string
    */
+  public $firewallPolicy;
+  /**
+   * @var string
+   */
   public $gatewayIPv4;
   /**
    * @var string
@@ -157,6 +161,20 @@ class Network extends \Google\Collection
   public function getEnableUlaInternalIpv6()
   {
     return $this->enableUlaInternalIpv6;
+  }
+  /**
+   * @param string
+   */
+  public function setFirewallPolicy($firewallPolicy)
+  {
+    $this->firewallPolicy = $firewallPolicy;
+  }
+  /**
+   * @return string
+   */
+  public function getFirewallPolicy()
+  {
+    return $this->firewallPolicy;
   }
   /**
    * @param string

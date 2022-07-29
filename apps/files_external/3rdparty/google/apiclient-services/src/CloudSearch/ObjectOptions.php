@@ -17,12 +17,17 @@
 
 namespace Google\Service\CloudSearch;
 
-class ObjectOptions extends \Google\Model
+class ObjectOptions extends \Google\Collection
 {
+  protected $collection_key = 'suggestionFilteringOperators';
   protected $displayOptionsType = ObjectDisplayOptions::class;
   protected $displayOptionsDataType = '';
   protected $freshnessOptionsType = FreshnessOptions::class;
   protected $freshnessOptionsDataType = '';
+  /**
+   * @var string[]
+   */
+  public $suggestionFilteringOperators;
 
   /**
    * @param ObjectDisplayOptions
@@ -51,6 +56,20 @@ class ObjectOptions extends \Google\Model
   public function getFreshnessOptions()
   {
     return $this->freshnessOptions;
+  }
+  /**
+   * @param string[]
+   */
+  public function setSuggestionFilteringOperators($suggestionFilteringOperators)
+  {
+    $this->suggestionFilteringOperators = $suggestionFilteringOperators;
+  }
+  /**
+   * @return string[]
+   */
+  public function getSuggestionFilteringOperators()
+  {
+    return $this->suggestionFilteringOperators;
   }
 }
 

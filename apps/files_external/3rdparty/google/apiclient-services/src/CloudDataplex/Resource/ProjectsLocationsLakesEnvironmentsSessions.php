@@ -35,7 +35,7 @@ class ProjectsLocationsLakesEnvironmentsSessions extends \Google\Service\Resourc
    *
    * @param string $parent Required. The resource name of the parent environment:
    * projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment
-   * /{environment_id}
+   * /{environment_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional. Filter request. The following mode filter

@@ -22,6 +22,8 @@ class GoogleCloudDocumentaiV1beta1DocumentPage extends \Google\Collection
   protected $collection_key = 'visualElements';
   protected $blocksType = GoogleCloudDocumentaiV1beta1DocumentPageBlock::class;
   protected $blocksDataType = 'array';
+  protected $detectedBarcodesType = GoogleCloudDocumentaiV1beta1DocumentPageDetectedBarcode::class;
+  protected $detectedBarcodesDataType = 'array';
   protected $detectedLanguagesType = GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage::class;
   protected $detectedLanguagesDataType = 'array';
   protected $dimensionType = GoogleCloudDocumentaiV1beta1DocumentPageDimension::class;
@@ -66,6 +68,20 @@ class GoogleCloudDocumentaiV1beta1DocumentPage extends \Google\Collection
   public function getBlocks()
   {
     return $this->blocks;
+  }
+  /**
+   * @param GoogleCloudDocumentaiV1beta1DocumentPageDetectedBarcode[]
+   */
+  public function setDetectedBarcodes($detectedBarcodes)
+  {
+    $this->detectedBarcodes = $detectedBarcodes;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1beta1DocumentPageDetectedBarcode[]
+   */
+  public function getDetectedBarcodes()
+  {
+    return $this->detectedBarcodes;
   }
   /**
    * @param GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage[]

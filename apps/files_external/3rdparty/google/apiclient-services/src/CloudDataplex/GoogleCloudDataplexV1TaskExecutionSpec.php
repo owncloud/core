@@ -26,6 +26,10 @@ class GoogleCloudDataplexV1TaskExecutionSpec extends \Google\Model
   /**
    * @var string
    */
+  public $kmsKey;
+  /**
+   * @var string
+   */
   public $maxJobExecutionLifetime;
   /**
    * @var string
@@ -49,6 +53,20 @@ class GoogleCloudDataplexV1TaskExecutionSpec extends \Google\Model
   public function getArgs()
   {
     return $this->args;
+  }
+  /**
+   * @param string
+   */
+  public function setKmsKey($kmsKey)
+  {
+    $this->kmsKey = $kmsKey;
+  }
+  /**
+   * @return string
+   */
+  public function getKmsKey()
+  {
+    return $this->kmsKey;
   }
   /**
    * @param string

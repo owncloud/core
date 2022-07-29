@@ -21,6 +21,10 @@ class GoogleCloudDataplexV1TaskInfrastructureSpecContainerImageRuntime extends \
 {
   protected $collection_key = 'pythonPackages';
   /**
+   * @var string
+   */
+  public $image;
+  /**
    * @var string[]
    */
   public $javaJars;
@@ -33,6 +37,20 @@ class GoogleCloudDataplexV1TaskInfrastructureSpecContainerImageRuntime extends \
    */
   public $pythonPackages;
 
+  /**
+   * @param string
+   */
+  public function setImage($image)
+  {
+    $this->image = $image;
+  }
+  /**
+   * @return string
+   */
+  public function getImage()
+  {
+    return $this->image;
+  }
   /**
    * @param string[]
    */

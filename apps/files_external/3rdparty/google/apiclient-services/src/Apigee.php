@@ -89,12 +89,14 @@ class Apigee extends \Google\Service
   public $organizations_environments_queries;
   public $organizations_environments_references;
   public $organizations_environments_resourcefiles;
+  public $organizations_environments_securityReports;
   public $organizations_environments_sharedflows_deployments;
   public $organizations_environments_sharedflows_revisions;
   public $organizations_environments_stats;
   public $organizations_environments_targetservers;
   public $organizations_environments_traceConfig_overrides;
   public $organizations_hostQueries;
+  public $organizations_hostSecurityReports;
   public $organizations_hostStats;
   public $organizations_instances;
   public $organizations_instances_attachments;
@@ -105,6 +107,8 @@ class Apigee extends \Google\Service
   public $organizations_operations;
   public $organizations_optimizedHostStats;
   public $organizations_reports;
+  public $organizations_securityProfiles;
+  public $organizations_securityProfiles_environments;
   public $organizations_sharedflows;
   public $organizations_sharedflows_deployments;
   public $organizations_sharedflows_revisions;
@@ -2928,6 +2932,94 @@ class Apigee extends \Google\Service
           ]
         ]
     );
+    $this->organizations_environments_securityReports = new Apigee\Resource\OrganizationsEnvironmentsSecurityReports(
+        $this,
+        $this->serviceName,
+        'securityReports',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/{+parent}/securityReports',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'getResult' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'getResultView' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/securityReports',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'dataset' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'from' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'status' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'submittedBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'to' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->organizations_environments_sharedflows_deployments = new Apigee\Resource\OrganizationsEnvironmentsSharedflowsDeployments(
         $this,
         $this->serviceName,
@@ -3270,6 +3362,98 @@ class Apigee extends \Google\Service
                   'type' => 'string',
                 ],
                 'inclQueriesWithoutReport' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'status' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'submittedBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'to' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->organizations_hostSecurityReports = new Apigee\Resource\OrganizationsHostSecurityReports(
+        $this,
+        $this->serviceName,
+        'hostSecurityReports',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/{+parent}/hostSecurityReports',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'getResult' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'getResultView' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/hostSecurityReports',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'dataset' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'envgroupHostname' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'from' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -3863,6 +4047,102 @@ class Apigee extends \Google\Service
             ],'update' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'PUT',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->organizations_securityProfiles = new Apigee\Resource\OrganizationsSecurityProfiles(
+        $this,
+        $this->serviceName,
+        'securityProfiles',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/securityProfiles',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'listRevisions' => [
+              'path' => 'v1/{+name}:listRevisions',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->organizations_securityProfiles_environments = new Apigee\Resource\OrganizationsSecurityProfilesEnvironments(
+        $this,
+        $this->serviceName,
+        'environments',
+        [
+          'methods' => [
+            'computeEnvironmentScores' => [
+              'path' => 'v1/{+profileEnvironment}:computeEnvironmentScores',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'profileEnvironment' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'create' => [
+              'path' => 'v1/{+parent}/environments',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
               'parameters' => [
                 'name' => [
                   'location' => 'path',

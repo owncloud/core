@@ -153,9 +153,17 @@ class TrainingOptions extends \Google\Collection
   /**
    * @var string
    */
+  public $maxTimeSeriesLength;
+  /**
+   * @var string
+   */
   public $maxTreeDepth;
   public $minRelativeProgress;
   public $minSplitLoss;
+  /**
+   * @var string
+   */
+  public $minTimeSeriesLength;
   /**
    * @var string
    */
@@ -207,6 +215,7 @@ class TrainingOptions extends \Google\Collection
    * @var string[]
    */
   public $timeSeriesIdColumns;
+  public $timeSeriesLengthFraction;
   /**
    * @var string
    */
@@ -215,6 +224,10 @@ class TrainingOptions extends \Google\Collection
    * @var string
    */
   public $treeMethod;
+  /**
+   * @var string
+   */
+  public $trendSmoothingWindowSize;
   /**
    * @var string
    */
@@ -728,6 +741,20 @@ class TrainingOptions extends \Google\Collection
   /**
    * @param string
    */
+  public function setMaxTimeSeriesLength($maxTimeSeriesLength)
+  {
+    $this->maxTimeSeriesLength = $maxTimeSeriesLength;
+  }
+  /**
+   * @return string
+   */
+  public function getMaxTimeSeriesLength()
+  {
+    return $this->maxTimeSeriesLength;
+  }
+  /**
+   * @param string
+   */
   public function setMaxTreeDepth($maxTreeDepth)
   {
     $this->maxTreeDepth = $maxTreeDepth;
@@ -754,6 +781,20 @@ class TrainingOptions extends \Google\Collection
   public function getMinSplitLoss()
   {
     return $this->minSplitLoss;
+  }
+  /**
+   * @param string
+   */
+  public function setMinTimeSeriesLength($minTimeSeriesLength)
+  {
+    $this->minTimeSeriesLength = $minTimeSeriesLength;
+  }
+  /**
+   * @return string
+   */
+  public function getMinTimeSeriesLength()
+  {
+    return $this->minTimeSeriesLength;
   }
   /**
    * @param string
@@ -945,6 +986,14 @@ class TrainingOptions extends \Google\Collection
   {
     return $this->timeSeriesIdColumns;
   }
+  public function setTimeSeriesLengthFraction($timeSeriesLengthFraction)
+  {
+    $this->timeSeriesLengthFraction = $timeSeriesLengthFraction;
+  }
+  public function getTimeSeriesLengthFraction()
+  {
+    return $this->timeSeriesLengthFraction;
+  }
   /**
    * @param string
    */
@@ -972,6 +1021,20 @@ class TrainingOptions extends \Google\Collection
   public function getTreeMethod()
   {
     return $this->treeMethod;
+  }
+  /**
+   * @param string
+   */
+  public function setTrendSmoothingWindowSize($trendSmoothingWindowSize)
+  {
+    $this->trendSmoothingWindowSize = $trendSmoothingWindowSize;
+  }
+  /**
+   * @return string
+   */
+  public function getTrendSmoothingWindowSize()
+  {
+    return $this->trendSmoothingWindowSize;
   }
   /**
    * @param string

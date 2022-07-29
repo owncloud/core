@@ -27,6 +27,10 @@ class GoogleCloudDocumentaiV1DocumentSchemaMetadata extends \Google\Model
    * @var bool
    */
   public $documentSplitter;
+  /**
+   * @var bool
+   */
+  public $prefixedNamingOnProperties;
 
   /**
    * @param bool
@@ -55,6 +59,20 @@ class GoogleCloudDocumentaiV1DocumentSchemaMetadata extends \Google\Model
   public function getDocumentSplitter()
   {
     return $this->documentSplitter;
+  }
+  /**
+   * @param bool
+   */
+  public function setPrefixedNamingOnProperties($prefixedNamingOnProperties)
+  {
+    $this->prefixedNamingOnProperties = $prefixedNamingOnProperties;
+  }
+  /**
+   * @return bool
+   */
+  public function getPrefixedNamingOnProperties()
+  {
+    return $this->prefixedNamingOnProperties;
   }
 }
 

@@ -84,10 +84,6 @@ class Firestore extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'validateOnly' => [
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ],
               ],
             ],'exportDocuments' => [
               'path' => 'v1/{+name}:exportDocuments',

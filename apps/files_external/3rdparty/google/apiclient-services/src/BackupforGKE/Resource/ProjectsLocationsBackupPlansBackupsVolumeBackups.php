@@ -38,7 +38,7 @@ class ProjectsLocationsBackupPlansBackupsVolumeBackups extends \Google\Service\R
    * Retrieve the details of a single VolumeBackup. (volumeBackups.get)
    *
    * @param string $name Required. Full name of the VolumeBackup resource. Format:
-   * projects/locations/backupPlans/backups/volumeBackups
+   * `projects/locations/backupPlans/backups/volumeBackups`
    * @param array $optParams Optional parameters.
    * @return VolumeBackup
    */
@@ -83,7 +83,7 @@ class ProjectsLocationsBackupPlansBackupsVolumeBackups extends \Google\Service\R
    * (volumeBackups.listProjectsLocationsBackupPlansBackupsVolumeBackups)
    *
    * @param string $parent Required. The Backup that contains the VolumeBackups to
-   * list. Format: projects/locations/backupPlans/backups
+   * list. Format: `projects/locations/backupPlans/backups`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Field match expression used to filter the results.

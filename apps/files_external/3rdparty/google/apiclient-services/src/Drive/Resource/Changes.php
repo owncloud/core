@@ -68,6 +68,8 @@ class Changes extends \Google\Service\Resource
    * be no further change entries for this file.
    * @opt_param bool includeItemsFromAllDrives Whether both My Drive and shared
    * drive items should be included in results.
+   * @opt_param string includeLabels A comma-separated list of IDs of labels to
+   * include in the labelInfo part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool includeRemoved Whether to include changes indicating that
@@ -112,6 +114,8 @@ class Changes extends \Google\Service\Resource
    * be no further change entries for this file.
    * @opt_param bool includeItemsFromAllDrives Whether both My Drive and shared
    * drive items should be included in results.
+   * @opt_param string includeLabels A comma-separated list of IDs of labels to
+   * include in the labelInfo part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool includeRemoved Whether to include changes indicating that

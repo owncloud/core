@@ -17,8 +17,11 @@
 
 namespace Google\Service\Monitoring;
 
-class HttpCheck extends \Google\Model
+class HttpCheck extends \Google\Collection
 {
+  protected $collection_key = 'acceptedResponseStatusCodes';
+  protected $acceptedResponseStatusCodesType = ResponseStatusCode::class;
+  protected $acceptedResponseStatusCodesDataType = 'array';
   protected $authInfoType = BasicAuthentication::class;
   protected $authInfoDataType = '';
   /**
@@ -58,6 +61,20 @@ class HttpCheck extends \Google\Model
    */
   public $validateSsl;
 
+  /**
+   * @param ResponseStatusCode[]
+   */
+  public function setAcceptedResponseStatusCodes($acceptedResponseStatusCodes)
+  {
+    $this->acceptedResponseStatusCodes = $acceptedResponseStatusCodes;
+  }
+  /**
+   * @return ResponseStatusCode[]
+   */
+  public function getAcceptedResponseStatusCodes()
+  {
+    return $this->acceptedResponseStatusCodes;
+  }
   /**
    * @param BasicAuthentication
    */

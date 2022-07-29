@@ -17,12 +17,15 @@
 
 namespace Google\Service\Compute;
 
-class ManagedInstanceLastAttemptErrorsErrors extends \Google\Model
+class ManagedInstanceLastAttemptErrorsErrors extends \Google\Collection
 {
+  protected $collection_key = 'errorDetails';
   /**
    * @var string
    */
   public $code;
+  protected $errorDetailsType = ManagedInstanceLastAttemptErrorsErrorsErrorDetails::class;
+  protected $errorDetailsDataType = 'array';
   /**
    * @var string
    */
@@ -45,6 +48,20 @@ class ManagedInstanceLastAttemptErrorsErrors extends \Google\Model
   public function getCode()
   {
     return $this->code;
+  }
+  /**
+   * @param ManagedInstanceLastAttemptErrorsErrorsErrorDetails[]
+   */
+  public function setErrorDetails($errorDetails)
+  {
+    $this->errorDetails = $errorDetails;
+  }
+  /**
+   * @return ManagedInstanceLastAttemptErrorsErrorsErrorDetails[]
+   */
+  public function getErrorDetails()
+  {
+    return $this->errorDetails;
   }
   /**
    * @param string

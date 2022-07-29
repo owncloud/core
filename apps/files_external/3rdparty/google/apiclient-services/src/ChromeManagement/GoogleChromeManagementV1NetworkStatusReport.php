@@ -22,11 +22,31 @@ class GoogleChromeManagementV1NetworkStatusReport extends \Google\Model
   /**
    * @var string
    */
+  public $connectionState;
+  /**
+   * @var string
+   */
+  public $connectionType;
+  /**
+   * @var bool
+   */
+  public $encryptionOn;
+  /**
+   * @var string
+   */
   public $gatewayIpAddress;
   /**
    * @var string
    */
+  public $guid;
+  /**
+   * @var string
+   */
   public $lanIpAddress;
+  /**
+   * @var string
+   */
+  public $receivingBitRateMbps;
   /**
    * @var string
    */
@@ -39,7 +59,65 @@ class GoogleChromeManagementV1NetworkStatusReport extends \Google\Model
    * @var int
    */
   public $signalStrengthDbm;
+  /**
+   * @var string
+   */
+  public $transmissionBitRateMbps;
+  /**
+   * @var int
+   */
+  public $transmissionPowerDbm;
+  /**
+   * @var string
+   */
+  public $wifiLinkQuality;
+  /**
+   * @var bool
+   */
+  public $wifiPowerManagementEnabled;
 
+  /**
+   * @param string
+   */
+  public function setConnectionState($connectionState)
+  {
+    $this->connectionState = $connectionState;
+  }
+  /**
+   * @return string
+   */
+  public function getConnectionState()
+  {
+    return $this->connectionState;
+  }
+  /**
+   * @param string
+   */
+  public function setConnectionType($connectionType)
+  {
+    $this->connectionType = $connectionType;
+  }
+  /**
+   * @return string
+   */
+  public function getConnectionType()
+  {
+    return $this->connectionType;
+  }
+  /**
+   * @param bool
+   */
+  public function setEncryptionOn($encryptionOn)
+  {
+    $this->encryptionOn = $encryptionOn;
+  }
+  /**
+   * @return bool
+   */
+  public function getEncryptionOn()
+  {
+    return $this->encryptionOn;
+  }
   /**
    * @param string
    */
@@ -57,6 +135,20 @@ class GoogleChromeManagementV1NetworkStatusReport extends \Google\Model
   /**
    * @param string
    */
+  public function setGuid($guid)
+  {
+    $this->guid = $guid;
+  }
+  /**
+   * @return string
+   */
+  public function getGuid()
+  {
+    return $this->guid;
+  }
+  /**
+   * @param string
+   */
   public function setLanIpAddress($lanIpAddress)
   {
     $this->lanIpAddress = $lanIpAddress;
@@ -67,6 +159,20 @@ class GoogleChromeManagementV1NetworkStatusReport extends \Google\Model
   public function getLanIpAddress()
   {
     return $this->lanIpAddress;
+  }
+  /**
+   * @param string
+   */
+  public function setReceivingBitRateMbps($receivingBitRateMbps)
+  {
+    $this->receivingBitRateMbps = $receivingBitRateMbps;
+  }
+  /**
+   * @return string
+   */
+  public function getReceivingBitRateMbps()
+  {
+    return $this->receivingBitRateMbps;
   }
   /**
    * @param string
@@ -109,6 +215,62 @@ class GoogleChromeManagementV1NetworkStatusReport extends \Google\Model
   public function getSignalStrengthDbm()
   {
     return $this->signalStrengthDbm;
+  }
+  /**
+   * @param string
+   */
+  public function setTransmissionBitRateMbps($transmissionBitRateMbps)
+  {
+    $this->transmissionBitRateMbps = $transmissionBitRateMbps;
+  }
+  /**
+   * @return string
+   */
+  public function getTransmissionBitRateMbps()
+  {
+    return $this->transmissionBitRateMbps;
+  }
+  /**
+   * @param int
+   */
+  public function setTransmissionPowerDbm($transmissionPowerDbm)
+  {
+    $this->transmissionPowerDbm = $transmissionPowerDbm;
+  }
+  /**
+   * @return int
+   */
+  public function getTransmissionPowerDbm()
+  {
+    return $this->transmissionPowerDbm;
+  }
+  /**
+   * @param string
+   */
+  public function setWifiLinkQuality($wifiLinkQuality)
+  {
+    $this->wifiLinkQuality = $wifiLinkQuality;
+  }
+  /**
+   * @return string
+   */
+  public function getWifiLinkQuality()
+  {
+    return $this->wifiLinkQuality;
+  }
+  /**
+   * @param bool
+   */
+  public function setWifiPowerManagementEnabled($wifiPowerManagementEnabled)
+  {
+    $this->wifiPowerManagementEnabled = $wifiPowerManagementEnabled;
+  }
+  /**
+   * @return bool
+   */
+  public function getWifiPowerManagementEnabled()
+  {
+    return $this->wifiPowerManagementEnabled;
   }
 }
 
