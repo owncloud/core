@@ -176,7 +176,7 @@ class EncryptionContext implements Context {
 	public function fileOfUserShouldNotBeEncrypted(string $fileName, string $username):void {
 		$fileName = \ltrim($fileName, "/");
 		$filePath = "data/$username/files/$fileName";
-		$this->featureContext->readFileInServerRoot($filePath);
+		$this->featureContext->readFileInServerRootForCore($filePath);
 
 		$response = $this->featureContext->getResponse();
 		$parsedResponse = HttpRequestHelper::getResponseXml(
