@@ -43,7 +43,6 @@ class ShoppingContent extends \Google\Service
   public $accounts_labels;
   public $accounts_returncarrier;
   public $accountstatuses;
-  public $accountstatusesbyexternalsellerid;
   public $accounttax;
   public $buyongoogleprograms;
   public $collections;
@@ -512,36 +511,6 @@ class ShoppingContent extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->accountstatusesbyexternalsellerid = new ShoppingContent\Resource\Accountstatusesbyexternalsellerid(
-        $this,
-        $this->serviceName,
-        'accountstatusesbyexternalsellerid',
-        [
-          'methods' => [
-            'get' => [
-              'path' => '{merchantId}/accountstatusesbyexternalsellerid/{externalSellerId}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'merchantId' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'externalSellerId' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'destinations' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
                 ],
               ],
             ],

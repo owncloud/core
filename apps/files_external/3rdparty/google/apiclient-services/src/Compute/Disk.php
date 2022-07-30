@@ -23,6 +23,10 @@ class Disk extends \Google\Collection
   /**
    * @var string
    */
+  public $architecture;
+  /**
+   * @var string
+   */
   public $creationTimestamp;
   /**
    * @var string
@@ -157,6 +161,20 @@ class Disk extends \Google\Collection
    */
   public $zone;
 
+  /**
+   * @param string
+   */
+  public function setArchitecture($architecture)
+  {
+    $this->architecture = $architecture;
+  }
+  /**
+   * @return string
+   */
+  public function getArchitecture()
+  {
+    return $this->architecture;
+  }
   /**
    * @param string
    */

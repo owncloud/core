@@ -41,6 +41,8 @@ class StreetViewPublish extends \Google\Service
       "https://www.googleapis.com/auth/streetviewpublish";
 
   public $photo;
+  public $photoSequence;
+  public $photoSequences;
   public $photos;
 
   /**
@@ -111,6 +113,84 @@ class StreetViewPublish extends \Google\Service
                   'required' => true,
                 ],
                 'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->photoSequence = new StreetViewPublish\Resource\PhotoSequence(
+        $this,
+        $this->serviceName,
+        'photoSequence',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/photoSequence',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'inputType' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/photoSequence/{sequenceId}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'sequenceId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/photoSequence/{sequenceId}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'sequenceId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'view' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'startUpload' => [
+              'path' => 'v1/photoSequence:startUpload',
+              'httpMethod' => 'POST',
+              'parameters' => [],
+            ],
+          ]
+        ]
+    );
+    $this->photoSequences = new StreetViewPublish\Resource\PhotoSequences(
+        $this,
+        $this->serviceName,
+        'photoSequences',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/photoSequences',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],

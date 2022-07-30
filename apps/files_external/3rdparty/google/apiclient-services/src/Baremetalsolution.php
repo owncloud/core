@@ -44,6 +44,7 @@ class Baremetalsolution extends \Google\Service
   public $projects_locations_instances;
   public $projects_locations_networks;
   public $projects_locations_nfsShares;
+  public $projects_locations_operations;
   public $projects_locations_provisioningConfigs;
   public $projects_locations_provisioningQuotas;
   public $projects_locations_volumes;
@@ -339,6 +340,26 @@ class Baremetalsolution extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_operations = new Baremetalsolution\Resource\ProjectsLocationsOperations(
+        $this,
+        $this->serviceName,
+        'operations',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v2/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

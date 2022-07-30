@@ -22,6 +22,10 @@ class User extends \Google\Model
   /**
    * @var string
    */
+  public $dualPasswordType;
+  /**
+   * @var string
+   */
   public $etag;
   /**
    * @var string
@@ -56,6 +60,20 @@ class User extends \Google\Model
    */
   public $type;
 
+  /**
+   * @param string
+   */
+  public function setDualPasswordType($dualPasswordType)
+  {
+    $this->dualPasswordType = $dualPasswordType;
+  }
+  /**
+   * @return string
+   */
+  public function getDualPasswordType()
+  {
+    return $this->dualPasswordType;
+  }
   /**
    * @param string
    */

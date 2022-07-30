@@ -21,6 +21,10 @@ class Snapshot extends \Google\Collection
 {
   protected $collection_key = 'storageLocations';
   /**
+   * @var string
+   */
+  public $architecture;
+  /**
    * @var bool
    */
   public $autoCreated;
@@ -28,6 +32,10 @@ class Snapshot extends \Google\Collection
    * @var string
    */
   public $chainName;
+  /**
+   * @var string
+   */
+  public $creationSizeBytes;
   /**
    * @var string
    */
@@ -89,6 +97,10 @@ class Snapshot extends \Google\Collection
   /**
    * @var string
    */
+  public $snapshotType;
+  /**
+   * @var string
+   */
   public $sourceDisk;
   protected $sourceDiskEncryptionKeyType = CustomerEncryptionKey::class;
   protected $sourceDiskEncryptionKeyDataType = '';
@@ -96,6 +108,14 @@ class Snapshot extends \Google\Collection
    * @var string
    */
   public $sourceDiskId;
+  /**
+   * @var string
+   */
+  public $sourceSnapshotSchedulePolicy;
+  /**
+   * @var string
+   */
+  public $sourceSnapshotSchedulePolicyId;
   /**
    * @var string
    */
@@ -113,6 +133,20 @@ class Snapshot extends \Google\Collection
    */
   public $storageLocations;
 
+  /**
+   * @param string
+   */
+  public function setArchitecture($architecture)
+  {
+    $this->architecture = $architecture;
+  }
+  /**
+   * @return string
+   */
+  public function getArchitecture()
+  {
+    return $this->architecture;
+  }
   /**
    * @param bool
    */
@@ -140,6 +174,20 @@ class Snapshot extends \Google\Collection
   public function getChainName()
   {
     return $this->chainName;
+  }
+  /**
+   * @param string
+   */
+  public function setCreationSizeBytes($creationSizeBytes)
+  {
+    $this->creationSizeBytes = $creationSizeBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getCreationSizeBytes()
+  {
+    return $this->creationSizeBytes;
   }
   /**
    * @param string
@@ -354,6 +402,20 @@ class Snapshot extends \Google\Collection
   /**
    * @param string
    */
+  public function setSnapshotType($snapshotType)
+  {
+    $this->snapshotType = $snapshotType;
+  }
+  /**
+   * @return string
+   */
+  public function getSnapshotType()
+  {
+    return $this->snapshotType;
+  }
+  /**
+   * @param string
+   */
   public function setSourceDisk($sourceDisk)
   {
     $this->sourceDisk = $sourceDisk;
@@ -392,6 +454,34 @@ class Snapshot extends \Google\Collection
   public function getSourceDiskId()
   {
     return $this->sourceDiskId;
+  }
+  /**
+   * @param string
+   */
+  public function setSourceSnapshotSchedulePolicy($sourceSnapshotSchedulePolicy)
+  {
+    $this->sourceSnapshotSchedulePolicy = $sourceSnapshotSchedulePolicy;
+  }
+  /**
+   * @return string
+   */
+  public function getSourceSnapshotSchedulePolicy()
+  {
+    return $this->sourceSnapshotSchedulePolicy;
+  }
+  /**
+   * @param string
+   */
+  public function setSourceSnapshotSchedulePolicyId($sourceSnapshotSchedulePolicyId)
+  {
+    $this->sourceSnapshotSchedulePolicyId = $sourceSnapshotSchedulePolicyId;
+  }
+  /**
+   * @return string
+   */
+  public function getSourceSnapshotSchedulePolicyId()
+  {
+    return $this->sourceSnapshotSchedulePolicyId;
   }
   /**
    * @param string

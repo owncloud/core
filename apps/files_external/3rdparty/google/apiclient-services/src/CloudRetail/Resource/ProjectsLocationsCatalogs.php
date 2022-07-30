@@ -57,12 +57,14 @@ class ProjectsLocationsCatalogs extends \Google\Service\Resource
    * types, e.g. `DESKTOP`, `MOBILE`. If it is empty, the suggestions are across
    * all device types. Supported formats: * `UNKNOWN_DEVICE_TYPE` * `DESKTOP` *
    * `MOBILE` * A customized string starts with `OTHER_`, e.g. `OTHER_IPHONE`.
-   * @opt_param string languageCodes The language filters applied to the output
-   * suggestions. If set, it should contain the language of the query. If not set,
-   * suggestions are returned without considering language restrictions. This is
-   * the BCP-47 language code, such as "en-US" or "sr-Latn". For more information,
-   * see [Tags for Identifying Languages](https://tools.ietf.org/html/bcp47). The
-   * maximum number of language codes is 3.
+   * @opt_param string languageCodes Note that this field applies for `user-data`
+   * dataset only. For requests with `cloud-retail` dataset, setting this field
+   * has no effect. The language filters applied to the output suggestions. If
+   * set, it should contain the language of the query. If not set, suggestions are
+   * returned without considering language restrictions. This is the BCP-47
+   * language code, such as "en-US" or "sr-Latn". For more information, see [Tags
+   * for Identifying Languages](https://tools.ietf.org/html/bcp47). The maximum
+   * number of language codes is 3.
    * @opt_param int maxSuggestions Completion max suggestions. If left unset or
    * set to 0, then will fallback to the configured value
    * CompletionConfig.max_suggestions. The maximum allowed max suggestions is 20.

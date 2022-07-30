@@ -32,6 +32,8 @@ class Person extends \Google\Collection
   public $obfuscatedId;
   protected $personNamesType = Name::class;
   protected $personNamesDataType = 'array';
+  protected $phoneNumbersType = PhoneNumber::class;
+  protected $phoneNumbersDataType = 'array';
   protected $photosType = Photo::class;
   protected $photosDataType = 'array';
 
@@ -90,6 +92,20 @@ class Person extends \Google\Collection
   public function getPersonNames()
   {
     return $this->personNames;
+  }
+  /**
+   * @param PhoneNumber[]
+   */
+  public function setPhoneNumbers($phoneNumbers)
+  {
+    $this->phoneNumbers = $phoneNumbers;
+  }
+  /**
+   * @return PhoneNumber[]
+   */
+  public function getPhoneNumbers()
+  {
+    return $this->phoneNumbers;
   }
   /**
    * @param Photo[]

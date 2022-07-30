@@ -20,6 +20,7 @@ namespace Google\Service\Logging\Resource;
 use Google\Service\Logging\CancelOperationRequest;
 use Google\Service\Logging\ListOperationsResponse;
 use Google\Service\Logging\LoggingEmpty;
+use Google\Service\Logging\Operation;
 
 /**
  * The "operations" collection of methods.
@@ -52,6 +53,21 @@ class BillingAccountsLocationsOperations extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('cancel', [$params], LoggingEmpty::class);
+  }
+  /**
+   * Gets the latest state of a long-running operation. Clients can use this
+   * method to poll the operation result at intervals as recommended by the API
+   * service. (operations.get)
+   *
+   * @param string $name The name of the operation resource.
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], Operation::class);
   }
   /**
    * Lists operations that match the specified filter in the request. If the

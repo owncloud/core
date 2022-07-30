@@ -23,6 +23,10 @@ class Image extends \Google\Collection
   /**
    * @var string
    */
+  public $architecture;
+  /**
+   * @var string
+   */
   public $archiveSizeBytes;
   /**
    * @var string
@@ -129,6 +133,20 @@ class Image extends \Google\Collection
    */
   public $storageLocations;
 
+  /**
+   * @param string
+   */
+  public function setArchitecture($architecture)
+  {
+    $this->architecture = $architecture;
+  }
+  /**
+   * @return string
+   */
+  public function getArchitecture()
+  {
+    return $this->architecture;
+  }
   /**
    * @param string
    */

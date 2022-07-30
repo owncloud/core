@@ -203,7 +203,6 @@ $jwks = ['keys' => []];
 JWT::decode($payload, JWK::parseKeySet($jwks));
 ```
 
-<<<<<<< HEAD
 Using Cached Key Sets
 ---------------------
 
@@ -243,8 +242,6 @@ $jwt = 'eyJhbGci...'; // Some JWT signed by a key from the $jwkUri above
 $decoded = JWT::decode($jwt, $keySet);
 ```
 
-=======
->>>>>>> Upgrading firebase/php-jwt (v5.5.1 => v6.1.2)
 Miscellaneous
 -------------
 
@@ -263,6 +260,16 @@ $decoded = json_decode(json_encode($decoded), true);
 
 Changelog
 ---------
+
+#### 6.3.0 / 2022-07-15
+
+ - Added ES256 support to JWK parsing ([#399](https://github.com/firebase/php-jwt/pull/399))
+ - Fixed potential caching error in `CachedKeySet` by caching jwks as strings ([#435](https://github.com/firebase/php-jwt/pull/435))
+
+#### 6.2.0 / 2022-05-14
+
+ - Added `CachedKeySet` ([#397](https://github.com/firebase/php-jwt/pull/397))
+ - Added `$defaultAlg` parameter to `JWT::parseKey` and `JWT::parseKeySet` ([#426](https://github.com/firebase/php-jwt/pull/426)). 
 
 #### 6.1.0 / 2022-03-23
 

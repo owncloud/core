@@ -44,6 +44,10 @@ class GoogleCloudRunV2Container extends \Google\Collection
   protected $resourcesDataType = '';
   protected $volumeMountsType = GoogleCloudRunV2VolumeMount::class;
   protected $volumeMountsDataType = 'array';
+  /**
+   * @var string
+   */
+  public $workingDir;
 
   /**
    * @param string[]
@@ -156,6 +160,20 @@ class GoogleCloudRunV2Container extends \Google\Collection
   public function getVolumeMounts()
   {
     return $this->volumeMounts;
+  }
+  /**
+   * @param string
+   */
+  public function setWorkingDir($workingDir)
+  {
+    $this->workingDir = $workingDir;
+  }
+  /**
+   * @return string
+   */
+  public function getWorkingDir()
+  {
+    return $this->workingDir;
   }
 }
 

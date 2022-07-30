@@ -33,7 +33,7 @@ class ProjectsLocationsLakesActions extends \Google\Service\Resource
    * Lists action resources in a lake. (actions.listProjectsLocationsLakesActions)
    *
    * @param string $parent Required. The resource name of the parent lake:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. Maximum number of actions to return. The

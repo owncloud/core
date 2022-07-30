@@ -21,6 +21,7 @@ use Google\Service\RecaptchaEnterprise\GoogleCloudRecaptchaenterpriseV1Key;
 use Google\Service\RecaptchaEnterprise\GoogleCloudRecaptchaenterpriseV1ListKeysResponse;
 use Google\Service\RecaptchaEnterprise\GoogleCloudRecaptchaenterpriseV1Metrics;
 use Google\Service\RecaptchaEnterprise\GoogleCloudRecaptchaenterpriseV1MigrateKeyRequest;
+use Google\Service\RecaptchaEnterprise\GoogleCloudRecaptchaenterpriseV1RetrieveLegacySecretKeyResponse;
 use Google\Service\RecaptchaEnterprise\GoogleProtobufEmpty;
 
 /**
@@ -148,6 +149,23 @@ class ProjectsKeys extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], GoogleCloudRecaptchaenterpriseV1Key::class);
+  }
+  /**
+   * Returns the secret key related to the specified public key. You should use
+   * the legacy secret key only if you are integrating with a 3rd party using the
+   * legacy reCAPTCHA instead of reCAPTCHA Enterprise.
+   * (keys.retrieveLegacySecretKey)
+   *
+   * @param string $key Required. The public key name linked to the requested
+   * secret key , in the format "projects/{project}/keys/{key}".
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudRecaptchaenterpriseV1RetrieveLegacySecretKeyResponse
+   */
+  public function retrieveLegacySecretKey($key, $optParams = [])
+  {
+    $params = ['key' => $key];
+    $params = array_merge($params, $optParams);
+    return $this->call('retrieveLegacySecretKey', [$params], GoogleCloudRecaptchaenterpriseV1RetrieveLegacySecretKeyResponse::class);
   }
 }
 

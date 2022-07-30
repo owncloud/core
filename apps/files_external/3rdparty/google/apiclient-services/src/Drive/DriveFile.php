@@ -96,6 +96,8 @@ class DriveFile extends \Google\Collection
    * @var string
    */
   public $kind;
+  protected $labelInfoType = DriveFileLabelInfo::class;
+  protected $labelInfoDataType = '';
   protected $lastModifyingUserType = User::class;
   protected $lastModifyingUserDataType = '';
   protected $linkShareMetadataType = DriveFileLinkShareMetadata::class;
@@ -526,6 +528,20 @@ class DriveFile extends \Google\Collection
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param DriveFileLabelInfo
+   */
+  public function setLabelInfo(DriveFileLabelInfo $labelInfo)
+  {
+    $this->labelInfo = $labelInfo;
+  }
+  /**
+   * @return DriveFileLabelInfo
+   */
+  public function getLabelInfo()
+  {
+    return $this->labelInfo;
   }
   /**
    * @param User

@@ -50,6 +50,10 @@ class IosApp extends \Google\Model
   /**
    * @var string
    */
+  public $state;
+  /**
+   * @var string
+   */
   public $teamId;
 
   /**
@@ -149,6 +153,20 @@ class IosApp extends \Google\Model
   public function getProjectId()
   {
     return $this->projectId;
+  }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
   }
   /**
    * @param string

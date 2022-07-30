@@ -36,6 +36,8 @@ class Finding extends \Google\Collection
   protected $connectionsDataType = 'array';
   protected $contactsType = ContactDetails::class;
   protected $contactsDataType = 'map';
+  protected $containersType = Container::class;
+  protected $containersDataType = 'array';
   /**
    * @var string
    */
@@ -64,6 +66,8 @@ class Finding extends \Google\Collection
   protected $iamBindingsDataType = 'array';
   protected $indicatorType = Indicator::class;
   protected $indicatorDataType = '';
+  protected $kubernetesType = Kubernetes::class;
+  protected $kubernetesDataType = '';
   protected $mitreAttackType = MitreAttack::class;
   protected $mitreAttackDataType = '';
   /**
@@ -198,6 +202,20 @@ class Finding extends \Google\Collection
     return $this->contacts;
   }
   /**
+   * @param Container[]
+   */
+  public function setContainers($containers)
+  {
+    $this->containers = $containers;
+  }
+  /**
+   * @return Container[]
+   */
+  public function getContainers()
+  {
+    return $this->containers;
+  }
+  /**
    * @param string
    */
   public function setCreateTime($createTime)
@@ -322,6 +340,20 @@ class Finding extends \Google\Collection
   public function getIndicator()
   {
     return $this->indicator;
+  }
+  /**
+   * @param Kubernetes
+   */
+  public function setKubernetes(Kubernetes $kubernetes)
+  {
+    $this->kubernetes = $kubernetes;
+  }
+  /**
+   * @return Kubernetes
+   */
+  public function getKubernetes()
+  {
+    return $this->kubernetes;
   }
   /**
    * @param MitreAttack

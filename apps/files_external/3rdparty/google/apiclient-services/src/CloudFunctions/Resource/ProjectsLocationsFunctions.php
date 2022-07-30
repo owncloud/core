@@ -17,6 +17,13 @@
 
 namespace Google\Service\CloudFunctions\Resource;
 
+use Google\Service\CloudFunctions\CloudfunctionsFunction;
+use Google\Service\CloudFunctions\GenerateDownloadUrlRequest;
+use Google\Service\CloudFunctions\GenerateDownloadUrlResponse;
+use Google\Service\CloudFunctions\GenerateUploadUrlRequest;
+use Google\Service\CloudFunctions\GenerateUploadUrlResponse;
+use Google\Service\CloudFunctions\ListFunctionsResponse;
+use Google\Service\CloudFunctions\Operation;
 use Google\Service\CloudFunctions\Policy;
 use Google\Service\CloudFunctions\SetIamPolicyRequest;
 use Google\Service\CloudFunctions\TestIamPermissionsRequest;
@@ -32,6 +39,106 @@ use Google\Service\CloudFunctions\TestIamPermissionsResponse;
  */
 class ProjectsLocationsFunctions extends \Google\Service\Resource
 {
+  /**
+   * Creates a new function. If a function with the given name already exists in
+   * the specified project, the long running operation will return
+   * `ALREADY_EXISTS` error. (functions.create)
+   *
+   * @param string $parent Required. The project and location in which the
+   * function should be created, specified in the format `projects/locations`
+   * @param CloudfunctionsFunction $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string functionId The ID to use for the function, which will
+   * become the final component of the function's resource name. This value should
+   * be 4-63 characters, and valid characters are /a-z-/.
+   * @return Operation
+   */
+  public function create($parent, CloudfunctionsFunction $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], Operation::class);
+  }
+  /**
+   * Deletes a function with the given name from the specified project. If the
+   * given function is used by some trigger, the trigger will be updated to remove
+   * this function. (functions.delete)
+   *
+   * @param string $name Required. The name of the function which should be
+   * deleted.
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function delete($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', [$params], Operation::class);
+  }
+  /**
+   * Returns a signed URL for downloading deployed function source code. The URL
+   * is only valid for a limited period and should be used within 30 minutes of
+   * generation. For more information about the signed URL usage see:
+   * https://cloud.google.com/storage/docs/access-control/signed-urls
+   * (functions.generateDownloadUrl)
+   *
+   * @param string $name Required. The name of function for which source code
+   * Google Cloud Storage signed URL should be generated.
+   * @param GenerateDownloadUrlRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GenerateDownloadUrlResponse
+   */
+  public function generateDownloadUrl($name, GenerateDownloadUrlRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('generateDownloadUrl', [$params], GenerateDownloadUrlResponse::class);
+  }
+  /**
+   * Returns a signed URL for uploading a function source code. For more
+   * information about the signed URL usage see:
+   * https://cloud.google.com/storage/docs/access-control/signed-urls. Once the
+   * function source code upload is complete, the used signed URL should be
+   * provided in CreateFunction or UpdateFunction request as a reference to the
+   * function source code. When uploading source code to the generated signed URL,
+   * please follow these restrictions: * Source file type should be a zip file. *
+   * No credentials should be attached - the signed URLs provide access to the
+   * target bucket using internal service identity; if credentials were attached,
+   * the identity from the credentials would be used, but that identity does not
+   * have permissions to upload files to the URL. When making a HTTP PUT request,
+   * these two headers need to be specified: * `content-type: application/zip` And
+   * this header SHOULD NOT be specified: * `Authorization: Bearer YOUR_TOKEN`
+   * (functions.generateUploadUrl)
+   *
+   * @param string $parent Required. The project and location in which the Google
+   * Cloud Storage signed URL should be generated, specified in the format
+   * `projects/locations`.
+   * @param GenerateUploadUrlRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GenerateUploadUrlResponse
+   */
+  public function generateUploadUrl($parent, GenerateUploadUrlRequest $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('generateUploadUrl', [$params], GenerateUploadUrlResponse::class);
+  }
+  /**
+   * Returns a function with the given name from the requested project.
+   * (functions.get)
+   *
+   * @param string $name Required. The name of the function which details should
+   * be obtained.
+   * @param array $optParams Optional parameters.
+   * @return CloudfunctionsFunction
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], CloudfunctionsFunction::class);
+  }
   /**
    * Gets the access control policy for a resource. Returns an empty policy if the
    * resource exists and does not have a policy set. (functions.getIamPolicy)
@@ -61,6 +168,54 @@ class ProjectsLocationsFunctions extends \Google\Service\Resource
     $params = ['resource' => $resource];
     $params = array_merge($params, $optParams);
     return $this->call('getIamPolicy', [$params], Policy::class);
+  }
+  /**
+   * Returns a list of functions that belong to the requested project.
+   * (functions.listProjectsLocationsFunctions)
+   *
+   * @param string $parent Required. The project and location from which the
+   * function should be listed, specified in the format `projects/locations` If
+   * you want to list functions in all locations, use "-" in place of a location.
+   * When listing functions in all locations, if one or more location(s) are
+   * unreachable, the response will contain functions from all reachable locations
+   * along with the names of any unreachable locations.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter The filter for Functions that match the filter
+   * expression, following the syntax outlined in https://google.aip.dev/160.
+   * @opt_param string orderBy The sorting order of the resources returned. Value
+   * should be a comma separated list of fields. The default sorting oder is
+   * ascending. See https://google.aip.dev/132#ordering.
+   * @opt_param int pageSize Maximum number of functions to return per call.
+   * @opt_param string pageToken The value returned by the last
+   * `ListFunctionsResponse`; indicates that this is a continuation of a prior
+   * `ListFunctions` call, and that the system should return the next page of
+   * data.
+   * @return ListFunctionsResponse
+   */
+  public function listProjectsLocationsFunctions($parent, $optParams = [])
+  {
+    $params = ['parent' => $parent];
+    $params = array_merge($params, $optParams);
+    return $this->call('list', [$params], ListFunctionsResponse::class);
+  }
+  /**
+   * Updates existing function. (functions.patch)
+   *
+   * @param string $name A user-defined name of the function. Function names must
+   * be unique globally and match pattern `projects/locations/functions`
+   * @param CloudfunctionsFunction $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The list of fields to be updated. If no field
+   * mask is provided, all provided fields in the request will be updated.
+   * @return Operation
+   */
+  public function patch($name, CloudfunctionsFunction $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], Operation::class);
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any

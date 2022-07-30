@@ -65,7 +65,7 @@ class ProjectsLocationsLakes extends \Google\Service\Resource
    * lake can be deleted. (lakes.delete)
    *
    * @param string $name Required. The resource name of the lake:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}.
    * @param array $optParams Optional parameters.
    * @return GoogleLongrunningOperation
    */
@@ -79,7 +79,7 @@ class ProjectsLocationsLakes extends \Google\Service\Resource
    * Retrieves a lake resource. (lakes.get)
    *
    * @param string $name Required. The resource name of the lake:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}.
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDataplexV1Lake
    */

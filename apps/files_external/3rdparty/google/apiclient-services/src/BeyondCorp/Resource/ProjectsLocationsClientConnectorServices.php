@@ -45,7 +45,7 @@ class ProjectsLocationsClientConnectorServices extends \Google\Service\Resource
    *
    * @opt_param string clientConnectorServiceId Optional. User-settable client
    * connector service resource ID. * Must start with a letter. * Must contain
-   * between 4-63 characters from (/a-z-/). * Must end with a number or a letter.
+   * between 4-63 characters from `/a-z-/`. * Must end with a number or a letter.
    * A random system generated name will be assigned if not specified by the user.
    * @opt_param string requestId Optional. An optional request ID to identify
    * requests. Specify a unique request ID so that if you must retry your request,
@@ -190,7 +190,7 @@ class ProjectsLocationsClientConnectorServices extends \Google\Service\Resource
    * update. The fields specified in the update_mask are relative to the resource,
    * not the full request. A field will be overwritten if it is in the mask. If
    * the user does not provide a mask then all fields will be overwritten. Mutable
-   * fields: display_name.
+   * fields: display_name, ingress.config.destination_routes.
    * @opt_param bool validateOnly Optional. If set, validates request by executing
    * a dry-run which would not alter the resource in any way.
    * @return GoogleLongrunningOperation

@@ -19,6 +19,7 @@ namespace Google\Service\FirebaseManagement\Resource;
 
 use Google\Service\FirebaseManagement\ListWebAppsResponse;
 use Google\Service\FirebaseManagement\Operation;
+use Google\Service\FirebaseManagement\RemoveWebAppRequest;
 use Google\Service\FirebaseManagement\WebApp;
 use Google\Service\FirebaseManagement\WebAppConfig;
 
@@ -110,6 +111,8 @@ class ProjectsWebApps extends \Google\Service\Resource
    * its own limit.
    * @opt_param string pageToken Token returned from a previous call to
    * `ListWebApps` indicating where in the set of Apps to resume listing.
+   * @opt_param bool showDeleted Controls whether Apps in the DELETED state should
+   * be returned. Defaults to false.
    * @return ListWebAppsResponse
    */
   public function listProjectsWebApps($parent, $optParams = [])
@@ -136,7 +139,7 @@ class ProjectsWebApps extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Specifies which fields to update. Note that the
-   * fields `name`, `appId`, and `projectId` are all immutable.
+   * fields `name`, `appId`, `projectId` and `state` are all immutable
    * @return WebApp
    */
   public function patch($name, WebApp $postBody, $optParams = [])
@@ -144,6 +147,25 @@ class ProjectsWebApps extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], WebApp::class);
+  }
+  /**
+   * Removes the specified WebApp from the project. (webApps.remove)
+   *
+   * @param string $name Required. The resource name of the WebApp, in the format:
+   * projects/ PROJECT_IDENTIFIER/webApps/APP_ID Since an APP_ID is a unique
+   * identifier, the Unique Resource from Sub-Collection access pattern may be
+   * used here, in the format: projects/-/webApps/APP_ID Refer to the WebApp
+   * [name](../projects.webApps#WebApp.FIELDS.name) field for details about
+   * PROJECT_IDENTIFIER and APP_ID values.
+   * @param RemoveWebAppRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function remove($name, RemoveWebAppRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('remove', [$params], Operation::class);
   }
 }
 

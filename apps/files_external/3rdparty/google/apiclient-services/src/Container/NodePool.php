@@ -64,6 +64,8 @@ class NodePool extends \Google\Collection
    * @var string
    */
   public $statusMessage;
+  protected $updateInfoType = UpdateInfo::class;
+  protected $updateInfoDataType = '';
   protected $upgradeSettingsType = UpgradeSettings::class;
   protected $upgradeSettingsDataType = '';
   /**
@@ -266,6 +268,20 @@ class NodePool extends \Google\Collection
   public function getStatusMessage()
   {
     return $this->statusMessage;
+  }
+  /**
+   * @param UpdateInfo
+   */
+  public function setUpdateInfo(UpdateInfo $updateInfo)
+  {
+    $this->updateInfo = $updateInfo;
+  }
+  /**
+   * @return UpdateInfo
+   */
+  public function getUpdateInfo()
+  {
+    return $this->updateInfo;
   }
   /**
    * @param UpgradeSettings

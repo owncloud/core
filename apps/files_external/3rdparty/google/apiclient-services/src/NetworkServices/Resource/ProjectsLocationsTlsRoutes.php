@@ -89,7 +89,8 @@ class ProjectsLocationsTlsRoutes extends \Google\Service\Resource
    * @opt_param int pageSize Maximum number of TlsRoutes to return per call.
    * @opt_param string pageToken The value returned by the last
    * `ListTlsRoutesResponse` Indicates that this is a continuation of a prior
-   * `ListRouters` call, and that the system should return the next page of data.
+   * `ListTlsRoutes` call, and that the system should return the next page of
+   * data.
    * @return ListTlsRoutesResponse
    */
   public function listProjectsLocationsTlsRoutes($parent, $optParams = [])

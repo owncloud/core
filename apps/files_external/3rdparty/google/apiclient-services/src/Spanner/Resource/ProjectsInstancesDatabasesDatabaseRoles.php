@@ -18,6 +18,8 @@
 namespace Google\Service\Spanner\Resource;
 
 use Google\Service\Spanner\ListDatabaseRolesResponse;
+use Google\Service\Spanner\TestIamPermissionsRequest;
+use Google\Service\Spanner\TestIamPermissionsResponse;
 
 /**
  * The "databaseRoles" collection of methods.
@@ -48,6 +50,29 @@ class ProjectsInstancesDatabasesDatabaseRoles extends \Google\Service\Resource
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListDatabaseRolesResponse::class);
+  }
+  /**
+   * Returns permissions that the caller has on the specified database or backup
+   * resource. Attempting this RPC on a non-existent Cloud Spanner database will
+   * result in a NOT_FOUND error if the user has `spanner.databases.list`
+   * permission on the containing Cloud Spanner instance. Otherwise returns an
+   * empty set of permissions. Calling this method on a backup that does not exist
+   * will result in a NOT_FOUND error if the user has `spanner.backups.list`
+   * permission on the containing instance. (databaseRoles.testIamPermissions)
+   *
+   * @param string $resource REQUIRED: The Cloud Spanner resource for which
+   * permissions are being tested. The format is `projects//instances/` for
+   * instance resources and `projects//instances//databases/` for database
+   * resources.
+   * @param TestIamPermissionsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return TestIamPermissionsResponse
+   */
+  public function testIamPermissions($resource, TestIamPermissionsRequest $postBody, $optParams = [])
+  {
+    $params = ['resource' => $resource, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('testIamPermissions', [$params], TestIamPermissionsResponse::class);
   }
 }
 

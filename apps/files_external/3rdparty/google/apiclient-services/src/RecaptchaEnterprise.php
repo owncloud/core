@@ -178,6 +178,16 @@ class RecaptchaEnterprise extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'retrieveLegacySecretKey' => [
+              'path' => 'v1/{+key}:retrieveLegacySecretKey',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'key' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],
           ]
         ]

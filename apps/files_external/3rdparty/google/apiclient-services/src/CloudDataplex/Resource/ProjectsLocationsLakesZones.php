@@ -39,7 +39,7 @@ class ProjectsLocationsLakesZones extends \Google\Service\Resource
    * Creates a zone resource within a lake. (zones.create)
    *
    * @param string $parent Required. The resource name of the parent lake:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}.
    * @param GoogleCloudDataplexV1Zone $postBody
    * @param array $optParams Optional parameters.
    *
@@ -64,9 +64,8 @@ class ProjectsLocationsLakesZones extends \Google\Service\Resource
    * Deletes a zone resource. All assets within a zone must be deleted before the
    * zone can be deleted. (zones.delete)
    *
-   * @param string $name Required. The resource name of the zone:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
-   * /zones/{zone_id}`
+   * @param string $name Required. The resource name of the zone: projects/{projec
+   * t_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}.
    * @param array $optParams Optional parameters.
    * @return GoogleLongrunningOperation
    */
@@ -79,9 +78,8 @@ class ProjectsLocationsLakesZones extends \Google\Service\Resource
   /**
    * Retrieves a zone resource. (zones.get)
    *
-   * @param string $name Required. The resource name of the zone:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
-   * /zones/{zone_id}
+   * @param string $name Required. The resource name of the zone: projects/{projec
+   * t_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}.
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDataplexV1Zone
    */
@@ -124,7 +122,7 @@ class ProjectsLocationsLakesZones extends \Google\Service\Resource
    * Lists zone resources in a lake. (zones.listProjectsLocationsLakesZones)
    *
    * @param string $parent Required. The resource name of the parent lake:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional. Filter request.

@@ -23,6 +23,10 @@ class DetachLunRequest extends \Google\Model
    * @var string
    */
   public $lun;
+  /**
+   * @var bool
+   */
+  public $skipReboot;
 
   /**
    * @param string
@@ -37,6 +41,20 @@ class DetachLunRequest extends \Google\Model
   public function getLun()
   {
     return $this->lun;
+  }
+  /**
+   * @param bool
+   */
+  public function setSkipReboot($skipReboot)
+  {
+    $this->skipReboot = $skipReboot;
+  }
+  /**
+   * @return bool
+   */
+  public function getSkipReboot()
+  {
+    return $this->skipReboot;
   }
 }
 

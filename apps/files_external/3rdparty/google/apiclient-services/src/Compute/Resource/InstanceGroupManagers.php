@@ -494,7 +494,9 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * instance group is performing on the instance. For example, if the group is
    * still creating an instance, the currentAction is CREATING. If a previous
    * action failed, the list displays the errors for that failed action. The
-   * orderBy query parameter is not supported.
+   * orderBy query parameter is not supported. The `pageToken` query parameter is
+   * supported only in the alpha and beta API and only if the group's
+   * `listManagedInstancesResults` field is set to `PAGINATED`.
    * (instanceGroupManagers.listManagedInstances)
    *
    * @param string $project Project ID for this request.

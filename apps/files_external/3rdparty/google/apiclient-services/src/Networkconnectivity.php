@@ -23,7 +23,7 @@ use Google\Client;
  * Service definition for Networkconnectivity (v1).
  *
  * <p>
- * The Network Connectivity API provides access to Network Connectivity Center.</p>
+ * This API enables connectivity with and between Google Cloud resources.</p>
  *
  * <p>
  * For more information about this service, see the API

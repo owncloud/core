@@ -39,7 +39,7 @@ class ProjectsLocationsRestorePlansRestores extends \Google\Service\Resource
    * Creates a new Restore for the given RestorePlan. (restores.create)
    *
    * @param string $parent Required. The RestorePlan within which to create the
-   * Restore. Format: projects/locations/restorePlans
+   * Restore. Format: `projects/locations/restorePlans`
    * @param Restore $postBody
    * @param array $optParams Optional parameters.
    *
@@ -60,7 +60,7 @@ class ProjectsLocationsRestorePlansRestores extends \Google\Service\Resource
    * Deletes an existing Restore. (restores.delete)
    *
    * @param string $name Required. Full name of the Restore Format:
-   * projects/locations/restorePlans/restores
+   * `projects/locations/restorePlans/restores`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string etag If provided, this value must match the current value
@@ -80,7 +80,7 @@ class ProjectsLocationsRestorePlansRestores extends \Google\Service\Resource
    * Retrieves the details of a single Restore. (restores.get)
    *
    * @param string $name Required. Name of the restore resource. Format:
-   * projects/locations/restorePlans/restores
+   * `projects/locations/restorePlans/restores`
    * @param array $optParams Optional parameters.
    * @return Restore
    */
@@ -125,7 +125,7 @@ class ProjectsLocationsRestorePlansRestores extends \Google\Service\Resource
    * (restores.listProjectsLocationsRestorePlansRestores)
    *
    * @param string $parent Required. The RestorePlan that contains the Restores to
-   * list. Format: projects/locations/restorePlans
+   * list. Format: `projects/locations/restorePlans`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Field match expression used to filter the results.
@@ -151,7 +151,7 @@ class ProjectsLocationsRestorePlansRestores extends \Google\Service\Resource
    * Update a Restore. (restores.patch)
    *
    * @param string $name Output only. The full name of the Restore resource.
-   * Format: projects/locations/restorePlans/restores
+   * Format: `projects/locations/restorePlans/restores`
    * @param Restore $postBody
    * @param array $optParams Optional parameters.
    *

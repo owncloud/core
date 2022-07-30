@@ -31,7 +31,7 @@ use Google\Service\DoubleClickBidManager\Report;
 class QueriesReports extends \Google\Service\Resource
 {
   /**
-   * Retrieves a stored report. (reports.get)
+   * Retrieves a report. (reports.get)
    *
    * @param string $queryId Required. ID of the query the report is associated
    * with.
@@ -46,16 +46,16 @@ class QueriesReports extends \Google\Service\Resource
     return $this->call('get', [$params], Report::class);
   }
   /**
-   * Lists reports. (reports.listQueriesReports)
+   * Lists reports associated with a query. (reports.listQueriesReports)
    *
-   * @param string $queryId Required. Query ID with which the reports are
+   * @param string $queryId Required. ID of the query with which the reports are
    * associated.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string orderBy Name of a field used to order results. The default
    * sorting order is ascending. To specify descending order for a field, append a
    * " desc" suffix. For example "key.reportId desc". Sorting is only supported
-   * for the following fields: * key.reportId
+   * for the following fields: * `key.reportId`
    * @opt_param int pageSize Maximum number of results per page. Must be between
    * `1` and `100`. Defaults to `100` if unspecified.
    * @opt_param string pageToken A page token, received from a previous list call.

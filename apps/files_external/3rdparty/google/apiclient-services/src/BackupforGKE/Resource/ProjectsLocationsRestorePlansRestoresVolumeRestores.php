@@ -38,7 +38,7 @@ class ProjectsLocationsRestorePlansRestoresVolumeRestores extends \Google\Servic
    * Retrieve the details of a single VolumeRestore. (volumeRestores.get)
    *
    * @param string $name Required. Full name of the VolumeRestore resource.
-   * Format: projects/locations/restorePlans/restores/volumeRestores
+   * Format: `projects/locations/restorePlans/restores/volumeRestores`
    * @param array $optParams Optional parameters.
    * @return VolumeRestore
    */
@@ -83,7 +83,7 @@ class ProjectsLocationsRestorePlansRestoresVolumeRestores extends \Google\Servic
    * (volumeRestores.listProjectsLocationsRestorePlansRestoresVolumeRestores)
    *
    * @param string $parent Required. The Restore that contains the VolumeRestores
-   * to list. Format: projects/locations/restorePlans/restores
+   * to list. Format: `projects/locations/restorePlans/restores`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Field match expression used to filter the results.

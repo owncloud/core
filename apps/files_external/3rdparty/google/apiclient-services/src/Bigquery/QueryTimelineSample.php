@@ -34,6 +34,10 @@ class QueryTimelineSample extends \Google\Model
   /**
    * @var string
    */
+  public $estimatedRunnableUnits;
+  /**
+   * @var string
+   */
   public $pendingUnits;
   /**
    * @var string
@@ -81,6 +85,20 @@ class QueryTimelineSample extends \Google\Model
   public function getElapsedMs()
   {
     return $this->elapsedMs;
+  }
+  /**
+   * @param string
+   */
+  public function setEstimatedRunnableUnits($estimatedRunnableUnits)
+  {
+    $this->estimatedRunnableUnits = $estimatedRunnableUnits;
+  }
+  /**
+   * @return string
+   */
+  public function getEstimatedRunnableUnits()
+  {
+    return $this->estimatedRunnableUnits;
   }
   /**
    * @param string

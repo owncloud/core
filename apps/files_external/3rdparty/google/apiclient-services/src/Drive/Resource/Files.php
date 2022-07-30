@@ -21,6 +21,9 @@ use Google\Service\Drive\Channel;
 use Google\Service\Drive\DriveFile;
 use Google\Service\Drive\FileList;
 use Google\Service\Drive\GeneratedIds;
+use Google\Service\Drive\LabelList;
+use Google\Service\Drive\ModifyLabelsRequest;
+use Google\Service\Drive\ModifyLabelsResponse;
 
 /**
  * The "files" collection of methods.
@@ -47,6 +50,8 @@ class Files extends \Google\Service\Resource
    * choose to make all uploaded files visible to the domain by default; this
    * parameter bypasses that behavior for the request. Permissions are still
    * inherited from parent folders.
+   * @opt_param string includeLabels A comma-separated list of IDs of labels to
+   * include in the labelInfo part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool keepRevisionForever Whether to set the 'keepForever' field in
@@ -79,6 +84,8 @@ class Files extends \Google\Service\Resource
    * choose to make all uploaded files visible to the domain by default; this
    * parameter bypasses that behavior for the request. Permissions are still
    * inherited from parent folders.
+   * @opt_param string includeLabels A comma-separated list of IDs of labels to
+   * include in the labelInfo part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool keepRevisionForever Whether to set the 'keepForever' field in
@@ -182,6 +189,8 @@ class Files extends \Google\Service\Resource
    * @opt_param bool acknowledgeAbuse Whether the user is acknowledging the risk
    * of downloading known malware or other abusive files. This is only applicable
    * when alt=media.
+   * @opt_param string includeLabels A comma-separated list of IDs of labels to
+   * include in the labelInfo part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool supportsAllDrives Whether the requesting application supports
@@ -212,6 +221,8 @@ class Files extends \Google\Service\Resource
    * @opt_param string driveId ID of the shared drive to search.
    * @opt_param bool includeItemsFromAllDrives Whether both My Drive and shared
    * drive items should be included in results.
+   * @opt_param string includeLabels A comma-separated list of IDs of labels to
+   * include in the labelInfo part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool includeTeamDriveItems Deprecated use
@@ -247,6 +258,39 @@ class Files extends \Google\Service\Resource
     return $this->call('list', [$params], FileList::class);
   }
   /**
+   * Lists the labels on a file. (files.listLabels)
+   *
+   * @param string $fileId The ID of the file.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param int maxResults The maximum number of labels to return per page.
+   * When not set, this defaults to 100.
+   * @opt_param string pageToken The token for continuing a previous list request
+   * on the next page. This should be set to the value of 'nextPageToken' from the
+   * previous response.
+   * @return LabelList
+   */
+  public function listLabels($fileId, $optParams = [])
+  {
+    $params = ['fileId' => $fileId];
+    $params = array_merge($params, $optParams);
+    return $this->call('listLabels', [$params], LabelList::class);
+  }
+  /**
+   * Modifies the set of labels on a file. (files.modifyLabels)
+   *
+   * @param string $fileId The ID of the file for which the labels are modified.
+   * @param ModifyLabelsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return ModifyLabelsResponse
+   */
+  public function modifyLabels($fileId, ModifyLabelsRequest $postBody, $optParams = [])
+  {
+    $params = ['fileId' => $fileId, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('modifyLabels', [$params], ModifyLabelsResponse::class);
+  }
+  /**
    * Updates a file's metadata and/or content. When calling this method, only
    * populate fields in the request that you want to modify. When updating fields,
    * some fields might change automatically, such as modifiedDate. This method
@@ -259,6 +303,8 @@ class Files extends \Google\Service\Resource
    * @opt_param string addParents A comma-separated list of parent IDs to add.
    * @opt_param bool enforceSingleParent Deprecated. Adding files to multiple
    * folders is no longer supported. Use shortcuts instead.
+   * @opt_param string includeLabels A comma-separated list of IDs of labels to
+   * include in the labelInfo part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool keepRevisionForever Whether to set the 'keepForever' field in
@@ -294,6 +340,8 @@ class Files extends \Google\Service\Resource
    * @opt_param bool acknowledgeAbuse Whether the user is acknowledging the risk
    * of downloading known malware or other abusive files. This is only applicable
    * when alt=media.
+   * @opt_param string includeLabels A comma-separated list of IDs of labels to
+   * include in the labelInfo part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool supportsAllDrives Whether the requesting application supports

@@ -22,6 +22,10 @@ class Admin extends \Google\Model
   /**
    * @var string
    */
+  public $account;
+  /**
+   * @var string
+   */
   public $admin;
   /**
    * @var string
@@ -36,6 +40,20 @@ class Admin extends \Google\Model
    */
   public $role;
 
+  /**
+   * @param string
+   */
+  public function setAccount($account)
+  {
+    $this->account = $account;
+  }
+  /**
+   * @return string
+   */
+  public function getAccount()
+  {
+    return $this->account;
+  }
   /**
    * @param string
    */

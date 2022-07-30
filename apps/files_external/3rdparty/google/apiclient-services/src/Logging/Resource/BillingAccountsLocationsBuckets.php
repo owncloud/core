@@ -74,6 +74,24 @@ class BillingAccountsLocationsBuckets extends \Google\Service\Resource
     return $this->call('delete', [$params], LoggingEmpty::class);
   }
   /**
+   * Gets a log bucket. (buckets.get)
+   *
+   * @param string $name Required. The resource name of the bucket:
+   * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+   * "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+   * "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET
+   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" For
+   * example:"projects/my-project/locations/global/buckets/my-bucket"
+   * @param array $optParams Optional parameters.
+   * @return LogBucket
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], LogBucket::class);
+  }
+  /**
    * Lists log buckets. (buckets.listBillingAccountsLocationsBuckets)
    *
    * @param string $parent Required. The parent resource whose buckets are to be

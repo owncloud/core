@@ -39,7 +39,7 @@ class ProjectsLocationsLakesEnvironments extends \Google\Service\Resource
    * Create an environment resource. (environments.create)
    *
    * @param string $parent Required. The resource name of the parent lake:
-   * projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_id}/locations/{location_id}/lakes/{lake_id}.
    * @param GoogleCloudDataplexV1Environment $postBody
    * @param array $optParams Optional parameters.
    *
@@ -63,7 +63,7 @@ class ProjectsLocationsLakesEnvironments extends \Google\Service\Resource
    *
    * @param string $name Required. The resource name of the environment: projects/
    * {project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environmen
-   * t_id}`
+   * t_id}.
    * @param array $optParams Optional parameters.
    * @return GoogleLongrunningOperation
    */
@@ -78,7 +78,7 @@ class ProjectsLocationsLakesEnvironments extends \Google\Service\Resource
    *
    * @param string $name Required. The resource name of the environment: projects/
    * {project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environmen
-   * t_id}
+   * t_id}.
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDataplexV1Environment
    */
@@ -122,7 +122,7 @@ class ProjectsLocationsLakesEnvironments extends \Google\Service\Resource
    * (environments.listProjectsLocationsLakesEnvironments)
    *
    * @param string $parent Required. The resource name of the parent lake:
-   * projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+   * projects/{project_id}/locations/{location_id}/lakes/{lake_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional. Filter request.

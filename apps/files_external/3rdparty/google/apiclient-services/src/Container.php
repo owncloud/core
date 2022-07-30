@@ -354,7 +354,17 @@ class Container extends \Google\Service
         'nodePools',
         [
           'methods' => [
-            'create' => [
+            'completeUpgrade' => [
+              'path' => 'v1/{+name}:completeUpgrade',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'create' => [
               'path' => 'v1/{+parent}/nodePools',
               'httpMethod' => 'POST',
               'parameters' => [

@@ -39,7 +39,7 @@ class TagKeys extends \Google\Service\Resource
   /**
    * Creates a new TagKey. If another request with the same parameters is sent
    * while the original request is in process, the second request will receive an
-   * error. A maximum of 300 TagKeys can exist under a parent at any given time.
+   * error. A maximum of 1000 TagKeys can exist under a parent at any given time.
    * (tagKeys.create)
    *
    * @param TagKey $postBody

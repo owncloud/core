@@ -20,6 +20,8 @@ namespace Google\Service\AndroidEnterprise;
 class Product extends \Google\Collection
 {
   protected $collection_key = 'screenshotUrls';
+  protected $appRestrictionsSchemaType = AppRestrictionsSchema::class;
+  protected $appRestrictionsSchemaDataType = '';
   protected $appTracksType = TrackInfo::class;
   protected $appTracksDataType = 'array';
   protected $appVersionType = AppVersion::class;
@@ -109,6 +111,20 @@ class Product extends \Google\Collection
    */
   public $workDetailsUrl;
 
+  /**
+   * @param AppRestrictionsSchema
+   */
+  public function setAppRestrictionsSchema(AppRestrictionsSchema $appRestrictionsSchema)
+  {
+    $this->appRestrictionsSchema = $appRestrictionsSchema;
+  }
+  /**
+   * @return AppRestrictionsSchema
+   */
+  public function getAppRestrictionsSchema()
+  {
+    return $this->appRestrictionsSchema;
+  }
   /**
    * @param TrackInfo[]
    */

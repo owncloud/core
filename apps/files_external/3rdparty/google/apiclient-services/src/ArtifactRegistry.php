@@ -49,9 +49,12 @@ class ArtifactRegistry extends \Google\Service
   public $projects_locations_repositories_aptArtifacts;
   public $projects_locations_repositories_dockerImages;
   public $projects_locations_repositories_files;
+  public $projects_locations_repositories_mavenArtifacts;
+  public $projects_locations_repositories_npmPackages;
   public $projects_locations_repositories_packages;
   public $projects_locations_repositories_packages_tags;
   public $projects_locations_repositories_packages_versions;
+  public $projects_locations_repositories_pythonPackages;
   public $projects_locations_repositories_yumArtifacts;
 
   /**
@@ -390,6 +393,82 @@ class ArtifactRegistry extends \Google\Service
           ]
         ]
     );
+    $this->projects_locations_repositories_mavenArtifacts = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesMavenArtifacts(
+        $this,
+        $this->serviceName,
+        'mavenArtifacts',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/mavenArtifacts',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_repositories_npmPackages = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesNpmPackages(
+        $this,
+        $this->serviceName,
+        'npmPackages',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/npmPackages',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->projects_locations_repositories_packages = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesPackages(
         $this,
         $this->serviceName,
@@ -574,6 +653,44 @@ class ArtifactRegistry extends \Google\Service
                   'type' => 'string',
                 ],
                 'view' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_repositories_pythonPackages = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesPythonPackages(
+        $this,
+        $this->serviceName,
+        'pythonPackages',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/pythonPackages',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],

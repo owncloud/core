@@ -20,6 +20,8 @@ namespace Google\Service\Connectors;
 class ConfigVariableTemplate extends \Google\Collection
 {
   protected $collection_key = 'enumOptions';
+  protected $authorizationCodeLinkType = AuthorizationCodeLink::class;
+  protected $authorizationCodeLinkDataType = '';
   /**
    * @var string
    */
@@ -49,6 +51,20 @@ class ConfigVariableTemplate extends \Google\Collection
    */
   public $valueType;
 
+  /**
+   * @param AuthorizationCodeLink
+   */
+  public function setAuthorizationCodeLink(AuthorizationCodeLink $authorizationCodeLink)
+  {
+    $this->authorizationCodeLink = $authorizationCodeLink;
+  }
+  /**
+   * @return AuthorizationCodeLink
+   */
+  public function getAuthorizationCodeLink()
+  {
+    return $this->authorizationCodeLink;
+  }
   /**
    * @param string
    */

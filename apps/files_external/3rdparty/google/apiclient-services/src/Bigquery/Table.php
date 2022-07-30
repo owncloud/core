@@ -83,6 +83,10 @@ class Table extends \Google\Model
   public $location;
   protected $materializedViewType = MaterializedViewDefinition::class;
   protected $materializedViewDataType = '';
+  /**
+   * @var string
+   */
+  public $maxStaleness;
   protected $modelType = ModelDefinition::class;
   protected $modelDataType = '';
   /**
@@ -383,6 +387,20 @@ class Table extends \Google\Model
   public function getMaterializedView()
   {
     return $this->materializedView;
+  }
+  /**
+   * @param string
+   */
+  public function setMaxStaleness($maxStaleness)
+  {
+    $this->maxStaleness = $maxStaleness;
+  }
+  /**
+   * @return string
+   */
+  public function getMaxStaleness()
+  {
+    return $this->maxStaleness;
   }
   /**
    * @param ModelDefinition

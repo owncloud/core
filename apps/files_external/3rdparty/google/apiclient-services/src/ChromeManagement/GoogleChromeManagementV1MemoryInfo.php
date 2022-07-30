@@ -23,6 +23,8 @@ class GoogleChromeManagementV1MemoryInfo extends \Google\Model
    * @var string
    */
   public $availableRamBytes;
+  protected $totalMemoryEncryptionType = GoogleChromeManagementV1TotalMemoryEncryptionInfo::class;
+  protected $totalMemoryEncryptionDataType = '';
   /**
    * @var string
    */
@@ -41,6 +43,20 @@ class GoogleChromeManagementV1MemoryInfo extends \Google\Model
   public function getAvailableRamBytes()
   {
     return $this->availableRamBytes;
+  }
+  /**
+   * @param GoogleChromeManagementV1TotalMemoryEncryptionInfo
+   */
+  public function setTotalMemoryEncryption(GoogleChromeManagementV1TotalMemoryEncryptionInfo $totalMemoryEncryption)
+  {
+    $this->totalMemoryEncryption = $totalMemoryEncryption;
+  }
+  /**
+   * @return GoogleChromeManagementV1TotalMemoryEncryptionInfo
+   */
+  public function getTotalMemoryEncryption()
+  {
+    return $this->totalMemoryEncryption;
   }
   /**
    * @param string

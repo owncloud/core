@@ -35,7 +35,7 @@ class ProjectsLocationsLakesZonesAssetsActions extends \Google\Service\Resource
    *
    * @param string $parent Required. The resource name of the parent asset: projec
    * ts/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/a
-   * ssets/{asset_id}
+   * ssets/{asset_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. Maximum number of actions to return. The

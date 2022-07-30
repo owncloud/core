@@ -48,6 +48,8 @@ class UpdateNodePoolRequest extends \Google\Collection
    * @var string
    */
   public $name;
+  protected $nodeNetworkConfigType = NodeNetworkConfig::class;
+  protected $nodeNetworkConfigDataType = '';
   /**
    * @var string
    */
@@ -212,6 +214,20 @@ class UpdateNodePoolRequest extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param NodeNetworkConfig
+   */
+  public function setNodeNetworkConfig(NodeNetworkConfig $nodeNetworkConfig)
+  {
+    $this->nodeNetworkConfig = $nodeNetworkConfig;
+  }
+  /**
+   * @return NodeNetworkConfig
+   */
+  public function getNodeNetworkConfig()
+  {
+    return $this->nodeNetworkConfig;
   }
   /**
    * @param string

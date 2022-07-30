@@ -39,7 +39,7 @@ class ProjectsLocationsRestorePlans extends \Google\Service\Resource
    * Creates a new RestorePlan in a given location. (restorePlans.create)
    *
    * @param string $parent Required. The location within which to create the
-   * RestorePlan. Format: projects/locations
+   * RestorePlan. Format: `projects/locations`
    * @param RestorePlan $postBody
    * @param array $optParams Optional parameters.
    *
@@ -60,7 +60,7 @@ class ProjectsLocationsRestorePlans extends \Google\Service\Resource
    * Deletes an existing RestorePlan. (restorePlans.delete)
    *
    * @param string $name Required. Fully qualified RestorePlan name. Format:
-   * projects/locations/restorePlans
+   * `projects/locations/restorePlans`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string etag If provided, this value must match the current value
@@ -80,7 +80,7 @@ class ProjectsLocationsRestorePlans extends \Google\Service\Resource
    * Retrieve the details of a single RestorePlan. (restorePlans.get)
    *
    * @param string $name Required. Fully qualified RestorePlan name. Format:
-   * projects/locations/restorePlans
+   * `projects/locations/restorePlans`
    * @param array $optParams Optional parameters.
    * @return RestorePlan
    */
@@ -125,7 +125,7 @@ class ProjectsLocationsRestorePlans extends \Google\Service\Resource
    * (restorePlans.listProjectsLocationsRestorePlans)
    *
    * @param string $parent Required. The location that contains the RestorePlans
-   * to list. Format: projects/locations
+   * to list. Format: `projects/locations`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Field match expression used to filter the results.
@@ -152,7 +152,7 @@ class ProjectsLocationsRestorePlans extends \Google\Service\Resource
    * Update a RestorePlan. (restorePlans.patch)
    *
    * @param string $name Output only. The full name of the RestorePlan resource.
-   * Format: projects/locations/restorePlans.
+   * Format: `projects/locations/restorePlans`.
    * @param RestorePlan $postBody
    * @param array $optParams Optional parameters.
    *

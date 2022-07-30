@@ -17,6 +17,7 @@
 
 namespace Google\Service\Eventarc\Resource;
 
+use Google\Service\Eventarc\GoogleChannelConfig;
 use Google\Service\Eventarc\ListLocationsResponse;
 use Google\Service\Eventarc\Location;
 
@@ -44,6 +45,19 @@ class ProjectsLocations extends \Google\Service\Resource
     return $this->call('get', [$params], Location::class);
   }
   /**
+   * Get a GoogleChannelConfig (locations.getGoogleChannelConfig)
+   *
+   * @param string $name Required. The name of the config to get.
+   * @param array $optParams Optional parameters.
+   * @return GoogleChannelConfig
+   */
+  public function getGoogleChannelConfig($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getGoogleChannelConfig', [$params], GoogleChannelConfig::class);
+  }
+  /**
    * Lists information about the supported locations for this service.
    * (locations.listProjectsLocations)
    *
@@ -65,6 +79,25 @@ class ProjectsLocations extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListLocationsResponse::class);
+  }
+  /**
+   * Update a single GoogleChannelConfig (locations.updateGoogleChannelConfig)
+   *
+   * @param string $name Required. The resource name of the config. Must be in the
+   * format of, `projects/{project}/locations/{location}/googleChannelConfig`.
+   * @param GoogleChannelConfig $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The fields to be updated; only fields explicitly
+   * provided are updated. If no field mask is provided, all provided fields in
+   * the request are updated. To update all fields, provide a field mask of "*".
+   * @return GoogleChannelConfig
+   */
+  public function updateGoogleChannelConfig($name, GoogleChannelConfig $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('updateGoogleChannelConfig', [$params], GoogleChannelConfig::class);
   }
 }
 

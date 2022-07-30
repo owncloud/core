@@ -51,6 +51,10 @@ class ProvisioningConfig extends \Google\Collection
   /**
    * @var string
    */
+  public $statusMessage;
+  /**
+   * @var string
+   */
   public $ticketId;
   /**
    * @var string
@@ -174,6 +178,20 @@ class ProvisioningConfig extends \Google\Collection
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param string
+   */
+  public function setStatusMessage($statusMessage)
+  {
+    $this->statusMessage = $statusMessage;
+  }
+  /**
+   * @return string
+   */
+  public function getStatusMessage()
+  {
+    return $this->statusMessage;
   }
   /**
    * @param string

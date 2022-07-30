@@ -55,7 +55,9 @@ class Events extends \Google\Service\Resource
     return $this->call('delete', [$params]);
   }
   /**
-   * Returns an event. (events.get)
+   * Returns an event based on its Google Calendar ID. To retrieve an event using
+   * its iCalendar ID, call the events.list method using the iCalUID parameter.
+   * (events.get)
    *
    * @param string $calendarId Calendar identifier. To retrieve calendar IDs call
    * the calendarList.list method. If you want to access the primary calendar of
@@ -195,8 +197,9 @@ class Events extends \Google\Service\Resource
    * always be returned in the email field for the organizer, creator and
    * attendees, even if no real email address is available (i.e. a generated, non-
    * working value will be provided).
-   * @opt_param string iCalUID Specifies event ID in the iCalendar format to be
-   * included in the response. Optional.
+   * @opt_param string iCalUID Specifies an event ID in the iCalendar format to be
+   * provided in the response. Optional. Use this if you want to search for an
+   * event by its iCalendar ID.
    * @opt_param int maxAttendees The maximum number of attendees to include in the
    * response. If there are more than the specified number of attendees, only the
    * participant is returned. Optional.
@@ -412,8 +415,9 @@ class Events extends \Google\Service\Resource
    * always be returned in the email field for the organizer, creator and
    * attendees, even if no real email address is available (i.e. a generated, non-
    * working value will be provided).
-   * @opt_param string iCalUID Specifies event ID in the iCalendar format to be
-   * included in the response. Optional.
+   * @opt_param string iCalUID Specifies an event ID in the iCalendar format to be
+   * provided in the response. Optional. Use this if you want to search for an
+   * event by its iCalendar ID.
    * @opt_param int maxAttendees The maximum number of attendees to include in the
    * response. If there are more than the specified number of attendees, only the
    * participant is returned. Optional.

@@ -100,9 +100,10 @@ class SpacesMessages extends \Google\Service\Resource
    * @param Message $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Required. The field paths to be updated, comma
-   * separated if there are multiple. Currently supported field paths: * text *
-   * cards * attachment
+   * @opt_param string updateMask Required. The field paths to update. Separate
+   * multiple values with commas. Currently supported field paths: - text - cards
+   * (Requires [service account authentication](/chat/api/guides/auth/service-
+   * accounts).) - attachment
    * @return Message
    */
   public function update($name, Message $postBody, $optParams = [])

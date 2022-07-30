@@ -228,7 +228,8 @@ class Instances extends \Google\Service\Resource
   }
   /**
    * Creates multiple instances. Count specifies the number of instances to
-   * create. (instances.bulkInsert)
+   * create. For more information, see About bulk creation of VMs.
+   * (instances.bulkInsert)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

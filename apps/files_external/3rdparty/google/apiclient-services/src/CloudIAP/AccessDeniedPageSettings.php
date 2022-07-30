@@ -27,6 +27,10 @@ class AccessDeniedPageSettings extends \Google\Model
    * @var bool
    */
   public $generateTroubleshootingUri;
+  /**
+   * @var bool
+   */
+  public $remediationTokenGenerationEnabled;
 
   /**
    * @param string
@@ -55,6 +59,20 @@ class AccessDeniedPageSettings extends \Google\Model
   public function getGenerateTroubleshootingUri()
   {
     return $this->generateTroubleshootingUri;
+  }
+  /**
+   * @param bool
+   */
+  public function setRemediationTokenGenerationEnabled($remediationTokenGenerationEnabled)
+  {
+    $this->remediationTokenGenerationEnabled = $remediationTokenGenerationEnabled;
+  }
+  /**
+   * @return bool
+   */
+  public function getRemediationTokenGenerationEnabled()
+  {
+    return $this->remediationTokenGenerationEnabled;
   }
 }
 

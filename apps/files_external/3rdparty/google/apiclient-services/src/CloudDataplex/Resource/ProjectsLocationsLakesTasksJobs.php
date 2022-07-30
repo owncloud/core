@@ -35,9 +35,8 @@ class ProjectsLocationsLakesTasksJobs extends \Google\Service\Resource
   /**
    * Cancel jobs running for the task resource. (jobs.cancel)
    *
-   * @param string $name Required. The resource name of the job:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
-   * /task/{task_id}/job/{job_id}`
+   * @param string $name Required. The resource name of the job: projects/{project
+   * _number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}/job/{job_id}.
    * @param GoogleCloudDataplexV1CancelJobRequest $postBody
    * @param array $optParams Optional parameters.
    * @return DataplexEmpty
@@ -51,9 +50,9 @@ class ProjectsLocationsLakesTasksJobs extends \Google\Service\Resource
   /**
    * Get job resource. (jobs.get)
    *
-   * @param string $name Required. The resource name of the job:
-   * projects/{project_number}/locations/{location_id}/lakes/{lake_id}
-   * /tasks/{task_id}/jobs/{job_id}
+   * @param string $name Required. The resource name of the job: projects/{project
+   * _number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id
+   * }.
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDataplexV1Job
    */
@@ -68,7 +67,7 @@ class ProjectsLocationsLakesTasksJobs extends \Google\Service\Resource
    *
    * @param string $parent Required. The resource name of the parent environment:
    * projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task
-   * _id}
+   * _id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. Maximum number of jobs to return. The

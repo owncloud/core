@@ -22,8 +22,26 @@ class AwsSourceVmDetails extends \Google\Model
   /**
    * @var string
    */
+  public $committedStorageBytes;
+  /**
+   * @var string
+   */
   public $firmware;
 
+  /**
+   * @param string
+   */
+  public function setCommittedStorageBytes($committedStorageBytes)
+  {
+    $this->committedStorageBytes = $committedStorageBytes;
+  }
+  /**
+   * @return string
+   */
+  public function getCommittedStorageBytes()
+  {
+    return $this->committedStorageBytes;
+  }
   /**
    * @param string
    */

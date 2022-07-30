@@ -27,6 +27,8 @@ class SshPublicKey extends \Google\Model
   protected $passwordDataType = '';
   protected $sshClientCertType = Secret::class;
   protected $sshClientCertDataType = '';
+  protected $sshClientCertPassType = Secret::class;
+  protected $sshClientCertPassDataType = '';
   /**
    * @var string
    */
@@ -73,6 +75,20 @@ class SshPublicKey extends \Google\Model
   public function getSshClientCert()
   {
     return $this->sshClientCert;
+  }
+  /**
+   * @param Secret
+   */
+  public function setSshClientCertPass(Secret $sshClientCertPass)
+  {
+    $this->sshClientCertPass = $sshClientCertPass;
+  }
+  /**
+   * @return Secret
+   */
+  public function getSshClientCertPass()
+  {
+    return $this->sshClientCertPass;
   }
   /**
    * @param string

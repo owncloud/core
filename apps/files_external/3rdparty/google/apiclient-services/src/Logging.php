@@ -51,8 +51,6 @@ class Logging extends \Google\Service
       "https://www.googleapis.com/auth/logging.write";
 
   public $billingAccounts;
-  public $billingAccounts_buckets;
-  public $billingAccounts_buckets_views;
   public $billingAccounts_exclusions;
   public $billingAccounts_locations;
   public $billingAccounts_locations_buckets;
@@ -60,7 +58,6 @@ class Logging extends \Google\Service
   public $billingAccounts_locations_buckets_views_logs;
   public $billingAccounts_locations_operations;
   public $billingAccounts_logs;
-  public $billingAccounts_operations;
   public $billingAccounts_sinks;
   public $entries;
   public $exclusions;
@@ -135,46 +132,6 @@ class Logging extends \Google\Service
               ],
             ],'getSettings' => [
               'path' => 'v2/{+name}/settings',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->billingAccounts_buckets = new Logging\Resource\BillingAccountsBuckets(
-        $this,
-        $this->serviceName,
-        'buckets',
-        [
-          'methods' => [
-            'get' => [
-              'path' => 'v2/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->billingAccounts_buckets_views = new Logging\Resource\BillingAccountsBucketsViews(
-        $this,
-        $this->serviceName,
-        'views',
-        [
-          'methods' => [
-            'get' => [
-              'path' => 'v2/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -331,6 +288,16 @@ class Logging extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'get' => [
+              'path' => 'v2/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'list' => [
               'path' => 'v2/{+parent}/buckets',
               'httpMethod' => 'GET',
@@ -400,6 +367,16 @@ class Logging extends \Google\Service
             ],'delete' => [
               'path' => 'v2/{+name}',
               'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v2/{+name}',
+              'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
                   'location' => 'path',
@@ -492,6 +469,16 @@ class Logging extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'get' => [
+              'path' => 'v2/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'list' => [
               'path' => 'v2/{+name}/operations',
               'httpMethod' => 'GET',
@@ -555,26 +542,6 @@ class Logging extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->billingAccounts_operations = new Logging\Resource\BillingAccountsOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        [
-          'methods' => [
-            'get' => [
-              'path' => 'v2/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ],
               ],
             ],

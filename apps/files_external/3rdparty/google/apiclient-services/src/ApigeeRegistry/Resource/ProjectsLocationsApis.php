@@ -62,6 +62,10 @@ class ProjectsLocationsApis extends \Google\Service\Resource
    * @param string $name Required. The name of the API to delete. Format:
    * projects/locations/apis
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param bool force If set to true, any child resources will also be
+   * deleted. (Otherwise, the request will only work if there are no child
+   * resources.)
    * @return ApigeeregistryEmpty
    */
   public function delete($name, $optParams = [])

@@ -34,6 +34,7 @@ use Google\Service\BigtableAdmin\SetIamPolicyRequest;
 use Google\Service\BigtableAdmin\Table;
 use Google\Service\BigtableAdmin\TestIamPermissionsRequest;
 use Google\Service\BigtableAdmin\TestIamPermissionsResponse;
+use Google\Service\BigtableAdmin\UndeleteTableRequest;
 
 /**
  * The "tables" collection of methods.
@@ -270,6 +271,22 @@ class ProjectsInstancesTables extends \Google\Service\Resource
     $params = ['resource' => $resource, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('testIamPermissions', [$params], TestIamPermissionsResponse::class);
+  }
+  /**
+   * Restores a specified table which was accidentally deleted. (tables.undelete)
+   *
+   * @param string $name Required. The unique name of the table to be restored.
+   * Values are of the form
+   * `projects/{project}/instances/{instance}/tables/{table}`.
+   * @param UndeleteTableRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function undelete($name, UndeleteTableRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('undelete', [$params], Operation::class);
   }
 }
 

@@ -39,7 +39,7 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * Creates a new BackupPlan in a given location. (backupPlans.create)
    *
    * @param string $parent Required. The location within which to create the
-   * BackupPlan. Format: projects/locations
+   * BackupPlan. Format: `projects/locations`
    * @param BackupPlan $postBody
    * @param array $optParams Optional parameters.
    *
@@ -60,7 +60,7 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * Deletes an existing BackupPlan. (backupPlans.delete)
    *
    * @param string $name Required. Fully qualified BackupPlan name. Format:
-   * projects/locations/backupPlans
+   * `projects/locations/backupPlans`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string etag If provided, this value must match the current value
@@ -77,7 +77,7 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * Retrieve the details of a single BackupPlan. (backupPlans.get)
    *
    * @param string $name Required. Fully qualified BackupPlan name. Format:
-   * projects/locations/backupPlans
+   * `projects/locations/backupPlans`
    * @param array $optParams Optional parameters.
    * @return BackupPlan
    */
@@ -122,7 +122,7 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * (backupPlans.listProjectsLocationsBackupPlans)
    *
    * @param string $parent Required. The location that contains the BackupPlans to
-   * list. Format: projects/locations
+   * list. Format: `projects/locations`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Field match expression used to filter the results.
@@ -149,7 +149,7 @@ class ProjectsLocationsBackupPlans extends \Google\Service\Resource
    * Update a BackupPlan. (backupPlans.patch)
    *
    * @param string $name Output only. The full name of the BackupPlan resource.
-   * Format: projects/locations/backupPlans
+   * Format: `projects/locations/backupPlans`
    * @param BackupPlan $postBody
    * @param array $optParams Optional parameters.
    *

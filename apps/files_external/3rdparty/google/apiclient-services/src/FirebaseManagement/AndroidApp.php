@@ -43,6 +43,10 @@ class AndroidApp extends \Google\Model
    * @var string
    */
   public $projectId;
+  /**
+   * @var string
+   */
+  public $state;
 
   /**
    * @param string
@@ -127,6 +131,20 @@ class AndroidApp extends \Google\Model
   public function getProjectId()
   {
     return $this->projectId;
+  }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
   }
 }
 
