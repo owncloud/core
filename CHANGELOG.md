@@ -233,10 +233,10 @@ Details
    (v2.5.0 to v2.6.3) - sabre/dav (4.3.1 to 4.4.0) - sabre/http (5.1.3 to 5.1.6) - sabre/vobject
    (4.4.1 to 4.4.3) - webmozart/assert (1.10.0 to 1.11.0)
 
-   The following have been updated in apps/files_external/3rdparty: -
-   google/apiclient-services (0.244.0 to 0.254.0) - google/apiclient (2.12.4 to 2.12.6) -
-   guzzlehttp/guzzle (v5.3.4 to v7.4.5) - icewind/smb (3.5.2 to 3.5.4) - icewind/streams
-   (0.7.5 to 0.7.6) - monolog/monolog (2.5.0 to 2.6.0)
+   The following have been updated in apps/files_external/3rdparty: - firebase/php-jwt
+   (v6.2.0 to v6.3.0) - google/apiclient-services (0.244.0 to 0.259.0) - google/apiclient
+   (2.12.4 to 2.12.6) - guzzlehttp/guzzle (v5.3.4 to v7.4.5) - icewind/smb (3.5.2 to 3.5.4) -
+   icewind/streams (0.7.5 to 0.7.6) - monolog/monolog (2.5.0 to 2.8.0)
 
    https://github.com/owncloud/core/pull/39368
    https://github.com/owncloud/core/pull/40092
@@ -252,6 +252,7 @@ Details
    https://github.com/owncloud/core/pull/40191
    https://github.com/owncloud/core/pull/40212
    https://github.com/owncloud/core/pull/40246
+   https://github.com/owncloud/core/pull/40250
 
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
 
