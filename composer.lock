@@ -3478,16 +3478,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.43",
+            "version": "v4.4.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "8a2628d2d5639f35113dc1b833ecd91e1ed1cf46"
+                "reference": "c35fafd7f12ebd6f9e29c95a370df7f1fb171a40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/8a2628d2d5639f35113dc1b833ecd91e1ed1cf46",
-                "reference": "8a2628d2d5639f35113dc1b833ecd91e1ed1cf46",
+                "url": "https://api.github.com/repos/symfony/console/zipball/c35fafd7f12ebd6f9e29c95a370df7f1fb171a40",
+                "reference": "c35fafd7f12ebd6f9e29c95a370df7f1fb171a40",
                 "shasum": ""
             },
             "require": {
@@ -3548,7 +3548,7 @@
             "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/console/tree/v4.4.43"
+                "source": "https://github.com/symfony/console/tree/v4.4.44"
             },
             "funding": [
                 {
@@ -3564,7 +3564,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-23T12:22:25+00:00"
+            "time": "2022-07-20T09:59:04+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -3635,16 +3635,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.4.42",
+            "version": "v4.4.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "708e761740c16b02c86e3f0c932018a06b895d40"
+                "reference": "1e866e9e5c1b22168e0ce5f0b467f19bba61266a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/708e761740c16b02c86e3f0c932018a06b895d40",
-                "reference": "708e761740c16b02c86e3f0c932018a06b895d40",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/1e866e9e5c1b22168e0ce5f0b467f19bba61266a",
+                "reference": "1e866e9e5c1b22168e0ce5f0b467f19bba61266a",
                 "shasum": ""
             },
             "require": {
@@ -3699,7 +3699,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher/tree/v4.4.42"
+                "source": "https://github.com/symfony/event-dispatcher/tree/v4.4.44"
             },
             "funding": [
                 {
@@ -3715,7 +3715,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-05T15:33:49+00:00"
+            "time": "2022-07-20T09:59:04+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -4373,16 +4373,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.41",
+            "version": "v4.4.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "9eedd60225506d56e42210a70c21bb80ca8456ce"
+                "reference": "5cee9cdc4f7805e2699d9fd66991a0e6df8252a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/9eedd60225506d56e42210a70c21bb80ca8456ce",
-                "reference": "9eedd60225506d56e42210a70c21bb80ca8456ce",
+                "url": "https://api.github.com/repos/symfony/process/zipball/5cee9cdc4f7805e2699d9fd66991a0e6df8252a2",
+                "reference": "5cee9cdc4f7805e2699d9fd66991a0e6df8252a2",
                 "shasum": ""
             },
             "require": {
@@ -4415,7 +4415,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v4.4.41"
+                "source": "https://github.com/symfony/process/tree/v4.4.44"
             },
             "funding": [
                 {
@@ -4431,20 +4431,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-04T10:19:07+00:00"
+            "time": "2022-06-27T13:16:42+00:00"
         },
         {
             "name": "symfony/routing",
-            "version": "v4.4.41",
+            "version": "v4.4.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "c25e38d403c00d5ddcfc514f016f1b534abdf052"
+                "reference": "f7751fd8b60a07f3f349947a309b5bdfce22d6ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/c25e38d403c00d5ddcfc514f016f1b534abdf052",
-                "reference": "c25e38d403c00d5ddcfc514f016f1b534abdf052",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/f7751fd8b60a07f3f349947a309b5bdfce22d6ae",
+                "reference": "f7751fd8b60a07f3f349947a309b5bdfce22d6ae",
                 "shasum": ""
             },
             "require": {
@@ -4504,7 +4504,7 @@
                 "url"
             ],
             "support": {
-                "source": "https://github.com/symfony/routing/tree/v4.4.41"
+                "source": "https://github.com/symfony/routing/tree/v4.4.44"
             },
             "funding": [
                 {
@@ -4520,7 +4520,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-12T15:19:55+00:00"
+            "time": "2022-07-20T09:59:04+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -4607,16 +4607,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.4.41",
+            "version": "v4.4.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "dcb67eae126e74507e0b4f0b9ac6ef35b37c3331"
+                "reference": "af947fefc306cec6ea5a1f6160c7e305a71f2493"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/dcb67eae126e74507e0b4f0b9ac6ef35b37c3331",
-                "reference": "dcb67eae126e74507e0b4f0b9ac6ef35b37c3331",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/af947fefc306cec6ea5a1f6160c7e305a71f2493",
+                "reference": "af947fefc306cec6ea5a1f6160c7e305a71f2493",
                 "shasum": ""
             },
             "require": {
@@ -4676,7 +4676,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v4.4.41"
+                "source": "https://github.com/symfony/translation/tree/v4.4.44"
             },
             "funding": [
                 {
@@ -4692,7 +4692,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-21T07:22:34+00:00"
+            "time": "2022-07-20T09:59:04+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -5873,12 +5873,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "66afddaae8d97c72945ae2f49bb94aff47084804"
+                "reference": "83594c26a26f66af6e5322b9011b2e243a5509e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/66afddaae8d97c72945ae2f49bb94aff47084804",
-                "reference": "66afddaae8d97c72945ae2f49bb94aff47084804",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/83594c26a26f66af6e5322b9011b2e243a5509e8",
+                "reference": "83594c26a26f66af6e5322b9011b2e243a5509e8",
                 "shasum": ""
             },
             "conflict": {
@@ -6086,6 +6086,7 @@
                 "matyhtf/framework": "<3.0.6",
                 "mautic/core": "<4.3|= 2.13.1",
                 "mediawiki/core": ">=1.27,<1.27.6|>=1.29,<1.29.3|>=1.30,<1.30.2|>=1.31,<1.31.9|>=1.32,<1.32.6|>=1.32.99,<1.33.3|>=1.33.99,<1.34.3|>=1.34.99,<1.35",
+                "mezzio/mezzio-swoole": "<3.7|>=4,<4.3",
                 "microweber/microweber": "<1.3",
                 "miniorange/miniorange-saml": "<1.4.3",
                 "mittwald/typo3_forum": "<1.2.1",
@@ -6156,7 +6157,7 @@
                 "prestashop/blockwishlist": ">=2,<2.1.1",
                 "prestashop/contactform": ">1.0.1,<4.3",
                 "prestashop/gamification": "<2.3.2",
-                "prestashop/prestashop": ">=1.7,<=1.7.8.2",
+                "prestashop/prestashop": ">=1.6.0.10,<1.7.8.7",
                 "prestashop/productcomments": ">=4,<4.2.1",
                 "prestashop/ps_emailsubscription": "<2.6.1",
                 "prestashop/ps_facetedsearch": "<3.4.1",
@@ -6378,7 +6379,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-27T23:04:16+00:00"
+            "time": "2022-07-29T23:04:14+00:00"
         },
         {
             "name": "sebastian/cli-parser",

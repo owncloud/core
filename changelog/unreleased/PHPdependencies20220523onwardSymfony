@@ -1,8 +1,11 @@
 Change: Update Symfony components
 
 The following Symfony components have been updated to:
-- console 4.4.43
-- event-dispatcher 4.4.42
+- console 4.4.44
+- event-dispatcher 4.4.44
+- process 4.4.44
+- routing 4.4.44
+- translation 4.4.44
 - polyfill-iconv 1.26.0
 - polyfill-intl-idn 1.26.0
 - polyfill-intl-normalizer 1.26.0
@@ -21,3 +24,5 @@ https://github.com/owncloud/core/pull/40111
 https://symfony.com/blog/symfony-4-4-43-released
 https://github.com/owncloud/core/pull/40169
 https://github.com/owncloud/core/pull/40175
+https://symfony.com/blog/symfony-4-4-44-released
+https://github.com/owncloud/core/pull/40255
