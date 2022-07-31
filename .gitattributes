@@ -1,0 +1,8 @@
+/.gitattributes export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/phpcs.xml export-ignore
+/phpstan.neon export-ignore
+/sonar-project.properties export-ignore
+/tests export-ignore
