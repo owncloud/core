@@ -32,7 +32,7 @@ class UserExtendedAttributesEventTest extends TestCase {
 	/** @var UserExtendedAttributesEvent | \PHPUnit\Framework\MockObject\MockObject */
 	private $userExtendedAttributesEvent;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->user = $this->createMock(IUser::class);
