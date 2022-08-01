@@ -680,7 +680,7 @@ class User implements IUser {
 		 * using empty because userExtendedAttributes could either be null or empty array
 		 * or an array of attributes
 		 */
-		if ($clearCache || !isset($this->userExtendedAttributes) || [] === $this->userExtendedAttributes) {
+		if ($clearCache || !isset($this->userExtendedAttributes) || $this->userExtendedAttributes === []) {
 			$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this);
 
 			/**

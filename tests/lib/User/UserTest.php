@@ -606,10 +606,11 @@ class UserTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\User\NotPermittedActionException
 	 * @throws NotPermittedActionException
 	 */
 	public function testGetExtendedAttributesForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
 		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
 
 		$this->eventDispatcher->expects($this->once())
@@ -697,64 +698,71 @@ class UserTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OCP\User\NotPermittedActionException
 	 * @throws NotPermittedActionException
 	 */
 	public function testSetSearchTermsForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
 		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setSearchTerms(['foo']);
 	}
 
 	/**
-	 * @expectedException \OCP\User\NotPermittedActionException
 	 * @throws NotPermittedActionException
 	 */
 	public function testSetQuotaForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
 		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setQuota('12M');
 	}
 
 	/**
-	 * @expectedException \OCP\User\NotPermittedActionException
 	 * @throws NotPermittedActionException
 	 */
 	public function testSetEmailAddressForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
 		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setEMailAddress('foo@bar.com');
 	}
 
 	/**
-	 * @expectedException \OCP\User\NotPermittedActionException
 	 * @throws NotPermittedActionException
 	 */
 	public function testSetEnabledForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
 		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setEnabled(true);
 	}
 
 	/**
-	 * @expectedException \OCP\User\NotPermittedActionException
 	 * @throws NotPermittedActionException
 	 */
 	public function testSetPasswordForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
 		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setPassword('foobar');
 	}
 
 	/**
-	 * @expectedException \OCP\User\NotPermittedActionException
 	 * @throws NotPermittedActionException
 	 */
 	public function testSetDisplayNameForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
 		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setDisplayName('FooBar');
 	}
 
 	/**
-	 * @expectedException \OCP\User\NotPermittedActionException
 	 * @throws NotPermittedActionException
 	 */
 	public function testSetUserNameForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
 		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setUserName('Foo');
 	}

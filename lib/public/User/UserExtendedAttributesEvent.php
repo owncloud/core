@@ -33,7 +33,7 @@ use Symfony\Component\EventDispatcher\Event;
  * @since 10.3.1
  */
 class UserExtendedAttributesEvent extends Event {
-	const USER_EXTENDED_ATTRIBUTES = 'UserExtendedAttributesEvent';
+	public const USER_EXTENDED_ATTRIBUTES = 'UserExtendedAttributesEvent';
 
 	/** @var array */
 	private $attributes = [];
