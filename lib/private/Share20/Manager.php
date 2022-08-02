@@ -322,7 +322,7 @@ class Manager implements IManager {
 		if ($shareNode instanceof \OCP\Files\File) {
 			// Single file shares should never have delete or create permissions
 			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_DELETE);
-			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_CREATE);
+#			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_CREATE);
 		}
 
 		/*
@@ -341,6 +341,9 @@ class Manager implements IManager {
 
 		/* Use share node permission as default $maxPermissions */
 		$maxPermissions = $shareNode->getPermissions();
+		if ($shareNode instanceof \OCP\Files\File) {
+			$maxPermissions |= \OCP\Constants::PERMISSION_CREATE;
+		}
 
 		/* By default, there are no required attributes to be set on a file */
 		$requiredAttributes = $this->newShare()->newAttributes();
