@@ -176,17 +176,17 @@ class Manager extends PublicEmitter implements IGroupManager {
 	protected function getGroupObject($gid, $displayName = null) {
 		$backends = [];
 		foreach ($this->backends as $backend) {
-			if ($backend->implementsActions(\OC\Group\Backend::GROUP_DETAILS)) {
-				/* @phan-suppress-next-line PhanUndeclaredMethod */
-				$groupData = $backend->getGroupDetails($gid);
-				if (\is_array($groupData)) {
-					// take the display name from the first backend that has a non-null one
-					if ($displayName === null && isset($groupData['displayName'])) {
-						$displayName = $groupData['displayName'];
+			if ($backend->groupExists($gid)) {
+				if ($backend->implementsActions(\OC\Group\Backend::GROUP_DETAILS)) {
+					/* @phan-suppress-next-line PhanUndeclaredMethod */
+					$groupData = $backend->getGroupDetails($gid);
+					if (\is_array($groupData)) {
+						// take the display name from the first backend that has a non-null one
+						if ($displayName === null && isset($groupData['displayName'])) {
+							$displayName = $groupData['displayName'];
+						}
 					}
-					$backends[] = $backend;
 				}
-			} elseif ($backend->groupExists($gid)) {
 				$backends[] = $backend;
 			}
 		}

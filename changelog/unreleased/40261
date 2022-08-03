@@ -1,0 +1,7 @@
+Bugfix: Only call getGroupDetails when the group exists
+
+When getting a group, the getGroupDetails method could be called for a group
+that does not exist. That is unnecessary and may cause a group backend implementation
+to log an error. The code has been refactored to avoid this happening.
+
+https://github.com/owncloud/core/pull/40261
