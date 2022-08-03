@@ -1159,6 +1159,9 @@ class ManagerTest extends \Test\TestCase {
 			GroupInterface::GROUP_DETAILS
 		);
 		$backend->expects($this->any())
+			->method('groupExists')
+			->will($this->returnValue(true));
+		$backend->expects($this->any())
 			->method('getGroupDetails')
 			->will($this->returnValueMap([
 				['group1', ['gid' => 'group1', 'displayName' => 'Group One']],
