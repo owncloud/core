@@ -26,6 +26,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Handle extra slashes at start of URI path: <a href="https://github.com/owncloud/core/pull/40216">#40216</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Use group's displayname in the user's profile and user list: <a href="https://github.com/owncloud/core/pull/40229">#40229</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Init encryption module before calculating unencrypted block-size: <a href="https://github.com/owncloud/core/pull/40240">#40240</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Only call getGroupDetails when the group exists: <a href="https://github.com/owncloud/core/pull/40261">#40261</a></li>
         <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
@@ -205,6 +206,14 @@
    config.php.
             </p>
             <p>https://github.com/owncloud/core/pull/40240<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Only call getGroupDetails when the group exists: <a href="https://github.com/owncloud/core/pull/40261">#40261</a></p>
+            <p>When getting a group, the getGroupDetails method could be called for a group that does not
+   exist. That is unnecessary and may cause a group backend implementation to log an error. The
+   code has been refactored to avoid this happening.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40261<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></p>
