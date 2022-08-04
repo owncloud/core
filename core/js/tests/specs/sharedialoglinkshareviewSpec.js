@@ -144,6 +144,9 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				expireDate: '2017-10-12',
 				permissions: OC.PERMISSION_CREATE
 			});
+			expect(view._isPublicFolderUploadPossible()).toEqual(true)
+			expect(view._isPublicFileUploadPossible()).toEqual(false)
+
 			view.render();
 
 			expect(parseInt(view.$('.publicPermissions:checked').val())).toBe(OC.PERMISSION_CREATE);
