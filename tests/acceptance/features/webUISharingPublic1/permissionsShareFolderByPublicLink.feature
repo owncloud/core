@@ -1,7 +1,7 @@
 @webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required @files_sharing-app-required
-Feature: Share by public link
+Feature: Share a folder by public link
   As a user
-  I want to share files through a publicly accessible link
+  I want to share folders through a publicly accessible link
   So that users who do not have an account on my ownCloud server can access them
 
   Background:

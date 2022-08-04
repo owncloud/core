@@ -863,7 +863,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$linkTab = $this->sharingDialog->openPublicShareTab($this->getSession());
 		$linkName = $linkTab->getNameOfFirstPublicLink($this->getSession());
 		$linkUrl = $linkTab->getLinkUrl($linkName);
-		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl, $name);
 	}
 
 	/**
@@ -930,7 +930,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			);
 		}
 		$this->featureContext->setLastPublicLinkShareId($shareId);
-		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl, $name);
 	}
 
 	/**
@@ -1224,12 +1224,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function thePublicAccessesTheLastCreatedPublicLinkUsingTheWebUI():void {
-		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
-		$lastCreatedLink = \end($createdPublicLinks);
+		$lastCreatedLinkUrl = $this->featureContext->getLastCreatedPublicLinkUrl();
 		$path = \str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
-			$lastCreatedLink['url']
+			$lastCreatedLinkUrl
 		);
 		$this->publicLinkFilesPage->setPagePath($path);
 		$this->publicLinkFilesPage->open();
