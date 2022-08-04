@@ -322,7 +322,7 @@ class Manager implements IManager {
 		if ($shareNode instanceof \OCP\Files\File) {
 			// Single file shares should never have delete or create permissions
 			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_DELETE);
-#			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_CREATE);
+			$share->setPermissions($share->getPermissions() & ~\OCP\Constants::PERMISSION_CREATE);
 		}
 
 		/*

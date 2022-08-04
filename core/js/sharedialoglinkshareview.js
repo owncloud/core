@@ -34,7 +34,7 @@
 				'<p><em>{{publicReadWriteDescription}}</em></p>' +
 			'</div>' +
 			'{{/if}}' +
-			'{{#if publicFolderUploadPossible}}' +
+			'{{#if publicUploadFolderPossible}}' +
 			'<div id="allowpublicUploadWrite-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicUploadWriteValue}}" name="publicPermissions" id="sharingDialogAllowpublicUploadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowpublicUploadWrite-{{cid}}">{{publicUploadWriteLabel}}</label>' +
