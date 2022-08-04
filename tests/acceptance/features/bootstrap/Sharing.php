@@ -3955,10 +3955,21 @@ trait Sharing {
 	 */
 	public function theAdministratorHasExpiredTheLastCreatedShare():void {
 		$this->expireShare();
+		$httpStatus = $this->getResponse()->getStatusCode();
 		Assert::assertSame(
 			200,
-			$this->getResponse()->getStatusCode(),
-			"Request to expire last share failed."
+			$httpStatus,
+			"Request to expire last share failed. HTTP status was '$httpStatus'"
+		);
+		$ocsStatusMessage = $this->ocsContext->getOCSResponseStatusMessage($this->getResponse());
+		if ($this->getOcsApiVersion() === 1) {
+			$expectedOcsStatusCode = "100";
+		} else {
+			$expectedOcsStatusCode = "200";
+		}
+		$this->ocsContext->theOCSStatusCodeShouldBe(
+			$expectedOcsStatusCode,
+			"Request to expire last share failed: '$ocsStatusMessage'"
 		);
 	}
 
@@ -3970,10 +3981,21 @@ trait Sharing {
 	 */
 	public function theAdministratorHasExpiredTheLastCreatedPublicLinkShare():void {
 		$this->expireLastCreatedPublicLinkShare();
+		$httpStatus = $this->getResponse()->getStatusCode();
 		Assert::assertSame(
 			200,
 			$this->getResponse()->getStatusCode(),
-			"Request to expire last public link share failed."
+			"Request to expire last public link share failed. HTTP status was '$httpStatus'"
+		);
+		$ocsStatusMessage = $this->ocsContext->getOCSResponseStatusMessage($this->getResponse());
+		if ($this->getOcsApiVersion() === 1) {
+			$expectedOcsStatusCode = "100";
+		} else {
+			$expectedOcsStatusCode = "200";
+		}
+		$this->ocsContext->theOCSStatusCodeShouldBe(
+			$expectedOcsStatusCode,
+			"Request to expire last public link share failed: '$ocsStatusMessage'"
 		);
 	}
 
