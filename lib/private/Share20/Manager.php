@@ -341,9 +341,6 @@ class Manager implements IManager {
 
 		/* Use share node permission as default $maxPermissions */
 		$maxPermissions = $shareNode->getPermissions();
-		if ($shareNode instanceof \OCP\Files\File) {
-			$maxPermissions |= \OCP\Constants::PERMISSION_CREATE;
-		}
 
 		/* By default, there are no required attributes to be set on a file */
 		$requiredAttributes = $this->newShare()->newAttributes();
@@ -403,6 +400,10 @@ class Manager implements IManager {
 					$maxPermissions |= $shareNode->getPermissions();
 				}
 			}
+		}
+
+		if ($shareNode instanceof \OCP\Files\File) {
+			$maxPermissions |= \OCP\Constants::PERMISSION_CREATE;
 		}
 
 		/**
