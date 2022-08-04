@@ -41,6 +41,11 @@ class AppConfigurationContext implements Context {
 	private $featureContext;
 
 	/**
+	 * @var OcsContext
+	 */
+	private $ocsContext;
+
+	/**
 	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $parameter
@@ -626,6 +631,7 @@ class AppConfigurationContext implements Context {
 			$this->featureContext->getResponse()->getStatusCode(),
 			"Request to expire last share failed."
 		);
+		$this->ocsContext->theOCSStatusCodeShouldBe("100", "Request to expire last share failed.");
 	}
 
 	/**
@@ -675,5 +681,6 @@ class AppConfigurationContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->ocsContext = $environment->getContext('OCSContext');
 	}
 }

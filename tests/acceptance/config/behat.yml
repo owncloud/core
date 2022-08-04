@@ -25,6 +25,7 @@ default:
         - ChecksumContext:
         - FilesVersionsContext:
         - OccContext:
+        - OCSContext:
         - TransferOwnershipContext:
         - TrashbinContext:
 
@@ -66,6 +67,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - CapabilitiesContext:
         - OccContext:
+        - OCSContext:
         - AppConfigurationContext:
 
     apiComments:
@@ -87,6 +89,7 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
         - OccContext:
+        - OCSContext:
 
     apiFederationToRoot1:
       paths:
@@ -97,6 +100,7 @@ default:
         - FederationContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
+        - OCSContext:
 
     apiFederationToRoot2:
       paths:
@@ -107,6 +111,7 @@ default:
         - FederationContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
+        - OCSContext:
 
     apiFederationToShares1:
       paths:
@@ -118,6 +123,7 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
         - OccContext:
+        - OCSContext:
 
     apiFederationToShares2:
       paths:
@@ -129,6 +135,7 @@ default:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
         - OccContext:
+        - OCSContext:
 
     apiProvisioning-v1:
       paths:
@@ -177,6 +184,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
@@ -188,6 +196,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
@@ -199,6 +208,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
@@ -210,6 +220,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
@@ -222,6 +233,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - ShareesContext:
         - OccContext:
+        - OCSContext:
         - AppConfigurationContext:
 
     apiShareManagementToRoot:
@@ -231,6 +243,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -244,6 +257,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -325,6 +339,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -337,6 +352,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -349,6 +365,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -383,6 +400,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -395,6 +413,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -407,6 +426,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -419,6 +439,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -431,6 +452,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -443,6 +465,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - TrashbinContext:
         - WebDavPropertiesContext:
@@ -456,6 +479,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
         - AppConfigurationContext:
+        - OCSContext:
 
     apiSharingNotificationsToShares:
       paths:
@@ -466,6 +490,7 @@ default:
         - NotificationsCoreContext:
         - AppConfigurationContext:
         - OccContext:
+        - OCSContext:
 
     apiTags:
       paths:
@@ -483,6 +508,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - TrashbinContext:
         - AppConfigurationContext:
         - WebDavPropertiesContext:
@@ -494,6 +520,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - OCSContext:
         - TrashbinContext:
         - AppConfigurationContext:
         - WebDavPropertiesContext:
@@ -508,6 +535,7 @@ default:
         - FilesVersionsContext:
         - WebDavPropertiesContext:
         - OccContext:
+        - OCSContext:
         - AppConfigurationContext:
 
     apiWebdavDelete:
@@ -619,6 +647,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
         - OccContext:
+        - OCSContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
@@ -631,6 +660,7 @@ default:
         - LoggingContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
+        - OCSContext:
 
     apiWebdavUpload1:
       paths:
@@ -674,6 +704,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
         - OccContext:
+        - OCSContext:
         - TrashbinContext:
         - PublicWebDavContext:
         - FilesVersionsContext:
@@ -688,6 +719,7 @@ default:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
         - OccContext:
+        - OCSContext:
         - TrashbinContext:
         - PublicWebDavContext:
         - FilesVersionsContext:
@@ -972,6 +1004,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - OccContext:
+        - OCSContext:
         - WebUIPersonalSharingSettingsContext:
 
     webUISharingAutocompletion2:
@@ -986,6 +1019,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - OccContext:
+        - OCSContext:
         - WebUIPersonalSharingSettingsContext:
 
     webUISharingExternal1:
@@ -1002,6 +1036,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - WebUIPersonalSharingSettingsContext:
         - WebUIAdminSharingSettingsContext:
@@ -1020,6 +1055,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - WebUIPersonalSharingSettingsContext:
         - WebUIAdminSharingSettingsContext:
@@ -1104,6 +1140,7 @@ default:
         - AppConfigurationContext:
         - EmailContext:
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
@@ -1119,6 +1156,7 @@ default:
         - AppConfigurationContext:
         - EmailContext:
         - OccContext:
+        - OCSContext:
         - PublicWebDavContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
