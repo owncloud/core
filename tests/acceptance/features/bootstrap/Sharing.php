@@ -3911,6 +3911,93 @@ trait Sharing {
 	}
 
 	/**
+	 * Expires last created public link share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function expireLastCreatedPublicLinkShare():void {
+		$shareId = $this->getLastPublicLinkShareId();
+		$this->expireShare($shareId);
+	}
+
+	/**
+	 * Expires a share using the testing API
+	 *
+	 * @param string|null $shareId optional share id, if null then expire the last share that was created.
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function expireShare(string $shareId = null):void {
+		$adminUser = $this->getAdminUsername();
+		if ($shareId === null) {
+			$shareId = $this->getLastShareId();
+		}
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$adminUser,
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/expire-share/{$shareId}",
+			$this->getStepLineRef(),
+			[],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Given the administrator has expired the last created share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorHasExpiredTheLastCreatedShare():void {
+		$this->expireShare();
+		Assert::assertSame(
+			200,
+			$this->getResponse()->getStatusCode(),
+			"Request to expire last share failed."
+		);
+	}
+
+	/**
+	 * @Given the administrator has expired the last created public link share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorHasExpiredTheLastCreatedPublicLinkShare():void {
+		$this->expireLastCreatedPublicLinkShare();
+		Assert::assertSame(
+			200,
+			$this->getResponse()->getStatusCode(),
+			"Request to expire last public link share failed."
+		);
+	}
+
+	/**
+	 * @When the administrator expires the last created share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorExpiresTheLastCreatedShare():void {
+		$this->expireShare();
+	}
+
+	/**
+	 * @When the administrator expires the last created public link share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorExpiresTheLastCreatedPublicLinkShare():void {
+		$this->expireLastCreatedPublicLinkShare();
+	}
+
+	/**
 	 * replace values from table
 	 *
 	 * @param string $field
