@@ -3911,6 +3911,115 @@ trait Sharing {
 	}
 
 	/**
+	 * Expires last created public link share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function expireLastCreatedPublicLinkShare():void {
+		$shareId = $this->getLastPublicLinkShareId();
+		$this->expireShare($shareId);
+	}
+
+	/**
+	 * Expires a share using the testing API
+	 *
+	 * @param string|null $shareId optional share id, if null then expire the last share that was created.
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function expireShare(string $shareId = null):void {
+		$adminUser = $this->getAdminUsername();
+		if ($shareId === null) {
+			$shareId = $this->getLastShareId();
+		}
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$adminUser,
+			$this->getAdminPassword(),
+			'POST',
+			"/apps/testing/api/v1/expire-share/{$shareId}",
+			$this->getStepLineRef(),
+			[],
+			$this->getOcsApiVersion()
+		);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Given the administrator has expired the last created share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorHasExpiredTheLastCreatedShare():void {
+		$this->expireShare();
+		$httpStatus = $this->getResponse()->getStatusCode();
+		Assert::assertSame(
+			200,
+			$httpStatus,
+			"Request to expire last share failed. HTTP status was '$httpStatus'"
+		);
+		$ocsStatusMessage = $this->ocsContext->getOCSResponseStatusMessage($this->getResponse());
+		if ($this->getOcsApiVersion() === 1) {
+			$expectedOcsStatusCode = "100";
+		} else {
+			$expectedOcsStatusCode = "200";
+		}
+		$this->ocsContext->theOCSStatusCodeShouldBe(
+			$expectedOcsStatusCode,
+			"Request to expire last share failed: '$ocsStatusMessage'"
+		);
+	}
+
+	/**
+	 * @Given the administrator has expired the last created public link share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorHasExpiredTheLastCreatedPublicLinkShare():void {
+		$this->expireLastCreatedPublicLinkShare();
+		$httpStatus = $this->getResponse()->getStatusCode();
+		Assert::assertSame(
+			200,
+			$this->getResponse()->getStatusCode(),
+			"Request to expire last public link share failed. HTTP status was '$httpStatus'"
+		);
+		$ocsStatusMessage = $this->ocsContext->getOCSResponseStatusMessage($this->getResponse());
+		if ($this->getOcsApiVersion() === 1) {
+			$expectedOcsStatusCode = "100";
+		} else {
+			$expectedOcsStatusCode = "200";
+		}
+		$this->ocsContext->theOCSStatusCodeShouldBe(
+			$expectedOcsStatusCode,
+			"Request to expire last public link share failed: '$ocsStatusMessage'"
+		);
+	}
+
+	/**
+	 * @When the administrator expires the last created share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorExpiresTheLastCreatedShare():void {
+		$this->expireShare();
+	}
+
+	/**
+	 * @When the administrator expires the last created public link share using the testing API
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function theAdministratorExpiresTheLastCreatedPublicLinkShare():void {
+		$this->expireLastCreatedPublicLinkShare();
+	}
+
+	/**
 	 * replace values from table
 	 *
 	 * @param string $field
