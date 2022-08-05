@@ -50,11 +50,11 @@ Feature: share with groups, group names are case-sensitive
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | share_with  | <group_id1>              |
-      | file_target | /textfile1.txt           |
-      | path        | /textfile1.txt           |
-      | permissions | share,read,update,create |
-      | uid_owner   | %username%               |
+      | share_with  | <group_id1>       |
+      | file_target | /textfile1.txt    |
+      | path        | /textfile1.txt    |
+      | permissions | share,read,update |
+      | uid_owner   | %username%        |
     And the content of file "textfile1.txt" for user "Brian" should be "ownCloud test text file 1"
     When user "Alice" shares file "textfile2.txt" with group "<group_id2>" using the sharing API
     Then the OCS status code should be "404"
