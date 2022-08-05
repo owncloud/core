@@ -1237,12 +1237,14 @@ class PublicWebDavContext implements Context {
 
 		if ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+			$path = $this->featureContext->getLastPublicSharePath();
 		} else {
 			$techPreviewHadToBeEnabled = false;
+			$path = "";
 		}
 
 		$this->publicUploadContent(
-			'',
+			$path,
 			'',
 			$content,
 			false,
@@ -1251,7 +1253,7 @@ class PublicWebDavContext implements Context {
 		);
 		$response = $this->featureContext->getResponse();
 		Assert::assertTrue(
-			($response->getStatusCode() == 201),
+			($response->getStatusCode() == 204),
 			"upload should have passed but failed with code " .
 			$response->getStatusCode()
 		);

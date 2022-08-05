@@ -3699,6 +3699,17 @@ trait Sharing {
 	}
 
 	/**
+	 * @return string path of file that was shared (relevant when a single file has been shared)
+	 */
+	public function getLastPublicSharePath():string {
+		if (\count($this->lastPublicShareData->data->element) > 0) {
+			return (string)$this->lastPublicShareData->data[0]->path;
+		}
+
+		return (string)$this->lastPublicShareData->data->path;
+	}
+
+	/**
 	 * Send request for preview of a file in a public link
 	 *
 	 * @param string $fileName
