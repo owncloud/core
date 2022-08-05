@@ -1215,9 +1215,9 @@ class PublicWebDavContext implements Context {
 		);
 		$this->shouldBeAbleToDownloadFileInsidePublicSharedFolder(
 			$path,
-			$publicWebDAVAPIVersion,
-			$content
+			$publicWebDAVAPIVersion
 		);
+		$this->featureContext->checkDownloadedContentMatches($content);
 
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
