@@ -600,7 +600,7 @@ class Share20OcsController extends OCSController {
 
 			if ($fullShare->getExpirationDate() !== null && $paramExpireDate !== '') {
 				if ($this->parseDate($paramExpireDate) > $fullShare->getExpirationDate()) {
-					throw new Exception('Expiration date exceeds the parent share\'s expiration date');
+					return new Result(null, 403, 'Expiration date exceeds the parent share\'s expiration date');
 				}
 			}
 		}
@@ -1001,7 +1001,7 @@ class Share20OcsController extends OCSController {
 
 			if ($fullShare->getExpirationDate() !== null && $paramExpireDate !== '') {
 				if ($this->parseDate($paramExpireDate) > $fullShare->getExpirationDate()) {
-					throw new Exception('Expiration date exceeds the parent share\'s expiration date');
+					return new Result(null, 403, 'Expiration date exceeds the parent share\'s expiration date');
 				}
 			}
 		}

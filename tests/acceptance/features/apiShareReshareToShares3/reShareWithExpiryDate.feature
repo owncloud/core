@@ -405,15 +405,15 @@ Feature: resharing a resource with an expiration date
       | expireDate  | +40 days              |
     #The action of extending the expiration date while resharing should be forbidden
     Then the HTTP status code should be "<http_status_code>"
-    And the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "403"
     And the information of the last share of user "Alice" should include
       | expiration | +20 days |
     Examples:
-      | ocs_api_version | default-expire-date | ocs_status_code | http_status_code |
-      | 1               | yes                 | 996             | 200              |
-      | 2               | yes                 | 500             | 500              |
-      | 1               | no                  | 996             | 200              |
-      | 2               | no                  | 500             | 500              |
+      | ocs_api_version | default-expire-date | http_status_code |
+      | 1               | yes                 | 200              |
+      | 2               | yes                 | 403              |
+      | 1               | no                  | 200              |
+      | 2               | no                  | 403              |
 
   @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10
   Scenario Outline: reshare cannot extend the received expiry date past the default when the default is enforced
@@ -436,10 +436,10 @@ Feature: resharing a resource with an expiration date
       | shareWith   | Carol                 |
       | expireDate  | +40 days              |
     Then the HTTP status code should be "<http_status_code>"
-    And the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "403"
     And the information of the last share of user "Alice" should include
       | expiration | +20 days |
     Examples:
-      | ocs_api_version | default-expire-date | ocs_status_code | http_status_code |
-      | 1               | yes                 | 996             | 200              |
-      | 2               | yes                 | 500             | 500              |
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 403              |
