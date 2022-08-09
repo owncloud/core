@@ -143,7 +143,7 @@
     "A valid email must be provided" : "Es muss eine gültige E-Mail-Adresse angegeben werden",
     "Use the following link to confirm your changes to the email address: {link}" : "Benutze den folgenden Link, um die Änderung der E-Mail Adresse zu bestätigen: {link}",
     "Email address changed to {mailAddress} successfully." : "E-Mail Adresse wurde erfolgreich auf {mailAddress} geändert.",
-    "Hey there,<br><br>just letting you know that you now have an %s account.<br><br>Your username: %s<br>Please set the password by accessing it: <a href=\"%s\">Here</a><br><br>" : "Hallo,<br><br>hier nur kurz die Mitteilung, dass Du jetzt ein %s-Konto hast.<br><br>Dein Benutzername: %s<br>Bitte erstelle Dein Passwort  <a href=\"%s\"> hier:</a><br><br>",
+    "Hey there,<br><br>just letting you know that you now have an %s account.<br><br>Your username: %s<br>Please set the password by accessing it: <a href=\"%s\">Here</a><br><br>" : "Hallo,<br><br>hier nur kurz die Mitteilung, dass Du jetzt ein %s-Konto hast.<br><br>Dein Benutzername: %s<br>Bitte erstelle Dein Passwort: <a href=\"%s\"> hier</a><br><br>",
     "Cheers!" : "Noch einen schönen Tag!",
     "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hallo,\n\nhier nur kurz die Mitteilung, dass Du jetzt ein %s-Konto hast.\n\nDein Benutzername: %s\nGreife darauf zu: %s\n\n",
     "Language" : "Sprache",

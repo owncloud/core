@@ -6,6 +6,7 @@ OC.L10N.register(
     "Google Drive App Configuration" : "Google Drive App Konfigurierung",
     "Error verifying OAuth2 Code for " : "Bei der Verifikation des OAuth2 Codes für [ ] ist ein Fehler aufgetreten.",
     "Personal" : "Persönlich",
+    "Saved" : "Gespeichert",
     "Username" : "Benutzername",
     "Password" : "Passwort",
     "Save" : "Speichern",
