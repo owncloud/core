@@ -238,4 +238,12 @@ class RemoteUser implements IUser {
 	public function getAccountId() {
 		return null;
 	}
+
+	/**
+	 * @return array
+	 * @since 10.11.0
+	 */
+	public function getExtendedAttributes($clearCache = false) {
+		return [];
+	}
 }

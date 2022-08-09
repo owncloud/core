@@ -45,6 +45,7 @@ use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
+use OCP\User\NotPermittedActionException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AppManager implements IAppManager {
@@ -162,9 +163,9 @@ class AppManager implements IAppManager {
 	 */
 	public function getEnabledAppsForUser(IUser $user = null) {
 		$apps = $this->getInstalledAppsValues();
-		$appsForUser = \array_filter($apps, function ($enabled) use ($user) {
-			return $this->checkAppForUser($enabled, $user);
-		});
+		$appsForUser = \array_filter($apps, function ($enabled, $appName) use ($user) {
+			return $this->checkAppForUser($enabled, $appName, $user);
+		}, ARRAY_FILTER_USE_BOTH);
 		return \array_keys($appsForUser);
 	}
 
@@ -184,7 +185,7 @@ class AppManager implements IAppManager {
 		}
 		$installedApps = $this->getInstalledAppsValues();
 		if (isset($installedApps[$appId])) {
-			return $this->checkAppForUser($installedApps[$appId], $user);
+			return $this->checkAppForUser($installedApps[$appId], $appId, $user);
 		} else {
 			return false;
 		}
@@ -193,9 +194,28 @@ class AppManager implements IAppManager {
 	/**
 	 * @param string $enabled
 	 * @param IUser $user
+	 * @param string $appName
 	 * @return bool
+	 * @throws NotPermittedActionException
 	 */
-	private function checkAppForUser($enabled, $user) {
+	private function checkAppForUser($enabled, $appName, $user) {
+		if ($user !== null) {
+			$userAppAttributes = $user->getExtendedAttributes();
+			/**
+			 * Guests will only have access to some whitelisted apps
+			 * - If the "whitelistedAppsForGuests" isn't found, the user is not considered guest and the user will have access to all the enabled apps.
+			 * - If the "whitelistedAppsForGuests" list is empty, the guest won't be able to use any app
+			 * - If the "whitelistedAppsForGuests" has some apps, only those apps will be available for that guest
+			 *
+			 */
+			if (isset($userAppAttributes['whitelistedAppsForGuests'])) {
+				$whiteListedAppsForGuest = $userAppAttributes['whitelistedAppsForGuests'];
+				if (\is_array($whiteListedAppsForGuest) && !\in_array($appName, $whiteListedAppsForGuest)) {
+					return false;
+				}
+			}
+		}
+
 		if ($enabled === 'yes') {
 			return true;
 		} elseif ($user === null) {

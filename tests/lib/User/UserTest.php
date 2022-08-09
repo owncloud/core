@@ -21,6 +21,8 @@ use OC\User\User;
 use OCP\IConfig;
 use OCP\IURLGenerator;
 use OCP\User\IChangePasswordBackend;
+use OCP\User\NotPermittedActionException;
+use OCP\User\UserExtendedAttributesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
@@ -580,5 +582,188 @@ class UserTest extends TestCase {
 			'normal terms' => [['term1'], ['term1']],
 			'too long terms' => [['term1', \str_repeat(".", 192)], ['term1', \str_repeat(".", 191)]]
 		];
+	}
+
+	public function providesClearCache() {
+		return [
+			[true],
+			[false],
+		];
+	}
+
+	/**
+	 * @dataProvider providesClearCache
+	 * @param bool $clearCache
+	 */
+	public function testGetExtendedAttributes($clearCache) {
+		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
+
+		$this->eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent);
+
+		$this->assertEquals($this->user->getExtendedAttributes($clearCache), []);
+	}
+
+	/**
+	 * @throws NotPermittedActionException
+	 */
+	public function testGetExtendedAttributesForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
+		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
+
+		$this->eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent)
+			->willThrowException(new NotPermittedActionException());
+
+		$this->user->getExtendedAttributes();
+	}
+
+	/**
+	 * In a normal execution test if the allowUserAccountUpdate is set to true
+	 * after the event is emitted.
+	 *
+	 * @throws NotPermittedActionException
+	 */
+	public function testAllowUserAccountUpdateFlagNormalExecution() {
+		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
+		$this->eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent);
+
+		$this->user->getExtendedAttributes();
+		$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
+		$this->assertTrue($value);
+	}
+
+	/**
+	 * Verify the value of allowUserAccountUpdate after NotPermittedActionException is thrown.
+	 * It should be set back to true.
+	 */
+	public function testAllowUserAccountUpdateFlagAfterException() {
+		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
+		$this->eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent)
+			->willThrowException(new NotPermittedActionException());
+
+		try {
+			$this->user->getExtendedAttributes();
+		} catch (NotPermittedActionException $ex) {
+			$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
+			$this->assertTrue($value);
+		}
+	}
+
+	/**
+	 * Test for allowUserAccountUpdate when a random exception is thrown, the value
+	 * should be set back to true.
+	 */
+	public function testAllowUserAccountUpdateFlagAfterRandomException() {
+		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
+		$this->eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent)
+			->willThrowException(new \Exception());
+
+		try {
+			$this->user->getExtendedAttributes();
+		} catch (\Exception $ex) {
+			$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
+			$this->assertTrue($value);
+		}
+	}
+
+	/**
+	 * Test to check no infinite loop is possible when getExtendedAttributes is called.
+	 * So lets say the listener of the event cannot call getExtendedAttributes again.
+	 */
+	public function testGetExtendedAttributesNoInfiniteLoop() {
+		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
+		$this->eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent)
+			->will($this->returnCallback(function () {
+				$this->user->getExtendedAttributes();
+			}));
+
+		try {
+			$this->user->getExtendedAttributes();
+		} catch (NotPermittedActionException $ex) {
+			$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
+			$this->assertTrue($value);
+		}
+	}
+
+	/**
+	 * @throws NotPermittedActionException
+	 */
+	public function testSetSearchTermsForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
+		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		$this->user->setSearchTerms(['foo']);
+	}
+
+	/**
+	 * @throws NotPermittedActionException
+	 */
+	public function testSetQuotaForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
+		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		$this->user->setQuota('12M');
+	}
+
+	/**
+	 * @throws NotPermittedActionException
+	 */
+	public function testSetEmailAddressForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
+		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		$this->user->setEMailAddress('foo@bar.com');
+	}
+
+	/**
+	 * @throws NotPermittedActionException
+	 */
+	public function testSetEnabledForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
+		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		$this->user->setEnabled(true);
+	}
+
+	/**
+	 * @throws NotPermittedActionException
+	 */
+	public function testSetPasswordForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
+		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		$this->user->setPassword('foobar');
+	}
+
+	/**
+	 * @throws NotPermittedActionException
+	 */
+	public function testSetDisplayNameForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
+		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		$this->user->setDisplayName('FooBar');
+	}
+
+	/**
+	 * @throws NotPermittedActionException
+	 */
+	public function testSetUserNameForException() {
+		$this->expectException(\OCP\User\NotPermittedActionException::class);
+
+		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		$this->user->setUserName('Foo');
 	}
 }

@@ -238,4 +238,8 @@ class DeletedUser implements IUser {
 	public function getSearchTerms() {
 		return [];
 	}
+
+	public function getExtendedAttributes($clearCache = false) {
+		return [];
+	}
 }
