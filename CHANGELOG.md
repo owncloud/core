@@ -28,6 +28,7 @@ Summary
 * Bugfix - Handle extra slashes at start of URI path: [#40216](https://github.com/owncloud/core/pull/40216)
 * Bugfix - Use group's displayname in the user's profile and user list: [#40229](https://github.com/owncloud/core/pull/40229)
 * Bugfix - Init encryption module before calculating unencrypted block-size: [#40240](https://github.com/owncloud/core/pull/40240)
+* Bugfix - Fix personal settings display for apps which are not whitelisted: [#40257](https://github.com/owncloud/core/pull/40257)
 * Bugfix - Only call getGroupDetails when the group exists: [#40261](https://github.com/owncloud/core/pull/40261)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -213,6 +214,14 @@ Details
    config.php.
 
    https://github.com/owncloud/core/pull/40240
+
+* Bugfix - Fix personal settings display for apps which are not whitelisted: [#40257](https://github.com/owncloud/core/pull/40257)
+
+   Apps can be disabled or enabled for guests. The personal settings for disabled apps were still
+   being shown to guest users. This problem has been fixed. Only the settings for enabled apps are
+   displayed now.
+
+   https://github.com/owncloud/core/pull/40257
 
 * Bugfix - Only call getGroupDetails when the group exists: [#40261](https://github.com/owncloud/core/pull/40261)
 

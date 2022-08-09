@@ -26,6 +26,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Handle extra slashes at start of URI path: <a href="https://github.com/owncloud/core/pull/40216">#40216</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Use group's displayname in the user's profile and user list: <a href="https://github.com/owncloud/core/pull/40229">#40229</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Init encryption module before calculating unencrypted block-size: <a href="https://github.com/owncloud/core/pull/40240">#40240</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix personal settings display for apps which are not whitelisted: <a href="https://github.com/owncloud/core/pull/40257">#40257</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Only call getGroupDetails when the group exists: <a href="https://github.com/owncloud/core/pull/40261">#40261</a></li>
         <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
@@ -206,6 +207,14 @@
    config.php.
             </p>
             <p>https://github.com/owncloud/core/pull/40240<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix personal settings display for apps which are not whitelisted: <a href="https://github.com/owncloud/core/pull/40257">#40257</a></p>
+            <p>Apps can be disabled or enabled for guests. The personal settings for disabled apps were still
+   being shown to guest users. This problem has been fixed. Only the settings for enabled apps are
+   displayed now.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40257<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Only call getGroupDetails when the group exists: <a href="https://github.com/owncloud/core/pull/40261">#40261</a></p>
