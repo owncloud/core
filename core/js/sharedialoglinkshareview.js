@@ -11,7 +11,15 @@
 (function () {
 	if (!OC.Share) {
 		OC.Share = {};
+		OC.Share.ShareDialogLink = {};
 	}
+
+	/**
+	 * @typedef {object} OC.Share.ShareDialogLink.PublicLinkRole
+	 * @property {string} name
+	 * @property {number} permissions
+	 * @property {OC.Share.Types.ShareAttribute[]} attributes
+	 */
 
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
 	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password');
@@ -22,31 +30,33 @@
 				'<label class="public-link-modal--label">{{linkNameLabel}}</label>' +
 				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
 			'</div>' +
+			'<div id="appManagedPublicLinkModelItems">' +
+			'</div>' +
 			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="{{publicReadValue}}" name="publicPermissions" id="sharingDialogAllowPublicRead-{{cid}}" class="checkbox publicPermissions" {{#if publicReadSelected}}checked{{/if}} />' +
+				'<input type="radio" value="allowPublicRead" name="publicLinkRole" id="sharingDialogAllowPublicRead-{{cid}}" class="checkbox publicLinkRole" {{#if publicReadSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicRead-{{cid}}">{{publicReadLabel}}</label>' +
 				'<p><em>{{publicReadDescription}}</em></p>' +
 			'</div>' +
 			'{{#if publicUploadFilePossible}}' +
-			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
+			'<div id="allowPublicReadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="allowPublicReadWrite" name="publicLinkRole" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicLinkRole" {{#if publicReadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
 				'<p><em>{{publicReadWriteDescription}}</em></p>' +
 			'</div>' +
 			'{{/if}}' +
 			'{{#if publicUploadFolderPossible}}' +
-			'<div id="allowpublicUploadWrite-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="{{publicUploadWriteValue}}" name="publicPermissions" id="sharingDialogAllowpublicUploadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadWriteSelected}}checked{{/if}} />' +
-				'<label class="bold" for="sharingDialogAllowpublicUploadWrite-{{cid}}">{{publicUploadWriteLabel}}</label>' +
+			'<div id="allowPublicUploadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="allowPublicUploadWrite" name="publicLinkRole" id="sharingDialogAllowPublicUploadWrite-{{cid}}" class="checkbox publicLinkRole" {{#if publicUploadWriteSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicUploadWrite-{{cid}}">{{publicUploadWriteLabel}}</label>' +
 				'<p><em>{{publicUploadWriteDescription}}</em></p>' +
 			'</div>' +
-			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
+			'<div id="allowPublicReadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="allowPublicReadWrite" name="publicLinkRole" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicLinkRole" {{#if publicReadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
 				'<p><em>{{publicReadWriteDescription}}</em></p>' +
 			'</div>' +
-			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="{{publicUploadValue}}" name="publicPermissions" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadSelected}}checked{{/if}} />' +
+			'<div id="allowPublicUpload-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="allowPublicUpload" name="publicLinkRole" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicLinkRole" {{#if publicUploadSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
 				'<p><em>{{publicUploadDescription}}</em></p>' +
 			'</div>' +
@@ -88,6 +98,30 @@
 		/** @type {Function} **/
 		_template: undefined,
 
+		/** @type {OC.Share.ShareDialogLink.PublicLinkRole} **/
+		_coreRoles: [
+			{
+				name: "allowPublicRead",
+				permissions: OC.PERMISSION_READ,
+				attributes: []
+			},
+			{
+				name: "allowPublicUploadWrite",
+				permissions: OC.PERMISSION_READ | OC.PERMISSION_CREATE,
+				attributes: []
+			},
+			{
+				name: "allowPublicUpload",
+				permissions: OC.PERMISSION_CREATE,
+				attributes: []
+			},
+			{
+				name: "allowPublicReadWrite",
+				permissions: OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
+				attributes: []
+			}
+		],
+
 		initialize: function (options) {
 			if (!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
@@ -105,20 +139,88 @@
 		},
 
 		/**
+		 * Returns public link roles available for share dialog link
+		 * 
+		 * NOTE: this API should be extended by apps to register new roles,
+		 *       along with registering entry in div[id=appManagedPublicLinkModelItems]
+		 * 
+		 * @return {OC.Share.ShareDialogLink.PublicLinkRole[]} roles
+		 */
+		getRoles: function() {
+			// base return value that can be extended by apps
+			return this._coreRoles;
+		},
+
+		/**
 		 * Returns the selected permissions as read from the checkboxes or
 		 * the absence thereof.
 		 *
 		 * @return {int} permissions
 		 */
-		_getPermissions: function() {
-			var permissions = this.$('input[name="publicPermissions"]:checked').val();
+		_getSharePermissions: function() {
+			var publicLinkRoles = this.getRoles();
+			var selectedPublicLinkRole = this.$('input[name="publicLinkRole"]:checked').val();
 
-			return (permissions) ? parseInt(permissions, 10) : OC.PERMISSION_READ;
+			if (selectedPublicLinkRole) {
+				for(var i in publicLinkRoles) {
+					if (publicLinkRoles[i].name === selectedPublicLinkRole) {
+						return publicLinkRoles[i].permissions
+					}
+				}
+			}
+			return OC.PERMISSION_READ;
+		},
+
+		/**
+		 * Returns the selected attributes as read from the checkboxes or
+		 * the absence thereof.
+		 *
+		 * @return {OC.Share.Types.ShareAttribute[]} attributes
+		 */
+		_getShareAttributes: function() {
+			var publicLinkRoles = this.getRoles();
+			var selectedPublicLinkRole = this.$('input[name="publicLinkRole"]:checked').val();
+
+			if (selectedPublicLinkRole) {
+				for(var i in publicLinkRoles) {
+					if (publicLinkRoles[i].name === selectedPublicLinkRole) {
+						return publicLinkRoles[i].attributes
+					}
+				}
+			}
+			return [];
+		},
+
+		/**
+		 * Returns whether the permissions and attributes of current share 
+		 * match to given role
+		 *
+		 * @return {boolean} enabled
+		 */
+		_checkRoleEnabled: function(role) {
+			var publicLinkRoles = this.getRoles();
+;
+			var assignedSharePermissions = this.model.get('permissions');
+			var assignedShareAttributes = (this.model.get('attributes') ? this.model.get('attributes') : []);
+
+			for(var i in publicLinkRoles) {
+				if (publicLinkRoles[i].name === role) {
+					var roleSharePermissions = publicLinkRoles[i].permissions;
+					var roleShareAttributes = publicLinkRoles[i].attributes;
+
+					// FIXME: for a moment map to string to allow dict comparisons for match 
+					//        but should be bitmap check instead
+					//        as in case of share to group/user
+					return (assignedSharePermissions === roleSharePermissions 
+						&& JSON.stringify(assignedShareAttributes) === JSON.stringify(roleShareAttributes))
+				}
+			}
+			return false;
 		},
 
 		_shouldRequirePassword: function() {
 			// matching passwordMustBeEnforced from server side
-			var permissions = this._getPermissions();
+			var permissions = this._getSharePermissions();
 			var roEnforcement = permissions === OC.PERMISSION_READ && this.configModel.get('enforceLinkPasswordReadOnly');
 			var woEnforcement = permissions === OC.PERMISSION_CREATE && this.configModel.get('enforceLinkPasswordWriteOnly');
 			var rwEnforcement = (permissions === (OC.PERMISSION_READ | OC.PERMISSION_CREATE) && this.configModel.get('enforceLinkPasswordReadWrite'));
@@ -157,7 +259,8 @@
 			// explicit attributes to be saved
 			var attributes = {
 				expireDate: expirationDate,
-				permissions: this._getPermissions(),
+				permissions: this._getSharePermissions(),
+				attributes: this._getShareAttributes(),
 				name: this.$('[name=linkName]').val(),
 				shareType: this.model.get('shareType')
 			};
@@ -273,23 +376,19 @@
 
 				publicUploadLabel          : t('core', 'Upload only') + ' (File Drop)',
 				publicUploadDescription    : t('core', 'Receive files from multiple recipients without revealing the contents of the folder.'),
-				publicUploadValue          : OC.PERMISSION_CREATE,
-				publicUploadSelected       : this.model.get('permissions') === OC.PERMISSION_CREATE,
+				publicUploadSelected       : this._checkRoleEnabled('allowPublicUpload'),
 
 				publicReadLabel            : t('core', 'Download / View'),
 				publicReadDescription      : t('core', 'Recipients can view or download contents.'),
-				publicReadValue            : OC.PERMISSION_READ,
-				publicReadSelected         : this.model.get('permissions') === OC.PERMISSION_READ,
+				publicReadSelected         : this._checkRoleEnabled('allowPublicRead'),
 
 				publicUploadWriteLabel       : t('core', 'Download / View / Upload'),
 				publicUploadWriteDescription : t('core', 'Recipients can view, download and upload contents.'),
-				publicUploadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_CREATE,
-				publicUploadWriteSelected    : this.model.get('permissions') === (OC.PERMISSION_READ | OC.PERMISSION_CREATE),
+				publicUploadWriteSelected    : this._checkRoleEnabled('allowPublicUploadWrite'),
 
 				publicReadWriteLabel       : t('core', 'Download / View / Edit'),
 				publicReadWriteDescription : t('core', 'Recipients can view, download, edit, delete and upload contents.'),
-				publicReadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
-				publicReadWriteSelected    : this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE),
+				publicReadWriteSelected    : this._checkRoleEnabled('allowPublicReadWrite'),
 
 				isMailEnabled: showEmailField
 			}));

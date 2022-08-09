@@ -277,7 +277,7 @@ class Share20OcsController extends OCSController {
 
 		$result['attributes'] = null;
 		if ($attributes = $share->getAttributes()) {
-			$result['attributes'] = \json_encode($attributes->toArray());
+			$result['attributes'] = $attributes->toArray();
 		}
 
 		return $result;
