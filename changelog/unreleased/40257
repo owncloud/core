@@ -1,0 +1,7 @@
+Bugfix: Fix personal settings display for apps which are not whitelisted
+
+Apps can be disabled or enabled for guests. The personal settings for disabled
+apps were still being shown to guest users. This problem has been fixed. Only
+the settings for enabled apps are displayed now.
+
+https://github.com/owncloud/core/pull/40257
