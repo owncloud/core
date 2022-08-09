@@ -25,7 +25,7 @@ namespace OCP\User;
  * Class NotPermitUserAccountException
  *
  * @package OCP
- * @since 10.3.1
+ * @since 10.11.0
  */
 class NotPermittedActionException extends \Exception {
 	/**
@@ -34,7 +34,7 @@ class NotPermittedActionException extends \Exception {
 	 * @param string $message
 	 * @param int $code
 	 * @param \Exception|null $previous
-	 * @since 10.3.1
+	 * @since 10.11.0
 	 */
 	public function __construct($message = "", $code = 0, \Exception $previous = null) {
 		parent::__construct($message, $code, $previous);

@@ -30,7 +30,7 @@ use Symfony\Component\EventDispatcher\Event;
  * Class UserExtendedAttributesEvent
  *
  * @package OCP\User
- * @since 10.3.1
+ * @since 10.11.0
  */
 class UserExtendedAttributesEvent extends Event {
 	public const USER_EXTENDED_ATTRIBUTES = 'UserExtendedAttributesEvent';
@@ -45,7 +45,7 @@ class UserExtendedAttributesEvent extends Event {
 	 * UserExtendedAttributesEvent constructor.
 	 *
 	 * @param IUser $user
-	 * @since 10.3.1
+	 * @since 10.11.0
 	 */
 	public function __construct(IUser $user) {
 		$this->user = $user;
@@ -57,7 +57,7 @@ class UserExtendedAttributesEvent extends Event {
 	 * null.
 	 *
 	 * @return IUser
-	 * @since 10.3.1
+	 * @since 10.11.0
 	 */
 	public function getUser() {
 		return $this->user;
@@ -69,7 +69,7 @@ class UserExtendedAttributesEvent extends Event {
 	 * attributes of all apps which were set in this array.
 	 *
 	 * @return array
-	 * @since 10.3.1
+	 * @since 10.11.0
 	 */
 	public function getAttributes() {
 		return $this->attributes;
@@ -85,7 +85,7 @@ class UserExtendedAttributesEvent extends Event {
 	 * @param string $attributeKey
 	 * @param mixed $attributeValue
 	 * @return bool true if the attribute is set by the method, else false if the attribute is already present
-	 * @since 10.3.1
+	 * @since 10.11.0
 	 */
 	public function setAttributes($attributeKey, $attributeValue) {
 		if (isset($this->attributes[$attributeKey]) || $attributeValue === null) {

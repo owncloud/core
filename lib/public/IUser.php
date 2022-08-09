@@ -294,7 +294,7 @@ interface IUser {
 	 * @param bool $clearCache, set to true if user attributes should be created every time, else false is set to reuse the userExtendedAttributes cache.
 	 * @return array
 	 * @throws NotPermittedActionException
-	 * @since 10.3.1
+	 * @since 10.11.0
 	 */
 	public function getExtendedAttributes($clearCache = false);
 }

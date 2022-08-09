@@ -241,7 +241,7 @@ class RemoteUser implements IUser {
 
 	/**
 	 * @return array
-	 * @since 10.3.1
+	 * @since 10.11.0
 	 */
 	public function getExtendedAttributes($clearCache = false) {
 		return [];
