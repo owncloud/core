@@ -43,6 +43,7 @@ use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
+use OCP\Files\ForbiddenException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IPreview;
@@ -446,6 +447,14 @@ class ShareController extends Controller {
 
 		$userFolder = $this->rootFolder->getUserFolder($share->getShareOwner());
 		$originalSharePath = $userFolder->getRelativePath($share->getNode()->getPath());
+
+		if ($share->getAttributes() !== null) {
+			$canDownload = $share->getAttributes()->getAttribute('permissions', 'download');
+			if ($canDownload !== null && !$canDownload) {
+				$this->emitAccessShareHook($share, 403, 'Access to this resource has been denied because it is in view-only mode.');
+				throw new ForbiddenException('Access to this resource has been denied because it is in view-only mode.', false);
+			}
+		}
 
 		if (!$this->validateShare($share)) {
 			throw new NotFoundException();
