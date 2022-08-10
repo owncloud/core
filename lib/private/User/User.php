@@ -33,6 +33,7 @@
 namespace OC\User;
 
 use OC\Files\Cache\Storage;
+use OC\Group\Manager;
 use OC\Hooks\Emitter;
 use OC_Helper;
 use OCP\Events\EventEmitterTrait;
@@ -102,9 +103,8 @@ class User implements IUser {
 	 * @param IConfig|null $config
 	 * @param null $urlGenerator
 	 * @param EventDispatcher|null $eventDispatcher
-	 * @param \OC\Group\Manager|null $groupManager
+	 * @param Manager|null $groupManager
 	 * @param Session|null $userSession
-	 * @param ILogger|null $logger
 	 */
 	public function __construct(
 		Account $account,
