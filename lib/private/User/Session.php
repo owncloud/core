@@ -919,7 +919,7 @@ class Session implements IUserSession, Emitter {
 		);
 
 		// Check if login names match
-		if ($user !== null && \strcasecmp ($dbToken->getLoginName(), $user) !== 0) {
+		if ($user !== null && \strcasecmp($dbToken->getLoginName(), $user) !== 0) {
 			// TODO: this makes it impossible to use different login names on browser and client
 			// e.g. login by e-mail 'user@example.com' on browser for generating the token will not
 			//      allow to use the client token with the login name 'user'.

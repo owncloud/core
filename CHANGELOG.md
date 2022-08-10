@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Fix case sensitivity for app passwords/tokens - [#40280](https://github.com/owncloud/core/pull/40280)
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 * Bugfix - Replace userid with username in login form: [#39870](https://github.com/owncloud/core/pull/39870)
 * Bugfix - Quota can be exceeded by user: [#40140](https://github.com/owncloud/core/issues/40140)
