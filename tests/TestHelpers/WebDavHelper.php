@@ -113,6 +113,49 @@ class WebDavHelper {
 
 		return $matches[1];
 	}
+	
+	/**
+	 * returns body for propfind
+	 *
+	 * @param array|null $properties
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function getBodyForPropfind(?array $properties): string {
+		$propertyBody = "";
+		$extraNamespaces = "";
+		foreach ($properties as $namespaceString => $property) {
+			if (\is_int($namespaceString)) {
+				//default namespace prefix if the property has no array key
+				//also used if no prefix is given in the property value
+				$namespacePrefix = "d";
+			} else {
+				//calculate the namespace prefix and namespace from the array key
+				$matches = [];
+				\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+				$nameSpace = $matches[2];
+				$namespacePrefix = $matches[1];
+				$extraNamespaces .= " xmlns:$namespacePrefix=\"$nameSpace\" ";
+			}
+			//if a namespace prefix is given in the property value use that
+			if (\strpos($property, ":") !== false) {
+				$propertyParts = \explode(":", $property);
+				$namespacePrefix = $propertyParts[0];
+				$property = $propertyParts[1];
+			}
+			$propertyBody .= "<$namespacePrefix:$property/>";
+		}
+		$body = "<?xml version=\"1.0\"?>
+				<d:propfind
+				   xmlns:d=\"DAV:\"
+				   xmlns:oc=\"http://owncloud.org/ns\"
+				   xmlns:ocs=\"http://open-collaboration-services.org/ns\"
+				   $extraNamespaces>
+				    <d:prop>$propertyBody</d:prop>
+				</d:propfind>";
+		return $body;
+	}
 
 	/**
 	 * sends a PROPFIND request
@@ -150,42 +193,12 @@ class WebDavHelper {
 		?int $davPathVersionToUse = self::DAV_VERSION_NEW,
 		?string $doDavRequestAsUser = null
 	):ResponseInterface {
-		$propertyBody = "";
-		$extraNamespaces = "";
-		foreach ($properties as $namespaceString => $property) {
-			if (\is_int($namespaceString)) {
-				//default namespace prefix if the property has no array key
-				//also used if no prefix is given in the property value
-				$namespacePrefix = "d";
-			} else {
-				//calculate the namespace prefix and namespace from the array key
-				$matches = [];
-				\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
-				$nameSpace = $matches[2];
-				$namespacePrefix = $matches[1];
-				$extraNamespaces .= " xmlns:$namespacePrefix=\"$nameSpace\" ";
-			}
-			//if a namespace prefix is given in the property value use that
-			if (\strpos($property, ":") !== false) {
-				$propertyParts = \explode(":", $property);
-				$namespacePrefix = $propertyParts[0];
-				$property = $propertyParts[1];
-			}
-			$propertyBody .= "<$namespacePrefix:$property/>";
-		}
+		$body = self::getBodyForPropfind($properties);
 		$folderDepth = (string) $folderDepth;
 		if ($folderDepth !== '0' && $folderDepth !== '1' && $folderDepth !== 'infinity') {
 			throw new InvalidArgumentException('Invalid depth value ' . $folderDepth);
 		}
 		$headers = ['Depth' => $folderDepth];
-		$body = "<?xml version=\"1.0\"?>
-				<d:propfind
-				   xmlns:d=\"DAV:\"
-				   xmlns:oc=\"http://owncloud.org/ns\"
-				   xmlns:ocs=\"http://open-collaboration-services.org/ns\"
-				   $extraNamespaces>
-				    <d:prop>$propertyBody</d:prop>
-				</d:propfind>";
 		return self::makeDavRequest(
 			$baseUrl,
 			$user,
