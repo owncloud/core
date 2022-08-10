@@ -193,8 +193,8 @@ class AppManager implements IAppManager {
 
 	/**
 	 * @param string $enabled
-	 * @param IUser $user
 	 * @param string $appName
+	 * @param IUser $user
 	 * @return bool
 	 * @throws NotPermittedActionException
 	 */
