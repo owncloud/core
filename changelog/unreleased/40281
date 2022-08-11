@@ -1,0 +1,7 @@
+Bugfix: Allow usernames to be case-insensitive with app passwords
+
+When using an app password, the associated username can now be provided in any
+case-insensitive way in requests. Username "Alice" and "alice" will work the same.
+
+https://github.com/owncloud/core/issues/40119
+https://github.com/owncloud/core/pull/40281
