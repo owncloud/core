@@ -55,7 +55,14 @@ class PublicWebDavContext implements Context {
 	 */
 	public function downloadPublicFileWithRange(string $range, string $publicWebDAVAPIVersion, ?string $password = ""):void {
 		if ($publicWebDAVAPIVersion === "new") {
-			$path = $this->featureContext->getLastPublicSharePath();
+			// In this case a single file has been shared as a public link.
+			// Even if that file is somewhere down inside a folder(s), when
+			// accessing it as a public link using the "new" public webDAV API
+			// the client needs to provide the public link share token followed
+			// by just the name of the file - not the full path.
+			$fullPath = $this->featureContext->getLastPublicSharePath();
+			$fullPathParts = \explode("/", $fullPath);
+			$path = \end($fullPathParts);
 		} else {
 			$path = "";
 		}
