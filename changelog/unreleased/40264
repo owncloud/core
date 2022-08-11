@@ -1,0 +1,6 @@
+Enhancement: Allow editing of public link shared single files
+
+It is now possible to create a public link share of a single file with
+Download/View/Edit permissions.
+
+https://github.com/owncloud/core/pull/40264
