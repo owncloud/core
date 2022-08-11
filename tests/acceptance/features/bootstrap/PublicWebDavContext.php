@@ -55,7 +55,7 @@ class PublicWebDavContext implements Context {
 	 */
 	public function downloadPublicFileWithRange(string $range, string $publicWebDAVAPIVersion, ?string $password = ""):void {
 		if ($publicWebDAVAPIVersion === "new") {
-			$path = (string)$this->featureContext->getLastPublicShareData()->data->file_target;
+			$path = $this->featureContext->getLastPublicSharePath();
 		} else {
 			$path = "";
 		}
@@ -1225,15 +1225,20 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^uploading content to a public link shared file should work using the (old|new) public WebDAV API$/
+	 * @Then /^uploading content to a public link shared file should (not|)\s?work using the (old|new) public WebDAV API$/
 	 *
+	 * @param string $shouldOrNot (not|)
 	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function publiclyUploadingToPublicLinkSharedFileShouldWork(string $publicWebDAVAPIVersion):void {
+	public function publiclyUploadingToPublicLinkSharedFileShouldWork(
+		string $shouldOrNot,
+		string $publicWebDAVAPIVersion
+	):void {
 		$content = "test $publicWebDAVAPIVersion";
+		$should = ($shouldOrNot !== "not");
 
 		if ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
@@ -1252,22 +1257,31 @@ class PublicWebDavContext implements Context {
 			$publicWebDAVAPIVersion
 		);
 		$response = $this->featureContext->getResponse();
-		Assert::assertTrue(
-			($response->getStatusCode() == 204),
-			"upload should have passed but failed with code " .
-			$response->getStatusCode()
-		);
+		if ($should) {
+			Assert::assertTrue(
+				($response->getStatusCode() == 204),
+				"upload should have passed but failed with code " .
+				$response->getStatusCode()
+			);
 
-		$this->downloadPublicFileWithRange(
-			"",
-			$publicWebDAVAPIVersion,
-			""
-		);
+			$this->downloadPublicFileWithRange(
+				"",
+				$publicWebDAVAPIVersion,
+				""
+			);
 
-		$this->featureContext->checkDownloadedContentMatches(
-			$content,
-			"Checking the content of the last public shared file after downloading with the $publicWebDAVAPIVersion public WebDAV API"
-		);
+			$this->featureContext->checkDownloadedContentMatches(
+				$content,
+				"Checking the content of the last public shared file after downloading with the $publicWebDAVAPIVersion public WebDAV API"
+			);
+		} else {
+			$expectedCode = 403;
+			Assert::assertTrue(
+				($response->getStatusCode() == $expectedCode),
+				"upload should have failed with HTTP status $expectedCode but passed with code " .
+				$response->getStatusCode()
+			);
+		}
 
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
