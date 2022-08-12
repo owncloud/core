@@ -106,12 +106,12 @@ Feature: create a public link share
       | 2               | 200             |
 
 
-  Scenario Outline: Trying to create a new public link share of a file with edit permissions only grants read access using the public WebDAV API
+  Scenario Outline: Create a new public link share of a file with edit permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
-      | path        | randomfile.txt |
-      | permissions | all            |
+      | path        | randomfile.txt            |
+      | permissions | read,update,create,delete |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
@@ -119,7 +119,7 @@ Feature: create a public link share
       | mimetype               | text/plain      |
       | file_target            | /randomfile.txt |
       | path                   | /randomfile.txt |
-      | permissions            | read            |
+      | permissions            | read,update     |
       | share_type             | public_link     |
       | displayname_file_owner | %displayname%   |
       | displayname_owner      | %displayname%   |
@@ -127,7 +127,7 @@ Feature: create a public link share
       | uid_owner              | %username%      |
       | name                   |                 |
     And the public should be able to download the last publicly shared file using the <public-webdav-api-version> public WebDAV API without a password and the content should be "Random data"
-    And the public upload to the last publicly shared file using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "403"
+    And uploading content to a public link shared file should work using the <public-webdav-api-version> public WebDAV API
 
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
