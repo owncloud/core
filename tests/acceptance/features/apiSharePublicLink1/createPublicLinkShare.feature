@@ -105,7 +105,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-
+  @skipOnOcV10.9 @skipOnOcV10.10
   Scenario Outline: Create a new public link share of a file with edit permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
