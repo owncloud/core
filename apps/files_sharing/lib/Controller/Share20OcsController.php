@@ -984,7 +984,19 @@ class Share20OcsController extends OCSController {
 		 * set or deny expiration date if the parent share has applying restrictions.
 		 */
 		$uf = $this->getCurrentUserFolder();
-		$path = $uf->get($share->getTarget());
+		$target = $share->getTarget();
+		// Target can be a string that includes the share_folder,
+		// for example, "/Shares/folder" or "/Shares/document.txt"
+		// Take the share_folder off the start of target.
+		$shareFolder = \OC::$server->getConfig()->getSystemValue('share_folder', '/');
+		if ($shareFolder !== "/") {
+			$shareFolderNormalized = "/" . \ltrim($shareFolder, "/");
+			$targetNormalized = "/" . \ltrim($target, "/");
+			if (\strpos($targetNormalized, $shareFolderNormalized) === 0) {
+				$target = \substr($targetNormalized, \strlen($shareFolderNormalized));
+			}
+		}
+		$path = $uf->get($target);
 
 		if ($path->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
 			$parentStorage = $path->getStorage();
