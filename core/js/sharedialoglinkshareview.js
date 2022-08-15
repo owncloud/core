@@ -38,10 +38,10 @@
 				'<p><em>{{publicReadDescription}}</em></p>' +
 			'</div>' +
 			'{{#if publicUploadFilePossible}}' +
-			'<div id="allowPublicReadWrite-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="allowPublicReadWrite" name="publicLinkRole" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicLinkRole" {{#if publicReadWriteSelected}}checked{{/if}} />' +
-				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
-				'<p><em>{{publicReadWriteDescription}}</em></p>' +
+			'<div id="allowPublicFileReadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="allowPublicFileReadWrite" name="publicLinkRole" id="sharingDialogAllowPublicFileReadWrite-{{cid}}" class="checkbox publicLinkRole" {{#if publicFileReadWriteSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicFileReadWrite-{{cid}}">{{publicFileReadWriteLabel}}</label>' +
+				'<p><em>{{publicFileReadWriteDescription}}</em></p>' +
 			'</div>' +
 			'{{/if}}' +
 			'{{#if publicUploadFolderPossible}}' +
@@ -50,10 +50,10 @@
 				'<label class="bold" for="sharingDialogAllowPublicUploadWrite-{{cid}}">{{publicUploadWriteLabel}}</label>' +
 				'<p><em>{{publicUploadWriteDescription}}</em></p>' +
 			'</div>' +
-			'<div id="allowPublicReadWrite-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="allowPublicReadWrite" name="publicLinkRole" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicLinkRole" {{#if publicReadWriteSelected}}checked{{/if}} />' +
-				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
-				'<p><em>{{publicReadWriteDescription}}</em></p>' +
+			'<div id="allowPublicFolderReadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="allowPublicFolderReadWrite" name="publicLinkRole" id="sharingDialogAllowPublicFolderReadWrite-{{cid}}" class="checkbox publicLinkRole" {{#if publicFolderReadWriteSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicFolderReadWrite-{{cid}}">{{publicFolderReadWriteLabel}}</label>' +
+				'<p><em>{{publicFolderReadWriteDescription}}</em></p>' +
 			'</div>' +
 			'<div id="allowPublicUpload-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="allowPublicUpload" name="publicLinkRole" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicLinkRole" {{#if publicUploadSelected}}checked{{/if}} />' +
@@ -116,7 +116,12 @@
 				attributes: []
 			},
 			{
-				name: "allowPublicReadWrite",
+				name: "allowPublicFileReadWrite",
+				permissions: OC.PERMISSION_READ | OC.PERMISSION_UPDATE,
+				attributes: []
+			},
+			{
+				name: "allowPublicFolderReadWrite",
 				permissions: OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
 				attributes: []
 			}
@@ -386,9 +391,13 @@
 				publicUploadWriteDescription : t('core', 'Recipients can view, download and upload contents.'),
 				publicUploadWriteSelected    : this._checkRoleEnabled('allowPublicUploadWrite'),
 
-				publicReadWriteLabel       : t('core', 'Download / View / Edit'),
-				publicReadWriteDescription : t('core', 'Recipients can view, download, edit, delete and upload contents.'),
-				publicReadWriteSelected    : this._checkRoleEnabled('allowPublicReadWrite'),
+				publicFileReadWriteLabel       : t('core', 'Download / View / Edit'),
+				publicFileReadWriteDescription : t('core', 'Recipients can view, download and edit contents.'),
+				publicFileReadWriteSelected    : this._checkRoleEnabled('allowPublicFileReadWrite'),
+
+				publicFolderReadWriteLabel       : t('core', 'Download / View / Edit / Upload'),
+				publicFolderReadWriteDescription : t('core', 'Recipients can view, download, edit, delete and upload contents.'),
+				publicFolderReadWriteSelected    : this._checkRoleEnabled('allowPublicFolderReadWrite'),
 
 				isMailEnabled: showEmailField
 			}));
