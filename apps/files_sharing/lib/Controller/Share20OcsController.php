@@ -882,6 +882,7 @@ class Share20OcsController extends OCSController {
 				// legacy
 				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE) &&
 				// correct
+				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE) &&
 				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE)
 			) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
