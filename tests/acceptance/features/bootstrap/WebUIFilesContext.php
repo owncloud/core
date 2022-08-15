@@ -1938,7 +1938,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theFilesActionMenuShouldBeCompletelyVisibleAfterOpeningItUsingTheWebUI():void {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
 			// wait for the actions menu to be closed if is open already
-			$this->waitTillFileActionsMenuIsClosed($this->getSession());
+			$this->waitTillFileActionsMenuIsClosed();
 
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo(
 				$i,
@@ -1981,7 +1981,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 	}
 
-	public function waitTillFileActionsMenuIsClosed($session) {
+	/**
+	 * waits upto standard ui wait timeout for the file actions menu to be closed
+	 *
+	 * @return void
+	 */
+	public function waitTillFileActionsMenuIsClosed(): void {
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC;
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);

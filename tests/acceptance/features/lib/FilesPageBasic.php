@@ -475,12 +475,19 @@ abstract class FilesPageBasic extends OwncloudPage {
 		return $actionMenu;
 	}
 
+	/**
+	 * checks if the file actions menu is open
+	 *
+	 * @return bool
+	 */
 	public function isFileActionsMenuOpen(): bool {
 		try {
 			$openMenu = $this->find('css', $this->fileActionMenuCss);
 			if ($openMenu && $openMenu->isVisible()) {
 				return true;
-			} else return false;
+			} else {
+				return false;
+			}
 		} catch (Exception $e) {
 			return false;
 		}
