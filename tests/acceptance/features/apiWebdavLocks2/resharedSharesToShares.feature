@@ -33,12 +33,6 @@ Feature: lock should propagate correctly if a share is reshared
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
 
   Scenario Outline: upload overwriting to a share that was locked by owner
     Given using <dav-path> DAV path
@@ -62,12 +56,6 @@ Feature: lock should propagate correctly if a share is reshared
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
 
   @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: public uploads to a reshared share that was locked by original owner
@@ -111,12 +99,6 @@ Feature: lock should propagate correctly if a share is reshared
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
 
   Scenario Outline: upload to a share that was locked by the resharing user
     Given using <dav-path> DAV path
@@ -137,9 +119,3 @@ Feature: lock should propagate correctly if a share is reshared
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
