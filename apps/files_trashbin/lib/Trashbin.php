@@ -734,30 +734,31 @@ class Trashbin {
 	 * @throws LockedException
 	 * @throws StorageNotAvailableException
 	 */
-	public static function delete($filename, $user, $timestamp = null) {
+	public static function delete($filename, $user) {
 		$view = new View('/' . $user);
 		$size = 0;
 
 		$dirOfFile = \dirname($filename);
+		$timestamp = null;
 
 		if ($dirOfFile === '/' || $dirOfFile === '.') {
+			$delimiter = \strrpos($filename, '.d');
+			$filenameWithoutTimestamp = \substr($filename, 0, $delimiter);
+			$timestamp =  \substr($filename, $delimiter+2);
 			$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
-			$query->execute([$user, $filename, $timestamp]);
-			$file = $filename . '.d' . $timestamp;
-		} else {
-			$file = $filename;
+			$query->execute([$user, $filenameWithoutTimestamp, $timestamp]);
 		}
 
-		$size += self::deleteVersions($view, $file, $timestamp, $user);
+		$size += self::deleteVersions($view, $filename, $user);
 
-		if ($view->is_dir('/files_trashbin/files/' . $file)) {
-			$size += self::calculateSize(new View('/' . $user . '/files_trashbin/files/' . $file));
+		if ($view->is_dir('/files_trashbin/files/' . $filename)) {
+			$size += self::calculateSize(new View('/' . $user . '/files_trashbin/files/' . $filename));
 		} else {
-			$size += $view->filesize('/files_trashbin/files/' . $file);
+			$size += $view->filesize('/files_trashbin/files/' . $filename);
 		}
-		self::emitTrashbinPreDelete($user, "/files_trashbin/files/$file");
-		$view->unlink('/files_trashbin/files/' . $file);
-		self::emitTrashbinPostDelete($user, "/files_trashbin/files/$file");
+		self::emitTrashbinPreDelete($user, "/files_trashbin/files/$filename");
+		$view->unlink('/files_trashbin/files/' . $filename);
+		self::emitTrashbinPostDelete($user, "/files_trashbin/files/$filename");
 
 		return $size;
 	}
@@ -769,20 +770,34 @@ class Trashbin {
 	 * @param string $user
 	 * @return int
 	 */
-	private static function deleteVersions(View $view, $file, $timestamp, $user) {
+	private static function deleteVersions(View $view, $file, $user) {
 		$size = 0;
 		if (\OCP\App::isEnabled('files_versions')) {
 			if ($view->is_dir('files_trashbin/versions/' . $file)) {
 				$size += self::calculateSize(new View('/' . $user . '/files_trashbin/versions/' . $file));
 				$view->unlink('files_trashbin/versions/' . $file);
-			} elseif ($versions = self::getVersionsFromTrash(\basename($file), $timestamp, $user)) {
+			} else {
+				$dir = \dirname($file);
+				$filenameOnly = \basename($file);
+				$delimiter = \strrpos($filenameOnly, '.d');
+				$timestamp = null;
+				if ($delimiter !== false) {
+					$timestamp =  \substr($filenameOnly, $delimiter+2);
+					$filenameOnly = \substr($filenameOnly, 0, $delimiter);
+				}
+
+				$dirAndFilename = $filenameOnly;
+				if ($dir !== '.' && $dir !== '/') {
+					$dirAndFilename = "{$dir}/{$filenameOnly}";
+				}
+				$versions = self::getVersionsFromTrash($filenameOnly, $timestamp, $user);
 				foreach ($versions as $v) {
 					if ($timestamp) {
-						$size += $view->filesize('/files_trashbin/versions/' . $file . '.v' . $v . '.d' . $timestamp);
-						$view->unlink('/files_trashbin/versions/' . $file . '.v' . $v . '.d' . $timestamp);
+						$size += $view->filesize('/files_trashbin/versions/' . $dirAndFilename . '.v' . $v . '.d' . $timestamp);
+						$view->unlink('/files_trashbin/versions/' . $dirAndFilename . '.v' . $v . '.d' . $timestamp);
 					} else {
-						$size += $view->filesize('/files_trashbin/versions/' . $file . '.v' . $v);
-						$view->unlink('/files_trashbin/versions/' . $file . '.v' . $v);
+						$size += $view->filesize('/files_trashbin/versions/' . $dirAndFilename . '.v' . $v);
+						$view->unlink('/files_trashbin/versions/' . $dirAndFilename . '.v' . $v);
 					}
 				}
 			}
@@ -797,13 +812,9 @@ class Trashbin {
 	 * @param int $timestamp of deletion time
 	 * @return bool true if file exists, otherwise false
 	 */
-	public static function file_exists($filename, $timestamp = null) {
+	public static function file_exists($filename) {
 		$user = User::getUser();
 		$view = new View('/' . $user);
-
-		if ($timestamp) {
-			$filename = $filename . '.d' . $timestamp;
-		}
 
 		$target = Filesystem::normalizePath('files_trashbin/files/' . $filename);
 		return $view->file_exists($target);

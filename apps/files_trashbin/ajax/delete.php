@@ -52,25 +52,17 @@ $success = [];
 
 $i = 0;
 foreach ($list as $file) {
-	if ($folder === '/') {
-		$file = \ltrim($file, '/');
-		$delimiter = \strrpos($file, '.d');
-		$filename = \substr($file, 0, $delimiter);
-		$timestamp =  \substr($file, $delimiter+2);
-	} else {
-		$filename = $folder . $file;  // folder already contains a trailing "/"
-		$timestamp = null;
-	}
+	$file = \ltrim($file, '/');
+	$filename = $folder . $file;  // folder already contains a trailing "/"
 
-	OCA\Files_Trashbin\Trashbin::delete($filename, \OCP\User::getUser(), $timestamp);
-	if (OCA\Files_Trashbin\Trashbin::file_exists($filename, $timestamp)) {
+	OCA\Files_Trashbin\Trashbin::delete($filename, \OCP\User::getUser());
+	if (OCA\Files_Trashbin\Trashbin::file_exists($filename)) {
 		$error[] = $filename;
 		\OCP\Util::writeLog('files_trashbin', 'can\'t delete ' . $filename . ' permanently.', \OCP\Util::ERROR);
 	}
 	// only list deleted files if not deleting everything
 	elseif (!$deleteAll) {
 		$success[$i]['filename'] = $file;
-		$success[$i]['timestamp'] = $timestamp;
 		$i++;
 	}
 }
