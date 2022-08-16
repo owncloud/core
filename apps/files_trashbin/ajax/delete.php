@@ -58,7 +58,7 @@ foreach ($list as $file) {
 		$filename = \substr($file, 0, $delimiter);
 		$timestamp =  \substr($file, $delimiter+2);
 	} else {
-		$filename = $folder . '/' . $file;
+		$filename = $folder . $file;  // folder already contains a trailing "/"
 		$timestamp = null;
 	}
 

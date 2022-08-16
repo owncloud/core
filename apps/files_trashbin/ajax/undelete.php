@@ -57,19 +57,17 @@ $success = [];
 
 $i = 0;
 foreach ($list as $file) {
-	$path = $dir . '/' . $file;
 	if ($dir === '/') {
 		$file = \ltrim($file, '/');
 		$delimiter = \strrpos($file, '.d');
 		$filename = \substr($file, 0, $delimiter);
 		$timestamp =  \substr($file, $delimiter+2);
 	} else {
-		$path_parts = \pathinfo($file);
-		$filename = $path_parts['basename'];
+		$filename = $dir . $file;  // dir already contains a trailing "/"
 		$timestamp = null;
 	}
 
-	if (!OCA\Files_Trashbin\Trashbin::restore($path, $filename, $timestamp)) {
+	if (!OCA\Files_Trashbin\Trashbin::restore($filename, $timestamp)) {
 		$error[] = $filename;
 		\OCP\Util::writeLog('files_trashbin', 'can\'t restore ' . $filename, \OCP\Util::DEBUG);
 	} else {
