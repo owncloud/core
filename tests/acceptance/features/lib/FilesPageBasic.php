@@ -56,7 +56,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 	protected $newFileFolderButtonXpath = './/*[@id="controls"]//a[@class="button new"]';
 	protected $fileActionsApplicationSelectMenuXpath = ".//div[contains(@class, 'fileActionsApplicationSelectMenu')]";
-	protected $fileActionMenuCss = ".fileActionsMenu.open";
+	protected $openFileActionMenuCss = ".fileActionsMenu.open";
 
 	/**
 	 * @return string
@@ -482,7 +482,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function isFileActionsMenuOpen(): bool {
 		try {
-			$openMenu = $this->find('css', $this->fileActionMenuCss);
+			$openMenu = $this->find('css', $this->openFileActionMenuCss);
 			if ($openMenu && $openMenu->isVisible()) {
 				return true;
 			} else {
