@@ -502,10 +502,21 @@ class Trashbin {
 	/**
 	 * Restore a file or folder from trash bin
 	 *
-	 * @param string $file path to the deleted file/folder relative to "files_trashbin/files/",
-	 * including the timestamp suffix ".d12345678"
-	 * @param string $filename name of the file/folder
-	 * @param int $timestamp time when the file/folder was deleted
+	 * @param string $filename full path to the file inside the trashbin,
+	 * starting from the trashbin's root ("files_trashbin/files/"), including
+	 * the deletion timestamp. For example, "file.txt.d123456" or
+	 * "folder1.d123456/folder2/file.txt"
+	 * @param string|null $targetLocation the place where the restored file
+	 * will be. For example, $targetLocation = "folder1/restored.txt" will
+	 * put the restored file ("file.txt.d123456") there. This is basically a rename.
+	 * In particular, restoring "bigFolder.d12345" to the target location
+	 * "largeContent/toobig" WON'T create "largeContent/toobig/bigFolder".
+	 * If null is provided, we'll try to put the file in it's previous location
+	 * if it still exists, otherwise the file will be restored in the root folder
+	 * (with an unique name if needed) as fallback. Note that the previous location
+	 * is only known for the top level directory in the root's trashbin, such as
+	 * "file1.txt.d12345" or "topFolder.d98765", but not "folder.d12345/file.txt"
+	 * or "folder.d98765/folder2"
 	 *
 	 * @return bool true on success, false otherwise
 	 * @throws \OC\DatabaseException
@@ -584,14 +595,12 @@ class Trashbin {
 	}
 
 	/**
-	 * restore versions from trash bin
+	 * restore all versions for the filename from trashbin in the target location
 	 *
 	 * @param View $view file view
-	 * @param string $file complete path to file
-	 * @param string $filename name of file once it was deleted
-	 * @param string $uniqueFilename new file name to restore the file without overwriting existing files
-	 * @param string $location location if file
-	 * @param int $timestamp deletion time
+	 * @param string $filename complete path to file in the trashbin, including the
+	 * deletion timestamp, such as "folder1.d98765/folder2/file.txt"
+	 * @param string $location location where the file will be restored
 	 * @return false|null
 	 */
 	private static function restoreVersions(View $view, $filename, $targetLocation) {
@@ -729,9 +738,11 @@ class Trashbin {
 	/**
 	 * delete file from trash bin permanently
 	 *
-	 * @param string $filename path to the file
-	 * @param string $user
-	 * @param int $timestamp of deletion time
+	 * @param string $filename full path to the file inside the trashbin,
+	 * starting from the trashbin's root ("files_trashbin/files/"), including
+	 * the deletion timestamp. For example, "file.txt.d123456" or
+	 * "folder1.d123456/folder2/file.txt"
+	 * @param string $user the user owning the trashbin
 	 *
 	 * @return int size of deleted files
 	 * @throws \OC\DatabaseException
@@ -769,10 +780,11 @@ class Trashbin {
 	}
 
 	/**
+	 * Permanently delete the versions of the file from the trashbin
 	 * @param View $view
-	 * @param string $file
-	 * @param integer|null $timestamp
-	 * @param string $user
+	 * @param string $file complete path to file in the trashbin, including the
+	 * deletion timestamp, such as "folder1.d98765/folder2/file.txt"
+	 * @param string $user the user owning the trashbin
 	 * @return int
 	 */
 	private static function deleteVersions(View $view, $file, $user) {
@@ -813,7 +825,8 @@ class Trashbin {
 	/**
 	 * check to see whether a file exists in trashbin
 	 *
-	 * @param string $filename path to the file
+	 * @param string $filename complete path to file in the trashbin, including the
+	 * deletion timestamp, such as "folder1.d98765/folder2/file.txt"
 	 * @param int $timestamp of deletion time
 	 * @return bool true if file exists, otherwise false
 	 */

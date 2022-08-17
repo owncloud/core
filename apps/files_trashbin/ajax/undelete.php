@@ -60,6 +60,9 @@ foreach ($list as $file) {
 	$file = \ltrim($file, '/');
 	$filename = $dir . $file;  // dir already contains a trailing "/"
 
+	// "restore" will require the whole path inside the trashbin including
+	// the deletion timestamp in the filename, such as "/file.txt.d12345"
+	// or "/folder.d12345/file.txt"
 	if (!OCA\Files_Trashbin\Trashbin::restore($filename)) {
 		$error[] = $filename;
 		\OCP\Util::writeLog('files_trashbin', 'can\'t restore ' . $filename, \OCP\Util::DEBUG);

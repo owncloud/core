@@ -55,6 +55,9 @@ foreach ($list as $file) {
 	$file = \ltrim($file, '/');
 	$filename = $folder . $file;  // folder already contains a trailing "/"
 
+	// both "delete" and "file_exists" will require the whole path inside the trashbin
+	// including the deletion timestamp in the filename, such as "/file.txt.d12345"
+	// or "/folder.d12345/file.txt"
 	OCA\Files_Trashbin\Trashbin::delete($filename, \OCP\User::getUser());
 	if (OCA\Files_Trashbin\Trashbin::file_exists($filename)) {
 		$error[] = $filename;

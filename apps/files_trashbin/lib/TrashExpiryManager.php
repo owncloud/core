@@ -74,6 +74,8 @@ class TrashExpiryManager {
 		$userTrashbinContent = Helper::getTrashFiles('/', $uid, 'mtime', false);
 		foreach ($userTrashbinContent as $key => $trashbinEntry) {
 			if ($this->expiration->isExpired($trashbinEntry->getMtime())) {
+				// Direct content of the trashbin's root folder will have the ".d[timestamp]" suffix
+				// The deletion timestamp is in the mtime of the trashbin entry
 				Trashbin::delete("{$trashbinEntry->getName()}.d{$trashbinEntry->getMtime()}", $uid);
 				$this->logger->info(
 					"Remove {$trashbinEntry->getName()} from {$uid} trashbin because it exceeds max retention obligation term.",
@@ -104,6 +106,8 @@ class TrashExpiryManager {
 		for ($i = 0; $i < \count($remainingUserTrashbinContent); $i++) {
 			$trashbinEntry = $remainingUserTrashbinContent[$i];
 			if ($this->expiration->isExpired($trashbinEntry->getMtime())) {
+				// Direct content of the trashbin's root folder will have the ".d[timestamp]" suffix
+				// The deletion timestamp is in the mtime of the trashbin entry
 				$availableSpace += Trashbin::delete("{$trashbinEntry->getName()}.d{$trashbinEntry->getMtime()}", $uid);
 				$this->logger->info(
 					"Remove {$trashbinEntry->getName()} from {$uid} trashbin because it exceeds max retention obligation term.",
