@@ -41,9 +41,9 @@ if (\version_compare(PHP_VERSION, '7.4.0') === -1) {
 	exit(1);
 }
 
-// Show warning if PHP 8.0 or later is used as ownCloud is not compatible with PHP 8.0
-if (\version_compare(PHP_VERSION, '8.0.0') !== -1) {
-	echo 'This version of ownCloud is not compatible with PHP 8.0' . PHP_EOL;
+// Show warning if PHP 8.3 or later is used as ownCloud is not compatible with PHP 8.3
+if (\version_compare(PHP_VERSION, '8.3.0') !== -1) {
+	echo 'This version of ownCloud is not compatible with PHP 8.3' . PHP_EOL;
 	echo 'You are currently running PHP ' . PHP_VERSION . '.' . PHP_EOL;
 	exit(1);
 }
