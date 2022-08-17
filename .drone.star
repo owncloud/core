@@ -31,6 +31,7 @@ TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 WEBHIPPIE_REDIS = "webhippie/redis:latest"
 
 DEFAULT_PHP_VERSION = "7.4-ubuntu20.04"
+TEST_RUNNER_PHP_VERSION = "8.0"
 DEFAULT_NODEJS_VERSION = "14"
 
 dir = {
@@ -57,7 +58,7 @@ config = {
     "phpunit": {
         "mostDatabases": {
             "phpVersions": [
-                DEFAULT_PHP_VERSION,
+                TEST_RUNNER_PHP_VERSION,
             ],
             # Gather coverage for all databases except Oracle
             "coverage": True,
@@ -91,7 +92,7 @@ config = {
         },
         "external-samba-windows": {
             "phpVersions": [
-                DEFAULT_PHP_VERSION,
+                TEST_RUNNER_PHP_VERSION,
             ],
             "databases": [
                 "sqlite",
@@ -110,7 +111,7 @@ config = {
         },
         "external-other": {
             "phpVersions": [
-                DEFAULT_PHP_VERSION,
+                TEST_RUNNER_PHP_VERSION,
             ],
             "databases": [
                 "sqlite",
@@ -254,7 +255,7 @@ config = {
             "testingRemoteSystem": False,
             "extraSetup": [{
                 "name": "configure-encryption",
-                "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
+                "image": OC_CI_PHP % TEST_RUNNER_PHP_VERSION,
                 "commands": [
                     "php occ maintenance:singleuser --on",
                     "php occ encryption:enable",
@@ -526,7 +527,7 @@ def dependencies(ctx):
         return pipelines
 
     default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
     }
 
     if "defaults" in config:
@@ -597,7 +598,7 @@ def codestyle(ctx):
         return pipelines
 
     default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
     }
 
     if "defaults" in config:
@@ -791,7 +792,7 @@ def phpstan(ctx):
         return pipelines
 
     default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
         "logLevel": "2",
     }
 
@@ -864,7 +865,7 @@ def phan(ctx):
         return pipelines
 
     default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
         "logLevel": "2",
     }
 
@@ -935,7 +936,7 @@ def litmus():
         return pipelines
 
     default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
         "logLevel": "2",
         "useHttps": True,
     }
@@ -1086,7 +1087,7 @@ def dav():
         return pipelines
 
     default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
         "logLevel": "2",
     }
 
@@ -1275,7 +1276,7 @@ def phpTests(ctx, testType, withCoverage):
     # The default PHP unit test settings for a PR.
     # Note: do not run Oracle by default in PRs.
     prDefault = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
         "databases": [
             "sqlite",
             "mariadb:10.2",
@@ -1307,7 +1308,7 @@ def phpTests(ctx, testType, withCoverage):
 
     # The default PHP unit test settings for the cron job (usually runs nightly).
     cronDefault = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
         "databases": [
             "sqlite",
             "mariadb:10.2",
@@ -1559,7 +1560,7 @@ def acceptance(ctx):
     default = {
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
-        "phpVersions": [DEFAULT_PHP_VERSION],
+        "phpVersions": [TEST_RUNNER_PHP_VERSION],
         "databases": ["mariadb:10.2"],
         "federatedPhpVersion": DEFAULT_PHP_VERSION,
         "federatedServerNeeded": False,
@@ -1840,7 +1841,7 @@ def acceptance(ctx):
 
     return pipelines
 
-def sonarAnalysis(ctx, phpVersion = DEFAULT_PHP_VERSION):
+def sonarAnalysis(ctx, phpVersion = TEST_RUNNER_PHP_VERSION):
     sonar_env = {
         "SONAR_TOKEN": {
             "from_secret": "sonar_token",
@@ -2493,7 +2494,7 @@ def vendorbinPhpstan(phpVersion):
 def vendorbinBehat():
     return [{
         "name": "vendorbin-behat",
-        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
+        "image": OC_CI_PHP % TEST_RUNNER_PHP_VERSION,
         "environment": {
             "COMPOSER_HOME": "%s/.cache/composer" % dir["server"],
         },
