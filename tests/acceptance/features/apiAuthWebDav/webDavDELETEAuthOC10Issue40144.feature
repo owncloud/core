@@ -1,4 +1,4 @@
-@api
+@api @notToImplementOnOCIS
 Feature: delete file/folder
 
   Background:
@@ -21,13 +21,4 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/FOLDER            |
-    Then the HTTP status code of responses on all endpoints should be "204"
-
-  @skipOnOcV10 @personalSpace
-  Scenario: send DELETE requests to webDav endpoints with body as normal user using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
-      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
-      | /remote.php/dav/spaces/%spaceid%/PARENT            |
     Then the HTTP status code of responses on all endpoints should be "204"
