@@ -637,7 +637,7 @@ class Trashbin {
 					$delimiter = \strrpos($filenameOnly, '.d');
 					$timestamp = \substr($filenameOnly, $delimiter+2);
 					$filenameOnlyWithoutTimestamp = \substr($filenameOnly, 0, $delimiter);
-					$dirAndFilename = $filenameOnly;
+					$dirAndFilename = $filenameOnlyWithoutTimestamp;
 				} else {
 					$timestamp = null;
 					$filenameOnlyWithoutTimestamp = $filenameOnly;
@@ -801,7 +801,7 @@ class Trashbin {
 					$delimiter = \strrpos($filenameOnly, '.d');
 					$timestamp = \substr($filenameOnly, $delimiter+2);
 					$filenameOnlyWithoutTimestamp = \substr($filenameOnly, 0, $delimiter);
-					$dirAndFilename = $filenameOnly;
+					$dirAndFilename = $filenameOnlyWithoutTimestamp;
 				} else {
 					$timestamp = null;
 					$filenameOnlyWithoutTimestamp = $filenameOnly;
