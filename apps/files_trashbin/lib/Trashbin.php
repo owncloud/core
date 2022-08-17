@@ -520,7 +520,6 @@ class Trashbin {
 		$dirOfFile = \dirname($filename);
 
 		$timestamp = null;
-		$filenameWithoutTimestamp = $filename;
 		$nameOfFileWithoutTimestamp = $nameOfFile;
 		if ($dirOfFile === '/' || $dirOfFile === '.') {
 			$delimiter = \strrpos($filename, '.d');
@@ -571,7 +570,7 @@ class Trashbin {
 			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', ['filePath' => Filesystem::normalizePath('/' . $targetLocation),
 				'trashPath' => Filesystem::normalizePath($filename)]);
 
-			self::restoreVersions($view, $filename, $targetLocation, $timestamp);
+			self::restoreVersions($view, $filename, $targetLocation);
 
 			if ($timestamp) {
 				$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
@@ -595,7 +594,7 @@ class Trashbin {
 	 * @param int $timestamp deletion time
 	 * @return false|null
 	 */
-	private static function restoreVersions(View $view, $filename, $targetLocation, $timestamp) {
+	private static function restoreVersions(View $view, $filename, $targetLocation) {
 		if (\OCP\App::isEnabled('files_versions')) {
 			$user = User::getUser();
 			$rootView = new View('/');
@@ -624,18 +623,18 @@ class Trashbin {
 			} else {
 				$dir = \dirname($filename);
 				$filenameOnly = \basename($filename);
-				$delimiter = \strrpos($filenameOnly, '.d');
-				$timestamp = null;
-				if ($delimiter !== false) {
-					$timestamp = \substr($filenameOnly, $delimiter+2);
-					$filenameOnly = \substr($filenameOnly, 0, $delimiter);
-				}
 
-				$dirAndFilename = $filenameOnly;
-				if ($dir !== '.' && $dir !== '/') {
+				if ($dir === '/' || $dir === '.') {
+					$delimiter = \strrpos($filenameOnly, '.d');
+					$timestamp = \substr($filenameOnly, $delimiter+2);
+					$filenameOnlyWithoutTimestamp = \substr($filenameOnly, 0, $delimiter);
+					$dirAndFilename = $filenameOnly;
+				} else {
+					$timestamp = null;
+					$filenameOnlyWithoutTimestamp = $filenameOnly;
 					$dirAndFilename = "{$dir}/{$filenameOnly}";
 				}
-				$versions = self::getVersionsFromTrash($filenameOnly, $timestamp, $user);
+				$versions = self::getVersionsFromTrash($filenameOnlyWithoutTimestamp, $timestamp, $user);
 				foreach ($versions as $v) {
 					if ($timestamp) {
 						$src = '/files_trashbin/versions/' . $dirAndFilename . '.v' . $v . '.d' . $timestamp;
@@ -785,18 +784,18 @@ class Trashbin {
 			} else {
 				$dir = \dirname($file);
 				$filenameOnly = \basename($file);
-				$delimiter = \strrpos($filenameOnly, '.d');
-				$timestamp = null;
-				if ($delimiter !== false) {
-					$timestamp = \substr($filenameOnly, $delimiter+2);
-					$filenameOnly = \substr($filenameOnly, 0, $delimiter);
-				}
 
-				$dirAndFilename = $filenameOnly;
-				if ($dir !== '.' && $dir !== '/') {
+				if ($dir === '/' || $dir === '.') {
+					$delimiter = \strrpos($filenameOnly, '.d');
+					$timestamp = \substr($filenameOnly, $delimiter+2);
+					$filenameOnlyWithoutTimestamp = \substr($filenameOnly, 0, $delimiter);
+					$dirAndFilename = $filenameOnly;
+				} else {
+					$timestamp = null;
+					$filenameOnlyWithoutTimestamp = $filenameOnly;
 					$dirAndFilename = "{$dir}/{$filenameOnly}";
 				}
-				$versions = self::getVersionsFromTrash($filenameOnly, $timestamp, $user);
+				$versions = self::getVersionsFromTrash($filenameOnlyWithoutTimestamp, $timestamp, $user);
 				foreach ($versions as $v) {
 					if ($timestamp) {
 						$size += $view->filesize('/files_trashbin/versions/' . $dirAndFilename . '.v' . $v . '.d' . $timestamp);
