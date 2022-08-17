@@ -513,21 +513,26 @@ class Trashbin {
 	 * @throws LockedException
 	 * @throws StorageNotAvailableException
 	 */
-	public static function restore($filename, $timestamp, $targetLocation = null) {
+	public static function restore($filename, $targetLocation = null) {
 		$user = User::getUser();
 		$view = new View('/' . $user);
 		$nameOfFile = \basename($filename);
 		$dirOfFile = \dirname($filename);
 
-		$filenameWithTimestamp = $filename;
+		$timestamp = null;
+		$filenameWithoutTimestamp = $filename;
+		$nameOfFileWithoutTimestamp = $nameOfFile;
 		if ($dirOfFile === '/' || $dirOfFile === '.') {
-			$filenameWithTimestamp .= ".d{$timestamp}";
+			$delimiter = \strrpos($filename, '.d');
+			$timestamp = \substr($filename, $delimiter+2);
+			$filenameWithoutTimestamp = \substr($filename, 0, $delimiter);
+			$nameOfFileWithoutTimestamp = ltrim($filenameWithoutTimestamp, '/');
 		}
 
 		if ($targetLocation === null) {
 			$location = '';
 			if ($timestamp) {
-				$location = self::getLocation($user, $nameOfFile, $timestamp);
+				$location = self::getLocation($user, $nameOfFileWithoutTimestamp, $timestamp);
 				if ($location === false) {
 					\OCP\Util::writeLog('files_trashbin', 'Original location of file ' . $filename .
 						' not found in database, hence restoring into user\'s root instead', \OCP\Util::DEBUG);
@@ -543,11 +548,11 @@ class Trashbin {
 			}
 
 			// we need a  extension in case a file/dir with the same name already exists
-			$uniqueFilename = self::getUniqueFilename($location, $nameOfFile, $view);
+			$uniqueFilename = self::getUniqueFilename($location, $nameOfFileWithoutTimestamp, $view);
 			$targetLocation = $location . '/' . $uniqueFilename;
 		}
 
-		$source = Filesystem::normalizePath('files_trashbin/files/' . $filenameWithTimestamp);
+		$source = Filesystem::normalizePath('files_trashbin/files/' . $filename);
 		$target = Filesystem::normalizePath('files/' . $targetLocation);
 		if (!$view->file_exists($source)) {
 			return false;
@@ -564,13 +569,13 @@ class Trashbin {
 			$view->touch('/' . $targetLocation, $mtime);
 			$view->chroot($fakeRoot);
 			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', ['filePath' => Filesystem::normalizePath('/' . $targetLocation),
-				'trashPath' => Filesystem::normalizePath($filenameWithTimestamp)]);
+				'trashPath' => Filesystem::normalizePath($filename)]);
 
 			self::restoreVersions($view, $filename, $targetLocation, $timestamp);
 
 			if ($timestamp) {
 				$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
-				$query->execute([$user, $filename, $timestamp]);
+				$query->execute([$user, $nameOfFileWithoutTimestamp, $timestamp]);
 			}
 
 			return true;
@@ -614,32 +619,33 @@ class Trashbin {
 				$metaStorage = \OC::$server->query(MetaStorage::class);
 			}
 
-			$dirOfFile = \dirname($filename);
+			if ($view->is_dir('/files_trashbin/versions/' . $filename)) {
+				$rootView->rename(Filesystem::normalizePath($user . '/files_trashbin/versions/' . $filename), Filesystem::normalizePath($owner . '/files_versions/' . $ownerPath));
+			} else {
+				$dir = \dirname($filename);
+				$filenameOnly = \basename($filename);
+				$delimiter = \strrpos($filenameOnly, '.d');
+				$timestamp = null;
+				if ($delimiter !== false) {
+					$timestamp = \substr($filenameOnly, $delimiter+2);
+					$filenameOnly = \substr($filenameOnly, 0, $delimiter);
+				}
 
-			$filenameWithTimestamp = $filename;
-			$targetFileTimestamp = null;
-			if ($dirOfFile === '/' || $dirOfFile === '.') {
-				// if restoring a file or folder from the root of the trashbin, we need
-				// to add the deletion timestamp to the filename and consider the timestamp
-				// in order to retrieve the versions, otherwise the deletion timestamp is
-				// in the top folder and we don't want to use the timestamp to find the versions
-				$filenameWithTimestamp .= ".d{$timestamp}";
-				$targetFileTimestamp = $timestamp;
-			}
-
-			if ($view->is_dir('/files_trashbin/versions/' . $filenameWithTimestamp)) {
-				$rootView->rename(Filesystem::normalizePath($user . '/files_trashbin/versions/' . $filenameWithTimestamp), Filesystem::normalizePath($owner . '/files_versions/' . $ownerPath));
-			} elseif ($versions = self::getVersionsFromTrash(\basename($filename), $targetFileTimestamp, $user)) {
+				$dirAndFilename = $filenameOnly;
+				if ($dir !== '.' && $dir !== '/') {
+					$dirAndFilename = "{$dir}/{$filenameOnly}";
+				}
+				$versions = self::getVersionsFromTrash($filenameOnly, $timestamp, $user);
 				foreach ($versions as $v) {
-					if ($dirOfFile === '/' || $dirOfFile === '.') {
-						$src = '/files_trashbin/versions/' . $filename . '.v' . $v . '.d' . $timestamp;
+					if ($timestamp) {
+						$src = '/files_trashbin/versions/' . $dirAndFilename . '.v' . $v . '.d' . $timestamp;
 						$dst = '/files_versions/' . $ownerPath . '.v' . $v;
 						$rootView->rename("$user$src", "$owner$dst");
 						if ($metaEnabled) {
 							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $user, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
 						}
 					} else {
-						$src = '/files_trashbin/versions/' . $filename . '.v' . $v;
+						$src = '/files_trashbin/versions/' . $dirAndFilename . '.v' . $v;
 						$dst = '/files_versions/' . $ownerPath . '.v' . $v;
 						$rootView->rename("$user$src", "$owner$dst");
 						if ($metaEnabled) {
@@ -743,8 +749,8 @@ class Trashbin {
 
 		if ($dirOfFile === '/' || $dirOfFile === '.') {
 			$delimiter = \strrpos($filename, '.d');
-			$filenameWithoutTimestamp = \substr($filename, 0, $delimiter);
-			$timestamp =  \substr($filename, $delimiter+2);
+			$filenameWithoutTimestamp = ltrim(\substr($filename, 0, $delimiter), '/');
+			$timestamp = \substr($filename, $delimiter+2);
 			$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
 			$query->execute([$user, $filenameWithoutTimestamp, $timestamp]);
 		}
@@ -782,7 +788,7 @@ class Trashbin {
 				$delimiter = \strrpos($filenameOnly, '.d');
 				$timestamp = null;
 				if ($delimiter !== false) {
-					$timestamp =  \substr($filenameOnly, $delimiter+2);
+					$timestamp = \substr($filenameOnly, $delimiter+2);
 					$filenameOnly = \substr($filenameOnly, 0, $delimiter);
 				}
 
