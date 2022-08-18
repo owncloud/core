@@ -146,7 +146,7 @@ Feature: favorite
       | dav_version |
       | spaces      |
 
-  @files_sharing-app-required @issue-ocis-2968
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -161,11 +161,6 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-33840 @skipOnOcV10
   Scenario Outline: Get favorited elements and limit count of entries
