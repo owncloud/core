@@ -621,7 +621,7 @@ class Share20OcsController extends OCSController {
 	 * [Share::SHARE_TYPE_USER => true, Share::SHARE_TYPE_GROUP => false]
 	 * @return Result
 	 */
-	private function getSharedWithMe($node = null, $includeTags, $requestedShareTypes, $stateFilter = 0) {
+	private function getSharedWithMe($node, $includeTags, $requestedShareTypes, $stateFilter = 0) {
 		// sharedWithMe is limited to user and group shares for compatibility.
 		$shares = [];
 		if (isset($requestedShareTypes[Share::SHARE_TYPE_USER]) && $requestedShareTypes[Share::SHARE_TYPE_USER]) {

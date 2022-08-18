@@ -1,0 +1,6 @@
+Bugfix: refactor to not have required params following an optional parameter
+
+All required parameters should be listed first in PHP functions. Adjust the code
+to meet this rule.
+
+https://github.com/owncloud/core/pull/40303
