@@ -869,6 +869,22 @@ default:
         - OccContext:
         - PublicWebDavContext:
 
+
+    webUIScroll:
+      paths:
+        - '%paths.base%/../features/webUIScroll'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - TagsContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISearchContext:
+        - WebUISharingContext:
+        - OccContext:
+        - PublicWebDavContext:
+
     webUILogin:
       paths:
         - '%paths.base%/../features/webUILogin'
