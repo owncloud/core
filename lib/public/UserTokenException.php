@@ -36,7 +36,7 @@ class UserTokenException extends \Exception {
 	 * @param \Exception|null $previous
 	 * @since 10.0.10
 	 */
-	public function __construct($message = "", $code, \Exception $previous = null) {
+	public function __construct($message = "", $code = 0, \Exception $previous = null) {
 		parent::__construct($message, $code, $previous);
 	}
 }
