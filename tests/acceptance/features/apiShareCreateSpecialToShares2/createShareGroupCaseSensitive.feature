@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1289 @issue-ocis-1328 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS
 Feature: share with groups, group names are case-sensitive
 
   Background:
