@@ -32,14 +32,8 @@ Feature: move (rename) file
       | new         | Alice | /Shares/testshare  |
       | new         | Brian | /testshare         |
 
-    @personalSpace
-    Examples:
-      | dav_version | mover | destination_folder |
-      | spaces      | Alice | /Shares/testshare  |
-      | spaces      | Brian | /testshare         |
 
-
-  Scenario Outline: Moving a file out of a shared folder as the sharee and as the sharer
+  Scenario Outline: Moving a file out of a shared folder as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "/testshare"
@@ -50,23 +44,36 @@ Feature: move (rename) file
       | permissions | change    |
       | shareWith   | Alice     |
     And user "Alice" has accepted share "/testshare" offered by user "Brian"
-    When user "<mover>" moves file "<source_folder>/testfile.txt" to "/testfile.txt" using the WebDAV API
+    When user "Brian" moves file "/testshare/testfile.txt" to "/testfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the content of file "/testfile.txt" for user "<mover>" should be "test data"
-    And as "Alice" file "/Shares/testfile.txt" should not exist
+    And the content of file "/testfile.txt" for user "Brian" should be "test data"
+    And as "Alice" file "/Shares/testshare/testfile.txt" should not exist
     And as "Brian" file "/testshare/testfile.txt" should not exist
     Examples:
-      | dav_version | mover | source_folder     |
-      | old         | Alice | /Shares/testshare |
-      | old         | Brian | /testshare        |
-      | new         | Alice | /Shares/testshare |
-      | new         | Brian | /testshare        |
+      | dav_version |
+      | old         |
+      | new         |
 
-    @personalSpace
+
+  Scenario Outline: Can not move a file out of a shared folder as the sharee
+    Given using <dav_version> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "/testshare"
+    And user "Brian" has uploaded file with content "test data" to "/testshare/testfile.txt"
+    And user "Brian" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | Alice     |
+    And user "Alice" has accepted share "/testshare" offered by user "Brian"
+    When user "Alice" moves file "/Shares/testshare/testfile.txt" to "/testfile.txt" using the WebDAV API
+    Then the HTTP status code should be "502"
+    And as "Alice" file "/Shares/testshare/testfile.txt" should exist
+    And as "Brian" file "/testshare/testfile.txt" should exist
     Examples:
-      | dav_version | mover | source_folder     |
-      | spaces      | Alice | /Shares/testshare |
-      | spaces      | Brian | /testshare        |
+      | dav_version |
+      | old         |
+      | new         |
 
 
   Scenario Outline: Moving a folder into a shared folder as the sharee and as the sharer
@@ -93,14 +100,8 @@ Feature: move (rename) file
       | new         | Alice | /Shares/testshare  |
       | new         | Brian | /testshare         |
 
-    @personalSpace
-    Examples:
-      | dav_version | mover | destination_folder |
-      | spaces      | Alice | /Shares/testshare  |
-      | spaces      | Brian | /testshare         |
 
-
-  Scenario Outline: Moving a folder out of a shared folder as the sharee and as the sharer
+  Scenario Outline: Moving a folder out of a shared folder as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created the following folders
@@ -114,23 +115,39 @@ Feature: move (rename) file
       | permissions | change    |
       | shareWith   | Alice     |
     And user "Alice" has accepted share "/testshare" offered by user "Brian"
-    When user "<mover>" moves folder "<source_folder>/testsubfolder" to "/testsubfolder" using the WebDAV API
+    When user "Brian" moves folder "/testshare/testsubfolder" to "/testsubfolder" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the content of file "/testsubfolder/testfile.txt" for user "<mover>" should be "test data"
-    And as "Alice" folder "<source_folder>/testsubfolder" should not exist
+    And the content of file "/testsubfolder/testfile.txt" for user "Brian" should be "test data"
+    And as "Alice" folder "/testshare/testsubfolder" should not exist
     And as "Brian" folder "/testshare/testsubfolder" should not exist
     Examples:
-      | dav_version | mover | source_folder     |
-      | old         | Alice | /Shares/testshare |
-      | old         | Brian | /testshare        |
-      | new         | Alice | /Shares/testshare |
-      | new         | Brian | /testshare        |
+      | dav_version |
+      | old         |
+      | new         |
 
-    @personalSpace
+
+  Scenario Outline: Moving a folder out of a shared folder as the sharee
+    Given using <dav_version> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created the following folders
+      | path                     |
+      | /testshare               |
+      | /testshare/testsubfolder |
+    And user "Brian" has uploaded file with content "test data" to "/testshare/testsubfolder/testfile.txt"
+    And user "Brian" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | Alice     |
+    And user "Alice" has accepted share "/testshare" offered by user "Brian"
+    When user "Alice" moves folder "/Shares/testshare/testsubfolder" to "/testsubfolder" using the WebDAV API
+    Then the HTTP status code should be "502"
+    And as "Alice" folder "/Shares/testshare/testsubfolder" should exist
+    And as "Brian" folder "/testshare/testsubfolder" should exist
     Examples:
-      | dav_version | mover | source_folder     |
-      | spaces      | Alice | /Shares/testshare |
-      | spaces      | Brian | /testshare        |
+      | dav_version |
+      | old         |
+      | new         |
 
 
   Scenario Outline: Moving a file to a shared folder with no permissions
@@ -151,11 +168,6 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Moving a file to overwrite a file in a shared folder with no permissions
@@ -178,11 +190,6 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Checking file id after a move between received shares
@@ -213,8 +220,3 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
