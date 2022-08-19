@@ -200,10 +200,10 @@ class Encryption extends Wrapper {
 	protected static function wrapSource($source, $context = [], $protocol = null, $class = null, $mode = 'r+') {
 		try {
 			\stream_wrapper_register($protocol, $class);
-			if (@\rewinddir($source) === false) {
-				$wrapped = \fopen($protocol . '://', $mode, false, $context);
-			} else {
+			if (self::resourceIsADir($source)) {
 				$wrapped = \opendir($protocol . '://', $context);
+			} else {
+				$wrapped = \fopen($protocol . '://', $mode, false, $context);
 			}
 		} catch (\BadMethodCallException $e) {
 			\stream_wrapper_unregister($protocol);
@@ -211,6 +211,33 @@ class Encryption extends Wrapper {
 		}
 		\stream_wrapper_unregister($protocol);
 		return $wrapped;
+	}
+
+	/**
+	 * Detect if a resource is a directory or file
+	 * If it is a directory then return true
+	 * If it is a file then return false
+	 *
+	 * @param resource $source
+	 * @return bool
+	 * @throws \BadMethodCallException
+	 */
+	private static function resourceIsADir($source) {
+		if (!\is_resource($source)) {
+			throw new \BadMethodCallException(__METHOD__ . " source parameter is not a resource");
+		}
+
+		if (\get_resource_type($source) === 'stream') {
+			$streamMetaData = \stream_get_meta_data($source);
+			if (\array_key_exists('stream_type', $streamMetaData)) {
+				if ($streamMetaData['stream_type'] === 'dir') {
+					// The resource is a stream of type 'dir'
+					return true;
+				}
+			}
+		}
+		// Everything else is not a directory
+		return false;
 	}
 
 	/**
