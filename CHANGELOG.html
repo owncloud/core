@@ -29,6 +29,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix personal settings display for apps which are not whitelisted: <a href="https://github.com/owncloud/core/pull/40257">#40257</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Only call getGroupDetails when the group exists: <a href="https://github.com/owncloud/core/pull/40261">#40261</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow usernames to be case-insensitive with app passwords: <a href="https://github.com/owncloud/core/issues/40119">#40119</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Refactor to not have required params following an optional parameter: <a href="https://github.com/owncloud/core/pull/40303">#40303</a></li>
         <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
@@ -234,6 +235,13 @@
             <p>https://github.com/owncloud/core/issues/40119<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40281<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Refactor to not have required params following an optional parameter: <a href="https://github.com/owncloud/core/pull/40303">#40303</a></p>
+            <p>All required parameters should be listed first in PHP functions. Adjust the code to meet this
+   rule.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40303<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></p>

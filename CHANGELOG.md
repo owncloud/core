@@ -31,6 +31,7 @@ Summary
 * Bugfix - Fix personal settings display for apps which are not whitelisted: [#40257](https://github.com/owncloud/core/pull/40257)
 * Bugfix - Only call getGroupDetails when the group exists: [#40261](https://github.com/owncloud/core/pull/40261)
 * Bugfix - Allow usernames to be case-insensitive with app passwords: [#40119](https://github.com/owncloud/core/issues/40119)
+* Bugfix - Refactor to not have required params following an optional parameter: [#40303](https://github.com/owncloud/core/pull/40303)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -240,6 +241,13 @@ Details
 
    https://github.com/owncloud/core/issues/40119
    https://github.com/owncloud/core/pull/40281
+
+* Bugfix - Refactor to not have required params following an optional parameter: [#40303](https://github.com/owncloud/core/pull/40303)
+
+   All required parameters should be listed first in PHP functions. Adjust the code to meet this
+   rule.
+
+   https://github.com/owncloud/core/pull/40303
 
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 
