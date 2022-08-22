@@ -336,4 +336,67 @@ $(document).ready(function () {
 	if (oc_config.enable_avatars) {
 		$('#avatar .avatardiv').avatar(OC.currentUser, 145);
 	}
+
+	$('.request-data-export').on('click', function() {
+		OC.dialogs.confirm(
+			t('core', 'Are you sure that want to request a data export?'),
+			t('core', 'Request data export'),
+			function confirmCallback(confirmation) {
+				if (confirmation) {
+					$.post(OC.generateUrl('/settings/request-data-export'), {})
+						.done(function() {
+							OC.Notification.showTemporary(t('core', 'The data report has been requested.'));
+						})
+						.fail(function() {
+							OC.Notification.showTemporary(t('core', 'Something went wrong. Please contact an administrator.'));
+						});
+				}
+			},
+			true
+		);
+	});
+
+	$('.request-account-deletion').on('click', function() {
+		OC.dialogs.confirm(
+			t('core', 'Are you sure that want to request the deletion of your account?'),
+			t('core', 'Request account deletion'),
+			function confirmCallback(confirmation) {
+				if (confirmation) {
+					$.post(OC.generateUrl('/settings/request-account-deletion'), {})
+						.done(function() {
+							OC.Notification.showTemporary(t('core', 'The deletion of your account has been requested.'));
+						})
+						.fail(function() {
+							OC.Notification.showTemporary(t('core', 'Something went wrong. Please contact an administrator.'));
+						});
+				}
+			},
+			true
+		);
+	});
+
+	$('.request-new-role').on('click', function() {
+		OC.dialogs.prompt(
+			'',
+			t('core', 'Request new role'),
+			function confirmCallback(confirmation, message) {
+				if (confirmation) {
+					$.post(OC.generateUrl('/settings/request-role-change'), { msg: message })
+						.done(function() {
+							OC.Notification.showTemporary(t('core', 'The data report has been requested.'));
+						})
+						.fail(function() {
+							OC.Notification.showTemporary(t('core', 'Something went wrong. Please contact an administrator.'));
+						});
+				}
+			},
+			true,
+			t('core', 'Your message'),
+		).then(function() {
+			var $dialog = $('.oc-dialog:visible');
+			var $buttons = $dialog.find('button');
+			$buttons.eq(0).text(t('core', 'Cancel'));
+			$buttons.eq(1).text(t('core', 'Send'));
+		});
+	});
 });

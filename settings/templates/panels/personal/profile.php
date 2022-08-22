@@ -145,3 +145,11 @@ if ($_['passwordChangeSupported']) {
 	</a>
 	<?php endif; ?>
 </form>
+<div class="section">
+	<h2 class="app-name"><?php p($l->t('Account'));?></h2>
+	<div>
+		<button class="request-data-export"><?php echo $l->t('Request data export'); ?></button>
+		<button class="request-account-deletion"><?php echo $l->t('Request account deletion'); ?></button>
+		<button class="request-new-role"><?php echo $l->t('Request new role'); ?></button>
+	</div>
+</div>

@@ -790,3 +790,7 @@ div.app-settings .section {
 	cursor: pointer;
 	clear: both;
 }
+
+#body-settings .oc-dialog input {
+	width: 800px;
+}
