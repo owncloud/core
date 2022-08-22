@@ -357,10 +357,11 @@ ADMIN_AUTH="${ADMIN_USERNAME}:${ADMIN_PASSWORD}"
 export ADMIN_USERNAME
 export ADMIN_PASSWORD
 
-if [ -z "${BEHAT_RERUN_TIMES}" ]
-then
-	BEHAT_RERUN_TIMES=1
-fi
+#if [ -z "${BEHAT_RERUN_TIMES}" ]
+#then
+#	BEHAT_RERUN_TIMES=1
+#fi
+BEHAT_RERUN_TIMES=0
 
 function env_alt_home_enable {
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set testing enable_alt_user_backend --value yes"
