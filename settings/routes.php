@@ -73,6 +73,9 @@ $application->registerRoutes($this, [
 		['name' => 'Users#resendInvitation', 'url' => '/resend/invitation/{userId}', 'verb' => 'POST'],
 		['name' => 'Users#setPassword', 'url' => '/setpassword/{token}/{userId}', 'verb' => 'POST'],
 		['name' => 'Groups#getAssignableAndRemovableGroups', 'url' => '/settings/groups/available', 'verb' => 'GET'],
+		['name' => 'AccountRequest#requestDataExport', 'url' => '/settings/request-data-export', 'verb' => 'POST'],
+		['name' => 'AccountRequest#requestAccountDeletion', 'url' => '/settings/request-account-deletion', 'verb' => 'POST'],
+		['name' => 'AccountRequest#requestRoleChange', 'url' => '/settings/request-role-change', 'verb' => 'POST'],
 	]
 ]);
 

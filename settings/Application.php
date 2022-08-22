@@ -33,6 +33,7 @@ namespace OC\Settings;
 
 use OC\Server;
 use OC\AppFramework\Utility\TimeFactory;
+use OC\Settings\Controller\AccountRequestController;
 use OC\Settings\Controller\CorsController;
 use OC\Settings\Controller\SettingsPageController;
 use OC\Settings\Controller\AppSettingsController;
@@ -156,6 +157,17 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('Config'),
 				$c->query('L10N')
+			);
+		});
+		$container->registerService('AccountRequestController', function (IContainer $c) {
+			return new AccountRequestController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('UserSession'),
+				$c->query('GroupManager'),
+				$c->query('L10N'),
+				$c->query('Mailer'),
+				$c->query('DefaultMailAddress')
 			);
 		});
 		$container->registerService('LegalSettingsController', function (IContainer $c) {
