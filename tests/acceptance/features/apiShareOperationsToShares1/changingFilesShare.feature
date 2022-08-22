@@ -25,10 +25,6 @@ Feature: sharing
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @smokeTest @files_trashbin-app-required @notToImplementOnOCIS
   Scenario Outline: moving a file out of a share as recipient creates a backup for the owner
@@ -92,11 +88,6 @@ Feature: sharing
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Move files between shares by same user added by sharee
     Given using <dav_version> DAV path
@@ -119,12 +110,6 @@ Feature: sharing
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
-
   Scenario Outline: Move files between shares by different users
     Given using <dav_version> DAV path
     And user "Carol" has been created with default attributes and without skeleton files
@@ -146,11 +131,6 @@ Feature: sharing
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: overwrite a received file share
     Given using <dav_version> DAV path
@@ -167,7 +147,3 @@ Feature: sharing
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
