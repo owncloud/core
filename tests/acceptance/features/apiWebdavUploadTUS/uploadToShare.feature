@@ -25,10 +25,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   Scenario Outline: Uploading file to a user read/write share folder works
     Given using <dav_version> DAV path
@@ -43,11 +39,6 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Uploading a file into a group share as share receiver
@@ -66,11 +57,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Overwrite file to a received share folder
     Given using <dav_version> DAV path
@@ -87,10 +73,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   Scenario Outline: attempt to upload a file into a folder within correctly received read only share
     Given using <dav_version> DAV path
@@ -104,11 +86,6 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Upload a file to shared folder with checksum should return the checksum in the propfind for sharee
@@ -129,11 +106,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Upload a file to shared folder with checksum should return the checksum in the download header for sharee
     Given using <dav_version> DAV path
@@ -153,11 +125,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Sharer shares a file with correct checksum should return the checksum in the propfind for sharee
     Given using <dav_version> DAV path
@@ -176,11 +143,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Sharer shares a file with correct checksum should return the checksum in the download header for sharee
     Given using <dav_version> DAV path
@@ -198,11 +160,6 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Sharee uploads a file to a received share folder with correct checksum
@@ -224,11 +181,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Sharee uploads a file to a received share folder with wrong checksum should not work
     Given using <dav_version> DAV path
@@ -247,11 +199,6 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Sharer uploads a file to shared folder with wrong correct checksum should not work
@@ -272,11 +219,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Sharer uploads a chunked file with correct checksum and share it with sharee should work
     Given using <dav_version> DAV path
@@ -295,10 +237,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   Scenario Outline: Sharee uploads a chunked file with correct checksum to a received share folder should work
     Given using <dav_version> DAV path
@@ -319,11 +257,6 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Sharer uploads a file with checksum and as a sharee overwrites the shared file with new data and correct checksum
@@ -346,11 +279,6 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Sharer uploads a file with checksum and as a sharee overwrites the shared file with new data and invalid checksum
     Given using <dav_version> DAV path
@@ -371,8 +299,3 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
