@@ -27,14 +27,7 @@
 				'<label class="bold" for="sharingDialogAllowPublicRead-{{cid}}">{{publicReadLabel}}</label>' +
 				'<p><em>{{publicReadDescription}}</em></p>' +
 			'</div>' +
-			'{{#if publicUploadFilePossible}}' +
-			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
-				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
-				'<p><em>{{publicReadWriteDescription}}</em></p>' +
-			'</div>' +
-			'{{/if}}' +
-			'{{#if publicFolderUploadPossible}}' +
+			'{{#if publicUploadPossible}}' +
 			'<div id="allowpublicUploadWrite-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicUploadWriteValue}}" name="publicPermissions" id="sharingDialogAllowpublicUploadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowpublicUploadWrite-{{cid}}">{{publicUploadWriteLabel}}</label>' +
@@ -237,18 +230,9 @@
 			this.model.destroy();
 		},
 
-		_isPublicFolderUploadPossible: function() {
-			if (this.itemModel.isFolder()) {
-				return this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
-			}
-			return false;
-		},
-
-		_isPublicFileUploadPossible: function() {
-			if (this.itemModel.isFolder()) {
-				return false;
-			}
-			return this.itemModel.updatePermissionPossible() && this.configModel.isPublicUploadEnabled();
+		_isPublicUploadPossible: function() {
+			// TODO: in the future to read directly from the FileInfoModel
+			return this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
 		},
 
 		render: function () {
@@ -268,8 +252,7 @@
 				fileNameLabel              : t('core', 'Filename'),
 				passwordLabel              : t('core', 'Password'),
 
-				publicUploadFolderPossible : this._isPublicFolderUploadPossible(),
-				publicUploadFilePossible   : this._isPublicFileUploadPossible(),
+				publicUploadPossible       : this._isPublicUploadPossible(),
 
 				publicUploadLabel          : t('core', 'Upload only') + ' (File Drop)',
 				publicUploadDescription    : t('core', 'Receive files from multiple recipients without revealing the contents of the folder.'),
