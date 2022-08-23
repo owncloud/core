@@ -19,7 +19,6 @@ Feature: Share a file by public link
     And uploading content to a public link shared file should not work using the old public WebDAV API
     And uploading content to a public link shared file should not work using the new public WebDAV API
 
-  @skipOnOcV10.9 @skipOnOcV10.10
   Scenario: creating a public link with read & write permissions
     Given user "Alice" has uploaded file with content "text to test public links" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
