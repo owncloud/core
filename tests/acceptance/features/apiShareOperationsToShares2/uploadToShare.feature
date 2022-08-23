@@ -289,3 +289,19 @@ Feature: sharing
       | dav-path | permissions |
       | old      | change      |
       | new      | create      |
+
+
+  Scenario Outline: upload an empty file (size zero byte) to a shared folder
+    Given using <dav_version> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "/folder-to-share"
+    And user "Brian" has shared folder "/folder-to-share" with user "Alice"
+    And user "Alice" has accepted share "/folder-to-share" offered by user "Brian"
+    When user "Alice" uploads file "filesForUpload/zerobyte.txt" to "/Shares/folder-to-share/zerobyte.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/Shares/folder-to-share/zerobyte.txt" should exist
+    And the content of file "/Shares/folder-to-share/zerobyte.txt" for user "Alice" should be ""
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

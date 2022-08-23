@@ -318,7 +318,17 @@ Feature: upload file
       | spaces      |
 
 
-  Scenario: upload a file of size zero byte
+  Scenario Outline: upload a file of size zero byte
+    Given using <dav_version> DAV path
     When user "Alice" uploads file "filesForUpload/zerobyte.txt" to "/zerobyte.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "zerobyte.txt" should exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
