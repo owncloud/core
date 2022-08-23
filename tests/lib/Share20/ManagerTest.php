@@ -930,9 +930,9 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertSame($exception, $thrown);
 	}
 
-	public function dataShareNotEnoughPermissions(): array {
+	public function dataShareNotEnoughPermissions() {
 		$file = $this->createMock(File::class);
-		$file->method('getPermissions')->willReturn(16);
+		$file->method('getPermissions')->willReturn(17);
 		$file->method('getName')->willReturn('sharedfile');
 		$file->method('getPath')->willReturn('/user1/sharedfile');
 
@@ -998,7 +998,7 @@ class ManagerTest extends \Test\TestCase {
 	 * @param $exceptionMessage
 	 * @param $exception
 	 */
-	public function testShareNotEnoughPermissions($share, $superShareNode, $exceptionMessage, $exception): void {
+	public function testShareNotEnoughPermissions($share, $superShareNode, $exceptionMessage, $exception) {
 		$sharer = $this->createMock(IUser::class);
 		$sharer->method('getUID')->willReturn($share->getSharedBy());
 		$this->userSession->method('getUser')->willReturn($sharer);
@@ -1008,7 +1008,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->rootFolder->method('getUserFolder')->willReturn($userFolder);
 
 		try {
-			self::invokePrivate($this->manager, 'validatePermissions', [$share]);
+			$this->invokePrivate($this->manager, 'validatePermissions', [$share]);
 			$thrown = false;
 		} catch (\OCP\Share\Exceptions\GenericShareException $e) {
 			$this->assertEquals($exceptionMessage, $e->getHint());

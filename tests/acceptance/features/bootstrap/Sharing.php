@@ -123,10 +123,6 @@ trait Sharing {
 		'attributes', 'permissions', 'share_with', 'share_with_displayname', 'share_with_additional_info'
 	];
 
-	/*
-	 * Contains information about the public links that have been created with the webUI.
-	 * Each entry in the array has a "name", "url" and "path".
-	 */
 	private $createdPublicLinks = [];
 
 	/**
@@ -134,41 +130,6 @@ trait Sharing {
 	 */
 	public function getCreatedPublicLinks():array {
 		return $this->createdPublicLinks;
-	}
-
-	/**
-	 * The end (last) entry will itself be an array with keys "name", "url" and "path"
-	 *
-	 * @return array
-	 */
-	public function getLastCreatedPublicLink():array {
-		return \end($this->createdPublicLinks);
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getLastCreatedPublicLinkUrl():string {
-		$lastCreatedLink = $this->getLastCreatedPublicLink();
-		return $lastCreatedLink["url"];
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getLastCreatedPublicLinkPath():string {
-		$lastCreatedLink = $this->getLastCreatedPublicLink();
-		return $lastCreatedLink["path"];
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getLastCreatedPublicLinkToken():string {
-		$lastCreatedLinkUrl = $this->getLastCreatedPublicLinkUrl();
-		// The token is the last part of the URL, delimited by "/"
-		$urlParts = \explode("/", $lastCreatedLinkUrl);
-		return \end($urlParts);
 	}
 
 	/**
@@ -1143,12 +1104,11 @@ trait Sharing {
 	/**
 	 * @param string $name
 	 * @param string $url
-	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function addToListOfCreatedPublicLinks(string $name, string $url, string $path = ""):void {
-		$this->createdPublicLinks[] = ["name" => $name, "url" => $url, "path" => $path];
+	public function addToListOfCreatedPublicLinks(string $name, string $url):void {
+		$this->createdPublicLinks[] = ["name" => $name, "url" => $url];
 	}
 
 	/**
@@ -1223,7 +1183,7 @@ trait Sharing {
 				if (isset($this->lastPublicShareData->data)) {
 					$linkName = (string) $this->lastPublicShareData->data[0]->name;
 					$linkUrl = (string) $this->lastPublicShareData->data[0]->url;
-					$this->addToListOfCreatedPublicLinks($linkName, $linkUrl, $path);
+					$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 				}
 			} else {
 				$shareData = $this->getResponseXml(null, __METHOD__);
@@ -3728,39 +3688,14 @@ trait Sharing {
 	}
 
 	/**
-	 * The tests can create public link shares with the API or with the webUI.
-	 * If lastPublicShareData is null, then there have not been any created with the API,
-	 * so look for details of a public link share created with the webUI.
-	 *
 	 * @return string authorization token
 	 */
 	public function getLastPublicShareToken():string {
-		if ($this->lastPublicShareData === null) {
-			return $this->getLastCreatedPublicLinkToken();
-		} else {
-			if (\count($this->lastPublicShareData->data->element) > 0) {
-				return (string)$this->lastPublicShareData->data[0]->token;
-			}
-
-			return (string)$this->lastPublicShareData->data->token;
+		if (\count($this->lastPublicShareData->data->element) > 0) {
+			return (string)$this->lastPublicShareData->data[0]->token;
 		}
-	}
 
-	/**
-	 * @return string path of file that was shared (relevant when a single file has been shared)
-	 */
-	public function getLastPublicSharePath():string {
-		if ($this->lastPublicShareData === null) {
-			// There have not been any public links created with the API
-			// so get the path of the last public link created with the webUI
-			return $this->getLastCreatedPublicLinkPath();
-		} else {
-			if (\count($this->lastPublicShareData->data->element) > 0) {
-				return (string)$this->lastPublicShareData->data[0]->path;
-			}
-
-			return (string)$this->lastPublicShareData->data->path;
-		}
+		return (string)$this->lastPublicShareData->data->token;
 	}
 
 	/**
