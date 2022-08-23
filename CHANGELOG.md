@@ -41,7 +41,6 @@ Summary
 * Enhancement - Add additional columns to background job queue status: [#40113](https://github.com/owncloud/core/pull/40113)
 * Enhancement - Add config option to bypass the proxy setting by domain: [#40148](https://github.com/owncloud/core/pull/40148)
 * Enhancement - Allow sharing with multiple users at once: [#40155](https://github.com/owncloud/core/pull/40155)
-* Enhancement - Allow editing of public link shared single files: [#40264](https://github.com/owncloud/core/pull/40264)
 
 Details
 -------
@@ -346,13 +345,6 @@ Details
    https://github.com/owncloud/enterprise/issues/2865
    https://github.com/owncloud/core/pull/40155
    https://github.com/owncloud/core/pull/40199
-
-* Enhancement - Allow editing of public link shared single files: [#40264](https://github.com/owncloud/core/pull/40264)
-
-   It is now possible to create a public link share of a single file with Download/View/Edit
-   permissions.
-
-   https://github.com/owncloud/core/pull/40264
 
 Changelog for ownCloud Core [10.10.0] (2022-05-16)
 =======================================
