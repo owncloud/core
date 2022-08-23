@@ -55,7 +55,7 @@ class PublicWebDavContext implements Context {
 	 */
 	public function downloadPublicFileWithRange(string $range, string $publicWebDAVAPIVersion, ?string $password = ""):void {
 		if ($publicWebDAVAPIVersion === "new") {
-			$path = $this->featureContext->getLastPublicSharePath();
+			$path = (string)$this->featureContext->getLastPublicShareData()->data->file_target;
 		} else {
 			$path = "";
 		}
@@ -1225,70 +1225,6 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Then /^uploading content to a public link shared file should (not|)\s?work using the (old|new) public WebDAV API$/
-	 *
-	 * @param string $shouldOrNot (not|)
-	 * @param string $publicWebDAVAPIVersion
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function publiclyUploadingToPublicLinkSharedFileShouldWork(
-		string $shouldOrNot,
-		string $publicWebDAVAPIVersion
-	):void {
-		$content = "test $publicWebDAVAPIVersion";
-		$should = ($shouldOrNot !== "not");
-
-		if ($publicWebDAVAPIVersion === "new") {
-			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
-			$path = $this->featureContext->getLastPublicSharePath();
-		} else {
-			$techPreviewHadToBeEnabled = false;
-			$path = "";
-		}
-
-		$this->publicUploadContent(
-			$path,
-			'',
-			$content,
-			false,
-			[],
-			$publicWebDAVAPIVersion
-		);
-		$response = $this->featureContext->getResponse();
-		if ($should) {
-			Assert::assertTrue(
-				($response->getStatusCode() == 204),
-				"upload should have passed but failed with code " .
-				$response->getStatusCode()
-			);
-
-			$this->downloadPublicFileWithRange(
-				"",
-				$publicWebDAVAPIVersion,
-				""
-			);
-
-			$this->featureContext->checkDownloadedContentMatches(
-				$content,
-				"Checking the content of the last public shared file after downloading with the $publicWebDAVAPIVersion public WebDAV API"
-			);
-		} else {
-			$expectedCode = 403;
-			Assert::assertTrue(
-				($response->getStatusCode() == $expectedCode),
-				"upload should have failed with HTTP status $expectedCode but passed with code " .
-				$response->getStatusCode()
-			);
-		}
-
-		if ($techPreviewHadToBeEnabled) {
-			$this->occContext->disableDAVTechPreview();
-		}
-	}
-
-	/**
 	 * @When the public uploads file :fileName to the last public link shared folder with mtime :mtime using the :davVersion public WebDAV API
 	 *
 	 * @param String $fileName
@@ -1511,10 +1447,6 @@ class PublicWebDavContext implements Context {
 			\array_map('rawurlencode', \explode('/', $filename))
 		);
 		$url .= \ltrim($filename, '/');
-		// Trim any "/" from the end. For example, if we are putting content to a
-		// single file that has been shared with a link, then the URL should end
-		// with the link token and no "/" at the end.
-		$url = \rtrim($url, "/");
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
 
 		if ($autoRename) {
