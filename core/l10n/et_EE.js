@@ -139,6 +139,7 @@ OC.L10N.register(
     "Remove" : "Eemalda",
     "Copy to clipboard" : "Kopeeri lõikepuhvrisse",
     "Social share" : "Sotsiaalvõrgustikus jagamine",
+    "Anyone with the link has access to the file/folder" : "Igaüks, kellel on link, pääseb failile/kaustale ligi",
     "Copied!" : "Kopeeritud!",
     "Not supported!" : "Pole toetatud!",
     "Press ⌘-C to copy." : "Kopeerimiseks vajuta ⌘-C.",
