@@ -26,6 +26,8 @@ use OCA\DAV\Files\ICopySource;
 use OCA\DAV\Files\IProvidesAdditionalHeaders;
 use OCA\DAV\Files\IFileNode;
 use OCP\Files\IProvidesVersionAuthor;
+use OCP\Files\IProvidesVersionIsCurrent;
+use OCP\Files\IProvidesVersionString;
 use OCP\Files\Node;
 use Sabre\DAV\File;
 
@@ -147,6 +149,26 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 			$manager = \OC::$server->getUserManager();
 			$user = $manager->get($uid);
 			return $user !== null ? $user->getDisplayName() : '';
+		}
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getVersionString() : string {
+		if ($this->file instanceof IProvidesVersionString) {
+			return $this->file->getVersionString();
+		}
+		return '';
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getVersionIsCurrent() : bool {
+		if ($this->file instanceof IProvidesVersionIsCurrent) {
+			return $this->file->getVersionIsCurrent();
 		}
 		return '';
 	}

@@ -34,7 +34,8 @@
 
 .versionsTabView .preview-container {
 	display: inline-block;
-  vertical-align: top;
+  	vertical-align: top;
+	text-align: center;
 }
 
 .versionsTabView img {
@@ -47,6 +48,7 @@
 	background-size: 32px;
 	width: 32px;
 	height: 32px;
+	display: block;
 }
 
 .versionsTabView .version-container {

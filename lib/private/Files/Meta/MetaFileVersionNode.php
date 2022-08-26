@@ -29,6 +29,8 @@ use OCP\Files\IProvidesAdditionalHeaders;
 use OC\Preview;
 use OCA\Files_Sharing\SharedStorage;
 use OCP\Files\IProvidesVersionAuthor;
+use OCP\Files\IProvidesVersionIsCurrent;
+use OCP\Files\IProvidesVersionString;
 use OCP\Files\IRootFolder;
 use OCP\Files\IPreviewNode;
 use OCP\Files\Storage\IVersionedStorage;
@@ -41,7 +43,7 @@ use OCP\IImage;
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor {
+class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor, IProvidesVersionString, IProvidesVersionIsCurrent {
 
 	/** @var string */
 	private $versionId;
@@ -85,6 +87,20 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 */
 	public function getEditedBy() : string {
 		return $this->versionInfo['edited_by'] ?? '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getVersionString() : string {
+		return $this->versionInfo['version_string'] ?? '';
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getVersionIsCurrent() : bool {
+		return $this->versionInfo['is_current'] ?? '';
 	}
 
 	/**

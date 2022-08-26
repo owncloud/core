@@ -16,6 +16,8 @@
 		PROPERTY_FILEID:	'{' + OC.Files.Client.NS_OWNCLOUD + '}id',
 		PROPERTY_VERSION_EDITED_BY:	'{' + OC.Files.Client.NS_OWNCLOUD + '}meta-version-edited-by',
     	PROPERTY_VERSION_EDITED_BY_NAME:	'{' + OC.Files.Client.NS_OWNCLOUD + '}meta-version-edited-by-name',
+    	PROPERTY_VERSION_STRING:	'{' + OC.Files.Client.NS_OWNCLOUD + '}meta-version-string',
+    	PROPERTY_VERSION_IS_CURRENT:	'{' + OC.Files.Client.NS_OWNCLOUD + '}meta-version-is-current',
 	});
 
 	/**
@@ -27,6 +29,8 @@
 		davProperties: {
 			'meta-version-edited-by':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY,
       		'meta-version-edited-by-name':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY_NAME,
+      		'meta-version-string':	OC.Files.Client.PROPERTY_VERSION_STRING,
+      		'meta-version-is-current':	OC.Files.Client.PROPERTY_VERSION_IS_CURRENT,
 			'id':	OC.Files.Client.PROPERTY_FILEID,
 			'getlastmodified': OC.Files.Client.PROPERTY_GETLASTMODIFIED,
 			'getcontentlength': OC.Files.Client.PROPERTY_GETCONTENTLENGTH,
@@ -69,7 +73,9 @@
 					mimetype: version.getcontenttype,
 					editedBy: version['meta-version-edited-by'],
           			editedByName: version['meta-version-edited-by-name'],
-					fileId: fileId
+					fileId: fileId,
+					versionString: version['meta-version-string'],
+					isCurrent: version['meta-version-is-current'] === '1',
 				};
 			});
 		}

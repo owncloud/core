@@ -28,12 +28,12 @@
 		'<li data-revision="{{versionId}}">' +
 		'<div>' +
 		'<div class="preview-container">' +
-		'<img class="preview" src="{{previewUrl}}"/>' +
+		'<img class="preview" src="{{previewUrl}}"/>{{versionString}}' +
 		'</div>' +
 		'<div class="version-container">' +
 		'<div>' +
 		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
-		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}</span>' +
+		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}} {{#isCurrent}}· current{{/isCurrent}}</span>' +
 		'</a>' +
 		'</div>' +
 		'{{#hasDetails}}' +
@@ -214,9 +214,11 @@
 				revertIconUrl: OC.imagePath('core', 'actions/history'),
 				previewUrl: getPreviewUrl(version),
 				revertLabel: t('files_versions', 'Restore'),
-				canRevert: (this.collection.getFileInfo().get('permissions') & OC.PERMISSION_UPDATE) !== 0,
+				canRevert: (this.collection.getFileInfo().get('permissions') & OC.PERMISSION_UPDATE) !== 0 && version.get('isCurrent') === false,
 				editedBy: version.has('editedBy'),
-        		editedByName: version.has('editedByName')
+        		editedByName: version.has('editedByName'),
+        		versionString: version.has('versionString'),
+				isCurrent: version.has('isCurrent')
 			}, version.attributes);
 		},
 

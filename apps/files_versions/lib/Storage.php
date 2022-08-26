@@ -215,11 +215,19 @@ class Storage {
 
 			$filename = \ltrim($filename, '/');
 
+			$versionString = '';
+			if (self::metaEnabled()) {
+				$versions = self::getVersions($uid, $filename);
+				$versionString = self::$metaData->getIncreasedVersionString($versions, $filename, $uid);
+				self::$metaData->resetCurrentVersion($versions, $filename, $uid);
+			}
+
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
 			$sourceFileInfo = $users_view->getFileInfo("files/$filename");
 
 			$versionFileName = "files_versions/$filename.v$mtime";
+
 			if ($users_view->copy("files/$filename", $versionFileName)) {
 				// call getFileInfo to enforce a file cache entry for the new version
 				$fileInfo = $users_view->getFileInfo($versionFileName);
@@ -229,20 +237,10 @@ class Storage {
 				]);
 
 				if (self::metaEnabled()) {
-					self::$metaData->moveCurrentToVersion($filename, $fileInfo, $uid);
+					$currentUID = \OC_User::getUser();
+					self::$metaData->createForVersion($currentUID, $uid, $fileInfo, $versionString);
 				}
 			}
-		}
-	}
-
-	/**
-	 * Called after the file is written to create meta-data for the current file
-	 * @param string $filename
-	 * @throws \Exception
-	 */
-	public static function storeMetaForCurrentFile(string $filename) {
-		if (self::metaEnabled()) {
-			self::$metaData->createCurrent($filename);
 		}
 	}
 
@@ -412,6 +410,17 @@ class Storage {
 			}
 		}
 
+		if (self::metaEnabled()) {
+			$versionFileInfo = $users_view->getFileInfo($version);
+			if ($versionFileInfo) {
+				$metaInfo = self::$metaData->getMetaInfo($versionFileInfo);
+				$isCurrentVersion = $metaInfo[MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME] ?? false;
+				if ($isCurrentVersion) {
+					return false;
+				}
+			}
+		}
+
 		// Restore encrypted version of the old file for the newly restored file
 		// This has to happen manually here since the file is manually copied below
 		$oldVersion = $users_view->getFileInfo($fileToRestore)->getEncryptedVersion();
@@ -524,16 +533,17 @@ class Storage {
 					$filename = $pathparts['filename'];
 					if ($filename === $versionedFile) {
 						$pathparts = \pathinfo($entryName);
+
 						$timestamp = \substr($pathparts['extension'], 1);
-						$filename = $pathparts['filename'];
 						$key = $timestamp . '#' . $filename;
 						$versions[$key]['version'] = $timestamp;
 						$versions[$key]['humanReadableTimestamp'] = self::getHumanReadableTimestamp($timestamp);
+						$versions[$key]['timestamp'] = $timestamp;
+						$filename = $pathparts['filename'];
 						$versions[$key]['preview'] = '';
 						$versions[$key]['path'] = Filesystem::normalizePath($pathinfo['dirname'] . '/' . $filename);
 						$versions[$key]['name'] = $versionedFile;
 						$versions[$key]['size'] = $view->filesize($dir . '/' . $entryName);
-						$versions[$key]['timestamp'] = $timestamp;
 						$versions[$key]['etag'] = $view->getETag($dir . '/' . $entryName);
 						$versions[$key]['storage_location'] = "$dir/$entryName";
 						$versions[$key]['owner'] = $uid;
@@ -542,9 +552,23 @@ class Storage {
 						if (self::metaEnabled()) {
 							$versionFileInfo = $view->getFileInfo("$dir/$entryName");
 							if ($versionFileInfo) {
-								$authorUid = self::$metaData->getAuthorUid($versionFileInfo);
-								if ($authorUid !== null) {
-									$versions[$key]['edited_by'] = $authorUid;
+								$data = self::$metaData->getMetaInfo($versionFileInfo);
+
+								if ($data) {
+									$authorUid = $data[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+									if ($authorUid !== null) {
+										$versions[$key]['edited_by'] = $authorUid;
+									}
+
+									$versionString = $data[MetaPlugin::VERSION_STRING_PROPERTYNAME];
+									if ($versionString !== null) {
+										$versions[$key]['version_string'] = $versionString;
+									}
+
+									$isCurrent = $data[MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME];
+									if ($isCurrent !== null) {
+										$versions[$key]['is_current'] = $isCurrent;
+									}
 								}
 							}
 						}
