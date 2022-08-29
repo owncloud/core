@@ -117,22 +117,6 @@ class MetaStorage {
 	}
 
 	/**
-	 * Retrieve the uid of the user that has authored the current version.
-	 *
-	 * @param string $uid
-	 * @param string $filename
-	 * @return string|null null if no metadata is available
-	 */
-	public function getCurrentVersionAuthorUid(string $uid, string $filename) : ?string {
-		$metaDataFilePath = $this->pathToAbsDiskPath($uid, "files_versions$filename" . self::CURRENT_FILE_EXT);
-		if (\file_exists($metaDataFilePath)) {
-			return $this->getPropertyByPath($metaDataFilePath, MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME);
-		}
-
-		return null;
-	}
-
-	/**
 	 * Reset the "isCurrent" state. This should be done before restoring or creating a new version.
 	 *
 	 * @param array $versions
@@ -152,32 +136,51 @@ class MetaStorage {
 	 *
 	 * @param array $versions
 	 */
-	public function publishCurrentVersion($versions) : void {
+	public function publishCurrentVersion($versions, $filename, $uid) : void {
 		$currentVersion = $this->getCurrentVersion($versions);
 		if (!$currentVersion) {
 			return;
 		}
 
-		$newMajor = \ceil($currentVersion['version_string']);
+		$latestVersionString = $this->getLatestVersionString($versions, $filename, $uid);
+		$latestIsMajor = substr($latestVersionString, -strlen('.0')) == '.0';
+		if  ($latestIsMajor) {
+			// If the latest version is a major, then we can't round up
+			$newMajor = \strval(\floatval($latestVersionString) + 1);
+		} else {
+			$newMajor = \ceil($latestVersionString);
+		}
+
 		$path = self::pathToAbsDiskPath($currentVersion['owner'], $currentVersion['storage_location']) . self::VERSION_FILE_EXT;
 		self::writeMetaFile($currentVersion['edited_by'], $path, "$newMajor.0", true);
 	}
 
 	/**
-	 * Retrieve the version string of the current version.
+	 * Retrieve the version string of the latest version (not the current one!)
 	 *
 	 * @param array $versions
 	 * @param string $filename
 	 * @param string $uid
 	 * @return string|null
 	 */
-	public function getCurrentVersionString($versions, $filename, $uid) : ?string {
+	public function getLatestVersionString($versions, $filename, $uid) : ?string {
 		// FIXME: Gather highest version number? Or does it work already?
 		if (!\count($versions)) {
 			return '';
 		}
 
-		$latestVersion = \array_shift($versions);
+		$latestVersion = null;
+		foreach ($versions as $version) {
+			if (!$latestVersion) {
+				$latestVersion = $version;
+				continue;
+			}
+
+			if ($version['version_string'] > $latestVersion['version_string']) {
+				$latestVersion = $version;
+			}
+		}
+
 		$latestVersionTimeStamp = $latestVersion['version'];
 		$latestVersionFileName = "files_versions/$filename.v$latestVersionTimeStamp";
 		$metaDataFilePath = $this->pathToAbsDiskPath($uid, $latestVersionFileName . self::VERSION_FILE_EXT);
@@ -189,7 +192,7 @@ class MetaStorage {
 	}
 
 	/**
-	 * Get the increased (new) version string for a new version.
+	 * Get the increased (new) version string for a new version (latest version +0.1).
 	 *
 	 * @param array $versions
 	 * @param string $filename
@@ -197,7 +200,7 @@ class MetaStorage {
 	 * @return string|null
 	 */
 	public function getIncreasedVersionString($versions, $filename, $uid) : ?string {
-		$currentVersionString = $this->getCurrentVersionString($versions, $filename, $uid);
+		$currentVersionString = $this->getLatestVersionString($versions, $filename, $uid);
 		if (!$currentVersionString) {
 			return '0.1';
 		}
@@ -246,29 +249,6 @@ class MetaStorage {
 
 		if (\file_exists($toDelete)) {
 			\unlink($toDelete);
-		}
-	}
-
-	/**
-	 * After a version is restored, the version's metadata is also restored
-	 * and becomes the current metadata of the file.
-	 *
-	 * @param string $uid
-	 * @param string $fileToRestore
-	 * @param string $target
-	 */
-	public function restore(string $uid, string $fileToRestore, string $target) {
-		$restoreDirName = \dirname($fileToRestore);
-		$restoreName = \basename($target);
-
-		$src = self::pathToAbsDiskPath($uid, $fileToRestore) . self::VERSION_FILE_EXT;
-		$dst = self::pathToAbsDiskPath($uid, "$restoreDirName/$restoreName") . self::CURRENT_FILE_EXT;
-
-		if (\file_exists($src)) {
-			\rename($src, $dst);
-		} elseif (\file_exists($dst)) {
-			// Remove current author file in case there is no author to restore
-			\unlink($dst);
 		}
 	}
 

@@ -250,7 +250,7 @@ class Storage {
 	public static function publish($filename) {
 		list($uid, $filename) = self::getUidAndFilename($filename);
 		$versions = self::getVersions($uid, $filename);
-		self::$metaData->publishCurrentVersion($versions);
+		self::$metaData->publishCurrentVersion($versions, $filename, $uid);
 	}
 
 	/**
@@ -399,42 +399,21 @@ class Storage {
 			return false;
 		}
 
-		$versionCreated = false;
+		$oldVersion = $users_view->getFileInfo($fileToRestore)->getEncryptedVersion();
+		$oldFileInfo = $users_view->getFileInfo($fileToRestore);
+		$newFileInfo = $users_view->getFileInfo("/files$filename");
 
-		//first create a new version
-		$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
-		if (!$users_view->file_exists($version)) {
-			$users_view->copy('files'.$filename, $version);
-			$versionCreated = true;
-
-			// create metadata for version if enabled
-			if (self::metaEnabled()) {
-				$versionFileInfo = $users_view->getFileInfo($version);
-				if ($versionFileInfo && !$versionFileInfo->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
-					$versionAuthor = self::$metaData->getCurrentVersionAuthorUid($uid, $filename);
-					if ($versionAuthor) {
-						self::$metaData->createForVersion($versionAuthor, $uid, $versionFileInfo);
-					}
-				}
-			}
-		}
-
+		// Can't restore current version
 		if (self::metaEnabled()) {
-			$versionFileInfo = $users_view->getFileInfo($version);
-			if ($versionFileInfo) {
-				$metaInfo = self::$metaData->getMetaInfo($versionFileInfo);
-				$isCurrentVersion = $metaInfo[MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME] ?? false;
-				if ($isCurrentVersion) {
-					return false;
-				}
+			$metaInfo = self::$metaData->getMetaInfo($oldFileInfo);
+			$isCurrentVersion = $metaInfo[MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME] ?? false;
+			if ($isCurrentVersion) {
+				return false;
 			}
 		}
 
 		// Restore encrypted version of the old file for the newly restored file
 		// This has to happen manually here since the file is manually copied below
-		$oldVersion = $users_view->getFileInfo($fileToRestore)->getEncryptedVersion();
-		$oldFileInfo = $users_view->getFileInfo($fileToRestore);
-		$newFileInfo = $users_view->getFileInfo("/files$filename");
 		$cache = $newFileInfo->getStorage()->getCache();
 		$cache->update(
 			$newFileInfo->getId(),
@@ -445,14 +424,25 @@ class Storage {
 			]
 		);
 
+		if (self::metaEnabled()) {
+			// Reset current version
+			$versions = self::getVersions($uid, $filename);
+			self::$metaData->resetCurrentVersion($versions);
+
+			// Set "current" for old version file
+			$metaData = self::$metaData->getMetaInfo($oldFileInfo);
+			self::$metaData->createForVersion(
+				$metaData[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME],
+				$oldFileInfo->getOwner()->getUID(),
+				$oldFileInfo,
+				$metaData[MetaPlugin::VERSION_STRING_PROPERTYNAME]
+			);
+		}
+
 		// rollback
 		if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
 			$users_view->touch("/files$filename", $revision);
 			Storage::scheduleExpire($uid, $filename);
-
-			if (self::metaEnabled()) {
-				self::$metaData->restore($uid, $fileToRestore, 'files' . $filename);
-			}
 
 			\OC_Hook::emit('\OCP\Versions', 'rollback', [
 				'path' => $filename,
@@ -461,9 +451,8 @@ class Storage {
 			]);
 
 			return true;
-		} elseif ($versionCreated) {
-			self::deleteVersion($users_view, $version);
 		}
+
 		return true;
 	}
 
@@ -492,12 +481,8 @@ class Storage {
 			list(, $result) = \OC_Helper::streamCopy($source, $target);
 			\fclose($source);
 			\fclose($target);
-
-			if ($result !== false) {
-				$storage1->unlink($internalPath1);
-			}
 		} else {
-			$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
+			$result = $storage2->copyFromStorage($storage1, $internalPath1, $internalPath2);
 		}
 
 		$view->unlockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
