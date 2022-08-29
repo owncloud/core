@@ -27,8 +27,8 @@
 // when updating major/minor version number.
 $OC_Version = [10, 11, 0, 3];
 
-// The human readable string
-$OC_VersionString = '10.11.0 beta 1';
+// The human-readable string
+$OC_VersionString = '10.11.0-beta.1';
 
 $OC_VersionCanBeUpgradedFrom = [[8, 2, 11],[9, 0, 9],[9, 1]];
 
