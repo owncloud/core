@@ -73,3 +73,9 @@
 	float: right;
 	margin-right: -10px;
 }
+
+.versionsTabView .publishVersion {
+	cursor: pointer;
+	float: right;
+	margin-right: -10px;
+}

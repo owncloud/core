@@ -24,17 +24,29 @@
 namespace OCA\Files_Versions\AppInfo;
 
 use OC\AllConfig;
+use OCA\Files_Versions\Controller\VersionController;
 use OCA\Files_Versions\Expiration;
 use OCA\Files_Versions\FileHelper;
 use OCA\Files_Versions\MetaStorage;
 use OCA\Files_Versions\Storage;
 use OCP\AppFramework\App;
+use OCP\IContainer;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
 		parent::__construct('files_versions', $urlParams);
 
 		$container = $this->getContainer();
+
+		/**
+		 * Controllers
+		 */
+		$container->registerService('VersionController', function ($c) {
+			return new VersionController(
+				$c->query('AppName'),
+				$c->query('Request')
+			);
+		});
 
 		/*
 		 * Register capabilities

@@ -138,24 +138,29 @@ class MetaStorage {
 	 * @param array $versions
 	 */
 	public function resetCurrentVersion($versions) : void {
-		if (!\count($versions)) {
-			return;
-		}
-
-		$currentVersion = null;
-		foreach ($versions as $version) {
-			if ($version['is_current']) {
-				$currentVersion = $version;
-				break;
-			}
-		}
-
+		$currentVersion = $this->getCurrentVersion($versions);
 		if (!$currentVersion) {
 			return;
 		}
 
 		$path = self::pathToAbsDiskPath($currentVersion['owner'], $currentVersion['storage_location']) . self::VERSION_FILE_EXT;
 		self::writeMetaFile($currentVersion['edited_by'], $path, $currentVersion['version_string'], false);
+	}
+
+	/**
+	 * Publish the current version and make it a new major version.
+	 *
+	 * @param array $versions
+	 */
+	public function publishCurrentVersion($versions) : void {
+		$currentVersion = $this->getCurrentVersion($versions);
+		if (!$currentVersion) {
+			return;
+		}
+
+		$newMajor = \ceil($currentVersion['version_string']);
+		$path = self::pathToAbsDiskPath($currentVersion['owner'], $currentVersion['storage_location']) . self::VERSION_FILE_EXT;
+		self::writeMetaFile($currentVersion['edited_by'], $path, "$newMajor.0", true);
 	}
 
 	/**
@@ -167,6 +172,7 @@ class MetaStorage {
 	 * @return string|null
 	 */
 	public function getCurrentVersionString($versions, $filename, $uid) : ?string {
+		// FIXME: Gather highest version number? Or does it work already?
 		if (!\count($versions)) {
 			return '';
 		}
@@ -352,5 +358,23 @@ class MetaStorage {
 			MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME => $isCurrent
 		]);
 		return \file_put_contents($diskPath, $metaJson);
+	}
+
+	/**
+	 * @param array $versions
+	 * @return array|null
+	 */
+	private function getCurrentVersion(array $versions) : ?array {
+		if (!\count($versions)) {
+			return null;
+		}
+
+		foreach ($versions as $version) {
+			if ($version['is_current']) {
+				return $version;
+			}
+		}
+
+		return null;
 	}
 }

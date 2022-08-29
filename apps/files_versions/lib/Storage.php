@@ -219,7 +219,7 @@ class Storage {
 			if (self::metaEnabled()) {
 				$versions = self::getVersions($uid, $filename);
 				$versionString = self::$metaData->getIncreasedVersionString($versions, $filename, $uid);
-				self::$metaData->resetCurrentVersion($versions, $filename, $uid);
+				self::$metaData->resetCurrentVersion($versions);
 			}
 
 			// store a new version of a file
@@ -242,6 +242,15 @@ class Storage {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Publish the current version
+	 */
+	public static function publish($filename) {
+		list($uid, $filename) = self::getUidAndFilename($filename);
+		$versions = self::getVersions($uid, $filename);
+		self::$metaData->publishCurrentVersion($versions);
 	}
 
 	/**
