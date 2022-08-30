@@ -401,6 +401,8 @@ class Storage {
 			}
 		}
 
+		$revisionTime = $revision;
+
 		// Restore encrypted version of the old file for the newly restored file
 		// This has to happen manually here since the file is manually copied below
 		$cache = $newFileInfo->getStorage()->getCache();
@@ -418,19 +420,26 @@ class Storage {
 			$versions = self::getVersions($uid, $filename);
 			self::$metaData->resetCurrentVersion($versions);
 
-			// Set "current" for restored version file
+			// Create new version based on the restored (old) one
+			$revisionTime = \time();
+			$versionFileName = "files_versions/$filename.v$revisionTime";
+			$users_view->copy("$fileToRestore", $versionFileName);
+			$newVersionFileInfo = $users_view->getFileInfo($versionFileName);
+
 			$metaData = self::$metaData->getMetaInfo($oldFileInfo);
+			$latestVersionString = self::$metaData->getLatestVersionString($versions, $filename, $uid);
+
 			self::$metaData->createForVersion(
 				$metaData[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME],
-				$oldFileInfo->getOwner()->getUID(),
-				$oldFileInfo,
-				$metaData[MetaPlugin::VERSION_STRING_PROPERTYNAME]
+				$newVersionFileInfo->getOwner()->getUID(),
+				$newVersionFileInfo,
+				\strval((float)$latestVersionString + 0.1)
 			);
 		}
 
 		// rollback
 		if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
-			$users_view->touch("/files$filename", $revision);
+			$users_view->touch("/files$filename", $revisionTime);
 			Storage::scheduleExpire($uid, $filename);
 
 			\OC_Hook::emit('\OCP\Versions', 'rollback', [
