@@ -54,9 +54,6 @@ use OCP\Files\FileInfo;
  */
 class MetaStorage {
 
-	/** @var string File-extension of the metadata of the current file  */
-	public const CURRENT_FILE_EXT = ".current.json";
-
 	/** @var string File-extension of the metadata file for a specific version */
 	public const VERSION_FILE_EXT = ".json";
 
@@ -135,6 +132,8 @@ class MetaStorage {
 	 * Publish the current version and make it a new major version.
 	 *
 	 * @param array $versions
+	 * @param string $filename
+	 * @param string $uid uid of the file owner
 	 */
 	public function publishCurrentVersion($versions, $filename, $uid) : void {
 		$currentVersion = $this->getCurrentVersion($versions);
@@ -160,11 +159,10 @@ class MetaStorage {
 	 *
 	 * @param array $versions
 	 * @param string $filename
-	 * @param string $uid
+	 * @param string $uid uid of the file owner
 	 * @return string|null
 	 */
 	public function getLatestVersionString($versions, $filename, $uid) : ?string {
-		// FIXME: Gather highest version number? Or does it work already?
 		if (!\count($versions)) {
 			return '';
 		}
@@ -233,20 +231,6 @@ class MetaStorage {
 	public function deleteForVersion(View $versionsView, string $versionPath) {
 		$uid = $versionsView->getOwner("/");
 		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$versionPath" . self::VERSION_FILE_EXT);
-		if (\file_exists($toDelete)) {
-			\unlink($toDelete);
-		}
-	}
-
-	/**
-	 * Deletes metadata for the current revision of a given file.
-	 *
-	 * @param string $filename Path to the file relative to files/ for which the current revision should be deleted
-	 */
-	public function deleteCurrent(View $versionsView, string $filename) {
-		$uid = $versionsView->getOwner("/");
-		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$filename" . self::CURRENT_FILE_EXT);
-
 		if (\file_exists($toDelete)) {
 			\unlink($toDelete);
 		}

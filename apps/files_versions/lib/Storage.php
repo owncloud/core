@@ -227,7 +227,6 @@ class Storage {
 			$sourceFileInfo = $users_view->getFileInfo("files/$filename");
 
 			$versionFileName = "files_versions/$filename.v$mtime";
-
 			if ($users_view->copy("files/$filename", $versionFileName)) {
 				// call getFileInfo to enforce a file cache entry for the new version
 				$fileInfo = $users_view->getFileInfo($versionFileName);
@@ -311,9 +310,6 @@ class Storage {
 					\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
 				}
 			}
-			if (self::metaEnabled()) {
-				self::$metaData->deleteCurrent($view, $filename);
-			}
 		}
 		unset(self::$deletedFiles[$path]);
 	}
@@ -377,13 +373,6 @@ class Storage {
 			}
 		}
 
-		if (self::metaEnabled()) {
-			// Also move/copy the current version
-			$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_EXT;
-			$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_EXT;
-			self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
-		}
-
 		// if we moved versions directly for a file, schedule expiration check for that file
 		if (!$rootView->is_dir('/' . $targetOwner . '/files/' . $targetPath)) {
 			self::scheduleExpire($targetOwner, $targetPath);
@@ -429,7 +418,7 @@ class Storage {
 			$versions = self::getVersions($uid, $filename);
 			self::$metaData->resetCurrentVersion($versions);
 
-			// Set "current" for old version file
+			// Set "current" for restored version file
 			$metaData = self::$metaData->getMetaInfo($oldFileInfo);
 			self::$metaData->createForVersion(
 				$metaData[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME],

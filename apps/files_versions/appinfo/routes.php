@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
- * @author Roeland Jago Douma <rullzer@users.noreply.github.com>
+ * @author Jannik Stehle <jstehle@owncloud.com>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify

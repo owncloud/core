@@ -170,6 +170,6 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 		if ($this->file instanceof IProvidesVersionIsCurrent) {
 			return $this->file->getVersionIsCurrent();
 		}
-		return '';
+		return false;
 	}
 }

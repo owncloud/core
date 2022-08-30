@@ -2,7 +2,7 @@
 /**
  * @author Jannik Stehle <jstehle@owncloud.com>
  *
- * @copyright Copyright (c) 2021, ownCloud GmbH
+ * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ namespace OCP\Files;
  * This interface provides version author retrieval for file version
  *
  * @package OCP\Files
- * @since 10.11.0
+ * @since 10.12.0
  */
 interface IProvidesVersionString {
 	/**
@@ -34,7 +34,7 @@ interface IProvidesVersionString {
 	 * empty string if this is the initial version @see IProvidesVersionString::getVersionString()
 	 *
 	 * @return string
-	 * @since 10.11.0
+	 * @since 10.12.0
 	 */
 	public function getVersionString() : string;
 }

@@ -262,8 +262,8 @@
 				canRevert: (this.collection.getFileInfo().get('permissions') & OC.PERMISSION_UPDATE) !== 0 && version.get('isCurrent') === false,
 				canPublish: version.get('isCurrent') === true && !isMajorVersion,
 				editedBy: version.has('editedBy'),
-        		editedByName: version.has('editedByName'),
-        		versionString: version.has('versionString'),
+				editedByName: version.has('editedByName'),
+				versionString: version.has('versionString'),
 				isCurrent: version.has('isCurrent')
 			}, version.attributes);
 		},

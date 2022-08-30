@@ -100,7 +100,7 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @return bool
 	 */
 	public function getVersionIsCurrent() : bool {
-		return $this->versionInfo['is_current'] ?? '';
+		return $this->versionInfo['is_current'] ?? false;
 	}
 
 	/**
