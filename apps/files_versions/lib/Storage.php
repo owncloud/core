@@ -916,6 +916,33 @@ class Storage {
 	}
 
 	/**
+	 * Clean up all versions for a given user.
+	 *
+	 * @param string $uid owner of the file
+	 */
+	public static function cleanUp($uid) {
+		$versions = self::getAllVersions($uid);
+		$view = new View('/' . $uid . '/files_versions');
+
+		foreach (\array_reverse($versions['all']) as $version) {
+			if (self::metaEnabled()) {
+				// Exclude current version
+				if ($version['is_current']) {
+					continue;
+				}
+
+				// Exclude major versions
+				$isMajor = substr($version['version_string'], -strlen('.0')) == '.0';
+				if ($isMajor) {
+					continue;
+				}
+			}
+
+			self::deleteVersion($view, $version['path'] . '.v' . $version['version']);
+		}
+	}
+
+	/**
 	 * Static workaround
 	 * @return FileHelper
 	 */
