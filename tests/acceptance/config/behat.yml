@@ -509,6 +509,7 @@ default:
         - WebDavPropertiesContext:
         - OccContext:
         - AppConfigurationContext:
+        - TrashbinContext:
 
     apiWebdavDelete:
       paths:
