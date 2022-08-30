@@ -574,13 +574,26 @@ class Storage {
 	public static function expireOlderThanMaxForUser($uid) {
 		$expiration = self::getExpiration();
 		$threshold = $expiration->getMaxAgeAsTimestamp();
-		$versions = self::getFileHelper()->getAllVersions($uid);
+		$versions = self::getAllVersions($uid);
 		if (!$threshold || !\array_key_exists('all', $versions)) {
 			return;
 		}
 
 		$toDelete = [];
 		foreach (\array_reverse($versions['all']) as $key => $version) {
+			if (self::metaEnabled()) {
+				// Exclude current version
+				if ($version['is_current']) {
+					continue;
+				}
+
+				// Exclude major versions
+				$isMajor = substr($version['version_string'], -strlen('.0')) == '.0';
+				if ($isMajor) {
+					continue;
+				}
+			}
+
 			if (\intval($version['version'])<$threshold) {
 				$toDelete[$key] = $version;
 			} else {
@@ -649,6 +662,19 @@ class Storage {
 		}
 
 		foreach ($versions as $key => $version) {
+			if (self::metaEnabled()) {
+				// Exclude current version
+				if ($version['is_current']) {
+					continue;
+				}
+
+				// Exclude major versions
+				$isMajor = substr($version['version_string'], -strlen('.0')) == '.0';
+				if ($isMajor) {
+					continue;
+				}
+			}
+
 			if ($expiration->isExpired($version['version'], $quotaExceeded) && !isset($toDelete[$key])) {
 				$size += $version['size'];
 				$toDelete[$key] = $version['path'] . '.v' . $version['version'];
@@ -684,6 +710,19 @@ class Storage {
 		unset($versions[$firstKey]);
 
 		foreach ($versions as $key => $version) {
+			if (self::metaEnabled()) {
+				// Exclude current version
+				if ($version['is_current']) {
+					continue;
+				}
+
+				// Exclude major versions
+				$isMajor = substr($version['version_string'], -strlen('.0')) == '.0';
+				if ($isMajor) {
+					continue;
+				}
+			}
+
 			$newInterval = true;
 			while ($newInterval) {
 				if ($nextInterval == -1 || $prevTimestamp > $nextInterval) {
@@ -806,7 +845,7 @@ class Storage {
 
 			// if still not enough free space we rearrange the versions from all files
 			if ($availableSpace <= 0) {
-				$result = self::getFileHelper()->getAllVersions($uid);
+				$result = self::getAllVersions($uid);
 				$allVersions = $result['all'];
 
 				foreach ($result['by_file'] as $versions) {
@@ -892,5 +931,82 @@ class Storage {
 	public static function getContentOfVersion($uid, $storage_location) {
 		$users_view = new View('/'.$uid);
 		return $users_view->fopen($storage_location, 'r');
+	}
+
+
+	/**
+	 * Returns all stored file versions from a given user
+	 *
+	 * @param string $uid id of the user
+	 *
+	 * @return string[][]
+	 * [
+	 *   'all' => all versions sorted by age,
+	 *    'by_file' => all versions sorted by filename
+	 * ]
+	 */
+	protected static function getAllVersions($uid) {
+		$view = self::getFileHelper()->getUserView($uid);
+		$dirs = [self::getFileHelper()::VERSIONS_RELATIVE_PATH];
+		$versions = [];
+
+		while (!empty($dirs)) {
+			$dir = \array_pop($dirs);
+			$files = $view->getDirectoryContent($dir);
+			foreach ($files as $file) {
+				$filePath = $dir . '/' . $file->getName();
+				if ($file->getType() === 'dir') {
+					\array_push($dirs, $filePath);
+				} else {
+					$versionInfo = self::getFileHelper()->getPathAndRevision($filePath);
+					$relPathStart = \strlen(Storage::VERSIONS_ROOT);
+					$relPath = \substr($versionInfo['path'], $relPathStart);
+					$key = $versionInfo['revision'] . '#' . $relPath;
+					$versions[$key] = [
+						'path' => $relPath,
+						'timestamp' => $versionInfo['revision']
+					];
+
+					if (self::metaEnabled()) {
+						$data = self::$metaData->getMetaInfo($file);
+
+						if ($data) {
+							$versionString = $data[MetaPlugin::VERSION_STRING_PROPERTYNAME];
+							if ($versionString !== null) {
+								$versions[$key]['version_string'] = $versionString;
+							}
+
+							$isCurrent = $data[MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME];
+							if ($isCurrent !== null) {
+								$versions[$key]['is_current'] = $isCurrent;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// newest version first
+		\krsort($versions);
+
+		$result = [];
+		foreach ($versions as $key => $value) {
+			$size = $view->filesize(Storage::VERSIONS_ROOT . '/' . $value['path'] . '.v' . $value['timestamp']);
+			$filename = $value['path'];
+
+			$result['all'][$key]['version'] = $value['timestamp'];
+			$result['all'][$key]['path'] = $filename;
+			$result['all'][$key]['size'] = $size;
+			$result['all'][$key]['version_string'] = $value['version_string'];
+			$result['all'][$key]['is_current'] = $value['is_current'];
+
+			$result['by_file'][$filename][$key]['version'] = $value['timestamp'];
+			$result['by_file'][$filename][$key]['path'] = $filename;
+			$result['by_file'][$filename][$key]['size'] = $size;
+			$result['by_file'][$filename][$key]['version_string'] = $value['version_string'];
+			$result['by_file'][$filename][$key]['is_current'] = $value['is_current'];
+		}
+
+		return $result;
 	}
 }
