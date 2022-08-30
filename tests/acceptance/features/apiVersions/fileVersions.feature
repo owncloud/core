@@ -516,3 +516,19 @@ Feature: dav-versions
       | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3OGNjZDI3NTEtOTBhNC00MGYyLWI5ZjMtNjFlZGY4NDQyMWY0     | 1284d238-aa92-42ce-bdc4-0b00000091578ccd2751-90a4-40f2-b9f3-61edf84421f4  | no = sign          |
       | c29tZS1yYW5kb20tZmlsZUlkPWFub3RoZXItcmFuZG9tLWZpbGVJZA==                                             | some-random-fileId=another-random-fileId                                  | some random string |
       | MTI4NGQyMzgtYWE5Mi00MmNlLWJkxzQtMGIwMDAwMDA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bd�4-0b0000009156:8ccd2751-90a4-40f2-b9f3-61edf84421f4 | with : and  � sign |
+
+
+  Scenario: File versions sets back after getting deleted and restored from trashbin
+    Given user "Alice" has uploaded file with content "Old Test Content." to "/davtest.txt"
+    And user "Alice" has uploaded file with content "New Test Content." to "/davtest.txt"
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
+    And user "Alice" has deleted file "/davtest.txt"
+    And as "Alice" file "/davtest.txt" should exist in the trashbin
+    When user "Alice" restores the file with original path "/davtest.txt" using the trashbin API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/davtest.txt" should exist
+    And the content of file "/davtest.txt" for user "Alice" should be "New Test Content."
+    And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
+    When user "Alice" restores version index "1" of file "/davtest.txt" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the content of file "/davtest.txt" for user "Alice" should be "Old Test Content."
