@@ -388,6 +388,17 @@ class Storage {
 			return false;
 		}
 
+		$versionCreated = false;
+		$version = null;
+		if (!self::metaEnabled()) {
+			//first create a new version
+			$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
+			if (!$users_view->file_exists($version)) {
+				$users_view->copy('files'.$filename, $version);
+				$versionCreated = true;
+			}
+		}
+
 		$oldVersion = $users_view->getFileInfo($fileToRestore)->getEncryptedVersion();
 		$oldFileInfo = $users_view->getFileInfo($fileToRestore);
 		$newFileInfo = $users_view->getFileInfo("/files$filename");
@@ -449,6 +460,8 @@ class Storage {
 			]);
 
 			return true;
+		} elseif ($versionCreated && $version) {
+			self::deleteVersion($users_view, $version);
 		}
 
 		return true;
@@ -479,8 +492,18 @@ class Storage {
 			list(, $result) = \OC_Helper::streamCopy($source, $target);
 			\fclose($source);
 			\fclose($target);
+
+			if ($result !== false && !self::metaEnabled()) {
+				// we keep versions with meta enabled
+				$storage1->unlink($internalPath1);
+			}
 		} else {
-			$result = $storage2->copyFromStorage($storage1, $internalPath1, $internalPath2);
+			if (self::metaEnabled()) {
+				// we keep versions with meta enabled
+				$result = $storage2->copyFromStorage($storage1, $internalPath1, $internalPath2);
+			} else {
+				$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
+			}
 		}
 
 		$view->unlockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
@@ -525,17 +548,16 @@ class Storage {
 					$filename = $pathparts['filename'];
 					if ($filename === $versionedFile) {
 						$pathparts = \pathinfo($entryName);
-
 						$timestamp = \substr($pathparts['extension'], 1);
+						$filename = $pathparts['filename'];
 						$key = $timestamp . '#' . $filename;
 						$versions[$key]['version'] = $timestamp;
 						$versions[$key]['humanReadableTimestamp'] = self::getHumanReadableTimestamp($timestamp);
-						$versions[$key]['timestamp'] = $timestamp;
-						$filename = $pathparts['filename'];
 						$versions[$key]['preview'] = '';
 						$versions[$key]['path'] = Filesystem::normalizePath($pathinfo['dirname'] . '/' . $filename);
 						$versions[$key]['name'] = $versionedFile;
 						$versions[$key]['size'] = $view->filesize($dir . '/' . $entryName);
+						$versions[$key]['timestamp'] = $timestamp;
 						$versions[$key]['etag'] = $view->getETag($dir . '/' . $entryName);
 						$versions[$key]['storage_location'] = "$dir/$entryName";
 						$versions[$key]['owner'] = $uid;
@@ -597,8 +619,7 @@ class Storage {
 				}
 
 				// Exclude major versions
-				$isMajor = substr($version['version_string'], -strlen('.0')) == '.0';
-				if ($isMajor) {
+				if (self::$metaData->isMajorVersion($version['version_string'])) {
 					continue;
 				}
 			}
@@ -678,8 +699,7 @@ class Storage {
 				}
 
 				// Exclude major versions
-				$isMajor = substr($version['version_string'], -strlen('.0')) == '.0';
-				if ($isMajor) {
+				if (self::$metaData->isMajorVersion($version['version_string'])) {
 					continue;
 				}
 			}
@@ -726,8 +746,7 @@ class Storage {
 				}
 
 				// Exclude major versions
-				$isMajor = substr($version['version_string'], -strlen('.0')) == '.0';
-				if ($isMajor) {
+				if (self::$metaData->isMajorVersion($version['version_string'])) {
 					continue;
 				}
 			}
@@ -917,10 +936,17 @@ class Storage {
 
 	/**
 	 * Clean up all versions for a given user.
+	 * If meta is enabled, we keep the current and major versions though.
 	 *
 	 * @param string $uid owner of the file
 	 */
 	public static function cleanUp($uid) {
+		if (!self::$metaData) {
+			$rootFolder = \OC::$server->getRootFolder();
+			$rootFolder->get('/' . $uid . '/files_versions')->delete();
+			return;
+		}
+
 		$versions = self::getAllVersions($uid);
 		$view = new View('/' . $uid . '/files_versions');
 
@@ -932,8 +958,7 @@ class Storage {
 				}
 
 				// Exclude major versions
-				$isMajor = substr($version['version_string'], -strlen('.0')) == '.0';
-				if ($isMajor) {
+				if (self::$metaData->isMajorVersion($version['version_string'])) {
 					continue;
 				}
 			}
@@ -968,7 +993,6 @@ class Storage {
 		$users_view = new View('/'.$uid);
 		return $users_view->fopen($storage_location, 'r');
 	}
-
 
 	/**
 	 * Returns all stored file versions from a given user
@@ -1033,14 +1057,21 @@ class Storage {
 			$result['all'][$key]['version'] = $value['timestamp'];
 			$result['all'][$key]['path'] = $filename;
 			$result['all'][$key]['size'] = $size;
-			$result['all'][$key]['version_string'] = $value['version_string'];
-			$result['all'][$key]['is_current'] = $value['is_current'];
 
 			$result['by_file'][$filename][$key]['version'] = $value['timestamp'];
 			$result['by_file'][$filename][$key]['path'] = $filename;
 			$result['by_file'][$filename][$key]['size'] = $size;
-			$result['by_file'][$filename][$key]['version_string'] = $value['version_string'];
 			$result['by_file'][$filename][$key]['is_current'] = $value['is_current'];
+
+			if ($value['version_string']) {
+				$result['all'][$key]['version_string'] = $value['version_string'];
+				$result['by_file'][$filename][$key]['version_string'] = $value['version_string'];
+			}
+
+			if ($value['is_current']) {
+				$result['all'][$key]['is_current'] = $value['is_current'];
+				$result['by_file'][$filename][$key]['is_current'] = $value['is_current'];
+			}
 		}
 
 		return $result;

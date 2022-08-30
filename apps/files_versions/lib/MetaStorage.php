@@ -142,8 +142,7 @@ class MetaStorage {
 		}
 
 		$latestVersionString = $this->getLatestVersionString($versions, $filename, $uid);
-		$latestIsMajor = substr($latestVersionString, -strlen('.0')) == '.0';
-		if  ($latestIsMajor) {
+		if ($this->isMajorVersion($latestVersionString)) {
 			// If the latest version is a major, then we can't round up
 			$newMajor = \strval(\floatval($latestVersionString) + 1);
 		} else {
@@ -340,5 +339,13 @@ class MetaStorage {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param $version_string
+	 * @return bool
+	 */
+	public function isMajorVersion($versionString) : bool {
+		return substr($versionString, -\strlen('.0')) == '.0';
 	}
 }
