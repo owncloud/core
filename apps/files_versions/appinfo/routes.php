@@ -22,6 +22,7 @@
 $application = new \OCA\Files_Versions\AppInfo\Application();
 
 $application->registerRoutes(
+	// @phan-suppress-next-line PhanUndeclaredThis
 	$this,
 	[
 		'routes' => [

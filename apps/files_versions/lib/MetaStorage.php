@@ -346,6 +346,6 @@ class MetaStorage {
 	 * @return bool
 	 */
 	public function isMajorVersion($versionString) : bool {
-		return substr($versionString, -\strlen('.0')) == '.0';
+		return \substr($versionString, -\strlen('.0')) === '.0';
 	}
 }
