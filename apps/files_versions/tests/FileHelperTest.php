@@ -22,7 +22,6 @@ namespace OCA\Files_Versions\Tests;
 
 use OC\Files\View;
 use OCA\Files_Versions\FileHelper;
-use OCP\Files\FileInfo;
 
 class FileHelperTest extends \Test\TestCase {
 	public function testCreateMissingDirectories() {
@@ -78,106 +77,5 @@ class FileHelperTest extends \Test\TestCase {
 				],
 			]
 		];
-	}
-
-	public function testGetAllVersions() {
-		$directoryTree = [
-			'files_versions' => [
-				'type' => 'dir',
-				'children' => [
-					'file1.txt.v1548687214' => ['type' => 'file', 'size' => 5],
-					'file1.txt.v2548687214' => ['type' => 'file', 'size' => 15],
-					'file1.txt.v1508687214' => ['type' => 'file', 'size' => 25],
-					'docs' => [
-						'type' => 'dir',
-						'children' => [
-							'file1.txt.v1548687234' => ['type' => 'file', 'size' => 3],
-							'file1.txt.v2548687224' => ['type' => 'file', 'size' => 52],
-							'file1.txt.v1508687274' => ['type' => 'file', 'size' => 125],
-						]
-					]
-				]
-			]
-		];
-
-		$viewMock = $this->createMock(View::class);
-		$viewMock->method('getDirectoryContent')
-			->willReturnCallback(
-				function ($dirName) use ($directoryTree) {
-					$dir = $this->descendByPath($dirName, $directoryTree);
-					if (!isset($dir['children'])) {
-						return [];
-					}
-					$dirContent = [];
-					foreach ($dir['children'] as $name => $data) {
-						$fileInfo = $this->createMock(FileInfo::class);
-						$fileInfo->method('getType')
-							->willReturn($data['type']);
-						$fileInfo->method('getName')
-							->willReturn($name);
-						$dirContent[] = $fileInfo;
-					}
-					return $dirContent;
-				}
-			);
-
-		$fileHelperMock = $this->getMockBuilder(FileHelper::class)
-			->setMethods(['getUserView'])->getMock();
-		$fileHelperMock->method('getUserView')
-			->willReturn($viewMock);
-
-		$allVersions = $fileHelperMock->getAllVersions('foo');
-		$versionsByTime = $allVersions['all'];
-		$versionsByFile = $allVersions['by_file'];
-
-		$this->assertEquals(
-			[
-				'2548687224#/docs/file1.txt',
-				'2548687214#/file1.txt',
-				'1548687234#/docs/file1.txt',
-				'1548687214#/file1.txt',
-				'1508687274#/docs/file1.txt',
-				'1508687214#/file1.txt',
-			],
-			\array_keys($versionsByTime)
-		);
-
-		$this->assertEquals(
-			[
-				'/docs/file1.txt',
-				'/file1.txt',
-			],
-			\array_keys($versionsByFile)
-		);
-	}
-
-	/**
-	 * Traverse an array as if it is a directory tree
-	 * treating 'children' key as directory items
-	 *
-	 * @param string $path
-	 * @param string[][] $tree
-	 *
-	 * @return string[] an array that matches given path or an empty array
-	 */
-	protected function descendByPath($path, $tree) {
-		$dirName = \trim($path, '/');
-		$path = \explode('/', $dirName);
-		$item = \current($path);
-		$depth = 1;
-		$fsItem = [];
-		while (isset($tree[$item]) && \is_array($tree[$item])) {
-			if ($depth === \count($path)) {
-				$fsItem = $tree[$item];
-			}
-			$depth++;
-			if ($tree[$item]['type'] === 'dir') {
-				$tree = $tree[$item]['children'];
-				$item = \ltrim(\next($path), '/');
-			} else {
-				break;
-			}
-		}
-		return $fsItem;
 	}
 }

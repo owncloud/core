@@ -614,12 +614,14 @@ class Storage {
 		foreach (\array_reverse($versions['all']) as $key => $version) {
 			if (self::metaEnabled()) {
 				// Exclude current version
-				if ($version['is_current']) {
+				$isCurrent = $version['is_current'] ?? false;
+				if ($isCurrent) {
 					continue;
 				}
 
 				// Exclude major versions
-				if (self::$metaData->isMajorVersion($version['version_string'])) {
+				$versionString = $version['version_string'] ?? '0.1';
+				if (self::$metaData->isMajorVersion($versionString)) {
 					continue;
 				}
 			}
@@ -694,12 +696,14 @@ class Storage {
 		foreach ($versions as $key => $version) {
 			if (self::metaEnabled()) {
 				// Exclude current version
-				if ($version['is_current']) {
+				$isCurrent = $version['is_current'] ?? false;
+				if ($isCurrent) {
 					continue;
 				}
 
 				// Exclude major versions
-				if (self::$metaData->isMajorVersion($version['version_string'])) {
+				$versionString = $version['version_string'] ?? '0.1';
+				if (self::$metaData->isMajorVersion($versionString)) {
 					continue;
 				}
 			}
@@ -741,12 +745,14 @@ class Storage {
 		foreach ($versions as $key => $version) {
 			if (self::metaEnabled()) {
 				// Exclude current version
-				if ($version['is_current']) {
+				$isCurrent = $version['is_current'] ?? false;
+				if ($isCurrent) {
 					continue;
 				}
 
 				// Exclude major versions
-				if (self::$metaData->isMajorVersion($version['version_string'])) {
+				$versionString = $version['version_string'] ?? '0.1';
+				if (self::$metaData->isMajorVersion($versionString)) {
 					continue;
 				}
 			}
@@ -953,12 +959,14 @@ class Storage {
 		foreach (\array_reverse($versions['all']) as $version) {
 			if (self::metaEnabled()) {
 				// Exclude current version
-				if ($version['is_current']) {
+				$isCurrent = $version['is_current'] ?? false;
+				if ($isCurrent) {
 					continue;
 				}
 
 				// Exclude major versions
-				if (self::$metaData->isMajorVersion($version['version_string'])) {
+				$versionString = $version['version_string'] ?? '0.1';
+				if (self::$metaData->isMajorVersion($versionString)) {
 					continue;
 				}
 			}
