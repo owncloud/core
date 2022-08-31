@@ -1,0 +1,5 @@
+Bugfix: Prevent expiry for version meta data files
+
+Version meta data files now get ignored during the expiry process. This fixes the massive amount of error logs being produced during this.
+
+https://github.com/owncloud/core/pull/40325
