@@ -619,7 +619,7 @@ class OC_Image implements \OCP\IImage {
 		if ($this->fileInfo) {
 			$this->mimeType = $this->fileInfo->buffer($str);
 		}
-		if (\is_resource($this->resource)) {
+		if (((PHP_MAJOR_VERSION === 7) && \is_resource($this->resource)) || (\is_object($this->resource) && ($this->resource instanceof GdImage))) {
 			\imagealphablending($this->resource, false);
 			\imagesavealpha($this->resource, true);
 		}
@@ -718,9 +718,8 @@ class OC_Image implements \OCP\IImage {
 		$heightOrig = \imagesy($this->resource);
 		$process = \imagecreatetruecolor($width, $height);
 
-		if ($process == false) {
+		if ($process === false) {
 			$this->logger->error(__METHOD__ . '(): Error creating true color image', ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 
@@ -732,9 +731,8 @@ class OC_Image implements \OCP\IImage {
 		}
 
 		\imagecopyresampled($process, $this->resource, 0, 0, 0, 0, $width, $height, $widthOrig, $heightOrig);
-		if ($process == false) {
+		if ($process === false) {
 			$this->logger->error(__METHOD__ . '(): Error re-sampling process image', ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 		\imagedestroy($this->resource);
@@ -776,9 +774,8 @@ class OC_Image implements \OCP\IImage {
 			$targetHeight = $height;
 		}
 		$process = \imagecreatetruecolor($targetWidth, $targetHeight);
-		if ($process == false) {
+		if ($process === false) {
 			$this->logger->error('OC_Image->centerCrop, Error creating true color image', ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 
@@ -790,9 +787,8 @@ class OC_Image implements \OCP\IImage {
 		}
 
 		\imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $targetWidth, $targetHeight, $width, $height);
-		if ($process == false) {
+		if ($process === false) {
 			$this->logger->error('OC_Image->centerCrop, Error re-sampling process image ' . $width . 'x' . $height, ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 		\imagedestroy($this->resource);
@@ -815,9 +811,8 @@ class OC_Image implements \OCP\IImage {
 			return false;
 		}
 		$process = \imagecreatetruecolor($w, $h);
-		if ($process == false) {
+		if ($process === false) {
 			$this->logger->error(__METHOD__ . '(): Error creating true color image', ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 
@@ -829,9 +824,8 @@ class OC_Image implements \OCP\IImage {
 		}
 
 		\imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $w, $h, $w, $h);
-		if ($process == false) {
+		if ($process === false) {
 			$this->logger->error(__METHOD__ . '(): Error re-sampling process image ' . $w . 'x' . $h, ['app' => 'core']);
-			\imagedestroy($process);
 			return false;
 		}
 		\imagedestroy($this->resource);
@@ -958,11 +952,11 @@ if (!\function_exists('imagebmp')) {
 			} // RLE8
 			elseif ($compression == 1 && $bit == 8) {
 				for ($j = $height - 1; $j >= 0; $j--) {
-					$lastIndex = "\0";
+					$lastIndex = 0;
 					$sameNum = 0;
 					for ($i = 0; $i <= $width; $i++) {
 						$index = \imagecolorat($im, $i, $j);
-						if ($index !== $lastIndex || $sameNum > 255) {
+						if ($index !== $lastIndex || $sameNum === 0 || $sameNum > 255) {
 							if ($sameNum != 0) {
 								$bmpData .= \chr($sameNum) . \chr($lastIndex);
 							}
