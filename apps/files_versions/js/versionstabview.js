@@ -25,13 +25,13 @@
 	}
 
 	var TEMPLATE_ITEM =
-		'<li data-revision="{{versionId}}">' +
+		'<li data-revision="{{versionId}}" class="{{#isCurrent}}current-version{{/isCurrent}}">' +
 		'<div>' +
 		'<div class="preview-container">' +
-		'<img class="preview" src="{{previewUrl}}"/>{{versionString}}' +
+		'<img class="preview" src="{{previewUrl}}"/><span>{{versionString}}</span>' +
 		'</div>' +
 		'<div class="version-container">' +
-		'<div>' +
+		'<div class="version-headline">' +
 		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
 		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}} {{#isCurrent}}· current{{/isCurrent}}</span>' +
 		'</a>' +

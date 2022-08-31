@@ -1061,14 +1061,13 @@ class Storage {
 			$result['by_file'][$filename][$key]['version'] = $value['timestamp'];
 			$result['by_file'][$filename][$key]['path'] = $filename;
 			$result['by_file'][$filename][$key]['size'] = $size;
-			$result['by_file'][$filename][$key]['is_current'] = $value['is_current'];
 
-			if ($value['version_string']) {
+			if (\array_key_exists('version_string', $value)) {
 				$result['all'][$key]['version_string'] = $value['version_string'];
 				$result['by_file'][$filename][$key]['version_string'] = $value['version_string'];
 			}
 
-			if ($value['is_current']) {
+			if (\array_key_exists('is_current', $value)) {
 				$result['all'][$key]['is_current'] = $value['is_current'];
 				$result['by_file'][$filename][$key]['is_current'] = $value['is_current'];
 			}
