@@ -366,7 +366,10 @@ class CacheTest extends TestCase {
 		$this->assertCount(2, $results);
 
 		\usort($results, function ($value1, $value2) {
-			return $value1['name'] >= $value2['name'];
+			if ($value1['name'] === $value2['name']) {
+				return 0;
+			}
+			return ($value1['name'] <= $value2['name']) ? -1 : 1;
 		});
 
 		$this->assertEquals('folder', $results[0]['name']);
@@ -382,7 +385,10 @@ class CacheTest extends TestCase {
 		$this->assertCount(3, $results);
 
 		\usort($results, function ($value1, $value2) {
-			return $value1['name'] >= $value2['name'];
+			if ($value1['name'] === $value2['name']) {
+				return 0;
+			}
+			return ($value1['name'] <= $value2['name']) ? -1 : 1;
 		});
 
 		$this->assertEquals('folder', $results[0]['name']);
