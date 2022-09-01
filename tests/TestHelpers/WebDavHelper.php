@@ -233,6 +233,7 @@ class WebDavHelper {
 	 *                                     e.g "x1='http://whatever.org/ns'"
 	 * @param int|null $davPathVersionToUse
 	 * @param string|null $type
+	 * @param string|null $spaceIDFromOcis
 	 *
 	 * @return ResponseInterface
 	 */
@@ -246,7 +247,8 @@ class WebDavHelper {
 		?string $xRequestId = '',
 		?string $namespaceString = "oc='http://owncloud.org/ns'",
 		?int $davPathVersionToUse = self::DAV_VERSION_NEW,
-		?string $type="files"
+		?string $type="files",
+		?string $spaceIDFromOcis = null
 	):ResponseInterface {
 		$matches = [];
 		\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
@@ -263,7 +265,7 @@ class WebDavHelper {
 				  <d:prop>$propertyBody</d:prop>
 				 </d:set>
 				</d:propertyupdate>";
-		return self::makeDavRequest(
+		return self::makeDavRequestThroughHelper(
 			$baseUrl,
 			$user,
 			$password,
@@ -273,7 +275,61 @@ class WebDavHelper {
 			$xRequestId,
 			$body,
 			$davPathVersionToUse,
-			$type
+			$type,
+			$spaceIDFromOcis,
+		);
+	}
+
+	/**
+	 * sends a DAV request through dav helper (use when a space id is passed from OCIS)
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $method
+	 * @param string $path
+	 * @param array $headers
+	 * @param string $xRequestId
+	 * @param string|null|resource|StreamInterface $body
+	 * @param int|null $davPathVersionToUse
+	 * @param string|null $type
+	 * @param string|null $spaceIDFromOcis
+	 *
+	 * @return ResponseInterface
+	 * @throws GuzzleException
+	 */
+	public static function makeDavRequestThroughHelper(
+		string $baseUrl,
+		string $user,
+		string $password,
+		string $method,
+		string $path,
+		array $headers = [],
+		string $xRequestId = '',
+		$body = null,
+		$davPathVersionToUse = self::DAV_VERSION_OLD,
+		string $type = 'files',
+		string $spaceIDFromOcis = null
+	):ResponseInterface {
+		return self::makeDavRequest(
+			$baseUrl,
+			$user,
+			$password,
+			$method,
+			$path,
+			$headers,
+			$xRequestId,
+			$body,
+			$davPathVersionToUse,
+			$type,
+			null,
+			'',
+			false,
+			0,
+			null,
+			[],
+			null,
+			$spaceIDFromOcis
 		);
 	}
 
@@ -544,6 +600,7 @@ class WebDavHelper {
 	 * @param Client|null $client
 	 * @param array|null $urlParameter to concatenate with path
 	 * @param string|null $doDavRequestAsUser run the DAV as this user, if null its same as $user
+	 * @param string|null $spaceIDFromOcis
 	 *
 	 * @return ResponseInterface
 	 * @throws GuzzleException
@@ -565,7 +622,8 @@ class WebDavHelper {
 		?int $timeout = 0,
 		?Client $client = null,
 		?array $urlParameter = [],
-		?string $doDavRequestAsUser = null
+		?string $doDavRequestAsUser = null,
+		?string $spaceIDFromOcis = null
 	):ResponseInterface {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 
@@ -575,14 +633,14 @@ class WebDavHelper {
 			$path = "";
 		}
 
-		$spaceId = null;
-		// get space id if testing with spaces dav
-		if ($davPathVersionToUse === self::DAV_VERSION_SPACES) {
+		if ($spaceIDFromOcis === null && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
 			if ($doDavRequestAsUser === null) {
 				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
 			} else {
 				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $doDavRequestAsUser, $password, $xRequestId);
 			}
+		} else {
+			$spaceId = $spaceIDFromOcis;
 		}
 
 		if ($doDavRequestAsUser === null) {
