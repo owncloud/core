@@ -44,10 +44,14 @@ class InfoParser {
 		}
 
 		\libxml_use_internal_errors(true);
-		$loadEntities = \libxml_disable_entity_loader(false);
+		if (PHP_MAJOR_VERSION === 7) {
+			$loadEntities = \libxml_disable_entity_loader(false);
+		}
 		$xml = \simplexml_load_file($file);
 
-		\libxml_disable_entity_loader($loadEntities);
+		if (PHP_MAJOR_VERSION === 7) {
+			\libxml_disable_entity_loader($loadEntities);
+		}
 		if ($xml === false) {
 			\libxml_clear_errors();
 			throw new InvalidArgumentException('Invalid XML');
