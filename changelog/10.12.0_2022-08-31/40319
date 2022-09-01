@@ -1,0 +1,5 @@
+Enhancement: Implement persistent major version workflow
+
+A process was added to achive persistent versioning of a document.
+
+https://github.com/owncloud/core/pull/40319

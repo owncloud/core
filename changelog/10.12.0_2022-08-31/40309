@@ -1,0 +1,5 @@
+Enhancement: Add possibility to request admin-actions for your account.
+
+Request data export, account deletion, new role.
+
+https://github.com/owncloud/core/pull/40309
