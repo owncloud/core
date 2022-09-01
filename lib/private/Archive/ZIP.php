@@ -43,8 +43,15 @@ class ZIP extends Archive {
 	public function __construct($source) {
 		$this->path=$source;
 		$this->zip=new \ZipArchive();
-		if ($this->zip->open($source, \ZipArchive::CREATE)) {
-		} else {
+		// An empty file is not a valid Zip Archive. If $source exists and is
+		// empty, then delete it. ZipArchive::CREATE will then create a new valid
+		// Zip Archive output file that has "empty" content, but has whatever
+		// is the structure of a Zip Archive.
+		if (\is_file($source) && \filesize($source) === 0) {
+			\unlink($source);
+		}
+		$openStatus = $this->zip->open($source, \ZipArchive::CREATE);
+		if ($openStatus !== true) {
 			\OCP\Util::writeLog('files_archive', 'Error while opening archive '.$source, \OCP\Util::WARN);
 		}
 	}
