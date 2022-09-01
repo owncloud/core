@@ -55,9 +55,13 @@ class MDB2SchemaReader {
 	 * @return Schema
 	 */
 	public function loadSchemaFromFile($file, Schema $schema) {
-		$loadEntities = \libxml_disable_entity_loader(false);
+		if (PHP_MAJOR_VERSION === 7) {
+			$loadEntities = \libxml_disable_entity_loader(false);
+		}
 		$xml = \simplexml_load_file($file);
-		\libxml_disable_entity_loader($loadEntities);
+		if (PHP_MAJOR_VERSION === 7) {
+			\libxml_disable_entity_loader($loadEntities);
+		}
 		foreach ($xml->children() as $child) {
 			/**
 			 * @var \SimpleXMLElement $child
