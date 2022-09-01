@@ -54,13 +54,9 @@ class SimpleContainer extends Container implements IContainer {
 				$type = $parameter->getType();
 
 				// try to find out if it is a class or a simple parameter
-				// Note: see issue https://github.com/phan/phan/issues/4721
-				/* @phan-suppress-next-line PhanUndeclaredMethod */
-				if (($type === null) || $type->isBuiltin()) {
+				if (($type === null) || !($type instanceof \ReflectionNamedType) || $type->isBuiltin()) {
 					$resolveName = $parameter->getName();
 				} else {
-					// Note: see issue https://github.com/phan/phan/issues/4721
-					/* @phan-suppress-next-line PhanUndeclaredMethod */
 					$parameterClass = new \ReflectionClass($type->getName());
 					$resolveName = $parameterClass->name;
 				}
