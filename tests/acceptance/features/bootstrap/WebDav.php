@@ -5322,8 +5322,7 @@ trait WebDav {
 							$this->getPasswordForUser($user),
 							$this->getStepLineRef()
 						);
-						$splitSpaceID = explode("$", $spaceId);
-						$topWebDavPath = "/dav/spaces/" . $splitSpaceID[0] . "%21" . "$splitSpaceID[1]" . "/";
+						$topWebDavPath = "/remote.php/dav/spaces/" . $spaceId . "/";
 					}
 				}
 				$entryName = \str_replace($topWebDavPath, "", $entryPath);
