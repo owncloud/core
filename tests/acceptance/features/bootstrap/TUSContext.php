@@ -50,14 +50,18 @@ class TUSContext implements Context {
 	 *
 	 * @param string $user
 	 * @param TableNode $headers
-	 * @param string $content
+	 * @param string|null $content
+	 * @param string|null $spaceIdFromOcis
 	 *
 	 * @return void
 	 *
 	 * @throws Exception
 	 * @throws GuzzleException
 	 */
-	public function createNewTUSResourceWithHeaders(string $user, TableNode $headers, string $content = ''):void {
+	public function createNewTUSResourceWithHeaders(string $user, TableNode $headers, string $content = '', string $spaceIdFromOcis=null):void {
+		if ($spaceIdFromOcis !== null) {
+			WebDavHelper::$SPACE_ID_FROM_OCIS = $spaceIdFromOcis;
+		}
 		$this->featureContext->verifyTableNodeColumnsCount($headers, 2);
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getUserPassword($user);
@@ -193,7 +197,7 @@ class TUSContext implements Context {
 				$user,
 				$this->featureContext->getDavPathVersion(),
 				"files",
-				$this->featureContext->getPersonalSpaceIdForUser($user)
+				WebDavHelper::$SPACE_ID_FROM_OCIS ? WebDavHelper::$SPACE_ID_FROM_OCIS : $this->featureContext->getPersonalSpaceIdForUser($user)
 			)
 		);
 		$client->setMetadata($uploadMetadata);
@@ -212,6 +216,7 @@ class TUSContext implements Context {
 			}
 		}
 		$this->featureContext->setLastUploadDeleteTime(\time());
+		WebDavHelper::$SPACE_ID_FROM_OCIS = null;
 	}
 
 	/**
@@ -220,6 +225,7 @@ class TUSContext implements Context {
 	 * @param string $user
 	 * @param string $content
 	 * @param string $destination
+	 * @param string|null $spaceIdFromOcis
 	 *
 	 * @return void
 	 * @throws GuzzleException
@@ -227,9 +233,13 @@ class TUSContext implements Context {
 	public function userUploadsAFileWithContentToUsingTus(
 		string $user,
 		string $content,
-		string $destination
+		string $destination,
+		string $spaceIdFromOcis=null
 	):void {
 		$tmpfname = $this->writeDataToTempFile($content);
+		if ($spaceIdFromOcis !== null) {
+			WebDavHelper::$SPACE_ID_FROM_OCIS = $spaceIdFromOcis;
+		}
 		try {
 			$this->userUploadsUsingTusAFileTo(
 				$user,
