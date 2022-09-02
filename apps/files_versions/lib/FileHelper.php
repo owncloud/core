@@ -62,6 +62,8 @@ class FileHelper {
 	}
 
 	/**
+	 * TODO LEGACY: remove this if ensured not needed any more
+	 * 
 	 * Returns all stored file versions from a given user
 	 *
 	 * @param string $uid id of the user

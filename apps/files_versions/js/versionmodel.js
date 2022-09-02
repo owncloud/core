@@ -41,6 +41,24 @@
 				});
 		},
 
+		/**
+		 * Publish a new version
+		 */
+		publish: function(options) {
+			var model = this;
+			$.post(OC.generateUrl('/apps/files_versions/publish-version'), { path: this.getFullPath() })
+				.done(function() {
+					if (options.success) {
+						options.success.call(options.context, model, {}, options);
+					}
+				})
+				.fail(function () {
+					if (options.error) {
+						options.error.call(options.context, model, {}, options);
+					}
+				});
+		},
+
 		getFullPath: function() {
 			return this.get('fullPath');
 		},

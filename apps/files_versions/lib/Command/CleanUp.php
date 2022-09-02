@@ -21,6 +21,7 @@
 
 namespace OCA\Files_Versions\Command;
 
+use OCA\Files_Versions\Storage;
 use OCP\Files\IRootFolder;
 use OCP\IUserBackend;
 use OCP\IUserManager;
@@ -103,7 +104,7 @@ class CleanUp extends Command {
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($user);
 		if ($this->rootFolder->nodeExists('/' . $user . '/files_versions')) {
-			$this->rootFolder->get('/' . $user . '/files_versions')->delete();
+			Storage::cleanUp($user);
 		}
 	}
 }
