@@ -40,7 +40,7 @@ class WebDavHelper {
 	public const DAV_VERSION_OLD = 1;
 	public const DAV_VERSION_NEW = 2;
 	public const DAV_VERSION_SPACES = 3;
-	public static $SPACE_ID_FROM_OCIS = null;
+	public static $SPACE_ID_FROM_OCIS = '';
 
 	/**
 	 * @var array of users with their different spaces ids
@@ -577,7 +577,7 @@ class WebDavHelper {
 		}
 
 		// get space id if testing with spaces dav
-		if (self::$SPACE_ID_FROM_OCIS === null && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
+		if (self::$SPACE_ID_FROM_OCIS === '' && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
 			if ($doDavRequestAsUser === null) {
 				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
 			} else {
@@ -634,8 +634,8 @@ class WebDavHelper {
 			}
 		}
 
-		//Make the space ID from ocis null after each request
-		self::$SPACE_ID_FROM_OCIS = null;
+		//Clear the space ID from ocis after each request
+		self::$SPACE_ID_FROM_OCIS = '';
 		return HttpRequestHelper::sendRequest(
 			$fullUrl,
 			$xRequestId,
