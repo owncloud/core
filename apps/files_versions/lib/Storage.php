@@ -215,6 +215,13 @@ class Storage {
 
 			$filename = \ltrim($filename, '/');
 
+			$versionString = '';
+			if (self::metaEnabled()) {
+				$versions = self::getVersions($uid, $filename);
+				$versionString = self::$metaData->getIncreasedVersionString($versions, $filename, $uid);
+				self::$metaData->resetCurrentVersion($versions);
+			}
+
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
 			$sourceFileInfo = $users_view->getFileInfo("files/$filename");
@@ -229,21 +236,20 @@ class Storage {
 				]);
 
 				if (self::metaEnabled()) {
-					self::$metaData->moveCurrentToVersion($filename, $fileInfo, $uid);
+					$currentUID = \OC_User::getUser();
+					self::$metaData->createForVersion($currentUID, $uid, $fileInfo, $versionString);
 				}
 			}
 		}
 	}
 
 	/**
-	 * Called after the file is written to create meta-data for the current file
-	 * @param string $filename
-	 * @throws \Exception
+	 * Publish the current version
 	 */
-	public static function storeMetaForCurrentFile(string $filename) {
-		if (self::metaEnabled()) {
-			self::$metaData->createCurrent($filename);
-		}
+	public static function publish($filename) {
+		list($uid, $filename) = self::getUidAndFilename($filename);
+		$versions = self::getVersions($uid, $filename);
+		self::$metaData->publishCurrentVersion($versions, $filename, $uid);
 	}
 
 	/**
@@ -303,9 +309,6 @@ class Storage {
 					self::deleteVersion($view, $filename . '.v' . $v['version']);
 					\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
 				}
-			}
-			if (self::metaEnabled()) {
-				self::$metaData->deleteCurrent($view, $filename);
 			}
 		}
 		unset(self::$deletedFiles[$path]);
@@ -370,13 +373,6 @@ class Storage {
 			}
 		}
 
-		if (self::metaEnabled()) {
-			// Also move/copy the current version
-			$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_EXT;
-			$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_EXT;
-			self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
-		}
-
 		// if we moved versions directly for a file, schedule expiration check for that file
 		if (!$rootView->is_dir('/' . $targetOwner . '/files/' . $targetPath)) {
 			self::scheduleExpire($targetOwner, $targetPath);
@@ -393,30 +389,33 @@ class Storage {
 		}
 
 		$versionCreated = false;
-
-		//first create a new version
-		$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
-		if (!$users_view->file_exists($version)) {
-			$users_view->copy('files'.$filename, $version);
-			$versionCreated = true;
-
-			// create metadata for version if enabled
-			if (self::metaEnabled()) {
-				$versionFileInfo = $users_view->getFileInfo($version);
-				if ($versionFileInfo && !$versionFileInfo->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
-					$versionAuthor = self::$metaData->getCurrentVersionAuthorUid($uid, $filename);
-					if ($versionAuthor) {
-						self::$metaData->createForVersion($versionAuthor, $uid, $versionFileInfo);
-					}
-				}
+		$version = null;
+		if (!self::metaEnabled()) {
+			//first create a new version
+			$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
+			if (!$users_view->file_exists($version)) {
+				$users_view->copy('files'.$filename, $version);
+				$versionCreated = true;
 			}
 		}
 
-		// Restore encrypted version of the old file for the newly restored file
-		// This has to happen manually here since the file is manually copied below
 		$oldVersion = $users_view->getFileInfo($fileToRestore)->getEncryptedVersion();
 		$oldFileInfo = $users_view->getFileInfo($fileToRestore);
 		$newFileInfo = $users_view->getFileInfo("/files$filename");
+
+		// Can't restore current version
+		if (self::metaEnabled()) {
+			$metaInfo = self::$metaData->getMetaInfo($oldFileInfo);
+			$isCurrentVersion = $metaInfo[MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME] ?? false;
+			if ($isCurrentVersion) {
+				return false;
+			}
+		}
+
+		$revisionTime = $revision;
+
+		// Restore encrypted version of the old file for the newly restored file
+		// This has to happen manually here since the file is manually copied below
 		$cache = $newFileInfo->getStorage()->getCache();
 		$cache->update(
 			$newFileInfo->getId(),
@@ -427,14 +426,32 @@ class Storage {
 			]
 		);
 
+		if (self::metaEnabled()) {
+			// Reset current version
+			$versions = self::getVersions($uid, $filename);
+			self::$metaData->resetCurrentVersion($versions);
+
+			// Create new version based on the restored (old) one
+			$revisionTime = \time();
+			$versionFileName = "files_versions/$filename.v$revisionTime";
+			$users_view->copy("$fileToRestore", $versionFileName);
+			$newVersionFileInfo = $users_view->getFileInfo($versionFileName);
+
+			$metaData = self::$metaData->getMetaInfo($oldFileInfo);
+			$latestVersionString = self::$metaData->getLatestVersionString($versions, $filename, $uid);
+
+			self::$metaData->createForVersion(
+				$metaData[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME],
+				$newVersionFileInfo->getOwner()->getUID(),
+				$newVersionFileInfo,
+				\strval((float)$latestVersionString + 0.1)
+			);
+		}
+
 		// rollback
 		if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
-			$users_view->touch("/files$filename", $revision);
+			$users_view->touch("/files$filename", $revisionTime);
 			Storage::scheduleExpire($uid, $filename);
-
-			if (self::metaEnabled()) {
-				self::$metaData->restore($uid, $fileToRestore, 'files' . $filename);
-			}
 
 			\OC_Hook::emit('\OCP\Versions', 'rollback', [
 				'path' => $filename,
@@ -443,9 +460,10 @@ class Storage {
 			]);
 
 			return true;
-		} elseif ($versionCreated) {
+		} elseif ($versionCreated && $version) {
 			self::deleteVersion($users_view, $version);
 		}
+
 		return true;
 	}
 
@@ -475,11 +493,17 @@ class Storage {
 			\fclose($source);
 			\fclose($target);
 
-			if ($result !== false) {
+			if ($result !== false && !self::metaEnabled()) {
+				// we keep versions with meta enabled
 				$storage1->unlink($internalPath1);
 			}
 		} else {
-			$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
+			if (self::metaEnabled()) {
+				// we keep versions with meta enabled
+				$result = $storage2->copyFromStorage($storage1, $internalPath1, $internalPath2);
+			} else {
+				$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
+			}
 		}
 
 		$view->unlockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
@@ -542,9 +566,23 @@ class Storage {
 						if (self::metaEnabled()) {
 							$versionFileInfo = $view->getFileInfo("$dir/$entryName");
 							if ($versionFileInfo) {
-								$authorUid = self::$metaData->getAuthorUid($versionFileInfo);
-								if ($authorUid !== null) {
-									$versions[$key]['edited_by'] = $authorUid;
+								$data = self::$metaData->getMetaInfo($versionFileInfo);
+
+								if ($data) {
+									$authorUid = $data[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+									if ($authorUid !== null) {
+										$versions[$key]['edited_by'] = $authorUid;
+									}
+
+									$versionString = $data[MetaPlugin::VERSION_STRING_PROPERTYNAME];
+									if ($versionString !== null) {
+										$versions[$key]['version_string'] = $versionString;
+									}
+
+									$isCurrent = $data[MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME];
+									if ($isCurrent !== null) {
+										$versions[$key]['is_current'] = $isCurrent;
+									}
 								}
 							}
 						}
@@ -567,13 +605,27 @@ class Storage {
 	public static function expireOlderThanMaxForUser($uid) {
 		$expiration = self::getExpiration();
 		$threshold = $expiration->getMaxAgeAsTimestamp();
-		$versions = self::getFileHelper()->getAllVersions($uid);
+		$versions = self::getAllVersions($uid);
 		if (!$threshold || !\array_key_exists('all', $versions)) {
 			return;
 		}
 
 		$toDelete = [];
 		foreach (\array_reverse($versions['all']) as $key => $version) {
+			if (self::metaEnabled()) {
+				// Exclude current version
+				$isCurrent = $version['is_current'] ?? false;
+				if ($isCurrent) {
+					continue;
+				}
+
+				// Exclude major versions
+				$versionString = $version['version_string'] ?? '0.1';
+				if (self::$metaData->isMajorVersion($versionString)) {
+					continue;
+				}
+			}
+
 			if (\intval($version['version'])<$threshold) {
 				$toDelete[$key] = $version;
 			} else {
@@ -642,6 +694,20 @@ class Storage {
 		}
 
 		foreach ($versions as $key => $version) {
+			if (self::metaEnabled()) {
+				// Exclude current version
+				$isCurrent = $version['is_current'] ?? false;
+				if ($isCurrent) {
+					continue;
+				}
+
+				// Exclude major versions
+				$versionString = $version['version_string'] ?? '0.1';
+				if (self::$metaData->isMajorVersion($versionString)) {
+					continue;
+				}
+			}
+
 			if ($expiration->isExpired($version['version'], $quotaExceeded) && !isset($toDelete[$key])) {
 				$size += $version['size'];
 				$toDelete[$key] = $version['path'] . '.v' . $version['version'];
@@ -677,6 +743,20 @@ class Storage {
 		unset($versions[$firstKey]);
 
 		foreach ($versions as $key => $version) {
+			if (self::metaEnabled()) {
+				// Exclude current version
+				$isCurrent = $version['is_current'] ?? false;
+				if ($isCurrent) {
+					continue;
+				}
+
+				// Exclude major versions
+				$versionString = $version['version_string'] ?? '0.1';
+				if (self::$metaData->isMajorVersion($versionString)) {
+					continue;
+				}
+			}
+
 			$newInterval = true;
 			while ($newInterval) {
 				if ($nextInterval == -1 || $prevTimestamp > $nextInterval) {
@@ -799,7 +879,7 @@ class Storage {
 
 			// if still not enough free space we rearrange the versions from all files
 			if ($availableSpace <= 0) {
-				$result = self::getFileHelper()->getAllVersions($uid);
+				$result = self::getAllVersions($uid);
 				$allVersions = $result['all'];
 
 				foreach ($result['by_file'] as $versions) {
@@ -861,6 +941,41 @@ class Storage {
 	}
 
 	/**
+	 * Clean up all versions for a given user.
+	 * If meta is enabled, we keep the current and major versions though.
+	 *
+	 * @param string $uid owner of the file
+	 */
+	public static function cleanUp($uid) {
+		if (!self::$metaData) {
+			$rootFolder = \OC::$server->getRootFolder();
+			$rootFolder->get('/' . $uid . '/files_versions')->delete();
+			return;
+		}
+
+		$versions = self::getAllVersions($uid);
+		$view = new View('/' . $uid . '/files_versions');
+
+		foreach (\array_reverse($versions['all']) as $version) {
+			if (self::metaEnabled()) {
+				// Exclude current version
+				$isCurrent = $version['is_current'] ?? false;
+				if ($isCurrent) {
+					continue;
+				}
+
+				// Exclude major versions
+				$versionString = $version['version_string'] ?? '0.1';
+				if (self::$metaData->isMajorVersion($versionString)) {
+					continue;
+				}
+			}
+
+			self::deleteVersion($view, $version['path'] . '.v' . $version['version']);
+		}
+	}
+
+	/**
 	 * Static workaround
 	 * @return FileHelper
 	 */
@@ -885,5 +1000,87 @@ class Storage {
 	public static function getContentOfVersion($uid, $storage_location) {
 		$users_view = new View('/'.$uid);
 		return $users_view->fopen($storage_location, 'r');
+	}
+
+	/**
+	 * Returns all stored file versions from a given user
+	 *
+	 * @param string $uid id of the user
+	 *
+	 * @return string[][]
+	 * [
+	 *   'all' => all versions sorted by age,
+	 *    'by_file' => all versions sorted by filename
+	 * ]
+	 */
+	protected static function getAllVersions($uid) {
+		$view = self::getFileHelper()->getUserView($uid);
+		$dirs = [self::getFileHelper()::VERSIONS_RELATIVE_PATH];
+		$versions = [];
+
+		while (!empty($dirs)) {
+			$dir = \array_pop($dirs);
+			$files = $view->getDirectoryContent($dir);
+			foreach ($files as $file) {
+				$filePath = $dir . '/' . $file->getName();
+				if ($file->getType() === 'dir') {
+					\array_push($dirs, $filePath);
+				} else {
+					$versionInfo = self::getFileHelper()->getPathAndRevision($filePath);
+					$relPathStart = \strlen(Storage::VERSIONS_ROOT);
+					$relPath = \substr($versionInfo['path'], $relPathStart);
+					$key = $versionInfo['revision'] . '#' . $relPath;
+					$versions[$key] = [
+						'path' => $relPath,
+						'timestamp' => $versionInfo['revision']
+					];
+
+					if (self::metaEnabled()) {
+						$data = self::$metaData->getMetaInfo($file);
+
+						if ($data) {
+							$versionString = $data[MetaPlugin::VERSION_STRING_PROPERTYNAME];
+							if ($versionString !== null) {
+								$versions[$key]['version_string'] = $versionString;
+							}
+
+							$isCurrent = $data[MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME];
+							if ($isCurrent !== null) {
+								$versions[$key]['is_current'] = $isCurrent;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// newest version first
+		\krsort($versions);
+
+		$result = [];
+		foreach ($versions as $key => $value) {
+			$size = $view->filesize(Storage::VERSIONS_ROOT . '/' . $value['path'] . '.v' . $value['timestamp']);
+			$filename = $value['path'];
+
+			$result['all'][$key]['version'] = $value['timestamp'];
+			$result['all'][$key]['path'] = $filename;
+			$result['all'][$key]['size'] = $size;
+
+			$result['by_file'][$filename][$key]['version'] = $value['timestamp'];
+			$result['by_file'][$filename][$key]['path'] = $filename;
+			$result['by_file'][$filename][$key]['size'] = $size;
+
+			if (\array_key_exists('version_string', $value)) {
+				$result['all'][$key]['version_string'] = $value['version_string'];
+				$result['by_file'][$filename][$key]['version_string'] = $value['version_string'];
+			}
+
+			if (\array_key_exists('is_current', $value)) {
+				$result['all'][$key]['is_current'] = $value['is_current'];
+				$result['by_file'][$filename][$key]['is_current'] = $value['is_current'];
+			}
+		}
+
+		return $result;
 	}
 }

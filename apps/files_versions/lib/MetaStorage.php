@@ -54,9 +54,6 @@ use OCP\Files\FileInfo;
  */
 class MetaStorage {
 
-	/** @var string File-extension of the metadata of the current file  */
-	public const CURRENT_FILE_EXT = ".current.json";
-
 	/** @var string File-extension of the metadata file for a specific version */
 	public const VERSION_FILE_EXT = ".json";
 
@@ -83,112 +80,144 @@ class MetaStorage {
 	}
 
 	/**
-	 * Creates or overwrites a metadata file for a current file. This is called
-	 * after every modification of a file to store the last author.
-	 *
-	 * @param string $currentFileName Path relative to the current user's home
-	 * @return bool
-	 * @throws \Exception
-	 */
-	public function createCurrent(string $currentFileName) : bool {
-		// if the file gets streamed we need to remove the .part extension
-		// to get the right target
-		$ext = \pathinfo($currentFileName, PATHINFO_EXTENSION);
-		if ($ext === 'part') {
-			$currentFileName = \substr($currentFileName, 0, \strlen($currentFileName) - 5);
-		}
-
-		// we don't support versioned directories
-		if (Filesystem::is_dir($currentFileName) || !Filesystem::file_exists($currentFileName)) {
-			return false;
-		}
-
-		list($owner, $fileName) = Storage::getUidAndFilename($currentFileName);
-
-		$userPath = "/files_versions$fileName" . MetaStorage::CURRENT_FILE_EXT;
-
-		$author = \OC_User::getUser();
-		$absPathOnDisk = $this->pathToAbsDiskPath($owner, $userPath);
-		$userView = $this->fileHelper->getUserView($owner);
-		$this->fileHelper->createMissingDirectories($userView, $fileName);
-
-		return $this->writeMetaFile($author, $absPathOnDisk) !== false;
-	}
-
-	/**
-	 * Associates the current metadata of a file with a given version.
-	 *
-	 * After a version was created by making a copy before modification the
-	 * current metadata becomes the metadata of the new version.
-	 *
-	 * @param string $currentFileName
-	 * @param FileInfo $versionFile
-	 * @param string $uid
-	 */
-	public function moveCurrentToVersion(string $currentFileName, FileInfo $versionFile, string $uid) {
-		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_EXT);
-		$targetMetaFile = $this->dataDir . $versionFile->getPath() . self::VERSION_FILE_EXT;
-
-		if (\file_exists($currentMetaFile)) {
-			@\rename($currentMetaFile, $targetMetaFile);
-		}
-	}
-
-	/**
 	 * Creates a metadata-file for an existing version-file. Overwrites existing
 	 * metadata.
 	 *
 	 * @param string $authorUid
 	 * @param string $fileOwner
 	 * @param FileInfo $version
+	 * @param string $versionString
+	 * @param bool $isCurrent
 	 */
-	public function createForVersion(string $authorUid, string $fileOwner, FileInfo $version) {
+	public function createForVersion(string $authorUid, string $fileOwner, FileInfo $version, string $versionString, bool $isCurrent = true) {
 		$path = self::pathToAbsDiskPath($fileOwner, $version->getInternalPath()) . self::VERSION_FILE_EXT;
-		self::writeMetaFile($authorUid, $path);
+		self::writeMetaFile($authorUid, $path, $versionString, $isCurrent);
 	}
 
 	/**
-	 * Retrieve the uid of the user that has authored a given version.
+	 * Retrieve meta info for a given version.
 	 *
 	 * @param FileInfo $versionFile
-	 * @return string|null null if no metadata is available
+	 * @return array|null null if no metadata is available
 	 */
-	public function getAuthorUid(FileInfo $versionFile) : ?string {
+	public function getMetaInfo(FileInfo $versionFile) : ?array {
 		$metaDataFilePath = $this->dataDir . '/' . $versionFile->getPath() . MetaStorage::VERSION_FILE_EXT;
 		if (\file_exists($metaDataFilePath)) {
-			return $this->getVersionAuthorByPath($metaDataFilePath);
+			return [
+				MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->getPropertyByPath($metaDataFilePath, MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME),
+				MetaPlugin::VERSION_STRING_PROPERTYNAME => $this->getPropertyByPath($metaDataFilePath, MetaPlugin::VERSION_STRING_PROPERTYNAME),
+				MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME => $this->getPropertyByPath($metaDataFilePath, MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME),
+			];
 		}
 
 		return null;
 	}
 
 	/**
-	 * Retrieve the uid of the user that has authored the current version.
+	 * Reset the "isCurrent" state. This should be done before restoring or creating a new version.
 	 *
-	 * @param string $uid
-	 * @param string $filename
-	 * @return string|null null if no metadata is available
+	 * @param array $versions
 	 */
-	public function getCurrentVersionAuthorUid(string $uid, string $filename) : ?string {
-		$metaDataFilePath = $this->pathToAbsDiskPath($uid, "files_versions$filename" . self::CURRENT_FILE_EXT);
-		if (\file_exists($metaDataFilePath)) {
-			return $this->getVersionAuthorByPath($metaDataFilePath);
+	public function resetCurrentVersion($versions) : void {
+		$currentVersion = $this->getCurrentVersion($versions);
+		if (!$currentVersion) {
+			return;
 		}
 
-		return null;
+		$path = self::pathToAbsDiskPath($currentVersion['owner'], $currentVersion['storage_location']) . self::VERSION_FILE_EXT;
+		self::writeMetaFile($currentVersion['edited_by'], $path, $currentVersion['version_string'], false);
 	}
 
 	/**
-	 * Retrieve the uid of a given version file path. Presumes that the file exists.
+	 * Publish the current version and make it a new major version.
 	 *
-	 * @param string $path
+	 * @param array $versions
+	 * @param string $filename
+	 * @param string $uid uid of the file owner
+	 */
+	public function publishCurrentVersion($versions, $filename, $uid) : void {
+		$currentVersion = $this->getCurrentVersion($versions);
+		if (!$currentVersion) {
+			return;
+		}
+
+		$latestVersionString = $this->getLatestVersionString($versions, $filename, $uid);
+		if ($this->isMajorVersion($latestVersionString)) {
+			// If the latest version is a major, then we can't round up
+			$newMajor = \strval(\floatval($latestVersionString) + 1);
+		} else {
+			$newMajor = \ceil($latestVersionString);
+		}
+
+		$path = self::pathToAbsDiskPath($currentVersion['owner'], $currentVersion['storage_location']) . self::VERSION_FILE_EXT;
+		self::writeMetaFile($currentVersion['edited_by'], $path, "$newMajor.0", true);
+	}
+
+	/**
+	 * Retrieve the version string of the latest version (not the current one!)
+	 *
+	 * @param array $versions
+	 * @param string $filename
+	 * @param string $uid uid of the file owner
 	 * @return string|null
 	 */
-	protected function getVersionAuthorByPath(string $path) : ?string {
+	public function getLatestVersionString($versions, $filename, $uid) : ?string {
+		if (!\count($versions)) {
+			return '';
+		}
+
+		$latestVersion = null;
+		foreach ($versions as $version) {
+			if (!$latestVersion) {
+				$latestVersion = $version;
+				continue;
+			}
+
+			if ($version['version_string'] > $latestVersion['version_string']) {
+				$latestVersion = $version;
+			}
+		}
+
+		$latestVersionTimeStamp = $latestVersion['version'];
+		$latestVersionFileName = "files_versions/$filename.v$latestVersionTimeStamp";
+		$metaDataFilePath = $this->pathToAbsDiskPath($uid, $latestVersionFileName . self::VERSION_FILE_EXT);
+		if (\file_exists($metaDataFilePath)) {
+			return $this->getPropertyByPath($metaDataFilePath, MetaPlugin::VERSION_STRING_PROPERTYNAME);
+		}
+
+		return '';
+	}
+
+	/**
+	 * Get the increased (new) version string for a new version (latest version +0.1).
+	 *
+	 * @param array $versions
+	 * @param string $filename
+	 * @param string $uid uid of the file owner
+	 * @return string|null
+	 */
+	public function getIncreasedVersionString($versions, $filename, $uid) : ?string {
+		$currentVersionString = $this->getLatestVersionString($versions, $filename, $uid);
+		if (!$currentVersionString) {
+			return '0.1';
+		}
+
+		$currentVersionFloat = (float)$currentVersionString;
+		return \strval($currentVersionFloat + 0.1);
+	}
+
+	/**
+	 * Retrieve a given property for a given version file path. Presumes that the file exists.
+	 *
+	 * @param string $path
+	 * @param string $property
+	 * @return string|null
+	 */
+	protected function getPropertyByPath(string $path, string $property) : ?string {
 		$json = \file_get_contents($path);
 		if ($decoded = \json_decode($json, true)) {
-			if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
-				return $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+			if (isset($decoded[$property])) {
+				return $decoded[$property];
 			}
 		}
 
@@ -203,43 +232,6 @@ class MetaStorage {
 		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$versionPath" . self::VERSION_FILE_EXT);
 		if (\file_exists($toDelete)) {
 			\unlink($toDelete);
-		}
-	}
-
-	/**
-	 * Deletes metadata for the current revision of a given file.
-	 *
-	 * @param string $filename Path to the file relative to files/ for which the current revision should be deleted
-	 */
-	public function deleteCurrent(View $versionsView, string $filename) {
-		$uid = $versionsView->getOwner("/");
-		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$filename" . self::CURRENT_FILE_EXT);
-
-		if (\file_exists($toDelete)) {
-			\unlink($toDelete);
-		}
-	}
-
-	/**
-	 * After a version is restored, the version's metadata is also restored
-	 * and becomes the current metadata of the file.
-	 *
-	 * @param string $uid
-	 * @param string $fileToRestore
-	 * @param string $target
-	 */
-	public function restore(string $uid, string $fileToRestore, string $target) {
-		$restoreDirName = \dirname($fileToRestore);
-		$restoreName = \basename($target);
-
-		$src = self::pathToAbsDiskPath($uid, $fileToRestore) . self::VERSION_FILE_EXT;
-		$dst = self::pathToAbsDiskPath($uid, "$restoreDirName/$restoreName") . self::CURRENT_FILE_EXT;
-
-		if (\file_exists($src)) {
-			\rename($src, $dst);
-		} elseif (\file_exists($dst)) {
-			// Remove current author file in case there is no author to restore
-			\unlink($dst);
 		}
 	}
 
@@ -318,10 +310,42 @@ class MetaStorage {
 	/**
 	 * @param string $authorUid
 	 * @param string $diskPath
+	 * @param string $versionString
+	 * @param bool $isCurrent
 	 * @return false|int
 	 */
-	private function writeMetaFile(string $authorUid, string $diskPath) {
-		$metaJson = \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $authorUid]);
+	private function writeMetaFile(string $authorUid, string $diskPath, string $versionString, bool $isCurrent) {
+		$metaJson = \json_encode([
+			MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $authorUid,
+			MetaPlugin::VERSION_STRING_PROPERTYNAME => $versionString,
+			MetaPlugin::VERSION_IS_CURRENT_PROPERTYNAME => $isCurrent
+		]);
 		return \file_put_contents($diskPath, $metaJson);
+	}
+
+	/**
+	 * @param array $versions
+	 * @return array|null
+	 */
+	private function getCurrentVersion(array $versions) : ?array {
+		if (!\count($versions)) {
+			return null;
+		}
+
+		foreach ($versions as $version) {
+			if ($version['is_current']) {
+				return $version;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param $version_string
+	 * @return bool
+	 */
+	public function isMajorVersion($versionString) : bool {
+		return \substr($versionString, -\strlen('.0')) === '.0';
 	}
 }

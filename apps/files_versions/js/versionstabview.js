@@ -25,15 +25,15 @@
 	}
 
 	var TEMPLATE_ITEM =
-		'<li data-revision="{{versionId}}">' +
+		'<li data-revision="{{versionId}}" class="{{#isCurrent}}current-version{{/isCurrent}}">' +
 		'<div>' +
 		'<div class="preview-container">' +
-		'<img class="preview" src="{{previewUrl}}"/>' +
+		'<img class="preview" src="{{previewUrl}}"/><span>{{versionString}}</span>' +
 		'</div>' +
 		'<div class="version-container">' +
-		'<div>' +
+		'<div class="version-headline">' +
 		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
-		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}</span>' +
+		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}} {{#isCurrent}}· current{{/isCurrent}}</span>' +
 		'</a>' +
 		'</div>' +
 		'{{#hasDetails}}' +
@@ -43,6 +43,9 @@
 		'</div>' +
 		'{{/hasDetails}}' +
 		'</div>' +
+		'{{#canPublish}}' +
+		'<a href="#" class="publishVersion" title="{{publishLabel}}"><img src="{{publishIconUrl}}" /></a>' +
+		'{{/canPublish}}' +
 		'{{#canRevert}}' +
 		'<a href="#" class="revertVersion" title="{{revertLabel}}"><img src="{{revertIconUrl}}" /></a>' +
 		'{{/canRevert}}' +
@@ -68,7 +71,8 @@
 		$versionsContainer: null,
 
 		events: {
-			'click .revertVersion': '_onClickRevertVersion'
+			'click .revertVersion': '_onClickRevertVersion',
+			'click .publishVersion': '_onClickPublishVersion'
 		},
 
 		initialize: function() {
@@ -150,6 +154,44 @@
 			fileInfoModel.trigger('busy', fileInfoModel, true);
 		},
 
+		_onClickPublishVersion: function(ev) {
+			var self = this;
+			var $target = $(ev.target);
+			var fileInfoModel = this.collection.getFileInfo();
+			var revision;
+			if (!$target.is('li')) {
+				$target = $target.closest('li');
+			}
+
+			ev.preventDefault();
+			revision = $target.attr('data-revision');
+
+			var versionModel = this.collection.get(revision);
+			versionModel.publish({
+				success: function() {
+					// reset and re-fetch the updated collection
+					self.$versionsContainer.empty();
+					self.collection.setFileInfo(fileInfoModel);
+					self.collection.reset([], {silent: true});
+					self.collection.fetch();
+
+					self.$el.find('.versions').removeClass('hidden');
+					self._toggleLoading(false);
+					fileInfoModel.trigger('busy', fileInfoModel, false);
+				},
+				error: function() {
+					self.$el.find('.versions').removeClass('hidden');
+					self._toggleLoading(false);
+					fileInfoModel.trigger('busy', fileInfoModel, false);
+					OC.Notification.show(t('files_versions', 'Failed to publish version'),{type: 'error'});
+				}
+			});
+
+			// spinner
+			this._toggleLoading(true);
+			fileInfoModel.trigger('busy', fileInfoModel, true);
+		},
+
 		_toggleLoading: function(state) {
 			this._loading = state;
 			this.$el.find('.loading').toggleClass('hidden', !state);
@@ -201,6 +243,7 @@
 		_formatItem: function(version) {
 			var timestamp = version.get('timestamp') * 1000;
 			var size = version.has('size') ? version.get('size') : 0;
+			var isMajorVersion = version.get('versionString').indexOf('.0', version.get('versionString').length - '.0'.length) !== -1;
 
 			return _.extend({
 				versionId: version.get('id'),
@@ -212,11 +255,16 @@
 				downloadUrl: version.getDownloadUrl(),
 				downloadIconUrl: OC.imagePath('core', 'actions/download'),
 				revertIconUrl: OC.imagePath('core', 'actions/history'),
+				publishIconUrl: OC.imagePath('core', 'actions/checkmark'),
 				previewUrl: getPreviewUrl(version),
 				revertLabel: t('files_versions', 'Restore'),
-				canRevert: (this.collection.getFileInfo().get('permissions') & OC.PERMISSION_UPDATE) !== 0,
+				publishLabel: t('files_versions', 'Publish version'),
+				canRevert: (this.collection.getFileInfo().get('permissions') & OC.PERMISSION_UPDATE) !== 0 && version.get('isCurrent') === false,
+				canPublish: version.get('isCurrent') === true && !isMajorVersion,
 				editedBy: version.has('editedBy'),
-        		editedByName: version.has('editedByName')
+				editedByName: version.has('editedByName'),
+				versionString: version.has('versionString'),
+				isCurrent: version.has('isCurrent')
 			}, version.attributes);
 		},
 

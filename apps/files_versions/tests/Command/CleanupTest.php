@@ -50,10 +50,16 @@ class CleanupTest extends TestCase {
 
 		$this->rootFolder = $this->getMockBuilder('OCP\Files\IRootFolder')
 			->disableOriginalConstructor()->getMock();
+		$this->overwriteService('RootFolder', $this->rootFolder);
 		$this->userManager = $this->getMockBuilder('OC\User\Manager')
 			->disableOriginalConstructor()->getMock();
 
 		$this->cleanup = new CleanUp($this->rootFolder, $this->userManager);
+	}
+
+	protected function tearDown(): void {
+		$this->restoreService('RootFolder');
+		parent::tearDown();
 	}
 
 	/**
