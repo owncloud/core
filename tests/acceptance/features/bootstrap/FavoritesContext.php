@@ -48,14 +48,16 @@ class FavoritesContext implements Context {
 	/**
 	 * @param string$user
 	 * @param string $path
+	 * @param string|null $spaceIDFromOcis
 	 *
 	 * @return void
 	 */
-	public function userFavoritesElement(string $user, string $path):void {
+	public function userFavoritesElement(string $user, string $path, ?string $spaceIDFromOcis = null):void {
 		$response = $this->changeFavStateOfAnElement(
 			$user,
 			$path,
-			1
+			1,
+			$spaceIDFromOcis
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -318,14 +320,19 @@ class FavoritesContext implements Context {
 	 * @param string $user
 	 * @param string $path
 	 * @param int|null $favOrUnfav 1 = favorite, 0 = unfavorite
+	 * @param string|null $spaceIDFromOcis
 	 *
 	 * @return ResponseInterface
 	 */
 	public function changeFavStateOfAnElement(
 		string $user,
 		string $path,
-		?int $favOrUnfav
+		?int $favOrUnfav,
+		?string $spaceIDFromOcis = null
 	):ResponseInterface {
+		if ($spaceIDFromOcis !== null) {
+			WebDavHelper::$SPACE_ID_FROM_OCIS = $spaceIDFromOcis;
+		}
 		$renamedUser = $this->featureContext->getActualUsername($user);
 		return WebDavHelper::proppatch(
 			$this->featureContext->getBaseUrl(),
