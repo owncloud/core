@@ -34,6 +34,9 @@ class MetaPlugin extends ServerPlugin {
 
 	public const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-edited-by';
 	public const VERSION_EDITED_BY_PROPERTYNAME_NAME = '{http://owncloud.org/ns}meta-version-edited-by-name';
+	public const VERSION_STRING_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-string';
+	public const VERSION_IS_CURRENT_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-is-current';
+
 	/**
 	 * Reference to main server object
 	 *
@@ -104,6 +107,12 @@ class MetaPlugin extends ServerPlugin {
 			});
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
 				return $node->getVersionAuthorName();
+			});
+			$propFind->handle(self::VERSION_STRING_PROPERTYNAME, function () use ($node) {
+				return $node->getVersionString();
+			});
+			$propFind->handle(self::VERSION_IS_CURRENT_PROPERTYNAME, function () use ($node) {
+				return $node->getVersionIsCurrent();
 			});
 		}
 	}
