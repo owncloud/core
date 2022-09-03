@@ -2414,16 +2414,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.14",
+            "version": "3.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "2f0b7af658cbea265cbb4a791d6c29a6613f98ef"
+                "reference": "c96e250238e88bf1040e9f7715efab1d6bc7f622"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/2f0b7af658cbea265cbb4a791d6c29a6613f98ef",
-                "reference": "2f0b7af658cbea265cbb4a791d6c29a6613f98ef",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/c96e250238e88bf1040e9f7715efab1d6bc7f622",
+                "reference": "c96e250238e88bf1040e9f7715efab1d6bc7f622",
                 "shasum": ""
             },
             "require": {
@@ -2435,6 +2435,7 @@
                 "phpunit/phpunit": "*"
             },
             "suggest": {
+                "ext-dom": "Install the DOM extension to load XML formatted public keys.",
                 "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
                 "ext-libsodium": "SSH2/SFTP can make use of some algorithms provided by the libsodium-php extension.",
                 "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
@@ -2503,7 +2504,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.14"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.15"
             },
             "funding": [
                 {
@@ -2519,7 +2520,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-04T05:15:45+00:00"
+            "time": "2022-09-02T17:05:08+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -5650,12 +5651,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9d7e96adfd22365735b812e6366393efe9b00bce"
+                "reference": "6d260392fad173d6ee6e3a93c875d9327db1109b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9d7e96adfd22365735b812e6366393efe9b00bce",
-                "reference": "9d7e96adfd22365735b812e6366393efe9b00bce",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/6d260392fad173d6ee6e3a93c875d9327db1109b",
+                "reference": "6d260392fad173d6ee6e3a93c875d9327db1109b",
                 "shasum": ""
             },
             "conflict": {
@@ -5939,7 +5940,7 @@
                 "prestashop/contactform": ">1.0.1,<4.3",
                 "prestashop/gamification": "<2.3.2",
                 "prestashop/prestashop": ">=1.6.0.10,<1.7.8.7",
-                "prestashop/productcomments": ">=4,<4.2.1",
+                "prestashop/productcomments": "<5.0.2",
                 "prestashop/ps_emailsubscription": "<2.6.1",
                 "prestashop/ps_facetedsearch": "<3.4.1",
                 "prestashop/ps_linklist": "<3.1",
@@ -6160,7 +6161,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-30T21:04:17+00:00"
+            "time": "2022-08-31T22:04:18+00:00"
         },
         {
             "name": "sebastian/cli-parser",
