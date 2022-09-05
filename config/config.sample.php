@@ -705,6 +705,13 @@ $CONFIG = [
 'versions_retention_obligation' => 'auto',
 
 /**
+ * Save and display the author of each version of uploaded and edited files.
+ *
+ * WARNING: This does not work for S3 storage backends.
+ */
+'file_storage.save_version_author' => false,
+
+/**
  * ownCloud Verifications
  *
  * ownCloud performs several verification checks. There are two options,
@@ -1294,13 +1301,6 @@ $CONFIG = [
  * quick action will not be displayed!
  */
 'sharing.showPublicLinkQuickAction' => false,
-
-/**
- * Save and display the author of each version of uploaded and edited files.
- *
- * WARNING: This does not work for S3 storage backends.
- */
-'file_storage.save_version_author' => false,
 
 /**
  * All other configuration options
