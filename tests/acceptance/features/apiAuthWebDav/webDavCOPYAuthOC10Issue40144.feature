@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api @notToImplementOnOCIS @skipOnOcis
 Feature: COPY file/folder
 
   Background:
@@ -21,7 +21,7 @@ Feature: COPY file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/webdav/PARENT/parent.txt               |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "400"
+    Then the HTTP status code of responses on all endpoints should be "403"
   
 
   Scenario: send COPY requests to webDav endpoints with body as normal user using the spaces WebDAV API
@@ -30,4 +30,4 @@ Feature: COPY file/folder
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
       | /remote.php/dav/spaces/%spaceid%/PARENT            |
       | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "415"
+    Then the HTTP status code of responses on all endpoints should be "403"
