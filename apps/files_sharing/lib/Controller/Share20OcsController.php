@@ -532,6 +532,7 @@ class Share20OcsController extends OCSController {
 				);
 			} elseif ($permissions === Constants::PERMISSION_CREATE ||
 				$permissions === (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE) ||
+				$permissions === (Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE) ||
 				$permissions === (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE)) {
 				$share->setPermissions($permissions);
 			} else {
@@ -878,6 +879,7 @@ class Share20OcsController extends OCSController {
 			if ($newPermissions !== null &&
 				$newPermissions !== Constants::PERMISSION_READ &&
 				$newPermissions !== Constants::PERMISSION_CREATE &&
+				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE) &&
 				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE) &&
 				// legacy
 				$newPermissions !== (Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE) &&
