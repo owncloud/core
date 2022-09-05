@@ -193,7 +193,7 @@ class TUSContext implements Context {
 				$user,
 				$this->featureContext->getDavPathVersion(),
 				"files",
-				$this->featureContext->getPersonalSpaceIdForUser($user)
+				WebDavHelper::$SPACE_ID_FROM_OCIS ? WebDavHelper::$SPACE_ID_FROM_OCIS : $this->featureContext->getPersonalSpaceIdForUser($user)
 			)
 		);
 		$client->setMetadata($uploadMetadata);
@@ -212,6 +212,7 @@ class TUSContext implements Context {
 			}
 		}
 		$this->featureContext->setLastUploadDeleteTime(\time());
+		WebDavHelper::$SPACE_ID_FROM_OCIS = '';
 	}
 
 	/**
