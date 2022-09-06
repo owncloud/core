@@ -213,7 +213,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				view.render();
 				expect(view.$('.publicPermissions').length).toEqual(4);
 				expect(view.$('.publicPermissions').context.innerHTML).toContain('Download / View');
-				expect(view.$('.publicPermissions').context.innerHTML).toContain('Download / View / Edit');
+				expect(view.$('.publicPermissions').context.innerHTML).toContain('Download / View / Upload / Edit');
 				expect(view.$('.publicPermissions').context.innerHTML).toContain('Download / View / Upload');
 				expect(view.$('.publicPermissions').context.innerHTML).toContain('Upload only (File Drop)');
 			});
@@ -453,7 +453,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			isPublicUploadEnabledStub = sinon.stub(configModel, 'isPublicUploadEnabled').returns(true);
 			configModel.set('enforceLinkPasswordReadWriteDelete', true);
 			view.render();
-			view.$('#sharingDialogAllowPublicReadWrite-' + view.cid).prop('checked', true)
+			view.$('#sharingDialogAllowPublicFolderReadWrite-' + view.cid).prop('checked', true)
 			var handler = sinon.stub();
 			view.on('saved', handler);
 			view._save();
