@@ -24,7 +24,7 @@ Feature: Share a file by public link
     Given user "Alice" has uploaded file with content "text to test public links" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for file "lorem.txt" using the webUI with
-      | permission | read-write |
+      | permission | read-write-file |
     And the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "text to test public links"
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "text to test public links"

@@ -236,7 +236,7 @@ Feature: rename files
     And user "Alice" has uploaded file with content "some content" to "/FOLDER_TO_SHARE/randomfile.txt"
     And user "Alice" has logged in using the webUI
     And the user has created a new public link for folder "FOLDER_TO_SHARE" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     When the public accesses the last created public link using the webUI
     And the user renames file "randomfile.txt" to "a-renamed-file.txt" using the webUI
     Then file "a-renamed-file.txt" should be listed on the webUI

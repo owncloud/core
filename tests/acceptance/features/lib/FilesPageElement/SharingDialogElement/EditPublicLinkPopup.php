@@ -50,7 +50,8 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $cancelButtonXpath = ".//button[contains(text(), 'Cancel')]";
 	private $permissionLabelXpath = [
 		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
-		'read-write' => ".//label[contains(@for, 'sharingDialogAllowPublicReadWrite')]",
+		'read-write-folder' => ".//label[contains(@for, 'sharingDialogAllowPublicFolderReadWrite')]",
+		'read-write-file' => ".//label[contains(@for, 'sharingDialogAllowPublicFileReadWrite')]",
 		'upload-write-without-modify' => ".//label[contains(@for, 'sharingDialogAllowpublicUploadWrite')]",
 		'upload' => ".//label[contains(@for, 'sharingDialogAllowPublicUpload')]"
 	];
