@@ -15,7 +15,7 @@ Feature: Share a folder by public link
     And user "Alice" has uploaded file "filesForUpload/zzzz-must-be-last-file-in-folder.txt" to "simple-folder/zzzz-must-be-last-file-in-folder.txt"
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     And the public accesses the last created public link using the webUI
     And the user deletes the following elements using the webUI
       | name                                  |
@@ -48,7 +48,7 @@ Feature: Share a folder by public link
     And user "Alice" has logged in using the webUI
     And parameter "shareapi_enforce_links_password_read_write_delete" of app "core" has been set to "yes"
     When the user tries to create a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
     And the public link should not have been generated
 
@@ -67,7 +67,7 @@ Feature: Share a folder by public link
     And user "Alice" has logged in using the webUI
     And parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
     When the user creates a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     And the public accesses the last created public link using the webUI
     Then file "lorem.txt" should be listed on the webUI
 
@@ -97,7 +97,7 @@ Feature: Share a folder by public link
     And user "Alice" has logged in using the webUI
     And the user opens the share dialog for folder "simple-folder"
     And the user has opened the public link share tab
-    When the user changes the permission of the public link named "Public link" to "read-write"
+    When the user changes the permission of the public link named "Public link" to "read-write-folder"
     And the public accesses the last created public link using the webUI
     And the user deletes the following elements using the webUI
       | name                |
@@ -122,7 +122,7 @@ Feature: Share a folder by public link
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "Alice" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     When the public accesses the last created public link using the webUI
     Then the option to rename file "lorem.txt" should be available on the webUI
     And the option to delete file "lorem.txt" should be available on the webUI
@@ -145,7 +145,7 @@ Feature: Share a folder by public link
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "Alice" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     When the public accesses the last created public link using the webUI
     And the user uploads file "lorem.txt" keeping both new and existing files using the webUI
     Then file "lorem.txt" should be listed on the webUI
@@ -157,7 +157,7 @@ Feature: Share a folder by public link
     And user "Alice" has uploaded file "filesForUpload/lorem-big.txt" to "/simple-folder/lorem-big.txt"
     And user "Alice" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     When the public accesses the last created public link using the webUI
     Then it should be possible to delete file "lorem.txt" using the webUI
     When the user browses to the files page
@@ -179,6 +179,6 @@ Feature: Share a folder by public link
     When the user browses to the files page
     And the user opens the share dialog for folder "simple-folder"
     And the user opens the public link share tab
-    And the user changes the permission of the public link named "Public link" to "read-write"
+    And the user changes the permission of the public link named "Public link" to "read-write-folder"
     And the public accesses the last created public link using the webUI
     Then it should be possible to delete file "lorem-big.txt" using the webUI
