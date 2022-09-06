@@ -70,7 +70,7 @@ Feature: Locks
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     When the public accesses the last created public link using the webUI
     And the user uploads overwriting file "lorem.txt" using the webUI
     Then notifications should be displayed on the webUI with the text

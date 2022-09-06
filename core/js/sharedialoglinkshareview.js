@@ -27,16 +27,23 @@
 				'<label class="bold" for="sharingDialogAllowPublicRead-{{cid}}">{{publicReadLabel}}</label>' +
 				'<p><em>{{publicReadDescription}}</em></p>' +
 			'</div>' +
-			'{{#if publicUploadPossible}}' +
-			'<div id="allowpublicUploadWrite-{{cid}}" class="public-link-modal--item">' +
+			'{{#if publicUploadFilePossible}}' +
+			'<div id="allowPublicFileReadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="{{publicFileReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicFileReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicFileReadWriteSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicFileReadWrite-{{cid}}">{{publicFileReadWriteLabel}}</label>' +
+				'<p><em>{{publicFileReadWriteDescription}}</em></p>' +
+			'</div>' +
+			'{{/if}}' +
+			'{{#if publicUploadFolderPossible}}' +
+			'<div id="allowPublicUploadWrite-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicUploadWriteValue}}" name="publicPermissions" id="sharingDialogAllowpublicUploadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowpublicUploadWrite-{{cid}}">{{publicUploadWriteLabel}}</label>' +
 				'<p><em>{{publicUploadWriteDescription}}</em></p>' +
 			'</div>' +
-			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
-				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
-				'<p><em>{{publicReadWriteDescription}}</em></p>' +
+			'<div id="allowPublicFolderReadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="{{publicFolderReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicFolderReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicFolderReadWriteSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicFolderReadWrite-{{cid}}">{{publicFolderReadWriteLabel}}</label>' +
+				'<p><em>{{publicFolderReadWriteDescription}}</em></p>' +
 			'</div>' +
 			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicUploadValue}}" name="publicPermissions" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadSelected}}checked{{/if}} />' +
@@ -230,9 +237,18 @@
 			this.model.destroy();
 		},
 
-		_isPublicUploadPossible: function() {
-			// TODO: in the future to read directly from the FileInfoModel
-			return this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
+		_isPublicFolderUploadPossible: function() {
+			if (this.itemModel.isFolder()) {
+				return this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
+			}
+			return false;
+		},
+
+		_isPublicFileUploadPossible: function() {
+			if (this.itemModel.isFolder()) {
+				return false;
+			}
+			return this.itemModel.updatePermissionPossible() && this.configModel.isPublicUploadEnabled();
 		},
 
 		render: function () {
@@ -252,7 +268,8 @@
 				fileNameLabel              : t('core', 'Filename'),
 				passwordLabel              : t('core', 'Password'),
 
-				publicUploadPossible       : this._isPublicUploadPossible(),
+				publicUploadFolderPossible : this._isPublicFolderUploadPossible(),
+				publicUploadFilePossible   : this._isPublicFileUploadPossible(),
 
 				publicUploadLabel          : t('core', 'Upload only') + ' (File Drop)',
 				publicUploadDescription    : t('core', 'Receive files from multiple recipients without revealing the contents of the folder.'),
@@ -269,10 +286,15 @@
 				publicUploadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_CREATE,
 				publicUploadWriteSelected    : this.model.get('permissions') === (OC.PERMISSION_READ | OC.PERMISSION_CREATE),
 
-				publicReadWriteLabel       : t('core', 'Download / View / Edit'),
-				publicReadWriteDescription : t('core', 'Recipients can view, download, edit, delete and upload contents.'),
-				publicReadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
-				publicReadWriteSelected    : this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE),
+				publicFolderReadWriteLabel       : t('core', 'Download / View / Upload / Edit'),
+				publicFolderReadWriteDescription : t('core', 'Recipients can view, download, edit, delete and upload contents.'),
+				publicFolderReadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
+				publicFolderReadWriteSelected    : this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE),
+
+				publicFileReadWriteLabel       : t('core', 'Download / View / Edit'),
+				publicFileReadWriteDescription : t('core', 'Recipients can view, download and edit contents.'),
+				publicFileReadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE,
+				publicFileReadWriteSelected    : this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE),
 
 				isMailEnabled: showEmailField
 			}));

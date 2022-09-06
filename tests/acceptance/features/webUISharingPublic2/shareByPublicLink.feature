@@ -60,7 +60,7 @@ Feature: Share by public link
     And user "Alice" has uploaded file with content "original content" to "/simple-folder/lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
-      | permission | read-write |
+      | permission | read-write-folder |
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
     And the public adds the public link to "%remote_server%" as user "Brian" using the webUI
