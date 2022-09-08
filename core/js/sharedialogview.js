@@ -616,7 +616,7 @@
 			var foundUsers = [];
 			var notFound = [];
 			var promises = [];
-			var users = Array.from(new Set(search.split(this.batchActionSeparator)));
+			var users = Array.from(new Set(search.replace(new RegExp(this.batchActionSeparator + '\\s+', 'g'), this.batchActionSeparator).split(this.batchActionSeparator)));
 
 			for (var i = 0; i < users.length; i++) {
 				if (!users[i] || users[i] === OC.currentUser) {
