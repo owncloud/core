@@ -1,0 +1,7 @@
+Bugfix: Adjust installation database details
+
+The suggested host name and port syntax for the database host on the installation
+has been corrected.
+
+https://github.com/owncloud/core/pull/40348
+https://github.com/owncloud/core/issues/39871
