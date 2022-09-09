@@ -498,6 +498,7 @@ trait Provisioning {
 	 */
 	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(string $user):void {
 		$this->userHasBeenCreatedWithDefaultAttributes($user);
+		$this->resetOccLastCode();
 	}
 
 	/**
