@@ -831,6 +831,9 @@ class OccContext implements Context {
 			if (!empty($exceptions)) {
 				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
 			}
+			if ($exitStatusCode === null) {
+				$msg = "The occ command did not run ";
+			}
 			throw new Exception($msg);
 		} elseif (!empty($exceptions)) {
 			$msg = 'The command was successful but triggered exceptions: '

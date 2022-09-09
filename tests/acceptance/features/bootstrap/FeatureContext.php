@@ -307,7 +307,7 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * @var int return code of last command
 	 */
-	private $lastCode;
+	private $occLastCode;
 	/**
 	 * @var string stdout of last command
 	 */
@@ -369,6 +369,13 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getOCSelector(): string {
 		return $this->oCSelector;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function resetOccLastCode():void {
+		$this->occLastCode = null;
 	}
 
 	/**
@@ -1027,8 +1034,8 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return int exit status code of the last occ command
 	 */
-	public function getExitStatusCodeOfOccCommand():int {
-		return $this->lastCode;
+	public function getExitStatusCodeOfOccCommand():?int {
+		return $this->occLastCode;
 	}
 
 	/**
@@ -4111,8 +4118,8 @@ class FeatureContext extends BehatVariablesContext {
 		);
 		$this->lastStdOut = $return['stdOut'];
 		$this->lastStdErr = $return['stdErr'];
-		$this->lastCode = (int) $return['code'];
-		return $this->lastCode;
+		$this->occLastCode = (int) $return['code'];
+		return $this->occLastCode;
 	}
 
 	/**
@@ -4150,7 +4157,7 @@ class FeatureContext extends BehatVariablesContext {
 		Assert::assertArrayHasKey('code', $result);
 		Assert::assertArrayHasKey('stdOut', $result);
 		Assert::assertArrayHasKey('stdErr', $result);
-		$this->lastCode = (int) $result['code'];
+		$this->occLastCode = (int) $result['code'];
 		$this->lastStdOut = $result['stdOut'];
 		$this->lastStdErr = $result['stdErr'];
 	}
