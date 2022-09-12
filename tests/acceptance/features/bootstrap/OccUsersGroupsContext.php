@@ -816,8 +816,10 @@ class OccUsersGroupsContext implements Context {
 	):void {
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		if ($password === null) {
-			$this->featureContext->runOcc(
-				["user:resetpassword $actualUsername --send-email"]
+			$this->featureContext->setOccLastCode(
+				$this->featureContext->runOcc(
+					["user:resetpassword $actualUsername --send-email"]
+				)
 			);
 		} else {
 			$password = $this->featureContext->getActualPassword($password);
@@ -826,9 +828,11 @@ class OccUsersGroupsContext implements Context {
 			} else {
 				$sendEmailParam = "";
 			}
-			$this->featureContext->runOccWithEnvVariables(
-				["user:resetpassword $actualUsername $sendEmailParam --password-from-env"],
-				['OC_PASS' => $password]
+			$this->featureContext->setOccLastCode(
+				$this->featureContext->runOccWithEnvVariables(
+					["user:resetpassword $actualUsername $sendEmailParam --password-from-env"],
+					['OC_PASS' => $password]
+				)
 			);
 			if ($username === "%admin%") {
 				$this->featureContext->rememberNewAdminPassword($password);
