@@ -1,4 +1,4 @@
-@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172
+@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172 @notToImplementOnOCIS
 Feature: persistent-locking in case of a public link
 
   Background:
@@ -18,8 +18,6 @@ Feature: persistent-locking in case of a public link
     When the public uploads file "/test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And as "Alice" file "/FOLDER/test.txt" should not exist
-
-    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | dav-path | lock-scope | public-webdav-api-version |
       | old      | shared     | old                       |
@@ -34,14 +32,6 @@ Feature: persistent-locking in case of a public link
       | old      | exclusive  | new                       |
       | new      | shared     | new                       |
       | new      | exclusive  | new                       |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path | lock-scope | public-webdav-api-version |
-      | spaces   | shared     | old                       |
-      | spaces   | exclusive  | old                       |
-      | spaces   | shared     | new                       |
-      | spaces   | exclusive  | new                       |
 
   @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
@@ -103,8 +93,6 @@ Feature: persistent-locking in case of a public link
       | lockscope | <lock-scope> |
     Then the HTTP status code should be "405"
     And the value of the item "//s:message" in the response should be "Locking not allowed from public endpoint"
-
-    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version | lock-scope |
       | old                       | shared     |

@@ -4,7 +4,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario Outline: rename a file in a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -22,13 +22,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario Outline: move a file into a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -47,13 +41,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario Outline: move a file into a locked folder is impossible when using the wrong token
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -75,13 +63,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-  @skipOnOcV10 @issue-34338 @files_sharing-app-required
+  @skipOnOcV10 @issue-34338 @files_sharing-app-required @notToImplementOnOCIS
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -102,13 +84,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-  @files_sharing-app-required
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario Outline: public cannot overwrite a file in a folder locked by the owner even when sending the locktoken
     Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
@@ -118,8 +94,6 @@ Feature: actions on a locked item are possible if the token is sent with the req
     When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "Alice" using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "<http_status_code>"
     And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent"
-
-    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | lock-scope | webdav_api_version | http_status_code |
       | shared     | old                | 423              |
