@@ -40,6 +40,8 @@ $finder = PhpCsFixer\Finder::create()
 	->notPath('config/config.php')
 	->notPath('config/config.backup.php')
 	->notPath('tests/autoconfig*')
+	->notPath('core/templates/twofactorselectchallenge.php')
+	->notPath('settings/templates/panels/personal/settings.development.notice.php')
 	->in(__DIR__);
 
 $config = new OC\CodingStandard\Config();
