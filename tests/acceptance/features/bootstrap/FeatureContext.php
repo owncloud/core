@@ -379,6 +379,13 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function setOccLastCode(?int $statusCode = null):void {
+		$this->occLastCode = $statusCode;
+	}
+
+	/**
 	 * @param string|null $httpStatusCode
 	 *
 	 * @return void
@@ -4118,8 +4125,8 @@ class FeatureContext extends BehatVariablesContext {
 		);
 		$this->lastStdOut = $return['stdOut'];
 		$this->lastStdErr = $return['stdErr'];
-		$this->occLastCode = (int) $return['code'];
-		return $this->occLastCode;
+		$occStatusCode = (int) $return['code'];
+		return $occStatusCode;
 	}
 
 	/**

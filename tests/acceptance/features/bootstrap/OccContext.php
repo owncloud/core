@@ -126,7 +126,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function invokingTheCommand(string $cmd):void {
-		$this->featureContext->runOcc([$cmd]);
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc([$cmd])
+		);
 	}
 
 	/**
