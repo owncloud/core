@@ -178,7 +178,7 @@
 		});
 		?>
 			<?php $i = 0;
-			foreach ($userBackends as $backend): ?>
+		foreach ($userBackends as $backend): ?>
 				<?php if ($deprecateTo = $backend->getDeprecateTo()): ?>
 					<input type="hidden" id="allowUserMountingBackends<?php p($i); ?>" name="allowUserMountingBackends[]" value="<?php p($backend->getIdentifier()); ?>" data-deprecate-to="<?php p($deprecateTo->getIdentifier()); ?>" />
 				<?php else: ?>
