@@ -158,11 +158,13 @@ class OccContext implements Context {
 		string $cmd,
 		string $envVariableName,
 		string $envVariableValue
-	):void {
+	):int {
 		$args = [$cmd];
-		$this->featureContext->runOccWithEnvVariables(
-			$args,
-			[$envVariableName => $envVariableValue]
+		return(
+			$this->featureContext->runOccWithEnvVariables(
+				$args,
+				[$envVariableName => $envVariableValue]
+			)
 		);
 	}
 
@@ -730,10 +732,12 @@ class OccContext implements Context {
 		string $envVariableName,
 		string $envVariableValue
 	):void {
-		$this->invokingTheCommandWithEnvVariable(
-			$cmd,
-			$envVariableName,
-			$envVariableValue
+		$this->featureContext->setOccLastCode(
+			$this->invokingTheCommandWithEnvVariable(
+				$cmd,
+				$envVariableName,
+				$envVariableValue
+			)
 		);
 	}
 

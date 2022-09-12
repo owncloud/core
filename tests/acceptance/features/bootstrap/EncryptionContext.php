@@ -166,10 +166,12 @@ class EncryptionContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDecryptsUserKeysBasedEncryptionWithKey(string $recoveryKey):void {
-		$this->occContext->invokingTheCommandWithEnvVariable(
-			"encryption:decrypt-all -m recovery -c yes",
-			'OC_RECOVERY_PASSWORD',
-			$recoveryKey
+		$this->featureContext->setOccLastCode(
+			$this->occContext->invokingTheCommandWithEnvVariable(
+				"encryption:decrypt-all -m recovery -c yes",
+				'OC_RECOVERY_PASSWORD',
+				$recoveryKey
+			)
 		);
 	}
 

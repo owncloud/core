@@ -88,10 +88,12 @@ class OccUsersGroupsContext implements Context {
 				$password = $this->featureContext->getPasswordForUser($row ['username']);
 			}
 
-			$this->occContext->invokingTheCommandWithEnvVariable(
-				$cmd,
-				'OC_PASS',
-				$password
+			$this->featureContext->setOccLastCode(
+				$this->occContext->invokingTheCommandWithEnvVariable(
+					$cmd,
+					'OC_PASS',
+					$password
+				)
 			);
 
 			if ($checkOccCommandStatus) {
@@ -154,10 +156,12 @@ class OccUsersGroupsContext implements Context {
 	 */
 	public function theAdministratorTriesToCreateAUserUsingTheOccCommand(string $username):void {
 		$user = $this->featureContext->getActualUsername($username);
-		$this->occContext->invokingTheCommandWithEnvVariable(
-			"user:add $user  --password-from-env",
-			'OC_PASS',
-			$this->featureContext->getPasswordForUser($username)
+		$this->featureContext->setOccLastCode(
+			$this->occContext->invokingTheCommandWithEnvVariable(
+				"user:add $user  --password-from-env",
+				'OC_PASS',
+				$this->featureContext->getPasswordForUser($username)
+			)
 		);
 	}
 
@@ -175,10 +179,12 @@ class OccUsersGroupsContext implements Context {
 		$user = $this->featureContext->getActualUsername($username);
 		$cmd = "user:add $user  --password-from-env --group=$group";
 		$actualPassword = $this->featureContext->getActualPassword($password);
-		$this->occContext->invokingTheCommandWithEnvVariable(
-			$cmd,
-			'OC_PASS',
-			$actualPassword
+		$this->featureContext->setOccLastCode(
+			$this->occContext->invokingTheCommandWithEnvVariable(
+				$cmd,
+				'OC_PASS',
+				$actualPassword
+			)
 		);
 		$this->featureContext->addUserToCreatedUsersList(
 			$user,
@@ -229,10 +235,12 @@ class OccUsersGroupsContext implements Context {
 	public function theAdministratorResetsTheirOwnPasswordToUsingTheOccCommand(string $newPassword):void {
 		$password = $this->featureContext->getActualPassword($newPassword);
 		$admin = $this->featureContext->getAdminUsername();
-		$this->occContext->invokingTheCommandWithEnvVariable(
-			"user:resetpassword $admin --password-from-env",
-			'OC_PASS',
-			$password
+		$this->featureContext->setOccLastCode(
+			$this->occContext->invokingTheCommandWithEnvVariable(
+				"user:resetpassword $admin --password-from-env",
+				'OC_PASS',
+				$password
+			)
 		);
 		$this->featureContext->rememberNewAdminPassword($password);
 	}
