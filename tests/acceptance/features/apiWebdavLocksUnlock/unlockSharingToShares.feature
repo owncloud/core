@@ -68,7 +68,7 @@ Feature: UNLOCK locked items (sharing)
       | spaces   | shared     |
       | spaces   | exclusive  |
 
-
+  @notToImplementOnOCIS
   Scenario Outline: as share receiver unlocking a shared folder locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT/CHILD"
@@ -91,12 +91,6 @@ Feature: UNLOCK locked items (sharing)
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
 
 
   Scenario Outline: as share receiver unlock a shared file
@@ -188,7 +182,7 @@ Feature: UNLOCK locked items (sharing)
       | spaces   | shared     |
       | spaces   | exclusive  |
 
-
+  @notToImplementOnOCIS
   Scenario Outline: as owner unlocking a shared folder locked by the share receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT/CHILD"
@@ -211,9 +205,3 @@ Feature: UNLOCK locked items (sharing)
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
