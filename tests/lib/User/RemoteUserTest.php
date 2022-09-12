@@ -32,7 +32,6 @@ use Test\TestCase;
  * @package Test\User
  */
 class RemoteUserTest extends TestCase {
-
 	/** @var RemoteUser */
 	private $remoteUser;
 

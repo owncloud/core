@@ -20,7 +20,6 @@ use OCP\IUserSession;
  * @package Tests\Settings\Panels\Admin
  */
 class MailTest extends \Test\TestCase {
-
 	/** @var Mail */
 	private $panel;
 	/** @var IConfig */

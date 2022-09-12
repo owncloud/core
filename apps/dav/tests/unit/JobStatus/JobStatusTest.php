@@ -32,7 +32,6 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\Unit\JobStatus
  */
 class JobStatusTest extends TestCase {
-
 	/** @var JobStatus */
 	private $jobStatus;
 	/** @var JobStatusEntity */

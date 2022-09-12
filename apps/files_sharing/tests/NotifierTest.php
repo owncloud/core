@@ -34,7 +34,6 @@ use OCP\IConfig;
 use OCP\IUser;
 
 class NotifierTest extends \Test\TestCase {
-
 	/**
 	 * @var Notifier
 	 */

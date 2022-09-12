@@ -32,7 +32,6 @@ namespace OCP;
  * @deprecated since 10.0.11 and will be removed in 11.0, please use the share manager instead
  */
 interface Share_Backend {
-
 	/**
 	 * Check if this $itemSource exist for the user
 	 * @param string $itemSource

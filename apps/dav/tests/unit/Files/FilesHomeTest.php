@@ -29,7 +29,6 @@ use OCP\Files\Mount\IMountManager;
 use Test\TestCase;
 
 class FilesHomeTest extends TestCase {
-
 	/** @var FilesHome */
 	private $filesHome;
 	/** @var Directory | \PHPUnit\Framework\MockObject\MockObject */

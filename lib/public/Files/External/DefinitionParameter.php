@@ -29,7 +29,6 @@ namespace OCP\Files\External;
  * @since 10.0
  */
 class DefinitionParameter implements \JsonSerializable {
-
 	/** Value constants */
 	public const VALUE_TEXT = 0;
 	public const VALUE_BOOLEAN = 1;

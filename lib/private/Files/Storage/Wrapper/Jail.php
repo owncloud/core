@@ -33,8 +33,7 @@ use OCP\Lock\ILockingProvider;
  *
  * This restricts access to a subfolder of the wrapped storage with the subfolder becoming the root folder new storage
  */
-class Jail extends Wrapper /* implements IVersionedStorage */
-{
+class Jail extends Wrapper { /* implements IVersionedStorage */
 	/**
 	 * @var string
 	 */

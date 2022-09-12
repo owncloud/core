@@ -31,7 +31,6 @@ use OCP\Migration\ISchemaMigration;
  */
 
 class Version20170202220512 implements ISchemaMigration {
-
 	/**
 	 * @param Schema $schema
 	 * @param array $options

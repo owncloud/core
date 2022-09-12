@@ -25,7 +25,6 @@ use OC\Files\Cache\Wrapper\ReadOnlyCachePermissionsMask;
 use OCP\Constants;
 
 class ReadOnlyJail extends DirMask {
-
 	/**
 	 * @param $path
 	 * @return bool

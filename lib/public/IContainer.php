@@ -44,7 +44,6 @@ use OCP\AppFramework\QueryException;
  * @since 6.0.0
  */
 interface IContainer {
-
 	/**
 	 * If a parameter is not registered in the container try to instantiate it
 	 * by using reflection to find out how to build the class

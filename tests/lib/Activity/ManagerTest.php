@@ -14,7 +14,6 @@ use OCP\Activity\IEvent;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
-
 	/** @var \OC\Activity\Manager */
 	private $activityManager;
 

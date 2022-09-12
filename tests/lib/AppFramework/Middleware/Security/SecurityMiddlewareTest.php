@@ -52,7 +52,6 @@ use OCP\ILogger;
 use OC\OCS\Result;
 
 class SecurityMiddlewareTest extends TestCase {
-
 	/** @var SecurityMiddleware */
 	private $middleware;
 	/** @var Controller | \PHPUnit\Framework\MockObject\MockObject */

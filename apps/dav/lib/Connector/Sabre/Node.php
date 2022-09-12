@@ -45,7 +45,6 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 
 abstract class Node implements \Sabre\DAV\INode {
-
 	/**
 	 * @var \OC\Files\View
 	 */
@@ -268,7 +267,6 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @return int
 	 */
 	public function getSharePermissions($user) {
-
 		// check of we access a federated share
 		if ($user !== null) {
 			try {

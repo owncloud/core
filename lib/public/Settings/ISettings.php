@@ -31,7 +31,6 @@ use OCP\Template;
  * @since 10.0
  */
 interface ISettings {
-
 	/**
 	 * The panel controller method that returns a template to the UI
 	 * @since 10.0

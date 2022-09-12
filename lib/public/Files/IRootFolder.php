@@ -31,7 +31,6 @@ use OC\Hooks\Emitter;
  * @since 8.0.0
  */
 interface IRootFolder extends Folder, Emitter {
-
 	/**
 	 * Returns a view to user's files folder
 	 *

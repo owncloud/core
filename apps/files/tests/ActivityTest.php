@@ -33,7 +33,6 @@ use Test\TestCase;
  * @package OCA\Files\Tests
  */
 class ActivityTest extends TestCase {
-
 	/** @var \OCP\Activity\IManager|\PHPUnit\Framework\MockObject\MockObject */
 	private $activityManager;
 

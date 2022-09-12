@@ -25,7 +25,6 @@ namespace OCP\Files;
  * @since 9.0.0
  */
 class StorageTimeoutException extends StorageNotAvailableException {
-
 	/**
 	 * StorageTimeoutException constructor.
 	 *

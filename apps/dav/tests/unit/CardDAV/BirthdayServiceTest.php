@@ -31,7 +31,6 @@ use Sabre\VObject\Reader;
 use Test\TestCase;
 
 class BirthdayServiceTest extends TestCase {
-
 	/** @var BirthdayService */
 	private $service;
 	/** @var CalDavBackend | \PHPUnit\Framework\MockObject\MockObject */

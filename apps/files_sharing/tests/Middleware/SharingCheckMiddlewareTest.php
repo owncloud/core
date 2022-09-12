@@ -33,7 +33,6 @@ use OCP\Files\NotFoundException;
  * @package OCA\Files_Sharing\Middleware\SharingCheckMiddleware
  */
 class SharingCheckMiddlewareTest extends \Test\TestCase {
-
 	/** @var \OCP\IConfig */
 	private $config;
 	/** @var \OCP\App\IAppManager */

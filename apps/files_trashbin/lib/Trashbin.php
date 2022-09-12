@@ -54,7 +54,6 @@ use OCP\IURLGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Trashbin {
-
 	/**
 	 * @var IURLGenerator
 	 */

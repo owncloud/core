@@ -54,7 +54,6 @@ use OC\Files\View;
  * @package OC\Settings
  */
 class Application extends App {
-
 	/**
 	 * @param array $urlParams
 	 */

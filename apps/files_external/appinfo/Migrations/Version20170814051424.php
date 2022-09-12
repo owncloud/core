@@ -31,12 +31,10 @@ use OCP\Migration\ISimpleMigration;
  * migrate mount.json mounts into the database
  */
 class Version20170814051424 implements ISimpleMigration {
-
 	/**
 	 * @param IOutput $out
 	 */
 	public function run(IOutput $out) {
-
 		/** @var GlobalStoragesService $globalStoragesService */
 		$globalStoragesService = \OC::$server->query('GlobalStoragesService');
 		$legacyStoragesService = new LegacyStoragesService(\OC::$server->getStoragesBackendService());

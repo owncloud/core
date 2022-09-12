@@ -29,7 +29,6 @@ use OCP\AppFramework\QueryException;
  * to the Sabre server.
  */
 class PluginManager {
-
 	/**
 	 * @var ServerContainer
 	 */

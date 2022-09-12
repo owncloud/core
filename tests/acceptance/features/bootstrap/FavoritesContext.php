@@ -32,7 +32,6 @@ require_once 'bootstrap.php';
  * context containing favorites related API steps
  */
 class FavoritesContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

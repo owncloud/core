@@ -29,7 +29,6 @@ use OCP\AppFramework\Http\JSONResponse;
 use Test\TestCase;
 
 class TokenControllerTest extends TestCase {
-
 	/** \OC\Core\Controller\TokenController */
 	private $tokenController;
 	private $request;

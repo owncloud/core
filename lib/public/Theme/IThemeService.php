@@ -24,7 +24,6 @@ namespace OCP\Theme;
  * @since 10.0.3
  */
 interface IThemeService {
-
 	/**
 	 * Returns the currently active theme.
 	 * @return ITheme

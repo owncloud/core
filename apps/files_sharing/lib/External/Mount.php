@@ -28,7 +28,6 @@ use OC\Files\Mount\MountPoint;
 use OC\Files\Mount\MoveableMount;
 
 class Mount extends MountPoint implements MoveableMount {
-
 	/**
 	 * @var \OCA\Files_Sharing\External\Manager
 	 */

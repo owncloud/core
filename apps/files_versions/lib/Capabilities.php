@@ -21,13 +21,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
- 
+
 namespace OCA\Files_Versions;
 
 use OCP\Capabilities\ICapability;
 
 class Capabilities implements ICapability {
-	
 	/**
 	 * Return this classes capabilities
 	 *

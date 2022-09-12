@@ -29,7 +29,6 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 
 class MDB2SchemaWriter {
-
 	/**
 	 * @param string $file
 	 * @param \OC\DB\Connection $conn
@@ -151,7 +150,6 @@ class MDB2SchemaWriter {
 				$xml->addChild('default', $column->getDefault());
 				$xml->addChild('notnull', self::toBool($column->getNotnull()));
 				break;
-
 		}
 	}
 

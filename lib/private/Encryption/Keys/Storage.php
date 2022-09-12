@@ -33,7 +33,6 @@ use OC\User\NoUserException;
 use OC_Util;
 
 class Storage implements IStorage {
-
 	// hidden file which indicate that the folder is a valid key storage
 	public const KEY_STORAGE_MARKER = '.oc_key_storage';
 

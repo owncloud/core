@@ -56,7 +56,6 @@
  *   logout()
  */
 class OC_User {
-
 	/**
 	 * @return \OC\User\Session
 	 */

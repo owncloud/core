@@ -171,7 +171,6 @@ class UsersController extends Controller {
 	 * @return array
 	 */
 	private function formatUserForIndex(IUser $user, array $userGroups = null) {
-
 		// TODO: eliminate this encryption specific code below and somehow
 		// hook in additional user info from other apps
 
@@ -1094,7 +1093,7 @@ class UsersController extends Controller {
 				!$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user) &&
 				$currentUser->getUID() !== $user->getUID()
 			)
-			) {
+		) {
 			return new DataResponse([
 				'status' => 'error',
 				'data' => [

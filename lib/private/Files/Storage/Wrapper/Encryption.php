@@ -366,7 +366,6 @@ class Encryption extends Wrapper {
 	 * @throws ModuleDoesNotExistsException
 	 */
 	public function fopen($path, $mode) {
-
 		// check if the file is stored in the array cache, this means that we
 		// copy a file over to the versions folder, in this case we don't want to
 		// decrypt it
@@ -678,7 +677,6 @@ class Encryption extends Wrapper {
 	 * @return bool
 	 */
 	public function copyFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false, $isRename = false) {
-
 		// TODO clean this up once the underlying moveFromStorage in OC\Files\Storage\Wrapper\Common is fixed:
 		// - call $this->storage->copyFromStorage() instead of $this->copyBetweenStorage
 		// - copy the file cache update from  $this->copyBetweenStorage to this method

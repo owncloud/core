@@ -10,7 +10,6 @@ use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
 
 class Version20170221114437 implements ISimpleMigration {
-
 	/**
 	 * @param IOutput $out
 	 */

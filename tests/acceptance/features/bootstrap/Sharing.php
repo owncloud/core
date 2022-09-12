@@ -37,7 +37,6 @@ use TestHelpers\TranslationHelper;
  * Sharing trait
  */
 trait Sharing {
-
 	/**
 	 * @var int
 	 */

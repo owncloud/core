@@ -42,7 +42,6 @@ use Sabre\DAV\Exception\NotFound;
  * @package OCA\DAV\Tests\unit\CalDAV
  */
 class CalDavBackendTest extends AbstractCalDavBackendTest {
-
 	/**
 	 * @throws \Sabre\DAV\Exception
 	 */
@@ -97,7 +96,6 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 	 * @throws \Sabre\DAV\Exception
 	 */
 	public function testCalendarSharing($userCanRead, $userCanWrite, $groupCanRead, $groupCanWrite, $add) {
-
 		/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject $l10n */
 		$l10n = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()->getMock();

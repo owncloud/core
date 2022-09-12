@@ -18,7 +18,6 @@ use OCP\IConfig;
  * @package Tests\Settings\Panels\Personal
  */
 class ClientsTest extends \Test\TestCase {
-
 	/** @var Clients */
 	private $panel;
 	/** @var IConfig */

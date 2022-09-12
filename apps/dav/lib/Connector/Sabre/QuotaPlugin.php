@@ -39,7 +39,6 @@ use Sabre\HTTP\RequestInterface;
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
 class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
-
 	/**
 	 * @var \OC\Files\View
 	 */

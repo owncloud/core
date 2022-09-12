@@ -34,7 +34,6 @@ use OCP\Migration\ISqlMigration;
  * Drop all entries that can't be resolved
  */
 class Version20170202213905 implements ISqlMigration {
-
 	/** @var IUserManager */
 	private $userManager;
 

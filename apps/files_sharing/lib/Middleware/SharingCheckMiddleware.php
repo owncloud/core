@@ -39,7 +39,6 @@ use OCP\IConfig;
  * @package OCA\Files_Sharing\Middleware
  */
 class SharingCheckMiddleware extends Middleware {
-
 	/** @var string */
 	protected $appName;
 	/** @var IConfig */

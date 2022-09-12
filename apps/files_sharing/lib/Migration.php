@@ -34,7 +34,6 @@ use OCP\IDBConnection;
  * @group DB
  */
 class Migration {
-
 	/** @var IDBConnection */
 	private $connection;
 

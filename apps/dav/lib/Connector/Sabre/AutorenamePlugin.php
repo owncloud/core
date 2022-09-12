@@ -32,7 +32,6 @@ use Sabre\HTTP\ResponseInterface;
  * if the OC-Autorename header is set.
  */
 class AutorenamePlugin extends ServerPlugin {
-
 	/**
 	 * Reference to main server object
 	 *

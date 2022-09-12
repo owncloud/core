@@ -48,7 +48,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *  - failure(string $message)
  */
 class Updater extends BasicEmitter {
-
 	/** @var ILogger $log */
 	private $log;
 	

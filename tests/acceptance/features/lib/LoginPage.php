@@ -32,7 +32,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * Login page.
  */
 class LoginPage extends OwncloudPage {
-
 	/**
 	 * @var string $path
 	 */

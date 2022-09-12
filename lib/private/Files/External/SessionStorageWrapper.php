@@ -30,7 +30,6 @@ use \OCP\Constants;
  * Wrap Storage in PermissionsMask for session ephemeral use
  */
 class SessionStorageWrapper extends PermissionsMask {
-
 	/**
 	 * @param array $arguments ['storage' => $storage]
 	 */

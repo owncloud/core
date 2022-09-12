@@ -31,7 +31,6 @@ require_once 'bootstrap.php';
  * Checksum functions
  */
 class ChecksumContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

@@ -22,7 +22,6 @@
 namespace Test;
 
 class CapabilitiesManagerTest extends TestCase {
-
 	/**
 	 * Test no capabilities
 	 */

@@ -32,7 +32,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ListApps extends Base {
-
 	/** @var IAppManager */
 	protected $manager;
 
@@ -183,11 +182,11 @@ class ListApps extends Base {
 					$output->writeln('Disabled:');
 					parent::writeArrayInOutputFormat($input, $output, $items['disabled']);
 				}
-			break;
+				break;
 
 			default:
 				parent::writeArrayInOutputFormat($input, $output, $items);
-			break;
+				break;
 		}
 	}
 }

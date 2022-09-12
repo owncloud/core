@@ -30,7 +30,6 @@ use OCP\IConfig;
 use OCP\IDBConnection;
 
 class AccountMapper extends Mapper {
-
 	/* @var IConfig */
 	protected $config;
 

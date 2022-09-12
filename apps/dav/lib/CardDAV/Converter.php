@@ -28,7 +28,6 @@ use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Property\Text;
 
 class Converter {
-
 	/**
 	 * @param IUser $user
 	 * @return VCard

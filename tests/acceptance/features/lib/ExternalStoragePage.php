@@ -28,7 +28,6 @@ use Exception;
  * External Storage page.
  */
 class ExternalStoragePage extends FilesPageBasic {
-
 	/**
 	 *
 	 * @var string $path

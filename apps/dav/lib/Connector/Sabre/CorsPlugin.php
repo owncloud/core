@@ -31,7 +31,6 @@ use Sabre\HTTP\ResponseInterface;
  * Class CorsPlugin is a plugin which adds CORS headers to the responses
  */
 class CorsPlugin extends ServerPlugin {
-
 	/**
 	 * Reference to main server object
 	 *

@@ -34,7 +34,6 @@ require_once 'bootstrap.php';
  * Sharees context.
  */
 class ShareesContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

@@ -442,7 +442,6 @@ class FilesPage extends FilesPageBasic {
 	 * @throws Exception
 	 */
 	public function browseToFolder(string $folderName): void {
-
 		// foldername is encoded into query-string
 		$folderName = \urlencode($folderName);
 

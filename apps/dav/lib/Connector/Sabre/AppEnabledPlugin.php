@@ -31,7 +31,6 @@ use Sabre\DAV\ServerPlugin;
  * Plugin to check if an app is enabled for the current user
  */
 class AppEnabledPlugin extends ServerPlugin {
-
 	/**
 	 * Reference to main server object
 	 *

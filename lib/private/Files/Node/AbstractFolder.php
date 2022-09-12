@@ -26,7 +26,6 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 
 class AbstractFolder extends AbstractNode implements \OCP\Files\Folder {
-
 	/**
 	 * @inheritdoc
 	 */

@@ -31,7 +31,6 @@ use Sabre\HTTP\Response;
 use Test\TestCase;
 
 class CorsPluginTest extends TestCase {
-
 	/**
 	 * @var Server
 	 */

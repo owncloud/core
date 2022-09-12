@@ -1507,7 +1507,6 @@ class ShareesTest extends TestCase {
 	 * @param bool $isSearchable
 	 */
 	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd, $previousExact = [], $isSearchable = true) {
-
 		// Set the limit and offset for remote user searching
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);

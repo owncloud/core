@@ -30,7 +30,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class Collation implements IRepairStep {
-
 	/** @var \OCP\IConfig */
 	protected $config;
 

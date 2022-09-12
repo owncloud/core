@@ -41,7 +41,6 @@ use OCP\Share\Events\DeclineShare;
 use OCP\Util;
 
 class Application extends App {
-
 	/** @var FederatedShareProvider */
 	protected $federatedShareProvider;
 

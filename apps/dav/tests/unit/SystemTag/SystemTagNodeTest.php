@@ -29,7 +29,6 @@ use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\SystemTag\TagNotFoundException;
 
 class SystemTagNodeTest extends \Test\TestCase {
-
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager
 	 */

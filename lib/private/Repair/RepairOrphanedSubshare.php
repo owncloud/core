@@ -27,7 +27,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class RepairOrphanedSubshare implements IRepairStep {
-
 	/** @var IDBConnection  */
 	private $connection;
 

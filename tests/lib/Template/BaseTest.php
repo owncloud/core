@@ -12,7 +12,6 @@ use OC\Template\Base;
 use OCP\Theme\ITheme;
 
 class BaseTest extends \Test\TestCase {
-
 	/** @var ITheme|\PHPUnit\Framework\MockObject\MockObject */
 	protected $theme;
 

@@ -26,7 +26,6 @@ use Sabre\DAV\INode;
  *
  */
 interface IShareable extends INode {
-
 	/**
 	 * Updates the list of shares.
 	 *

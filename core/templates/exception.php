@@ -2,8 +2,8 @@
 	/** @var array $_ */
 	/** @var \OCP\IL10N $l */
 
-style('core', ['styles', 'header']);
-?>
+	style('core', ['styles', 'header']);
+	?>
 <span class="error error-wide">
 	<h2><strong><?php p($l->t('Internal Server Error')) ?></strong></h2>
 		<p><?php p($l->t('The server encountered an internal error and was unable to complete your request.')) ?></p>

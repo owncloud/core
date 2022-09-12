@@ -24,7 +24,6 @@ use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\MethodNotAllowed;
 
 class PublicCalendarRoot extends Collection {
-
 	/** @var CalDavBackend */
 	protected $caldavBackend;
 

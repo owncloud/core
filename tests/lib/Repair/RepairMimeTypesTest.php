@@ -22,7 +22,6 @@ use OCP\Migration\IRepairStep;
  * @see \OC\Repair\RepairMimeTypes
  */
 class RepairMimeTypesTest extends \Test\TestCase {
-
 	/** @var IRepairStep */
 	private $repair;
 

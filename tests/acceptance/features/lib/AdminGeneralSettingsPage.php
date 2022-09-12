@@ -33,7 +33,6 @@ use TestHelpers\EmailHelper;
  * Admin General Settings page.
  */
 class AdminGeneralSettingsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

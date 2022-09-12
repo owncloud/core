@@ -35,7 +35,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Execute extends Command {
-
 	/**
 	 * @var IJobList
 	 */

@@ -34,7 +34,6 @@ require_once 'bootstrap.php';
  * WebUI Tags context.
  */
 class WebUITagsContext extends RawMinkContext implements Context {
-
 	/**
 	 *
 	 * @var FilesPage

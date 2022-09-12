@@ -56,7 +56,6 @@ use Sabre\DAV\INode;
 use Sabre\DAV\IQuota;
 
 class Directory extends Node implements ICollection, IQuota, IMoveTarget {
-
 	/**
 	 * Cached directory content
 	 *
@@ -122,7 +121,6 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @throws ServiceUnavailable
 	 */
 	public function createFile($name, $data = null) {
-
 		# the check here is necessary, because createFile uses put covered in sabre/file.php
 		# and not touch covered in files/view.php
 		if (Filesystem::isForbiddenFileOrDir($name)) {
@@ -200,7 +198,6 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @throws SabreServiceUnavailable
 	 */
 	public function createDirectory($name) {
-
 		# the check here is necessary, because createDirectory does not use the methods in files/view.php
 		if (Filesystem::isForbiddenFileOrDir($name)) {
 			throw new SabreForbidden();

@@ -25,7 +25,6 @@ namespace OCP\Files;
  * @since 9.0.0
  */
 class StorageAuthException extends StorageNotAvailableException {
-
 	/**
 	 * StorageAuthException constructor.
 	 *

@@ -68,7 +68,6 @@ use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 
 class Filesystem {
-
 	/**
 	 * @var Mount\Manager $mounts
 	 */

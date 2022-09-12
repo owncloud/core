@@ -26,7 +26,6 @@ use OCP\IUser;
 use OCP\IUserSession;
 
 class SharingPersonalPanelTest extends \Test\TestCase {
-
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
 	private $config;
 

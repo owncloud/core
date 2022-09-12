@@ -35,7 +35,6 @@ use OCP\IDBConnection;
 use OCP\ILogger;
 
 class JobList implements IJobList {
-
 	/** @var IDBConnection */
 	protected $connection;
 	/**@var IConfig */

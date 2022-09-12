@@ -10,20 +10,20 @@
 
 	<?php
 		$userId = \OC::$server->getUserSession()->getUser()->getUID();
-		if (\OC::$server->getGroupManager()->isAdmin($userId)) {
-			echo 	'<p><a href="' .
-				link_to('', 'index.php/settings/admin?sectionid=storage') .
-				'">' .
-				$l->t('You can add external storages in the storage settings') .
-				'</a></p>';
-		} else {
-			echo 	'<p><a href="' .
-				link_to('', 'index.php/settings/personal?sectionid=storage') .
-				'">' .
-				$l->t('You can add external storages in the storage settings') .
-				'</a></p>';
-		}
-	?>
+if (\OC::$server->getGroupManager()->isAdmin($userId)) {
+	echo 	'<p><a href="' .
+		link_to('', 'index.php/settings/admin?sectionid=storage') .
+		'">' .
+		$l->t('You can add external storages in the storage settings') .
+		'</a></p>';
+} else {
+	echo 	'<p><a href="' .
+		link_to('', 'index.php/settings/personal?sectionid=storage') .
+		'">' .
+		$l->t('You can add external storages in the storage settings') .
+		'</a></p>';
+}
+?>
 </div>
 
 <input type="hidden" name="dir" value="" id="dir">

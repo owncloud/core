@@ -30,7 +30,6 @@ use OCP\Files\External\Backend\Backend;
  * @since 10.0
  */
 interface IBackendProvider {
-
 	/**
 	 * @since 9.1.0
 	 * @return Backend[]

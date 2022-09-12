@@ -36,7 +36,6 @@ use Test\TestCase;
  * @package OCA\Files_Trashbin\Tests\Command
  */
 class CleanUpTest extends TestCase {
-
 	/** @var  CleanUp */
 	protected $cleanup;
 

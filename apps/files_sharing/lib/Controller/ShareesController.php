@@ -45,7 +45,6 @@ use OCA\Files_Sharing\SharingBlacklist;
 use OCP\Util\UserSearch;
 
 class ShareesController extends OCSController {
-
 	/** @var IGroupManager */
 	protected $groupManager;
 

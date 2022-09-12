@@ -45,7 +45,6 @@ use OCP\Files\StorageNotAvailableException;
  * @since 9.0.0
  */
 interface IStorage {
-
 	/**
 	 * usePartFile - allows a storage to opt-out of .part upload and rename
 	 * @return boolean

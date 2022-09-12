@@ -47,7 +47,6 @@ use OCP\Files\Node;
  * @package OC\Share20
  */
 class DefaultShareProvider implements IShareProvider {
-
 	// Special share type for user modified group shares
 	public const SHARE_TYPE_USERGROUP = 2;
 

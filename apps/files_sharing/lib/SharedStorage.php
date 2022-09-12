@@ -47,7 +47,6 @@ use OCP\Lock\Persistent\ILock;
  * Convert target path to source path and pass the function call to the correct storage provider
  */
 class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
-
 	/** @var \OCP\Share\IShare */
 	private $superShare;
 

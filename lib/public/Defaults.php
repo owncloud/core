@@ -37,7 +37,6 @@ namespace OCP;
  * @since 6.0.0
  */
 class Defaults {
-
 	/**
 	 * \OC_Defaults instance to retrieve the defaults
 	 * @return string

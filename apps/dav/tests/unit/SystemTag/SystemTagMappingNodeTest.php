@@ -28,7 +28,6 @@ use OCP\SystemTag\ISystemTag;
 use OCP\SystemTag\TagNotFoundException;
 
 class SystemTagMappingNodeTest extends \Test\TestCase {
-
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager
 	 */
