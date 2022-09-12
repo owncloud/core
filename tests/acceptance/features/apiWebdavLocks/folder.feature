@@ -4,7 +4,7 @@ Feature: lock folders
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario Outline: upload to a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -20,13 +20,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-
+  @notToImplementOnOCIS
   Scenario Outline: upload to a subfolder of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -43,13 +37,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario Outline: create folder in a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -65,13 +53,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-
+  @notToImplementOnOCIS
   Scenario Outline: create folder in a subfolder of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -88,13 +70,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-
+  @notToImplementOnOCIS
   Scenario Outline: Move file out of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -112,13 +88,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-
+  @notToImplementOnOCIS
   Scenario Outline: Move file out of a locked sub folder one level higher into locked parent folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -137,13 +107,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
-
+  @notToImplementOnOCIS
   Scenario Outline: lockdiscovery of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -162,9 +126,3 @@ Feature: lock folders
       | old      | exclusive  | /%base_path%\/remote.php\/webdav\/PARENT$/                 |
       | new      | shared     | /%base_path%\/remote.php\/dav\/files\/%username%\/PARENT$/ |
       | new      | exclusive  | /%base_path%\/remote.php\/dav\/files\/%username%\/PARENT$/ |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope | lock-root                                                  |
-      | spaces   | shared     | /%base_path%\/remote.php\/dav\/spaces\/%spaceid%\/PARENT$/ |
-      | spaces   | exclusive  | /%base_path%\/remote.php\/dav\/spaces\/%spaceid%\/PARENT$/ |
