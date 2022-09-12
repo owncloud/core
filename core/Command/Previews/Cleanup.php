@@ -58,7 +58,7 @@ class Cleanup extends Base {
 		$chunk_size = $input->getArgument('chunk_size');
 
 		$pc = new PreviewCleanup($this->connection);
-		$count = $pc->process($all, $chunk_size, static function ($userId, $name, $action) use ($output) {
+		$count = $pc->process($all, (int)$chunk_size, static function ($userId, $name, $action) use ($output) {
 			$output->writeln("$name - $userId: $action");
 		});
 
