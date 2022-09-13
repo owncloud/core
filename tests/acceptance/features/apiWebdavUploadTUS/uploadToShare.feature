@@ -17,8 +17,7 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "/FOLDER" with user "Brian"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "200"
-    And as "Alice" file "/FOLDER/textfile.txt" should exist
+    Then as "Alice" file "/FOLDER/textfile.txt" should exist
     And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |
@@ -32,8 +31,7 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "change"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "200"
-    And as "Alice" file "/FOLDER/textfile.txt" should exist
+    Then as "Alice" file "/FOLDER/textfile.txt" should exist
     And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |
@@ -49,8 +47,7 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "FOLDER" with group "grp1" with permissions "change"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "200"
-    And as "Alice" file "/FOLDER/textfile.txt" should exist
+    Then as "Alice" file "/FOLDER/textfile.txt" should exist
     And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |
@@ -65,8 +62,7 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "/FOLDER" with user "Brian"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "overwritten content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "200"
-    And as "Alice" file "/FOLDER/textfile.txt" should exist
+    Then as "Alice" file "/FOLDER/textfile.txt" should exist
     And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "overwritten content"
     Examples:
       | dav_version |
@@ -80,8 +76,7 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "read"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "200"
-    And as "Brian" file "/Shares/FOLDER/textfile.txt" should not exist
+    Then as "Brian" file "/Shares/FOLDER/textfile.txt" should not exist
     Examples:
       | dav_version |
       | old         |

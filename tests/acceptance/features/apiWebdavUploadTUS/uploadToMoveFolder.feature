@@ -13,8 +13,7 @@ Feature: move folders
     And user "Alice" has created folder "/test-moved"
     And user "Alice" has moved folder "/test-moved" to "/test/test-moved"
     When user "Alice" uploads file with content "uploaded content" to "/test/test-moved/textfile.txt" using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "/test/test-moved/textfile.txt" should exist
+    Then as "Alice" file "/test/test-moved/textfile.txt" should exist
     And the content of file "/test/test-moved/textfile.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |

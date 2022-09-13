@@ -31,8 +31,7 @@ Feature: tests of the creation extension see https://tus.io/protocols/resumable-
   Scenario Outline: creating a new resource and upload data in multiple bytes using creation with upload extension
     Given using <dav_version> DAV path
     When user "Alice" creates file "textFile.txt" and uploads content "12345" in the same request using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "200"
-    And the content of file "/textFile.txt" for user "Alice" should be "12345"
+    Then the content of file "/textFile.txt" for user "Alice" should be "12345"
     Examples:
       | dav_version |
       | old         |
