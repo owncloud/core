@@ -84,8 +84,8 @@ class TransferOwnershipContext implements Context {
 	 */
 	public function troubleshootingTransferOwnership(string $type):void {
 		$this->featureContext->setOccLastCode(
-			$this->featureContext->runOcc(['files:troubleshoot-transfer-ownership', $type, '--fix']);
-		)
+			$this->featureContext->runOcc(['files:troubleshoot-transfer-ownership', $type, '--fix'])
+		);
 	}
 
 	/**

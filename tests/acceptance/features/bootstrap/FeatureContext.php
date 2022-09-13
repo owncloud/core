@@ -379,6 +379,8 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @param int $statusCode
+	 *
 	 * @return void
 	 */
 	public function setOccLastCode(?int $statusCode = null):void {

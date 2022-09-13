@@ -60,7 +60,7 @@ class EncryptionContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminRecreatesMasterKeyUsingOccCommand():void {
-		$this->featureContext->setOccLastCode($this->recreateMasterKeyUsingOccCommand());	
+		$this->featureContext->setOccLastCode($this->recreateMasterKeyUsingOccCommand());
 	}
 
 	/**
@@ -92,8 +92,9 @@ class EncryptionContext implements Context {
 	 * @throws Exception
 	 */
 	public function setEncryptionTypeUsingTheOccCommand(string $encryptionType):int {
-		return( $this->featureContext->runOcc(
-				["encryption:select-encryption-type", $encryptionType, "-y"])
+		return($this->featureContext->runOcc(
+			["encryption:select-encryption-type", $encryptionType, "-y"]
+		)
 		);
 	}
 

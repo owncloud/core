@@ -1499,13 +1499,15 @@ class OccContext implements Context {
 			$action = "$action-group";
 		}
 		$mountId = $this->featureContext->getStorageId($mountName);
-		$this->featureContext->runOcc(
-			[
-				'files_external:applicable',
-				$mountId,
-				"$action ",
-				"$userOrGroupName"
-			]
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(
+				[
+					'files_external:applicable',
+					$mountId,
+					"$action ",
+					"$userOrGroupName"
+				]
+			)
 		);
 	}
 
@@ -3401,7 +3403,9 @@ class OccContext implements Context {
 			$extMntSettings['storage_backend'],
 			$extMntSettings['authentication_backend']
 		];
-		$this->featureContext->runOcc($args);
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc($args)
+		);
 		// add to array of created storageIds
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$mountId = \preg_replace('/\D/', '', $commandOutput);
