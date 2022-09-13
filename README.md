@@ -42,6 +42,6 @@ Learn about the different ways you can get support for ownCloud: https://ownclou
 
 ## Important Notice on Translations
 Please submit translations via Transifex:
-https://www.transifex.com/projects/p/owncloud/
+https://explore.transifex.com/owncloud-org/
 
 See the detailed information about [translations](https://doc.owncloud.com/server/latest/developer_manual/core/translation.html) here.
