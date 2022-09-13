@@ -139,7 +139,7 @@ if ($_['passwordChangeSupported']) {
 	</h2>
 	<?php print_unescaped($_['languageSelector']); ?>
 	<?php if (OC_Util::getEditionString() === OC_Util::EDITION_COMMUNITY): ?>
-	<a href="https://www.transifex.com/projects/p/owncloud/"
+	<a href="https://explore.transifex.com/owncloud-org/"
 	  target="_blank" rel="noreferrer">
 		<em><?php p($l->t('Help translate'));?></em>
 	</a>
