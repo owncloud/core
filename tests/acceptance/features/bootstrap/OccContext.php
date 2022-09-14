@@ -3672,7 +3672,9 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorListsMigrationStatusOfApp(string $app):void {
 		$this->featureContext->setStdOutOfOccCommand("");
-		$this->featureContext->runOcc(['migrations:status', $app]);
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(['migrations:status', $app])
+		);
 	}
 
 	/**
