@@ -415,16 +415,25 @@ function run_behat_tests() {
 	echo ${TEMP_CONTENT} > ${TEST_LOG_FILE}
 	IFS="${OLD_IFS}"
 
+	# Find the count of scenarios that passed
+	SCENARIO_RESULTS_COLORED=`grep -Ea '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
+	SCENARIO_RESULTS=$(echo "${SCENARIO_RESULTS_COLORED}" | sed "s/\x1b[^m]*m//g")
 	if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 	then
-		# Find the count of scenarios that passed
-		SCENARIO_RESULTS_COLORED=`grep -Ea '^[0-9]+[[:space:]]scenario(|s)[[:space:]]\(' ${TEST_LOG_FILE}`
-		SCENARIO_RESULTS=$(echo "${SCENARIO_RESULTS_COLORED}" | sed "s/\x1b[^m]*m//g")
-		# They all passed, so just get the first number.
+		# They (SCENARIO_RESULTS) all passed, so just get the first number.
 		# The text looks like "1 scenario (1 passed)" or "123 scenarios (123 passed)"
 		[[ ${SCENARIO_RESULTS} =~ ([0-9]+) ]]
 		SCENARIOS_THAT_PASSED=$((SCENARIOS_THAT_PASSED + BASH_REMATCH[1]))
 	else
+		# "Something went wrong" with the Behat run (non-zero exit status).
+		# If there were "ordinary" test fails, then we process that later. Maybe they are all "expected failures".
+		# But if there were steps in a feature file that are undefined, we want to fail immediately.
+		# So exit the tests and do not lint expected failures when undefined steps exist.
+		if [[ ${SCENARIO_RESULTS} == *"undefined"* ]]
+		then
+			echo -e "\033[31m Undefined steps: There were some undefined steps found."
+			exit 1
+		fi
 		# If there were no scenarios in the requested suite or feature that match
 		# the requested combination of tags, then Behat exits with an error status
 		# and reports "No scenarios" in its output.
