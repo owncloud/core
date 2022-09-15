@@ -324,7 +324,7 @@ trait WebDav {
 	public function getFullDavFilesPath(string $user):string {
 		$spaceId = null;
 		if ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES) {
-			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
+			$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ? WebDavHelper::$SPACE_ID_FROM_OCIS : WebDavHelper::getPersonalSpaceIdForUser(
 				$this->getBaseUrl(),
 				$user,
 				$this->getPasswordForUser($user),
@@ -4882,24 +4882,29 @@ trait WebDav {
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $expectedFiles
 	 * @param string|null $user
+	 * @param string|null $method
+	 * @param string|null $folderpath
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function propfindResultShouldContainEntries(
 		string $shouldOrNot,
 		TableNode $expectedFiles,
-		?string $user = null
+		?string $user = null,
+		?string $method = 'REPORT',
+		?string $folderpath = ''
 	):void {
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$elementRows = $expectedFiles->getRows();
 		$should = ($shouldOrNot !== "not");
-
 		foreach ($elementRows as $expectedFile) {
 			$fileFound = $this->findEntryFromPropfindResponse(
 				$expectedFile[0],
 				$user,
-				"REPORT"
+				$method,
+				"files",
+				$folderpath
 			);
 			if ($should) {
 				Assert::assertNotEmpty(
@@ -5267,35 +5272,54 @@ trait WebDav {
 	}
 
 	/**
+	 * Escapes the given string for
+	 * 1. Space --> %20
+	 * 2. Opening Small Bracket --> %28
+	 * 3. Closing Small Bracket --> %29
+	 *
+	 * @param string $path - File path to parse
+	 *
+	 * @return string
+	 */
+	public function escapePath(string $path): string {
+		return \str_replace([" ", "(", ")"], ["%20", "%28", "%29"], $path);
+	}
+
+	/**
 	 * parses a PROPFIND response from $this->response into xml
 	 * and returns found search results if found else returns false
 	 *
-	 * @param string $entryNameToSearch
+	 * @param string|null $entryNameToSearch
 	 * @param string|null $user
 	 * @param string|null $method
 	 * @param string $type
+	 * @param string $folderPath
 	 *
 	 * @return string|array|boolean
+	 *
 	 * string if $entryNameToSearch is given and is found
 	 * array if $entryNameToSearch is not given
 	 * boolean false if $entryNameToSearch is given and is not found
-	 * @throws Exception
+	 *
+	 * @throws GuzzleException
 	 */
 	public function findEntryFromPropfindResponse(
 		?string $entryNameToSearch = null,
 		?string $user = null,
 		?string $method = null,
-		string $type = "files"
+		string $type = "files",
+		string $folderPath = ''
 	) {
 		$trimmedEntryNameToSearch = '';
 		// trim any leading "/" passed by the caller, we can just match the "raw" name
 		if ($entryNameToSearch != null) {
 			$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 		}
+		// url encode for spaces and brackets that may appear in the filePath
+		$folderPath = $this->escapePath($folderPath);
 		// topWebDavPath should be something like /remote.php/webdav/ or
 		// /remote.php/dav/files/alice/
-		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
-
+		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/" . $folderPath;
 		switch ($type) {
 			case "files":
 				break;
@@ -5316,13 +5340,13 @@ trait WebDav {
 					if ($entryNameToSearch !== null && str_ends_with($entryPath, $entryNameToSearch)) {
 						return $multistatusResults;
 					} else {
-						$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
+						$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ? WebDavHelper::$SPACE_ID_FROM_OCIS : WebDavHelper::getPersonalSpaceIdForUser(
 							$this->getBaseUrl(),
 							$user,
 							$this->getPasswordForUser($user),
 							$this->getStepLineRef()
 						);
-						$topWebDavPath = "/remote.php/dav/spaces/" . $spaceId . "/";
+						$topWebDavPath = "/remote.php/dav/spaces/" . $spaceId . "/" . $folderPath;
 					}
 				}
 				$entryName = \str_replace($topWebDavPath, "", $entryPath);
