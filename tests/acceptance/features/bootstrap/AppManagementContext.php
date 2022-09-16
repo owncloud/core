@@ -185,8 +185,10 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminGetsPathForApp(string $appId):void {
-		$this->featureContext->runOcc(
-			['app:getpath', $appId, '--no-ansi']
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(
+				['app:getpath', $appId, '--no-ansi']
+			)
 		);
 		$this->cmdOutput = $this->featureContext->getStdOutOfOccCommand();
 		// check that the command seems to have executed OK, for both When and Given
@@ -207,8 +209,10 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminListsTheApps():void {
-		$this->featureContext->runOcc(
-			['app:list', '--no-ansi']
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(
+				['app:list', '--no-ansi']
+			)
 		);
 	}
 
@@ -219,8 +223,10 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminListsTheEnabledApps():void {
-		$this->featureContext->runOcc(
-			['app:list', '--enabled', '--no-ansi']
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(
+				['app:list', '--enabled', '--no-ansi']
+			)
 		);
 	}
 
@@ -231,8 +237,10 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminListsTheDisabledApps():void {
-		$this->featureContext->runOcc(
-			['app:list', '--disabled', '--no-ansi']
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(
+				['app:list', '--disabled', '--no-ansi']
+			)
 		);
 	}
 
@@ -243,8 +251,10 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminListsTheEnabledAndDisabledApps():void {
-		$this->featureContext->runOcc(
-			['app:list', '--enabled', '--disabled', '--no-ansi']
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(
+				['app:list', '--enabled', '--disabled', '--no-ansi']
+			)
 		);
 	}
 
@@ -255,8 +265,10 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminListsTheAppsInMinimalFormat():void {
-		$this->featureContext->runOcc(
-			['app:list', '--minimal --no-ansi']
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(
+				['app:list', '--minimal --no-ansi']
+			)
 		);
 	}
 

@@ -47,8 +47,10 @@ class EncryptionContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function recreateMasterKeyUsingOccCommand():void {
-		$this->featureContext->runOcc(['encryption:recreate-master-key', '-y']);
+	public function recreateMasterKeyUsingOccCommand():int {
+		return(
+			$this->featureContext->runOcc(['encryption:recreate-master-key', '-y'])
+		);
 	}
 
 	/**
@@ -58,7 +60,7 @@ class EncryptionContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminRecreatesMasterKeyUsingOccCommand():void {
-		$this->recreateMasterKeyUsingOccCommand();
+		$this->featureContext->setOccLastCode($this->recreateMasterKeyUsingOccCommand());
 	}
 
 	/**
@@ -89,9 +91,10 @@ class EncryptionContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setEncryptionTypeUsingTheOccCommand(string $encryptionType):void {
-		$this->featureContext->runOcc(
+	public function setEncryptionTypeUsingTheOccCommand(string $encryptionType):int {
+		return($this->featureContext->runOcc(
 			["encryption:select-encryption-type", $encryptionType, "-y"]
+		)
 		);
 	}
 
@@ -104,7 +107,9 @@ class EncryptionContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorSetsEncryptionTypeToUsingTheOccCommand(string $encryptionType):void {
-		$this->setEncryptionTypeUsingTheOccCommand($encryptionType);
+		$this->featureContext->setOccLastCode(
+			$this->setEncryptionTypeUsingTheOccCommand($encryptionType)
+		);
 	}
 
 	/**
@@ -124,8 +129,10 @@ class EncryptionContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function encryptAllDataUsingTheOccCommand():void {
-		$this->featureContext->runOcc(["encryption:encrypt-all", "-y"]);
+	public function encryptAllDataUsingTheOccCommand():int {
+		return (
+			$this->featureContext->runOcc(["encryption:encrypt-all", "-y"])
+		);
 	}
 
 	/**
@@ -135,7 +142,9 @@ class EncryptionContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorEncryptsAllDataUsingTheOccCommand():void {
-		$this->encryptAllDataUsingTheOccCommand();
+		$this->featureContext->setOccLastCode(
+			$this->encryptAllDataUsingTheOccCommand()
+		);
 	}
 
 	/**
@@ -158,10 +167,12 @@ class EncryptionContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorDecryptsUserKeysBasedEncryptionWithKey(string $recoveryKey):void {
-		$this->occContext->invokingTheCommandWithEnvVariable(
-			"encryption:decrypt-all -m recovery -c yes",
-			'OC_RECOVERY_PASSWORD',
-			$recoveryKey
+		$this->featureContext->setOccLastCode(
+			$this->occContext->invokingTheCommandWithEnvVariable(
+				"encryption:decrypt-all -m recovery -c yes",
+				'OC_RECOVERY_PASSWORD',
+				$recoveryKey
+			)
 		);
 	}
 

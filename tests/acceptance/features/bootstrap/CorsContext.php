@@ -49,7 +49,7 @@ class CorsContext implements Context {
 	 */
 	public function addDomainToPrivateCORSLists(string $user, string $domain):void {
 		$user = $this->featureContext->getActualUsername($user);
-		$this->featureContext->runOcc(
+		$occStatus = $this->featureContext->runOcc(
 			[
 				'user:setting',
 				$user,
@@ -57,7 +57,7 @@ class CorsContext implements Context {
 				'domains'
 			]
 		);
-		if ($this->featureContext->getExitStatusCodeOfOccCommand() === 0) {
+		if ($occStatus === 0) {
 			$domainsJson = $this->featureContext->getStdOutOfOccCommand();
 			$domains = \json_decode($domainsJson);
 		} else {
@@ -72,8 +72,7 @@ class CorsContext implements Context {
 
 		$domains[] = $domain;
 		$valueString = \json_encode($domains);
-
-		$this->featureContext->runOcc(
+		$occStatus = $this->featureContext->runOcc(
 			[
 				'user:setting',
 				$user,
@@ -82,7 +81,7 @@ class CorsContext implements Context {
 				'--value=\'' . $valueString . '\''
 			]
 		);
-		if ($this->featureContext->getExitStatusCodeOfOccCommand() !== 0) {
+		if ($occStatus !== 0) {
 			throw new \Exception(
 				"could not set CORS domain. " .
 				$this->featureContext->getStdErrOfOccCommand()

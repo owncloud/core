@@ -67,7 +67,9 @@ class TransferOwnershipContext implements Context {
 	 * @throws Exception
 	 */
 	public function transferringOwnership(string $user1, string $user2):void {
-		if ($this->featureContext->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
+		$occStatusCode = $this->featureContext->runOcc(['files:transfer-ownership', $user1, $user2]);
+		$this->featureContext->setOccLastCode($occStatusCode);
+		if ($occStatusCode === 0) {
 			$this->lastTransferPath
 				= $this->featureContext->findLastTransferFolderForUser($user1, $user2);
 		} else {
@@ -83,7 +85,9 @@ class TransferOwnershipContext implements Context {
 	 * @throws Exception
 	 */
 	public function troubleshootingTransferOwnership(string $type):void {
-		$this->featureContext->runOcc(['files:troubleshoot-transfer-ownership', $type, '--fix']);
+		$this->featureContext->setOccLastCode(
+			$this->featureContext->runOcc(['files:troubleshoot-transfer-ownership', $type, '--fix'])
+		);
 	}
 
 	/**
@@ -140,7 +144,9 @@ class TransferOwnershipContext implements Context {
 		$user1 = $this->featureContext->getActualUsername($user1);
 		$user2 = $this->featureContext->getActualUsername($user2);
 		$path = "--path=$path";
-		if ($this->featureContext->runOcc(['files:transfer-ownership', $path, $user1, $user2]) === 0) {
+		$occStatusCode = $this->featureContext->runOcc(['files:transfer-ownership', $path, $user1, $user2]);
+		$this->featureContext->setOccLastCode($occStatusCode);
+		if ($occStatusCode === 0) {
 			$this->lastTransferPath
 				= $this->featureContext->findLastTransferFolderForUser($user1, $user2);
 		} else {
