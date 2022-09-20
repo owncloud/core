@@ -3487,16 +3487,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.44",
+            "version": "v4.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "c35fafd7f12ebd6f9e29c95a370df7f1fb171a40"
+                "reference": "28b77970939500fb04180166a1f716e75a871ef8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/c35fafd7f12ebd6f9e29c95a370df7f1fb171a40",
-                "reference": "c35fafd7f12ebd6f9e29c95a370df7f1fb171a40",
+                "url": "https://api.github.com/repos/symfony/console/zipball/28b77970939500fb04180166a1f716e75a871ef8",
+                "reference": "28b77970939500fb04180166a1f716e75a871ef8",
                 "shasum": ""
             },
             "require": {
@@ -3557,7 +3557,7 @@
             "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/console/tree/v4.4.44"
+                "source": "https://github.com/symfony/console/tree/v4.4.45"
             },
             "funding": [
                 {
@@ -3573,7 +3573,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-20T09:59:04+00:00"
+            "time": "2022-08-17T14:50:19+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4616,16 +4616,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.4.44",
+            "version": "v4.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "af947fefc306cec6ea5a1f6160c7e305a71f2493"
+                "reference": "4e6b4c0dbeb04d6f004ed7f43eb0905ce8396def"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/af947fefc306cec6ea5a1f6160c7e305a71f2493",
-                "reference": "af947fefc306cec6ea5a1f6160c7e305a71f2493",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/4e6b4c0dbeb04d6f004ed7f43eb0905ce8396def",
+                "reference": "4e6b4c0dbeb04d6f004ed7f43eb0905ce8396def",
                 "shasum": ""
             },
             "require": {
@@ -4685,7 +4685,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v4.4.44"
+                "source": "https://github.com/symfony/translation/tree/v4.4.45"
             },
             "funding": [
                 {
@@ -4701,7 +4701,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-20T09:59:04+00:00"
+            "time": "2022-08-02T12:44:49+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -5651,12 +5651,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "4f051d70956e86d68c2ac3d078b803473c6d9426"
+                "reference": "264a5085afd6e127daba3f47751fa971d3c29c3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4f051d70956e86d68c2ac3d078b803473c6d9426",
-                "reference": "4f051d70956e86d68c2ac3d078b803473c6d9426",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/264a5085afd6e127daba3f47751fa971d3c29c3d",
+                "reference": "264a5085afd6e127daba3f47751fa971d3c29c3d",
                 "shasum": ""
             },
             "conflict": {
@@ -5749,6 +5749,8 @@
                 "enshrined/svg-sanitize": "<0.15",
                 "erusev/parsedown": "<1.7.2",
                 "ether/logs": "<3.0.4",
+                "exceedone/exment": "<4.4.3|>=5,<5.0.3",
+                "exceedone/laravel-admin": "= 3.0.0|<2.2.3",
                 "ezsystems/demobundle": ">=5.4,<5.4.6.1",
                 "ezsystems/ez-support-tools": ">=2.2,<2.2.3",
                 "ezsystems/ezdemo-ls-extension": ">=5.4,<5.4.2.1",
@@ -5781,19 +5783,20 @@
                 "fooman/tcpdf": "<6.2.22",
                 "forkcms/forkcms": "<5.11.1",
                 "fossar/tcpdf-parser": "<6.2.22",
-                "francoisjacquet/rosariosis": "<9.1",
+                "francoisjacquet/rosariosis": "<10.1",
                 "friendsofsymfony/oauth2-php": "<1.3",
                 "friendsofsymfony/rest-bundle": ">=1.2,<1.2.2",
                 "friendsofsymfony/user-bundle": ">=1.2,<1.3.5",
                 "friendsoftypo3/mediace": ">=7.6.2,<7.6.5",
                 "froala/wysiwyg-editor": "<3.2.7",
-                "froxlor/froxlor": "<=0.10.22",
+                "froxlor/froxlor": "<0.10.38",
                 "fuel/core": "<1.8.1",
                 "gaoming13/wechat-php-sdk": "<=1.10.2",
                 "genix/cms": "<=1.1.11",
                 "getgrav/grav": "<1.7.34",
-                "getkirby/cms": "<3.5.8",
+                "getkirby/cms": "<3.5.8.1|>=3.6,<3.6.6.1|>=3.7,<3.7.4",
                 "getkirby/panel": "<2.5.14",
+                "getkirby/starterkit": "<=3.7.0.2",
                 "gilacms/gila": "<=1.11.4",
                 "globalpayments/php-sdk": "<2",
                 "google/protobuf": "<3.15",
@@ -5844,7 +5847,6 @@
                 "laminas/laminas-http": "<2.14.2",
                 "laravel/fortify": "<1.11.1",
                 "laravel/framework": "<6.20.42|>=7,<7.30.6|>=8,<8.75",
-                "laravel/laravel": "<=9.1.8",
                 "laravel/socialite": ">=1,<1.0.99|>=2,<2.0.10",
                 "latte/latte": "<2.10.8",
                 "lavalite/cms": "<=5.8",
@@ -5887,6 +5889,7 @@
                 "nette/application": ">=2,<2.0.19|>=2.1,<2.1.13|>=2.2,<2.2.10|>=2.3,<2.3.14|>=2.4,<2.4.16|>=3,<3.0.6",
                 "nette/nette": ">=2,<2.0.19|>=2.1,<2.1.13",
                 "nilsteampassnet/teampass": "<=2.1.27.36",
+                "notrinos/notrinos-erp": "<=0.7",
                 "noumo/easyii": "<=0.9",
                 "nukeviet/nukeviet": "<4.5.2",
                 "nystudio107/craft-seomatic": "<3.4.12",
@@ -5930,7 +5933,7 @@
                 "phpwhois/phpwhois": "<=4.2.5",
                 "phpxmlrpc/extras": "<0.6.1",
                 "pimcore/data-hub": "<1.2.4",
-                "pimcore/pimcore": "<10.4.4",
+                "pimcore/pimcore": "<10.5.6",
                 "pocketmine/bedrock-protocol": "<8.0.2",
                 "pocketmine/pocketmine-mp": "<4.7.2|>= 4.0.0-BETA5, < 4.4.2",
                 "pressbooks/pressbooks": "<5.18",
@@ -5939,7 +5942,7 @@
                 "prestashop/contactform": ">1.0.1,<4.3",
                 "prestashop/gamification": "<2.3.2",
                 "prestashop/prestashop": ">=1.6.0.10,<1.7.8.7",
-                "prestashop/productcomments": ">=4,<4.2.1",
+                "prestashop/productcomments": "<5.0.2",
                 "prestashop/ps_emailsubscription": "<2.6.1",
                 "prestashop/ps_facetedsearch": "<3.4.1",
                 "prestashop/ps_linklist": "<3.1",
@@ -5951,6 +5954,8 @@
                 "pusher/pusher-php-server": "<2.2.1",
                 "pwweb/laravel-core": "<=0.3.6-beta",
                 "rainlab/debugbar-plugin": "<3.1",
+                "rankmath/seo-by-rank-math": "<=1.0.95",
+                "react/http": ">=0.7,<1.7",
                 "remdex/livehelperchat": "<3.99",
                 "rmccue/requests": ">=1.6,<1.8",
                 "robrichards/xmlseclibs": "<3.0.4",
@@ -5965,7 +5970,7 @@
                 "shopware/core": "<=6.4.9",
                 "shopware/platform": "<=6.4.9",
                 "shopware/production": "<=6.3.5.2",
-                "shopware/shopware": "<=5.7.13",
+                "shopware/shopware": "<=5.7.14",
                 "shopware/storefront": "<=6.4.8.1",
                 "shopxo/shopxo": "<2.2.6",
                 "showdoc/showdoc": "<2.10.4",
@@ -5989,8 +5994,8 @@
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "simplito/elliptic-php": "<1.0.6",
                 "slim/slim": "<2.6",
-                "smarty/smarty": "<3.1.45|>=4,<4.1.1",
-                "snipe/snipe-it": "<=6.0.2|>= 6.0.0-RC-1, <= 6.0.0-RC-5",
+                "smarty/smarty": "<3.1.47|>=4,<4.2.1",
+                "snipe/snipe-it": "<6.0.11|>= 6.0.0-RC-1, <= 6.0.0-RC-5",
                 "socalnick/scn-social-auth": "<1.15.2",
                 "socialiteproviders/steam": "<1.1",
                 "spipu/html2pdf": "<5.2.4",
@@ -6052,23 +6057,24 @@
                 "thinkcmf/thinkcmf": "<=5.1.7",
                 "tinymce/tinymce": "<5.10",
                 "titon/framework": ">=0,<9.9.99",
-                "topthink/framework": "<=6.0.12",
+                "topthink/framework": "<=6.0.13",
                 "topthink/think": "<=6.0.9",
                 "topthink/thinkphp": "<=3.2.3",
                 "tribalsystems/zenario": "<9.2.55826",
                 "truckersmp/phpwhois": "<=4.3.1",
                 "twig/twig": "<1.38|>=2,<2.14.11|>=3,<3.3.8",
-                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.32|>=8,<8.7.38|>=9,<9.5.29|>=10,<10.4.29|>=11,<11.5.11",
+                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.32|>=8,<8.7.38|>=9,<9.5.29|>=10,<10.4.32|>=11,<11.5.16",
                 "typo3/cms-backend": ">=7,<=7.6.50|>=8,<=8.7.39|>=9,<=9.5.24|>=10,<=10.4.13|>=11,<=11.1",
-                "typo3/cms-core": ">=6.2,<=6.2.56|>=7,<7.6.57|>=8,<8.7.47|>=9,<9.5.35|>=10,<10.4.29|>=11,<11.5.11",
+                "typo3/cms-core": ">=6.2,<=6.2.56|>=7,<7.6.58|>=8,<8.7.48|>=9,<9.5.37|>=10,<10.4.32|>=11,<11.5.16",
                 "typo3/cms-form": ">=8,<=8.7.39|>=9,<=9.5.24|>=10,<=10.4.13|>=11,<=11.1",
                 "typo3/flow": ">=1,<1.0.4|>=1.1,<1.1.1|>=2,<2.0.1|>=2.3,<2.3.16|>=3,<3.0.12|>=3.1,<3.1.10|>=3.2,<3.2.13|>=3.3,<3.3.13|>=4,<4.0.6",
+                "typo3/html-sanitizer": ">=1,<1.0.7|>=2,<2.0.16",
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4|>=2.3,<2.3.99|>=3,<3.0.20|>=3.1,<3.1.18|>=3.2,<3.2.14|>=3.3,<3.3.23|>=4,<4.0.17|>=4.1,<4.1.16|>=4.2,<4.2.12|>=4.3,<4.3.3",
                 "typo3/phar-stream-wrapper": ">=1,<2.1.1|>=3,<3.1.1",
                 "typo3/swiftmailer": ">=4.1,<4.1.99|>=5.4,<5.4.5",
                 "typo3fluid/fluid": ">=2,<2.0.8|>=2.1,<2.1.7|>=2.2,<2.2.4|>=2.3,<2.3.7|>=2.4,<2.4.4|>=2.5,<2.5.11|>=2.6,<2.6.10",
                 "ua-parser/uap-php": "<3.8",
-                "unisharp/laravel-filemanager": "<=2.3",
+                "unisharp/laravel-filemanager": "<=2.5.1",
                 "userfrosting/userfrosting": ">=0.3.1,<4.6.3",
                 "usmanhalalit/pixie": "<1.0.3|>=2,<2.0.2",
                 "vanilla/safecurl": "<0.9.2",
@@ -6160,7 +6166,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-18T20:04:23+00:00"
+            "time": "2022-09-16T22:04:31+00:00"
         },
         {
             "name": "sebastian/cli-parser",

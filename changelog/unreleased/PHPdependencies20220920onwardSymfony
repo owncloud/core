@@ -1,0 +1,8 @@
+Change: Update Symfony components
+
+The following Symfony components have been updated to:
+- console 4.4.45
+- translation 4.4.45
+
+https://symfony.com/blog/symfony-4-4-45-released
+https://github.com/owncloud/core/pull/40337
