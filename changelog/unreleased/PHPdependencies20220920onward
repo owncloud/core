@@ -1,0 +1,8 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- guzzlehttp/guzzle (7.4.5 to 7.5.0)
+- guzzlehttp/promises (1.5.1 to 1.5.2)
+- guzzlehttp/psr7 (2.4.0 to 2.4.1)
+
+https://github.com/owncloud/core/pull/40337
