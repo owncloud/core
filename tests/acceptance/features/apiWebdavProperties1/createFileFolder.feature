@@ -1,7 +1,7 @@
 @api
-Feature: create folder
+Feature: create files and folder
   As a user
-  I want to be able to create folders
+  I want to be able to create files and folders
   So that I can organise the files in my file system
 
   Background:
@@ -23,6 +23,7 @@ Feature: create folder
       | old         | /folder #2      |
       | old         | /folder ?2      |
       | old         | /😀 🤖          |
+      | old         | /new&folder     |
       | new         | /upload         |
       | new         | /strängé folder |
       | new         | /C++ folder.cpp |
@@ -30,6 +31,7 @@ Feature: create folder
       | new         | /folder #2      |
       | new         | /folder ?2      |
       | new         | /😀 🤖          |
+      | new         | /new&folder     |
 
     @skipOnOcV10 @personalSpace
     Examples:
@@ -41,6 +43,7 @@ Feature: create folder
       | spaces      | /folder #2      |
       | spaces      | /folder ?2      |
       | spaces      | /😀 🤖          |
+      | spaces      | /new&folder     |
 
   @smokeTest
   Scenario Outline: Creating a folder
@@ -137,3 +140,41 @@ Feature: create folder
     Examples:
       | dav_version |
       | spaces      |
+
+
+  Scenario Outline: Create a file
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "some text" to "<file_name>" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "<file_name>" should exist
+    And the content of file "<file_name>" for user "Alice" should be "some text"
+    Examples:
+      | dav_version | file_name        |
+      | old         | /upload.txt      |
+      | old         | /strängéfile.txt |
+      | old         | /C++ file.cpp    |
+      | old         | /नेपाली            |
+      | old         | /file #2.txt     |
+      | old         | /file ?2.pdf     |
+      | old         | /😀 🤖.txt       |
+      | old         | /new&file.txt    |
+      | new         | /upload.txt      |
+      | new         | /strängéfile.txt |
+      | new         | /C++ file.cpp    |
+      | new         | /नेपाली            |
+      | new         | /file #2.txt     |
+      | new         | /file ?2.pdf     |
+      | new         | /😀 🤖.txt       |
+      | new         | /new&file.txt    |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | file_name        |
+      | spaces      | /upload.txt      |
+      | spaces      | /strängéfile.txt |
+      | spaces      | /C++ file.cpp    |
+      | spaces      | /नेपाली            |
+      | spaces      | /file #2.txt     |
+      | spaces      | /file ?2.pdf     |
+      | spaces      | /😀 🤖.txt       |
+      | spaces      | /new&file.txt    |
