@@ -402,6 +402,10 @@ class Manager implements IManager {
 			}
 		}
 
+		if ($shareNode instanceof \OCP\Files\File) {
+			$maxPermissions |= \OCP\Constants::PERMISSION_CREATE;
+		}
+
 		/**
 		 * Check that we do not share with more permissions than we have
 		 */

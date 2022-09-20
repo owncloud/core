@@ -82,6 +82,11 @@ class FileHelper {
 			$files = $view->getDirectoryContent($dir);
 			foreach ($files as $file) {
 				$filePath = $dir . '/' . $file->getName();
+				$isMetaFile = \substr($filePath, -\strlen(MetaStorage::VERSION_FILE_EXT)) === MetaStorage::VERSION_FILE_EXT;
+				if ($isMetaFile) {
+					continue;
+				}
+
 				if ($file->getType() === 'dir') {
 					\array_push($dirs, $filePath);
 				} else {

@@ -56,6 +56,17 @@ class Cleanup extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$all = $input->hasOption('all');
 		$chunk_size = $input->getArgument('chunk_size');
+		$chunk_size_valid = false;
+		if (is_numeric($chunk_size)) {
+			$chunk_size = (int) $chunk_size;
+			if ($chunk_size > 0) {
+				$chunk_size_valid = true;
+			}
+		}
+		if (!$chunk_size_valid) {
+			$output->writeln('<error>chunk_size must be a positive integer.</error>');
+			return 1;
+		}
 
 		$pc = new PreviewCleanup($this->connection);
 		$count = $pc->process($all, $chunk_size, static function ($userId, $name, $action) use ($output) {
