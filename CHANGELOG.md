@@ -1,9 +1,9 @@
-Changelog for ownCloud Core [unreleased] (UNRELEASED)
+Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
-The following sections list the changes in ownCloud core unreleased relevant to
+The following sections list the changes in ownCloud core 10.11.0 relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.10.0...master
+[10.11.0]: https://github.com/owncloud/core/compare/v10.10.0...v10.11.0
 
 Summary
 -------
@@ -32,6 +32,7 @@ Summary
 * Bugfix - Only call getGroupDetails when the group exists: [#40261](https://github.com/owncloud/core/pull/40261)
 * Bugfix - Allow usernames to be case-insensitive with app passwords: [#40119](https://github.com/owncloud/core/issues/40119)
 * Bugfix - Refactor to not have required params following an optional parameter: [#40303](https://github.com/owncloud/core/pull/40303)
+* Bugfix - Prevent expiry for version meta data files: [#40325](https://github.com/owncloud/core/pull/40325)
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 * Change - Update PHP dependencies: [#39368](https://github.com/owncloud/core/pull/39368)
 * Change - Update Symfony components: [#39368](https://github.com/owncloud/core/pull/39368)
@@ -41,6 +42,7 @@ Summary
 * Enhancement - Add additional columns to background job queue status: [#40113](https://github.com/owncloud/core/pull/40113)
 * Enhancement - Add config option to bypass the proxy setting by domain: [#40148](https://github.com/owncloud/core/pull/40148)
 * Enhancement - Allow sharing with multiple users at once: [#40155](https://github.com/owncloud/core/pull/40155)
+* Enhancement - Allow editing of public link shared single files: [#40264](https://github.com/owncloud/core/pull/40264)
 
 Details
 -------
@@ -248,6 +250,13 @@ Details
 
    https://github.com/owncloud/core/pull/40303
 
+* Bugfix - Prevent expiry for version meta data files: [#40325](https://github.com/owncloud/core/pull/40325)
+
+   Version meta data files now get ignored during the expiry process. This fixes the massive
+   amount of error logs being produced during this.
+
+   https://github.com/owncloud/core/pull/40325
+
 * Change - Improve visualization of author's comment in the comments section: [#40142](https://github.com/owncloud/core/pull/40142)
 
    Previously, a long display name for the author's comment could overlap with the "edit" action
@@ -345,6 +354,14 @@ Details
    https://github.com/owncloud/enterprise/issues/2865
    https://github.com/owncloud/core/pull/40155
    https://github.com/owncloud/core/pull/40199
+   https://github.com/owncloud/core/pull/40347
+
+* Enhancement - Allow editing of public link shared single files: [#40264](https://github.com/owncloud/core/pull/40264)
+
+   It is now possible to create a public link share of a single file with Download/View/Edit
+   permissions.
+
+   https://github.com/owncloud/core/pull/40264
 
 Changelog for ownCloud Core [10.10.0] (2022-05-16)
 =======================================

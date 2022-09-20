@@ -1,10 +1,10 @@
 <div id="changelog-owncloud-core">
-<h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
-    <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
+<h2 id="10.11.0" class="version"> Changelog for ownCloud Core [10.11.0] (2022-08-23)</h2>
+    <p>The following sections list the changes in ownCloud core 10.11.0 relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.10.0...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.10.0...v10.11.0">Full list of changes in 10.11.0</a>
     </p>
-    <h3 id="unreleased-summary">Summary</h3>
+    <h3 id="10.11.0-summary">Summary</h3>
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Trigger the right event when the filecache is updated: <a href="https://github.com/owncloud/core/pull/39844">#39844</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Replace userid with username in login form: <a href="https://github.com/owncloud/core/pull/39870">#39870</a></li>
@@ -30,6 +30,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Only call getGroupDetails when the group exists: <a href="https://github.com/owncloud/core/pull/40261">#40261</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow usernames to be case-insensitive with app passwords: <a href="https://github.com/owncloud/core/issues/40119">#40119</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Refactor to not have required params following an optional parameter: <a href="https://github.com/owncloud/core/pull/40303">#40303</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent expiry for version meta data files: <a href="https://github.com/owncloud/core/pull/40325">#40325</a></li>
         <li class="type-change changelog-item">Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39368">#39368</a></li>
@@ -39,8 +40,9 @@
         <li class="type-enhancement changelog-item">Enhancement - Add additional columns to background job queue status: <a href="https://github.com/owncloud/core/pull/40113">#40113</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add config option to bypass the proxy setting by domain: <a href="https://github.com/owncloud/core/pull/40148">#40148</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow sharing with multiple users at once: <a href="https://github.com/owncloud/core/pull/40155">#40155</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Allow editing of public link shared single files: <a href="https://github.com/owncloud/core/pull/40264">#40264</a></li>
     </ul>
-    <h3 id="unreleased-details">Details</h3>
+    <h3 id="10.11.0-details">Details</h3>
     <ul class="details">
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Trigger the right event when the filecache is updated: <a href="https://github.com/owncloud/core/pull/39844">#39844</a></p>
@@ -242,6 +244,13 @@
             </p>
             <p>https://github.com/owncloud/core/pull/40303<br></p>
         </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent expiry for version meta data files: <a href="https://github.com/owncloud/core/pull/40325">#40325</a></p>
+            <p>Version meta data files now get ignored during the expiry process. This fixes the massive
+   amount of error logs being produced during this.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40325<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Improve visualization of author's comment in the comments section: <a href="https://github.com/owncloud/core/pull/40142">#40142</a></p>
             <p>Previously, a long display name for the author's comment could overlap with the "edit" action
@@ -312,7 +321,14 @@
             </p>
             <p>https://github.com/owncloud/enterprise/issues/2865<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/40155<br>https://github.com/owncloud/core/pull/40199<br></p>
+            <p>https://github.com/owncloud/core/pull/40155<br>https://github.com/owncloud/core/pull/40199<br>https://github.com/owncloud/core/pull/40347<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Allow editing of public link shared single files: <a href="https://github.com/owncloud/core/pull/40264">#40264</a></p>
+            <p>It is now possible to create a public link share of a single file with Download/View/Edit
+   permissions.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40264<br></p>
         </li>
     </ul>
     <h2 id="10.10.0" class="version"> Changelog for ownCloud Core [10.10.0] (2022-05-16)</h2>
