@@ -232,9 +232,10 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbin102" has deleted file "/textfile0.txt"
     And user "testtrashbin102" has deleted file "/textfile2.txt"
     And the administrator has deleted user "testtrashbin102" using the provisioning API
-    And these users have been created with default attributes and small skeleton files but not initialized:
+    And these users have been created without skeleton files and not initialized:
       | username        |
       | testtrashbin102 |
+    And user "testtrashbin102" has uploaded file "filesForUpload/textfile.txt" to "/textfile3.txt"
     And user "testtrashbin102" has deleted file "/textfile3.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin102"
     Then the HTTP status code should be "401"
