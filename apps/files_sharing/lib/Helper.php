@@ -296,12 +296,13 @@ class Helper {
 			}
 
 			$dirsToCreate = \array_reverse($dirsToCreate);
-			$shareFolder = '/';
 			foreach ($dirsToCreate as $dirToCreate) {
 				if ($view->mkdir($dirToCreate) === false) {
 					break;
 				}
-				$shareFolder = $dirToCreate;
+			}
+			if ($shareFolder !== $dirToCreate) {
+				\OCP\Util::writeLog('files_sharing', "Couldn't create missing share folder $shareFolder. Please choose a different share folder", \OCP\Util::ERROR);
 			}
 		}
 
