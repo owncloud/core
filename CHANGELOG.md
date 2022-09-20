@@ -1,3 +1,34 @@
+Changelog for ownCloud Core [unreleased] (UNRELEASED)
+=======================================
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v10.11.0...master
+
+Summary
+-------
+
+* Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
+* Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
+
+Details
+-------
+
+* Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
+
+   The following have been updated: - guzzlehttp/guzzle (7.4.5 to 7.5.0) - guzzlehttp/promises
+   (1.5.1 to 1.5.2) - guzzlehttp/psr7 (2.4.0 to 2.4.1) - phpseclib/phpseclib (3.0.14 to 3.0.16)
+   - sabre/uri (2.2.3 to 2.2.4)
+
+   https://github.com/owncloud/core/pull/40337
+
+* Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
+
+   The following Symfony components have been updated to: - console 4.4.45 - translation 4.4.45
+
+   https://github.com/owncloud/core/pull/40337
+   https://symfony.com/blog/symfony-4-4-45-released
+
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
 The following sections list the changes in ownCloud core 10.11.0 relevant to
