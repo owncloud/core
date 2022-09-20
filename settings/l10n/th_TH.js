@@ -339,7 +339,7 @@ OC.L10N.register(
     "Current password" : "รหัสผ่านปัจจุบัน",
     "New password" : "รหัสผ่านใหม่",
     "Change password" : "เปลี่ยนรหัสผ่าน",
-    "Help translate" : "แปลภาษาไทยเมื่อวันที่ 21/12/21 โดย Sunchai Paejaroenchai (YIP IN TSOI & CO.,LTD.)",
+    "Help translate" : "แปลภาษาไทยล่าสุดเมื่อวันที่ 19/09/22 โดย Sunchai Paejaroenchai (KKPS)",
     "You are using %s" : "คุณใช้พื้นที่จัดเก็บไปแล้ว %s",
     "You are using %s of %s (%s %%)" : "คุณใช้พื้นที่ไปแล้ว %s จากทั้งหมด %s (%s%%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "พัฒนาโดย {communityopen}ownCloud{linkclose} {githubopen}ต้นฉบับจาก Github{linkclose} อยู่ภายใต้สัญญา {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}",
