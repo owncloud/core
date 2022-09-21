@@ -42,11 +42,32 @@ then
 	while read -r INPUT_LINE;
 	do
 		LINE_NUMBER=$(("$LINE_NUMBER" + 1))
-		# Ignore comment lines (starting with -) in order to grab the GITHUB issue link only
+		# Ignore feature file lines (starting with -) in order to grab the GITHUB issue link only
 		if [[ "${INPUT_LINE}" =~ ^- ]]
 		then
 			continue
 		fi
+
+		# Report suspicious lines like ( https://github.com/owncloud/ocis/issues/111 )
+		# There should not be any space inside the brackets surrounding an issue link.
+		LINE_FORMAT_ERROR=0
+		if [[ "${INPUT_LINE}" =~ \([[:blank:]] ]];
+		then
+			log_error "Line ${LINE_NUMBER} contains space after the left-bracket"
+			LINE_FORMAT_ERROR=1
+			NO_INVALID_ISSUE=0
+		fi
+		if [[ "${INPUT_LINE}" =~ [[:blank:]]\) ]];
+		then
+			log_error "Line ${LINE_NUMBER} contains space before the right-bracket"
+			LINE_FORMAT_ERROR=1
+			NO_INVALID_ISSUE=0
+		fi
+		if [ ${LINE_FORMAT_ERROR} -eq 1 ];
+		then
+			continue
+		fi
+
 		# Match and find the GITHUB issue link like (https://github.com/owncloud/ocis/issues/1239) in description with regex in the expected failures file.
 		if [[ "${INPUT_LINE}" =~ \(([a-zA-Z0-9:/.#_-]+)\) ]];
 		then
@@ -59,28 +80,39 @@ then
 			# Make request with curl
 			# Check the state of the issue
 			ISSUE_STATE=$(curl -s -XGET -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GITHUB_ACCESS_TOKEN}" "${GITHUB_API_LINK}" | jq -r ".state")
+			if [ "${ISSUE_STATE}" = "open" ];
+			then
+				continue
+			fi
 			if [ "${ISSUE_STATE}" = "closed" ];
 			then
 				NO_CLOSED_ISSUE=0
 				log_error "Issue \033[1;37m${GITHUB_ISSUE_LINK} \033[0;31mis closed but still in expected failures"
+				continue
 			fi
+			# The issue state is not "open" or "closed". Something is wrong.
+			# If the link goes to an issue number that does not exist, then the state is "null"
+			NO_INVALID_ISSUE=0
 			if [ "${ISSUE_STATE}" = "null" ];
 			then
-				NO_INVALID_ISSUE=0
-				log_error "Issue \033[1;37m${GITHUB_ISSUE_LINK} \033[0;31mis invalid but in expected failures"
+				log_error "Issue \033[1;37m${GITHUB_ISSUE_LINK} \033[0;31mdoes not exist"
+				continue
 			fi
+			# Otherwise, the link might be to a completely different place. The curl response probably has no "state".
+			log_error "Issue \033[1;37m${GITHUB_ISSUE_LINK} \033[0;31mhas unknown state - maybe the issue link is invalid"
 		fi
 	done < "${EXPECTED_FAILURES_FILE}"
-
-	if [ ${NO_INVALID_ISSUE} -eq 0 ];
-	then
-		log_error "There are invalid issue numbers in ${EXPECTED_FAILURES_FILE}."
-	fi
 
 	# Last Check for if no closed issues in the expected failures file
 	if [ ${NO_CLOSED_ISSUE} -eq 1 ];
 	then
 		log_success "There are no closed issues in ${EXPECTED_FAILURES_FILE}."
+	fi
+
+	if [ ${NO_INVALID_ISSUE} -eq 0 ];
+	then
+		log_error "There are invalid issue links in ${EXPECTED_FAILURES_FILE}."
+		exit 1
 	fi
 else
 	log_error "Environment variable EXPECTED_FAILURES_FILE must be defined to be the file to check"
