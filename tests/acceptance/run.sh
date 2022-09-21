@@ -2,8 +2,8 @@
 [[ "${DEBUG}" == "true" ]] && set -x
 
 # from http://stackoverflow.com/a/630387
-SCRIPT_PATH="`dirname \"$0\"`"              # relative
-SCRIPT_PATH="`( cd \"${SCRIPT_PATH}\" && pwd )`"  # absolutized and normalized
+SCRIPT_PATH="`dirname \"$0\"`" # relative
+SCRIPT_PATH="`( cd \"${SCRIPT_PATH}\" && pwd )`" # absolutized and normalized
 
 echo 'Script path: '${SCRIPT_PATH}
 
@@ -14,15 +14,15 @@ OCC=${OC_PATH}occ
 # This gives flexibility for callers that have installed their own behat
 if [ -z "${BEHAT_BIN}" ]
 then
-    BEHAT=${OC_PATH}vendor-bin/behat/vendor/bin/behat
+	BEHAT=${OC_PATH}vendor-bin/behat/vendor/bin/behat
 else
-    BEHAT=${BEHAT_BIN}
+	BEHAT=${BEHAT_BIN}
 fi
 BEHAT_TAGS_OPTION_FOUND=false
 
 if [ -n "${STEP_THROUGH}" ]
 then
-    STEP_THROUGH_OPTION="--step-through"
+	STEP_THROUGH_OPTION="--step-through"
 fi
 
 # The following environment variables can be specified:
@@ -98,7 +98,7 @@ fi
 #            testing app. We have to assume it is already enabled.
 # --show-oc-logs - tail the ownCloud log after the test run
 # --norerun - do not rerun failed webUI scenarios
-# --loop  - loop tests for given number of times. Only use it for debugging purposes
+# --loop - loop tests for given number of times. Only use it for debugging purposes
 # --part - run a subset of scenarios, need two numbers.
 #          first number: which part to run
 #          second number: in how many parts to divide the set of scenarios
@@ -404,7 +404,7 @@ function run_behat_tests() {
 		cat ${SCRIPT_PATH}/usernames.json
 	fi
 
-	${BEHAT} --colors --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+	${BEHAT} --colors --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v 2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
@@ -518,9 +518,9 @@ function run_behat_tests() {
 				# brackets is the suite, feature and line number of the expected failure.
 				# Else ignore the line.
 				if [[ "${SUITE_SCENARIO}" =~ \[([a-zA-Z0-9-]+/[a-zA-Z0-9-]+\.feature:[0-9]+)] ]]; then
-				  SUITE_SCENARIO="${BASH_REMATCH[1]}"
+					SUITE_SCENARIO="${BASH_REMATCH[1]}"
 				else
-				  continue
+					continue
 				fi
 				if [ -n "${BEHAT_SUITE_TO_RUN}" ]
 				then
@@ -605,7 +605,7 @@ function run_behat_tests() {
 				fi
 
 				echo "Rerun failed scenario: ${FAILED_SCENARIO_PATH}"
-				${BEHAT} --colors --strict -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+				${BEHAT} --colors --strict -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v 2>&1 | tee -a ${TEST_LOG_FILE}
 				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 				if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 				then
@@ -987,7 +987,7 @@ SETTINGS+=("system;;skeletondirectory;;")
 # Set various settings
 for URL in ${OCC_URL} ${OCC_FED_URL}
 do
-  declare SETTINGS_CMDS='['
+	declare SETTINGS_CMDS='['
 	for i in "${!SETTINGS[@]}"
 	do
 		PREVIOUS_IFS=${IFS}
@@ -1099,7 +1099,7 @@ function version { echo "$@" | awk -F. '{ printf("%d%03d%03d\n", $1,$2,$3); }'; 
 
 # Skip tests for OC versions greater than 10.8.0
 if [ $(version $OWNCLOUD_VERSION_THREE_DIGIT) -gt $(version "10.8.0") ]; then
-    BEHAT_FILTER_TAGS='~@skipOnAllVersionsGreaterThanOcV10.8.0&&'${BEHAT_FILTER_TAGS}
+	BEHAT_FILTER_TAGS='~@skipOnAllVersionsGreaterThanOcV10.8.0&&'${BEHAT_FILTER_TAGS}
 fi
 
 if [ -n "${TEST_SERVER_FED_URL}" ]
@@ -1127,12 +1127,12 @@ fi
 # If the caller did not mention specific tags, skip the skipped tests by default
 if [ "${BEHAT_TAGS_OPTION_FOUND}" = false ]
 then
-  #  If the caller has already specified specifically to run "@skip" scenarios
-  #  then do not append "not @skip"
-  if [[ ! ${BEHAT_FILTER_TAGS} =~ "&&@skip&&" ]]
-  then
-	  BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip"
-  fi
+	# If the caller has already specified specifically to run "@skip" scenarios
+	# then do not append "not @skip"
+	if [[ ! ${BEHAT_FILTER_TAGS} =~ "&&@skip&&" ]]
+	then
+		BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip"
+	fi
 fi
 
 if [ -n "${BROWSER_VERSION}" ]
@@ -1297,33 +1297,33 @@ fi
 # Filter the UNEXPECTED_PASSED_SCENARIOS to remove scenarios that were not run.
 if [ "${UNEXPECTED_SUCCESS}" = true ]
 then
-  ACTUAL_UNEXPECTED_PASS=()
-  # if running a single feature or a single scenario
-  if [[ -n "${BEHAT_FEATURE}" ]]
-  then
-    for unexpected_passed_value in "${UNEXPECTED_PASSED_SCENARIOS[@]}"
-    do
-      # check only for the running feature
-      if [[ $BEHAT_FEATURE == *":"* ]]
-      then
-        BEHAT_FEATURE_WITH_LINE_NUM=$BEHAT_FEATURE
-      else
-        LINE_NUM=$(echo ${unexpected_passed_value} | cut -d":" -f2)
-        BEHAT_FEATURE_WITH_LINE_NUM=$BEHAT_FEATURE:$LINE_NUM
-      fi
-      if [[ $BEHAT_FEATURE_WITH_LINE_NUM == *"${unexpected_passed_value}" ]]
-      then
-        ACTUAL_UNEXPECTED_PASS+=("${unexpected_passed_value}")
-      fi
-    done
-  else
-    ACTUAL_UNEXPECTED_PASS=("${UNEXPECTED_PASSED_SCENARIOS[@]}")
-  fi
+	ACTUAL_UNEXPECTED_PASS=()
+	# if running a single feature or a single scenario
+	if [[ -n "${BEHAT_FEATURE}" ]]
+	then
+		for unexpected_passed_value in "${UNEXPECTED_PASSED_SCENARIOS[@]}"
+		do
+			# check only for the running feature
+			if [[ $BEHAT_FEATURE == *":"* ]]
+			then
+				BEHAT_FEATURE_WITH_LINE_NUM=$BEHAT_FEATURE
+			else
+				LINE_NUM=$(echo ${unexpected_passed_value} | cut -d":" -f2)
+				BEHAT_FEATURE_WITH_LINE_NUM=$BEHAT_FEATURE:$LINE_NUM
+			fi
+			if [[ $BEHAT_FEATURE_WITH_LINE_NUM == *"${unexpected_passed_value}" ]]
+			then
+				ACTUAL_UNEXPECTED_PASS+=("${unexpected_passed_value}")
+			fi
+		done
+	else
+		ACTUAL_UNEXPECTED_PASS=("${UNEXPECTED_PASSED_SCENARIOS[@]}")
+	fi
 
-  if [ ${#ACTUAL_UNEXPECTED_PASS[@]} -eq 0 ]
-  then
-    UNEXPECTED_SUCCESS=false
-  fi
+	if [ ${#ACTUAL_UNEXPECTED_PASS[@]} -eq 0 ]
+	then
+		UNEXPECTED_SUCCESS=false
+	fi
 fi
 
 if [ "${UNEXPECTED_FAILURE}" = false ] && [ "${UNEXPECTED_SUCCESS}" = false ] && [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = false ]
@@ -1340,24 +1340,24 @@ fi
 
 if [ "${UNEXPECTED_FAILURE}" = true ]
 then
-  tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
-  tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
+	tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
+	tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
 else
-  tput setaf 2; echo "runsh: There were no unexpected failures."
+	tput setaf 2; echo "runsh: There were no unexpected failures."
 fi
 
 if [ "${UNEXPECTED_SUCCESS}" = true ]
 then
-  tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
-  tput setaf 1; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
+	tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
+	tput setaf 1; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
 else
-  tput setaf 2; echo "runsh: There were no unexpected success."
+	tput setaf 2; echo "runsh: There were no unexpected success."
 fi
 
 if [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = true ]
 then
-  tput setaf 3; echo "runsh: The following Behat test runs exited with non-zero status:"
-  tput setaf 1; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
+	tput setaf 3; echo "runsh: The following Behat test runs exited with non-zero status:"
+	tput setaf 1; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
 fi
 
 # sync the file-system so all output will be flushed to storage.
@@ -1369,8 +1369,8 @@ sync
 # drone agent send all the output to the drone server.
 if [ -n "${CI_REPO}" ]
 then
-  echo "sleeping for 30 seconds at end of test run"
-  sleep 30
+	echo "sleeping for 30 seconds at end of test run"
+	sleep 30
 fi
 
 exit ${FINAL_EXIT_STATUS}

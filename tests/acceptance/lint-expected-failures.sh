@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 log_error() {
-    echo -e "\e[31m$1\e[0m"
+	echo -e "\e[31m$1\e[0m"
 }
 
 log_info() {
-    echo -e "\e[34m$1\e[0m"
+	echo -e "\e[34m$1\e[0m"
 }
 
 log_success() {
-    echo -e "\e[32m$1\e[0m"
+	echo -e "\e[32m$1\e[0m"
 }
 
 if [ -n "${EXPECTED_FAILURES_FILE}" ]
@@ -56,12 +56,12 @@ then
 			if [[ "${INPUT_LINE}" =~ features[[:blank:]]in[[:blank:]]the[[:blank:]]([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)[[:blank:]]repo ]]; then
 				FEATURE_FILE_REPO="${BASH_REMATCH[1]}"
 				log_info "Features are expected to be in the ${FEATURE_FILE_REPO} repo\n"
-  			FEATURE_FILE_SPEC_LINE_FOUND="true"
+				FEATURE_FILE_SPEC_LINE_FOUND="true"
 			fi
 			if [[ "${INPUT_LINE}" =~ repo[[:blank:]]in[[:blank:]]the[[:blank:]]([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)[[:blank:]]folder[[:blank:]]tree ]]; then
 				FEATURE_FILE_PATH="${BASH_REMATCH[1]}"
 				log_info "Features are expected to be in the ${FEATURE_FILE_PATH} folder tree\n"
-  			FEATURE_FILE_SPEC_LINE_FOUND="true"
+				FEATURE_FILE_SPEC_LINE_FOUND="true"
 			fi
 			if [[ $FEATURE_FILE_SPEC_LINE_FOUND == "true" ]]; then
 				continue
@@ -71,10 +71,10 @@ then
 			if [[ "${INPUT_LINE}" =~ ^-[[:space:]]\[([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+)] ]]; then
 				SUITE_SCENARIO_LINE="${BASH_REMATCH[1]}"
 			elif [[
-			  # report for lines like: " - someSuite/someName.feature:n"
-			  "${INPUT_LINE}" =~ ^[[:space:]]*-[[:space:]][a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+[[:space:]]*$ ||
-			  # report for lines starting with: "[someSuite/someName.feature:n]"
-			  "${INPUT_LINE}" =~ ^[[:space:]]*\[([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+)]
+				# report for lines like: " - someSuite/someName.feature:n"
+				"${INPUT_LINE}" =~ ^[[:space:]]*-[[:space:]][a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+[[:space:]]*$ ||
+				# report for lines starting with: "[someSuite/someName.feature:n]"
+				"${INPUT_LINE}" =~ ^[[:space:]]*\[([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+)]
 			]]; then
 				log_error "> Line ${LINE_NUMBER}: Not in the correct format."
 				log_error "  + Actual Line     : '${INPUT_LINE}'"
