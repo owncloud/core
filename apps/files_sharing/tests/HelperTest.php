@@ -32,21 +32,21 @@ use OC\Files\View;
  * @group DB
  */
 class HelperTest extends TestCase {
+	public function tearDown(): void {
+		// tests will set this config option. It needs to be removed
+		\OC::$server->getConfig()->deleteSystemValue('share_folder');
+		parent::tearDown();
+	}
 
 	/**
 	 * test set and get share folder
 	 */
 	public function testSetGetShareFolder() {
-		$this->assertSame('/', \OCA\Files_Sharing\Helper::getShareFolder());
-
 		\OCA\Files_Sharing\Helper::setShareFolder('/Shared/Folder');
 
 		$sharedFolder = \OCA\Files_Sharing\Helper::getShareFolder();
 		$this->assertSame('/Shared/Folder', \OCA\Files_Sharing\Helper::getShareFolder());
 		$this->assertTrue(\OC\Files\Filesystem::is_dir($sharedFolder));
-
-		// cleanup
-		\OC::$server->getConfig()->deleteSystemValue('share_folder');
 	}
 
 	/**
@@ -62,9 +62,6 @@ class HelperTest extends TestCase {
 		$viewMock->method('mkdir')
 			->willReturnOnConsecutiveCalls(true, false);
 		$sharedFolder = \OCA\Files_Sharing\Helper::getShareFolder($viewMock);
-		$this->assertSame('/Share', $sharedFolder);
-
-		// cleanup
-		\OC::$server->getConfig()->deleteSystemValue('share_folder');
+		$this->assertSame('/Share/Folder', $sharedFolder);
 	}
 }
