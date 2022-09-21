@@ -541,8 +541,8 @@ Feature: accept/decline shares coming from internal users
       | /Shares/textfile0.txt |
 
   @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-  Scenario: user shares folder with matching folder name a user before that user has logged in
-    Given these users have been created with small skeleton files but not initialized:
+  Scenario: user shares folder with matching folder name to  a user before that user has logged in
+    Given these users have been created without skeleton files and not initialized:
       | username |
       | David    |
     And user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
@@ -553,11 +553,6 @@ Feature: accept/decline shares coming from internal users
     And user "David" should see the following elements
       | /Shares/PARENT/        |
       | /Shares/PARENT/abc.txt |
-      | /FOLDER/               |
-      | /textfile0.txt         |
-      | /textfile1.txt         |
-      | /textfile2.txt         |
-      | /textfile3.txt         |
     And user "David" should not see the following elements
       | /PARENT (2)/ |
     And the content of file "/Shares/PARENT/abc.txt" for user "David" should be "uploaded content"
