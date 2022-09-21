@@ -172,6 +172,7 @@
     "Name" : "Nama",
     "Filename" : "Nama berkas",
     "Password" : "Sandi",
+    "Recipients can view, download and edit contents." : "Penerima dapat melihat, mengunduh, dan menyunting konten.",
     "Can not remove required password" : "Tidak dapat menghilangkan kata sandi yang dibutuhkan",
     "Edit link share: {name}" : "Sunting tautan yang dibagi: {nama}",
     "Create link share: {name}" : "Buat tautan yang dibagi: {nama}",

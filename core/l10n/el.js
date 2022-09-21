@@ -183,6 +183,7 @@ OC.L10N.register(
     "Name" : "Όνομα",
     "Filename" : "Όνομα αρχείου",
     "Password" : "Συνθηματικό",
+    "Recipients can view, download and edit contents." : "Οι παραλήπτες μπορούν να προβάλλουν, να κατεβάζουν και να επεξεργάζονται περιεχόμενο.",
     "Can not remove required password" : "Αδυναμία αφαίρεσης του απαιτούμενου συνθηματικού",
     "Edit link share: {name}" : "Επεξεργασία συνδέσμου κοινόχρηστου: {name}",
     "Create link share: {name}" : "Δημιουργία συνδέσμου κοινόχρηστου: {name}",

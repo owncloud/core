@@ -183,6 +183,7 @@ OC.L10N.register(
     "Name" : "Nome",
     "Filename" : "Nome de ficheiro",
     "Password" : "Contrasinal",
+    "Recipients can view, download and edit contents." : "Os destinatarios poden ver, descargar e editar contido.",
     "Can not remove required password" : "Non é posíbel retirar o contrasinal requirido",
     "Edit link share: {name}" : "Editar a ligazón compartida: {name}",
     "Create link share: {name}" : "Crear a ligazón compartida: {name}",

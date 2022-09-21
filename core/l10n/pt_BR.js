@@ -183,6 +183,7 @@ OC.L10N.register(
     "Name" : "Nome",
     "Filename" : "Nome do Arquivo",
     "Password" : "Senha",
+    "Recipients can view, download and edit contents." : "Os destinatários podem visualizar, baixar e editar o conteúdo.",
     "Can not remove required password" : "Não é possível remover a senha requisitada",
     "Edit link share: {name}" : "Editar link de compartilhamento: {name}",
     "Create link share: {name}" : "Cliar link de compartilhamento: {name}",

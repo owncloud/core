@@ -183,6 +183,7 @@ OC.L10N.register(
     "Name" : "Название",
     "Filename" : "Имя файла",
     "Password" : "Пароль",
+    "Recipients can view, download and edit contents." : "Получатели могут просматривать, скачиать или править содержимое.",
     "Can not remove required password" : "Нельзя удалить обязательный пароль",
     "Edit link share: {name}" : "Изменить доступ по ссылке: {name}",
     "Create link share: {name}" : "Создать доступ по ссылке: {name}",

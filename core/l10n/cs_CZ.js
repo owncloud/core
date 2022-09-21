@@ -179,6 +179,7 @@ OC.L10N.register(
     "Name" : "Název",
     "Filename" : "Jméno souboru",
     "Password" : "Heslo",
+    "Recipients can view, download and edit contents." : "Příjemce může zobrazit, stáhnout a upravovat obsah.",
     "Can not remove required password" : "Můžete odstranit požadované heslo",
     "Edit link share: {name}" : "Editace sdíleného odkazu: {name}",
     "Create link share: {name}" : "Vytvoření sdíleného odkazu: {name}",

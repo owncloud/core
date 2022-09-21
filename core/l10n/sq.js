@@ -183,6 +183,7 @@ OC.L10N.register(
     "Name" : "Emër",
     "Filename" : "Emër kartele",
     "Password" : "Fjalëkalim",
+    "Recipients can view, download and edit contents." : "Marrësit mund të shohin, shkarkojnë dhe përpunojnë lëndë.",
     "Can not remove required password" : "S’mund të heqin fjalëkalim të domosdoshëm",
     "Edit link share: {name}" : "Përpunoni ndarje lidhjesh: {name}",
     "Create link share: {name}" : "Krijoni ndarje lidhjesh: {name}",

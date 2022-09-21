@@ -174,6 +174,7 @@ OC.L10N.register(
     "Name" : "Heiti",
     "Filename" : "Skráarheiti",
     "Password" : "Lykilorð",
+    "Recipients can view, download and edit contents." : "Viðtakendur geta skoðað, sótt og breytt efni.",
     "Can not remove required password" : "Gat ekki fjarlægt umbeðið lykilorð",
     "Edit link share: {name}" : "Breyta sameignartengli: {name}",
     "Create link share: {name}" : "Búa til sameignartengil: {name}",
