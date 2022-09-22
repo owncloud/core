@@ -181,6 +181,7 @@
     "Name" : "Emër",
     "Filename" : "Emër kartele",
     "Password" : "Fjalëkalim",
+    "Download / View / Upload / Edit" : "Shkarkoje / Shiheni / Ngarkoje / Përpunojeni",
     "Recipients can view, download and edit contents." : "Marrësit mund të shohin, shkarkojnë dhe përpunojnë lëndë.",
     "Can not remove required password" : "S’mund të heqin fjalëkalim të domosdoshëm",
     "Edit link share: {name}" : "Përpunoni ndarje lidhjesh: {name}",
