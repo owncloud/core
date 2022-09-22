@@ -7,8 +7,6 @@
  *
  * PHP version 5
  *
- * @category  Crypt
- * @package   Common
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2016 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -17,8 +15,6 @@
 
 namespace phpseclib3\Crypt\Common\Formats\Keys;
 
-use ParagonIE\ConstantTime\Base64;
-use ParagonIE\ConstantTime\Hex;
 use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\AES;
 use phpseclib3\Crypt\Hash;
@@ -28,9 +24,7 @@ use phpseclib3\Exception\UnsupportedAlgorithmException;
 /**
  * PuTTY Formatted Key Handler
  *
- * @package Common
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class PuTTY
 {
@@ -38,7 +32,6 @@ abstract class PuTTY
      * Default comment
      *
      * @var string
-     * @access private
      */
     private static $comment = 'phpseclib-generated-key';
 
@@ -46,14 +39,12 @@ abstract class PuTTY
      * Default version
      *
      * @var int
-     * @access private
      */
     private static $version = 2;
 
     /**
      * Sets the default comment
      *
-     * @access public
      * @param string $comment
      */
     public static function setComment($comment)
@@ -64,7 +55,6 @@ abstract class PuTTY
     /**
      * Sets the default version
      *
-     * @access public
      * @param int $version
      */
     public static function setVersion($version)
@@ -78,7 +68,6 @@ abstract class PuTTY
     /**
      * Generate a symmetric key for PuTTY v2 keys
      *
-     * @access private
      * @param string $password
      * @param int $length
      * @return string
@@ -89,7 +78,7 @@ abstract class PuTTY
         $sequence = 0;
         while (strlen($symkey) < $length) {
             $temp = pack('Na*', $sequence++, $password);
-            $symkey .= Hex::decode(sha1($temp));
+            $symkey .= Strings::hex2bin(sha1($temp));
         }
         return substr($symkey, 0, $length);
     }
@@ -97,7 +86,6 @@ abstract class PuTTY
     /**
      * Generate a symmetric key for PuTTY v3 keys
      *
-     * @access private
      * @param string $password
      * @param string $flavour
      * @param int $memory
@@ -135,7 +123,6 @@ abstract class PuTTY
     /**
      * Break a public or private key down into its constituent components
      *
-     * @access public
      * @param string $key
      * @param string $password
      * @return array
@@ -208,7 +195,7 @@ abstract class PuTTY
         $components['comment'] = trim(preg_replace('#Comment: (.+)#', '$1', $key[2]));
 
         $publicLength = trim(preg_replace('#Public-Lines: (\d+)#', '$1', $key[3]));
-        $public = Base64::decode(implode('', array_map('trim', array_slice($key, 4, $publicLength))));
+        $public = Strings::base64_decode(implode('', array_map('trim', array_slice($key, 4, $publicLength))));
 
         $source = Strings::packSSH2('ssss', $type, $encryption, $components['comment'], $public);
 
@@ -238,7 +225,7 @@ abstract class PuTTY
                         $memory = trim(preg_replace('#Argon2-Memory: (\d+)#', '$1', $key[$offset++]));
                         $passes = trim(preg_replace('#Argon2-Passes: (\d+)#', '$1', $key[$offset++]));
                         $parallelism = trim(preg_replace('#Argon2-Parallelism: (\d+)#', '$1', $key[$offset++]));
-                        $salt = Hex::decode(trim(preg_replace('#Argon2-Salt: ([0-9a-f]+)#', '$1', $key[$offset++])));
+                        $salt = Strings::hex2bin(trim(preg_replace('#Argon2-Salt: ([0-9a-f]+)#', '$1', $key[$offset++])));
 
                         extract(self::generateV3Key($password, $flavour, $memory, $passes, $salt));
 
@@ -261,7 +248,7 @@ abstract class PuTTY
         }
 
         $privateLength = trim(preg_replace('#Private-Lines: (\d+)#', '$1', $key[$offset++]));
-        $private = Base64::decode(implode('', array_map('trim', array_slice($key, $offset, $privateLength))));
+        $private = Strings::base64_decode(implode('', array_map('trim', array_slice($key, $offset, $privateLength))));
 
         if ($encryption != 'none') {
             $crypto->setKey($symkey);
@@ -273,7 +260,7 @@ abstract class PuTTY
         $source .= Strings::packSSH2('s', $private);
 
         $hmac = trim(preg_replace('#Private-MAC: (.+)#', '$1', $key[$offset + $privateLength]));
-        $hmac = Hex::decode($hmac);
+        $hmac = Strings::hex2bin($hmac);
 
         if (!hash_equals($hash->hash($source), $hmac)) {
             throw new \UnexpectedValueException('MAC validation error');
@@ -287,7 +274,6 @@ abstract class PuTTY
     /**
      * Wrap a private key appropriately
      *
-     * @access private
      * @param string $public
      * @param string $private
      * @param string $type
@@ -309,7 +295,7 @@ abstract class PuTTY
 
         $source = Strings::packSSH2('ssss', $type, $encryption, $comment, $public);
 
-        $public = Base64::encode($public);
+        $public = Strings::base64_encode($public);
         $key .= "Public-Lines: " . ((strlen($public) + 63) >> 6) . "\r\n";
         $key .= chunk_split($public, 64);
 
@@ -336,7 +322,7 @@ abstract class PuTTY
                     $key .= "Argon2-Memory: 8192\r\n";
                     $key .= "Argon2-Passes: 13\r\n";
                     $key .= "Argon2-Parallelism: 1\r\n";
-                    $key .= "Argon2-Salt: " . Hex::encode($salt) . "\r\n";
+                    $key .= "Argon2-Salt: " . Strings::bin2hex($salt) . "\r\n";
                     extract(self::generateV3Key($password, 'Argon2id', 8192, 13, $salt));
 
                     $hash = new Hash('sha256');
@@ -359,10 +345,10 @@ abstract class PuTTY
             $mac = $hash->hash($source);
         }
 
-        $private = Base64::encode($private);
+        $private = Strings::base64_encode($private);
         $key .= 'Private-Lines: ' . ((strlen($private) + 63) >> 6) . "\r\n";
         $key .= chunk_split($private, 64);
-        $key .= 'Private-MAC: ' . Hex::encode($hash->hash($source)) . "\r\n";
+        $key .= 'Private-MAC: ' . Strings::bin2hex($hash->hash($source)) . "\r\n";
 
         return $key;
     }
@@ -372,7 +358,6 @@ abstract class PuTTY
      *
      * This is basically the format described in RFC 4716 (https://tools.ietf.org/html/rfc4716)
      *
-     * @access private
      * @param string $key
      * @param string $type
      * @return string
@@ -382,7 +367,7 @@ abstract class PuTTY
         $key = pack('Na*a*', strlen($type), $type, $key);
         $key = "---- BEGIN SSH2 PUBLIC KEY ----\r\n" .
                'Comment: "' . str_replace(['\\', '"'], ['\\\\', '\"'], self::$comment) . "\"\r\n" .
-               chunk_split(Base64::encode($key), 64) .
+               chunk_split(Strings::base64_encode($key), 64) .
                '---- END SSH2 PUBLIC KEY ----';
         return $key;
     }

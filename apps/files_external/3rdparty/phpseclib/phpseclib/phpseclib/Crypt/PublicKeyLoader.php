@@ -5,8 +5,6 @@
  *
  * Returns a PublicKey or PrivateKey object.
  *
- * @category  Crypt
- * @package   PublicKeyLoader
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2009 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -24,9 +22,7 @@ use phpseclib3\File\X509;
 /**
  * PublicKeyLoader
  *
- * @package Common
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class PublicKeyLoader
 {
@@ -34,7 +30,6 @@ abstract class PublicKeyLoader
      * Loads a public or private key
      *
      * @return AsymmetricKey
-     * @access public
      * @param string|array $key
      * @param string $password optional
      */
@@ -72,7 +67,6 @@ abstract class PublicKeyLoader
      * Loads a private key
      *
      * @return PrivateKey
-     * @access public
      * @param string|array $key
      * @param string $password optional
      */
@@ -89,7 +83,6 @@ abstract class PublicKeyLoader
      * Loads a public key
      *
      * @return PublicKey
-     * @access public
      * @param string|array $key
      */
     public static function loadPublicKey($key)
@@ -105,7 +98,6 @@ abstract class PublicKeyLoader
      * Loads parameters
      *
      * @return AsymmetricKey
-     * @access public
      * @param string|array $key
      */
     public static function loadParameters($key)

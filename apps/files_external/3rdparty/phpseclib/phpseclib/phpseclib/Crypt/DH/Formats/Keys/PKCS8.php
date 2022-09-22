@@ -11,8 +11,6 @@
  * -----BEGIN PRIVATE KEY-----
  * -----BEGIN PUBLIC KEY-----
  *
- * @category  Crypt
- * @package   DH
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2015 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -30,9 +28,7 @@ use phpseclib3\Math\BigInteger;
 /**
  * PKCS#8 Formatted DH Key Handler
  *
- * @package DH
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class PKCS8 extends Progenitor
 {
@@ -40,7 +36,6 @@ abstract class PKCS8 extends Progenitor
      * OID Name
      *
      * @var string
-     * @access private
      */
     const OID_NAME = 'dhKeyAgreement';
 
@@ -48,7 +43,6 @@ abstract class PKCS8 extends Progenitor
      * OID Value
      *
      * @var string
-     * @access private
      */
     const OID_VALUE = '1.2.840.113549.1.3.1';
 
@@ -56,14 +50,12 @@ abstract class PKCS8 extends Progenitor
      * Child OIDs loaded
      *
      * @var bool
-     * @access private
      */
     protected static $childOIDsLoaded = false;
 
     /**
      * Break a public or private key down into its constituent components
      *
-     * @access public
      * @param string $key
      * @param string $password optional
      * @return array
@@ -98,8 +90,7 @@ abstract class PKCS8 extends Progenitor
 
         $decoded = ASN1::decodeBER($key[$type]);
         switch (true) {
-            case empty($decoded):
-            case !is_array($decoded):
+            case !isset($decoded):
             case !isset($decoded[0]['content']):
             case !$decoded[0]['content'] instanceof BigInteger:
                 throw new \RuntimeException('Unable to decode BER of parameters');
@@ -112,7 +103,6 @@ abstract class PKCS8 extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @access public
      * @param \phpseclib3\Math\BigInteger $prime
      * @param \phpseclib3\Math\BigInteger $base
      * @param \phpseclib3\Math\BigInteger $privateKey
@@ -136,7 +126,6 @@ abstract class PKCS8 extends Progenitor
     /**
      * Convert a public key to the appropriate format
      *
-     * @access public
      * @param \phpseclib3\Math\BigInteger $prime
      * @param \phpseclib3\Math\BigInteger $base
      * @param \phpseclib3\Math\BigInteger $publicKey

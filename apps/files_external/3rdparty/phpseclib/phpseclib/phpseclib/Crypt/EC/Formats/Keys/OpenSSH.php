@@ -7,8 +7,6 @@
  *
  * Place in $HOME/.ssh/authorized_keys
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2015 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -27,9 +25,7 @@ use phpseclib3\Math\BigInteger;
 /**
  * OpenSSH Formatted EC Key Handler
  *
- * @package EC
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class OpenSSH extends Progenitor
 {
@@ -50,7 +46,6 @@ abstract class OpenSSH extends Progenitor
     /**
      * Break a public or private key down into its constituent components
      *
-     * @access public
      * @param string $key
      * @param string $password optional
      * @return array
@@ -139,7 +134,6 @@ abstract class OpenSSH extends Progenitor
     /**
      * Convert an EC public key to the appropriate format
      *
-     * @access public
      * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param array $options optional
@@ -177,28 +171,28 @@ abstract class OpenSSH extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @access public
      * @param \phpseclib3\Math\BigInteger $privateKey
      * @param \phpseclib3\Crypt\EC\Curves\Ed25519 $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
+     * @param string $secret optional
      * @param string $password optional
      * @param array $options optional
      * @return string
      */
-    public static function savePrivateKey(BigInteger $privateKey, BaseCurve $curve, array $publicKey, $password = '', array $options = [])
+    public static function savePrivateKey(BigInteger $privateKey, BaseCurve $curve, array $publicKey, $secret = null, $password = '', array $options = [])
     {
         if ($curve instanceof Ed25519) {
-            if (!isset($privateKey->secret)) {
+            if (!isset($secret)) {
                 throw new \RuntimeException('Private Key does not have a secret set');
             }
-            if (strlen($privateKey->secret) != 32) {
+            if (strlen($secret) != 32) {
                 throw new \RuntimeException('Private Key secret is not of the correct length');
             }
 
             $pubKey = $curve->encodePoint($publicKey);
 
             $publicKey = Strings::packSSH2('ss', 'ssh-ed25519', $pubKey);
-            $privateKey = Strings::packSSH2('sss', 'ssh-ed25519', $pubKey, $privateKey->secret . $pubKey);
+            $privateKey = Strings::packSSH2('sss', 'ssh-ed25519', $pubKey, $secret . $pubKey);
 
             return self::wrapPrivateKey($publicKey, $privateKey, $password, $options);
         }

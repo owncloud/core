@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2015 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -15,7 +13,6 @@
 
 namespace phpseclib3\Crypt\EC\Formats\Keys;
 
-use ParagonIE\ConstantTime\Hex;
 use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
 use phpseclib3\Crypt\EC\BaseCurves\Binary as BinaryCurve;
@@ -29,9 +26,7 @@ use phpseclib3\Math\BigInteger;
 /**
  * Generic EC Key Parsing Helper functions
  *
- * @package EC
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 trait Common
 {
@@ -254,8 +249,8 @@ trait Common
                     $curve->setModulo(...$modulo);
                     $len = ceil($modulo[0] / 8);
                     $curve->setCoefficients(
-                        Hex::encode($data['curve']['a']),
-                        Hex::encode($data['curve']['b'])
+                        Strings::bin2hex($data['curve']['a']),
+                        Strings::bin2hex($data['curve']['b'])
                     );
                     $point = self::extractPoint("\0" . $data['base'], $curve);
                     $curve->setBasePoint(...$point);
@@ -301,7 +296,7 @@ trait Common
         // the first byte of a bit string represents the number of bits in the last byte that are to be ignored but,
         // currently, bit strings wanting a non-zero amount of bits trimmed are not supported
         if (($val = Strings::shift($str)) != "\0") {
-            throw new \UnexpectedValueException('extractPoint expects the first byte to be null - not ' . Hex::encode($val));
+            throw new \UnexpectedValueException('extractPoint expects the first byte to be null - not ' . Strings::bin2hex($val));
         }
         if ($str == "\0") {
             return [];
@@ -319,7 +314,7 @@ trait Common
             preg_match("#(.)(.{{$order}})(.{{$order}})#s", $str, $matches);
             list(, $w, $x, $y) = $matches;
             if ($w != "\4") {
-                throw new \UnexpectedValueException('The first byte of an uncompressed point should be 04 - not ' . Hex::encode($val));
+                throw new \UnexpectedValueException('The first byte of an uncompressed point should be 04 - not ' . Strings::bin2hex($val));
             }
             $point = [
                 $curve->convertInteger(new BigInteger($x, 256)),

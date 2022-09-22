@@ -5,8 +5,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Math
- * @package   BigInteger
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -15,15 +13,13 @@
 
 namespace phpseclib3\Math\BigInteger\Engines;
 
-use ParagonIE\ConstantTime\Hex;
+use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Exception\BadConfigurationException;
 
 /**
  * BCMath Engine.
  *
- * @package BCMath
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class BCMath extends Engine
 {
@@ -32,7 +28,6 @@ class BCMath extends Engine
      *
      * @see parent::bitwise_leftRotate()
      * @see parent::bitwise_rightRotate()
-     * @access protected
      */
     const FAST_BITWISE = false;
 
@@ -40,7 +35,6 @@ class BCMath extends Engine
      * Engine Directory
      *
      * @see parent::setModExpEngine
-     * @access protected
      */
     const ENGINE_DIR = 'BCMath';
 
@@ -109,7 +103,7 @@ class BCMath extends Engine
                 break;
             case 16:
                 $x = (strlen($this->value) & 1) ? '0' . $this->value : $this->value;
-                $temp = new self(Hex::decode($x), 256);
+                $temp = new self(Strings::hex2bin($x), 256);
                 $this->value = $this->is_negative ? '-' . $temp->value : $temp->value;
                 $this->is_negative = false;
                 break;

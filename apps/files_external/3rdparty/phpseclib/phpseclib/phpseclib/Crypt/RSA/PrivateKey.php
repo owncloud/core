@@ -3,8 +3,6 @@
 /**
  * RSA Private Key
  *
- * @category  Crypt
- * @package   RSA
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2015 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -23,9 +21,7 @@ use phpseclib3\Math\BigInteger;
 /**
  * Raw RSA Key Handler
  *
- * @package RSA
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class PrivateKey extends RSA implements Common\PrivateKey
 {
@@ -35,7 +31,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      * Primes for Chinese Remainder Theorem (ie. p and q)
      *
      * @var array
-     * @access private
      */
     protected $primes;
 
@@ -43,7 +38,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      * Exponents for Chinese Remainder Theorem (ie. dP and dQ)
      *
      * @var array
-     * @access private
      */
     protected $exponents;
 
@@ -51,28 +45,24 @@ class PrivateKey extends RSA implements Common\PrivateKey
      * Coefficients for Chinese Remainder Theorem (ie. qInv)
      *
      * @var array
-     * @access private
      */
     protected $coefficients;
 
     /**
-     * Public Exponent
+     * Private Exponent
      *
-     * @var mixed
-     * @access private
+     * @var \phpseclib3\Math\BigInteger
      */
-    protected $publicExponent = false;
+    protected $privateExponent;
 
     /**
      * RSADP
      *
      * See {@link http://tools.ietf.org/html/rfc3447#section-5.1.2 RFC3447#section-5.1.2}.
      *
-     * @access private
-     * @param \phpseclib3\Math\BigInteger $c
      * @return bool|\phpseclib3\Math\BigInteger
      */
-    private function rsadp($c)
+    private function rsadp(BigInteger $c)
     {
         if ($c->compare(self::$zero) < 0 || $c->compare($this->modulus) > 0) {
             throw new \OutOfRangeException('Ciphertext representative out of range');
@@ -85,11 +75,9 @@ class PrivateKey extends RSA implements Common\PrivateKey
      *
      * See {@link http://tools.ietf.org/html/rfc3447#section-5.2.1 RFC3447#section-5.2.1}.
      *
-     * @access private
-     * @param \phpseclib3\Math\BigInteger $m
      * @return bool|\phpseclib3\Math\BigInteger
      */
-    private function rsasp1($m)
+    private function rsasp1(BigInteger $m)
     {
         if ($m->compare(self::$zero) < 0 || $m->compare($this->modulus) > 0) {
             throw new \OutOfRangeException('Signature representative out of range');
@@ -181,13 +169,12 @@ class PrivateKey extends RSA implements Common\PrivateKey
      * Protects against timing attacks by employing RSA Blinding.
      * Returns $x->modPow($this->exponents[$i], $this->primes[$i])
      *
-     * @access private
      * @param \phpseclib3\Math\BigInteger $x
      * @param \phpseclib3\Math\BigInteger $r
      * @param int $i
      * @return \phpseclib3\Math\BigInteger
      */
-    private function blind($x, $r, $i)
+    private function blind(BigInteger $x, BigInteger $r, $i)
     {
         $x = $x->multiply($r->modPow($this->publicExponent, $this->primes[$i]));
         $x = $x->modPow($this->exponents[$i], $this->primes[$i]);
@@ -205,7 +192,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      * See {@link http://tools.ietf.org/html/rfc3447#section-9.1.1 RFC3447#section-9.1.1}.
      *
      * @return string
-     * @access private
      * @param string $m
      * @throws \RuntimeException on encoding error
      * @param int $emBits
@@ -241,7 +227,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      *
      * See {@link http://tools.ietf.org/html/rfc3447#section-8.1.1 RFC3447#section-8.1.1}.
      *
-     * @access private
      * @param string $m
      * @return bool|string
      */
@@ -267,7 +252,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      *
      * See {@link http://tools.ietf.org/html/rfc3447#section-8.2.1 RFC3447#section-8.2.1}.
      *
-     * @access private
      * @param string $m
      * @throws \LengthException if the RSA modulus is too short
      * @return bool|string
@@ -299,7 +283,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      * Create a signature
      *
      * @see self::verify()
-     * @access public
      * @param string $message
      * @return string
      */
@@ -320,7 +303,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      *
      * See {@link http://tools.ietf.org/html/rfc3447#section-7.2.2 RFC3447#section-7.2.2}.
      *
-     * @access private
      * @param string $c
      * @return bool|string
      */
@@ -370,7 +352,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      *    ciphertext C, leading to a chosen-ciphertext attack such as the one
      *    observed by Manger [36].
      *
-     * @access private
      * @param string $c
      * @return bool|string
      */
@@ -429,7 +410,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      *
      * Doesn't use padding and is not recommended.
      *
-     * @access private
      * @param string $m
      * @return bool|string
      * @throws \LengthException if strlen($m) > $this->k
@@ -449,7 +429,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
      * Decryption
      *
      * @see self::encrypt()
-     * @access public
      * @param string $ciphertext
      * @return bool|string
      */
@@ -469,7 +448,6 @@ class PrivateKey extends RSA implements Common\PrivateKey
     /**
      * Returns the public key
      *
-     * @access public
      * @return mixed
      */
     public function getPublicKey()

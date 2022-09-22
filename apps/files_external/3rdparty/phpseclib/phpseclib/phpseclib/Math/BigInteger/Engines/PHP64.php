@@ -5,8 +5,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Math
- * @package   BigInteger
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -20,9 +18,7 @@ namespace phpseclib3\Math\BigInteger\Engines;
  *
  * Uses 64-bit integers if int size is 8 bits
  *
- * @package PHP
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class PHP64 extends PHP
 {
@@ -251,7 +247,6 @@ class PHP64 extends PHP
      *
      * @param PHP64 $y
      * @return int in case < 0 if $this is less than $y; > 0 if $this is greater than $y, and 0 if they are equal.
-     * @access public
      * @see self::equals()
      */
     public function compare(PHP64 $y)

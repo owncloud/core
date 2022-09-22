@@ -3,8 +3,6 @@
 /**
  * PublicKey interface
  *
- * @category  Crypt
- * @package   Common
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2009 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -16,9 +14,7 @@ namespace phpseclib3\Crypt\Common;
 /**
  * PublicKey interface
  *
- * @package Common
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 interface PublicKey
 {

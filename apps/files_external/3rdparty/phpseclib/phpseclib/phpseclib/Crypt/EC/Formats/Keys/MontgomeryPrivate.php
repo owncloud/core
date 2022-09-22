@@ -12,8 +12,6 @@
  *
  * PHP version 5
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2015 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -31,23 +29,19 @@ use phpseclib3\Math\BigInteger;
 /**
  * Montgomery Curve Private Key Handler
  *
- * @package EC
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class MontgomeryPrivate
 {
     /**
      * Is invisible flag
      *
-     * @access private
      */
     const IS_INVISIBLE = true;
 
     /**
      * Break a public or private key down into its constituent components
      *
-     * @access public
      * @param string $key
      * @param string $password optional
      * @return array
@@ -77,7 +71,6 @@ abstract class MontgomeryPrivate
     /**
      * Convert an EC public key to the appropriate format
      *
-     * @access public
      * @param \phpseclib3\Crypt\EC\BaseCurves\Montgomery $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @return string
@@ -90,14 +83,14 @@ abstract class MontgomeryPrivate
     /**
      * Convert a private key to the appropriate format.
      *
-     * @access public
      * @param \phpseclib3\Math\BigInteger $privateKey
      * @param \phpseclib3\Crypt\EC\BaseCurves\Montgomery $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
+     * @param string $secret optional
      * @param string $password optional
      * @return string
      */
-    public static function savePrivateKey(BigInteger $privateKey, MontgomeryCurve $curve, array $publicKey, $password = '')
+    public static function savePrivateKey(BigInteger $privateKey, MontgomeryCurve $curve, array $publicKey, $secret = null, $password = '')
     {
         if (!empty($password) && is_string($password)) {
             throw new UnsupportedFormatException('MontgomeryPrivate private keys do not support encryption');

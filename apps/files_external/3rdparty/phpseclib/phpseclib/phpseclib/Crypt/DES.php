@@ -32,8 +32,6 @@
  * ?>
  * </code>
  *
- * @category  Crypt
- * @package   DES
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2007 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -48,16 +46,13 @@ use phpseclib3\Exception\BadModeException;
 /**
  * Pure-PHP implementation of DES.
  *
- * @package DES
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class DES extends BlockCipher
 {
     /**
      * Contains $keys[self::ENCRYPT]
      *
-     * @access private
      * @see \phpseclib3\Crypt\DES::setupKey()
      * @see \phpseclib3\Crypt\DES::processBlock()
      */
@@ -65,7 +60,6 @@ class DES extends BlockCipher
     /**
      * Contains $keys[self::DECRYPT]
      *
-     * @access private
      * @see \phpseclib3\Crypt\DES::setupKey()
      * @see \phpseclib3\Crypt\DES::processBlock()
      */
@@ -76,7 +70,6 @@ class DES extends BlockCipher
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::block_size
      * @var int
-     * @access private
      */
     protected $block_size = 8;
 
@@ -85,7 +78,6 @@ class DES extends BlockCipher
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::setKeyLength()
      * @var int
-     * @access private
      */
     protected $key_length = 8;
 
@@ -94,7 +86,6 @@ class DES extends BlockCipher
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::cipher_name_mcrypt
      * @var string
-     * @access private
      */
     protected $cipher_name_mcrypt = 'des';
 
@@ -103,7 +94,6 @@ class DES extends BlockCipher
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::openssl_mode_names
      * @var array
-     * @access private
      */
     protected $openssl_mode_names = [
         self::MODE_ECB => 'des-ecb',
@@ -118,7 +108,6 @@ class DES extends BlockCipher
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::cfb_init_len
      * @var int
-     * @access private
      */
     protected $cfb_init_len = 500;
 
@@ -130,7 +119,6 @@ class DES extends BlockCipher
      * @see self::setupKey()
      * @see self::processBlock()
      * @var int
-     * @access private
      */
     protected $des_rounds = 1;
 
@@ -139,7 +127,6 @@ class DES extends BlockCipher
      *
      * @see self::setKey()
      * @var string
-     * @access private
      */
     protected $key_length_max = 8;
 
@@ -148,9 +135,16 @@ class DES extends BlockCipher
      *
      * @see self::setupKey()
      * @var array
-     * @access private
      */
     private $keys;
+
+    /**
+     * Key Cache "key"
+     *
+     * @see self::setupKey()
+     * @var array
+     */
+    private $kl;
 
     /**
      * Shuffle table.
@@ -162,7 +156,6 @@ class DES extends BlockCipher
      * @see self::processBlock()
      * @see self::setupKey()
      * @var array
-     * @access private
      */
     protected static $shuffle = [
         "\x00\x00\x00\x00\x00\x00\x00\x00", "\x00\x00\x00\x00\x00\x00\x00\xFF",
@@ -301,7 +294,6 @@ class DES extends BlockCipher
      * Indexing this table with each source byte performs the initial bit permutation.
      *
      * @var array
-     * @access private
      */
     protected static $ipmap = [
         0x00, 0x10, 0x01, 0x11, 0x20, 0x30, 0x21, 0x31,
@@ -343,7 +335,6 @@ class DES extends BlockCipher
      * Indexing this table with a byte value reverses the bit order.
      *
      * @var array
-     * @access private
      */
     protected static $invipmap = [
         0x00, 0x80, 0x40, 0xC0, 0x20, 0xA0, 0x60, 0xE0,
@@ -387,7 +378,6 @@ class DES extends BlockCipher
      * P table: concatenation can then be replaced by exclusive ORs.
      *
      * @var array
-     * @access private
      */
     protected static $sbox1 = [
         0x00808200, 0x00000000, 0x00008000, 0x00808202,
@@ -412,7 +402,6 @@ class DES extends BlockCipher
      * Pre-permuted S-box2
      *
      * @var array
-     * @access private
      */
     protected static $sbox2 = [
         0x40084010, 0x40004000, 0x00004000, 0x00084010,
@@ -437,7 +426,6 @@ class DES extends BlockCipher
      * Pre-permuted S-box3
      *
      * @var array
-     * @access private
      */
     protected static $sbox3 = [
         0x00000104, 0x04010100, 0x00000000, 0x04010004,
@@ -462,7 +450,6 @@ class DES extends BlockCipher
      * Pre-permuted S-box4
      *
      * @var array
-     * @access private
      */
     protected static $sbox4 = [
         0x80401000, 0x80001040, 0x80001040, 0x00000040,
@@ -487,7 +474,6 @@ class DES extends BlockCipher
      * Pre-permuted S-box5
      *
      * @var array
-     * @access private
      */
     protected static $sbox5 = [
         0x00000080, 0x01040080, 0x01040000, 0x21000080,
@@ -512,7 +498,6 @@ class DES extends BlockCipher
      * Pre-permuted S-box6
      *
      * @var array
-     * @access private
      */
     protected static $sbox6 = [
         0x10000008, 0x10200000, 0x00002000, 0x10202008,
@@ -537,7 +522,6 @@ class DES extends BlockCipher
      * Pre-permuted S-box7
      *
      * @var array
-     * @access private
      */
     protected static $sbox7 = [
         0x00100000, 0x02100001, 0x02000401, 0x00000000,
@@ -562,7 +546,6 @@ class DES extends BlockCipher
      * Pre-permuted S-box8
      *
      * @var array
-     * @access private
      */
     protected static $sbox8 = [
         0x08000820, 0x00000800, 0x00020000, 0x08020820,
@@ -587,7 +570,6 @@ class DES extends BlockCipher
      * Default Constructor.
      *
      * @param string $mode
-     * @access public
      * @throws BadModeException if an invalid / unsupported mode is provided
      */
     public function __construct($mode)
@@ -606,7 +588,6 @@ class DES extends BlockCipher
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::isValidEngine()
      * @param int $engine
-     * @access protected
      * @return bool
      */
     protected function isValidEngineHelper($engine)
@@ -629,7 +610,6 @@ class DES extends BlockCipher
      * DES also requires that every eighth bit be a parity bit, however, we'll ignore that.
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::setKey()
-     * @access public
      * @param string $key
      */
     public function setKey($key)
@@ -648,7 +628,6 @@ class DES extends BlockCipher
      * @see \phpseclib3\Crypt\Common\SymmetricKey::encryptBlock()
      * @see \phpseclib3\Crypt\Common\SymmetricKey::encrypt()
      * @see self::encrypt()
-     * @access private
      * @param string $in
      * @return string
      */
@@ -663,7 +642,6 @@ class DES extends BlockCipher
      * @see \phpseclib3\Crypt\Common\SymmetricKey::decryptBlock()
      * @see \phpseclib3\Crypt\Common\SymmetricKey::decrypt()
      * @see self::decrypt()
-     * @access private
      * @param string $in
      * @return string
      */
@@ -681,7 +659,6 @@ class DES extends BlockCipher
      *
      * @see self::encryptBlock()
      * @see self::decryptBlock()
-     * @access private
      * @param string $block
      * @param int $mode
      * @return string
@@ -765,7 +742,6 @@ class DES extends BlockCipher
      * Creates the key schedule
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::setupKey()
-     * @access private
      */
     protected function setupKey()
     {
@@ -1261,9 +1237,9 @@ class DES extends BlockCipher
                       $pc2mapd3[($d >>  8) & 0xFF] | $pc2mapd4[ $d        & 0xFF];
 
                 // Reorder: odd bytes/even bytes. Push the result in key schedule.
-                $val1 = ( $cp        & 0xFF000000) | (($cp <<  8) & 0x00FF0000) |
+                $val1 = ( $cp        & intval(0xFF000000)) | (($cp <<  8) & 0x00FF0000) |
                         (($dp >> 16) & 0x0000FF00) | (($dp >>  8) & 0x000000FF);
-                $val2 = (($cp <<  8) & 0xFF000000) | (($cp << 16) & 0x00FF0000) |
+                $val2 = (($cp <<  8) & intval(0xFF000000)) | (($cp << 16) & 0x00FF0000) |
                         (($dp >>  8) & 0x0000FF00) | ( $dp        & 0x000000FF);
                 $keys[$des_round][self::ENCRYPT][       ] = $val1;
                 $keys[$des_round][self::DECRYPT][$ki - 1] = $val1;
@@ -1300,7 +1276,6 @@ class DES extends BlockCipher
      * Setup the performance-optimized function for de/encrypt()
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::setupInlineCrypt()
-     * @access private
      */
     protected function setupInlineCrypt()
     {

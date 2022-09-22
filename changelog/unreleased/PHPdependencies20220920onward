@@ -15,6 +15,7 @@ The following have been updated:
 
 The following have been updated in apps/files_external/3rdparty:
 - guzzlehttp/psr7 (2.4.0 to 2.4.1)
+- phpseclib/phpseclib (3.0.14 to 3.0.16)
 
 https://github.com/owncloud/core/pull/40323
 https://github.com/owncloud/core/pull/40337
