@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 2.4.1 - 2022-08-28
+
+### Fixed
+
+- Rewind body before reading in `Message::bodySummary`
+
 ## 2.4.0 - 2022-06-20
 
 ### Added
