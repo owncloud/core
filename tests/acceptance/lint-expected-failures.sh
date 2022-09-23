@@ -12,6 +12,8 @@ log_success() {
 	echo -e "\e[32m$1\e[0m"
 }
 
+declare -A scenarioLines
+
 if [ -n "${EXPECTED_FAILURES_FILE}" ]
 then
 	if [ -f "${EXPECTED_FAILURES_FILE}" ]
@@ -93,6 +95,12 @@ then
 				FINAL_EXIT_STATUS=1
 				continue
 			fi
+			if [[ -n "${scenarioLines[${SUITE_SCENARIO_LINE}]:-}" ]];
+			then
+				log_error "> Line ${LINE_NUMBER}: Scenario line ${SUITE_SCENARIO_LINE} is duplicated"
+				FINAL_EXIT_STATUS=1
+			fi
+			scenarioLines[${SUITE_SCENARIO_LINE}]="exists"
 			OLD_IFS=${IFS}
 			IFS=':'
 			read -ra FEATURE_PARTS <<< "${SUITE_SCENARIO_LINE}"
