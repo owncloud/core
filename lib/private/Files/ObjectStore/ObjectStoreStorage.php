@@ -27,6 +27,8 @@ namespace OC\Files\ObjectStore;
 
 use Icewind\Streams\IteratorDirectory;
 use OC\Files\Cache\CacheEntry;
+use OC\Files\Filesystem;
+use OCP\Files\FileInfo;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
@@ -48,6 +50,10 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 */
 	protected $id;
 	/**
+	 * @var int|null $availableStorage
+	 */
+	private $availableStorage;
+	/**
 	 * @var \OC\User\User $user
 	 */
 	protected $user;
@@ -68,6 +74,10 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		if (isset($params['objectPrefix'])) {
 			$this->objectPrefix = $params['objectPrefix'];
 		}
+		if (isset($params['availablestorage']) && is_int($params['availablestorage'])) {
+			$this->availableStorage = $params['availablestorage'];
+		}
+		
 		//initialize cache with root directory in cache
 		if (!$this->is_dir('/')) {
 			$this->mkdir('/');
@@ -418,6 +428,33 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * get the free space in the object storage as indicated by the objectstore config
+	 * 
+	 * NOTE: getting total free space for objectstorage is not possible, 
+	 *       and this can only be set to administrator allowed volume 
+	 *       e.g. due to billing or monitoring concerns
+	 *
+	 * @param string $path
+	 * @return int
+	 */
+	public function free_space($path) {
+		if (isset($this->availableStorage)) {
+			$rootInfo = Filesystem::getFileInfo('/', false);
+			$used = $rootInfo->getSize();
+			if ($used < 0) {
+				$used = 0;
+			}
+
+			$free = $this->availableStorage - $used;
+			if ($free < 0){
+				return 0;
+			}
+			return $free;
+		}
+		return FileInfo::SPACE_UNLIMITED;
 	}
 
 	public function touch($path, $mtime = null) {

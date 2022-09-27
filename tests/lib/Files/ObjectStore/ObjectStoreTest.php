@@ -2,12 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
-<<<<<<< HEAD
  * @copyright Copyright (c) 2018, ownCloud GmbH
-=======
- * @copyright Copyright (c) 2017, ownCloud GmbH
->>>>>>> 478c4d51eb... Add versioning to objectstore
- * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -29,6 +24,7 @@ use OC\Files\Cache\CacheEntry;
 use OC\Files\Cache\Updater;
 use OC\Files\ObjectStore\NoopScanner;
 use OC\Files\ObjectStore\ObjectStoreStorage;
+use OCP\Files\FileInfo;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
@@ -98,6 +94,21 @@ class ObjectStoreTest extends TestCase {
 
 	public function testGetScanner() {
 		$this->assertInstanceOf(NoopScanner::class, $this->objectStore->getScanner());
+	}
+
+	public function testFreeSpaceDefault() {
+		$this->assertEquals(FileInfo::SPACE_UNLIMITED, $this->objectStore->free_space('test'));
+	}
+
+	public function testFreeSpaceWithAvailableStorageConfig() {
+		$objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
+			->setConstructorArgs([[
+				'objectstore' => $this->impl,
+				'availablestorage' => 1
+			]])
+			->getMock();
+		$free = $objectStore->free_space('test');
+		$this->assertTrue($free >= 0);
 	}
 
 	public function testUnlink() {
