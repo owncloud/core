@@ -183,6 +183,8 @@ OC.L10N.register(
     "Name" : "Ad",
     "Filename" : "Dosya adı",
     "Password" : "Parola",
+    "Download / View / Upload / Edit" : "İndir / Görüntüle / Yükle / Düzenle",
+    "Recipients can view, download and edit contents." : "Alıcılar içeriği görüntüleyebilir, indirebilir ve düzenleyebilir.",
     "Can not remove required password" : "Gerekli parola kaldırılamıyor",
     "Edit link share: {name}" : "Paylaşım bağlantısını düzenle: {name}",
     "Create link share: {name}" : "Paylaşım bağlantısı oluştur: {name}",
