@@ -31,7 +31,6 @@ use OCP\IServerContainer;
  * @since 9.0.0
  */
 interface IProviderFactory {
-
 	/**
 	 * IProviderFactory constructor.
 	 * @param IServerContainer $serverContainer

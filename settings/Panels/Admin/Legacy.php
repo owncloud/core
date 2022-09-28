@@ -28,7 +28,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Legacy implements ISettings {
-
 	/** @var Helper  */
 	protected $helper;
 

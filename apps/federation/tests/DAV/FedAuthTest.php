@@ -26,7 +26,6 @@ use OCA\Federation\DbHandler;
 use Test\TestCase;
 
 class FedAuthTest extends TestCase {
-
 	/**
 	 * @dataProvider providesUser
 	 *

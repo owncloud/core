@@ -28,7 +28,6 @@ namespace OCP\Migration;
  * @since 9.1.0
  */
 interface IOutput {
-
 	/**
 	 * @param string $message
 	 * @since 9.1.0

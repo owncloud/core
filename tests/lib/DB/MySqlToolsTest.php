@@ -32,7 +32,6 @@ use OC\DB\Connection;
  * Class MySqlToolsTest
  */
 class MySqlToolsTest extends \Test\TestCase {
-
 	/**
 	 * @var IDBConnection
 	 */

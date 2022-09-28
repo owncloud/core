@@ -34,7 +34,6 @@ use OC_Util;
  * @package OC\Files\Stream
  */
 class Checksum extends Wrapper {
-
 	/**
 	 * To stepwise compute a hash on a continuous stream
 	 * of data a "context" is required which stores the intermediate

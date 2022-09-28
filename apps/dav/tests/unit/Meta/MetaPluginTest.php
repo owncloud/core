@@ -33,7 +33,6 @@ use Sabre\DAV\Xml\Service as XMLService;
 use Test\TestCase;
 
 class MetaPluginTest extends TestCase {
-
 	/** @var MetaPlugin */
 	private $plugin;
 	/**

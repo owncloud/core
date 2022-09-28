@@ -41,7 +41,6 @@ use OC\AppFramework\Routing\RouteConfig;
  * @since 6.0.0
  */
 class App {
-
 	/**
 	 * Turns an app id into a namespace. The id is split at the
 	 * underscores, all parts are camelcased and reassembled. e.g.:

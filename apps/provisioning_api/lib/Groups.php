@@ -30,7 +30,6 @@ use OCP\IGroup;
 use OCP\IUser;
 
 class Groups {
-
 	/** @var \OCP\IGroupManager */
 	private $groupManager;
 

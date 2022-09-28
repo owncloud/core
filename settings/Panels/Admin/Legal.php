@@ -26,7 +26,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Legal implements ISettings {
-
 	/**
 	 * @var IConfig
 	 */

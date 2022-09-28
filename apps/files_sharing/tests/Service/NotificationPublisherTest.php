@@ -35,7 +35,6 @@ use OCP\IUser;
  * @group DB
  */
 class NotificationPublisherTest extends TestCase {
-
 	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;
 

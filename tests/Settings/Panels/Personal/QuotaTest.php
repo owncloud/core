@@ -17,7 +17,6 @@ use OC\Settings\Panels\Personal\Quota;
  * @package Tests\Settings\Panels
  */
 class QuotaTest extends \Test\TestCase {
-
 	/** @var Quota */
 	private $panel;
 	/** @var Helper */

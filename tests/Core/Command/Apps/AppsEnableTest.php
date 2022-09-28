@@ -31,7 +31,6 @@ use Test\TestCase;
  * @group DB
  */
 class AppsEnableTest extends TestCase {
-
 	/** @var CommandTester */
 	private $commandTester;
 

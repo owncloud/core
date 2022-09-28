@@ -26,7 +26,6 @@
 namespace OC\Log;
 
 class Errorlog {
-
 	/**
 	 * Init class data
 	 */

@@ -95,7 +95,6 @@ class ResourceLocatorTest extends \Test\TestCase {
 	}
 
 	public function testAppendOnceIfExist() {
-		
 		/** @var \OC\Template\ResourceLocator $locator */
 		$locator = $this->getResourceLocator('theme', [__DIR__=>'map'], ['foo'=>'bar']);
 		

@@ -37,7 +37,6 @@ use Laminas\Ldap\Ldap;
  * Functions for provisioning of users and groups
  */
 trait Provisioning {
-
 	/**
 	 * list of users that were created on the local server during test runs
 	 * key is the lowercase username, value is an array of user attributes

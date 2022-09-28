@@ -16,7 +16,6 @@ use OC\Settings\Panels\Admin\Tips;
  * @package Tests\Settings\Panels\Admin
  */
 class TipsTest extends \Test\TestCase {
-
 	/** @var Tips */
 	private $panel;
 

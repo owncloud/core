@@ -37,7 +37,6 @@ use OCP\Files\IHomeStorage;
  * @package OC\Files\Storage\Wrapper
  */
 class Checksum extends Wrapper {
-
 	/** Format of checksum field in filecache */
 	public const CHECKSUMS_DB_FORMAT = 'SHA1:%s MD5:%s ADLER32:%s';
 

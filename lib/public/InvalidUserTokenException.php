@@ -28,7 +28,6 @@ namespace OCP;
  * @since 10.0.10
  */
 class InvalidUserTokenException extends UserTokenException {
-
 	/**
 	 * InvalidUserTokenException constructor.
 	 *

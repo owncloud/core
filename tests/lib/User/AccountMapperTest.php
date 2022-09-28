@@ -36,7 +36,6 @@ use Test\TestCase;
  * @package Test\User
  */
 class AccountMapperTest extends TestCase {
-
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 

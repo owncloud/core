@@ -52,7 +52,6 @@ use OCP\Files\External\IStorageConfig;
  * @since 10.0
  */
 abstract class AuthMechanism implements \JsonSerializable {
-
 	/** Standard authentication schemes */
 	public const SCHEME_NULL = 'null';
 	public const SCHEME_BUILTIN = 'builtin';

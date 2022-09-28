@@ -33,7 +33,6 @@ require_once 'bootstrap.php';
  * Trashbin context
  */
 class TrashbinContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

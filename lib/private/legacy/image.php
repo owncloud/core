@@ -530,12 +530,12 @@ class OC_Image implements \OCP\IImage {
 					$this->logger->debug('OC_Image->loadFromFile, JPG images not supported: ' . $imagePath, ['app' => 'core']);
 				}
 				break;
-				case IMAGETYPE_WEBP:
-					if (\imagetypes() & IMG_WEBP) {
-						$this->resource = \imagecreatefromwebp($imagePath);
-					} else {
-						$this->logger->debug('OC_Image->loadFromFile, WEBP images not supported: ' . $imagePath, ['app' => 'core']);
-					}
+			case IMAGETYPE_WEBP:
+				if (\imagetypes() & IMG_WEBP) {
+					$this->resource = \imagecreatefromwebp($imagePath);
+				} else {
+					$this->logger->debug('OC_Image->loadFromFile, WEBP images not supported: ' . $imagePath, ['app' => 'core']);
+				}
 				break;
 			case IMAGETYPE_PNG:
 				if (\imagetypes() & IMG_PNG) {
@@ -564,30 +564,30 @@ class OC_Image implements \OCP\IImage {
 			case IMAGETYPE_BMP:
 				$this->resource = $this->imagecreatefrombmp($imagePath);
 				break;
-			/*
-			case IMAGETYPE_TIFF_II: // (intel byte order)
-				break;
-			case IMAGETYPE_TIFF_MM: // (motorola byte order)
-				break;
-			case IMAGETYPE_JPC:
-				break;
-			case IMAGETYPE_JP2:
-				break;
-			case IMAGETYPE_JPX:
-				break;
-			case IMAGETYPE_JB2:
-				break;
-			case IMAGETYPE_SWC:
-				break;
-			case IMAGETYPE_IFF:
-				break;
-			case IMAGETYPE_ICO:
-				break;
-			case IMAGETYPE_SWF:
-				break;
-			case IMAGETYPE_PSD:
-				break;
-			*/
+				/*
+				case IMAGETYPE_TIFF_II: // (intel byte order)
+					break;
+				case IMAGETYPE_TIFF_MM: // (motorola byte order)
+					break;
+				case IMAGETYPE_JPC:
+					break;
+				case IMAGETYPE_JP2:
+					break;
+				case IMAGETYPE_JPX:
+					break;
+				case IMAGETYPE_JB2:
+					break;
+				case IMAGETYPE_SWC:
+					break;
+				case IMAGETYPE_IFF:
+					break;
+				case IMAGETYPE_ICO:
+					break;
+				case IMAGETYPE_SWF:
+					break;
+				case IMAGETYPE_PSD:
+					break;
+				*/
 			default:
 
 				// this is mostly file created from encrypted file

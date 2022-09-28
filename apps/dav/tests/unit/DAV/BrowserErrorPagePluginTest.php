@@ -27,7 +27,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Exception\NotFound;
 
 class BrowserErrorPagePluginTest extends \Test\TestCase {
-
 	/**
 	 * @dataProvider providesExceptions
 	 * @param $expectedCode

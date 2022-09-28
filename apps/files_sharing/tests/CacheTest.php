@@ -39,7 +39,6 @@ use OCP\Files\FileInfo;
  * @group DB
  */
 class CacheTest extends TestCase {
-
 	/** @var View */
 	public $user2View;
 

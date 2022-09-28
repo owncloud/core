@@ -32,7 +32,6 @@ use \OCP\IUser;
  * @since 9.0.0
  */
 interface ICommentsManager {
-
 	/**
 	 * @const DELETED_USER type and id for a user that has been deleted
 	 * @see deleteReferencesOfActor

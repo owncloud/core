@@ -18,7 +18,6 @@ use OCP\Route\IRouter;
  * Class UrlGeneratorTest
  */
 class UrlGeneratorTest extends TestCase {
-
 	/** @var IURLGenerator */
 	private $urlGenerator;
 	/** @var IRouter | \PHPUnit\Framework\MockObject\MockObject */

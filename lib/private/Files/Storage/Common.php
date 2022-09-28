@@ -784,7 +784,6 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	}
 
 	public function getLocks($internalPath, $returnChildLocks = false) {
-
 		/** @var LockManager $locksManager */
 		$locksManager = \OC::$server->query(LockManager::class);
 		$storageId = $this->getCache()->getNumericStorageId();

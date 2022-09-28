@@ -30,7 +30,6 @@ use OC\Cache\CappedMemoryCache;
  * the actual given name and then try its NFD form.
  */
 class Encoding extends Wrapper {
-
 	/**
 	 * @var CappedMemoryCache
 	 */

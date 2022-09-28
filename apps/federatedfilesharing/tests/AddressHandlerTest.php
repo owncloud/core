@@ -28,7 +28,6 @@ use OCP\IL10N;
 use OCP\IURLGenerator;
 
 class AddressHandlerTest extends \Test\TestCase {
-
 	/** @var  AddressHandler */
 	private $addressHandler;
 

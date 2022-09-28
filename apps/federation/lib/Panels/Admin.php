@@ -32,7 +32,6 @@ use OCP\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Admin implements ISettings {
-
 	/** @var IDBConnection */
 	protected $connection;
 	/** @var IL10N */

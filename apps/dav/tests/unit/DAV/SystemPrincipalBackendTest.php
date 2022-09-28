@@ -27,7 +27,6 @@ use OCA\DAV\DAV\SystemPrincipalBackend;
 use Test\TestCase;
 
 class SystemPrincipalBackendTest extends TestCase {
-
 	/**
 	 * @dataProvider providesPrefix
 	 * @param $expected

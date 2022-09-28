@@ -167,64 +167,62 @@ class PublishPlugin extends ServerPlugin {
 		$this->server->xml->parse($requestBody, $request->getUrl(), $documentType);
 
 		switch ($documentType) {
-
 			case '{'.self::NS_CALENDARSERVER.'}publish-calendar':
 
-			// We can only deal with IShareableCalendar objects
-			if (!$node instanceof Calendar) {
-				return;
-			}
-			$this->server->transactionType = 'post-publish-calendar';
+				// We can only deal with IShareableCalendar objects
+				if (!$node instanceof Calendar) {
+					return;
+				}
+				$this->server->transactionType = 'post-publish-calendar';
 
-			// Getting ACL info
-			$acl = $this->server->getPlugin('acl');
+				// Getting ACL info
+				$acl = $this->server->getPlugin('acl');
 
-			// If there's no ACL support, we allow everything
-			if ($acl) {
-				'@phan-var \OCA\DAV\Connector\Sabre\DavAclPlugin $acl';
-				$acl->checkPrivileges($path, '{DAV:}write');
-			}
+				// If there's no ACL support, we allow everything
+				if ($acl) {
+					'@phan-var \OCA\DAV\Connector\Sabre\DavAclPlugin $acl';
+					$acl->checkPrivileges($path, '{DAV:}write');
+				}
 
-			$node->setPublishStatus(true);
+				$node->setPublishStatus(true);
 
-			// iCloud sends back the 202, so we will too.
-			$response->setStatus(202);
+				// iCloud sends back the 202, so we will too.
+				$response->setStatus(202);
 
-			// Adding this because sending a response body may cause issues,
-			// and I wanted some type of indicator the response was handled.
-			$response->setHeader('X-Sabre-Status', 'everything-went-well');
+				// Adding this because sending a response body may cause issues,
+				// and I wanted some type of indicator the response was handled.
+				$response->setHeader('X-Sabre-Status', 'everything-went-well');
 
-			// Breaking the event chain
-			return false;
+				// Breaking the event chain
+				return false;
 
 			case '{'.self::NS_CALENDARSERVER.'}unpublish-calendar':
 
-			// We can only deal with IShareableCalendar objects
-			if (!$node instanceof Calendar) {
-				return;
-			}
-			$this->server->transactionType = 'post-unpublish-calendar';
+				// We can only deal with IShareableCalendar objects
+				if (!$node instanceof Calendar) {
+					return;
+				}
+				$this->server->transactionType = 'post-unpublish-calendar';
 
-			// Getting ACL info
-			$acl = $this->server->getPlugin('acl');
+				// Getting ACL info
+				$acl = $this->server->getPlugin('acl');
 
-			// If there's no ACL support, we allow everything
-			if ($acl) {
-				'@phan-var \OCA\DAV\Connector\Sabre\DavAclPlugin $acl';
-				$acl->checkPrivileges($path, '{DAV:}write');
-			}
+				// If there's no ACL support, we allow everything
+				if ($acl) {
+					'@phan-var \OCA\DAV\Connector\Sabre\DavAclPlugin $acl';
+					$acl->checkPrivileges($path, '{DAV:}write');
+				}
 
-			$node->setPublishStatus(false);
+				$node->setPublishStatus(false);
 
-			$response->setStatus(200);
+				$response->setStatus(200);
 
-			// Adding this because sending a response body may cause issues,
-			// and I wanted some type of indicator the response was handled.
-			$response->setHeader('X-Sabre-Status', 'everything-went-well');
+				// Adding this because sending a response body may cause issues,
+				// and I wanted some type of indicator the response was handled.
+				$response->setHeader('X-Sabre-Status', 'everything-went-well');
 
-			// Breaking the event chain
-			return false;
-
+				// Breaking the event chain
+				return false;
 		}
 	}
 }

@@ -28,7 +28,6 @@ use OCP\IUser;
 use OC\Files\Mount\MountPoint;
 
 class PreviewsMountProviderTest extends \Test\TestCase {
-
 	/** @var PreviewsMountProvider */
 	protected $provider;
 

@@ -29,7 +29,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class FileSharing implements ISettings {
-
 	/** @var IConfig */
 	protected $config;
 	/** @var Helper */

@@ -46,7 +46,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class TransferOwnership extends Command {
-
 	/** @var IUserManager $userManager */
 	private $userManager;
 

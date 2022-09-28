@@ -1186,7 +1186,6 @@ class VersioningTest extends TestCase {
 
 // extend the original class to make it possible to test protected methods
 class VersionStorageToTest extends \OCA\Files_Versions\Storage {
-
 	/**
 	 * @param integer $time
 	 */

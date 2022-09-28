@@ -29,7 +29,6 @@ namespace OCA\DAV\Files;
  * @package OCA\DAV\Files
  */
 interface ICopySource {
-
 	/**
 	 * Copies the source to the given destination.
 	 * If the operation was not successful false is returned.

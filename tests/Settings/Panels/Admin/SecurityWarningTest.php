@@ -21,7 +21,6 @@ use OCP\Lock\ILockingProvider;
  * @package Tests\Settings\Panels\Admin
  */
 class SecurityWarningTest extends \Test\TestCase {
-
 	/** @var SecurityWarning */
 	private $panel;
 	/** @var IL10N */

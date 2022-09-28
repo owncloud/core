@@ -44,7 +44,6 @@ use Sabre\HTTP\ResponseInterface;
  *
  */
 class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
-
 	// namespace
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	public const ID_PROPERTYNAME = '{http://owncloud.org/ns}id';

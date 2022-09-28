@@ -42,7 +42,6 @@ use OCP\Files\StorageNotAvailableException;
  * implementation and so need a wrapper to be modified.
  */
 trait StorageModifierTrait {
-
 	/**
 	 * Modify a IStorageConfig parameters
 	 *

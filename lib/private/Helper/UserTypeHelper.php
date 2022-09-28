@@ -25,7 +25,6 @@ use OCP\IConfig;
 use OCP\User;
 
 class UserTypeHelper {
-
 	/** @var IConfig */
 	private $config;
 

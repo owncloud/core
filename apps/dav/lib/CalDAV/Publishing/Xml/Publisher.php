@@ -24,7 +24,6 @@ use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
 class Publisher implements XmlSerializable {
-
 	/**
 	 * @var string $publishUrl
 	 */

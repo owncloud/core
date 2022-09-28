@@ -35,7 +35,6 @@ use Sabre\DAV\ICollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RootCollection implements ICollection {
-
 	/** @var EntityTypeCollection[]|null */
 	private $entityTypeCollections;
 

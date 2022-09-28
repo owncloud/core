@@ -35,7 +35,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
 class SyncBackendTest extends TestCase {
-
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */

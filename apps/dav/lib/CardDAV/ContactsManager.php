@@ -26,7 +26,6 @@ use OCP\Contacts\IManager;
 use OCP\IURLGenerator;
 
 class ContactsManager {
-
 	/** @var CardDavBackend  */
 	private $backend;
 

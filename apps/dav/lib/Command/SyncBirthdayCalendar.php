@@ -31,7 +31,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncBirthdayCalendar extends Command {
-
 	/** @var BirthdayService */
 	private $birthdayService;
 

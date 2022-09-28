@@ -5,7 +5,6 @@ namespace Test\legacy;
 use Test\TestCase;
 
 class HelperTest extends TestCase {
-
 	/**
 	 * @dataProvider getCleanedPathProvider
 	 * @param string $original

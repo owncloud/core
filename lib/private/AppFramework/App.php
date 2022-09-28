@@ -36,7 +36,6 @@ use OCP\AppFramework\Http\ICallbackResponse;
  * Handles all the dependency injection, controllers and output flow
  */
 class App {
-
 	/**
 	 * Turns an app id into a namespace by either reading the appinfo.xml's
 	 * namespace tag or uppercasing the appid's first letter

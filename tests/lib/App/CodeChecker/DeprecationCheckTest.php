@@ -14,7 +14,6 @@ use OC\App\CodeChecker\EmptyCheck;
 use Test\TestCase;
 
 class DeprecationCheckTest extends TestCase {
-
 	/**
 	 * @dataProvider providesFilesToCheck
 	 * @param string $expectedErrorToken

@@ -31,7 +31,6 @@ namespace OCP\Search;
  * @since 7.0.0
  */
 abstract class Provider {
-
 	/**
 	 * @since 8.0.0
 	 */

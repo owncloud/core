@@ -29,7 +29,6 @@ use OCP\Migration\ISchemaMigration;
  */
 
 class Version20170427182800 implements ISchemaMigration {
-
 	/** @var  string */
 	private $prefix;
 

@@ -33,7 +33,6 @@ use OCP\IConfig;
 use OCP\L10N\IFactory;
 
 class Profile implements ISettings {
-
 	/* @var IConfig */
 	protected $config;
 	/* @var IGroupManager */

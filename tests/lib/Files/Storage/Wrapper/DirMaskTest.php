@@ -27,7 +27,6 @@ use OCP\Constants;
 use PHPUnit\Framework\TestCase;
 
 class DirMaskTest extends TestCase {
-
 	/** @var  Temporary */
 	private $sourceStorage;
 

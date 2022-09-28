@@ -36,7 +36,6 @@ use Sabre\DAV\ICollection;
  * Collection containing object ids by object type
  */
 class SystemTagsObjectTypeCollection implements ICollection {
-
 	/**
 	 * @var string
 	 */

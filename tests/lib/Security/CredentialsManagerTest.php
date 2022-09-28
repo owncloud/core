@@ -26,7 +26,6 @@ use OCP\IDBConnection;
 use OCP\Security\ICrypto;
 
 class CredentialsManagerTest extends \Test\TestCase {
-
 	/** @var ICrypto */
 	protected $crypto;
 

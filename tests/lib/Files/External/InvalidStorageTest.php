@@ -24,7 +24,6 @@ use Test\TestCase;
 use OC\Files\External\InvalidStorage;
 
 class InvalidStorageTest extends TestCase {
-
 	/**
 	 */
 	public function testCannotInstantiate() {

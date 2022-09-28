@@ -35,7 +35,6 @@ use Test\TestCase;
  * @package OCA\Files_Versions\Tests\Command
  */
 class ExpireVersionsTest extends TestCase {
-
 	/** @var CommandTester */
 	private $commandTester;
 

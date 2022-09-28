@@ -38,7 +38,6 @@ use PHPUnit\Framework\Assert;
  *
  */
 class SharingDialog extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

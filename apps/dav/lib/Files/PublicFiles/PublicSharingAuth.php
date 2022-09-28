@@ -39,7 +39,6 @@ use function explode;
  * @package OCA\DAV\Files\PublicFiles
  */
 class PublicSharingAuth extends AbstractBasic {
-
 	/** @var Server */
 	private $server;
 	/** @var IShare */

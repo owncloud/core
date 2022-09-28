@@ -47,7 +47,6 @@ interface IUserInterfaceWithUserNameBackendTest extends UserInterface, IProvides
 }
 
 class SyncServiceTest extends TestCase {
-
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
@@ -149,7 +148,6 @@ class SyncServiceTest extends TestCase {
 	}
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
-
 		/** @var Database | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->createMock(Database::class);
 		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome'])->getMock();
@@ -259,7 +257,6 @@ class SyncServiceTest extends TestCase {
 	 * @param $expectedQuota
 	 */
 	public function testSyncQuota($backendProvidesQuota, $backendQuota, $preferencesQuota, $expectedQuota) {
-
 		/** @var UserInterface | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$a = $this->getMockBuilder(Account::class)->setMethods(['setQuota'])->getMock();
 

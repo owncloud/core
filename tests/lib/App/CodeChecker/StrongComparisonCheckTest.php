@@ -14,7 +14,6 @@ use OC\App\CodeChecker\StrongComparisonCheck;
 use Test\TestCase;
 
 class StrongComparisonCheckTest extends TestCase {
-
 	/**
 	 * @dataProvider providesFilesToCheck
 	 * @param string $expectedErrorToken

@@ -863,7 +863,6 @@ class Session implements IUserSession, Emitter {
 
 		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false
 			|| ($this->activeUser !== null && !$this->activeUser->isEnabled())) {
-
 			// FIXME: protect debug statement this way to avoid regressions
 			if ($this->activeUser !== null) {
 				$this->logger->debug(

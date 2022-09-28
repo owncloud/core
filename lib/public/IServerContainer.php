@@ -54,7 +54,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @since 6.0.0
  */
 interface IServerContainer extends IContainer {
-
 	/**
 	 * The contacts manager will act as a broker between consumers for contacts information and
 	 * providers which actual deliver the contact information.

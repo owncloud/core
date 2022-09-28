@@ -36,7 +36,6 @@ use Test\TestCase;
  * @package OCA\Files\Tests\Command
  */
 class DeleteOrphanedFilesTest extends TestCase {
-
 	/**
 	 * @var DeleteOrphanedFiles
 	 */

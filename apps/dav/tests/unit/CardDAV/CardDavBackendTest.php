@@ -45,7 +45,6 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\unit\CardDAV
  */
 class CardDavBackendTest extends TestCase {
-
 	/** @var CardDavBackend */
 	private $backend;
 
@@ -114,7 +113,6 @@ class CardDavBackendTest extends TestCase {
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 */
 	public function testAddressBookOperations() {
-
 		// create a new address book
 		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
 
@@ -169,7 +167,6 @@ class CardDavBackendTest extends TestCase {
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 */
 	public function testCardOperations() {
-
 		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->getMockBuilder(CardDavBackend::class)
 				->setConstructorArgs([$this->db, $this->principal, $this->groupPrincipal, null])

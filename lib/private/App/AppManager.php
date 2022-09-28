@@ -49,7 +49,6 @@ use OCP\User\NotPermittedActionException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AppManager implements IAppManager {
-
 	/**
 	 * Apps with these types can not be enabled for certain groups only
 	 * @var string[]

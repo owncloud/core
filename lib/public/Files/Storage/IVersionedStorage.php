@@ -28,7 +28,6 @@ namespace OCP\Files\Storage;
  * @since 10.0.9
  */
 interface IVersionedStorage {
-
 	/**
 	 * List all versions for the given file
 	 *

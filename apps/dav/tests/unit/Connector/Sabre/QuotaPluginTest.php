@@ -43,7 +43,6 @@ use OCP\Files\FileInfo;
  * See the COPYING-README file.
  */
 class QuotaPluginTest extends TestCase {
-
 	/** @var \Sabre\DAV\Server | \PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 

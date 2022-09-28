@@ -739,7 +739,6 @@ class OC {
 	public static function registerCacheHooks() {
 		//don't try to do this before we are properly setup
 		if (\OC::$server->getSystemConfig()->getValue('installed', false) && !self::checkUpgrade(false)) {
-
 			// NOTE: This will be replaced to use OCP
 			$userSession = self::$server->getUserSession();
 			$userSession->listen('\OC\User', 'postLogin', function () {

@@ -29,7 +29,6 @@ use OCP\IConfig;
 * Various PostgreSQL specific helper functions.
 */
 class PgSqlTools {
-
 	/** @var \OCP\IConfig */
 	private $config;
 

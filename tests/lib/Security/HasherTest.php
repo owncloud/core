@@ -14,7 +14,6 @@ use OC\Security\Hasher;
  * Class HasherTest
  */
 class HasherTest extends \Test\TestCase {
-
 	/**
 	 * @return array
 	 */

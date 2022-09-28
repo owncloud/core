@@ -141,7 +141,6 @@ class Dispatcher {
 		$types = ['int', 'integer', 'bool', 'boolean', 'float'];
 
 		foreach ($this->reflector->getParameters() as $param => $default) {
-
 			// try to get the parameter from the request object and cast
 			// it to the type annotated in the @param annotation
 			$value = $this->request->getParam($param, $default);
@@ -171,7 +170,6 @@ class Dispatcher {
 
 		// format response
 		if ($response instanceof DataResponse || !($response instanceof Response)) {
-
 			// get format from the url format or request format parameter
 			$format = $this->request->getParam('format');
 

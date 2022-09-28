@@ -33,7 +33,6 @@ use OCA\Files_Sharing\Tests\TestCase;
  * @package OCA\Files_Sharing\Tests\External
  */
 class CacheTest extends TestCase {
-
 	/**
 	 * @var \OC\Files\Storage\Storage
 	 **/

@@ -32,7 +32,6 @@ require_once 'bootstrap.php';
  * Context for personal encryption settings specific webUI steps
  */
 class WebUIPersonalEncryptionSettingsContext extends RawMinkContext implements Context {
-
 	/**
 	 * @var FeatureContext
 	 */

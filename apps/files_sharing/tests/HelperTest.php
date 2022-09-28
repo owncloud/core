@@ -32,7 +32,6 @@ use OC\Files\View;
  * @group DB
  */
 class HelperTest extends TestCase {
-
 	/**
 	 * test set and get share folder
 	 */

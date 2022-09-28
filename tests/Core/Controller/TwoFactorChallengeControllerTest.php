@@ -37,7 +37,6 @@ use OCP\IUser;
 use OCP\Template;
 
 class TwoFactorChallengeControllerTest extends TestCase {
-
 	/** @var IRequest | MockObject */
 	private $request;
 	/** @var Manager | MockObject */

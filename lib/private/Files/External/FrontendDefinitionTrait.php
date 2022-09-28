@@ -30,7 +30,6 @@ use OCP\Files\External\IStorageConfig;
  * Trait for objects that have a frontend representation
  */
 trait FrontendDefinitionTrait {
-
 	/** @var string human-readable mechanism name */
 	private $text;
 

@@ -31,7 +31,6 @@ use Exception;
  * Admin Storage Settings page.
  */
 class AdminStorageSettingsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

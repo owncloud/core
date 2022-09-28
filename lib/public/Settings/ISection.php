@@ -26,7 +26,6 @@ namespace OCP\Settings;
  * @since 10.0
  */
 interface ISection {
-
 	/**
 	 * A string used for section identification, eg: in HTML
 	 * @since 10.0

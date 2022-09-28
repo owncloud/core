@@ -32,7 +32,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package Test\User
  */
 class ManagerTest extends TestCase {
-
 	/** @var Manager */
 	private $manager;
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */

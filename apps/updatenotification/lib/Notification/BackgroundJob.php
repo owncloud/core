@@ -33,7 +33,6 @@ use OCP\IUser;
 use OCP\Notification\IManager;
 
 class BackgroundJob extends TimedJob {
-
 	/** @var IConfig */
 	protected $config;
 

@@ -34,7 +34,6 @@ use Test\TestCase;
  * @group DB
  */
 class StatusTest extends TestCase {
-
 	/** @var CommandTester */
 	private $commandTester;
 	/** @var IJobList */
