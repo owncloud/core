@@ -96,20 +96,32 @@ class ObjectStoreTest extends TestCase {
 	public function testGetScanner() {
 		$this->assertInstanceOf(NoopScanner::class, $this->objectStore->getScanner());
 	}
-
-	public function testFreeSpaceDefault() {
-		$this->assertEquals(FileInfo::SPACE_UNLIMITED, $this->objectStore->free_space('test'));
+	public function providersFreeSpace() {
+		return [
+			[100, 10, 90],
+			[100, -1, 100],
+			[100, 110, 0],
+			[null, 10, FileInfo::SPACE_UNLIMITED]
+		];
 	}
 
-	public function testFreeSpaceWithAvailableStorageConfig() {
+	/**
+	 * @dataProvider providersFreeSpace
+	 * @param int $availableStorage
+	 * @param int $usedStorage
+	 * @param int $expected
+	 */
+	public function testFreeSpace($availableStorage, $usedStorage, $expected) {
 		$objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
+			->setMethods(['getTotalUsedStorage'])
 			->setConstructorArgs([[
 				'objectstore' => $this->impl,
-				'availableStorage' => 1
+				'availableStorage' => $availableStorage
 			]])
 			->getMock();
+		$objectStore->method('getTotalUsedStorage')->willReturn($usedStorage);
 		$free = $objectStore->free_space('test');
-		$this->assertTrue($free >= 0);
+		$this->assertEquals($expected, $free);
 	}
 
 	public function testUnlink() {

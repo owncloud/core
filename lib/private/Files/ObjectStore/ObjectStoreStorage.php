@@ -431,6 +431,16 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	}
 
 	/**
+	 * overwrite this method if objectstorage supports getting total bucket objects size
+	 *
+	 * @return int
+	 */
+	protected function getTotalUsedStorage() {
+		$rootInfo = Filesystem::getFileInfo('/', false);
+		return $rootInfo->getSize();
+	}
+
+	/**
 	 * get the free space in the object storage as indicated by the objectstore config
 	 *
 	 * NOTE: getting total free space for objectstorage is not possible,
@@ -442,8 +452,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 */
 	public function free_space($path) {
 		if (isset($this->availableStorage)) {
-			$rootInfo = Filesystem::getFileInfo('/', false);
-			$used = $rootInfo->getSize();
+			$used = $this->getTotalUsedStorage();
 			if ($used < 0) {
 				$used = 0;
 			}
