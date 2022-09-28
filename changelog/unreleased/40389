@@ -1,0 +1,6 @@
+Change: Allow specifying available space for objectstorages
+
+Before this change, objectstorages were reporting only infinite storage space. This could have caused problems in other apps that rely on this storage method, e.g. metrics app that monitors available space
+
+https://github.com/owncloud/core/pull/40192
+https://github.com/owncloud/enterprise/issues/5384
