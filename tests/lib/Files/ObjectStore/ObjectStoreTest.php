@@ -3,6 +3,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -104,7 +105,7 @@ class ObjectStoreTest extends TestCase {
 		$objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
 			->setConstructorArgs([[
 				'objectstore' => $this->impl,
-				'availablestorage' => 1
+				'availableStorage' => 1
 			]])
 			->getMock();
 		$free = $objectStore->free_space('test');

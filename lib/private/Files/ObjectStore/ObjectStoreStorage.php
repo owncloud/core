@@ -74,8 +74,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		if (isset($params['objectPrefix'])) {
 			$this->objectPrefix = $params['objectPrefix'];
 		}
-		if (isset($params['availablestorage']) && is_int($params['availablestorage'])) {
-			$this->availableStorage = $params['availablestorage'];
+		if (isset($params['availableStorage']) && \is_int($params['availableStorage'])) {
+			$this->availableStorage = $params['availableStorage'];
 		}
 		
 		//initialize cache with root directory in cache
@@ -432,9 +432,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 	/**
 	 * get the free space in the object storage as indicated by the objectstore config
-	 * 
-	 * NOTE: getting total free space for objectstorage is not possible, 
-	 *       and this can only be set to administrator allowed volume 
+	 *
+	 * NOTE: getting total free space for objectstorage is not possible,
+	 *       and this can only be set to administrator allowed volume
 	 *       e.g. due to billing or monitoring concerns
 	 *
 	 * @param string $path
@@ -449,7 +449,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			}
 
 			$free = $this->availableStorage - $used;
-			if ($free < 0){
+			if ($free < 0) {
 				return 0;
 			}
 			return $free;
