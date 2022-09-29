@@ -5375,7 +5375,7 @@ trait WebDav {
 					if ($entryNameToSearch !== null && str_ends_with($entryPath, $entryNameToSearch)) {
 						return $multistatusResult;
 					} else {
-						$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ? WebDavHelper::$SPACE_ID_FROM_OCIS : WebDavHelper::getPersonalSpaceIdForUser(
+						$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ?: WebDavHelper::getPersonalSpaceIdForUser(
 							$this->getBaseUrl(),
 							$user,
 							$this->getPasswordForUser($user),

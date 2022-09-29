@@ -2841,7 +2841,7 @@ class FeatureContext extends BehatVariablesContext {
 		$pathToOcis = \getenv("PATH_TO_OCIS");
 		$targetFile = \rtrim($pathToOcis, "/") . "/" . "services/web/assets" . "/" . ltrim($path, '/');
 		if (!\file_exists($targetFile)) {
-			throw new Exception('Target File' . $targetFile . 'could not be found');
+			throw new Exception('Target File ' . $targetFile . ' could not be found');
 		}
 		return \file_get_contents($targetFile);
 	}
@@ -2942,6 +2942,25 @@ class FeatureContext extends BehatVariablesContext {
 	public function theContentInTheRespShouldMatchWithFileInTheServerRoot(string $path):void {
 		$content = $this->getResponse()->getBody()->getContents();
 		$this->theFileWithContentShouldExistInTheServerRoot($path, $content);
+	}
+
+	/**
+	 * @Then the content of the requested file in the response should be
+	 *
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 */
+	public function theContentOfTheRequestedFileInTheResponseShouldBe(PyStringNode $content):void {
+		$actualContent = $this->getResponse()->getBody()->getContents();
+		$pattern = ["/--\w*/", "/\s*/m"];
+		$actualContent = \preg_replace($pattern, "", $actualContent);
+		$expectedString = \preg_replace($pattern, "", $content->getRaw());
+		Assert::assertSame(
+			$expectedString,
+			$actualContent,
+			"The content of the file does not match with '$expectedString'"
+		);
 	}
 
 	/**
