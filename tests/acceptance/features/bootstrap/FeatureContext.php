@@ -3700,6 +3700,17 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function deleteAllResourceCreatedByAdmin():void {
+		foreach ($this->adminResources as $resource) {
+			$this->userDeletesFile("admin", $resource);
+		}
+	}
+
+	/**
 	 * deletes all created storages
 	 *
 	 * @return void

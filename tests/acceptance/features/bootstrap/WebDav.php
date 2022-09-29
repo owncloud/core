@@ -94,6 +94,16 @@ trait WebDav {
 	private $responseXml = [];
 
 	/**
+	 * add resource created by admin in an array
+	 * This array is used while cleaning up the resource created by admin during test run
+	 * As of now it tracks only for (files|folder) creation
+	 * This can be expanded and modified to track other actions like (upload, deleted ..)
+	 *
+	 * @var array
+	 */
+	private $adminResources = [];
+
+	/**
 	 * response content parsed into a SimpleXMLElement
 	 *
 	 * @var SimpleXMLElement
@@ -3704,6 +3714,32 @@ trait WebDav {
 			["201", "204"],
 			"HTTP status code was not 201 or 204 while trying to create folder '$destination' for user '$user'"
 		);
+		$this->emptyLastHTTPStatusCodesArray();
+	}
+
+	/**
+	 * @Given admin :admin has created folder :destination
+	 *
+	 * @param string $admin
+	 * @param string $destination
+	 *
+	 * @return void
+	 * @throws JsonException
+	 * @throws GuzzleException
+	 */
+	public function adminHasCreatedFolder(string $admin, string $destination):void {
+		$admin = $this->getActualUsername($admin);
+		Assert::assertEquals(
+			"admin",
+			$admin,
+			__METHOD__ . "The provided user is not admin but '" . $admin . "'"
+		);
+		$this->userCreatesFolder($admin, $destination);
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to create folder '$destination' for admin '$admin'"
+		);
+		$this->adminResources[] = $destination;
 		$this->emptyLastHTTPStatusCodesArray();
 	}
 

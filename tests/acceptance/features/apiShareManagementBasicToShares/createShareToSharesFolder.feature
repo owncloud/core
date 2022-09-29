@@ -236,18 +236,15 @@ Feature: sharing
       | 2               | 200             |
 
   @smokeTest
-  Scenario Outline: User included in multiple group receives a share from admin
+  Scenario Outline: User included in multiple groups receives a share from the admin
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and without skeleton files:
-      | username   |
-      | admin-user |
-    And user "admin-user" has been added to group "admin"
     And group "grp1" has been created
     And group "grp2" has been created
     And user "Alice" has been added to group "grp1"
-    And user "admin-user" has created folder "/PARENT"
-    When user "admin-user" shares folder "/PARENT" with group "grp1" using the sharing API
-    And user "Alice" accepts share "/PARENT" offered by user "admin-user" using the sharing API
+    And user "Alice" has been added to group "grp2"
+    And admin "admin" has created folder "/PARENT"
+    When user "admin" shares folder "/PARENT" with group "grp1" using the sharing API
+    And user "Alice" accepts share "/PARENT" offered by user "admin" using the sharing API
     Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
     And the HTTP status code of responses on all endpoints should be "200"
     Examples:
@@ -256,7 +253,7 @@ Feature: sharing
       | 2               | 200             |
 
   @smokeTest
-  Scenario Outline: user included in multiple group share a folder to a group
+  Scenario Outline: user included in multiple groups, shares a folder with a group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
       | username |
