@@ -568,15 +568,13 @@ Feature: accept/decline shares coming from internal users
       | <declined_share_path> |
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2540
     Examples:
-      | ocs_api_version | ocs_status_code | declined_share_path |
-      | 1               | 100             | /Shares/PARENT      |
-      | 2               | 200             | /Shares/PARENT      |
+      | declined_share_path |
+      | /Shares/PARENT      |
 
     @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code | declined_share_path |
-      | 1               | 100             | /PARENT             |
-      | 2               | 200             | /PARENT             |
+      | declined_share_path |
+      | /PARENT             |
 
 
   @issue-ocis-765 @issue-ocis-2131 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0

@@ -31,7 +31,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-1289
+
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -55,7 +55,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-2133
+
   Scenario Outline: sharing subfolder when parent already shared
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -72,7 +72,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-2133
+
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -90,7 +90,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-2131
+
   Scenario Outline: multiple users share a file with the same name but different permissions to a user
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -122,7 +122,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-2131
+
   Scenario Outline: multiple users share a folder with the same name to a user
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
