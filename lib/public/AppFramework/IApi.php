@@ -34,7 +34,6 @@ namespace OCP\AppFramework;
  * @deprecated 8.0.0
  */
 interface IApi {
-
 	/**
 	 * Gets the userid of the current user
 	 * @return string the user id of the current user

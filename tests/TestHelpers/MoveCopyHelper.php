@@ -30,7 +30,6 @@ use Psr\Http\Message\ResponseInterface;
  *
  */
 class MoveCopyHelper {
-
 	/**
 	 *
 	 * @param string|null $baseUrl URL of owncloud

@@ -34,7 +34,6 @@ use OCP\Activity\IManager as ActivityIManager;
  * Delete all shares that are expired
  */
 class ExpireSharesJob extends TimedJob {
-
 	/**
 	 * @var IManager $shareManager
 	 */

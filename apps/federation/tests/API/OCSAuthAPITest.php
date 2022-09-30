@@ -34,7 +34,6 @@ use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
 class OCSAuthAPITest extends TestCase {
-
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IRequest */
 	private $request;
 

@@ -31,7 +31,6 @@ use Exception;
  *
  */
 class PersonalEncryptionSettingsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

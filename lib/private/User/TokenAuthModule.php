@@ -33,7 +33,6 @@ use OCP\IUserManager;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 
 class TokenAuthModule implements IAuthModule {
-
 	/** @var ISession */
 	private $session;
 

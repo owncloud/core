@@ -255,7 +255,7 @@ class Comment implements IComment {
 	 */
 	public function setActor($actorType, $actorId) {
 		if (
-			   !\is_string($actorType) || !\trim($actorType)
+			!\is_string($actorType) || !\trim($actorType)
 			|| !\is_string($actorId)   || !\trim($actorId)
 		) {
 			throw new \InvalidArgumentException('String expected.');
@@ -341,7 +341,7 @@ class Comment implements IComment {
 	 */
 	public function setObject($objectType, $objectId) {
 		if (
-			   !\is_string($objectType) || !\trim($objectType)
+			!\is_string($objectType) || !\trim($objectType)
 			|| !\is_string($objectId)   || !\trim($objectId)
 		) {
 			throw new \InvalidArgumentException('String expected.');

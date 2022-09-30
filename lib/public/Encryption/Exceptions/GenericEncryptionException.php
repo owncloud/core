@@ -33,7 +33,6 @@ use OC\HintException;
  * @since 8.1.0
  */
 class GenericEncryptionException extends HintException {
-
 	/**
 	 * @param string $message
 	 * @param string $hint

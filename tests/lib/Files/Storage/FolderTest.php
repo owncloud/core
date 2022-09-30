@@ -31,7 +31,6 @@ use OCP\Files\Storage\IStorage;
  * @package Test\Files\Storage
  */
 class FolderTest extends NodeTest {
-
 	/**
 	 * @param $path
 	 * @param IStorage|\PHPUnit\Framework\MockObject\MockObject|null $storage

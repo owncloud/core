@@ -31,7 +31,6 @@
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP {
-
 	/**
 	 * This class provides access to the contacts app. Use this class exclusively if you want to access contacts.
 	 *
@@ -50,7 +49,6 @@ namespace OCP {
 	 * @since 5.0.0
 	 */
 	class Contacts {
-
 		/**
 		 * This function is used to search and find contacts within the users address books.
 		 * In case $pattern is empty all contacts will be returned.

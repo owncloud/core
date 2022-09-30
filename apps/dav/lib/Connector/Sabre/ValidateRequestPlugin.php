@@ -33,7 +33,6 @@ use Sabre\DAV\ServerPlugin;
  * @package OCA\DAV\Connector\Sabre
  */
 class ValidateRequestPlugin extends ServerPlugin {
-
 	/**
 	 * Reference to main server object
 	 *

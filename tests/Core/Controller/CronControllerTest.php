@@ -36,7 +36,6 @@ use Test\TestCase;
  * @package OC\Core\Controller
  */
 class CronControllerTest extends TestCase {
-
 	/** @var CronController */
 	private $controller;
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */

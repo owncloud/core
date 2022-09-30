@@ -29,7 +29,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
 class ConverterTest extends TestCase {
-
 	/**
 	 * @dataProvider providesNewUsers
 	 */

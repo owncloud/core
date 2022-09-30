@@ -32,7 +32,6 @@ use Test\TestCase;
  * @see http://php.net/manual/en/class.iterator.php for the order of calls on an iterator
  */
 class BackendUsersIteratorTest extends TestCase {
-
 	/**
 	 * @var UserInterface|\PHPUnit\Framework\MockObject\MockObject
 	 */
@@ -76,8 +75,8 @@ class BackendUsersIteratorTest extends TestCase {
 			->method('getUsers')
 			->with(
 				$this->equalTo(''),					// all users
-					$this->equalTo(UsersIterator::LIMIT),	// limit 500
-					$this->equalTo(0)						// at the beginning
+				$this->equalTo(UsersIterator::LIMIT),	// limit 500
+				$this->equalTo(0)						// at the beginning
 			)
 			->willReturn([]);
 
@@ -89,7 +88,6 @@ class BackendUsersIteratorTest extends TestCase {
 	 * test three pages of results
 	 */
 	public function testNext() {
-
 		// create pages for 1001 users (0..1000)
 		$page1 = [];
 		for ($i=0; $i<500; $i++) {
@@ -142,7 +140,6 @@ class BackendUsersIteratorTest extends TestCase {
 	 * test a page larger than the internal limit / page size of 500
 	 */
 	public function testOverLimit() {
-
 		// create pages for 1201 users (0..1200)
 		$page1 = [];
 		for ($i=0; $i<600; $i++) {

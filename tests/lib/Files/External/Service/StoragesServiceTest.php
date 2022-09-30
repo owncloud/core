@@ -40,7 +40,6 @@ use OCP\Security\ICrypto;
  * @group DB
  */
 abstract class StoragesServiceTest extends TestCase {
-
 	/**
 	 * @var StoragesService
 	 */

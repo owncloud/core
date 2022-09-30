@@ -35,7 +35,6 @@ use OCP\Security\ISecureRandom;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 
 class AuthSettingsController extends Controller {
-
 	/** @var IProvider */
 	private $tokenProvider;
 

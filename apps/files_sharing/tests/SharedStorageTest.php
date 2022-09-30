@@ -74,7 +74,6 @@ class SharedStorageTest extends TestCase {
 	 * @medium
 	 */
 	public function testParentOfMountPointIsGone() {
-
 		// share to user
 		$share = $this->share(
 			\OCP\Share::SHARE_TYPE_USER,
@@ -119,7 +118,6 @@ class SharedStorageTest extends TestCase {
 	 * @medium
 	 */
 	public function testRenamePartFile() {
-
 		// share to user
 		$share = $this->share(
 			\OCP\Share::SHARE_TYPE_USER,

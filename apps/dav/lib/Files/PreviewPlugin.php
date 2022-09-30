@@ -40,7 +40,6 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class PreviewPlugin extends ServerPlugin {
-
 	/** @var Server */
 	protected $server;
 	/** @var ITimeFactory */

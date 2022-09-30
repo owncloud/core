@@ -36,7 +36,6 @@ use OCP\Share\IManager;
  * @package OCA\DAV\Tests\unit\Connector
  */
 class PublicAuthTest extends \Test\TestCase {
-
 	/** @var ISession|\PHPUnit\Framework\MockObject\MockObject */
 	private $session;
 	/** @var IRequest|\PHPUnit\Framework\MockObject\MockObject */

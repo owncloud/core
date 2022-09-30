@@ -29,7 +29,6 @@ use OCP\Files\StorageNotAvailableException;
  * @since 10.0
  */
 abstract class StorageAdapter extends \OC\Files\Storage\Common {
-
 	/**
 	 * Get the identifier for the storage,
 	 * the returned id should be the same for every storage object that is created with the same parameters

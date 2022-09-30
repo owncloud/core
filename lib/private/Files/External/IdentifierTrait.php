@@ -27,7 +27,6 @@ namespace OC\Files\External;
  * Also supports deprecation to a different object, linking the objects
  */
 trait IdentifierTrait {
-
 	/** @var string */
 	protected $identifier;
 

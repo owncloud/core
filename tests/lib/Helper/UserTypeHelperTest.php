@@ -27,7 +27,6 @@ use OCP\IConfig;
 use Test\TestCase;
 
 class UserTypeHelperTest extends TestCase {
-
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 

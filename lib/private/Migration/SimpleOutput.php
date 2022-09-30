@@ -33,7 +33,6 @@ use OCP\Migration\IOutput;
  * @package OC\Migration
  */
 class SimpleOutput implements IOutput {
-
 	/** @var ILogger */
 	private $logger;
 	private $appName;

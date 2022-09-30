@@ -36,7 +36,6 @@ use OCP\AppFramework\Db\Entity;
  * @method int getLastActivity()
  */
 class DefaultToken extends Entity implements IToken {
-
 	/**
 	 * @var string user UID
 	 */

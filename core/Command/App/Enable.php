@@ -32,7 +32,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Enable extends Command {
-
 	/** @var IAppManager */
 	protected $manager;
 

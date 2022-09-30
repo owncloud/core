@@ -1086,7 +1086,6 @@ class OC_App {
 	 * @return array improved app data
 	 */
 	public static function parseAppInfo(array $data) {
-
 		// just modify the description if it is available
 		// otherwise this will create a $data element with an empty 'description'
 		if (isset($data['description'])) {

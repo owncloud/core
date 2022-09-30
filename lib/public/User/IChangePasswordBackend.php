@@ -30,7 +30,6 @@ namespace OCP\User;
  * @since 10.0
  */
 interface IChangePasswordBackend {
-
 	/**
 	 * Set password
 	 * @param string $uid The username

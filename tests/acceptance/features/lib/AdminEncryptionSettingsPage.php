@@ -30,7 +30,6 @@ use Behat\Mink\Session;
  *
  */
 class AdminEncryptionSettingsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

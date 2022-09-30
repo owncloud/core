@@ -30,7 +30,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Favorites page.
  */
 class FavoritesPage extends FilesPageBasic {
-
 	/**
 	 *
 	 * @var string $path

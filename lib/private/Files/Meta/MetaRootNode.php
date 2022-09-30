@@ -34,7 +34,6 @@ use OCP\IUserSession;
  * @package OC\Files\Meta
  */
 class MetaRootNode extends AbstractFolder {
-
 	/**
 	 * @var IRootFolder
 	 */

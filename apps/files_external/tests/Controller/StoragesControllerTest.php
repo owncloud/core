@@ -33,7 +33,6 @@ use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\StorageNotAvailableException;
 
 abstract class StoragesControllerTest extends \Test\TestCase {
-
 	/**
 	 * @var GlobalStoragesController
 	 */

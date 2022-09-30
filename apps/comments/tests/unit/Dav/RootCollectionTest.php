@@ -29,7 +29,6 @@ use OCP\Comments\CommentsEntityEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class RootCollectionTest extends \Test\TestCase {
-
 	/** @var \OCP\Comments\ICommentsManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $commentsManager;
 	/** @var \OCP\IUserManager|\PHPUnit\Framework\MockObject\MockObject */

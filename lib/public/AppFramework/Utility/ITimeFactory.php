@@ -27,7 +27,6 @@ namespace OCP\AppFramework\Utility;
  * @since 8.0.0
  */
 interface ITimeFactory {
-
 	/**
 	 * @return int the result of a call to time()
 	 * @since 8.0.0

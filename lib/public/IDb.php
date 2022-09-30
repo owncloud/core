@@ -27,7 +27,6 @@ namespace OCP;
  * @since 7.0.0 - extends IDBConnection was added in 8.1.0
  */
 interface IDb extends IDBConnection {
-
 	/**
 	 * Used to abstract the owncloud database access away
 	 * @param string $sql the sql query with ? placeholder for params

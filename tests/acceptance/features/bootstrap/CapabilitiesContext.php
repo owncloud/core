@@ -33,7 +33,6 @@ require_once 'bootstrap.php';
  * Capabilities context.
  */
 class CapabilitiesContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

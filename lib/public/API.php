@@ -38,7 +38,6 @@ namespace OCP;
  * @since 5.0.0
  */
 class API {
-
 	/**
 	 * API authentication levels
 	 * @since 8.1.0

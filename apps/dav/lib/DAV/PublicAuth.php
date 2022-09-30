@@ -25,7 +25,6 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class PublicAuth implements BackendInterface {
-
 	/** @var string[] */
 	private $publicURLs;
 

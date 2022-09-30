@@ -26,7 +26,6 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\ICollection;
 
 class FilesHome extends ObjectTree implements ICollection {
-
 	/** @var array */
 	private $principalInfo;
 

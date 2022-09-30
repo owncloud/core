@@ -63,7 +63,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\Files_Sharing\Controllers
  */
 class ShareController extends Controller {
-
 	/** @var IConfig */
 	protected $config;
 	/** @var IURLGenerator */
@@ -161,7 +160,6 @@ class ShareController extends Controller {
 	 * @return RedirectResponse|TemplateResponse
 	 */
 	public function authenticate($token, $password = '') {
-
 		// Check whether share exists
 		try {
 			$share = $this->shareManager->getShareByToken($token);
@@ -533,7 +531,6 @@ class ShareController extends Controller {
 		if (!empty($downloadStartSecret)
 			&& !isset($downloadStartSecret[32])
 			&& \preg_match('!^[a-zA-Z0-9]+$!', $downloadStartSecret) === 1) {
-
 			// FIXME: set on the response once we use an actual app framework response
 			\setcookie('ocDownloadStarted', $downloadStartSecret, \time() + 20, '/');
 		}

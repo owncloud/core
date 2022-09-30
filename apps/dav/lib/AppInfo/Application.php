@@ -33,7 +33,6 @@ use OCP\IUser;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Application extends App {
-
 	/**
 	 * Application constructor.
 	 *

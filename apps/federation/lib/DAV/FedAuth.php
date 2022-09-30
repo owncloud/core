@@ -26,7 +26,6 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class FedAuth extends AbstractBasic {
-
 	/** @var DbHandler */
 	private $db;
 

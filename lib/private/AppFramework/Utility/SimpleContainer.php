@@ -39,7 +39,6 @@ use OCP\IContainer;
  * SimpleContainer is a simple implementation of IContainer on basis of Pimple
  */
 class SimpleContainer extends Container implements IContainer {
-
 	/**
 	 * @param ReflectionClass $class the class to instantiate
 	 * @return \stdClass the created class

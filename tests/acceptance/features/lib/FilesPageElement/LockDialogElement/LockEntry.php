@@ -33,7 +33,6 @@ use Page\OwncloudPage;
  *
  */
 class LockEntry extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

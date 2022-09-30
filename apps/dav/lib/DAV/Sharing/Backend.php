@@ -29,7 +29,6 @@ use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IDBConnection;
 
 class Backend {
-
 	/** @var IDBConnection */
 	private $db;
 	/** @var Principal */

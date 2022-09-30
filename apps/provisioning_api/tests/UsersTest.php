@@ -43,7 +43,6 @@ use OC\Authentication\TwoFactorAuth\Manager;
 use OCP\IConfig;
 
 class UsersTest extends OriginalTest {
-
 	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 	/** @var \OC\Group\Manager | PHPUnit\Framework\MockObject\MockObject */

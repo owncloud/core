@@ -36,7 +36,6 @@ require_once 'bootstrap.php';
  * TUS related test steps
  */
 class TUSContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

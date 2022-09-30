@@ -45,7 +45,6 @@ require_once 'bootstrap.php';
  * WebUI SharingContext context.
  */
 class WebUISharingContext extends RawMinkContext implements Context {
-
 	/**
 	 *
 	 * @var FilesPage

@@ -45,7 +45,6 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\unit\DAV
  */
 class LockPluginTest extends TestCase {
-
 	/** @var Server | \PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 	/** @var LockPlugin */

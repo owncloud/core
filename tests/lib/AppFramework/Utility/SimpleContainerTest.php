@@ -58,7 +58,6 @@ class ClassInterfaceConstructor {
 }
 
 class SimpleContainerTest extends \Test\TestCase {
-
 	/** @var SimpleContainer */
 	private $container;
 

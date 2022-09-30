@@ -33,7 +33,6 @@ use TestHelpers\UploadHelper;
  * Personal General Settings page.
  */
 class PersonalGeneralSettingsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

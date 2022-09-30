@@ -83,7 +83,7 @@ if (isset($_GET['fetch'])) {
 		case 'getItem':
 			if (isset($_GET['itemType'], $_GET['itemSource'], $_GET['checkReshare'], $_GET['checkShares'])
 				 
-				 ) {
+			) {
 				if ($_GET['checkReshare'] == 'true') {
 					$reshare = OCP\Share::getItemSharedWithBySource(
 						(string)$_GET['itemType'],

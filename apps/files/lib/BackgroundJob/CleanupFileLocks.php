@@ -28,7 +28,6 @@ use OC\Lock\DBLockingProvider;
  * Clean up all file locks that are expired for the DB file locking provider
  */
 class CleanupFileLocks extends TimedJob {
-
 	/**
 	 * Default interval in minutes
 	 *

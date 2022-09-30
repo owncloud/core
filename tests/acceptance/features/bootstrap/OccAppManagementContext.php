@@ -31,7 +31,6 @@ require_once 'bootstrap.php';
  * Occ context for test steps that test occ commands
  */
 class OccAppManagementContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

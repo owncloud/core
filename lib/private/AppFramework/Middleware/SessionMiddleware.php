@@ -30,7 +30,6 @@ use OCP\AppFramework\Middleware;
 use OCP\ISession;
 
 class SessionMiddleware extends Middleware {
-
 	/** @var IRequest */
 	private $request;
 

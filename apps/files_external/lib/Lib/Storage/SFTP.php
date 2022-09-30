@@ -79,7 +79,6 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 * {@inheritdoc}
 	 */
 	public function __construct($params) {
-
 		// Register sftp://
 		Stream::register();
 

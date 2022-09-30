@@ -33,7 +33,6 @@ require_once 'bootstrap.php';
  * Federation context.
  */
 class FederationContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

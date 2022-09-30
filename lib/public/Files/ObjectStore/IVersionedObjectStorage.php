@@ -29,7 +29,6 @@ namespace OCP\Files\ObjectStore;
  * @since 10.0.9
  */
 interface IVersionedObjectStorage {
-
 	/**
 	 * List all versions for the given file
 	 *

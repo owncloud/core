@@ -33,7 +33,6 @@ use Sabre\VObject\Property\Binary;
 use Sabre\VObject\Reader;
 
 class ImageExportPlugin extends ServerPlugin {
-
 	/** @var Server */
 	protected $server;
 	/** @var ILogger */

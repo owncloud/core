@@ -28,7 +28,6 @@ namespace OCA\DAV\Files;
  * @package OCA\DAV\Files
  */
 interface IProvidesAdditionalHeaders {
-
 	/**
 	 * @return array
 	 */

@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
- 
+
 namespace OCA\Files_Trashbin;
 
 use OCP\Capabilities\ICapability;
@@ -31,7 +31,6 @@ use OCP\Capabilities\ICapability;
  * @package OCA\Files_Trashbin
  */
 class Capabilities implements ICapability {
-
 	/**
 	 * Return this classes capabilities
 	 *

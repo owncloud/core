@@ -65,7 +65,6 @@ use OCP\Share\IManager;
  * @group DB
  */
 class Share20OcsControllerTest extends TestCase {
-
 	/** @var Manager | MockObject */
 	private $shareManager;
 

@@ -28,7 +28,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportCertificate extends Base {
-
 	/** @var ICertificateManager */
 	protected $certificateManager;
 

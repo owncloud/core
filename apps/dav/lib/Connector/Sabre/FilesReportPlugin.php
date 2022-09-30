@@ -40,7 +40,6 @@ use Sabre\DAV\Tree;
 use Sabre\DAV\Xml\Element\Response;
 
 class FilesReportPlugin extends ServerPlugin {
-
 	// namespace
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	public const REPORT_NAME            = '{http://owncloud.org/ns}filter-files';

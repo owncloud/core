@@ -34,7 +34,6 @@ use Test\TestCase;
  * @group DB
  */
 class RemoveCertificateTest extends TestCase {
-
 	/** @var CommandTester */
 	private $commandTester;
 

@@ -17,7 +17,6 @@ use OC\Settings\Panels\Personal\Legacy;
  * @package Tests\Settings\Panels\Personal
  */
 class LegacyTest extends \Test\TestCase {
-
 	/** @var Legacy */
 	private $panel;
 	/** @var Helper */

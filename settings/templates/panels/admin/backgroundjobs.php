@@ -23,10 +23,10 @@ script('settings', 'panels/backgroundjobs');
 					<?php p($l->t("Last cron job execution: %s. Something seems wrong.", [$relative_time]));?>
 				</span>
 			<?php endif;
-		else: ?>
+	else: ?>
 			<span class="status error"></span>
 			<?php p($l->t("Cron was not executed yet!"));
-		endif; ?>
+	endif; ?>
 	</p>
 	<?php endif; ?>
 	<a target="_blank" rel="noreferrer" class="icon-info"
@@ -35,24 +35,24 @@ script('settings', 'panels/backgroundjobs');
 	<p>
 		<input type="radio" name="mode" class="radio" value="ajax"
 			   id="backgroundjobs_ajax" <?php if ($_['backgroundjobs_mode'] === "ajax") {
-			print_unescaped('checked="checked"');
-		} ?>>
+			   	print_unescaped('checked="checked"');
+			   } ?>>
 		<label for="backgroundjobs_ajax">AJAX</label><br/>
 		<em><?php p($l->t("Execute one task with each page loaded")); ?></em>
 	</p>
 	<p>
 		<input type="radio" name="mode" class="radio" value="webcron"
 			   id="backgroundjobs_webcron" <?php if ($_['backgroundjobs_mode'] === "webcron") {
-			print_unescaped('checked="checked"');
-		} ?>>
+			   	print_unescaped('checked="checked"');
+			   } ?>>
 		<label for="backgroundjobs_webcron">Webcron</label><br/>
 		<em><?php p($l->t("cron.php is registered at a webcron service to call cron.php every 15 minutes over http.")); ?></em>
 	</p>
 	<p>
 		<input type="radio" name="mode" class="radio" value="cron"
 			   id="backgroundjobs_cron" <?php if ($_['backgroundjobs_mode'] === "cron") {
-			print_unescaped('checked="checked"');
-		} ?>>
+			   	print_unescaped('checked="checked"');
+			   } ?>>
 		<label for="backgroundjobs_cron">Cron</label><br/>
 		<em><?php p($l->t("Use system's cron service to call the cron.php file every 15 minutes.")); ?></em>
 	</p>

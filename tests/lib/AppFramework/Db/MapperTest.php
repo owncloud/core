@@ -62,7 +62,6 @@ class ExampleMapper extends Mapper {
 }
 
 class MapperTest extends MapperTestUtility {
-
 	/**
 	 * @var Mapper
 	 */

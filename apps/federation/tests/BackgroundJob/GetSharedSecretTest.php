@@ -42,7 +42,6 @@ use Test\TestCase;
  * @package OCA\Federation\Tests\BackgroundJob
  */
 class GetSharedSecretTest extends TestCase {
-
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IClient */
 	private $httpClient;
 

@@ -61,7 +61,6 @@ use OCP\Activity\IManager as ActivityIManager;
  * This class is the communication hub for all sharing related operations.
  */
 class Manager implements IManager {
-
 	/** @var IProviderFactory */
 	private $factory;
 	/** @var ILogger */
@@ -655,7 +654,6 @@ class Manager implements IManager {
 	 * @param \OCP\Share\IShare $share
 	 */
 	protected function setLinkParent(\OCP\Share\IShare $share) {
-
 		// No sense in checking if the method is not there.
 		if (\method_exists($share, 'setParent')) {
 			$storage = $share->getNode()->getStorage();

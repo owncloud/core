@@ -30,7 +30,6 @@ namespace OCP\User;
  * @since 10.0
  */
 interface IProvidesDisplayNameBackend {
-
 	/**
 	 * get display name of the user
 	 * @param string $uid user ID of the user

@@ -33,7 +33,6 @@ use OCP\IUserSession;
  * @package OCA\FederatedFileSharing\Tests
  */
 class GeneralPersonalPanelTest extends \Test\TestCase {
-
 	/** @var GeneralPersonalPanel */
 	private $panel;
 	/** @var IL10N */

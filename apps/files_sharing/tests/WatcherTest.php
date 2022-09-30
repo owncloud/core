@@ -34,7 +34,6 @@ namespace OCA\Files_Sharing\Tests;
  * @group DB
  */
 class WatcherTest extends TestCase {
-
 	/** @var \OC\Files\Storage\Storage */
 	private $ownerStorage;
 

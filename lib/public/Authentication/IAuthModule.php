@@ -12,7 +12,6 @@ use OCP\IUser;
  * @since 10.0.0
  */
 interface IAuthModule {
-
 	/**
 	 * Authenticates a request.
 	 *

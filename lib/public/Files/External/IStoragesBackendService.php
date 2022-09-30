@@ -32,7 +32,6 @@ use \OCP\Files\External\Config\IAuthMechanismProvider;
  * @since 10.0
  */
 interface IStoragesBackendService {
-
 	/** Visibility constants for VisibilityTrait */
 	public const VISIBILITY_NONE = 0;
 	public const VISIBILITY_PERSONAL = 1;

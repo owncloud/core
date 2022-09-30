@@ -37,7 +37,6 @@ use OCP\DB\QueryBuilder\IParameter;
 use OCP\IDBConnection;
 
 class QueryBuilder implements IQueryBuilder {
-
 	/** @var \OCP\IDBConnection */
 	private $connection;
 

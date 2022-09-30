@@ -61,7 +61,6 @@ namespace OCP;
  * @since 6.0.0
  */
 interface IRequest {
-
 	/**
 	 * @param string $name
 	 *

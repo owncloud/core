@@ -31,7 +31,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class SecurityWarning implements ISettings {
-
 	/** @var IL10N */
 	protected $l;
 	/** @var IConfig */

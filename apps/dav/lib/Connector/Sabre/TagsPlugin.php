@@ -47,7 +47,6 @@ use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 
 class TagsPlugin extends \Sabre\DAV\ServerPlugin {
-
 	// namespace
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	public const TAGS_PROPERTYNAME = '{http://owncloud.org/ns}tags';

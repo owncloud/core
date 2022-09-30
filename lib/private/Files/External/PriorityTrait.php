@@ -28,7 +28,6 @@ use OCP\Files\External\IStoragesBackendService;
  * Trait to implement priority mechanics for a configuration class
  */
 trait PriorityTrait {
-
 	/** @var int initial priority */
 	protected $priority = IStoragesBackendService::PRIORITY_DEFAULT;
 

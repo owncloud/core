@@ -27,7 +27,6 @@ use Sabre\HTTP\Request;
 use Test\TestCase;
 
 class VerifierTest extends TestCase {
-
 	/**
 	 * @dataProvider provider
 	 * @param bool $isSignedUrl

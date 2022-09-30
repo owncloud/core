@@ -49,7 +49,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  */
 class TrashbinTest extends TestCase {
-
 	/**
 	 * Login USER1 for each test case
 	 */
