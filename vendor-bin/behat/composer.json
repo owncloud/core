@@ -1,7 +1,7 @@
 {
     "require": {
-        "behat/behat": "^3.8",
-        "behat/gherkin": "4.7.1",
+        "behat/behat": "^3.11",
+        "behat/gherkin": "^4.9",
         "behat/mink": "1.7.1",
         "behat/mink-extension": "^2.3",
         "behat/mink-selenium2-driver": "^1.5",
