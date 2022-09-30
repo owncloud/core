@@ -2,11 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
-<<<<<<< HEAD
  * @copyright Copyright (c) 2018, ownCloud GmbH
-=======
- * @copyright Copyright (c) 2017, ownCloud GmbH
->>>>>>> 478c4d51eb... Add versioning to objectstore
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,6 +25,7 @@ use OC\Files\Cache\CacheEntry;
 use OC\Files\Cache\Updater;
 use OC\Files\ObjectStore\NoopScanner;
 use OC\Files\ObjectStore\ObjectStoreStorage;
+use OCP\Files\FileInfo;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
@@ -98,6 +95,33 @@ class ObjectStoreTest extends TestCase {
 
 	public function testGetScanner() {
 		$this->assertInstanceOf(NoopScanner::class, $this->objectStore->getScanner());
+	}
+	public function providersFreeSpace() {
+		return [
+			[100, 10, 90],
+			[100, -1, 100],
+			[100, 110, 0],
+			[null, 10, FileInfo::SPACE_UNLIMITED]
+		];
+	}
+
+	/**
+	 * @dataProvider providersFreeSpace
+	 * @param int $availableStorage
+	 * @param int $usedStorage
+	 * @param int $expected
+	 */
+	public function testFreeSpace($availableStorage, $usedStorage, $expected) {
+		$objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
+			->setMethods(['getTotalUsedStorage'])
+			->setConstructorArgs([[
+				'objectstore' => $this->impl,
+				'availableStorage' => $availableStorage
+			]])
+			->getMock();
+		$objectStore->method('getTotalUsedStorage')->willReturn($usedStorage);
+		$free = $objectStore->free_space('test');
+		$this->assertEquals($expected, $free);
 	}
 
 	public function testUnlink() {
