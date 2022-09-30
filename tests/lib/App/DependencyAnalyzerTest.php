@@ -15,7 +15,6 @@ use OCP\IL10N;
 use Test\TestCase;
 
 class DependencyAnalyzerTest extends TestCase {
-
 	/** @var Platform */
 	private $platformMock;
 

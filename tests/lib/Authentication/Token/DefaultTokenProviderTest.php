@@ -28,7 +28,6 @@ use OC\Authentication\Token\IToken;
 use Test\TestCase;
 
 class DefaultTokenProviderTest extends TestCase {
-
 	/** @var DefaultTokenProvider */
 	private $tokenProvider;
 	private $mapper;

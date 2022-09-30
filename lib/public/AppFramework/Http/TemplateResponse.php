@@ -34,7 +34,6 @@ namespace OCP\AppFramework\Http;
  * @since 6.0.0
  */
 class TemplateResponse extends Response {
-
 	/**
 	 * name of the template
 	 * @var string

@@ -26,7 +26,6 @@ use OC\Authentication\TwoFactorAuth\Manager;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
-
 	/** @var \OCP\IUser|\PHPUnit\Framework\MockObject\MockObject */
 	private $user;
 

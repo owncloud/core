@@ -32,7 +32,6 @@ use Test\TestCase;
  * @see http://php.net/manual/en/class.iterator.php for the order of calls on an iterator
  */
 class SeenUsersIteratorTest extends TestCase {
-
 	/**
 	 * @var AccountMapper|\PHPUnit\Framework\MockObject\MockObject
 	 */
@@ -75,7 +74,6 @@ class SeenUsersIteratorTest extends TestCase {
 	 * test three pages of results
 	 */
 	public function testNext() {
-
 		// create pages for 1001 users (0..1000)
 		$page1 = [];
 		for ($i=0; $i<500; $i++) {

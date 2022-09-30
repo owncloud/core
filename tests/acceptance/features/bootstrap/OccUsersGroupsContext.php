@@ -31,7 +31,6 @@ require_once 'bootstrap.php';
  * Context for test steps that test occ commands that manage users and groups
  */
 class OccUsersGroupsContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

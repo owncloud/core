@@ -33,7 +33,6 @@ use Doctrine\DBAL\Schema\Schema;
 use OCP\IConfig;
 
 class MDB2SchemaReader {
-
 	/** @var string $DBTABLEPREFIX */
 	protected $DBTABLEPREFIX;
 
@@ -73,7 +72,6 @@ class MDB2SchemaReader {
 					break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
-
 			}
 		}
 		return $schema;
@@ -109,7 +107,6 @@ class MDB2SchemaReader {
 					break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
-
 			}
 		}
 	}
@@ -133,7 +130,6 @@ class MDB2SchemaReader {
 					break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
-
 			}
 		}
 	}
@@ -209,7 +205,6 @@ class MDB2SchemaReader {
 					break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
-
 			}
 		}
 		if (isset($name, $type)) {
@@ -293,13 +288,11 @@ class MDB2SchemaReader {
 								break;
 							default:
 								throw new \DomainException('Unknown element: ' . $field->getName());
-
 						}
 					}
 					break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
-
 			}
 		}
 		if (!empty($fields)) {

@@ -25,7 +25,6 @@ use OCP\Files\Folder;
 use OCP\IDBConnection;
 
 class PreviewCleanup {
-
 	/**
 	 * @var IDBConnection
 	 */

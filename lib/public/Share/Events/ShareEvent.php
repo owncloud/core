@@ -30,7 +30,6 @@ use Symfony\Component\EventDispatcher\Event;
  * @since 10.0.2
  */
 class ShareEvent extends Event {
-
 	// TODO when the sharing code uses a Share entity use that instead of an array
 	/** @var array */
 	private $share;

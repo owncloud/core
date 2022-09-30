@@ -36,7 +36,6 @@ use OCP\IL10N;
 use OCP\ILogger;
 
 class Manager implements IManager {
-
 	/** @var array */
 	protected $encryptionModules;
 

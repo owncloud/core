@@ -33,7 +33,6 @@ use OCP\Files\NotFoundException;
  * @since 6.0.0
  */
 interface IAvatar {
-
 	/**
 	 * get the users avatar
 	 * @param int $size size in px of the avatar, avatars are square, defaults to 64, -1 can be used to not scale the image

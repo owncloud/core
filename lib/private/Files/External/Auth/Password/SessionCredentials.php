@@ -35,7 +35,6 @@ use OCP\Files\External\InsufficientDataForMeaningfulAnswerException;
  * Username and password from login credentials, saved in session
  */
 class SessionCredentials extends AuthMechanism {
-
 	/** @var ISession */
 	protected $session;
 

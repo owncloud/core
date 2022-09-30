@@ -66,7 +66,6 @@ class SharedMountTest extends TestCase {
 	 * test if the mount point moves up if the parent folder no longer exists
 	 */
 	public function testShareMountLoseParentFolder() {
-
 		// share to user
 		$share = $this->share(
 			\OCP\Share::SHARE_TYPE_USER,

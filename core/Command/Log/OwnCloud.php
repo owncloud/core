@@ -29,7 +29,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class OwnCloud extends Command {
-
 	/** @var IConfig */
 	protected $config;
 

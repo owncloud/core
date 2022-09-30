@@ -6,7 +6,6 @@ use OC\Encryption\Manager;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
-
 	/** @var Manager */
 	private $manager;
 

@@ -142,18 +142,18 @@ class Manage extends Command {
 	protected function convertLevelString($level) {
 		$level = \strtolower($level);
 		switch ($level) {
-		case 'debug':
-			return 0;
-		case 'info':
-			return 1;
-		case 'warning':
-		case 'warn':
-			return 2;
-		case 'error':
-		case 'err':
-			return 3;
-		case 'fatal':
-			return 4;
+			case 'debug':
+				return 0;
+			case 'info':
+				return 1;
+			case 'warning':
+			case 'warn':
+				return 2;
+			case 'error':
+			case 'err':
+				return 3;
+			case 'fatal':
+				return 4;
 		}
 		throw new \InvalidArgumentException('Invalid log level string');
 	}
@@ -165,16 +165,16 @@ class Manage extends Command {
 	 */
 	protected function convertLevelNumber($levelNum) {
 		switch ($levelNum) {
-		case 0:
-			return 'Debug';
-		case 1:
-			return 'Info';
-		case 2:
-			return 'Warning';
-		case 3:
-			return 'Error';
-		case 4:
-			return 'Fatal';
+			case 0:
+				return 'Debug';
+			case 1:
+				return 'Info';
+			case 2:
+				return 'Warning';
+			case 3:
+				return 'Error';
+			case 4:
+				return 'Fatal';
 		}
 		throw new \InvalidArgumentException('Invalid log level number');
 	}

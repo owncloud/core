@@ -44,7 +44,6 @@ use OCP\IConfig;
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
  */
 class CORSMiddleware extends Middleware {
-
 	/**
 	 * @var IRequest
 	 */

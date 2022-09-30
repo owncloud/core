@@ -28,7 +28,6 @@ use OCP\Template;
  * @since 9.1.0
  */
 interface IProvider {
-
 	/**
 	 * Get unique identifier of this 2FA provider
 	 *

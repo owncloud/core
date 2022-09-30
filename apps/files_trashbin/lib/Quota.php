@@ -28,7 +28,6 @@ use OCP\IUserManager;
 use OCP\IUser;
 
 class Quota {
-
 	// percent of free disk space/quota that triggers trashbin cleanup by default
 	public const DEFAULTMAXSIZE = 50;
 

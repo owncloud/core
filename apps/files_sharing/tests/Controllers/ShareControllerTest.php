@@ -48,7 +48,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\Files_Sharing\Controllers
  */
 class ShareControllerTest extends \Test\TestCase {
-
 	/** @var string */
 	private $user;
 	/** @var string */

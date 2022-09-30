@@ -39,7 +39,6 @@ use Sabre\DAV\Auth\Backend\AbstractBasic;
  * @package OCA\DAV\Connector
  */
 class PublicAuth extends AbstractBasic {
-
 	/** @var \OCP\Share\IShare */
 	private $share;
 

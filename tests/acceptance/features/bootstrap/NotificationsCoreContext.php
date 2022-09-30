@@ -33,7 +33,6 @@ require_once 'bootstrap.php';
  * Defines application features from the specific context.
  */
 class NotificationsCoreContext implements Context {
-
 	/**
 	 * @var array[]
 	 */
@@ -235,7 +234,7 @@ class NotificationsCoreContext implements Context {
 		$lastNotifications = $this->getLastNotificationIds();
 		if ($notification === 'first') {
 			$notificationId = \reset($lastNotifications);
-		} else /* if ($notification === 'last')*/ {
+		} else { /* if ($notification === 'last')*/
 			$notificationId = \end($lastNotifications);
 		}
 

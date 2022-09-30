@@ -32,7 +32,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Cron extends Command {
-
 	/** @var \OCP\BackgroundJob\IJobList */
 	private $jobList;
 	/** @var IConfig */

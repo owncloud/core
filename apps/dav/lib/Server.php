@@ -76,7 +76,6 @@ use Sabre\DAV\Exception;
 use Sabre\HTTP\Request;
 
 class Server {
-
 	/** @var Connector\Sabre\Server  */
 	public $server;
 

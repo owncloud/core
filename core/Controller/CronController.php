@@ -29,7 +29,6 @@ use OCP\IRequest;
 use OCP\ILogger;
 
 class CronController extends Controller {
-	
 	/** @var IConfig */
 	private $config;
 	/** @var ILogger */

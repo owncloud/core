@@ -36,7 +36,6 @@ use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
 class LazyOpsPluginTest extends TestCase {
-
 	/** @var LazyOpsPlugin */
 	private $plugin;
 	/** @var ILogger */

@@ -53,7 +53,6 @@ use OCP\Util;
  * @package OC\Settings
  */
 class Application extends App {
-
 	/**
 	 * @param array $urlParams
 	 */

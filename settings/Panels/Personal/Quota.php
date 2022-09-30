@@ -26,7 +26,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Quota implements ISettings {
-
 	/** @var Helper  */
 	protected $helper;
 

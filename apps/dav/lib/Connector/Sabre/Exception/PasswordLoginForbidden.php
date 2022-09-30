@@ -42,7 +42,6 @@ class PasswordLoginForbidden extends NotAuthenticated {
 	 * @return void
 	 */
 	public function serialize(Server $server, DOMElement $errorNode) {
-
 		// set ownCloud namespace
 		$errorNode->setAttribute('xmlns:o', self::NS_OWNCLOUD);
 

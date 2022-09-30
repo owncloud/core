@@ -26,7 +26,6 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 
 class Expiration {
-
 	// how long do we keep files in the trash bin if no other value is defined in the config file (unit: days)
 	public const DEFAULT_RETENTION_OBLIGATION = 30;
 	public const NO_OBLIGATION = -1;

@@ -24,7 +24,6 @@ namespace OCA\DAV\Upload;
 use Sabre\DAVACL\AbstractPrincipalCollection;
 
 class RootCollection extends AbstractPrincipalCollection {
-
 	/**
 	 * @inheritdoc
 	 */

@@ -36,7 +36,6 @@ use Sabre\DAV\Exception\NotFound;
  * DAV node representing a system tag, with the name being the tag id.
  */
 class SystemTagNode implements \Sabre\DAV\INode {
-
 	/**
 	 * @var ISystemTag
 	 */

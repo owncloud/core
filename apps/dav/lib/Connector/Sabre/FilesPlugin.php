@@ -49,7 +49,6 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class FilesPlugin extends ServerPlugin {
-
 	// namespace
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	public const FILEID_PROPERTYNAME = '{http://owncloud.org/ns}id';

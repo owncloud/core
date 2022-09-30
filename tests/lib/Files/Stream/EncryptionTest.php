@@ -7,7 +7,6 @@ use OC\User\Manager;
 use Test\TestCase;
 
 class EncryptionTest extends TestCase {
-
 	/** @var  \OCP\Encryption\IEncryptionModule | \PHPUnit\Framework\MockObject\MockObject  */
 	private $encryptionModule;
 
@@ -83,7 +82,6 @@ class EncryptionTest extends TestCase {
 		$expectedUnencryptedSize,
 		$expectedReadOnly
 	) {
-
 		// build mocks
 		$encryptionModuleMock = $this->getMockBuilder('\OCP\Encryption\IEncryptionModule')
 		->disableOriginalConstructor()->getMock();

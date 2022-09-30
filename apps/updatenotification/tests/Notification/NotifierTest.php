@@ -28,7 +28,6 @@ use OCP\Notification\IManager;
 use Test\TestCase;
 
 class NotifierTest extends TestCase {
-
 	/** @var IManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $notificationManager;
 	/** @var IFactory|\PHPUnit\Framework\MockObject\MockObject */

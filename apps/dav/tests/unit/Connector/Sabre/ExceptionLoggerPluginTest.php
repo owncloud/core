@@ -47,7 +47,6 @@ class TestLogger extends Log {
 }
 
 class ExceptionLoggerPluginTest extends TestCase {
-
 	/** @var Server */
 	private $server;
 

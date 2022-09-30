@@ -35,13 +35,13 @@ script('files_sharing', 'settings');
 			   name="public_share_sharers_groups_allowlist_enabled"
 			   id="publicShareSharersGroupsAllowlistEnabled" class="checkbox noautosave"
 			   value="1" <?php if ($_['publicShareSharersGroupsAllowlistEnabled'] === 'yes') {
-	print_unescaped('checked="checked"');
-} ?> />
+			   	print_unescaped('checked="checked"');
+			   } ?> />
 		<label for="publicShareSharersGroupsAllowlistEnabled"><?php p($l->t('Only certain groups are allowed to create public links')); ?></label><br/>
 		<span id="setAllowlistPublicShareSharersGroups"
 			  class="indent <?php if ($_['publicShareSharersGroupsAllowlistEnabled'] === 'no') {
-	p('hidden');
-} ?>">
+			  	p('hidden');
+			  } ?>">
 		  <input name="public_share_sharers_groups_allowlist"
 				 id="allowlistPublicShareSharersGroups"
 				 class="noautosave"

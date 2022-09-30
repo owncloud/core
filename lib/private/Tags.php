@@ -46,7 +46,6 @@ use OC\Tagging\TagMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
 class Tags implements \OCP\ITags {
-
 	/**
 	 * Tags
 	 *

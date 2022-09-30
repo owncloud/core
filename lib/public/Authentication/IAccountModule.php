@@ -31,7 +31,6 @@ use OCP\IUser;
  * @since 10.0.9
  */
 interface IAccountModule {
-
 	/**
 	 * The check is called on every request, so it should be cheap, eg an
 	 * app or per user config. If the check is more complex try decoupling it

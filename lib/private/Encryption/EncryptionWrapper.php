@@ -38,7 +38,6 @@ use OCP\ILogger;
  * @package OC\Encryption
  */
 class EncryptionWrapper {
-
 	/** @var ArrayCache  */
 	private $arrayCache;
 

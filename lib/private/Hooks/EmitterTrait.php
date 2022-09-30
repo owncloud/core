@@ -23,7 +23,6 @@
 namespace OC\Hooks;
 
 trait EmitterTrait {
-
 	/**
 	 * @var (callable[])[] $listeners
 	 */

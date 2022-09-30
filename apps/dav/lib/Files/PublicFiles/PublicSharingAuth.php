@@ -38,7 +38,6 @@ use Sabre\HTTP\ResponseInterface;
  * @package OCA\DAV\Files\PublicFiles
  */
 class PublicSharingAuth extends AbstractBasic {
-
 	/** @var Server */
 	private $server;
 	/** @var IShare */

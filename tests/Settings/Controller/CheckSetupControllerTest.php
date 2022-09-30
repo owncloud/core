@@ -42,7 +42,6 @@ use Test\TestCase;
  * @package Tests\Settings\Controller
  */
 class CheckSetupControllerTest extends TestCase {
-
 	/** @var CheckSetupController | \PHPUnit\Framework\MockObject\MockObject */
 	private $checkSetupController;
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */

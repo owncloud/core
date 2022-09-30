@@ -44,7 +44,6 @@ use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
 class PreviewPluginTest extends TestCase {
-
 	/** @var RequestInterface | MockObject */
 	private $request;
 	/** @var IPreviewNode | MockObject */

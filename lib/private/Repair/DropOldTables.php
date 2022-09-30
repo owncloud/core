@@ -28,7 +28,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class DropOldTables implements IRepairStep {
-
 	/** @var IDBConnection */
 	protected $connection;
 

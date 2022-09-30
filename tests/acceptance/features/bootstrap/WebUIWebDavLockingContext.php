@@ -34,7 +34,6 @@ require_once 'bootstrap.php';
  * context containing webUI steps needed for the locking mechanism of webdav
  */
 class WebUIWebDavLockingContext extends RawMinkContext implements Context {
-
 	/**
 	 *
 	 * @var FilesPage

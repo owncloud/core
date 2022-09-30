@@ -11,7 +11,6 @@ namespace Test\Files\Storage\Wrapper;
 use OC\Files\Storage\Common;
 
 class JailTest extends \Test\Files\Storage\Storage {
-
 	/**
 	 * @var \OC\Files\Storage\Temporary
 	 */

@@ -30,7 +30,6 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\ServiceUnavailable as SabreServiceUnavailable;
 
 abstract class AbstractTrashBinNode implements ITrashBinNode {
-
 	/**
 	 * @var FileInfo
 	 */

@@ -5,7 +5,6 @@ namespace OCA\DAV\Avatars;
 use Sabre\DAVACL\AbstractPrincipalCollection;
 
 class RootCollection extends AbstractPrincipalCollection {
-
 	/**
 	 * This method returns a node for a principal.
 	 *

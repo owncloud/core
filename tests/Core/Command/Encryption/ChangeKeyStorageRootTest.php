@@ -32,7 +32,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
 class ChangeKeyStorageRootTest extends TestCase {
-
 	/** @var ChangeKeyStorageRoot */
 	protected $changeKeyStorageRoot;
 
@@ -142,7 +141,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 	}
 
 	public function testMoveAllKeys() {
-
 		/** @var \OC\Core\Command\Encryption\ChangeKeyStorageRoot $changeKeyStorageRoot */
 		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
 			->setConstructorArgs(

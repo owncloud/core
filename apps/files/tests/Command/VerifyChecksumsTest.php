@@ -201,7 +201,6 @@ class VerifyChecksumsTest extends TestCase {
 	 * @depends testNoBrokenChecksums
 	 */
 	public function testBrokenChecksumsResultInErrorExitCode() {
-
 		/** @var File $file1 */
 		$file1 = $this->testFiles[0]['file'];
 
@@ -241,7 +240,6 @@ class VerifyChecksumsTest extends TestCase {
 	 * @depends testBrokenFilesAreRepairedWithRepairArgument
 	 */
 	public function testOnlyFilesInGivenPathArgumentAreRepaired() {
-
 		/** @var File $file1 */
 		$file1 = $this->testFiles[0]['file'];
 		/** @var File $file2 */
@@ -275,7 +273,6 @@ class VerifyChecksumsTest extends TestCase {
 	 * @depends testBrokenFilesAreRepairedWithRepairArgument
 	 */
 	public function testSingleFileInGivenPathArgumentIsRepaired() {
-
 		/** @var File $file1 */
 		$file1 = $this->testFiles[0]['file'];
 		/** @var File $file2 */
@@ -298,7 +295,6 @@ class VerifyChecksumsTest extends TestCase {
 	}
 
 	public function testOnlyFilesOfAGivenUserAreRepaired() {
-
 		/** @var File $file1 */
 		$file1 = $this->testFiles[0]['file'];
 		/** @var File $file2 */

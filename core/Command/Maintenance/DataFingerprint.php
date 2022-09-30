@@ -30,7 +30,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DataFingerprint extends Command {
-
 	/** @var IConfig */
 	private $config;
 	/** @var ITimeFactory */

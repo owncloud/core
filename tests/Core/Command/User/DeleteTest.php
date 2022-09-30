@@ -30,7 +30,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
 class DeleteTest extends TestCase {
-
 	/** @var \PHPUnit\Framework\MockObject\MockObject|IUserManager */
 	private $userManager;
 

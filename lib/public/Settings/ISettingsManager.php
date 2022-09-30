@@ -27,7 +27,6 @@ namespace OCP\Settings;
  * @since 10.0
  */
 interface ISettingsManager {
-
 	/**
 	 * Retrieves sections for a personal
 	 * @since 10.0

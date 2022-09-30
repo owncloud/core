@@ -30,7 +30,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
 class DataFingerprintTest extends TestCase {
-
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */

@@ -24,7 +24,6 @@ namespace OC\Notification;
 use OCP\Notification\IAction;
 
 class Action implements IAction {
-
 	/** @var string */
 	protected $label;
 

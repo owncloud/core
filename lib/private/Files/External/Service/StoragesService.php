@@ -45,7 +45,6 @@ use OCP\Security\ICrypto;
  * Service class to manage external storages
  */
 abstract class StoragesService implements IStoragesService {
-
 	/** @var IStoragesBackendService */
 	protected $backendService;
 

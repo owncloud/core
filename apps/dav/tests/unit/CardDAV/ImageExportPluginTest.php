@@ -32,7 +32,6 @@ use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
 class ImageExportPluginTest extends TestCase {
-
 	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $response;
 	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */

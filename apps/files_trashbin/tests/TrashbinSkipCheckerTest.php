@@ -33,7 +33,6 @@ use OCP\ILogger;
  * @group DB
  */
 class TrashbinSkipCheckerTest extends TestCase {
-
 	/** @var  ILogger */
 	protected $logger;
 	/** @var  IConfig */

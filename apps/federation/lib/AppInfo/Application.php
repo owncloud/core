@@ -36,7 +36,6 @@ use OCP\Util;
 use Sabre\DAV\Auth\Plugin;
 
 class Application extends \OCP\AppFramework\App {
-
 	/**
 	 * @param array $urlParams
 	 */

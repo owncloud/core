@@ -276,7 +276,6 @@ class DecryptAllTest extends TestCase {
 	 * @dataProvider dataTestDecryptAllUsersFiles
 	 */
 	public function testDecryptAllUsersFiles($user) {
-
 		/** @var DecryptAll | \PHPUnit\Framework\MockObject\MockObject |  $instance */
 		$instance = $this->getMockBuilder(DecryptAll::class)
 			->setConstructorArgs(

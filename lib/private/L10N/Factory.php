@@ -38,7 +38,6 @@ use OCP\Theme\IThemeService;
  * A factory that generates language instances
  */
 class Factory implements IFactory {
-
 	/** @var string */
 	protected $requestLanguage = '';
 

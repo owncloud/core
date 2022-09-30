@@ -28,7 +28,6 @@ use OCP\IConfig;
 use OCP\IURLGenerator;
 
 class Certificates implements ISettings {
-
 	/** @var IConfig */
 	protected $config;
 	/** @var ICertificateManager */

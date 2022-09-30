@@ -48,7 +48,6 @@ class Forbidden extends \Sabre\DAV\Exception\Forbidden {
 	 * @return void
 	 */
 	public function serialize(\Sabre\DAV\Server $server, \DOMElement $errorNode) {
-
 		// set ownCloud namespace
 		$errorNode->setAttribute('xmlns:o', self::NS_OWNCLOUD);
 

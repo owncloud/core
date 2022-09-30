@@ -402,7 +402,6 @@ class Preview {
 
 		// Only use the cache if we have a max preview
 		if ($maxPreviewWidth !== null && $maxPreviewHeight !== null) {
-
 			/**
 			 * Phase 2: Calculating the size of the preview we need to send back
 			 */

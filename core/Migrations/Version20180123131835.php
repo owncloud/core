@@ -9,7 +9,6 @@ use OCP\Migration\IOutput;
  * read & write and write-only links
  */
 class Version20180123131835 implements ISimpleMigration {
-
 	/**
 	 * @param IOutput $out
 	 */

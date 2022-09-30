@@ -40,7 +40,6 @@ use OCP\ISession;
  * Make the old files_external config work with the new public mount config api
  */
 class ConfigAdapter implements IMountProvider {
-
 	/** @var IConfig */
 	private $config;
 

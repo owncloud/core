@@ -9,7 +9,6 @@
 namespace Test;
 
 class HTTPHelperTest extends \Test\TestCase {
-
 	/** @var \OCP\IConfig*/
 	private $config;
 	/** @var \OC\HTTPHelper */

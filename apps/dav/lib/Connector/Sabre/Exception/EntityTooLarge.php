@@ -29,7 +29,6 @@ namespace OCA\DAV\Connector\Sabre\Exception;
  *
  */
 class EntityTooLarge extends \Sabre\DAV\Exception {
-
 	/**
 	 * Returns the HTTP status code for this exception
 	 *

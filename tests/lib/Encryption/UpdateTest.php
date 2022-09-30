@@ -25,7 +25,6 @@ use OC\Encryption\Update;
 use Test\TestCase;
 
 class UpdateTest extends TestCase {
-
 	/** @var \OC\Encryption\Update */
 	private $update;
 

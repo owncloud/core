@@ -43,7 +43,6 @@ use OCP\IUserSession;
 use OCP\Util;
 
 class Users {
-
 	/** @var IUserManager */
 	private $userManager;
 	/** @var IGroupManager|\OC\Group\Manager */ // FIXME Requires a method that is not on the interface
@@ -645,7 +644,6 @@ class Users {
 	 * @return Result
 	 */
 	public function getUserSubAdminGroups($parameters) {
-
 		// Check if user is logged in
 		$currentLoggedInUser = $this->userSession->getUser();
 		if ($currentLoggedInUser === null) {
@@ -667,7 +665,6 @@ class Users {
 		if ($targetUserId === $currentLoggedInUserId
 			|| $subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)
 			|| $this->groupManager->isAdmin($currentLoggedInUserId)) {
-
 			// Get the subadmin groups
 			$groups = $subAdminManager->getSubAdminsGroups($targetUser);
 			foreach ($groups as $key => $group) {

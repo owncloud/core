@@ -27,7 +27,6 @@
 namespace OCA\Files_External\Lib;
 
 class Api {
-
 	/**
 	 * Formats the given mount config to a mount entry.
 	 *

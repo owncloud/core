@@ -30,7 +30,6 @@ use Sabre\DAV\IFile;
 use Test\TestCase;
 
 class TreeTest1 extends TestCase {
-
 	/** @var ICollection | \PHPUnit\Framework\MockObject\MockObject */
 	private $rootNode;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */

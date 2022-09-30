@@ -34,7 +34,6 @@ use Laminas\InputFilter\Factory as InputFilterFactory;
  * @see https://hackerone.com/reports/297535
  */
 class MailNotificationFilter {
-
 	/**
 	 * @var \Laminas\InputFilter\InputFilterInterface
 	 */

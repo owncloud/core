@@ -36,7 +36,6 @@ use Doctrine\DBAL\Types\Type;
 use OCP\ILogger;
 
 class MigrationService {
-
 	/** @var boolean */
 	private $migrationTableCreated;
 	/** @var array */

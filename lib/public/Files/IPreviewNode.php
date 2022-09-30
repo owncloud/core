@@ -31,7 +31,6 @@ use OCP\IImage;
  * @since 10.0.9
  */
 interface IPreviewNode {
-
 	/**
 	 * Generates a preview image of the node
 	 *

@@ -38,7 +38,6 @@ use Test\TestCase;
  * @package Test\Authentication
  */
 class DefaultTokenMapperTest extends TestCase {
-
 	/** @var DefaultTokenMapper */
 	private $mapper;
 	/** @var IDBConnection */

@@ -31,7 +31,6 @@ use OCP\IL10N;
 use OCP\ILogger;
 
 class AddServerMiddleware extends Middleware {
-
 	/** @var  string */
 	protected $appName;
 

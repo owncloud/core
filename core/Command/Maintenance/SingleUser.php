@@ -30,7 +30,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use OCP\IConfig;
 
 class SingleUser extends Command {
-
 	/** @var IConfig */
 	protected $config;
 

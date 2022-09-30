@@ -43,7 +43,6 @@ use Sabre\DAV\Xml\Property\Complex;
  * @package OCA\DAV\Tests\unit\DAV
  */
 class FileCustomPropertiesBackendTest extends \Test\TestCase {
-
 	/**
 	 * @var \Sabre\DAV\Server
 	 */

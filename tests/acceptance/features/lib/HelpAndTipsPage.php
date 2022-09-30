@@ -29,7 +29,6 @@ use Behat\Mink\Element\NodeElement;
  * Admin General Settings page.
  */
 class HelpAndTipsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

@@ -10,7 +10,6 @@ use Sabre\DAV\Xml\Property\ShareAccess;
 use Test\TestCase;
 
 class PluginTest extends TestCase {
-
 	/** @var Plugin */
 	private $plugin;
 

@@ -27,7 +27,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class RemoveGetETagEntries implements IRepairStep {
-
 	/**
 	 * @var IDBConnection
 	 */

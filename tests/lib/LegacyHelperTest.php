@@ -11,7 +11,6 @@ namespace Test;
 use OC_Helper;
 
 class LegacyHelperTest extends \Test\TestCase {
-
 	/**
 	 * @dataProvider humanFileSizeProvider
 	 */

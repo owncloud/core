@@ -45,17 +45,17 @@ if ($_['displayNameChangeSupported']) {
 </form>
 <?php
 } else {
-		?>
+	?>
 <div id="displaynameform" class="section">
 	<h2><?php echo $l->t('Full name'); ?></h2>
 	<span><?php if (isset($_['displayName'][0])) {
-			p($_['displayName']);
-		} else {
-			p($l->t('No display name set'));
-		} ?></span>
+		p($_['displayName']);
+	} else {
+		p($l->t('No display name set'));
+	} ?></span>
 </div>
 <?php
-	}
+}
 ?>
 
 <?php
@@ -78,31 +78,31 @@ if ($_['mailAddressChangeSupported']) {
 </form>
 <?php
 } else {
-		?>
+	?>
 <div id="emailform" class="section">
 	<h2><?php echo $l->t('Email'); ?></h2>
 	<span><?php if (isset($_['email'][0])) {
-			p($_['email']);
-		} else {
-			p($l->t('No email address set'));
-		} ?></span>
+		p($_['email']);
+	} else {
+		p($l->t('No email address set'));
+	} ?></span>
 </div>
 <?php
-	}
+}
 ?>
 
 <div id="groups" class="section">
 	<h2><?php p($l->t('Groups')); ?></h2>
 	<?php if (\count($_['groups']) > 0) {
-	?>
+		?>
 		<p><?php p($l->t('You are member of the following groups:')); ?></p>
 		<p>
 			<?php p(\implode(', ', \array_map(function ($group) {
-		return $group->getDisplayName();
-	}, $_['groups']))); ?>
+				return $group->getDisplayName();
+			}, $_['groups']))); ?>
 		</p>
 	<?php
-} else {
+	} else {
 		?>
 		<p><?php p($l->t('You are not a member of any groups.')); ?></p>
 	<?php
@@ -112,7 +112,7 @@ if ($_['mailAddressChangeSupported']) {
 
 <?php
 if ($_['passwordChangeSupported']) {
-		script('jquery-showpassword'); ?>
+	script('jquery-showpassword'); ?>
 <form id="passwordform" class="section" autocapitalize="none">
 	<h2 class="inlineblock"><?php p($l->t('Password')); ?></h2>
 	<div class="hidden icon-checkmark" id="password-changed"></div>
@@ -131,7 +131,7 @@ if ($_['passwordChangeSupported']) {
 	<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password'); ?>" />
 </form>
 <?php
-	}
+}
 ?>
 <form id="language" class="section">
 	<h2>
