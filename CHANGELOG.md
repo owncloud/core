@@ -8,19 +8,35 @@ ownCloud admins and users.
 Summary
 -------
 
+* Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
 Details
 -------
 
+* Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
+
+   Support for security fixes for PHP 7.3 ended in Dec 2021 ownCloud core no longer supports PHP
+   7.3. Ensure that you are using PHP 7.4.
+
+   https://github.com/owncloud/core/pull/40394
+   https://www.php.net/supported-versions.php
+
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 
    The following have been updated: - guzzlehttp/guzzle (7.4.5 to 7.5.0) - guzzlehttp/promises
    (1.5.1 to 1.5.2) - guzzlehttp/psr7 (2.4.0 to 2.4.1) - phpseclib/phpseclib (3.0.14 to 3.0.16)
-   - sabre/uri (2.2.3 to 2.2.4)
+   - laminas/laminas-filter (2.12.0 to 2.20.0) - laminas/laminas-inputfilter (2.12.1 to
+   2.21.0) - laminas/laminas-servicemanager (3.7.0 to 3.17.0) - laminas/laminas-stdlib
+   (3.11.0 to 3.13.0) - laminas/laminas-validator (2.19.0 to 2.25.0) - psr/container (1.1.1 to
+   1.1.2) - sabre/uri (2.2.3 to 2.3.2)
+
+   The following have been updated in apps/files_external/3rdparty: - guzzlehttp/psr7 (2.4.0
+   to 2.4.1)
 
    https://github.com/owncloud/core/pull/40337
+   https://github.com/owncloud/core/pull/40394
 
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
