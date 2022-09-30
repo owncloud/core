@@ -8,12 +8,22 @@ ownCloud admins and users.
 Summary
 -------
 
+* Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
 Details
 -------
+
+* Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
+
+   Before this change, objectstorages were reporting only infinite storage space. This could
+   have caused problems in other apps that rely on this storage method, e.g. metrics app that
+   monitors available space
+
+   https://github.com/owncloud/enterprise/issues/5384
+   https://github.com/owncloud/core/pull/40192
 
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 

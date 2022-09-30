@@ -6,12 +6,23 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-change changelog-item">
+            <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>
+            <p>Before this change, objectstorages were reporting only infinite storage space. This could
+   have caused problems in other apps that rely on this storage method, e.g. metrics app that
+   monitors available space
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5384<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40192<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></p>
             <p>Support for security fixes for PHP 7.3 ended in Dec 2021 ownCloud core no longer supports PHP
