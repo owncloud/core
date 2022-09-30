@@ -1,4 +1,4 @@
-@api @skipOnOcis-OC-Storage @issue-product-280
+@api @issue-product-280
 Feature: propagation of etags when restoring a version of a file
 
   Background:

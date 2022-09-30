@@ -6,7 +6,7 @@ Feature: propagation of etags when creating folders
     And the administrator has set the default folder for received shares to "Shares"
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 
-  @skipOnOcis-OC-Storage @issue-product-280
+  @issue-product-280
   Scenario Outline: creating a folder inside a folder changes its etag
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/folder"
@@ -53,7 +53,7 @@ Feature: propagation of etags when creating folders
       | dav_version |
       | spaces      |
 
-  @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as share receiver creating a folder inside a folder received as a share changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path
@@ -79,7 +79,7 @@ Feature: propagation of etags when creating folders
       | old         |
       | new         |
 
-  @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as a sharer creating a folder inside a shared folder changes etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path
@@ -105,7 +105,7 @@ Feature: propagation of etags when creating folders
       | old         |
       | new         |
 
-  @skipOnOcis-OC-Storage @issue-product-280
+  @issue-product-280
   Scenario Outline: creating a folder in a publicly shared folder changes its etag for the sharer
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/folder"
