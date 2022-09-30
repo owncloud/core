@@ -49,7 +49,7 @@ Feature: propagation of etags when restoring a file or folder from trash
       | old         |
       | new         |
 
-  @skipOnOcis-OC-Storage
+
   Scenario Outline: restoring a folder to its original location changes the etags of all parents
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload/sub"
