@@ -90,6 +90,7 @@ OC.L10N.register(
     "Unknown share type" : "Type de partage inconnu",
     "Could not lock path" : "Impossible de verrouiller le chemin",
     "Not a directory" : "N'est pas un répertoire",
+    "Could not update share" : "Impossible de mettre à jour le partage",
     "Can't change permissions for public share links" : "Impossible de changer les permissions pour les liens de partage public",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" Partage \"%3$s\" avec vous (de la part de \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" a partagé \"%3$s\" avec vous",

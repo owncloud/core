@@ -52,6 +52,7 @@ OC.L10N.register(
     "%s email address changed successfully" : "l'adresse de courriel %s a été modifiée avec succès",
     "Couldn't send email address change notification mail. Please contact your administrator." : "Impossible d'envoyer un courriel de notification de changement d'adresse. Veuillez contacter votre administrateur.",
     "Unable to enable/disable user." : "Impossible d'activer/désactiver l'utilisateur.",
+    "Owner language" : "Langue du propriétaire",
     "Create" : "Créer",
     "Change" : "Modification",
     "Delete" : "Supprimer",

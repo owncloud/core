@@ -67,6 +67,7 @@ OC.L10N.register(
     "Remote subfolder" : "Sous-dossier distant",
     "Secure https://" : "Sécurisation https://",
     "Google Drive" : "Google Drive",
+    "SubFolder" : "Sous dossier",
     "Local" : "Local",
     "Location" : "Emplacement",
     "ownCloud" : "ownCloud",

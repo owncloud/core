@@ -71,6 +71,7 @@ OC.L10N.register(
     "%2$s restored %1$s" : "%2$s відновлено %1$s",
     "Upload (max. %s)" : "Вивантаження (макс. %s)",
     "Settings" : "Налаштування",
+    "Show hidden files" : "Показати приховані файли",
     "WebDAV" : "WebDAV",
     "No files in here" : "Тут немає файлів",
     "Upload some content or sync with your devices!" : "Вивантажте щось або синхронізуйте з пристроями!",
