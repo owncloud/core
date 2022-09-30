@@ -235,6 +235,46 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+  @smokeTest
+  Scenario Outline: User included in multiple groups receives a share from the admin
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp1" has been created
+    And group "grp2" has been created
+    And user "Alice" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And admin "admin" has created folder "/PARENT"
+    When user "admin" shares folder "/PARENT" with group "grp1" using the sharing API
+    And user "Alice" accepts share "/PARENT" offered by user "admin" using the sharing API
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+  @smokeTest
+  Scenario Outline: user included in multiple groups, shares a folder with a group
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+    And group "grp1" has been created
+    And group "grp2" has been created
+    And user "Alice" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp1"
+    And user "Brian" has been added to group "grp2"
+    And user "Alice" has created folder "/PARENT"
+    When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
