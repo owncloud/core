@@ -150,6 +150,8 @@ OC.L10N.register(
     "Errors and fatal issues" : "Errors e errors fatalas",
     "Fatal issues only" : "Errors fatalas unicament",
     "Log" : "Log",
+    "What to log" : "Que enregistrar",
+    "Download logfile (%s)" : "Telecargar lo fichèr de log ( 1%s )",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "La talha del fichièr jornal excedís 100 Mo. Lo telecargar pòt prene un certan temps!",
     "Login" : "Login",
     "Plain" : "En clar",
