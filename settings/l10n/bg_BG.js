@@ -93,6 +93,7 @@ OC.L10N.register(
     "So-so password" : "Не особено добра парола",
     "Good password" : "Добра парола",
     "Strong password" : "Сигурна парола",
+    "Passwords do not match" : "Паролите не съвпадат",
     "Groups" : "Групи",
     "Unable to delete {objName}" : "Неуспешно изтриване на {objName}.",
     "Error creating group: {message}" : "Грешка при създавне на група: {message}",
