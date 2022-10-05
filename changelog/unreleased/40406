@@ -1,0 +1,5 @@
+Change: Test indirect resource existence
+
+We now expect a not found error instead of permission denied error for some trash interactions.
+
+https://github.com/owncloud/core/pull/40406
