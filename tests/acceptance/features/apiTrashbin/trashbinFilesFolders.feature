@@ -185,7 +185,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin100" has deleted file "/textfile1.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin100"
-    Then the HTTP status code should be "401"
+    Then the HTTP status code should be "404"
     And the last webdav response should not contain the following elements
       | path          | user            |
       | textfile1.txt | testtrashbin100 |
@@ -208,7 +208,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbin101" has deleted file "/textfile0.txt"
     And user "testtrashbin101" has deleted file "/textfile2.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin101"
-    Then the HTTP status code should be "401"
+    Then the HTTP status code should be "404"
     And the last webdav response should not contain the following elements
       | path          | user            |
       | textfile0.txt | testtrashbin101 |
@@ -259,7 +259,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbinempty" has been created with default attributes and without skeleton files
     And user "testtrashbinempty" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
     When user "Alice" tries to list the trashbin content for user "testtrashbinempty"
-    Then the HTTP status code should be "401"
+    Then the HTTP status code should be "404"
     Examples:
       | dav-path |
       | new      |
