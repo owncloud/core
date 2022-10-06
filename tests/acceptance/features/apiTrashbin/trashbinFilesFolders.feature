@@ -208,14 +208,14 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbin101" has deleted file "/textfile0.txt"
     And user "testtrashbin101" has deleted file "/textfile2.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin101"
-    Then the HTTP status code should be <status_code>
+    Then the HTTP status code should be "<status-code>"
     And the last webdav response should not contain the following elements
       | path          | user            |
       | textfile0.txt | testtrashbin101 |
       | textfile2.txt | testtrashbin101 |
     @skipOnOcis
     Examples:
-      | dav-path | status_code |
+      | dav-path | status-code |
       | new      | 401         |
     @skipOnOcV10 @personalSpace
     Examples:

@@ -195,13 +195,13 @@ Feature: Restore deleted files/folders
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has deleted file "/textfile0.txt"
     When user "Brian" tries to restore the file with original path "/textfile0.txt" from the trashbin of user "Alice" using the trashbin API
-    Then the HTTP status code should be <status_code>
+    Then the HTTP status code should be "<status-code>"
     And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
     And user "Alice" should not see the following elements
       | /textfile0.txt |
     @skipOnOcis
     Examples:
-      | dav-path | status_code |
+      | dav-path | status-code |
       | old      | 401         |
       | new      | 401         |
     @skipOnOcV10
