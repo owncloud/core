@@ -30,7 +30,7 @@ THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 WEBHIPPIE_REDIS = "webhippie/redis:latest"
 
-DEFAULT_PHP_VERSION = "7.4"
+DEFAULT_PHP_VERSION = "7.4-ubuntu20.04"
 DEFAULT_NODEJS_VERSION = "14"
 
 dir = {
@@ -1378,7 +1378,7 @@ def phpTests(ctx, testType, withCoverage):
 
         for phpVersion in params["phpVersions"]:
             if testType == "phpunit":
-                command = "su-exec www-data bash tests/drone/test-phpunit.sh"
+                command = "setpriv --reuid=www-data --regid=www-data --init-groups bash tests/drone/test-phpunit.sh"
             else:
                 command = "unknown tbd"
 
@@ -1652,6 +1652,11 @@ def acceptance(ctx):
             for federatedServerVersion in params["federatedServerVersions"]:
                 for browser in params["browsers"]:
                     for phpVersion in params["phpVersions"]:
+                        # Get the first 3 characters of the PHP version (7.4 or 8.0 etc)
+                        # And use that for constructing the pipeline name
+                        # That helps shorten pipeline names when using owncloud-ci images
+                        # that have longer names like 7.4-ubuntu20.04
+                        phpMinorVersion = phpVersion[0:3]
                         for db in params["databases"]:
                             for runPart in range(1, params["numberOfParts"] + 1):
                                 debugPartsEnabled = (len(params["skipExceptParts"]) != 0)
@@ -1673,7 +1678,7 @@ def acceptance(ctx):
                                     keyString = "-" + category if params["includeKeyInMatrixName"] else ""
                                     partString = "" if params["numberOfParts"] == 1 else "-%d-%d" % (params["numberOfParts"], runPart)
                                     federatedServerVersionString = "-" + federatedServerVersion.replace("daily-", "").replace("-qa", "") if (federatedServerVersion != "") else ""
-                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersion)
+                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpMinorVersion)
                                     maxLength = 50
                                     nameLength = len(name)
                                     if nameLength > maxLength:
@@ -1733,7 +1738,7 @@ def acceptance(ctx):
 
                                     # The test suite (may/will) run local commands, rather than calling the testing app to do them
                                     # Those commands need to be executed as www-data (which owns the files)
-                                    suExecCommand = "su-exec www-data "
+                                    suExecCommand = "setpriv --reuid=www-data --regid=www-data --init-groups "
 
                                 if params["testAgainstCoreTarball"]:
                                     pathOfServerUnderTest = "/drone/core"
