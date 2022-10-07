@@ -1378,7 +1378,7 @@ def phpTests(ctx, testType, withCoverage):
 
         for phpVersion in params["phpVersions"]:
             if testType == "phpunit":
-                command = "su-exec www-data bash tests/drone/test-phpunit.sh"
+                command = "setpriv --reuid=www-data --regid=www-data --init-groups bash tests/drone/test-phpunit.sh"
             else:
                 command = "unknown tbd"
 
@@ -1733,7 +1733,7 @@ def acceptance(ctx):
 
                                     # The test suite (may/will) run local commands, rather than calling the testing app to do them
                                     # Those commands need to be executed as www-data (which owns the files)
-                                    suExecCommand = "su-exec www-data "
+                                    suExecCommand = "setpriv --reuid=www-data --regid=www-data --init-groups "
 
                                 if params["testAgainstCoreTarball"]:
                                     pathOfServerUnderTest = "/drone/core"
