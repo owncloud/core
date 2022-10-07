@@ -13,6 +13,7 @@
     "Unable to delete group." : "Неуспешно изтриване на група",
     "Saved" : "Запаметяване",
     "log-level out of allowed range" : "Ниво на проследяване \\(log-level\\) e извън допустимия обхват",
+    "Invalid email address" : "Невалиден имейл адрес",
     "test email settings" : "проверка на настройките на електронна поща",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Настъпи проблем при изпращането на имейла. Моля, провери настройките.  (Грешка: %s)",
     "Email sent" : "Имейлът е изпратен",
