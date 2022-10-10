@@ -37,16 +37,18 @@ Details
 
    The following have been updated: - guzzlehttp/guzzle (7.4.5 to 7.5.0) - guzzlehttp/promises
    (1.5.1 to 1.5.2) - guzzlehttp/psr7 (2.4.0 to 2.4.1) - phpseclib/phpseclib (3.0.14 to 3.0.16)
-   - laminas/laminas-filter (2.12.0 to 2.20.0) - laminas/laminas-inputfilter (2.12.1 to
+   - laminas/laminas-filter (2.12.0 to 2.21.0) - laminas/laminas-inputfilter (2.12.1 to
    2.21.0) - laminas/laminas-servicemanager (3.7.0 to 3.17.0) - laminas/laminas-stdlib
-   (3.11.0 to 3.13.0) - laminas/laminas-validator (2.19.0 to 2.25.0) - psr/container (1.1.1 to
-   1.1.2) - sabre/uri (2.2.3 to 2.3.2)
+   (3.11.0 to 3.13.0) - laminas/laminas-validator (2.19.0 to 2.25.0) - league/flysystem
+   (1.1.9 to 1.1.10) - psr/container (1.1.1 to 1.1.2) - sabre/uri (2.2.3 to 2.3.2) -
+   sabre/vobject (4.5.0 to 4.5.1)
 
    The following have been updated in apps/files_external/3rdparty: - guzzlehttp/psr7 (2.4.0
    to 2.4.1)
 
    https://github.com/owncloud/core/pull/40337
    https://github.com/owncloud/core/pull/40394
+   https://github.com/owncloud/core/pull/40410
 
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
