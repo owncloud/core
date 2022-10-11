@@ -3718,17 +3718,16 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given admin :admin has created folder :destination
+	 * @Given admin has created folder :destination
 	 *
-	 * @param string $admin
 	 * @param string $destination
 	 *
 	 * @return void
 	 * @throws JsonException
 	 * @throws GuzzleException
 	 */
-	public function adminHasCreatedFolder(string $admin, string $destination):void {
-		$admin = $this->getActualUsername($admin);
+	public function adminHasCreatedFolder(string $destination):void {
+		$admin = $this->getAdminUsername();
 		Assert::assertEquals(
 			"admin",
 			$admin,
