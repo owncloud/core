@@ -266,6 +266,48 @@ class ConfigTest extends TestCase {
 		\unlink($additionalConfigPath);
 	}
 
+	public function providerNestedConfig() {
+		return [
+			[true],
+			[false]
+		];
+	}
+
+	/**
+	 * @dataProvider providerNestedConfig
+	 *
+	 * @param boolean $configExtraRecursiveSearchEnabled
+	 */
+	public function testNestedConfig($configExtraRecursiveSearchEnabled) {
+		// enable recursive search for extra config files
+		if ($configExtraRecursiveSearchEnabled) {
+			\putenv('OC_config_extra_recursive_search=true');
+		}
+
+		// Create additional config in nested dir
+		\mkdir($this->randomTmpDir.'nested1', 0755, true);
+		$additionalConfig = '<?php $CONFIG=array("php53"=>"totallyOutdated");';
+		$additionalConfigPath = $this->randomTmpDir.'nested1/additionalConfig.testconfig.php';
+		\file_put_contents($additionalConfigPath, $additionalConfig);
+
+		// Reinstantiate the config to force a read-in of the additional configs
+		$this->config = new \OC\Config($this->randomTmpDir, 'testconfig.php');
+
+		if ($configExtraRecursiveSearchEnabled) {
+			// nested config got correctly read
+			$this->assertSame('totallyOutdated', $this->config->getValue('php53', 'defaultValue'));
+			$this->assertStringEqualsFile($this->configFile, self::TESTCONTENT);
+		} else {
+			// nested config got ignored
+			$this->assertSame('defaultValue', $this->config->getValue('php53', 'defaultValue'));
+			$this->assertStringEqualsFile($this->configFile, self::TESTCONTENT);
+		}
+
+		// Cleanup
+		\putenv('OC_config_extra_recursive_search');
+		\unlink($additionalConfigPath);
+	}
+
 	private function checkConfigMatchesExpected($expectedConfig) {
 		foreach ($expectedConfig as $key => $value) {
 			$this->assertEquals($value, $this->config->getValue($key));

@@ -217,6 +217,33 @@ class Config {
 	}
 
 	/**
+	 * This function scans for extra config.php files.
+	 *
+	 * NOTE: due to the fact that `config_extra_recursive_search` setting controls the configuration itself,
+	 * it is only possible to enable this via environment variable. It is not possible to enable it with *.config.php file.
+	 *
+	 * @return string[] paths to extra config.php files
+	 */
+	private function findExtraConfigFiles() {
+		if ($this->getValue('config_extra_recursive_search', false) === 'true') {
+			$foundConfigFiles = [];
+			$configItr = new \RecursiveDirectoryIterator($this->configDir);
+			foreach (new \RecursiveIteratorIterator($configItr) as $file) {
+				// find all extra config files matching config file name,
+				// except for default config filepath
+				if (\preg_match("/{$this->configFileName}\$/", $file->getFileName()) &&
+						$file->getPathName() !== $this->configFilePath) {
+					$foundConfigFiles[] = $file->getPathName();
+				}
+			}
+			return $foundConfigFiles;
+		} else {
+			// default is to search in config directory (as of owncloud 10.11)
+			return \glob($this->configDir . '*.' . $this->configFileName);
+		}
+	}
+
+	/**
 	 * Loads the config file
 	 *
 	 * Reads the config file and saves it to the cache
@@ -228,7 +255,7 @@ class Config {
 		$configFiles = [$this->configFilePath];
 
 		// Add all files in the config dir ending with the same file name
-		$extra = \glob($this->configDir.'*.'.$this->configFileName);
+		$extra = $this->findExtraConfigFiles();
 		if (\is_array($extra)) {
 			\natsort($extra);
 			$configFiles = \array_merge($configFiles, $extra);

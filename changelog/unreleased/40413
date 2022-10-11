@@ -1,0 +1,11 @@
+Enhancement: Setting for recursive extra config.php search
+
+Before this change extra config.php files were required to be placed directly in the config folder.
+This change allows to have nested folders configuration structure, 
+enabled by config value OC_CONFIG_EXTRA_RECURSIVE_SEARCH, that can be useful in some deployments.
+
+NOTE: due to the fact that `config_extra_recursive_search` setting controls the configuration itself, 
+it is only possible to enable this via environment variable. It is not possible to enable it with *.config.php file.
+
+https://github.com/owncloud/core/pull/40413
+https://github.com/owncloud/enterprise/issues/5406
