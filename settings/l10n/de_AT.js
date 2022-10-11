@@ -20,6 +20,7 @@ OC.L10N.register(
     "Save" : "Speichern",
     "Server address" : "Adresse des Servers",
     "Port" : "Port",
+    "Credentials" : "Zugangsdaten",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Insbesondere bei Nutzung des Desktop Clients zur Dateisynchronisierung wird vom Einsatz von SQLite abgeraten.",
     "Add" : "Hinzufügen",
     "Cancel" : "Abbrechen",
