@@ -3720,7 +3720,6 @@ trait WebDav {
 	/**
 	 * @Given admin has created folder :destination
 	 *
-	 * @param string $admin
 	 * @param string $destination
 	 *
 	 * @return void
