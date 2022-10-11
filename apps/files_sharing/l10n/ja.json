@@ -66,6 +66,7 @@
     "Public link of %2$s expired" : "公開リンク%2$sの期限が切れています",
     "Shared by %2$s" : "%2$s が共有",
     "Shares" : "共有",
+    "Public link" : "公開リンク",
     "Couldn't send mail to following recipient(s): %s " : "以下の宛先にメールを送信できませんでした: %s",
     "Share API is disabled" : "共有APIが無効です。",
     "Wrong share ID, share doesn't exist" : "共有IDが間違っています。共有がありません。",

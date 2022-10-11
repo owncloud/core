@@ -19,6 +19,7 @@
     "An error occurred while updating share state: {message}" : "Fehler bei der Aktualisierung des Freigabestatus: {message}",
     "Accept Share" : "Freigabe annehmen",
     "Decline Share" : "Freigabe ablehnen",
+    "Federated share" : "Federated-Freigabe",
     "Cancel" : "Abbrechen",
     "The video cannot be played because your browser does not support the file type. Please try another browser." : "Das Video kann nicht abgespielt werden, da der Browser den Dateityp nicht unterstützt. Bitte versuchen Sie einen anderen Browser.",
     "You can upload into this folder" : "Sie können in diesen Ordner hochladen",

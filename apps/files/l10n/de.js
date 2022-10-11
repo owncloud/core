@@ -125,7 +125,7 @@ OC.L10N.register(
     "You renamed %2$s to %1$s" : "Sie haben %2$s zu %1$s umbenannt ",
     "%2$s renamed %3$s to %1$s" : "%2$swurde von %3$snach %1$sumbenannt",
     "You moved %2$s to %1$s" : "Sie haben %2$snach %1$s verschoben ",
-    "%2$s moved %3$s to %1$s" : "%2$swurde von %3$s nach %1$s verschoben",
+    "%2$s moved %3$s to %1$s" : "%2$s hat %3$s nach %1$s verschoben",
     "Changed by %2$s" : "Geändert von %2$s",
     "Deleted by %2$s" : "Gelöscht von %2$s",
     "Restored by %2$s" : "Wiederhergestellt von %2$s",
