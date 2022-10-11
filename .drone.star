@@ -1382,12 +1382,18 @@ def phpTests(ctx, testType, withCoverage):
             else:
                 command = "unknown tbd"
 
+            # Get the first 3 characters of the PHP version (7.4 or 8.0 etc)
+            # And use that for constructing the pipeline name
+            # That helps shorten pipeline names when using owncloud-ci images
+            # that have longer names like 7.4-ubuntu20.04
+            phpMinorVersion = phpVersion[0:3]
+
             for db in params["databases"]:
                 for externalType in params["externalTypes"]:
                     keyString = "-" + category if params["includeKeyInMatrixName"] else ""
                     filesExternalType = externalType if externalType != "none" else ""
                     externalNameString = "-" + externalType if externalType != "none" else ""
-                    name = "%s%s-php%s-%s%s" % (testType, keyString, phpVersion, getShortDbNameAndVersion(db), externalNameString)
+                    name = "%s%s-php%s-%s%s" % (testType, keyString, phpMinorVersion, getShortDbNameAndVersion(db), externalNameString)
                     maxLength = 50
                     nameLength = len(name)
                     if nameLength > maxLength:
