@@ -248,8 +248,14 @@ class DefaultShareProvider implements IShareProvider {
 			/*
 			 * Update all user defined group shares
 			 */
-			$qb = $this->dbConn->getQueryBuilder();
-			$qb->update('share')
+
+			$children[] = $this->getChildren($share->getId());
+			foreach ($children as $child) {
+				if ($child->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+					return;
+				}
+				$qb = $this->dbConn->getQueryBuilder();
+				$qb->update('share')
 				->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
@@ -257,16 +263,17 @@ class DefaultShareProvider implements IShareProvider {
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->execute();
 
-			/*
-			 * Now update the permissions for all children
-			 */
-			$qb = $this->dbConn->getQueryBuilder();
-			$qb->update('share')
+				/*
+				 * Now update the permissions for all children
+				 */
+				$qb = $this->dbConn->getQueryBuilder();
+				$qb->update('share')
 				->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 				->set('expiration', $qb->createNamedParameter($share->getExpirationDate(), IQueryBuilder::PARAM_DATE))
 				->set('attributes', $qb->createNamedParameter($shareAttributes))
 				->execute();
+			}
 		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->update('share')
