@@ -235,14 +235,14 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
+  @smokeTest @skipOnReva # reva doesn't have a pre-created admin user
   Scenario Outline: User included in multiple groups receives a share from the admin
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And group "grp2" has been created
     And user "Alice" has been added to group "grp1"
     And user "Alice" has been added to group "grp2"
-    And admin "admin" has created folder "/PARENT"
+    And admin has created folder "/PARENT"
     When user "admin" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" accepts share "/PARENT" offered by user "admin" using the sharing API
     Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
