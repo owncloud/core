@@ -30,7 +30,7 @@ THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 WEBHIPPIE_REDIS = "webhippie/redis:latest"
 
-DEFAULT_PHP_VERSION = "7.4-ubuntu20.04"
+DEFAULT_PHP_VERSION = "7.4"
 DEFAULT_NODEJS_VERSION = "14"
 
 dir = {
