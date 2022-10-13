@@ -179,7 +179,7 @@ Feature: Search
       | dav_version |
       | spaces      |
 
-
+  @issue-ocis-4712
   Scenario Outline: report extra properties in search entries for a file
     Given using <dav_version> DAV path
     When user "Alice" searches for "upload" using the WebDAV API requesting these properties:
@@ -212,7 +212,7 @@ Feature: Search
       | dav_version |
       | spaces      |
 
-
+  @issue-ocis-4712
   Scenario Outline: report extra properties in search entries for a folder
     Given using <dav_version> DAV path
     When user "Alice" searches for "upload" using the WebDAV API requesting these properties:
