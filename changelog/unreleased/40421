@@ -1,0 +1,6 @@
+Change: No activities on rejected shares
+
+As soon as a user has rejected a share no activities within this
+share are reported via the activity app.
+
+https://github.com/owncloud/core/pull/40421
