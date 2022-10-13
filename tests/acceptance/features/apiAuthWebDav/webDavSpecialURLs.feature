@@ -25,9 +25,9 @@ Feature: make webdav request with special urls
     When user "Alice" requests these endpoints with "DELETE" using password "%regular%" about user "Alice"
       | endpoint                                             |
       | //remote.php/dav/spaces/%spaceid%/textfile0.txt      |
+      | //remote.php//dav/spaces/%spaceid%/PARENT/parent.txt |
       | /remote.php//dav/spaces/%spaceid%/PARENT             |
       | //remote.php/dav//spaces/%spaceid%//FOLDER           |
-      | //remote.php//dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "204"
 
 
