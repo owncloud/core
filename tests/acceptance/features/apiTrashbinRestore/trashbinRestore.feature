@@ -206,7 +206,7 @@ Feature: Restore deleted files/folders
       | new      | 401         |
     @skipOnOcV10
     Examples:
-      | dav-path | status_code |
+      | dav-path | status-code |
       | old      | 404         |
       | new      | 404         |
 

@@ -220,7 +220,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | new      | 401         |
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav-path | status_code |
+      | dav-path | status-code |
       | new      | 404         |
       | spaces   | 404         |
 
@@ -246,12 +246,13 @@ Feature: files and folders exist in the trashbin after being deleted
       | textfile0.txt | testtrashbin102 |
       | textfile2.txt | testtrashbin102 |
       | textfile3.txt | testtrashbin102 |
+    @skipOnOcis
     Examples:
       | dav-path | status-code |
       | new      | 401         |
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav-path | status_code |
+      | dav-path | status-code |
       | new      | 404         |
       | spaces   | 404         |
 
