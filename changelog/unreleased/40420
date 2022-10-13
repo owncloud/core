@@ -1,0 +1,6 @@
+Bugfix: Skip public links when updating permissions of share's children
+
+Currently, updates to permissions of a share are wrongly propagated to public links children.
+This has now been fixed and public links are being skipped.
+
+https://github.com/owncloud/core/pull/40420
