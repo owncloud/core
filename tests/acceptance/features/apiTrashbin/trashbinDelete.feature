@@ -93,19 +93,20 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted file "/PARENT/parent.txt"
     And user "Alice" has deleted file "/PARENT/CHILD/child.txt"
     When user "Brian" tries to delete the file with original path "textfile1.txt" from the trashbin of user "Alice" using the trashbin API
-    Then the HTTP status code should be "401"
+    Then the HTTP status code should be "<status-code>"
     And as "Alice" the file with original path "/textfile1.txt" should exist in the trashbin
     And as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
     And as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
     And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should exist in the trashbin
+    @skipOnOcis
     Examples:
-      | dav-path |
-      | new      |
-
+      | dav-path | status-code |
+      | new      | 401         |
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav-path |
-      | spaces   |
+      | dav-path | status-code |
+      | new      | 404         |
+      | spaces   | 404         |
 
   Scenario Outline: User tries to delete trashbin file using invalid password
     Given using <dav-path> DAV path

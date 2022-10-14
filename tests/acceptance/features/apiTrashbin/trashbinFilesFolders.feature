@@ -185,18 +185,19 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin100" has deleted file "/textfile1.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin100"
-    Then the HTTP status code should be "401"
+    Then the HTTP status code should be "<status-code>"
     And the last webdav response should not contain the following elements
       | path          | user            |
       | textfile1.txt | testtrashbin100 |
+    @skipOnOcis
     Examples:
-      | dav-path |
-      | new      |
-
+      | dav-path | status-code |
+      | new      | 401         |
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav-path |
-      | spaces   |
+      | dav-path | status-code |
+      | new      | 404         |
+      | spaces   | 404         |
 
   @issue-ocis-3561 @smokeTest @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited with multiple files on trashbin
@@ -208,19 +209,20 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbin101" has deleted file "/textfile0.txt"
     And user "testtrashbin101" has deleted file "/textfile2.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin101"
-    Then the HTTP status code should be "401"
+    Then the HTTP status code should be "<status-code>"
     And the last webdav response should not contain the following elements
       | path          | user            |
       | textfile0.txt | testtrashbin101 |
       | textfile2.txt | testtrashbin101 |
+    @skipOnOcis
     Examples:
-      | dav-path |
-      | new      |
-
+      | dav-path | status-code |
+      | new      | 401         |
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav-path |
-      | spaces   |
+      | dav-path | status-code |
+      | new      | 404         |
+      | spaces   | 404         |
 
   @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited for newly recreated user with same name
@@ -238,20 +240,21 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbin102" has uploaded file "filesForUpload/textfile.txt" to "/textfile3.txt"
     And user "testtrashbin102" has deleted file "/textfile3.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin102"
-    Then the HTTP status code should be "401"
+    Then the HTTP status code should be "<status-code>"
     And the last webdav response should not contain the following elements
       | path          | user            |
       | textfile0.txt | testtrashbin102 |
       | textfile2.txt | testtrashbin102 |
       | textfile3.txt | testtrashbin102 |
+    @skipOnOcis
     Examples:
-      | dav-path |
-      | new      |
-
+      | dav-path | status-code |
+      | new      | 401         |
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav-path |
-      | spaces   |
+      | dav-path | status-code |
+      | new      | 404         |
+      | spaces   | 404         |
 
   @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's empty unused trashbin is prohibited
@@ -259,15 +262,16 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbinempty" has been created with default attributes and without skeleton files
     And user "testtrashbinempty" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
     When user "Alice" tries to list the trashbin content for user "testtrashbinempty"
-    Then the HTTP status code should be "401"
+    Then the HTTP status code should be "<status-code>"
+    @skipOnOcis
     Examples:
-      | dav-path |
-      | new      |
-
+      | dav-path | status-code |
+      | new      | 401         |
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav-path |
-      | spaces   |
+      | dav-path | status-code |
+      | new      | 404         |
+      | spaces   | 404         |
 
   @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing non-existent user's trashbin is prohibited
