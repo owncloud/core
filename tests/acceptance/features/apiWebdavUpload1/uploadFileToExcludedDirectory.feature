@@ -11,8 +11,8 @@ Feature: users cannot upload a file to or into an excluded directory
   @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name
     Given using <dav_version> DAV path
-    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "Alice" uploads file with content "uploaded content" to ".github" using the WebDAV API
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    When user "Alice" uploads file with content "uploaded content" to ".github" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file ".github" should not exist
     Examples:
@@ -29,8 +29,8 @@ Feature: users cannot upload a file to or into an excluded directory
   Scenario Outline: upload a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER"
-    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "Alice" uploads file with content "uploaded content" to "/FOLDER/.github" using the WebDAV API
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    When user "Alice" uploads file with content "uploaded content" to "/FOLDER/.github" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" folder "/FOLDER" should exist
     But as "Alice" file "/FOLDER/.github" should not exist

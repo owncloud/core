@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
@@ -3223,6 +3224,7 @@ class OccContext implements Context {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function theAdministratorHasAddedGroupToTheExcludeGroupFromSharingList(string $groups):void {
 		$groups = \explode(',', \trim($groups));
@@ -3645,7 +3647,7 @@ class OccContext implements Context {
 	 * @param string $value
 	 *
 	 * @return void
-	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 * @throws GuzzleException
 	 */
 	public function theSystemConfigKeyShouldBeSetAs(string $value):void {
 		$actual_value = SetupHelper::getSystemConfigValue(

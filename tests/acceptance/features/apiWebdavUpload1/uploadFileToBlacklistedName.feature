@@ -22,8 +22,8 @@ Feature: users cannot upload a file to a blacklisted name
   @issue-ocis-reva-54
   Scenario Outline: upload a file to a banned filename
     Given using <dav_version> DAV path
-    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
-    And user "Alice" uploads file with content "uploaded content" to "blacklisted-file.txt" using the WebDAV API
+    And the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
+    When user "Alice" uploads file with content "uploaded content" to "blacklisted-file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "blacklisted-file.txt" should not exist
     Examples:

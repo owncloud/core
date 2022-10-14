@@ -21,8 +21,8 @@ Feature: users cannot upload a file to a blacklisted name using new chunking
     And as "Alice" file "/.htaccess" should not exist
 
   Scenario: Upload to a banned filename using new chunking and async MOVE
-    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
-    And user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
+    Given the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
+    When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "Alice" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
     And user "Alice" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "Alice" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
