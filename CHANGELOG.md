@@ -35,9 +35,10 @@ Details
 
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 
-   The following have been updated: - guzzlehttp/guzzle (7.4.5 to 7.5.0) - guzzlehttp/promises
-   (1.5.1 to 1.5.2) - guzzlehttp/psr7 (2.4.0 to 2.4.1) - phpseclib/phpseclib (3.0.14 to 3.0.16)
-   - laminas/laminas-filter (2.12.0 to 2.21.0) - laminas/laminas-inputfilter (2.12.1 to
+   The following have been updated: - doctrine/event-manager (1.1.2 to 1.2.0) -
+   guzzlehttp/guzzle (7.4.5 to 7.5.0) - guzzlehttp/promises (1.5.1 to 1.5.2) -
+   guzzlehttp/psr7 (2.4.0 to 2.4.1) - phpseclib/phpseclib (3.0.14 to 3.0.16) -
+   laminas/laminas-filter (2.12.0 to 2.22.0) - laminas/laminas-inputfilter (2.12.1 to
    2.21.0) - laminas/laminas-servicemanager (3.7.0 to 3.17.0) - laminas/laminas-stdlib
    (3.11.0 to 3.13.0) - laminas/laminas-validator (2.19.0 to 2.25.0) - league/flysystem
    (1.1.9 to 1.1.10) - psr/container (1.1.1 to 1.1.2) - sabre/uri (2.2.3 to 2.3.2) -
@@ -49,13 +50,16 @@ Details
    https://github.com/owncloud/core/pull/40337
    https://github.com/owncloud/core/pull/40394
    https://github.com/owncloud/core/pull/40410
+   https://github.com/owncloud/core/pull/40424
 
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
-   The following Symfony components have been updated to: - console 4.4.45 - translation 4.4.45
+   The following Symfony components have been updated to: - console 4.4.47 - translation 4.4.47
 
    https://github.com/owncloud/core/pull/40337
+   https://github.com/owncloud/core/pull/40424
    https://symfony.com/blog/symfony-4-4-45-released
+   https://symfony.com/blog/symfony-4-4-47-released
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
