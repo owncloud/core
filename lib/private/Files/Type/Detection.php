@@ -192,21 +192,18 @@ class Detection implements IMimeTypeDetector {
 		$this->loadMappings();
 
 		$fileName = \basename($path);
-		// note: leading dot doesn't qualify as extension
-		if (\strpos($fileName, '.') > 0) {
-			//try to guess the type by the file extension
-			if ($this->detectSharedObjFileName($fileName)) {
-				$extension = 'so';
-			} else {
-				$extension = \strtolower(\strrchr($fileName, '.'));
-				$extension = \substr($extension, 1); //remove leading .
-			}
-			return (isset($this->mimetypes[$extension], $this->mimetypes[$extension][0]))
-				? $this->mimetypes[$extension][0]
-				: 'application/octet-stream';
+		# let's eat the first char if it is a .
+		$fileName = ltrim($fileName, ".");
+		//try to guess the type by the file extension
+		if ($this->detectSharedObjFileName($fileName)) {
+			$extension = 'so';
 		} else {
-			return 'application/octet-stream';
+			$extension = \strtolower(\strrchr($fileName, '.'));
+			$extension = \substr($extension, 1); //remove leading .
 		}
+		return (isset($this->mimetypes[$extension], $this->mimetypes[$extension][0]))
+			? $this->mimetypes[$extension][0]
+			: 'application/octet-stream';
 	}
 
 	/**
