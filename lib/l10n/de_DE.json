@@ -194,6 +194,6 @@
     "Storage connection error. %s" : "Speicher-Verbindungsfehler. %s",
     "Storage is temporarily not available" : "Speicher ist vorübergehend nicht verfügbar",
     "Storage connection timeout. %s" : "Speicher-Verbindungszeitüberschreitung. %s",
-    "\"%s\" is locked" : "\"%s\" wird im Hintergrund bearbeitet und wird angezeigt, sobald der Vorgang abgeschlossen ist."
+    "\"%s\" is locked" : "\"%s\" ist gesperrt"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
