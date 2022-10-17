@@ -11,6 +11,7 @@ Summary
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
+* Change - Detect mime types of hidden files: [#40427](https://github.com/owncloud/core/pull/40427)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
@@ -39,6 +40,12 @@ Details
    We now expect a not found error instead of permission denied error for some trash interactions.
 
    https://github.com/owncloud/core/pull/40406
+
+* Change - Detect mime types of hidden files: [#40427](https://github.com/owncloud/core/pull/40427)
+
+   Mime type of hidden files are now properly detected.
+
+   https://github.com/owncloud/core/pull/40427
 
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 
