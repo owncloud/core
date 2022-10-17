@@ -37,6 +37,8 @@ dir = {
     "base": "/drone",
     "server": "/drone/src",
     "federated": "/drone/federated",
+    "tarballServer": "/drone/core",
+    "browserService": "/home/seluser/Downloads",
 }
 
 config = {
@@ -1748,7 +1750,7 @@ def acceptance(ctx):
                                     suExecCommand = "setpriv --reuid=www-data --regid=www-data --init-groups "
 
                                 if params["testAgainstCoreTarball"]:
-                                    pathOfServerUnderTest = "/drone/core"
+                                    pathOfServerUnderTest = dir["tarballServer"]
                                 else:
                                     pathOfServerUnderTest = dir["server"]
 
@@ -2096,7 +2098,7 @@ def browserService(browser):
             },
             "volumes": [{
                 "name": "downloads",
-                "path": "/home/seluser/Downloads",
+                "path": "%s" % dir["browserService"],
             }],
         }]
 
@@ -2110,7 +2112,7 @@ def browserService(browser):
             },
             "volumes": [{
                 "name": "downloads",
-                "path": "/home/seluser/Downloads",
+                "path": "%s" % dir["browserService"],
             }],
         }]
 
@@ -2784,11 +2786,11 @@ def fixPermissions(phpVersion, federatedServerNeeded, selUserNeeded = False, pat
         ] if (pathOfServerUnderTest != dir["server"]) else []) + ([
             "chown -R www-data %s" % dir["federated"],
         ] if federatedServerNeeded else []) + ([
-            "chmod 777 /home/seluser/Downloads/",
+            "chmod 777 %s" % dir["browserService"],
         ] if selUserNeeded else []),
         "volumes": [{
             "name": "downloads",
-            "path": "/home/seluser/Downloads/",
+            "path": "%s" % dir["browserService"],
         }],
     }]
 
@@ -2859,7 +2861,7 @@ def dependsOn(earlierStages, nextStages):
         for nextStage in nextStages:
             nextStage["depends_on"].append(earlierStage["name"])
 
-def installCoreFromTarball(version, db, logLevel = "2", ssl = False, federatedServerNeeded = False, proxyNeeded = False, pathOfServerUnderTest = "/drone/core"):
+def installCoreFromTarball(version, db, logLevel = "2", ssl = False, federatedServerNeeded = False, proxyNeeded = False, pathOfServerUnderTest = dir["tarballServer"]):
     host = getDbName(db)
     dbType = host
 
