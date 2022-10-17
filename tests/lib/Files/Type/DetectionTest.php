@@ -37,7 +37,7 @@ class DetectionTest extends \Test\TestCase {
 		);
 	}
 
-	public function testDetect() {
+	public function testDetect(): void {
 		$dir = \OC::$SERVERROOT.'/tests/data';
 
 		$result = $this->detection->detect($dir."/");
@@ -61,7 +61,7 @@ class DetectionTest extends \Test\TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
-	public function testGetSecureMimeType() {
+	public function testGetSecureMimeType(): void {
 		$result = $this->detection->getSecureMimeType('image/svg+xml');
 		$expected = 'text/plain';
 		$this->assertEquals($expected, $result);
@@ -71,7 +71,8 @@ class DetectionTest extends \Test\TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
-	public function testDetectPath() {
+	public function testDetectPath(): void {
+		$this->assertEquals('text/plain', $this->detection->detectPath('.foo.txt'));
 		$this->assertEquals('text/plain', $this->detection->detectPath('foo.txt'));
 		$this->assertEquals('image/png', $this->detection->detectPath('foo.png'));
 		$this->assertEquals('image/png', $this->detection->detectPath('foo.bar.png'));
@@ -89,13 +90,13 @@ class DetectionTest extends \Test\TestCase {
 		$this->assertEquals('application/octet-stream', $this->detection->detectPath(''));
 	}
 
-	public function testDetectString() {
+	public function testDetectString(): void {
 		$result = $this->detection->detectString("/data/data.tar.gz");
 		$expected = 'text/plain; charset=us-ascii';
 		$this->assertEquals($expected, $result);
 	}
 
-	public function testMimeTypeIcon() {
+	public function testMimeTypeIcon(): void {
 		$confDir = vfsStream::setup();
 		$mimetypealiases_dist = vfsStream::newFile('mimetypealiases.dist.json')->at($confDir);
 
@@ -189,14 +190,12 @@ class DetectionTest extends \Test\TestCase {
 				[$this->equalTo('core'), $this->equalTo('filetypes/my-type.svg')],
 				[$this->equalTo('core'), $this->equalTo('filetypes/my.svg')]
 			)
-			->will($this->returnCallback(
-				function ($appName, $file) {
-					if ($file === 'filetypes/my.svg') {
-						return 'my.svg';
-					}
-					throw new \RuntimeException();
+			->willReturnCallback(function ($appName, $file) {
+				if ($file === 'filetypes/my.svg') {
+					return 'my.svg';
 				}
-			));
+				throw new \RuntimeException();
+			});
 
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
 		$mimeType = $detection->mimeTypeIcon('my-type');
@@ -219,14 +218,12 @@ class DetectionTest extends \Test\TestCase {
 				[$this->equalTo('core'), $this->equalTo('filetypes/foo.svg')],
 				[$this->equalTo('core'), $this->equalTo('filetypes/file.svg')]
 			)
-			->will($this->returnCallback(
-				function ($appName, $file) {
-					if ($file === 'filetypes/file.svg') {
-						return 'file.svg';
-					}
-					throw new \RuntimeException();
+			->willReturnCallback(function ($appName, $file) {
+				if ($file === 'filetypes/file.svg') {
+					return 'file.svg';
 				}
-			));
+				throw new \RuntimeException();
+			});
 
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
 		$mimeType = $detection->mimeTypeIcon('foo-bar');

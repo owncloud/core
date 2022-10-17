@@ -1,0 +1,5 @@
+Change: Detect mime types of hidden files
+
+Mime type of hidden files are now properly detected.
+
+https://github.com/owncloud/core/pull/40427
