@@ -270,7 +270,8 @@ class Encryption extends Wrapper {
 	public function rename($path1, $path2) {
 		$renameOk = false;
 		$copyKeysOk = true;  // assume keys are copied, in case we deal with versions
-		if ($this->isVersion($path2) === false && $this->encryptionManager->isEnabled()) {
+		$isVersion = !($this->isVersion($path2) === false && $this->encryptionManager->isEnabled());
+		if (!$isVersion) {
 			// versions always use the keys from the original file, so we can skip
 			// this step for versions
 			$source = $this->getFullPath($path1);
@@ -292,6 +293,10 @@ class Encryption extends Wrapper {
 
 		if ($copyKeysOk) {
 			$renameOk = $this->storage->rename($path1, $path2);
+			if ($isVersion) {
+				return $renameOk;
+			}
+
 			if ($renameOk) {
 				$sourceKeyDeleteOk = $this->keyStorage->deleteAllFileKeys($source);
 				if (!$sourceKeyDeleteOk) {
