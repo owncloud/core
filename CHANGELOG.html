@@ -6,6 +6,7 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Skip public links when updating permissions of share's children: <a href="https://github.com/owncloud/core/pull/40420">#40420</a></li>
         <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
         <li class="type-change changelog-item">Change - Test indirect resource existence: <a href="https://github.com/owncloud/core/pull/40406">#40406</a></li>
@@ -15,6 +16,13 @@
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Skip public links when updating permissions of share's children: <a href="https://github.com/owncloud/core/pull/40420">#40420</a></p>
+            <p>Currently, updates to permissions of a share are wrongly propagated to public links children.
+   This has now been fixed and public links are being skipped.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40420<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>
             <p>Before this change, objectstorages were reporting only infinite storage space. This could
