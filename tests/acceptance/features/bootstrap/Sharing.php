@@ -3760,6 +3760,37 @@ trait Sharing {
 	}
 
 	/**
+	 * Returns the attribute values from the last public link share data
+	 *
+	 * @param $attr - attribute name to get
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public function getLastPublicShareAttribute($attr): string {
+		if ($this->lastPublicShareData === null) {
+			throw new Exception(__METHOD__ . "No public share data available.");
+		}
+		if (!\in_array($attr, $this->shareResponseFields)) {
+			throw new Exception(
+				__METHOD__ . " attribute $attr is not in the list of allowed attributes"
+			);
+		}
+		if (\count($this->lastPublicShareData->data->element) > 0) {
+			if (!isset($this->lastPublicShareData->data[0]->$attr)) {
+				throw new Exception(__METHOD__ . " No attribute $attr available in the last share data.");
+			}
+			return (string)$this->lastPublicShareData->data[0]->{$attr};
+		}
+
+		if (!isset($this->lastPublicShareData->data->$attr)) {
+			throw new Exception(__METHOD__ . " No attribute $attr available in the last share data.");
+		}
+
+		return (string)$this->lastPublicShareData->data->{$attr};
+	}
+
+	/**
 	 * @return string path of file that was shared (relevant when a single file has been shared)
 	 */
 	public function getLastPublicSharePath():string {
