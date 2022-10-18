@@ -26,6 +26,12 @@
     "autoload-dev" : {
         "files": ["tests/lib/TestCase.php"]
     },
+    "repositories": [
+        {
+        "type": "git",
+        "url": "https://github.com/phil-davis/phpseclib"
+        }
+    ],
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.8",
         "jakub-onderka/php-console-highlighter": "^0.4",
@@ -36,7 +42,7 @@
     "require": {
         "php": ">=7.4",
         "doctrine/dbal": "^2.13",
-        "phpseclib/phpseclib": "^3.0",
+        "phpseclib/phpseclib": "dev-test-delete-folder",
         "opis/closure": "^3.6",
         "bantu/ini-get-wrapper": "v1.0.1",
         "punic/punic": "^3.7",

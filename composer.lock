@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4a8cd386de028ebe9b223034789055e",
+    "content-hash": "796af8568c4a48b520bacb615ce0db09",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -2313,17 +2313,11 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.16",
+            "version": "dev-test-delete-folder",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "7181378909ed8890be4db53d289faac5b77f8b05"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/7181378909ed8890be4db53d289faac5b77f8b05",
-                "reference": "7181378909ed8890be4db53d289faac5b77f8b05",
-                "shasum": ""
+                "url": "https://github.com/phil-davis/phpseclib",
+                "reference": "a10a3b8e5b1744988042a7f67cbcebd608da6b48"
             },
             "require": {
                 "paragonie/constant_time_encoding": "^1|^2",
@@ -2349,7 +2343,11 @@
                     "phpseclib3\\": "phpseclib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "phpseclib3\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -2401,25 +2399,7 @@
                 "x.509",
                 "x509"
             ],
-            "support": {
-                "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.16"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/terrafrost",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/phpseclib",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2022-09-05T18:03:08+00:00"
+            "time": "2022-10-05T02:02:49+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -7093,6 +7073,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "phpseclib/phpseclib": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
