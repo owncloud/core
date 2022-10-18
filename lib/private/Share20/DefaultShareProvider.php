@@ -251,6 +251,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->update('share')
 				->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
+				->andWhere($qb->expr()->neq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_LINK)))  // links could be attached and must be excluded
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
 				->set('uid_initiator', $qb->createNamedParameter($share->getSharedBy()))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
@@ -263,6 +264,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->update('share')
 				->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
+				->andWhere($qb->expr()->neq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_LINK)))  // links could be attached and must be excluded
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 				->set('expiration', $qb->createNamedParameter($share->getExpirationDate(), IQueryBuilder::PARAM_DATE))
 				->set('attributes', $qb->createNamedParameter($shareAttributes))
