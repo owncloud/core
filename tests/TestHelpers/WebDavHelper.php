@@ -114,7 +114,7 @@ class WebDavHelper {
 
 		return $matches[1];
 	}
-	
+
 	/**
 	 * returns body for propfind
 	 *
@@ -419,17 +419,32 @@ class WebDavHelper {
 	/**
 	 * fetches personal space id for provided user
 	 *
+	 * when the `returnFakeIfNotFound` is set to true, the function can return a fake space id.
+	 * if the fetch fails, and the user is not found, then the function will return a fake space id.
+	 * this is useful for testing when the personal space is of a non-existing user
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
 	 * @param string $xRequestId
+	 * @param bool $returnFakeIfNotFound
 	 *
 	 * @return string
 	 * @throws GuzzleException
 	 * @throws Exception
 	 */
-	public static function getPersonalSpaceIdForUser(string $baseUrl, string $user, string $password, string $xRequestId):string {
-		if (\array_key_exists($user, self::$spacesIdRef) && \array_key_exists("personal", self::$spacesIdRef[$user])) {
+	public static function getPersonalSpaceIdForUser(
+		string $baseUrl,
+		string $user,
+		string $password,
+		string $xRequestId,
+		bool $returnFakeIfNotFound = false
+	):string {
+		$fakeId = "fake-personal-space-id";
+		if (
+			\array_key_exists($user, self::$spacesIdRef) &&
+			\array_key_exists("personal", self::$spacesIdRef[$user])
+		) {
 			return self::$spacesIdRef[$user]["personal"];
 		}
 		$trimmedBaseUrl = \trim($baseUrl, "/");
@@ -458,6 +473,7 @@ class WebDavHelper {
 			// we expect to get a multipart XML response with status 207
 			$status = $response->getStatusCode();
 			if ($status !== 207) {
+				if ($returnFakeIfNotFound) return $fakeId;
 				throw new Exception(
 					__METHOD__ . " webdav propfind for user $user failed with status $status - so the personal space id cannot be discovered"
 				);
@@ -468,6 +484,7 @@ class WebDavHelper {
 			);
 			$xmlPart = $responseXmlObject->xpath("/d:multistatus/d:response[1]/d:propstat/d:prop/oc:id");
 			if ($xmlPart === false) {
+				if ($returnFakeIfNotFound) return $fakeId;
 				throw new Exception(
 					__METHOD__ . " oc:id not found in webdav propfind for user $user - so the personal space id cannot be discovered"
 				);
@@ -495,6 +512,7 @@ class WebDavHelper {
 			}
 			$ocIdParts = \explode($separator, $decodedId);
 			if (\count($ocIdParts) !== 2) {
+				if ($returnFakeIfNotFound) return $fakeId;
 				throw new Exception(
 					__METHOD__ . " the oc:id $decodedId for user $user does not have 2 parts separated by '$separator', so the personal space id cannot be discovered"
 				);
@@ -518,6 +536,7 @@ class WebDavHelper {
 			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
 			return $personalSpaceId;
 		}
+		if ($returnFakeIfNotFound) return $fakeId;
 		throw new Exception(__METHOD__ . " Personal space not found for user " . $user);
 	}
 
@@ -579,9 +598,9 @@ class WebDavHelper {
 		// get space id if testing with spaces dav
 		if (self::$SPACE_ID_FROM_OCIS === '' && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
 			if ($doDavRequestAsUser === null) {
-				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
+				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId, true);
 			} else {
-				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $doDavRequestAsUser, $password, $xRequestId);
+				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $doDavRequestAsUser, $password, $xRequestId, true);
 			}
 		} else {
 			$spaceId = self::$SPACE_ID_FROM_OCIS;
