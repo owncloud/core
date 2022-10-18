@@ -268,28 +268,47 @@ class Encryption extends Wrapper {
 	 * @return bool
 	 */
 	public function rename($path1, $path2) {
-		$result = $this->storage->rename($path1, $path2);
-
-		if ($result &&
+		$renameOk = false;
+		$copyKeysOk = true;  // assume keys are copied, in case we deal with versions
+		if ($this->isVersion($path2) === false && $this->encryptionManager->isEnabled()) {
 			// versions always use the keys from the original file, so we can skip
 			// this step for versions
-			$this->isVersion($path2) === false &&
-			$this->encryptionManager->isEnabled()) {
 			$source = $this->getFullPath($path1);
 			if (!$this->util->isExcluded($source)) {
 				$target = $this->getFullPath($path2);
 				if (isset($this->unencryptedSize[$source])) {
 					$this->unencryptedSize[$target] = $this->unencryptedSize[$source];
 				}
-				$this->keyStorage->renameKeys($source, $target);
-				$module = $this->getEncryptionModule($path2);
-				if ($module) {
-					$module->update($target, $this->uid, []);
+
+				$copyKeysOk = $this->keyStorage->copyKeys($source, $target);
+				if ($copyKeysOk) {
+					$module = $this->getEncryptionModule($path2);
+					if ($module) {
+						$module->update($target, $this->uid, []);
+					}
 				}
 			}
 		}
 
-		return $result;
+		if ($copyKeysOk) {
+			$renameOk = $this->storage->rename($path1, $path2);
+			if ($renameOk) {
+				$sourceKeyDeleteOk = $this->keyStorage->deleteAllFileKeys($source);
+				if (!$sourceKeyDeleteOk) {
+					$this->logger->error("Renaming {$path1} to {$path2} succeeded, but key {$target} wasn't deleted from the original location in {$source}");
+				}
+			} else {
+				$this->logger->error("Renaming {$path1} to {$path2} failed");
+				$targetKeyDeleteOk = $this->keyStorage->deleteAllFileKeys($target);
+				if (!$targetKeyDeleteOk) {
+					$this->logger->error("Copied key {$source} wasn't removed from the target location in {$target}");
+				}
+			}
+		} else {
+			$this->logger->error("Failed to copied keys from {$source} to {$target} while renaming {$path1} to {$path2}");
+		}
+
+		return $renameOk && $copyKeysOk;
 	}
 
 	/**
