@@ -99,11 +99,11 @@ class Accounts extends \Google\Service\Resource
    * information of an unowned customer. The reseller should provide the
    * customer's Cloud Identity ID or Customer Name. Possible error codes: *
    * PERMISSION_DENIED: * The customer doesn't belong to the reseller and has no
-   * auth token. * The supplied auth token is invalid. * The reseller account
-   * making the request is different from the reseller account in the query. *
-   * INVALID_ARGUMENT: Required request parameters are missing or invalid. Return
-   * value: List of TransferableOffer for the given customer and SKU.
-   * (accounts.listTransferableOffers)
+   * auth token. * The customer provided incorrect reseller information when
+   * generating auth token. * The reseller account making the request is different
+   * from the reseller account in the query. * INVALID_ARGUMENT: Required request
+   * parameters are missing or invalid. Return value: List of TransferableOffer
+   * for the given customer and SKU. (accounts.listTransferableOffers)
    *
    * @param string $parent Required. The resource name of the reseller's account.
    * @param GoogleCloudChannelV1ListTransferableOffersRequest $postBody

@@ -30,6 +30,10 @@ class RemoveWebAppRequest extends \Google\Model
   /**
    * @var bool
    */
+  public $immediate;
+  /**
+   * @var bool
+   */
   public $validateOnly;
 
   /**
@@ -59,6 +63,20 @@ class RemoveWebAppRequest extends \Google\Model
   public function getEtag()
   {
     return $this->etag;
+  }
+  /**
+   * @param bool
+   */
+  public function setImmediate($immediate)
+  {
+    $this->immediate = $immediate;
+  }
+  /**
+   * @return bool
+   */
+  public function getImmediate()
+  {
+    return $this->immediate;
   }
   /**
    * @param bool

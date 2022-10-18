@@ -27,6 +27,8 @@ class PreprocessingConfig extends \Google\Model
   protected $cropDataType = '';
   protected $deblockType = Deblock::class;
   protected $deblockDataType = '';
+  protected $deinterlaceType = Deinterlace::class;
+  protected $deinterlaceDataType = '';
   protected $denoiseType = Denoise::class;
   protected $denoiseDataType = '';
   protected $padType = Pad::class;
@@ -87,6 +89,20 @@ class PreprocessingConfig extends \Google\Model
   public function getDeblock()
   {
     return $this->deblock;
+  }
+  /**
+   * @param Deinterlace
+   */
+  public function setDeinterlace(Deinterlace $deinterlace)
+  {
+    $this->deinterlace = $deinterlace;
+  }
+  /**
+   * @return Deinterlace
+   */
+  public function getDeinterlace()
+  {
+    return $this->deinterlace;
   }
   /**
    * @param Denoise

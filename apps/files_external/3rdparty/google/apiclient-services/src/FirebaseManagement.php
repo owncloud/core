@@ -186,6 +186,10 @@ class FirebaseManagement extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'showDeleted' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
               ],
             ],'patch' => [
               'path' => 'v1beta1/{+name}',
@@ -315,6 +319,16 @@ class FirebaseManagement extends \Google\Service
               ],
             ],'remove' => [
               'path' => 'v1beta1/{+name}:remove',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'undelete' => [
+              'path' => 'v1beta1/{+name}:undelete',
               'httpMethod' => 'POST',
               'parameters' => [
                 'name' => [
@@ -497,6 +511,16 @@ class FirebaseManagement extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'undelete' => [
+              'path' => 'v1beta1/{+name}:undelete',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],
           ]
         ]
@@ -575,6 +599,16 @@ class FirebaseManagement extends \Google\Service
               ],
             ],'remove' => [
               'path' => 'v1beta1/{+name}:remove',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'undelete' => [
+              'path' => 'v1beta1/{+name}:undelete',
               'httpMethod' => 'POST',
               'parameters' => [
                 'name' => [

@@ -27,6 +27,10 @@ class RuntimeSoftwareConfig extends \Google\Collection
   /**
    * @var bool
    */
+  public $disableTerminal;
+  /**
+   * @var bool
+   */
   public $enableHealthMonitoring;
   /**
    * @var bool
@@ -72,6 +76,20 @@ class RuntimeSoftwareConfig extends \Google\Collection
   public function getCustomGpuDriverPath()
   {
     return $this->customGpuDriverPath;
+  }
+  /**
+   * @param bool
+   */
+  public function setDisableTerminal($disableTerminal)
+  {
+    $this->disableTerminal = $disableTerminal;
+  }
+  /**
+   * @return bool
+   */
+  public function getDisableTerminal()
+  {
+    return $this->disableTerminal;
   }
   /**
    * @param bool

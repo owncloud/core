@@ -86,8 +86,8 @@ class BuyersCreatives extends \Google\Service\Resource
    * `buyers/456`. 3. The ID of the bidder itself. So for listing creatives
    * pertaining to bidder (`123`), you would use `buyers/123`. If you want to
    * access all creatives pertaining to both the bidder and all of its child seat
-   * accounts, you would use `bidders/{bidderAccountId}`, e.g., for all creatives
-   * pertaining to bidder (`123`), use `bidders/123`.
+   * accounts, you would use `bidders/{bidderAccountId}`, for example, for all
+   * creatives pertaining to bidder (`123`), use `bidders/123`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Query string to filter creatives. If no filter is
@@ -96,8 +96,8 @@ class BuyersCreatives extends \Google\Service\Resource
    * declaredAttributes:IS_COOKIE_TARGETED'
    * @opt_param int pageSize Requested page size. The server may return fewer
    * creatives than requested (due to timeout constraint) even if more are
-   * available via another call. If unspecified, server will pick an appropriate
-   * default. Acceptable values are 1 to 1000, inclusive.
+   * available through another call. If unspecified, server will pick an
+   * appropriate default. Acceptable values are 1 to 1000, inclusive.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of
    * ListCreativesResponse.nextPageToken returned from the previous call to the

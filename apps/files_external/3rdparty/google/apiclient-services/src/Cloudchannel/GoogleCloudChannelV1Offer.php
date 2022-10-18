@@ -25,10 +25,6 @@ class GoogleCloudChannelV1Offer extends \Google\Collection
   /**
    * @var string
    */
-  public $dealCode;
-  /**
-   * @var string
-   */
   public $endTime;
   protected $marketingInfoType = GoogleCloudChannelV1MarketingInfo::class;
   protected $marketingInfoDataType = '';
@@ -62,20 +58,6 @@ class GoogleCloudChannelV1Offer extends \Google\Collection
   public function getConstraints()
   {
     return $this->constraints;
-  }
-  /**
-   * @param string
-   */
-  public function setDealCode($dealCode)
-  {
-    $this->dealCode = $dealCode;
-  }
-  /**
-   * @return string
-   */
-  public function getDealCode()
-  {
-    return $this->dealCode;
   }
   /**
    * @param string

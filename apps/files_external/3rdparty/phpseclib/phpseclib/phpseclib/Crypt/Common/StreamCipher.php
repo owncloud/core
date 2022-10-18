@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  Crypt
- * @package   StreamCipher
  * @author    Jim Wigginton <terrafrost@php.net>
  * @author    Hans-Juergen Petrich <petrich@tronic-media.com>
  * @copyright 2007 Jim Wigginton
@@ -19,7 +17,6 @@ namespace phpseclib3\Crypt\Common;
 /**
  * Base Class for all stream cipher classes
  *
- * @package StreamCipher
  * @author  Jim Wigginton <terrafrost@php.net>
  */
 abstract class StreamCipher extends SymmetricKey
@@ -31,7 +28,6 @@ abstract class StreamCipher extends SymmetricKey
      *
      * @see \phpseclib3\Crypt\Common\SymmetricKey::block_size
      * @var int
-     * @access private
      */
     protected $block_size = 0;
 
@@ -49,7 +45,6 @@ abstract class StreamCipher extends SymmetricKey
     /**
      * Stream ciphers not use an IV
      *
-     * @access public
      * @return bool
      */
     public function usesIV()

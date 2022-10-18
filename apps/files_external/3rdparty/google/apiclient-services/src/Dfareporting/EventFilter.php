@@ -25,6 +25,8 @@ class EventFilter extends \Google\Model
    * @var string
    */
   public $kind;
+  protected $uvarFilterType = UvarFilter::class;
+  protected $uvarFilterDataType = '';
 
   /**
    * @param PathReportDimensionValue
@@ -53,6 +55,20 @@ class EventFilter extends \Google\Model
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param UvarFilter
+   */
+  public function setUvarFilter(UvarFilter $uvarFilter)
+  {
+    $this->uvarFilter = $uvarFilter;
+  }
+  /**
+   * @return UvarFilter
+   */
+  public function getUvarFilter()
+  {
+    return $this->uvarFilter;
   }
 }
 

@@ -17,8 +17,8 @@
 
 namespace Google\Service\ChromePolicy\Resource;
 
-use Google\Service\ChromePolicy\GoogleChromePolicyV1ResolveRequest;
-use Google\Service\ChromePolicy\GoogleChromePolicyV1ResolveResponse;
+use Google\Service\ChromePolicy\GoogleChromePolicyVersionsV1ResolveRequest;
+use Google\Service\ChromePolicy\GoogleChromePolicyVersionsV1ResolveResponse;
 
 /**
  * The "policies" collection of methods.
@@ -36,15 +36,15 @@ class CustomersPolicies extends \Google\Service\Resource
    *
    * @param string $customer ID of the G Suite account or literal "my_customer"
    * for the customer associated to the request.
-   * @param GoogleChromePolicyV1ResolveRequest $postBody
+   * @param GoogleChromePolicyVersionsV1ResolveRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return GoogleChromePolicyV1ResolveResponse
+   * @return GoogleChromePolicyVersionsV1ResolveResponse
    */
-  public function resolve($customer, GoogleChromePolicyV1ResolveRequest $postBody, $optParams = [])
+  public function resolve($customer, GoogleChromePolicyVersionsV1ResolveRequest $postBody, $optParams = [])
   {
     $params = ['customer' => $customer, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('resolve', [$params], GoogleChromePolicyV1ResolveResponse::class);
+    return $this->call('resolve', [$params], GoogleChromePolicyVersionsV1ResolveResponse::class);
   }
 }
 

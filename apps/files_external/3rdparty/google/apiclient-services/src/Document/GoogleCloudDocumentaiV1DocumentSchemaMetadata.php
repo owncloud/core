@@ -31,6 +31,10 @@ class GoogleCloudDocumentaiV1DocumentSchemaMetadata extends \Google\Model
    * @var bool
    */
   public $prefixedNamingOnProperties;
+  /**
+   * @var bool
+   */
+  public $skipNamingValidation;
 
   /**
    * @param bool
@@ -73,6 +77,20 @@ class GoogleCloudDocumentaiV1DocumentSchemaMetadata extends \Google\Model
   public function getPrefixedNamingOnProperties()
   {
     return $this->prefixedNamingOnProperties;
+  }
+  /**
+   * @param bool
+   */
+  public function setSkipNamingValidation($skipNamingValidation)
+  {
+    $this->skipNamingValidation = $skipNamingValidation;
+  }
+  /**
+   * @return bool
+   */
+  public function getSkipNamingValidation()
+  {
+    return $this->skipNamingValidation;
   }
 }
 

@@ -19,11 +19,15 @@ namespace Google\Service\NetworkManagement;
 
 class RouteInfo extends \Google\Collection
 {
-  protected $collection_key = 'instanceTags';
+  protected $collection_key = 'srcPortRanges';
   /**
    * @var string
    */
   public $destIpRange;
+  /**
+   * @var string[]
+   */
+  public $destPortRanges;
   /**
    * @var string
    */
@@ -49,9 +53,21 @@ class RouteInfo extends \Google\Collection
    */
   public $priority;
   /**
+   * @var string[]
+   */
+  public $protocols;
+  /**
    * @var string
    */
   public $routeType;
+  /**
+   * @var string
+   */
+  public $srcIpRange;
+  /**
+   * @var string[]
+   */
+  public $srcPortRanges;
   /**
    * @var string
    */
@@ -70,6 +86,20 @@ class RouteInfo extends \Google\Collection
   public function getDestIpRange()
   {
     return $this->destIpRange;
+  }
+  /**
+   * @param string[]
+   */
+  public function setDestPortRanges($destPortRanges)
+  {
+    $this->destPortRanges = $destPortRanges;
+  }
+  /**
+   * @return string[]
+   */
+  public function getDestPortRanges()
+  {
+    return $this->destPortRanges;
   }
   /**
    * @param string
@@ -156,6 +186,20 @@ class RouteInfo extends \Google\Collection
     return $this->priority;
   }
   /**
+   * @param string[]
+   */
+  public function setProtocols($protocols)
+  {
+    $this->protocols = $protocols;
+  }
+  /**
+   * @return string[]
+   */
+  public function getProtocols()
+  {
+    return $this->protocols;
+  }
+  /**
    * @param string
    */
   public function setRouteType($routeType)
@@ -168,6 +212,34 @@ class RouteInfo extends \Google\Collection
   public function getRouteType()
   {
     return $this->routeType;
+  }
+  /**
+   * @param string
+   */
+  public function setSrcIpRange($srcIpRange)
+  {
+    $this->srcIpRange = $srcIpRange;
+  }
+  /**
+   * @return string
+   */
+  public function getSrcIpRange()
+  {
+    return $this->srcIpRange;
+  }
+  /**
+   * @param string[]
+   */
+  public function setSrcPortRanges($srcPortRanges)
+  {
+    $this->srcPortRanges = $srcPortRanges;
+  }
+  /**
+   * @return string[]
+   */
+  public function getSrcPortRanges()
+  {
+    return $this->srcPortRanges;
   }
   /**
    * @param string

@@ -26,6 +26,10 @@ class PipelineDescription extends \Google\Collection
   protected $executionPipelineStageDataType = 'array';
   protected $originalPipelineTransformType = TransformSummary::class;
   protected $originalPipelineTransformDataType = 'array';
+  /**
+   * @var string
+   */
+  public $stepNamesHash;
 
   /**
    * @param DisplayData[]
@@ -68,6 +72,20 @@ class PipelineDescription extends \Google\Collection
   public function getOriginalPipelineTransform()
   {
     return $this->originalPipelineTransform;
+  }
+  /**
+   * @param string
+   */
+  public function setStepNamesHash($stepNamesHash)
+  {
+    $this->stepNamesHash = $stepNamesHash;
+  }
+  /**
+   * @return string
+   */
+  public function getStepNamesHash()
+  {
+    return $this->stepNamesHash;
   }
 }
 

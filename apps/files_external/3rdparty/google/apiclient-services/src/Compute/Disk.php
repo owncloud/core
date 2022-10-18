@@ -80,6 +80,8 @@ class Disk extends \Google\Collection
    * @var string
    */
   public $options;
+  protected $paramsType = DiskParams::class;
+  protected $paramsDataType = '';
   /**
    * @var string
    */
@@ -384,6 +386,20 @@ class Disk extends \Google\Collection
   public function getOptions()
   {
     return $this->options;
+  }
+  /**
+   * @param DiskParams
+   */
+  public function setParams(DiskParams $params)
+  {
+    $this->params = $params;
+  }
+  /**
+   * @return DiskParams
+   */
+  public function getParams()
+  {
+    return $this->params;
   }
   /**
    * @param string

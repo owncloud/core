@@ -65,7 +65,8 @@ class ProjectsLocationsProvisioningConfigs extends \Google\Service\Resource
   /**
    * Update existing ProvisioningConfig. (provisioningConfigs.patch)
    *
-   * @param string $name Output only. The name of the provisioning config.
+   * @param string $name Output only. The system-generated name of the
+   * provisioning config. This follows the UUID format.
    * @param ProvisioningConfig $postBody
    * @param array $optParams Optional parameters.
    *

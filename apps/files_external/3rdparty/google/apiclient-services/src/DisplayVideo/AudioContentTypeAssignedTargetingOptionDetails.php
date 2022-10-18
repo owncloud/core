@@ -23,10 +23,6 @@ class AudioContentTypeAssignedTargetingOptionDetails extends \Google\Model
    * @var string
    */
   public $audioContentType;
-  /**
-   * @var string
-   */
-  public $targetingOptionId;
 
   /**
    * @param string
@@ -41,20 +37,6 @@ class AudioContentTypeAssignedTargetingOptionDetails extends \Google\Model
   public function getAudioContentType()
   {
     return $this->audioContentType;
-  }
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
-  {
-    $this->targetingOptionId = $targetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
-  {
-    return $this->targetingOptionId;
   }
 }
 

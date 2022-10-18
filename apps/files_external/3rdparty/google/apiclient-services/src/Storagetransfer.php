@@ -170,6 +170,21 @@ class Storagetransfer extends \Google\Service
               'path' => 'v1/transferJobs',
               'httpMethod' => 'POST',
               'parameters' => [],
+            ],'delete' => [
+              'path' => 'v1/{+jobName}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'jobName' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'projectId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'get' => [
               'path' => 'v1/{+jobName}',
               'httpMethod' => 'GET',

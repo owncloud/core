@@ -23,10 +23,6 @@ class AgeRangeAssignedTargetingOptionDetails extends \Google\Model
    * @var string
    */
   public $ageRange;
-  /**
-   * @var string
-   */
-  public $targetingOptionId;
 
   /**
    * @param string
@@ -41,20 +37,6 @@ class AgeRangeAssignedTargetingOptionDetails extends \Google\Model
   public function getAgeRange()
   {
     return $this->ageRange;
-  }
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
-  {
-    $this->targetingOptionId = $targetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
-  {
-    return $this->targetingOptionId;
   }
 }
 

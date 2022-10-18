@@ -26,6 +26,10 @@ class GoogleChromePolicyV1PolicySchema extends \Google\Collection
   public $accessRestrictions;
   protected $additionalTargetKeyNamesType = GoogleChromePolicyV1AdditionalTargetKeyName::class;
   protected $additionalTargetKeyNamesDataType = 'array';
+  /**
+   * @var string
+   */
+  public $categoryTitle;
   protected $definitionType = Proto2FileDescriptorProto::class;
   protected $definitionDataType = '';
   protected $fieldDescriptionsType = GoogleChromePolicyV1PolicySchemaFieldDescription::class;
@@ -36,6 +40,8 @@ class GoogleChromePolicyV1PolicySchema extends \Google\Collection
   public $name;
   protected $noticesType = GoogleChromePolicyV1PolicySchemaNoticeDescription::class;
   protected $noticesDataType = 'array';
+  protected $policyApiLifecycleType = ChromeCrosDpanelAutosettingsProtoPolicyApiLifecycle::class;
+  protected $policyApiLifecycleDataType = '';
   protected $policyApiLifeycleType = ChromeCrosDpanelAutosettingsProtoPolicyApiLifecycle::class;
   protected $policyApiLifeycleDataType = '';
   /**
@@ -82,6 +88,20 @@ class GoogleChromePolicyV1PolicySchema extends \Google\Collection
   public function getAdditionalTargetKeyNames()
   {
     return $this->additionalTargetKeyNames;
+  }
+  /**
+   * @param string
+   */
+  public function setCategoryTitle($categoryTitle)
+  {
+    $this->categoryTitle = $categoryTitle;
+  }
+  /**
+   * @return string
+   */
+  public function getCategoryTitle()
+  {
+    return $this->categoryTitle;
   }
   /**
    * @param Proto2FileDescriptorProto
@@ -138,6 +158,20 @@ class GoogleChromePolicyV1PolicySchema extends \Google\Collection
   public function getNotices()
   {
     return $this->notices;
+  }
+  /**
+   * @param ChromeCrosDpanelAutosettingsProtoPolicyApiLifecycle
+   */
+  public function setPolicyApiLifecycle(ChromeCrosDpanelAutosettingsProtoPolicyApiLifecycle $policyApiLifecycle)
+  {
+    $this->policyApiLifecycle = $policyApiLifecycle;
+  }
+  /**
+   * @return ChromeCrosDpanelAutosettingsProtoPolicyApiLifecycle
+   */
+  public function getPolicyApiLifecycle()
+  {
+    return $this->policyApiLifecycle;
   }
   /**
    * @param ChromeCrosDpanelAutosettingsProtoPolicyApiLifecycle

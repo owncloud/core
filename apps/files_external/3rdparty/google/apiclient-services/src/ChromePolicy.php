@@ -44,6 +44,8 @@ class ChromePolicy extends \Google\Service
       "https://www.googleapis.com/auth/chrome.management.policy.readonly";
 
   public $customers_policies;
+  public $customers_policies_groups;
+  public $customers_policies_networks;
   public $customers_policies_orgunits;
   public $customers_policySchemas;
   public $media;
@@ -72,6 +74,106 @@ class ChromePolicy extends \Google\Service
           'methods' => [
             'resolve' => [
               'path' => 'v1/{+customer}/policies:resolve',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->customers_policies_groups = new ChromePolicy\Resource\CustomersPoliciesGroups(
+        $this,
+        $this->serviceName,
+        'groups',
+        [
+          'methods' => [
+            'batchDelete' => [
+              'path' => 'v1/{+customer}/policies/groups:batchDelete',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'batchModify' => [
+              'path' => 'v1/{+customer}/policies/groups:batchModify',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'listGroupPriorityOrdering' => [
+              'path' => 'v1/{+customer}/policies/groups:listGroupPriorityOrdering',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'updateGroupPriorityOrdering' => [
+              'path' => 'v1/{+customer}/policies/groups:updateGroupPriorityOrdering',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->customers_policies_networks = new ChromePolicy\Resource\CustomersPoliciesNetworks(
+        $this,
+        $this->serviceName,
+        'networks',
+        [
+          'methods' => [
+            'defineCertificate' => [
+              'path' => 'v1/{+customer}/policies/networks:defineCertificate',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'defineNetwork' => [
+              'path' => 'v1/{+customer}/policies/networks:defineNetwork',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'removeCertificate' => [
+              'path' => 'v1/{+customer}/policies/networks:removeCertificate',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'removeNetwork' => [
+              'path' => 'v1/{+customer}/policies/networks:removeNetwork',
               'httpMethod' => 'POST',
               'parameters' => [
                 'customer' => [

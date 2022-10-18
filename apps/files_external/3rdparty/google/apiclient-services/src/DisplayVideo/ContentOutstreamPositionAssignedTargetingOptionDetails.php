@@ -27,10 +27,6 @@ class ContentOutstreamPositionAssignedTargetingOptionDetails extends \Google\Mod
    * @var string
    */
   public $contentOutstreamPosition;
-  /**
-   * @var string
-   */
-  public $targetingOptionId;
 
   /**
    * @param string
@@ -59,20 +55,6 @@ class ContentOutstreamPositionAssignedTargetingOptionDetails extends \Google\Mod
   public function getContentOutstreamPosition()
   {
     return $this->contentOutstreamPosition;
-  }
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
-  {
-    $this->targetingOptionId = $targetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
-  {
-    return $this->targetingOptionId;
   }
 }
 

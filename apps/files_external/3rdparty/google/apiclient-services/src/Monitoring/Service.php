@@ -21,6 +21,8 @@ class Service extends \Google\Model
 {
   protected $appEngineType = AppEngine::class;
   protected $appEngineDataType = '';
+  protected $basicServiceType = BasicService::class;
+  protected $basicServiceDataType = '';
   protected $cloudEndpointsType = CloudEndpoints::class;
   protected $cloudEndpointsDataType = '';
   protected $cloudRunType = CloudRun::class;
@@ -67,6 +69,20 @@ class Service extends \Google\Model
   public function getAppEngine()
   {
     return $this->appEngine;
+  }
+  /**
+   * @param BasicService
+   */
+  public function setBasicService(BasicService $basicService)
+  {
+    $this->basicService = $basicService;
+  }
+  /**
+   * @return BasicService
+   */
+  public function getBasicService()
+  {
+    return $this->basicService;
   }
   /**
    * @param CloudEndpoints

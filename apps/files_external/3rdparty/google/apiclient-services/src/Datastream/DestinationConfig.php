@@ -19,6 +19,8 @@ namespace Google\Service\Datastream;
 
 class DestinationConfig extends \Google\Model
 {
+  protected $bigqueryDestinationConfigType = BigQueryDestinationConfig::class;
+  protected $bigqueryDestinationConfigDataType = '';
   /**
    * @var string
    */
@@ -26,6 +28,20 @@ class DestinationConfig extends \Google\Model
   protected $gcsDestinationConfigType = GcsDestinationConfig::class;
   protected $gcsDestinationConfigDataType = '';
 
+  /**
+   * @param BigQueryDestinationConfig
+   */
+  public function setBigqueryDestinationConfig(BigQueryDestinationConfig $bigqueryDestinationConfig)
+  {
+    $this->bigqueryDestinationConfig = $bigqueryDestinationConfig;
+  }
+  /**
+   * @return BigQueryDestinationConfig
+   */
+  public function getBigqueryDestinationConfig()
+  {
+    return $this->bigqueryDestinationConfig;
+  }
   /**
    * @param string
    */

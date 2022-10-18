@@ -23,6 +23,8 @@ class BackfillAllStrategy extends \Google\Model
   protected $mysqlExcludedObjectsDataType = '';
   protected $oracleExcludedObjectsType = OracleRdbms::class;
   protected $oracleExcludedObjectsDataType = '';
+  protected $postgresqlExcludedObjectsType = PostgresqlRdbms::class;
+  protected $postgresqlExcludedObjectsDataType = '';
 
   /**
    * @param MysqlRdbms
@@ -51,6 +53,20 @@ class BackfillAllStrategy extends \Google\Model
   public function getOracleExcludedObjects()
   {
     return $this->oracleExcludedObjects;
+  }
+  /**
+   * @param PostgresqlRdbms
+   */
+  public function setPostgresqlExcludedObjects(PostgresqlRdbms $postgresqlExcludedObjects)
+  {
+    $this->postgresqlExcludedObjects = $postgresqlExcludedObjects;
+  }
+  /**
+   * @return PostgresqlRdbms
+   */
+  public function getPostgresqlExcludedObjects()
+  {
+    return $this->postgresqlExcludedObjects;
   }
 }
 

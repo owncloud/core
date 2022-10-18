@@ -19,11 +19,27 @@ namespace Google\Service\ChromeUXReport;
 
 class Record extends \Google\Model
 {
+  protected $collectionPeriodType = CollectionPeriod::class;
+  protected $collectionPeriodDataType = '';
   protected $keyType = Key::class;
   protected $keyDataType = '';
   protected $metricsType = Metric::class;
   protected $metricsDataType = 'map';
 
+  /**
+   * @param CollectionPeriod
+   */
+  public function setCollectionPeriod(CollectionPeriod $collectionPeriod)
+  {
+    $this->collectionPeriod = $collectionPeriod;
+  }
+  /**
+   * @return CollectionPeriod
+   */
+  public function getCollectionPeriod()
+  {
+    return $this->collectionPeriod;
+  }
   /**
    * @param Key
    */

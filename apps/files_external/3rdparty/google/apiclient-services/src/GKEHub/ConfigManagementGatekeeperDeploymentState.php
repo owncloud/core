@@ -27,6 +27,10 @@ class ConfigManagementGatekeeperDeploymentState extends \Google\Model
    * @var string
    */
   public $gatekeeperControllerManagerState;
+  /**
+   * @var string
+   */
+  public $gatekeeperMutation;
 
   /**
    * @param string
@@ -55,6 +59,20 @@ class ConfigManagementGatekeeperDeploymentState extends \Google\Model
   public function getGatekeeperControllerManagerState()
   {
     return $this->gatekeeperControllerManagerState;
+  }
+  /**
+   * @param string
+   */
+  public function setGatekeeperMutation($gatekeeperMutation)
+  {
+    $this->gatekeeperMutation = $gatekeeperMutation;
+  }
+  /**
+   * @return string
+   */
+  public function getGatekeeperMutation()
+  {
+    return $this->gatekeeperMutation;
   }
 }
 

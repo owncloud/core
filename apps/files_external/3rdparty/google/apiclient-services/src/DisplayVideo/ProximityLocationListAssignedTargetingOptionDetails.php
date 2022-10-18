@@ -23,10 +23,11 @@ class ProximityLocationListAssignedTargetingOptionDetails extends \Google\Model
    * @var string
    */
   public $proximityLocationListId;
+  public $proximityRadius;
   /**
    * @var string
    */
-  public $proximityRadiusRange;
+  public $proximityRadiusUnit;
 
   /**
    * @param string
@@ -42,19 +43,27 @@ class ProximityLocationListAssignedTargetingOptionDetails extends \Google\Model
   {
     return $this->proximityLocationListId;
   }
+  public function setProximityRadius($proximityRadius)
+  {
+    $this->proximityRadius = $proximityRadius;
+  }
+  public function getProximityRadius()
+  {
+    return $this->proximityRadius;
+  }
   /**
    * @param string
    */
-  public function setProximityRadiusRange($proximityRadiusRange)
+  public function setProximityRadiusUnit($proximityRadiusUnit)
   {
-    $this->proximityRadiusRange = $proximityRadiusRange;
+    $this->proximityRadiusUnit = $proximityRadiusUnit;
   }
   /**
    * @return string
    */
-  public function getProximityRadiusRange()
+  public function getProximityRadiusUnit()
   {
-    return $this->proximityRadiusRange;
+    return $this->proximityRadiusUnit;
   }
 }
 

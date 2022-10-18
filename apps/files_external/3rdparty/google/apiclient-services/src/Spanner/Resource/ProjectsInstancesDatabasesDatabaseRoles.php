@@ -36,7 +36,7 @@ class ProjectsInstancesDatabasesDatabaseRoles extends \Google\Service\Resource
    * (databaseRoles.listProjectsInstancesDatabasesDatabaseRoles)
    *
    * @param string $parent Required. The database whose roles should be listed.
-   * Values are of the form `projects//instances//databases//databaseRoles`.
+   * Values are of the form `projects//instances//databases/`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Number of database roles to be returned in the

@@ -173,19 +173,20 @@ class Cases extends \Google\Service\Resource
    * `P1`, `P2`, `P3`, or `P4`. You can specify multiple values for priority using
    * the `OR` operator. For example, `priority=P1 OR priority=P2`. - [DEPRECATED]
    * `severity`: The accepted values are `S0`, `S1`, `S2`, `S3`, or `S4`. -
-   * `creator.email`: The email address of the case creator. You must specify
-   * eitehr `organization` or `project`. To search across `displayName`,
-   * `description`, and comments, use a global restriction with no keyword or
-   * operator. For example, `"my search"`. To search only cases updated after a
-   * certain date, use `update_time` retricted with that particular date, time,
-   * and timezone in ISO datetime format. For example,
-   * `update_time>"2020-01-01T00:00:00-05:00"`. `update_time` only supports the
-   * greater than operator (`>`). Examples: -
+   * `creator.email`: The email address of the case creator. - `billingAccount`: A
+   * billing account in the form `billingAccounts/` You must specify eitehr
+   * `organization` or `project`. To search across `displayName`, `description`,
+   * and comments, use a global restriction with no keyword or operator. For
+   * example, `"my search"`. To search only cases updated after a certain date,
+   * use `update_time` retricted with that particular date, time, and timezone in
+   * ISO datetime format. For example, `update_time>"2020-01-01T00:00:00-05:00"`.
+   * `update_time` only supports the greater than operator (`>`). Examples: -
    * `organization="organizations/123456789"` - `project="projects/my-project-id"`
-   * - `project="projects/123456789"` - `organization="organizations/123456789"
-   * AND state=CLOSED` - `project="projects/my-project-id" AND
-   * creator.email="tester@example.com"` - `project="projects/my-project-id" AND
-   * (priority=P0 OR priority=P1)`
+   * - `project="projects/123456789"` -
+   * `billing_account="billingAccounts/123456-A0B0C0-CUZ789"` -
+   * `organization="organizations/123456789" AND state=CLOSED` -
+   * `project="projects/my-project-id" AND creator.email="tester@example.com"` -
+   * `project="projects/my-project-id" AND (priority=P0 OR priority=P1)`
    * @return SearchCasesResponse
    */
   public function search($optParams = [])

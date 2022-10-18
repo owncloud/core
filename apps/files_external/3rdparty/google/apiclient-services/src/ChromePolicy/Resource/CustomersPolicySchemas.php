@@ -17,8 +17,8 @@
 
 namespace Google\Service\ChromePolicy\Resource;
 
-use Google\Service\ChromePolicy\GoogleChromePolicyV1ListPolicySchemasResponse;
-use Google\Service\ChromePolicy\GoogleChromePolicyV1PolicySchema;
+use Google\Service\ChromePolicy\GoogleChromePolicyVersionsV1ListPolicySchemasResponse;
+use Google\Service\ChromePolicy\GoogleChromePolicyVersionsV1PolicySchema;
 
 /**
  * The "policySchemas" collection of methods.
@@ -36,13 +36,13 @@ class CustomersPolicySchemas extends \Google\Service\Resource
    *
    * @param string $name Required. The policy schema resource name to query.
    * @param array $optParams Optional parameters.
-   * @return GoogleChromePolicyV1PolicySchema
+   * @return GoogleChromePolicyVersionsV1PolicySchema
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], GoogleChromePolicyV1PolicySchema::class);
+    return $this->call('get', [$params], GoogleChromePolicyVersionsV1PolicySchema::class);
   }
   /**
    * Gets a list of policy schemas that match a specified filter value for a given
@@ -55,16 +55,17 @@ class CustomersPolicySchemas extends \Google\Service\Resource
    * @opt_param string filter The schema filter used to find a particular schema
    * based on fields like its resource name, description and
    * `additionalTargetKeyNames`.
-   * @opt_param int pageSize The maximum number of policy schemas to return.
+   * @opt_param int pageSize The maximum number of policy schemas to return,
+   * defaults to 100 and has a maximum of 1000.
    * @opt_param string pageToken The page token used to retrieve a specific page
    * of the listing request.
-   * @return GoogleChromePolicyV1ListPolicySchemasResponse
+   * @return GoogleChromePolicyVersionsV1ListPolicySchemasResponse
    */
   public function listCustomersPolicySchemas($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('list', [$params], GoogleChromePolicyV1ListPolicySchemasResponse::class);
+    return $this->call('list', [$params], GoogleChromePolicyVersionsV1ListPolicySchemasResponse::class);
   }
 }
 

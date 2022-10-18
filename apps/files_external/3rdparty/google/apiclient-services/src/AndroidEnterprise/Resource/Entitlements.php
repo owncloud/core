@@ -31,7 +31,9 @@ use Google\Service\AndroidEnterprise\EntitlementsListResponse;
 class Entitlements extends \Google\Service\Resource
 {
   /**
-   * Removes an entitlement to an app for a user. (entitlements.delete)
+   * Removes an entitlement to an app for a user. **Note:** This item has been
+   * deprecated. New integrations cannot use this method and can refer to our new
+   * recommendations. (entitlements.delete)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.
@@ -46,7 +48,9 @@ class Entitlements extends \Google\Service\Resource
     return $this->call('delete', [$params]);
   }
   /**
-   * Retrieves details of an entitlement. (entitlements.get)
+   * Retrieves details of an entitlement. **Note:** This item has been deprecated.
+   * New integrations cannot use this method and can refer to our new
+   * recommendations. (entitlements.get)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.
@@ -62,8 +66,9 @@ class Entitlements extends \Google\Service\Resource
     return $this->call('get', [$params], Entitlement::class);
   }
   /**
-   * Lists all entitlements for the specified user. Only the ID is set.
-   * (entitlements.listEntitlements)
+   * Lists all entitlements for the specified user. Only the ID is set. **Note:**
+   * This item has been deprecated. New integrations cannot use this method and
+   * can refer to our new recommendations. (entitlements.listEntitlements)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.
@@ -77,7 +82,9 @@ class Entitlements extends \Google\Service\Resource
     return $this->call('list', [$params], EntitlementsListResponse::class);
   }
   /**
-   * Adds or updates an entitlement to an app for a user. (entitlements.update)
+   * Adds or updates an entitlement to an app for a user. **Note:** This item has
+   * been deprecated. New integrations cannot use this method and can refer to our
+   * new recommendations. (entitlements.update)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.

@@ -40,7 +40,9 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    *
    * @param string $parent Required. The location and project in which this
    * service should be created. Format:
-   * projects/{projectnumber}/locations/{location}
+   * projects/{projectnumber}/locations/{location} Only lowercase, digits, and
+   * hyphens; must begin with letter, and may not end with hyphen; must contain
+   * fewer than 50 characters.
    * @param GoogleCloudRunV2Service $postBody
    * @param array $optParams Optional parameters.
    *

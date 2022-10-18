@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  File
- * @package   ASN1
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2012 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -21,9 +19,7 @@ namespace phpseclib3\File\ASN1;
  * An ASN.1 ANY mapping will return an ASN1\Element object. Use of this object
  * will also bypass the normal encoding rules in ASN1::encodeDER()
  *
- * @package ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class Element
 {
@@ -31,7 +27,6 @@ class Element
      * Raw element value
      *
      * @var string
-     * @access private
      */
     public $element;
 
@@ -40,7 +35,6 @@ class Element
      *
      * @param string $encoded
      * @return \phpseclib3\File\ASN1\Element
-     * @access public
      */
     public function __construct($encoded)
     {

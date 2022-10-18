@@ -23,6 +23,8 @@ class CryptoHashConfig extends \Google\Model
    * @var string
    */
   public $cryptoKey;
+  protected $kmsWrappedType = KmsWrappedCryptoKey::class;
+  protected $kmsWrappedDataType = '';
 
   /**
    * @param string
@@ -37,6 +39,20 @@ class CryptoHashConfig extends \Google\Model
   public function getCryptoKey()
   {
     return $this->cryptoKey;
+  }
+  /**
+   * @param KmsWrappedCryptoKey
+   */
+  public function setKmsWrapped(KmsWrappedCryptoKey $kmsWrapped)
+  {
+    $this->kmsWrapped = $kmsWrapped;
+  }
+  /**
+   * @return KmsWrappedCryptoKey
+   */
+  public function getKmsWrapped()
+  {
+    return $this->kmsWrapped;
   }
 }
 

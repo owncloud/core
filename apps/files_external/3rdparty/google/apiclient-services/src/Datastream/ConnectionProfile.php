@@ -19,6 +19,8 @@ namespace Google\Service\Datastream;
 
 class ConnectionProfile extends \Google\Model
 {
+  protected $bigqueryProfileType = BigQueryProfile::class;
+  protected $bigqueryProfileDataType = '';
   /**
    * @var string
    */
@@ -43,6 +45,8 @@ class ConnectionProfile extends \Google\Model
   public $name;
   protected $oracleProfileType = OracleProfile::class;
   protected $oracleProfileDataType = '';
+  protected $postgresqlProfileType = PostgresqlProfile::class;
+  protected $postgresqlProfileDataType = '';
   protected $privateConnectivityType = PrivateConnectivity::class;
   protected $privateConnectivityDataType = '';
   protected $staticServiceIpConnectivityType = StaticServiceIpConnectivity::class;
@@ -52,6 +56,20 @@ class ConnectionProfile extends \Google\Model
    */
   public $updateTime;
 
+  /**
+   * @param BigQueryProfile
+   */
+  public function setBigqueryProfile(BigQueryProfile $bigqueryProfile)
+  {
+    $this->bigqueryProfile = $bigqueryProfile;
+  }
+  /**
+   * @return BigQueryProfile
+   */
+  public function getBigqueryProfile()
+  {
+    return $this->bigqueryProfile;
+  }
   /**
    * @param string
    */
@@ -163,6 +181,20 @@ class ConnectionProfile extends \Google\Model
   public function getOracleProfile()
   {
     return $this->oracleProfile;
+  }
+  /**
+   * @param PostgresqlProfile
+   */
+  public function setPostgresqlProfile(PostgresqlProfile $postgresqlProfile)
+  {
+    $this->postgresqlProfile = $postgresqlProfile;
+  }
+  /**
+   * @return PostgresqlProfile
+   */
+  public function getPostgresqlProfile()
+  {
+    return $this->postgresqlProfile;
   }
   /**
    * @param PrivateConnectivity

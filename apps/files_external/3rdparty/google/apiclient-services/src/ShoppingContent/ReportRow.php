@@ -21,6 +21,8 @@ class ReportRow extends \Google\Model
 {
   protected $metricsType = Metrics::class;
   protected $metricsDataType = '';
+  protected $productViewType = ProductView::class;
+  protected $productViewDataType = '';
   protected $segmentsType = Segments::class;
   protected $segmentsDataType = '';
 
@@ -37,6 +39,20 @@ class ReportRow extends \Google\Model
   public function getMetrics()
   {
     return $this->metrics;
+  }
+  /**
+   * @param ProductView
+   */
+  public function setProductView(ProductView $productView)
+  {
+    $this->productView = $productView;
+  }
+  /**
+   * @return ProductView
+   */
+  public function getProductView()
+  {
+    return $this->productView;
   }
   /**
    * @param Segments

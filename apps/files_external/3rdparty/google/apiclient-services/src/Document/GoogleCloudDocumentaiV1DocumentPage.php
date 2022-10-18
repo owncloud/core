@@ -32,6 +32,8 @@ class GoogleCloudDocumentaiV1DocumentPage extends \Google\Collection
   protected $formFieldsDataType = 'array';
   protected $imageType = GoogleCloudDocumentaiV1DocumentPageImage::class;
   protected $imageDataType = '';
+  protected $imageQualityScoresType = GoogleCloudDocumentaiV1DocumentPageImageQualityScores::class;
+  protected $imageQualityScoresDataType = '';
   protected $layoutType = GoogleCloudDocumentaiV1DocumentPageLayout::class;
   protected $layoutDataType = '';
   protected $linesType = GoogleCloudDocumentaiV1DocumentPageLine::class;
@@ -138,6 +140,20 @@ class GoogleCloudDocumentaiV1DocumentPage extends \Google\Collection
   public function getImage()
   {
     return $this->image;
+  }
+  /**
+   * @param GoogleCloudDocumentaiV1DocumentPageImageQualityScores
+   */
+  public function setImageQualityScores(GoogleCloudDocumentaiV1DocumentPageImageQualityScores $imageQualityScores)
+  {
+    $this->imageQualityScores = $imageQualityScores;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1DocumentPageImageQualityScores
+   */
+  public function getImageQualityScores()
+  {
+    return $this->imageQualityScores;
   }
   /**
    * @param GoogleCloudDocumentaiV1DocumentPageLayout

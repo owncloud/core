@@ -24,6 +24,8 @@ class GoogleCloudRetailV2alphaExportUserEventsResponse extends \Google\Collectio
   protected $errorSamplesDataType = 'array';
   protected $errorsConfigType = GoogleCloudRetailV2alphaExportErrorsConfig::class;
   protected $errorsConfigDataType = '';
+  protected $outputResultType = GoogleCloudRetailV2alphaOutputResult::class;
+  protected $outputResultDataType = '';
 
   /**
    * @param GoogleRpcStatus[]
@@ -52,6 +54,20 @@ class GoogleCloudRetailV2alphaExportUserEventsResponse extends \Google\Collectio
   public function getErrorsConfig()
   {
     return $this->errorsConfig;
+  }
+  /**
+   * @param GoogleCloudRetailV2alphaOutputResult
+   */
+  public function setOutputResult(GoogleCloudRetailV2alphaOutputResult $outputResult)
+  {
+    $this->outputResult = $outputResult;
+  }
+  /**
+   * @return GoogleCloudRetailV2alphaOutputResult
+   */
+  public function getOutputResult()
+  {
+    return $this->outputResult;
   }
 }
 

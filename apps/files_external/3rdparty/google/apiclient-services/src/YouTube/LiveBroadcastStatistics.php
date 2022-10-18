@@ -22,8 +22,26 @@ class LiveBroadcastStatistics extends \Google\Model
   /**
    * @var string
    */
+  public $concurrentViewers;
+  /**
+   * @var string
+   */
   public $totalChatCount;
 
+  /**
+   * @param string
+   */
+  public function setConcurrentViewers($concurrentViewers)
+  {
+    $this->concurrentViewers = $concurrentViewers;
+  }
+  /**
+   * @return string
+   */
+  public function getConcurrentViewers()
+  {
+    return $this->concurrentViewers;
+  }
   /**
    * @param string
    */

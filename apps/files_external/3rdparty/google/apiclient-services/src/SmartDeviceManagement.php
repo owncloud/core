@@ -38,9 +38,6 @@ class SmartDeviceManagement extends \Google\Service
   /** See and/or control the devices that you selected. */
   const SDM_SERVICE =
       "https://www.googleapis.com/auth/sdm.service";
-  /** See and control the Nest thermostats that you select. */
-  const SDM_THERMOSTAT_SERVICE =
-      "https://www.googleapis.com/auth/sdm.thermostat.service";
 
   public $enterprises_devices;
   public $enterprises_structures;

@@ -17,17 +17,44 @@
 
 namespace Google\Service\ShoppingContent;
 
-class CollectionStatusDestinationStatus extends \Google\Model
+class CollectionStatusDestinationStatus extends \Google\Collection
 {
+  protected $collection_key = 'pendingCountries';
+  /**
+   * @var string[]
+   */
+  public $approvedCountries;
   /**
    * @var string
    */
   public $destination;
   /**
+   * @var string[]
+   */
+  public $disapprovedCountries;
+  /**
+   * @var string[]
+   */
+  public $pendingCountries;
+  /**
    * @var string
    */
   public $status;
 
+  /**
+   * @param string[]
+   */
+  public function setApprovedCountries($approvedCountries)
+  {
+    $this->approvedCountries = $approvedCountries;
+  }
+  /**
+   * @return string[]
+   */
+  public function getApprovedCountries()
+  {
+    return $this->approvedCountries;
+  }
   /**
    * @param string
    */
@@ -41,6 +68,34 @@ class CollectionStatusDestinationStatus extends \Google\Model
   public function getDestination()
   {
     return $this->destination;
+  }
+  /**
+   * @param string[]
+   */
+  public function setDisapprovedCountries($disapprovedCountries)
+  {
+    $this->disapprovedCountries = $disapprovedCountries;
+  }
+  /**
+   * @return string[]
+   */
+  public function getDisapprovedCountries()
+  {
+    return $this->disapprovedCountries;
+  }
+  /**
+   * @param string[]
+   */
+  public function setPendingCountries($pendingCountries)
+  {
+    $this->pendingCountries = $pendingCountries;
+  }
+  /**
+   * @return string[]
+   */
+  public function getPendingCountries()
+  {
+    return $this->pendingCountries;
   }
   /**
    * @param string

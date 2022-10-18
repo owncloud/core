@@ -17,12 +17,15 @@
 
 namespace Google\Service\ShoppingContent;
 
-class LocalInventory extends \Google\Model
+class LocalInventory extends \Google\Collection
 {
+  protected $collection_key = 'customAttributes';
   /**
    * @var string
    */
   public $availability;
+  protected $customAttributesType = CustomAttribute::class;
+  protected $customAttributesDataType = 'array';
   /**
    * @var string
    */
@@ -69,6 +72,20 @@ class LocalInventory extends \Google\Model
   public function getAvailability()
   {
     return $this->availability;
+  }
+  /**
+   * @param CustomAttribute[]
+   */
+  public function setCustomAttributes($customAttributes)
+  {
+    $this->customAttributes = $customAttributes;
+  }
+  /**
+   * @return CustomAttribute[]
+   */
+  public function getCustomAttributes()
+  {
+    return $this->customAttributes;
   }
   /**
    * @param string

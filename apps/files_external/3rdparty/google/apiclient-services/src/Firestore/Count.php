@@ -20,19 +20,19 @@ namespace Google\Service\Firestore;
 class Count extends \Google\Model
 {
   /**
-   * @var int
+   * @var string
    */
   public $upTo;
 
   /**
-   * @param int
+   * @param string
    */
   public function setUpTo($upTo)
   {
     $this->upTo = $upTo;
   }
   /**
-   * @return int
+   * @return string
    */
   public function getUpTo()
   {

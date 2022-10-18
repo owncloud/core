@@ -20,6 +20,7 @@ namespace Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\Re
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\AttachTrustRequest;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\DetachTrustRequest;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\Domain;
+use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\ExtendSchemaRequest;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\LDAPSSettings;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\ListDomainsResponse;
 use Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI\Operation;
@@ -111,6 +112,21 @@ class ProjectsLocationsManagedidentitiesGlobalDomains extends \Google\Service\Re
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('detachTrust', [$params], Operation::class);
+  }
+  /**
+   * Extend Schema for Domain (domains.extendSchema)
+   *
+   * @param string $domain Required. The domain resource name using the form:
+   * `projects/{project_id}/locations/global/domains/{domain_name}`
+   * @param ExtendSchemaRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function extendSchema($domain, ExtendSchemaRequest $postBody, $optParams = [])
+  {
+    $params = ['domain' => $domain, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('extendSchema', [$params], Operation::class);
   }
   /**
    * Gets information about a domain. (domains.get)

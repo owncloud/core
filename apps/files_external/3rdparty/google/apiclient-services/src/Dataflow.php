@@ -143,6 +143,10 @@ class Dataflow extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'name' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'pageSize' => [
                   'location' => 'query',
                   'type' => 'integer',
@@ -238,6 +242,10 @@ class Dataflow extends \Google\Service
                   'type' => 'string',
                 ],
                 'location' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'name' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -591,6 +599,10 @@ class Dataflow extends \Google\Service
                   'required' => true,
                 ],
                 'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'name' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],

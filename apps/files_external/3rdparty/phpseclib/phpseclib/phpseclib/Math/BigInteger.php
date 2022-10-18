@@ -20,8 +20,6 @@
  * ?>
  * </code>
  *
- * @category  Math
- * @package   BigInteger
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -36,9 +34,7 @@ use phpseclib3\Math\BigInteger\Engines\Engine;
  * Pure-PHP arbitrary precision integer arithmetic library. Supports base-2, base-10, base-16, and base-256
  * numbers.
  *
- * @package BigInteger
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class BigInteger implements \JsonSerializable
 {
@@ -366,7 +362,6 @@ class BigInteger implements \JsonSerializable
      * Absolute value.
      *
      * @return BigInteger
-     * @access public
      */
     public function abs()
     {
@@ -493,7 +488,6 @@ class BigInteger implements \JsonSerializable
      *
      * @param BigInteger $y
      * @return int in case < 0 if $this is less than $y; > 0 if $this is greater than $y, and 0 if they are equal.
-     * @access public
      * @see self::equals()
      */
     public function compare(BigInteger $y)

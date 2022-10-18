@@ -42,6 +42,10 @@ class AttachedDisk extends \Google\Collection
    * @var string
    */
   public $diskSizeGb;
+  /**
+   * @var bool
+   */
+  public $forceAttach;
   protected $guestOsFeaturesType = GuestOsFeature::class;
   protected $guestOsFeaturesDataType = 'array';
   /**
@@ -160,6 +164,20 @@ class AttachedDisk extends \Google\Collection
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
+  }
+  /**
+   * @param bool
+   */
+  public function setForceAttach($forceAttach)
+  {
+    $this->forceAttach = $forceAttach;
+  }
+  /**
+   * @return bool
+   */
+  public function getForceAttach()
+  {
+    return $this->forceAttach;
   }
   /**
    * @param GuestOsFeature[]

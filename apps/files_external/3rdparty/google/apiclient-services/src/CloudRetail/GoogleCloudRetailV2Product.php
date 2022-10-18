@@ -78,6 +78,8 @@ class GoogleCloudRetailV2Product extends \Google\Collection
    * @var string
    */
   public $languageCode;
+  protected $localInventoriesType = GoogleCloudRetailV2LocalInventory::class;
+  protected $localInventoriesDataType = 'array';
   /**
    * @var string[]
    */
@@ -372,6 +374,20 @@ class GoogleCloudRetailV2Product extends \Google\Collection
   public function getLanguageCode()
   {
     return $this->languageCode;
+  }
+  /**
+   * @param GoogleCloudRetailV2LocalInventory[]
+   */
+  public function setLocalInventories($localInventories)
+  {
+    $this->localInventories = $localInventories;
+  }
+  /**
+   * @return GoogleCloudRetailV2LocalInventory[]
+   */
+  public function getLocalInventories()
+  {
+    return $this->localInventories;
   }
   /**
    * @param string[]

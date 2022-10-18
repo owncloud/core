@@ -38,9 +38,9 @@ class ProjectsRelatedaccountgroups extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The maximum number of groups to return. The
-   * service may return fewer than this value. If unspecified, at most 50 groups
-   * will be returned. The maximum value is 1000; values above 1000 will be
-   * coerced to 1000.
+   * service might return fewer than this value. If unspecified, at most 50 groups
+   * are returned. The maximum value is 1000; values above 1000 are coerced to
+   * 1000.
    * @opt_param string pageToken Optional. A page token, received from a previous
    * `ListRelatedAccountGroups` call. Provide this to retrieve the subsequent
    * page. When paginating, all other parameters provided to

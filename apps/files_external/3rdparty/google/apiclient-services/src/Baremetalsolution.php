@@ -47,6 +47,7 @@ class Baremetalsolution extends \Google\Service
   public $projects_locations_operations;
   public $projects_locations_provisioningConfigs;
   public $projects_locations_provisioningQuotas;
+  public $projects_locations_sshKeys;
   public $projects_locations_volumes;
   public $projects_locations_volumes_luns;
 
@@ -134,11 +135,41 @@ class Baremetalsolution extends \Google\Service
         'instances',
         [
           'methods' => [
-            'detachLun' => [
+            'create' => [
+              'path' => 'v2/{+parent}/instances',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'detachLun' => [
               'path' => 'v2/{+instance}:detachLun',
               'httpMethod' => 'POST',
               'parameters' => [
                 'instance' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'disableInteractiveSerialConsole' => [
+              'path' => 'v2/{+name}:disableInteractiveSerialConsole',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'enableInteractiveSerialConsole' => [
+              'path' => 'v2/{+name}:enableInteractiveSerialConsole',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -296,7 +327,27 @@ class Baremetalsolution extends \Google\Service
         'nfsShares',
         [
           'methods' => [
-            'get' => [
+            'create' => [
+              'path' => 'v2/{+parent}/nfsShares',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v2/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
               'path' => 'v2/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -436,6 +487,58 @@ class Baremetalsolution extends \Google\Service
           'methods' => [
             'list' => [
               'path' => 'v2/{+parent}/provisioningQuotas',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_sshKeys = new Baremetalsolution\Resource\ProjectsLocationsSshKeys(
+        $this,
+        $this->serviceName,
+        'sshKeys',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v2/{+parent}/sshKeys',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'sshKeyId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v2/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v2/{+parent}/sshKeys',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [

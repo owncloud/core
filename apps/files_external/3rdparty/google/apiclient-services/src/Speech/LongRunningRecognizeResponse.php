@@ -24,6 +24,10 @@ class LongRunningRecognizeResponse extends \Google\Collection
   protected $outputConfigDataType = '';
   protected $outputErrorType = Status::class;
   protected $outputErrorDataType = '';
+  /**
+   * @var string
+   */
+  public $requestId;
   protected $resultsType = SpeechRecognitionResult::class;
   protected $resultsDataType = 'array';
   /**
@@ -58,6 +62,20 @@ class LongRunningRecognizeResponse extends \Google\Collection
   public function getOutputError()
   {
     return $this->outputError;
+  }
+  /**
+   * @param string
+   */
+  public function setRequestId($requestId)
+  {
+    $this->requestId = $requestId;
+  }
+  /**
+   * @return string
+   */
+  public function getRequestId()
+  {
+    return $this->requestId;
   }
   /**
    * @param SpeechRecognitionResult[]

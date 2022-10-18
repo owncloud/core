@@ -45,6 +45,7 @@ class Spanner extends \Google\Service
   const SPANNER_DATA =
       "https://www.googleapis.com/auth/spanner.data";
 
+  public $projects_instanceConfigOperations;
   public $projects_instanceConfigs;
   public $projects_instanceConfigs_operations;
   public $projects_instances;
@@ -75,13 +76,73 @@ class Spanner extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'spanner';
 
+    $this->projects_instanceConfigOperations = new Spanner\Resource\ProjectsInstanceConfigOperations(
+        $this,
+        $this->serviceName,
+        'instanceConfigOperations',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/instanceConfigOperations',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->projects_instanceConfigs = new Spanner\Resource\ProjectsInstanceConfigs(
         $this,
         $this->serviceName,
         'instanceConfigs',
         [
           'methods' => [
-            'get' => [
+            'create' => [
+              'path' => 'v1/{+parent}/instanceConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'etag' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'validateOnly' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
+              ],
+            ],'get' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -107,6 +168,16 @@ class Spanner extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

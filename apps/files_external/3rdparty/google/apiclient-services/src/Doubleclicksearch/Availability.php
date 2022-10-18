@@ -34,6 +34,10 @@ class Availability extends \Google\Model
   /**
    * @var string
    */
+  public $customerId;
+  /**
+   * @var string
+   */
   public $segmentationId;
   /**
    * @var string
@@ -85,6 +89,20 @@ class Availability extends \Google\Model
   public function getAvailabilityTimestamp()
   {
     return $this->availabilityTimestamp;
+  }
+  /**
+   * @param string
+   */
+  public function setCustomerId($customerId)
+  {
+    $this->customerId = $customerId;
+  }
+  /**
+   * @return string
+   */
+  public function getCustomerId()
+  {
+    return $this->customerId;
   }
   /**
    * @param string

@@ -31,7 +31,9 @@ class Grouplicenseusers extends \Google\Service\Resource
 {
   /**
    * Retrieves the IDs of the users who have been granted entitlements under the
-   * license. (grouplicenseusers.listGrouplicenseusers)
+   * license. **Note:** This item has been deprecated. New integrations cannot use
+   * this method and can refer to our new recommendations.
+   * (grouplicenseusers.listGrouplicenseusers)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $groupLicenseId The ID of the product the group license is for,

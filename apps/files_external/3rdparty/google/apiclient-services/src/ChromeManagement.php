@@ -211,6 +211,24 @@ class ChromeManagement extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'countChromeHardwareFleetDevices' => [
+              'path' => 'v1/{+customer}/reports:countChromeHardwareFleetDevices',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'orgUnitId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'readMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
             ],'countChromeVersions' => [
               'path' => 'v1/{+customer}/reports:countChromeVersions',
               'httpMethod' => 'GET',

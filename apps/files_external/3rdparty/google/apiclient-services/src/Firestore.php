@@ -528,6 +528,16 @@ class Firestore extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'runAggregationQuery' => [
+              'path' => 'v1/{+parent}:runAggregationQuery',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'runQuery' => [
               'path' => 'v1/{+parent}:runQuery',
               'httpMethod' => 'POST',

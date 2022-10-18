@@ -63,11 +63,10 @@ class AccountsFinalizedProposals extends \Google\Service\Resource
    * Update given deals to pause serving. This method will set the
    * `DealServingMetadata.DealPauseStatus.has_buyer_paused` bit to true for all
    * listed deals in the request. Currently, this method only applies to PG and PD
-   * deals. For PA deals, please call accounts.proposals.pause endpoint. It is a
-   * no-op to pause already-paused deals. It is an error to call
-   * PauseProposalDeals for deals which are not part of the proposal of
-   * proposal_id or which are not finalized or renegotiating.
-   * (finalizedProposals.pause)
+   * deals. For PA deals, call accounts.proposals.pause endpoint. It is a no-op to
+   * pause already-paused deals. It is an error to call PauseProposalDeals for
+   * deals which are not part of the proposal of proposal_id or which are not
+   * finalized or renegotiating. (finalizedProposals.pause)
    *
    * @param string $accountId Account ID of the buyer.
    * @param string $proposalId The proposal_id of the proposal containing the
@@ -86,10 +85,10 @@ class AccountsFinalizedProposals extends \Google\Service\Resource
    * Update given deals to resume serving. This method will set the
    * `DealServingMetadata.DealPauseStatus.has_buyer_paused` bit to false for all
    * listed deals in the request. Currently, this method only applies to PG and PD
-   * deals. For PA deals, please call accounts.proposals.resume endpoint. It is a
-   * no-op to resume running deals or deals paused by the other party. It is an
-   * error to call ResumeProposalDeals for deals which are not part of the
-   * proposal of proposal_id or which are not finalized or renegotiating.
+   * deals. For PA deals, call accounts.proposals.resume endpoint. It is a no-op
+   * to resume running deals or deals paused by the other party. It is an error to
+   * call ResumeProposalDeals for deals which are not part of the proposal of
+   * proposal_id or which are not finalized or renegotiating.
    * (finalizedProposals.resume)
    *
    * @param string $accountId Account ID of the buyer.

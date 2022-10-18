@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="6"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedPsalmSuppress="true"
+    sealAllMethods="true"
+    errorBaseline="psalm_baseline.xml"
+>
+    <projectFiles>
+        <directory name="../phpseclib"/>
+        <ignoreFiles>
+            <directory name="../phpseclib/Crypt"/>
+            <directory name="../tests"/>
+        </ignoreFiles>
+    </projectFiles>
+    <issueHandlers>
+        <Trace>
+            <errorLevel type="error">
+                <directory name=".."/>
+            </errorLevel>
+        </Trace>
+        <UndefinedConstant>
+            <errorLevel type="suppress">
+                <directory name="../phpseclib/Net"/>
+            </errorLevel>
+        </UndefinedConstant>
+    </issueHandlers>
+</psalm>

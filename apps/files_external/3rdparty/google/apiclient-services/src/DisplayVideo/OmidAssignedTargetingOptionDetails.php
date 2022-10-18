@@ -23,10 +23,6 @@ class OmidAssignedTargetingOptionDetails extends \Google\Model
    * @var string
    */
   public $omid;
-  /**
-   * @var string
-   */
-  public $targetingOptionId;
 
   /**
    * @param string
@@ -41,20 +37,6 @@ class OmidAssignedTargetingOptionDetails extends \Google\Model
   public function getOmid()
   {
     return $this->omid;
-  }
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
-  {
-    $this->targetingOptionId = $targetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
-  {
-    return $this->targetingOptionId;
   }
 }
 

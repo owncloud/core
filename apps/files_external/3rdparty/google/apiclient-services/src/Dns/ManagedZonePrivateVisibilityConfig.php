@@ -20,6 +20,8 @@ namespace Google\Service\Dns;
 class ManagedZonePrivateVisibilityConfig extends \Google\Collection
 {
   protected $collection_key = 'networks';
+  protected $gkeClustersType = ManagedZonePrivateVisibilityConfigGKECluster::class;
+  protected $gkeClustersDataType = 'array';
   /**
    * @var string
    */
@@ -27,6 +29,20 @@ class ManagedZonePrivateVisibilityConfig extends \Google\Collection
   protected $networksType = ManagedZonePrivateVisibilityConfigNetwork::class;
   protected $networksDataType = 'array';
 
+  /**
+   * @param ManagedZonePrivateVisibilityConfigGKECluster[]
+   */
+  public function setGkeClusters($gkeClusters)
+  {
+    $this->gkeClusters = $gkeClusters;
+  }
+  /**
+   * @return ManagedZonePrivateVisibilityConfigGKECluster[]
+   */
+  public function getGkeClusters()
+  {
+    return $this->gkeClusters;
+  }
   /**
    * @param string
    */

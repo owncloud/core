@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.21.0@d8bec4c7aaee111a532daec32fb09de5687053d1">
+  <file src="../phpseclib/Math/BigInteger.php">
+    <InvalidCast occurrences="1">
+      <code>$this-&gt;value</code>
+    </InvalidCast>
+    <UndefinedMethod occurrences="5">
+      <code>$class::max(...$nums)</code>
+      <code>$class::min(...$nums)</code>
+      <code>$class::randomRange($min-&gt;value, $max-&gt;value)</code>
+      <code>$class::randomRangePrime($min-&gt;value, $max-&gt;value)</code>
+      <code>$class::scan1divide($r-&gt;value)</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/BCMath.php">
+    <InvalidArgument occurrences="31">
+      <code>$current</code>
+      <code>$current</code>
+      <code>$current</code>
+      <code>$n-&gt;value</code>
+      <code>$r_value</code>
+      <code>$result-&gt;bitmask-&gt;value</code>
+      <code>$result-&gt;value</code>
+      <code>$temp</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$u</code>
+      <code>$v</code>
+      <code>$v</code>
+      <code>$v</code>
+      <code>$x-&gt;value</code>
+      <code>$y-&gt;value</code>
+      <code>$y-&gt;value</code>
+      <code>$y-&gt;value</code>
+      <code>$y-&gt;value</code>
+      <code>$y-&gt;value</code>
+      <code>$y-&gt;value[0] == '-' ? substr($y-&gt;value, 1) : $y-&gt;value</code>
+    </InvalidArgument>
+    <UndefinedMethod occurrences="9">
+      <code>$class::powModHelper($this, $e, $n, static::class)</code>
+      <code>$current</code>
+      <code>$r_value</code>
+      <code>$temp-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$y-&gt;value</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/BCMath/Base.php">
+    <UndefinedMethod occurrences="3">
+      <code>static::reduce($x, $n)</code>
+      <code>static::reduce(bcmul($x, $x), $n)</code>
+      <code>static::reduce(bcmul($x, $y), $n)</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/BCMath/BuiltIn.php">
+    <InvalidArgument occurrences="3">
+      <code>$e-&gt;value</code>
+      <code>$n-&gt;value</code>
+      <code>$x-&gt;value</code>
+    </InvalidArgument>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/Engine.php">
+    <InvalidArrayAccess occurrences="3">
+      <code>$x[0]</code>
+      <code>$x[0]</code>
+      <code>$x[0]</code>
+    </InvalidArrayAccess>
+    <InvalidPropertyAssignmentValue occurrences="2">
+      <code>static::$zero</code>
+      <code>static::$zero</code>
+    </InvalidPropertyAssignmentValue>
+    <UndefinedConstant occurrences="4">
+      <code>static::ENGINE_DIR</code>
+      <code>static::ENGINE_DIR</code>
+      <code>static::FAST_BITWISE</code>
+      <code>static::FAST_BITWISE</code>
+    </UndefinedConstant>
+    <UndefinedMethod occurrences="78">
+      <code>abs</code>
+      <code>abs</code>
+      <code>abs</code>
+      <code>abs</code>
+      <code>add</code>
+      <code>add</code>
+      <code>add</code>
+      <code>add</code>
+      <code>bitwise_leftShift</code>
+      <code>bitwise_leftShift</code>
+      <code>bitwise_rightShift</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>divide</code>
+      <code>divide</code>
+      <code>equals</code>
+      <code>equals</code>
+      <code>equals</code>
+      <code>extendedGCD</code>
+      <code>initialize</code>
+      <code>initialize</code>
+      <code>initialize</code>
+      <code>make_odd</code>
+      <code>make_odd</code>
+      <code>make_odd</code>
+      <code>modInverse</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>normalize</code>
+      <code>powModInner</code>
+      <code>static::randomRange($min, $max)</code>
+      <code>static::randomRange($min, $max)</code>
+      <code>static::randomRange(static::$two[static::class], $n_2)</code>
+      <code>static::randomRangePrime($min, $max)</code>
+      <code>static::scan1divide($r)</code>
+      <code>subtract</code>
+      <code>subtract</code>
+      <code>subtract</code>
+      <code>subtract</code>
+      <code>subtract</code>
+      <code>subtract</code>
+      <code>subtract</code>
+      <code>subtract</code>
+      <code>testSmallPrimes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toBytes</code>
+      <code>toString</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/GMP.php">
+    <UndefinedMethod occurrences="1">
+      <code>$class::powModHelper($this, $e, $n)</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/OpenSSL.php">
+    <UndefinedMethod occurrences="1">
+      <code>toBytes</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/PHP.php">
+    <UndefinedConstant occurrences="54">
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::BASE_FULL</code>
+      <code>static::MAX10</code>
+      <code>static::MAX10</code>
+      <code>static::MAX10LEN</code>
+      <code>static::MAX10LEN</code>
+      <code>static::MAX10LEN</code>
+      <code>static::MAX10LEN</code>
+      <code>static::MAX10LEN</code>
+      <code>static::MAX_DIGIT</code>
+      <code>static::MAX_DIGIT</code>
+      <code>static::MAX_DIGIT</code>
+      <code>static::MAX_DIGIT</code>
+      <code>static::MAX_DIGIT2</code>
+      <code>static::MAX_DIGIT2</code>
+      <code>static::MAX_DIGIT2</code>
+      <code>static::MSB</code>
+    </UndefinedConstant>
+    <UndefinedMethod occurrences="30">
+      <code>$class::powModHelper($this, $e, $n, static::class)</code>
+      <code>$r_value</code>
+      <code>$result-&gt;bitmask-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+      <code>$val</code>
+      <code>$val</code>
+      <code>$val</code>
+      <code>$val</code>
+      <code>$val</code>
+      <code>$val</code>
+      <code>$val</code>
+      <code>$value</code>
+      <code>$x</code>
+      <code>$y-&gt;value</code>
+      <code>$y-&gt;value</code>
+      <code>$y_value</code>
+      <code>$y_value</code>
+      <code>compare</code>
+      <code>compare</code>
+      <code>static::isValidEngine()</code>
+      <code>subtract</code>
+      <code>subtract</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/PHP/Base.php">
+    <UndefinedMethod occurrences="4">
+      <code>divide</code>
+      <code>static::reduce($class::square($x), $n, $class)</code>
+      <code>static::reduce($temp[self::VALUE], $n, $class)</code>
+      <code>static::reduce($x, $n, $class)</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/PHP/Montgomery.php">
+    <UndefinedMethod occurrences="3">
+      <code>$n-&gt;value</code>
+      <code>modInverse</code>
+      <code>rshift</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/PHP/Reductions/Barrett.php">
+    <UndefinedMethod occurrences="2">
+      <code>divide</code>
+      <code>divide</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/PHP/Reductions/EvalBarrett.php">
+    <UndefinedMethod occurrences="2">
+      <code>$m</code>
+      <code>$m-&gt;value</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/PHP/Reductions/MontgomeryMult.php">
+    <ParamNameMismatch occurrences="1">
+      <code>$m</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="../phpseclib/Math/BigInteger/Engines/PHP64.php">
+    <UndefinedMethod occurrences="1">
+      <code>$val</code>
+    </UndefinedMethod>
+  </file>
+  <file src="../phpseclib/Math/PrimeField/Integer.php">
+    <UndefinedMethod occurrences="6">
+      <code>static::$zero</code>
+      <code>static::$zero</code>
+      <code>static::$zero</code>
+      <code>static::$zero</code>
+      <code>static::$zero</code>
+      <code>static::$zero</code>
+    </UndefinedMethod>
+  </file>
+</files>

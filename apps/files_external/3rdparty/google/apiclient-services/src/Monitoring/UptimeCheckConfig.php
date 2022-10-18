@@ -60,6 +60,10 @@ class UptimeCheckConfig extends \Google\Collection
    * @var string
    */
   public $timeout;
+  /**
+   * @var string[]
+   */
+  public $userLabels;
 
   /**
    * @param string
@@ -242,6 +246,20 @@ class UptimeCheckConfig extends \Google\Collection
   public function getTimeout()
   {
     return $this->timeout;
+  }
+  /**
+   * @param string[]
+   */
+  public function setUserLabels($userLabels)
+  {
+    $this->userLabels = $userLabels;
+  }
+  /**
+   * @return string[]
+   */
+  public function getUserLabels()
+  {
+    return $this->userLabels;
   }
 }
 

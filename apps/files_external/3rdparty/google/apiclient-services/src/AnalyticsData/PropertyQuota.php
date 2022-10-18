@@ -29,6 +29,8 @@ class PropertyQuota extends \Google\Model
   protected $tokensPerDayDataType = '';
   protected $tokensPerHourType = QuotaStatus::class;
   protected $tokensPerHourDataType = '';
+  protected $tokensPerProjectPerHourType = QuotaStatus::class;
+  protected $tokensPerProjectPerHourDataType = '';
 
   /**
    * @param QuotaStatus
@@ -99,6 +101,20 @@ class PropertyQuota extends \Google\Model
   public function getTokensPerHour()
   {
     return $this->tokensPerHour;
+  }
+  /**
+   * @param QuotaStatus
+   */
+  public function setTokensPerProjectPerHour(QuotaStatus $tokensPerProjectPerHour)
+  {
+    $this->tokensPerProjectPerHour = $tokensPerProjectPerHour;
+  }
+  /**
+   * @return QuotaStatus
+   */
+  public function getTokensPerProjectPerHour()
+  {
+    return $this->tokensPerProjectPerHour;
   }
 }
 

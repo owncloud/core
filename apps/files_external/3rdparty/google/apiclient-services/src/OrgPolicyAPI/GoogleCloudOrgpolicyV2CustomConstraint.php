@@ -48,6 +48,10 @@ class GoogleCloudOrgpolicyV2CustomConstraint extends \Google\Collection
    * @var string[]
    */
   public $resourceTypes;
+  /**
+   * @var string
+   */
+  public $updateTime;
 
   /**
    * @param string
@@ -146,6 +150,20 @@ class GoogleCloudOrgpolicyV2CustomConstraint extends \Google\Collection
   public function getResourceTypes()
   {
     return $this->resourceTypes;
+  }
+  /**
+   * @param string
+   */
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  /**
+   * @return string
+   */
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
 }
 

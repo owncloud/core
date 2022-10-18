@@ -33,6 +33,14 @@ class GoogleDocsMetadata extends \Google\Model
    * @var string
    */
   public $lastContentModifiedTimestamp;
+  /**
+   * @var int
+   */
+  public $numSubscribers;
+  /**
+   * @var int
+   */
+  public $numViewers;
   protected $resultInfoType = GoogleDocsResultInfo::class;
   protected $resultInfoDataType = '';
   protected $typeInfoType = TypeInfo::class;
@@ -93,6 +101,34 @@ class GoogleDocsMetadata extends \Google\Model
   public function getLastContentModifiedTimestamp()
   {
     return $this->lastContentModifiedTimestamp;
+  }
+  /**
+   * @param int
+   */
+  public function setNumSubscribers($numSubscribers)
+  {
+    $this->numSubscribers = $numSubscribers;
+  }
+  /**
+   * @return int
+   */
+  public function getNumSubscribers()
+  {
+    return $this->numSubscribers;
+  }
+  /**
+   * @param int
+   */
+  public function setNumViewers($numViewers)
+  {
+    $this->numViewers = $numViewers;
+  }
+  /**
+   * @return int
+   */
+  public function getNumViewers()
+  {
+    return $this->numViewers;
   }
   /**
    * @param GoogleDocsResultInfo

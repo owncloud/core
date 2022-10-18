@@ -41,8 +41,8 @@ class OrganizationsEndpointAttachments extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string endpointAttachmentId ID to use for the endpoint attachment.
-   * The ID can contain lowercase letters and numbers, must start with a letter,
-   * and must be 1-20 characters in length.
+   * ID must start with a lowercase letter followed by up to 31 lowercase letters,
+   * numbers, or hyphens, and cannot end with a hyphen. The minimum length is 2.
    * @return GoogleLongrunningOperation
    */
   public function create($parent, GoogleCloudApigeeV1EndpointAttachment $postBody, $optParams = [])

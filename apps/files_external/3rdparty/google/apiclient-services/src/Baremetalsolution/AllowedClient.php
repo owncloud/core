@@ -40,6 +40,10 @@ class AllowedClient extends \Google\Model
    */
   public $network;
   /**
+   * @var string
+   */
+  public $nfsPath;
+  /**
    * @var bool
    */
   public $noRootSquash;
@@ -117,6 +121,20 @@ class AllowedClient extends \Google\Model
   public function getNetwork()
   {
     return $this->network;
+  }
+  /**
+   * @param string
+   */
+  public function setNfsPath($nfsPath)
+  {
+    $this->nfsPath = $nfsPath;
+  }
+  /**
+   * @return string
+   */
+  public function getNfsPath()
+  {
+    return $this->nfsPath;
   }
   /**
    * @param bool

@@ -51,6 +51,7 @@ class GoogleAnalyticsAdmin extends \Google\Service
   public $accounts;
   public $accounts_userLinks;
   public $properties;
+  public $properties_audiences;
   public $properties_conversionEvents;
   public $properties_customDimensions;
   public $properties_customMetrics;
@@ -60,6 +61,7 @@ class GoogleAnalyticsAdmin extends \Google\Service
   public $properties_displayVideo360AdvertiserLinks;
   public $properties_firebaseLinks;
   public $properties_googleAdsLinks;
+  public $properties_searchAds360Links;
   public $properties_userLinks;
 
   /**
@@ -418,6 +420,16 @@ class GoogleAnalyticsAdmin extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'runAccessReport' => [
+              'path' => 'v1alpha/{+entity}:runAccessReport',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'entity' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'updateAttributionSettings' => [
               'path' => 'v1alpha/{+name}',
               'httpMethod' => 'PATCH',
@@ -447,6 +459,78 @@ class GoogleAnalyticsAdmin extends \Google\Service
                 ],
               ],
             ],'updateGoogleSignalsSettings' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->properties_audiences = new GoogleAnalyticsAdmin\Resource\PropertiesAudiences(
+        $this,
+        $this->serviceName,
+        'audiences',
+        [
+          'methods' => [
+            'archive' => [
+              'path' => 'v1alpha/{+name}:archive',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'create' => [
+              'path' => 'v1alpha/{+parent}/audiences',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1alpha/{+parent}/audiences',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
               'path' => 'v1alpha/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
@@ -1046,6 +1130,78 @@ class GoogleAnalyticsAdmin extends \Google\Service
               ],
             ],'list' => [
               'path' => 'v1alpha/{+parent}/googleAdsLinks',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->properties_searchAds360Links = new GoogleAnalyticsAdmin\Resource\PropertiesSearchAds360Links(
+        $this,
+        $this->serviceName,
+        'searchAds360Links',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1alpha/{+parent}/searchAds360Links',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1alpha/{+parent}/searchAds360Links',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [

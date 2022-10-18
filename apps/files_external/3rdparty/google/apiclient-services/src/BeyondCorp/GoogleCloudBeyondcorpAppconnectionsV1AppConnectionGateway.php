@@ -30,6 +30,10 @@ class GoogleCloudBeyondcorpAppconnectionsV1AppConnectionGateway extends \Google\
   /**
    * @var string
    */
+  public $l7psc;
+  /**
+   * @var string
+   */
   public $type;
   /**
    * @var string
@@ -63,6 +67,20 @@ class GoogleCloudBeyondcorpAppconnectionsV1AppConnectionGateway extends \Google\
   public function getIngressPort()
   {
     return $this->ingressPort;
+  }
+  /**
+   * @param string
+   */
+  public function setL7psc($l7psc)
+  {
+    $this->l7psc = $l7psc;
+  }
+  /**
+   * @return string
+   */
+  public function getL7psc()
+  {
+    return $this->l7psc;
   }
   /**
    * @param string

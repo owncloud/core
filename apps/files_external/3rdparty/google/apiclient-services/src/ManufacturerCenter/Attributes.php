@@ -64,6 +64,8 @@ class Attributes extends \Google\Collection
    * @var string
    */
   public $gender;
+  protected $groceryType = Grocery::class;
+  protected $groceryDataType = '';
   /**
    * @var string[]
    */
@@ -86,6 +88,8 @@ class Attributes extends \Google\Collection
    * @var string
    */
   public $mpn;
+  protected $nutritionType = Nutrition::class;
+  protected $nutritionDataType = '';
   /**
    * @var string
    */
@@ -338,6 +342,20 @@ class Attributes extends \Google\Collection
     return $this->gender;
   }
   /**
+   * @param Grocery
+   */
+  public function setGrocery(Grocery $grocery)
+  {
+    $this->grocery = $grocery;
+  }
+  /**
+   * @return Grocery
+   */
+  public function getGrocery()
+  {
+    return $this->grocery;
+  }
+  /**
    * @param string[]
    */
   public function setGtin($gtin)
@@ -420,6 +438,20 @@ class Attributes extends \Google\Collection
   public function getMpn()
   {
     return $this->mpn;
+  }
+  /**
+   * @param Nutrition
+   */
+  public function setNutrition(Nutrition $nutrition)
+  {
+    $this->nutrition = $nutrition;
+  }
+  /**
+   * @return Nutrition
+   */
+  public function getNutrition()
+  {
+    return $this->nutrition;
   }
   /**
    * @param string

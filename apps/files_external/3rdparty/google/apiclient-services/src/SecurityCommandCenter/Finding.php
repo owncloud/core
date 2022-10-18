@@ -42,6 +42,8 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $createTime;
+  protected $databaseType = Database::class;
+  protected $databaseDataType = '';
   /**
    * @var string
    */
@@ -94,6 +96,10 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $parent;
+  /**
+   * @var string
+   */
+  public $parentDisplayName;
   protected $processesType = Process::class;
   protected $processesDataType = 'array';
   /**
@@ -228,6 +234,20 @@ class Finding extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param Database
+   */
+  public function setDatabase(Database $database)
+  {
+    $this->database = $database;
+  }
+  /**
+   * @return Database
+   */
+  public function getDatabase()
+  {
+    return $this->database;
   }
   /**
    * @param string
@@ -452,6 +472,20 @@ class Finding extends \Google\Collection
   public function getParent()
   {
     return $this->parent;
+  }
+  /**
+   * @param string
+   */
+  public function setParentDisplayName($parentDisplayName)
+  {
+    $this->parentDisplayName = $parentDisplayName;
+  }
+  /**
+   * @return string
+   */
+  public function getParentDisplayName()
+  {
+    return $this->parentDisplayName;
   }
   /**
    * @param Process[]

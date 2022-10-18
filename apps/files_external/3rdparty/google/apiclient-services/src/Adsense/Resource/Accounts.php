@@ -18,6 +18,7 @@
 namespace Google\Service\Adsense\Resource;
 
 use Google\Service\Adsense\Account;
+use Google\Service\Adsense\AdBlockingRecoveryTag;
 use Google\Service\Adsense\ListAccountsResponse;
 use Google\Service\Adsense\ListChildAccountsResponse;
 
@@ -44,6 +45,21 @@ class Accounts extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], Account::class);
+  }
+  /**
+   * Gets the ad blocking recovery tag of an account.
+   * (accounts.getAdBlockingRecoveryTag)
+   *
+   * @param string $name Required. The name of the account to get the tag for.
+   * Format: accounts/{account}
+   * @param array $optParams Optional parameters.
+   * @return AdBlockingRecoveryTag
+   */
+  public function getAdBlockingRecoveryTag($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getAdBlockingRecoveryTag', [$params], AdBlockingRecoveryTag::class);
   }
   /**
    * Lists all accounts available to this user. (accounts.listAccounts)

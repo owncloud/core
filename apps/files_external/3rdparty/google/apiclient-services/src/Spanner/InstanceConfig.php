@@ -23,7 +23,27 @@ class InstanceConfig extends \Google\Collection
   /**
    * @var string
    */
+  public $baseConfig;
+  /**
+   * @var string
+   */
+  public $configType;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
+  public $etag;
+  /**
+   * @var string
+   */
+  public $freeInstanceAvailability;
+  /**
+   * @var string[]
+   */
+  public $labels;
   /**
    * @var string[]
    */
@@ -32,9 +52,47 @@ class InstanceConfig extends \Google\Collection
    * @var string
    */
   public $name;
+  protected $optionalReplicasType = ReplicaInfo::class;
+  protected $optionalReplicasDataType = 'array';
+  /**
+   * @var bool
+   */
+  public $reconciling;
   protected $replicasType = ReplicaInfo::class;
   protected $replicasDataType = 'array';
+  /**
+   * @var string
+   */
+  public $state;
 
+  /**
+   * @param string
+   */
+  public function setBaseConfig($baseConfig)
+  {
+    $this->baseConfig = $baseConfig;
+  }
+  /**
+   * @return string
+   */
+  public function getBaseConfig()
+  {
+    return $this->baseConfig;
+  }
+  /**
+   * @param string
+   */
+  public function setConfigType($configType)
+  {
+    $this->configType = $configType;
+  }
+  /**
+   * @return string
+   */
+  public function getConfigType()
+  {
+    return $this->configType;
+  }
   /**
    * @param string
    */
@@ -48,6 +106,48 @@ class InstanceConfig extends \Google\Collection
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param string
+   */
+  public function setEtag($etag)
+  {
+    $this->etag = $etag;
+  }
+  /**
+   * @return string
+   */
+  public function getEtag()
+  {
+    return $this->etag;
+  }
+  /**
+   * @param string
+   */
+  public function setFreeInstanceAvailability($freeInstanceAvailability)
+  {
+    $this->freeInstanceAvailability = $freeInstanceAvailability;
+  }
+  /**
+   * @return string
+   */
+  public function getFreeInstanceAvailability()
+  {
+    return $this->freeInstanceAvailability;
+  }
+  /**
+   * @param string[]
+   */
+  public function setLabels($labels)
+  {
+    $this->labels = $labels;
+  }
+  /**
+   * @return string[]
+   */
+  public function getLabels()
+  {
+    return $this->labels;
   }
   /**
    * @param string[]
@@ -80,6 +180,34 @@ class InstanceConfig extends \Google\Collection
   /**
    * @param ReplicaInfo[]
    */
+  public function setOptionalReplicas($optionalReplicas)
+  {
+    $this->optionalReplicas = $optionalReplicas;
+  }
+  /**
+   * @return ReplicaInfo[]
+   */
+  public function getOptionalReplicas()
+  {
+    return $this->optionalReplicas;
+  }
+  /**
+   * @param bool
+   */
+  public function setReconciling($reconciling)
+  {
+    $this->reconciling = $reconciling;
+  }
+  /**
+   * @return bool
+   */
+  public function getReconciling()
+  {
+    return $this->reconciling;
+  }
+  /**
+   * @param ReplicaInfo[]
+   */
   public function setReplicas($replicas)
   {
     $this->replicas = $replicas;
@@ -90,6 +218,20 @@ class InstanceConfig extends \Google\Collection
   public function getReplicas()
   {
     return $this->replicas;
+  }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
   }
 }
 

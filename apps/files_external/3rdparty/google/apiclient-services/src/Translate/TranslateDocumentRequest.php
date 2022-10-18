@@ -19,6 +19,10 @@ namespace Google\Service\Translate;
 
 class TranslateDocumentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $customizedAttribution;
   protected $documentInputConfigType = DocumentInputConfig::class;
   protected $documentInputConfigDataType = '';
   protected $documentOutputConfigType = DocumentOutputConfig::class;
@@ -42,6 +46,20 @@ class TranslateDocumentRequest extends \Google\Model
    */
   public $targetLanguageCode;
 
+  /**
+   * @param string
+   */
+  public function setCustomizedAttribution($customizedAttribution)
+  {
+    $this->customizedAttribution = $customizedAttribution;
+  }
+  /**
+   * @return string
+   */
+  public function getCustomizedAttribution()
+  {
+    return $this->customizedAttribution;
+  }
   /**
    * @param DocumentInputConfig
    */

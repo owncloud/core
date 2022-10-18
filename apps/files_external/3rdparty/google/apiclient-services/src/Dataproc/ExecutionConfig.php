@@ -23,6 +23,10 @@ class ExecutionConfig extends \Google\Collection
   /**
    * @var string
    */
+  public $idleTtl;
+  /**
+   * @var string
+   */
   public $kmsKey;
   /**
    * @var string[]
@@ -41,6 +45,20 @@ class ExecutionConfig extends \Google\Collection
    */
   public $subnetworkUri;
 
+  /**
+   * @param string
+   */
+  public function setIdleTtl($idleTtl)
+  {
+    $this->idleTtl = $idleTtl;
+  }
+  /**
+   * @return string
+   */
+  public function getIdleTtl()
+  {
+    return $this->idleTtl;
+  }
   /**
    * @param string
    */

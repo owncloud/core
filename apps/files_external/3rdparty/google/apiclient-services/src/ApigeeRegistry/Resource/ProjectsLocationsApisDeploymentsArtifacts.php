@@ -33,10 +33,10 @@ use Google\Service\ApigeeRegistry\ListArtifactsResponse;
 class ProjectsLocationsApisDeploymentsArtifacts extends \Google\Service\Resource
 {
   /**
-   * CreateArtifact creates a specified artifact. (artifacts.create)
+   * Creates a specified artifact. (artifacts.create)
    *
    * @param string $parent Required. The parent, which owns this collection of
-   * artifacts. Format: {parent}
+   * artifacts. Format: `{parent}`
    * @param Artifact $postBody
    * @param array $optParams Optional parameters.
    *
@@ -53,10 +53,10 @@ class ProjectsLocationsApisDeploymentsArtifacts extends \Google\Service\Resource
     return $this->call('create', [$params], Artifact::class);
   }
   /**
-   * DeleteArtifact removes a specified artifact. (artifacts.delete)
+   * Removes a specified artifact. (artifacts.delete)
    *
    * @param string $name Required. The name of the artifact to delete. Format:
-   * {parent}/artifacts
+   * `{parent}/artifacts`
    * @param array $optParams Optional parameters.
    * @return ApigeeregistryEmpty
    */
@@ -67,10 +67,10 @@ class ProjectsLocationsApisDeploymentsArtifacts extends \Google\Service\Resource
     return $this->call('delete', [$params], ApigeeregistryEmpty::class);
   }
   /**
-   * GetArtifact returns a specified artifact. (artifacts.get)
+   * Returns a specified artifact. (artifacts.get)
    *
    * @param string $name Required. The name of the artifact to retrieve. Format:
-   * {parent}/artifacts
+   * `{parent}/artifacts`
    * @param array $optParams Optional parameters.
    * @return Artifact
    */
@@ -81,13 +81,13 @@ class ProjectsLocationsApisDeploymentsArtifacts extends \Google\Service\Resource
     return $this->call('get', [$params], Artifact::class);
   }
   /**
-   * GetArtifactContents returns the contents of a specified artifact. If
-   * artifacts are stored with GZip compression, the default behavior is to return
-   * the artifact uncompressed (the mime_type response field indicates the exact
-   * format returned). (artifacts.getContents)
+   * Returns the contents of a specified artifact. If artifacts are stored with
+   * GZip compression, the default behavior is to return the artifact uncompressed
+   * (the mime_type response field indicates the exact format returned).
+   * (artifacts.getContents)
    *
    * @param string $name Required. The name of the artifact whose contents should
-   * be retrieved. Format: {parent}/artifacts
+   * be retrieved. Format: `{parent}/artifacts`
    * @param array $optParams Optional parameters.
    * @return HttpBody
    */
@@ -98,16 +98,19 @@ class ProjectsLocationsApisDeploymentsArtifacts extends \Google\Service\Resource
     return $this->call('getContents', [$params], HttpBody::class);
   }
   /**
-   * ListArtifacts returns matching artifacts.
+   * Returns matching artifacts.
    * (artifacts.listProjectsLocationsApisDeploymentsArtifacts)
    *
    * @param string $parent Required. The parent, which owns this collection of
-   * artifacts. Format: {parent}
+   * artifacts. Format: `{parent}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter An expression that can be used to filter the list.
    * Filters use the Common Expression Language and can refer to all message
    * fields except contents.
+   * @opt_param string orderBy A comma-separated list of fields, e.g. "foo,bar"
+   * Fields can be sorted in descending order using the "desc" identifier, e.g.
+   * "foo desc,bar"
    * @opt_param int pageSize The maximum number of artifacts to return. The
    * service may return fewer than this value. If unspecified, at most 50 values
    * will be returned. The maximum is 1000; values above 1000 will be coerced to
@@ -125,8 +128,7 @@ class ProjectsLocationsApisDeploymentsArtifacts extends \Google\Service\Resource
     return $this->call('list', [$params], ListArtifactsResponse::class);
   }
   /**
-   * ReplaceArtifact can be used to replace a specified artifact.
-   * (artifacts.replaceArtifact)
+   * Used to replace a specified artifact. (artifacts.replaceArtifact)
    *
    * @param string $name Resource name.
    * @param Artifact $postBody

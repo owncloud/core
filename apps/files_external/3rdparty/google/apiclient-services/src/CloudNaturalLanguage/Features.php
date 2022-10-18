@@ -19,6 +19,8 @@ namespace Google\Service\CloudNaturalLanguage;
 
 class Features extends \Google\Model
 {
+  protected $classificationModelOptionsType = ClassificationModelOptions::class;
+  protected $classificationModelOptionsDataType = '';
   /**
    * @var bool
    */
@@ -40,6 +42,20 @@ class Features extends \Google\Model
    */
   public $extractSyntax;
 
+  /**
+   * @param ClassificationModelOptions
+   */
+  public function setClassificationModelOptions(ClassificationModelOptions $classificationModelOptions)
+  {
+    $this->classificationModelOptions = $classificationModelOptions;
+  }
+  /**
+   * @return ClassificationModelOptions
+   */
+  public function getClassificationModelOptions()
+  {
+    return $this->classificationModelOptions;
+  }
   /**
    * @param bool
    */

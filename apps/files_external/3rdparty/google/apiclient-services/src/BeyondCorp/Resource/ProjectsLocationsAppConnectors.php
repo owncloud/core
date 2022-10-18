@@ -222,8 +222,8 @@ class ProjectsLocationsAppConnectors extends \Google\Service\Resource
     return $this->call('reportStatus', [$params], GoogleLongrunningOperation::class);
   }
   /**
-   * Get instance config for a given AppConnector. An internal method called by a
-   * AppConnector to get its container config.
+   * Gets instance configuration for a given AppConnector. An internal method
+   * called by a AppConnector to get its container config.
    * (appConnectors.resolveInstanceConfig)
    *
    * @param string $appConnector Required. BeyondCorp AppConnector name using the

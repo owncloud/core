@@ -65,63 +65,7 @@ class Doubleclicksearch extends \Google\Service
         'conversion',
         [
           'methods' => [
-            'get' => [
-              'path' => 'doubleclicksearch/v2/agency/{agencyId}/advertiser/{advertiserId}/engine/{engineAccountId}/conversion',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'agencyId' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'advertiserId' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'engineAccountId' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'endDate' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                  'required' => true,
-                ],
-                'rowCount' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                  'required' => true,
-                ],
-                'startDate' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                  'required' => true,
-                ],
-                'startRow' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                  'required' => true,
-                ],
-                'adGroupId' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'adId' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'campaignId' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'criterionId' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'insert' => [
+            'insert' => [
               'path' => 'doubleclicksearch/v2/conversion',
               'httpMethod' => 'POST',
               'parameters' => [],

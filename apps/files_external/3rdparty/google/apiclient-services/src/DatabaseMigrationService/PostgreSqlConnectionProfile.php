@@ -30,6 +30,10 @@ class PostgreSqlConnectionProfile extends \Google\Model
   /**
    * @var string
    */
+  public $networkArchitecture;
+  /**
+   * @var string
+   */
   public $password;
   /**
    * @var bool
@@ -73,6 +77,20 @@ class PostgreSqlConnectionProfile extends \Google\Model
   public function getHost()
   {
     return $this->host;
+  }
+  /**
+   * @param string
+   */
+  public function setNetworkArchitecture($networkArchitecture)
+  {
+    $this->networkArchitecture = $networkArchitecture;
+  }
+  /**
+   * @return string
+   */
+  public function getNetworkArchitecture()
+  {
+    return $this->networkArchitecture;
   }
   /**
    * @param string

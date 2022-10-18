@@ -30,7 +30,7 @@ use Google\Service\RecaptchaEnterprise\GoogleCloudRecaptchaenterpriseV1ListRelat
 class ProjectsRelatedaccountgroupsMemberships extends \Google\Service\Resource
 {
   /**
-   * Get the memberships in a group of related accounts.
+   * Get memberships in a group of related accounts.
    * (memberships.listProjectsRelatedaccountgroupsMemberships)
    *
    * @param string $parent Required. The resource name for the related account
@@ -39,9 +39,9 @@ class ProjectsRelatedaccountgroupsMemberships extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The maximum number of accounts to return.
-   * The service may return fewer than this value. If unspecified, at most 50
-   * accounts will be returned. The maximum value is 1000; values above 1000 will
-   * be coerced to 1000.
+   * The service might return fewer than this value. If unspecified, at most 50
+   * accounts are returned. The maximum value is 1000; values above 1000 are
+   * coerced to 1000.
    * @opt_param string pageToken Optional. A page token, received from a previous
    * `ListRelatedAccountGroupMemberships` call. When paginating, all other
    * parameters provided to `ListRelatedAccountGroupMemberships` must match the

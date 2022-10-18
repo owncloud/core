@@ -23,10 +23,7 @@ class DeviceTypeAssignedTargetingOptionDetails extends \Google\Model
    * @var string
    */
   public $deviceType;
-  /**
-   * @var string
-   */
-  public $targetingOptionId;
+  public $youtubeAndPartnersBidMultiplier;
 
   /**
    * @param string
@@ -42,19 +39,13 @@ class DeviceTypeAssignedTargetingOptionDetails extends \Google\Model
   {
     return $this->deviceType;
   }
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
+  public function setYoutubeAndPartnersBidMultiplier($youtubeAndPartnersBidMultiplier)
   {
-    $this->targetingOptionId = $targetingOptionId;
+    $this->youtubeAndPartnersBidMultiplier = $youtubeAndPartnersBidMultiplier;
   }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
+  public function getYoutubeAndPartnersBidMultiplier()
   {
-    return $this->targetingOptionId;
+    return $this->youtubeAndPartnersBidMultiplier;
   }
 }
 

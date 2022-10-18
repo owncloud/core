@@ -53,7 +53,7 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * [R4](http://hl7.org/fhir/R4/compartmentdefinition-patient.html)), which
    * details the eligible resource types and referencing search parameters. For
    * samples that show how to call `Patient-everything`, see [Getting all patient
-   * compartment resources](/healthcare/docs/how-tos/fhir-
+   * compartment resources](https://cloud.google.com/healthcare/docs/how-tos/fhir-
    * resources#getting_all_patient_compartment_resources).
    * (fhir.PatientEverything)
    *
@@ -93,8 +93,9 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * version) from the FHIR store. To remove all versions of a resource, first
    * delete the current version and then call this method. This is not a FHIR
    * standard operation. For samples that show how to call `Resource-purge`, see
-   * [Deleting historical versions of a FHIR resource](/healthcare/docs/how-tos
-   * /fhir-resources#deleting_historical_versions_of_a_fhir_resource).
+   * [Deleting historical versions of a FHIR
+   * resource](https://cloud.google.com/healthcare/docs/how-tos/fhir-
+   * resources#deleting_historical_versions_of_a_fhir_resource).
    * (fhir.ResourcePurge)
    *
    * @param string $name The name of the resource to purge.
@@ -189,8 +190,8 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * resource describing the reason for the error. If the request cannot be mapped
    * to a valid API method on a FHIR store, a generic GCP error might be returned
    * instead. For samples that show how to call `create`, see [Creating a FHIR
-   * resource](/healthcare/docs/how-tos/fhir-resources#creating_a_fhir_resource).
-   * (fhir.create)
+   * resource](https://cloud.google.com/healthcare/docs/how-tos/fhir-
+   * resources#creating_a_fhir_resource). (fhir.create)
    *
    * @param string $parent The name of the FHIR store this resource belongs to.
    * @param string $type The FHIR resource type to create, such as Patient or
@@ -219,8 +220,8 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * will be moved to a history repository that can still be retrieved through
    * vread and related methods, unless they are removed by the purge method. For
    * samples that show how to call `delete`, see [Deleting a FHIR
-   * resource](/healthcare/docs/how-tos/fhir-resources#deleting_a_fhir_resource).
-   * (fhir.delete)
+   * resource](https://cloud.google.com/healthcare/docs/how-tos/fhir-
+   * resources#deleting_a_fhir_resource). (fhir.delete)
    *
    * @param string $name The name of the resource to delete.
    * @param array $optParams Optional parameters.
@@ -234,32 +235,41 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
   }
   /**
    * Executes all the requests in the given Bundle. Implements the FHIR standard
-   * batch/transaction interaction ([DSTU2](http://hl7.org/implement/standards/fhi
-   * r/DSTU2/http.html#transaction),
-   * [STU3](http://hl7.org/implement/standards/fhir/STU3/http.html#transaction),
-   * [R4](http://hl7.org/implement/standards/fhir/R4/http.html#transaction)).
+   * batch/transaction interaction ([DSTU2](https://hl7.org/implement/standards/fh
+   * ir/DSTU2/http.html#transaction),
+   * [STU3](https://hl7.org/implement/standards/fhir/STU3/http.html#transaction),
+   * [R4](https://hl7.org/implement/standards/fhir/R4/http.html#transaction)).
    * Supports all interactions within a bundle, except search. This method accepts
    * Bundles of type `batch` and `transaction`, processing them according to the
-   * batch processing rules
-   * ([DSTU2](http://hl7.org/implement/standards/fhir/DSTU2/http.html#2.1.0.16.1),
-   * [STU3](http://hl7.org/implement/standards/fhir/STU3/http.html#2.21.0.17.1),
-   * [R4](http://hl7.org/implement/standards/fhir/R4/http.html#brules)) and
-   * transaction processing rules
-   * ([DSTU2](http://hl7.org/implement/standards/fhir/DSTU2/http.html#2.1.0.16.2),
-   * [STU3](http://hl7.org/implement/standards/fhir/STU3/http.html#2.21.0.17.2),
-   * [R4](http://hl7.org/implement/standards/fhir/R4/http.html#trules)). The
+   * batch processing rules ([DSTU2](https://hl7.org/implement/standards/fhir/DSTU
+   * 2/http.html#2.1.0.16.1),
+   * [STU3](https://hl7.org/implement/standards/fhir/STU3/http.html#2.21.0.17.1),
+   * [R4](https://hl7.org/implement/standards/fhir/R4/http.html#brules)) and
+   * transaction processing rules ([DSTU2](https://hl7.org/implement/standards/fhi
+   * r/DSTU2/http.html#2.1.0.16.2),
+   * [STU3](https://hl7.org/implement/standards/fhir/STU3/http.html#2.21.0.17.2),
+   * [R4](https://hl7.org/implement/standards/fhir/R4/http.html#trules)). The
    * request body must contain a JSON-encoded FHIR `Bundle` resource, and the
    * request headers must contain `Content-Type: application/fhir+json`. For a
-   * batch bundle or a successful transaction the response body will contain a
-   * JSON-encoded representation of a `Bundle` resource of type `batch-response`
-   * or `transaction-response` containing one entry for each entry in the request,
+   * batch bundle or a successful transaction, the response body contains a JSON-
+   * encoded representation of a `Bundle` resource of type `batch-response` or
+   * `transaction-response` containing one entry for each entry in the request,
    * with the outcome of processing the entry. In the case of an error for a
-   * transaction bundle, the response body will contain a JSON-encoded
+   * transaction bundle, the response body contains a JSON-encoded
    * `OperationOutcome` resource describing the reason for the error. If the
    * request cannot be mapped to a valid API method on a FHIR store, a generic GCP
-   * error might be returned instead. For samples that show how to call
-   * `executeBundle`, see [Managing FHIR resources using FHIR
-   * bundles](/healthcare/docs/how-tos/fhir-bundles). (fhir.executeBundle)
+   * error might be returned instead. This method checks permissions for each
+   * request in the bundle. The `executeBundle` permission is required to call
+   * this method, but you must also grant sufficient permissions to execute the
+   * individual requests in the bundle. For example, if the bundle contains a
+   * request to create a FHIR resource, the caller must also have been granted the
+   * `healthcare.fhirResources.create` permission. You can use audit logs to view
+   * the permissions for `executeBundle` and each request in the bundle. For more
+   * information, see [Viewing Cloud Audit logs](https://cloud.google.com
+   * /healthcare-api/docs/how-tos/audit-logging). For samples that show how to
+   * call `executeBundle`, see [Managing FHIR resources using FHIR
+   * bundles](https://cloud.google.com/healthcare/docs/how-tos/fhir-bundles).
+   * (fhir.executeBundle)
    *
    * @param string $parent Name of the FHIR store in which this bundle will be
    * executed.
@@ -286,8 +296,9 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * contain a JSON-encoded `OperationOutcome` resource describing the reason for
    * the error. If the request cannot be mapped to a valid API method on a FHIR
    * store, a generic GCP error might be returned instead. For samples that show
-   * how to call `history`, see [Listing FHIR resource versions](/healthcare/docs
-   * /how-tos/fhir-resources#listing_fhir_resource_versions). (fhir.history)
+   * how to call `history`, see [Listing FHIR resource
+   * versions](https://cloud.google.com/healthcare/docs/how-tos/fhir-
+   * resources#listing_fhir_resource_versions). (fhir.history)
    *
    * @param string $name The name of the resource to retrieve.
    * @param array $optParams Optional parameters.
@@ -334,8 +345,8 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * describing the reason for the error. If the request cannot be mapped to a
    * valid API method on a FHIR store, a generic GCP error might be returned
    * instead. For samples that show how to call `patch`, see [Patching a FHIR
-   * resource](/healthcare/docs/how-tos/fhir-resources#patching_a_fhir_resource).
-   * (fhir.patch)
+   * resource](https://cloud.google.com/healthcare/docs/how-tos/fhir-
+   * resources#patching_a_fhir_resource). (fhir.patch)
    *
    * @param string $name The name of the resource to update.
    * @param HttpBody $postBody
@@ -364,8 +375,9 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * store contain a JSON-encoded `OperationOutcome` resource describing the
    * reason for the error. If the request cannot be mapped to a valid API method
    * on a FHIR store, a generic GCP error might be returned instead. For samples
-   * that show how to call `read`, see [Getting a FHIR resource](/healthcare/docs
-   * /how-tos/fhir-resources#getting_a_fhir_resource). (fhir.read)
+   * that show how to call `read`, see [Getting a FHIR
+   * resource](https://cloud.google.com/healthcare/docs/how-tos/fhir-
+   * resources#getting_a_fhir_resource). (fhir.read)
    *
    * @param string $name The name of the resource to retrieve.
    * @param array $optParams Optional parameters.
@@ -423,8 +435,9 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * asynchronously, so there might be a slight delay between the time a resource
    * is created or changes and when the change is reflected in search results. For
    * samples and detailed information, see [Searching for FHIR
-   * resources](/healthcare/docs/how-tos/fhir-search) and [Advanced FHIR search
-   * features](/healthcare/docs/how-tos/fhir-advanced-search). (fhir.search)
+   * resources](https://cloud.google.com/healthcare/docs/how-tos/fhir-search) and
+   * [Advanced FHIR search features](https://cloud.google.com/healthcare/docs/how-
+   * tos/fhir-advanced-search). (fhir.search)
    *
    * @param string $parent Name of the FHIR store to retrieve resources from.
    * @param SearchResourcesRequest $postBody
@@ -483,8 +496,9 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * asynchronously, so there might be a slight delay between the time a resource
    * is created or changes and when the change is reflected in search results. For
    * samples and detailed information, see [Searching for FHIR
-   * resources](/healthcare/docs/how-tos/fhir-search) and [Advanced FHIR search
-   * features](/healthcare/docs/how-tos/fhir-advanced-search). (fhir.searchType)
+   * resources](https://cloud.google.com/healthcare/docs/how-tos/fhir-search) and
+   * [Advanced FHIR search features](https://cloud.google.com/healthcare/docs/how-
+   * tos/fhir-advanced-search). (fhir.searchType)
    *
    * @param string $parent Name of the FHIR store to retrieve resources from.
    * @param string $resourceType The FHIR resource type to search, such as Patient
@@ -523,8 +537,8 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * `OperationOutcome` resource describing the reason for the error. If the
    * request cannot be mapped to a valid API method on a FHIR store, a generic GCP
    * error might be returned instead. For samples that show how to call `update`,
-   * see [Updating a FHIR resource](/healthcare/docs/how-tos/fhir-
-   * resources#updating_a_fhir_resource). (fhir.update)
+   * see [Updating a FHIR resource](https://cloud.google.com/healthcare/docs/how-
+   * tos/fhir-resources#updating_a_fhir_resource). (fhir.update)
    *
    * @param string $name The name of the resource to update.
    * @param HttpBody $postBody
@@ -548,7 +562,8 @@ class ProjectsLocationsDatasetsFhirStoresFhir extends \Google\Service\Resource
    * `OperationOutcome` resource describing the reason for the error. If the
    * request cannot be mapped to a valid API method on a FHIR store, a generic GCP
    * error might be returned instead. For samples that show how to call `vread`,
-   * see [Retrieving a FHIR resource version](/healthcare/docs/how-tos/fhir-
+   * see [Retrieving a FHIR resource
+   * version](https://cloud.google.com/healthcare/docs/how-tos/fhir-
    * resources#retrieving_a_fhir_resource_version). (fhir.vread)
    *
    * @param string $name The name of the resource version to retrieve.

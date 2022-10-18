@@ -1,0 +1,31 @@
+name: Generate Documentation
+on:
+    push:
+        branches: [main]
+
+jobs:
+    docs:
+        name: "Generate Project Documentation"
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        - name: Install Dependencies
+          uses: nick-invision/retry@v1
+          with:
+            timeout_minutes: 10
+            max_attempts: 3
+            command: composer install
+        - name: Generate and Push Documentation
+          uses: docker://php:7.3-cli
+          env:
+            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          with:
+            entrypoint: ./.github/actions/docs/entrypoint.sh
+        - name: Deploy 🚀
+          uses: JamesIves/github-pages-deploy-action@releases/v3
+          with:
+            ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+            BRANCH: gh-pages
+            FOLDER: .docs

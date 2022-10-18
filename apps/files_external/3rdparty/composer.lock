@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd922d044682c0e26eaa4c28135b68c3",
+    "content-hash": "2b148e764c3904907624e3c7f535463d",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -70,17 +70,11 @@
         },
         {
             "name": "google/apiclient",
-            "version": "v2.12.6",
+            "version": "dev-test-deps",
             "source": {
                 "type": "git",
-                "url": "https://github.com/googleapis/google-api-php-client.git",
-                "reference": "f92aa126903a9e2da5bd41a280d9633cb249e79e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/f92aa126903a9e2da5bd41a280d9633cb249e79e",
-                "reference": "f92aa126903a9e2da5bd41a280d9633cb249e79e",
-                "shasum": ""
+                "url": "https://github.com/phil-davis/google-api-php-client",
+                "reference": "71b9dbea55da001156700dabd5d5b172ad03e281"
             },
             "require": {
                 "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0||~6.0",
@@ -90,7 +84,7 @@
                 "guzzlehttp/psr7": "^1.8.4||^2.2.1",
                 "monolog/monolog": "^1.17||^2.0||^3.0",
                 "php": "^5.6|^7.0|^8.0",
-                "phpseclib/phpseclib": "~2.0||^3.0.2"
+                "phpseclib/phpseclib": "dev-test-delete-folder"
             },
             "require-dev": {
                 "cache/filesystem-adapter": "^0.3.2|^1.1",
@@ -113,17 +107,16 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/aliases.php"
-                ],
                 "psr-4": {
                     "Google\\": "src/"
                 },
+                "files": [
+                    "src/aliases.php"
+                ],
                 "classmap": [
                     "src/aliases.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -132,24 +125,20 @@
             "keywords": [
                 "google"
             ],
-            "support": {
-                "issues": "https://github.com/googleapis/google-api-php-client/issues",
-                "source": "https://github.com/googleapis/google-api-php-client/tree/v2.12.6"
-            },
-            "time": "2022-06-06T20:00:19+00:00"
+            "time": "2022-10-18T09:44:09+00:00"
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.259.0",
+            "version": "v0.271.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "3f68a8b8f825974bc0318b8f7268a09216d5fee1"
+                "reference": "3ab645dbdd0e511ba4c7a937fb4dc764e861ed6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/3f68a8b8f825974bc0318b8f7268a09216d5fee1",
-                "reference": "3f68a8b8f825974bc0318b8f7268a09216d5fee1",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/3ab645dbdd0e511ba4c7a937fb4dc764e861ed6a",
+                "reference": "3ab645dbdd0e511ba4c7a937fb4dc764e861ed6a",
                 "shasum": ""
             },
             "require": {
@@ -178,22 +167,22 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.259.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.271.0"
             },
-            "time": "2022-07-24T01:26:12+00:00"
+            "time": "2022-10-15T00:58:16+00:00"
         },
         {
             "name": "google/auth",
-            "version": "v1.21.1",
+            "version": "v1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "aa3b9ca29258ac6347ce3c8937a2418c5d78f840"
+                "reference": "8da16102d2cd1bdc128d97f323553df465ee7701"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/aa3b9ca29258ac6347ce3c8937a2418c5d78f840",
-                "reference": "aa3b9ca29258ac6347ce3c8937a2418c5d78f840",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/8da16102d2cd1bdc128d97f323553df465ee7701",
+                "reference": "8da16102d2cd1bdc128d97f323553df465ee7701",
                 "shasum": ""
             },
             "require": {
@@ -236,9 +225,9 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/main/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.21.1"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.23.0"
             },
-            "time": "2022-05-16T19:34:15+00:00"
+            "time": "2022-09-27T16:27:23+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -672,27 +661,25 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.14",
+            "version": "dev-test-delete-folder",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "2f0b7af658cbea265cbb4a791d6c29a6613f98ef"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/2f0b7af658cbea265cbb4a791d6c29a6613f98ef",
-                "reference": "2f0b7af658cbea265cbb4a791d6c29a6613f98ef",
-                "shasum": ""
+                "url": "https://github.com/phil-davis/phpseclib",
+                "reference": "e6c91dd204d5ea8b0fd568e2ef68b8745371ec23"
             },
             "require": {
                 "paragonie/constant_time_encoding": "^1|^2",
                 "paragonie/random_compat": "^1.4|^2.0|^9.99.99",
                 "php": ">=5.6.1"
             },
+            "replace": {
+                "phpseclib/phpseclib": "*"
+            },
             "require-dev": {
                 "phpunit/phpunit": "*"
             },
             "suggest": {
+                "ext-dom": "Install the DOM extension to load XML formatted public keys.",
                 "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
                 "ext-libsodium": "SSH2/SFTP can make use of some algorithms provided by the libsodium-php extension.",
                 "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
@@ -707,7 +694,11 @@
                     "phpseclib3\\": "phpseclib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "phpseclib3\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -759,25 +750,7 @@
                 "x.509",
                 "x509"
             ],
-            "support": {
-                "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.14"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/terrafrost",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/phpseclib",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2022-04-04T05:15:45+00:00"
+            "time": "2022-10-18T04:17:08+00:00"
         },
         {
             "name": "psr/cache",
@@ -1034,7 +1007,10 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "google/apiclient": 20,
+        "phpseclib/phpseclib": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

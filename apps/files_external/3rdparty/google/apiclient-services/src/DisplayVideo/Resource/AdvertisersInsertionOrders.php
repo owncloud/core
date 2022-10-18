@@ -33,47 +33,6 @@ use Google\Service\DisplayVideo\ListInsertionOrdersResponse;
 class AdvertisersInsertionOrders extends \Google\Service\Resource
 {
   /**
-   * Lists assigned targeting options of an insertion order across targeting
-   * types. (insertionOrders.bulkListInsertionOrderAssignedTargetingOptions)
-   *
-   * @param string $advertiserId Required. The ID of the advertiser the insertion
-   * order belongs to.
-   * @param string $insertionOrderId Required. The ID of the insertion order to
-   * list assigned targeting options for.
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param string filter Allows filtering by assigned targeting option
-   * properties. Supported syntax: * Filter expressions are made up of one or more
-   * restrictions. * Restrictions can be combined by the logical operator `OR` on
-   * the same field. * A restriction has the form of `{field} {operator} {value}`.
-   * * The operator must be `EQUALS (=)`. * Supported fields: - `targetingType` -
-   * `inheritance` Examples: * AssignedTargetingOptions of targeting type
-   * TARGETING_TYPE_PROXIMITY_LOCATION_LIST or TARGETING_TYPE_CHANNEL
-   * `targetingType="TARGETING_TYPE_PROXIMITY_LOCATION_LIST" OR
-   * targetingType="TARGETING_TYPE_CHANNEL"` * AssignedTargetingOptions with
-   * inheritance status of NOT_INHERITED or INHERITED_FROM_PARTNER
-   * `inheritance="NOT_INHERITED" OR inheritance="INHERITED_FROM_PARTNER"` The
-   * length of this field should be no more than 500 characters.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * `targetingType` (default) The default sorting order is ascending. To
-   * specify descending order for a field, a suffix "desc" should be added to the
-   * field name. Example: `targetingType desc`.
-   * @opt_param int pageSize Requested page size. The size must be an integer
-   * between `1` and `5000`. If unspecified, the default is `5000`. Returns error
-   * code `INVALID_ARGUMENT` if an invalid value is specified.
-   * @opt_param string pageToken A token that lets the client fetch the next page
-   * of results. Typically, this is the value of next_page_token returned from the
-   * previous call to `BulkListInsertionOrderAssignedTargetingOptions` method. If
-   * not specified, the first page of results will be returned.
-   * @return BulkListInsertionOrderAssignedTargetingOptionsResponse
-   */
-  public function bulkListInsertionOrderAssignedTargetingOptions($advertiserId, $insertionOrderId, $optParams = [])
-  {
-    $params = ['advertiserId' => $advertiserId, 'insertionOrderId' => $insertionOrderId];
-    $params = array_merge($params, $optParams);
-    return $this->call('bulkListInsertionOrderAssignedTargetingOptions', [$params], BulkListInsertionOrderAssignedTargetingOptionsResponse::class);
-  }
-  /**
    * Creates a new insertion order. Returns the newly created insertion order if
    * successful. (insertionOrders.create)
    *
@@ -97,8 +56,7 @@ class AdvertisersInsertionOrders extends \Google\Service\Resource
    *
    * @param string $advertiserId The ID of the advertiser this insertion order
    * belongs to.
-   * @param string $insertionOrderId The ID of the insertion order we need to
-   * delete.
+   * @param string $insertionOrderId The ID of the insertion order to delete.
    * @param array $optParams Optional parameters.
    * @return DisplayvideoEmpty
    */
@@ -175,6 +133,47 @@ class AdvertisersInsertionOrders extends \Google\Service\Resource
     $params = ['advertiserId' => $advertiserId];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListInsertionOrdersResponse::class);
+  }
+  /**
+   * Lists assigned targeting options of an insertion order across targeting
+   * types. (insertionOrders.listAssignedTargetingOptions)
+   *
+   * @param string $advertiserId Required. The ID of the advertiser the insertion
+   * order belongs to.
+   * @param string $insertionOrderId Required. The ID of the insertion order to
+   * list assigned targeting options for.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter Allows filtering by assigned targeting option
+   * properties. Supported syntax: * Filter expressions are made up of one or more
+   * restrictions. * Restrictions can be combined by the logical operator `OR` on
+   * the same field. * A restriction has the form of `{field} {operator} {value}`.
+   * * The operator must be `EQUALS (=)`. * Supported fields: - `targetingType` -
+   * `inheritance` Examples: * AssignedTargetingOptions of targeting type
+   * TARGETING_TYPE_PROXIMITY_LOCATION_LIST or TARGETING_TYPE_CHANNEL
+   * `targetingType="TARGETING_TYPE_PROXIMITY_LOCATION_LIST" OR
+   * targetingType="TARGETING_TYPE_CHANNEL"` * AssignedTargetingOptions with
+   * inheritance status of NOT_INHERITED or INHERITED_FROM_PARTNER
+   * `inheritance="NOT_INHERITED" OR inheritance="INHERITED_FROM_PARTNER"` The
+   * length of this field should be no more than 500 characters.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `targetingType` (default) The default sorting order is ascending. To
+   * specify descending order for a field, a suffix "desc" should be added to the
+   * field name. Example: `targetingType desc`.
+   * @opt_param int pageSize Requested page size. The size must be an integer
+   * between `1` and `5000`. If unspecified, the default is `5000`. Returns error
+   * code `INVALID_ARGUMENT` if an invalid value is specified.
+   * @opt_param string pageToken A token that lets the client fetch the next page
+   * of results. Typically, this is the value of next_page_token returned from the
+   * previous call to `BulkListInsertionOrderAssignedTargetingOptions` method. If
+   * not specified, the first page of results will be returned.
+   * @return BulkListInsertionOrderAssignedTargetingOptionsResponse
+   */
+  public function listAssignedTargetingOptions($advertiserId, $insertionOrderId, $optParams = [])
+  {
+    $params = ['advertiserId' => $advertiserId, 'insertionOrderId' => $insertionOrderId];
+    $params = array_merge($params, $optParams);
+    return $this->call('listAssignedTargetingOptions', [$params], BulkListInsertionOrderAssignedTargetingOptionsResponse::class);
   }
   /**
    * Updates an existing insertion order. Returns the updated insertion order if

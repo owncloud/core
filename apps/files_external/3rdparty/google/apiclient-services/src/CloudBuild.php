@@ -38,6 +38,7 @@ class CloudBuild extends \Google\Service
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
+  public $githubDotComWebhook;
   public $locations;
   public $operations;
   public $projects_builds;
@@ -46,6 +47,9 @@ class CloudBuild extends \Google\Service
   public $projects_locations_bitbucketServerConfigs_connectedRepositories;
   public $projects_locations_bitbucketServerConfigs_repos;
   public $projects_locations_builds;
+  public $projects_locations_gitLabConfigs;
+  public $projects_locations_gitLabConfigs_connectedRepositories;
+  public $projects_locations_gitLabConfigs_repos;
   public $projects_locations_githubEnterpriseConfigs;
   public $projects_locations_operations;
   public $projects_locations_triggers;
@@ -69,6 +73,25 @@ class CloudBuild extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'cloudbuild';
 
+    $this->githubDotComWebhook = new CloudBuild\Resource\GithubDotComWebhook(
+        $this,
+        $this->serviceName,
+        'githubDotComWebhook',
+        [
+          'methods' => [
+            'receive' => [
+              'path' => 'v1/githubDotComWebhook:receive',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'webhookKey' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->locations = new CloudBuild\Resource\Locations(
         $this,
         $this->serviceName,
@@ -550,6 +573,140 @@ class CloudBuild extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_gitLabConfigs = new CloudBuild\Resource\ProjectsLocationsGitLabConfigs(
+        $this,
+        $this->serviceName,
+        'gitLabConfigs',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/{+parent}/gitLabConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'gitlabConfigId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/gitLabConfigs',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'removeGitLabConnectedRepository' => [
+              'path' => 'v1/{+config}:removeGitLabConnectedRepository',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'config' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_gitLabConfigs_connectedRepositories = new CloudBuild\Resource\ProjectsLocationsGitLabConfigsConnectedRepositories(
+        $this,
+        $this->serviceName,
+        'connectedRepositories',
+        [
+          'methods' => [
+            'batchCreate' => [
+              'path' => 'v1/{+parent}/connectedRepositories:batchCreate',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_gitLabConfigs_repos = new CloudBuild\Resource\ProjectsLocationsGitLabConfigsRepos(
+        $this,
+        $this->serviceName,
+        'repos',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/repos',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],

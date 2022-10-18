@@ -27,10 +27,6 @@ class ContentInstreamPositionAssignedTargetingOptionDetails extends \Google\Mode
    * @var string
    */
   public $contentInstreamPosition;
-  /**
-   * @var string
-   */
-  public $targetingOptionId;
 
   /**
    * @param string
@@ -59,20 +55,6 @@ class ContentInstreamPositionAssignedTargetingOptionDetails extends \Google\Mode
   public function getContentInstreamPosition()
   {
     return $this->contentInstreamPosition;
-  }
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
-  {
-    $this->targetingOptionId = $targetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
-  {
-    return $this->targetingOptionId;
   }
 }
 

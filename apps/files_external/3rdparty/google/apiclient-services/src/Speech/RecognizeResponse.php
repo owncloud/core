@@ -20,6 +20,10 @@ namespace Google\Service\Speech;
 class RecognizeResponse extends \Google\Collection
 {
   protected $collection_key = 'results';
+  /**
+   * @var string
+   */
+  public $requestId;
   protected $resultsType = SpeechRecognitionResult::class;
   protected $resultsDataType = 'array';
   /**
@@ -27,6 +31,20 @@ class RecognizeResponse extends \Google\Collection
    */
   public $totalBilledTime;
 
+  /**
+   * @param string
+   */
+  public function setRequestId($requestId)
+  {
+    $this->requestId = $requestId;
+  }
+  /**
+   * @return string
+   */
+  public function getRequestId()
+  {
+    return $this->requestId;
+  }
   /**
    * @param SpeechRecognitionResult[]
    */

@@ -46,6 +46,14 @@ class ApkManifest extends \Google\Collection
    * @var string[]
    */
   public $usesPermission;
+  /**
+   * @var string
+   */
+  public $versionCode;
+  /**
+   * @var string
+   */
+  public $versionName;
 
   /**
    * @param string
@@ -144,6 +152,34 @@ class ApkManifest extends \Google\Collection
   public function getUsesPermission()
   {
     return $this->usesPermission;
+  }
+  /**
+   * @param string
+   */
+  public function setVersionCode($versionCode)
+  {
+    $this->versionCode = $versionCode;
+  }
+  /**
+   * @return string
+   */
+  public function getVersionCode()
+  {
+    return $this->versionCode;
+  }
+  /**
+   * @param string
+   */
+  public function setVersionName($versionName)
+  {
+    $this->versionName = $versionName;
+  }
+  /**
+   * @return string
+   */
+  public function getVersionName()
+  {
+    return $this->versionName;
   }
 }
 

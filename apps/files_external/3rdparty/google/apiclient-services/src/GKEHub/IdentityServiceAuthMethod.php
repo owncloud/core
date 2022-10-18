@@ -19,6 +19,8 @@ namespace Google\Service\GKEHub;
 
 class IdentityServiceAuthMethod extends \Google\Model
 {
+  protected $googleConfigType = IdentityServiceGoogleConfig::class;
+  protected $googleConfigDataType = '';
   /**
    * @var string
    */
@@ -30,6 +32,20 @@ class IdentityServiceAuthMethod extends \Google\Model
    */
   public $proxy;
 
+  /**
+   * @param IdentityServiceGoogleConfig
+   */
+  public function setGoogleConfig(IdentityServiceGoogleConfig $googleConfig)
+  {
+    $this->googleConfig = $googleConfig;
+  }
+  /**
+   * @return IdentityServiceGoogleConfig
+   */
+  public function getGoogleConfig()
+  {
+    return $this->googleConfig;
+  }
   /**
    * @param string
    */

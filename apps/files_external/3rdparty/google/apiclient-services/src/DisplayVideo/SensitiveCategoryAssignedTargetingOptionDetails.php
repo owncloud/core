@@ -22,39 +22,21 @@ class SensitiveCategoryAssignedTargetingOptionDetails extends \Google\Model
   /**
    * @var string
    */
-  public $excludedTargetingOptionId;
-  /**
-   * @var string
-   */
-  public $sensitiveCategory;
+  public $excludedSensitiveCategory;
 
   /**
    * @param string
    */
-  public function setExcludedTargetingOptionId($excludedTargetingOptionId)
+  public function setExcludedSensitiveCategory($excludedSensitiveCategory)
   {
-    $this->excludedTargetingOptionId = $excludedTargetingOptionId;
+    $this->excludedSensitiveCategory = $excludedSensitiveCategory;
   }
   /**
    * @return string
    */
-  public function getExcludedTargetingOptionId()
+  public function getExcludedSensitiveCategory()
   {
-    return $this->excludedTargetingOptionId;
-  }
-  /**
-   * @param string
-   */
-  public function setSensitiveCategory($sensitiveCategory)
-  {
-    $this->sensitiveCategory = $sensitiveCategory;
-  }
-  /**
-   * @return string
-   */
-  public function getSensitiveCategory()
-  {
-    return $this->sensitiveCategory;
+    return $this->excludedSensitiveCategory;
   }
 }
 

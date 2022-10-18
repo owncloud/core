@@ -49,9 +49,9 @@ class QuerySources extends \Google\Service\Resource
    * translations. Set this field using the language set in browser or for the
    * page. In the event that the user's language preference is known, set this
    * field to the known user language. When specified, the documents in search
-   * results are biased towards the specified language. The suggest API does not
-   * use this parameter. Instead, suggest autocompletes only based on characters
-   * in the query.
+   * results are biased towards the specified language. From Suggest API
+   * perspective, for 3p suggest this is used as a hint while making predictions
+   * to add language boosting.
    * @opt_param string requestOptions.searchApplicationId The ID generated when
    * you create a search application using the [admin
    * console](https://support.google.com/a/answer/9043922).

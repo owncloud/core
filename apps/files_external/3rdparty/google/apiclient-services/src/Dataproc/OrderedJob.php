@@ -50,6 +50,8 @@ class OrderedJob extends \Google\Collection
    * @var string
    */
   public $stepId;
+  protected $trinoJobType = TrinoJob::class;
+  protected $trinoJobDataType = '';
 
   /**
    * @param HadoopJob
@@ -218,6 +220,20 @@ class OrderedJob extends \Google\Collection
   public function getStepId()
   {
     return $this->stepId;
+  }
+  /**
+   * @param TrinoJob
+   */
+  public function setTrinoJob(TrinoJob $trinoJob)
+  {
+    $this->trinoJob = $trinoJob;
+  }
+  /**
+   * @return TrinoJob
+   */
+  public function getTrinoJob()
+  {
+    return $this->trinoJob;
   }
 }
 

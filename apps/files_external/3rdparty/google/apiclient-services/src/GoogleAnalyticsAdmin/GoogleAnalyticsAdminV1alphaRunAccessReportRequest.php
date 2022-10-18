@@ -43,7 +43,7 @@ class GoogleAnalyticsAdminV1alphaRunAccessReportRequest extends \Google\Collecti
   /**
    * @var bool
    */
-  public $returnPropertyQuota;
+  public $returnEntityQuota;
   /**
    * @var string
    */
@@ -164,16 +164,16 @@ class GoogleAnalyticsAdminV1alphaRunAccessReportRequest extends \Google\Collecti
   /**
    * @param bool
    */
-  public function setReturnPropertyQuota($returnPropertyQuota)
+  public function setReturnEntityQuota($returnEntityQuota)
   {
-    $this->returnPropertyQuota = $returnPropertyQuota;
+    $this->returnEntityQuota = $returnEntityQuota;
   }
   /**
    * @return bool
    */
-  public function getReturnPropertyQuota()
+  public function getReturnEntityQuota()
   {
-    return $this->returnPropertyQuota;
+    return $this->returnEntityQuota;
   }
   /**
    * @param string

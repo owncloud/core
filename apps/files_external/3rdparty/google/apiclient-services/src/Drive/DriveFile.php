@@ -159,6 +159,14 @@ class DriveFile extends \Google\Collection
    */
   public $resourceKey;
   /**
+   * @var string
+   */
+  public $sha1Checksum;
+  /**
+   * @var string
+   */
+  public $sha256Checksum;
+  /**
    * @var bool
    */
   public $shared;
@@ -780,6 +788,34 @@ class DriveFile extends \Google\Collection
   public function getResourceKey()
   {
     return $this->resourceKey;
+  }
+  /**
+   * @param string
+   */
+  public function setSha1Checksum($sha1Checksum)
+  {
+    $this->sha1Checksum = $sha1Checksum;
+  }
+  /**
+   * @return string
+   */
+  public function getSha1Checksum()
+  {
+    return $this->sha1Checksum;
+  }
+  /**
+   * @param string
+   */
+  public function setSha256Checksum($sha256Checksum)
+  {
+    $this->sha256Checksum = $sha256Checksum;
+  }
+  /**
+   * @return string
+   */
+  public function getSha256Checksum()
+  {
+    return $this->sha256Checksum;
   }
   /**
    * @param bool

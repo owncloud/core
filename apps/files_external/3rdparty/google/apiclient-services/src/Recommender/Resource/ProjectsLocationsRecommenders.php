@@ -37,7 +37,8 @@ class ProjectsLocationsRecommenders extends \Google\Service\Resource
    * Acceptable formats: * `projects/[PROJECT_NUMBER]/locations/[LOCATION]/recomme
    * nders/[RECOMMENDER_ID]/config` * `projects/[PROJECT_ID]/locations/[LOCATION]/
    * recommenders/[RECOMMENDER_ID]/config` * `organizations/[ORGANIZATION_ID]/loca
-   * tions/[LOCATION]/recommenders/[RECOMMENDER_ID]/config`
+   * tions/[LOCATION]/recommenders/[RECOMMENDER_ID]/config` * `billingAccounts/[BI
+   * LLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudRecommenderV1RecommenderConfig
    */

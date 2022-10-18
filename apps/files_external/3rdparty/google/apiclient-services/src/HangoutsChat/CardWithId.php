@@ -21,6 +21,9 @@ class CardWithId extends \Google\Model
 {
   protected $cardType = GoogleAppsCardV1Card::class;
   protected $cardDataType = '';
+  /**
+   * @var string
+   */
   public $cardId;
 
   /**
@@ -37,10 +40,16 @@ class CardWithId extends \Google\Model
   {
     return $this->card;
   }
+  /**
+   * @param string
+   */
   public function setCardId($cardId)
   {
     $this->cardId = $cardId;
   }
+  /**
+   * @return string
+   */
   public function getCardId()
   {
     return $this->cardId;

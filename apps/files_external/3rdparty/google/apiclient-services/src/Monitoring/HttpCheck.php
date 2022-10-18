@@ -44,6 +44,8 @@ class HttpCheck extends \Google\Collection
    * @var string
    */
   public $path;
+  protected $pingConfigType = PingConfig::class;
+  protected $pingConfigDataType = '';
   /**
    * @var int
    */
@@ -158,6 +160,20 @@ class HttpCheck extends \Google\Collection
   public function getPath()
   {
     return $this->path;
+  }
+  /**
+   * @param PingConfig
+   */
+  public function setPingConfig(PingConfig $pingConfig)
+  {
+    $this->pingConfig = $pingConfig;
+  }
+  /**
+   * @return PingConfig
+   */
+  public function getPingConfig()
+  {
+    return $this->pingConfig;
   }
   /**
    * @param int

@@ -90,6 +90,10 @@ class ProjectsUptimeCheckConfigs extends \Google\Service\Resource
    * configurations are listed. The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter If provided, this field specifies the criteria that
+   * must be met by uptime checks to be included in the response.For more details,
+   * see Filtering syntax (https://cloud.google.com/monitoring/api/v3/sorting-and-
+   * filtering#filter_syntax).
    * @opt_param int pageSize The maximum number of results to return in a single
    * response. The server may further constrain the maximum number of results
    * returned in a single page. If the page_size is <=0, the server will decide

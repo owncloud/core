@@ -22,6 +22,10 @@ class ConfigManagementConfigSync extends \Google\Model
   /**
    * @var bool
    */
+  public $allowVerticalScale;
+  /**
+   * @var bool
+   */
   public $enabled;
   protected $gitType = ConfigManagementGitConfig::class;
   protected $gitDataType = '';
@@ -36,6 +40,20 @@ class ConfigManagementConfigSync extends \Google\Model
    */
   public $sourceFormat;
 
+  /**
+   * @param bool
+   */
+  public function setAllowVerticalScale($allowVerticalScale)
+  {
+    $this->allowVerticalScale = $allowVerticalScale;
+  }
+  /**
+   * @return bool
+   */
+  public function getAllowVerticalScale()
+  {
+    return $this->allowVerticalScale;
+  }
   /**
    * @param bool
    */

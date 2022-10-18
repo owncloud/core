@@ -27,11 +27,19 @@ class Network extends \Google\Collection
   /**
    * @var string
    */
+  public $gatewayIp;
+  /**
+   * @var string
+   */
   public $id;
   /**
    * @var string
    */
   public $ipAddress;
+  /**
+   * @var bool
+   */
+  public $jumboFramesEnabled;
   /**
    * @var string[]
    */
@@ -40,10 +48,16 @@ class Network extends \Google\Collection
    * @var string[]
    */
   public $macAddress;
+  protected $mountPointsType = NetworkMountPoint::class;
+  protected $mountPointsDataType = 'array';
   /**
    * @var string
    */
   public $name;
+  /**
+   * @var string
+   */
+  public $pod;
   protected $reservationsType = NetworkAddressReservation::class;
   protected $reservationsDataType = 'array';
   /**
@@ -82,6 +96,20 @@ class Network extends \Google\Collection
   /**
    * @param string
    */
+  public function setGatewayIp($gatewayIp)
+  {
+    $this->gatewayIp = $gatewayIp;
+  }
+  /**
+   * @return string
+   */
+  public function getGatewayIp()
+  {
+    return $this->gatewayIp;
+  }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
@@ -106,6 +134,20 @@ class Network extends \Google\Collection
   public function getIpAddress()
   {
     return $this->ipAddress;
+  }
+  /**
+   * @param bool
+   */
+  public function setJumboFramesEnabled($jumboFramesEnabled)
+  {
+    $this->jumboFramesEnabled = $jumboFramesEnabled;
+  }
+  /**
+   * @return bool
+   */
+  public function getJumboFramesEnabled()
+  {
+    return $this->jumboFramesEnabled;
   }
   /**
    * @param string[]
@@ -136,6 +178,20 @@ class Network extends \Google\Collection
     return $this->macAddress;
   }
   /**
+   * @param NetworkMountPoint[]
+   */
+  public function setMountPoints($mountPoints)
+  {
+    $this->mountPoints = $mountPoints;
+  }
+  /**
+   * @return NetworkMountPoint[]
+   */
+  public function getMountPoints()
+  {
+    return $this->mountPoints;
+  }
+  /**
    * @param string
    */
   public function setName($name)
@@ -148,6 +204,20 @@ class Network extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setPod($pod)
+  {
+    $this->pod = $pod;
+  }
+  /**
+   * @return string
+   */
+  public function getPod()
+  {
+    return $this->pod;
   }
   /**
    * @param NetworkAddressReservation[]

@@ -17,6 +17,7 @@
 
 namespace Google\Service\AIPlatformNotebooks\Resource;
 
+use Google\Service\AIPlatformNotebooks\DiagnoseInstanceRequest;
 use Google\Service\AIPlatformNotebooks\GetInstanceHealthResponse;
 use Google\Service\AIPlatformNotebooks\Instance;
 use Google\Service\AIPlatformNotebooks\IsInstanceUpgradeableResponse;
@@ -83,6 +84,22 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('delete', [$params], Operation::class);
+  }
+  /**
+   * Creates a Diagnostic File and runs Diagnostic Tool given an Instance.
+   * (instances.diagnose)
+   *
+   * @param string $name Required. Format:
+   * `projects/{project_id}/locations/{location}/instances/{instance_id}`
+   * @param DiagnoseInstanceRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function diagnose($name, DiagnoseInstanceRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('diagnose', [$params], Operation::class);
   }
   /**
    * Gets details of a single Instance. (instances.get)

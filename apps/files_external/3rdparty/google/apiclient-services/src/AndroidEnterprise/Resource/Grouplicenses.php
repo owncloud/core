@@ -31,8 +31,9 @@ use Google\Service\AndroidEnterprise\GroupLicensesListResponse;
 class Grouplicenses extends \Google\Service\Resource
 {
   /**
-   * Retrieves details of an enterprise's group license for a product.
-   * (grouplicenses.get)
+   * Retrieves details of an enterprise's group license for a product. **Note:**
+   * This item has been deprecated. New integrations cannot use this method and
+   * can refer to our new recommendations. (grouplicenses.get)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $groupLicenseId The ID of the product the group license is for,
@@ -48,6 +49,8 @@ class Grouplicenses extends \Google\Service\Resource
   }
   /**
    * Retrieves IDs of all products for which the enterprise has a group license.
+   * **Note:** This item has been deprecated. New integrations cannot use this
+   * method and can refer to our new recommendations.
    * (grouplicenses.listGrouplicenses)
    *
    * @param string $enterpriseId The ID of the enterprise.

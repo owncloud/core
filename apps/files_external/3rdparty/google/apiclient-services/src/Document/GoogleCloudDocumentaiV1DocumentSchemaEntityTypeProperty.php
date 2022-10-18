@@ -27,6 +27,8 @@ class GoogleCloudDocumentaiV1DocumentSchemaEntityTypeProperty extends \Google\Mo
    * @var string
    */
   public $occurrenceType;
+  protected $propertyMetadataType = GoogleCloudDocumentaiV1PropertyMetadata::class;
+  protected $propertyMetadataDataType = '';
   /**
    * @var string
    */
@@ -59,6 +61,20 @@ class GoogleCloudDocumentaiV1DocumentSchemaEntityTypeProperty extends \Google\Mo
   public function getOccurrenceType()
   {
     return $this->occurrenceType;
+  }
+  /**
+   * @param GoogleCloudDocumentaiV1PropertyMetadata
+   */
+  public function setPropertyMetadata(GoogleCloudDocumentaiV1PropertyMetadata $propertyMetadata)
+  {
+    $this->propertyMetadata = $propertyMetadata;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1PropertyMetadata
+   */
+  public function getPropertyMetadata()
+  {
+    return $this->propertyMetadata;
   }
   /**
    * @param string

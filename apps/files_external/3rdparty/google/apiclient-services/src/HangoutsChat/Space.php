@@ -31,6 +31,8 @@ class Space extends \Google\Model
    * @var bool
    */
   public $singleUserBotDm;
+  protected $spaceDetailsType = SpaceDetails::class;
+  protected $spaceDetailsDataType = '';
   /**
    * @var bool
    */
@@ -81,6 +83,20 @@ class Space extends \Google\Model
   public function getSingleUserBotDm()
   {
     return $this->singleUserBotDm;
+  }
+  /**
+   * @param SpaceDetails
+   */
+  public function setSpaceDetails(SpaceDetails $spaceDetails)
+  {
+    $this->spaceDetails = $spaceDetails;
+  }
+  /**
+   * @return SpaceDetails
+   */
+  public function getSpaceDetails()
+  {
+    return $this->spaceDetails;
   }
   /**
    * @param bool

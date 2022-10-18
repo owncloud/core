@@ -33,6 +33,10 @@ class GoogleCloudAssuredworkloadsVersioningV1mainWorkload extends \Google\Collec
   protected $complianceStatusType = GoogleCloudAssuredworkloadsVersioningV1mainWorkloadComplianceStatus::class;
   protected $complianceStatusDataType = '';
   /**
+   * @var string[]
+   */
+  public $compliantButDisallowedServices;
+  /**
    * @var string
    */
   public $createTime;
@@ -134,6 +138,20 @@ class GoogleCloudAssuredworkloadsVersioningV1mainWorkload extends \Google\Collec
   public function getComplianceStatus()
   {
     return $this->complianceStatus;
+  }
+  /**
+   * @param string[]
+   */
+  public function setCompliantButDisallowedServices($compliantButDisallowedServices)
+  {
+    $this->compliantButDisallowedServices = $compliantButDisallowedServices;
+  }
+  /**
+   * @return string[]
+   */
+  public function getCompliantButDisallowedServices()
+  {
+    return $this->compliantButDisallowedServices;
   }
   /**
    * @param string

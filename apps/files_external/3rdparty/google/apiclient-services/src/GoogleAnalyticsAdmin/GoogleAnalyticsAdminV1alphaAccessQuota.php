@@ -27,6 +27,8 @@ class GoogleAnalyticsAdminV1alphaAccessQuota extends \Google\Model
   protected $tokensPerDayDataType = '';
   protected $tokensPerHourType = GoogleAnalyticsAdminV1alphaAccessQuotaStatus::class;
   protected $tokensPerHourDataType = '';
+  protected $tokensPerProjectPerHourType = GoogleAnalyticsAdminV1alphaAccessQuotaStatus::class;
+  protected $tokensPerProjectPerHourDataType = '';
 
   /**
    * @param GoogleAnalyticsAdminV1alphaAccessQuotaStatus
@@ -83,6 +85,20 @@ class GoogleAnalyticsAdminV1alphaAccessQuota extends \Google\Model
   public function getTokensPerHour()
   {
     return $this->tokensPerHour;
+  }
+  /**
+   * @param GoogleAnalyticsAdminV1alphaAccessQuotaStatus
+   */
+  public function setTokensPerProjectPerHour(GoogleAnalyticsAdminV1alphaAccessQuotaStatus $tokensPerProjectPerHour)
+  {
+    $this->tokensPerProjectPerHour = $tokensPerProjectPerHour;
+  }
+  /**
+   * @return GoogleAnalyticsAdminV1alphaAccessQuotaStatus
+   */
+  public function getTokensPerProjectPerHour()
+  {
+    return $this->tokensPerProjectPerHour;
   }
 }
 

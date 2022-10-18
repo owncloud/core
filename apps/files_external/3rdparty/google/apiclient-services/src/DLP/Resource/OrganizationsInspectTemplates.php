@@ -34,7 +34,7 @@ use Google\Service\DLP\GoogleProtobufEmpty;
 class OrganizationsInspectTemplates extends \Google\Service\Resource
 {
   /**
-   * Creates an InspectTemplate for re-using frequently used configuration for
+   * Creates an InspectTemplate for reusing frequently used configuration for
    * inspecting content, images, and storage. See
    * https://cloud.google.com/dlp/docs/creating-templates to learn more.
    * (inspectTemplates.create)
@@ -118,11 +118,12 @@ class OrganizationsInspectTemplates extends \Google\Service\Resource
    * followed by `asc` or `desc` postfix. This list is case-insensitive, default
    * sorting order is ascending, redundant space characters are insignificant.
    * Example: `name asc,update_time, create_time desc` Supported fields are: -
-   * `create_time`: corresponds to time the template was created. - `update_time`:
-   * corresponds to time the template was last updated. - `name`: corresponds to
-   * template's name. - `display_name`: corresponds to template's display name.
-   * @opt_param int pageSize Size of the page, can be limited by server. If zero
-   * server returns a page of max size 100.
+   * `create_time`: corresponds to the time the template was created. -
+   * `update_time`: corresponds to the time the template was last updated. -
+   * `name`: corresponds to the template's name. - `display_name`: corresponds to
+   * the template's display name.
+   * @opt_param int pageSize Size of the page, can be limited by the server. If
+   * zero server returns a page of max size 100.
    * @opt_param string pageToken Page token to continue retrieval. Comes from
    * previous call to `ListInspectTemplates`.
    * @return GooglePrivacyDlpV2ListInspectTemplatesResponse

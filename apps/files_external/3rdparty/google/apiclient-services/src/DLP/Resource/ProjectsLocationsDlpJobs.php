@@ -84,8 +84,8 @@ class ProjectsLocationsDlpJobs extends \Google\Service\Resource
   }
   /**
    * Deletes a long-running DlpJob. This method indicates that the client is no
-   * longer interested in the DlpJob result. The job will be cancelled if
-   * possible. See https://cloud.google.com/dlp/docs/inspecting-storage and
+   * longer interested in the DlpJob result. The job will be canceled if possible.
+   * See https://cloud.google.com/dlp/docs/inspecting-storage and
    * https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
    * (dlpJobs.delete)
    *
@@ -171,25 +171,25 @@ class ProjectsLocationsDlpJobs extends \Google\Service\Resource
    * implicitly uses `AND`. * A restriction has the form of `{field} {operator}
    * {value}`. * Supported fields/values for inspect jobs: - `state` -
    * PENDING|RUNNING|CANCELED|FINISHED|FAILED - `inspected_storage` -
-   * DATASTORE|CLOUD_STORAGE|BIGQUERY - `trigger_name` - The resource name of the
-   * trigger that created job. - 'end_time` - Corresponds to time the job
-   * finished. - 'start_time` - Corresponds to time the job finished. * Supported
-   * fields for risk analysis jobs: - `state` - RUNNING|CANCELED|FINISHED|FAILED -
-   * 'end_time` - Corresponds to time the job finished. - 'start_time` -
-   * Corresponds to time the job finished. * The operator must be `=` or `!=`.
-   * Examples: * inspected_storage = cloud_storage AND state = done *
-   * inspected_storage = cloud_storage OR inspected_storage = bigquery *
-   * inspected_storage = cloud_storage AND (state = done OR state = canceled) *
-   * end_time > \"2017-12-12T00:00:00+00:00\" The length of this field should be
-   * no more than 500 characters.
+   * DATASTORE|CLOUD_STORAGE|BIGQUERY - `trigger_name` - The name of the trigger
+   * that created the job. - 'end_time` - Corresponds to the time the job
+   * finished. - 'start_time` - Corresponds to the time the job finished. *
+   * Supported fields for risk analysis jobs: - `state` -
+   * RUNNING|CANCELED|FINISHED|FAILED - 'end_time` - Corresponds to the time the
+   * job finished. - 'start_time` - Corresponds to the time the job finished. *
+   * The operator must be `=` or `!=`. Examples: * inspected_storage =
+   * cloud_storage AND state = done * inspected_storage = cloud_storage OR
+   * inspected_storage = bigquery * inspected_storage = cloud_storage AND (state =
+   * done OR state = canceled) * end_time > \"2017-12-12T00:00:00+00:00\" The
+   * length of this field should be no more than 500 characters.
    * @opt_param string locationId Deprecated. This field has no effect.
    * @opt_param string orderBy Comma separated list of fields to order by,
    * followed by `asc` or `desc` postfix. This list is case-insensitive, default
    * sorting order is ascending, redundant space characters are insignificant.
    * Example: `name asc, end_time asc, create_time desc` Supported fields are: -
-   * `create_time`: corresponds to time the job was created. - `end_time`:
-   * corresponds to time the job ended. - `name`: corresponds to job's name. -
-   * `state`: corresponds to `state`
+   * `create_time`: corresponds to the time the job was created. - `end_time`:
+   * corresponds to the time the job ended. - `name`: corresponds to the job's
+   * name. - `state`: corresponds to `state`
    * @opt_param int pageSize The standard list page size.
    * @opt_param string pageToken The standard list page token.
    * @opt_param string type The type of job. Defaults to `DlpJobType.INSPECT`

@@ -35,8 +35,8 @@ class ProjectsLocationsBackups extends \Google\Service\Resource
    * Creates a backup. (backups.create)
    *
    * @param string $parent Required. The backup's project and location, in the
-   * format `projects/{project_number}/locations/{location}`. In Cloud Filestore,
-   * backup locations map to GCP regions, for example **us-west1**.
+   * format `projects/{project_number}/locations/{location}`. In Filestore, backup
+   * locations map to GCP regions, for example **us-west1**.
    * @param Backup $postBody
    * @param array $optParams Optional parameters.
    *
@@ -87,7 +87,7 @@ class ProjectsLocationsBackups extends \Google\Service\Resource
    *
    * @param string $parent Required. The project and location for which to
    * retrieve backup information, in the format
-   * `projects/{project_number}/locations/{location}`. In Cloud Filestore, backup
+   * `projects/{project_number}/locations/{location}`. In Filestore, backup
    * locations map to GCP regions, for example **us-west1**. To retrieve backup
    * information for all locations, use "-" for the `{location}` value.
    * @param array $optParams Optional parameters.

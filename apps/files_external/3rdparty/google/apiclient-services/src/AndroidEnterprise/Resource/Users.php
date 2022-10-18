@@ -78,8 +78,9 @@ class Users extends \Google\Service\Resource
     return $this->call('get', [$params], User::class);
   }
   /**
-   * Retrieves the set of products a user is entitled to access.
-   * (users.getAvailableProductSet)
+   * Retrieves the set of products a user is entitled to access. **Note:** This
+   * item has been deprecated. New integrations cannot use this method and can
+   * refer to our new recommendations. (users.getAvailableProductSet)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.
@@ -148,6 +149,8 @@ class Users extends \Google\Service\Resource
    * Modifies the set of products that a user is entitled to access (referred to
    * as *whitelisted* products). Only products that are approved or products that
    * were previously approved (products with revoked approval) can be whitelisted.
+   * **Note:** This item has been deprecated. New integrations cannot use this
+   * method and can refer to our new recommendations.
    * (users.setAvailableProductSet)
    *
    * @param string $enterpriseId The ID of the enterprise.

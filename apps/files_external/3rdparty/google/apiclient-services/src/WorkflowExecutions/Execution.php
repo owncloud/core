@@ -49,6 +49,8 @@ class Execution extends \Google\Model
    * @var string
    */
   public $state;
+  protected $statusType = Status::class;
+  protected $statusDataType = '';
   /**
    * @var string
    */
@@ -165,6 +167,20 @@ class Execution extends \Google\Model
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param Status
+   */
+  public function setStatus(Status $status)
+  {
+    $this->status = $status;
+  }
+  /**
+   * @return Status
+   */
+  public function getStatus()
+  {
+    return $this->status;
   }
   /**
    * @param string

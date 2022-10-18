@@ -42,6 +42,7 @@ class CloudDeploy extends \Google\Service
   public $projects_locations_deliveryPipelines;
   public $projects_locations_deliveryPipelines_releases;
   public $projects_locations_deliveryPipelines_releases_rollouts;
+  public $projects_locations_deliveryPipelines_releases_rollouts_jobRuns;
   public $projects_locations_operations;
   public $projects_locations_targets;
 
@@ -399,6 +400,62 @@ class CloudDeploy extends \Google\Service
               ],
             ],'list' => [
               'path' => 'v1/{+parent}/rollouts',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'retryJob' => [
+              'path' => 'v1/{+rollout}:retryJob',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'rollout' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_deliveryPipelines_releases_rollouts_jobRuns = new CloudDeploy\Resource\ProjectsLocationsDeliveryPipelinesReleasesRolloutsJobRuns(
+        $this,
+        $this->serviceName,
+        'jobRuns',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/jobRuns',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [

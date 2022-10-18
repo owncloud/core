@@ -30,11 +30,35 @@ class GoogleCloudRetailLoggingImportErrorContext extends \Google\Model
   /**
    * @var string
    */
+  public $inventoryActivity;
+  /**
+   * @var string
+   */
   public $lineNumber;
   /**
    * @var string
    */
   public $operationName;
+  /**
+   * @var string
+   */
+  public $order;
+  /**
+   * @var string
+   */
+  public $place;
+  /**
+   * @var string
+   */
+  public $placeAsset;
+  /**
+   * @var string
+   */
+  public $placeProductPrice;
+  /**
+   * @var string
+   */
+  public $placeProductSettings;
   /**
    * @var string
    */
@@ -75,6 +99,20 @@ class GoogleCloudRetailLoggingImportErrorContext extends \Google\Model
   /**
    * @param string
    */
+  public function setInventoryActivity($inventoryActivity)
+  {
+    $this->inventoryActivity = $inventoryActivity;
+  }
+  /**
+   * @return string
+   */
+  public function getInventoryActivity()
+  {
+    return $this->inventoryActivity;
+  }
+  /**
+   * @param string
+   */
   public function setLineNumber($lineNumber)
   {
     $this->lineNumber = $lineNumber;
@@ -99,6 +137,76 @@ class GoogleCloudRetailLoggingImportErrorContext extends \Google\Model
   public function getOperationName()
   {
     return $this->operationName;
+  }
+  /**
+   * @param string
+   */
+  public function setOrder($order)
+  {
+    $this->order = $order;
+  }
+  /**
+   * @return string
+   */
+  public function getOrder()
+  {
+    return $this->order;
+  }
+  /**
+   * @param string
+   */
+  public function setPlace($place)
+  {
+    $this->place = $place;
+  }
+  /**
+   * @return string
+   */
+  public function getPlace()
+  {
+    return $this->place;
+  }
+  /**
+   * @param string
+   */
+  public function setPlaceAsset($placeAsset)
+  {
+    $this->placeAsset = $placeAsset;
+  }
+  /**
+   * @return string
+   */
+  public function getPlaceAsset()
+  {
+    return $this->placeAsset;
+  }
+  /**
+   * @param string
+   */
+  public function setPlaceProductPrice($placeProductPrice)
+  {
+    $this->placeProductPrice = $placeProductPrice;
+  }
+  /**
+   * @return string
+   */
+  public function getPlaceProductPrice()
+  {
+    return $this->placeProductPrice;
+  }
+  /**
+   * @param string
+   */
+  public function setPlaceProductSettings($placeProductSettings)
+  {
+    $this->placeProductSettings = $placeProductSettings;
+  }
+  /**
+   * @return string
+   */
+  public function getPlaceProductSettings()
+  {
+    return $this->placeProductSettings;
   }
   /**
    * @param string

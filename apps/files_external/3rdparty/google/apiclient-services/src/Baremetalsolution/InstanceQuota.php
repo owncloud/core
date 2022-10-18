@@ -26,6 +26,10 @@ class InstanceQuota extends \Google\Model
   /**
    * @var string
    */
+  public $gcpService;
+  /**
+   * @var string
+   */
   public $instanceType;
   /**
    * @var string
@@ -49,6 +53,20 @@ class InstanceQuota extends \Google\Model
   public function getAvailableMachineCount()
   {
     return $this->availableMachineCount;
+  }
+  /**
+   * @param string
+   */
+  public function setGcpService($gcpService)
+  {
+    $this->gcpService = $gcpService;
+  }
+  /**
+   * @return string
+   */
+  public function getGcpService()
+  {
+    return $this->gcpService;
   }
   /**
    * @param string

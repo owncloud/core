@@ -17,6 +17,7 @@
 
 namespace Google\Service\AIPlatformNotebooks\Resource;
 
+use Google\Service\AIPlatformNotebooks\DiagnoseRuntimeRequest;
 use Google\Service\AIPlatformNotebooks\ListRuntimesResponse;
 use Google\Service\AIPlatformNotebooks\Operation;
 use Google\Service\AIPlatformNotebooks\Policy;
@@ -31,6 +32,7 @@ use Google\Service\AIPlatformNotebooks\StopRuntimeRequest;
 use Google\Service\AIPlatformNotebooks\SwitchRuntimeRequest;
 use Google\Service\AIPlatformNotebooks\TestIamPermissionsRequest;
 use Google\Service\AIPlatformNotebooks\TestIamPermissionsResponse;
+use Google\Service\AIPlatformNotebooks\UpgradeRuntimeRequest;
 
 /**
  * The "runtimes" collection of methods.
@@ -75,6 +77,22 @@ class ProjectsLocationsRuntimes extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('delete', [$params], Operation::class);
+  }
+  /**
+   * Creates a Diagnostic File and runs Diagnostic Tool given a Runtime.
+   * (runtimes.diagnose)
+   *
+   * @param string $name Required. Format:
+   * `projects/{project_id}/locations/{location}/runtimes/{runtimes_id}`
+   * @param DiagnoseRuntimeRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function diagnose($name, DiagnoseRuntimeRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('diagnose', [$params], Operation::class);
   }
   /**
    * Gets details of a single Runtime. The location must be a regional endpoint
@@ -158,7 +176,7 @@ class ProjectsLocationsRuntimes extends \Google\Service\Resource
    * Currently, only the following fields can be updated: -
    * software_config.kernels - software_config.post_startup_script -
    * software_config.custom_gpu_driver_path - software_config.idle_shutdown -
-   * software_config.idle_shutdown_timeout
+   * software_config.idle_shutdown_timeout - software_config.disable_terminal
    * @return Operation
    */
   public function patch($name, Runtime $postBody, $optParams = [])
@@ -304,6 +322,21 @@ class ProjectsLocationsRuntimes extends \Google\Service\Resource
     $params = ['resource' => $resource, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('testIamPermissions', [$params], TestIamPermissionsResponse::class);
+  }
+  /**
+   * Upgrades a Managed Notebook Runtime to the latest version. (runtimes.upgrade)
+   *
+   * @param string $name Required. Format:
+   * `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
+   * @param UpgradeRuntimeRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function upgrade($name, UpgradeRuntimeRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('upgrade', [$params], Operation::class);
   }
 }
 

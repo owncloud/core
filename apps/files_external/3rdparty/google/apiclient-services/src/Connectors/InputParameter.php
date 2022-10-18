@@ -32,13 +32,13 @@ class InputParameter extends \Google\Model
    */
   public $description;
   /**
+   * @var string
+   */
+  public $name;
+  /**
    * @var bool
    */
   public $nullable;
-  /**
-   * @var string
-   */
-  public $parameter;
 
   /**
    * @param string
@@ -83,6 +83,20 @@ class InputParameter extends \Google\Model
     return $this->description;
   }
   /**
+   * @param string
+   */
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+  /**
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->name;
+  }
+  /**
    * @param bool
    */
   public function setNullable($nullable)
@@ -95,20 +109,6 @@ class InputParameter extends \Google\Model
   public function getNullable()
   {
     return $this->nullable;
-  }
-  /**
-   * @param string
-   */
-  public function setParameter($parameter)
-  {
-    $this->parameter = $parameter;
-  }
-  /**
-   * @return string
-   */
-  public function getParameter()
-  {
-    return $this->parameter;
   }
 }
 

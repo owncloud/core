@@ -58,60 +58,6 @@ class Advertisers extends \Google\Service\Resource
     return $this->call('audit', [$params], AuditAdvertiserResponse::class);
   }
   /**
-   * Bulk edits targeting options under a single advertiser. The operation will
-   * delete the assigned targeting options provided in
-   * BulkEditAdvertiserAssignedTargetingOptionsRequest.delete_requests and then
-   * create the assigned targeting options provided in
-   * BulkEditAdvertiserAssignedTargetingOptionsRequest.create_requests .
-   * (advertisers.bulkEditAdvertiserAssignedTargetingOptions)
-   *
-   * @param string $advertiserId Required. The ID of the advertiser.
-   * @param BulkEditAdvertiserAssignedTargetingOptionsRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return BulkEditAdvertiserAssignedTargetingOptionsResponse
-   */
-  public function bulkEditAdvertiserAssignedTargetingOptions($advertiserId, BulkEditAdvertiserAssignedTargetingOptionsRequest $postBody, $optParams = [])
-  {
-    $params = ['advertiserId' => $advertiserId, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('bulkEditAdvertiserAssignedTargetingOptions', [$params], BulkEditAdvertiserAssignedTargetingOptionsResponse::class);
-  }
-  /**
-   * Lists assigned targeting options of an advertiser across targeting types.
-   * (advertisers.bulkListAdvertiserAssignedTargetingOptions)
-   *
-   * @param string $advertiserId Required. The ID of the advertiser the line item
-   * belongs to.
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param string filter Allows filtering by assigned targeting option
-   * properties. Supported syntax: * Filter expressions are made up of one or more
-   * restrictions. * Restrictions can be combined by the logical operator `OR`.. *
-   * A restriction has the form of `{field} {operator} {value}`. * The operator
-   * must be `EQUALS (=)`. * Supported fields: - `targetingType` Examples: *
-   * targetingType with value TARGETING_TYPE_CHANNEL
-   * `targetingType="TARGETING_TYPE_CHANNEL"` The length of this field should be
-   * no more than 500 characters.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * `targetingType` (default) The default sorting order is ascending. To
-   * specify descending order for a field, a suffix "desc" should be added to the
-   * field name. Example: `targetingType desc`.
-   * @opt_param int pageSize Requested page size. The size must be an integer
-   * between `1` and `5000`. If unspecified, the default is '5000'. Returns error
-   * code `INVALID_ARGUMENT` if an invalid value is specified.
-   * @opt_param string pageToken A token that lets the client fetch the next page
-   * of results. Typically, this is the value of next_page_token returned from the
-   * previous call to `BulkListAdvertiserAssignedTargetingOptions` method. If not
-   * specified, the first page of results will be returned.
-   * @return BulkListAdvertiserAssignedTargetingOptionsResponse
-   */
-  public function bulkListAdvertiserAssignedTargetingOptions($advertiserId, $optParams = [])
-  {
-    $params = ['advertiserId' => $advertiserId];
-    $params = array_merge($params, $optParams);
-    return $this->call('bulkListAdvertiserAssignedTargetingOptions', [$params], BulkListAdvertiserAssignedTargetingOptionsResponse::class);
-  }
-  /**
    * Creates a new advertiser. Returns the newly created advertiser if successful.
    * This method can take up to 180 seconds to complete. (advertisers.create)
    *
@@ -139,6 +85,25 @@ class Advertisers extends \Google\Service\Resource
     $params = ['advertiserId' => $advertiserId];
     $params = array_merge($params, $optParams);
     return $this->call('delete', [$params], DisplayvideoEmpty::class);
+  }
+  /**
+   * Edits targeting options under a single advertiser. The operation will delete
+   * the assigned targeting options provided in
+   * BulkEditAdvertiserAssignedTargetingOptionsRequest.delete_requests and then
+   * create the assigned targeting options provided in
+   * BulkEditAdvertiserAssignedTargetingOptionsRequest.create_requests .
+   * (advertisers.editAssignedTargetingOptions)
+   *
+   * @param string $advertiserId Required. The ID of the advertiser.
+   * @param BulkEditAdvertiserAssignedTargetingOptionsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return BulkEditAdvertiserAssignedTargetingOptionsResponse
+   */
+  public function editAssignedTargetingOptions($advertiserId, BulkEditAdvertiserAssignedTargetingOptionsRequest $postBody, $optParams = [])
+  {
+    $params = ['advertiserId' => $advertiserId, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('editAssignedTargetingOptions', [$params], BulkEditAdvertiserAssignedTargetingOptionsResponse::class);
   }
   /**
    * Gets an advertiser. (advertisers.get)
@@ -195,6 +160,41 @@ class Advertisers extends \Google\Service\Resource
     $params = [];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListAdvertisersResponse::class);
+  }
+  /**
+   * Lists assigned targeting options of an advertiser across targeting types.
+   * (advertisers.listAssignedTargetingOptions)
+   *
+   * @param string $advertiserId Required. The ID of the advertiser the line item
+   * belongs to.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter Allows filtering by assigned targeting option
+   * properties. Supported syntax: * Filter expressions are made up of one or more
+   * restrictions. * Restrictions can be combined by the logical operator `OR`.. *
+   * A restriction has the form of `{field} {operator} {value}`. * The operator
+   * must be `EQUALS (=)`. * Supported fields: - `targetingType` Examples: *
+   * targetingType with value TARGETING_TYPE_CHANNEL
+   * `targetingType="TARGETING_TYPE_CHANNEL"` The length of this field should be
+   * no more than 500 characters.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `targetingType` (default) The default sorting order is ascending. To
+   * specify descending order for a field, a suffix "desc" should be added to the
+   * field name. Example: `targetingType desc`.
+   * @opt_param int pageSize Requested page size. The size must be an integer
+   * between `1` and `5000`. If unspecified, the default is '5000'. Returns error
+   * code `INVALID_ARGUMENT` if an invalid value is specified.
+   * @opt_param string pageToken A token that lets the client fetch the next page
+   * of results. Typically, this is the value of next_page_token returned from the
+   * previous call to `BulkListAdvertiserAssignedTargetingOptions` method. If not
+   * specified, the first page of results will be returned.
+   * @return BulkListAdvertiserAssignedTargetingOptionsResponse
+   */
+  public function listAssignedTargetingOptions($advertiserId, $optParams = [])
+  {
+    $params = ['advertiserId' => $advertiserId];
+    $params = array_merge($params, $optParams);
+    return $this->call('listAssignedTargetingOptions', [$params], BulkListAdvertiserAssignedTargetingOptionsResponse::class);
   }
   /**
    * Updates an existing advertiser. Returns the updated advertiser if successful.

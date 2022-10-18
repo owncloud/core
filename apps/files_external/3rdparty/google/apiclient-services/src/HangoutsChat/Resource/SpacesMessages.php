@@ -103,7 +103,7 @@ class SpacesMessages extends \Google\Service\Resource
    * @opt_param string updateMask Required. The field paths to update. Separate
    * multiple values with commas. Currently supported field paths: - text - cards
    * (Requires [service account authentication](/chat/api/guides/auth/service-
-   * accounts).) - attachment
+   * accounts).) - cards_v2
    * @return Message
    */
   public function update($name, Message $postBody, $optParams = [])

@@ -40,10 +40,10 @@ use Google\Service\ApigeeRegistry\TestIamPermissionsResponse;
 class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
 {
   /**
-   * CreateApiSpec creates a specified spec. (specs.create)
+   * Creates a specified spec. (specs.create)
    *
    * @param string $parent Required. The parent, which owns this collection of
-   * specs. Format: projects/locations/apis/versions
+   * specs. Format: `projects/locations/apis/versions`
    * @param ApiSpec $postBody
    * @param array $optParams Optional parameters.
    *
@@ -60,11 +60,11 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('create', [$params], ApiSpec::class);
   }
   /**
-   * DeleteApiSpec removes a specified spec, all revisions, and all child
-   * resources (e.g. artifacts). (specs.delete)
+   * Removes a specified spec, all revisions, and all child resources (e.g.,
+   * artifacts). (specs.delete)
    *
    * @param string $name Required. The name of the spec to delete. Format:
-   * projects/locations/apis/versions/specs
+   * `projects/locations/apis/versions/specs`
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool force If set to true, any child resources will also be
@@ -79,11 +79,11 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('delete', [$params], ApigeeregistryEmpty::class);
   }
   /**
-   * DeleteApiSpecRevision deletes a revision of a spec. (specs.deleteRevision)
+   * Deletes a revision of a spec. (specs.deleteRevision)
    *
    * @param string $name Required. The name of the spec revision to be deleted,
-   * with a revision ID explicitly included. Example: projects/sample/locations/gl
-   * obal/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8
+   * with a revision ID explicitly included. Example: `projects/sample/locations/g
+   * lobal/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8`
    * @param array $optParams Optional parameters.
    * @return ApiSpec
    */
@@ -94,10 +94,10 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('deleteRevision', [$params], ApiSpec::class);
   }
   /**
-   * GetApiSpec returns a specified spec. (specs.get)
+   * Returns a specified spec. (specs.get)
    *
    * @param string $name Required. The name of the spec to retrieve. Format:
-   * projects/locations/apis/versions/specs
+   * `projects/locations/apis/versions/specs`
    * @param array $optParams Optional parameters.
    * @return ApiSpec
    */
@@ -108,13 +108,13 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('get', [$params], ApiSpec::class);
   }
   /**
-   * GetApiSpecContents returns the contents of a specified spec. If specs are
-   * stored with GZip compression, the default behavior is to return the spec
-   * uncompressed (the mime_type response field indicates the exact format
-   * returned). (specs.getContents)
+   * Returns the contents of a specified spec. If specs are stored with GZip
+   * compression, the default behavior is to return the spec uncompressed (the
+   * mime_type response field indicates the exact format returned).
+   * (specs.getContents)
    *
    * @param string $name Required. The name of the spec whose contents should be
-   * retrieved. Format: projects/locations/apis/versions/specs
+   * retrieved. Format: `projects/locations/apis/versions/specs`
    * @param array $optParams Optional parameters.
    * @return HttpBody
    */
@@ -155,16 +155,18 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('getIamPolicy', [$params], Policy::class);
   }
   /**
-   * ListApiSpecs returns matching specs.
-   * (specs.listProjectsLocationsApisVersionsSpecs)
+   * Returns matching specs. (specs.listProjectsLocationsApisVersionsSpecs)
    *
    * @param string $parent Required. The parent, which owns this collection of
-   * specs. Format: projects/locations/apis/versions
+   * specs. Format: `projects/locations/apis/versions`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter An expression that can be used to filter the list.
    * Filters use the Common Expression Language and can refer to all message
    * fields except contents.
+   * @opt_param string orderBy A comma-separated list of fields, e.g. "foo,bar"
+   * Fields can be sorted in descending order using the "desc" identifier, e.g.
+   * "foo desc,bar"
    * @opt_param int pageSize The maximum number of specs to return. The service
    * may return fewer than this value. If unspecified, at most 50 values will be
    * returned. The maximum is 1000; values above 1000 will be coerced to 1000.
@@ -181,8 +183,8 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('list', [$params], ListApiSpecsResponse::class);
   }
   /**
-   * ListApiSpecRevisions lists all revisions of a spec. Revisions are returned in
-   * descending order of revision creation time. (specs.listRevisions)
+   * Lists all revisions of a spec. Revisions are returned in descending order of
+   * revision creation time. (specs.listRevisions)
    *
    * @param string $name Required. The name of the spec to list revisions for.
    * @param array $optParams Optional parameters.
@@ -199,7 +201,7 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('listRevisions', [$params], ListApiSpecRevisionsResponse::class);
   }
   /**
-   * UpdateApiSpec can be used to modify a specified spec. (specs.patch)
+   * Used to modify a specified spec. (specs.patch)
    *
    * @param string $name Resource name.
    * @param ApiSpec $postBody
@@ -209,8 +211,8 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
    * spec will be created. In this situation, `update_mask` is ignored.
    * @opt_param string updateMask The list of fields to be updated. If omitted,
    * all fields are updated that are set in the request message (fields set to
-   * default values are ignored). If a "*" is specified, all fields are updated,
-   * including fields that are unspecified/default in the request.
+   * default values are ignored). If an asterisk "*" is specified, all fields are
+   * updated, including fields that are unspecified/default in the request.
    * @return ApiSpec
    */
   public function patch($name, ApiSpec $postBody, $optParams = [])
@@ -220,8 +222,8 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('patch', [$params], ApiSpec::class);
   }
   /**
-   * RollbackApiSpec sets the current revision to a specified prior revision. Note
-   * that this creates a new revision with a new revision ID. (specs.rollback)
+   * Sets the current revision to a specified prior revision. Note that this
+   * creates a new revision with a new revision ID. (specs.rollback)
    *
    * @param string $name Required. The spec being rolled back.
    * @param RollbackApiSpecRequest $postBody
@@ -254,8 +256,7 @@ class ProjectsLocationsApisVersionsSpecs extends \Google\Service\Resource
     return $this->call('setIamPolicy', [$params], Policy::class);
   }
   /**
-   * TagApiSpecRevision adds a tag to a specified revision of a spec.
-   * (specs.tagRevision)
+   * Adds a tag to a specified revision of a spec. (specs.tagRevision)
    *
    * @param string $name Required. The name of the spec to be tagged, including
    * the revision ID.

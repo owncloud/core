@@ -22,26 +22,8 @@ class ViewabilityAssignedTargetingOptionDetails extends \Google\Model
   /**
    * @var string
    */
-  public $targetingOptionId;
-  /**
-   * @var string
-   */
   public $viewability;
 
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
-  {
-    $this->targetingOptionId = $targetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
-  {
-    return $this->targetingOptionId;
-  }
   /**
    * @param string
    */

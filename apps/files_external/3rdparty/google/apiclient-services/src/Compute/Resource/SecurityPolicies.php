@@ -17,6 +17,7 @@
 
 namespace Google\Service\Compute\Resource;
 
+use Google\Service\Compute\GlobalSetLabelsRequest;
 use Google\Service\Compute\Operation;
 use Google\Service\Compute\SecurityPoliciesAggregatedList;
 use Google\Service\Compute\SecurityPoliciesListPreconfiguredExpressionSetsResponse;
@@ -401,6 +402,22 @@ class SecurityPolicies extends \Google\Service\Resource
     $params = ['project' => $project, 'securityPolicy' => $securityPolicy];
     $params = array_merge($params, $optParams);
     return $this->call('removeRule', [$params], Operation::class);
+  }
+  /**
+   * Sets the labels on a security policy. To learn more about labels, read the
+   * Labeling Resources documentation. (securityPolicies.setLabels)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $resource Name or id of the resource for this request.
+   * @param GlobalSetLabelsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function setLabels($project, $resource, GlobalSetLabelsRequest $postBody, $optParams = [])
+  {
+    $params = ['project' => $project, 'resource' => $resource, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('setLabels', [$params], Operation::class);
   }
 }
 

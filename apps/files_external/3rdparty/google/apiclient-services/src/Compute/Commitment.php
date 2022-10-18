@@ -51,6 +51,10 @@ class Commitment extends \Google\Collection
   protected $licenseResourceType = LicenseResourceCommitment::class;
   protected $licenseResourceDataType = '';
   /**
+   * @var string[]
+   */
+  public $mergeSourceCommitments;
+  /**
    * @var string
    */
   public $name;
@@ -70,6 +74,10 @@ class Commitment extends \Google\Collection
    * @var string
    */
   public $selfLink;
+  /**
+   * @var string
+   */
+  public $splitSourceCommitment;
   /**
    * @var string
    */
@@ -200,6 +208,20 @@ class Commitment extends \Google\Collection
     return $this->licenseResource;
   }
   /**
+   * @param string[]
+   */
+  public function setMergeSourceCommitments($mergeSourceCommitments)
+  {
+    $this->mergeSourceCommitments = $mergeSourceCommitments;
+  }
+  /**
+   * @return string[]
+   */
+  public function getMergeSourceCommitments()
+  {
+    return $this->mergeSourceCommitments;
+  }
+  /**
    * @param string
    */
   public function setName($name)
@@ -282,6 +304,20 @@ class Commitment extends \Google\Collection
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param string
+   */
+  public function setSplitSourceCommitment($splitSourceCommitment)
+  {
+    $this->splitSourceCommitment = $splitSourceCommitment;
+  }
+  /**
+   * @return string
+   */
+  public function getSplitSourceCommitment()
+  {
+    return $this->splitSourceCommitment;
   }
   /**
    * @param string

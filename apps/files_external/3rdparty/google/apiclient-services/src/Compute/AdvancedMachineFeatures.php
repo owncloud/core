@@ -31,6 +31,10 @@ class AdvancedMachineFeatures extends \Google\Model
    * @var int
    */
   public $threadsPerCore;
+  /**
+   * @var int
+   */
+  public $visibleCoreCount;
 
   /**
    * @param bool
@@ -73,6 +77,20 @@ class AdvancedMachineFeatures extends \Google\Model
   public function getThreadsPerCore()
   {
     return $this->threadsPerCore;
+  }
+  /**
+   * @param int
+   */
+  public function setVisibleCoreCount($visibleCoreCount)
+  {
+    $this->visibleCoreCount = $visibleCoreCount;
+  }
+  /**
+   * @return int
+   */
+  public function getVisibleCoreCount()
+  {
+    return $this->visibleCoreCount;
   }
 }
 

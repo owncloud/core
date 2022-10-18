@@ -21,6 +21,8 @@ use Google\Service\Compute\BackendService;
 use Google\Service\Compute\BackendServiceGroupHealth;
 use Google\Service\Compute\BackendServiceList;
 use Google\Service\Compute\Operation;
+use Google\Service\Compute\Policy;
+use Google\Service\Compute\RegionSetPolicyRequest;
 use Google\Service\Compute\ResourceGroupReference;
 
 /**
@@ -93,6 +95,24 @@ class RegionBackendServices extends \Google\Service\Resource
     $params = ['project' => $project, 'region' => $region, 'backendService' => $backendService, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('getHealth', [$params], BackendServiceGroupHealth::class);
+  }
+  /**
+   * Gets the access control policy for a resource. May be empty if no such policy
+   * or resource exists. (regionBackendServices.getIamPolicy)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $region The name of the region for this request.
+   * @param string $resource Name or id of the resource for this request.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param int optionsRequestedPolicyVersion Requested IAM Policy version.
+   * @return Policy
+   */
+  public function getIamPolicy($project, $region, $resource, $optParams = [])
+  {
+    $params = ['project' => $project, 'region' => $region, 'resource' => $resource];
+    $params = array_merge($params, $optParams);
+    return $this->call('getIamPolicy', [$params], Policy::class);
   }
   /**
    * Creates a regional BackendService resource in the specified project using the
@@ -218,6 +238,23 @@ class RegionBackendServices extends \Google\Service\Resource
     $params = ['project' => $project, 'region' => $region, 'backendService' => $backendService, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], Operation::class);
+  }
+  /**
+   * Sets the access control policy on the specified resource. Replaces any
+   * existing policy. (regionBackendServices.setIamPolicy)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $region The name of the region for this request.
+   * @param string $resource Name or id of the resource for this request.
+   * @param RegionSetPolicyRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Policy
+   */
+  public function setIamPolicy($project, $region, $resource, RegionSetPolicyRequest $postBody, $optParams = [])
+  {
+    $params = ['project' => $project, 'region' => $region, 'resource' => $resource, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('setIamPolicy', [$params], Policy::class);
   }
   /**
    * Updates the specified regional BackendService resource with the data included

@@ -63,6 +63,10 @@ class RouterBgpPeer extends \Google\Collection
   /**
    * @var string
    */
+  public $md5AuthenticationKeyName;
+  /**
+   * @var string
+   */
   public $name;
   /**
    * @var string
@@ -234,6 +238,20 @@ class RouterBgpPeer extends \Google\Collection
   public function getManagementType()
   {
     return $this->managementType;
+  }
+  /**
+   * @param string
+   */
+  public function setMd5AuthenticationKeyName($md5AuthenticationKeyName)
+  {
+    $this->md5AuthenticationKeyName = $md5AuthenticationKeyName;
+  }
+  /**
+   * @return string
+   */
+  public function getMd5AuthenticationKeyName()
+  {
+    return $this->md5AuthenticationKeyName;
   }
   /**
    * @param string

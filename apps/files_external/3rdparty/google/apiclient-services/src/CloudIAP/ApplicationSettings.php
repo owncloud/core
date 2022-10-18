@@ -21,6 +21,8 @@ class ApplicationSettings extends \Google\Model
 {
   protected $accessDeniedPageSettingsType = AccessDeniedPageSettings::class;
   protected $accessDeniedPageSettingsDataType = '';
+  protected $attributePropagationSettingsType = AttributePropagationSettings::class;
+  protected $attributePropagationSettingsDataType = '';
   /**
    * @var string
    */
@@ -41,6 +43,20 @@ class ApplicationSettings extends \Google\Model
   public function getAccessDeniedPageSettings()
   {
     return $this->accessDeniedPageSettings;
+  }
+  /**
+   * @param AttributePropagationSettings
+   */
+  public function setAttributePropagationSettings(AttributePropagationSettings $attributePropagationSettings)
+  {
+    $this->attributePropagationSettings = $attributePropagationSettings;
+  }
+  /**
+   * @return AttributePropagationSettings
+   */
+  public function getAttributePropagationSettings()
+  {
+    return $this->attributePropagationSettings;
   }
   /**
    * @param string

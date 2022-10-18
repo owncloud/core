@@ -37,8 +37,11 @@ class ProjectsNotificationChannels extends \Google\Service\Resource
 {
   /**
    * Creates a new notification channel, representing a single notification
-   * endpoint such as an email address, SMS number, or PagerDuty service.
-   * (notificationChannels.create)
+   * endpoint such as an email address, SMS number, or PagerDuty service.Design
+   * your application to single-thread API calls that modify the state of
+   * notification channels in a single project. This includes calls to
+   * CreateNotificationChannel, DeleteNotificationChannel and
+   * UpdateNotificationChannel. (notificationChannels.create)
    *
    * @param string $name Required. The project
    * (https://cloud.google.com/monitoring/api/v3#project_name) on which to execute
@@ -58,7 +61,10 @@ class ProjectsNotificationChannels extends \Google\Service\Resource
     return $this->call('create', [$params], NotificationChannel::class);
   }
   /**
-   * Deletes a notification channel. (notificationChannels.delete)
+   * Deletes a notification channel.Design your application to single-thread API
+   * calls that modify the state of notification channels in a single project.
+   * This includes calls to CreateNotificationChannel, DeleteNotificationChannel
+   * and UpdateNotificationChannel. (notificationChannels.delete)
    *
    * @param string $name Required. The channel for which to execute the request.
    * The format is:
@@ -169,7 +175,10 @@ class ProjectsNotificationChannels extends \Google\Service\Resource
   }
   /**
    * Updates a notification channel. Fields not specified in the field mask remain
-   * unchanged. (notificationChannels.patch)
+   * unchanged.Design your application to single-thread API calls that modify the
+   * state of notification channels in a single project. This includes calls to
+   * CreateNotificationChannel, DeleteNotificationChannel and
+   * UpdateNotificationChannel. (notificationChannels.patch)
    *
    * @param string $name The full REST resource name for this channel. The format
    * is: projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID] The

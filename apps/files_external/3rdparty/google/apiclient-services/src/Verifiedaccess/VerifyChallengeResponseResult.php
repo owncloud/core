@@ -22,6 +22,10 @@ class VerifyChallengeResponseResult extends \Google\Model
   /**
    * @var string
    */
+  public $customerId;
+  /**
+   * @var string
+   */
   public $devicePermanentId;
   /**
    * @var string
@@ -35,7 +39,25 @@ class VerifyChallengeResponseResult extends \Google\Model
    * @var string
    */
   public $signedPublicKeyAndChallenge;
+  /**
+   * @var string
+   */
+  public $virtualDeviceId;
 
+  /**
+   * @param string
+   */
+  public function setCustomerId($customerId)
+  {
+    $this->customerId = $customerId;
+  }
+  /**
+   * @return string
+   */
+  public function getCustomerId()
+  {
+    return $this->customerId;
+  }
   /**
    * @param string
    */
@@ -91,6 +113,20 @@ class VerifyChallengeResponseResult extends \Google\Model
   public function getSignedPublicKeyAndChallenge()
   {
     return $this->signedPublicKeyAndChallenge;
+  }
+  /**
+   * @param string
+   */
+  public function setVirtualDeviceId($virtualDeviceId)
+  {
+    $this->virtualDeviceId = $virtualDeviceId;
+  }
+  /**
+   * @return string
+   */
+  public function getVirtualDeviceId()
+  {
+    return $this->virtualDeviceId;
   }
 }
 

@@ -17,8 +17,9 @@
 
 namespace Google\Service\CloudRetail;
 
-class GoogleCloudRetailV2alphaModel extends \Google\Model
+class GoogleCloudRetailV2alphaModel extends \Google\Collection
 {
+  protected $collection_key = 'servingConfigLists';
   /**
    * @var string
    */
@@ -53,6 +54,8 @@ class GoogleCloudRetailV2alphaModel extends \Google\Model
    * @var string
    */
   public $periodicTuningState;
+  protected $servingConfigListsType = GoogleCloudRetailV2alphaModelServingConfigList::class;
+  protected $servingConfigListsDataType = 'array';
   /**
    * @var string
    */
@@ -199,6 +202,20 @@ class GoogleCloudRetailV2alphaModel extends \Google\Model
   public function getPeriodicTuningState()
   {
     return $this->periodicTuningState;
+  }
+  /**
+   * @param GoogleCloudRetailV2alphaModelServingConfigList[]
+   */
+  public function setServingConfigLists($servingConfigLists)
+  {
+    $this->servingConfigLists = $servingConfigLists;
+  }
+  /**
+   * @return GoogleCloudRetailV2alphaModelServingConfigList[]
+   */
+  public function getServingConfigLists()
+  {
+    return $this->servingConfigLists;
   }
   /**
    * @param string

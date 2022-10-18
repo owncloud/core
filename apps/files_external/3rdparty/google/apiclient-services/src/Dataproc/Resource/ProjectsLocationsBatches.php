@@ -65,7 +65,9 @@ class ProjectsLocationsBatches extends \Google\Service\Resource
    * the delete fails and the response returns FAILED_PRECONDITION.
    * (batches.delete)
    *
-   * @param string $name Required. The name of the batch resource to delete.
+   * @param string $name Required. The fully qualified name of the batch to
+   * retrieve in the format
+   * "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID"
    * @param array $optParams Optional parameters.
    * @return DataprocEmpty
    */
@@ -78,7 +80,9 @@ class ProjectsLocationsBatches extends \Google\Service\Resource
   /**
    * Gets the batch workload resource representation. (batches.get)
    *
-   * @param string $name Required. The name of the batch to retrieve.
+   * @param string $name Required. The fully qualified name of the batch to
+   * retrieve in the format
+   * "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID"
    * @param array $optParams Optional parameters.
    * @return Batch
    */

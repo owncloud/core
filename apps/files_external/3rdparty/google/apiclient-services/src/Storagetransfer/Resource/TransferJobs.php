@@ -20,6 +20,7 @@ namespace Google\Service\Storagetransfer\Resource;
 use Google\Service\Storagetransfer\ListTransferJobsResponse;
 use Google\Service\Storagetransfer\Operation;
 use Google\Service\Storagetransfer\RunTransferJobRequest;
+use Google\Service\Storagetransfer\StoragetransferEmpty;
 use Google\Service\Storagetransfer\TransferJob;
 use Google\Service\Storagetransfer\UpdateTransferJobRequest;
 
@@ -45,6 +46,22 @@ class TransferJobs extends \Google\Service\Resource
     $params = ['postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('create', [$params], TransferJob::class);
+  }
+  /**
+   * Deletes a transfer job. Deleting a transfer job sets its status to DELETED.
+   * (transferJobs.delete)
+   *
+   * @param string $jobName Required. The job to delete.
+   * @param string $projectId Required. The ID of the Google Cloud project that
+   * owns the job.
+   * @param array $optParams Optional parameters.
+   * @return StoragetransferEmpty
+   */
+  public function delete($jobName, $projectId, $optParams = [])
+  {
+    $params = ['jobName' => $jobName, 'projectId' => $projectId];
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', [$params], StoragetransferEmpty::class);
   }
   /**
    * Gets a transfer job. (transferJobs.get)
@@ -101,10 +118,9 @@ class TransferJobs extends \Google\Service\Resource
     return $this->call('patch', [$params], TransferJob::class);
   }
   /**
-   * Attempts to start a new TransferOperation for the current TransferJob. A
-   * TransferJob has a maximum of one active TransferOperation. If this method is
-   * called while a TransferOperation is active, an error will be returned.
-   * (transferJobs.run)
+   * Starts a new operation for the specified transfer job. A `TransferJob` has a
+   * maximum of one active `TransferOperation`. If this method is called while a
+   * `TransferOperation` is active, an error is returned. (transferJobs.run)
    *
    * @param string $jobName Required. The name of the transfer job.
    * @param RunTransferJobRequest $postBody

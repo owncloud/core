@@ -105,12 +105,10 @@ class OrganizationsStoredInfoTypes extends \Google\Service\Resource
    * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
    * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
    * Projects scope, no location specified (defaults to global):
-   * `projects/`PROJECT_ID + Organizations scope, location specified:
-   * `organizations/`ORG_ID`/locations/`LOCATION_ID + Organizations scope, no
-   * location specified (defaults to global): `organizations/`ORG_ID The following
-   * example `parent` string specifies a parent project with the identifier
-   * `example-project`, and specifies the `europe-west3` location for processing
-   * data: parent=projects/example-project/locations/europe-west3
+   * `projects/`PROJECT_ID The following example `parent` string specifies a
+   * parent project with the identifier `example-project`, and specifies the
+   * `europe-west3` location for processing data: parent=projects/example-
+   * project/locations/europe-west3
    * @param array $optParams Optional parameters.
    *
    * @opt_param string locationId Deprecated. This field has no effect.
@@ -118,12 +116,12 @@ class OrganizationsStoredInfoTypes extends \Google\Service\Resource
    * followed by `asc` or `desc` postfix. This list is case-insensitive, default
    * sorting order is ascending, redundant space characters are insignificant.
    * Example: `name asc, display_name, create_time desc` Supported fields are: -
-   * `create_time`: corresponds to time the most recent version of the resource
-   * was created. - `state`: corresponds to the state of the resource. - `name`:
-   * corresponds to resource name. - `display_name`: corresponds to info type's
-   * display name.
-   * @opt_param int pageSize Size of the page, can be limited by server. If zero
-   * server returns a page of max size 100.
+   * `create_time`: corresponds to the time the most recent version of the
+   * resource was created. - `state`: corresponds to the state of the resource. -
+   * `name`: corresponds to resource name. - `display_name`: corresponds to info
+   * type's display name.
+   * @opt_param int pageSize Size of the page, can be limited by the server. If
+   * zero server returns a page of max size 100.
    * @opt_param string pageToken Page token to continue retrieval. Comes from
    * previous call to `ListStoredInfoTypes`.
    * @return GooglePrivacyDlpV2ListStoredInfoTypesResponse

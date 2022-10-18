@@ -64,9 +64,9 @@ class ProjectsLocationsCatalogsUserEvents extends \Google\Service\Resource
   /**
    * Bulk import of User events. Request processing might be synchronous. Events
    * that already exist are skipped. Use this method for backfilling historical
-   * user events. Operation.response is of type ImportResponse. Note that it is
-   * possible for a subset of the items to be successfully inserted.
-   * Operation.metadata is of type ImportMetadata. (userEvents.import)
+   * user events. `Operation.response` is of type `ImportResponse`. Note that it
+   * is possible for a subset of the items to be successfully inserted.
+   * `Operation.metadata` is of type `ImportMetadata`. (userEvents.import)
    *
    * @param string $parent Required.
    * `projects/1234/locations/global/catalogs/default_catalog`
@@ -100,13 +100,13 @@ class ProjectsLocationsCatalogsUserEvents extends \Google\Service\Resource
     return $this->call('purge', [$params], GoogleLongrunningOperation::class);
   }
   /**
-   * Starts a user event rejoin operation with latest product catalog. Events will
-   * not be annotated with detailed product information if product is missing from
-   * the catalog at the time the user event is ingested, and these events are
-   * stored as unjoined events with a limited usage on training and serving. This
-   * method can be used to start a join operation on specified events with latest
-   * version of product catalog. It can also be used to correct events joined with
-   * the wrong product catalog. A rejoin operation can take hours or days to
+   * Starts a user-event rejoin operation with latest product catalog. Events are
+   * not annotated with detailed product information for products that are missing
+   * from the catalog when the user event is ingested. These events are stored as
+   * unjoined events with limited usage on training and serving. You can use this
+   * method to start a join operation on specified events with the latest version
+   * of product catalog. You can also use this method to correct events joined
+   * with the wrong product catalog. A rejoin operation can take hours or days to
    * complete. (userEvents.rejoin)
    *
    * @param string $parent Required. The parent catalog resource name, such as

@@ -151,13 +151,12 @@ class ProjectsKeys extends \Google\Service\Resource
     return $this->call('patch', [$params], GoogleCloudRecaptchaenterpriseV1Key::class);
   }
   /**
-   * Returns the secret key related to the specified public key. You should use
-   * the legacy secret key only if you are integrating with a 3rd party using the
-   * legacy reCAPTCHA instead of reCAPTCHA Enterprise.
+   * Returns the secret key related to the specified public key. You must use the
+   * legacy secret key only in a 3rd party integration with legacy reCAPTCHA.
    * (keys.retrieveLegacySecretKey)
    *
    * @param string $key Required. The public key name linked to the requested
-   * secret key , in the format "projects/{project}/keys/{key}".
+   * secret key in the format "projects/{project}/keys/{key}".
    * @param array $optParams Optional parameters.
    * @return GoogleCloudRecaptchaenterpriseV1RetrieveLegacySecretKeyResponse
    */

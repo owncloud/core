@@ -96,7 +96,7 @@ class Reports extends \Google\Service\Resource
    * Updates an existing report. This method supports patch semantics.
    * (reports.patch)
    *
-   * @param string $profileId The DFA user profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param string $reportId The ID of the report.
    * @param Report $postBody
    * @param array $optParams Optional parameters.

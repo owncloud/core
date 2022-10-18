@@ -49,6 +49,7 @@ class ArtifactRegistry extends \Google\Service
   public $projects_locations_repositories_aptArtifacts;
   public $projects_locations_repositories_dockerImages;
   public $projects_locations_repositories_files;
+  public $projects_locations_repositories_kfpArtifacts;
   public $projects_locations_repositories_mavenArtifacts;
   public $projects_locations_repositories_npmPackages;
   public $projects_locations_repositories_packages;
@@ -334,6 +335,10 @@ class ArtifactRegistry extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'pageSize' => [
                   'location' => 'query',
                   'type' => 'integer',
@@ -387,6 +392,26 @@ class ArtifactRegistry extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_repositories_kfpArtifacts = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesKfpArtifacts(
+        $this,
+        $this->serviceName,
+        'kfpArtifacts',
+        [
+          'methods' => [
+            'upload' => [
+              'path' => 'v1/{+parent}/kfpArtifacts:create',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

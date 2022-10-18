@@ -72,6 +72,10 @@ class BackupRun extends \Google\Model
   /**
    * @var string
    */
+  public $timeZone;
+  /**
+   * @var string
+   */
   public $type;
   /**
    * @var string
@@ -273,6 +277,20 @@ class BackupRun extends \Google\Model
   public function getStatus()
   {
     return $this->status;
+  }
+  /**
+   * @param string
+   */
+  public function setTimeZone($timeZone)
+  {
+    $this->timeZone = $timeZone;
+  }
+  /**
+   * @return string
+   */
+  public function getTimeZone()
+  {
+    return $this->timeZone;
   }
   /**
    * @param string

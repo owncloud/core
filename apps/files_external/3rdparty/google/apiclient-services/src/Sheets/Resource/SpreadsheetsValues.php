@@ -226,9 +226,10 @@ class SpreadsheetsValues extends \Google\Service\Resource
    * be represented in the output. This is ignored if value_render_option is
    * FORMATTED_VALUE. The default dateTime render option is SERIAL_NUMBER.
    * @opt_param string majorDimension The major dimension that results should use.
-   * For example, if the spreadsheet data is: `A1=1,B1=2,A2=3,B2=4`, then
-   * requesting `range=A1:B2,majorDimension=ROWS` returns `[[1,2],[3,4]]`, whereas
-   * requesting `range=A1:B2,majorDimension=COLUMNS` returns `[[1,3],[2,4]]`.
+   * For example, if the spreadsheet data in Sheet1 is: `A1=1,B1=2,A2=3,B2=4`,
+   * then requesting `range=Sheet1!A1:B2?majorDimension=ROWS` returns
+   * `[[1,2],[3,4]]`, whereas requesting
+   * `range=Sheet1!A1:B2?majorDimension=COLUMNS` returns `[[1,3],[2,4]]`.
    * @opt_param string valueRenderOption How values should be represented in the
    * output. The default render option is FORMATTED_VALUE.
    * @return ValueRange

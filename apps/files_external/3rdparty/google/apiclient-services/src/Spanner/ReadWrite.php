@@ -19,6 +19,25 @@ namespace Google\Service\Spanner;
 
 class ReadWrite extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $readLockMode;
+
+  /**
+   * @param string
+   */
+  public function setReadLockMode($readLockMode)
+  {
+    $this->readLockMode = $readLockMode;
+  }
+  /**
+   * @return string
+   */
+  public function getReadLockMode()
+  {
+    return $this->readLockMode;
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

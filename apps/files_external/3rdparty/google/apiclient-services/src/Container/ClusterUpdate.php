@@ -82,6 +82,8 @@ class ClusterUpdate extends \Google\Collection
    * @var string
    */
   public $desiredNodePoolId;
+  protected $desiredNodePoolLoggingConfigType = NodePoolLoggingConfig::class;
+  protected $desiredNodePoolLoggingConfigDataType = '';
   /**
    * @var string
    */
@@ -442,6 +444,20 @@ class ClusterUpdate extends \Google\Collection
   public function getDesiredNodePoolId()
   {
     return $this->desiredNodePoolId;
+  }
+  /**
+   * @param NodePoolLoggingConfig
+   */
+  public function setDesiredNodePoolLoggingConfig(NodePoolLoggingConfig $desiredNodePoolLoggingConfig)
+  {
+    $this->desiredNodePoolLoggingConfig = $desiredNodePoolLoggingConfig;
+  }
+  /**
+   * @return NodePoolLoggingConfig
+   */
+  public function getDesiredNodePoolLoggingConfig()
+  {
+    return $this->desiredNodePoolLoggingConfig;
   }
   /**
    * @param string

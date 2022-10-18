@@ -17,8 +17,9 @@
 
 namespace Google\Service\SecurityCommandCenter;
 
-class Access extends \Google\Model
+class Access extends \Google\Collection
 {
+  protected $collection_key = 'serviceAccountDelegationInfo';
   /**
    * @var string
    */
@@ -36,11 +37,25 @@ class Access extends \Google\Model
   /**
    * @var string
    */
+  public $principalSubject;
+  protected $serviceAccountDelegationInfoType = ServiceAccountDelegationInfo::class;
+  protected $serviceAccountDelegationInfoDataType = 'array';
+  /**
+   * @var string
+   */
+  public $serviceAccountKeyName;
+  /**
+   * @var string
+   */
   public $serviceName;
   /**
    * @var string
    */
   public $userAgentFamily;
+  /**
+   * @var string
+   */
+  public $username;
 
   /**
    * @param string
@@ -101,6 +116,48 @@ class Access extends \Google\Model
   /**
    * @param string
    */
+  public function setPrincipalSubject($principalSubject)
+  {
+    $this->principalSubject = $principalSubject;
+  }
+  /**
+   * @return string
+   */
+  public function getPrincipalSubject()
+  {
+    return $this->principalSubject;
+  }
+  /**
+   * @param ServiceAccountDelegationInfo[]
+   */
+  public function setServiceAccountDelegationInfo($serviceAccountDelegationInfo)
+  {
+    $this->serviceAccountDelegationInfo = $serviceAccountDelegationInfo;
+  }
+  /**
+   * @return ServiceAccountDelegationInfo[]
+   */
+  public function getServiceAccountDelegationInfo()
+  {
+    return $this->serviceAccountDelegationInfo;
+  }
+  /**
+   * @param string
+   */
+  public function setServiceAccountKeyName($serviceAccountKeyName)
+  {
+    $this->serviceAccountKeyName = $serviceAccountKeyName;
+  }
+  /**
+   * @return string
+   */
+  public function getServiceAccountKeyName()
+  {
+    return $this->serviceAccountKeyName;
+  }
+  /**
+   * @param string
+   */
   public function setServiceName($serviceName)
   {
     $this->serviceName = $serviceName;
@@ -125,6 +182,20 @@ class Access extends \Google\Model
   public function getUserAgentFamily()
   {
     return $this->userAgentFamily;
+  }
+  /**
+   * @param string
+   */
+  public function setUsername($username)
+  {
+    $this->username = $username;
+  }
+  /**
+   * @return string
+   */
+  public function getUsername()
+  {
+    return $this->username;
   }
 }
 

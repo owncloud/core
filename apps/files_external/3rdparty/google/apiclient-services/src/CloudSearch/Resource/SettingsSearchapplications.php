@@ -102,6 +102,30 @@ class SettingsSearchapplications extends \Google\Service\Resource
     return $this->call('list', [$params], ListSearchApplicationsResponse::class);
   }
   /**
+   * Updates a search application. **Note:** This API requires an admin account to
+   * execute. (searchapplications.patch)
+   *
+   * @param string $name The name of the Search Application. Format:
+   * searchapplications/{application_id}.
+   * @param SearchApplication $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Update mask to control which fields to update.
+   * If update_mask is non-empty then only the fields specified in the update_mask
+   * are updated. If you specify a field in the update_mask, but don't specify its
+   * value in the search_application then that field will be cleared. If the
+   * update_mask is not present or empty or has the value * then all fields will
+   * be updated. Some example field paths: search_application.name,
+   * search_application.display_name
+   * @return Operation
+   */
+  public function patch($name, SearchApplication $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], Operation::class);
+  }
+  /**
    * Resets a search application to default settings. This will return an empty
    * response. **Note:** This API requires an admin account to execute.
    * (searchapplications.reset)
@@ -126,6 +150,14 @@ class SettingsSearchapplications extends \Google\Service\Resource
    * searchapplications/{application_id}.
    * @param SearchApplication $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Update mask to control which fields to update.
+   * If update_mask is non-empty then only the fields specified in the update_mask
+   * are updated. If you specify a field in the update_mask, but don't specify its
+   * value in the search_application then that field will be cleared. If the
+   * update_mask is not present or empty or has the value * then all fields will
+   * be updated. Some example field paths: search_application.name,
+   * search_application.display_name
    * @return Operation
    */
   public function update($name, SearchApplication $postBody, $optParams = [])

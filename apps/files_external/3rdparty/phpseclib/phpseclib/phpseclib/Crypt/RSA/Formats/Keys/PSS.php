@@ -15,8 +15,6 @@
  *
  * Analogous to "openssl genpkey -algorithm rsa-pss".
  *
- * @category  Crypt
- * @package   RSA
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2015 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -34,9 +32,7 @@ use phpseclib3\Math\BigInteger;
 /**
  * PKCS#8 Formatted RSA-PSS Key Handler
  *
- * @package RSA
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class PSS extends Progenitor
 {
@@ -44,7 +40,6 @@ abstract class PSS extends Progenitor
      * OID Name
      *
      * @var string
-     * @access private
      */
     const OID_NAME = 'id-RSASSA-PSS';
 
@@ -52,7 +47,6 @@ abstract class PSS extends Progenitor
      * OID Value
      *
      * @var string
-     * @access private
      */
     const OID_VALUE = '1.2.840.113549.1.1.10';
 
@@ -60,7 +54,6 @@ abstract class PSS extends Progenitor
      * OIDs loaded
      *
      * @var bool
-     * @access private
      */
     private static $oidsLoaded = false;
 
@@ -68,7 +61,6 @@ abstract class PSS extends Progenitor
      * Child OIDs loaded
      *
      * @var bool
-     * @access private
      */
     protected static $childOIDsLoaded = false;
 
@@ -99,7 +91,6 @@ abstract class PSS extends Progenitor
     /**
      * Break a public or private key down into its constituent components
      *
-     * @access public
      * @param string $key
      * @param string $password optional
      * @return array
@@ -163,7 +154,6 @@ abstract class PSS extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @access public
      * @param \phpseclib3\Math\BigInteger $n
      * @param \phpseclib3\Math\BigInteger $e
      * @param \phpseclib3\Math\BigInteger $d
@@ -187,7 +177,6 @@ abstract class PSS extends Progenitor
     /**
      * Convert a public key to the appropriate format
      *
-     * @access public
      * @param \phpseclib3\Math\BigInteger $n
      * @param \phpseclib3\Math\BigInteger $e
      * @param array $options optional
@@ -206,7 +195,6 @@ abstract class PSS extends Progenitor
     /**
      * Encodes PSS parameters
      *
-     * @access public
      * @param array $options
      * @return string
      */

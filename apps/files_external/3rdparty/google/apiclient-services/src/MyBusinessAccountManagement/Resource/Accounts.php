@@ -76,7 +76,7 @@ class Accounts extends \Google\Service\Resource
    * `type=USER_GROUP` will only return user groups. The `type` field is the only
    * supported filter.
    * @opt_param int pageSize Optional. How many accounts to fetch per page. The
-   * minimum supported page_size is 2. The default and maximum is 20.
+   * default and maximum is 20.
    * @opt_param string pageToken Optional. If specified, the next page of accounts
    * is retrieved. The `pageToken` is returned when a call to `accounts.list`
    * returns more results than can fit into the requested page size.

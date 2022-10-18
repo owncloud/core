@@ -22,30 +22,8 @@ class Bucket extends \Google\Model
   /**
    * @var string
    */
-  public $location;
-  /**
-   * @var string
-   */
   public $name;
-  /**
-   * @var bool
-   */
-  public $reconciling;
 
-  /**
-   * @param string
-   */
-  public function setLocation($location)
-  {
-    $this->location = $location;
-  }
-  /**
-   * @return string
-   */
-  public function getLocation()
-  {
-    return $this->location;
-  }
   /**
    * @param string
    */
@@ -59,20 +37,6 @@ class Bucket extends \Google\Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param bool
-   */
-  public function setReconciling($reconciling)
-  {
-    $this->reconciling = $reconciling;
-  }
-  /**
-   * @return bool
-   */
-  public function getReconciling()
-  {
-    return $this->reconciling;
   }
 }
 

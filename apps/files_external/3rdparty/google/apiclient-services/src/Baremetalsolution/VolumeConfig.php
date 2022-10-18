@@ -43,6 +43,10 @@ class VolumeConfig extends \Google\Collection
   /**
    * @var string
    */
+  public $performanceTier;
+  /**
+   * @var string
+   */
   public $protocol;
   /**
    * @var int
@@ -144,6 +148,20 @@ class VolumeConfig extends \Google\Collection
   public function getNfsExports()
   {
     return $this->nfsExports;
+  }
+  /**
+   * @param string
+   */
+  public function setPerformanceTier($performanceTier)
+  {
+    $this->performanceTier = $performanceTier;
+  }
+  /**
+   * @return string
+   */
+  public function getPerformanceTier()
+  {
+    return $this->performanceTier;
   }
   /**
    * @param string

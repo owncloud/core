@@ -58,6 +58,10 @@ class Page extends \Google\Model
   /**
    * @var string
    */
+  public $trashed;
+  /**
+   * @var string
+   */
   public $updated;
   /**
    * @var string
@@ -203,6 +207,20 @@ class Page extends \Google\Model
   public function getTitle()
   {
     return $this->title;
+  }
+  /**
+   * @param string
+   */
+  public function setTrashed($trashed)
+  {
+    $this->trashed = $trashed;
+  }
+  /**
+   * @return string
+   */
+  public function getTrashed()
+  {
+    return $this->trashed;
   }
   /**
    * @param string

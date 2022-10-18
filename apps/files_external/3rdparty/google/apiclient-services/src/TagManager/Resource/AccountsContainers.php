@@ -76,7 +76,7 @@ class AccountsContainers extends \Google\Service\Resource
    * Lists all Containers that belongs to a GTM Account.
    * (containers.listAccountsContainers)
    *
-   * @param string $parent GTM Accounts's API relative path. Example:
+   * @param string $parent GTM Account's API relative path. Example:
    * accounts/{account_id}.
    * @param array $optParams Optional parameters.
    *

@@ -208,6 +208,9 @@ class Projects extends \Google\Service\Resource
    * @opt_param string pageToken Token returned from a previous call to
    * `ListFirebaseProjects` indicating where in the set of Projects to resume
    * listing.
+   * @opt_param bool showDeleted Optional. Controls whether Projects in the
+   * DELETED state should be returned in the response. If not specified, only
+   * `ACTIVE` Projects will be returned.
    * @return ListFirebaseProjectsResponse
    */
   public function listProjects($optParams = [])
@@ -231,9 +234,13 @@ class Projects extends \Google\Service\Resource
    * @param FirebaseProject $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Specifies which fields to update. If this list
-   * is empty, then no state will be updated. Note that the fields `name`,
-   * `projectId`, and `projectNumber` are all immutable.
+   * @opt_param string updateMask Specifies which fields of the FirebaseProject to
+   * update. Note that the following fields are immutable: `name`, `project_id`,
+   * and `project_number`. To update `state`, use any of the following Google
+   * Cloud endpoints: [`projects.delete`](https://cloud.google.com/resource-
+   * manager/reference/rest/v1/projects/delete) or
+   * [`projects.undelete`](https://cloud.google.com/resource-
+   * manager/reference/rest/v1/projects/undelete)
    * @return FirebaseProject
    */
   public function patch($name, FirebaseProject $postBody, $optParams = [])
@@ -290,18 +297,18 @@ class Projects extends \Google\Service\Resource
    * [`platform`](../projects.apps#FirebaseAppInfo.FIELDS.platform) We also
    * support the following "virtual" fields (fields which are not actually part of
    * the returned resource object, but can be queried as if they are pre-populated
-   * with specific values): * `sha1_hash`: This field is considered to be a
-   * repeated `string` field, populated with the list of all SHA-1 certificate
-   * fingerprints registered with the app. This list is empty if the app is not an
-   * Android app. * `sha256_hash`: This field is considered to be a repeated
-   * `string` field, populated with the list of all SHA-256 certificate
-   * fingerprints registered with the app. This list is empty if the app is not an
-   * Android app. * `app_store_id`: This field is considered to be a singular
-   * `string` field, populated with the Apple App Store ID registered with the
-   * app. This field is empty if the app is not an iOS app. * `team_id`: This
-   * field is considered to be a singular `string` field, populated with the Apple
-   * team ID registered with the app. This field is empty if the app is not an iOS
-   * app.
+   * with specific values): * `sha1_hash` or `sha1_hashes`: This field is
+   * considered to be a repeated `string` field, populated with the list of all
+   * SHA-1 certificate fingerprints registered with the app. This list is empty if
+   * the app is not an Android app. * `sha256_hash` or `sha256_hashes`: This field
+   * is considered to be a repeated `string` field, populated with the list of all
+   * SHA-256 certificate fingerprints registered with the app. This list is empty
+   * if the app is not an Android app. * `app_store_id`: This field is considered
+   * to be a singular `string` field, populated with the Apple App Store ID
+   * registered with the app. This field is empty if the app is not an iOS app. *
+   * `team_id`: This field is considered to be a singular `string` field,
+   * populated with the Apple team ID registered with the app. This field is empty
+   * if the app is not an iOS app.
    * @opt_param int pageSize The maximum number of Apps to return in the response.
    * The server may return fewer than this value at its discretion. If no value is
    * specified (or too large a value is specified), then the server will impose
@@ -309,7 +316,7 @@ class Projects extends \Google\Service\Resource
    * @opt_param string pageToken Token returned from a previous call to
    * `SearchFirebaseApps` indicating where in the set of Apps to resume listing.
    * @opt_param bool showDeleted Controls whether Apps in the DELETED state should
-   * be returned. Defaults to false.
+   * be returned. If not specified, only `ACTIVE` Apps will be returned.
    * @return SearchFirebaseAppsResponse
    */
   public function searchApps($parent, $optParams = [])

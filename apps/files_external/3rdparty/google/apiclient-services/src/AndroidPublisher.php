@@ -318,6 +318,10 @@ class AndroidPublisher extends \Google\Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ],
+                'deviceTierConfigId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
               ],
             ],
           ]

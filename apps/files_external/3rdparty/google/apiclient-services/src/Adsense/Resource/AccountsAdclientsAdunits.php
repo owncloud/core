@@ -33,6 +33,27 @@ use Google\Service\Adsense\ListLinkedCustomChannelsResponse;
 class AccountsAdclientsAdunits extends \Google\Service\Resource
 {
   /**
+   * Creates an ad unit. This method can only be used by projects enabled for the
+   * [AdSense for Platforms](https://developers.google.com/adsense/platforms/)
+   * product. Note that ad units can only be created for ad clients with an "AFC"
+   * product code. For more info see the [AdClient resource](https://developers.go
+   * ogle.com/adsense/management/reference/rest/v2/accounts.adclients). For now,
+   * this method can only be used to create `DISPLAY` ad units. See:
+   * https://support.google.com/adsense/answer/9183566 (adunits.create)
+   *
+   * @param string $parent Required. Ad client to create an ad unit under. Format:
+   * accounts/{account}/adclients/{adclient}
+   * @param AdUnit $postBody
+   * @param array $optParams Optional parameters.
+   * @return AdUnit
+   */
+  public function create($parent, AdUnit $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], AdUnit::class);
+  }
+  /**
    * Gets an ad unit from a specified account and ad client. (adunits.get)
    *
    * @param string $name Required. AdUnit to get information about. Format:
@@ -47,7 +68,10 @@ class AccountsAdclientsAdunits extends \Google\Service\Resource
     return $this->call('get', [$params], AdUnit::class);
   }
   /**
-   * Gets the AdSense code for a given ad unit. (adunits.getAdcode)
+   * Gets the ad unit code for a given ad unit. For more information, see [About
+   * the AdSense code](https://support.google.com/adsense/answer/9274634) and
+   * [Where to place the ad code in your
+   * HTML](https://support.google.com/adsense/answer/9190028). (adunits.getAdcode)
    *
    * @param string $name Required. Name of the adunit for which to get the adcode.
    * Format: accounts/{account}/adclients/{adclient}/adunits/{adunit}
@@ -108,6 +132,27 @@ class AccountsAdclientsAdunits extends \Google\Service\Resource
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
     return $this->call('listLinkedCustomChannels', [$params], ListLinkedCustomChannelsResponse::class);
+  }
+  /**
+   * Updates an ad unit. This method can only be used by projects enabled for the
+   * [AdSense for Platforms](https://developers.google.com/adsense/platforms/)
+   * product. For now, this method can only be used to update `DISPLAY` ad units.
+   * See: https://support.google.com/adsense/answer/9183566 (adunits.patch)
+   *
+   * @param string $name Output only. Resource name of the ad unit. Format:
+   * accounts/{account}/adclients/{adclient}/adunits/{adunit}
+   * @param AdUnit $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The list of fields to update. If empty, a full
+   * update is performed.
+   * @return AdUnit
+   */
+  public function patch($name, AdUnit $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], AdUnit::class);
   }
 }
 

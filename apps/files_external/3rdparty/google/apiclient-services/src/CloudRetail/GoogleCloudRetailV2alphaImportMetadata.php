@@ -39,6 +39,8 @@ class GoogleCloudRetailV2alphaImportMetadata extends \Google\Model
    * @var string
    */
   public $successCount;
+  protected $transformedUserEventsMetadataType = GoogleCloudRetailV2alphaTransformedUserEventsMetadata::class;
+  protected $transformedUserEventsMetadataDataType = '';
   /**
    * @var string
    */
@@ -113,6 +115,20 @@ class GoogleCloudRetailV2alphaImportMetadata extends \Google\Model
   public function getSuccessCount()
   {
     return $this->successCount;
+  }
+  /**
+   * @param GoogleCloudRetailV2alphaTransformedUserEventsMetadata
+   */
+  public function setTransformedUserEventsMetadata(GoogleCloudRetailV2alphaTransformedUserEventsMetadata $transformedUserEventsMetadata)
+  {
+    $this->transformedUserEventsMetadata = $transformedUserEventsMetadata;
+  }
+  /**
+   * @return GoogleCloudRetailV2alphaTransformedUserEventsMetadata
+   */
+  public function getTransformedUserEventsMetadata()
+  {
+    return $this->transformedUserEventsMetadata;
   }
   /**
    * @param string

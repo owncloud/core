@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="phpseclib">
+    <file>../build/php-cs-fixer.php</file>
+    <file>../phpseclib/</file>
+    <file>../tests/</file>
+
+    <arg name="extensions" value="php"/>
+    <arg name="basepath" value=".."/>
+    <arg name="report" value="emacs"/>
+    <arg value="s"/>
+    <arg value="n"/>
+    <arg value="p"/>
+
+    <rule ref="PSR12">
+        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+        <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
+    </rule>
+</ruleset>

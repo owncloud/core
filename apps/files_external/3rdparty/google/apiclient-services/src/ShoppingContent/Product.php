@@ -144,6 +144,10 @@ class Product extends \Google\Collection
   /**
    * @var string
    */
+  public $feedLabel;
+  /**
+   * @var string
+   */
   public $gender;
   /**
    * @var string
@@ -783,6 +787,20 @@ class Product extends \Google\Collection
   public function getExternalSellerId()
   {
     return $this->externalSellerId;
+  }
+  /**
+   * @param string
+   */
+  public function setFeedLabel($feedLabel)
+  {
+    $this->feedLabel = $feedLabel;
+  }
+  /**
+   * @return string
+   */
+  public function getFeedLabel()
+  {
+    return $this->feedLabel;
   }
   /**
    * @param string

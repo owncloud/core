@@ -19,6 +19,25 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2CreateConversationDatasetOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $conversationDataset;
+
+  /**
+   * @param string
+   */
+  public function setConversationDataset($conversationDataset)
+  {
+    $this->conversationDataset = $conversationDataset;
+  }
+  /**
+   * @return string
+   */
+  public function getConversationDataset()
+  {
+    return $this->conversationDataset;
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

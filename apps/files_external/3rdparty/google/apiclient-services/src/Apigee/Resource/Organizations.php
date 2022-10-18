@@ -60,15 +60,15 @@ class Organizations extends \Google\Service\Resource
    * Delete an Apigee organization. For organizations with BillingType EVALUATION,
    * an immediate deletion is performed. For paid organizations, a soft-deletion
    * is performed. The organization can be restored within the soft-deletion
-   * period - which can be controlled using the retention field in the request.
+   * period which can be controlled using the retention field in the request.
    * (organizations.delete)
    *
    * @param string $name Required. Name of the organization. Use the following
    * structure in your request: `organizations/{org}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string retention Optional. This setting is only applicable for
-   * organizations that are soft-deleted (i.e. BillingType is not EVALUATION). It
+   * @opt_param string retention Optional. This setting is applicable only for
+   * organizations that are soft-deleted (i.e., BillingType is not EVALUATION). It
    * controls how long Organization data will be retained after the initial delete
    * operation completes. During this period, the Organization may be restored to
    * its last known state. After this period, the Organization will no longer be

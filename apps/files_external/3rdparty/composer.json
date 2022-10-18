@@ -13,11 +13,22 @@
 	"replace": {
 		"guzzlehttp/guzzle": "*"
 	},
+	"repositories": [
+		{
+			"type": "git",
+			"url": "https://github.com/phil-davis/phpseclib"
+		},
+		{
+			"type": "git",
+			"url": "https://github.com/phil-davis/google-api-php-client"
+		}
+	],
 	"require": {
 		"php": ">=7.4",
 		"icewind/smb": "3.5.4",
 		"icewind/streams": "0.7.6",
-		"google/apiclient": "2.12.6",
+		"google/apiclient": "dev-test-deps",
+		"phpseclib/phpseclib": "dev-test-delete-folder",
 		"guzzlehttp/guzzle": "^7.4"
 	},
 	"autoload": {

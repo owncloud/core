@@ -19,7 +19,7 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2InfoTypeDescription extends \Google\Collection
 {
-  protected $collection_key = 'supportedBy';
+  protected $collection_key = 'versions';
   protected $categoriesType = GooglePrivacyDlpV2InfoTypeCategory::class;
   protected $categoriesDataType = 'array';
   /**
@@ -38,6 +38,8 @@ class GooglePrivacyDlpV2InfoTypeDescription extends \Google\Collection
    * @var string[]
    */
   public $supportedBy;
+  protected $versionsType = GooglePrivacyDlpV2VersionDescription::class;
+  protected $versionsDataType = 'array';
 
   /**
    * @param GooglePrivacyDlpV2InfoTypeCategory[]
@@ -108,6 +110,20 @@ class GooglePrivacyDlpV2InfoTypeDescription extends \Google\Collection
   public function getSupportedBy()
   {
     return $this->supportedBy;
+  }
+  /**
+   * @param GooglePrivacyDlpV2VersionDescription[]
+   */
+  public function setVersions($versions)
+  {
+    $this->versions = $versions;
+  }
+  /**
+   * @return GooglePrivacyDlpV2VersionDescription[]
+   */
+  public function getVersions()
+  {
+    return $this->versions;
   }
 }
 

@@ -19,6 +19,8 @@ namespace Google\Service\Compute;
 
 class SecurityPolicyAdvancedOptionsConfig extends \Google\Model
 {
+  protected $jsonCustomConfigType = SecurityPolicyAdvancedOptionsConfigJsonCustomConfig::class;
+  protected $jsonCustomConfigDataType = '';
   /**
    * @var string
    */
@@ -28,6 +30,20 @@ class SecurityPolicyAdvancedOptionsConfig extends \Google\Model
    */
   public $logLevel;
 
+  /**
+   * @param SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
+   */
+  public function setJsonCustomConfig(SecurityPolicyAdvancedOptionsConfigJsonCustomConfig $jsonCustomConfig)
+  {
+    $this->jsonCustomConfig = $jsonCustomConfig;
+  }
+  /**
+   * @return SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
+   */
+  public function getJsonCustomConfig()
+  {
+    return $this->jsonCustomConfig;
+  }
   /**
    * @param string
    */

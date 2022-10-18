@@ -101,12 +101,12 @@ class BiddersPublisherConnections extends \Google\Service\Resource
    * publisherPlatform=ADMOB AND biddingState != PENDING' See
    * https://google.aip.dev/160 for more information about filtering syntax.
    * @opt_param string orderBy Order specification by which results should be
-   * sorted. If no sort order is specified, the results will be returned in an
-   * arbitrary order. Currently results can be sorted by `createTime`. Example:
-   * 'createTime DESC'.
+   * sorted. If no sort order is specified, the results will be returned in
+   * alphabetic order based on the publisher's publisher code. Results can be
+   * sorted by `createTime`. Example: 'createTime DESC'.
    * @opt_param int pageSize Requested page size. The server may return fewer
    * results than requested (due to timeout constraint) even if more are available
-   * via another call. If unspecified, the server will pick an appropriate
+   * through another call. If unspecified, the server will pick an appropriate
    * default. Acceptable values are 1 to 5000, inclusive.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of

@@ -25,6 +25,8 @@ class MarketplaceTargeting extends \Google\Model
   protected $geoTargetingDataType = '';
   protected $inventorySizeTargetingType = InventorySizeTargeting::class;
   protected $inventorySizeTargetingDataType = '';
+  protected $inventoryTypeTargetingType = InventoryTypeTargeting::class;
+  protected $inventoryTypeTargetingDataType = '';
   protected $placementTargetingType = PlacementTargeting::class;
   protected $placementTargetingDataType = '';
   protected $technologyTargetingType = TechnologyTargeting::class;
@@ -75,6 +77,20 @@ class MarketplaceTargeting extends \Google\Model
   public function getInventorySizeTargeting()
   {
     return $this->inventorySizeTargeting;
+  }
+  /**
+   * @param InventoryTypeTargeting
+   */
+  public function setInventoryTypeTargeting(InventoryTypeTargeting $inventoryTypeTargeting)
+  {
+    $this->inventoryTypeTargeting = $inventoryTypeTargeting;
+  }
+  /**
+   * @return InventoryTypeTargeting
+   */
+  public function getInventoryTypeTargeting()
+  {
+    return $this->inventoryTypeTargeting;
   }
   /**
    * @param PlacementTargeting

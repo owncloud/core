@@ -45,6 +45,10 @@ class ConfigVariableTemplate extends \Google\Collection
   /**
    * @var string
    */
+  public $state;
+  /**
+   * @var string
+   */
   public $validationRegex;
   /**
    * @var string
@@ -148,6 +152,20 @@ class ConfigVariableTemplate extends \Google\Collection
   public function getRoleGrant()
   {
     return $this->roleGrant;
+  }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
   }
   /**
    * @param string

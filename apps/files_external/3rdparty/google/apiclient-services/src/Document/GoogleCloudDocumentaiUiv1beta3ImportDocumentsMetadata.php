@@ -22,8 +22,14 @@ class GoogleCloudDocumentaiUiv1beta3ImportDocumentsMetadata extends \Google\Coll
   protected $collection_key = 'individualImportStatuses';
   protected $commonMetadataType = GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata::class;
   protected $commonMetadataDataType = '';
+  protected $importConfigValidationResultsType = GoogleCloudDocumentaiUiv1beta3ImportDocumentsMetadataImportConfigValidationResult::class;
+  protected $importConfigValidationResultsDataType = 'array';
   protected $individualImportStatusesType = GoogleCloudDocumentaiUiv1beta3ImportDocumentsMetadataIndividualImportStatus::class;
   protected $individualImportStatusesDataType = 'array';
+  /**
+   * @var int
+   */
+  public $totalDocumentCount;
 
   /**
    * @param GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata
@@ -40,6 +46,20 @@ class GoogleCloudDocumentaiUiv1beta3ImportDocumentsMetadata extends \Google\Coll
     return $this->commonMetadata;
   }
   /**
+   * @param GoogleCloudDocumentaiUiv1beta3ImportDocumentsMetadataImportConfigValidationResult[]
+   */
+  public function setImportConfigValidationResults($importConfigValidationResults)
+  {
+    $this->importConfigValidationResults = $importConfigValidationResults;
+  }
+  /**
+   * @return GoogleCloudDocumentaiUiv1beta3ImportDocumentsMetadataImportConfigValidationResult[]
+   */
+  public function getImportConfigValidationResults()
+  {
+    return $this->importConfigValidationResults;
+  }
+  /**
    * @param GoogleCloudDocumentaiUiv1beta3ImportDocumentsMetadataIndividualImportStatus[]
    */
   public function setIndividualImportStatuses($individualImportStatuses)
@@ -52,6 +72,20 @@ class GoogleCloudDocumentaiUiv1beta3ImportDocumentsMetadata extends \Google\Coll
   public function getIndividualImportStatuses()
   {
     return $this->individualImportStatuses;
+  }
+  /**
+   * @param int
+   */
+  public function setTotalDocumentCount($totalDocumentCount)
+  {
+    $this->totalDocumentCount = $totalDocumentCount;
+  }
+  /**
+   * @return int
+   */
+  public function getTotalDocumentCount()
+  {
+    return $this->totalDocumentCount;
   }
 }
 

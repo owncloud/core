@@ -32,7 +32,10 @@ use Google\Service\Monitoring\MonitoringEmpty;
 class ProjectsAlertPolicies extends \Google\Service\Resource
 {
   /**
-   * Creates a new alerting policy. (alertPolicies.create)
+   * Creates a new alerting policy.Design your application to single-thread API
+   * calls that modify the state of alerting policies in a single project. This
+   * includes calls to CreateAlertPolicy, DeleteAlertPolicy and UpdateAlertPolicy.
+   * (alertPolicies.create)
    *
    * @param string $name Required. The project
    * (https://cloud.google.com/monitoring/api/v3#project_name) in which to create
@@ -54,7 +57,10 @@ class ProjectsAlertPolicies extends \Google\Service\Resource
     return $this->call('create', [$params], AlertPolicy::class);
   }
   /**
-   * Deletes an alerting policy. (alertPolicies.delete)
+   * Deletes an alerting policy.Design your application to single-thread API calls
+   * that modify the state of alerting policies in a single project. This includes
+   * calls to CreateAlertPolicy, DeleteAlertPolicy and UpdateAlertPolicy.
+   * (alertPolicies.delete)
    *
    * @param string $name Required. The alerting policy to delete. The format is:
    * projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID] For more
@@ -121,7 +127,10 @@ class ProjectsAlertPolicies extends \Google\Service\Resource
    * Updates an alerting policy. You can either replace the entire policy with a
    * new one or replace only certain fields in the current alerting policy by
    * specifying the fields to be updated via updateMask. Returns the updated
-   * alerting policy. (alertPolicies.patch)
+   * alerting policy.Design your application to single-thread API calls that
+   * modify the state of alerting policies in a single project. This includes
+   * calls to CreateAlertPolicy, DeleteAlertPolicy and UpdateAlertPolicy.
+   * (alertPolicies.patch)
    *
    * @param string $name Required if the policy exists. The resource name for this
    * policy. The format is:

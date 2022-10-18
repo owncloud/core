@@ -23,6 +23,10 @@ class ServiceMeshMembershipSpec extends \Google\Model
    * @var string
    */
   public $controlPlane;
+  /**
+   * @var string
+   */
+  public $management;
 
   /**
    * @param string
@@ -37,6 +41,20 @@ class ServiceMeshMembershipSpec extends \Google\Model
   public function getControlPlane()
   {
     return $this->controlPlane;
+  }
+  /**
+   * @param string
+   */
+  public function setManagement($management)
+  {
+    $this->management = $management;
+  }
+  /**
+   * @return string
+   */
+  public function getManagement()
+  {
+    return $this->management;
   }
 }
 

@@ -5,8 +5,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Math
- * @package   BigInteger
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -15,7 +13,6 @@
 
 namespace phpseclib3\Math\BigInteger\Engines;
 
-use ParagonIE\ConstantTime\Hex;
 use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Random;
 use phpseclib3\Exception\BadConfigurationException;
@@ -24,9 +21,7 @@ use phpseclib3\Math\BigInteger;
 /**
  * Base Engine.
  *
- * @package Engine
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class Engine implements \JsonSerializable
 {
@@ -176,7 +171,7 @@ abstract class Engine implements \JsonSerializable
                 $is_negative = false;
                 if ($base < 0 && hexdec($x[0]) >= 8) {
                     $this->is_negative = $is_negative = true;
-                    $x = Hex::encode(~Hex::decode($x));
+                    $x = Strings::bin2hex(~Strings::hex2bin($x));
                 }
 
                 $this->value = $x;
@@ -274,7 +269,7 @@ abstract class Engine implements \JsonSerializable
      */
     public function toHex($twos_compliment = false)
     {
-        return Hex::encode($this->toBytes($twos_compliment));
+        return Strings::bin2hex($this->toBytes($twos_compliment));
     }
 
     /**

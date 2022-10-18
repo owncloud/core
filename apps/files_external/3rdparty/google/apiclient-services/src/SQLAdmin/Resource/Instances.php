@@ -245,8 +245,9 @@ class Instances extends \Google\Service\Resource
     return $this->call('listServerCas', [$params], InstancesListServerCasResponse::class);
   }
   /**
-   * Updates settings of a Cloud SQL instance. This method supports patch
-   * semantics. (instances.patch)
+   * Partially updates settings of a Cloud SQL instance by merging the request
+   * with the current configuration. This method supports patch semantics.
+   * (instances.patch)
    *
    * @param string $project Project ID of the project that contains the instance.
    * @param string $instance Cloud SQL instance ID. This does not include the

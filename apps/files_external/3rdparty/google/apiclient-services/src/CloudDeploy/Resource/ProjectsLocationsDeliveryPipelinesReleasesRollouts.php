@@ -21,6 +21,8 @@ use Google\Service\CloudDeploy\ApproveRolloutRequest;
 use Google\Service\CloudDeploy\ApproveRolloutResponse;
 use Google\Service\CloudDeploy\ListRolloutsResponse;
 use Google\Service\CloudDeploy\Operation;
+use Google\Service\CloudDeploy\RetryJobRequest;
+use Google\Service\CloudDeploy\RetryJobResponse;
 use Google\Service\CloudDeploy\Rollout;
 
 /**
@@ -123,6 +125,22 @@ class ProjectsLocationsDeliveryPipelinesReleasesRollouts extends \Google\Service
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListRolloutsResponse::class);
+  }
+  /**
+   * Retries the specified Job in a Rollout. (rollouts.retryJob)
+   *
+   * @param string $rollout Required. Name of the Rollout. Format is
+   * projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
+   * releases/{release}/rollouts/{rollout}.
+   * @param RetryJobRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return RetryJobResponse
+   */
+  public function retryJob($rollout, RetryJobRequest $postBody, $optParams = [])
+  {
+    $params = ['rollout' => $rollout, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('retryJob', [$params], RetryJobResponse::class);
   }
 }
 

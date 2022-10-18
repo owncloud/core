@@ -30,8 +30,8 @@ use Google\Service\DLP\GooglePrivacyDlpV2ListInfoTypesResponse;
 class InfoTypes extends \Google\Service\Resource
 {
   /**
-   * Returns a list of the sensitive information types that the DLP API supports.
-   * See https://cloud.google.com/dlp/docs/infotypes-reference to learn more.
+   * Returns a list of the sensitive information types that DLP API supports. See
+   * https://cloud.google.com/dlp/docs/infotypes-reference to learn more.
    * (infoTypes.listInfoTypes)
    *
    * @param array $optParams Optional parameters.

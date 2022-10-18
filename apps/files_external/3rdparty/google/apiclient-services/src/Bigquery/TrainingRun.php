@@ -39,6 +39,10 @@ class TrainingRun extends \Google\Collection
   /**
    * @var string
    */
+  public $trainingStartTime;
+  /**
+   * @var string
+   */
   public $vertexAiModelId;
   /**
    * @var string
@@ -142,6 +146,20 @@ class TrainingRun extends \Google\Collection
   public function getTrainingOptions()
   {
     return $this->trainingOptions;
+  }
+  /**
+   * @param string
+   */
+  public function setTrainingStartTime($trainingStartTime)
+  {
+    $this->trainingStartTime = $trainingStartTime;
+  }
+  /**
+   * @return string
+   */
+  public function getTrainingStartTime()
+  {
+    return $this->trainingStartTime;
   }
   /**
    * @param string

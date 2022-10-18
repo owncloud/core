@@ -26,6 +26,10 @@ class TargetRender extends \Google\Model
   /**
    * @var string
    */
+  public $failureMessage;
+  /**
+   * @var string
+   */
   public $renderingBuild;
   /**
    * @var string
@@ -45,6 +49,20 @@ class TargetRender extends \Google\Model
   public function getFailureCause()
   {
     return $this->failureCause;
+  }
+  /**
+   * @param string
+   */
+  public function setFailureMessage($failureMessage)
+  {
+    $this->failureMessage = $failureMessage;
+  }
+  /**
+   * @return string
+   */
+  public function getFailureMessage()
+  {
+    return $this->failureMessage;
   }
   /**
    * @param string

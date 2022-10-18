@@ -172,6 +172,26 @@ class OrganizationsEnvironments extends \Google\Service\Resource
     return $this->call('getTraceConfig', [$params], GoogleCloudApigeeV1TraceConfig::class);
   }
   /**
+   * Updates properties for an Apigee environment with patch semantics using a
+   * field mask. **Note:** Not supported for Apigee hybrid.
+   * (environments.modifyEnvironment)
+   *
+   * @param string $name Required. Name of the environment. Use the following
+   * structure in your request: `organizations/{org}/environments/{environment}`.
+   * @param GoogleCloudApigeeV1Environment $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask List of fields to be updated. Fields that can be
+   * updated: node_config.
+   * @return GoogleLongrunningOperation
+   */
+  public function modifyEnvironment($name, GoogleCloudApigeeV1Environment $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('modifyEnvironment', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
    * Sets the IAM policy on an environment, if the policy already exists it will
    * be replaced. For more information, see [Manage users, roles, and permissions
    * using the API](https://cloud.google.com/apigee/docs/api-platform/system-

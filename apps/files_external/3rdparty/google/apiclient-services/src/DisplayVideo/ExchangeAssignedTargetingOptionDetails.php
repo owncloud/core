@@ -22,21 +22,21 @@ class ExchangeAssignedTargetingOptionDetails extends \Google\Model
   /**
    * @var string
    */
-  public $targetingOptionId;
+  public $exchange;
 
   /**
    * @param string
    */
-  public function setTargetingOptionId($targetingOptionId)
+  public function setExchange($exchange)
   {
-    $this->targetingOptionId = $targetingOptionId;
+    $this->exchange = $exchange;
   }
   /**
    * @return string
    */
-  public function getTargetingOptionId()
+  public function getExchange()
   {
-    return $this->targetingOptionId;
+    return $this->exchange;
   }
 }
 

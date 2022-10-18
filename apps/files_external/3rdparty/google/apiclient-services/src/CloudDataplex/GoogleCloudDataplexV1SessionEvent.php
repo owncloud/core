@@ -20,6 +20,10 @@ namespace Google\Service\CloudDataplex;
 class GoogleCloudDataplexV1SessionEvent extends \Google\Model
 {
   /**
+   * @var bool
+   */
+  public $eventSucceeded;
+  /**
    * @var string
    */
   public $message;
@@ -36,8 +40,30 @@ class GoogleCloudDataplexV1SessionEvent extends \Google\Model
   /**
    * @var string
    */
+  public $unassignedDuration;
+  /**
+   * @var string
+   */
   public $userId;
+  /**
+   * @var bool
+   */
+  public $warmPoolEnabled;
 
+  /**
+   * @param bool
+   */
+  public function setEventSucceeded($eventSucceeded)
+  {
+    $this->eventSucceeded = $eventSucceeded;
+  }
+  /**
+   * @return bool
+   */
+  public function getEventSucceeded()
+  {
+    return $this->eventSucceeded;
+  }
   /**
    * @param string
    */
@@ -97,6 +123,20 @@ class GoogleCloudDataplexV1SessionEvent extends \Google\Model
   /**
    * @param string
    */
+  public function setUnassignedDuration($unassignedDuration)
+  {
+    $this->unassignedDuration = $unassignedDuration;
+  }
+  /**
+   * @return string
+   */
+  public function getUnassignedDuration()
+  {
+    return $this->unassignedDuration;
+  }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
@@ -107,6 +147,20 @@ class GoogleCloudDataplexV1SessionEvent extends \Google\Model
   public function getUserId()
   {
     return $this->userId;
+  }
+  /**
+   * @param bool
+   */
+  public function setWarmPoolEnabled($warmPoolEnabled)
+  {
+    $this->warmPoolEnabled = $warmPoolEnabled;
+  }
+  /**
+   * @return bool
+   */
+  public function getWarmPoolEnabled()
+  {
+    return $this->warmPoolEnabled;
   }
 }
 

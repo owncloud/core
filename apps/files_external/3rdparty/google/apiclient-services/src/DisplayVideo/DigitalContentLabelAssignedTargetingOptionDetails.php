@@ -22,39 +22,21 @@ class DigitalContentLabelAssignedTargetingOptionDetails extends \Google\Model
   /**
    * @var string
    */
-  public $contentRatingTier;
-  /**
-   * @var string
-   */
-  public $excludedTargetingOptionId;
+  public $excludedContentRatingTier;
 
   /**
    * @param string
    */
-  public function setContentRatingTier($contentRatingTier)
+  public function setExcludedContentRatingTier($excludedContentRatingTier)
   {
-    $this->contentRatingTier = $contentRatingTier;
+    $this->excludedContentRatingTier = $excludedContentRatingTier;
   }
   /**
    * @return string
    */
-  public function getContentRatingTier()
+  public function getExcludedContentRatingTier()
   {
-    return $this->contentRatingTier;
-  }
-  /**
-   * @param string
-   */
-  public function setExcludedTargetingOptionId($excludedTargetingOptionId)
-  {
-    $this->excludedTargetingOptionId = $excludedTargetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getExcludedTargetingOptionId()
-  {
-    return $this->excludedTargetingOptionId;
+    return $this->excludedContentRatingTier;
   }
 }
 

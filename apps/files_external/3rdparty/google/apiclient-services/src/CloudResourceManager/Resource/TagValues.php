@@ -77,9 +77,9 @@ class TagValues extends \Google\Service\Resource
     return $this->call('delete', [$params], Operation::class);
   }
   /**
-   * Retrieves TagValue. If the TagValue or namespaced name does not exist, or if
-   * the user does not have permission to view it, this method will return
-   * `PERMISSION_DENIED`. (tagValues.get)
+   * Retrieves a TagValue. This method will return `PERMISSION_DENIED` if the
+   * value does not exist or the user does not have permission to view it.
+   * (tagValues.get)
    *
    * @param string $name Required. Resource name for TagValue to be fetched in the
    * format `tagValues/456`.

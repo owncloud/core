@@ -34,10 +34,16 @@ class JobConfigurationLoad extends \Google\Collection
   public $autodetect;
   protected $clusteringType = Clustering::class;
   protected $clusteringDataType = '';
+  protected $connectionPropertiesType = ConnectionProperty::class;
+  protected $connectionPropertiesDataType = 'array';
   /**
    * @var string
    */
   public $createDisposition;
+  /**
+   * @var bool
+   */
+  public $createSession;
   /**
    * @var string[]
    */
@@ -90,6 +96,10 @@ class JobConfigurationLoad extends \Google\Collection
   public $quote;
   protected $rangePartitioningType = RangePartitioning::class;
   protected $rangePartitioningDataType = '';
+  /**
+   * @var string
+   */
+  public $referenceFileSchemaUri;
   protected $schemaType = TableSchema::class;
   protected $schemaDataType = '';
   /**
@@ -184,6 +194,20 @@ class JobConfigurationLoad extends \Google\Collection
     return $this->clustering;
   }
   /**
+   * @param ConnectionProperty[]
+   */
+  public function setConnectionProperties($connectionProperties)
+  {
+    $this->connectionProperties = $connectionProperties;
+  }
+  /**
+   * @return ConnectionProperty[]
+   */
+  public function getConnectionProperties()
+  {
+    return $this->connectionProperties;
+  }
+  /**
    * @param string
    */
   public function setCreateDisposition($createDisposition)
@@ -196,6 +220,20 @@ class JobConfigurationLoad extends \Google\Collection
   public function getCreateDisposition()
   {
     return $this->createDisposition;
+  }
+  /**
+   * @param bool
+   */
+  public function setCreateSession($createSession)
+  {
+    $this->createSession = $createSession;
+  }
+  /**
+   * @return bool
+   */
+  public function getCreateSession()
+  {
+    return $this->createSession;
   }
   /**
    * @param string[]
@@ -420,6 +458,20 @@ class JobConfigurationLoad extends \Google\Collection
   public function getRangePartitioning()
   {
     return $this->rangePartitioning;
+  }
+  /**
+   * @param string
+   */
+  public function setReferenceFileSchemaUri($referenceFileSchemaUri)
+  {
+    $this->referenceFileSchemaUri = $referenceFileSchemaUri;
+  }
+  /**
+   * @return string
+   */
+  public function getReferenceFileSchemaUri()
+  {
+    return $this->referenceFileSchemaUri;
   }
   /**
    * @param TableSchema

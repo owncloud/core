@@ -30,6 +30,8 @@ class JobStatistics extends \Google\Collection
    * @var string
    */
   public $creationTime;
+  protected $dataMaskingStatisticsType = DataMaskingStatistics::class;
+  protected $dataMaskingStatisticsDataType = '';
   /**
    * @var string
    */
@@ -114,6 +116,20 @@ class JobStatistics extends \Google\Collection
   public function getCreationTime()
   {
     return $this->creationTime;
+  }
+  /**
+   * @param DataMaskingStatistics
+   */
+  public function setDataMaskingStatistics(DataMaskingStatistics $dataMaskingStatistics)
+  {
+    $this->dataMaskingStatistics = $dataMaskingStatistics;
+  }
+  /**
+   * @return DataMaskingStatistics
+   */
+  public function getDataMaskingStatistics()
+  {
+    return $this->dataMaskingStatistics;
   }
   /**
    * @param string

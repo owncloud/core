@@ -141,11 +141,12 @@ class ProjectsJobTriggers extends \Google\Service\Resource
    * order by, followed by `asc` or `desc` postfix. This list is case-insensitive,
    * default sorting order is ascending, redundant space characters are
    * insignificant. Example: `name asc,update_time, create_time desc` Supported
-   * fields are: - `create_time`: corresponds to time the JobTrigger was created.
-   * - `update_time`: corresponds to time the JobTrigger was last updated. -
-   * `last_run_time`: corresponds to the last time the JobTrigger ran. - `name`:
-   * corresponds to JobTrigger's name. - `display_name`: corresponds to
-   * JobTrigger's display name. - `status`: corresponds to JobTrigger's status.
+   * fields are: - `create_time`: corresponds to the time the JobTrigger was
+   * created. - `update_time`: corresponds to the time the JobTrigger was last
+   * updated. - `last_run_time`: corresponds to the last time the JobTrigger ran.
+   * - `name`: corresponds to the JobTrigger's name. - `display_name`: corresponds
+   * to the JobTrigger's display name. - `status`: corresponds to JobTrigger's
+   * status.
    * @opt_param int pageSize Size of the page, can be limited by a server.
    * @opt_param string pageToken Page token to continue retrieval. Comes from
    * previous call to ListJobTriggers. `order_by` field must not change for

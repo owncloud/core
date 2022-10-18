@@ -40,6 +40,7 @@ class Assuredworkloads extends \Google\Service
 
   public $organizations_locations_operations;
   public $organizations_locations_workloads;
+  public $organizations_locations_workloads_violations;
 
   /**
    * Constructs the internal representation of the Assuredworkloads service.
@@ -187,6 +188,66 @@ class Assuredworkloads extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->organizations_locations_workloads_violations = new Assuredworkloads\Resource\OrganizationsLocationsWorkloadsViolations(
+        $this,
+        $this->serviceName,
+        'violations',
+        [
+          'methods' => [
+            'acknowledge' => [
+              'path' => 'v1/{+name}:acknowledge',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/violations',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'interval.endTime' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'interval.startTime' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],

@@ -69,6 +69,10 @@ class GoogleCloudApigeeV1ApiProduct extends \Google\Collection
   /**
    * @var string
    */
+  public $quotaCounterScope;
+  /**
+   * @var string
+   */
   public $quotaInterval;
   /**
    * @var string
@@ -260,6 +264,20 @@ class GoogleCloudApigeeV1ApiProduct extends \Google\Collection
   public function getQuota()
   {
     return $this->quota;
+  }
+  /**
+   * @param string
+   */
+  public function setQuotaCounterScope($quotaCounterScope)
+  {
+    $this->quotaCounterScope = $quotaCounterScope;
+  }
+  /**
+   * @return string
+   */
+  public function getQuotaCounterScope()
+  {
+    return $this->quotaCounterScope;
   }
   /**
    * @param string

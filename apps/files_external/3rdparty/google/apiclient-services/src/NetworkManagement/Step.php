@@ -25,6 +25,8 @@ class Step extends \Google\Model
    * @var bool
    */
   public $causesDrop;
+  protected $cloudFunctionType = CloudFunctionInfo::class;
+  protected $cloudFunctionDataType = '';
   protected $cloudSqlInstanceType = CloudSQLInstanceInfo::class;
   protected $cloudSqlInstanceDataType = '';
   protected $deliverType = DeliverInfo::class;
@@ -61,6 +63,8 @@ class Step extends \Google\Model
    * @var string
    */
   public $state;
+  protected $vpcConnectorType = VpcConnectorInfo::class;
+  protected $vpcConnectorDataType = '';
   protected $vpnGatewayType = VpnGatewayInfo::class;
   protected $vpnGatewayDataType = '';
   protected $vpnTunnelType = VpnTunnelInfo::class;
@@ -93,6 +97,20 @@ class Step extends \Google\Model
   public function getCausesDrop()
   {
     return $this->causesDrop;
+  }
+  /**
+   * @param CloudFunctionInfo
+   */
+  public function setCloudFunction(CloudFunctionInfo $cloudFunction)
+  {
+    $this->cloudFunction = $cloudFunction;
+  }
+  /**
+   * @return CloudFunctionInfo
+   */
+  public function getCloudFunction()
+  {
+    return $this->cloudFunction;
   }
   /**
    * @param CloudSQLInstanceInfo
@@ -303,6 +321,20 @@ class Step extends \Google\Model
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param VpcConnectorInfo
+   */
+  public function setVpcConnector(VpcConnectorInfo $vpcConnector)
+  {
+    $this->vpcConnector = $vpcConnector;
+  }
+  /**
+   * @return VpcConnectorInfo
+   */
+  public function getVpcConnector()
+  {
+    return $this->vpcConnector;
   }
   /**
    * @param VpnGatewayInfo

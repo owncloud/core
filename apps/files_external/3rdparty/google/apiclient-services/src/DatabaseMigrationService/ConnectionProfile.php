@@ -19,6 +19,8 @@ namespace Google\Service\DatabaseMigrationService;
 
 class ConnectionProfile extends \Google\Model
 {
+  protected $alloydbType = AlloyDbConnectionProfile::class;
+  protected $alloydbDataType = '';
   protected $cloudsqlType = CloudSqlConnectionProfile::class;
   protected $cloudsqlDataType = '';
   /**
@@ -56,6 +58,20 @@ class ConnectionProfile extends \Google\Model
    */
   public $updateTime;
 
+  /**
+   * @param AlloyDbConnectionProfile
+   */
+  public function setAlloydb(AlloyDbConnectionProfile $alloydb)
+  {
+    $this->alloydb = $alloydb;
+  }
+  /**
+   * @return AlloyDbConnectionProfile
+   */
+  public function getAlloydb()
+  {
+    return $this->alloydb;
+  }
   /**
    * @param CloudSqlConnectionProfile
    */

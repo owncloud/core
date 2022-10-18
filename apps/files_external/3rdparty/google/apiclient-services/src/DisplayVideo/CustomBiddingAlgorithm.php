@@ -31,10 +31,6 @@ class CustomBiddingAlgorithm extends \Google\Collection
   /**
    * @var string
    */
-  public $customBiddingAlgorithmState;
-  /**
-   * @var string
-   */
   public $customBiddingAlgorithmType;
   /**
    * @var string
@@ -44,8 +40,8 @@ class CustomBiddingAlgorithm extends \Google\Collection
    * @var string
    */
   public $entityStatus;
-  protected $modelReadinessType = CustomBiddingModelReadinessState::class;
-  protected $modelReadinessDataType = 'array';
+  protected $modelDetailsType = CustomBiddingModelDetails::class;
+  protected $modelDetailsDataType = 'array';
   /**
    * @var string
    */
@@ -90,20 +86,6 @@ class CustomBiddingAlgorithm extends \Google\Collection
   /**
    * @param string
    */
-  public function setCustomBiddingAlgorithmState($customBiddingAlgorithmState)
-  {
-    $this->customBiddingAlgorithmState = $customBiddingAlgorithmState;
-  }
-  /**
-   * @return string
-   */
-  public function getCustomBiddingAlgorithmState()
-  {
-    return $this->customBiddingAlgorithmState;
-  }
-  /**
-   * @param string
-   */
   public function setCustomBiddingAlgorithmType($customBiddingAlgorithmType)
   {
     $this->customBiddingAlgorithmType = $customBiddingAlgorithmType;
@@ -144,18 +126,18 @@ class CustomBiddingAlgorithm extends \Google\Collection
     return $this->entityStatus;
   }
   /**
-   * @param CustomBiddingModelReadinessState[]
+   * @param CustomBiddingModelDetails[]
    */
-  public function setModelReadiness($modelReadiness)
+  public function setModelDetails($modelDetails)
   {
-    $this->modelReadiness = $modelReadiness;
+    $this->modelDetails = $modelDetails;
   }
   /**
-   * @return CustomBiddingModelReadinessState[]
+   * @return CustomBiddingModelDetails[]
    */
-  public function getModelReadiness()
+  public function getModelDetails()
   {
-    return $this->modelReadiness;
+    return $this->modelDetails;
   }
   /**
    * @param string

@@ -17,8 +17,8 @@
 
 namespace Google\Service\ChromePolicy\Resource;
 
-use Google\Service\ChromePolicy\GoogleChromePolicyV1UploadPolicyFileRequest;
-use Google\Service\ChromePolicy\GoogleChromePolicyV1UploadPolicyFileResponse;
+use Google\Service\ChromePolicy\GoogleChromePolicyVersionsV1UploadPolicyFileRequest;
+use Google\Service\ChromePolicy\GoogleChromePolicyVersionsV1UploadPolicyFileResponse;
 
 /**
  * The "media" collection of methods.
@@ -36,15 +36,15 @@ class Media extends \Google\Service\Resource
    *
    * @param string $customer Required. The customer for which the file upload will
    * apply.
-   * @param GoogleChromePolicyV1UploadPolicyFileRequest $postBody
+   * @param GoogleChromePolicyVersionsV1UploadPolicyFileRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return GoogleChromePolicyV1UploadPolicyFileResponse
+   * @return GoogleChromePolicyVersionsV1UploadPolicyFileResponse
    */
-  public function upload($customer, GoogleChromePolicyV1UploadPolicyFileRequest $postBody, $optParams = [])
+  public function upload($customer, GoogleChromePolicyVersionsV1UploadPolicyFileRequest $postBody, $optParams = [])
   {
     $params = ['customer' => $customer, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('upload', [$params], GoogleChromePolicyV1UploadPolicyFileResponse::class);
+    return $this->call('upload', [$params], GoogleChromePolicyVersionsV1UploadPolicyFileResponse::class);
   }
 }
 

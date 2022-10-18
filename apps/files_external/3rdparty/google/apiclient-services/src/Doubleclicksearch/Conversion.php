@@ -83,6 +83,10 @@ class Conversion extends \Google\Collection
   /**
    * @var string
    */
+  public $customerId;
+  /**
+   * @var string
+   */
   public $deviceType;
   /**
    * @var string
@@ -372,6 +376,20 @@ class Conversion extends \Google\Collection
   public function getCustomMetric()
   {
     return $this->customMetric;
+  }
+  /**
+   * @param string
+   */
+  public function setCustomerId($customerId)
+  {
+    $this->customerId = $customerId;
+  }
+  /**
+   * @return string
+   */
+  public function getCustomerId()
+  {
+    return $this->customerId;
   }
   /**
    * @param string

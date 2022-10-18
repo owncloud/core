@@ -24,6 +24,8 @@ use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaDataRetention
 use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaGoogleSignalsSettings;
 use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaListPropertiesResponse;
 use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaProperty;
+use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaRunAccessReportRequest;
+use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaRunAccessReportResponse;
 
 /**
  * The "properties" collection of methods.
@@ -205,6 +207,33 @@ class Properties extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], GoogleAnalyticsAdminV1alphaProperty::class);
+  }
+  /**
+   * Returns a customized report of data access records. The report provides
+   * records of each time a user reads Google Analytics reporting data. Access
+   * records are retained for up to 2 years. Data Access Reports can be requested
+   * for a property. The property must be in Google Analytics 360. This method is
+   * only available to Administrators. These data access records include GA4 UI
+   * Reporting, GA4 UI Explorations, GA4 Data API, and other products like
+   * Firebase & Admob that can retrieve data from Google Analytics through a
+   * linkage. These records don't include property configuration changes like
+   * adding a stream or changing a property's time zone. For configuration change
+   * history, see [searchChangeHistoryEvents](https://developers.google.com/analyt
+   * ics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents
+   * ). (properties.runAccessReport)
+   *
+   * @param string $entity The Data Access Report is requested for this property.
+   * For example if "123" is your GA4 property ID, then entity should be
+   * "properties/123".
+   * @param GoogleAnalyticsAdminV1alphaRunAccessReportRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleAnalyticsAdminV1alphaRunAccessReportResponse
+   */
+  public function runAccessReport($entity, GoogleAnalyticsAdminV1alphaRunAccessReportRequest $postBody, $optParams = [])
+  {
+    $params = ['entity' => $entity, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('runAccessReport', [$params], GoogleAnalyticsAdminV1alphaRunAccessReportResponse::class);
   }
   /**
    * Updates attribution settings on a property.

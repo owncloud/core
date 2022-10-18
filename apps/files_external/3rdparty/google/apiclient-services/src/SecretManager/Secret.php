@@ -21,6 +21,10 @@ class Secret extends \Google\Collection
 {
   protected $collection_key = 'topics';
   /**
+   * @var string[]
+   */
+  public $annotations;
+  /**
    * @var string
    */
   public $createTime;
@@ -55,6 +59,20 @@ class Secret extends \Google\Collection
    */
   public $versionAliases;
 
+  /**
+   * @param string[]
+   */
+  public function setAnnotations($annotations)
+  {
+    $this->annotations = $annotations;
+  }
+  /**
+   * @return string[]
+   */
+  public function getAnnotations()
+  {
+    return $this->annotations;
+  }
   /**
    * @param string
    */

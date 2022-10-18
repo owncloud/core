@@ -50,6 +50,10 @@ class GoogleCloudRetailV2SearchRequestFacetSpecFacetKey extends \Google\Collecti
    * @var string[]
    */
   public $restrictedValues;
+  /**
+   * @var bool
+   */
+  public $returnMinMax;
 
   /**
    * @param bool
@@ -162,6 +166,20 @@ class GoogleCloudRetailV2SearchRequestFacetSpecFacetKey extends \Google\Collecti
   public function getRestrictedValues()
   {
     return $this->restrictedValues;
+  }
+  /**
+   * @param bool
+   */
+  public function setReturnMinMax($returnMinMax)
+  {
+    $this->returnMinMax = $returnMinMax;
+  }
+  /**
+   * @return bool
+   */
+  public function getReturnMinMax()
+  {
+    return $this->returnMinMax;
   }
 }
 

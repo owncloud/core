@@ -22,6 +22,7 @@ use Google\Service\FirebaseManagement\AndroidAppConfig;
 use Google\Service\FirebaseManagement\ListAndroidAppsResponse;
 use Google\Service\FirebaseManagement\Operation;
 use Google\Service\FirebaseManagement\RemoveAndroidAppRequest;
+use Google\Service\FirebaseManagement\UndeleteAndroidAppRequest;
 
 /**
  * The "androidApps" collection of methods.
@@ -113,7 +114,8 @@ class ProjectsAndroidApps extends \Google\Service\Resource
    * @opt_param string pageToken Token returned from a previous call to
    * `ListAndroidApps` indicating where in the set of Apps to resume listing.
    * @opt_param bool showDeleted Controls whether Apps in the DELETED state should
-   * be returned. Defaults to false.
+   * be returned in the response. If not specified, only `ACTIVE` Apps will be
+   * returned.
    * @return ListAndroidAppsResponse
    */
   public function listProjectsAndroidApps($parent, $optParams = [])
@@ -139,9 +141,10 @@ class ProjectsAndroidApps extends \Google\Service\Resource
    * @param AndroidApp $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Specifies which fields to update. Note that the
-   * fields `name`, `app_id`, `project_id`, `package_name`, and `state` are all
-   * immutable.
+   * @opt_param string updateMask Specifies which fields of the AndroidApp to
+   * update. Note that the following fields are immutable: `name`, `app_id`,
+   * `project_id`, and `package_name`. To update `state`, use any of the following
+   * endpoints: RemoveAndroidApp or UndeleteAndroidApp.
    * @return AndroidApp
    */
   public function patch($name, AndroidApp $postBody, $optParams = [])
@@ -151,7 +154,8 @@ class ProjectsAndroidApps extends \Google\Service\Resource
     return $this->call('patch', [$params], AndroidApp::class);
   }
   /**
-   * Removes the specified AndroidApp from the project. (androidApps.remove)
+   * Removes the specified AndroidApp from the FirebaseProject.
+   * (androidApps.remove)
    *
    * @param string $name Required. The resource name of the AndroidApp, in the
    * format: projects/ PROJECT_IDENTIFIER/androidApps/APP_ID Since an APP_ID is a
@@ -168,6 +172,26 @@ class ProjectsAndroidApps extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('remove', [$params], Operation::class);
+  }
+  /**
+   * Restores the specified AndroidApp to the FirebaseProject.
+   * (androidApps.undelete)
+   *
+   * @param string $name Required. The resource name of the AndroidApp, in the
+   * format: projects/ PROJECT_IDENTIFIER/androidApps/APP_ID Since an APP_ID is a
+   * unique identifier, the Unique Resource from Sub-Collection access pattern may
+   * be used here, in the format: projects/-/androidApps/APP_ID Refer to the
+   * AndroidApp [name](../projects.androidApps#AndroidApp.FIELDS.name) field for
+   * details about PROJECT_IDENTIFIER and APP_ID values.
+   * @param UndeleteAndroidAppRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function undelete($name, UndeleteAndroidAppRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('undelete', [$params], Operation::class);
   }
 }
 

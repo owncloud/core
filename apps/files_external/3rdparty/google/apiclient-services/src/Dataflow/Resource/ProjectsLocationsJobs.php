@@ -151,6 +151,7 @@ class ProjectsLocationsJobs extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter The kind of filter to use.
+   * @opt_param string name Optional. The job name. Optional.
    * @opt_param int pageSize If there are many jobs, limit response to at most
    * this many. The actual number of jobs returned will be the lesser of
    * max_responses and an unspecified server-defined limit.

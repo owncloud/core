@@ -50,6 +50,10 @@ class TargetTcpProxy extends \Google\Model
   /**
    * @var string
    */
+  public $region;
+  /**
+   * @var string
+   */
   public $selfLink;
   /**
    * @var string
@@ -153,6 +157,20 @@ class TargetTcpProxy extends \Google\Model
   public function getProxyHeader()
   {
     return $this->proxyHeader;
+  }
+  /**
+   * @param string
+   */
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  /**
+   * @return string
+   */
+  public function getRegion()
+  {
+    return $this->region;
   }
   /**
    * @param string

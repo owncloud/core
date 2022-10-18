@@ -61,10 +61,6 @@ class LineItem extends \Google\Collection
   protected $integrationDetailsType = IntegrationDetails::class;
   protected $integrationDetailsDataType = '';
   /**
-   * @var string[]
-   */
-  public $inventorySourceIds;
-  /**
    * @var string
    */
   public $lineItemId;
@@ -98,6 +94,8 @@ class LineItem extends \Google\Collection
    * @var string[]
    */
   public $warningMessages;
+  protected $youtubeAndPartnersSettingsType = YoutubeAndPartnersSettings::class;
+  protected $youtubeAndPartnersSettingsDataType = '';
 
   /**
    * @param string
@@ -282,20 +280,6 @@ class LineItem extends \Google\Collection
     return $this->integrationDetails;
   }
   /**
-   * @param string[]
-   */
-  public function setInventorySourceIds($inventorySourceIds)
-  {
-    $this->inventorySourceIds = $inventorySourceIds;
-  }
-  /**
-   * @return string[]
-   */
-  public function getInventorySourceIds()
-  {
-    return $this->inventorySourceIds;
-  }
-  /**
    * @param string
    */
   public function setLineItemId($lineItemId)
@@ -448,6 +432,20 @@ class LineItem extends \Google\Collection
   public function getWarningMessages()
   {
     return $this->warningMessages;
+  }
+  /**
+   * @param YoutubeAndPartnersSettings
+   */
+  public function setYoutubeAndPartnersSettings(YoutubeAndPartnersSettings $youtubeAndPartnersSettings)
+  {
+    $this->youtubeAndPartnersSettings = $youtubeAndPartnersSettings;
+  }
+  /**
+   * @return YoutubeAndPartnersSettings
+   */
+  public function getYoutubeAndPartnersSettings()
+  {
+    return $this->youtubeAndPartnersSettings;
   }
 }
 

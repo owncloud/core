@@ -5,13 +5,19 @@
     "keywords": ["google"],
     "homepage": "http://developers.google.com/api-client-library/php",
     "license": "Apache-2.0",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/phil-davis/phpseclib"
+        }
+    ],
     "require": {
         "php": "^5.6|^7.0|^8.0",
         "google/auth": "^1.10",
         "google/apiclient-services": "~0.200",
         "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0||~6.0",
         "monolog/monolog": "^1.17||^2.0||^3.0",
-        "phpseclib/phpseclib": "~2.0||^3.0.2",
+        "phpseclib/phpseclib": "dev-test-delete-folder",
         "guzzlehttp/guzzle": "~5.3.3||~6.0||~7.0",
         "guzzlehttp/psr7": "^1.8.4||^2.2.1"
     },

@@ -34,6 +34,10 @@ class AutoRenewingBasePlanType extends \Google\Model
   /**
    * @var string
    */
+  public $legacyCompatibleSubscriptionOfferId;
+  /**
+   * @var string
+   */
   public $prorationMode;
   /**
    * @var string
@@ -81,6 +85,20 @@ class AutoRenewingBasePlanType extends \Google\Model
   public function getLegacyCompatible()
   {
     return $this->legacyCompatible;
+  }
+  /**
+   * @param string
+   */
+  public function setLegacyCompatibleSubscriptionOfferId($legacyCompatibleSubscriptionOfferId)
+  {
+    $this->legacyCompatibleSubscriptionOfferId = $legacyCompatibleSubscriptionOfferId;
+  }
+  /**
+   * @return string
+   */
+  public function getLegacyCompatibleSubscriptionOfferId()
+  {
+    return $this->legacyCompatibleSubscriptionOfferId;
   }
   /**
    * @param string

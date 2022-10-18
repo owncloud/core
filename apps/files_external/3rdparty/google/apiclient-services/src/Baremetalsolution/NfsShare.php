@@ -49,6 +49,10 @@ class NfsShare extends \Google\Collection
   /**
    * @var string
    */
+  public $storageType;
+  /**
+   * @var string
+   */
   public $volume;
 
   /**
@@ -148,6 +152,20 @@ class NfsShare extends \Google\Collection
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param string
+   */
+  public function setStorageType($storageType)
+  {
+    $this->storageType = $storageType;
+  }
+  /**
+   * @return string
+   */
+  public function getStorageType()
+  {
+    return $this->storageType;
   }
   /**
    * @param string

@@ -17,8 +17,13 @@
 
 namespace Google\Service\ShoppingContent;
 
-class CollectionStatusItemLevelIssue extends \Google\Model
+class CollectionStatusItemLevelIssue extends \Google\Collection
 {
+  protected $collection_key = 'applicableCountries';
+  /**
+   * @var string[]
+   */
+  public $applicableCountries;
   /**
    * @var string
    */
@@ -52,6 +57,20 @@ class CollectionStatusItemLevelIssue extends \Google\Model
    */
   public $servability;
 
+  /**
+   * @param string[]
+   */
+  public function setApplicableCountries($applicableCountries)
+  {
+    $this->applicableCountries = $applicableCountries;
+  }
+  /**
+   * @return string[]
+   */
+  public function getApplicableCountries()
+  {
+    return $this->applicableCountries;
+  }
   /**
    * @param string
    */

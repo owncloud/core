@@ -39,10 +39,10 @@ use Google\Service\ApigeeRegistry\TestIamPermissionsResponse;
 class ProjectsLocationsApisDeployments extends \Google\Service\Resource
 {
   /**
-   * CreateApiDeployment creates a specified deployment. (deployments.create)
+   * Creates a specified deployment. (deployments.create)
    *
    * @param string $parent Required. The parent, which owns this collection of
-   * deployments. Format: projects/locations/apis
+   * deployments. Format: `projects/locations/apis`
    * @param ApiDeployment $postBody
    * @param array $optParams Optional parameters.
    *
@@ -59,11 +59,11 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
     return $this->call('create', [$params], ApiDeployment::class);
   }
   /**
-   * DeleteApiDeployment removes a specified deployment, all revisions, and all
-   * child resources (e.g. artifacts). (deployments.delete)
+   * Removes a specified deployment, all revisions, and all child resources (e.g.,
+   * artifacts). (deployments.delete)
    *
    * @param string $name Required. The name of the deployment to delete. Format:
-   * projects/locations/apis/deployments
+   * `projects/locations/apis/deployments`
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool force If set to true, any child resources will also be
@@ -78,12 +78,11 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
     return $this->call('delete', [$params], ApigeeregistryEmpty::class);
   }
   /**
-   * DeleteApiDeploymentRevision deletes a revision of a deployment.
-   * (deployments.deleteRevision)
+   * Deletes a revision of a deployment. (deployments.deleteRevision)
    *
    * @param string $name Required. The name of the deployment revision to be
    * deleted, with a revision ID explicitly included. Example:
-   * projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8
+   * `projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8`
    * @param array $optParams Optional parameters.
    * @return ApiDeployment
    */
@@ -94,10 +93,10 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
     return $this->call('deleteRevision', [$params], ApiDeployment::class);
   }
   /**
-   * GetApiDeployment returns a specified deployment. (deployments.get)
+   * Returns a specified deployment. (deployments.get)
    *
    * @param string $name Required. The name of the deployment to retrieve. Format:
-   * projects/locations/apis/deployments
+   * `projects/locations/apis/deployments`
    * @param array $optParams Optional parameters.
    * @return ApiDeployment
    */
@@ -138,16 +137,19 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
     return $this->call('getIamPolicy', [$params], Policy::class);
   }
   /**
-   * ListApiDeployments returns matching deployments.
+   * Returns matching deployments.
    * (deployments.listProjectsLocationsApisDeployments)
    *
    * @param string $parent Required. The parent, which owns this collection of
-   * deployments. Format: projects/locations/apis
+   * deployments. Format: `projects/locations/apis`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter An expression that can be used to filter the list.
    * Filters use the Common Expression Language and can refer to all message
    * fields.
+   * @opt_param string orderBy A comma-separated list of fields, e.g. "foo,bar"
+   * Fields can be sorted in descending order using the "desc" identifier, e.g.
+   * "foo desc,bar"
    * @opt_param int pageSize The maximum number of deployments to return. The
    * service may return fewer than this value. If unspecified, at most 50 values
    * will be returned. The maximum is 1000; values above 1000 will be coerced to
@@ -165,9 +167,8 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
     return $this->call('list', [$params], ListApiDeploymentsResponse::class);
   }
   /**
-   * ListApiDeploymentRevisions lists all revisions of a deployment. Revisions are
-   * returned in descending order of revision creation time.
-   * (deployments.listRevisions)
+   * Lists all revisions of a deployment. Revisions are returned in descending
+   * order of revision creation time. (deployments.listRevisions)
    *
    * @param string $name Required. The name of the deployment to list revisions
    * for.
@@ -186,8 +187,7 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
     return $this->call('listRevisions', [$params], ListApiDeploymentRevisionsResponse::class);
   }
   /**
-   * UpdateApiDeployment can be used to modify a specified deployment.
-   * (deployments.patch)
+   * Used to modify a specified deployment. (deployments.patch)
    *
    * @param string $name Resource name.
    * @param ApiDeployment $postBody
@@ -198,8 +198,8 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
    * ignored.
    * @opt_param string updateMask The list of fields to be updated. If omitted,
    * all fields are updated that are set in the request message (fields set to
-   * default values are ignored). If a "*" is specified, all fields are updated,
-   * including fields that are unspecified/default in the request.
+   * default values are ignored). If an asterisk "*" is specified, all fields are
+   * updated, including fields that are unspecified/default in the request.
    * @return ApiDeployment
    */
   public function patch($name, ApiDeployment $postBody, $optParams = [])
@@ -209,9 +209,8 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
     return $this->call('patch', [$params], ApiDeployment::class);
   }
   /**
-   * RollbackApiDeployment sets the current revision to a specified prior
-   * revision. Note that this creates a new revision with a new revision ID.
-   * (deployments.rollback)
+   * Sets the current revision to a specified prior revision. Note that this
+   * creates a new revision with a new revision ID. (deployments.rollback)
    *
    * @param string $name Required. The deployment being rolled back.
    * @param RollbackApiDeploymentRequest $postBody
@@ -244,8 +243,7 @@ class ProjectsLocationsApisDeployments extends \Google\Service\Resource
     return $this->call('setIamPolicy', [$params], Policy::class);
   }
   /**
-   * TagApiDeploymentRevision adds a tag to a specified revision of a deployment.
-   * (deployments.tagRevision)
+   * Adds a tag to a specified revision of a deployment. (deployments.tagRevision)
    *
    * @param string $name Required. The name of the deployment to be tagged,
    * including the revision ID.

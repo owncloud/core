@@ -37,13 +37,16 @@ class PartnersProducts extends \Google\Service\Resource
    * Format: partners/{partner}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. Specifies the filters for the products
-   * results. The syntax defined in the EBNF grammar:
-   * https://google.aip.dev/assets/misc/ebnf-filtering.txt. An error will be
-   * thrown if any specified parameter is not supported. Currently, it can only be
-   * used by Youtube partners. Allowed parameters are: - regionCodes - zipCode -
-   * eligibilityId Multiple parameters can be specified, for example:
-   * "regionCodes=US zipCode=94043 eligibilityId=2022H1Campaign"
+   * @opt_param string filter Optional. Specifies the filters for the product
+   * results. The syntax is defined in https://google.aip.dev/160 with the
+   * following caveats: - Only the following features are supported: - Logical
+   * operator `AND` - Comparison operator `=` (no wildcards `*`) - Traversal
+   * operator `.` - Has operator `:` (no wildcards `*`) - Only the following
+   * fields are supported: - `regionCodes` - `youtubePayload.partnerEligibilityId`
+   * - `youtubePayload.postalCode` - Unless explicitly mentioned above, other
+   * features are not supported. Example: `regionCodes:US AND
+   * youtubePayload.postalCode=94043 AND youtubePayload.partnerEligibilityId
+   * =eligibility-id`
    * @opt_param int pageSize Optional. The maximum number of products to return.
    * The service may return fewer than this value. If unspecified, at most 50
    * products will be returned. The maximum value is 1000; values above 1000 will

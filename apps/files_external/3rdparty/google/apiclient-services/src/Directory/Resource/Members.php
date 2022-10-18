@@ -66,7 +66,12 @@ class Members extends \Google\Service\Resource
   }
   /**
    * Checks whether the given user is a member of the group. Membership can be
-   * direct or nested. (members.hasMember)
+   * direct or nested, but if nested, the `memberKey` and `groupKey` must be
+   * entities in the same domain or an `Invalid input` error is returned. To check
+   * for nested memberships that include entities outside of the group's domain,
+   * use the [`checkTransitiveMembership()`](https://cloud.google.com/identity/doc
+   * s/reference/rest/v1/groups.memberships/checkTransitiveMembership) method in
+   * the Cloud Identity Groups API. (members.hasMember)
    *
    * @param string $groupKey Identifies the group in the API request. The value
    * can be the group's email address, group alias, or the unique group ID.

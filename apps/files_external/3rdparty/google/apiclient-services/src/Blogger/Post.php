@@ -81,6 +81,10 @@ class Post extends \Google\Collection
   /**
    * @var string
    */
+  public $trashed;
+  /**
+   * @var string
+   */
   public $updated;
   /**
    * @var string
@@ -324,6 +328,20 @@ class Post extends \Google\Collection
   public function getTitleLink()
   {
     return $this->titleLink;
+  }
+  /**
+   * @param string
+   */
+  public function setTrashed($trashed)
+  {
+    $this->trashed = $trashed;
+  }
+  /**
+   * @return string
+   */
+  public function getTrashed()
+  {
+    return $this->trashed;
   }
   /**
    * @param string

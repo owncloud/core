@@ -50,7 +50,7 @@ class Spaces extends \Google\Service\Resource
   /**
    * Lists spaces the caller is a member of. Requires [service account
    * authentication](https://developers.google.com/chat/api/guides/auth/service-
-   * accounts). (spaces.listSpaces)
+   * accounts).  (spaces.listSpaces)
    *
    * @param array $optParams Optional parameters.
    *

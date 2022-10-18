@@ -43,6 +43,7 @@ class CloudKMS extends \Google\Service
       "https://www.googleapis.com/auth/cloudkms";
 
   public $projects_locations;
+  public $projects_locations_ekmConfig;
   public $projects_locations_ekmConnections;
   public $projects_locations_keyRings;
   public $projects_locations_keyRings_cryptoKeys;
@@ -111,6 +112,50 @@ class CloudKMS extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_ekmConfig = new CloudKMS\Resource\ProjectsLocationsEkmConfig(
+        $this,
+        $this->serviceName,
+        'ekmConfig',
+        [
+          'methods' => [
+            'getIamPolicy' => [
+              'path' => 'v1/{+resource}:getIamPolicy',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'resource' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'options.requestedPolicyVersion' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+              ],
+            ],'setIamPolicy' => [
+              'path' => 'v1/{+resource}:setIamPolicy',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'resource' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'testIamPermissions' => [
+              'path' => 'v1/{+resource}:testIamPermissions',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'resource' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

@@ -24,6 +24,8 @@ class Stage extends \Google\Collection
    * @var string[]
    */
   public $profiles;
+  protected $strategyType = Strategy::class;
+  protected $strategyDataType = '';
   /**
    * @var string
    */
@@ -42,6 +44,20 @@ class Stage extends \Google\Collection
   public function getProfiles()
   {
     return $this->profiles;
+  }
+  /**
+   * @param Strategy
+   */
+  public function setStrategy(Strategy $strategy)
+  {
+    $this->strategy = $strategy;
+  }
+  /**
+   * @return Strategy
+   */
+  public function getStrategy()
+  {
+    return $this->strategy;
   }
   /**
    * @param string

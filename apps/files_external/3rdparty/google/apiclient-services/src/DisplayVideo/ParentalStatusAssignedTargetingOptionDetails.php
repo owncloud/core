@@ -23,10 +23,6 @@ class ParentalStatusAssignedTargetingOptionDetails extends \Google\Model
    * @var string
    */
   public $parentalStatus;
-  /**
-   * @var string
-   */
-  public $targetingOptionId;
 
   /**
    * @param string
@@ -41,20 +37,6 @@ class ParentalStatusAssignedTargetingOptionDetails extends \Google\Model
   public function getParentalStatus()
   {
     return $this->parentalStatus;
-  }
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
-  {
-    $this->targetingOptionId = $targetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
-  {
-    return $this->targetingOptionId;
   }
 }
 

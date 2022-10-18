@@ -33,23 +33,23 @@ use Google\Service\DisplayVideo\Partner;
 class Partners extends \Google\Service\Resource
 {
   /**
-   * Bulk edits targeting options under a single partner. The operation will
-   * delete the assigned targeting options provided in
+   * Edits targeting options under a single partner. The operation will delete the
+   * assigned targeting options provided in
    * BulkEditPartnerAssignedTargetingOptionsRequest.deleteRequests and then create
    * the assigned targeting options provided in
    * BulkEditPartnerAssignedTargetingOptionsRequest.createRequests .
-   * (partners.bulkEditPartnerAssignedTargetingOptions)
+   * (partners.editAssignedTargetingOptions)
    *
    * @param string $partnerId Required. The ID of the partner.
    * @param BulkEditPartnerAssignedTargetingOptionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return BulkEditPartnerAssignedTargetingOptionsResponse
    */
-  public function bulkEditPartnerAssignedTargetingOptions($partnerId, BulkEditPartnerAssignedTargetingOptionsRequest $postBody, $optParams = [])
+  public function editAssignedTargetingOptions($partnerId, BulkEditPartnerAssignedTargetingOptionsRequest $postBody, $optParams = [])
   {
     $params = ['partnerId' => $partnerId, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('bulkEditPartnerAssignedTargetingOptions', [$params], BulkEditPartnerAssignedTargetingOptionsResponse::class);
+    return $this->call('editAssignedTargetingOptions', [$params], BulkEditPartnerAssignedTargetingOptionsResponse::class);
   }
   /**
    * Gets a partner. (partners.get)

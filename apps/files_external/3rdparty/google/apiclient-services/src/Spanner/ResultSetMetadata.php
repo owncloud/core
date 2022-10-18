@@ -23,6 +23,8 @@ class ResultSetMetadata extends \Google\Model
   protected $rowTypeDataType = '';
   protected $transactionType = Transaction::class;
   protected $transactionDataType = '';
+  protected $undeclaredParametersType = StructType::class;
+  protected $undeclaredParametersDataType = '';
 
   /**
    * @param StructType
@@ -51,6 +53,20 @@ class ResultSetMetadata extends \Google\Model
   public function getTransaction()
   {
     return $this->transaction;
+  }
+  /**
+   * @param StructType
+   */
+  public function setUndeclaredParameters(StructType $undeclaredParameters)
+  {
+    $this->undeclaredParameters = $undeclaredParameters;
+  }
+  /**
+   * @return StructType
+   */
+  public function getUndeclaredParameters()
+  {
+    return $this->undeclaredParameters;
   }
 }
 

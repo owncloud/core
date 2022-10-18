@@ -24,8 +24,16 @@ class RepairClusterRequest extends \Google\Collection
    * @var string
    */
   public $clusterUuid;
+  /**
+   * @var string
+   */
+  public $gracefulDecommissionTimeout;
   protected $nodePoolsType = NodePool::class;
   protected $nodePoolsDataType = 'array';
+  /**
+   * @var string
+   */
+  public $parentOperationId;
   /**
    * @var string
    */
@@ -46,6 +54,20 @@ class RepairClusterRequest extends \Google\Collection
     return $this->clusterUuid;
   }
   /**
+   * @param string
+   */
+  public function setGracefulDecommissionTimeout($gracefulDecommissionTimeout)
+  {
+    $this->gracefulDecommissionTimeout = $gracefulDecommissionTimeout;
+  }
+  /**
+   * @return string
+   */
+  public function getGracefulDecommissionTimeout()
+  {
+    return $this->gracefulDecommissionTimeout;
+  }
+  /**
    * @param NodePool[]
    */
   public function setNodePools($nodePools)
@@ -58,6 +80,20 @@ class RepairClusterRequest extends \Google\Collection
   public function getNodePools()
   {
     return $this->nodePools;
+  }
+  /**
+   * @param string
+   */
+  public function setParentOperationId($parentOperationId)
+  {
+    $this->parentOperationId = $parentOperationId;
+  }
+  /**
+   * @return string
+   */
+  public function getParentOperationId()
+  {
+    return $this->parentOperationId;
   }
   /**
    * @param string

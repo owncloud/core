@@ -17,9 +17,11 @@
 
 namespace Google\Service\DisplayVideo\Resource;
 
-use Google\Service\DisplayVideo\BulkEditLineItemAssignedTargetingOptionsRequest;
-use Google\Service\DisplayVideo\BulkEditLineItemAssignedTargetingOptionsResponse;
-use Google\Service\DisplayVideo\BulkListLineItemAssignedTargetingOptionsResponse;
+use Google\Service\DisplayVideo\BulkEditAssignedTargetingOptionsRequest;
+use Google\Service\DisplayVideo\BulkEditAssignedTargetingOptionsResponse;
+use Google\Service\DisplayVideo\BulkListAssignedTargetingOptionsResponse;
+use Google\Service\DisplayVideo\BulkUpdateLineItemsRequest;
+use Google\Service\DisplayVideo\BulkUpdateLineItemsResponse;
 use Google\Service\DisplayVideo\DisplayvideoEmpty;
 use Google\Service\DisplayVideo\GenerateDefaultLineItemRequest;
 use Google\Service\DisplayVideo\LineItem;
@@ -36,39 +38,31 @@ use Google\Service\DisplayVideo\ListLineItemsResponse;
 class AdvertisersLineItems extends \Google\Service\Resource
 {
   /**
-   * Bulk edits targeting options under a single line item. The operation will
+   * Bulk edits targeting options under multiple line items. The operation will
    * delete the assigned targeting options provided in
-   * BulkEditLineItemAssignedTargetingOptionsRequest.delete_requests and then
-   * create the assigned targeting options provided in
-   * BulkEditLineItemAssignedTargetingOptionsRequest.create_requests. Requests to
-   * this endpoint cannot be made concurrently with the following requests
-   * updating the same line item: * BulkEditLineItemAssignedTargetingOptions *
-   * UpdateLineItem * CreateLineItemAssignedTargetingOption *
-   * DeleteLineItemAssignedTargetingOption
-   * (lineItems.bulkEditLineItemAssignedTargetingOptions)
+   * BulkEditAssignedTargetingOptionsRequest.delete_requests and then create the
+   * assigned targeting options provided in
+   * BulkEditAssignedTargetingOptionsRequest.create_requests .
+   * (lineItems.bulkEditAssignedTargetingOptions)
    *
-   * @param string $advertiserId Required. The ID of the advertiser the line item
-   * belongs to.
-   * @param string $lineItemId Required. The ID of the line item the assigned
-   * targeting option will belong to.
-   * @param BulkEditLineItemAssignedTargetingOptionsRequest $postBody
+   * @param string $advertiserId Required. The ID of the advertiser the line items
+   * belong to.
+   * @param BulkEditAssignedTargetingOptionsRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return BulkEditLineItemAssignedTargetingOptionsResponse
+   * @return BulkEditAssignedTargetingOptionsResponse
    */
-  public function bulkEditLineItemAssignedTargetingOptions($advertiserId, $lineItemId, BulkEditLineItemAssignedTargetingOptionsRequest $postBody, $optParams = [])
+  public function bulkEditAssignedTargetingOptions($advertiserId, BulkEditAssignedTargetingOptionsRequest $postBody, $optParams = [])
   {
-    $params = ['advertiserId' => $advertiserId, 'lineItemId' => $lineItemId, 'postBody' => $postBody];
+    $params = ['advertiserId' => $advertiserId, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('bulkEditLineItemAssignedTargetingOptions', [$params], BulkEditLineItemAssignedTargetingOptionsResponse::class);
+    return $this->call('bulkEditAssignedTargetingOptions', [$params], BulkEditAssignedTargetingOptionsResponse::class);
   }
   /**
-   * Lists assigned targeting options of a line item across targeting types.
-   * (lineItems.bulkListLineItemAssignedTargetingOptions)
+   * Lists assigned targeting options for multiple line items across targeting
+   * types. (lineItems.bulkListAssignedTargetingOptions)
    *
-   * @param string $advertiserId Required. The ID of the advertiser the line item
+   * @param string $advertiserId Required. The ID of the advertiser the line items
    * belongs to.
-   * @param string $lineItemId Required. The ID of the line item to list assigned
-   * targeting options for.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Allows filtering by assigned targeting option
@@ -83,24 +77,41 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * inheritance status of NOT_INHERITED or INHERITED_FROM_PARTNER
    * `inheritance="NOT_INHERITED" OR inheritance="INHERITED_FROM_PARTNER"` The
    * length of this field should be no more than 500 characters.
+   * @opt_param string lineItemIds Required. The IDs of the line items to list
+   * assigned targeting options for.
    * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * `targetingType` (default) The default sorting order is ascending. To
-   * specify descending order for a field, a suffix "desc" should be added to the
-   * field name. Example: `targetingType desc`.
+   * are: * `lineItemId` (default) * `assignedTargetingOption.targetingType` The
+   * default sorting order is ascending. To specify descending order for a field,
+   * a suffix "desc" should be added to the field name. Example: `targetingType
+   * desc`.
    * @opt_param int pageSize Requested page size. The size must be an integer
    * between `1` and `5000`. If unspecified, the default is '5000'. Returns error
    * code `INVALID_ARGUMENT` if an invalid value is specified.
    * @opt_param string pageToken A token that lets the client fetch the next page
    * of results. Typically, this is the value of next_page_token returned from the
-   * previous call to `BulkListLineItemAssignedTargetingOptions` method. If not
+   * previous call to the `BulkListAssignedTargetingOptions` method. If not
    * specified, the first page of results will be returned.
-   * @return BulkListLineItemAssignedTargetingOptionsResponse
+   * @return BulkListAssignedTargetingOptionsResponse
    */
-  public function bulkListLineItemAssignedTargetingOptions($advertiserId, $lineItemId, $optParams = [])
+  public function bulkListAssignedTargetingOptions($advertiserId, $optParams = [])
   {
-    $params = ['advertiserId' => $advertiserId, 'lineItemId' => $lineItemId];
+    $params = ['advertiserId' => $advertiserId];
     $params = array_merge($params, $optParams);
-    return $this->call('bulkListLineItemAssignedTargetingOptions', [$params], BulkListLineItemAssignedTargetingOptionsResponse::class);
+    return $this->call('bulkListAssignedTargetingOptions', [$params], BulkListAssignedTargetingOptionsResponse::class);
+  }
+  /**
+   * Updates multiple line items. (lineItems.bulkUpdate)
+   *
+   * @param string $advertisersId
+   * @param BulkUpdateLineItemsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return BulkUpdateLineItemsResponse
+   */
+  public function bulkUpdate($advertisersId, BulkUpdateLineItemsRequest $postBody, $optParams = [])
+  {
+    $params = ['advertisersId' => $advertisersId, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('bulkUpdate', [$params], BulkUpdateLineItemsResponse::class);
   }
   /**
    * Creates a new line item. Returns the newly created line item if successful.
@@ -125,7 +136,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
    *
    * @param string $advertiserId The ID of the advertiser this line item belongs
    * to.
-   * @param string $lineItemId The ID of the line item we need to fetch.
+   * @param string $lineItemId The ID of the line item to delete.
    * @param array $optParams Optional parameters.
    * @return DisplayvideoEmpty
    */

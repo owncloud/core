@@ -65,7 +65,8 @@ class ProjectsLocationsDatasetsDicomStores extends \Google\Service\Resource
    * identification fails for some DICOM instances. The output DICOM store will
    * not contain these failed resources. Failed resource totals are tracked in
    * Operation.metadata. Error details are also logged to Cloud Logging (see
-   * [Viewing error logs in Cloud Logging](/healthcare/docs/how-tos/logging)).
+   * [Viewing error logs in Cloud
+   * Logging](https://cloud.google.com/healthcare/docs/how-tos/logging)).
    * (dicomStores.deidentify)
    *
    * @param string $sourceStore Source DICOM store resource name. For example, `pr

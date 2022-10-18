@@ -7,8 +7,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Math
- * @package   BigInteger
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -23,9 +21,7 @@ use phpseclib3\Math\PrimeField\Integer;
 /**
  * Prime Finite Fields
  *
- * @package Math
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class PrimeField extends FiniteField
 {
@@ -51,8 +47,6 @@ class PrimeField extends FiniteField
         //if (!$modulo->isPrime()) {
         //    throw new \UnexpectedValueException('PrimeField requires a prime number be passed to the constructor');
         //}
-
-        $this->modulo = $modulo;
 
         $this->instanceID = self::$instanceCounter++;
         Integer::setModulo($this->instanceID, $modulo);

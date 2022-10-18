@@ -36,15 +36,15 @@ use Google\Service\ApigeeRegistry\TestIamPermissionsResponse;
 class ProjectsLocationsApis extends \Google\Service\Resource
 {
   /**
-   * CreateApi creates a specified API. (apis.create)
+   * Creates a specified API. (apis.create)
    *
    * @param string $parent Required. The parent, which owns this collection of
-   * APIs. Format: projects/locations
+   * APIs. Format: `projects/locations`
    * @param Api $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string apiId Required. The ID to use for the api, which will
-   * become the final component of the api's resource name. This value should be
+   * @opt_param string apiId Required. The ID to use for the API, which will
+   * become the final component of the API's resource name. This value should be
    * 4-63 characters, and valid characters are /a-z-/. Following AIP-162, IDs must
    * not have the form of a UUID.
    * @return Api
@@ -56,11 +56,10 @@ class ProjectsLocationsApis extends \Google\Service\Resource
     return $this->call('create', [$params], Api::class);
   }
   /**
-   * DeleteApi removes a specified API and all of the resources that it owns.
-   * (apis.delete)
+   * Removes a specified API and all of the resources that it owns. (apis.delete)
    *
    * @param string $name Required. The name of the API to delete. Format:
-   * projects/locations/apis
+   * `projects/locations/apis`
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool force If set to true, any child resources will also be
@@ -75,10 +74,10 @@ class ProjectsLocationsApis extends \Google\Service\Resource
     return $this->call('delete', [$params], ApigeeregistryEmpty::class);
   }
   /**
-   * GetApi returns a specified API. (apis.get)
+   * Returns a specified API. (apis.get)
    *
    * @param string $name Required. The name of the API to retrieve. Format:
-   * projects/locations/apis
+   * `projects/locations/apis`
    * @param array $optParams Optional parameters.
    * @return Api
    */
@@ -119,15 +118,18 @@ class ProjectsLocationsApis extends \Google\Service\Resource
     return $this->call('getIamPolicy', [$params], Policy::class);
   }
   /**
-   * ListApis returns matching APIs. (apis.listProjectsLocationsApis)
+   * Returns matching APIs. (apis.listProjectsLocationsApis)
    *
    * @param string $parent Required. The parent, which owns this collection of
-   * APIs. Format: projects/locations
+   * APIs. Format: `projects/locations`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter An expression that can be used to filter the list.
    * Filters use the Common Expression Language and can refer to all message
    * fields.
+   * @opt_param string orderBy A comma-separated list of fields, e.g. "foo,bar"
+   * Fields can be sorted in descending order using the "desc" identifier, e.g.
+   * "foo desc,bar"
    * @opt_param int pageSize The maximum number of APIs to return. The service may
    * return fewer than this value. If unspecified, at most 50 values will be
    * returned. The maximum is 1000; values above 1000 will be coerced to 1000.
@@ -144,18 +146,18 @@ class ProjectsLocationsApis extends \Google\Service\Resource
     return $this->call('list', [$params], ListApisResponse::class);
   }
   /**
-   * UpdateApi can be used to modify a specified API. (apis.patch)
+   * Used to modify a specified API. (apis.patch)
    *
    * @param string $name Resource name.
    * @param Api $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool allowMissing If set to true, and the api is not found, a new
-   * api will be created. In this situation, `update_mask` is ignored.
+   * @opt_param bool allowMissing If set to true, and the API is not found, a new
+   * API will be created. In this situation, `update_mask` is ignored.
    * @opt_param string updateMask The list of fields to be updated. If omitted,
    * all fields are updated that are set in the request message (fields set to
-   * default values are ignored). If a "*" is specified, all fields are updated,
-   * including fields that are unspecified/default in the request.
+   * default values are ignored). If an asterisk "*" is specified, all fields are
+   * updated, including fields that are unspecified/default in the request.
    * @return Api
    */
   public function patch($name, Api $postBody, $optParams = [])

@@ -34,10 +34,12 @@ class ProjectsLocationsInsightTypes extends \Google\Service\Resource
    * config for each InsightType. (insightTypes.getConfig)
    *
    * @param string $name Required. Name of the InsightTypeConfig to get.
-   * Acceptable formats: * `projects/[PROJECT_NUMBER]/locations/global/recommender
-   * s/[INSIGHT_TYPE_ID]/config` * `projects/[PROJECT_ID]/locations/global/recomme
-   * nders/[INSIGHT_TYPE_ID]/config` * `organizations/[ORGANIZATION_ID]/locations/
-   * global/recommenders/[INSIGHT_TYPE_ID]/config`
+   * Acceptable formats: * `projects/[PROJECT_NUMBER]/locations/[LOCATION]/insight
+   * Types/[INSIGHT_TYPE_ID]/config` * `projects/[PROJECT_ID]/locations/[LOCATION]
+   * /insightTypes/[INSIGHT_TYPE_ID]/config` * `organizations/[ORGANIZATION_ID]/lo
+   * cations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config` * `billingAccounts/
+   * [BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/conf
+   * ig`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudRecommenderV1InsightTypeConfig
    */

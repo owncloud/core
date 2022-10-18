@@ -30,7 +30,7 @@ class ResultMetadata extends \Google\Model
   /**
    * @var string
    */
-  public $field;
+  public $name;
 
   /**
    * @param string
@@ -63,16 +63,16 @@ class ResultMetadata extends \Google\Model
   /**
    * @param string
    */
-  public function setField($field)
+  public function setName($name)
   {
-    $this->field = $field;
+    $this->name = $name;
   }
   /**
    * @return string
    */
-  public function getField()
+  public function getName()
   {
-    return $this->field;
+    return $this->name;
   }
 }
 

@@ -36,6 +36,10 @@ class IdentityServiceOidcConfig extends \Google\Model
    */
   public $deployCloudConsoleProxy;
   /**
+   * @var bool
+   */
+  public $enableAccessToken;
+  /**
    * @var string
    */
   public $encryptedClientSecret;
@@ -127,6 +131,20 @@ class IdentityServiceOidcConfig extends \Google\Model
   public function getDeployCloudConsoleProxy()
   {
     return $this->deployCloudConsoleProxy;
+  }
+  /**
+   * @param bool
+   */
+  public function setEnableAccessToken($enableAccessToken)
+  {
+    $this->enableAccessToken = $enableAccessToken;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableAccessToken()
+  {
+    return $this->enableAccessToken;
   }
   /**
    * @param string

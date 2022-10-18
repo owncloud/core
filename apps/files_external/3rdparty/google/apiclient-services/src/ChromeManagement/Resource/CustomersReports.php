@@ -19,6 +19,7 @@ namespace Google\Service\ChromeManagement\Resource;
 
 use Google\Service\ChromeManagement\GoogleChromeManagementV1CountChromeDevicesReachingAutoExpirationDateResponse;
 use Google\Service\ChromeManagement\GoogleChromeManagementV1CountChromeDevicesThatNeedAttentionResponse;
+use Google\Service\ChromeManagement\GoogleChromeManagementV1CountChromeHardwareFleetDevicesResponse;
 use Google\Service\ChromeManagement\GoogleChromeManagementV1CountChromeVersionsResponse;
 use Google\Service\ChromeManagement\GoogleChromeManagementV1CountInstalledAppsResponse;
 use Google\Service\ChromeManagement\GoogleChromeManagementV1FindInstalledAppDevicesResponse;
@@ -84,6 +85,27 @@ class CustomersReports extends \Google\Service\Resource
     $params = ['customer' => $customer];
     $params = array_merge($params, $optParams);
     return $this->call('countChromeDevicesThatNeedAttention', [$params], GoogleChromeManagementV1CountChromeDevicesThatNeedAttentionResponse::class);
+  }
+  /**
+   * Counts of devices with a specific hardware specification from the requested
+   * hardware type (for example model name, processor type). Further information
+   * can be found here https://support.google.com/chrome/a/answer/10564947
+   * (reports.countChromeHardwareFleetDevices)
+   *
+   * @param string $customer Required. The customer ID or "my_customer".
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string orgUnitId Optional. The ID of the organizational unit. If
+   * omitted, all data will be returned.
+   * @opt_param string readMask Required. Mask of the fields that should be
+   * populated in the returned report.
+   * @return GoogleChromeManagementV1CountChromeHardwareFleetDevicesResponse
+   */
+  public function countChromeHardwareFleetDevices($customer, $optParams = [])
+  {
+    $params = ['customer' => $customer];
+    $params = array_merge($params, $optParams);
+    return $this->call('countChromeHardwareFleetDevices', [$params], GoogleChromeManagementV1CountChromeHardwareFleetDevicesResponse::class);
   }
   /**
    * Generate report of installed Chrome versions. (reports.countChromeVersions)

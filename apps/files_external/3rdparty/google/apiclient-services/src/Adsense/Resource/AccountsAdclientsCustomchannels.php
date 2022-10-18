@@ -17,6 +17,7 @@
 
 namespace Google\Service\Adsense\Resource;
 
+use Google\Service\Adsense\AdsenseEmpty;
 use Google\Service\Adsense\CustomChannel;
 use Google\Service\Adsense\ListCustomChannelsResponse;
 use Google\Service\Adsense\ListLinkedAdUnitsResponse;
@@ -31,6 +32,41 @@ use Google\Service\Adsense\ListLinkedAdUnitsResponse;
  */
 class AccountsAdclientsCustomchannels extends \Google\Service\Resource
 {
+  /**
+   * Creates a custom channel. This method can only be used by projects enabled
+   * for the [AdSense for
+   * Platforms](https://developers.google.com/adsense/platforms/) product.
+   * (customchannels.create)
+   *
+   * @param string $parent Required. The ad client to create a custom channel
+   * under. Format: accounts/{account}/adclients/{adclient}
+   * @param CustomChannel $postBody
+   * @param array $optParams Optional parameters.
+   * @return CustomChannel
+   */
+  public function create($parent, CustomChannel $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], CustomChannel::class);
+  }
+  /**
+   * Deletes a custom channel. This method can only be used by projects enabled
+   * for the [AdSense for
+   * Platforms](https://developers.google.com/adsense/platforms/) product.
+   * (customchannels.delete)
+   *
+   * @param string $name Required. Name of the custom channel to delete. Format:
+   * accounts/{account}/adclients/{adclient}/customchannels/{customchannel}
+   * @param array $optParams Optional parameters.
+   * @return AdsenseEmpty
+   */
+  public function delete($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', [$params], AdsenseEmpty::class);
+  }
   /**
    * Gets information about the selected custom channel. (customchannels.get)
    *
@@ -93,6 +129,27 @@ class AccountsAdclientsCustomchannels extends \Google\Service\Resource
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
     return $this->call('listLinkedAdUnits', [$params], ListLinkedAdUnitsResponse::class);
+  }
+  /**
+   * Updates a custom channel. This method can only be used by projects enabled
+   * for the [AdSense for
+   * Platforms](https://developers.google.com/adsense/platforms/) product.
+   * (customchannels.patch)
+   *
+   * @param string $name Output only. Resource name of the custom channel. Format:
+   * accounts/{account}/adclients/{adclient}/customchannels/{customchannel}
+   * @param CustomChannel $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The list of fields to update. If empty, a full
+   * update is performed.
+   * @return CustomChannel
+   */
+  public function patch($name, CustomChannel $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], CustomChannel::class);
   }
 }
 

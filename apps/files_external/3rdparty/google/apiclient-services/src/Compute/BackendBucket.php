@@ -29,6 +29,10 @@ class BackendBucket extends \Google\Collection
   /**
    * @var string
    */
+  public $compressionMode;
+  /**
+   * @var string
+   */
   public $creationTimestamp;
   /**
    * @var string[]
@@ -90,6 +94,20 @@ class BackendBucket extends \Google\Collection
   public function getCdnPolicy()
   {
     return $this->cdnPolicy;
+  }
+  /**
+   * @param string
+   */
+  public function setCompressionMode($compressionMode)
+  {
+    $this->compressionMode = $compressionMode;
+  }
+  /**
+   * @return string
+   */
+  public function getCompressionMode()
+  {
+    return $this->compressionMode;
   }
   /**
    * @param string

@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  Common
- * @package   Functions\Strings
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2016 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -15,13 +13,15 @@
 
 namespace phpseclib3\Common\Functions;
 
+use ParagonIE\ConstantTime\Base64;
+use ParagonIE\ConstantTime\Base64UrlSafe;
+use ParagonIE\ConstantTime\Hex;
 use phpseclib3\Math\BigInteger;
 use phpseclib3\Math\Common\FiniteField;
 
 /**
  * Common String Functions
  *
- * @package Functions\Strings
  * @author  Jim Wigginton <terrafrost@php.net>
  */
 abstract class Strings
@@ -33,7 +33,6 @@ abstract class Strings
      *
      * @param string $string
      * @param int $index
-     * @access public
      * @return string
      */
     public static function shift(&$string, $index = 1)
@@ -50,7 +49,6 @@ abstract class Strings
      *
      * @param string $string
      * @param int $index
-     * @access public
      * @return string
      */
     public static function pop(&$string, $index = 1)
@@ -160,7 +158,6 @@ abstract class Strings
      *
      * @param string $format
      * @param string|int|float|array|bool ...$elements
-     * @access public
      * @return string
      */
     public static function packSSH2($format, ...$elements)
@@ -233,7 +230,6 @@ abstract class Strings
      *
      * Converts C5 to CCCCC, for example.
      *
-     * @access private
      * @param string $format
      * @return string
      */
@@ -257,7 +253,6 @@ abstract class Strings
      * of this function, bin refers to base-256 encoded data whilst bits refers
      * to base-2 encoded data
      *
-     * @access public
      * @param string $x
      * @return string
      */
@@ -304,7 +299,6 @@ abstract class Strings
     /**
      * Convert bits to binary data
      *
-     * @access public
      * @param string $x
      * @return string
      */
@@ -343,7 +337,6 @@ abstract class Strings
     /**
      * Switch Endianness Bit Order
      *
-     * @access public
      * @param string $x
      * @return string
      */
@@ -374,7 +367,6 @@ abstract class Strings
      *
      * @param string $var
      * @return string
-     * @access public
      */
     public static function increment_str(&$var)
     {
@@ -424,5 +416,90 @@ abstract class Strings
     public static function is_stringable($var)
     {
         return is_string($var) || (is_object($var) && method_exists($var, '__toString'));
+    }
+
+    /**
+     * Constant Time Base64-decoding
+     *
+     * ParagoneIE\ConstantTime doesn't use libsodium if it's available so we'll do so
+     * ourselves. see https://github.com/paragonie/constant_time_encoding/issues/39
+     *
+     * @param string $data
+     * @return string
+     */
+    public static function base64_decode($data)
+    {
+        return function_exists('sodium_base642bin') ?
+            sodium_base642bin($data, SODIUM_BASE64_VARIANT_ORIGINAL_NO_PADDING, '=') :
+            Base64::decode($data);
+    }
+
+    /**
+     * Constant Time Base64-decoding (URL safe)
+     *
+     * @param string $data
+     * @return string
+     */
+    public static function base64url_decode($data)
+    {
+        // return self::base64_decode(str_replace(['-', '_'], ['+', '/'], $data));
+
+        return function_exists('sodium_base642bin') ?
+            sodium_base642bin($data, SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING, '=') :
+            Base64UrlSafe::decode($data);
+    }
+
+    /**
+     * Constant Time Base64-encoding
+     *
+     * @param string $data
+     * @return string
+     */
+    public static function base64_encode($data)
+    {
+        return function_exists('sodium_bin2base64') ?
+            sodium_bin2base64($data, SODIUM_BASE64_VARIANT_ORIGINAL) :
+            Base64::encode($data);
+    }
+
+    /**
+     * Constant Time Base64-encoding (URL safe)
+     *
+     * @param string $data
+     * @return string
+     */
+    public static function base64url_encode($data)
+    {
+        // return str_replace(['+', '/'], ['-', '_'], self::base64_encode($data));
+
+        return function_exists('sodium_bin2base64') ?
+            sodium_bin2base64($data, SODIUM_BASE64_VARIANT_URLSAFE) :
+            Base64UrlSafe::encode($data);
+    }
+
+    /**
+     * Constant Time Hex Decoder
+     *
+     * @param string $data
+     * @return string
+     */
+    public static function hex2bin($data)
+    {
+        return function_exists('sodium_hex2bin') ?
+            sodium_hex2bin($data) :
+            Hex::decode($data);
+    }
+
+    /**
+     * Constant Time Hex Encoder
+     *
+     * @param string $data
+     * @return string
+     */
+    public static function bin2hex($data)
+    {
+        return function_exists('sodium_bin2hex') ?
+            sodium_bin2hex($data) :
+            Hex::encode($data);
     }
 }

@@ -43,6 +43,10 @@ class DockerImage extends \Google\Collection
   /**
    * @var string
    */
+  public $updateTime;
+  /**
+   * @var string
+   */
   public $uploadTime;
   /**
    * @var string
@@ -118,6 +122,20 @@ class DockerImage extends \Google\Collection
   public function getTags()
   {
     return $this->tags;
+  }
+  /**
+   * @param string
+   */
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  /**
+   * @return string
+   */
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
   /**
    * @param string

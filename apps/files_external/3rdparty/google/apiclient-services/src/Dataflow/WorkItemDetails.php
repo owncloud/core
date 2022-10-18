@@ -40,6 +40,8 @@ class WorkItemDetails extends \Google\Collection
    * @var string
    */
   public $state;
+  protected $stragglerInfoType = StragglerInfo::class;
+  protected $stragglerInfoDataType = '';
   /**
    * @var string
    */
@@ -128,6 +130,20 @@ class WorkItemDetails extends \Google\Collection
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param StragglerInfo
+   */
+  public function setStragglerInfo(StragglerInfo $stragglerInfo)
+  {
+    $this->stragglerInfo = $stragglerInfo;
+  }
+  /**
+   * @return StragglerInfo
+   */
+  public function getStragglerInfo()
+  {
+    return $this->stragglerInfo;
   }
   /**
    * @param string

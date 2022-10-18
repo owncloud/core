@@ -22,6 +22,10 @@ class Glossary extends \Google\Model
   /**
    * @var string
    */
+  public $displayName;
+  /**
+   * @var string
+   */
   public $endTime;
   /**
    * @var int
@@ -42,6 +46,20 @@ class Glossary extends \Google\Model
    */
   public $submitTime;
 
+  /**
+   * @param string
+   */
+  public function setDisplayName($displayName)
+  {
+    $this->displayName = $displayName;
+  }
+  /**
+   * @return string
+   */
+  public function getDisplayName()
+  {
+    return $this->displayName;
+  }
   /**
    * @param string
    */

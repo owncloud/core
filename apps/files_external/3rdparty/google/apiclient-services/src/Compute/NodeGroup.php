@@ -63,6 +63,8 @@ class NodeGroup extends \Google\Model
    * @var string
    */
   public $selfLink;
+  protected $shareSettingsType = ShareSettings::class;
+  protected $shareSettingsDataType = '';
   /**
    * @var int
    */
@@ -243,6 +245,20 @@ class NodeGroup extends \Google\Model
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param ShareSettings
+   */
+  public function setShareSettings(ShareSettings $shareSettings)
+  {
+    $this->shareSettings = $shareSettings;
+  }
+  /**
+   * @return ShareSettings
+   */
+  public function getShareSettings()
+  {
+    return $this->shareSettings;
   }
   /**
    * @param int

@@ -25,6 +25,8 @@ class GoogleCloudRetailV2SearchResponseFacetFacetValue extends \Google\Model
   public $count;
   protected $intervalType = GoogleCloudRetailV2Interval::class;
   protected $intervalDataType = '';
+  public $maxValue;
+  public $minValue;
   /**
    * @var string
    */
@@ -57,6 +59,22 @@ class GoogleCloudRetailV2SearchResponseFacetFacetValue extends \Google\Model
   public function getInterval()
   {
     return $this->interval;
+  }
+  public function setMaxValue($maxValue)
+  {
+    $this->maxValue = $maxValue;
+  }
+  public function getMaxValue()
+  {
+    return $this->maxValue;
+  }
+  public function setMinValue($minValue)
+  {
+    $this->minValue = $minValue;
+  }
+  public function getMinValue()
+  {
+    return $this->minValue;
   }
   /**
    * @param string

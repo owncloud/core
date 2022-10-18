@@ -77,6 +77,10 @@ class ChromeOsDevice extends \Google\Collection
   /**
    * @var string
    */
+  public $firstEnrollmentTime;
+  /**
+   * @var string
+   */
   public $kind;
   /**
    * @var string
@@ -120,6 +124,8 @@ class ChromeOsDevice extends \Google\Collection
    * @var string
    */
   public $orgUnitPath;
+  protected $osUpdateStatusType = OsUpdateStatus::class;
+  protected $osUpdateStatusDataType = '';
   /**
    * @var string
    */
@@ -384,6 +390,20 @@ class ChromeOsDevice extends \Google\Collection
   /**
    * @param string
    */
+  public function setFirstEnrollmentTime($firstEnrollmentTime)
+  {
+    $this->firstEnrollmentTime = $firstEnrollmentTime;
+  }
+  /**
+   * @return string
+   */
+  public function getFirstEnrollmentTime()
+  {
+    return $this->firstEnrollmentTime;
+  }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
@@ -548,6 +568,20 @@ class ChromeOsDevice extends \Google\Collection
   public function getOrgUnitPath()
   {
     return $this->orgUnitPath;
+  }
+  /**
+   * @param OsUpdateStatus
+   */
+  public function setOsUpdateStatus(OsUpdateStatus $osUpdateStatus)
+  {
+    $this->osUpdateStatus = $osUpdateStatus;
+  }
+  /**
+   * @return OsUpdateStatus
+   */
+  public function getOsUpdateStatus()
+  {
+    return $this->osUpdateStatus;
   }
   /**
    * @param string

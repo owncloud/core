@@ -48,6 +48,10 @@ class TrainingOptions extends \Google\Collection
    * @var bool
    */
   public $cleanSpikesAndDips;
+  /**
+   * @var string
+   */
+  public $colorSpace;
   public $colsampleBylevel;
   public $colsampleBynode;
   public $colsampleBytree;
@@ -335,6 +339,20 @@ class TrainingOptions extends \Google\Collection
   public function getCleanSpikesAndDips()
   {
     return $this->cleanSpikesAndDips;
+  }
+  /**
+   * @param string
+   */
+  public function setColorSpace($colorSpace)
+  {
+    $this->colorSpace = $colorSpace;
+  }
+  /**
+   * @return string
+   */
+  public function getColorSpace()
+  {
+    return $this->colorSpace;
   }
   public function setColsampleBylevel($colsampleBylevel)
   {

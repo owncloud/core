@@ -114,6 +114,26 @@ class ProjectsLocationsGlossaries extends \Google\Service\Resource
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListGlossariesResponse::class);
   }
+  /**
+   * Updates a glossary. A LRO is used since the update can be async if the
+   * glossary's entry file is updated. (glossaries.patch)
+   *
+   * @param string $name Required. The resource name of the glossary. Glossary
+   * names have the form `projects/{project-number-or-id}/locations/{location-
+   * id}/glossaries/{glossary-id}`.
+   * @param Glossary $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The list of fields to be updated. Currently only
+   * `display_name` and 'input_config'
+   * @return Operation
+   */
+  public function patch($name, Glossary $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], Operation::class);
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

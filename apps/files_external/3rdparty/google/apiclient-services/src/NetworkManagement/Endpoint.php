@@ -19,6 +19,8 @@ namespace Google\Service\NetworkManagement;
 
 class Endpoint extends \Google\Model
 {
+  protected $cloudFunctionType = CloudFunctionEndpoint::class;
+  protected $cloudFunctionDataType = '';
   /**
    * @var string
    */
@@ -52,6 +54,20 @@ class Endpoint extends \Google\Model
    */
   public $projectId;
 
+  /**
+   * @param CloudFunctionEndpoint
+   */
+  public function setCloudFunction(CloudFunctionEndpoint $cloudFunction)
+  {
+    $this->cloudFunction = $cloudFunction;
+  }
+  /**
+   * @return CloudFunctionEndpoint
+   */
+  public function getCloudFunction()
+  {
+    return $this->cloudFunction;
+  }
   /**
    * @param string
    */

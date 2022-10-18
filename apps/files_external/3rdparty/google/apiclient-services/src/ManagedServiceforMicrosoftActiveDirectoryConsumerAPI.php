@@ -155,6 +155,16 @@ class ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extends \Google\Servi
                   'required' => true,
                 ],
               ],
+            ],'extendSchema' => [
+              'path' => 'v1/{+domain}:extendSchema',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'domain' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'get' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'GET',

@@ -45,7 +45,7 @@ class ProjectsLocationsClustersNodePools extends \Google\Service\Resource
    *
    * @param string $name The name (project, location, cluster, node pool id) of
    * the node pool to complete upgrade. Specified in the format
-   * 'projects/locations/clusters/nodePools'.
+   * `projects/locations/clusters/nodePools`.
    * @param CompleteNodePoolUpgradeRequest $postBody
    * @param array $optParams Optional parameters.
    * @return ContainerEmpty

@@ -50,10 +50,9 @@ class ProjectsTransferConfigs extends \Google\Service\Resource
    * with this transfer configuration. This is required only if
    * `transferConfig.dataSourceId` is 'youtube_channel' and new credentials are
    * needed, as indicated by `CheckValidCreds`. In order to obtain
-   * authorization_code, make a request to the following URL:
-   * https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?
-   * client_id=client_id=data_source_scopes
-   * _uri=urn:ietf:wg:oauth:2.0:oob_type=authorization_code * The client_id is the
+   * authorization_code, make a request to the following URL: https://www.gstatic.
+   * com/bigquerydatatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob_t
+   * ype=authorization_code_id=client_id=data_source_scopes * The client_id is the
    * OAuth client_id of the a data source as returned by ListDataSources method. *
    * data_source_scopes are the scopes returned by ListDataSources method. Note
    * that this should not be set when `service_account_name` is used to create the
@@ -69,14 +68,12 @@ class ProjectsTransferConfigs extends \Google\Service\Resource
    * @opt_param string versionInfo Optional version info. This is required only if
    * `transferConfig.dataSourceId` is not 'youtube_channel' and new credentials
    * are needed, as indicated by `CheckValidCreds`. In order to obtain version
-   * info, make a request to the following URL:
-   * https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?
-   * client_id=client_id=data_source_scopes
-   * _uri=urn:ietf:wg:oauth:2.0:oob_type=version_info * The client_id is the OAuth
-   * client_id of the a data source as returned by ListDataSources method. *
-   * data_source_scopes are the scopes returned by ListDataSources method. Note
-   * that this should not be set when `service_account_name` is used to create the
-   * transfer config.
+   * info, make a request to the following URL: https://www.gstatic.com/bigqueryda
+   * tatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob_type=version_in
+   * fo_id=client_id=data_source_scopes * The client_id is the OAuth client_id of
+   * the a data source as returned by ListDataSources method. * data_source_scopes
+   * are the scopes returned by ListDataSources method. Note that this should not
+   * be set when `service_account_name` is used to create the transfer config.
    * @return TransferConfig
    */
   public function create($parent, TransferConfig $postBody, $optParams = [])
@@ -159,10 +156,9 @@ class ProjectsTransferConfigs extends \Google\Service\Resource
    * with this transfer configuration. This is required only if
    * `transferConfig.dataSourceId` is 'youtube_channel' and new credentials are
    * needed, as indicated by `CheckValidCreds`. In order to obtain
-   * authorization_code, make a request to the following URL:
-   * https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?
-   * client_id=client_id=data_source_scopes
-   * _uri=urn:ietf:wg:oauth:2.0:oob_type=authorization_code * The client_id is the
+   * authorization_code, make a request to the following URL: https://www.gstatic.
+   * com/bigquerydatatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob_t
+   * ype=authorization_code_id=client_id=data_source_scopes * The client_id is the
    * OAuth client_id of the a data source as returned by ListDataSources method. *
    * data_source_scopes are the scopes returned by ListDataSources method. Note
    * that this should not be set when `service_account_name` is used to update the
@@ -180,14 +176,12 @@ class ProjectsTransferConfigs extends \Google\Service\Resource
    * @opt_param string versionInfo Optional version info. This is required only if
    * `transferConfig.dataSourceId` is not 'youtube_channel' and new credentials
    * are needed, as indicated by `CheckValidCreds`. In order to obtain version
-   * info, make a request to the following URL:
-   * https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?
-   * client_id=client_id=data_source_scopes
-   * _uri=urn:ietf:wg:oauth:2.0:oob_type=version_info * The client_id is the OAuth
-   * client_id of the a data source as returned by ListDataSources method. *
-   * data_source_scopes are the scopes returned by ListDataSources method. Note
-   * that this should not be set when `service_account_name` is used to update the
-   * transfer config.
+   * info, make a request to the following URL: https://www.gstatic.com/bigqueryda
+   * tatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob_type=version_in
+   * fo_id=client_id=data_source_scopes * The client_id is the OAuth client_id of
+   * the a data source as returned by ListDataSources method. * data_source_scopes
+   * are the scopes returned by ListDataSources method. Note that this should not
+   * be set when `service_account_name` is used to update the transfer config.
    * @return TransferConfig
    */
   public function patch($name, TransferConfig $postBody, $optParams = [])

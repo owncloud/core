@@ -19,6 +19,10 @@ namespace Google\Service\Logging;
 
 class LogMetric extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $bucketName;
   protected $bucketOptionsType = BucketOptions::class;
   protected $bucketOptionsDataType = '';
   /**
@@ -60,6 +64,20 @@ class LogMetric extends \Google\Model
    */
   public $version;
 
+  /**
+   * @param string
+   */
+  public function setBucketName($bucketName)
+  {
+    $this->bucketName = $bucketName;
+  }
+  /**
+   * @return string
+   */
+  public function getBucketName()
+  {
+    return $this->bucketName;
+  }
   /**
    * @param BucketOptions
    */

@@ -22,10 +22,28 @@ class GoogleCloudDatacatalogV1UsageSignal extends \Google\Model
   /**
    * @var string
    */
+  public $favoriteCount;
+  /**
+   * @var string
+   */
   public $updateTime;
   protected $usageWithinTimeRangeType = GoogleCloudDatacatalogV1UsageStats::class;
   protected $usageWithinTimeRangeDataType = 'map';
 
+  /**
+   * @param string
+   */
+  public function setFavoriteCount($favoriteCount)
+  {
+    $this->favoriteCount = $favoriteCount;
+  }
+  /**
+   * @return string
+   */
+  public function getFavoriteCount()
+  {
+    return $this->favoriteCount;
+  }
   /**
    * @param string
    */

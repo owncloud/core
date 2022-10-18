@@ -47,6 +47,10 @@ class Address extends \Google\Collection
   /**
    * @var string
    */
+  public $ipv6EndpointType;
+  /**
+   * @var string
+   */
   public $kind;
   /**
    * @var string
@@ -172,6 +176,20 @@ class Address extends \Google\Collection
   public function getIpVersion()
   {
     return $this->ipVersion;
+  }
+  /**
+   * @param string
+   */
+  public function setIpv6EndpointType($ipv6EndpointType)
+  {
+    $this->ipv6EndpointType = $ipv6EndpointType;
+  }
+  /**
+   * @return string
+   */
+  public function getIpv6EndpointType()
+  {
+    return $this->ipv6EndpointType;
   }
   /**
    * @param string

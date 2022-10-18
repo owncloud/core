@@ -39,7 +39,8 @@ class Products extends \Google\Service\Resource
    * maximum number of products that you can approve per enterprise customer is
    * 1,000. To learn how to use managed Google Play to design and create a store
    * layout to display approved products to your users, see Store Layout Design.
-   * (products.approve)
+   * **Note:** This item has been deprecated. New integrations cannot use this
+   * method and can refer to our new recommendations.  (products.approve)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $productId The ID of the product.
@@ -60,7 +61,9 @@ class Products extends \Google\Service\Resource
    * UI element in the EMM console, which in turn should trigger the use of this
    * URL as the approvalUrlInfo.approvalUrl property in a Products.approve call to
    * approve the product. This URL can only be used to display permissions for up
-   * to 1 day. (products.generateApprovalUrl)
+   * to 1 day. **Note:** This item has been deprecated. New integrations cannot
+   * use this method and can refer to our new recommendations.
+   * (products.generateApprovalUrl)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $productId The ID of the product.
@@ -134,7 +137,9 @@ class Products extends \Google\Service\Resource
   }
   /**
    * Finds approved products that match a query, or all approved products if there
-   * is no query. (products.listProducts)
+   * is no query. **Note:** This item has been deprecated. New integrations cannot
+   * use this method and can refer to our new recommendations.
+   * (products.listProducts)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param array $optParams Optional parameters.
@@ -163,7 +168,8 @@ class Products extends \Google\Service\Resource
   }
   /**
    * Unapproves the specified product (and the relevant app permissions, if any)
-   * (products.unapprove)
+   * **Note:** This item has been deprecated. New integrations cannot use this
+   * method and can refer to our new recommendations. (products.unapprove)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $productId The ID of the product.

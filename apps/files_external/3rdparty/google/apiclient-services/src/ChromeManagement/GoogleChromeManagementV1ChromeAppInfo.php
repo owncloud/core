@@ -31,6 +31,10 @@ class GoogleChromeManagementV1ChromeAppInfo extends \Google\Collection
   /**
    * @var bool
    */
+  public $isExtensionPolicySupported;
+  /**
+   * @var bool
+   */
   public $isKioskOnly;
   /**
    * @var bool
@@ -80,6 +84,20 @@ class GoogleChromeManagementV1ChromeAppInfo extends \Google\Collection
   public function getIsCwsHosted()
   {
     return $this->isCwsHosted;
+  }
+  /**
+   * @param bool
+   */
+  public function setIsExtensionPolicySupported($isExtensionPolicySupported)
+  {
+    $this->isExtensionPolicySupported = $isExtensionPolicySupported;
+  }
+  /**
+   * @return bool
+   */
+  public function getIsExtensionPolicySupported()
+  {
+    return $this->isExtensionPolicySupported;
   }
   /**
    * @param bool

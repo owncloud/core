@@ -33,9 +33,17 @@ class GoogleChromePolicyV1PolicySchemaFieldDescription extends \Google\Collectio
   /**
    * @var string
    */
+  public $fieldDescription;
+  /**
+   * @var string
+   */
   public $inputConstraint;
   protected $knownValueDescriptionsType = GoogleChromePolicyV1PolicySchemaFieldKnownValueDescription::class;
   protected $knownValueDescriptionsDataType = 'array';
+  /**
+   * @var string
+   */
+  public $name;
   protected $nestedFieldDescriptionsType = GoogleChromePolicyV1PolicySchemaFieldDescription::class;
   protected $nestedFieldDescriptionsDataType = 'array';
   protected $requiredItemsType = GoogleChromePolicyV1PolicySchemaRequiredItems::class;
@@ -86,6 +94,20 @@ class GoogleChromePolicyV1PolicySchemaFieldDescription extends \Google\Collectio
   /**
    * @param string
    */
+  public function setFieldDescription($fieldDescription)
+  {
+    $this->fieldDescription = $fieldDescription;
+  }
+  /**
+   * @return string
+   */
+  public function getFieldDescription()
+  {
+    return $this->fieldDescription;
+  }
+  /**
+   * @param string
+   */
   public function setInputConstraint($inputConstraint)
   {
     $this->inputConstraint = $inputConstraint;
@@ -110,6 +132,20 @@ class GoogleChromePolicyV1PolicySchemaFieldDescription extends \Google\Collectio
   public function getKnownValueDescriptions()
   {
     return $this->knownValueDescriptions;
+  }
+  /**
+   * @param string
+   */
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+  /**
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->name;
   }
   /**
    * @param GoogleChromePolicyV1PolicySchemaFieldDescription[]

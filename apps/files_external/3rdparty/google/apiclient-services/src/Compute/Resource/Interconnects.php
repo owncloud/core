@@ -17,6 +17,7 @@
 
 namespace Google\Service\Compute\Resource;
 
+use Google\Service\Compute\GlobalSetLabelsRequest;
 use Google\Service\Compute\Interconnect;
 use Google\Service\Compute\InterconnectList;
 use Google\Service\Compute\InterconnectsGetDiagnosticsResponse;
@@ -205,6 +206,22 @@ class Interconnects extends \Google\Service\Resource
     $params = ['project' => $project, 'interconnect' => $interconnect, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], Operation::class);
+  }
+  /**
+   * Sets the labels on an Interconnect. To learn more about labels, read the
+   * Labeling Resources documentation. (interconnects.setLabels)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $resource Name or id of the resource for this request.
+   * @param GlobalSetLabelsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function setLabels($project, $resource, GlobalSetLabelsRequest $postBody, $optParams = [])
+  {
+    $params = ['project' => $project, 'resource' => $resource, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('setLabels', [$params], Operation::class);
   }
 }
 

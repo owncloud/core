@@ -57,8 +57,8 @@ class ProjectsLocationsCatalogsPlacements extends \Google\Service\Resource
   }
   /**
    * Performs a search. This feature is only available for users who have Retail
-   * Search enabled. Please enable Retail Search on Cloud Console before using
-   * this feature. (placements.search)
+   * Search enabled. Enable Retail Search on Cloud Console before using this
+   * feature. (placements.search)
    *
    * @param string $placement Required. The resource name of the Retail Search
    * serving config, such as `projects/locations/global/catalogs/default_catalog/s

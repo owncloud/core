@@ -19,6 +19,8 @@ namespace Google\Service\DriveActivity;
 
 class ActionDetail extends \Google\Model
 {
+  protected $appliedLabelChangeType = AppliedLabelChange::class;
+  protected $appliedLabelChangeDataType = '';
   protected $commentType = Comment::class;
   protected $commentDataType = '';
   protected $createType = Create::class;
@@ -42,6 +44,20 @@ class ActionDetail extends \Google\Model
   protected $settingsChangeType = SettingsChange::class;
   protected $settingsChangeDataType = '';
 
+  /**
+   * @param AppliedLabelChange
+   */
+  public function setAppliedLabelChange(AppliedLabelChange $appliedLabelChange)
+  {
+    $this->appliedLabelChange = $appliedLabelChange;
+  }
+  /**
+   * @return AppliedLabelChange
+   */
+  public function getAppliedLabelChange()
+  {
+    return $this->appliedLabelChange;
+  }
   /**
    * @param Comment
    */

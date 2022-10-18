@@ -17,8 +17,9 @@
 
 namespace Google\Service\CloudRetail;
 
-class GoogleCloudRetailV2SearchResponseSearchResult extends \Google\Model
+class GoogleCloudRetailV2SearchResponseSearchResult extends \Google\Collection
 {
+  protected $collection_key = 'personalLabels';
   /**
    * @var string
    */
@@ -31,6 +32,10 @@ class GoogleCloudRetailV2SearchResponseSearchResult extends \Google\Model
    * @var string[]
    */
   public $matchingVariantFields;
+  /**
+   * @var string[]
+   */
+  public $personalLabels;
   protected $productType = GoogleCloudRetailV2Product::class;
   protected $productDataType = '';
   /**
@@ -79,6 +84,20 @@ class GoogleCloudRetailV2SearchResponseSearchResult extends \Google\Model
   public function getMatchingVariantFields()
   {
     return $this->matchingVariantFields;
+  }
+  /**
+   * @param string[]
+   */
+  public function setPersonalLabels($personalLabels)
+  {
+    $this->personalLabels = $personalLabels;
+  }
+  /**
+   * @return string[]
+   */
+  public function getPersonalLabels()
+  {
+    return $this->personalLabels;
   }
   /**
    * @param GoogleCloudRetailV2Product

@@ -32,6 +32,34 @@ use Google\Service\Baremetalsolution\Operation;
 class ProjectsLocationsNfsShares extends \Google\Service\Resource
 {
   /**
+   * Create an NFS share. (nfsShares.create)
+   *
+   * @param string $parent Required. The parent project and location.
+   * @param NfsShare $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function create($parent, NfsShare $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], Operation::class);
+  }
+  /**
+   * Delete an NFS share. The underlying volume is automatically deleted.
+   * (nfsShares.delete)
+   *
+   * @param string $name Required. The name of the NFS share to delete.
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function delete($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', [$params], Operation::class);
+  }
+  /**
    * Get details of a single NFS share. (nfsShares.get)
    *
    * @param string $name Required. Name of the resource.
@@ -67,12 +95,12 @@ class ProjectsLocationsNfsShares extends \Google\Service\Resource
   /**
    * Update details of a single NFS share. (nfsShares.patch)
    *
-   * @param string $name Output only. The name of the NFS share.
+   * @param string $name Immutable. The name of the NFS share.
    * @param NfsShare $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask The list of fields to update. The only currently
-   * supported fields are: `labels`
+   * supported fields are: `labels` `allowed_clients`
    * @return Operation
    */
   public function patch($name, NfsShare $postBody, $optParams = [])

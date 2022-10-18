@@ -24,6 +24,10 @@ class FrequencyCap extends \Google\Model
    */
   public $maxImpressions;
   /**
+   * @var int
+   */
+  public $maxViews;
+  /**
    * @var string
    */
   public $timeUnit;
@@ -49,6 +53,20 @@ class FrequencyCap extends \Google\Model
   public function getMaxImpressions()
   {
     return $this->maxImpressions;
+  }
+  /**
+   * @param int
+   */
+  public function setMaxViews($maxViews)
+  {
+    $this->maxViews = $maxViews;
+  }
+  /**
+   * @return int
+   */
+  public function getMaxViews()
+  {
+    return $this->maxViews;
   }
   /**
    * @param string

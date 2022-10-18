@@ -53,6 +53,10 @@ class ResourceSearchResult extends \Google\Collection
   /**
    * @var string[]
    */
+  public $kmsKeys;
+  /**
+   * @var string[]
+   */
   public $labels;
   /**
    * @var string
@@ -218,6 +222,20 @@ class ResourceSearchResult extends \Google\Collection
   public function getKmsKey()
   {
     return $this->kmsKey;
+  }
+  /**
+   * @param string[]
+   */
+  public function setKmsKeys($kmsKeys)
+  {
+    $this->kmsKeys = $kmsKeys;
+  }
+  /**
+   * @return string[]
+   */
+  public function getKmsKeys()
+  {
+    return $this->kmsKeys;
   }
   /**
    * @param string[]

@@ -43,6 +43,10 @@ class CsvOptions extends \Google\Model
    */
   public $nullMarker;
   /**
+   * @var bool
+   */
+  public $preserveAsciiControlCharacters;
+  /**
    * @var string
    */
   public $quote;
@@ -120,6 +124,20 @@ class CsvOptions extends \Google\Model
   public function getNullMarker()
   {
     return $this->nullMarker;
+  }
+  /**
+   * @param bool
+   */
+  public function setPreserveAsciiControlCharacters($preserveAsciiControlCharacters)
+  {
+    $this->preserveAsciiControlCharacters = $preserveAsciiControlCharacters;
+  }
+  /**
+   * @return bool
+   */
+  public function getPreserveAsciiControlCharacters()
+  {
+    return $this->preserveAsciiControlCharacters;
   }
   /**
    * @param string

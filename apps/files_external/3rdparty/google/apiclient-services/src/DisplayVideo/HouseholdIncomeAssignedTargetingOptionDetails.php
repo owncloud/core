@@ -23,10 +23,6 @@ class HouseholdIncomeAssignedTargetingOptionDetails extends \Google\Model
    * @var string
    */
   public $householdIncome;
-  /**
-   * @var string
-   */
-  public $targetingOptionId;
 
   /**
    * @param string
@@ -41,20 +37,6 @@ class HouseholdIncomeAssignedTargetingOptionDetails extends \Google\Model
   public function getHouseholdIncome()
   {
     return $this->householdIncome;
-  }
-  /**
-   * @param string
-   */
-  public function setTargetingOptionId($targetingOptionId)
-  {
-    $this->targetingOptionId = $targetingOptionId;
-  }
-  /**
-   * @return string
-   */
-  public function getTargetingOptionId()
-  {
-    return $this->targetingOptionId;
   }
 }
 

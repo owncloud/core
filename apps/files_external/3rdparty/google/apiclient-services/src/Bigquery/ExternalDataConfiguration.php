@@ -56,6 +56,10 @@ class ExternalDataConfiguration extends \Google\Collection
   public $maxBadRecords;
   protected $parquetOptionsType = ParquetOptions::class;
   protected $parquetOptionsDataType = '';
+  /**
+   * @var string
+   */
+  public $referenceFileSchemaUri;
   protected $schemaType = TableSchema::class;
   protected $schemaDataType = '';
   /**
@@ -234,6 +238,20 @@ class ExternalDataConfiguration extends \Google\Collection
   public function getParquetOptions()
   {
     return $this->parquetOptions;
+  }
+  /**
+   * @param string
+   */
+  public function setReferenceFileSchemaUri($referenceFileSchemaUri)
+  {
+    $this->referenceFileSchemaUri = $referenceFileSchemaUri;
+  }
+  /**
+   * @return string
+   */
+  public function getReferenceFileSchemaUri()
+  {
+    return $this->referenceFileSchemaUri;
   }
   /**
    * @param TableSchema

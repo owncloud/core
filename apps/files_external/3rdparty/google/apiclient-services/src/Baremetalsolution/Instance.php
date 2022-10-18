@@ -19,7 +19,7 @@ namespace Google\Service\Baremetalsolution;
 
 class Instance extends \Google\Collection
 {
-  protected $collection_key = 'networks';
+  protected $collection_key = 'volumes';
   /**
    * @var string
    */
@@ -42,6 +42,10 @@ class Instance extends \Google\Collection
   public $labels;
   protected $logicalInterfacesType = GoogleCloudBaremetalsolutionV2LogicalInterface::class;
   protected $logicalInterfacesDataType = 'array';
+  /**
+   * @var string
+   */
+  public $loginInfo;
   protected $lunsType = Lun::class;
   protected $lunsDataType = 'array';
   /**
@@ -74,6 +78,8 @@ class Instance extends \Google\Collection
    * @var string
    */
   public $updateTime;
+  protected $volumesType = Volume::class;
+  protected $volumesDataType = 'array';
 
   /**
    * @param string
@@ -158,6 +164,20 @@ class Instance extends \Google\Collection
   public function getLogicalInterfaces()
   {
     return $this->logicalInterfaces;
+  }
+  /**
+   * @param string
+   */
+  public function setLoginInfo($loginInfo)
+  {
+    $this->loginInfo = $loginInfo;
+  }
+  /**
+   * @return string
+   */
+  public function getLoginInfo()
+  {
+    return $this->loginInfo;
   }
   /**
    * @param Lun[]
@@ -284,6 +304,20 @@ class Instance extends \Google\Collection
   public function getUpdateTime()
   {
     return $this->updateTime;
+  }
+  /**
+   * @param Volume[]
+   */
+  public function setVolumes($volumes)
+  {
+    $this->volumes = $volumes;
+  }
+  /**
+   * @return Volume[]
+   */
+  public function getVolumes()
+  {
+    return $this->volumes;
   }
 }
 

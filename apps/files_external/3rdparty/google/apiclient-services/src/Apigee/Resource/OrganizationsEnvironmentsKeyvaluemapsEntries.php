@@ -32,7 +32,8 @@ class OrganizationsEnvironmentsKeyvaluemapsEntries extends \Google\Service\Resou
 {
   /**
    * Creates key value entries in a key value map scoped to an organization,
-   * environment, or API proxy. (entries.create)
+   * environment, or API proxy. **Note**: Supported for Apigee hybrid 1.8.x and
+   * higher. (entries.create)
    *
    * @param string $parent Required. Scope as indicated by the URI in which to
    * create the key value map entry. Use **one** of the following structures in
@@ -52,9 +53,10 @@ class OrganizationsEnvironmentsKeyvaluemapsEntries extends \Google\Service\Resou
   }
   /**
    * Deletes a key value entry from a key value map scoped to an organization,
-   * environment, or API proxy. **Note:** After you delete the key value entry,
+   * environment, or API proxy. **Notes:** * After you delete the key value entry,
    * the policy consuming the entry will continue to function with its cached
-   * values for a few minutes. This is expected behavior. (entries.delete)
+   * values for a few minutes. This is expected behavior. * Supported for Apigee
+   * hybrid 1.8.x and higher. (entries.delete)
    *
    * @param string $name Required. Scope as indicated by the URI in which to
    * delete the key value map entry. Use **one** of the following structures in
@@ -72,8 +74,9 @@ class OrganizationsEnvironmentsKeyvaluemapsEntries extends \Google\Service\Resou
     return $this->call('delete', [$params], GoogleCloudApigeeV1KeyValueEntry::class);
   }
   /**
-   * Get the Key value entry value for org, env or apis scoped Key value map.
-   * (entries.get)
+   * Get the key value entry value for a key value map scoped to an organization,
+   * environment, or API proxy. **Note**: Supported for Apigee hybrid 1.8.x and
+   * higher. (entries.get)
    *
    * @param string $name Required. Scope as indicated by the URI in which to fetch
    * the key value map entry/value. Use **one** of the following structures in
@@ -92,8 +95,8 @@ class OrganizationsEnvironmentsKeyvaluemapsEntries extends \Google\Service\Resou
   }
   /**
    * Lists key value entries for key values maps scoped to an organization,
-   * environment, or API proxy.
-   * (entries.listOrganizationsEnvironmentsKeyvaluemapsEntries)
+   * environment, or API proxy. **Note**: Supported for Apigee hybrid 1.8.x and
+   * higher. (entries.listOrganizationsEnvironmentsKeyvaluemapsEntries)
    *
    * @param string $parent Required. Scope as indicated by the URI in which to
    * list key value maps. Use **one** of the following structures in your request:
