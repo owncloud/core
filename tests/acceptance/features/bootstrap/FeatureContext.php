@@ -2945,25 +2945,6 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @Then the content of the requested file in the response should be
-	 *
-	 * @param PyStringNode $content
-	 *
-	 * @return void
-	 */
-	public function theContentOfTheRequestedFileInTheResponseShouldBe(PyStringNode $content):void {
-		$actualContent = $this->getResponse()->getBody()->getContents();
-		$pattern = ["/--\w*/", "/\s*/m"];
-		$actualContent = \preg_replace($pattern, "", $actualContent);
-		$expectedString = \preg_replace($pattern, "", $content->getRaw());
-		Assert::assertSame(
-			$expectedString,
-			$actualContent,
-			"The content of the file does not match with '$expectedString'"
-		);
-	}
-
-	/**
 	 * @Then the file :path should not exist in the server root
 	 *
 	 * @param string $path

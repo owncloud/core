@@ -1182,8 +1182,19 @@ trait WebDav {
 		Assert::assertEquals(
 			$expectedContent,
 			$actualContent,
-			$extraErrorText . "The downloaded content was expected to be '$expectedContent', but actually is '$actualContent'. HTTP status was $actualStatus"
+			$extraErrorText . "The content was expected to be '$expectedContent', but actually is '$actualContent'. HTTP status was $actualStatus"
 		);
+	}
+
+	/**
+	 * @Then the content in the response should match the following content:
+	 *
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 */
+	public function theContentInTheResponseShouldMatchTheFollowingContent(PyStringNode $content): void {
+		$this->checkDownloadedContentMatches($content->getRaw());
 	}
 
 	/**
@@ -5375,7 +5386,7 @@ trait WebDav {
 					if ($entryNameToSearch !== null && str_ends_with($entryPath, $entryNameToSearch)) {
 						return $multistatusResult;
 					} else {
-						$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ?: WebDavHelper::getPersonalSpaceIdForUser(
+						$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ? WebDavHelper::$SPACE_ID_FROM_OCIS : WebDavHelper::getPersonalSpaceIdForUser(
 							$this->getBaseUrl(),
 							$user,
 							$this->getPasswordForUser($user),
