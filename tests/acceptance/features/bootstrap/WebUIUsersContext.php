@@ -246,6 +246,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			$email,
 			$groupsTable
 		);
+		// after creating a user add the created user to emailRecipient array
+		$this->featureContext->emailRecipients [] = $username;
 	}
 
 	/**

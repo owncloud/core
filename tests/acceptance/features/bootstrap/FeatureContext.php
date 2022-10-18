@@ -240,6 +240,11 @@ class FeatureContext extends BehatVariablesContext {
 	private $userResponseBodyContents = [];
 
 	/**
+	 * @var array
+	 */
+	public $emailRecipients = [];
+
+	/**
 	 * @var CookieJar
 	 */
 	private $cookieJar;

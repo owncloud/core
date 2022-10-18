@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
+use TestHelpers\InbucketHelper;
 use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
@@ -51,27 +52,39 @@ class EmailContext implements Context {
 	 * @param string $address
 	 * @param PyStringNode $content
 	 * @param string|null $sender
+	 * @param array $emailRecipents
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function assertThatEmailContains(string $address, PyStringNode $content, ?string $sender = null):void {
+	public function assertThatEmailContains(string $address, PyStringNode $content, ?string $sender = null, ?array $emailRecipents = null):void {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
 		$expectedContent = $this->featureContext->substituteInLineCodes(
 			$expectedContent,
 			$sender
 		);
-		$emailBody = EmailHelper::getBodyOfLastEmail(
-			$this->localMailhogUrl,
-			$address,
-			$this->featureContext->getStepLineRef()
+		$mailBoxIds = InbucketHelper::getMailboxIds($emailRecipents);
+		$emailBody = InbucketHelper::getBodyContentWithID($emailRecipents, $mailBoxIds[0]["id"]);
+		var_dump(
+			$emailBody
 		);
-		Assert::assertStringContainsString(
-			$expectedContent,
-			$emailBody,
-			"The email address {$address} should have received an email with the body containing {$expectedContent}
-			but the received email is {$emailBody}"
-		);
+
+
+
+//		$emailBody = EmailHelper::getBodyOfLastEmail(
+//			$this->localMailhogUrl,
+//			$address,
+//			$this->featureContext->getStepLineRef()
+//		);
+//		var_dump(
+//			$emailBody
+//		);
+//		Assert::assertStringContainsString(
+//			$expectedContent,
+//			$emailBody,
+//			"The email address {$address} should have received an email with the body containing {$expectedContent}
+//			but the received email is {$emailBody}"
+//		);
 	}
 
 	/**
@@ -100,8 +113,8 @@ class EmailContext implements Context {
 	 * @throws Exception
 	 */
 	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining(string $address, PyStringNode $content, ?string $user = null):void {
-		$user = $this->featureContext->getActualUsername($user);
-		$this->assertThatEmailContains($address, $content, $user);
+		$user= $this->featureContext->getActualUsername($user);
+		$this->assertThatEmailContains($address, $content, $user, $this->featureContext->emailRecipients);
 	}
 
 	/**

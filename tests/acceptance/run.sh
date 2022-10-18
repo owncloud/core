@@ -932,7 +932,7 @@ fi
 
 if [ -z "${MAILHOG_SMTP_PORT}" ]
 then
-	MAILHOG_SMTP_PORT="1025"
+	MAILHOG_SMTP_PORT="2500"
 fi
 
 if [ -z "${SELENIUM_HOST}" ]

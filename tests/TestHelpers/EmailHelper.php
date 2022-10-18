@@ -53,6 +53,9 @@ class EmailHelper {
 		);
 
 		$json = \json_decode($response->getBody()->getContents());
+		var_dump(
+			$json
+		);
 		return $json;
 	}
 
