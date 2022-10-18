@@ -212,11 +212,6 @@ Feature: list files
       | dav_version |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Get the list of resources in a folder shared through public link with depth 1
     Given using <dav_version> DAV path
@@ -250,10 +245,6 @@ Feature: list files
       | dav_version |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @depthInfinityPropfindEnabled
   Scenario Outline: Get the list of resources in a folder shared through public link with depth infinity
@@ -286,11 +277,6 @@ Feature: list files
     Examples:
       | dav_version |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Get the list of files in the trashbin with depth 0

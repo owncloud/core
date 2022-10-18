@@ -2841,7 +2841,7 @@ class FeatureContext extends BehatVariablesContext {
 		$pathToOcis = \getenv("PATH_TO_OCIS");
 		$targetFile = \rtrim($pathToOcis, "/") . "/" . "services/web/assets" . "/" . ltrim($path, '/');
 		if (!\file_exists($targetFile)) {
-			throw new Exception('Target File' . $targetFile . 'could not be found');
+			throw new Exception('Target File ' . $targetFile . ' could not be found');
 		}
 		return \file_get_contents($targetFile);
 	}
