@@ -2818,14 +2818,15 @@ def owncloudDockerService(ocDockerService):
         return []
 
     db = "postgres"
+    domainForOcDocker = "oc-server"
 
     return [
         {
-            "name": "oc-server",
+            "name": domainForOcDocker,
             "image": OC_SERVER,
             "environment": {
                 "OWNCLOUD_VERSION": "latest",
-                "OWNCLOUD_DOMAIN": "oc-server",
+                "OWNCLOUD_DOMAIN": domainForOcDocker,
                 "OWNCLOUD_ADMIN_USERNAME": "admin",
                 "OWNCLOUD_ADMIN_PASSWORD": "admin",
                 "HTTP_PORT": "8080",
@@ -2836,6 +2837,7 @@ def owncloudDockerService(ocDockerService):
                 "OWNCLOUD_DB_USERNAME": getDbUsername(db),
                 "OWNCLOUD_DB_PASSWORD": getDbPassword(db),
                 "OWNCLOUD_DB_HOST": getDbName(db),
+                "OWNCLOUD_TRUSTED_DOMAINS": domainForOcDocker,
             },
         },
     ] + databaseService(db)
