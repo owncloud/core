@@ -24,7 +24,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
-use TestHelpers\InbucketHelper;
 use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
@@ -33,7 +32,7 @@ require_once 'bootstrap.php';
  * context file for email related steps.
  */
 class EmailContext implements Context {
-	private $localMailhogUrl = null;
+	private $localInbucketUrl = null;
 
 	/**
 	 *
@@ -44,47 +43,32 @@ class EmailContext implements Context {
 	/**
 	 * @return string
 	 */
-	public function getLocalMailhogUrl():string {
-		return $this->localMailhogUrl;
+	public function getLocalInbucketUrl():string {
+		return $this->localInbucketUrl;
 	}
 
 	/**
 	 * @param string $address
 	 * @param PyStringNode $content
 	 * @param string|null $sender
-	 * @param array $emailRecipents
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function assertThatEmailContains(string $address, PyStringNode $content, ?string $sender = null, ?array $emailRecipents = null):void {
+	public function assertThatEmailContains(string $address, PyStringNode $content, ?string $sender = null):void {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
 		$expectedContent = $this->featureContext->substituteInLineCodes(
 			$expectedContent,
 			$sender
 		);
-		$mailBoxIds = InbucketHelper::getMailboxIds($emailRecipents);
-		$emailBody = InbucketHelper::getBodyContentWithID($emailRecipents, $mailBoxIds[0]["id"]);
-		var_dump(
-			$emailBody
+		$this->featureContext->pushEmailRecipientAsMailBox($address);
+		$emailBody = EmailHelper::getBodyOfLastEmail($address, $this->featureContext->getStepLineRef());
+		Assert::assertStringContainsString(
+			$expectedContent,
+			$emailBody,
+			"The email address {$address} should have received an email with the body containing {$expectedContent}
+			but the received email is {$emailBody}"
 		);
-
-
-
-//		$emailBody = EmailHelper::getBodyOfLastEmail(
-//			$this->localMailhogUrl,
-//			$address,
-//			$this->featureContext->getStepLineRef()
-//		);
-//		var_dump(
-//			$emailBody
-//		);
-//		Assert::assertStringContainsString(
-//			$expectedContent,
-//			$emailBody,
-//			"The email address {$address} should have received an email with the body containing {$expectedContent}
-//			but the received email is {$emailBody}"
-//		);
 	}
 
 	/**
@@ -113,8 +97,8 @@ class EmailContext implements Context {
 	 * @throws Exception
 	 */
 	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining(string $address, PyStringNode $content, ?string $user = null):void {
-		$user= $this->featureContext->getActualUsername($user);
-		$this->assertThatEmailContains($address, $content, $user, $this->featureContext->emailRecipients);
+		$user = $this->featureContext->getActualUsername($user);
+		$this->assertThatEmailContains($address, $content, $user);
 	}
 
 	/**
@@ -143,10 +127,9 @@ class EmailContext implements Context {
 	public function theResetEmailSenderEmailAddressShouldBe(string $user, string $senderAddress):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$receiverAddress = $this->featureContext->getEmailAddressForUser($user);
-		$actualSenderAddress = EmailHelper::getSenderOfEmail(
-			$this->localMailhogUrl,
+		$actualSenderAddress = EmailHelper::getEmailAddressOfSender(
 			$receiverAddress,
-			$this->featureContext->getStepLineRef()
+			$this->featureContext->getStepLineRef(),
 		);
 		Assert::assertStringContainsString(
 			$senderAddress,
@@ -164,18 +147,18 @@ class EmailContext implements Context {
 	 * @throws Exception
 	 */
 	public function assertThatEmailDoesntExistWithTheAddress(string $address):void {
+		$this->featureContext->pushEmailRecipientAsMailBox($address);
 		Assert::assertFalse(
-			EmailHelper::emailReceived(
-				EmailHelper::getLocalMailhogUrl(),
+			EmailHelper::isEmailReceived(
 				$address,
-				$this->featureContext->getStepLineRef()
+				$this->featureContext->getStepLineRef(),
 			),
 			"Email exists with email address: {$address} but was not expected to be."
 		);
 	}
 
 	/**
-	 * @BeforeScenario @mailhog
+	 * @BeforeScenario @email
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
@@ -186,23 +169,30 @@ class EmailContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->localMailhogUrl = EmailHelper::getLocalMailhogUrl();
-		$this->clearMailHogMessages();
+		$this->localInbucketUrl = EmailHelper::getLocalEmailUrl();
 	}
 
 	/**
+	 * Delete all the inbucket emails
+	 *
+	 * @AfterScenario @email
 	 *
 	 * @return void
 	 */
-	protected function clearMailHogMessages():void {
+	public function clearInbucketMessages():void {
 		try {
-			EmailHelper::deleteAllMessages(
-				$this->getLocalMailhogUrl(),
-				$this->featureContext->getStepLineRef()
-			);
+			if (!empty($this->featureContext->emailRecipients)) {
+				foreach ($this->featureContext->emailRecipients as $emailRecipent) {
+					EmailHelper::deleteAllEmailsForAMailbox(
+						$this->getLocalInbucketUrl(),
+						$this->featureContext->getStepLineRef(),
+						$emailRecipent
+					);
+				}
+			}
 		} catch (Exception $e) {
 			echo __METHOD__ .
-				" could not delete mailhog messages, is mailhog set up?\n" .
+				" could not delete inbucket messages, is inbucket set up?\n" .
 				$e->getMessage();
 		}
 	}

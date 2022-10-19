@@ -253,21 +253,21 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * using inbucket mail service
 	 *
 	 * @param string $emailAddress
 	 * @param string $regexSearch
 	 * @param string $errorMessage
-	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 * @param ?int $emailNumber For email number, 1 means the latest one
 	 *
 	 * @return string
 	 * @throws GuzzleException
 	 */
-	public function getLinkFromEmail(string $emailAddress, string $regexSearch, string $errorMessage, int $numEmails = 1):string {
-		$content = EmailHelper::getBodyOfEmail(
-			EmailHelper::getLocalMailhogUrl(),
+	public function getLinkFromEmail(string $emailAddress, string $regexSearch, string $errorMessage, int $emailNumber = 1):string {
+		$content = EmailHelper::getBodyOfLastEmail(
 			$emailAddress,
 			$this->featureContext->getStepLineRef(),
-			$numEmails
+			$emailNumber
 		);
 		$matches = [];
 		\preg_match($regexSearch, $content, $matches);
@@ -280,17 +280,17 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $emailAddress
 	 * @param string $regexSearch
 	 * @param string $errorMessage
-	 * @param int $numEmails which number of multiple emails to read (first email is 1)
+	 * @param ?int $emailNumber For email number, 1 means the latest one
 	 *
 	 * @return void
 	 * @throws GuzzleException
 	 */
-	public function followLinkFromEmail(string $emailAddress, string $regexSearch, string $errorMessage, int $numEmails = 1):void {
+	public function followLinkFromEmail(string $emailAddress, string $regexSearch, string $errorMessage, int $emailNumber = 1):void {
 		$link = $this->getLinkFromEmail(
 			$emailAddress,
 			$regexSearch,
 			$errorMessage,
-			$numEmails
+			$emailNumber
 		);
 		$this->visitPath($link);
 	}

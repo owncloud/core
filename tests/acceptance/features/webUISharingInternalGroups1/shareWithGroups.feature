@@ -137,7 +137,7 @@ Feature: Sharing files and folders with internal groups
     Then a tooltip with the text "No users or groups found for system-group" should be shown near the share-with-field on the webUI
     And the autocomplete list should not be displayed on the webUI
 
-  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @mailhog
+  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @email
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "Carol" has logged in using the webUI
@@ -154,7 +154,7 @@ Feature: Sharing files and folders with internal groups
       just letting you know that %displayname% shared lorem.txt with you.
       """
 
-  @mailhog @skipOnOcV10.3
+  @email @skipOnOcV10.3
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "Carol" has logged in using the webUI
@@ -174,7 +174,7 @@ Feature: Sharing files and folders with internal groups
     When the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email for group "grp1" using the webUI
 
-  @mailhog @skipOnLDAP @skipOnOcV10.3
+  @email @skipOnLDAP @skipOnOcV10.3
   Scenario: user should not get an email notification if the user is added to the group after the mail notification was sent
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "David" has been created with default attributes and without skeleton files
@@ -186,7 +186,7 @@ Feature: Sharing files and folders with internal groups
     When the administrator adds user "David" to group "grp1" using the provisioning API
     Then the email address "david@example.org" should not have received an email
 
-  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @mailhog
+  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @email
   Scenario: user should get an error message when trying to send notification by email to the group where some user have set up their email and others haven't
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created without skeleton files:

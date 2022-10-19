@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog
+@webUI @insulated @disablePreviews @email
 Feature: Change own email address on the personal settings page
   As a user
   I would like to change my own email address

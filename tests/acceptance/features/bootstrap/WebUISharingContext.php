@@ -2292,7 +2292,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theEmailAddressShouldHaveReceivedAnEmailContainingSharedPublicLink(?string $address):void {
 		$content = EmailHelper::getBodyOfLastEmail(
-			EmailHelper::getLocalMailhogUrl(),
 			$address,
 			$this->featureContext->getStepLineRef()
 		);

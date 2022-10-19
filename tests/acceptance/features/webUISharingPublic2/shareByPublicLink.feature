@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required @files_sharing-app-required
+@webUI @insulated @disablePreviews @email @public_link_share-feature-required @files_sharing-app-required
 Feature: Share by public link
   As a user
   I want to share files through a publicly accessible link
@@ -259,7 +259,7 @@ Feature: Share by public link
     And the fields of the last response to user "Alice" should include
       | expiration |  |
 
-  @mailhog @skipOnOcV10.3
+  @email @skipOnOcV10.3
   Scenario: user without email shares a public link via email
     Given these users have been created without skeleton files:
       | username | password |
