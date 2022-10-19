@@ -417,12 +417,13 @@ class WebDavHelper {
 	}
 
 	/**
-	 * UUID generator
+	 * Generates UUIDv4
+	 * Example: 123e4567-e89b-12d3-a456-426614174000
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	public static function getUUID4():string {
+	public static function generateUUIDv4():string {
 		// generate 16 bytes (128 bits) of random data or use the data passed into the function.
 		$data = random_bytes(16);
 		\assert(\strlen($data) == 16);
@@ -604,9 +605,9 @@ class WebDavHelper {
 					$xRequestId,
 				);
 			} catch (Exception $e) {
-				// if the fetch fails, and the user is not found, then the a fake space id is prepared
+				// if the fetch fails, and the user is not found, then a fake space id is prepared
 				// this is useful for testing when the personal space is of a non-existing user
-				$fakeSpaceId = self::getUUID4();
+				$fakeSpaceId = self::generateUUIDv4();
 				self::$spacesIdRef[$user]["personal"] = $fakeSpaceId;
 				$spaceId = $fakeSpaceId;
 			}
