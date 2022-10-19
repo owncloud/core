@@ -417,34 +417,36 @@ class WebDavHelper {
 	}
 
 	/**
-	 * fetches personal space id for provided user
+	 * UUID generator
 	 *
-	 * when the `returnFakeIfNotFound` is set to true, the function can return a fake space id.
-	 * if the fetch fails, and the user is not found, then the function will return a fake space id.
-	 * this is useful for testing when the personal space is of a non-existing user
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function getUUID4():string {
+		// generate 16 bytes (128 bits) of random data or use the data passed into the function.
+		$data = random_bytes(16);
+		\assert(\strlen($data) == 16);
+
+		$data[6] = \chr(\ord($data[6]) & 0x0f | 0x40); // set version to 0100
+		$data[8] = \chr(\ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+
+		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+
+	/**
+	 * fetches personal space id for provided user
 	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
 	 * @param string $xRequestId
-	 * @param bool $returnFakeIfNotFound
 	 *
 	 * @return string
 	 * @throws GuzzleException
 	 * @throws Exception
 	 */
-	public static function getPersonalSpaceIdForUser(
-		string $baseUrl,
-		string $user,
-		string $password,
-		string $xRequestId,
-		bool $returnFakeIfNotFound = false
-	):string {
-		$fakeId = "fake-personal-space-id";
-		if (
-			\array_key_exists($user, self::$spacesIdRef) &&
-			\array_key_exists("personal", self::$spacesIdRef[$user])
-		) {
+	public static function getPersonalSpaceIdForUser(string $baseUrl, string $user, string $password, string $xRequestId):string {
+		if (\array_key_exists($user, self::$spacesIdRef) && \array_key_exists("personal", self::$spacesIdRef[$user])) {
 			return self::$spacesIdRef[$user]["personal"];
 		}
 		$trimmedBaseUrl = \trim($baseUrl, "/");
@@ -473,7 +475,6 @@ class WebDavHelper {
 			// we expect to get a multipart XML response with status 207
 			$status = $response->getStatusCode();
 			if ($status !== 207) {
-				if ($returnFakeIfNotFound) return $fakeId;
 				throw new Exception(
 					__METHOD__ . " webdav propfind for user $user failed with status $status - so the personal space id cannot be discovered"
 				);
@@ -484,7 +485,6 @@ class WebDavHelper {
 			);
 			$xmlPart = $responseXmlObject->xpath("/d:multistatus/d:response[1]/d:propstat/d:prop/oc:id");
 			if ($xmlPart === false) {
-				if ($returnFakeIfNotFound) return $fakeId;
 				throw new Exception(
 					__METHOD__ . " oc:id not found in webdav propfind for user $user - so the personal space id cannot be discovered"
 				);
@@ -512,7 +512,6 @@ class WebDavHelper {
 			}
 			$ocIdParts = \explode($separator, $decodedId);
 			if (\count($ocIdParts) !== 2) {
-				if ($returnFakeIfNotFound) return $fakeId;
 				throw new Exception(
 					__METHOD__ . " the oc:id $decodedId for user $user does not have 2 parts separated by '$separator', so the personal space id cannot be discovered"
 				);
@@ -536,7 +535,6 @@ class WebDavHelper {
 			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
 			return $personalSpaceId;
 		}
-		if ($returnFakeIfNotFound) return $fakeId;
 		throw new Exception(__METHOD__ . " Personal space not found for user " . $user);
 	}
 
@@ -567,6 +565,7 @@ class WebDavHelper {
 	 *
 	 * @return ResponseInterface
 	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function makeDavRequest(
 		?string $baseUrl,
@@ -597,20 +596,25 @@ class WebDavHelper {
 
 		// get space id if testing with spaces dav
 		if (self::$SPACE_ID_FROM_OCIS === '' && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
-			if ($doDavRequestAsUser === null) {
-				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId, true);
-			} else {
-				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $doDavRequestAsUser, $password, $xRequestId, true);
+			try {
+				$spaceId = self::getPersonalSpaceIdForUser(
+					$baseUrl,
+					$doDavRequestAsUser ?? $user,
+					$password,
+					$xRequestId,
+				);
+			} catch (Exception $e) {
+				// if the fetch fails, and the user is not found, then the a fake space id is prepared
+				// this is useful for testing when the personal space is of a non-existing user
+				$fakeSpaceId = self::getUUID4();
+				self::$spacesIdRef[$user]["personal"] = $fakeSpaceId;
+				$spaceId = $fakeSpaceId;
 			}
 		} else {
 			$spaceId = self::$SPACE_ID_FROM_OCIS;
 		}
 
-		if ($doDavRequestAsUser === null) {
-			$davPath = self::getDavPath($user, $davPathVersionToUse, $type, $spaceId);
-		} else {
-			$davPath = self::getDavPath($doDavRequestAsUser, $davPathVersionToUse, $type, $spaceId);
-		}
+		$davPath = self::getDavPath($doDavRequestAsUser ?? $user, $davPathVersionToUse, $type, $spaceId);
 
 		//replace %, # and ? and in the path, Guzzle will not encode them
 		$urlSpecialChar = [['%', '#', '?'], ['%25', '%23', '%3F']];
