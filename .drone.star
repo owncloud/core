@@ -2836,6 +2836,7 @@ def owncloudDockerService(ocDockerService):
                 "OWNCLOUD_DB_USERNAME": getDbUsername(db),
                 "OWNCLOUD_DB_PASSWORD": getDbPassword(db),
                 "OWNCLOUD_DB_HOST": getDbName(db),
+                "OWNCLOUD_TRUSTED_DOMAINS": "oc-server",
             },
         },
     ] + databaseService(db)
