@@ -753,21 +753,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * Generates UUIDV4
-	 * Example: 123e4567-e89b-12d3-a456-426614174000
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	public function generateUUIDv4(): string {
-		$data = random_bytes(16);
-		$data[6] = \chr(\ord($data[6]) & 0x0f | 0x40);
-		$data[8] = \chr(\ord($data[8]) & 0x3f | 0x80);
-
-		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-	}
-
-	/**
 	 * creates a user in the ldap server
 	 * the created user is added to `createdUsersList`
 	 * ldap users are re-synced after creating a new user
@@ -812,7 +797,7 @@ trait Provisioning {
 
 		if (OcisHelper::isTestingOnOcis()) {
 			$entry['objectclass'][] = 'ownCloud';
-			$entry['ownCloudUUID'] = $this->generateUUIDv4();
+			$entry['ownCloudUUID'] = WebDavHelper::generateUUIDv4();
 		}
 		if (OcisHelper::isTestingParallelDeployment()) {
 			$entry['ownCloudSelector'] = $this->getOCSelector();
@@ -852,7 +837,7 @@ trait Provisioning {
 		}
 		if (OcisHelper::isTestingOnOcis()) {
 			$entry['objectclass'][] = 'ownCloud';
-			$entry['ownCloudUUID'] = $this->generateUUIDv4();
+			$entry['ownCloudUUID'] = WebDavHelper::generateUUIDv4();
 		}
 		$this->ldap->add($newDN, $entry);
 		$this->ldapCreatedGroups[] = $group;

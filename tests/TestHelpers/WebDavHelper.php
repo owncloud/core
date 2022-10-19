@@ -114,7 +114,7 @@ class WebDavHelper {
 
 		return $matches[1];
 	}
-	
+
 	/**
 	 * returns body for propfind
 	 *
@@ -417,6 +417,24 @@ class WebDavHelper {
 	}
 
 	/**
+	 * Generates UUIDv4
+	 * Example: 123e4567-e89b-12d3-a456-426614174000
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function generateUUIDv4():string {
+		// generate 16 bytes (128 bits) of random data or use the data passed into the function.
+		$data = random_bytes(16);
+		\assert(\strlen($data) == 16);
+
+		$data[6] = \chr(\ord($data[6]) & 0x0f | 0x40); // set version to 0100
+		$data[8] = \chr(\ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+
+		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+
+	/**
 	 * fetches personal space id for provided user
 	 *
 	 * @param string $baseUrl
@@ -548,6 +566,7 @@ class WebDavHelper {
 	 *
 	 * @return ResponseInterface
 	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function makeDavRequest(
 		?string $baseUrl,
@@ -578,20 +597,25 @@ class WebDavHelper {
 
 		// get space id if testing with spaces dav
 		if (self::$SPACE_ID_FROM_OCIS === '' && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
-			if ($doDavRequestAsUser === null) {
-				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
-			} else {
-				$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $doDavRequestAsUser, $password, $xRequestId);
+			try {
+				$spaceId = self::getPersonalSpaceIdForUser(
+					$baseUrl,
+					$doDavRequestAsUser ?? $user,
+					$password,
+					$xRequestId,
+				);
+			} catch (Exception $e) {
+				// if the fetch fails, and the user is not found, then a fake space id is prepared
+				// this is useful for testing when the personal space is of a non-existing user
+				$fakeSpaceId = self::generateUUIDv4();
+				self::$spacesIdRef[$user]["personal"] = $fakeSpaceId;
+				$spaceId = $fakeSpaceId;
 			}
 		} else {
 			$spaceId = self::$SPACE_ID_FROM_OCIS;
 		}
 
-		if ($doDavRequestAsUser === null) {
-			$davPath = self::getDavPath($user, $davPathVersionToUse, $type, $spaceId);
-		} else {
-			$davPath = self::getDavPath($doDavRequestAsUser, $davPathVersionToUse, $type, $spaceId);
-		}
+		$davPath = self::getDavPath($doDavRequestAsUser ?? $user, $davPathVersionToUse, $type, $spaceId);
 
 		//replace %, # and ? and in the path, Guzzle will not encode them
 		$urlSpecialChar = [['%', '#', '?'], ['%25', '%23', '%3F']];
