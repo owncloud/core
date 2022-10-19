@@ -3767,7 +3767,7 @@ trait Sharing {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function getLastPublicShareAttribute($attr): string {
+	public function getLastPublicShareAttribute(string $attr): string {
 		if ($this->lastPublicShareData === null) {
 			throw new Exception(__METHOD__ . "No public share data available.");
 		}
