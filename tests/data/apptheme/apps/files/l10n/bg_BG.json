@@ -9,7 +9,7 @@
     "Upload timeout for file \"{file}\"" : "Време за качване на файл \"{file}\"",
     "Unknown error \"{error}\" uploading file \"{file}\"" : "Неизвестна грешка \"{error}\" при качването на файл \"{file}\"",
     "Could not create folder \"{dir}\"" : "Неуспешно създаване на \"{dir}\"",
-    "Upload cancelled." : "Качването е прекъснато.",
+    "Upload cancelled." : "Качването е отказано.",
     "The file {file} already exists" : "Файлът {file} вече съществува",
     "Processing files..." : "Файловете се обработват...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Неуспешно качване на {filename}, защото е директория или е с размер от 0 байта.",
