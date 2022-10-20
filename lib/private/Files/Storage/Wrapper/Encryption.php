@@ -270,33 +270,39 @@ class Encryption extends Wrapper {
 	public function rename($path1, $path2) {
 		$renameOk = false;
 		$copyKeysOk = true;  // assume keys are copied, in case we deal with versions
+
 		$isVersion = !($this->isVersion($path2) === false && $this->encryptionManager->isEnabled());
-		if (!$isVersion) {
+		$source = $this->getFullPath($path1);
+		$target = $this->getFullPath($path2);
+		$keysExcluded = $this->util->isExcluded($source);
+
+		if (!$isVersion && !$keysExcluded) {
 			// versions always use the keys from the original file, so we can skip
 			// this step for versions
-			$source = $this->getFullPath($path1);
-			if (!$this->util->isExcluded($source)) {
-				$target = $this->getFullPath($path2);
-				if (isset($this->unencryptedSize[$source])) {
-					$this->unencryptedSize[$target] = $this->unencryptedSize[$source];
-				}
+			// Keys can also be excluded if we're moving the keys themselves. It could
+			// happen with the encryption:change-key-storage-root command
+			if (isset($this->unencryptedSize[$source])) {
+				$this->unencryptedSize[$target] = $this->unencryptedSize[$source];
+			}
 
-				$copyKeysOk = $this->keyStorage->copyKeys($source, $target);
-				if ($copyKeysOk) {
-					$module = $this->getEncryptionModule($path2);
-					if ($module) {
-						$module->update($target, $this->uid, []);
-					}
+			$copyKeysOk = $this->keyStorage->copyKeys($source, $target);
+			if ($copyKeysOk) {
+				$module = $this->getEncryptionModule($path2);
+				if ($module) {
+					$module->update($target, $this->uid, []);
 				}
 			}
 		}
 
 		if ($copyKeysOk) {
 			$renameOk = $this->storage->rename($path1, $path2);
-			if ($isVersion) {
+			if ($isVersion || $keysExcluded) {
+				// no need to deal with the keys
 				return $renameOk;
 			}
 
+			// need to remove the keys, either the old ones if the rename
+			// succeeded, or the new ones if the rename failed
 			if ($renameOk) {
 				$sourceKeyDeleteOk = $this->keyStorage->deleteAllFileKeys($source);
 				if (!$sourceKeyDeleteOk) {
