@@ -2103,7 +2103,7 @@ trait WebDav {
 					"//d:response/d:href[text() = \"$webdavPath\"]"
 				);
 				if ($expectedToBeListed
-					&& (!isset($element[0]) || $element[0]->__toString() !== $webdavPath)
+					&& (!isset($element[0]) || urldecode($element[0]->__toString()) !== urldecode($webdavPath))
 				) {
 					Assert::fail(
 						"$webdavPath is not in propfind answer but should be"
@@ -2138,7 +2138,7 @@ trait WebDav {
 					"//d:response/d:href[text() = \"$webdavPath\"]"
 				);
 				if ($expectedToBeListed
-					&& (!isset($element[0]) || $element[0]->__toString() !== $webdavPath)
+					&& (!isset($element[0]) || urldecode($element[0]->__toString()) !== urldecode($webdavPath))
 				) {
 					Assert::fail(
 						"$webdavPath is not in propfind answer but should be"
@@ -4501,7 +4501,11 @@ trait WebDav {
 	public function encodePath(string $path):string {
 		// slashes need to stay
 		$encodedPath = \str_replace('%2F', '/', \rawurlencode($path));
-		// do not encode '(' and ')'
+		// in ocis even brackets are encoded
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			return $encodedPath;
+		}
+		// do not encode '(' and ')' for oc10
 		$encodedPath = \str_replace('%28', '(', $encodedPath);
 		$encodedPath = \str_replace('%29', ')', $encodedPath);
 		return $encodedPath;
