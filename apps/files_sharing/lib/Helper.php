@@ -285,6 +285,10 @@ class Helper {
 		$shareFolder = Filesystem::normalizePath($shareFolder);
 
 		if (!$view->file_exists($shareFolder)) {
+			// if the share folder doesn't exists, create the folder in order
+			// to place the shares inside it. All the parent folders need to
+			// be created as well. By creating these folders, the shares will
+			// be accessible
 			$currentDir = $shareFolder;
 			$dirsToCreate = [$shareFolder];
 			while (($currentDir = \dirname($currentDir)) !== '/') {
@@ -302,6 +306,7 @@ class Helper {
 				}
 			}
 			if ($shareFolder !== $dirToCreate) {
+				// share folder might fail to be created
 				\OCP\Util::writeLog('files_sharing', "Couldn't create missing share folder $shareFolder. Please choose a different share folder", \OCP\Util::ERROR);
 			}
 		}
