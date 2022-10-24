@@ -1,0 +1,5 @@
+Change: Drop unneeded Google SDK services
+
+Unused Google SDK services are removed to reduce package size.
+
+https://github.com/owncloud/core/pull/40444
