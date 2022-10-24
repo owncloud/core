@@ -11,14 +11,15 @@
 		}
 	},
 	"replace": {
-		"guzzlehttp/guzzle": "*"
+		"guzzlehttp/guzzle": "^7.5",
+		"guzzlehttp/psr7": "^2.4",
+		"phpseclib/phpseclib": ">3.0.7"
 	},
 	"require": {
 		"php": ">=7.4",
 		"icewind/smb": "3.5.4",
 		"icewind/streams": "0.7.6",
-		"google/apiclient": "2.12.6",
-		"guzzlehttp/guzzle": "^7.4"
+		"google/apiclient": "2.12.6"
 	}
 	,
 	"require-dev": {
