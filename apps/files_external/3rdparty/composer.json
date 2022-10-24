@@ -19,8 +19,20 @@
 		"icewind/streams": "0.7.6",
 		"google/apiclient": "2.12.6",
 		"guzzlehttp/guzzle": "^7.4"
+	}
+	,
+	"require-dev": {
+		"roave/security-advisories": "dev-latest"
 	},
 	"autoload": {
 		"files": ["../lib/config.php"]
+	},
+	"scripts": {
+		"pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+	},
+	"extra": {
+		"google/apiclient-services": [
+			"Drive"
+		]
 	}
 }
