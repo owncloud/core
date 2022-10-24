@@ -14,6 +14,7 @@ Summary
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
 * Change - No activities on rejected shares: [#40421](https://github.com/owncloud/core/pull/40421)
 * Change - Detect mime types of hidden files: [#40427](https://github.com/owncloud/core/pull/40427)
+* Change - Drop unneeded Google SDK services: [#40444](https://github.com/owncloud/core/pull/40444)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
@@ -62,6 +63,12 @@ Details
    Mime type of hidden files are now properly detected.
 
    https://github.com/owncloud/core/pull/40427
+
+* Change - Drop unneeded Google SDK services: [#40444](https://github.com/owncloud/core/pull/40444)
+
+   Unused Google SDK services are removed to reduce package size.
+
+   https://github.com/owncloud/core/pull/40444
 
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 
