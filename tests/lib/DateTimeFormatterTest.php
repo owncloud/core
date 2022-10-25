@@ -154,8 +154,8 @@ class DateTimeFormatterTest extends TestCase {
 
 	public function formatDateTimeData() {
 		return [
-			[1350129205, null, 'October 13, 2012 at 11:53:25 AM UTC'],
-			[1350129205, new \DateTimeZone('Europe/Berlin'), 'October 13, 2012 at 1:53:25 PM GMT+2'],
+			[1350129205, null, 'October 13, 2012, 11:53:25 AM UTC'],
+			[1350129205, new \DateTimeZone('Europe/Berlin'), 'October 13, 2012, 1:53:25 PM GMT+2'],
 		];
 	}
 
