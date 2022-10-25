@@ -17,6 +17,14 @@ use OCP\License\ILicenseManager;
  * @group DB
  */
 class UtilTest extends \Test\TestCase {
+	/*
+	 * Time strings with 12-hour AM/PM time are formatted with a narrow no-break space between
+	 * the time and the AM/PM characters. That ensures that such strings do not get wrapped in
+	 * an unfortunate position when rendered by applications. This constant contains the 3-character
+	 * string that is that Unicode character. Various test results expect to have this in the string.
+	 */
+	private const narrowNoBreakSpace = "\xE2\x80\xAF";
+
 	public $skeletonDirectoryWasSet = false;
 
 	public function testGetVersion() {
@@ -74,7 +82,7 @@ class UtilTest extends \Test\TestCase {
 		\date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205);
-		$expected = 'October 13, 2012 at 11:53:25 AM UTC';
+		$expected = \sprintf('October 13, 2012, 11:53:25%sAM UTC', self::narrowNoBreakSpace);
 		$this->assertEquals($expected, $result);
 
 		$result = OC_Util::formatDate(1102831200, true);
@@ -86,7 +94,7 @@ class UtilTest extends \Test\TestCase {
 		\date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205, false, 'Europe/Berlin');
-		$expected = 'October 13, 2012 at 1:53:25 PM GMT+2';
+		$expected = \sprintf('October 13, 2012, 1:53:25%sPM GMT+2', self::narrowNoBreakSpace);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -99,13 +107,14 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function formatDateWithTZFromSessionData() {
+		$narrowNoBreakSpace = self::narrowNoBreakSpace;
 		return [
-			[3, 'October 13, 2012 at 2:53:25 PM GMT+3', 'Etc/GMT-3'],
-			[15, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
-			[-13, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
-			[9.5, 'October 13, 2012 at 9:23:25 PM GMT+9:30', 'Australia/Darwin'],
-			[-4.5, 'October 13, 2012 at 7:23:25 AM GMT-4:30', 'America/Caracas'],
-			[15.5, 'October 13, 2012 at 11:53:25 AM UTC', 'UTC'],
+			[3, "October 13, 2012, 2:53:25${narrowNoBreakSpace}PM GMT+3", 'Etc/GMT-3'],
+			[15, "October 13, 2012, 11:53:25${narrowNoBreakSpace}AM UTC", 'UTC'],
+			[-13, "October 13, 2012, 11:53:25${narrowNoBreakSpace}AM UTC", 'UTC'],
+			[9.5, "October 13, 2012, 9:23:25${narrowNoBreakSpace}PM GMT+9:30", 'Australia/Darwin'],
+			[-4.5, "October 13, 2012, 7:23:25${narrowNoBreakSpace}AM GMT-4:30", 'America/Caracas'],
+			[15.5, "October 13, 2012, 11:53:25${narrowNoBreakSpace}AM UTC", 'UTC'],
 		];
 	}
 
