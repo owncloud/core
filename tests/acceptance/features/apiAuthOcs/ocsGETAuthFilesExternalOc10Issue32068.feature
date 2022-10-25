@@ -27,8 +27,7 @@ Feature: current oC10 behavior for issue-32068
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @smokeTest
-  @skipOnBruteForceProtection @issue-brute_force_protection-112
+  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as normal user with wrong password
     When user "Alice" requests these endpoints with "GET" using password "invalid"
       | endpoint                                                    |

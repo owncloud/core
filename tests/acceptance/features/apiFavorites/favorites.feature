@@ -120,6 +120,7 @@ Feature: favorite
       | dav_version |
       | spaces      |
 
+
   Scenario Outline: Get favorited elements of a subfolder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/subfolder"
@@ -248,6 +249,7 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: favoriting a folder does not change the favorite state of elements inside the folder
     Given using <dav_version> DAV path

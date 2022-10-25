@@ -4,9 +4,7 @@ Feature: auth
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-32068 @skipOnOcV10
-  @issue-ocis-reva-30
-  @smokeTest
+  @issue-32068 @skipOnOcV10 @issue-ocis-reva-30 @smokeTest
   Scenario: using OCS anonymously
     When a user requests these endpoints with "GET" and no authentication
       | endpoint                                                    |
@@ -40,14 +38,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @issue-32068 @skipOnOcV10
-  @issue-ocis-reva-11
-  @issue-ocis-reva-30
-  @issue-ocis-reva-31
-  @issue-ocis-reva-32
-  @issue-ocis-reva-33
-  @issue-ocis-reva-34
-  @issue-ocis-reva-35
+  @issue-32068 @skipOnOcV10 @issue-ocis-reva-11 @issue-ocis-reva-30 @issue-ocis-reva-31 @issue-ocis-reva-32 @issue-ocis-reva-33 @issue-ocis-reva-34 @issue-ocis-reva-35
   Scenario: using OCS with non-admin basic auth
     When the user "Alice" requests these endpoints with "GET" with basic auth
       | endpoint                                                    |
@@ -78,9 +69,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "401"
 
-  @issue-32068 @skipOnOcV10 @issue-ocis-reva-29 @issue-ocis-reva-30
-  @smokeTest
-  @skipOnBruteForceProtection @issue-brute_force_protection-112
+  @issue-32068 @skipOnOcV10 @issue-ocis-reva-29 @issue-ocis-reva-30 @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as normal user with wrong password
     When user "Alice" requests these endpoints with "GET" using password "invalid"
       | endpoint                                                    |
@@ -128,8 +117,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @issue-ocis-reva-30 @issue-ocis-reva-65
-  @skipOnBruteForceProtection @issue-brute_force_protection-112
+  @issue-ocis-reva-30 @issue-ocis-reva-65 @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as admin user with wrong password
     Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
@@ -161,7 +149,6 @@ Feature: auth
       | /ocs/v2.php/config |
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
-
 
   @notToImplementOnOCIS @issue-ocis-reva-30 @issue-ocis-reva-28
   Scenario: using OCS with token auth of a normal user

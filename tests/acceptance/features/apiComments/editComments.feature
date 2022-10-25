@@ -49,6 +49,7 @@ Feature: Comments
       | user  | comment        |
       | Brian | Sharee comment |
 
+
   Scenario: Edit my own comments on a folder belonging to myself
     Given user "Alice" has created folder "FOLDER"
     And user "Alice" has commented with content "Folder owner comment" on folder "/FOLDER"

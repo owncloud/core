@@ -24,6 +24,7 @@ Feature: external-storage
       | token    | A_TOKEN              |
       | mimetype | httpd/unix-directory |
 
+
   Scenario: Move a file into storage
     Given these users have been created with default attributes and small skeleton files:
       | username |
@@ -34,6 +35,7 @@ Feature: external-storage
     Then the HTTP status code should be "201"
     And as "Brian" file "/local_storage/foo1/textfile0.txt" should exist
     And as "Alice" file "/local_storage/foo1/textfile0.txt" should exist
+
 
   Scenario: Move a file out of storage
     Given these users have been created with default attributes and small skeleton files:
@@ -71,6 +73,7 @@ Feature: external-storage
     And as "Alice" file "/fileInsideLocalStorage.txt" should exist
     And as "Alice" file "/local_storage/foo1/fileInsideLocalStorage.txt" should exist
 
+
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/local_storage/foo3"
@@ -82,12 +85,14 @@ Feature: external-storage
     # in the folder. The file cache will be cleared after the local storage is scanned.
     And as "Alice" file "local_storage/foo3/textfile0.txt" should exist
 
+
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "Alice" has been created with default attributes and small skeleton files
     And the quota of user "Alice" has been set to "1 B"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/local_storage/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
     And as "Alice" the files uploaded to "/local_storage/testquota.txt" with all mechanisms should exist
+
 
   Scenario Outline: query OCS endpoint for information about the mount
     Given using OCS API version "<ocs_api_version>"
