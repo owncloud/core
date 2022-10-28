@@ -90,7 +90,7 @@ Feature: sharing
     And as "Brian" folder "/Shares/merge-test-inside-twogroups" should not exist
     And as "Brian" folder "/Shares/merge-test-inside-twogroups (2)" should not exist
 
-  Scenario: Merging shares for recipient when shared from inside with group with less permissions
+  Scenario Outline: Merging shares for recipient when shared from inside with group with less permissions
     Given group "grp2" has been created
     And user "Brian" has been added to group "grp2"
     And user "Brian" has created folder "/merge-test-inside-twogroups-perms"
@@ -98,9 +98,17 @@ Feature: sharing
     And user "Brian" shares folder "/merge-test-inside-twogroups-perms" with group "grp2" using the sharing API
     Then the OCS status code of responses on all endpoints should be "100"
     And the HTTP status code of responses on all endpoints should be "200"
-    And as user "Brian" folder "/merge-test-inside-twogroups-perms" should contain a property "oc:permissions" with value "RDNVCK" or with value "RMDNVCK"
+    And as user "Brian" folder "/merge-test-inside-twogroups-perms" should contain a property "oc:permissions" with value "<expected_permission_1>" or with value "<expected_permission_2>"
     And as "Brian" folder "/Shares/merge-test-inside-twogroups-perms" should not exist
     And as "Brian" folder "/Shares/merge-test-inside-twogroups-perms (2)" should not exist
+    @skipOnOcV10
+    Examples:
+      | expected_permission_1 | expected_permission_2 |
+      | RDNVCKZ               | RMDNVCKZ              |
+    @skipOnOcis
+    Examples:
+      | expected_permission_1 | expected_permission_2 |
+      | RDNVCK                | RMDNVCK               |
 
   Scenario: Merging shares for recipient when shared from outside with group then user and recipient renames in between
     Given user "Alice" has created folder "/merge-test-outside-groups-renamebeforesecondshare"
