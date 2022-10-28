@@ -182,11 +182,12 @@ class Share extends Constants {
 		}
 
 		$paths = [];
+		$rejected = [];
 		while ($source !== -1) {
 			// Fetch all shares with another user
 			if (!$returnUserPaths) {
 				$query = \OC_DB::prepare(
-					'SELECT `share_with`, `file_source`, `file_target`
+					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
 					FROM
 					`*PREFIX*share`
 					WHERE
@@ -195,7 +196,7 @@ class Share extends Constants {
 				$result = $query->execute([$source, self::SHARE_TYPE_USER]);
 			} else {
 				$query = \OC_DB::prepare(
-					'SELECT `share_with`, `file_source`, `file_target`
+					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
 				FROM
 				`*PREFIX*share`
 				WHERE
@@ -208,6 +209,10 @@ class Share extends Constants {
 				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 			} else {
 				while ($row = $result->fetchRow()) {
+					if ((int)($row['accepted']) === Constants::STATE_REJECTED) {
+						$rejected[]= $row['parent'];
+						continue;
+					}
 					$shares[] = $row['share_with'];
 					if ($returnUserPaths) {
 						$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
@@ -216,30 +221,28 @@ class Share extends Constants {
 			}
 
 			// We also need to take group shares into account
-			$query = \OC_DB::prepare(
-				'SELECT `share_with`, `file_source`, `file_target`
+			$sql = 'SELECT `share_with`, `file_source`, `file_target`
 				FROM
 				`*PREFIX*share`
 				WHERE
-				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
+				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\') AND `id` NOT IN (?)';
+
+			$result = \OC::$server->getDatabaseConnection()->executeQuery(
+				$sql,
+				[$source, self::SHARE_TYPE_GROUP, $rejected],
+				[null, null, IQueryBuilder::PARAM_INT_ARRAY]
 			);
 
-			$result = $query->execute([$source, self::SHARE_TYPE_GROUP]);
-
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-			} else {
-				while ($row = $result->fetchRow()) {
-					$usersInGroup = self::usersInGroup($row['share_with']);
-					$shares = \array_merge($shares, $usersInGroup);
-					if ($returnUserPaths) {
-						foreach ($usersInGroup as $user) {
-							if (!isset($fileTargets[(int) $row['file_source']][$user])) {
-								// When the user already has an entry for this file source
-								// the file is either shared directly with him as well, or
-								// he has an exception entry (because of naming conflict).
-								$fileTargets[(int) $row['file_source']][$user] = $row;
-							}
+			while ($row = $result->fetch()) {
+				$usersInGroup = self::usersInGroup($row['share_with']);
+				$shares = \array_merge($shares, $usersInGroup);
+				if ($returnUserPaths) {
+					foreach ($usersInGroup as $user) {
+						if (!isset($fileTargets[(int) $row['file_source']][$user])) {
+							// When the user already has an entry for this file source
+							// the file is either shared directly with him as well, or
+							// he has an exception entry (because of naming conflict).
+							$fileTargets[(int) $row['file_source']][$user] = $row;
 						}
 					}
 				}
