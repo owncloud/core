@@ -119,6 +119,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Correct webdav share-permissions for received group shared file with reshare permissions but no edit permissions
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -139,6 +140,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for owned folder
     Given using <dav-path> DAV path

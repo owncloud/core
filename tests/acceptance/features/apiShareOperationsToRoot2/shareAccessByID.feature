@@ -7,6 +7,7 @@ Feature: share access by ID
       | Alice    |
       | Brian    |
 
+
   Scenario Outline: Get a share with a valid share ID
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
@@ -32,6 +33,7 @@ Feature: share access by ID
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: accept a share using the share Id
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And using OCS API version "<ocs_api_version>"
@@ -49,6 +51,7 @@ Feature: share access by ID
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: decline a share using the share Id
     Given using OCS API version "<ocs_api_version>"

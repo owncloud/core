@@ -7,7 +7,6 @@ Feature: local-storage
       | Alice    |
       | Brian    |
 
-
   @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: Share a file inside a local external storage
     Given using OCS API version "<ocs_api_version>"

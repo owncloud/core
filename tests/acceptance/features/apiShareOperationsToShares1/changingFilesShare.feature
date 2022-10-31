@@ -25,7 +25,6 @@ Feature: sharing
       | old         |
       | new         |
 
-
   @smokeTest @files_trashbin-app-required @notToImplementOnOCIS
   Scenario Outline: moving a file out of a share as recipient creates a backup for the owner
     Given using <dav_version> DAV path
@@ -109,6 +108,7 @@ Feature: sharing
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Move files between shares by different users
     Given using <dav_version> DAV path

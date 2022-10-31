@@ -23,6 +23,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
+
   Scenario Outline: user tries to share a folder with another user when the sharing api has been disabled
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/FOLDER"
@@ -34,6 +35,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: user tries to share a file with group when the sharing api has been disabled
     Given using OCS API version "<ocs_api_version>"
@@ -49,6 +51,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
+
   Scenario Outline: user tries to share a folder with group when the sharing api has been disabled
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/FOLDER"
@@ -62,6 +65,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: user tries to create public link share of a file when the sharing api has been disabled
     Given using OCS API version "<ocs_api_version>"
@@ -103,6 +107,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 403              |
 
+
   Scenario Outline: user shares a file with user who is in their group when sharing outside the group has been restricted
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -118,6 +123,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: user shares a file with the group they are not member of when sharing outside the group has been restricted
     Given using OCS API version "<ocs_api_version>"
@@ -150,6 +156,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: user who is a member of a group tries to share a file in the group when group sharing has been disabled
     Given using OCS API version "<ocs_api_version>"

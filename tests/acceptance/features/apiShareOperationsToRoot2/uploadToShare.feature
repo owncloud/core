@@ -5,6 +5,7 @@ Feature: sharing
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "FOLDER"
 
+
   Scenario: Uploading file to a user read-only share folder does not work
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created a share with settings
@@ -15,6 +16,7 @@ Feature: sharing
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/FOLDER/textfile.txt" should not exist
+
 
   Scenario Outline: Uploading file to a group read-only share folder does not work
     Given using <dav-path> DAV path
@@ -33,6 +35,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Uploading file to a user upload-only share folder works
     Given using <dav-path> DAV path
@@ -56,6 +59,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Uploading file to a group upload-only share folder works
     Given using <dav-path> DAV path
@@ -104,6 +108,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Uploading file to a group read/write share folder works
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -149,6 +154,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Uploading to a user shared folder with read/write permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -165,6 +171,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Uploading to a group shared folder with read/write permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
@@ -185,6 +192,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Uploading to a user shared folder with upload-only permission when the sharer has insufficient quota does not work
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -201,6 +209,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Uploading to a group shared folder with upload-only permission when the sharer has insufficient quota does not work
     Given using <dav-path> DAV path
@@ -220,6 +229,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario: Uploading a file in to a shared folder without edit permissions
     Given using new DAV path

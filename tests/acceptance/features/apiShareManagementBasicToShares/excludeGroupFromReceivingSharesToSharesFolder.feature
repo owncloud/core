@@ -108,6 +108,7 @@ Feature: Exclude groups from receiving shares
       | 1               | 200              |
       | 2               | 403              |
 
+
   Scenario Outline: sharing with a user that is part of a group that is excluded from receiving shares still works
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
@@ -127,6 +128,7 @@ Feature: Exclude groups from receiving shares
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: sharing with a user that is part of a group that is excluded from receiving shares using an other group works
     Given using OCS API version "<ocs_api_version>"
@@ -149,6 +151,7 @@ Feature: Exclude groups from receiving shares
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: a user that is part of a group that is excluded from receiving shares still can initiate shares
     Given using OCS API version "<ocs_api_version>"
