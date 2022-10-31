@@ -948,8 +948,7 @@ Feature: capabilities
       | capability | path_to_element         | value    |
       | files      | blacklisted_files_regex | \.(part\|filepart)$ |
 
-  @smokeTest
-  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @smokeTest @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   # This is a new capability after 10.9.1
   Scenario: getting default capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API

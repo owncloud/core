@@ -22,6 +22,7 @@ Feature: Comments
     And the single response should contain a property "oc:comments-unread" with value "0"
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
+
   Scenario: Getting info on comments for a folder using the endpoint
     Given user "Alice" has created folder "/PARENT"
     And user "Alice" has commented with content "My first comment" on folder "/PARENT"
@@ -38,6 +39,7 @@ Feature: Comments
     And the single response should contain a property "oc:comments-unread" with value "0"
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
+
   Scenario: Getting more info about comments using REPORT method
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And user "Alice" has commented with content "My first comment" on file "/myFileToComment.txt"
@@ -52,6 +54,7 @@ Feature: Comments
       | isUnread         | false            |
       | actorDisplayName | %displayname%    |
       | message          | My first comment |
+
 
   Scenario: Getting more info about comments using PROPFIND method
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"

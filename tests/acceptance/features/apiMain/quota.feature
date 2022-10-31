@@ -309,6 +309,7 @@ Feature: quota
     Then the HTTP status code should be "201"
     And as "Brian" file "testquota.txt" should exist
 
+
   Scenario: User with zero quota can upload an empty file
     Given the quota of user "Alice" has been set to "0 B"
     When user "Alice" uploads file with content "" to "testquota.txt" using the WebDAV API

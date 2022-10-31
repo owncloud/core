@@ -26,8 +26,7 @@ Feature: carddav
     And the CardDAV exception should be "Sabre\DAV\Exception\NotFound"
     And the CardDAV message should be "Addressbook with name 'MyAddressbook' could not be found"
 
-  @carddav
-  @smokeTest
+  @carddav @smokeTest
   Scenario: Creating a new addressbook
     Given user "Alice" has successfully created an address book named "MyAddressbook"
     When user "Alice" requests address book "%username%/MyAddressbook" of user "Alice" using the new WebDAV API

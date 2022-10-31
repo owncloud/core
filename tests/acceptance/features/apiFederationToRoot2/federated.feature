@@ -37,6 +37,7 @@ Feature: federated
     And as "Brian" file "textfile1.txt" should not exist
     And url "%remote_server%" should be a trusted server
 
+
   Scenario: Federated share with "Auto add server" enabled
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
@@ -50,6 +51,7 @@ Feature: federated
     And the HTTP status code of responses on all endpoints should be "200"
     And as "Brian" file "textfile1.txt" should exist
     And url "%remote_server%" should be a trusted server
+
 
   Scenario: Federated share with "Auto add server" disabled
     Given using server "REMOTE"
@@ -104,6 +106,7 @@ Feature: federated
     And the HTTP status code should be "200"
     And as "Brian" file "textfile1.txt" should not exist
 
+
   Scenario Outline: federated share receiver sees the original content of a received file
     Given using server "REMOTE"
     And user "Alice" has uploaded file with content "thisContentIsVisible" to "/file-to-share"
@@ -116,6 +119,7 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
 
   Scenario Outline: federated share receiver sees the original content of a received file in multiple levels of folders
     Given using server "REMOTE"
@@ -131,6 +135,7 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
 
   Scenario Outline: remote federated share receiver adds files/folders in the federated share
     Given user "Brian" has created folder "/PARENT"
@@ -152,6 +157,7 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
 
   Scenario Outline: local federated share receiver adds files/folders in the federated share
     Given using server "REMOTE"
@@ -175,6 +181,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: local federated share receiver deletes files/folders of the received share
     Given using server "REMOTE"
     And user "Alice" has created folder "/PARENT"
@@ -197,6 +204,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: remote federated share receiver deletes files/folders of the received share
     Given user "Brian" has created folder "/PARENT"
     And user "Brian" has created folder "/PARENT/RandomFolder"
@@ -217,6 +225,7 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
 
   Scenario Outline: local federated share receiver renames files/folders of the received share
     Given using server "REMOTE"
@@ -242,6 +251,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: remote federated share receiver renames files/folders of the received share
     Given user "Brian" has created folder "/PARENT"
     And user "Brian" has created folder "/PARENT/RandomFolder"
@@ -265,6 +275,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: sharer modifies the share which was shared to the federated share receiver
     Given using server "REMOTE"
     And user "Alice" has created folder "/PARENT"
@@ -281,6 +292,7 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
 
   Scenario Outline: sharer adds files/folders in the share which was shared to the federated share receiver
     Given using server "REMOTE"
@@ -303,6 +315,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: sharer deletes files/folders of the share which was shared to the federated share receiver
     Given using server "REMOTE"
     And user "Alice" has created folder "/PARENT"
@@ -323,6 +336,7 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
 
   Scenario Outline: sharer renames files/folders of the share which was shared to the federated share receiver
     Given using server "REMOTE"
@@ -347,6 +361,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: sharer unshares the federated share and the receiver no longer sees the files/folders
     Given user "Brian" has created folder "/PARENT"
     And user "Brian" has created folder "/PARENT/RandomFolder"
@@ -364,6 +379,7 @@ Feature: federated
       | ocs-api-version | ocs-status-code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: federated share receiver can move the location of the received share and changes are correctly seen at both ends
     Given user "Brian" has created folder "/PARENT"
@@ -391,6 +407,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: federated sharer can move the location of the received share and changes are correctly seen at both ends
     Given user "Brian" has created folder "/PARENT"
     And user "Brian" has created folder "/PARENT/RandomFolder"
@@ -415,6 +432,7 @@ Feature: federated
       | ocs-api-version |
       | 1               |
       | 2               |
+
 
   Scenario Outline: Both Incoming and Outgoing federation shares are allowed
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
@@ -441,6 +459,7 @@ Feature: federated
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Incoming federation shares are allowed but outgoing federation shares are restricted
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
@@ -464,6 +483,7 @@ Feature: federated
       | 1               | 100             | 200              |
       | 2               | 200             | 403              |
 
+
   Scenario Outline: Incoming federation shares are restricted but outgoing federation shares are allowed
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
@@ -483,6 +503,7 @@ Feature: federated
       | ocs-api-version | http-status-code |
       | 1               | 201, 200         |
       | 2               | 201, 403         |
+
 
   Scenario Outline: Both Incoming and outgoing federation shares are restricted
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
@@ -506,6 +527,7 @@ Feature: federated
       | ocs-api-version | http-status-code |
       | 1               | 201, 200         |
       | 2               | 201, 403         |
+
 
   Scenario Outline: Incoming and outgoing federation shares are enabled for local server but incoming federation shares are restricted for remote server
     Given using server "REMOTE"
@@ -533,6 +555,7 @@ Feature: federated
       | ocs-api-version | ocs-status-code | http-status-code |
       | 1               | 100             | 201, 200         |
       | 2               | 200             | 201, 403         |
+
 
   Scenario Outline: Incoming and outgoing federation shares are enabled for local server but outgoing federation shares are restricted for remote server
     Given using server "REMOTE"
