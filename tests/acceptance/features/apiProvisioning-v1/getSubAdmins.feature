@@ -27,6 +27,7 @@ Feature: get subadmins
     And the HTTP status code should be "200"
     And the API should not return any data
 
+
   Scenario: subadmin tries to get other subadmins of the same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -39,6 +40,7 @@ Feature: get subadmins
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the API should not return any data
+
 
   Scenario: normal user tries to get the subadmins of the group
     Given these users have been created with default attributes and without skeleton files:

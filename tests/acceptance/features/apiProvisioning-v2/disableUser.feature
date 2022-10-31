@@ -79,6 +79,7 @@ Feature: disable user
     And the HTTP status code should be "401"
     And user "another-admin" should be enabled
 
+
   Scenario: Admin can disable another admin user
     Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
@@ -98,6 +99,7 @@ Feature: disable user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "subadmin" should be disabled
+
 
   Scenario: Admin user cannot disable himself
     Given user "another-admin" has been created with default attributes and without skeleton files
@@ -170,6 +172,7 @@ Feature: disable user
     And user "Alice" has been disabled
     When user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
+
 
   Scenario: Disabled user tries to share a file
     Given user "Alice" has been created with default attributes and small skeleton files

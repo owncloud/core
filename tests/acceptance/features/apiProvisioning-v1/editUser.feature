@@ -37,6 +37,7 @@ Feature: edit users
     And the OCS status code should be "100"
     And the display name of user "brand-new-user" should be "A New User"
 
+
   Scenario: the administrator can edit a user display name
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator changes the display name of user "brand-new-user" to "A New User" using the provisioning API

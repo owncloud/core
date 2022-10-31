@@ -33,6 +33,7 @@ Feature: remove a user from a group
       | brand-new-user | España§àôœ€         |
       | brand-new-user | नेपाली                |
 
+
   Scenario: admin removes a user from a group with special characters
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And these groups have been created:
@@ -175,6 +176,7 @@ Feature: remove a user from a group
       | Brand-New-User | mixed-group | MIXED-GROUP | Mixed-Group |
       | brand-new-user | MIXED-GROUP | Mixed-Group | mixed-group |
 
+
   Scenario: admin tries to remove a user from a group which does not exist
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "nonexistentgroup" has been deleted
@@ -196,6 +198,7 @@ Feature: remove a user from a group
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should not belong to group "brand-new-group"
+
   @notToImplementOnOCIS
   Scenario: a subadmin cannot remove users from groups the subadmin is not responsible for
     Given these users have been created with default attributes and without skeleton files:
@@ -210,6 +213,7 @@ Feature: remove a user from a group
     Then the OCS status code should be "104"
     And the HTTP status code should be "200"
     And user "brand-new-user" should belong to group "brand-new-group"
+
 
   Scenario: normal user tries to remove a user in their group
     Given these users have been created with default attributes and without skeleton files:

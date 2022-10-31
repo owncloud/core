@@ -44,6 +44,7 @@ Feature: get subadmin groups
       | brand-new-group |
       | 😅 😆          |
 
+
   Scenario: subadmin of a group should not be able to get subadmin groups of another subadmin user
     Given these users have been created with default attributes and without skeleton files:
       | username |

@@ -7,6 +7,7 @@ Feature: cannot share resources with invalid permissions
       | Alice    |
       | Brian    |
 
+
   Scenario Outline: Cannot create a share of a file with invalid permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"

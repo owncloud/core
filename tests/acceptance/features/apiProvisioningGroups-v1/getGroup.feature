@@ -23,12 +23,14 @@ Feature: get group
       | brand-new-user |
       | 123            |
 
+
   Scenario: admin tries to get users in the empty group
     Given group "brand-new-group" has been created
     When the administrator gets all the members of group "brand-new-group" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the list of users returned by the API should be empty
+
 
   Scenario: admin tries to get users in a nonexistent group
     Given group "brand-new-group" has been created
@@ -68,6 +70,7 @@ Feature: get group
     And the users returned by the API should be
       | Alice |
       | Brian |
+
   @notToImplementOnOCIS
   Scenario: subadmin tries to get users in a group they are not responsible for
     Given user "subadmin" has been created with default attributes and without skeleton files
@@ -77,6 +80,7 @@ Feature: get group
     When user "subadmin" gets all the members of group "another-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
+
 
   Scenario: normal user tries to get users in their group
     Given user "newuser" has been created with default attributes and without skeleton files

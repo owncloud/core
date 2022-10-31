@@ -20,6 +20,7 @@ Feature: delete groups
       | España§àôœ€ | special European and other characters |
       | नेपाली      | Unicode group name                    |
 
+
   Scenario Outline: admin deletes a group
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API
@@ -85,7 +86,6 @@ Feature: delete groups
       | Mgmt/Sydney      | Slash (special escaping happens)   |
       | Mgmt//NSW/Sydney | Multiple slash                     |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
-
 
   @issue-31276 @skipOnOcV10
   Scenario: normal user tries to delete the group

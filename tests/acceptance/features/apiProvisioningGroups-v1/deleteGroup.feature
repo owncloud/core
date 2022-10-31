@@ -20,6 +20,7 @@ Feature: delete groups
       | España§àôœ€ | special European and other characters |
       | नेपाली      | Unicode group name                    |
 
+
   Scenario Outline: admin deletes a group
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API
@@ -95,6 +96,7 @@ Feature: delete groups
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And group "brand-new-group" should exist
+
   @notToImplementOnOCIS
   Scenario: subadmin of the group tries to delete the group
     Given user "subadmin" has been created with default attributes and without skeleton files

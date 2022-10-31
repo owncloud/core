@@ -17,6 +17,7 @@ Feature: remove subadmin
     And the HTTP status code should be "200"
     And user "brand-new-user" should not be a subadmin of group "brand-new-group"
 
+
   Scenario: subadmin tries to remove other subadmin in the group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -30,6 +31,7 @@ Feature: remove subadmin
     And the HTTP status code should be "401"
     And user "another-subadmin" should be a subadmin of group "brand-new-group"
 
+
   Scenario: normal user tries to remove subadmin in the group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -42,6 +44,7 @@ Feature: remove subadmin
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "subadmin" should be a subadmin of group "brand-new-group"
+
 
   Scenario: subadmin should not be able to remove subadmin of another group
     Given these users have been created with default attributes and without skeleton files:

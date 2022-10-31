@@ -37,12 +37,14 @@ Feature: add user
       | a@-+_.b  |
       | a space  |
 
+
   Scenario: admin tries to create an existing user
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
+
 
   Scenario: admin tries to create an existing disabled user
     Given user "brand-new-user" has been created with default attributes and without skeleton files
@@ -60,6 +62,7 @@ Feature: add user
     And the HTTP status code should be "200"
     And user "brand-new-user" should belong to group "brand-new-group"
     And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
+
 
   Scenario: admin creates a user and specifies a password with special characters
     When the administrator sends a user creation request for the following users with password using the provisioning API
@@ -80,12 +83,14 @@ Feature: add user
       | brand-new-user2 |
       | brand-new-user3 |
 
+
   Scenario: admin creates a user and specifies an invalid password, containing just space
     Given user "brand-new-user" has been deleted
     When the administrator sends a user creation request for user "brand-new-user" password " " using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And user "brand-new-user" should not exist
+
 
   Scenario: admin creates a user and specifies a password containing spaces
     Given user "brand-new-user" has been deleted
@@ -94,6 +99,7 @@ Feature: add user
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
     And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
+
 
   Scenario Outline: admin creates a user with username that contains capital letters
     When the administrator sends a user creation request for user "<display-name>" password "%alt1%" using the provisioning API
@@ -113,12 +119,14 @@ Feature: add user
       | brand-NEW-user |
       | BrAnD-nEw-UsEr |
 
+
   Scenario: admin tries to create an existing user but with username containing capital letters
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator sends a user creation request for user "BRAND-NEW-USER" password "%alt1%" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
+
 
   Scenario: admin creates a user with unusual username
     Given the following users have been deleted
@@ -155,6 +163,7 @@ Feature: add user
       | 123      |
       | -123     |
       | 0.0      |
+
   @notToImplementOnOCIS
   Scenario: subadmin should not be able to create a user
     Given user "brand-new-user" has been deleted
@@ -167,6 +176,7 @@ Feature: add user
     And the HTTP status code should be "400"
     And user "brand-new-user" should not exist
 
+
   Scenario: normal user should not be able to create another user
     Given user "brand-new-user" has been deleted
     And user "Alice" has been created with default attributes and without skeleton files
@@ -174,6 +184,7 @@ Feature: add user
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "brand-new-user" should not exist
+
   @notToImplementOnOCIS
   Scenario: subadmin should be able to create a new user into their group
     Given user "brand-new-user" has been deleted
@@ -185,6 +196,7 @@ Feature: add user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
+
   @notToImplementOnOCIS
   Scenario: subadmin should not be able to create a new user into other group
     Given user "brand-new-user" has been deleted
