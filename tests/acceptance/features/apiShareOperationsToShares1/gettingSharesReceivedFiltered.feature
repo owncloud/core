@@ -34,6 +34,7 @@ Feature: get the received shares filtered by type (user, group etc)
       | path        | /fileToShareWithPublic.txt |
       | permissions | read                       |
 
+
   Scenario Outline: getting shares received from users
     Given using OCS API version "<ocs_api_version>"
     When user "Brian" gets the user shares shared with him using the sharing API
@@ -46,6 +47,7 @@ Feature: get the received shares filtered by type (user, group etc)
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: getting shares received from groups
     Given using OCS API version "<ocs_api_version>"

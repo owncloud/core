@@ -18,6 +18,7 @@ Feature: get shares filtered by type (user, group etc)
     And user "Alice" has uploaded file with content "file to share with group" to "/fileToShareWithGroup.txt"
     And user "Alice" has uploaded file with content "file to share with public" to "/fileToShareWithPublic.txt"
 
+
   Scenario Outline: getting shares shared to users when there are none
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared folder "/folderToShareWithGroup" with group "grp1"
@@ -37,6 +38,7 @@ Feature: get shares filtered by type (user, group etc)
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: getting shares shared to groups when there are none
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared folder "/folderToShareWithUser" with user "Brian"
@@ -55,6 +57,7 @@ Feature: get shares filtered by type (user, group etc)
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: getting shares shared to public links when there are none
     Given using OCS API version "<ocs_api_version>"

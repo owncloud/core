@@ -22,6 +22,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Correct webdav share-permissions for received file with edit and reshare permissions
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -35,6 +36,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received group shared file with edit and reshare permissions
     Given using <dav-path> DAV path
@@ -56,6 +58,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Correct webdav share-permissions for received file with edit permissions but no reshare permissions
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -68,6 +71,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received group shared file with edit permissions but no reshare permissions
     Given using <dav-path> DAV path
@@ -89,6 +93,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Correct webdav share-permissions for received file with reshare permissions but no edit permissions
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -101,6 +106,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received group shared file with reshare permissions but no edit permissions
     Given using <dav-path> DAV path
@@ -123,6 +129,7 @@ Feature: sharing
       | new      |
 
 
+
   Scenario Outline: Correct webdav share-permissions for owned folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -135,6 +142,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions
     Given using <dav-path> DAV path
@@ -149,6 +157,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions
     Given using <dav-path> DAV path
@@ -169,6 +178,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but edit
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -181,6 +191,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions but edit
     Given using <dav-path> DAV path
@@ -202,6 +213,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but create
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -214,6 +226,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions but create
     Given using <dav-path> DAV path
@@ -235,6 +248,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but delete
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -247,6 +261,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions but delete
     Given using <dav-path> DAV path
@@ -268,6 +283,7 @@ Feature: sharing
       | old      |
       | new      |
 
+
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but share
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
@@ -280,6 +296,7 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Correct webdav share-permissions for received group shared folder with all permissions but share
     Given using <dav-path> DAV path

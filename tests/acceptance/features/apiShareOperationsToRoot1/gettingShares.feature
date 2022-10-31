@@ -22,6 +22,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: getting all shares of a user using another user
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
@@ -133,6 +134,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: getting all the shares inside the folder
     Given using OCS API version "<ocs_api_version>"

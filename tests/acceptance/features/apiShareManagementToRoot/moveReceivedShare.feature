@@ -9,6 +9,7 @@ Feature: sharing
       | Brian    |
       | Carol    |
 
+
   Scenario: Keep usergroup shares (#22143)
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
@@ -23,6 +24,7 @@ Feature: sharing
     And user "Brian" should see the following elements
       | /myFOLDER/myTMP/ |
 
+
   Scenario: keep user shared file name same after one of recipient has renamed the file
     Given user "Alice" has uploaded file with content "foo" to "/sharefile.txt"
     And user "Alice" has shared file "/sharefile.txt" with user "Brian"
@@ -32,6 +34,7 @@ Feature: sharing
     And as "Carol" file "/renamedsharefile.txt" should exist
     And as "Alice" file "/sharefile.txt" should exist
     And as "Brian" file "/sharefile.txt" should exist
+
 
   Scenario: keep user shared file directory same in respect to respective user if one of the recipient has moved the file
     Given user "Alice" has uploaded file with content "foo" to "/sharefile.txt"
@@ -43,6 +46,7 @@ Feature: sharing
     And as "Carol" file "/newfolder/sharefile.txt" should exist
     And as "Alice" file "/sharefile.txt" should exist
     And as "Brian" file "/sharefile.txt" should exist
+
 
   Scenario Outline: move folder inside received folder with special characters
     Given group "grp1" has been created
@@ -68,6 +72,7 @@ Feature: sharing
       | sharer_folder | group_folder    | receiver_folder |
       | ?abc=oc #     | ?abc=oc g%rp#   | # oc?test=oc&a  |
       | @a#8a=b?c=d   | @a#8a=b?c=d grp | ?a#8 a=b?c=d    |
+
 
   Scenario: receiver renames a received share with share, read, change permissions
     Given user "Alice" has created folder "folderToShare"

@@ -57,7 +57,6 @@ Feature: local-storage
       | 1               | /local_storage/foo |
       | 2               | /local_storage/foo |
 
-
   @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: sub-folders,file inside a renamed received folder shared from local storage are accessible
     Given using OCS API version "<ocs_api_version>"
@@ -89,7 +88,6 @@ Feature: local-storage
       | ocs_api_version | pending_share_path |
       | 1               | /local_storage/foo |
       | 2               | /local_storage/foo |
-
 
   @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: receiver renames a received file share from local storage in group sharing

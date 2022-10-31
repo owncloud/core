@@ -23,6 +23,7 @@ Feature: sharing
     And as "Brian" folder "/Shares/merge-test-outside" should exist
     And as "Brian" folder "/Shares/merge-test-outside (2)" should not exist
 
+
   Scenario: Merging shares for recipient when shared from outside with group and member with different permissions
     Given user "Alice" has created folder "/merge-test-outside-perms"
     When user "Alice" shares folder "/merge-test-outside-perms" with group "grp1" with permissions "read" using the sharing API
@@ -32,6 +33,7 @@ Feature: sharing
     And the HTTP status code of responses on all endpoints should be "200"
     And as user "Brian" folder "/Shares/merge-test-outside-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-perms (2)" should not exist
+
 
   Scenario: Merging shares for recipient when shared from outside with two groups
     Given group "grp2" has been created
@@ -45,6 +47,7 @@ Feature: sharing
     And as "Brian" folder "/Shares/merge-test-outside-twogroups" should exist
     And as "Brian" folder "/Shares/merge-test-outside-twogroups (2)" should not exist
 
+
   Scenario: Merging shares for recipient when shared from outside with two groups with different permissions
     Given group "grp2" has been created
     And user "Brian" has been added to group "grp2"
@@ -56,6 +59,7 @@ Feature: sharing
     And the HTTP status code of responses on all endpoints should be "200"
     And as user "Brian" folder "/Shares/merge-test-outside-twogroups-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-twogroups-perms (2)" should not exist
+
 
   Scenario: Merging shares for recipient when shared from outside with two groups and member
     Given group "grp2" has been created
@@ -70,6 +74,7 @@ Feature: sharing
     And as user "Brian" folder "/Shares/merge-test-outside-twogroups-member-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-twogroups-member-perms (2)" should not exist
 
+
   Scenario: Merging shares for recipient when shared from inside with group
     Given user "Brian" has created folder "/merge-test-inside-group"
     When user "Brian" shares folder "/merge-test-inside-group" with group "grp1" using the sharing API
@@ -77,6 +82,7 @@ Feature: sharing
     And the HTTP status code should be "200"
     And as "Brian" folder "/merge-test-inside-group" should exist
     And as "Brian" folder "/Shares/merge-test-inside-group" should not exist
+
 
   Scenario: Merging shares for recipient when shared from inside with two groups
     Given group "grp2" has been created
@@ -89,6 +95,7 @@ Feature: sharing
     And as "Brian" folder "/merge-test-inside-twogroups" should exist
     And as "Brian" folder "/Shares/merge-test-inside-twogroups" should not exist
     And as "Brian" folder "/Shares/merge-test-inside-twogroups (2)" should not exist
+
 
   Scenario Outline: Merging shares for recipient when shared from inside with group with less permissions
     Given group "grp2" has been created
@@ -110,6 +117,7 @@ Feature: sharing
       | expected_permission_1 | expected_permission_2 |
       | RDNVCK                | RMDNVCK               |
 
+
   Scenario: Merging shares for recipient when shared from outside with group then user and recipient renames in between
     Given user "Alice" has created folder "/merge-test-outside-groups-renamebeforesecondshare"
     # Section 1: Brian receives and accepts the group share from Alice and moves and renames it out of the "Shares" folder
@@ -128,6 +136,7 @@ Feature: sharing
     And the HTTP status code of responses on all endpoints should be "200"
     And as "Brian" folder "/Shares/merge-test-outside-groups-renamebeforesecondshare" should exist
     But as "Brian" folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" should not exist
+
 
   Scenario: Merging shares for recipient when shared from outside with user then group and recipient renames in between
     Given user "Alice" has created folder "/merge-test-outside-groups-renamebeforesecondshare"

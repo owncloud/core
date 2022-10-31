@@ -7,6 +7,7 @@ Feature: sharing
       | Alice    |
       | Brian    |
 
+
   Scenario Outline: Delete all group shares
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -35,6 +36,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario: orphaned shares
     Given using OCS API version "1"
@@ -93,6 +95,7 @@ Feature: sharing
     And the etag of element "/" of user "Brian" should have changed
     And the etag of element "/PARENT" of user "Carol" should not have changed
 
+
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
     And user "Alice" has created folder "/shared"
@@ -101,6 +104,7 @@ Feature: sharing
     When user "Brian" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Brian" file "/shared/shared_file.txt" should exist
+
 
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
@@ -111,6 +115,7 @@ Feature: sharing
     Then the HTTP status code should be "403"
     And as "Alice" file "/shared/shared_file.txt" should exist
 
+
   Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
     And user "Alice" has created folder "/shared"
@@ -119,6 +124,7 @@ Feature: sharing
     When user "Brian" deletes file "/shared/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/shared/textfile.txt" should exist
+
 
   Scenario Outline: A Group share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
@@ -144,6 +150,7 @@ Feature: sharing
       | /PARENT            | 1               | 200              | PARENT         |
       | /PARENT            | 2               | 404              | PARENT         |
 
+
   Scenario Outline: An individual share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
@@ -160,6 +167,7 @@ Feature: sharing
       | /PARENT/parent.txt | 2               | 404              | parent.txt     |
       | /PARENT            | 1               | 200              | PARENT         |
       | /PARENT            | 2               | 404              | PARENT         |
+
 
   Scenario Outline: delete a share with wrong authentication
     Given using OCS API version "<ocs_api_version>"

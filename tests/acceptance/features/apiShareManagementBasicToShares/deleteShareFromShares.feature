@@ -10,6 +10,7 @@ Feature: sharing
       | Brian    |
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
 
+
   Scenario Outline: Delete all group shares
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -42,6 +43,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: orphaned shares
     Given using OCS API version "1"
@@ -136,6 +138,7 @@ Feature: sharing
     And as "Alice" file "/shared/shared_file.txt" should exist
     And as "Brian" file "/Shares/shared/shared_file.txt" should exist
 
+
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
     And user "Alice" has created folder "/shared"
@@ -148,6 +151,7 @@ Feature: sharing
     # Note: for Brian, the file does not "exist" because he only has "create" permission, not "read"
     And as "Brian" file "/Shares/shared/shared_file.txt" should not exist
 
+
   Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
     And user "Alice" has created folder "/shared"
@@ -159,6 +163,7 @@ Feature: sharing
     And as "Alice" file "/shared/textfile.txt" should exist
     # Note: for Brian, the file does not "exist" because he only has "create" permission, not "read"
     And as "Brian" file "/Shares/shared/textfile.txt" should not exist
+
 
   Scenario Outline: A Group share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
@@ -194,6 +199,7 @@ Feature: sharing
       | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt | /shared/shared_file.txt |
       | /shared                 | 1               | 200              | /Shares/shared          | /shared                 |
       | /shared                 | 2               | 404              | /Shares/shared          | /shared                 |
+
 
   Scenario Outline: An individual share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
