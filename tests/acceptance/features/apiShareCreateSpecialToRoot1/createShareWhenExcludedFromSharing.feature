@@ -7,6 +7,7 @@ Feature: cannot share resources when in a group that is excluded from sharing
       | Alice    |
       | Brian    |
 
+
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "/fileToShare.txt"
@@ -22,6 +23,7 @@ Feature: cannot share resources when in a group that is excluded from sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 403              |
+
 
   Scenario Outline: user who is excluded from sharing tries to share a file with a group
     Given using OCS API version "<ocs_api_version>"
@@ -44,6 +46,7 @@ Feature: cannot share resources when in a group that is excluded from sharing
       | 1               | 200              |
       | 2               | 403              |
 
+
   Scenario Outline: user who is excluded from sharing tries to share a folder with another user
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -59,6 +62,7 @@ Feature: cannot share resources when in a group that is excluded from sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 403              |
+
 
   Scenario Outline: user who is excluded from sharing tries to share a folder with a group
     Given using OCS API version "<ocs_api_version>"

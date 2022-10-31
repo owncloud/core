@@ -251,6 +251,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | 123CASE_SENSITIVE.txt |
       | casesensitive.xyz.txt |
 
+
   Scenario: sharing folder with group members that has existing files with different case names
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"

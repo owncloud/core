@@ -37,6 +37,7 @@ Feature: enable user
       | a@-+_.b  |
       | a space  |
 
+
   Scenario: admin enables another admin user
     Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
@@ -58,6 +59,7 @@ Feature: enable user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "subadmin" should be enabled
+
 
   Scenario: admin tries to enable himself
     Given user "another-admin" has been created with default attributes and without skeleton files
@@ -108,6 +110,7 @@ Feature: enable user
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "Alice" should be disabled
+
   @notToImplementOnOCIS
   Scenario: subadmin should be able to enable user in their group
     Given these users have been created with default attributes and without skeleton files:
@@ -122,6 +125,7 @@ Feature: enable user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "Alice" should be enabled
+
   @notToImplementOnOCIS
   Scenario: subadmin should not be able to enable user not in their group
     Given these users have been created with default attributes and without skeleton files:
@@ -135,6 +139,7 @@ Feature: enable user
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "Alice" should be disabled
+
   @notToImplementOnOCIS
   Scenario: subadmin should be able to enable user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
@@ -150,6 +155,7 @@ Feature: enable user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "Alice" should be enabled
+
   @notToImplementOnOCIS
   Scenario: subadmin should not be able to enable another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:

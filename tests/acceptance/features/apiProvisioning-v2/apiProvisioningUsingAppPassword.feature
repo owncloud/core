@@ -64,6 +64,7 @@ Feature: access user provisioning API using app password
     Then the users returned by the API should not include "another-new-user"
     And the HTTP status code should be "200"
 
+
   Scenario: normal user tries to get other user information using the app password
     Given these users have been created with default attributes and without skeleton files:
       | username         |

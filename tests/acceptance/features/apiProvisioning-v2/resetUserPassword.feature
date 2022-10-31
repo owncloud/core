@@ -53,6 +53,7 @@ Feature: reset user password
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%regular%" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%alt1%" should not be able to download file "textfile0.txt"
 
+
   Scenario: a user should not be able to reset the password of another user
     Given these users have been created with small skeleton files:
       | username         | password   | displayname    | email                    |
@@ -63,6 +64,7 @@ Feature: reset user password
     And the HTTP status code should be "401"
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%regular%" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%alt1%" should not be able to download file "textfile0.txt"
+
 
   Scenario: a user should be able to reset their own password
     Given these users have been created with small skeleton files:

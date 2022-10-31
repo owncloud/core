@@ -45,6 +45,7 @@ Feature: remove subadmin
     And the HTTP status code should be "401"
     And user "subadmin" should be a subadmin of group "brand-new-group"
 
+
   Scenario: subadmin should not be able to remove subadmin of another group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

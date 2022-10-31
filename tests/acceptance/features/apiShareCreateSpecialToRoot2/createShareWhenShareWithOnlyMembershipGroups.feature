@@ -10,6 +10,7 @@ Feature: cannot share resources outside the group when share with membership gro
     And group "grp0" has been created
     And user "Alice" has been added to group "grp0"
 
+
   Scenario Outline: sharer should not be able to share a folder to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -24,6 +25,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
 
+
   Scenario Outline: sharer should be able to share a folder to a user who is not member of sharer group when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
@@ -35,6 +37,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
+
 
   Scenario Outline: sharer should be able to share a folder to a group which he/she is member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
@@ -48,6 +51,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
+
 
   Scenario Outline: sharer should not be able to share a file to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
@@ -63,6 +67,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
 
+
   Scenario Outline: sharer should be able to share a file to a group which he/she is member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been added to group "grp0"
@@ -75,6 +80,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
+
 
   Scenario Outline: sharer should be able to share a file to a user who is not a member of sharer group when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
