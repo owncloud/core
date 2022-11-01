@@ -73,6 +73,7 @@ Feature: Share by public link
     Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the remote server should be the same as the local "lorem.txt"
 
+
   Scenario: user edits a public link and does not save the changes
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And user "Alice" has created folder "/simple-folder"
@@ -89,6 +90,7 @@ Feature: Share by public link
     And the public tries to access the last created public link with wrong password "qwertyui" using the webUI
     Then the public should not get access to the publicly shared file
 
+
   Scenario: user edits a name of an already existing public link
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
@@ -101,6 +103,7 @@ Feature: Share by public link
     When the user renames the public link name from "Public link" to "simple-folder Share"
     And the public accesses the last created public link using the webUI
     Then file "lorem.txt" should be listed on the webUI
+
 
   Scenario: user edits the password of an already existing public link
     Given user "Alice" has created folder "/simple-folder"
@@ -116,6 +119,7 @@ Feature: Share by public link
     And the public accesses the last created public link with password "pass1234" using the webUI
     Then file "lorem.txt" should be listed on the webUI
 
+
   Scenario: user edits the password of an already existing public link and tries to access with old password
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created a public link share with settings
@@ -129,6 +133,7 @@ Feature: Share by public link
     And the public tries to access the last created public link with wrong password "pass123" using the webUI
     Then the public should not get access to the publicly shared file
 
+
   Scenario: user changes the expiration date of an already existing public link using webUI
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has created a share with settings
@@ -141,6 +146,7 @@ Feature: Share by public link
     And the user gets the info of the last public link share using the sharing API
     Then the fields of the last response to user "Alice" should include
       | expiration | 21-07-2038 |
+
 
   Scenario: user tries to change the expiration date of the public link to past date using webUI
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -156,6 +162,7 @@ Feature: Share by public link
     And the fields of the last response to user "Alice" should include
       | expiration | 14-10-2038 |
 
+
   Scenario: share two files with the same name but different paths by public link
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has created folder "/simple-folder"
@@ -168,12 +175,14 @@ Feature: Share by public link
     Then file "lorem.txt" with path "" should be listed in the shared with others page on the webUI
     And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI
 
+
   Scenario: user removes the public link of a file
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has created a public link share of file "/lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user removes the public link of file "lorem.txt" using the webUI
     Then the public should see an error message "File not found" while accessing last created public link using the webUI
+
 
   Scenario: user cancel removes operation for the public link of a file
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -234,6 +243,7 @@ Feature: Share by public link
     And the user gets the info of the last public link share using the sharing API
     And the fields of the last response to user "Alice" should include
       | expiration | + 5 days |
+
 
   Scenario: user deletes the expiration date of already existing public link using webUI when expiration date is set but not enforced
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
@@ -347,6 +357,7 @@ Feature: Share by public link
     And the user opens the share dialog for file "textfile.txt"
     And the user opens the public link share tab
     Then public link with last share token should be listed as share receiver via "simple-folder" on the webUI
+
 
   Scenario: add to your owncloud button is present
     Given user "Alice" has created folder "/simple-folder"

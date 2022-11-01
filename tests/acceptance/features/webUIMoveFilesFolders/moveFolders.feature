@@ -11,6 +11,7 @@ Feature: move folders
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
+
   Scenario: An attempt to move a folder into a sub-folder using rename is not allowed
     When the user renames folder "simple-empty-folder" to "simple-folder/simple-empty-folder" using the webUI
     Then near folder "simple-empty-folder" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI

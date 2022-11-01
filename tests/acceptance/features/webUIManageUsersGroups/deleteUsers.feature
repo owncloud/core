@@ -21,9 +21,11 @@ Feature: delete users
     And user "Brian" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
+
   Scenario: use the webUI to cancel deletion of user
     When the administrator deletes user "Alice" using the webUI and cancels the deletion using the webUI
     Then user "Alice" should exist
+
 
   Scenario Outline:  user names are not case-sensitive, deleting users with different upper and lower case names
     When the administrator creates a user with the name "<user_id1>" and the password "password" using the webUI

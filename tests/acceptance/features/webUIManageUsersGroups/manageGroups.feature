@@ -8,6 +8,7 @@ Feature: manage groups
     Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
+
   Scenario: delete group called "0" and "false"
     Given these groups have been created:
       | groupname      |
@@ -45,6 +46,7 @@ Feature: manage groups
       | groupname |
       | 0         |
       | false     |
+
 
   Scenario: delete groups with special characters that appear in URLs
     Given these groups have been created:
@@ -94,6 +96,7 @@ Feature: manage groups
       | hash#char |
       | q?mark    |
 
+
   Scenario: delete groups with problematic names
     Given these groups have been created:
       | groupname      |
@@ -142,6 +145,7 @@ Feature: manage groups
       | quotes'     |
       | quotes"     |
 
+
   Scenario: cancel deletion of a group
     Given these groups have been created:
       | groupname      |
@@ -155,6 +159,7 @@ Feature: manage groups
     When the administrator deletes the group named "space group" using the webUI and cancels the deletion using the webUI
     And the administrator reloads the users page
     Then group "space group" should exist
+
 
   Scenario: cancel deletion of groups
     Given these groups have been created:

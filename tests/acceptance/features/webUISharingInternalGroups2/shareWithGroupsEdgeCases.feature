@@ -15,6 +15,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has created folder "simple-folder/simple-inner-folder"
     And user "Carol" has created folder "simple-folder/simple-inner-folder/simple-inner-inner-folder"
 
+
   Scenario Outline: sharing  files and folder with an internal problematic group name
     Given these groups have been created:
       | groupname |
@@ -70,6 +71,7 @@ Feature: Sharing files and folders with internal groups
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
 
+
   Scenario: Share file with a user and again with a group with same name but different case
     Given these groups have been created:
       | groupname |
@@ -82,6 +84,7 @@ Feature: Sharing files and folders with internal groups
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
+
 
   Scenario: Share file with a group and again with a user with same name but different case
     Given these groups have been created:

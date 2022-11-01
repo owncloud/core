@@ -33,6 +33,7 @@ Feature: Search
     And file "lorem.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
     And file "lorem-big.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
 
+
   Scenario: search for folders
     Given user "Alice" has created the following folders
       | path                               |
@@ -57,6 +58,7 @@ Feature: Search
     And file "zzzz-must-be-last-file-in-folder.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
     But file "lorem.txt" should not be listed on the webUI
     And file "lorem.txt" should not be listed in the search results in the other folders section on the webUI
+
 
   Scenario: search in sub folder
     Given user "Alice" has created the following folders
@@ -190,6 +192,7 @@ Feature: Search
     And file "another-torem.txt" with path "/simple-folder" should be listed in the search results in the other folders section on the webUI
 #    And file "another-torem.txt" with path "/simple-folder" should not be listed in the search results in the other folders section on the webUI
 
+
   Scenario: Search for files with difficult names
     Given user "Alice" has created folder "strängé नेपाली folder"
     And user "Alice" has uploaded file with content "does-not-matter" to "/strängéनेपालीloremfile.txt"
@@ -199,6 +202,7 @@ Feature: Search
     When the user searches for "lorem" using the webUI
     Then file "strängéनेपालीloremfile.txt" should be listed on the webUI
     And file "strängéनेपालीloremfile.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
+
 
   Scenario: Search for files with difficult names and difficult search phrase
     Given user "Alice" has created folder "strängé नेपाली folder"

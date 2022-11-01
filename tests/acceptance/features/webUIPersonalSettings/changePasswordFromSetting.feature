@@ -15,6 +15,7 @@ Feature: Change Login Password
     And the user re-logs in with username "Alice" and password "%alt3%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
+
   Scenario Outline: Change password to some unusual values
     When the user changes the password to "<new_password>" using the webUI
     And the user re-logs in with username "Alice" and password "<new_password>" using the webUI
@@ -25,13 +26,16 @@ Feature: Change Login Password
       | España§àôœ€                  | special European and other characters |
       | नेपाली                       | Unicode                               |
 
+
   Scenario: Password change with wrong current password
     When the user changes the password to "%alt3%" entering the wrong current password "%alt2%" using the webUI
     Then a password error message should be displayed on the webUI with the text "Wrong current password"
 
+
   Scenario: New password is same as current password
     When the user changes the password to the current password using the webUI
     Then a password error message should be displayed on the webUI with the text "The new password cannot be the same as the previous one"
+
 
   Scenario Outline: Password change with invalid or no new password
     When the user changes the password to "<new_password>" using the webUI

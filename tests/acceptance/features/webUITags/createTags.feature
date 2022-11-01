@@ -10,6 +10,7 @@ Feature: Creation of tags for the files and folders
       | Alice    |
     And user "Alice" has logged in using the webUI
 
+
   Scenario: Create a new tag that does not exist for a file in the root
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
@@ -20,6 +21,7 @@ Feature: Creation of tags for the files and folders
       | name         | type   |
       | Top Secret   | normal |
       | Confidential | normal |
+
 
   Scenario: Create new tags in lowercase and uppercase
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
@@ -40,6 +42,7 @@ Feature: Creation of tags for the files and folders
       | Top Secret Uppercase   | normal |
       | confidential lowercase | normal |
 
+
   Scenario: Create new tags with same name in lowercase and uppercase
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
@@ -59,6 +62,7 @@ Feature: Creation of tags for the files and folders
       | Top Secret | normal |
       | top secret | normal |
 
+
   Scenario: Create a new tag that does not exist for a file in a folder
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has uploaded file with content "some content" to "/a-folder/randomfile.txt"
@@ -70,6 +74,7 @@ Feature: Creation of tags for the files and folders
       | name       | type   |
       | Top Secret | normal |
       | Top        | normal |
+
 
   Scenario: Add a new tag that already exists for a file in a folder
     Given user "Alice" has created folder "a-folder"

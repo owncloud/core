@@ -14,9 +14,11 @@ Feature: login users
       | Alice    |
     And the user has browsed to the login page
 
+
   Scenario: user login with email address
     When user "Alice" logs in with their email address using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
+
 
   Scenario: user login with email address but invalid password should fail
     When user "Alice" logs in with email and invalid password "%alt2%" using the webUI

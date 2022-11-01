@@ -14,6 +14,7 @@ Feature: personal general settings
     When the user changes the language to "Русский" using the webUI
     Then the user should be redirected to a webUI page with the title "Настройки - %productname%"
 
+
   Scenario: change language and check that file actions menu have been translated
     Given the user has created folder "simple-folder"
     When the user changes the language to "हिन्दी" using the webUI
@@ -34,11 +35,13 @@ Feature: personal general settings
     And group "new-group" should be displayed on the personal general settings page on the webUI
     And group "another-group" should be displayed on the personal general settings page on the webUI
 
+
   Scenario: User sets profile picture from their existing cloud file
     Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And the user has deleted any existing profile picture
     When the user sets profile picture to "testimage.jpg" from their cloud files using the webUI
     Then the preview of the profile picture should be shown on the webUI
+
 
   Scenario: User deletes the existing profile picture
     Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
@@ -46,11 +49,13 @@ Feature: personal general settings
     When the user deletes the existing profile picture
     Then the preview of the profile picture should not be shown on the webUI
 
+
   Scenario: User uploads new profile picture
     Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And the user has deleted any existing profile picture
     When the user uploads "testavatar.png" as a new profile picture using the webUI
     Then the preview of the profile picture should be shown on the webUI
+
 
   Scenario Outline: User tries to upload different files as profile picture
     Given the user has deleted any existing profile picture

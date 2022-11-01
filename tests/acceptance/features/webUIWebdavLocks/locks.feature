@@ -11,6 +11,7 @@ Feature: Locks
       | brand-new-user |
     And user "brand-new-user" has logged in using the webUI
 
+
   Scenario: setting a lock shows the lock symbols at the correct files/folders
     Given user "brand-new-user" has created folder "simple-folder"
     And user "brand-new-user" has created folder "simple-empty-folder"
@@ -27,6 +28,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked on the webUI
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     But file "data.tar.gz" should not be marked as locked on the webUI
+
 
   Scenario: setting a lock shows the display name of a user in the locking details
     Given user "brand-new-user" has created folder "simple-folder"
@@ -56,6 +58,7 @@ Feature: Locks
     And folder "simple-folder" should be marked as locked by user "An ordinary name" in the locks tab of the details panel on the webUI
     And file "data.zip" should be marked as locked by user "An ordinary name" in the locks tab of the details panel on the webUI
 
+
   Scenario: setting a lock shows the display name of a user in the locking details (user has set email address)
     Given these users have been created without skeleton files:
       | username               | displayname   | email       |
@@ -70,6 +73,7 @@ Feature: Locks
     And folder "simple-folder" should be marked as locked by user "My fancy name (mail@oc.org)" in the locks tab of the details panel on the webUI
     And file "data.zip" should be marked as locked by user "My fancy name (mail@oc.org)" in the locks tab of the details panel on the webUI
 
+
   Scenario: setting a lock shows the user name of a user in the locking details (user has set email address)
     Given these users have been created without skeleton files:
       | username        | email       |
@@ -83,6 +87,7 @@ Feature: Locks
     When the user re-logs in with username "user-with-email" and password "%regular%" using the webUI
     And folder "simple-folder" should be marked as locked by user "user-with-email (mail@oc.org)" in the locks tab of the details panel on the webUI
     And file "data.zip" should be marked as locked by user "user-with-email (mail@oc.org)" in the locks tab of the details panel on the webUI
+
 
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the favorites page
     Given user "brand-new-user" has created folder "simple-folder"
@@ -224,6 +229,7 @@ Feature: Locks
     Then file "data.tar (2).gz" should be marked as locked on the webUI
     And file "data.tar (2).gz" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
 
+
   Scenario: setting a lock on a folder shows the symbols at the sub-elements
     Given user "brand-new-user" has created folder "simple-folder"
     And user "brand-new-user" has created folder "simple-folder/simple-empty-folder"
@@ -236,6 +242,7 @@ Feature: Locks
     And folder "simple-empty-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     And file "data.zip" should be marked as locked on the webUI
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+
 
   Scenario: setting a depth:0 lock on a folder does not shows the symbols at the sub-elements
     Given user "brand-new-user" has created folder "simple-folder"

@@ -28,6 +28,7 @@ Feature: Deletion of existing tags from files and folders
     Then tag "tag1" should not exist for user "Alice"
     And tag "tag1" should not exist for user "Brian"
 
+
   Scenario: Delete a tag that already exists for a file in the root
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the user has created a "normal" tag with name "random"
@@ -39,6 +40,7 @@ Feature: Deletion of existing tags from files and folders
       | random | normal |
     When the user deletes tag with name "random" using the webUI
     Then tag "random" should not exist for user "Alice"
+
 
   Scenario: Delete a tag that already exists for a file in a folder
     Given user "Alice" has created folder "a-folder"
@@ -53,6 +55,7 @@ Feature: Deletion of existing tags from files and folders
     When the user deletes tag with name "random" using the webUI
     Then tag "random" should not exist for user "Alice"
 
+
   Scenario: Delete a tag that exists for multiple file
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has created folder "a-folder"
@@ -66,6 +69,7 @@ Feature: Deletion of existing tags from files and folders
     When the user deletes tag with name "random" using the webUI
     Then tag "random" should not exist for user "Alice"
 
+
   Scenario: Delete all tags that exist for a file
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the user has created a "normal" tag with name "random"
@@ -77,6 +81,7 @@ Feature: Deletion of existing tags from files and folders
     When the user deletes tag with name "random" using the webUI
     And the user deletes tag with name "Confidential" using the webUI
     Then file "randomfile.txt" should have no tags for user "Alice"
+
 
   Scenario: Delete multiple tags that exist for a file
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"

@@ -11,6 +11,7 @@ Feature: manage user quota
     And the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
+
   Scenario Outline: change quota to a valid value
     Given the administrator has set the quota of user "Alice" to "<start_quota>"
     When the administrator changes the quota of user "Alice" to "<wished_quota>" using the webUI
@@ -27,11 +28,13 @@ Feature: manage user quota
       | Unlimited   | 55kB         | 55 KB          |
       | Unlimited   | 45Kb         | 45 KB          |
 
+
   Scenario: change quota to a valid value that do not work on 10.0.3
     Given the administrator has set the quota of user "Alice" to "Unlimited"
     When the administrator changes the quota of user "Alice" to "0 Kb" using the webUI
     And the administrator reloads the users page
     Then the quota of user "Alice" should be set to "0 B" on the webUI
+
 
   Scenario Outline: change quota to an invalid value
     When the administrator changes the quota of user "Alice" to the invalid string "<wished_quota>" using the webUI

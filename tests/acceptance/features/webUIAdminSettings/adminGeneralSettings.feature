@@ -89,6 +89,7 @@ Feature: admin general settings
     And the administrator sets the value of log level to 1 using the webUI
     Then the log level should be "1"
 
+
   Scenario: administrator should be able to see system status
     When the administrator browses to the admin general settings page
     Then the version of the owncloud installation should be displayed on the admin general settings page

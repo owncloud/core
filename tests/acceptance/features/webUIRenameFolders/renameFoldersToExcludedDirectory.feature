@@ -7,6 +7,7 @@ Feature: users cannot rename a folder to or into an excluded directory
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario: Rename a folder to an excluded folder name
     Given user "Alice" has created folder "a-folder"
     And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
@@ -16,6 +17,7 @@ Feature: users cannot rename a folder to or into an excluded directory
     Then notifications should be displayed on the webUI with the text
       | Could not rename "a-folder" |
     And folder "a-folder" should be listed on the webUI
+
 
   Scenario: Rename a folder to an excluded folder name inside a parent folder
     Given user "Alice" has created folder "top-folder"
