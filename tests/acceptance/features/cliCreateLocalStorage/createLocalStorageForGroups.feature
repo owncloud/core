@@ -10,6 +10,7 @@ Feature: create local storage from the command line
       | Alice    |
       | Brian    |
 
+
   Scenario: create local storage that is available to a specific group
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
@@ -25,6 +26,7 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Brian" should be "this is a file in local storage2"
     But as "Alice" folder "/local_storage2" should not exist
 
+
   Scenario: removing the only group from applicable group of local storage leaves the storage available to everyone
     Given group "brand-new-group" has been created
     And user "Brian" has been added to group "brand-new-group"
@@ -36,6 +38,7 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Alice" should be "this is a file in local storage2"
     And as "Brian" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Brian" should be "this is a file in local storage2"
+
 
   Scenario: user should not get access if the group of the user is removed from the applicable group and that group was not the only applicable group
     And these users have been created with default attributes and small skeleton files:
@@ -55,6 +58,7 @@ Feature: create local storage from the command line
     And as "Alice" folder "/local_storage2" should not exist
     And as "Brian" folder "/local_storage2" should not exist
 
+
   Scenario: another user can create a folder matching a local storage name that is for a specific group
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
@@ -68,6 +72,7 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Alice" should be "this is an ordinary file"
     And as "Brian" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Brian" should be "this is a file in local storage2"
+
 
   Scenario: users should get access if all the users and groups are removed from the applicable groups
     And these users have been created with default attributes and small skeleton files:

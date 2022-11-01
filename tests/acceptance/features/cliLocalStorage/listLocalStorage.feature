@@ -10,6 +10,7 @@ Feature: list created local storage from the command line
     And the administrator has uploaded file with content "this is a file in local storage2" to "/local_storage2/file-in-local-storage.txt"
     And the administrator has uploaded file with content "this is a file in local storage3" to "/local_storage3/new-file"
 
+
   Scenario: List the created local storage
     When the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
@@ -17,6 +18,7 @@ Feature: list created local storage from the command line
       | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
       | /local_storage2 | Local   | None               | datadir:      |                      | All             |                  |
       | /local_storage3 | Local   | None               | datadir:      |                      | All             |                  |
+
 
   Scenario: List local storage with applicable users
     Given these users have been created with default attributes and without skeleton files:
@@ -34,6 +36,7 @@ Feature: list created local storage from the command line
       | /local_storage2 | Local   | None               | datadir:      |                      | Alice           |                  |
       | /local_storage3 | Local   | None               | datadir:      |                      | Brian, Carol    |                  |
 
+
   Scenario: List local storage with applicable groups
     Given group "grp1" has been created
     And group "grp2" has been created
@@ -47,6 +50,7 @@ Feature: list created local storage from the command line
       | /local_storage  | Local   | None               | datadir:      | enable_sharing: true | All             |                  |
       | /local_storage2 | Local   | None               | datadir:      |                      |                 | grp1             |
       | /local_storage3 | Local   | None               | datadir:      |                      |                 | grp2, grp3       |
+
 
   Scenario: List local storage with applicable users and groups
     Given these users have been created with default attributes and without skeleton files:
@@ -70,6 +74,7 @@ Feature: list created local storage from the command line
       | /local_storage2 | Local   | None               | datadir:      |                      | Alice           | grp1             |
       | /local_storage3 | Local   | None               | datadir:      |                      | Brian, Carol    | grp2, grp3       |
 
+
   Scenario: Short list of local storage with applicable users and groups
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -92,6 +97,7 @@ Feature: list created local storage from the command line
       | /local_storage2 | User | Alice           | grp1             | Admin |
       | /local_storage3 | User | Brian, Carol    | grp2, grp3       | Admin |
 
+
   Scenario: List local storage with non-default options (one storage set to read-only)
     Given the administrator has set the external storage "local_storage2" to read-only
     When the administrator lists the local storage using the occ command
@@ -101,6 +107,7 @@ Feature: list created local storage from the command line
       | /local_storage2 | Local   | None               | datadir:      | read_only: 1         | All             |                  |
       | /local_storage3 | Local   | None               | datadir:      |                      | All             |                  |
 
+
   Scenario: List local storage with --mount-options
     When the administrator lists the local storage with --mount-options using the occ command
     Then the following local storage should be listed:
@@ -108,6 +115,7 @@ Feature: list created local storage from the command line
       | /local_storage  | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: true, encoding_compatibility: false  | All             |                  |
       | /local_storage2 | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: false, encoding_compatibility: false | All             |                  |
       | /local_storage3 | Local   | None               | datadir:      | encrypt: true, previews: true, filesystem_check_changes: 1, read_only: false, enable_sharing: false, encoding_compatibility: false | All             |                  |
+
 
   Scenario: List local storage with --mount-options and non-default options (one storage set to read-only)
     Given the administrator has set the external storage "local_storage2" to read-only

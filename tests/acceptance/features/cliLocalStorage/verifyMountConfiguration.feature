@@ -4,6 +4,7 @@ Feature: verify mount configuration using occ command
   I want to verify mount configuration for created local storage
   So that I can assure the status of created local storage
 
+
   Scenario: verify mount configuration for created local storage
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has created the local storage mount "new_local_storage"

@@ -4,6 +4,7 @@ Feature: delete local storage from the command line
   I want to delete local storage
   So that I can remove undesired local storage
 
+
   Scenario: delete local storage
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has created the local storage mount "new_local_storage"

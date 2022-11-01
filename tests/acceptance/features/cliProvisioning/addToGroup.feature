@@ -16,7 +16,8 @@ Feature: add users to group
       | group_id    | comment                               |
       | simplegroup | nothing special here                  |
       | España§àôœ€ | special European and other characters |
-      | नेपाली      | Unicode group name                    |
+      | नेपाली        | Unicode group name                    |
+
 
   Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names
     Given user "mixed-case-user" has been created with default attributes and small skeleton files
@@ -35,6 +36,7 @@ Feature: add users to group
       | Mixed-Case-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
       | mixed-case-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
 
+
   Scenario: admin tries to add user to a group which does not exist
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "not-group" has been deleted
@@ -42,6 +44,7 @@ Feature: add users to group
     Then the command should have failed with exit code 1
     And the command output should contain the text 'Group "not-group" does not exist'
     And user "brand-new-user" should not belong to group "not-group"
+
 
   Scenario: admin tries to add a user which does not exist to a group
     Given user "nonexistentuser" has been deleted

@@ -5,6 +5,7 @@ Feature: add and delete app configs using occ command
   I want to be able to add and delete app configs via the command line
   So that I can configure apps via the command line, rather than having to use the webUI
 
+
   Scenario: admin adds and deletes a config for an app using the occ command
     When the administrator adds config key "con" with value "conkey" in app "core" using the occ command
     Then the command should have been successful
@@ -14,6 +15,7 @@ Feature: add and delete app configs using occ command
     Then the command should have been successful
     And the command output should contain the text 'Config value con of app core deleted'
     And app "core" should not have config key "con"
+
 
   Scenario: admin adds and deletes a system config
     When the administrator adds system config key "con" with value "conkey" using the occ command
@@ -25,11 +27,13 @@ Feature: add and delete app configs using occ command
     And the command output should contain the text 'System config value con deleted'
     And system config key "con" should not exist
 
+
   Scenario: admin adds a config key for an app with an empty value using the occ command
     When the administrator adds config key "con" with value "''" in app "core" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Config value con for app core set to'
     And the config key "con" of app "core" should have value ""
+
 
   Scenario: admin adds a system config with an empty value
     When the administrator adds system config key "con" with value "" using the occ command
@@ -55,30 +59,36 @@ Feature: add and delete app configs using occ command
     Then the command should have failed with exit code 1
     And the command output should contain the text 'Config name must not be empty.'
 
+
   Scenario: admin can list system config keys
     When the administrator lists the config keys
     Then the command should have been successful
     And the command output should contain the system configs
+
 
   Scenario: admin can list app config keys
     When the administrator lists the config keys
     Then the command should have been successful
     And the command output should contain the apps configs
 
+
   Scenario: app directory should be listed in the config file
     When the administrator lists the config keys
     Then the command should have been successful
     And the system config key "apps_paths" from the last command output should match value '/\"url\":\"\/apps\",\"writable\":false/' of type "json"
+
 
   Scenario: app-external directory should be listed in the config
     When the administrator lists the config keys
     Then the command should have been successful
     And the system config key "apps_paths" from the last command output should match value '/\"url\":\"\/apps-external\",\"writable\":true/' of type "json"
 
+
   Scenario: log time zone should be listed in the config file
     When the administrator lists the config keys
     Then the command should have been successful
     And the system config key "logtimezone" from the last command output should match value "UTC" of type "string"
+
 
   Scenario: server installed should be listed in the config file
     When the administrator lists the config keys

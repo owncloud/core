@@ -10,6 +10,7 @@ Feature: export created local storage mounts from the command line
     And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
     And the administrator has uploaded file with content "new file" to "/new_local_storage/new-file"
 
+
   Scenario: export the created mounts
     When the administrator exports the local storage mounts using the occ command
     Then the following local storage should be listed:
@@ -17,6 +18,7 @@ Feature: export created local storage mounts from the command line
       | /local_storage2    | \OC\Files\Storage\Local | null::null         | datadir:      |                      |                 |                  |
       | /new_local_storage | \OC\Files\Storage\Local | null::null         | datadir:      |                      |                 |                  |
       | /local_storage     | \OC\Files\Storage\Local | null::null         | datadir:      | enable_sharing: true |                 |                  |
+
 
   Scenario: export the created mounts when the system language is "de"
     Given the administrator has set the system language to "de"
@@ -26,6 +28,7 @@ Feature: export created local storage mounts from the command line
       | /local_storage2    | \OC\Files\Storage\Local | null::null         | datadir:      |                      |                 |                  |
       | /new_local_storage | \OC\Files\Storage\Local | null::null         | datadir:      |                      |                 |                  |
       | /local_storage     | \OC\Files\Storage\Local | null::null         | datadir:      | enable_sharing: true |                 |                  |
+
 
   Scenario: export the created mounts with various user and group settings
     Given these users have been created with default attributes and without skeleton files:

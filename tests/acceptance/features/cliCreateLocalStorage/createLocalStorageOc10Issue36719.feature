@@ -10,6 +10,7 @@ Feature: create local storage from the command line
       | Alice    |
       | Brian    |
 
+
   Scenario: create local storage that matches an existing folder of a user
     Given user "Alice" has created folder "reference"
     And user "Alice" has uploaded file with content "this is a reference file" to "/reference/reference-file.txt"
@@ -26,6 +27,7 @@ Feature: create local storage from the command line
     # Some other behaviour is to be defined here. See discussion in the issue.
     # How can Alice get access to their own previous folder with file?
     But as "Alice" file "/reference/reference-file.txt" should not exist
+
 
   Scenario: create local storage that matches an existing shared folder of a user
     Given user "Alice" has created folder "reference"
@@ -47,6 +49,7 @@ Feature: create local storage from the command line
     # How can Alice and Brian get access to their previous shared folder with file?
     But as "Alice" file "/reference/reference-file.txt" should not exist
     And as "Brian" file "/reference/reference-file.txt" should not exist
+
 
   Scenario: create local storage that matches an existing shared folder, and the sharee has renamed the received folder
     Given user "Alice" has created folder "reference"

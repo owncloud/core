@@ -4,6 +4,7 @@ Feature: edit users
   I want to be able to edit user information
   So that I can keep the user information up-to-date
 
+
   Scenario: the administrator can edit a user email
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator changes the email of user "brand-new-user" to "brand-new-user@example.com" using the occ command
@@ -23,6 +24,7 @@ Feature: edit users
     And user "brand-new-user" should exist
     And the user attributes returned by the API should include
       | email |  |
+
 
   Scenario: the administrator can edit a user display name
     Given user "brand-new-user" has been created with default attributes and small skeleton files
@@ -71,6 +73,7 @@ Feature: edit users
       | España§àôœ€                  | special European and other characters |
       | नेपाली                       | Unicode                               |
       | password with spaces         | password with spaces                  |
+
 
   Scenario: admin creates a user and specifies an invalid password, containing just space
     Given user "brand-new-user" has been deleted

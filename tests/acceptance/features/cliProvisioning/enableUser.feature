@@ -4,6 +4,7 @@ Feature: enable user
   I want to be able to enable a user
   So that I can give a user access to their files and resources again if they are now authorized for that
 
+
   Scenario: admin enables an user
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
@@ -11,6 +12,7 @@ Feature: enable user
     Then the command should have been successful
     And the command output should contain the text 'The specified user is enabled'
     And user "Alice" should be enabled
+
 
   Scenario: admin enables another admin user
     Given user "another-admin" has been created with default attributes and small skeleton files
@@ -20,6 +22,7 @@ Feature: enable user
     Then the command should have been successful
     And the command output should contain the text 'The specified user is enabled'
     And user "another-admin" should be enabled
+
 
   Scenario: admin enables subadmins in the same group
     Given user "subadmin" has been created with default attributes and small skeleton files

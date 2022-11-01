@@ -4,6 +4,7 @@ Feature: get users
   I want to be able to list the users that exist
   So that I can see who has access to ownCloud
 
+
   Scenario: admin gets all users
     Given this user has been created using the occ command:
       | username       | displayname | email                 |
@@ -13,6 +14,7 @@ Feature: get users
     And the users returned by the occ command should be
       | uid            |
       | brand-new-user |
+
 
   Scenario: admin gets the list of all inactive users
     Given these users have been created with default attributes and without skeleton files:
@@ -28,6 +30,7 @@ Feature: get users
       | uid   | display name | inactive days |
       | Alice | Alice Hansen | 7             |
       | Brian | Brian Murphy | 400           |
+
 
   Scenario Outline: admin gets a short username that has multiple matches of longer usernames
     Given user "brand-new" has been created with default attributes and without skeleton files
