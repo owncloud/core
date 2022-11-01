@@ -7,6 +7,7 @@ Feature: upload file
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "<file_name>" using the TUS protocol on the WebDAV API
@@ -72,6 +73,7 @@ Feature: upload file
       | spaces      | /folder #2.txt                   | file #2.txt                   |
       | spaces      | /folder ?2.txt                   | file ?2.txt                   |
       | spaces      | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
+
 
   Scenario Outline: Upload chunked file with TUS
     Given using <dav_version> DAV path

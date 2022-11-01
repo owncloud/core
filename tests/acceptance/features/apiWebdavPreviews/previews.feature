@@ -4,6 +4,7 @@ Feature: previews of files downloaded through the webdav API
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: download previews with invalid width
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "Alice" downloads the preview of "/parent.txt" with width "<width>" and height "32" using the WebDAV API

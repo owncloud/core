@@ -26,6 +26,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: keep group permissions in sync
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -58,6 +59,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Cannot set permissions to zero
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -71,6 +73,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 400              |
+
 
   Scenario Outline: Cannot update a share of a file with a user to have only create and/or delete permission
     Given using OCS API version "<ocs_api_version>"
@@ -91,6 +94,7 @@ Feature: sharing
       | 2               | 400              | delete        |
       | 1               | 200              | create,delete |
       | 2               | 400              | create,delete |
+
 
   Scenario Outline: Cannot update a share of a file with a group to have only create and/or delete permission
     Given using OCS API version "<ocs_api_version>"
@@ -144,6 +148,7 @@ Feature: sharing
     And as "Alice" folder "/folder1/folder2" should not exist
     And as "Carol" folder "/folder2" should exist
 
+
   Scenario: Share ownership change after moving a shared file to another share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -173,6 +178,7 @@ Feature: sharing
     And as "Alice" folder "/Alice-folder/folder2" should not exist
     And as "Carol" folder "/Carol-folder/folder2" should exist
 
+
   Scenario Outline: Increasing permissions is allowed for owner
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -194,6 +200,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Forbid sharing with groups
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -206,6 +213,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: Editing share permission of existing share is forbidden when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
@@ -231,6 +239,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
+
   Scenario Outline: Deleting group share is allowed when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -248,6 +257,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
       | 2               | 200             | 404              |
+
 
   Scenario Outline: user can update the role in an existing share after the system maximum expiry date has been reduced
     Given using OCS API version "<ocs_api_version>"

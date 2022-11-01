@@ -13,6 +13,7 @@ Feature: lock should propagate correctly if a share is reshared
     And user "Brian" has created folder "PARENT"
     And user "Carol" has created folder "PARENT"
 
+
   Scenario Outline: upload to a share that was locked by owner
     Given using <dav-path> DAV path
     And user "Alice" has shared folder "PARENT" with user "Brian"

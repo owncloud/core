@@ -11,6 +11,7 @@ Feature: lock should propagate correctly if a share is reshared
     And user "Brian" has created folder "PARENT"
     And user "Carol" has created folder "PARENT"
 
+
   Scenario Outline: upload to a share that was locked by owner
     Given using <dav-path> DAV path
     And user "Alice" has shared folder "PARENT" with user "Brian"
@@ -28,6 +29,7 @@ Feature: lock should propagate correctly if a share is reshared
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
 
   Scenario Outline: upload overwriting to a share that was locked by owner
     Given using <dav-path> DAV path
@@ -68,6 +70,7 @@ Feature: lock should propagate correctly if a share is reshared
       | new      | shared     |
       | new      | exclusive  |
 
+
   Scenario Outline: upload to a share that was locked by owner but renamed before
     Given using <dav-path> DAV path
     And user "Alice" has shared folder "PARENT" with user "Brian"
@@ -86,6 +89,7 @@ Feature: lock should propagate correctly if a share is reshared
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
 
   Scenario Outline: upload to a share that was locked by the resharing user
     Given using <dav-path> DAV path

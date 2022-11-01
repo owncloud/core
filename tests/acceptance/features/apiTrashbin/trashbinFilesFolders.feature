@@ -40,6 +40,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | spaces   |
 
+
   Scenario Outline: deleting a file in a folder moves it to the trashbin root
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/new-folder"
@@ -157,9 +158,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | spaces   |
 
-  @local_storage @files_external-app-required
-  @skipOnEncryptionType:user-keys @encryption-issue-42
-  @skip_on_objectstore
+  @local_storage @files_external-app-required @skipOnEncryptionType:user-keys @encryption-issue-42 @skip_on_objectstore
   Scenario Outline: Deleting a folder into external storage moves it to the trashbin
     Given using <dav-path> DAV path
     And the administrator has invoked occ command "files:scan --all"
@@ -323,6 +322,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | spaces   |
 
+
   Scenario Outline: user with unusual username deletes a file
     Given using <dav-path> DAV path
     And user "<username>" has been created with default attributes and without skeleton files
@@ -349,6 +349,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | spaces   | 123      |
       | spaces   | -123     |
       | spaces   | 0.0      |
+
 
   Scenario Outline: deleting a file with comma in the filename moves it to trashbin
     Given using <dav-path> DAV path

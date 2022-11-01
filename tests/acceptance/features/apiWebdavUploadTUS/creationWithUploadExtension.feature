@@ -4,6 +4,7 @@ Feature: tests of the creation extension see https://tus.io/protocols/resumable-
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: creating a new upload resource using creation with upload extension
     Given using <dav_version> DAV path
     When user "Alice" creates a new TUS resource with content "uploaded content" on the WebDAV API with these headers:

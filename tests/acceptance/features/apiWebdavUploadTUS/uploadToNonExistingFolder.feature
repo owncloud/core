@@ -9,6 +9,7 @@ Feature: upload file
     And the administrator has set the default folder for received shares to "Shares"
     And user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: attempt to upload a file into a nonexistent folder inside shares
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API

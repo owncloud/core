@@ -115,6 +115,7 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | dav-path |
       | new      |
 
+
   Scenario Outline: Skip trashbin based on extensions when deleting the parent folder - skip-by-extension rules should not be applied
     Given the administrator has set the following file extensions to be skipped from the trashbin
       | extension |

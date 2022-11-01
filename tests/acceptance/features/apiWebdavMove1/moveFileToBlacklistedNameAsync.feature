@@ -10,11 +10,13 @@ Feature: users cannot move (rename) a file to a blacklisted name
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     And the administrator has enabled async operations
 
+
   Scenario: rename a file to a filename that is banned by default
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/.htaccess" using the WebDAV API
     Then the HTTP status code should be "403"
     And user "Alice" should see the following elements
       | /textfile0.txt |
+
 
   Scenario: rename a file to a banned filename
     Given the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"

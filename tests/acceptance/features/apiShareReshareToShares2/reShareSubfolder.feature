@@ -122,7 +122,6 @@ Feature: a subfolder of a received share can be reshared
       | 1               | 100             | /TMP/SUB               |
       | 2               | 200             | /TMP/SUB               |
 
-
   @issue-ocis-2214
   Scenario Outline: User is allowed to update reshare of a sub-folder to the maximum allowed permissions
     Given using OCS API version "<ocs_api_version>"
@@ -152,7 +151,6 @@ Feature: a subfolder of a received share can be reshared
       | ocs_api_version | ocs_status_code | pending_sub_share_path |
       | 1               | 100             | /TMP/SUB               |
       | 2               | 200             | /TMP/SUB               |
-
 
   @issue-ocis-2214
   Scenario Outline: User is not allowed to update reshare of a sub-folder with more permissions

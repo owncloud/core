@@ -38,6 +38,7 @@ Feature: Display notifications when receiving a share
       | link        | /^https?:\/\/.+\/f\/(\d+)$/                      |
       | object_type | /^local_share$/                                  |
 
+
   Scenario: share to group sends notification to every member
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
@@ -132,6 +133,7 @@ Feature: Display notifications when receiving a share
     And user "Carol" should have 0 notifications
     And user "David" should have 0 notifications
 
+
   Scenario: when auto-accepting is enabled no notifications are sent
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
@@ -150,6 +152,7 @@ Feature: Display notifications when receiving a share
     And the OCS status code of responses on all endpoints should be "100"
     And user "Brian" should have 0 notifications
     And user "Carol" should have 1 notification
+
 
   Scenario: discard notification if group is deleted
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"

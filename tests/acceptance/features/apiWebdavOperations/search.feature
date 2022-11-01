@@ -155,6 +155,7 @@ Feature: Search
       | dav_version |
       | spaces      |
 
+
   Scenario Outline: limit returned search entries to more entires than there are
     Given using <dav_version> DAV path
     When user "Alice" searches for "upload" and limits the results to "100" items using the WebDAV API
@@ -286,6 +287,7 @@ Feature: Search
     And the search result by tags for user "Alice" should contain these entries:
       | upload.txt |
 
+
   Scenario: share a tagged resource to another internal user and sharee searches for tag using REPORT method
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created a "normal" tag with name "JustARegularTag1"
@@ -310,6 +312,7 @@ Feature: Search
     Then the HTTP status code should be "207"
     And as user "Brian" the response should contain file "upload.txt"
     And as user "Brian" the response should not contain file "फनी näme"
+
 
   Scenario: search for entries across various folders by tags using REPORT method
     Given user "Alice" has created folder "/just-a-folder/inner-folder"

@@ -8,6 +8,7 @@ Feature: sharing
       | Brian    |
       | Carol    |
 
+
   Scenario Outline: Update of reshare can reduce permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/TMP"
@@ -22,6 +23,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: Update of reshare can increase permissions to the maximum allowed
     Given using OCS API version "<ocs_api_version>"
@@ -38,6 +40,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Do not allow update of reshare to exceed permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/TMP"
@@ -52,6 +55,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: Update of user reshare by the original share owner can increase permissions up to the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
@@ -68,6 +72,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Update of user reshare by the original share owner can increase permissions to more than the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/TMP"
@@ -82,6 +87,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: Update of group reshare by the original share owner can increase permissions up to permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"
@@ -99,6 +105,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: Update of group reshare by the original share owner can increase permissions to more than the permissions of the top-level share
     Given using OCS API version "<ocs_api_version>"

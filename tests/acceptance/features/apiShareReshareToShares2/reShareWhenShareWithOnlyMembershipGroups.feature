@@ -9,6 +9,7 @@ Feature: resharing a resource with an expiration date
       | Alice    |
       | Brian    |
 
+
   Scenario Outline: User should not be able to re-share a folder to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -26,6 +27,7 @@ Feature: resharing a resource with an expiration date
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
+
 
   Scenario Outline: User should not be able to re-share a file to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"

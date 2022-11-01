@@ -19,6 +19,7 @@ Feature: users cannot upload a file to a blacklisted name using new chunking
     Then the HTTP status code should be "403"
     And as "Alice" file ".htaccess" should not exist
 
+
   Scenario: Upload a file to a banned filename using new chunking
     Given the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API

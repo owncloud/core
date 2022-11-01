@@ -11,6 +11,7 @@ Feature: users cannot upload a file to a blacklisted name using new chunking
     And the owncloud log has been cleared
     And the administrator has enabled async operations
 
+
   Scenario: Upload to a filename that is banned by default using new chunking and async MOVE
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "Alice" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
@@ -19,6 +20,7 @@ Feature: users cannot upload a file to a blacklisted name using new chunking
     And user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/.htaccess" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/.htaccess" should not exist
+
 
   Scenario: Upload to a banned filename using new chunking and async MOVE
     Given the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
