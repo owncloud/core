@@ -32,6 +32,7 @@ Feature: get groups
       | Case-Sensitive-Group |
       | CASE-SENSITIVE-GROUP |
 
+
   Scenario Outline: admin gets all the groups containing some sub-string
     Given group "brand-new" has been created
     And group "brand-new-group" has been created

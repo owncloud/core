@@ -21,6 +21,7 @@ Feature: get group
       | brand-new-user |
       | 123            |
 
+
   Scenario: admin gets user in the group who is disabled
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
@@ -32,6 +33,7 @@ Feature: get group
     And the users returned by the occ command should be
       | uid            |
       | brand-new-user |
+
 
   Scenario: admin tries to get users in a nonexistent group
     Given group "brand-new-group" has been created

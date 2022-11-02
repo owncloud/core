@@ -4,6 +4,7 @@ Feature: security certificates
   I want to be able to manage the ownCloud security certificates
   So that I can ensure the proper encryption mechanism
 
+
   Scenario: Import a security certificate
     Given the administrator has copied file "tests/data/certificates/goodCertificate.crt" to "goodCertificate.crt" in temporary storage on the system under test
     When the administrator imports security certificate from file "goodCertificate.crt" in temporary storage on the system under test
@@ -20,6 +21,7 @@ Feature: security certificates
     Then the command should have failed with exit code 1
     And the command output should contain the text "certificate not found"
 
+
   Scenario: List security certificates when multiple certificates are imported
     Given the administrator has copied file "tests/data/certificates/goodCertificate.crt" to "goodCertificate.crt" in temporary storage on the system under test
     And the administrator has copied file "tests/data/certificates/badCertificate.crt" to "badCertificate.crt" in temporary storage on the system under test
@@ -30,6 +32,7 @@ Feature: security certificates
       | table_column        |
       | goodCertificate.crt |
       | badCertificate.crt  |
+
 
   Scenario: Remove a security certificate
     Given the administrator has copied file "tests/data/certificates/goodCertificate.crt" to "goodCertificate.crt" in temporary storage on the system under test
@@ -48,6 +51,7 @@ Feature: security certificates
     When the administrator removes the security certificate "someCertificate.crt"
     Then the command should have failed with exit code 1
     And the command output should contain the text "certificate not found"
+
 
   Scenario: Import random file as certificate
     Given the administrator has copied file "tests/data/lorem.txt" to "lorem.txt" in temporary storage on the system under test

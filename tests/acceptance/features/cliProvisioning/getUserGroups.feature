@@ -28,6 +28,7 @@ Feature: get user groups
       | admin:Pokhara@Nepal  |
       | नेपाली               |
 
+
   Scenario: admin gets groups of an user who is not in any groups
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "unused-group" has been created

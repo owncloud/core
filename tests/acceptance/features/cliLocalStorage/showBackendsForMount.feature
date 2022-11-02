@@ -8,12 +8,14 @@ Feature: show available backends using occ command
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "file in local storage" to "/local_storage2/file-in-local-storage.txt"
 
+
   Scenario: list available backends for created local storage
     When the administrator lists the available backends using the occ command
     Then the following backend types should be listed:
       | backend-type   |
       | authentication |
       | storage        |
+
 
   Scenario: list available backends of type authentication for created local storage
     When the administrator lists the available backends of type "authentication" using the occ command
@@ -29,6 +31,7 @@ Feature: show available backends using occ command
       | openstack::openstack         |
       | openstack::rackspace         |
 
+
   Scenario: list available backends of type storage for created local storage
     When the administrator lists the available backends of type "storage" using the occ command
     Then the following storage backends should be listed:
@@ -41,6 +44,7 @@ Feature: show available backends using occ command
       | smb                        |
       | \OC\Files\Storage\SMB_OC   |
       | local                      |
+
 
   Scenario Outline: list specific backend of type storage for created local storage
     When the administrator lists the "<backend>" backend of type "storage" using the occ command
@@ -62,6 +66,7 @@ Feature: show available backends using occ command
       | smb                        |
       | \OC\Files\Storage\SMB_OC   |
       | local                      |
+
 
   Scenario Outline: list specific backend of type authentication for created local storage
     When the administrator lists the "<backend>" backend of type "authentication" using the occ command

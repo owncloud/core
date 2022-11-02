@@ -15,6 +15,7 @@ Feature: reset user password
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
+
   Scenario: user should get email when admin does a "send email" password reset without specifying a password
     Given these users have been created with small skeleton files:
       | username       | password  | displayname | email                    |
@@ -35,6 +36,7 @@ Feature: reset user password
     When the administrator resets the password of user "brand-new-user" to "%alt1%" sending email using the occ command
     Then the command should have failed with exit code 1
 
+
   Scenario: administrator gets error message while trying to reset user password with send email when the email address of the user is not setup
     Given these users have been created with small skeleton files:
       | username       | password  | displayname |
@@ -52,6 +54,7 @@ Feature: reset user password
     Then the command should have failed with exit code 1
     And the command output should contain the text "Email address is not set for the user %username%" about user "brand-new-user"
 
+
   Scenario: user should not get an email when the smtpmode value points to an invalid or missing mail program
     Given these users have been created with small skeleton files:
       | username       | password  | displayname | email                    |
@@ -62,11 +65,13 @@ Feature: reset user password
     And the command output should contain the text "Can't send new user mail to brand.new.user@oc.com.np: Couldn't send reset email."
     And the email address "brand.new.user@oc.com.np" should not have received an email
 
+
   Scenario: admin tries to reset the password of a user that does not exist
     Given user "not-a-user" has been deleted
     When the administrator resets the password of user "not-a-user" to "%alt1%" using the occ command
     Then the command should have failed with exit code 1
     And the command output should contain the text 'User does not exist'
+
 
   Scenario: admin should be able to reset their own password
     Given these users have been created with default attributes and small skeleton files:

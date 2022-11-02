@@ -79,6 +79,7 @@ Feature: Scanning files on local storage
       | grp0                 |
       | commas,in,group,name |
 
+
   Scenario: Adding a folder to local storage, sharing with groups and running scan for a list of groups should add files for users in the groups
     Given these users have been created with default attributes and small skeleton files:
       | username |
@@ -137,6 +138,7 @@ Feature: Scanning files on local storage
     Then the propfind result of user "David" should contain these entries:
       | /local_storage3/folder3/hello3.txt |
 
+
   Scenario: Deleting a file from local storage and running scan for a specific path should remove the file.
     Given user "Alice" has been created with default attributes and small skeleton files
     And using new DAV path
@@ -152,6 +154,7 @@ Feature: Scanning files on local storage
     And user "Alice" requests "/remote.php/dav/files/%username%/local_storage" with "PROPFIND" using basic auth
     Then the propfind result of user "Alice" should not contain these entries:
       | /local_storage/hello1.txt |
+
 
   Scenario: Adding a file on local storage and running file scan for a specific user should add file for only that user
     Given these users have been created with default attributes and small skeleton files:
@@ -181,6 +184,7 @@ Feature: Scanning files on local storage
     When user "Brian" requests "/remote.php/dav/files/%username%/local_storage2" with "PROPFIND" using basic auth
     Then the propfind result of user "Brian" should not contain these entries:
       | /local_storage2/hello1.txt |
+
 
   Scenario: Adding a file on local storage and running file scan for a specific group should add file for only the users of that group
     Given these users have been created with default attributes and small skeleton files:

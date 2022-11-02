@@ -10,6 +10,7 @@ Feature: create local storage from the command line
       | Alice    |
       | Brian    |
 
+
   Scenario: create local storage that is available to all users
     When the administrator creates the local storage mount "local_storage2" using the occ command
     And the administrator uploads file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt" using the WebDAV API
@@ -27,6 +28,7 @@ Feature: create local storage from the command line
     And as "Brian" file "/local_storage2/textfile.txt" should exist
     And as "Brian" file "/local_storage2/file-to-delete.txt" should not exist
 
+
   Scenario: user cannot rename a local storage
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
@@ -36,6 +38,7 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Alice" should be "this is a file in local storage"
     And as "Alice" folder "/another_name" should not exist
 
+
   Scenario: user cannot delete a local storage
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
@@ -44,6 +47,7 @@ Feature: create local storage from the command line
     And as "Alice" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Alice" should be "this is a file in local storage"
 
+
   Scenario: user cannot create a folder that matches a local storage
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
@@ -51,6 +55,7 @@ Feature: create local storage from the command line
     Then the HTTP status code should be "405"
     And as "Alice" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Alice" should be "this is a file in local storage"
+
 
   Scenario: user cannot upload a file that matches a local storage folder name
     Given the administrator has created the local storage mount "local_storage2"

@@ -4,6 +4,7 @@ Feature: add group
   I want to be able to add groups
   So that I can more easily manage access to resources by groups rather than individual users
 
+
   Scenario Outline: admin creates a group
     When the administrator creates group "<group_id>" using the occ command
     Then the command should have been successful
@@ -14,6 +15,7 @@ Feature: add group
       | simplegroup | nothing special here                  |
       | España§àôœ€ | special European and other characters |
       | नेपाली      | Unicode group name                    |
+
 
   Scenario Outline: group names are case-sensitive, multiple groups can exist with different upper and lower case names
     When the administrator creates group "<group_id1>" using the occ command
@@ -27,6 +29,7 @@ Feature: add group
       | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP |
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
+
 
   Scenario: admin tries to create a group that already exists
     Given group "brand-new-group" has been created

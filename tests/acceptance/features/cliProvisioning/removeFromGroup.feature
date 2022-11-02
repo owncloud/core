@@ -4,6 +4,7 @@ Feature: remove a user from a group
   I want to be able to remove a user from a group
   So that I can manage user access to group resources
 
+
   Scenario Outline: admin removes a user from a group
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "<group_id>" has been created
@@ -17,6 +18,7 @@ Feature: remove a user from a group
       | simplegroup | nothing special here                  |
       | España§àôœ€ | special European and other characters |
       | नेपाली      | Unicode group name                    |
+
 
   Scenario Outline: remove a user from a group using mixes of upper and lower case in user and group names
     Given user "brand-new-user" has been created with default attributes and small skeleton files
@@ -38,6 +40,7 @@ Feature: remove a user from a group
       | Brand-New-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
       | brand-new-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
 
+
   Scenario: admin tries to remove a user from a group which does not exist
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "nonexistentgroup" has been deleted
@@ -45,12 +48,14 @@ Feature: remove a user from a group
     Then the command should have failed with exit code 1
     And the command output should contain the text 'Group "nonexistentgroup" does not exist'
 
+
   Scenario: admin tries to remove a user from a group which the user is not a member of
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     When the administrator removes user "brand-new-user" from group "brand-new-group" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Member "%username%" could not be found in group "brand-new-group"' about user "brand-new-user"
+
 
   Scenario: admin tries to remove a user who does not exist from an existing group
     Given user "nonexistentuser" has been deleted
