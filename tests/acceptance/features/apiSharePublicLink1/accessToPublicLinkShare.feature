@@ -17,6 +17,7 @@ Feature: accessing a public link share
     When the public accesses the preview of file "testavatar.jpg" from the last shared public link using the sharing API
     Then the HTTP status code should be "404"
 
+
   Scenario: Access to the preview of public shared file without password
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "testavatar.jpg"
@@ -41,6 +42,7 @@ Feature: accessing a public link share
       | testavatar.jpg |
       | textfile0.txt  |
     Then the HTTP status code of responses on all endpoints should be "404"
+
 
   Scenario: Access to the preview of public shared file inside a folder without password
     Given the administrator has enabled DAV tech_preview

@@ -23,6 +23,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
+
   Scenario Outline: User is not allowed to reshare folder when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/FOLDER"
@@ -51,6 +52,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: User is allowed to reshare folder with the same permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/FOLDER"
@@ -63,6 +65,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: User is allowed to reshare file with less permissions
     Given using OCS API version "<ocs_api_version>"
@@ -77,6 +80,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: User is allowed to reshare folder with less permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/FOLDER"
@@ -89,6 +93,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: User is not allowed to reshare file and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
@@ -115,6 +120,7 @@ Feature: sharing
       | 2               | 404              | 17                   | 7                   |
       | 1               | 200              | 17                   | 15                  |
       | 2               | 404              | 17                   | 15                  |
+
 
   Scenario Outline: User is allowed to reshare file and set create (4) or delete (8) permissions bits, which get ignored
     Given using OCS API version "<ocs_api_version>"
@@ -154,6 +160,7 @@ Feature: sharing
       | 1               | 100             | 17                   | 9                   | 1                   |
       | 2               | 200             | 17                   | 9                   | 1                   |
 
+
   Scenario Outline: User is not allowed to reshare folder and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/PARENT"
@@ -191,6 +198,7 @@ Feature: sharing
       | 2               | 404              | 19                   | 7                   |
       | 1               | 200              | 19                   | 15                  |
       | 2               | 404              | 19                   | 15                  |
+
 
   Scenario Outline: User is not allowed to reshare folder and add delete permission bit (8)
     Given using OCS API version "<ocs_api_version>"
@@ -233,7 +241,6 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
-
 
 
   Scenario Outline: Reshare a folder with same name as a deleted folder

@@ -8,6 +8,7 @@ Feature: get quota
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and small skeleton files
 
+
   Scenario Outline: Retrieving folder quota when no quota is set
     Given using <dav_version> DAV path
     When the administrator gives unlimited quota to user "Alice" using the provisioning API

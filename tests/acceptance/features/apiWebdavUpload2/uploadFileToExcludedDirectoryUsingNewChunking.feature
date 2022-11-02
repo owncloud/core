@@ -9,6 +9,7 @@ Feature: users cannot upload a file to or into an excluded directory using new c
     And using new DAV path
     And user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario: Upload a file to an excluded directory name using new chunking
     Given the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
@@ -18,6 +19,7 @@ Feature: users cannot upload a file to or into an excluded directory using new c
     And user "Alice" moves new chunk file with id "chunking-42" to ".github" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file ".github" should not exist
+
 
   Scenario: Upload a file to an excluded directory name inside a parent directory using new chunking
     Given user "Alice" has created folder "FOLDER"

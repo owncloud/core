@@ -4,6 +4,7 @@ Feature: there can be only one exclusive lock on a resource
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: a second lock cannot be set on a folder when its exclusively locked
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"

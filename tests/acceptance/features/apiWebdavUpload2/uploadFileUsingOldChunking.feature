@@ -30,6 +30,7 @@ Feature: upload file using old chunking
       | dav_version |
       | spaces      |
 
+
   Scenario Outline: Upload chunked file desc
     Given using <dav_version> DAV path
     When user "Alice" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the WebDAV API
@@ -49,6 +50,7 @@ Feature: upload file using old chunking
       | dav_version |
       | spaces      |
 
+
   Scenario Outline: Upload chunked file random
     Given using <dav_version> DAV path
     When user "Alice" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the WebDAV API
@@ -67,6 +69,7 @@ Feature: upload file using old chunking
     Examples:
       | dav_version |
       | spaces      |
+
 
   Scenario Outline: Checking file id after a move overwrite using old chunking endpoint
     Given using <dav_version> DAV path

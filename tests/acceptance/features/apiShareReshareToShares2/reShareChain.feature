@@ -37,7 +37,6 @@ Feature: resharing can be done on a reshared resource
       | /textfile0.txt     |
       | /textfile0.txt     |
 
-
   @skipOnOcV10
   Scenario: Reshared files can be still accessed if a user in the middle removes it.
     Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"

@@ -26,7 +26,6 @@ Feature: low level tests for upload of chunks
       | spaces      |
 
 
-
   Scenario Outline: finalize file upload after uploading a chunk twice
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
@@ -48,6 +47,7 @@ Feature: low level tests for upload of chunks
       | dav_version |
       | spaces      |
 
+
   Scenario Outline: send last chunk twice
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
@@ -68,6 +68,7 @@ Feature: low level tests for upload of chunks
     Examples:
       | dav_version |
       | spaces      |
+
 
   Scenario Outline: start with uploading not at the beginning of the file
     Given using <dav_version> DAV path

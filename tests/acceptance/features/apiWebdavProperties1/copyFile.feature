@@ -63,8 +63,7 @@ Feature: copy file
       | dav_version |
       | spaces      |
 
-  @files_sharing-app-required
-  @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @files_sharing-app-required @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -83,8 +82,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @files_sharing-app-required
-  @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @files_sharing-app-required @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: Copying a file to overwrite a file into a folder with no permissions
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

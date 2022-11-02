@@ -108,6 +108,7 @@ Feature: files and folders can be deleted from the trashbin
       | new      | 404         |
       | spaces   | 404         |
 
+
   Scenario Outline: User tries to delete trashbin file using invalid password
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -129,6 +130,7 @@ Feature: files and folders can be deleted from the trashbin
     Examples:
       | dav-path |
       | spaces   |
+
 
   Scenario Outline: User tries to delete trashbin file using no password
     Given using <dav-path> DAV path
@@ -275,6 +277,7 @@ Feature: files and folders can be deleted from the trashbin
     Examples:
       | dav-path |
       | spaces   |
+
 
   Scenario Outline: delete folders with dot in the name from the trashbin
     Given using <dav-path> DAV path

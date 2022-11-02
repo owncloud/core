@@ -64,7 +64,6 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-
   @issue-ocis-1289
   Scenario Outline: keep group permissions in sync when the share is renamed by the receiver and then the permissions are updated by sharer
     Given using OCS API version "<ocs_api_version>"

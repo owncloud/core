@@ -245,7 +245,6 @@ Feature: list files
       | dav_version |
       | new         |
 
-
   @depthInfinityPropfindEnabled
   Scenario Outline: Get the list of resources in a folder shared through public link with depth infinity
     Given using <dav_version> DAV path

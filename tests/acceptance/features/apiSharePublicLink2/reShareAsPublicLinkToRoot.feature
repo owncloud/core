@@ -155,6 +155,7 @@ Feature: reshare as public link
       | 1               | 200              |
       | 2               | 404              |
 
+
   Scenario Outline: increasing permissions of a public link of a share with share+read only permissions is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/test"
@@ -181,6 +182,7 @@ Feature: reshare as public link
       | ocs_api_version | http_status_code | public-webdav-api-version |
       | 1               | 200              | new                       |
       | 2               | 404              | new                       |
+
 
   Scenario Outline: increasing permissions of a public link from a sub-folder of a share with share+read only permissions is not allowed
     Given using OCS API version "<ocs_api_version>"
