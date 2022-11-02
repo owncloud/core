@@ -478,7 +478,7 @@ class LoginControllerTest extends TestCase {
 		$expectedResponse = new TemplateResponse(
 			'core',
 			'apacheauthredirect',
-			[],
+			['redirect_url' => 'http://localhost/index.php/apps/files/'],
 			'guest'
 		);
 		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('0', '', ''));
