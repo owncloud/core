@@ -10,6 +10,7 @@ Feature: disable users
       | Alice    |
       | Brian    |
 
+
   Scenario: disable a user
     Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
@@ -20,6 +21,7 @@ Feature: disable users
     When the user has browsed to the login page
     And user "Brian" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
+
 
   Scenario: subadmin disables a user
     Given group "grp1" has been created

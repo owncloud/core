@@ -9,6 +9,7 @@ Feature: create folders
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
+
   Scenario Outline: Create a folder
     When the user creates a folder with the name "<folder-name>" using the webUI
     Then folder "<folder-name>" should be listed on the webUI
@@ -38,7 +39,6 @@ Feature: create folders
     And the user clicks cancel in newFileMenu filename form using the webUI
     Then the newFileMenu filename form should not be displayed on the webUI
 
-
   @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: Create a folder inside another folder
     When the user creates a folder with the name "top-folder" using the webUI
@@ -48,6 +48,7 @@ Feature: create folders
     Then folder "sub-folder" should be listed on the webUI
     When the user reloads the current page of the webUI
     Then folder "sub-folder" should be listed on the webUI
+
 
   Scenario: Create a folder with existing name
     Given user "Alice" has created folder "/simple-folder"
@@ -69,6 +70,7 @@ Feature: create folders
     Then folder "sub-folder" should be listed on the webUI
     When the user reloads the current page of the webUI
     Then folder "sub-folder" should be listed on the webUI
+
 
   Scenario: Create folder with name including both double and single quotes
     When the user creates a folder with the following name using the webUI

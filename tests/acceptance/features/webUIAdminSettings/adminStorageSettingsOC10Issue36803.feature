@@ -4,8 +4,7 @@ Feature: admin storage settings
   I want to be able to manage external storages on the ownCloud server
   So that owncloud users can link external storages into the owncloud server
 
-  @issue-36803
-  @issue-files_primary_s3-351 @skipOnStorage:ceph @skipOnStorage:scality
+  @issue-36803 @issue-files_primary_s3-351 @skipOnStorage:ceph @skipOnStorage:scality
   Scenario: applicable user is not able to share top-level of read-only storage
     Given these users have been created with default attributes and without skeleton files:
       | username |

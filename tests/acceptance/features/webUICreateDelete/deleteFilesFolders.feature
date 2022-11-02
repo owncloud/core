@@ -74,8 +74,7 @@ Feature: deleting files and folders
       | question?       |
       | &and#hash       |
 
-  @smokeTest @skipOnLDAP @mobileResolutionTest
-  @skipOnEncryption @encryption-issue-74
+  @smokeTest @skipOnLDAP @mobileResolutionTest @skipOnEncryption @encryption-issue-74
   Scenario: Delete multiple files at once
     Given user "Alice" has created folder "simple-folder"
     And user "Alice" has uploaded file "filesForUpload/data.zip" to "data.zip"
@@ -130,6 +129,7 @@ Feature: deleting files and folders
     But as "Alice" file "data.zip" should not exist
     And file "data.zip" should not be listed on the webUI
 
+
   Scenario: Delete an empty folder
     Given user "Alice" has logged in using the webUI
     And the user has browsed to the files page
@@ -140,6 +140,7 @@ Feature: deleting files and folders
     And folder "my-other-empty-folder" should be listed on the webUI
     But as "Alice" folder "my-empty-folder" should not exist
     And folder "my-empty-folder" should not be listed on the webUI
+
 
   Scenario: Delete the last file in a folder
     Given user "Alice" has uploaded file "filesForUpload/zzzz-must-be-last-file-in-folder.txt" to "zzzz-must-be-last-file-in-folder.txt"

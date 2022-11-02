@@ -22,6 +22,7 @@ Feature: Restore deleted files/folders
     When the user browses to the files page
     Then file "data.zip" should be listed on the webUI
 
+
   Scenario: Restore folder
     When the user deletes folder "simple-folder" using the webUI
     Then folder "simple-folder" should be listed in the trashbin on the webUI
@@ -53,6 +54,7 @@ Feature: Restore deleted files/folders
     But file "data.zip" should not be listed in the files page on the webUI
     And folder "simple-folder" should not be listed in the files page on the webUI
 
+
   Scenario: Select all except for some trashbin files and restore them in a batch
     Given user "Alice" has deleted the following files
       | path          |
@@ -76,6 +78,7 @@ Feature: Restore deleted files/folders
     But file "lorem.txt" should not be listed in the files page on the webUI
     And file "lorem-big.txt" should not be listed in the files page on the webUI
 
+
   Scenario: Select all trashbin files and restore them in a batch
     Given user "Alice" has deleted the following files
       | path          |
@@ -93,6 +96,7 @@ Feature: Restore deleted files/folders
     And file "data.zip" should be listed on the webUI
     And folder "simple-folder" should be listed on the webUI
 
+
   Scenario: Delete a file and then restore it when a file with the same name already exists
     Given the user has deleted file "lorem.txt"
     And user "Alice" has uploaded file with content "some content" to "/textfile0.txt"
@@ -106,6 +110,7 @@ Feature: Restore deleted files/folders
     And file "lorem (restored).txt" should be listed on the webUI
     And the content of file "lorem.txt" for user "Alice" should be "some content"
     And the content of "lorem (restored).txt" should be the same as the local "lorem.txt"
+
 
   Scenario: delete a file inside a folder and then restore the file after the folder has been deleted
     Given user "Alice" has created folder "folder-to-delete"

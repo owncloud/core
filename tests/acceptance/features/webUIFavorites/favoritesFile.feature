@@ -25,6 +25,7 @@ Feature: Mark file as favorite
     And file "data.zip" should be listed in the favorites page on the webUI
     And file "lorem.txt" should not be listed in the favorites page on the webUI
 
+
   Scenario: mark a folder as favorite and list it in favorites page
     Given user "Alice" has created the following folders
       | path                              |
@@ -38,6 +39,7 @@ Feature: Mark file as favorite
     Then folder "simple-folder" should be marked as favorite on the webUI
     And folder "simple-folder" should be listed in the favorites page on the webUI
     And folder "simple-empty-folder" should not be listed in the favorites page on the webUI
+
 
   Scenario: mark files with same name and different path as favorites and list them in favourites page
     Given user "Alice" has created the following folders

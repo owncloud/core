@@ -44,6 +44,7 @@ Feature: File Upload
     Then file "big-video.mp4" should be listed on the webUI
     And the content of "big-video.mp4" should be the same as the local "big-video.mp4"
 
+
   Scenario: upload a new file into a sub folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has logged in using the webUI
@@ -78,6 +79,7 @@ Feature: File Upload
     And file "lorem (2).txt" should be listed on the webUI
     And the content of "lorem (2).txt" should be the same as the local "lorem.txt"
 
+
   Scenario: cancel conflict dialog
     Given user "Alice" has uploaded file with content "original content" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
@@ -89,6 +91,7 @@ Feature: File Upload
     And the content of file "lorem.txt" for user "Alice" should be "original content"
     And file "lorem (2).txt" should not be listed on the webUI
 
+
   Scenario: overwrite an existing file in a sub-folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file with content "original content" to "/simple-folder/lorem.txt"
@@ -97,6 +100,7 @@ Feature: File Upload
     And the user uploads overwriting file "lorem.txt" using the webUI and retries if the file is locked
     Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" should be the same as the local "lorem.txt"
+
 
   Scenario: keep new and existing file in a sub-folder
     Given user "Alice" has created folder "/simple-folder"

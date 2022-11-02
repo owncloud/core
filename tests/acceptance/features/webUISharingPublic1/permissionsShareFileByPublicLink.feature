@@ -7,6 +7,7 @@ Feature: Share a file by public link
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario: creating a public link of a file with read permissions
     Given user "Alice" has uploaded file with content "text to test public links" to "/lorem.txt"
     And user "Alice" has logged in using the webUI

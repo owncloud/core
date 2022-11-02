@@ -18,6 +18,7 @@ Feature: Reshare by public link
     And the public accesses the last created public link using the webUI
     Then file "randomfile.txt" should be listed on the webUI
 
+
   Scenario: resharing by public link of a received shared file
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has shared file "/randomfile.txt" with user "Brian" with permissions "share,read"
@@ -25,6 +26,7 @@ Feature: Reshare by public link
     When the user creates a new public link for file "randomfile.txt" using the webUI
     And the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "some content"
+
 
   Scenario: resharing by public link of a sub-folder in a received shared folder
     Given user "Alice" has created folder "/simple-folder"
@@ -35,6 +37,7 @@ Feature: Reshare by public link
     When the user creates a new public link for folder "simple-folder/sub-folder" using the webUI
     And the public accesses the last created public link using the webUI
     Then file "randomfile.txt" should be listed on the webUI
+
 
   Scenario: resharing by public link of a file in a received shared folder
     Given user "Alice" has created folder "/simple-folder"

@@ -20,6 +20,7 @@ Feature: Unmark file/folder as favorite
     When the user browses to the favorites page
     Then file "data.zip" should not be listed in the favorites page on the webUI
 
+
   Scenario: unmark a folder as favorite from files page
     Given the user has marked folder "simple-folder" as favorite using the webUI
     When the user unmarks the favorited folder "simple-folder" using the webUI
@@ -36,6 +37,7 @@ Feature: Unmark file/folder as favorite
     Then file "data.zip" should not be listed in the favorites page on the webUI
     When the user browses to the files page
     Then file "data.zip" should not be marked as favorite on the webUI
+
 
   Scenario: unmark a folder as favorite from favorite page
     Given the user has marked folder "simple-folder" as favorite using the webUI

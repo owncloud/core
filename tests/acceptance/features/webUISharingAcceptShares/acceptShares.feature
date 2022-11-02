@@ -30,6 +30,7 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
 
+
   Scenario: receive shares with same name from different users, accept one by one
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "Carol" has been created with default attributes and without skeleton files
@@ -46,6 +47,7 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" should see the following elements
       | /simple-folder/from_alice/     |
       | /simple-folder (2)/from_brian/ |
+
 
   Scenario: receive shares with same name from different users
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
@@ -70,6 +72,7 @@ Feature: accept/decline shares coming from internal users
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI after a page reload
     And folder "simple-folder" should be listed in the files page on the webUI
     And file "testimage.jpg" should not be listed in the files page on the webUI
+
 
   Scenario Outline: accept an offered share when there is a default folder for received shares
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
@@ -112,6 +115,7 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should not be listed in the files page on the webUI
     And file "testimage.jpg" should not be listed in the files page on the webUI
 
+
   Scenario: decline an accepted share (without any page-reload in between)
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
@@ -123,6 +127,7 @@ Feature: accept/decline shares coming from internal users
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
     And folder "simple-folder" should not be listed in the files page on the webUI
     And file "testimage.jpg" should not be listed in the files page on the webUI
+
 
   Scenario: accept a previously declined share
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
@@ -136,6 +141,7 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should be listed in the files page on the webUI
     And file "testimage.jpg" should not be listed in the files page on the webUI
 
+
   Scenario: accept a share that you received as user and as group member
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
@@ -146,6 +152,7 @@ Feature: accept/decline shares coming from internal users
     Then folder "simple-folder" should be in state "" in the shared-with-you page on the webUI
     And folder "simple-folder" should be listed in the files page on the webUI
 
+
   Scenario: reject a share that you received as user and as group member
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
@@ -155,6 +162,7 @@ Feature: accept/decline shares coming from internal users
     And the user reloads the current page of the webUI
     Then folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
     And folder "simple-folder" should not be listed in the files page on the webUI
+
 
   Scenario: reshare a share that you received to a group that you are member of
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
@@ -196,6 +204,7 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should be in state "" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "" in the shared-with-you page on the webUI
 
+
   Scenario Outline: auto-accept a share when there is a default folder for received shares
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
     And the administrator has set the default folder for received shares to "<share_folder>"
@@ -208,6 +217,7 @@ Feature: accept/decline shares coming from internal users
       | share_folder        |
       | /ReceivedShares     |
       | /My/Received/Shares |
+
 
   Scenario: decline auto-accepted shares
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
@@ -222,6 +232,7 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Declined" in the shared-with-you page on the webUI
 
+
   Scenario: unshare auto-accepted shares
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
     And user "Brian" has shared folder "/simple-folder" with group "grp1"
@@ -234,6 +245,7 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should be in state "Declined" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Declined" in the shared-with-you page on the webUI
 
+
   Scenario: unshare renamed shares
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
@@ -242,6 +254,7 @@ Feature: accept/decline shares coming from internal users
     When the user unshares folder "simple-folder-renamed" using the webUI
     Then folder "simple-folder-renamed" should not be listed on the webUI
     And folder "simple-folder-renamed" should be in state "Declined" in the shared-with-you page on the webUI
+
 
   Scenario: unshare moved shares
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
@@ -254,6 +267,7 @@ Feature: accept/decline shares coming from internal users
     Then folder "shared" should not be listed on the webUI
     And folder "shared" should be in state "Declined" in the shared-with-you page on the webUI
 
+
   Scenario: unshare renamed shares, accept it again
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
@@ -263,6 +277,7 @@ Feature: accept/decline shares coming from internal users
     And the user accepts share "simple-folder-renamed" offered by user "Brian" using the webUI
     Then folder "simple-folder-renamed" should be in state "" in the shared-with-you page on the webUI
     And folder "simple-folder-renamed" should be listed in the files page on the webUI
+
 
   Scenario: User-based accepting is disabled while global is enabled
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
@@ -279,6 +294,7 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
 
+
   Scenario: User-based accepting is enabled while global is enabled
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
     And user "Alice" has logged in using the webUI
@@ -294,11 +310,13 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder" should be in state "" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "" in the shared-with-you page on the webUI
 
+
   Scenario: User-based accepting checkbox is not visible while global is disabled
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "Alice" has logged in using the webUI
     And the user has browsed to the personal sharing settings page
     Then User-based auto accepting checkbox should not be displayed on the personal sharing settings page on the webUI
+
 
   Scenario: Admin disables auto-accept setting again after user enabled personal auto-accept setting
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled

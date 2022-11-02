@@ -14,6 +14,7 @@ Feature: add users
     And user "Alice" has logged in using the webUI
     And the user has browsed to the users page
 
+
   Scenario: a subadmin uses the webUI to create a simple user
     When the subadmin creates a user with the name "guiusr1" and the password "%regular%" using the webUI
     And the user logs out of the webUI

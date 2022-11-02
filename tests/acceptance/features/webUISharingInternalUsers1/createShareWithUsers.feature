@@ -22,6 +22,7 @@ Feature: Sharing files and folders with internal users
     Then file "lorem.txt" should be listed on the webUI
     But folder "simple-folder" should not be listed on the webUI
 
+
   Scenario: share a folder with other user and then it should be listed on Shared with Others page
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -36,6 +37,7 @@ Feature: Sharing files and folders with internal users
     Then file "lorem.txt" should be listed on the webUI
     And folder "simple-folder" should be listed on the webUI
 
+
   Scenario: share two file with same name but different paths
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
@@ -49,6 +51,7 @@ Feature: Sharing files and folders with internal users
     And the user browses to the shared-with-others page
     Then file "lorem.txt" with path "" should be listed in the shared with others page on the webUI
     And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI
+
 
   Scenario: user shares the file/folder with another internal user and delete the share with user
     Given these users have been created with default attributes and without skeleton files:
@@ -86,6 +89,7 @@ Feature: Sharing files and folders with internal users
       | 0x10      |
       | Some-User |
 
+
   Scenario: multiple users share a file with the same name to a user
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -102,6 +106,7 @@ Feature: Sharing files and folders with internal users
     And file "randomfile (2).txt" should be listed on the webUI
     And the content of file "randomfile (2).txt" for user "Alice" should be "Second data"
 
+
   Scenario: multiple users share a folder with the same name to a user
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -117,6 +122,7 @@ Feature: Sharing files and folders with internal users
     And folder "zzzfolder" should be marked as shared by "Brian" on the webUI
     And folder "zzzfolder (2)" should be listed on the webUI
     And folder "zzzfolder (2)" should be marked as shared by "Carol" on the webUI
+
 
   Scenario Outline:  user names are not case-sensitive, sharing same file to user specifying different upper and lower case names
     Given these users have been created with default attributes and without skeleton files:
@@ -139,6 +145,7 @@ Feature: Sharing files and folders with internal users
       | brand-new-user | BRAND-NEW-USER | Brand-New-User |
       | BRAND-NEW-USER | Brand-New-User | brand-new-user |
 
+
   Scenario: sharer should be able to share a folder to a user when only share with groups they are member of is enabled
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -152,6 +159,7 @@ Feature: Sharing files and folders with internal users
     And the user re-logs in as "Alice" using the webUI
     And the user shares folder "simple-folder" with user "Brian" using the webUI
     Then as "Brian" folder "/simple-folder" should exist
+
 
   Scenario: sharer should be able to share a file to a user when only share with groups they are member of is enabled
     Given these users have been created with default attributes and without skeleton files:
@@ -317,6 +325,7 @@ Feature: Sharing files and folders with internal users
     When the user opens the share dialog for file "lorem.txt"
     And the user opens the public link share tab
     Then 2 public link shares with name "Public link" should be visible on the webUI
+
 
   Scenario Outline: user with unusual username shares a file & folder with another internal user
     Given these users have been created with default attributes and without skeleton files:

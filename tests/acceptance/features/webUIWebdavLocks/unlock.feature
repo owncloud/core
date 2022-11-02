@@ -14,12 +14,14 @@ Feature: Unlock locked files and folders
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "brand-new-user" has logged in using the webUI
 
+
   Scenario: unlocking by webDAV deletes the lock symbols at the correct files/folders
     Given user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     When user "brand-new-user" unlocks the last created lock of folder "simple-folder" using the WebDAV API
     And the user browses to the files page
     Then folder "simple-folder" should not be marked as locked on the webUI
+
 
   Scenario: unlocking by webDAV after the display name has been changed deletes the lock symbols at the correct files/folders
     Given these users have been created without skeleton files:
@@ -261,6 +263,7 @@ Feature: Unlock locked files and folders
       | lockscope |
       | exclusive |
       | shared    |
+
 
   Scenario Outline: deleting a locked file
     Given user "brand-new-user" has locked file "lorem.txt" setting the following properties
