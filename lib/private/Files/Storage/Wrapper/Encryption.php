@@ -271,7 +271,11 @@ class Encryption extends Wrapper {
 		$renameOk = false;
 		$copyKeysOk = true;  // assume keys are copied, in case we deal with versions
 
-		$isVersion = !($this->isVersion($path2) === false && $this->encryptionManager->isEnabled());
+		$isVersion = $this->isVersion($path2) || $this->isVersion($path1);
+		// if encryption is disabled, consider it's a version in order to skip
+		// moving the keys
+		$isVersion = $isVersion || !$this->encryptionManager->isEnabled();
+
 		$source = $this->getFullPath($path1);
 		$target = $this->getFullPath($path2);
 		$keysExcluded = $this->util->isExcluded($source);
