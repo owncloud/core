@@ -461,7 +461,8 @@ $CONFIG = [
  * See the "S3 Compatible Object Storage as Primary Storage Location" documentation for more details.
  */
 'objectstore' => [
-	'class' => 'Implementation\Of\OCP\Files\ObjectStore\IObjectStore',
+	'class' => 'OCA\Files_Primary_S3\S3Storage',
+
 	'arguments' => [
 		// ...
 	],
