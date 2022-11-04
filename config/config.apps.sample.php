@@ -449,6 +449,25 @@ $CONFIG = [
 'collabora_group' => '',
 
 /**
+ * App: S3 Primary Object Storage
+ *
+ * Possible keys: `objectstore` ARRAY
+ */
+
+/**
+ * Configure the access parameters for a particular S3 provider.
+ * The detailed configuration of that array depends on the S3 provider.
+ * This example can therefore only show the general construct.
+ * See the "S3 Compatible Object Storage as Primary Storage Location" documentation for more details.
+ */
+'objectstore' => [
+	'class' => 'Implementation\Of\OCP\Files\ObjectStore\IObjectStore',
+	'arguments' => [
+		// ...
+	],
+],
+
+/**
  * App: Windows Network Drive (WND)
  *
  * Note: This app is for Enterprise customers only.
