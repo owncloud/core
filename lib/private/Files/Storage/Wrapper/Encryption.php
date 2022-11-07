@@ -268,25 +268,20 @@ class Encryption extends Wrapper {
 	 * @return bool
 	 */
 	public function rename($path1, $path2) {
-		$renameOk = false;
-		$copyKeysOk = true;  // assume keys are copied, in case we deal with versions
+		$result = $this->storage->rename($path1, $path2);
 
-		$isVersion = !($this->isVersion($path2) === false && $this->encryptionManager->isEnabled());
-		$source = $this->getFullPath($path1);
-		$target = $this->getFullPath($path2);
-		$keysExcluded = $this->util->isExcluded($source);
-
-		if (!$isVersion && !$keysExcluded) {
+		if ($result &&
 			// versions always use the keys from the original file, so we can skip
 			// this step for versions
-			// Keys can also be excluded if we're moving the keys themselves. It could
-			// happen with the encryption:change-key-storage-root command
-			if (isset($this->unencryptedSize[$source])) {
-				$this->unencryptedSize[$target] = $this->unencryptedSize[$source];
-			}
-
-			$copyKeysOk = $this->keyStorage->copyKeys($source, $target);
-			if ($copyKeysOk) {
+			$this->isVersion($path2) === false &&
+			$this->encryptionManager->isEnabled()) {
+			$source = $this->getFullPath($path1);
+			if (!$this->util->isExcluded($source)) {
+				$target = $this->getFullPath($path2);
+				if (isset($this->unencryptedSize[$source])) {
+					$this->unencryptedSize[$target] = $this->unencryptedSize[$source];
+				}
+				$this->keyStorage->renameKeys($source, $target);
 				$module = $this->getEncryptionModule($path2);
 				if ($module) {
 					$module->update($target, $this->uid, []);
@@ -294,32 +289,7 @@ class Encryption extends Wrapper {
 			}
 		}
 
-		if ($copyKeysOk) {
-			$renameOk = $this->storage->rename($path1, $path2);
-			if ($isVersion || $keysExcluded) {
-				// no need to deal with the keys
-				return $renameOk;
-			}
-
-			// need to remove the keys, either the old ones if the rename
-			// succeeded, or the new ones if the rename failed
-			if ($renameOk) {
-				$sourceKeyDeleteOk = $this->keyStorage->deleteAllFileKeys($source);
-				if (!$sourceKeyDeleteOk) {
-					$this->logger->error("Renaming {$path1} to {$path2} succeeded, but key {$target} wasn't deleted from the original location in {$source}");
-				}
-			} else {
-				$this->logger->error("Renaming {$path1} to {$path2} failed");
-				$targetKeyDeleteOk = $this->keyStorage->deleteAllFileKeys($target);
-				if (!$targetKeyDeleteOk) {
-					$this->logger->error("Copied key {$source} wasn't removed from the target location in {$target}");
-				}
-			}
-		} else {
-			$this->logger->error("Failed to copied keys from {$source} to {$target} while renaming {$path1} to {$path2}");
-		}
-
-		return $renameOk && $copyKeysOk;
+		return $result;
 	}
 
 	/**
