@@ -227,6 +227,16 @@ class UsersController extends Controller {
 			];
 		}
 
+		// storageUsed
+		try {
+			\OC_Util::tearDownFS();
+			\OC_Util::setupFS($user->getUID());
+			$storage = \OC_Helper::getStorageInfo('/');
+			$storageUsed = sprintf("%d MB", $storage['used'] / 1024 / 1024);
+		} catch (\Exception $ex) {
+			$storageUsed = "0 MB";
+		}
+
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
@@ -235,6 +245,7 @@ class UsersController extends Controller {
 			'isEnabled' => $user->isEnabled(),
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
+						'storageUsed' => $storageUsed,
 			'lastLogin' => $user->getLastLogin() * 1000,
 			'backend' => $user->getBackendClassName(),
 			'email' => $displayName,
