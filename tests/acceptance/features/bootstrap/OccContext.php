@@ -2492,7 +2492,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @Given the administrator has exported the local storage mounts using the occ command
+	 * @Given /^the administrator has exported the (local|external) storage mounts using the occ command$/
 	 *
 	 * @return void
 	 * @throws Exception

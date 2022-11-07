@@ -201,7 +201,9 @@ Feature: using files external service with storage as webdav_owncloud
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
-    And the administrator has created a json file with exported config of local storage mount "TestMountPoint" to "mountConfig.json" in temporary storage
+    And the administrator has exported the external storage mounts using the occ command
+    And the administrator has created a file "mountConfig.json" in temporary storage with the last exported content using the testing API
+    And the administrator has deleted local storage "local_storage" using the occ command
     And the administrator has deleted external storage with mount point "TestMountPoint"
     When the administrator imports the local storage mount from file "mountConfig.json" using the occ command
     Then the command should have been successful
