@@ -636,7 +636,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	 */
 	public function getMetaData($path) {
 		$permissions = $this->getPermissions($path);
-		if (!$permissions & Constants::PERMISSION_READ) {
+		if (~$permissions & Constants::PERMISSION_READ) {
 			//can't read, nothing we can do
 			return null;
 		}
