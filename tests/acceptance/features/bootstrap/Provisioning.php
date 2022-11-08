@@ -4941,11 +4941,15 @@ trait Provisioning {
 			},
 			$this->simplifyArray($users)
 		);
-		$respondedArray = $this->getArrayOfUsersResponded($this->response);
-		Assert::assertEqualsCanonicalizing(
-			$usersSimplified,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseUsersShouldBeInTheResponse($usersSimplified);
+		} else {
+			$respondedArray = $this->getArrayOfUsersResponded($this->response);
+			Assert::assertEqualsCanonicalizing(
+				$usersSimplified,
+				$respondedArray
+			);
+		}
 	}
 
 	/**
@@ -5008,14 +5012,18 @@ trait Provisioning {
 		$this->verifyTableNodeColumnsCount($groupsList, 1);
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
-		$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
-		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		\asort($expectedGroups);
-		\asort($respondedArray);
-		Assert::assertEqualsCanonicalizing(
-			$expectedGroups,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseExtraGroupsShouldBeInTheResponse($groupsSimplified);
+		} else {
+			$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
+			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+			\asort($expectedGroups);
+			\asort($respondedArray);
+			Assert::assertEqualsCanonicalizing(
+				$expectedGroups,
+				$respondedArray
+			);
+		}
 	}
 
 	/**
