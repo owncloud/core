@@ -445,7 +445,7 @@ $CONFIG = [
 
 /**
  * Authenticate guests only with basic auth
- * Allows guests only to be able to log in using basic auth. Other users will need to use
+ * Only guests are able to log in using basic auth. Other users will need to use
  * another auth mechanisms (such as OIDC).
  */
 'openid-connect.basic_auth_guest_only' => false,
