@@ -1,4 +1,12 @@
 <?php
+
+use OC\AppFramework\Http\Request;
+use OC\LargeFileHelper;
+use OC\OCS\Result;
+use OCP\IConfig;
+use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
+
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
@@ -46,18 +54,18 @@ class OC_Response {
 	*  null		cache indefinitely
 	*/
 	public static function enableCaching($cache_time = null) {
-		if (\is_numeric($cache_time)) {
-			\header('Pragma: public');// enable caching in IE
+		if (is_numeric($cache_time)) {
+			header('Pragma: public');// enable caching in IE
 			if ($cache_time > 0) {
 				self::setExpiresHeader('PT'.$cache_time.'S');
-				\header('Cache-Control: max-age='.$cache_time.', must-revalidate');
+				header('Cache-Control: max-age='.$cache_time.', must-revalidate');
 			} else {
 				self::setExpiresHeader(0);
-				\header('Cache-Control: no-cache, no-store, must-revalidate, post-check=0, pre-check=0');
+				header('Cache-Control: no-cache, no-store, must-revalidate, post-check=0, pre-check=0');
 			}
 		} else {
-			\header('Cache-Control: cache');
-			\header('Pragma: cache');
+			header('Cache-Control: cache');
+			header('Pragma: cache');
 		}
 	}
 
@@ -74,7 +82,7 @@ class OC_Response {
 	* @param int $status a HTTP status code, see also the STATUS constants
 	*/
 	public static function setStatus($status) {
-		$protocol = \OC::$server->getRequest()->getHttpProtocol();
+		$protocol = OC::$server->getRequest()->getHttpProtocol();
 		switch ($status) {
 			case self::STATUS_NOT_MODIFIED:
 				$status = $status . ' Not Modified';
@@ -101,7 +109,7 @@ class OC_Response {
 				$status = $status . ' Service Unavailable';
 				break;
 		}
-		\header($protocol.' '.$status);
+		header($protocol.' '.$status);
 	}
 
 	/**
@@ -110,7 +118,7 @@ class OC_Response {
 	*/
 	public static function redirect($location) {
 		self::setStatus(self::STATUS_TEMPORARY_REDIRECT);
-		\header('Location: '.$location);
+		header('Location: '.$location);
 	}
 
 	/**
@@ -122,7 +130,7 @@ class OC_Response {
 	 * @throws Exception
 	 */
 	public static function setExpiresHeader($expires) {
-		if (\is_string($expires) && $expires[0] == 'P') {
+		if (is_string($expires) && $expires[0] == 'P') {
 			$interval = $expires;
 			$expires = new DateTime('now');
 			$expires->add(new DateInterval($interval));
@@ -131,7 +139,7 @@ class OC_Response {
 			$expires->setTimezone(new DateTimeZone('GMT'));
 			$expires = $expires->format(DateTime::RFC2822);
 		}
-		\header('Expires: '.$expires);
+		header('Expires: '.$expires);
 	}
 
 	/**
@@ -145,11 +153,11 @@ class OC_Response {
 		}
 		$etag = '"'.$etag.'"';
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-			\trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
+			trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
 			self::setStatus(self::STATUS_NOT_MODIFIED);
 			exit;
 		}
-		\header('ETag: '.$etag);
+		header('ETag: '.$etag);
 	}
 
 	/**
@@ -161,18 +169,18 @@ class OC_Response {
 		if (empty($lastModified)) {
 			return;
 		}
-		if (\is_int($lastModified)) {
-			$lastModified = \gmdate(DateTime::RFC2822, $lastModified);
+		if (is_int($lastModified)) {
+			$lastModified = gmdate(DateTime::RFC2822, $lastModified);
 		}
 		if ($lastModified instanceof DateTime) {
 			$lastModified = $lastModified->format(DateTime::RFC2822);
 		}
 		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) &&
-			\trim($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified) {
+			trim($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified) {
 			self::setStatus(self::STATUS_NOT_MODIFIED);
 			exit;
 		}
-		\header('Last-Modified: '.$lastModified);
+		header('Last-Modified: '.$lastModified);
 	}
 
 	/**
@@ -181,17 +189,17 @@ class OC_Response {
 	 * @param string $type disposition type, either 'attachment' or 'inline'
 	 */
 	public static function setContentDispositionHeader($filename, $type = 'attachment') {
-		if (\OC::$server->getRequest()->isUserAgent(
+		if (OC::$server->getRequest()->isUserAgent(
 			[
-				\OC\AppFramework\Http\Request::USER_AGENT_IE,
-				\OC\AppFramework\Http\Request::USER_AGENT_ANDROID_MOBILE_CHROME,
-				\OC\AppFramework\Http\Request::USER_AGENT_FREEBOX,
+				Request::USER_AGENT_IE,
+				Request::USER_AGENT_ANDROID_MOBILE_CHROME,
+				Request::USER_AGENT_FREEBOX,
 			]
 		)) {
-			\header('Content-Disposition: ' . \rawurlencode($type) . '; filename="' . \rawurlencode($filename) . '"');
+			header('Content-Disposition: ' . rawurlencode($type) . '; filename="' . rawurlencode($filename) . '"');
 		} else {
-			\header('Content-Disposition: ' . \rawurlencode($type) . '; filename*=UTF-8\'\'' . \rawurlencode($filename)
-												 . '; filename="' . \rawurlencode($filename) . '"');
+			header('Content-Disposition: ' . rawurlencode($type) . '; filename*=UTF-8\'\'' . rawurlencode($filename)
+												 . '; filename="' . rawurlencode($filename) . '"');
 		}
 	}
 
@@ -201,7 +209,7 @@ class OC_Response {
 	 */
 	public static function setContentLengthHeader($length) {
 		if (PHP_INT_SIZE === 4) {
-			if ($length > PHP_INT_MAX && \stripos(PHP_SAPI, 'apache') === 0) {
+			if ($length > PHP_INT_MAX && stripos(PHP_SAPI, 'apache') === 0) {
 				// Apache PHP SAPI casts Content-Length headers to PHP integers.
 				// This enforces a limit of PHP_INT_MAX (2147483647 on 32-bit
 				// platforms). So, if the length is greater than PHP_INT_MAX,
@@ -210,10 +218,10 @@ class OC_Response {
 				return;
 			}
 			// Convert signed integer or float to unsigned base-10 string.
-			$lfh = new \OC\LargeFileHelper;
+			$lfh = new LargeFileHelper;
 			$length = $lfh->formatUnsignedInteger($length);
 		}
-		\header('Content-Length: '.$length);
+		header('Content-Length: '.$length);
 	}
 
 	/**
@@ -222,13 +230,13 @@ class OC_Response {
 	 * @deprecated 8.1.0 - Use \OCP\AppFramework\Http\StreamResponse or another AppFramework controller instead
 	 */
 	public static function sendFile($filepath) {
-		$fp = \fopen($filepath, 'rb');
+		$fp = fopen($filepath, 'rb');
 		if ($fp) {
-			self::setLastModifiedHeader(\filemtime($filepath));
-			self::setETagHeader(\md5_file($filepath));
+			self::setLastModifiedHeader(filemtime($filepath));
+			self::setETagHeader(md5_file($filepath));
 
-			self::setContentLengthHeader(\filesize($filepath));
-			\fpassthru($fp);
+			self::setContentLengthHeader(filesize($filepath));
+			fpassthru($fp);
 		} else {
 			self::setStatus(self::STATUS_NOT_FOUND);
 		}
@@ -254,17 +262,17 @@ class OC_Response {
 			. 'font-src \'self\' data:; '
 			. 'media-src *; '
 			. 'connect-src *';
-		\header('Content-Security-Policy:' . $policy);
+		header('Content-Security-Policy:' . $policy);
 
 		// Send fallback headers for installations that don't have the possibility to send
 		// custom headers on the webserver side
-		if (\getenv('modHeadersAvailable') !== 'true') {
-			\header('X-XSS-Protection: 0'); // Disable browser based XSS filters: https://github.com/owncloud/core/issues/38236
-			\header('X-Content-Type-Options: nosniff'); // Disable sniffing the content type for IE
-			\header('X-Frame-Options: SAMEORIGIN'); // Disallow iFraming from other domains
-			\header('X-Robots-Tag: none'); // https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
-			\header('X-Download-Options: noopen'); // https://msdn.microsoft.com/en-us/library/jj542450(v=vs.85).aspx
-			\header('X-Permitted-Cross-Domain-Policies: none'); // https://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html
+		if (getenv('modHeadersAvailable') !== 'true') {
+			header('X-XSS-Protection: 0'); // Disable browser based XSS filters: https://github.com/owncloud/core/issues/38236
+			header('X-Content-Type-Options: nosniff'); // Disable sniffing the content type for IE
+			header('X-Frame-Options: SAMEORIGIN'); // Disallow iFraming from other domains
+			header('X-Robots-Tag: none'); // https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
+			header('X-Download-Options: noopen'); // https://msdn.microsoft.com/en-us/library/jj542450(v=vs.85).aspx
+			header('X-Permitted-Cross-Domain-Policies: none'); // https://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html
 		}
 	}
 
@@ -273,7 +281,7 @@ class OC_Response {
 	 *
 	 * @param string $userId
 	 * @param string $domain
-	 * @param \OCP\IConfig $config
+	 * @param IConfig $config
 	 * @param array $headers
 	 *
 	 * Format of $headers:
@@ -285,40 +293,31 @@ class OC_Response {
 	 *
 	 * @return array
 	 */
-	public static function setCorsHeaders($userId, $domain, \OCP\IConfig $config = null, array $headers = []) {
+	public static function setCorsHeaders($userId, $domain, IConfig $config = null, array $headers = []) {
 		if ($config === null) {
-			$config = \OC::$server->getConfig();
+			$config = OC::$server->getConfig();
 		}
 		// first check if any of the global CORS domains matches
 		$globalAllowedDomains = $config->getSystemValue('cors.allowed-domains', []);
-		$isCorsRequest = (\is_array($globalAllowedDomains) && \in_array($domain, $globalAllowedDomains, true));
+		$isCorsRequest = (is_array($globalAllowedDomains) && in_array($domain, $globalAllowedDomains, true));
 		if (!$isCorsRequest && $userId !== null) {
 			// check if any of the user specific CORS domains matches
-			$allowedDomains = \json_decode($config->getUserValue($userId, 'core', 'domains'), true);
-			$isCorsRequest = (\is_array($allowedDomains) && \in_array($domain, $allowedDomains, true));
+			$allowedDomains = json_decode($config->getUserValue($userId, 'core', 'domains'), true);
+			$isCorsRequest = (is_array($allowedDomains) && in_array($domain, $allowedDomains, true));
 		}
 		if ($isCorsRequest) {
 			// TODO: infer allowed verbs from existing known routes
-			$allHeaders['Access-Control-Allow-Headers'] = self::getAllowedCorsHeaders($config);
+			$allHeaders = self::generateCorsHeaders($config, $domain, $headers);
 			$allHeaders['Access-Control-Expose-Headers'] = self::getExposeCorsHeaders();
-			$allHeaders['Access-Control-Allow-Origin'] = [$domain];
-			$allHeaders['Access-Control-Allow-Methods'] =['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'MKCOL', 'PROPFIND', 'PATCH', 'PROPPATCH', 'REPORT'];
-
-			foreach ($headers as $key => $value) {
-				if (\array_key_exists($key, $allHeaders)) {
-					$allHeaders[$key] = \array_unique(\array_merge($allHeaders[$key], $value));
-				}
-			}
-
 			return $allHeaders;
 		}
 		return [];
 	}
 
 	/**
-	 * This function adds the CORS headers for all domains
+	 * This function generates the CORS headers
 	 *
-	 * @param Sabre\HTTP\ResponseInterface $response
+	 * @param RequestInterface $request
 	 * @param array $headers
 	 *
 	 * Format of $headers:
@@ -327,27 +326,19 @@ class OC_Response {
 	 *     "Access-Control-Allow-Origin": ["a", "b", "c"],
 	 *     "Access-Control-Allow-Methods": ["a", "b", "c"]
 	 * ]
-	 *
-	 * @param \OCP\IConfig|null $config
-	 * @return Sabre\HTTP\ResponseInterface $response
+	 * @param IConfig|null $config
+	 * @return array
 	 */
-	public static function setOptionsRequestHeaders($response, $headers = [], \OCP\IConfig $config = null) {
+	public static function getOptionsRequestHeaders(RequestInterface $request, array $headers = [], ?IConfig $config = null): array {
+		$authorization = $request->getHeader('Authorization');
+		if ($authorization === null || $authorization === '') {
+			$origin = '*';
+		} else {
+			$origin = $request->getHeader('Origin') ?? '*';
+		}
+
 		// TODO: infer allowed verbs from existing known routes
-		$allHeaders['Access-Control-Allow-Headers'] = self::getAllowedCorsHeaders($config);
-		$allHeaders['Access-Control-Allow-Origin'] = ['*'];
-		$allHeaders['Access-Control-Allow-Methods'] =['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'MKCOL', 'PROPFIND', 'PATCH', 'PROPPATCH', 'REPORT'];
-
-		foreach ($headers as $key => $value) {
-			if (\array_key_exists($key, $allHeaders)) {
-				$allHeaders[$key] = \array_unique(\array_merge($allHeaders[$key], $value));
-			}
-		}
-
-		foreach ($allHeaders as $key => $value) {
-			$response->addHeader($key, \implode(',', $value));
-		}
-
-		return $response;
+		return self::generateCorsHeaders($config, $origin, $headers);
 	}
 
 	/**
@@ -357,7 +348,7 @@ class OC_Response {
 	 *
 	 * @return array
 	 */
-	private static function getExposeCorsHeaders() {
+	private static function getExposeCorsHeaders(): array {
 		return [
 			'Content-Location',
 			'DAV',
@@ -379,12 +370,12 @@ class OC_Response {
 	 * These are the headers the browser is allowed to ask for in a CORS request.
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
 	 *
-	 * @param \OCP\IConfig $config
+	 * @param IConfig $config
 	 * @return array|mixed
 	 */
-	private static function getAllowedCorsHeaders(\OCP\IConfig $config = null) {
+	private static function getAllowedCorsHeaders(IConfig $config = null) {
 		if ($config === null) {
-			$config = \OC::$server->getConfig();
+			$config = OC::$server->getConfig();
 		}
 		$allowedDefaultHeaders = [
 			// own headers
@@ -438,8 +429,21 @@ class OC_Response {
 			'X-Requested-With'
 		];
 		$corsAllowedHeaders = $config->getSystemValue('cors.allowed-headers', []);
-		$corsAllowedHeaders = \array_merge($corsAllowedHeaders, $allowedDefaultHeaders);
-		$corsAllowedHeaders = \array_unique(\array_values($corsAllowedHeaders));
+		$corsAllowedHeaders = array_merge($corsAllowedHeaders, $allowedDefaultHeaders);
+		$corsAllowedHeaders = array_unique(array_values($corsAllowedHeaders));
 		return $corsAllowedHeaders;
+	}
+
+	private static function generateCorsHeaders(?IConfig $config, string $domain, array $headers): array {
+		$allHeaders['Access-Control-Allow-Headers'] = self::getAllowedCorsHeaders($config);
+		$allHeaders['Access-Control-Allow-Origin'] = [$domain];
+		$allHeaders['Access-Control-Allow-Methods'] = ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'MKCOL', 'PROPFIND', 'PATCH', 'PROPPATCH', 'REPORT'];
+
+		foreach ($headers as $key => $value) {
+			if (array_key_exists($key, $allHeaders)) {
+				$allHeaders[$key] = array_unique(array_merge($allHeaders[$key], $value));
+			}
+		}
+		return $allHeaders;
 	}
 }

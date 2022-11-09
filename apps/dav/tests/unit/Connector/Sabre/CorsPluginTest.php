@@ -24,31 +24,28 @@ use OCA\DAV\Connector\Sabre\CorsPlugin;
 use OCP\IUserSession;
 use OCP\IUser;
 use OCP\IConfig;
+use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\Request;
 use Sabre\HTTP\Response;
+use stdClass;
 use Test\TestCase;
+use function implode;
 
 class CorsPluginTest extends TestCase {
 
-	/**
-	 * @var Server
-	 */
-	private $server;
+	private Server $server;
+
+	private CorsPlugin $plugin;
 
 	/**
-	 * @var CorsPlugin
-	 */
-	private $plugin;
-
-	/**
-	 * @var IUserSession | \PHPUnit\Framework\MockObject\MockObject
+	 * @var IUserSession | MockObject
 	 */
 	private $userSession;
 
 	/**
-	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
+	 * @var IConfig | MockObject
 	 */
 	private $config;
 
@@ -56,7 +53,7 @@ class CorsPluginTest extends TestCase {
 		parent::setUp();
 		$this->server = new Server();
 
-		$this->server->sapi = $this->getMockBuilder(\stdClass::class)
+		$this->server->sapi = $this->getMockBuilder(stdClass::class)
 			->setMethods(['sendResponse'])
 			->getMock();
 
@@ -69,7 +66,7 @@ class CorsPluginTest extends TestCase {
 
 		$this->plugin = new CorsPlugin($this->userSession);
 
-		/** @var ServerPlugin | \PHPUnit\Framework\MockObject\MockObject $extraMethodPlugin */
+		/** @var ServerPlugin | MockObject $extraMethodPlugin */
 		$extraMethodPlugin = $this->createMock(ServerPlugin::class);
 		$extraMethodPlugin->method('getHTTPMethods')
 			->with('owncloud/remote.php/dav/files/user1/target/path')
@@ -83,7 +80,7 @@ class CorsPluginTest extends TestCase {
 		$this->restoreService('AllConfig');
 	}
 
-	public function optionsCases() {
+	public function optionsCases(): array {
 		$allowedDomains = '["https://requesterdomain.tld", "http://anotherdomain.tld"]';
 
 		$allowedHeaders = [
@@ -140,9 +137,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => '*',
-					'Access-Control-Allow-Methods' => \implode(',', $allowedMethodsUnAuthenticated),
+					'Access-Control-Allow-Methods' => implode(',', $allowedMethodsUnAuthenticated),
 				],
 				false
 			],
@@ -156,9 +153,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => 'https://requesterdomain.tld',
-					'Access-Control-Allow-Methods' => \implode(',', $allowedMethods),
+					'Access-Control-Allow-Methods' => implode(',', $allowedMethods),
 				],
 				true
 			],
@@ -236,9 +233,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => 'https://currentdomain.tld:8443',
-					'Access-Control-Allow-Methods' => \implode(',', $allowedMethods),
+					'Access-Control-Allow-Methods' => implode(',', $allowedMethods),
 				],
 				true
 			],
@@ -266,9 +263,8 @@ class CorsPluginTest extends TestCase {
 	 * @param $requestHeaders
 	 * @param $expectedStatus
 	 * @param array $expectedHeaders
-	 * @param bool $expectDavHeaders
 	 */
-	public function testOptionsHeaders($allowedDomains, $hasUser, $requestHeaders, $expectedStatus, array $expectedHeaders, $expectDavHeaders = false) {
+	public function testOptionsHeaders($allowedDomains, $hasUser, $requestHeaders, $expectedStatus, array $expectedHeaders, $expectDavHeaders = false): void {
 		$this->server->sapi->expects($this->once())->method('sendResponse')->with($this->server->httpResponse);
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')->willReturn('someuser');

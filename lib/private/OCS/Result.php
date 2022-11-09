@@ -154,4 +154,10 @@ class Result {
 	public function getHeaders() {
 		return $this->headers;
 	}
+
+	public function addHeaders(array $headers) {
+		foreach ($headers as $key => $value) {
+			$this->addHeader($key, implode(',', $value));
+		}
+	}
 }

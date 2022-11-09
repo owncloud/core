@@ -158,8 +158,10 @@ class CorsPlugin extends ServerPlugin {
 		if ($authorization === null || $authorization === '') {
 			// Set the proper response
 			$response->setStatus(200);
-			$response = \OC_Response::setOptionsRequestHeaders($response, $this->getExtraHeaders($request));
+			$headers = \OC_Response::getOptionsRequestHeaders($request, $this->getExtraHeaders($request));
+			$response->setHeaders($headers);
 
+			# TODO: actually wrong - https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSNotSupportingCredentials
 			// Since All OPTIONS requests are unauthorized, we will have to return false from here
 			// If we don't return false, due to no authorization, a 401-Unauthorized will be thrown
 			// Which we don't want here

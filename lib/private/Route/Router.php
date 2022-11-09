@@ -31,10 +31,13 @@
 
 namespace OC\Route;
 
+use OC\OCS\Result;
 use OCP\ILogger;
 use OCP\Route\IRouter;
 use OCP\AppFramework\App;
 use OCP\Util;
+use Sabre\HTTP\Request;
+use Sabre\HTTP\Sapi;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -282,19 +285,23 @@ class Router implements IRouter {
 
 		$matcher = new UrlMatcher($this->root, $this->context);
 
-		if (\OC::$server->getRequest()->getMethod() === "OPTIONS" && \OC::$server->getRequest()->getHeader('Access-Control-Request-Method')) {
+		$r = \OC::$server->getRequest();
+
+		if ($r->getMethod() === "OPTIONS" && $r->getHeader('Access-Control-Request-Method')) {
 			try {
-				// Checking whether the actual request (one which OPTIONS is pre-flight for)
+				// Checking whether the actual request (one which OPTIONS are pre-flight for)
 				// Is actually valid
-				$requestingMethod = \OC::$server->getRequest()->getHeader('Access-Control-Request-Method');
+				$requestingMethod = $r->getHeader('Access-Control-Request-Method');
 				$tempContext = $this->context;
 				$tempContext->setMethod($requestingMethod);
 				$tempMatcher = new UrlMatcher($this->root, $tempContext);
 				$parameters = $tempMatcher->match($url);
 
 				// Reach here if it's valid
-				$response = new \OC\OCS\Result(null, 100, 'OPTIONS request successful');
-				$response = \OC_Response::setOptionsRequestHeaders($response);
+				$request = Sapi::createFromServerArray($_SERVER);
+				$response = new Result(null, 100, 'OPTIONS request successful');
+				$headers = \OC_Response::getOptionsRequestHeaders($request);
+				$response->addHeaders($headers);
 				\OC_API::respond($response, \OC_API::requestedFormat());
 
 				// Return since no more processing for an OPTIONS request is required

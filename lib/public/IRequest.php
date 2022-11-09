@@ -35,7 +35,7 @@
 namespace OCP;
 
 /**
- * This interface provides an immutable object with with accessors to
+ * This interface provides an immutable object with accessors to
  * request variables and headers.
  *
  * Access request variables by method and name.
