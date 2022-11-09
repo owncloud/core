@@ -250,10 +250,12 @@ $CONFIG = [
  *
  * Possible keys: `openid-connect` ARRAY
  *
+ * Possible keys: `openid-connect.basic_auth_guest_only` BOOL
+ *
  *
  * **Configure OpenID Connect - all possible sub-keys**
  *
- * _You have to use the main key together with sub keys listed below, see code samples._
+ * _You have to use the main key `openid-connect` together with sub keys listed below, see code samples._
  *
  * allowed-user-backends::
  * Limit the users which are allowed to login to a specific user backend - e.g. LDAP
@@ -282,6 +284,11 @@ $CONFIG = [
  * insecure::
  * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
  * IdP - **DO NOT use in production!**
+ *
+ * jwt-self-signed-jwk-header-supported::
+ * If set to true, JWK (JSON Web Token) will be taken from the JWT header instead of the IdP's jwks_uri.
+ * Should only be enabled in exceptional cases as this could lead to vulnerabilities
+ * https://portswigger.net/kb/issues/00200902_jwt-self-signed-jwk-header-supported
  *
  * loginButtonName::
  * The name as displayed on the login screen which is used to redirect to the IdP.
@@ -437,6 +444,13 @@ $CONFIG = [
 ],
 
 /**
+ * Authenticate guests only with basic auth
+ * Only guests are able to log in using basic auth. Other users will need to use
+ * another auth mechanisms (such as OIDC).
+ */
+'openid-connect.basic_auth_guest_only' => false,
+
+/**
  * App: Richdocuments
  *
  * Possible keys: `collabora_group` STRING
@@ -462,7 +476,6 @@ $CONFIG = [
  */
 'objectstore' => [
 	'class' => 'OCA\Files_Primary_S3\S3Storage',
-
 	'arguments' => [
 		// ...
 	],
