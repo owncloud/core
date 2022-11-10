@@ -4570,7 +4570,6 @@ trait Provisioning {
 		}
 		if (OcisHelper::isTestingWithGraphApi()) {
 			$base = '/graph/v1.0';
-			$group = $this->getAttributeOfCreatedGroup($group, "id");
 		} else {
 			$base = '/ocs/v2.php/cloud';
 		}
