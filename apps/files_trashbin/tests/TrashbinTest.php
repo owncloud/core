@@ -234,9 +234,7 @@ class TrashbinTest extends TestCase {
 
 		$this->assertTrue(
 			Trashbin::restore(
-				'file1.txt.d' . $trashedFile->getMtime(),
-				$trashedFile->getName(),
-				$trashedFile->getMtime()
+				'file1.txt.d' . $trashedFile->getMtime()
 			)
 		);
 
@@ -268,9 +266,7 @@ class TrashbinTest extends TestCase {
 
 		$this->assertTrue(
 			Trashbin::restore(
-				'file1.txt.d' . $trashedFile->getMtime(),
-				$trashedFile->getName(),
-				$trashedFile->getMtime()
+				'file1.txt.d' . $trashedFile->getMtime()
 			)
 		);
 
@@ -302,9 +298,7 @@ class TrashbinTest extends TestCase {
 
 		$this->assertTrue(
 			Trashbin::restore(
-				'folder.d' . $trashedFolder->getMtime(),
-				$trashedFolder->getName(),
-				$trashedFolder->getMtime()
+				'folder.d' . $trashedFolder->getMtime()
 			)
 		);
 
@@ -336,9 +330,7 @@ class TrashbinTest extends TestCase {
 
 		$this->assertTrue(
 			Trashbin::restore(
-				'folder.d' . $trashedFile->getMtime() . '/file1.txt',
-				'file1.txt',
-				$trashedFile->getMtime()
+				'folder.d' . $trashedFile->getMtime() . '/file1.txt'
 			)
 		);
 
@@ -374,9 +366,7 @@ class TrashbinTest extends TestCase {
 
 		$this->assertTrue(
 			Trashbin::restore(
-				'file1.txt.d' . $trashedFile->getMtime(),
-				$trashedFile->getName(),
-				$trashedFile->getMtime()
+				'file1.txt.d' . $trashedFile->getMtime()
 			)
 		);
 
@@ -412,9 +402,7 @@ class TrashbinTest extends TestCase {
 
 		$this->assertTrue(
 			Trashbin::restore(
-				'file1.txt.d' . $trashedFile->getMtime(),
-				$trashedFile->getName(),
-				$trashedFile->getMtime()
+				'file1.txt.d' . $trashedFile->getMtime()
 			)
 		);
 
@@ -455,9 +443,7 @@ class TrashbinTest extends TestCase {
 
 		$this->assertTrue(
 			Trashbin::restore(
-				'file1.txt.d' . $trashedFile->getMtime(),
-				$trashedFile->getName(),
-				$trashedFile->getMtime()
+				'file1.txt.d' . $trashedFile->getMtime()
 			)
 		);
 
@@ -476,9 +462,7 @@ class TrashbinTest extends TestCase {
 	public function testRestoreUnexistingFile() {
 		$this->assertFalse(
 			Trashbin::restore(
-				'unexist.txt.d123456',
-				'unexist.txt',
-				'123456'
+				'unexist.txt.d123456'
 			)
 		);
 	}
@@ -514,9 +498,7 @@ class TrashbinTest extends TestCase {
 
 			$this->assertTrue(
 				Trashbin::restore(
-					'file1.txt.d' . $trashedFile->getMtime(),
-					$trashedFile->getName(),
-					$trashedFile->getMtime()
+					'file1.txt.d' . $trashedFile->getMtime()
 				)
 			);
 

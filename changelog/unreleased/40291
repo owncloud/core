@@ -1,0 +1,12 @@
+Bugfix: Properly remove file versions from the trashbin
+
+Previously, restoring or removing a file from inside a folder
+that was deleted (so the folder and the contents are in the
+trashbin) didn't remove the versions of the file. Those versions
+were left in both the DB and the FS, taking space and degrading
+the performance.
+
+This is now being handled properly, so no additional resource
+is consumed due to the versions being left stranded.
+
+https://github.com/owncloud/core/issues/40286

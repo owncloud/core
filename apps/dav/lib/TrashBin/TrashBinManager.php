@@ -93,8 +93,6 @@ class TrashBinManager {
 		$path = \implode('/', $path);
 		return Trashbin::restore(
 			$path,
-			$trashItem->getOriginalFileName(),
-			$trashItem->getDeleteTimestamp(),
 			$targetLocation
 		);
 	}
