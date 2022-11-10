@@ -240,6 +240,11 @@ class FeatureContext extends BehatVariablesContext {
 	private $userResponseBodyContents = [];
 
 	/**
+	 * @var array
+	 */
+	public $emailRecipients = [];
+
+	/**
 	 * @var CookieJar
 	 */
 	private $cookieJar;
@@ -449,6 +454,18 @@ class FeatureContext extends BehatVariablesContext {
 		} catch (Exception $exception) {
 			// if response couldn't be converted into xml then push "notset" to last ocs status codes array
 			$this->pushToLastOcsCodesArray("notset");
+		}
+	}
+
+	/**
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 */
+	public function pushEmailRecipientAsMailBox(string $emailAddress):void {
+		$mailBox = explode("@", $emailAddress)[0];
+		if (!\in_array($mailBox, $this->emailRecipients)) {
+			$this->emailRecipients[] = $mailBox;
 		}
 	}
 

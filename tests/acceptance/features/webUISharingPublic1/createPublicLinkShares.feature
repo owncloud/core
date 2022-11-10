@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required @files_sharing-app-required
+@webUI @insulated @disablePreviews @email @public_link_share-feature-required @files_sharing-app-required
 Feature: Share by public link
   As a user
   I want to share files through a publicly accessible link
@@ -93,17 +93,17 @@ Feature: Share by public link
     And parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     And user "Alice" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
-      | email | foo@bar.co, foo@barr.co |
+      | email | foo@bar.co, goo@barr.co |
     Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
     """
     %displayname% shared simple-folder with you
     """
-    And the email address "foo@barr.co" should have received an email from user "Alice" with the body containing
+    And the email address "goo@barr.co" should have received an email from user "Alice" with the body containing
     """
     %displayname% shared simple-folder with you
     """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
-    And the email address "foo@barr.co" should have received an email containing the last shared public link
+    And the email address "goo@barr.co" should have received an email containing the last shared public link
 
 
   Scenario: user shares a public link via email with a personal message
