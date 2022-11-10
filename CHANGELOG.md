@@ -8,6 +8,8 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Properly remove file versions from the trashbin: [#40286](https://github.com/owncloud/core/issues/40286)
+* Bugfix - "available for" in the mount point configuration will show displaynames: [#40412](https://github.com/owncloud/core/pull/40412)
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
@@ -19,6 +21,34 @@ Summary
 
 Details
 -------
+
+* Bugfix - Properly remove file versions from the trashbin: [#40286](https://github.com/owncloud/core/issues/40286)
+
+   Previously, restoring or removing a file from inside a folder that was deleted (so the folder
+   and the contents are in the trashbin) didn't remove the versions of the file. Those versions
+   were left in both the DB and the FS, taking space and degrading the performance.
+
+   This is now being handled properly, so no additional resource is consumed due to the versions
+   being left stranded.
+
+   https://github.com/owncloud/core/issues/40286
+
+* Bugfix - "available for" in the mount point configuration will show displaynames: [#40412](https://github.com/owncloud/core/pull/40412)
+
+   The "available for" select of the mount configuration of external storages were using the
+   group id. This wasn't a problem because for local groups the group id matches the group
+   displayname, and for ldap groups the group id was the "cn" attribute. Due to recent changes, the
+   ldap group will now use the objectuid attribute (or a similar attribute) as group id by default.
+   This was causing the "available for" select to show that objectuid, so identifying the right
+   group was problematic.
+
+   Now, the "available for" select will show the group displayname, which for ldap is the "cn"
+   attribute by default.
+
+   Note that this happens on new installations. There is an automatic migration in place, so for
+   upgrades, the "cn" attribute will be set as groupname in order to keep the old behavior
+
+   https://github.com/owncloud/core/pull/40412
 
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
 

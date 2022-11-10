@@ -6,6 +6,8 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Properly remove file versions from the trashbin: <a href="https://github.com/owncloud/core/issues/40286">#40286</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - "available for" in the mount point configuration will show displaynames: <a href="https://github.com/owncloud/core/pull/40412">#40412</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Skip public links when updating permissions of share's children: <a href="https://github.com/owncloud/core/pull/40420">#40420</a></li>
         <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
@@ -17,6 +19,29 @@
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Properly remove file versions from the trashbin: <a href="https://github.com/owncloud/core/issues/40286">#40286</a></p>
+            <p>Previously, restoring or removing a file from inside a folder that was deleted (so the folder
+   and the contents are in the trashbin) didn't remove the versions of the file. Those versions
+   were left in both the DB and the FS, taking space and degrading the performance.This is now being handled properly, so no additional resource is consumed due to the versions
+   being left stranded.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40286<br>
+            </p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - "available for" in the mount point configuration will show displaynames: <a href="https://github.com/owncloud/core/pull/40412">#40412</a></p>
+            <p>The "available for" select of the mount configuration of external storages were using the
+   group id. This wasn't a problem because for local groups the group id matches the group
+   displayname, and for ldap groups the group id was the "cn" attribute. Due to recent changes, the
+   ldap group will now use the objectuid attribute (or a similar attribute) as group id by default.
+   This was causing the "available for" select to show that objectuid, so identifying the right
+   group was problematic.Now, the "available for" select will show the group displayname, which for ldap is the "cn"
+   attribute by default.Note that this happens on new installations. There is an automatic migration in place, so for
+   upgrades, the "cn" attribute will be set as groupname in order to keep the old behavior
+            </p>
+            <p>https://github.com/owncloud/core/pull/40412<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Skip public links when updating permissions of share's children: <a href="https://github.com/owncloud/core/pull/40420">#40420</a></p>
             <p>Currently, updates to permissions of a share are wrongly propagated to public links children.
