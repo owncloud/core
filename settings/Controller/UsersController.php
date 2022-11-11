@@ -227,7 +227,6 @@ class UsersController extends Controller {
 			];
 		}
 
-		// storageUsed
 		try {
 			\OC_Util::tearDownFS();
 			\OC_Util::setupFS($user->getUID());
@@ -236,6 +235,8 @@ class UsersController extends Controller {
 		} catch (\Exception $e) {
 			$this->log->error("Can't compute used storage for user " . $user->getUID() . ": " . $e->getMessage(), ['app' => 'settings']);
 			$storageUsed = "0 MB";
+		} finally {
+			\OC_Util::tearDownFS();
 		}
 
 		return [
