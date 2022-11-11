@@ -232,8 +232,9 @@ class UsersController extends Controller {
 			\OC_Util::tearDownFS();
 			\OC_Util::setupFS($user->getUID());
 			$storage = \OC_Helper::getStorageInfo('/');
-			$storageUsed = sprintf("%d MB", $storage['used'] / 1024 / 1024);
-		} catch (\Exception $ex) {
+			$storageUsed = \sprint("%.1f MB", $storage['used'] / 1024 / 1024);
+		} catch (\Exception $e) {
+                        $this->log->error("Can't compute used storage for user " . $user->getUID() . ": " . $e->getMessage(), ['app' => 'settings']);
 			$storageUsed = "0 MB";
 		}
 
@@ -245,7 +246,7 @@ class UsersController extends Controller {
 			'isEnabled' => $user->isEnabled(),
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
-						'storageUsed' => $storageUsed,
+			'storageUsed' => $storageUsed,
 			'lastLogin' => $user->getLastLogin() * 1000,
 			'backend' => $user->getBackendClassName(),
 			'email' => $displayName,
