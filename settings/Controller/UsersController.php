@@ -234,7 +234,7 @@ class UsersController extends Controller {
 			$storage = \OC_Helper::getStorageInfo('/');
 			$storageUsed = \sprint("%.1f MB", $storage['used'] / 1024 / 1024);
 		} catch (\Exception $e) {
-                        $this->log->error("Can't compute used storage for user " . $user->getUID() . ": " . $e->getMessage(), ['app' => 'settings']);
+			$this->log->error("Can't compute used storage for user " . $user->getUID() . ": " . $e->getMessage(), ['app' => 'settings']);
 			$storageUsed = "0 MB";
 		}
 
