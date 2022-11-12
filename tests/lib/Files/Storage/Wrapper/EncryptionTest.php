@@ -9,7 +9,6 @@ use OC\Files\Storage\Temporary;
 use OC\Files\Storage\Wrapper\Encryption;
 use OC\Files\View;
 use OC\User\Manager;
-use OCP\Files\Storage\IStorage;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\Files\Storage\Storage;
 

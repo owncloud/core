@@ -21,7 +21,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use TestHelpers\HttpRequestHelper;
 use PHPUnit\Framework\Assert;
 use TestHelpers\WebDavHelper;
 

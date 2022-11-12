@@ -21,7 +21,6 @@
 
 namespace Test;
 
-use OC\Core\Command\Previews\Cleanup;
 use OC\Files\Filesystem;
 use OC\Files\Node\File;
 use OC\PreviewCleanup;

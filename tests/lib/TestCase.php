@@ -22,8 +22,6 @@
 
 namespace Test;
 
-use DOMDocument;
-use DOMNode;
 use OC\Command\QueueBus;
 use OC\Files\Filesystem;
 use OC\Template\Base;
