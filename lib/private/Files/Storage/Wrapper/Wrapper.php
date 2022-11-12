@@ -30,7 +30,6 @@ use OCP\Files\InvalidPathException;
 use OCP\Files\Storage\ILockingStorage;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Lock\ILockingProvider;
-use OCP\Lock\Persistent\ILock;
 
 class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistentLockingStorage {
 	/**

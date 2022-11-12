@@ -28,7 +28,6 @@ use OC\DB\QueryBuilder\CompositeExpression;
 use OC\DB\QueryBuilder\Literal;
 use OC\DB\QueryBuilder\QueryFunction;
 use OC\DB\QueryBuilder\QuoteHelper;
-use OC\Diagnostics\Query;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
 use OCP\IDBConnection;
 

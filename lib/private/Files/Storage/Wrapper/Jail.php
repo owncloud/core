@@ -25,7 +25,6 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OC\Files\Cache\Wrapper\CacheJail;
-use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
 
 /**

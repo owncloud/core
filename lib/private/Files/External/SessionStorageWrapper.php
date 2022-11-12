@@ -22,7 +22,6 @@
 
 namespace OC\Files\External;
 
-use \OCP\Files\Storage;
 use \OC\Files\Storage\Wrapper\PermissionsMask;
 use \OCP\Constants;
 

@@ -21,7 +21,6 @@
 
 namespace OC\Notification\Events;
 
-use Symfony\Component\EventDispatcher\Event;
 use OCP\Notification\Events\RegisterConsumerEvent;
 use OCP\Notification\IApp;
 use OC\Notification\Manager;
