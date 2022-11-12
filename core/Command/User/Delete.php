@@ -24,8 +24,6 @@
 
 namespace OC\Core\Command\User;
 
-use OC\User\DeletedUser;
-use OC\User\Manager;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

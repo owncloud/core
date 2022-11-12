@@ -20,11 +20,8 @@
  */
 namespace OC\Core\Command\Previews;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\OraclePlatform;
 use OC\Core\Command\Base;
 use OC\PreviewCleanup;
-use OCP\Files\Folder;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
