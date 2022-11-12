@@ -22,7 +22,6 @@
 namespace OCA\DAV\Tests\Unit\Files\Sharing;
 
 use Sabre\DAV\Server;
-use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

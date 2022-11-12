@@ -26,7 +26,6 @@ use OC\Share20\Exception\ProviderException;
 use OC\Share20\ProviderFactory;
 use OCP\IDBConnection;
 use OCP\Share\Exceptions\ShareNotFound;
-use OCP\Share\IManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;

@@ -26,7 +26,6 @@ use OCP\App\IAppManager;
 use OCP\Comments\CommentsEvent;
 use OCP\Files\Config\IMountProviderCollection;
 use OCP\Files\IRootFolder;
-use OCP\Files\Node;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\Share;

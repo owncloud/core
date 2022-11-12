@@ -26,7 +26,6 @@ use OCP\Activity\IManager;
 use OCP\App\IAppManager;
 use OCP\Files\Config\IMountProviderCollection;
 use OCP\Files\IRootFolder;
-use OCP\Files\Node;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IUser;

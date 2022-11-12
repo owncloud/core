@@ -25,7 +25,6 @@
 
 namespace OCA\DAV\Tests\unit\CardDAV;
 
-use InvalidArgumentException;
 use OCA\DAV\CardDAV\AddressBook;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;

@@ -39,7 +39,6 @@ use OCP\IUserSession;
 use OCP\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ViewControllerTest

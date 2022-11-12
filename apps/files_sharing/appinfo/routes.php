@@ -26,8 +26,6 @@
  *
  */
 
-use OCP\API;
-
 $application = new \OCA\Files_Sharing\AppInfo\Application();
 $application->registerRoutes($this, [
 	'resources' => [

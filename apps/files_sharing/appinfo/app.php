@@ -44,13 +44,13 @@ $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(
 	'OCA\Files::loadAdditionalScripts',
 	function () {
-		\OCP\Util::addScript('files_sharing', 'share');
-		\OCP\Util::addScript('files_sharing', 'sharetabview');
-		\OCP\Util::addScript('files_sharing', 'sharedialogview');
+		Util::addScript('files_sharing', 'share');
+		Util::addScript('files_sharing', 'sharetabview');
+		Util::addScript('files_sharing', 'sharedialogview');
 		if (\OC::$server->getConfig()->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes') === 'yes') {
-			\OCP\Util::addScript('files_sharing', 'external');
+			Util::addScript('files_sharing', 'external');
 		}
-		\OCP\Util::addStyle('files_sharing', 'sharetabview');
+		Util::addStyle('files_sharing', 'sharetabview');
 	}
 );
 
@@ -77,7 +77,7 @@ if (\class_exists('OCA\Files\App') && $config->getAppValue('core', 'shareapi_ena
 		];
 	});
 
-	if (\OCP\Util::isSharingDisabledForUser() === false) {
+	if (Util::isSharingDisabledForUser() === false) {
 		\OCA\Files\App::getNavigationManager()->add(function () {
 			$l = \OC::$server->getL10N('files_sharing');
 			return [

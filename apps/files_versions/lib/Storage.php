@@ -45,7 +45,6 @@ namespace OCA\Files_Versions;
 use OC\Files\Filesystem;
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\View;
-use OCA\DAV\Meta\MetaPlugin;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Command\Expire;
 use OCP\Files\NotFoundException;

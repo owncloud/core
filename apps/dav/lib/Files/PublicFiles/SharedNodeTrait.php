@@ -27,10 +27,7 @@ use OCP\Files\Folder;
 use OCP\Files\Node;
 use OCP\Files\NotPermittedException;
 use OCP\Share\IShare;
-use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
-use Sabre\DAVACL\ACLTrait;
-use Sabre\DAVACL\IACL;
 
 /**
  * Trait SharedNodeTrait - common method implementations of SharedFile and SharedFolder

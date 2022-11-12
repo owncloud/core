@@ -24,13 +24,10 @@
 namespace OCA\DAV\DAV;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\OraclePlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\Node;
 use OC\Cache\CappedMemoryCache;
 use Sabre\DAV\INode;
-use Sabre\DAV\Xml\Property\Complex;
 
 /**
  * Class FileCustomPropertiesBackend

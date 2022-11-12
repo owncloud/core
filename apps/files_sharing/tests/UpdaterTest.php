@@ -27,8 +27,6 @@
 
 namespace OCA\Files_Sharing\Tests;
 
-use OCP\Share\Exceptions\ShareNotFound;
-
 /**
  * Class UpdaterTest
  *

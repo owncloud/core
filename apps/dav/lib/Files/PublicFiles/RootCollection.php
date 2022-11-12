@@ -28,8 +28,6 @@ use OCP\Share\IShare;
 use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
-use Sabre\DAV\SimpleCollection;
-use Sabre\DAV\SimpleFile;
 
 /**
  * Class RootCollection - represents the list of public shares.

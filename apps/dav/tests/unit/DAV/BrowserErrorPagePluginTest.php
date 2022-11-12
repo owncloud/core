@@ -23,7 +23,6 @@
 namespace OCA\DAV\Tests\unit\DAV;
 
 use OCA\DAV\Files\BrowserErrorPagePlugin;
-use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Exception\NotFound;
 
 class BrowserErrorPagePluginTest extends \Test\TestCase {

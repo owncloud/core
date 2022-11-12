@@ -47,7 +47,6 @@ use Sabre\DAV\ServerPlugin;
 use Sabre\DAV\Tree;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
-use OCA\DAV\Connector\Sabre\Node;
 
 class FilesPlugin extends ServerPlugin {
 

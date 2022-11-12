@@ -22,7 +22,6 @@
 namespace OCA\Files_Sharing\Tests\Controller;
 
 use OC\Files\FileInfo;
-use OC\Files\View;
 use OCA\Files_Sharing\Controller\RemoteOcsController;
 use OCA\Files_Sharing\External\Manager;
 use OCP\IRequest;

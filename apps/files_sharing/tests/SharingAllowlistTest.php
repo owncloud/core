@@ -22,7 +22,6 @@ namespace OCA\Files_Sharing\Tests;
 
 use OCP\IConfig;
 use OCP\IGroup;
-use OCA\Files_Sharing\SharingBlacklist;
 use OCA\Files_Sharing\SharingAllowlist;
 use OCP\IGroupManager;
 use OCP\IUser;

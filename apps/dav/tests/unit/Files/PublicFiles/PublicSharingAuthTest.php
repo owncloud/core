@@ -21,16 +21,13 @@
 
 namespace OCA\DAV\Tests\Unit\Files\PublicFiles;
 
-use OCA\DAV\Files\PublicFiles\PublicFilesPlugin;
 use OCA\DAV\Files\PublicFiles\PublicSharingAuth;
 use OCA\DAV\Files\PublicFiles\PublicSharedRootNode;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
 use PHPUnit\Framework\MockObject\MockObject;
-use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
 use Sabre\DAV\Tree;
-use Sabre\DAV\Xml\Property\GetLastModified;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;

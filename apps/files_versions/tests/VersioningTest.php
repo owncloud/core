@@ -37,7 +37,6 @@ require_once __DIR__ . '/../appinfo/app.php';
 
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Storage\Temporary;
-use OC\Share\Constants;
 use OCA\DAV\Meta\MetaPlugin;
 use OCA\Files_Versions\FileHelper;
 use OCA\Files_Versions\MetaStorage;
