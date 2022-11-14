@@ -4941,11 +4941,17 @@ trait Provisioning {
 			},
 			$this->simplifyArray($users)
 		);
-		$respondedArray = $this->getArrayOfUsersResponded($this->response);
-		Assert::assertEqualsCanonicalizing(
-			$usersSimplified,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseUsersShouldBeInTheResponse($usersSimplified);
+		} else {
+			$respondedArray = $this->getArrayOfUsersResponded($this->response);
+			Assert::assertEqualsCanonicalizing(
+				$usersSimplified,
+				$respondedArray,
+				__METHOD__
+				. " Provided users do not match the users returned in the response."
+			);
+		}
 	}
 
 	/**
@@ -4990,10 +4996,16 @@ trait Provisioning {
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		Assert::assertEqualsCanonicalizing(
-			$groupsSimplified,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseGroupsShouldBeInTheResponse($groupsSimplified);
+		} else {
+			Assert::assertEqualsCanonicalizing(
+				$groupsSimplified,
+				$respondedArray,
+				__METHOD__
+				. " Provided groups do not match the groups returned in the response."
+			);
+		}
 	}
 
 	/**
@@ -5008,14 +5020,18 @@ trait Provisioning {
 		$this->verifyTableNodeColumnsCount($groupsList, 1);
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
-		$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
-		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		\asort($expectedGroups);
-		\asort($respondedArray);
-		Assert::assertEqualsCanonicalizing(
-			$expectedGroups,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseGroupsShouldBeInTheResponse($groupsSimplified);
+		} else {
+			$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
+			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+			Assert::assertEqualsCanonicalizing(
+				$expectedGroups,
+				$respondedArray,
+				__METHOD__
+				. " Provided groups do not match the groups returned in the response."
+			);
+		}
 	}
 
 	/**
