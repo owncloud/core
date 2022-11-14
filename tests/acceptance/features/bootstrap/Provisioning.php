@@ -4947,7 +4947,9 @@ trait Provisioning {
 			$respondedArray = $this->getArrayOfUsersResponded($this->response);
 			Assert::assertEqualsCanonicalizing(
 				$usersSimplified,
-				$respondedArray
+				$respondedArray,
+				__METHOD__
+				. " Provided users do not match the users returned in the response."
 			);
 		}
 	}
@@ -4994,10 +4996,16 @@ trait Provisioning {
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		Assert::assertEqualsCanonicalizing(
-			$groupsSimplified,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseGroupsShouldBeInTheResponse($groupsSimplified);
+		} else {
+			Assert::assertEqualsCanonicalizing(
+				$groupsSimplified,
+				$respondedArray,
+				__METHOD__
+				. " Provided groups do not match the groups returned in the response."
+			);
+		}
 	}
 
 	/**
@@ -5013,15 +5021,15 @@ trait Provisioning {
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
 		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->theseExtraGroupsShouldBeInTheResponse($groupsSimplified);
+			$this->graphContext->theseGroupsShouldBeInTheResponse($groupsSimplified);
 		} else {
 			$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
 			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-			\asort($expectedGroups);
-			\asort($respondedArray);
 			Assert::assertEqualsCanonicalizing(
 				$expectedGroups,
-				$respondedArray
+				$respondedArray,
+				__METHOD__
+				. " Provided groups do not match the groups returned in the response."
 			);
 		}
 	}
