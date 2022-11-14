@@ -136,7 +136,7 @@ script('core', [
 					autocomplete="off" autocorrect="off">
 			</p>
 			<p class="info">
-				<?php p($l->t('Please specify the port number along with the host name (e.g., localhost: 5432).')); ?>
+				<?php p($l->t('Please specify the port number along with the host name (e.g., localhost:5432).')); ?>
 			</p>
 		</div>
 		</fieldset>
