@@ -2,14 +2,13 @@ parameters:
   bootstrapFiles:
     - %currentWorkingDirectory%/lib/base.php
   excludePaths:
-    - %currentWorkingDirectory%/core/ajax/update.php
-    - %currentWorkingDirectory%/apps/*/tests*
-    - %currentWorkingDirectory%/apps/*/composer/*
-    - %currentWorkingDirectory%/apps/*/3rdparty/*
-    - %currentWorkingDirectory%/apps/files_external/ajax/oauth2.php
-    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/Google.php
-    - %currentWorkingDirectory%/apps/files_external/lib/Lib/Storage/SMB.php
-    - %currentWorkingDirectory%/settings/templates/*
+    analyseAndScan:
+      - %currentWorkingDirectory%/core/ajax/update.php
+      - %currentWorkingDirectory%/apps/*/tests*
+      - %currentWorkingDirectory%/settings/templates/*
+    analyse:
+      - %currentWorkingDirectory%/apps/*/composer/*
+      - %currentWorkingDirectory%/apps/*/3rdparty/*
   ignoreErrors:
     - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
     - '#Undefined variable: \$vendor#'

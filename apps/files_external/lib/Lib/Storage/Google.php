@@ -577,6 +577,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				self::$tempFiles[$tmpFile] = $path;
 				return \fopen('close://'.$tmpFile, $mode);
 		}
+		return false;
 	}
 
 	public function writeBack($tmpFile) {
