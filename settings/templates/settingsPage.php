@@ -56,13 +56,13 @@ style('settings', 'settings');
 	<?php
 	}
 	$numPanels = \count($_['panels']);
-$legacyClass = OC\Settings\Panels\Personal\Legacy::class;
-if ($numPanels === 0 || ($numPanels === 1 && $_['panels'][0]['id'] === $legacyClass && empty(\trim($_['panels'][0]['content'])))) {
+	$legacyClass = OC\Settings\Panels\Personal\Legacy::class;
+	if ($numPanels === 0 || ($numPanels === 1 && $_['panels'][0]['id'] === $legacyClass && empty(\trim($_['panels'][0]['content'])))) {
 	?>
 		<div class="section">
 			<h2><?php p($l->t('Currently no settings are available in this category')); ?></h2>
 			<p><?php p($l->t('The administrators can enable additional apps which add settings sections here.')); ?></p>
 		</div>
 	<?php
-} ?>
+	} ?>
 </div>
