@@ -30,7 +30,6 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
-use OCP\Share\IAttributes;
 use OCP\Share\IManager;
 
 class MountProvider implements IMountProvider {

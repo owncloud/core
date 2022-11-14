@@ -23,10 +23,8 @@ namespace OCA\FederatedFileSharing\Command;
 
 use OC\ServerNotAvailableException;
 use OC\User\NoUserException;
-use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
-use OCP\Files\Mount\IMountManager;
 use OCP\Files\Storage\IStorage;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\Files\StorageInvalidException;

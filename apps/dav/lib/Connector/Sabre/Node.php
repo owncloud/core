@@ -35,12 +35,10 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OC\Files\Mount\MoveableMount;
-use OC\Lock\Persistent\Lock;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCA\Files_Sharing\SharedMount;
 use OCP\Files\ForbiddenException;
-use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 

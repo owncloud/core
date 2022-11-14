@@ -21,7 +21,6 @@
 
 namespace OCP\Share;
 
-use OC\User\NoUserException;
 use OCP\Files\Node;
 
 use OCP\Files\NotFoundException;

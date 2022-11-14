@@ -23,8 +23,6 @@
 namespace OCA\Files\Tests\Command;
 
 use OC\Encryption\Manager;
-use OC\Files\Filesystem;
-use OC\Files\View;
 use OC\Share20\ProviderFactory;
 use OC\User\NoUserException;
 use OCA\Files\Command\TransferOwnership;

@@ -22,7 +22,6 @@
 
 namespace OCP\AppFramework\Http;
 
-use OCP\AppFramework\Http;
 use OCP\Template;
 
 /**

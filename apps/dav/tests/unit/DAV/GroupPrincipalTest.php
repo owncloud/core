@@ -24,7 +24,6 @@ namespace OCA\DAV\Tests\unit\DAV;
 
 use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IGroupManager;
-use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\PropPatch;
 use OC\Group\Group;
 

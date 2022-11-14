@@ -24,7 +24,6 @@
 
 namespace OC\Files\External;
 
-use OC\Files\Storage\Wrapper\Availability;
 use OCP\Files\Storage;
 use OC\Files\Mount\MountPoint;
 use OCP\Files\Storage\IStorageFactory;
@@ -34,9 +33,7 @@ use OCP\Files\External\Service\IUserStoragesService;
 use OCP\Files\External\Service\IUserGlobalStoragesService;
 use OCP\Files\External\IStorageConfig;
 use OC\Files\Storage\FailedStorage;
-use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
-use OCP\Files\ObjectStore\IObjectStore;
 use OCP\ISession;
 
 /**

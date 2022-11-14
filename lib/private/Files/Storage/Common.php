@@ -56,7 +56,6 @@ use OCP\Files\Storage\ILockingStorage;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
-use OCP\Lock\Persistent\ILock;
 
 /**
  * Storage backend class for providing common filesystem operation methods

@@ -23,8 +23,6 @@
 
 namespace OCP\AppFramework\Http;
 
-use OCP\AppFramework\Http;
-
 /**
  * Class ContentSecurityPolicy is a simple helper which allows applications to
  * modify the Content-Security-Policy sent by ownCloud. Per default only JavaScript,

@@ -19,7 +19,6 @@
 namespace OC\Settings\Controller;
 
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IL10N;
 use OCP\ILogger;

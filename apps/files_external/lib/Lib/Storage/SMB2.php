@@ -21,27 +21,7 @@
 
 namespace OCA\Files_External\Lib\Storage;
 
-use Icewind\SMB\Exception\AlreadyExistsException;
-use Icewind\SMB\Exception\ConnectException;
-use Icewind\SMB\Exception\Exception;
-use Icewind\SMB\Exception\ForbiddenException;
-use Icewind\SMB\Exception\NotFoundException;
-use Icewind\SMB\BasicAuth;
-use Icewind\SMB\IFileInfo;
-use Icewind\SMB\IServer;
-use Icewind\SMB\Native\NativeServer;
-use Icewind\SMB\Wrapped\FileInfo;
-use Icewind\SMB\ServerFactory;
-use Icewind\SMB\System;
-use Icewind\SMB\IShare;
-use Icewind\Streams\CallbackWrapper;
-use Icewind\Streams\IteratorDirectory;
-use OC\Cache\CappedMemoryCache;
-use OC\Files\Filesystem;
 use OCA\Files_External\Lib\Cache\SmbCacheWrapper;
-use OCP\Files\Storage\StorageAdapter;
-use OCP\Files\StorageNotAvailableException;
-use OCP\Util;
 
 class SMB2 extends SMB {
 	/**

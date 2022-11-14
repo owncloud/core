@@ -23,7 +23,6 @@ namespace OC\User;
 
 use OC\Files\Cache\Storage;
 use OC\Hooks\Emitter;
-use OC\User\Manager;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IConfig;

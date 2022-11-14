@@ -30,7 +30,6 @@ use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCA\DAV\DAV\Sharing\Backend;
 use OCA\DAV\DAV\Sharing\IShareable;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\Security\ISecureRandom;
 use Sabre\CalDAV\Backend\AbstractBackend;

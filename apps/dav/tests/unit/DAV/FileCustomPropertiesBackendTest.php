@@ -23,9 +23,6 @@
 
 namespace OCA\DAV\Tests\unit\DAV;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
 use OCA\DAV\DAV\FileCustomPropertiesPlugin;

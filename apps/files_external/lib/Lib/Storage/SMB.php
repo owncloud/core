@@ -48,7 +48,6 @@ use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
-use OCA\Files_External\Lib\Cache\SmbCacheWrapper;
 use OCP\Files\Storage\StorageAdapter;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
