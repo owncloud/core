@@ -6,7 +6,7 @@
 			<?php
 				/** @var OC_Theme $theme */
 				p(!empty($_['application'])?$_['application'].' - ':'');
-p($theme->getTitle());
+				p($theme->getTitle());
 ?>
 		</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">

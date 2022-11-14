@@ -1,31 +1,21 @@
 <?php
 
 	use OCP\Files\External\Auth\AuthMechanism;
-
 	use OCP\Files\External\Backend\Backend;
-
 	use OCP\Files\External\IStoragesBackendService;
 
 	$l->t("Enable encryption");
-
 	$l->t("Set read-only");
-
 	$l->t("Enable previews");
-
 	$l->t("Enable sharing");
-
 	$l->t("Check for changes");
-
 	$l->t("Never");
-
 	$l->t("Once every direct access");
 
 	script('files_external', 'settings');
-
 	style('files_external', 'settings');
 
 	// load custom JS
-
 	foreach ($_['backends'] as $backend) {
 		/** @var Backend $backend */
 		$scripts = $backend->getCustomJs();
@@ -108,13 +98,12 @@
 							<?php p($l->t('Add storage')); ?>
 						</option>
 						<?php
-											$sortedBackends = \array_filter($_['backends'], function ($backend) use ($_) {
-												return $backend->isVisibleFor($_['visibilityType']);
-											});
-
-	\uasort($sortedBackends, function ($a, $b) {
-		return \strcasecmp($a->getText(), $b->getText());
-	});
+							$sortedBackends = \array_filter($_['backends'], function ($backend) use ($_) {
+								return $backend->isVisibleFor($_['visibilityType']);
+							});
+							\uasort($sortedBackends, function ($a, $b) {
+								return \strcasecmp($a->getText(), $b->getText());
+							});
 
 	?>
 						<?php

@@ -41,7 +41,9 @@ $finder = PhpCsFixer\Finder::create()
 	->notPath('config/config.backup.php')
 	->notPath('tests/autoconfig*')
 	->notPath('apps/files_external/templates/settings.php')
+	->notPath('core/templates/layout.user.php')
 	->notPath('core/templates/twofactorselectchallenge.php')
+	->notPath('settings/templates/email.new_user.php')
 	->notPath('settings/templates/panels/personal/settings.development.notice.php')
 	->in(__DIR__);
 
