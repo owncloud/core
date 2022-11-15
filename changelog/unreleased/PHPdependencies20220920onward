@@ -4,7 +4,7 @@ The following have been updated:
 - doctrine/event-manager (1.1.2 to 1.2.0)
 - guzzlehttp/guzzle (7.4.5 to 7.5.0)
 - guzzlehttp/promises (1.5.1 to 1.5.2)
-- guzzlehttp/psr7 (2.4.0 to 2.4.1)
+- guzzlehttp/psr7 (2.4.0 to 2.4.3)
 - phpseclib/phpseclib (3.0.14 to 3.0.17)
 - laminas/laminas-filter (2.12.0 to 2.22.0)
 - laminas/laminas-inputfilter (2.12.1 to 2.21.0)
@@ -19,10 +19,11 @@ The following have been updated:
 The following have been updated in apps/files_external/3rdparty:
 - google/auth (v1.21.1 to v1.23.0)
 - google/apiclient-services (v0.259.0 to v0.272.0)
-- guzzlehttp/psr7 (2.4.0 to 2.4.1)
+- guzzlehttp/psr7 (2.4.0 to 2.4.3)
 
 https://github.com/owncloud/core/pull/40337
 https://github.com/owncloud/core/pull/40394
 https://github.com/owncloud/core/pull/40410
 https://github.com/owncloud/core/pull/40424
 https://github.com/owncloud/core/pull/40449
+https://github.com/owncloud/core/pull/40494
