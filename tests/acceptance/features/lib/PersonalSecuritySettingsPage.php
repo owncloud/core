@@ -32,7 +32,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Personal Security Settings page.
  */
 class PersonalSecuritySettingsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

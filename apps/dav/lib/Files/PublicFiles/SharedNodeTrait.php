@@ -35,7 +35,6 @@ use Sabre\DAV\Exception\Forbidden;
  * @package OCA\DAV\Files\PublicFiles
  */
 trait SharedNodeTrait {
-
 	/**@var Node */
 	private $node;
 	/** @var IShare */

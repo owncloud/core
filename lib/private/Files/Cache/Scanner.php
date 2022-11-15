@@ -139,10 +139,8 @@ class Scanner extends BasicEmitter implements IScanner {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function scanFile($file, $reuseExisting = 0, $parentId = -1, $cacheData = null, $lock = true) {
-
 		// only proceed if $file is not a partial file nor a blacklisted file
 		if (!self::isPartialFile($file) and !Filesystem::isFileBlacklisted($file)) {
-
 			//acquire a lock
 			if ($lock && $this->storage->instanceOfStorage(ILockingStorage::class)) {
 				$this->storage->acquireLock($file, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
@@ -151,7 +149,6 @@ class Scanner extends BasicEmitter implements IScanner {
 			try {
 				$data = $this->getData($file);
 				if ($data) {
-
 					// pre-emit only if it was a file. By that we avoid counting/treating folders as files
 					if ($data['mimetype'] !== 'httpd/unix-directory') {
 						$this->emit('\OC\Files\Cache\Scanner', 'scanFile', [$file, $this->storageId]);

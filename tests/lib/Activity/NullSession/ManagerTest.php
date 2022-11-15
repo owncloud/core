@@ -19,7 +19,6 @@ use OCP\IRequest;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
-
 	/** @var \OC\Activity\Manager */
 	private $activityManager;
 	/** @var \OCP\IRequest|\PHPUnit\Framework\MockObject\MockObject */

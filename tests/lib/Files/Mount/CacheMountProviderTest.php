@@ -28,7 +28,6 @@ use OCP\IUser;
 use OC\Files\Mount\MountPoint;
 
 class CacheMountProviderTest extends \Test\TestCase {
-
 	/** @var CacheMountProvider */
 	protected $provider;
 

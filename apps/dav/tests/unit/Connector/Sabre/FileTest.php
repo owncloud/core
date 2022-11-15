@@ -60,7 +60,6 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  */
 class FileTest extends TestCase {
-
 	/**
 	 * @var string
 	 */

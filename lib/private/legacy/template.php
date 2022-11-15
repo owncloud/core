@@ -46,7 +46,6 @@ require_once __DIR__.'/template/functions.php';
  * This class provides the templates for ownCloud.
  */
 class OC_Template extends \OC\Template\Base {
-
 	/**
 	 * @var string
 	 */
@@ -103,7 +102,6 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	public static function initTemplateEngine($renderAs) {
 		if (self::$initTemplateEngineFirstRun) {
-
 			//apps that started before the template initialization can load their own scripts/styles
 			//so to make sure this scripts/styles here are loaded first we use OC_Util::addScript() with $prepend=true
 			//meaning the last script/style in this list will be loaded first

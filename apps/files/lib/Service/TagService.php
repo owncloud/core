@@ -30,7 +30,6 @@ use OCP\Files\IRootFolder;
  * Service class to manage tags on files.
  */
 class TagService {
-
 	/**
 	 * @var \OCP\IUserSession
 	 */

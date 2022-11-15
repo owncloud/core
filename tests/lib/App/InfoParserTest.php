@@ -14,7 +14,6 @@ use OC\App\InfoParser;
 use Test\TestCase;
 
 class InfoParserTest extends TestCase {
-
 	/** @var InfoParser */
 	private $parser;
 

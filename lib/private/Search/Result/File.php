@@ -30,7 +30,6 @@ use OCP\Files\Folder;
  * A found file
  */
 class File extends \OCP\Search\Result {
-
 	/**
 	 * Type name; translated in templates
 	 * @var string

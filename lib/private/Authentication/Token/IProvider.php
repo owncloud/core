@@ -26,7 +26,6 @@ use OC\Authentication\Exceptions\PasswordlessTokenException;
 use OCP\IUser;
 
 interface IProvider {
-
 	/**
 	 * Create and persist a new token
 	 *

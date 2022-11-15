@@ -35,7 +35,6 @@ use OCP\Migration\IRepairStep;
  * @package OC\Repair
  */
 class CleanTags implements IRepairStep {
-
 	/** @var IDBConnection */
 	protected $connection;
 

@@ -31,7 +31,6 @@ use OC\Files\Filesystem;
  * Provide search results from the 'files' app
  */
 class File extends \OCP\Search\Provider {
-
 	/**
 	 * Search for files and folders matching the given query
 	 * @param string $query

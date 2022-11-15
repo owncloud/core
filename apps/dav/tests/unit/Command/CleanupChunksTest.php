@@ -96,7 +96,7 @@ class CleanupChunksTest extends TestCase {
 		$view->touch($uploadId, 0);
 
 		$path = $view->getAbsolutePath('/' . $user->getUID(
-			) . '/uploads/'. $uploadId);
+		) . '/uploads/'. $uploadId);
 
 		list($storage) = Filesystem::resolvePath($path);
 

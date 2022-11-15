@@ -24,7 +24,6 @@ namespace OC\Files\Storage;
 use OCP\Files\File as FilesFile;
 
 class File extends Node implements FilesFile {
-
 	/**
 	 * Get the content of the file as string
 	 *

@@ -19,7 +19,6 @@ use Test\TestCase;
  * @group DB
  */
 class FactoryTest extends TestCase {
-
 	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 

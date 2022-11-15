@@ -39,7 +39,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\Files_Sharing\Controllers
  */
 class ExternalSharesController extends Controller {
-
 	/** @var \OCA\Files_Sharing\External\Manager */
 	private $externalManager;
 	/** @var IClientService */

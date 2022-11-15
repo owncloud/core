@@ -21,7 +21,7 @@ if ($_['showShareIT']) {
 		<br>
 
 		<?php if ($_['showShareIT']) {
-	?>
+			?>
 		<p>
 			<?php p($l->t('Share it:')); ?>
 			<div class="gs-share">
@@ -70,7 +70,7 @@ if ($_['showShareIT']) {
 		</p>
 		</div>
 		<?php
-} ?>
+		} ?>
 
 	</div>
 <?php endif; ?>

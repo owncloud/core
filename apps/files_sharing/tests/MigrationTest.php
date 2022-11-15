@@ -33,7 +33,6 @@ use OCA\Files_Sharing\Migration;
  * @group DB
  */
 class MigrationTest extends TestCase {
-
 	/** @var \OCP\IDBConnection */
 	private $connection;
 

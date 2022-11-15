@@ -26,7 +26,6 @@ use OCA\DAV\Files\BrowserErrorPagePlugin;
 use Sabre\DAV\Exception\NotFound;
 
 class BrowserErrorPagePluginTest extends \Test\TestCase {
-
 	/**
 	 * @dataProvider providesExceptions
 	 * @param $expectedCode

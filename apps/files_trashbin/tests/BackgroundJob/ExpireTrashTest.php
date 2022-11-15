@@ -37,7 +37,6 @@ use Test\TestCase;
  * Test ExpireTrashTest
  */
 class ExpireTrashTest extends TestCase {
-
 	/**
 	 * @var TrashExpiryManager | \PHPUnit\Framework\MockObject\MockObject
 	 */

@@ -28,7 +28,6 @@ use OCP\IUser;
 use Test\TestCase;
 
 class ConverterTest extends TestCase {
-
 	/**
 	 * @dataProvider providesNewUsers
 	 */

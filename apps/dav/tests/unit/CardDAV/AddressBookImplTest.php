@@ -33,7 +33,6 @@ use Sabre\VObject\Property\Text;
 use Test\TestCase;
 
 class AddressBookImplTest extends TestCase {
-
 	/** @var AddressBookImpl  */
 	private $addressBookImpl;
 
@@ -89,7 +88,6 @@ class AddressBookImplTest extends TestCase {
 	}
 
 	public function testSearch() {
-
 		/** @var \PHPUnit\Framework\MockObject\MockObject | AddressBookImpl $addressBookImpl */
 		$addressBookImpl = $this->getMockBuilder(AddressBookImpl::class)
 			->setConstructorArgs(

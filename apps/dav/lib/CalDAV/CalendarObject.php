@@ -26,7 +26,6 @@ use Sabre\VObject\Property;
 use Sabre\VObject\Reader;
 
 class CalendarObject extends \Sabre\CalDAV\CalendarObject {
-
 	/**
 	 * @inheritdoc
 	 */

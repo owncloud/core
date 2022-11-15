@@ -19,7 +19,6 @@ use Test\Util\User\MemoryAccountMapper;
  * Allow creating users in a temporary backend
  */
 trait UserTrait {
-
 	/** @var User[] */
 	private $users = [];
 

@@ -30,7 +30,6 @@ use org\bovigo\vfs\vfsStream;
  * @group DB
  */
 class ManagerTest extends TestCase {
-
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
 	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */

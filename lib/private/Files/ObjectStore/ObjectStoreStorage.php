@@ -34,7 +34,6 @@ use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
 
 class ObjectStoreStorage extends \OC\Files\Storage\Common {
-
 	/**
 	 * @var array
 	 */

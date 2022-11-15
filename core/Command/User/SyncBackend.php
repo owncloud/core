@@ -368,7 +368,6 @@ class SyncBackend extends Command {
 		if (empty($removedUsers)) {
 			$output->writeln('No removed users have been detected.');
 		} else {
-
 			// define some actions to be used
 			$disableAction = function ($uid, IUser $user) use ($output) {
 				if ($user->isEnabled()) {

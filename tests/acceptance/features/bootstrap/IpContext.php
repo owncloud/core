@@ -28,7 +28,6 @@ use TestHelpers\IpHelper;
  * Ip trait
  */
 class IpContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

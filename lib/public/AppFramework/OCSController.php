@@ -44,7 +44,6 @@ use OCP\IRequest;
  * @since 8.1.0
  */
 abstract class OCSController extends ApiController {
-
 	/**
 	 * constructor of the controller
 	 * @param string $appName the name of the app

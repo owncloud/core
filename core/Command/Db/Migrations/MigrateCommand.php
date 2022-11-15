@@ -30,7 +30,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateCommand extends Command {
-
 	/** @var IDBConnection */
 	private $connection;
 

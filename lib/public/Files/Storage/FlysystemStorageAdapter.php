@@ -28,7 +28,6 @@ namespace OCP\Files\Storage;
  * @since 10.0
  */
 abstract class FlysystemStorageAdapter extends \OC\Files\Storage\Flysystem {
-
 	/**
 	 * Get the identifier for the storage,
 	 * the returned id should be the same for every storage object that is created with the same parameters

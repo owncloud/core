@@ -28,7 +28,6 @@ namespace OCP\AppFramework\Db;
  * @since 7.0.0
  */
 class DoesNotExistException extends \Exception {
-
 	/**
 	 * Constructor
 	 * @param string $msg the error message

@@ -31,7 +31,6 @@ use Psr\Http\Message\ResponseInterface;
  *
  */
 class EmailHelper {
-
 	/**
 	 * This function splits email address as mailbox
 	 * for ex: mailbox for foo@example.com is created as 'foo'

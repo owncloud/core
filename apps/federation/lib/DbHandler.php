@@ -36,7 +36,6 @@ use OCP\IL10N;
  * @package OCA\Federation
  */
 class DbHandler {
-
 	/** @var  IDBConnection */
 	private $connection;
 

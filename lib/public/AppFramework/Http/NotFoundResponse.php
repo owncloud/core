@@ -29,7 +29,6 @@ use OCP\Template;
  * @since 8.1.0
  */
 class NotFoundResponse extends Response {
-
 	/**
 	 * @since 8.1.0
 	 */

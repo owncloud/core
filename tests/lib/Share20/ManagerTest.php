@@ -4035,7 +4035,6 @@ class DummyPassword {
 }
 
 class DummyFactory implements IProviderFactory {
-
 	/** @var IShareProvider */
 	private $provider;
 

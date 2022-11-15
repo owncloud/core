@@ -52,7 +52,6 @@ require_once 'bootstrap.php';
  * WebUI Files context.
  */
 class WebUIFilesContext extends RawMinkContext implements Context {
-
 	/**
 	 *
 	 * @var FilesPage
@@ -1002,8 +1001,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$previousNotificationsCount = 0;
 
 		for ($retryCounter = 0;
-			 $retryCounter < STANDARD_RETRY_COUNT;
-			 $retryCounter++) {
+			$retryCounter < STANDARD_RETRY_COUNT;
+			$retryCounter++) {
 			$this->theUserUploadsOverwritingFileUsingTheWebUI($name);
 
 			try {

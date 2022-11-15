@@ -26,7 +26,6 @@ namespace OC\Files\External;
  * External storage backend dependency
  */
 class MissingDependency {
-
 	/** @var string */
 	private $dependency;
 

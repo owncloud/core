@@ -35,7 +35,6 @@ use Sabre\HTTP\RequestInterface;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
 class ViewOnlyPluginTest extends TestCase {
-
 	/** @var ViewOnlyPlugin */
 	private $plugin;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */

@@ -25,7 +25,6 @@ use OCP\IConfig;
 use Sabre\HTTP\RequestInterface;
 
 class Verifier {
-
 	/**
 	 * @var RequestInterface
 	 */

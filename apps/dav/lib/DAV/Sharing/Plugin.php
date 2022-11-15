@@ -140,7 +140,6 @@ class Plugin extends ServerPlugin {
 		$message = $this->server->xml->parse($requestBody, $request->getUrl(), $documentType);
 
 		switch ($documentType) {
-
 			// Dealing with the 'share' document, which modified invitees on a
 			// calendar.
 			case '{' . self::NS_OWNCLOUD . '}share':

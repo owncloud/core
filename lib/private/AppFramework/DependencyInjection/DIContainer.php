@@ -49,7 +49,6 @@ use OCP\Files\Mount\IMountManager;
 use OCP\IDateTimeFormatter;
 
 class DIContainer extends SimpleContainer implements IAppContainer {
-
 	/**
 	 * @var array
 	 */

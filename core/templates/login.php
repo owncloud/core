@@ -51,15 +51,15 @@ script('core', [
 			</div>
 		<?php endif; ?>
 		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
-		echo ' shake';
-	} ?>">
+			echo ' shake';
+		} ?>">
 	<?php
-	if ($_['strictLoginEnforced'] === true) {
-		$label = $l->t('Login');
-	} else {
-		$label = $l->t('Username or email');
-	}
-	?>
+		if ($_['strictLoginEnforced'] === true) {
+			$label = $l->t('Login');
+		} else {
+			$label = $l->t('Username or email');
+		}
+?>
 			<label for="user" class=""><?php p($label); ?></label>
 			
 			<input type="text" name="user" id="user"
@@ -72,8 +72,8 @@ script('core', [
 		</div>
 
 		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
-		echo ' shake';
-	} ?>">
+			echo ' shake';
+		} ?>">
 			<label for="password" class=""><?php p($l->t('Password')); ?></label>
 			
 			<input type="password" name="password" id="password" value=""
@@ -85,26 +85,26 @@ script('core', [
 		
 		<div class="submit-wrap">
 			<?php if (!empty($_['invalidpassword']) && !empty($_['canResetPassword'])) {
-		?>
+				?>
 				<a id="lost-password" class="warning" href="<?php p($_['resetPasswordLink']); ?>">
 					<?php p($l->t('Wrong password. Reset it?')); ?>
 				</a>
 				<?php
-	} elseif (!empty($_['invalidpassword'])) {
-		?>
+			} elseif (!empty($_['invalidpassword'])) {
+				?>
 					<p class="warning">
 						<?php p($l->t('Wrong password.')); ?>
 					</p>
 				<?php
-	} ?>
+			} ?>
 
 			<?php if (!empty($_['csrf_error'])) {
-		?>
+				?>
 					<p class="warning">
 						<?php p($l->t('You took too long to log in, please try again now')); ?>
 					</p>
 					<?php
-	} ?>
+			} ?>
 				
 			<button type="submit" id="submit" class="login-button">
 				<span><?php p($l->t('Login')); ?></span>
@@ -115,7 +115,7 @@ script('core', [
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
 			<?php
-			$stayLoggedInText = $l->t('Stay logged in');
+					$stayLoggedInText = $l->t('Stay logged in');
 
 			if ($_['rememberLoginState'] === 0) {
 				?>
@@ -135,7 +135,7 @@ script('core', [
 
 </form>
 <?php if (!empty($_['alt_login'])) {
-				?>
+	?>
 <form id="alternative-logins">
 		<legend><?php p($l->t('Alternative Logins')) ?></legend>
 		<ul>
@@ -153,4 +153,4 @@ script('core', [
 		</ul>
 </form>
 <?php
-			}
+}

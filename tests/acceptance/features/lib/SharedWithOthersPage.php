@@ -32,7 +32,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Shared With Others page.
  */
 class SharedWithOthersPage extends FilesPageBasic {
-
 	/**
 	 *
 	 * @var string $path

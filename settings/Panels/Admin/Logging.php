@@ -29,7 +29,6 @@ use OCP\IConfig;
 use OCP\IURLGenerator;
 
 class Logging implements ISettings {
-
 	/** @var IConfig  */
 	protected $config;
 	/** @var IURLGenerator  */

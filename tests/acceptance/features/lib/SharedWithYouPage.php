@@ -29,7 +29,6 @@ use Exception;
  * Shared with you page.
  */
 class SharedWithYouPage extends FilesPageBasic {
-
 	/**
 	 *
 	 * @var string $path

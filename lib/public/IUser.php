@@ -34,7 +34,6 @@ use OCP\User\NotPermittedActionException;
  * @since 8.0.0
  */
 interface IUser {
-
 	/**
 	 * @return integer
 	 * @since 11.0.0

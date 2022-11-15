@@ -42,7 +42,6 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class LoginController extends Controller {
-
 	/** @var IUserManager */
 	private $userManager;
 

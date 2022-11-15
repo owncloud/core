@@ -33,7 +33,6 @@ use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\StorageNotAvailableException;
 
 class UserStoragesControllerTest extends StoragesControllerTest {
-
 	/**
 	 * @var array
 	 */

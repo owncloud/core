@@ -9,7 +9,6 @@ use OCP\Migration\IOutput;
  * so the behaviour does not change.
  */
 class Version20210928123126 implements ISimpleMigration {
-
 	/**
 	 * @param IOutput $out
 	 */

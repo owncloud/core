@@ -45,7 +45,7 @@ abstract class AbstractCheck implements ICheck {
 				if (isset($functions[$errorObject])) {
 					return $this->getLocalDescription();
 				}
-			// no break;
+				// no break;
 			case CodeChecker::CLASS_EXTENDS_NOT_ALLOWED:
 			case CodeChecker::CLASS_IMPLEMENTS_NOT_ALLOWED:
 			case CodeChecker::CLASS_NEW_NOT_ALLOWED:
@@ -55,7 +55,7 @@ abstract class AbstractCheck implements ICheck {
 				if (isset($classes[$errorObject])) {
 					return $this->getLocalDescription();
 				}
-			break;
+				break;
 
 			case CodeChecker::CLASS_CONST_FETCH_NOT_ALLOWED:
 				$constants = $this->getLocalConstants();
@@ -63,7 +63,7 @@ abstract class AbstractCheck implements ICheck {
 				if (isset($constants[$errorObject])) {
 					return $this->getLocalDescription();
 				}
-			break;
+				break;
 
 			case CodeChecker::CLASS_METHOD_CALL_NOT_ALLOWED:
 				$methods = $this->getLocalMethods();
@@ -71,7 +71,7 @@ abstract class AbstractCheck implements ICheck {
 				if (isset($methods[$errorObject])) {
 					return $this->getLocalDescription();
 				}
-			break;
+				break;
 		}
 
 		return $this->check->getDescription($errorCode, $errorObject);

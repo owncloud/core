@@ -29,7 +29,6 @@ class ChildDownloadResponse extends DownloadResponse {
 };
 
 class DownloadResponseTest extends \Test\TestCase {
-
 	/**
 	 * @var ChildDownloadResponse
 	 */

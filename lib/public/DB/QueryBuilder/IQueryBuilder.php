@@ -31,7 +31,6 @@ use Doctrine\DBAL\ForwardCompatibility\DriverResultStatement;
  * @since 8.2.0
  */
 interface IQueryBuilder {
-
 	/**
 	 * @since 9.0.0
 	 */

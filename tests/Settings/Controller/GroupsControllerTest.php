@@ -23,7 +23,6 @@ use OCP\AppFramework\Http\DataResponse;
  * @package Tests\Settings\Controller
  */
 class GroupsControllerTest extends \Test\TestCase {
-
 	/** @var \OCP\AppFramework\IAppContainer */
 	private $container;
 

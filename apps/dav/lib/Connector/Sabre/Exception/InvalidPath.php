@@ -58,7 +58,6 @@ class InvalidPath extends Exception {
 	 * @return void
 	 */
 	public function serialize(\Sabre\DAV\Server $server, \DOMElement $errorNode) {
-
 		// set ownCloud namespace
 		$errorNode->setAttribute('xmlns:o', self::NS_OWNCLOUD);
 

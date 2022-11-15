@@ -53,7 +53,6 @@ use OCP\Files\FileInfo;
  *  	└── Hello.txt.v1638547177      # Content of the prev. version
  */
 class MetaStorage {
-
 	/** @var string File-extension of the metadata of the current file  */
 	public const CURRENT_FILE_EXT = ".current.json";
 

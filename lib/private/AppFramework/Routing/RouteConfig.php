@@ -62,7 +62,6 @@ class RouteConfig {
 	 * The routes and resource will be registered to the \OCP\Route\IRouter
 	 */
 	public function register() {
-
 		// parse simple
 		$this->processSimpleRoutes($this->routes);
 
@@ -199,7 +198,6 @@ class RouteConfig {
 
 		$resources = isset($routes['resources']) ? $routes['resources'] : [];
 		foreach ($resources as $resource => $config) {
-
 			// the url parameter used as id to the resource
 			foreach ($actions as $action) {
 				$url = $config['url'];

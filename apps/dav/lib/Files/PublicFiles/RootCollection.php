@@ -37,7 +37,6 @@ use Sabre\DAV\Exception\NotFound;
  * @package OCA\DAV\Files\PublicFiles
  */
 class RootCollection extends Collection {
-
 	/** @var IManager */
 	private $shareManager;
 	/** @var \OCP\IL10N */

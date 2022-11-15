@@ -10,9 +10,9 @@
 ));?>
 				<?php else: ?>
 					<?php p($l->t(
-	'You are using %s of %s (%s %%)',
-	[$_['usage'], $_['total_human'],  $_['usage_relative']]
-));?>
+						'You are using %s of %s (%s %%)',
+						[$_['usage'], $_['total_human'],  $_['usage_relative']]
+					));?>
 				<?php endif ?>
 			</p>
 		</div>

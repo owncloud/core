@@ -30,7 +30,6 @@ use Exception;
  * Admin Apps Settings page.
  */
 class AdminAppsSettingsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

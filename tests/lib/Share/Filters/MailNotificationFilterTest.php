@@ -6,7 +6,6 @@ use OC\Share\Filters\MailNotificationFilter;
 use Test\TestCase;
 
 class MailNotificationFilterTest extends TestCase {
-
 	/**
 	 * @dataProvider mailNotificationData
 	 * @param array $original

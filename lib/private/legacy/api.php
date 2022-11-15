@@ -67,7 +67,6 @@ use OCP\Authentication\Exceptions\AccountCheckException;
  */
 
 class OC_API {
-
 	/**
 	 * API authentication levels
 	 */
@@ -383,7 +382,6 @@ class OC_API {
 			if ($userSession->verifyAuthHeaders($request)) {
 				$ocsApiRequest = isset($_SERVER['HTTP_OCS_APIREQUEST']) ? $_SERVER['HTTP_OCS_APIREQUEST'] === 'true' : false;
 				if ($ocsApiRequest) {
-
 					// initialize the user's filesystem
 					\OC_Util::setupFS(\OC_User::getUser());
 					self::$isLoggedIn = true;

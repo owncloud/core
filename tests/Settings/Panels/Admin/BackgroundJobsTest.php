@@ -18,7 +18,6 @@ use OCP\IConfig;
  * @group DB
  */
 class BackgroundJobsTest extends \Test\TestCase {
-
 	/** @var BackgroundJobs */
 	private $panel;
 	/** @var IConfig */

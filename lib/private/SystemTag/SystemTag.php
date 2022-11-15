@@ -25,7 +25,6 @@ namespace OC\SystemTag;
 use OCP\SystemTag\ISystemTag;
 
 class SystemTag implements ISystemTag {
-
 	/**
 	 * @var string
 	 */

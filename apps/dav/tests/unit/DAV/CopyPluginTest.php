@@ -36,7 +36,6 @@ use OCP\Files\ForbiddenException;
 use OCA\DAV\Files\ICopySource;
 
 class CopyPluginTest extends TestCase {
-
 	/** @var Server | \PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 	/** @var CopyPlugin */

@@ -34,7 +34,6 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class ExpireTrash extends TimedJob {
-
 	/**
 	 * @var IConfig
 	 */

@@ -29,7 +29,6 @@ use Sabre\DAV\ServerPlugin;
 use Test\TestCase;
 
 class CorsPluginTest extends TestCase {
-
 	/**
 	 * @var Server
 	 */

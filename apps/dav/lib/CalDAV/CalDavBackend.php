@@ -55,7 +55,6 @@ use Sabre\VObject\Recur\EventIterator;
  * @package OCA\DAV\CalDAV
  */
 class CalDavBackend extends AbstractBackend implements SyncSupport, SubscriptionSupport, SchedulingSupport {
-
 	/**
 	 * We need to specify a max date, because we need to stop *somewhere*
 	 *

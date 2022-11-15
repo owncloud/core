@@ -90,7 +90,7 @@ class AppSettingsController extends Controller {
 					return ($a < $b) ? -1 : 1;
 				});
 				break;
-			// not-installed apps
+				// not-installed apps
 			case 'disabled':
 				$apps = \OC_App::listAllApps();
 				$apps = \array_filter($apps, function ($app) {
@@ -114,7 +114,6 @@ class AppSettingsController extends Controller {
 		// fix groups to be an array
 		$dependencyAnalyzer = new DependencyAnalyzer(new Platform($this->config), $this->l10n);
 		$apps = \array_map(function ($app) use ($dependencyAnalyzer) {
-
 			// fix groups
 			$groups = [];
 			if (\is_string($app['groups'])) {

@@ -61,7 +61,6 @@ class ChildController extends Controller {
 };
 
 class ControllerTest extends TestCase {
-
 	/** @var ChildController */
 	private $controller;
 	/** @var DIContainer */

@@ -30,7 +30,6 @@ namespace OCP\User;
  * @since 10.0
  */
 interface IProvidesQuotaBackend {
-
 	/**
 	 * Get a users quota
 	 *

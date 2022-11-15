@@ -30,7 +30,6 @@
 namespace OC\OCS;
 
 class Result {
-
 	/** @var array  */
 	protected $data;
 

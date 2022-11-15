@@ -31,7 +31,6 @@ namespace OC\Share;
 use OC\HintException;
 
 class Helper extends \OC\Share\Constants {
-
 	/**
 	 * Generate a unique target for the item
 	 * @param string $itemType

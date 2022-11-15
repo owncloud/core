@@ -33,7 +33,6 @@ use OCP\Files\NotFoundException;
  * @package OC\Files\Meta
  */
 class MetaFileIdNode extends AbstractFolder {
-
 	/** @var \OCP\Files\Node */
 	private $node;
 	/** @var MetaRootNode */

@@ -35,7 +35,6 @@ use OCP\IUserSession;
  * @package OC\Settings\Controller
  */
 class SettingsPageController extends Controller {
-
 	/** @var ISettingsManager */
 	protected $settingsManager;
 	/** @var IURLGenerator */

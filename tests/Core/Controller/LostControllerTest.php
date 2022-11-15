@@ -42,7 +42,6 @@ use PHPUnit\Framework\TestCase;
  * @package OC\Core\Controller
  */
 class LostControllerTest extends TestCase {
-
 	/** @var LostController */
 	private $lostController;
 	/** @var IUser */

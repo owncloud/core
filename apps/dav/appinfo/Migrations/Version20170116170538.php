@@ -29,7 +29,6 @@ use OCP\Migration\ISchemaMigration;
  * Add fileid field to this table if needed
  */
 class Version20170116170538 implements ISchemaMigration {
-
 	/**
 	 * @param Schema $schema
 	 * @param string $prefix
