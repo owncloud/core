@@ -306,7 +306,6 @@
     "Database name" : "שם מסד הנתונים",
     "Database tablespace" : "מרחב הכתובות של מסד הנתונים",
     "Database host" : "שרת בסיס נתונים",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "יש לפרט את מספר הפורט יחד עם שם המארח (לדוגמא, localhost: 5432).",
     "Performance warning" : "אזהרת ביצועים",
     "SQLite will be used as database." : "יעשה שימוש ב- SQLite כמסד נתונים.",
     "For larger installations we recommend to choose a different database backend." : "להתקנות נרחבות אנו ממליצים לבחור מסד נתונים אחר לצד השרת.",

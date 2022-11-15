@@ -284,7 +284,6 @@ OC.L10N.register(
     "Database name" : "데이터베이스 이름",
     "Database tablespace" : "데이터베이스 테이블 공간",
     "Database host" : "데이터베이스 호스트",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "호스트 이름과 함께 포트 번호를 지정하십시오(예: localhost: 5432)",
     "Performance warning" : "성능 경고",
     "SQLite will be used as database." : "데이터베이스로 SQLite를 사용할 것입니다.",
     "For larger installations we recommend to choose a different database backend." : "대규모 파일을 관리하려고 한다면 다른 데이터베이스 백엔드를 선택할 것을 권장합니다.",

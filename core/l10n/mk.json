@@ -287,7 +287,6 @@
     "Database name" : "Име на база",
     "Database tablespace" : "Табела во базата на податоци",
     "Database host" : "Сервер со база",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Ве молиме наведете го бројот на портата заедно со името на хостот (на пр., localhost: 5432).",
     "Performance warning" : "Предупредување за перформансите",
     "SQLite will be used as database." : "SQLite ќе се користи како база на податоци.",
     "For larger installations we recommend to choose a different database backend." : "За поголеми инсталации ви препорачуваме да изберете back-end база на податоци.",

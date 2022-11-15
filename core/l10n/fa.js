@@ -267,7 +267,6 @@ OC.L10N.register(
     "Database name" : "نام پایگاه داده",
     "Database tablespace" : "جدول پایگاه داده",
     "Database host" : "هاست پایگاه داده",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "لطفا شماره پورت را با نام میزبان مشخص کنید (به عنوان مثال، localhost: 5432).",
     "Performance warning" : "اخطار کارایی",
     "SQLite will be used as database." : "SQLite به عنوان پایگاه‎داده استفاده خواهد شد.",
     "For larger installations we recommend to choose a different database backend." : "برای راه اندازی های بزرگتر توصیه می کنیم پشتانه پایگاه داده متفاوتی انتخاب کنید.",

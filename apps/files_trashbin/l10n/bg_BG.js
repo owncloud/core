@@ -1,7 +1,7 @@
 OC.L10N.register(
     "files_trashbin",
     {
-    "Couldn't delete %s permanently" : "Неуспешно изтриване на %s за постоянно",
+    "Couldn't delete %s permanently" : "Неуспешно е изтриването на %s за постоянно",
     "Couldn't restore %s" : "Неуспешно възтановяване на %s.",
     "Deleted files" : "Изтрити файлове",
     "Restore" : "Възстановяване",

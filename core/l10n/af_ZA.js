@@ -221,7 +221,6 @@ OC.L10N.register(
     "Database name" : "Databasisnaam",
     "Database tablespace" : "Databasis tabelspasie",
     "Database host" : "Databasis gasheer",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Spesifiseer die poortnommer saam met die gasheernaam (bv. localhost: 5432).",
     "Finish setup" : "Maak opstelling klaar",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Goeiedag,<br><br>ons wil u laat weet dat %s <strong>%s</strong> met u gedeel het.<br><a href=\"%s\">Bekyk!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Hierdie toepassing benodig JavaScript om reg te werk. {linkstart}Aktiveer JavaScript{linkend} en herlaai die blad.",

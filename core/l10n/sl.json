@@ -266,7 +266,6 @@
     "Database name" : "Ime podatkovne zbirke",
     "Database tablespace" : "Razpredelnica podatkovne zbirke",
     "Database host" : "Gostitelj podatkovne zbirke",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Določiti je treba številko vrat skupaj z imenom gostitelja (na primer: localhost: 5432).",
     "Performance warning" : "Opozorilo učinkovitosti delovanja",
     "SQLite will be used as database." : "Kot podatkovna zbirka bo uporabljena zbirka SQLite",
     "For larger installations we recommend to choose a different database backend." : "Za večje namestitve je priporočljivo uporabiti drugo ozadnji program  zbirke podatkov.",

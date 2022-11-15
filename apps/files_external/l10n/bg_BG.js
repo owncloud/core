@@ -31,7 +31,7 @@ OC.L10N.register(
     "No URL provided by backend " : "Няма URL адрес предоставен от бекенд",
     "Error getting OAuth2 URL for " : "Грешка при получаването на URL адрес от OAuth2 за",
     "Empty response from the server" : "Празен отговор от сървъра",
-    "Couldn't access. Please logout and login to activate this mount point" : "Неуспешен достъп. Моля, излезте и влезте за да активирате тази точка на монтиране",
+    "Couldn't access. Please logout and login to activate this mount point" : "Неуспешен достъп. Моля, излезте и влезте, за да активирате тази точка на монтиране",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "Неуспешно извличане на информация от сървъра на ownCloud: {code} {type}",
     "Couldn't get the list of external mount points: {type}" : "Неуспешно извличане на списъка с външни точки за монтиране: {тип}",
     "There was an error with message: " : "Възникна греша със съобщение:",

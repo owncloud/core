@@ -264,7 +264,6 @@
     "Database name" : "Navn på database",
     "Database tablespace" : "Database tabelplads",
     "Database host" : "Databasehost",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Angiv port-nummeret og host-navnet, tak (f.eks, localhost: 5432).",
     "Performance warning" : "Ydelses advarsel",
     "SQLite will be used as database." : "SQLite vil blive brugt som database.",
     "For larger installations we recommend to choose a different database backend." : "Til større installationer anbefaler vi at vælge en anden database-backend.",

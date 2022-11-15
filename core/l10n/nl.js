@@ -287,7 +287,6 @@ OC.L10N.register(
     "Database name" : "Naam database",
     "Database tablespace" : "Database tablespace",
     "Database host" : "Databaseserver",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Geef het poortnummer met de hostnaam op (bijv, localhost: 5432).",
     "Performance warning" : "Prestatiewaarschuwing",
     "SQLite will be used as database." : "SQLite wordt gebruikt als database.",
     "For larger installations we recommend to choose a different database backend." : "Voor grotere installaties adviseren we een andere database engine te kiezen.",

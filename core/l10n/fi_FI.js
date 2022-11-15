@@ -273,7 +273,6 @@ OC.L10N.register(
     "Database name" : "Tietokannan nimi",
     "Database tablespace" : "Tietokannan taulukkotila",
     "Database host" : "Tietokantapalvelin",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Määritä portin numero palvelimen nimen yhteydessä (esim. localhost: 5432).",
     "Performance warning" : "Suorituskykyvaroitus",
     "SQLite will be used as database." : "SQLitea käytetään tietokantana.",
     "For larger installations we recommend to choose a different database backend." : "Suuria asennuksia varten suositellaan muun tietokannan käyttöä.",
