@@ -55,13 +55,17 @@ OCA.Sharing.App = {
 		if (this._outFileList) {
 			return this._outFileList;
 		}
+
+		var fileActions = this._createFileActions();
+		this._adjustOutShareActions(fileActions);
+
 		this._outFileList = new OCA.Sharing.FileList(
 			$el,
 			{
 				id: 'shares.others',
 				scrollContainer: $('#app-content'),
 				sharedWithUser: false,
-				fileActions: this._createFileActions(),
+				fileActions: fileActions,
 				config: OCA.Files.App.getFilesConfig()
 			}
 		);
@@ -321,6 +325,18 @@ OCA.Sharing.App = {
 			}
 
 			return newActions;
+		});
+	},
+
+	_adjustOutShareActions: function(fileActions) {
+		fileActions.addAdvancedFilter(function(actions, context) {
+			// delete action is removed to prevent confusion. Users might accidentally
+			// delete a file or a folder instead of unsharing it.
+			// If the user clicks in the a folder, he'll be moved to the "all files" section,
+			// so there is no need check for additional context and we'll remove the delete
+			// action from all the files and folders in the list.
+			delete(actions.Delete);
+			return actions;
 		});
 	}
 };
