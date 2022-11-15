@@ -48,7 +48,7 @@ Feature: create folder using MKCOL
       | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @issue-ocis-reva-9 @issue-ocis-reva-197
+  @skipOnOcV10 @issue-ocis-reva-9 @issue-ocis-reva-197
   Scenario: send MKCOL requests to another user's webDav endpoints as normal user
     Given user "Brian" has been created with default attributes and without skeleton files
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
@@ -56,11 +56,11 @@ Feature: create folder using MKCOL
       | /remote.php/dav/files/%username%/textfile0.txt  |
       | /remote.php/dav/files/%username%/PARENT         |
       | /remote.php/dav/files/%username%/does-not-exist |
-    Then the HTTP status code of responses on all endpoints should be "403"
+    Then the HTTP status code of responses on all endpoints should be "404"
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "409"
+    Then the HTTP status code of responses on all endpoints should be "404"
 
   @skipOnOcV10 @personalSpace @issue-ocis-reva-9 @issue-ocis-reva-197
   Scenario: send MKCOL requests to another user's webDav endpoints as normal user using the spaces WebDAV API
@@ -70,11 +70,11 @@ Feature: create folder using MKCOL
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt  |
       | /remote.php/dav/spaces/%spaceid%/PARENT         |
       | /remote.php/dav/spaces/%spaceid%/does-not-exist |
-    Then the HTTP status code of responses on all endpoints should be "403"
+    Then the HTTP status code of responses on all endpoints should be "404"
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "409"
+    Then the HTTP status code of responses on all endpoints should be "404"
 
 
   Scenario: send MKCOL requests to webDav endpoints using invalid username but correct password
