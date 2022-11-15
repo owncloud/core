@@ -57,7 +57,7 @@ OCA.Sharing.App = {
 		}
 
 		var fileActions = this._createFileActions();
-		this._adjustOutShareActions(fileActions);
+		this._adjustOutAndLinkShareActions(fileActions);
 
 		this._outFileList = new OCA.Sharing.FileList(
 			$el,
@@ -82,13 +82,17 @@ OCA.Sharing.App = {
 		if (this._linkFileList) {
 			return this._linkFileList;
 		}
+
+		var fileActions = this._createFileActions();
+		this._adjustOutAndLinkShareActions(fileActions);
+
 		this._linkFileList = new OCA.Sharing.FileList(
 			$el,
 			{
 				id: 'shares.link',
 				scrollContainer: $('#app-content'),
 				linksOnly: true,
-				fileActions: this._createFileActions(),
+				fileActions: fileActions,
 				config: OCA.Files.App.getFilesConfig()
 			}
 		);
@@ -328,11 +332,11 @@ OCA.Sharing.App = {
 		});
 	},
 
-	_adjustOutShareActions: function(fileActions) {
+	_adjustOutAndLinkShareActions: function(fileActions) {
 		fileActions.addAdvancedFilter(function(actions, context) {
 			// delete action is removed to prevent confusion. Users might accidentally
 			// delete a file or a folder instead of unsharing it.
-			// If the user clicks in the a folder, he'll be moved to the "all files" section,
+			// If the user clicks in the folder, he'll be moved to the "all files" section,
 			// so there is no need check for additional context and we'll remove the delete
 			// action from all the files and folders in the list.
 			delete(actions.Delete);
