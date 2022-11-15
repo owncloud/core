@@ -1,0 +1,12 @@
+Change: Delete action is removed from sharing sections
+
+In the files apps, the "shared with others" and "shared by link" sections
+allowed people to use a delete action on a file or folder present in that
+list. This was causing problems because people accidentally removed the
+folder when, in fact, they wanted to unshare it.
+
+This delete action isn't present any longer. You can unshare from those
+views by accessing the file or folder's details. If you want to delete
+the file or folder, you can do it from the regular "all files" section.
+
+https://github.com/owncloud/core/pull/40497
