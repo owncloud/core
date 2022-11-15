@@ -52,13 +52,10 @@ Feature: create folder using MKCOL
   Scenario: send MKCOL requests to another user's webDav endpoints as normal user
     Given user "Brian" has been created with default attributes and without skeleton files
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
-      | endpoint                                        |
-      | /remote.php/dav/files/%username%/textfile0.txt  |
-      | /remote.php/dav/files/%username%/PARENT         |
-      | /remote.php/dav/files/%username%/does-not-exist |
-    Then the HTTP status code of responses on all endpoints should be "404"
-    When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
       | endpoint                                           |
+      | /remote.php/dav/files/%username%/textfile0.txt     |
+      | /remote.php/dav/files/%username%/PARENT            |
+      | /remote.php/dav/files/%username%/does-not-exist    |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "404"
 
@@ -70,9 +67,6 @@ Feature: create folder using MKCOL
       | /remote.php/dav/spaces/%spaceid%/textfile0.txt  |
       | /remote.php/dav/spaces/%spaceid%/PARENT         |
       | /remote.php/dav/spaces/%spaceid%/does-not-exist |
-    Then the HTTP status code of responses on all endpoints should be "404"
-    When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
-      | endpoint                                           |
       | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "404"
 
