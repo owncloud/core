@@ -28,7 +28,7 @@ OC.L10N.register(
     "Federated Cloud" : "Федеративен облак",
     "Your Federated Cloud ID:" : "Вашето ID за федеративен облак:",
     "Share it:" : "Споделяне с:",
-    "Add to your website" : "Добавяне към вашия сайт",
+    "Add to your website" : "Добавяне към вашия уебсайт",
     "Share with me via ownCloud" : "Споделяне с мен чрез ownCloud",
     "HTML Code:" : "HTML код:",
     "Nothing to configure." : "Няма нищо за конфигуриране."

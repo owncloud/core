@@ -314,6 +314,7 @@
     "Database name" : "Veritabanı adı",
     "Database tablespace" : "Veritabanı tablo alanı",
     "Database host" : "Veritabanı sunucusu",
+    "Please specify the port number along with the host name (e.g., localhost:5432)." : "Lütfen bağlantı noktası numarasını ana bilgisayar adıyla birlikte belirtin (ör. localhost:5432).",
     "Performance warning" : "Performans uyarısı",
     "SQLite will be used as database." : "Veritabanı olarak SQLite kullanılacak.",
     "For larger installations we recommend to choose a different database backend." : "Daha büyük kurulumlar için farklı bir veritabanı arka ucu seçmenizi öneriyoruz",

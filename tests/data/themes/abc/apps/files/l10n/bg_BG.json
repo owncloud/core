@@ -14,7 +14,7 @@
     "Processing files..." : "Файловете се обработват...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Неуспешно качване на {filename}, защото е директория или е с размер от 0 байта.",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Няма достатъчно свободно пространство, качвате {size1}, но в наличност има само {size2}.",
-    "You don’t have permission to upload or create files here" : "Нямате необходимите права да качвате или създавате файлове тук",
+    "You don’t have permission to upload or create files here" : "Нямате необходимите права тук да качвате или създавате файлове",
     "Target folder \"{dir}\" does not exist any more" : "Целевата папка \"{dir}\" вече не съществува",
     "Target folder does not exist any more" : "Целевата папка вече не съществува",
     "The file {file} is currently locked, please try again later" : "Файлът {file} в момента е заключен, моля, опитайте отново по-късно",

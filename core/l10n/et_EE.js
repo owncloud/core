@@ -21,6 +21,7 @@ OC.L10N.register(
     "Download / View / Edit" : "Laadi alla / Vaata / Muuda",
     "Recipients can view, download, edit, delete and upload contents." : "Vastuvõtjad saavad sisu vaadata, alla laadida, muuta, kustutada ja üles laadida.",
     "Upload only" : "Ainult üleslaadimine",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "Failide vastuvõtmine mitmelt saatjalt ilma kausta sisu avalikustamata.",
     "Preparing update" : "Uuendamise ettevalmistamine",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Paranda hoiatus:",
