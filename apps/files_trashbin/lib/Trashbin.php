@@ -608,6 +608,21 @@ class Trashbin {
 		return false;
 	}
 
+	private static function recursiveMkdir($view, $targetDir) {
+		$checkingDir = $targetDir;
+		$toBeCreated = [];
+		while (!$view->file_exists($checkingDir) && $checkingDir !== '/' && $checkingDir !== '.' && $checkingDir !== '') {
+			$toBeCreated[] = $checkingDir;
+			$checkingDir = \dirname($checkingDir);
+		}
+
+		// need to reverse the array
+		$toBeCreated = \array_reverse($toBeCreated);
+		foreach ($toBeCreated as $creatingDir) {
+			$view->mkdir($creatingDir);
+		}
+	}
+
 	/**
 	 * restore all versions for the filename from trashbin in the target location
 	 *
@@ -642,6 +657,7 @@ class Trashbin {
 			}
 
 			if ($view->is_dir('/files_trashbin/versions/' . $filename)) {
+				self::recursiveMkdir($rootView, "{$owner}/files_versions/" . \dirname($ownerPath));
 				$rootView->rename(Filesystem::normalizePath($user . '/files_trashbin/versions/' . $filename), Filesystem::normalizePath($owner . '/files_versions/' . $ownerPath));
 			} else {
 				$dir = \dirname($filename);
@@ -669,6 +685,7 @@ class Trashbin {
 					if ($timestamp) {
 						$src = '/files_trashbin/versions/' . $dirAndFilename . '.v' . $v . '.d' . $timestamp;
 						$dst = '/files_versions/' . $ownerPath . '.v' . $v;
+						self::recursiveMkdir($rootView, $owner . \dirname($dst));
 						$rootView->rename("$user$src", "$owner$dst");
 						if ($metaEnabled) {
 							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $user, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
@@ -676,6 +693,7 @@ class Trashbin {
 					} else {
 						$src = '/files_trashbin/versions/' . $dirAndFilename . '.v' . $v;
 						$dst = '/files_versions/' . $ownerPath . '.v' . $v;
+						self::recursiveMkdir($rootView, $owner . \dirname($dst));
 						$rootView->rename("$user$src", "$owner$dst");
 						if ($metaEnabled) {
 							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $user, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
