@@ -110,6 +110,8 @@ OC.L10N.register(
     "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Limitar las notificaiones acerca de la creación y cambios de sus <strong>archivos favoritos</strong><em>(Stream only)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Se ha <strong>eliminado</strong> un archivo o carpeta",
     "A file or folder has been <strong>restored</strong>" : "Se ha <strong>restaurado</strong> un archivo o carpeta",
+    "A file or folder has been <strong>renamed</strong>" : "Un fichero o carpeta ha sido <strong>renombrado</strong>",
+    "A file or folder has been <strong>moved</strong>" : "Un fichero o carpeta ha sido <strong>movido</strong>",
     "You created %1$s" : "Ha creado %1$s",
     "%2$s created %1$s" : "%2$s ha creado %1$s",
     "%1$s was created in a public folder" : "%1$s ha sido creado en una carpeta pública",
