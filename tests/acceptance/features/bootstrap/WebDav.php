@@ -5375,6 +5375,10 @@ trait WebDav {
 		if ($entryNameToSearch === null) {
 			return $results;
 		}
+
+		//print all response of search request if match not found
+		print_r($multistatusResults);
+
 		return false;
 	}
 
