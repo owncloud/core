@@ -3329,6 +3329,9 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws GuzzleException
 	 */
 	public function getPersonalSpaceIdForUser(string $user, bool $alwaysDoIt = false): ?string {
+		if ($user === 'non-existent-user') {
+			return WebDavHelper::generateUUIDv4();
+		}
 		if ($alwaysDoIt || ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES)) {
 			return WebDavHelper::getPersonalSpaceIdForUser(
 				$this->getBaseUrl(),

@@ -17,3 +17,14 @@ Feature: create folder using MKCOL
       | /remote.php/dav/files/%username%/does-not-exist |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on each endpoint should be "403, 403, 403, 409" respectively
+
+
+  Scenario: send MKCOL requests to non-existent user's webDav endpoints as normal user
+    Given user "Brian" has been created with default attributes and without skeleton files
+    When user "Brian" requests these endpoints with "MKCOL" including body "" about user "non-existent-user"
+      | endpoint                                                  |
+      | /remote.php/dav/files/non-existent-user/textfile0.txt     |
+      | /remote.php/dav/files/non-existent-user/PARENT            |
+      | /remote.php/dav/files/non-existent-user/does-not-exist    |
+      | /remote.php/dav/files/non-existent-user/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "409"
