@@ -5,7 +5,7 @@ OC.L10N.register(
     "Tagged files" : "Файлове с етикети",
     "Select tags to filter by" : "Изберете етикети, по които да филтрирате",
     "Please select tags to filter by" : "Моля, изберете етикети, по които да филтрирате",
-    "No files found for the selected tags" : "Не са намерени файлове за избраните етикети",
+    "No files found for the selected tags" : "Не са намерени файлове с избраните етикети",
     "<strong>System tags</strong> for a file have been modified" : "<strong>Системните етикети</strong> за файла бяха променени",
     "System tag %3$s was assigned to %2$s due to automation rule" : "Системният етикет %3$s е присвоен на %2$s поради автоматизирано правило",
     "You assigned system tag %3$s" : "Присвоихте системен етикет %3$s",

@@ -13,7 +13,7 @@
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" сподели \"%3$s\" с вас",
     "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" ви покани да прегледате \"%3$s\" (от името на \"%2$s\")",
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" ви покани да прегледате \"%3$s\"",
-    "Accept" : "Приемам",
+    "Accept" : "Приемане",
     "Decline" : "Отказвам",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Споделете с мен чрез моето ID в #ownCloud Федеративен облак, вижте %s",
     "Share with me through my #ownCloud Federated Cloud ID" : "Споделяне с мен чрез моето ID в #ownCloud Федеративен облак",

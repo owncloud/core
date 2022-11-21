@@ -11,7 +11,7 @@ OC.L10N.register(
     "Shared with others" : "Споделено с други",
     "Shared by link" : "Споделено с връзка",
     "Anonymous upload" : "Анонимно качване",
-    "Click to select files or use drag & drop to upload" : "Натиснете за да изберете файлове или използвайте плъзгане и пускане за да качите",
+    "Click to select files or use drag & drop to upload" : "Натиснете, за избор на файлове или използвайте плъзгане и пускане за да качите",
     "Uploaded files" : "Качени файлове",
     "Uploading..." : "Качване...",
     "Nothing shared with you yet" : "Все още няма нищо споделено с вас",

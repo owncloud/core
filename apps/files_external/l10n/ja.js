@@ -15,6 +15,7 @@ OC.L10N.register(
     "Error generating key pair" : "キーペアの生成エラー",
     "All users. Type to select user or group." : "すべてのユーザー。ユーザー、グループを追加",
     "(group)" : "(グループ)",
+    "All users" : "すべてのユーザー",
     "Compatibility with Mac NFD encoding (slow)" : "Mac NFD エンコード互換 (遅い)",
     "Admin defined" : "管理者設定済",
     "Saved" : "保存されました",
@@ -66,6 +67,7 @@ OC.L10N.register(
     "Remote subfolder" : "リモートサブフォルダー",
     "Secure https://" : "セキュア https://",
     "Google Drive" : "Google Drive",
+    "SubFolder" : "サブフォルダー",
     "Local" : "ローカル",
     "Location" : "場所",
     "ownCloud" : "ownCloud",
@@ -75,6 +77,8 @@ OC.L10N.register(
     "SFTP with secret key login" : "秘密鍵でSFTPログイン",
     "Share" : "共有",
     "Domain" : "ドメイン",
+    "Service Account" : "サービスアカウント",
+    "Service Account Password" : "サービスアカウントのパスワード",
     "SMB / CIFS using OC login" : "ownCloudログインを利用したSMB / CIFS",
     "Username as share" : "共有名",
     "<b>Note:</b> " : "<b>注意:</b> ",
@@ -103,6 +107,7 @@ OC.L10N.register(
     "Advanced settings" : "詳細設定",
     "Delete" : "削除",
     "Allow users to mount external storage" : "ユーザーに外部ストレージの接続を許可する",
-    "Allow users to mount the following external storage" : "ユーザーに以下の外部ストレージのマウントを許可する"
+    "Allow users to mount the following external storage" : "ユーザーに以下の外部ストレージのマウントを許可する",
+    "Allow sharing on user-mounted external storages" : "ユーザーがマウントした外部ストレージでの共有を許可する"
 },
 "nplurals=1; plural=0;");

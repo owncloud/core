@@ -316,6 +316,7 @@ OC.L10N.register(
     "Database name" : "Emër baze të dhënash",
     "Database tablespace" : "Tablespace baze të dhënash",
     "Database host" : "Strehë baze të dhënash",
+    "Please specify the port number along with the host name (e.g., localhost:5432)." : "Ju lutemi, tok me emrin e strehës specifikoni një numër porte (p.sh., localhost:5432).",
     "Performance warning" : "Sinjalizim funksionimi",
     "SQLite will be used as database." : "Si bazë të dhënash do të përdoret SQLite.",
     "For larger installations we recommend to choose a different database backend." : "Për instalime më të mëdha këshillojmë të zgjidhni një tjetër program shërbyesi baze të dhënash.",

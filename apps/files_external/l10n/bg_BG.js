@@ -13,7 +13,7 @@ OC.L10N.register(
     "Please provide a valid app key and secret." : "Моля, въведете валиден ключ и тайна на приложението.",
     "Generate keys" : "Генериране на ключове",
     "Error generating key pair" : "Грешка при генерирането на двойката ключове",
-    "All users. Type to select user or group." : "Всички потребители. Въведете за да изберете потребител или група.",
+    "All users. Type to select user or group." : "Всички потребители. Въведете, за да изберете потребител или група.",
     "(group)" : "(група)",
     "All users" : "Всички потребители",
     "Compatibility with Mac NFD encoding (slow)" : "Съвместимост с Mac NFD кодиране (бавно)",

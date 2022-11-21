@@ -147,7 +147,7 @@
     "The special username %s is not allowed" : "Специалното потребителско %s име не е разрешено",
     "A valid password must be provided" : "Трябва да бъде зададена валидна парола",
     "The username is already being used" : "Това потребителско име вече е заето.",
-    "Login canceled by app" : "Влизането е прекратено от приложение",
+    "Login canceled by app" : "Влизането е анулирано от приложението",
     "User disabled" : "Потребителят е деактивиран",
     "Settings" : "Настройки",
     "Users" : "Потребители",
