@@ -121,6 +121,7 @@ $tmpl->assign('enableAvatars', \OC::$server->getConfig()->getSystemValue('enable
 
 $tmpl->assign('show_is_enabled', $config->getAppValue('core', 'umgmt_show_is_enabled', 'false'));
 $tmpl->assign('show_storage_location', $config->getAppValue('core', 'umgmt_show_storage_location', 'false'));
+$tmpl->assign('show_storage_used', $config->getAppValue('core', 'umgmt_show_storage_used', 'false'));
 $tmpl->assign('show_last_login', $config->getAppValue('core', 'umgmt_show_last_login', 'false'));
 $tmpl->assign('show_email', $config->getAppValue('core', 'umgmt_show_email', 'false'));
 $tmpl->assign('show_backend', $config->getAppValue('core', 'umgmt_show_backend', 'false'));
