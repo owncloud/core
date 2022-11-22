@@ -245,7 +245,7 @@ class UsersController extends Controller {
 			'isEnabled' => $user->isEnabled(),
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
-						'storageUsed' => $storageUsed,
+			'storageUsed' => $storageUsed,
 			'lastLogin' => $user->getLastLogin() * 1000,
 			'backend' => $user->getBackendClassName(),
 			'email' => $displayName,
