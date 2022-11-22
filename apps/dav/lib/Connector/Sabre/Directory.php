@@ -155,6 +155,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				throw new SabreForbidden();
 			}
 
+			list($used, $free) = $this->getQuotaInfo();
+			if ($free == 0) {
+				throw new SabreForbidden();
+			}
+
 			$this->fileView->verifyPath($this->path, $name);
 
 			$path = $this->fileView->getAbsolutePath($this->path) . '/' . $name;
@@ -210,6 +215,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			}
 
 			if (!$this->info->isCreatable()) {
+				throw new SabreForbidden();
+			}
+
+			list($used, $free) = $this->getQuotaInfo();
+			if ($free == 0) {
 				throw new SabreForbidden();
 			}
 
