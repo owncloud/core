@@ -230,7 +230,7 @@ OC.L10N.register(
     "Email address" : "Имейл адрес",
     "Legal" : "Юридически",
     "Imprint URL:" : "URL на отпечатъка:",
-    "Imprint URL" : "URL на отпечатъка",
+    "Imprint URL" : "URL на отпечатък",
     "Privacy Policy URL:" : "URL адрес на Политиката за поверителност:",
     "Privacy Policy URL" : "URL адрес на Политиката за поверителност",
     "Enterprise license key" : "Корпоративен лицензен ключ",

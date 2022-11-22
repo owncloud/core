@@ -153,7 +153,7 @@
     "Users" : "Потребители",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Приложението \"%s\" не може да бъде инсталирано защото следните зависимости не са изпълнени: %s",
     "A safe home for all your data" : "Сигурен дом за всичките ви данни",
-    "Imprint" : "отпечатване",
+    "Imprint" : "отпечатък",
     "Privacy Policy" : "Политика за поверителност",
     "File is currently busy, please try again later" : "В момента файлът се използва, моля опитайте по-късно",
     "Access to this resource or one of its sub-items has been denied." : "Достъпът до този ресурс или до някой от неговите под-елементи е отказан.",

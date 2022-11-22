@@ -301,7 +301,7 @@ OC.L10N.register(
     "File: %s" : "Файл: %s",
     "Line: %s" : "Линия: %s",
     "Trace" : "Проследяване",
-    "Imprint" : "отпечатване",
+    "Imprint" : "отпечатък",
     "Privacy Policy" : "Политика за поверителност",
     "Create an <strong>admin account</strong>" : "Създаване на <strong>администраторски профил</strong>.",
     "Username" : "Потребителско име",
