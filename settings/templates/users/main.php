@@ -62,6 +62,15 @@ translation('settings');
 						<?php p($l->t('Show storage location')) ?>
 					</label>
 				</p>
+                                <p>
+                                        <input type="checkbox" name="StorageUsed" value="StorageUsed" id="CheckboxStorageUsed"
+                                                class="checkbox" <?php if ($_['show_storage_used'] === 'true') {
+                                                	print_unescaped('checked="checked"');
+                                                } ?> />
+                                        <label for="CheckboxStorageUsed">
+                                                <?php p($l->t('Show storage used')) ?>
+                                        </label>
+                                </p>
 				<p>
 					<input type="checkbox" name="LastLogin" value="LastLogin" id="CheckboxLastLogin"
 						class="checkbox" <?php if ($_['show_last_login'] === 'true') {

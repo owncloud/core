@@ -15,6 +15,7 @@
 			<th class="enabled" scope="col"><?php p($l->t('Enabled')); ?></th>
 			<th class="quota" id="headerQuota" scope="col"><?php p($l->t('Quota')); ?></th>
 			<th class="storageLocation" scope="col"><?php p($l->t('Storage Location')); ?></th>
+                        <th class="storageUsed" scope="col"><?php p($l->t('Storage Used')); ?></th>
 			<th class="userBackend" scope="col"><?php p($l->t('User Backend')); ?></th>
 			<th class="lastLogin" scope="col"><?php p($l->t('Last Login')); ?></th>
 			<th id="headerResendInvitationEmail">&nbsp;</th>
@@ -70,6 +71,7 @@
 				</select>
 			</td>
 			<td class="storageLocation"></td>
+                        <td class="storageUsed"></td>
 			<td class="userBackend"></td>
 			<td class="lastLogin"></td>
 			<td class="resendInvitationEmail"></td>

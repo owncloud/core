@@ -267,6 +267,7 @@ span.usersLastLoginTooltip { white-space: nowrap; }
 #userlist .mailAddress,
 #userlist .enabled,
 #userlist .storageLocation,
+serlist .storageUsed,
 #userlist .userBackend,
 #userlist .lastLogin {
 	display : none;
