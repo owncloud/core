@@ -105,6 +105,8 @@ class Profile implements ISettings {
 		$groups = $this->groupManager->getUserGroups($this->userSession->getUser());
 		$tmpl->assign('groups', $groups);
 		$tmpl->assign('languageSelector', $selector->fetchPage());
+		$tmpl->assign('legal_privacy_policy', $this->config->getAppValue('core', 'legal.privacy_policy_url'));
+		$tmpl->assign('legal_imprint', $this->config->getAppValue('core', 'legal.imprint_url'));
 		return $tmpl;
 	}
 
