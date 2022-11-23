@@ -110,6 +110,11 @@ if ($_['mailAddressChangeSupported']) {
 
 </div>
 
+<div id="username" class="section">
+       <h2 class="username"><?php p($l->t('Username')); ?></h2>
+       <p><?php p($_['username']); ?></p>
+</div>
+
 <?php
 if ($_['passwordChangeSupported']) {
 	script('jquery-showpassword'); ?>
