@@ -46,13 +46,18 @@ class Checksum extends Wrapper {
 	 */
 	private $hashingContexts;
 
+	/**
+	 * Check if the stream has been read or written from the beginning.
+	 * If `fseek` is called, this flag should be false unless the target
+	 * position of the beginning of the stream
+	 */
+	private $fromBeginning = true;
+
 	/** @var CappedMemoryCache Key is path, value is array of checksums */
 	private static $checksums;
 
 	public function __construct(array $algos = ['sha1', 'md5', 'adler32']) {
-		foreach ($algos as $algo) {
-			$this->hashingContexts[$algo] = \hash_init($algo);
-		}
+		$this->startHashingContexts($algos);
 
 		if (!self::$checksums) {
 			self::$checksums = new CappedMemoryCache();
@@ -104,6 +109,23 @@ class Checksum extends Wrapper {
 	}
 
 	/**
+	 * @param int $offset
+	 * @param int $whence
+	 * @return bool
+	 */
+	public function stream_seek($offset, $whence = SEEK_SET) {
+		$seeked = parent::stream_seek($offset, $whence);
+		if ($seeked) {
+			$this->fromBeginning = parent::stream_tell() === 0;
+			if ($this->fromBeginning) {
+				// start new hashing contexts if we've moved to the beginning of the stream
+				$this->startHashingContexts();
+			}
+		}
+		return $seeked;
+	}
+
+	/**
 	 * @param int $count
 	 * @return string
 	 */
@@ -137,17 +159,39 @@ class Checksum extends Wrapper {
 	public function stream_close() {
 		$currentPath = $this->getPathFromStreamContext();
 		$checksum = $this->finalizeHashingContexts();
-		self::$checksums[$currentPath] = $checksum;
+		if ($this->fromBeginning && parent::stream_eof()) {
+			// only store the checksum if we've reached the end of the stream from the beginning
+			self::$checksums[$currentPath] = $checksum;
 
-		// If current path belongs to part file, save checksum for original file
-		// As a result, call to getChecksums for original file (of this part file) will
-		// fetch checksum from cache
-		$originalFilePath = OC_Util::stripPartialFileExtension($currentPath);
-		if ($originalFilePath !== $currentPath) {
-			self::$checksums[$originalFilePath] = $checksum;
+			// If current path belongs to part file, save checksum for original file
+			// As a result, call to getChecksums for original file (of this part file) will
+			// fetch checksum from cache
+			$originalFilePath = OC_Util::stripPartialFileExtension($currentPath);
+			if ($originalFilePath !== $currentPath) {
+				self::$checksums[$originalFilePath] = $checksum;
+			}
 		}
 
 		return parent::stream_close();
+	}
+
+	/**
+	 * Start hashing contexts. If no algorithm is provided, the existing ones
+	 * will be reinitialized, otherwise the ones provided will be used
+	 * @param array|null a list of hashing algorithms or null to use the existing ones
+	 * (from a previous `startHashingContexts($algos)` call)
+	 */
+	private function startHashingContexts($algos = null) {
+		if ($algos === null) {
+			foreach ($this->hashingContexts as $key => $value) {
+				$this->hashingContexts[$key] = \hash_init($key);
+			}
+		} else {
+			$this->hashingContexts = [];
+			foreach ($algos as $algo) {
+				$this->hashingContexts[$algo] = \hash_init($algo);
+			}
+		}
 	}
 
 	/**
