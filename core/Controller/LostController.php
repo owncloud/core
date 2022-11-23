@@ -166,6 +166,8 @@ class LostController extends Controller {
 	private function checkPasswordResetToken($token, $userId) {
 		$user = $this->userManager->get($userId);
 
+		$allow_change_empty = $this->config->getAppValue('core', 'umgmt_allow_change_empty_password', true);
+
 		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
 		if (\count($splittedToken) !== 2) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
@@ -181,6 +183,12 @@ class LostController extends Controller {
 		if (!\hash_equals($splittedToken[1], $token)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Could not reset password because the token does not match'));
+		}
+
+		// Disallow password reset on sso accounts
+		if (($allow_change_empty == false) && ($this->passwordHasLength($userId) == false)) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
+			throw new \Exception($this->l10n->t('Could not reset password because your account uses single-sign-on'));
 		}
 	}
 
@@ -397,4 +405,26 @@ class LostController extends Controller {
 		}
 		$this->userSession->logout();
 	}
+
+	// Disallow password reset on sso accounts
+	/**
+	 * Check if the current password has a length
+	 *
+	 * @param string $userId
+	 * @return bool
+	 */
+	private function passwordHasLength($userId) {
+		$query = \OC_DB::prepare('SELECT LENGTH(password) AS length FROM `*PREFIX*users` WHERE `uid` = ?');
+		$result = $query->execute([$userId]);
+		if (!$result) {
+			return false;
+		}
+		$row = $result->fetchRow();
+		if ($row && ((int)$row['length'] > 0)) {
+			return true;
+		}
+		return false;
+	}
+
+
 }
