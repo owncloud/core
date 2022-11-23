@@ -28,7 +28,7 @@ Feature: upload to a public link share
       | permissions | create |
     When the public uploads file "test.txt" with content "test" using the new public WebDAV API
     And the public uploads file "test.txt" with content "test2" using the new public WebDAV API
-    Then the HTTP status code of responses on all endpoints should be "201"
+    Then the HTTP status code of responses on each endpoint should be "<httpStatuses>" respectively
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
@@ -36,13 +36,13 @@ Feature: upload to a public link share
 
     @skipOnOcis
     Examples:
-      | secondFileName       |
-      | /FOLDER/test (2).txt |
+      | secondFileName       | httpStatuses |
+      | /FOLDER/test (2).txt | 201,201      |
 
     @skipOnOcV10
     Examples:
-      | secondFileName       |
-      | /FOLDER/test (1).txt |
+      | secondFileName       | httpStatuses |
+      | /FOLDER/test (1).txt | 201,204      |
 
 
   Scenario Outline: Uploading file to a public upload-only share using public API that was deleted does not work
@@ -289,16 +289,16 @@ Feature: upload to a public link share
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     When the public uploads file "test.txt" with content "test2" using the new public WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "<httpStatus>"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
     And the content of file "<secondFileName>" for user "Alice" should be "test2"
 
     @skipOnOcis
     Examples:
-      | secondFileName       |
-      | /FOLDER/test (2).txt |
+      | secondFileName       | httpStatus |
+      | /FOLDER/test (2).txt | 201        |
 
     @skipOnOcV10
     Examples:
-      | secondFileName       |
-      | /FOLDER/test (1).txt |
+      | secondFileName       | httpStatus |
+      | /FOLDER/test (1).txt | 204        |
