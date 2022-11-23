@@ -20,8 +20,8 @@ Feature: upload to a public link share
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
     And the content of file "/FOLDER/test (2).txt" for user "Alice" should be "test2"
 
-  @smokeTest @issue-ocis-reva-286
-  Scenario: Uploading same file to a public upload-only share multiple times via new API
+  @smokeTest @issue-ocis-1267
+  Scenario Outline: Uploading same file to a public upload-only share multiple times via new API
     # The new API does the autorename automatically in upload-only folders
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
@@ -32,7 +32,17 @@ Feature: upload to a public link share
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
-    And the content of file "/FOLDER/test (2).txt" for user "Alice" should be "test2"
+    And the content of file "<secondFileName>" for user "Alice" should be "test2"
+
+    @skipOnOcis
+    Examples:
+      | secondFileName       |
+      | /FOLDER/test (2).txt |
+
+    @skipOnOcV10
+    Examples:
+      | secondFileName       |
+      | /FOLDER/test (1).txt |
 
 
   Scenario Outline: Uploading file to a public upload-only share using public API that was deleted does not work
@@ -269,8 +279,8 @@ Feature: upload to a public link share
     Then the HTTP status code should be "403"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
 
-  @smokeTest @issue-ocis-reva-286
-  Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with new public API
+  @smokeTest @issue-ocis-1267
+  Scenario Outline: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with new public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
@@ -281,4 +291,14 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test2" using the new public WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
-    And the content of file "/FOLDER/test (2).txt" for user "Alice" should be "test2"
+    And the content of file "<secondFileName>" for user "Alice" should be "test2"
+
+    @skipOnOcis
+    Examples:
+      | secondFileName       |
+      | /FOLDER/test (2).txt |
+
+    @skipOnOcV10
+    Examples:
+      | secondFileName       |
+      | /FOLDER/test (1).txt |
