@@ -77,11 +77,17 @@ class Checksum extends Wrapper {
 			]
 		]);
 
+		// need to check the underlying stream's mode
+		// The `wrapSource` will use 'r+' by default, so the
+		// `stream_open` function might use that mode wrongly.
+		$meta = \stream_get_meta_data($source);
+		$mode = $meta['mode'] ?? 'r+';
 		return Wrapper::wrapSource(
 			$source,
 			$context,
 			'occhecksum',
-			self::class
+			self::class,
+			$mode
 		);
 	}
 
@@ -104,6 +110,20 @@ class Checksum extends Wrapper {
 	public function stream_open($path, $mode, $options, &$opened_path) {
 		$context = parent::loadContext('occhecksum');
 		$this->setSourceStream($context['source']);
+
+		switch ($mode[0]) {  // check first char of the mode
+			case 'r':
+			case 'w':
+			case 'x':
+				$this->fromBeginning = true;
+				break;
+			default:
+				// for 'a' (append), there might be content before
+				// what we're trying to write, so we can't calculate checksum
+				// for 'c', the file isn't truncated, so there might be content
+				$this->fromBeginning = false;
+				break;
+		}
 
 		return true;
 	}
@@ -260,5 +280,12 @@ class Checksum extends Wrapper {
 		}
 
 		return self::$checksums;
+	}
+
+	/**
+	 * For tests
+	 */
+	public static function resetChecksums() {
+		self::$checksums = new CappedMemoryCache();
 	}
 }
