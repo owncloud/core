@@ -1,0 +1,15 @@
+Bugfix: Store checksums only if the whole stream has been read
+
+Previously, range downloads (or downloads requesting a specific
+byte range) would store a checksum, if needed, based only on the
+requested range. This causes problems because the checksum is
+expected to be for the whole file.
+
+Now, those range downloads won't store a checksum because only a
+part of the file has been read, so the checksum would be incomplete.
+
+Some additional cases have been taken into account, mostly based
+on actions that could happen on the data stream, but they shouldn't
+happen normally.
+
+https://github.com/owncloud/core/pull/40513
