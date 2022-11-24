@@ -52,6 +52,7 @@ class Checksum extends Wrapper {
 	 * position of the beginning of the stream
 	 */
 	private $fromBeginning = true;
+	private $reading = false;
 
 	/** @var CappedMemoryCache Key is path, value is array of checksums */
 	private static $checksums;
@@ -113,15 +114,21 @@ class Checksum extends Wrapper {
 
 		switch ($mode[0]) {  // check first char of the mode
 			case 'r':
+			case 'c':
+				// "c" mode is write only, but we consider it as read because
+				// the content isn't truncated and there could be content after
+				// the pointer that should be read in order to compute the checksum
+				$this->fromBeginning = true;
+				$this->reading = true;
+				break;
 			case 'w':
 			case 'x':
 				$this->fromBeginning = true;
+				$this->reading = false;
 				break;
-			default:
-				// for 'a' (append), there might be content before
-				// what we're trying to write, so we can't calculate checksum
-				// for 'c', the file isn't truncated, so there might be content
+			case 'a':
 				$this->fromBeginning = false;
+				$this->reading = true;
 				break;
 		}
 
@@ -140,6 +147,9 @@ class Checksum extends Wrapper {
 			if ($this->fromBeginning) {
 				// start new hashing contexts if we've moved to the beginning of the stream
 				$this->startHashingContexts();
+				// mark the stream as reading because there could be content to read
+				// after the pointer even if we're only writing.
+				$this->reading = true;
 			}
 		}
 		return $seeked;
@@ -179,7 +189,7 @@ class Checksum extends Wrapper {
 	public function stream_close() {
 		$currentPath = $this->getPathFromStreamContext();
 		$checksum = $this->finalizeHashingContexts();
-		if ($this->fromBeginning && parent::stream_eof()) {
+		if ($this->fromBeginning && (!$this->reading || parent::stream_eof())) {
 			// only store the checksum if we've reached the end of the stream from the beginning
 			self::$checksums[$currentPath] = $checksum;
 
