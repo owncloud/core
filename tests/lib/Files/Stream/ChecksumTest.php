@@ -196,5 +196,116 @@ class ChecksumTest extends \Test\TestCase {
 		$expectedChecksums = [];
 		$checksums = Checksum::getChecksums($filename);
 		$this->assertEquals($expectedChecksums, $checksums);
+		$this->assertSame(0, \count($checksums));
+	}
+
+	public function testReadAndWrite() {
+		$content = 'random text to fill bytes';
+		$filename = 'test001.txt';
+
+		$file = $this->getVfsFile($filename);
+		$file->setContent($content);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb+'), $filename);
+
+		$contentWritten = \fwrite($fp, 'zzz');
+		$contentRead = \fread($fp, 1000);
+		\fclose($fp);
+		$this->assertSame(3, $contentWritten);
+		$this->assertSame('dom text to fill bytes', $contentRead);
+
+		$expectedChecksums = [
+			'sha1' => \sha1("zzz{$contentRead}"),
+			'md5' => \md5("zzz{$contentRead}"),
+			'adler32' => \hash('adler32', "zzz{$contentRead}"),
+		];
+		$checksums = Checksum::getChecksums($filename);
+		$this->assertEquals($expectedChecksums, $checksums);
+	}
+
+	public function testReadAndWrite2() {
+		$content = 'random text to fill bytes';
+		$filename = 'test001.txt';
+
+		$file = $this->getVfsFile($filename);
+		$file->setContent($content);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb+'), $filename);
+
+		$contentWritten = \fwrite($fp, 'zzz');
+		\fclose($fp);
+		$this->assertSame(3, $contentWritten);
+
+		// without fully reading the content, we can't provide checksums
+		$expectedChecksums = [];
+		$checksums = Checksum::getChecksums($filename);
+		$this->assertEquals($expectedChecksums, $checksums);
+		$this->assertSame(0, \count($checksums));
+	}
+
+	public function testWriteNotTruncate() {
+		$content = 'random text to fill bytes';
+		$filename = 'test001.txt';
+
+		$file = $this->getVfsFile($filename);
+		$file->setContent($content);
+		$fp = Checksum::wrap(\fopen($file->url(), 'cb+'), $filename);
+
+		$contentWritten = \fwrite($fp, 'zzz');
+		\fclose($fp);
+		$this->assertSame(3, $contentWritten);
+		$this->assertSame('zzzdom text to fill bytes', $file->getContent());  // just verifying there is content after what we've written
+
+		// without fully reading the content, we can't provide checksums
+		$expectedChecksums = [];
+		$checksums = Checksum::getChecksums($filename);
+		$this->assertEquals($expectedChecksums, $checksums);
+		$this->assertSame(0, \count($checksums));
+	}
+
+	public function testWriteJumpBack() {
+		$content = 'random text to fill bytes';
+		$filename = 'test001.txt';
+
+		$file = $this->getVfsFile($filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'wb'), $filename);
+
+		$contentWritten = \fwrite($fp, $content);
+		\fseek($fp, 7, SEEK_SET);
+		$contentWritten2 = \fwrite($fp, 'pool');
+		\fclose($fp);
+		$this->assertSame(\strlen($content), $contentWritten);
+		$this->assertSame(4, $contentWritten2);
+		$this->assertSame('random pool to fill bytes', $file->getContent());  // just verifying there is content after what we've written
+
+		// we can't provide checksums, some evaluated text was overwritten so the checksum is wrong
+		// calculated checksum would be from "random text to fill bytespool" instead of
+		// the actual content "random pool to fill bytes"
+		$expectedChecksums = [];
+		$checksums = Checksum::getChecksums($filename);
+		$this->assertEquals($expectedChecksums, $checksums);
+		$this->assertSame(0, \count($checksums));
+	}
+
+	public function testWriteJumpBeginning() {
+		$content = 'random text to fill bytes';
+		$filename = 'test001.txt';
+
+		$file = $this->getVfsFile($filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'wb'), $filename);
+
+		$contentWritten = \fwrite($fp, $content);
+		\fseek($fp, 0, SEEK_SET);
+		$contentWritten2 = \fwrite($fp, 'pool');
+		\fclose($fp);
+		$this->assertSame(\strlen($content), $contentWritten);
+		$this->assertSame(4, $contentWritten2);
+		$this->assertSame('poolom text to fill bytes', $file->getContent());  // just verifying there is content after what we've written
+
+		// we can't provide checksums, some evaluated text was overwritten so the checksum is wrong
+		// calculated checksum would be from "random text to fill bytespool" instead of
+		// the actual content "random pool to fill bytes"
+		$expectedChecksums = [];
+		$checksums = Checksum::getChecksums($filename);
+		$this->assertEquals($expectedChecksums, $checksums);
+		$this->assertSame(0, \count($checksums));
 	}
 }
