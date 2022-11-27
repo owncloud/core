@@ -41,7 +41,7 @@
     "This operation is forbidden" : "Операцията е забранена",
     "Directory \"{dir}\" is unavailable, please contact the administrator" : "Директорията \"{dir}\" е недостъпна, моля свържете се с администратор",
     "Storage for \"{dir}\" is temporarily not available" : "Хранилището за \"{dir}“ временно не е налично",
-    "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "Споделената директория \"{dir}\" не е налична, премахнете споделянето или се свържете с нейния собственик за да я споделите отново.",
+    "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "Споделената директория \"{dir}\" не е налична, премахнете споделянето или се свържете с нейния собственик, за да бъде споделена отново.",
     "Directory \"{dir}\" not found" : "Директорията \"{dir}\" не е намерена",
     "group" : "група",
     "Federated share" : "Федеративно споделяне",
