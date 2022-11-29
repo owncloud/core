@@ -6,7 +6,7 @@ OC.L10N.register(
     "Loading..." : "Зареждане...",
     "Change server..." : "Промяна на сървъра...",
     "Invalid Federated Cloud ID" : "Невалидно ID за федаративен облак",
-    "Sharing %s failed, because this item is already shared with %s" : "Неуспешно споделяне на %s, защото това съдържание е вече споделено с %s",
+    "Sharing %s failed, because this item is already shared with %s" : "Споделянето на %s е неуспешно, защото това съдържание е вече споделено с %s",
     "Not allowed to create a federated share with the same user" : "Не е разрешено създаването на федеративно споделяне със същия потребител",
     "File is already shared with %s" : "Файлът е вече споделен с %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Споделянето на %s е неуспешно, не може да се намери %s, може би сървърът в момента е недостъпен.",

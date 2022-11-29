@@ -17,7 +17,7 @@
     "Compatibility with Mac NFD encoding (slow)" : "Съвместимост с Mac NFD кодиране (бавно)",
     "Sharing cannot be enabled due to the chosen authentication method" : "Споделянето не може да бъде активирано заради избрания метод на удостоверяване",
     "Unknown auth backend \"{b}\"" : "Неизвестно удостоверяване на бекенд за \"{b}“",
-    "Please make sure that the app that provides this backend is installed and enabled" : "Моля, уверете се че приложението, което предоставя този бекенд е инсталирано и активирано",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Моля, уверете се че приложението, което предоставя тази фонова услуга е инсталирано и активирано",
     "Admin defined" : "Определено от администратора",
     "An error occurred while adding the external storage, please check the logs or contact the administrator" : "Възникна грешка при добавянето на външно хранилище, моля проверете регистрационните файлове или се свържете с администратор",
     "External storage has been added successfully" : "Външното хранилище е добавено успешно",
