@@ -1,7 +1,7 @@
 Change: Update Symfony components
 
 The following Symfony components have been updated to:
-- console 4.4.48
+- console 4.4.49
 - translation 4.4.47
 
 The following Symfony polyfill components have been updated:
@@ -20,3 +20,5 @@ https://symfony.com/blog/symfony-4-4-47-released
 https://github.com/owncloud/core/pull/40424
 https://symfony.com/blog/symfony-4-4-48-released
 https://github.com/owncloud/core/pull/40448
+https://symfony.com/blog/symfony-4-4-49-released
+https://github.com/owncloud/core/pull/40517
