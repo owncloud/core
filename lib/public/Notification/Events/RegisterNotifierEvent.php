@@ -21,7 +21,7 @@
 
 namespace OCP\Notification\Events;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use OCP\Notification\INotifier;
 
 /**

@@ -24,7 +24,7 @@
 namespace OCP\User;
 
 use OCP\IUser;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class UserExtendedAttributesEvent
