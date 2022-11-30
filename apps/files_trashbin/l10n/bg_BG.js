@@ -12,8 +12,8 @@ OC.L10N.register(
     "This directory is unavailable, please check the logs or contact the administrator" : "Директорията липсва, моля проверете докладите или се свържете с администратор",
     "restored" : "възстановено",
     "No deleted files" : "Няма изтрити файлове",
-    "You will be able to recover deleted files from here" : "Имате възможност да възстановите изтритите файлове от тук",
-    "No entries found in this folder" : "Няма намерени записи в тази папка",
+    "You will be able to recover deleted files from here" : "Имате възможност от тук да възстановите изтритите файлове",
+    "No entries found in this folder" : "В тази папка няма намерени записи",
     "Select all" : "Избиране на всички",
     "Name" : "Име",
     "Deleted" : "Изтрито"

@@ -26,7 +26,7 @@ OC.L10N.register(
     "%s (invisible)" : "%s (невидимо)",
     "%s (static)" : "%s (статично)",
     "No files in here" : "Тук няма файлове",
-    "No entries found in this folder" : "Няма намерени записи в тази папка",
+    "No entries found in this folder" : "В тази папка няма намерени записи",
     "Name" : "Име",
     "Size" : "Размер",
     "Modified" : "Променен на"
