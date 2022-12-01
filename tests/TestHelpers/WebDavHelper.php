@@ -631,7 +631,7 @@ class WebDavHelper {
 
 		// get space id if testing with spaces dav
 		if (self::$SPACE_ID_FROM_OCIS === '' && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
-			$spaceId = self::checkAndGetPersonalSpaceIdForUser(
+			$spaceId = self::getPersonalSpaceIdForUserOrFakeIfNotFound(
 				$baseUrl,
 				$doDavRequestAsUser ?? $user,
 				$password,
