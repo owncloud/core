@@ -242,7 +242,8 @@ class Session implements IUserSession, Emitter {
 	 * - For browsers, the session token validity is checked
 	 */
 	public function validateSession() {
-		if (!$this->getUser()) {
+		$sessionUser = $this->getUser();
+		if (!$sessionUser) {
 			return;
 		}
 
@@ -258,6 +259,11 @@ class Session implements IUserSession, Emitter {
 			}
 		} else {
 			$token = $appPassword;
+		}
+
+		if (!$sessionUser->isEnabled()) {
+			$this->tokenProvider->invalidateToken($token);
+			$this->logout();
 		}
 
 		if (!$this->validateToken($token)) {
@@ -567,11 +573,19 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 
-		$loginOk = $this->loginInOwnCloud('token', $user, $password);
+		try {
+			$loginOk = $this->loginInOwnCloud('token', $user, $password);
 
-		// set the app password
-		if ($loginOk) {
-			$this->session->set('app_password', $token);
+			// set the app password
+			if ($loginOk) {
+				$this->session->set('app_password', $token);
+			} else {
+				$this->tokenProvider->invalidateToken($token);
+			}
+		} catch (LoginException $e) {
+			// need to invalidate the token
+			$this->tokenProvider->invalidateToken($token);
+			throw $e;
 		}
 
 		return $loginOk;
@@ -755,20 +769,6 @@ class Session implements IUserSession, Emitter {
 		} catch (PasswordlessTokenException $ex) {
 			// Token has no password
 
-			if ($this->activeUser !== null && !$this->activeUser->isEnabled()) {
-				$this->logger->debug(
-					'user {uid}, {email}, {displayName} was disabled',
-					[
-						'app' => __METHOD__,
-						'uid' => $this->activeUser->getUID(),
-						'email' => $this->activeUser->getEMailAddress(),
-						'displayName' => $this->activeUser->getDisplayName(),
-					]
-				);
-				$this->tokenProvider->invalidateToken($token);
-				return false;
-			}
-
 			$dbToken->setLastCheck($now);
 			$this->tokenProvider->updateToken($dbToken);
 			return true;
@@ -781,28 +781,14 @@ class Session implements IUserSession, Emitter {
 			return true;
 		}
 
-		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false
-			|| ($this->activeUser !== null && !$this->activeUser->isEnabled())) {
-			// FIXME: protect debug statement this way to avoid regressions
-			if ($this->activeUser !== null) {
-				$this->logger->debug(
-					'user uid {uid}, email {email}, displayName {displayName} was disabled or password changed',
-					[
-						'app' => __METHOD__,
-						'uid' => $this->activeUser->getUID(),
-						'email' => $this->activeUser->getEMailAddress(),
-						'displayName' => $this->activeUser->getDisplayName(),
-					]
-				);
-			} else {
-				$this->logger->debug(
-					'user with login name {loginName} was disabled or password changed (no activeUser)',
-					[
-						'app' => __METHOD__,
-						'loginName' => $dbToken->getLoginName(),
-					]
-				);
-			}
+		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false) {
+			$this->logger->debug(
+				'password changed for user with login name {loginName}',
+				[
+					'app' => __METHOD__,
+					'loginName' => $dbToken->getLoginName(),
+				]
+			);
 
 			$this->tokenProvider->invalidateToken($token);
 			// Password has changed or user was disabled -> log user out
@@ -958,6 +944,10 @@ class Session implements IUserSession, Emitter {
 	 * @throws LoginException if an app canceled the login process or the user is not enabled
 	 */
 	public function loginUser(IUser $user = null, $password = null, $authModuleClass = null) {
+		if ($user === null) {
+			$this->emitFailedLogin(null);
+			return false;
+		}
 		// openidconnect calls the loginUser method. It might not have an $authModuleClass
 		return $this->loginInOwnCloud($authModuleClass, $user, $password);
 	}
@@ -1047,6 +1037,8 @@ class Session implements IUserSession, Emitter {
 			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
 			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 			throw new LoginException($message);
+		} else {
+			$this->logger->info("login {$user->getUID()} cancelled. User disabled", ['app' => __METHOD__]);
 		}
 
 		// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
