@@ -126,7 +126,7 @@ Details
 
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
-   The following Symfony components have been updated to: - console 4.4.48 - translation 4.4.47
+   The following Symfony components have been updated to: - console 4.4.49 - translation 4.4.47
 
    The following Symfony polyfill components have been updated: - symfony/polyfill-iconv
    (v1.26.0 to v1.27.0) - symfony/polyfill-intl-idn (v1.26.0 to v1.27.0) -
@@ -138,9 +138,11 @@ Details
    https://github.com/owncloud/core/pull/40337
    https://github.com/owncloud/core/pull/40424
    https://github.com/owncloud/core/pull/40448
+   https://github.com/owncloud/core/pull/40517
    https://symfony.com/blog/symfony-4-4-45-released
    https://symfony.com/blog/symfony-4-4-47-released
    https://symfony.com/blog/symfony-4-4-48-released
+   https://symfony.com/blog/symfony-4-4-49-released
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
