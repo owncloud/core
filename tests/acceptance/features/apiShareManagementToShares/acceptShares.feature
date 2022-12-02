@@ -584,7 +584,7 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has shared file "/toShareFile.txt" with user "Brian"
     And user "Brian" has accepted share "/toShareFile.txt" offered by user "Alice"
     When user "Alice" restores version index "1" of file "/toShareFile.txt" using the WebDAV API
-    Then the HTTP status code should be "200"
+    Then the HTTP status code should be "204"
     And the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
     And the content of file "/Shares/toShareFile.txt" for user "Brian" should be "Test Content."
 
