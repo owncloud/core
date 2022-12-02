@@ -154,7 +154,7 @@ class FilesVersionsContext implements Context {
 			WebDavHelper::getDavPath($user, 2) . \trim($path, "/");
 		$fullUrl = $this->featureContext->getBaseUrlWithoutPath() .
 			$xmlPart[$versionIndex];
-		HttpRequestHelper::sendRequest(
+		$response = HttpRequestHelper::sendRequest(
 			$fullUrl,
 			$this->featureContext->getStepLineRef(),
 			'COPY',
@@ -162,6 +162,7 @@ class FilesVersionsContext implements Context {
 			$this->featureContext->getPasswordForUser($user),
 			['Destination' => $destinationUrl]
 		);
+		$this->featureContext->setResponse($response, $user);
 	}
 
 	/**
