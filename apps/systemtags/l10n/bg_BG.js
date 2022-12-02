@@ -18,7 +18,7 @@ OC.L10N.register(
     "%1$s deleted system tag %2$s" : "%1$s изтри системен етикет %2$s",
     "You updated system tag %3$s to %2$s" : "Актуализирахте системен етикет %3$s на %2$s",
     "%1$s updated system tag %3$s to %2$s" : "%1$s актуализира системен етикет %3$s на %2$s",
-    "You assigned system tag %3$s to %2$s" : "Сложихте системен етикет %3$s на %2$s",
+    "You assigned system tag %3$s to %2$s" : "Сложихте системният етикет %3$s на %2$s",
     "%1$s assigned system tag %3$s to %2$s" : "%1$s присвои системен етикет %3$s на %2$s",
     "You unassigned system tag %3$s from %2$s" : "Отменихте присвоения системен етикет %3$s от %2$s",
     "%1$s unassigned system tag %3$s from %2$s" : "%1$s отмени присвоения системен етикет %3$s от %2$s",
@@ -29,6 +29,6 @@ OC.L10N.register(
     "No entries found in this folder" : "В тази папка няма намерени записи",
     "Name" : "Име",
     "Size" : "Размер",
-    "Modified" : "Променен на"
+    "Modified" : "Променено"
 },
 "nplurals=2; plural=(n != 1);");
