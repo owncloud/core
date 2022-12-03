@@ -72,7 +72,9 @@ class Application extends App {
 
 		/** @var AllConfig $config */
 		$config = $container->query('ServerContainer')->getConfig();
-		$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+
+		// FIXME: this needs adjustment
+		$metaEnabled = ($config->getSystemValue('file_storage.save_version_author', false) === true);
 
 		if ($metaEnabled) {
 			$container->registerService(

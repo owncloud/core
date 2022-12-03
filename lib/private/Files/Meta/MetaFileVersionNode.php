@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,8 +29,7 @@ use OCP\Files\IProvidesAdditionalHeaders;
 use OC\Preview;
 use OCA\Files_Sharing\SharedStorage;
 use OCP\Files\IProvidesVersionAuthor;
-use OCP\Files\IProvidesVersionIsCurrent;
-use OCP\Files\IProvidesVersionString;
+use OCP\Files\IProvidesVersionTag;
 use OCP\Files\IRootFolder;
 use OCP\Files\IPreviewNode;
 use OCP\Files\Storage\IVersionedStorage;
@@ -43,7 +42,7 @@ use OCP\IImage;
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor, IProvidesVersionString, IProvidesVersionIsCurrent {
+class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor, IProvidesVersionTag {
 
 	/** @var string */
 	private $versionId;
@@ -92,15 +91,8 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	/**
 	 * @return string
 	 */
-	public function getVersionString() : string {
-		return $this->versionInfo['version_string'] ?? '';
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function getVersionIsCurrent() : bool {
-		return $this->versionInfo['is_current'] ?? false;
+	public function getVersionTag() : string {
+		return $this->versionInfo['tag'] ?? '';
 	}
 
 	/**

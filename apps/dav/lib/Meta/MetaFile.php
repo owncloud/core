@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,8 +26,7 @@ use OCA\DAV\Files\ICopySource;
 use OCA\DAV\Files\IProvidesAdditionalHeaders;
 use OCA\DAV\Files\IFileNode;
 use OCP\Files\IProvidesVersionAuthor;
-use OCP\Files\IProvidesVersionIsCurrent;
-use OCP\Files\IProvidesVersionString;
+use OCP\Files\IProvidesVersionTag;
 use OCP\Files\Node;
 use Sabre\DAV\File;
 
@@ -155,20 +154,10 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	/**
 	 * @return string
 	 */
-	public function getVersionString() : string {
-		if ($this->file instanceof IProvidesVersionString) {
-			return $this->file->getVersionString();
+	public function getVersionTag() : string {
+		if ($this->file instanceof IProvidesVersionTag) {
+			return $this->file->getVersionTag();
 		}
 		return '';
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function getVersionIsCurrent() : bool {
-		if ($this->file instanceof IProvidesVersionIsCurrent) {
-			return $this->file->getVersionIsCurrent();
-		}
-		return false;
 	}
 }

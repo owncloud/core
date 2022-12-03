@@ -1,6 +1,8 @@
 <?php
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Jannik Stehle <jstehle@owncloud.com>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
@@ -34,8 +36,7 @@ class MetaPlugin extends ServerPlugin {
 
 	public const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-edited-by';
 	public const VERSION_EDITED_BY_PROPERTYNAME_NAME = '{http://owncloud.org/ns}meta-version-edited-by-name';
-	public const VERSION_STRING_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-string';
-	public const VERSION_IS_CURRENT_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-is-current';
+	public const VERSION_TAG_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-tag';
 
 	/**
 	 * Reference to main server object
@@ -101,6 +102,15 @@ class MetaPlugin extends ServerPlugin {
 				$file = \current($files);
 				return $baseFolder->getRelativePath($file->getPath());
 			});
+			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
+				return 'test';
+			});
+			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
+				return 'test';
+			});
+			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
+				return '1.0';
+			});
 		} elseif ($node instanceof MetaFile) {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
 				return $node->getVersionAuthor();
@@ -108,11 +118,8 @@ class MetaPlugin extends ServerPlugin {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
 				return $node->getVersionAuthorName();
 			});
-			$propFind->handle(self::VERSION_STRING_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionString();
-			});
-			$propFind->handle(self::VERSION_IS_CURRENT_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionIsCurrent();
+			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
+				return $node->getVersionTag();
 			});
 		}
 	}
