@@ -35,10 +35,10 @@ namespace OCA\Files_Versions;
 class Hooks {
 	public static function connectHooks() {
 		// Listen to write signals
+		\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');
+
 		if (\OC::$server->getConfig()->getSystemValue('file_storage.save_version_author', false) === true) {
-			\OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Versions\Hooks', 'write_hook');
-		} else {
-			\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');
+			\OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Versions\Hooks', 'post_write_hook');
 		}
 
 		// Listen to delete and rename signals
@@ -61,6 +61,18 @@ class Hooks {
 			$path = $params[\OC\Files\Filesystem::signal_param_path];
 			if ($path<>'') {
 				Storage::store($path);
+			}
+		}
+	}
+
+	/**
+	 * writes metadata for the current file
+	 */
+	public static function post_write_hook($params) {
+		if (\OCP\App::isEnabled('files_versions')) {
+			$path = $params[\OC\Files\Filesystem::signal_param_path];
+			if ($path<>'') {
+				Storage::storeMetaForCurrentFile($path);
 			}
 		}
 	}
@@ -160,6 +172,7 @@ class Hooks {
 	 */
 	public static function onLoadFilesAppScripts() {
 		\OCP\Util::addScript('files_versions', 'versionmodel');
+		\OCP\Util::addScript('files_versions', 'versioncurrentmodel');
 		\OCP\Util::addScript('files_versions', 'versioncollection');
 		\OCP\Util::addScript('files_versions', 'versionstabview');
 		\OCP\Util::addScript('files_versions', 'filesplugin');

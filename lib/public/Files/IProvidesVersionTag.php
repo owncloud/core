@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Jannik Stehle <jstehle@owncloud.com>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
@@ -22,19 +23,19 @@
 namespace OCP\Files;
 
 /**
- * Interface IProvidesVersionIsCurrent
+ * Interface IProvidesVersionTag
  * This interface provides version author retrieval for file version
  *
  * @package OCP\Files
  * @since 10.12.0
  */
-interface IProvidesVersionIsCurrent {
+interface IProvidesVersionTag {
 	/**
 	 * Returns the username of author which made this edit. Returns
-	 * empty string if this is the initial version @see IProvidesVersionIsCurrent::getVersionIsCurrent()
+	 * empty string if this is the initial version @see IProvidesVersionTag::getVersionTag()
 	 *
-	 * @return bool
+	 * @return string
 	 * @since 10.12.0
 	 */
-	public function getVersionIsCurrent() : bool;
+	public function getVersionTag() : string;
 }

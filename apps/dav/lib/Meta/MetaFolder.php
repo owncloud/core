@@ -71,4 +71,27 @@ class MetaFolder extends Collection {
 		}
 		throw new \InvalidArgumentException();
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getVersionAuthor() : string {
+		if ($this->folder instanceof IProvidesVersionAuthor) {
+			return $this->folder->getEditedBy();
+		}
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getVersionAuthorName() : string {
+		if ($this->folder instanceof IProvidesVersionAuthor) {
+			$uid =  $this->folder->getEditedBy();
+			$manager = \OC::$server->getUserManager();
+			$user = $manager->get($uid);
+			return $user !== null ? $user->getDisplayName() : '';
+		}
+		return '';
+	}
 }
