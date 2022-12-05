@@ -524,10 +524,10 @@ Feature: dav-versions
     And user "Alice" has deleted file "/davtest.txt"
     And as "Alice" file "/davtest.txt" should exist in the trashbin
     When user "Alice" restores the file with original path "/davtest.txt" using the trashbin API
-    Then the HTTP status code should be "204"
+    Then the HTTP status code should be "201"
     And as "Alice" file "/davtest.txt" should exist
     And the content of file "/davtest.txt" for user "Alice" should be "New Test Content."
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
     When user "Alice" restores version index "1" of file "/davtest.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "204"
     And the content of file "/davtest.txt" for user "Alice" should be "Old Test Content."
