@@ -141,7 +141,7 @@ Feature: dav-versions
     And user "Brian" has created folder "/received"
     And user "Brian" has moved folder "/Shares/sharingfolder" to "/received/sharingfolder"
     When user "Brian" restores version index "1" of file "/received/sharingfolder/sharefile.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "204"
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
@@ -155,7 +155,7 @@ Feature: dav-versions
     And user "Brian" has created folder "/received"
     And user "Brian" has moved file "/Shares/sharefile.txt" to "/received/sharefile.txt"
     When user "Brian" restores version index "1" of file "/received/sharefile.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "204"
     And the content of file "/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
@@ -170,7 +170,7 @@ Feature: dav-versions
     And user "Brian" has created folder "/received"
     And user "Brian" has moved file "/Shares/sharefile.txt" to "/received/sharefile.txt"
     When user "Brian" restores version index "1" of file "/received/sharefile.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "204"
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
