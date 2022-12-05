@@ -9,7 +9,10 @@
  */
 
 (function() {
+
 	/**
+	 * Non-concurrent version in a collection
+	 * 
 	 * @memberof OCA.Versions
 	 */
 	var VersionModel = OC.Backbone.Model.extend({

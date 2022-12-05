@@ -172,7 +172,7 @@ class Hooks {
 	 */
 	public static function onLoadFilesAppScripts() {
 		\OCP\Util::addScript('files_versions', 'versionmodel');
-		\OCP\Util::addScript('files_versions', 'versioncurrentmodel');
+		\OCP\Util::addScript('files_versions', 'versionsrootmodel');
 		\OCP\Util::addScript('files_versions', 'versioncollection');
 		\OCP\Util::addScript('files_versions', 'versionstabview');
 		\OCP\Util::addScript('files_versions', 'filesplugin');

@@ -103,13 +103,13 @@ class MetaPlugin extends ServerPlugin {
 				return $baseFolder->getRelativePath($file->getPath());
 			});
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
-				return 'test';
+				return $node->getVersionAuthor();
 			});
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
-				return 'test';
+				return $node->getVersionAuthorName();
 			});
 			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
-				return '1.0';
+				return $node->getVersionTag();
 			});
 		} elseif ($node instanceof MetaFile) {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {

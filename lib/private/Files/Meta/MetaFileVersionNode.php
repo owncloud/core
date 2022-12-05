@@ -39,6 +39,8 @@ use OCP\IImage;
 /**
  * Class MetaFileVersionNode - this class represents a version of a file in the
  * meta endpoint
+ * 
+ * /meta/fileid/v/id
  *
  * @package OC\Files\Meta
  */
@@ -82,6 +84,17 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public function getName() {
+		return $this->versionId;
+	}
+
+	public function getPath() {
+		return $this->parent->getPath() . '/' . $this->getName();
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getEditedBy() : string {
@@ -93,13 +106,6 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 */
 	public function getVersionTag() : string {
 		return $this->versionInfo['tag'] ?? '';
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getName() {
-		return $this->versionId;
 	}
 
 	/**
@@ -174,10 +180,6 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 
 	public function getId() {
 		return $this->parent->getId();
-	}
-
-	public function getPath() {
-		return $this->parent->getPath() . '/' . $this->getName();
 	}
 
 	public function getMountPoint() {
