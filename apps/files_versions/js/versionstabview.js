@@ -100,15 +100,17 @@
 		initialize: function() {
 			OCA.Files.DetailTabView.prototype.initialize.apply(this, arguments);
 
-			this.currentVersion = new OCA.Versions.VersionCurrentModel();
-			this.currentVersion.on('sync', this._onAddCurrentVersionModel, this);
+			// versions collection root - current version
+			this.versionsRoot = new OCA.Versions.VersionsRootModel();
+			this.versionsRoot.on('sync', this._onAddVersionsRootModel, this);
 
+			// versions collection - non-concurrent versions
 			this.collection = new OCA.Versions.VersionCollection();
 			this.collection.on('request', this._onCollectionRequest, this);
 			this.collection.on('sync', this._onCollectionEndRequest, this);
 			this.collection.on('update', this._onUpdate, this);
 			this.collection.on('error', this._onError, this);
-			this.collection.on('add', this._onAddNonCurrentVersionModel, this);
+			this.collection.on('add', this._onAddVersionModel, this);
 		},
 
 		getLabel: function() {
@@ -144,8 +146,8 @@
 					// reset and re-fetch the updated collection
 					self.$versionsContainer.empty();
 
-					self.currentVersion.setFileInfo(fileInfoModel);
-					self.currentVersion.fetch();
+					self.versionsRoot.setFileInfo(fileInfoModel);
+					self.versionsRoot.fetch();
 
 					self.collection.setFileInfo(fileInfoModel);
 					self.collection.reset([], {silent: true});
@@ -239,15 +241,15 @@
 			this.$el.find('.empty').toggleClass('hidden', !!this.collection.length);
 		},
 
-		_onAddNonCurrentVersionModel: function(model) {
+		_onAddVersionModel: function(model) {
 			// add version to the list (collection child)
 			var $el = $(this.versionTemplate(this._formatVersion(model)));
 			this.$versionsContainer.append($el);
 			$el.find('.has-tooltip').tooltip();
 		},
 
-		_onAddCurrentVersionModel: function(model) {
-			// add current version as first item in the list
+		_onAddVersionsRootModel: function(model) {
+			// add current version (versions root) as first item in the list
 			var $el = $(this.currentTemplate(this._formatCurrent(model)));
 			this.$versionsContainer.prepend($el);
 			$el.find('.has-tooltip').tooltip();
@@ -281,8 +283,8 @@
 			if (fileInfo) {
 				this.render();
 
-				this.currentVersion.setFileInfo(fileInfo);
-				this.currentVersion.fetch();
+				this.versionsRoot.setFileInfo(fileInfo);
+				this.versionsRoot.fetch();
 
 				this.collection.setFileInfo(fileInfo);
 				this.collection.reset([], {silent: true});

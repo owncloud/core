@@ -24,6 +24,8 @@ namespace OC\Files\Meta;
 
 use OC\Files\Node\AbstractFolder;
 use OCP\Files\IRootFolder;
+use OCP\Files\IProvidesVersionAuthor;
+use OCP\Files\IProvidesVersionTag;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Files\NotFoundException;
 use OCP\Files\Storage;
@@ -34,7 +36,7 @@ use OCP\Files\Storage;
  *
  * @package OC\Files\Meta
  */
-class MetaVersionCollection extends AbstractFolder {
+class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAuthor, IProvidesVersionTag {
 	/** @var IRootFolder */
 	private $root;
 	/** @var \OCP\Files\Node */
@@ -49,6 +51,28 @@ class MetaVersionCollection extends AbstractFolder {
 	public function __construct(IRootFolder $root, \OCP\Files\Node $node) {
 		$this->root = $root;
 		$this->node = $node;
+	}
+
+	public function getName() {
+		return "v";
+	}
+
+	public function getPath() {
+		return "/meta/{$this->getId()}/v";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEditedBy() : string {
+		return 'admin';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getVersionTag() : string {
+		return '1.0';
 	}
 
 	/**
@@ -118,13 +142,5 @@ class MetaVersionCollection extends AbstractFolder {
 	 */
 	public function getId() {
 		return $this->node->getId();
-	}
-
-	public function getName() {
-		return "v";
-	}
-
-	public function getPath() {
-		return "/meta/{$this->getId()}/v";
 	}
 }

@@ -18,9 +18,11 @@
 	});
 
 	/**
+	 * Versions collection root - current file version
+	 * 
 	 * @memberof OCA.Versions
 	 */
-	var VersionCurrentModel = OC.Backbone.Model.extend({
+	var VersionsRootModel = OC.Backbone.Model.extend({
 		sync: OC.Backbone.davSync,
 
 		davProperties: {
@@ -50,7 +52,7 @@
 		parse: function(version) {
 			var revision = version.id;
 			return {
-				id: this._fileInfo.get('id'),
+				id: revision,
 				name: revision,
 				fullPath: this._fileInfo.getFullPath(),
 				timestamp: moment(new Date(this._fileInfo.get('mtime'))).format('X'),
@@ -103,5 +105,5 @@
 
 	OCA.Versions = OCA.Versions || {};
 
-	OCA.Versions.VersionCurrentModel = VersionCurrentModel;
+	OCA.Versions.VersionsRootModel = VersionsRootModel;
 })();

@@ -20,6 +20,8 @@
 	});
 
 	/**
+	 * Collection of non-concurrent versions of a file
+	 * 
 	 * @memberof OCA.Versions
 	 */
 	var VersionCollection = OC.Backbone.Collection.extend({
