@@ -529,5 +529,5 @@ Feature: dav-versions
     And the content of file "/davtest.txt" for user "Alice" should be "New Test Content."
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
     When user "Alice" restores version index "1" of file "/davtest.txt" using the WebDAV API
-    Then the HTTP status code should be "204"
+    Then the HTTP status code should be "201"
     And the content of file "/davtest.txt" for user "Alice" should be "Old Test Content."
