@@ -45,7 +45,6 @@ require_once 'bootstrap.php';
  * WebUI SharingContext context.
  */
 class WebUISharingContext extends RawMinkContext implements Context {
-
 	/**
 	 *
 	 * @var FilesPage
@@ -1283,18 +1282,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		if (!$this->publicLinkFilesPage->isOpen()) {
 			throw new Exception('Not on public link page!');
 		}
-		if ($server === '%remote_server%') {
+		$servers = ['%local_server%', '%remote_server%'];
+		if (\in_array($server, $servers)) {
 			$server = $this->featureContext->substituteInLineCodes($server);
 			$this->publicLinkFilesPage->addToServer($server);
-		} elseif ($server === '%local_server%') {
-			$this->publicLinkFilesPage->saveToSameServer();
 		} else {
 			throw new Exception(
 				"Invalid server provided '" . $server . "'. " .
 				"Either should be '%remote_server%' or '%local_server%'"
 			);
 		}
-		// addToServer and saveToSameServer takes us from the public link page to the login page
+		// addToServer takes us from the public link page to the login page
 		// of the remote and local server respectively, waiting for us to login.
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getUserPassword($actualUsername);
@@ -2293,7 +2291,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theEmailAddressShouldHaveReceivedAnEmailContainingSharedPublicLink(?string $address):void {
 		$content = EmailHelper::getBodyOfLastEmail(
-			EmailHelper::getLocalMailhogUrl(),
 			$address,
 			$this->featureContext->getStepLineRef()
 		);

@@ -127,6 +127,7 @@ Feature: Creation of tags
       | UppercaseTag | normal |
       | lowercasetag | normal |
 
+
   Scenario: Creating tags with the same name in lowercase and uppercase should work
     When the administrator creates the following tags using the WebDAV API
       | name    | type   |
@@ -139,4 +140,3 @@ Feature: Creation of tags
       | testtag | normal |
       | Testtag | normal |
       | TESTTAG | normal |
-

@@ -14,6 +14,7 @@ Feature: Add, delete and edit comments in files and folders
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
+
   Scenario Outline: user adds and deletes comment for a file/folder
     When the user browses directly to display the "comments" details of file "lorem.txt" in folder "/"
     And the user comments with content "<comment>" using the webUI

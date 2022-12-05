@@ -7,16 +7,16 @@
 				/** @var OC_Theme $theme */
 				p(!empty($_['application'])?$_['application'].' - ':'');
 				p($theme->getTitle());
-			?>
+?>
 		</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="referrer" content="never">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 		<?php if ($theme->getiTunesAppId() !== '') {
-				?>
+			?>
 			<meta name="apple-itunes-app" content="app-id=<?php p($theme->getiTunesAppId()); ?>">
 		<?php
-			} ?>
+		} ?>
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="apple-mobile-web-app-title" content="<?php p((!empty($_['application']) && $_['appid']!='files')? $_['application']:'ownCloud'); ?>">
@@ -66,10 +66,10 @@
 					<div id="expand" tabindex="6" role="link" class="menutoggle">
 						<?php if ($_['enableAvatars']): ?>
 						<div class="avatardiv<?php if ($_['userAvatarSet']) {
-		print_unescaped(' avatardiv-shown');
-	} else {
-		print_unescaped('" style="display: none');
-	} ?>">
+							print_unescaped(' avatardiv-shown');
+						} else {
+							print_unescaped('" style="display: none');
+						} ?>">
 							<?php if ($_['userAvatarSet']): ?>
 								<img alt="" width="32" height="32"
 								src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>"

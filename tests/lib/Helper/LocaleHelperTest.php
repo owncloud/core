@@ -144,7 +144,7 @@ class LocaleHelperTest extends TestCase {
 			$userLang,
 			$commonLanguages,
 			$languages
-			) = $this->localeHelper->getNormalizedLanguages($langFactory, $currentCode);
+		) = $this->localeHelper->getNormalizedLanguages($langFactory, $currentCode);
 		$this->assertEquals($expectedUserLang, $userLang);
 		$this->assertEquals($expectedCommonLanguages, $commonLanguages);
 		$this->assertEquals($expectedLanguages, $languages);

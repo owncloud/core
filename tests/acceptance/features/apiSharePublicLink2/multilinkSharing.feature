@@ -43,6 +43,7 @@ Feature: multilinksharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Creating three public shares of a file
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
@@ -78,6 +79,7 @@ Feature: multilinksharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Check that updating password doesn't remove name of links
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
@@ -107,6 +109,7 @@ Feature: multilinksharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: Deleting a file deletes also its public links
     Given using OCS API version "1"
@@ -172,6 +175,7 @@ Feature: multilinksharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: Overwriting a file doesn't remove its public shares
     Given using OCS API version "1"

@@ -34,7 +34,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * shares_external table.
  */
 class CleanupRemoteStorages extends Command {
-
 	/**
 	 * @var IDBConnection
 	 */
@@ -145,16 +144,16 @@ class CleanupRemoteStorages extends Command {
 			->where(
 				$queryBuilder->expr()->like(
 					'id',
-				// match all 'shared::' + 32 characters storages
-				$queryBuilder->createPositionalParameter('shared::________________________________', IQueryBuilder::PARAM_STR),
+					// match all 'shared::' + 32 characters storages
+					$queryBuilder->createPositionalParameter('shared::________________________________', IQueryBuilder::PARAM_STR),
 					IQueryBuilder::PARAM_STR
 				)
 			)
 			->andWhere(
 				$queryBuilder->expr()->notLike(
 					'id',
-				// but not the ones starting with a '/', they are for normal shares
-				$queryBuilder->createPositionalParameter('shared::/%', IQueryBuilder::PARAM_STR),
+					// but not the ones starting with a '/', they are for normal shares
+					$queryBuilder->createPositionalParameter('shared::/%', IQueryBuilder::PARAM_STR),
 					IQueryBuilder::PARAM_STR
 				)
 			)->orderBy('numeric_id');

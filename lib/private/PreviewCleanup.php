@@ -20,13 +20,11 @@
  */
 namespace OC;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\Folder;
 use OCP\IDBConnection;
 
 class PreviewCleanup {
-
 	/**
 	 * @var IDBConnection
 	 */

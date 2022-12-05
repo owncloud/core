@@ -239,7 +239,6 @@
     "Database name" : "Nomine de base de datos",
     "Database tablespace" : "Spatio de tabella de base de datos",
     "Database host" : "Hospite de base de datos",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Specifica le numero de porto con le nomine de hospite (p.ex. localhost: 5432).",
     "Performance warning" : "Aviso de rendimento",
     "SQLite will be used as database." : "SQLite essera usate pro base de datos.",
     "For larger installations we recommend to choose a different database backend." : "Pro installationes major nos recommenda seliger un altere motor de base de datos.",

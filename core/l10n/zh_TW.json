@@ -305,7 +305,6 @@
     "Database name" : "資料庫名稱",
     "Database tablespace" : "資料庫 tablespace",
     "Database host" : "資料庫主機",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "請指定端口號與及主機名稱（例如，本地主機：5432）。",
     "Performance warning" : "效能警告",
     "SQLite will be used as database." : "將使用 SQLite 為資料庫",
     "For larger installations we recommend to choose a different database backend." : "在大型安裝中建議使用其他種資料庫",

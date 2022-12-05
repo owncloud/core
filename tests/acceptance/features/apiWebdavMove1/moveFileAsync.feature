@@ -10,6 +10,7 @@ Feature: move (rename) file
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
     And the administrator has enabled async operations
 
+
   Scenario Outline: Moving a file
     Given user "Alice" has created folder "FOLDER"
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/FOLDER/<destination-file-name>" using the WebDAV API
@@ -32,6 +33,7 @@ Feature: move (rename) file
       | file ?2.txt           |
       | sample,1.txt          |
 
+
   Scenario: Moving and overwriting a file
     Given user "Alice" has uploaded file with content "Welcome to move" to "/fileToMove.txt"
     When user "Alice" moves file "/fileToMove.txt" asynchronously to "/textfile0.txt" using the WebDAV API
@@ -46,6 +48,7 @@ Feature: move (rename) file
     And user "Alice" should not see the following elements
       | /fileToMove.txt |
 
+
   Scenario: Moving (renaming) a file to be only different case
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/TextFile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
@@ -58,6 +61,7 @@ Feature: move (rename) file
     And the content of file "/TextFile0.txt" for user "Alice" should be "ownCloud test text file 0"
     And user "Alice" should not see the following elements
       | /textfile0.txt |
+
 
   Scenario: Moving (renaming) a file to a file with only different case to an existing file
     Given user "Alice" has uploaded file with content "ownCloud test text file 1" to "textfile1.txt"
@@ -73,6 +77,7 @@ Feature: move (rename) file
     And the content of file "/TextFile0.txt" for user "Alice" should be "ownCloud test text file 1"
     And user "Alice" should not see the following elements
       | /textfile1.txt |
+
 
   Scenario: Moving (renaming) a file to a file in a folder with only different case to an existing file
     Given user "Alice" has created folder "PARENT"
@@ -129,6 +134,7 @@ Feature: move (rename) file
     And user "Alice" should see the following elements
       | /textfile0.txt |
 
+
   Scenario: move file into a not-existing folder
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/not-existing/not-existing-file.txt" using the WebDAV API
     Then the HTTP status code should be "202"
@@ -139,11 +145,13 @@ Feature: move (rename) file
     And user "Alice" should see the following elements
       | /textfile0.txt |
 
+
   Scenario: rename a file into an invalid filename
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/a\\a" using the WebDAV API
     Then the HTTP status code should be "400"
     And user "Alice" should see the following elements
       | /textfile0.txt |
+
 
   Scenario: Renaming a file to a path with extension .part should not be possible
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/textfile0.part" using the WebDAV API
@@ -152,6 +160,7 @@ Feature: move (rename) file
       | /textfile0.txt |
     But user "Alice" should not see the following elements
       | /textfile0.part |
+
 
   Scenario: Checking file id after a move
     Given user "Alice" has stored id of file "/textfile0.txt"
@@ -162,6 +171,7 @@ Feature: move (rename) file
     And user "Alice" should not see the following elements
       | /textfile0.txt |
 
+
   Scenario: disabled async operations leads to original behavior
     Given the administrator has disabled async operations
     And user "Alice" has created folder "FOLDER"
@@ -171,6 +181,7 @@ Feature: move (rename) file
       | header                |
       | OC-JobStatus-Location |
     And the content of file "/FOLDER/fileToMove.txt" for user "Alice" should be "ownCloud test text file 0"
+
 
   Scenario Outline: enabling async operations does no difference to normal MOVE - Moving a file
     Given the administrator has enabled async operations
@@ -183,6 +194,7 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: enabling async operations does no difference to normal MOVE - Moving and overwriting a file
     Given the administrator has enabled async operations
@@ -215,6 +227,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+
   Scenario Outline: enabling async operations does no difference to normal MOVE - move file into a not-existing folder
     Given the administrator has enabled async operations
     And using <dav_version> DAV path
@@ -225,6 +238,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+
   Scenario Outline: enabling async operations does no difference to normal MOVE - rename a file into an invalid filename
     Given the administrator has enabled async operations
     And using <dav_version> DAV path
@@ -234,6 +248,7 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: enabling async operations does no difference to normal MOVE - rename a file into a banned filename
     Given the administrator has enabled async operations

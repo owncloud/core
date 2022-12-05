@@ -21,6 +21,7 @@ Feature: get apps
       | systemtags           |
       | updatenotification   |
 
+
   Scenario: admin gets enabled apps - check for the minimal list of apps
     When the administrator gets the list of apps using the occ command
     Then the command should have been successful
@@ -32,10 +33,12 @@ Feature: get apps
       | files_sharing        |
       | updatenotification   |
 
+
   Scenario: admin checks the path of the given app
     When the administrator checks the location of the "testing" app using the occ command
     Then the command should have been successful
     And the path returned by the occ command should be inside one of the apps paths in the config for the "testing" app
+
 
   Scenario: admin checks the path for nonexistent app
     When the administrator checks the location of the "not-existing-app" app using the occ command

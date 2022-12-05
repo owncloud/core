@@ -4,6 +4,7 @@ Feature: Scanning files on local storage
   I want to be able to control the scanning of local storage for changes
   So that I can manage the balance between performance and "up-to-date-ness" of local storage
 
+
   Scenario: Adding a file to local storage and running scan should add files.
     Given user "Alice" has been created with default attributes and small skeleton files
     And using new DAV path
@@ -21,6 +22,7 @@ Feature: Scanning files on local storage
       | /local_storage/hello1.txt |
     But the propfind result of user "Alice" should not contain these entries:
       | /local_storage/hello2.txt |
+
 
   Scenario: Adding a file to local storage and running scan for a specific path should add files for only that path.
     Given user "Alice" has been created with default attributes and small skeleton files

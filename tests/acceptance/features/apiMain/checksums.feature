@@ -188,8 +188,7 @@ Feature: checksums
       | dav_version |
       | spaces      |
 
-  @files_sharing-app-required
-  @issue-ocis-reva-196 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @files_sharing-app-required @issue-ocis-reva-196 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: Sharing a file with checksum should return the checksum in the propfind using new DAV path
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -205,8 +204,7 @@ Feature: checksums
       | dav_version |
       | new         |
 
-  @files_sharing-app-required
-  @issue-ocis-reva-196 @skipOnOcV10
+  @files_sharing-app-required @issue-ocis-reva-196 @skipOnOcV10
   Scenario Outline: Modifying a shared file should return correct checksum in the propfind using new DAV path
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -230,7 +228,6 @@ Feature: checksums
     And user "Alice" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "Alice" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1" using the WebDAV API
     Then the HTTP status code of responses on all endpoints should be "201"
-
 
   @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload new DAV chunked file where checksum does not match
@@ -310,6 +307,7 @@ Feature: checksums
     Examples:
       | dav_version |
       | spaces      |
+
 
   Scenario Outline: Upload a file where checksum does match
     Given using <dav_version> DAV path
@@ -422,8 +420,7 @@ Feature: checksums
       | dav_version |
       | spaces      |
 
-  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224
-  @issue-ocis-reva-196
+  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224 @issue-ocis-reva-196
   Scenario Outline: Uploading a file with invalid SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
@@ -452,8 +449,7 @@ Feature: checksums
     Then the HTTP status code of responses on each endpoint should be "201, 201, 204" respectively
     And the content of file "/textfile0.txt" for user "Alice" should be "BBBBBCCCCC"
 
-  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224
-  @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload overwriting a file with new chunking and invalid checksum
     Given using new DAV path
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"

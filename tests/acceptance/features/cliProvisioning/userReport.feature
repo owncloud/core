@@ -4,6 +4,7 @@ Feature: get user report
   I want to be able get user report
   So that I can see the total number of users in an ownCloud server
 
+
   Scenario: admin gets the user report
     Given these users have been created without skeleton files and not initialized:
       | username |
@@ -12,6 +13,7 @@ Feature: get user report
     When the administrator retrieves the user report using the occ command
     Then the command should have been successful
     And the total users returned by the command should be 3
+
 
   Scenario: admin gets the user report when the user is disabled
     Given these users have been created without skeleton files and not initialized:
@@ -22,6 +24,7 @@ Feature: get user report
     When the administrator retrieves the user report using the occ command
     Then the command should have been successful
     And the total users returned by the command should be 3
+
 
   Scenario: admin gets the user report when a user has been created and deleted
     Given these users have been created without skeleton files and not initialized:

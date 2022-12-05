@@ -22,7 +22,6 @@ use Test\TestCase;
  * @see \OC\Repair\RepairInvalidShares
  */
 class RepairInvalidSharesTest extends TestCase {
-
 	/** @var IRepairStep */
 	private $repair;
 

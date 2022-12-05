@@ -23,9 +23,7 @@ namespace OCA\FederatedFileSharing\BackgroundJob;
 
 use OC\BackgroundJob\Job;
 use OC\BackgroundJob\JobList;
-use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\AppInfo\Application;
-use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\Notifications;
 use OCP\BackgroundJob\IJobList;
 use OCP\ILogger;
@@ -39,7 +37,6 @@ use OCP\ILogger;
  * @package OCA\FederatedFileSharing\BackgroundJob
  */
 class RetryJob extends Job {
-
 	/** @var  bool */
 	private $retainJob = true;
 

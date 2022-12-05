@@ -60,8 +60,6 @@ use OC\Security\SignedUrl\Verifier;
 use OC\User\LoginException;
 use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\Files\NoReadAccessException;
-use OCP\IConfig;
-use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\License\ILicenseManager;
 

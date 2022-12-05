@@ -7,6 +7,7 @@ Feature: dav-versions
     And using new DAV path
     And user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario: Upload file and no version is available
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -93,8 +94,7 @@ Feature: dav-versions
     Then the HTTP status code should be "204"
     And the content of file "/davtest.txt" for user "Alice" should be "Back To The Future."
 
-  @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161
-  @issue-ocis-reva-17 @issue-ocis-reva-56
+  @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161 @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario Outline: Uploading a chunked file does create the correct version that can be restored
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -114,8 +114,7 @@ Feature: dav-versions
       | dav-path | status-code |
       | new      | 204         |
 
-  @skipOnStorage:ceph @files_primary_s3-issue-161 @notToImplementOnOCIS @newChunking @issue-ocis-1321
-  @issue-ocis-reva-17 @issue-ocis-reva-56 @skipOnStorage:scality
+  @skipOnStorage:ceph @files_primary_s3-issue-161 @notToImplementOnOCIS @newChunking @issue-ocis-1321 @issue-ocis-reva-17 @issue-ocis-reva-56 @skipOnStorage:scality
   Scenario: Uploading a file asynchronously does create the correct version that can be restored
     Given the administrator has enabled async operations
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"

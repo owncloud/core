@@ -44,7 +44,6 @@ use OCP\Share\IShare;
  * @group DB
  */
 class DefaultShareProviderTest extends TestCase {
-
 	/** @var IDBConnection */
 	protected $dbConn;
 

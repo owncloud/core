@@ -21,6 +21,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
 
+
   Scenario: expiration date is disabled for sharing with groups, user shares with a group
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "no"
@@ -33,6 +34,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | file_target | /lorem.txt |
       | expiration  |            |
       | uid_owner   | %username% |
+
 
   Scenario: expiration date is disabled for sharing with groups but enabled for sharing with users, user shares with a group
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -48,6 +50,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | expiration  |            |
       | uid_owner   | %username% |
 
+
   Scenario: expiration date is enabled for sharing with groups, user shares a file with a group
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -62,6 +65,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
       | uid_owner   | %username% |
+
 
   Scenario Outline: expiration date is enforced for group, user shares a file
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -82,6 +86,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | 3        | +3 days |
       | 0        | today   |
 
+
   Scenario: expiration date is enforced for group, user shares and tries to change expiration date more than allowed
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -96,6 +101,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
       | uid_owner   | %username% |
+
 
   Scenario: expiration date is enforced for group, user reshares received file with the group
     Given user "Carol" has shared file "lorem.txt" with user "Alice"
@@ -112,6 +118,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | expiration  | +3 days    |
       | uid_owner   | %username% |
 
+
   Scenario: expiration date is enabled but not enforced for group, user reshares received file with group
     Given user "Carol" has shared file "lorem.txt" with user "Alice"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -125,6 +132,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | file_target | /lorem.txt |
       | expiration  | +7 days    |
       | uid_owner   | %username% |
+
 
   Scenario: expiration date is enabled but not enforced for group, user reshares received file with group, but removes default expiration date
     Given user "Carol" has shared file "lorem.txt" with user "Alice"
@@ -140,6 +148,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | uid_owner   | %username% |
       | expiration  |            |
 
+
   Scenario: expiration date is enabled but not enforced for group, user reshares received file with user, but changes expiration date
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "no"
@@ -154,6 +163,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | uid_owner   | %username% |
       | expiration  | +15 days   |
 
+
   Scenario: expiration date is enabled but not enforced for group, user shares to group through api and checks the expiration date on webUI
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "no"
@@ -166,6 +176,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
     And user "Carol" has logged in using the webUI
     When the user opens the share dialog for file "lorem.txt"
     Then the expiration date input field should be "+15 days" for the group "grp1" in the share dialog
+
 
   Scenario: expiration date is enabled but not enforced for group, user receives a share with expiration date and reshares with expiration date less than the original
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -187,6 +198,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | uid_owner   | %username% |
       | expiration  | +10 days   |
 
+
   Scenario: expiration date is enabled but not enforced for group, user receives a share with expiration date and reshares with expiration date in future than the original
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "no"
@@ -206,6 +218,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | file_target | /lorem.txt |
       | uid_owner   | %username% |
       | expiration  | +20 days   |
+
 
   Scenario: expiration date is enabled and enforced for group, user receives a share with expiration date and tries to reshare with expiration date less than the original
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -228,6 +241,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | uid_owner   | %username% |
       | expiration  | +20 days   |
 
+
   Scenario: expiration date is enabled and enforced for group, user receives a share with expiration date and tries to reshare with expiration date further in future than the original
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
@@ -248,6 +262,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | file_target | /lorem.txt |
       | uid_owner   | %username% |
       | expiration  | +30 days   |
+
 
   Scenario: expiration date is enabled and enforced for group, user receives a folder from a group share with expiration date and shares sub-folder with group
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
@@ -273,6 +288,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | uid_owner   | %username%           |
       | expiration  | +20 days             |
       | share_with  | grp1                 |
+
 
   Scenario Outline: expiration date is disabled for sharing with group, user shares file with group and sets expiration date
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "no"

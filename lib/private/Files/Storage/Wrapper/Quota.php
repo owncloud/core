@@ -30,7 +30,6 @@ use OC\Files\Filesystem;
 use OC_Util;
 
 class Quota extends Wrapper {
-
 	/**
 	 * @var int $quota
 	 */

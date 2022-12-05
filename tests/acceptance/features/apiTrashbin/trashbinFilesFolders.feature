@@ -40,6 +40,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | spaces   |
 
+
   Scenario Outline: deleting a file in a folder moves it to the trashbin root
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/new-folder"
@@ -157,9 +158,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | spaces   |
 
-  @local_storage @files_external-app-required
-  @skipOnEncryptionType:user-keys @encryption-issue-42
-  @skip_on_objectstore
+  @local_storage @files_external-app-required @skipOnEncryptionType:user-keys @encryption-issue-42 @skip_on_objectstore
   Scenario Outline: Deleting a folder into external storage moves it to the trashbin
     Given using <dav-path> DAV path
     And the administrator has invoked occ command "files:scan --all"
@@ -224,7 +223,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | new      | 404         |
       | spaces   | 404         |
 
-  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
+  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3  @provisioning_api-app-required
   Scenario Outline: Listing other user's trashbin is prohibited for newly recreated user with same name
     Given using <dav-path> DAV path
     And user "testtrashbin102" has been created with default attributes and without skeleton files
@@ -234,9 +233,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbin102" has deleted file "/textfile0.txt"
     And user "testtrashbin102" has deleted file "/textfile2.txt"
     And the administrator has deleted user "testtrashbin102" using the provisioning API
-    And these users have been created without skeleton files and not initialized:
-      | username        |
-      | testtrashbin102 |
+    And user "testtrashbin102" has been created with default attributes and without skeleton files
     And user "testtrashbin102" has uploaded file "filesForUpload/textfile.txt" to "/textfile3.txt"
     And user "testtrashbin102" has deleted file "/textfile3.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin102"
@@ -325,6 +322,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | spaces   |
 
+
   Scenario Outline: user with unusual username deletes a file
     Given using <dav-path> DAV path
     And user "<username>" has been created with default attributes and without skeleton files
@@ -351,6 +349,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | spaces   | 123      |
       | spaces   | -123     |
       | spaces   | 0.0      |
+
 
   Scenario Outline: deleting a file with comma in the filename moves it to trashbin
     Given using <dav-path> DAV path

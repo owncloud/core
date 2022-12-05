@@ -9,10 +9,10 @@
 		<meta name="referrer" content="never">
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
 		<?php if ($theme->getiTunesAppId() !== '') {
-	?>
+			?>
 			<meta name="apple-itunes-app" content="app-id=<?php p($theme->getiTunesAppId()); ?>">
 		<?php
-} ?>
+		} ?>
 		<meta name="theme-color" content="<?php p($theme->getMailHeaderColor()); ?>">
 		<link rel="icon" href="<?php print_unescaped(image_path('', 'favicon.ico')); /* IE11+ supports png */ ?>">
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path('', 'favicon-touch.png')); ?>">
@@ -29,9 +29,9 @@
 		<?php print_unescaped($_['headers']); ?>
 	</head>
 	<body id="<?php p($_['bodyid']);?>" <?php
-	if ($theme->getName() !== 'ownCloud') {
-		print_unescaped('class="theme-' . \str_replace(' ', '-', $theme->getName()) . ' has-theme"');
-	} ?> >
+			if ($theme->getName() !== 'ownCloud') {
+				print_unescaped('class="theme-' . \str_replace(' ', '-', $theme->getName()) . ' has-theme"');
+			} ?> >
 		<?php include('layout.noscript.warning.php'); ?>
 		<div class="wrapper">
 			<div class="v-align">

@@ -54,7 +54,6 @@ namespace OC\User;
 use OC\Cache\CappedMemoryCache;
 use OCP\IUserBackend;
 use OCP\User\IProvidesDisplayNameBackend;
-use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesHomeBackend;
 use OCP\Util;
 

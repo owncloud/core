@@ -16,6 +16,7 @@ Feature: create a subadmin
     And the HTTP status code should be "200"
     And user "brand-new-user" should be a subadmin of group "brand-new-group"
 
+
   Scenario: admin tries to create a subadmin using a user which does not exist
     Given user "nonexistentuser" has been deleted
     And group "brand-new-group" has been created
@@ -23,6 +24,7 @@ Feature: create a subadmin
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And user "nonexistentuser" should not be a subadmin of group "brand-new-group"
+
 
   Scenario: admin tries to create a subadmin using a group which does not exist
     Given user "brand-new-user" has been created with default attributes and without skeleton files
@@ -44,6 +46,7 @@ Feature: create a subadmin
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "brand-new-user" should not be a subadmin of group "brand-new-group"
+
 
   Scenario: normal user should not be able to make another user a subadmin
     Given these users have been created with default attributes and without skeleton files:

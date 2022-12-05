@@ -289,7 +289,6 @@ OC.L10N.register(
     "Database name" : "Az adatbázis neve",
     "Database tablespace" : "Az adatbázis táblázattér (tablespace)",
     "Database host" : "Adatbázis szerver",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Határozd meg a port számát a hosztnév mellett (pl.: localhost: 5432).",
     "Performance warning" : "Teljesítménybeli figyelmeztetés",
     "SQLite will be used as database." : "SQLite lesz adatbázisként használva.",
     "For larger installations we recommend to choose a different database backend." : "Nagyobb telepítésekhez ajánlott egy másik adatbázis háttérkiszolgáló használata.",

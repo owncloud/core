@@ -47,10 +47,8 @@ use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
 use OCP\Files\Mount\IMountManager;
 use OCP\IDateTimeFormatter;
-use OCP\License\ILicenseManager;
 
 class DIContainer extends SimpleContainer implements IAppContainer {
-
 	/**
 	 * @var array
 	 */

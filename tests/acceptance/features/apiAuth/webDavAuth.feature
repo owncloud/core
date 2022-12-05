@@ -33,11 +33,6 @@ Feature: auth
     When user "Alice" requests "/remote.php/webdav" with "PROPFIND" using basic token auth
     Then the HTTP status code should be "207"
 
-	# DAV token auth is not possible yet
-	#Scenario: using WebDAV with a client token
-	#	When requesting "/remote.php/webdav" with "PROPFIND" using a client token
-	#	Then the HTTP status code should be "207"
-
   @smokeTest  @notToImplementOnOCIS
   Scenario: using WebDAV with browser session
     Given a new browser session for "Alice" has been started

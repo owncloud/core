@@ -39,6 +39,7 @@ Feature: restrict Sharing
     And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
+
   Scenario: Do not restrict users to only share with groups they are member of
     Given user "David" has been created with default attributes and without skeleton files
     And user "David" has been added to group "grp2"
@@ -88,6 +89,7 @@ Feature: restrict Sharing
     When the user reloads the current page of the webUI
     Then the following permissions are seen for "simple-folder" in the sharing dialog for group "grp1"
       | create | yes |
+
 
   Scenario: Deleting group share when sharing with groups is forbidden
     Given the user has shared folder "simple-folder" with group "grp1"

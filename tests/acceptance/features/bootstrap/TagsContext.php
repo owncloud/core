@@ -35,7 +35,6 @@ require_once 'bootstrap.php';
  * Acceptance test steps related to testing tags features
  */
 class TagsContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

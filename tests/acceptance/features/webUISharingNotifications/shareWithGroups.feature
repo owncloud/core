@@ -18,6 +18,7 @@ Feature: Sharing files and folders with internal groups
     And user "Brian" has been added to group "grp1"
     And user "Brian" has logged in using the webUI
 
+
   Scenario: notifications about new share is displayed
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
     And user "Carol" has created folder "a-folder"

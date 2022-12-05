@@ -37,7 +37,6 @@ use OCP\IDBConnection;
  * @package Test\DB
  */
 class AdapterTest extends \Test\TestCase {
-
 	/** @var Adapter  */
 	protected $adapter;
 	/** @var IDBConnection  */

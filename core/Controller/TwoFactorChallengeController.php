@@ -36,10 +36,8 @@ use OCP\IRequest;
 use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
-use OCP\Util;
 
 class TwoFactorChallengeController extends Controller {
-
 	/** @var Manager */
 	private $twoFactorManager;
 

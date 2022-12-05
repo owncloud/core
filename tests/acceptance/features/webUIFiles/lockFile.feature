@@ -11,17 +11,20 @@ Feature: Manually lock a file
     And user "Alice" has uploaded file with content "some content" to "/can-lock-a-file.txt"
     And user "Alice" has created folder "cannot-lock-a-folder"
 
+
   Scenario: Lock File option is not shown when the admin has disabled it
     Given the administrator has disabled the webUI lock file action
     When user "Alice" logs in using the webUI
     Then the option to lock file "can-lock-a-file.txt" should not be available on the webUI
     And the option to lock folder "cannot-lock-a-folder" should not be available on the webUI
 
+
   Scenario: Lock File option is shown only for a file when the admin has enabled it
     Given the administrator has enabled the webUI lock file action
     When user "Alice" logs in using the webUI
     Then the option to lock file "can-lock-a-file.txt" should be available on the webUI
     But the option to lock folder "cannot-lock-a-folder" should not be available on the webUI
+
 
   Scenario: Lock File option is shown for a file in a folder when the admin has enabled it
     Given the administrator has enabled the webUI lock file action

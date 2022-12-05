@@ -4,6 +4,7 @@ Feature: delete groups
   I want to be able to delete groups
   So that I can remove unnecessary groups
 
+
   Scenario Outline: admin deletes a group
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the occ command
@@ -15,6 +16,7 @@ Feature: delete groups
       | simplegroup | nothing special here                  |
       | España§àôœ€ | special European and other characters |
       | नेपाली      | Unicode group name                    |
+
 
   Scenario Outline: group names are case-sensitive, the correct group is deleted
     Given group "<group_id1>" has been created

@@ -32,7 +32,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Admin Sharing Settings page.
  */
 class AdminSharingSettingsPage extends SharingSettingsPage {
-
 	/**
 	 *
 	 * @var string $path

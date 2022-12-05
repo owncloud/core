@@ -308,7 +308,6 @@ OC.L10N.register(
     "Database name" : "Nome da base de datos",
     "Database tablespace" : "Táboa de espazos da base de datos",
     "Database host" : "Servidor da base de datos",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Especifique o numero do porto xunto co nome do anfitrión (p. ex. localhost: 5432)",
     "Performance warning" : "Aviso de rendemento",
     "SQLite will be used as database." : "Utilizarase SQLite como base de datos",
     "For larger installations we recommend to choose a different database backend." : "Para instalacións grandes, recomendámoslle que empregue unha infraestrutura de base de datos diferente.",

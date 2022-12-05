@@ -41,7 +41,6 @@ use Sabre\VObject\ITip;
  * @license http://sabre.io/license/ Modified BSD License
  */
 class IMipPlugin extends SabreIMipPlugin {
-
 	/** @var IMailer */
 	private $mailer;
 
@@ -72,7 +71,6 @@ class IMipPlugin extends SabreIMipPlugin {
 	 * @return void
 	 */
 	public function schedule(ITip\Message $iTipMessage) {
-
 		// Not sending any emails if OC-CalDav-Import header is set
 		if ($this->request->getHeader('OC-CalDav-Import') !== null) {
 			return;

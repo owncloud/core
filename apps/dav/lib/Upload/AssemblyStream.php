@@ -36,7 +36,6 @@ use Sabre\DAV\Exception\BadRequest;
  * @package OCA\DAV\Upload
  */
 class AssemblyStream implements \Icewind\Streams\File {
-
 	/** @var resource */
 	private $context;
 

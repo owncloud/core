@@ -29,7 +29,6 @@ use Sabre\DAV\PropFind;
 use Sabre\DAVACL\Xml\Property\Principal;
 
 class LegacyDAVACL extends DavAclPlugin {
-
 	/**
 	 * @inheritdoc
 	 */

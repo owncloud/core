@@ -32,6 +32,7 @@ Feature: delete users
       | a@-+_.b  |
       | a space  |
 
+
   Scenario: Delete a user, and specify the user name in different case
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator deletes user "Brand-New-User" using the provisioning API
@@ -53,6 +54,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
+
   Scenario: normal user tries to delete a user
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -62,6 +64,7 @@ Feature: delete users
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "Brian" should exist
+
 
   Scenario: administrator deletes another admin user
     Given these users have been created with default attributes and without skeleton files:

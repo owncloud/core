@@ -37,7 +37,6 @@ use TestHelpers\TranslationHelper;
  * Sharing trait
  */
 trait Sharing {
-
 	/**
 	 * @var int
 	 */
@@ -1432,15 +1431,18 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be included in the response$/
+	 * @Then /^(user|group) "([^"]*)" should be included in the response$/
 	 *
+	 * @param string $type
 	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function checkSharedUserInResponse(string $user):void {
-		$user = $this->getActualUsername($user);
+	public function checkSharedUserOrGroupInResponse(string $type, string $user):void {
+		if ($type === 'user') {
+			$user = $this->getActualUsername($user);
+		}
 		Assert::assertTrue(
 			$this->isFieldInResponse('share_with', "$user"),
 			"'share_with' value '$user' was not found in response"
@@ -1449,16 +1451,17 @@ trait Sharing {
 
 	/**
 	 * @Then /^user "([^"]*)" should not be included in the response$/
+	 * @Then /^group "([^"]*)" should not be included in the response$/
 	 *
-	 * @param string $user
+	 * @param string $userOrGroup
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function checkSharedUserNotInResponse(string $user):void {
+	public function checkSharedUserOrGroupNotInResponse(string $userOrGroup):void {
 		Assert::assertFalse(
-			$this->isFieldInResponse('share_with', "$user", false),
-			"'share_with' value '$user' was unexpectedly found in response"
+			$this->isFieldInResponse('share_with', "$userOrGroup", false),
+			"'share_with' value '$userOrGroup' was unexpectedly found in response"
 		);
 	}
 

@@ -8,6 +8,7 @@ Feature: Renaming files inside a folder with problematic name
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has logged in using the webUI
 
+
   Scenario Outline: Rename the existing file inside a problematic folder
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has created folder "<folder>"

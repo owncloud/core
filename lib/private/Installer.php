@@ -39,9 +39,6 @@
 namespace OC;
 
 use Doctrine\DBAL\Exception\TableExistsException;
-use OC\App\CodeChecker\CodeChecker;
-use OC\App\CodeChecker\EmptyCheck;
-use OC\App\CodeChecker\PrivateCheck;
 use OC\DB\MigrationService;
 use OC_App;
 use OC_DB;
@@ -52,7 +49,6 @@ use OCP\App\AppAlreadyInstalledException;
  * This class provides the functionality needed to install, update and remove plugins/apps
  */
 class Installer {
-
 	/**
 	 *
 	 * This function installs an app. All information needed are passed in the

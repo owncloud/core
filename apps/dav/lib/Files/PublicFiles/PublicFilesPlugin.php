@@ -21,7 +21,6 @@
 
 namespace OCA\DAV\Files\PublicFiles;
 
-use OC;
 use OC\Files\Node\Folder;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCP\Files\FileInfo;

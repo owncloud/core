@@ -59,7 +59,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *  - post_shared
  */
 class Share extends Constants {
-
 	/** CRUDS permissions (Create, Read, Update, Delete, Share) using a bitmask
 	 * Construct permissions for share() and setPermissions with Or (|) e.g.
 	 * Give user read and update permissions: PERMISSION_READ | PERMISSION_UPDATE
@@ -183,12 +182,11 @@ class Share extends Constants {
 		}
 
 		$paths = [];
-		$rejected = [];
 		while ($source !== -1) {
 			// Fetch all shares with another user
 			if (!$returnUserPaths) {
 				$query = \OC_DB::prepare(
-					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
+					'SELECT `share_with`, `file_source`, `file_target`
 					FROM
 					`*PREFIX*share`
 					WHERE
@@ -197,7 +195,7 @@ class Share extends Constants {
 				$result = $query->execute([$source, self::SHARE_TYPE_USER]);
 			} else {
 				$query = \OC_DB::prepare(
-					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
+					'SELECT `share_with`, `file_source`, `file_target`
 				FROM
 				`*PREFIX*share`
 				WHERE
@@ -210,10 +208,6 @@ class Share extends Constants {
 				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 			} else {
 				while ($row = $result->fetchRow()) {
-					if ((int)($row['accepted']) === Constants::STATE_REJECTED) {
-						$rejected[]= $row['parent'];
-						continue;
-					}
 					$shares[] = $row['share_with'];
 					if ($returnUserPaths) {
 						$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
@@ -222,28 +216,30 @@ class Share extends Constants {
 			}
 
 			// We also need to take group shares into account
-			$sql = 'SELECT `share_with`, `file_source`, `file_target`
+			$query = \OC_DB::prepare(
+				'SELECT `share_with`, `file_source`, `file_target`
 				FROM
 				`*PREFIX*share`
 				WHERE
-				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\') AND `id` NOT IN (?)';
-
-			$result = \OC::$server->getDatabaseConnection()->executeQuery(
-				$sql,
-				[$source, self::SHARE_TYPE_GROUP, $rejected],
-				[null, null, IQueryBuilder::PARAM_INT_ARRAY]
+				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
 			);
 
-			while ($row = $result->fetch()) {
-				$usersInGroup = self::usersInGroup($row['share_with']);
-				$shares = \array_merge($shares, $usersInGroup);
-				if ($returnUserPaths) {
-					foreach ($usersInGroup as $user) {
-						if (!isset($fileTargets[(int) $row['file_source']][$user])) {
-							// When the user already has an entry for this file source
-							// the file is either shared directly with him as well, or
-							// he has an exception entry (because of naming conflict).
-							$fileTargets[(int) $row['file_source']][$user] = $row;
+			$result = $query->execute([$source, self::SHARE_TYPE_GROUP]);
+
+			if (\OCP\DB::isError($result)) {
+				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
+			} else {
+				while ($row = $result->fetchRow()) {
+					$usersInGroup = self::usersInGroup($row['share_with']);
+					$shares = \array_merge($shares, $usersInGroup);
+					if ($returnUserPaths) {
+						foreach ($usersInGroup as $user) {
+							if (!isset($fileTargets[(int) $row['file_source']][$user])) {
+								// When the user already has an entry for this file source
+								// the file is either shared directly with him as well, or
+								// he has an exception entry (because of naming conflict).
+								$fileTargets[(int) $row['file_source']][$user] = $row;
+							}
 						}
 					}
 				}
@@ -931,7 +927,6 @@ class Share extends Constants {
 		} elseif ($shareType === self::SHARE_TYPE_LINK) {
 			$updateExistingShare = false;
 			if (\OC::$server->getAppConfig()->getValue('core', 'shareapi_allow_links', 'yes') == 'yes') {
-
 				// IF the password is changed via the old ajax endpoint verify it before deleting the old share
 				if ($passwordChanged === true) {
 					self::verifyPassword($shareWith);
@@ -1026,7 +1021,6 @@ class Share extends Constants {
 			\OCP\Util::writeLog('OCP\Share', \sprintf($message, $itemSourceName), \OCP\Util::DEBUG);
 			throw new \Exception($message_t);
 		} elseif ($shareType === self::SHARE_TYPE_REMOTE) {
-
 			/*
 			 * Check if file is not already shared with the remote user
 			 */
@@ -1102,7 +1096,6 @@ class Share extends Constants {
 	 * @return boolean true on success or false on failure
 	 */
 	public static function unshare($itemType, $itemSource, $shareType, $shareWith, $owner = null) {
-
 		// check if it is a valid itemType
 		self::getBackend($itemType);
 
@@ -1116,8 +1109,8 @@ class Share extends Constants {
 			if ((int)$item['share_type'] === (int)$shareType && $item['uid_owner'] === $currentUser) {
 				$toDelete = $item;
 			// if there is more then one result we don't have to delete the children
-				// but update their parent. For group shares the new parent should always be
-				// the original group share and not the db entry with the unique name
+			// but update their parent. For group shares the new parent should always be
+			// the original group share and not the db entry with the unique name
 			} elseif ((int)$item['share_type'] === self::$shareTypeGroupUserUnique) {
 				$newParent = $item['parent'];
 			} else {
@@ -1648,7 +1641,6 @@ class Share extends Constants {
 
 		// only use default expiration date for link shares
 		if ((int) $item['share_type'] === self::SHARE_TYPE_LINK) {
-
 			// calculate expiration date
 			if (!empty($item['expiration'])) {
 				$userDefinedExpire = new \DateTime($item['expiration']);
@@ -2490,7 +2482,6 @@ class Share extends Constants {
 					$fileTarget = null;
 				}
 			} else {
-
 				// group share which doesn't exists until now, check if we need a unique target for this user
 
 				$itemTarget = Helper::generateTarget(

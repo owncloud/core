@@ -33,7 +33,6 @@ class DummyClass {
 EOL;
 
 	public function testActionInclude() {
-
 		// create temp file with code to be required in the include action
 		$temp_file = \tempnam(\sys_get_temp_dir(), 'code');
 		\file_put_contents($temp_file, self::code);

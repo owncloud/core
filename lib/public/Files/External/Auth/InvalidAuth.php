@@ -28,7 +28,6 @@ namespace OCP\Files\External\Auth;
  * @since 10.0.5
  */
 class InvalidAuth extends AuthMechanism {
-
 	/**
 	 * Constructs a new InvalidAuth with the id of the invalid auth
 	 * for display purposes

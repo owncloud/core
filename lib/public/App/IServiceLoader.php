@@ -33,7 +33,6 @@ use OCP\IUser;
  * @since 10.0.4
  */
 interface IServiceLoader {
-
 	/**
 	 * Looks in info.xml of all enabled apps for the given xml path and returns
 	 * a generator which can be used to enumerate all occurrences.

@@ -44,6 +44,7 @@ Feature: using files external service with storage as webdav_owncloud
     Then as "Alice" file "/TestMnt/test.txt" should exist
     And the content of file "/TestMnt/test.txt" for user "Alice" should be "Hello from Local!"
 
+
   Scenario: deleting a webdav_owncloud external storage
     Given using server "REMOTE"
     And user "Alice" has created folder "TestMnt1"
@@ -200,7 +201,9 @@ Feature: using files external service with storage as webdav_owncloud
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
-    And the administrator has created a json file with exported config of local storage mount "TestMountPoint" to "mountConfig.json" in temporary storage
+    And the administrator has exported the external storage mounts using the occ command
+    And the administrator has created a file "mountConfig.json" in temporary storage with the last exported content using the testing API
+    And the administrator has deleted local storage "local_storage" using the occ command
     And the administrator has deleted external storage with mount point "TestMountPoint"
     When the administrator imports the local storage mount from file "mountConfig.json" using the occ command
     Then the command should have been successful
@@ -393,6 +396,7 @@ Feature: using files external service with storage as webdav_owncloud
     When user "Carol" moves folder "/testFolder" to "TestMountPoint/testFolder" using the WebDAV API
     Then the HTTP status code should be "403"
     And the HTTP response message should be "It is not allowed to move one mount point into another one"
+
 
   Scenario: share receiver tries to move a file that they have received from someone, to external storage
     Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command

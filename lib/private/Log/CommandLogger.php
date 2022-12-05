@@ -26,7 +26,6 @@ use OCP\Util;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CommandLogger implements ILogger {
-
 	/** @var OutputInterface */
 	private $output;
 

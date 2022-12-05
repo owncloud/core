@@ -23,7 +23,7 @@
 				$l->t('You can add external storages in the storage settings') .
 				'</a></p>';
 		}
-	?>
+?>
 </div>
 
 <input type="hidden" name="dir" value="" id="dir">

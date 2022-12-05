@@ -33,7 +33,6 @@ require_once 'bootstrap.php';
  * Context for new file menu
  */
 class WebUINewFileMenuContext extends RawMinkContext implements Context {
-
 	/**
 	 *
 	 * @var FilesPage

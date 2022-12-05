@@ -42,10 +42,8 @@ use Sabre\DAV\Tree;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
-use OCP\Files\FileInfo;
 
 class PreviewPluginTest extends TestCase {
-
 	/** @var RequestInterface | MockObject */
 	private $request;
 	/** @var IPreviewNode | MockObject */

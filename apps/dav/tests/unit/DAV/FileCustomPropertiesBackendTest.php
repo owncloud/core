@@ -23,9 +23,6 @@
 
 namespace OCA\DAV\Tests\unit\DAV;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
 use OCA\DAV\DAV\FileCustomPropertiesPlugin;
@@ -46,7 +43,6 @@ use Sabre\DAV\Xml\Property\Complex;
  * @package OCA\DAV\Tests\unit\DAV
  */
 class FileCustomPropertiesBackendTest extends \Test\TestCase {
-
 	/**
 	 * @var \Sabre\DAV\Server
 	 */

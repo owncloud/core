@@ -26,7 +26,6 @@ use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
 class ForbiddenTest extends \Test\TestCase {
 	public function testSerialization() {
-
 		// create xml doc
 		$DOM = new \DOMDocument('1.0', 'utf-8');
 		$DOM->formatOutput = true;

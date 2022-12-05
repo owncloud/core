@@ -28,12 +28,10 @@ use OC\Authentication\Token\IToken;
 use OCP\Authentication\IAuthModule;
 use OCP\IRequest;
 use OCP\ISession;
-use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 
 class TokenAuthModule implements IAuthModule {
-
 	/** @var ISession */
 	private $session;
 

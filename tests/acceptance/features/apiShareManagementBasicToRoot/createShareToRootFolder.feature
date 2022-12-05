@@ -4,8 +4,7 @@ Feature: sharing
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest
-  @skipOnEncryptionType:user-keys @issue-32322 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @smokeTest @skipOnEncryptionType:user-keys @issue-32322 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -32,8 +31,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest
-  @skipOnEncryptionType:user-keys @issue-32322
+  @smokeTest @skipOnEncryptionType:user-keys @issue-32322
   Scenario Outline: Creating a share of a file containing commas in the filename, with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -58,6 +56,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
     Given using OCS API version "<ocs_api_version>"
@@ -93,6 +92,7 @@ Feature: sharing
       | 1               | 2                     | 2                   | 100             |
       | 2               | 2                     | 2                   | 200             |
 
+
   Scenario Outline: Creating a share of a file with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -106,6 +106,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
+
   Scenario Outline: Creating a share of a folder with no permissions should fail
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -118,6 +119,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 400              |
+
 
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
@@ -143,6 +145,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -166,6 +169,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: Creating a share of a folder with a group, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
@@ -219,6 +223,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -234,6 +239,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
@@ -266,6 +272,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -279,6 +286,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: user shares a file with file name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
@@ -296,6 +304,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -310,6 +319,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
@@ -361,6 +371,7 @@ Feature: sharing
     And user "Brian" should see the following elements
       | /randomfile.txt |
     And the content of file "randomfile.txt" for user "Brian" should be "Random data"
+
 
   Scenario Outline: Share of folder to a group with emoji in the name
     Given using OCS API version "<ocs_api_version>"
@@ -469,6 +480,7 @@ Feature: sharing
       | /common/sub/textfile0.txt |
       | /textfile0.txt            |
 
+
   Scenario Outline: sharing back to resharer is not allowed
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -487,6 +499,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: sharing back to original sharer is not allowed
     Given using OCS API version "<ocs_api_version>"
@@ -528,6 +541,7 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: shares to a deleted user should not be listed as shares for the sharer
     Given using OCS API version "<ocs_api_version>"

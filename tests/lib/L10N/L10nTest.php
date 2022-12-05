@@ -88,36 +88,37 @@ class L10nTest extends TestCase {
 	}
 
 	public function localizationData() {
+		$narrowNoBreakSpace = "\xE2\x80\xAF";
 		return [
 			// timestamp as string
-			['February 13, 2009 at 11:31:30 PM UTC', 'en', 'datetime', '1234567890'],
-			['13. Februar 2009 um 23:31:30 UTC', 'de', 'datetime', '1234567890'],
+			["February 13, 2009, 11:31:30${narrowNoBreakSpace}PM UTC", 'en', 'datetime', '1234567890'],
+			['13. Februar 2009, 23:31:30 UTC', 'de', 'datetime', '1234567890'],
 			['February 13, 2009', 'en', 'date', '1234567890'],
 			['13. Februar 2009', 'de', 'date', '1234567890'],
-			['11:31:30 PM UTC', 'en', 'time', '1234567890'],
+			["11:31:30${narrowNoBreakSpace}PM UTC", 'en', 'time', '1234567890'],
 			['23:31:30 UTC', 'de', 'time', '1234567890'],
 
 			// timestamp as int
-			['February 13, 2009 at 11:31:30 PM UTC', 'en', 'datetime', 1234567890],
-			['13. Februar 2009 um 23:31:30 UTC', 'de', 'datetime', 1234567890],
+			["February 13, 2009, 11:31:30${narrowNoBreakSpace}PM UTC", 'en', 'datetime', 1234567890],
+			['13. Februar 2009, 23:31:30 UTC', 'de', 'datetime', 1234567890],
 			['February 13, 2009', 'en', 'date', 1234567890],
 			['13. Februar 2009', 'de', 'date', 1234567890],
-			['11:31:30 PM UTC', 'en', 'time', 1234567890],
+			["11:31:30${narrowNoBreakSpace}PM UTC", 'en', 'time', 1234567890],
 			['23:31:30 UTC', 'de', 'time', 1234567890],
 
 			// DateTime object
-			['February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', new DateTime('@1234567890')],
-			['13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', new DateTime('@1234567890')],
+			["February 13, 2009, 11:31:30${narrowNoBreakSpace}PM GMT+0", 'en', 'datetime', new DateTime('@1234567890')],
+			['13. Februar 2009, 23:31:30 GMT+0', 'de', 'datetime', new DateTime('@1234567890')],
 			['February 13, 2009', 'en', 'date', new DateTime('@1234567890')],
 			['13. Februar 2009', 'de', 'date', new DateTime('@1234567890')],
-			['11:31:30 PM GMT+0', 'en', 'time', new DateTime('@1234567890')],
+			["11:31:30${narrowNoBreakSpace}PM GMT+0", 'en', 'time', new DateTime('@1234567890')],
 			['23:31:30 GMT+0', 'de', 'time', new DateTime('@1234567890')],
 
 			// en_GB
-			['13 February 2009 at 23:31:30 GMT+0', 'en_GB', 'datetime', new DateTime('@1234567890')],
+			['13 February 2009, 23:31:30 GMT+0', 'en_GB', 'datetime', new DateTime('@1234567890')],
 			['13 February 2009', 'en_GB', 'date', new DateTime('@1234567890')],
 			['23:31:30 GMT+0', 'en_GB', 'time', new DateTime('@1234567890')],
-			['13 February 2009 at 23:31:30 GMT+0', 'en-GB', 'datetime', new DateTime('@1234567890')],
+			['13 February 2009, 23:31:30 GMT+0', 'en-GB', 'datetime', new DateTime('@1234567890')],
 			['13 February 2009', 'en-GB', 'date', new DateTime('@1234567890')],
 			['23:31:30 GMT+0', 'en-GB', 'time', new DateTime('@1234567890')],
 		];

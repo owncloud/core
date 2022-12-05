@@ -4,6 +4,7 @@ Feature: get status, delete and execute jobs in background queue
   I want to be able to see, delete and execute the jobs in background queue
   So that I have control over background job queue
 
+
   Scenario: get the list of jobs in background queue
     When the administrator gets all the jobs in the background queue using the occ command
     Then the command should have been successful
@@ -21,6 +22,7 @@ Feature: get status, delete and execute jobs in background queue
       | OCA\Files_Versions\BackgroundJob\ExpireVersions    |
       | OCA\UpdateNotification\Notification\BackgroundJob  |
       | OC\Authentication\Token\DefaultTokenCleanupJob     |
+
 
   Scenario: delete one of the job in background queue
     Given user "Alice" has been created with default attributes and small skeleton files

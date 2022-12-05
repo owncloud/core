@@ -33,7 +33,6 @@ use TestHelpers\EmailHelper;
  * Admin General Settings page.
  */
 class AdminGeneralSettingsPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path
@@ -95,8 +94,8 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 			} elseif ($row['setting'] === 'authentication required') {
 				$this->checkRequiredAuthentication($row['value']);
 			} elseif ($row['setting'] === 'server address') {
-				if ($row['value'] === "%MAILHOG_HOST%") {
-					$row['value'] = EmailHelper::getMailhogHost();
+				if ($row['value'] === "%EMAIL_HOST%") {
+					$row['value'] = EmailHelper::getEmailHost();
 				}
 				$this->fillField($this->serverAddressFieldId, $row['value']);
 			} elseif ($row['setting'] === 'port') {

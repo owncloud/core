@@ -130,9 +130,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  @local_storage @files_external-app-required
-  @skipOnEncryptionType:user-keys @encryption-issue-42
-  @skip_on_objectstore
+  @local_storage @files_external-app-required @skipOnEncryptionType:user-keys @encryption-issue-42 @skip_on_objectstore
   Scenario Outline: Deleting a file into external storage moves it to the trashbin and can be restored
     Given using <dav-path> DAV path
     And the administrator has invoked occ command "files:scan --all"
@@ -155,9 +153,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  @local_storage @files_external-app-required
-  @skipOnEncryptionType:user-keys @encryption-issue-42
-  @skip_on_objectstore
+  @local_storage @files_external-app-required @skipOnEncryptionType:user-keys @encryption-issue-42 @skip_on_objectstore
   Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored
     Given using old DAV path
     And the administrator has invoked occ command "files:scan --all"
@@ -171,9 +167,7 @@ Feature: Restore deleted files/folders
     And as "Alice" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
     And the content of file "/local_storage/tmp/textfile0.txt" for user "Alice" should be "AA"
 
-  @local_storage @files_external-app-required
-  @skipOnEncryptionType:user-keys @encryption-issue-42
-  @skip_on_objectstore @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @local_storage @files_external-app-required @skipOnEncryptionType:user-keys @encryption-issue-42 @skip_on_objectstore @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored with new chunking
     Given using new DAV path
     And the administrator has invoked occ command "files:scan --all"
@@ -541,6 +535,7 @@ Feature: Restore deleted files/folders
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: restoring folders with dot in the name
     Given using <dav-path> DAV path

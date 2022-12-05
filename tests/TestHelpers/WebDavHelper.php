@@ -29,6 +29,7 @@ use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use DateTime;
+use TestHelpers\SpaceNotFoundException;
 
 /**
  * Helper to make WebDav Requests
@@ -475,7 +476,9 @@ class WebDavHelper {
 			);
 			// we expect to get a multipart XML response with status 207
 			$status = $response->getStatusCode();
-			if ($status !== 207) {
+			if ($status === 401) {
+				throw new SpaceNotFoundException(__METHOD__ . " Personal space not found for user " . $user);
+			} elseif ($status !== 207) {
 				throw new Exception(
 					__METHOD__ . " webdav propfind for user $user failed with status $status - so the personal space id cannot be discovered"
 				);
@@ -535,8 +538,39 @@ class WebDavHelper {
 			self::$spacesIdRef[$user] = [];
 			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
 			return $personalSpaceId;
+		} else {
+			throw new SpaceNotFoundException(__METHOD__ . " Personal space not found for user " . $user);
 		}
-		throw new Exception(__METHOD__ . " Personal space not found for user " . $user);
+	}
+
+	/**
+	 * First checks if a user exist to return its space ID
+	 * In case of any exception, it returns a fake space ID
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $xRequestId
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public static function getPersonalSpaceIdForUserOrFakeIfNotFound(string $baseUrl, string $user, string $password, string $xRequestId):string {
+		try {
+			$spaceId = self::getPersonalSpaceIdForUser(
+				$baseUrl,
+				$user,
+				$password,
+				$xRequestId,
+			);
+		} catch (SpaceNotFoundException $e) {
+			// if the fetch fails, and the user is not found, then a fake space id is prepared
+			// this is useful for testing when the personal space is of a non-existing user
+			$fakeSpaceId = self::generateUUIDv4();
+			self::$spacesIdRef[$user]["personal"] = $fakeSpaceId;
+			$spaceId = $fakeSpaceId;
+		}
+		return $spaceId;
 	}
 
 	/**
@@ -597,20 +631,12 @@ class WebDavHelper {
 
 		// get space id if testing with spaces dav
 		if (self::$SPACE_ID_FROM_OCIS === '' && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
-			try {
-				$spaceId = self::getPersonalSpaceIdForUser(
-					$baseUrl,
-					$doDavRequestAsUser ?? $user,
-					$password,
-					$xRequestId,
-				);
-			} catch (Exception $e) {
-				// if the fetch fails, and the user is not found, then a fake space id is prepared
-				// this is useful for testing when the personal space is of a non-existing user
-				$fakeSpaceId = self::generateUUIDv4();
-				self::$spacesIdRef[$user]["personal"] = $fakeSpaceId;
-				$spaceId = $fakeSpaceId;
-			}
+			$spaceId = self::getPersonalSpaceIdForUserOrFakeIfNotFound(
+				$baseUrl,
+				$doDavRequestAsUser ?? $user,
+				$password,
+				$xRequestId
+			);
 		} else {
 			$spaceId = self::$SPACE_ID_FROM_OCIS;
 		}

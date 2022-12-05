@@ -153,9 +153,10 @@ class DateTimeFormatterTest extends TestCase {
 	}
 
 	public function formatDateTimeData() {
+		$narrowNoBreakSpace = "\xE2\x80\xAF";
 		return [
-			[1350129205, null, 'October 13, 2012 at 11:53:25 AM UTC'],
-			[1350129205, new \DateTimeZone('Europe/Berlin'), 'October 13, 2012 at 1:53:25 PM GMT+2'],
+			[1350129205, null, "October 13, 2012, 11:53:25${narrowNoBreakSpace}AM UTC"],
+			[1350129205, new \DateTimeZone('Europe/Berlin'), "October 13, 2012, 1:53:25${narrowNoBreakSpace}PM GMT+2"],
 		];
 	}
 
@@ -163,7 +164,14 @@ class DateTimeFormatterTest extends TestCase {
 	 * @dataProvider formatDateTimeData
 	 */
 	public function testFormatDateTime($timestamp, $timeZone, $expected) {
-		$this->assertEquals($expected, (string) $this->formatter->formatDateTime($timestamp, 'long', 'long', $timeZone));
+		$actual = $this->formatter->formatDateTime($timestamp, 'long', 'long', $timeZone);
+		/*
+		 * This test returns special Unicode characters. So construct a message that will show the hex
+		 * representation of the strings. This is helpful if the test fails. The detailed content of the
+		 * expected and actual strings can be seen.
+		 */
+		$message = "expected: " . bin2hex($expected) . PHP_EOL . "  actual: " . bin2hex($actual);
+		$this->assertEquals($expected, $actual, $message);
 	}
 
 	/**

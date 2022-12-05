@@ -311,7 +311,6 @@ OC.L10N.register(
     "Database name" : "ชื่อฐานข้อมูล",
     "Database tablespace" : "พื้นที่ตารางในฐานข้อมูล",
     "Database host" : "Database host",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "กรุณาระบุชื่อโฮสต์และหมายเลขพอร์ต (ตัวอย่าง localhost:5432)",
     "Performance warning" : "คำเตือนเรื่องประสิทธิภาพการทำงาน",
     "SQLite will be used as database." : "SQLite ถูกใช้เป็นฐานข้อมูลแล้ว",
     "For larger installations we recommend to choose a different database backend." : "สำหรับการติดตั้งขนาดใหญ่เราขอแนะนำให้เลือกแบ็กเอนด์ฐานข้อมูลที่แตกต่างกัน",

@@ -20,6 +20,7 @@ Feature: Comments
       | 😀 🤖            |
       | नेपालि           |
 
+
   Scenario: Deleting a comment on a file belonging to myself having several comments
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And user "Alice" has commented with content "My first comment" on file "/myFileToComment.txt"
@@ -45,12 +46,14 @@ Feature: Comments
     Then the HTTP status code should be "204"
     And user "Brian" should have 1 comments on file "/myFileToComment.txt"
 
+
   Scenario: Deleting my own comments on a folder belonging to myself
     Given user "Alice" has created folder "/FOLDER_TO_COMMENT_AND_DELETE"
     And user "Alice" has commented with content "My first comment" on folder "/FOLDER_TO_COMMENT_AND_DELETE"
     When user "Alice" deletes the last created comment using the WebDAV API
     Then the HTTP status code should be "204"
     And user "Alice" should have 0 comments on folder "/FOLDER_TO_COMMENT_AND_DELETE"
+
 
   Scenario: Deleting a comment on a folder belonging to myself having several comments
     Given user "Alice" has created folder "/FOLDER_TO_COMMENT"
@@ -73,6 +76,7 @@ Feature: Comments
     Then the HTTP status code should be "204"
     And user "Brian" should have 1 comments on folder "/FOLDER_TO_COMMENT"
 
+
   Scenario: deleting a folder removes existing comments on the folder
     Given user "Alice" has created folder "/FOLDER_TO_DELETE"
     When user "Alice" comments with content "This should be deleted" on folder "/FOLDER_TO_DELETE" using the WebDAV API
@@ -94,6 +98,7 @@ Feature: Comments
     And user "Alice" should have the following comments on folder "/FOLDER_TO_COMMENT"
       | user          | comment             |
       | deleted_users | Comment from sharee |
+
 
   Scenario: deleting a content owner deletes the comment
     Given user "Alice" has created folder "/FOLDER_TO_COMMENT"

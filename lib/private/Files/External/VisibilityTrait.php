@@ -35,7 +35,6 @@ use OCP\Files\External\IStoragesBackendService;
  * modified by the administrator.
  */
 trait VisibilityTrait {
-
 	/** @var int visibility */
 	protected $visibility = IStoragesBackendService::VISIBILITY_DEFAULT;
 

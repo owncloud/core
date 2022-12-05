@@ -24,7 +24,6 @@ use OC\Files\External\StoragesBackendService;
 use OCP\Files\External\IStoragesBackendService;
 
 class StoragesBackendServiceTest extends \Test\TestCase {
-
 	/** @var \OCP\IConfig */
 	protected $config;
 

@@ -11,6 +11,7 @@ Feature: upload file using new chunking
     And the owncloud log has been cleared
     And the administrator has enabled async operations
 
+
   Scenario: Upload chunked file ordered asc using async MOVE
     When user "Alice" uploads the following chunks asynchronously to "/myChunkedFile.txt" with new chunking and using the WebDAV API
       | number | content |
@@ -27,6 +28,7 @@ Feature: upload file using new chunking
     And the log file should not contain any log-entries containing these attributes:
       | app |
       | dav |
+
 
   Scenario: Upload chunked file ordered desc using async MOVE
     When user "Alice" uploads the following chunks asynchronously to "/myChunkedFile.txt" with new chunking and using the WebDAV API
@@ -45,6 +47,7 @@ Feature: upload file using new chunking
       | app |
       | dav |
 
+
   Scenario: Upload chunked file in random order using async MOVE
     When user "Alice" uploads the following chunks asynchronously to "/myChunkedFile.txt" with new chunking and using the WebDAV API
       | number | content |
@@ -61,6 +64,7 @@ Feature: upload file using new chunking
     And the log file should not contain any log-entries containing these attributes:
       | app |
       | dav |
+
 
   Scenario: Upload chunked file overwriting existing file using async MOVE
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
@@ -81,6 +85,7 @@ Feature: upload file using new chunking
       | app |
       | dav |
 
+
   Scenario: New chunked upload MOVE using old DAV path should fail
     Given user "Alice" has created a new chunking upload with id "chunking-42"
     And user "Alice" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
@@ -89,6 +94,7 @@ Feature: upload file using new chunking
     When using old DAV path
     And user "Alice" moves new chunk file with id "chunking-42" asynchronously to "/myChunkedFile.txt" using the WebDAV API
     Then the HTTP status code should be "404"
+
 
   Scenario: Upload file via new chunking endpoint with wrong size header using async MOVE
     Given user "Alice" has created a new chunking upload with id "chunking-42"
@@ -103,6 +109,7 @@ Feature: upload file using new chunking
       | status       | /^error$/                                         |
       | errorCode    | /^400$/                                           |
       | errorMessage | /^Chunks on server do not sum up to 5 but to 15$/ |
+
 
   Scenario: Upload file via new chunking endpoint with correct size header using async MOVE
     Given user "Alice" has created a new chunking upload with id "chunking-42"
@@ -121,6 +128,7 @@ Feature: upload file using new chunking
     And the log file should not contain any log-entries containing these attributes:
       | app |
       | dav |
+
 
   Scenario Outline: Upload files with difficult names using new chunking and async MOVE
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
@@ -144,6 +152,7 @@ Feature: upload file using new chunking
       | &#?       |
       | TIÄFÜ     |
 
+
   Scenario: disabled async operations leads to original behavior
     Given the administrator has disabled async operations
     When user "Alice" uploads the following chunks asynchronously to "/myChunkedFile.txt" with new chunking and using the WebDAV API
@@ -156,6 +165,7 @@ Feature: upload file using new chunking
       | header                |
       | OC-JobStatus-Location |
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
+
 
   Scenario: enabling async operations does no difference to normal MOVE - Upload chunked file
     When user "Alice" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API

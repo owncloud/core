@@ -5,6 +5,7 @@ Feature: Maintenance command
   I want to be able to maintain and repair my ownCloud installation
   So that I can run ownCloud smoothly
 
+
   Scenario: Repair steps should be listed correctly
     When the administrator list the repair steps using the occ command
     Then the command should have been successful
@@ -28,6 +29,7 @@ Feature: Maintenance command
       | OC\Repair\DisableExtraThemes          |
       | OC\Repair\OldGroupMembershipShares    |
       | OCA\DAV\Repair\RemoveInvalidShares    |
+
 
   Scenario: Running single repair step without providing value should fail
     When the administrator invokes occ command "maintenance:repair --single"

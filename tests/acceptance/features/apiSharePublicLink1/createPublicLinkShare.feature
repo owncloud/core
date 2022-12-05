@@ -341,7 +341,6 @@ Feature: create a public link share
       | 1               | 403             |
       | 2               | 403             |
 
-
   @issue-ocis-reva-41 @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario Outline: Creating a link share with read+update+create permissions is forbidden when public upload is disabled globally
     Given using OCS API version "<ocs_api_version>"
@@ -357,7 +356,6 @@ Feature: create a public link share
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
       | 2               | 403             |
-
 
   @issue-ocis-reva-41 @skipOnOcis
   Scenario Outline: Creating a link share with update permissions defaults to read permissions when public upload disabled globally

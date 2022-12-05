@@ -62,7 +62,6 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		?int $chunkingVersion = null,
 		?int $noOfChunks = 1
 	): ResponseInterface {
-
 		//simple upload with no chunking
 		if ($chunkingVersion === null) {
 			$data = \file_get_contents($source);

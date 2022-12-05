@@ -121,7 +121,6 @@ class SecurityMiddleware extends Middleware {
 	 * @throws SecurityException when a security check fails
 	 */
 	public function beforeController($controller, $methodName) {
-
 		// this will set the current navigation entry of the app, use this only
 		// for normal HTML requests and not for AJAX requests
 		$this->navigationManager->setActiveEntry($this->appName);

@@ -4,6 +4,7 @@ Feature: checksums
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: Uploading a file with checksum should work
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
@@ -205,6 +206,7 @@ Feature: checksums
       | dav_version | overwriteChecksum                             |
       | spaces      | MD5 5d41402abc4b2a76b9719d911017c592          |
       | spaces      | SHA1 aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d |
+
 
   Scenario Outline: Uploading a file with correct checksum and overwriting an existing file with invalid checksum should not work
     Given using <dav_version> DAV path

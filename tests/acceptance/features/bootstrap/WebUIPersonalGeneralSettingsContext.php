@@ -296,10 +296,10 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @throws Exception
 	 */
 	public function theUserFollowsTheEmailChangeConfirmationLinkEmail(string $emailAddress):void {
+		$this->featureContext->pushEmailRecipientAsMailBox($emailAddress);
 		$content = EmailHelper::getBodyOfLastEmail(
-			EmailHelper::getLocalMailhogUrl(),
 			$emailAddress,
-			$this->featureContext->getStepLineRef()
+			$this->featureContext->getStepLineRef(),
 		);
 		$matches = [];
 		\preg_match(

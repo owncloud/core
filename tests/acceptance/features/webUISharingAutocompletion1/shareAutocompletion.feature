@@ -44,6 +44,7 @@ Feature: Autocompletion of share-with names
     And the users own name should not be listed in the autocomplete list on the webUI
     And user "other" should not be listed in the autocomplete list on the webUI
 
+
   Scenario: autocompletion for a pattern that does not match any user or group
     Given user "autocomplete-test-user" has logged in using the webUI
     And the user has browsed to the files page
@@ -51,6 +52,7 @@ Feature: Autocompletion of share-with names
     When the user types "doesnotexist" in the share-with-field
     Then a tooltip with the text "No users or groups found for doesnotexist" should be shown near the share-with-field on the webUI
     And the autocomplete list should not be displayed on the webUI
+
 
   Scenario: autocomplete short user/display names when completely typed
     Given the administrator has set the minimum characters for sharing autocomplete to "4"
@@ -64,6 +66,7 @@ Feature: Autocompletion of share-with names
     Then only user "Someone" should be listed in the autocomplete list on the webUI
     And user "User Five" should not be listed in the autocomplete list on the webUI
 
+
   Scenario: autocomplete short group names when completely typed
     Given the administrator has set the minimum characters for sharing autocomplete to "3"
     And these groups have been created:
@@ -76,6 +79,7 @@ Feature: Autocompletion of share-with names
     Then only group "fi" should be listed in the autocomplete list on the webUI
     And user "finance1" should not be listed in the autocomplete list on the webUI
 
+
   Scenario: autocompletion when minimum characters is the default (2) and not enough characters are typed
     Given user "autocomplete-test-user" has logged in using the webUI
     And the user has browsed to the files page
@@ -83,6 +87,7 @@ Feature: Autocompletion of share-with names
     When the user types "u" in the share-with-field
     Then a tooltip with the text "No users or groups found for u. Please enter at least 2 characters for suggestions" should be shown near the share-with-field on the webUI
     And the autocomplete list should not be displayed on the webUI
+
 
   Scenario: autocompletion when minimum characters is increased and not enough characters are typed
     Given the administrator has set the minimum characters for sharing autocomplete to "4"
@@ -93,6 +98,7 @@ Feature: Autocompletion of share-with names
     Then a tooltip with the text "No users or groups found for use. Please enter at least 4 characters for suggestions" should be shown near the share-with-field on the webUI
     And the autocomplete list should not be displayed on the webUI
 
+
   Scenario: autocompletion when increasing the minimum characters for sharing autocomplete
     Given the administrator has set the minimum characters for sharing autocomplete to "3"
     And user "autocomplete-test-user" has logged in using the webUI
@@ -102,6 +108,7 @@ Feature: Autocompletion of share-with names
     Then all users and groups that contain the string "use" in their name should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
     And user "Four" should not be listed in the autocomplete list on the webUI
+
 
   Scenario: allow user to disable autocomplete in sharing dialog
     Given user "another-test-user" has created folder "simple-folder"
@@ -114,6 +121,7 @@ Feature: Autocompletion of share-with names
     And the user types "auto" in the share-with-field
     Then user "Thomas Krause" should not be listed in the autocomplete list on the webUI
 
+
   Scenario: user disables autocomplete in sharing dialog but the sharer types full username
     Given user "another-test-user" has created folder "simple-folder"
     And user "autocomplete-test-user" has logged in using the webUI
@@ -125,6 +133,7 @@ Feature: Autocompletion of share-with names
     And the user types "autocomplete-test-user" in the share-with-field
     Then user "Thomas Krause" should be listed in the autocomplete list on the webUI
 
+
   Scenario: user disables autocomplete in sharing dialog but the sharer types full display name
     Given user "another-test-user" has created folder "simple-folder"
     And user "autocomplete-test-user" has logged in using the webUI
@@ -135,6 +144,7 @@ Feature: Autocompletion of share-with names
     And the user opens the share dialog for folder "simple-folder"
     And the user types "Thomas Krause" in the share-with-field
     Then user "Thomas Krause" should be listed in the autocomplete list on the webUI
+
 
   Scenario: allow user to enable autocomplete in sharing dialog
     Given user "another-test-user" has created folder "simple-folder"
@@ -148,11 +158,13 @@ Feature: Autocompletion of share-with names
     Then user "Thomas Krause" should be listed in the autocomplete list on the webUI
     And the users own name should not be listed in the autocomplete list on the webUI
 
+
   Scenario: admin disables share dialog user enumeration
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
     And user "autocomplete-test-user" has logged in using the webUI
     When the user browses to the personal sharing settings page
     Then allow finding you via autocomplete checkbox should not be displayed on the personal sharing settings page
+
 
   Scenario: admin disables share dialog user enumeration and types full user name of user in sharing dialog
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
@@ -161,6 +173,7 @@ Feature: Autocompletion of share-with names
     And the user has opened the share dialog for folder "simple-folder"
     When the user types "usersmith" in the share-with-field
     Then user "John Finn Smith" should be listed in the autocomplete list on the webUI
+
 
   Scenario: admin disables share dialog user enumeration and types full display name of user in sharing dialog
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"

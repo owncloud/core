@@ -7,6 +7,7 @@ Feature: rename folders
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: Rename a folder using special characters
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has logged in using the webUI
@@ -20,6 +21,7 @@ Feature: rename folders
       | '"quotes1"'             |
       | "'quotes2'"             |
 
+
   Scenario Outline: Rename a folder that has special characters in its name
     Given user "Alice" has created folder <from_name>
     And user "Alice" has logged in using the webUI
@@ -31,6 +33,7 @@ Feature: rename folders
       | from_name               | to_name                     |
       | "strängé नेपाली folder" | "strängé नेपाली folder-#?2" |
       | "'single'quotes"        | "single-quotes"             |
+
 
   Scenario: Rename a folder using special characters and check its existence after page reload
     Given user "Alice" has created folder "a-folder"
@@ -62,6 +65,7 @@ Feature: rename folders
     And the user reloads the current page of the webUI
     Then folder "multiple   spaces    all     over" should be listed on the webUI
 
+
   Scenario: Rename a folder using both double and single quotes
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has logged in using the webUI
@@ -81,6 +85,7 @@ Feature: rename folders
     And the user reloads the current page of the webUI
     Then folder "a normal folder" should be listed on the webUI
 
+
   Scenario: Rename a folder using forbidden characters
     Given user "Alice" has created folder "a-folder"
     And the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
@@ -97,6 +102,7 @@ Feature: rename folders
       | Could not rename "a-folder" |
     And folder "a-folder" should be listed on the webUI
 
+
   Scenario: Rename a folder putting a name of a file which already exists
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
@@ -104,17 +110,20 @@ Feature: rename folders
     When the user renames folder "a-folder" to "randomfile.txt" using the webUI
     Then near folder "a-folder" a tooltip with the text 'randomfile.txt already exists' should be displayed on the webUI
 
+
   Scenario: Rename a folder to ..
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has logged in using the webUI
     When the user renames folder "a-folder" to ".." using the webUI
     Then near folder "a-folder" a tooltip with the text '".." is an invalid file name.' should be displayed on the webUI
 
+
   Scenario: Rename a folder to .
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has logged in using the webUI
     When the user renames folder "a-folder" to "." using the webUI
     Then near folder "a-folder" a tooltip with the text '"." is an invalid file name.' should be displayed on the webUI
+
 
   Scenario: Rename a folder to .part
     Given user "Alice" has created folder "a-folder"
@@ -133,6 +142,7 @@ Feature: rename folders
     Then folder "renamedFolder" should be listed on the webUI
     When the user opens folder "/renamedFolder" using the webUI
     Then the option to rename file "newFile" should not be available on the webUI
+
 
   Scenario: Rename a folder which is received as a share (with change permission)
     Given user "Brian" has been created with default attributes and without skeleton files

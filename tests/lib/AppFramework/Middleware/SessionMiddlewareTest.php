@@ -17,7 +17,6 @@ use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Http\Response;
 
 class SessionMiddlewareTest extends \Test\TestCase {
-
 	/**
 	 * @var ControllerMethodReflector
 	 */

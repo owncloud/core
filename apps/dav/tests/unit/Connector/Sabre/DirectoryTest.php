@@ -69,7 +69,6 @@ class TestDoubleFileView extends \OC\Files\View {
  * @group DB
  */
 class DirectoryTest extends \Test\TestCase {
-
 	/** @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject */
 	private $view;
 	/** @var \OC\Files\FileInfo | \PHPUnit\Framework\MockObject\MockObject */

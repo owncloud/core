@@ -26,7 +26,6 @@ use OC\NotSquareException;
 use OC\User\NoUserException;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
-use OCP\Files\Storage\IStorage;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;

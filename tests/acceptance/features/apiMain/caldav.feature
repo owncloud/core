@@ -26,8 +26,7 @@ Feature: caldav
     And the CalDAV exception should be "Sabre\DAV\Exception\NotFound"
     And the CalDAV message should be "Node with name 'MyCalendar' could not be found"
 
-  @caldav
-  @smokeTest
+  @caldav @smokeTest
   Scenario: Creating a new calendar
     Given user "Alice" has successfully created a calendar named "MyCalendar"
     When user "Alice" requests calendar "%username%/MyCalendar" of user "Alice" using the new WebDAV API

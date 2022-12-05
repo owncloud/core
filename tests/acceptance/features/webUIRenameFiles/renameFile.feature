@@ -22,6 +22,7 @@ Feature: rename files
       | "'quotes2'"            |
       | "?quot=OC&OC2 #OC%  3" |
 
+
   Scenario Outline: user with unusual username renames a file using special characters
     Given user "<username>" has been created with default attributes and without skeleton files
     And user "<username>" has uploaded file with content "some content" to "/randomfile.txt"
@@ -38,6 +39,7 @@ Feature: rename files
       | 123      |
       | -123     |
       | 0.0      |
+
 
   Scenario Outline: Rename a file that has special characters in its name
     Given user "Alice" has uploaded file with content "some content" to <from_name>
@@ -98,6 +100,7 @@ Feature: rename files
     And the user reloads the current page of the webUI
     Then file "multiple   space    all     over   .  dat" should be listed on the webUI
 
+
   Scenario: Rename a file using both double and single quotes
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has logged in using the webUI
@@ -116,6 +119,7 @@ Feature: rename files
       | -then "double".txt    |               |
     And the user reloads the current page of the webUI
     Then file "loremz.dat" should be listed on the webUI
+
 
   Scenario: Rename a file using forbidden characters
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
@@ -150,6 +154,7 @@ Feature: rename files
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
 
+
   Scenario: Rename a file to an excluded folder name
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
@@ -159,6 +164,7 @@ Feature: rename files
     Then notifications should be displayed on the webUI with the text
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
+
 
   Scenario: Rename a file to an excluded folder name inside a parent folder
     Given user "Alice" has created folder "top-folder"
@@ -189,6 +195,7 @@ Feature: rename files
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
 
+
   Scenario: Rename the last file in a folder
     Given user "Alice" has uploaded file with content "some content" to "/firstfile.txt"
     And user "Alice" has uploaded file with content "more content" to "/zzzz-must-be-last-file-in-folder.txt"
@@ -196,6 +203,7 @@ Feature: rename files
     When the user renames file "zzzz-must-be-last-file-in-folder.txt" to "a-file.txt" using the webUI
     And the user reloads the current page of the webUI
     Then file "a-file.txt" should be listed on the webUI
+
 
   Scenario: Rename a file to become the last file in a folder
     Given user "Alice" has uploaded file with content "some content" to "/firstfile.txt"
@@ -205,6 +213,7 @@ Feature: rename files
     And the user reloads the current page of the webUI
     Then file "zzzz-z-this-is-now-the-last-file.txt" should be listed on the webUI
 
+
   Scenario: Rename a file putting a name of a file which already exists
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has uploaded file with content "another content" to "/anotherfile.txt"
@@ -212,17 +221,20 @@ Feature: rename files
     When the user renames file "anotherfile.txt" to "randomfile.txt" using the webUI
     Then near file "anotherfile.txt" a tooltip with the text 'randomfile.txt already exists' should be displayed on the webUI
 
+
   Scenario: Rename a file to ..
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has logged in using the webUI
     When the user renames file "randomfile.txt" to ".." using the webUI
     Then near file "randomfile.txt" a tooltip with the text '".." is an invalid file name.' should be displayed on the webUI
 
+
   Scenario: Rename a file to .
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has logged in using the webUI
     When the user renames file "randomfile.txt" to "." using the webUI
     Then near file "randomfile.txt" a tooltip with the text '"." is an invalid file name.' should be displayed on the webUI
+
 
   Scenario: Rename a file to .part
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"

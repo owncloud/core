@@ -29,7 +29,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateAddressBook extends Command {
-
 	/** @var IUserManager */
 	private $userManager;
 

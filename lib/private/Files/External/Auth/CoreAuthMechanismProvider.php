@@ -28,7 +28,6 @@ use OCP\Files\External\Config\IAuthMechanismProvider;
  * @package OC\Files\External
  */
 class CoreAuthMechanismProvider implements IAuthMechanismProvider {
-
 	/** @var ServerContainer */
 	private $server;
 

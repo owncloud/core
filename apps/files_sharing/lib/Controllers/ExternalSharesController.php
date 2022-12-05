@@ -32,9 +32,6 @@ use OCP\Http\Client\IClientService;
 use OCP\IRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use OC\Files\Filesystem;
-use OCA\Files_Sharing\Helper;
-use OCP\Files;
 
 /**
  * Class ExternalSharesController
@@ -42,7 +39,6 @@ use OCP\Files;
  * @package OCA\Files_Sharing\Controllers
  */
 class ExternalSharesController extends Controller {
-
 	/** @var \OCA\Files_Sharing\External\Manager */
 	private $externalManager;
 	/** @var IClientService */

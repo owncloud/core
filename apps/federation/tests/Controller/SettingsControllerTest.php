@@ -27,7 +27,6 @@ use OCP\AppFramework\Http\DataResponse;
 use Test\TestCase;
 
 class SettingsControllerTest extends TestCase {
-
 	/** @var SettingsController  */
 	private $controller;
 

@@ -22,6 +22,7 @@ Feature: Versions of a file
     Then the content of file "randomfile.txt" for user "Alice" should be "new lorem content"
     And the versions list should contain 2 entries
 
+
   Scenario: restoring file to old version changes the content of the file
     Given user "Alice" has uploaded file with content "lorem content" to "/randomfile.txt"
     And user "Alice" has logged in using the webUI

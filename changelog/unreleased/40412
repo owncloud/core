@@ -1,0 +1,18 @@
+Bugfix: "available for" in the mount point configuration will show displaynames
+
+The "available for" select of the mount configuration of external storages
+were using the group id. This wasn't a problem because for local groups the
+group id matches the group displayname, and for ldap groups the group id was
+the "cn" attribute.
+Due to recent changes, the ldap group will now use the objectuid attribute
+(or a similar attribute) as group id by default. This was causing the "available
+for" select to show that objectuid, so identifying the right group was problematic.
+
+Now, the "available for" select will show the group displayname, which for
+ldap is the "cn" attribute by default.
+
+Note that this happens on new installations. There is an automatic migration
+in place, so for upgrades, the "cn" attribute will be set as groupname in order
+to keep the old behavior
+
+https://github.com/owncloud/core/pull/40412

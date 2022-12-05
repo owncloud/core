@@ -30,7 +30,6 @@ use Sabre\DAV\INode;
 use Sabre\DAV\Server;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
-use function explode;
 
 /**
  * Class PublicSharingAuth - sabre dav auth backend to handle password for
@@ -39,7 +38,6 @@ use function explode;
  * @package OCA\DAV\Files\PublicFiles
  */
 class PublicSharingAuth extends AbstractBasic {
-
 	/** @var Server */
 	private $server;
 	/** @var IShare */

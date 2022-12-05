@@ -32,12 +32,7 @@ use OC\Core\Controller\LostController;
 use OC\Helper\EnvironmentHelper;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
-use OCP\IL10N;
-use OCP\IURLGenerator;
 use OCP\IUserManager;
-use OCP\Mail\IMailer;
-use OCP\Security\ISecureRandom;
-use OCP\Util;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -47,7 +42,6 @@ use Symfony\Component\Console\Question\Question;
 use Laminas\Validator\EmailAddress;
 
 class ResetPassword extends Command {
-
 	/** @var IUserManager */
 	protected $userManager;
 	/** @var IConfig  */

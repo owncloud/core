@@ -27,6 +27,7 @@ Feature: resharing can be disabled
       | 1               | 200              |
       | 2               | 404              |
 
+
   Scenario Outline: ordinary sharing is allowed when allow resharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_resharing" of app "core" has been set to "no"

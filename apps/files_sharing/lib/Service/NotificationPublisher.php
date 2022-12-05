@@ -26,7 +26,6 @@ use OCP\IGroupManager;
 use OCP\Share\IShare;
 
 class NotificationPublisher {
-
 	/** @var \OCP\Notification\IManager */
 	private $notificationManager;
 	/** @var IGroupManager */

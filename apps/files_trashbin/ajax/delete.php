@@ -52,25 +52,20 @@ $success = [];
 
 $i = 0;
 foreach ($list as $file) {
-	if ($folder === '/') {
-		$file = \ltrim($file, '/');
-		$delimiter = \strrpos($file, '.d');
-		$filename = \substr($file, 0, $delimiter);
-		$timestamp =  \substr($file, $delimiter+2);
-	} else {
-		$filename = $folder . '/' . $file;
-		$timestamp = null;
-	}
+	$file = \ltrim($file, '/');
+	$filename = $folder . $file;  // folder already contains a trailing "/"
 
-	OCA\Files_Trashbin\Trashbin::delete($filename, \OCP\User::getUser(), $timestamp);
-	if (OCA\Files_Trashbin\Trashbin::file_exists($filename, $timestamp)) {
+	// both "delete" and "file_exists" will require the whole path inside the trashbin
+	// including the deletion timestamp in the filename, such as "/file.txt.d12345"
+	// or "/folder.d12345/file.txt"
+	OCA\Files_Trashbin\Trashbin::delete($filename, \OCP\User::getUser());
+	if (OCA\Files_Trashbin\Trashbin::file_exists($filename)) {
 		$error[] = $filename;
 		\OCP\Util::writeLog('files_trashbin', 'can\'t delete ' . $filename . ' permanently.', \OCP\Util::ERROR);
 	}
 	// only list deleted files if not deleting everything
 	elseif (!$deleteAll) {
 		$success[$i]['filename'] = $file;
-		$success[$i]['timestamp'] = $timestamp;
 		$i++;
 	}
 }

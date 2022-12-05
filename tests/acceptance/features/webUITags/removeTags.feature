@@ -10,6 +10,7 @@ Feature: Removal of already existing tags from files and folders
       | Alice    |
     And user "Alice" has logged in using the webUI
 
+
   Scenario: Remove a tag that already exists for a file in a folder
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has uploaded file with content "some content" to "/a-folder/randomfile.txt"
@@ -20,6 +21,7 @@ Feature: Removal of already existing tags from files and folders
     And the user toggles a tag "random" on the file using the webUI
     Then file "a-folder/randomfile.txt" should have no tags for user "Alice"
 
+
   Scenario: Remove a tag that already exists for a file in the root
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the user has created a "normal" tag with name "random"
@@ -28,6 +30,7 @@ Feature: Removal of already existing tags from files and folders
     And the user switches to the "tags" tab in the details panel using the webUI
     And the user toggles a tag "random" on the file using the webUI
     Then file "randomfile.txt" should have no tags for user "Alice"
+
 
   Scenario: Remove all tags that already exist for a file
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
@@ -76,6 +79,7 @@ Feature: Removal of already existing tags from files and folders
     Then file "coolnewfile.txt" should have no tags for user "Brian"
     And file "coolnewfile.txt" should have no tags for user "Alice"
 
+
   Scenario: Remove multiple tags that exist for a file
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the user has created a "normal" tag with name "random"
@@ -91,6 +95,7 @@ Feature: Removal of already existing tags from files and folders
     Then file "randomfile.txt" should have the following tags for user "Alice"
       | name     | type   |
       | some-tag | normal |
+
 
   Scenario: Remove a tag from a file and assign another tag
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"

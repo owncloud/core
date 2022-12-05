@@ -34,7 +34,6 @@ use OCP\Share\Exceptions\IllegalIDChangeException;
  * @since 9.0.0
  */
 interface IShare {
-
 	/**
 	 * Set the internal id of the share
 	 * It is only allowed to set the internal id of a share once.

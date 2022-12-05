@@ -9,6 +9,7 @@ Feature: move files
     And user "Alice" has created folder "simple-folder"
     And user "Alice" has uploaded file "filesForUpload/data.zip" to "data.zip"
 
+
   Scenario: An attempt to move a file into a sub-folder using rename is not allowed
     Given user "Alice" has logged in using the webUI
     And the user has browsed to the files page
@@ -34,6 +35,7 @@ Feature: move files
     And the user moves file "strängé filename (duplicate #2 &).txt" into folder "strängé नेपाली folder empty" using the webUI
     Then file "strängé filename (duplicate #2 &).txt" should not be listed on the webUI
     But file "strängé filename (duplicate #2 &).txt" should be listed in folder "strängé नेपाली folder empty" on the webUI
+
 
   Scenario: move a file into a folder where a file with the same name already exists
     Given user "Alice" has created folder "strängé नेपाली folder"

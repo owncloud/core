@@ -10,6 +10,7 @@ Feature: Locks
       | username       |
       | brand-new-user |
 
+
   Scenario Outline: uploading a file, trying to overwrite a locked file
     Given user "brand-new-user" has uploaded file with content "original content" to "/lorem.txt"
     And user "brand-new-user" has locked file "lorem.txt" setting the following properties
@@ -26,6 +27,7 @@ Feature: Locks
       | lockscope |
       | exclusive |
       | shared    |
+
 
   Scenario Outline: uploading a file, trying to overwrite a file in a locked folder
     Given user "brand-new-user" has created folder "/simple-folder"
@@ -45,6 +47,7 @@ Feature: Locks
       | lockscope |
       | exclusive |
       | shared    |
+
 
   Scenario Outline: uploading a new file into a locked folder
     Given user "brand-new-user" has created folder "/simple-folder"

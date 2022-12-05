@@ -34,7 +34,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 class Install extends Command {
-
 	/**
 	 * @var IConfig
 	 */
@@ -62,7 +61,6 @@ class Install extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-
 		// validate the environment
 		$server = \OC::$server;
 		$setupHelper = new Setup(

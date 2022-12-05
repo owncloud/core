@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog @admin_settings-feature-required
+@webUI @insulated @disablePreviews @email @admin_settings-feature-required
 Feature: admin general settings
   As an admin
   I want to be able to manage general settings on the ownCloud server
@@ -11,15 +11,15 @@ Feature: admin general settings
   Scenario: administrator sets email server settings
     Given the administrator has browsed to the admin general settings page
     When the administrator sets the following email server settings using the webUI
-      | setting                 | value          |
-      | send mode               | smtp           |
-      | encryption              | None           |
-      | from address            | owncloud       |
-      | mail domain             | foobar.com     |
-      | authentication method   | None           |
-      | authentication required | false          |
-      | server address          | %MAILHOG_HOST% |
-      | port                    | 1025           |
+      | setting                 | value        |
+      | send mode               | smtp         |
+      | encryption              | None         |
+      | from address            | owncloud     |
+      | mail domain             | foobar.com   |
+      | authentication method   | None         |
+      | authentication required | false        |
+      | server address          | %EMAIL_HOST% |
+      | port                    | 2500         |
     And the administrator clicks on send test email in the admin general settings page using the webUI
     Then the email address "admin@owncloud.com" should have received an email with the body containing
       """
@@ -30,17 +30,17 @@ Feature: admin general settings
   Scenario: administrator sets email server credentials and re-displays them
     Given the administrator has browsed to the admin general settings page
     When the administrator sets the following email server settings using the webUI
-      | setting                 | value          |
-      | send mode               | smtp           |
-      | encryption              | None           |
-      | from address            | owncloud       |
-      | mail domain             | foobar.com     |
-      | authentication method   | None           |
-      | authentication required | true           |
-      | server address          | %MAILHOG_HOST% |
-      | port                    | 1025           |
-      | credential name         | mysmtp         |
-      | credential password     | SomePwd123     |
+      | setting                 | value        |
+      | send mode               | smtp         |
+      | encryption              | None         |
+      | from address            | owncloud     |
+      | mail domain             | foobar.com   |
+      | authentication method   | None         |
+      | authentication required | true         |
+      | server address          | %EMAIL_HOST% |
+      | port                    | 2500         |
+      | credential name         | mysmtp       |
+      | credential password     | SomePwd123   |
     And the administrator clicks on store-credentials in the admin general settings page using the webUI
     Then the email credential name on the admin general settings page should be "mysmtp"
     And the email credential password on the admin general settings page should be "SomePwd123"
@@ -88,6 +88,7 @@ Feature: admin general settings
     When the user reloads the current page of the webUI
     And the administrator sets the value of log level to 1 using the webUI
     Then the log level should be "1"
+
 
   Scenario: administrator should be able to see system status
     When the administrator browses to the admin general settings page

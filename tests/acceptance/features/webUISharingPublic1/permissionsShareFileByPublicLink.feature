@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required @files_sharing-app-required
+@webUI @insulated @disablePreviews @email @public_link_share-feature-required @files_sharing-app-required
 Feature: Share a file by public link
   As a user
   I want to share files through a publicly accessible link
@@ -6,6 +6,7 @@ Feature: Share a file by public link
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
+
 
   Scenario: creating a public link of a file with read permissions
     Given user "Alice" has uploaded file with content "text to test public links" to "/lorem.txt"

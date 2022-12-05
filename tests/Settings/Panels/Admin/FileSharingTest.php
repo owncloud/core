@@ -20,7 +20,6 @@ use OCP\L10N\IFactory;
  * @package Tests\Settings\Panels\Admin
  */
 class FileSharingTest extends \Test\TestCase {
-
 	/** @var FileSharing */
 	private $panel;
 	/** @var IConfig */

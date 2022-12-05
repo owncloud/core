@@ -20,7 +20,6 @@
  */
 namespace OCA\Files_Sharing\Tests;
 
-use OCP\L10N\IFactory;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\Share\IManager as IShareManager;
 use OCP\Share\IShare;
@@ -34,7 +33,6 @@ use OCP\IConfig;
 use OCP\IUser;
 
 class NotifierTest extends \Test\TestCase {
-
 	/**
 	 * @var Notifier
 	 */

@@ -45,7 +45,6 @@ use OCP\IUserSession;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Share;
-use OCP\User;
 use OCP\User\Constants;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -65,7 +64,6 @@ use OCP\Share\IManager;
  * @group DB
  */
 class Share20OcsControllerTest extends TestCase {
-
 	/** @var Manager | MockObject */
 	private $shareManager;
 

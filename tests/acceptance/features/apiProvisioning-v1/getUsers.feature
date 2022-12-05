@@ -17,6 +17,7 @@ Feature: get users
       | brand-new-user |
       | admin          |
 
+
   Scenario: admin gets all users
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator gets the list of all users using the provisioning API

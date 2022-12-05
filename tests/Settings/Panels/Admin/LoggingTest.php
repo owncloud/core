@@ -19,7 +19,6 @@ use OCP\IURLGenerator;
  * @package Tests\Settings\Panels\Admin
  */
 class LoggingTest extends \Test\TestCase {
-
 	/** @var Logging */
 	private $panel;
 	/** @var IConfig */

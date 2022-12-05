@@ -43,7 +43,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @package OCA\Comments\Dav
  */
 class EntityTypeCollection extends RootCollection {
-
 	/** @var ILogger */
 	protected $logger;
 

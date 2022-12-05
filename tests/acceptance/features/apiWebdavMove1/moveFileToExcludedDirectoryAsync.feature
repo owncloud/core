@@ -10,12 +10,14 @@ Feature: users cannot move (rename) a file to or into an excluded directory
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     And the administrator has enabled async operations
 
+
   Scenario: rename a file to an excluded directory name
     Given the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/.github" using the WebDAV API
     Then the HTTP status code should be "403"
     And user "Alice" should see the following elements
       | /textfile0.txt |
+
 
   Scenario: rename a file to an excluded directory name inside a parent directory
     Given user "Alice" has created folder "FOLDER"

@@ -24,7 +24,6 @@
 
 namespace OC\Files\External;
 
-use OC\Files\Storage\Wrapper\Availability;
 use OCP\Files\Storage;
 use OC\Files\Mount\MountPoint;
 use OCP\Files\Storage\IStorageFactory;
@@ -34,16 +33,13 @@ use OCP\Files\External\Service\IUserStoragesService;
 use OCP\Files\External\Service\IUserGlobalStoragesService;
 use OCP\Files\External\IStorageConfig;
 use OC\Files\Storage\FailedStorage;
-use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
-use OCP\Files\ObjectStore\IObjectStore;
 use OCP\ISession;
 
 /**
  * Make the old files_external config work with the new public mount config api
  */
 class ConfigAdapter implements IMountProvider {
-
 	/** @var IConfig */
 	private $config;
 

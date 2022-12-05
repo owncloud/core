@@ -28,7 +28,6 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Test\TestCase;
 
 class InactiveTest extends TestCase {
-
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

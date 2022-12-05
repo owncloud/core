@@ -29,7 +29,6 @@
 namespace OCA\Files_Trashbin;
 
 class Hooks {
-
 	/**
 	 * clean up user specific settings if user gets deleted
 	 * @param array $params array with uid

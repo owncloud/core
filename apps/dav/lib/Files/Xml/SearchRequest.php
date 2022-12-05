@@ -21,7 +21,6 @@
 
 namespace OCA\DAV\Files\Xml;
 
-use Sabre\Xml\Element\Base;
 use Sabre\Xml\Element\KeyValue;
 use Sabre\Xml\Reader;
 use Sabre\Xml\XmlDeserializable;

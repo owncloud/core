@@ -21,13 +21,11 @@
 
 namespace OC\Repair;
 
-use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class RepairOrphanedSubshare implements IRepairStep {
-
 	/** @var IDBConnection  */
 	private $connection;
 

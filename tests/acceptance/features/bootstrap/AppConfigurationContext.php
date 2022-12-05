@@ -34,7 +34,6 @@ use Behat\Behat\Context\Context;
  * AppConfiguration trait
  */
 class AppConfigurationContext implements Context {
-
 	/**
 	 * @var FeatureContext
 	 */

@@ -10,6 +10,7 @@ Feature: create read-only local storage from the command line
       | Alice    |
       | Brian    |
 
+
   Scenario: create read-only local storage that is available to all users
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"

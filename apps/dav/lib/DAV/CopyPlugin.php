@@ -25,7 +25,6 @@ use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\Files\ICopySource;
 use OCP\Files\ForbiddenException;
-use OCP\Lock\ILockingProvider;
 use Sabre\DAV\IFile;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
@@ -45,7 +44,6 @@ use Sabre\HTTP\ResponseInterface;
  * @package OCA\DAV\DAV
  */
 class CopyPlugin extends ServerPlugin {
-
 	/** @var Server */
 	private $server;
 

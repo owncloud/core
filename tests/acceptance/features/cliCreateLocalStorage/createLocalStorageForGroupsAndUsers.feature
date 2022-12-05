@@ -10,6 +10,7 @@ Feature: create local storage from the command line
       | Alice    |
       | Brian    |
 
+
   Scenario: create local storage for a specific group and user
     Given these users have been created with default attributes and without skeleton files:
       | username |

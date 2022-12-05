@@ -23,8 +23,6 @@ namespace OCA\DAV\Connector\Sabre;
 
 use Sabre\DAV\Locks\Backend\BackendInterface;
 use Sabre\DAV\Locks\LockInfo;
-use Sabre\DAV\PropFind;
-use Sabre\DAV\INode;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\Locked;
 use Sabre\HTTP\RequestInterface;

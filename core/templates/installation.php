@@ -66,10 +66,10 @@ script('core', [
 	<?php if (!$_['dbIsSet'] or \count($_['errors']) > 0): ?>
 	<fieldset id='databaseBackend'>
 		<?php if ($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle']) {
-	$hasOtherDB = true;
-} else {
-	$hasOtherDB =false;
-} //other than SQLite?>
+			$hasOtherDB = true;
+		} else {
+			$hasOtherDB =false;
+		} //other than SQLite?>
 		<legend><strong><?php p($l->t('Configure the database')); ?></strong></legend>
 		<div id="selectDbType">
 		<?php foreach ($_['databases'] as $type => $label): ?>
@@ -136,7 +136,7 @@ script('core', [
 					autocomplete="off" autocorrect="off">
 			</p>
 			<p class="info">
-				<?php p($l->t('Please specify the port number along with the host name (e.g., localhost: 5432).')); ?>
+				<?php p($l->t('Please specify the port number along with the host name (e.g., localhost:5432).')); ?>
 			</p>
 		</div>
 		</fieldset>

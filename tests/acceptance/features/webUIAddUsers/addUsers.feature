@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog
+@webUI @insulated @disablePreviews @email
 Feature: add users
   As an admin
   I want to add users
@@ -7,6 +7,7 @@ Feature: add users
   Background:
     Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
+
 
   Scenario Outline: use the webUI to create a simple user
     When the administrator creates a user with the name "<username>" and the password "<password>" using the webUI
@@ -46,11 +47,13 @@ Feature: add users
       | user | password | notification                                                  |
       | meta | "%alt4%" | Error creating user: The special username meta is not allowed |
 
+
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Error creating user: A valid password must be provided |
     And the user should be redirected to a webUI page with the title "Users - %productname%"
+
 
   Scenario Outline: use the webUI to create a user with less than 3 characters
     When the administrator attempts to create a user with the name <user> and the password <password> using the webUI
@@ -127,6 +130,7 @@ Feature: add users
       | guiusr1  | simple user-name      |
       | a@-+_.'b | complicated user-name |
 
+
   Scenario Outline: webUI refuses to create users with invalid Email addresses
     When the administrator creates a user with the name "guiusr1" and the email "<email>" without a password using the webUI
     Then notifications should be displayed on the webUI with the text
@@ -139,10 +143,12 @@ Feature: add users
       #see http://codefool.tumblr.com/post/15288874550/list-of-valid-and-invalid-email-addresses
       #email address validation would better go into an unit test
 
+
   Scenario: webUI refuses to create a user with an empty Email address
     When the administrator creates a user with the name "guiusr1" and the email "" without a password using the webUI
     Then notifications should be displayed on the webUI with the text
       | Error creating user: A valid email must be provided |
+
 
   Scenario: changing the user password as an admin invalidates the user sets-password-token
     When the administrator creates a user with the name "guiusr1" and the email "guiusr1@owncloud" without a password using the webUI
@@ -152,6 +158,7 @@ Feature: add users
     Then the user should be redirected to the general error webUI page with the title "%productname%"
     And an error should be displayed on the general error webUI page saying "The token provided is invalid."
 
+
   Scenario: sets-password-token cannot be used twice
     When the administrator creates a user with the name "guiusr1" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
@@ -160,6 +167,7 @@ Feature: add users
     And the user follows the password set link received by "guiusr1@owncloud" in Email number 2 using the webUI
     Then the user should be redirected to the general error webUI page with the title "%productname%"
     And an error should be displayed on the general error webUI page saying "The token provided is invalid."
+
 
   Scenario: recreating a user with same name after deletion sends a new token to new address
     When the administrator creates a user with the name "guiusr1" and the email "mistake@owncloud" without a password using the webUI
@@ -171,6 +179,7 @@ Feature: add users
     And the user logs in with username "guiusr1" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
+
   Scenario: recreating a user with same name after deletion makes the first token invalid
     When the administrator creates a user with the name "guiusr1" and the email "mistake@owncloud" without a password using the webUI
     And the administrator deletes user "guiusr1" using the webUI and confirms the deletion using the webUI
@@ -179,6 +188,7 @@ Feature: add users
     And the user follows the password set link received by "mistake@owncloud" using the webUI
     Then the user should be redirected to the general error webUI page with the title "%productname%"
     And an error should be displayed on the general error webUI page saying "The token provided is invalid."
+
 
   Scenario: when recreating a user with same second token can be used even if someone tried to use the first one
     When the administrator creates a user with the name "guiusr1" and the email "mistake@owncloud" without a password using the webUI
@@ -191,6 +201,7 @@ Feature: add users
     And the user logs in with username "guiusr1" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
+
   Scenario: check if the sender email address is valid
     When the administrator creates a user with the name "Brian" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
@@ -202,6 +213,7 @@ Feature: add users
       Password changed successfully
       """
     And the reset email to user "Brian" should be from "owncloud@foobar.com"
+
 
   Scenario Outline: admin creates a user and sets password containing special characters
     Given user "brand-new-user" has been deleted
@@ -216,6 +228,7 @@ Feature: add users
       | España                       | special European characters |
       | नेपाली                       | Unicode                     |
       | password with spaces         | password with spaces        |
+
 
   Scenario Outline: admin creates a user without setting password and user sets password containing special characters
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
@@ -232,12 +245,14 @@ Feature: add users
       | नेपाली                       | Unicode                     |
       | password with spaces         | password with spaces        |
 
+
   Scenario: admin creates a user without setting password and user sets empty spaces as password
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "bnu@owncloud" using the webUI
     And the user sets the password to " " and confirms with the same password using the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
+
 
   Scenario Outline: admin creates a user but logs in with different case username
     When the administrator creates a user with the name "<creation-username>" and the password "password" using the webUI
@@ -251,6 +266,7 @@ Feature: add users
       | mixed-case-user   | Mixed-Case-user | Mixed-Case-user |
       | Mixed-Case-user   | MIXED-CASE-USER | mixed-case-user |
       | mixed-case-user   | Mixed-Case-user | MIXED-CASE-USER |
+
 
   Scenario Outline: user names are not case-sensitive, multiple users can't exist with different upper and lower case names
     When the administrator creates a user with the name "<user_id1>" and the password "password" using the webUI

@@ -50,7 +50,6 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IServerContainer;
 use OCP\Util;
-use OCP\License\ILicenseManager;
 
 /**
  * Class Application
@@ -58,7 +57,6 @@ use OCP\License\ILicenseManager;
  * @package OC\Core
  */
 class Application extends App {
-
 	/**
 	 * @param array $urlParams
 	 */

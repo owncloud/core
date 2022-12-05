@@ -4,6 +4,7 @@ Feature: files and folders can be deleted from the trashbin
   I want to delete files and folders from the trashbin
   So that I can control user trashbin space and which files are kept in that space
 
+
   Scenario: delete files and folder of a user from the trashbin
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has deleted file "/textfile0.txt"
@@ -15,6 +16,7 @@ Feature: files and folders can be deleted from the trashbin
     And as "Alice" the file with original path "/textfile0.txt" should not exist in the trashbin
     And as "Alice" the file with original path "/textfile1.txt" should not exist in the trashbin
     And as "Alice" the folder with original path "/PARENT" should not exist in the trashbin
+
 
   Scenario: delete files and folder of all user from the trashbin
     Given user "Alice" has been created with default attributes and small skeleton files

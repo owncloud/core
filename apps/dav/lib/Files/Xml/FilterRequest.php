@@ -8,7 +8,6 @@ use Sabre\Xml\Reader;
 use Sabre\Xml\XmlDeserializable;
 
 class FilterRequest implements XmlDeserializable {
-
 	/**
 	 * An array with requested properties.
 	 *
@@ -69,7 +68,6 @@ class FilterRequest implements XmlDeserializable {
 
 		foreach ($elems as $elem) {
 			switch ($elem['name']) {
-
 				case '{DAV:}prop':
 					$newProps['properties'] = \array_keys($elem['value']);
 					break;

@@ -31,7 +31,6 @@ use \OC\Files\View;
  * update encrypted files, e.g. because a file was shared
  */
 class Update {
-
 	/** @var \OC\Files\View */
 	protected $view;
 
@@ -165,7 +164,6 @@ class Update {
 	 * @throws Exceptions\ModuleDoesNotExistsException
 	 */
 	public function update($path) {
-
 		// if a folder was shared, get a list of all (sub-)folders
 		if ($this->view->is_dir($path)) {
 			$allFiles = $this->util->getAllFiles($path);

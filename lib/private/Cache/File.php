@@ -31,7 +31,6 @@ use OCP\ICache;
 use OCP\Security\ISecureRandom;
 
 class File implements ICache {
-
 	/** @var View */
 	protected $storage;
 

@@ -38,7 +38,6 @@ use Sabre\DAV\PropPatch;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 
 class Principal implements BackendInterface {
-
 	/** @var IUserManager */
 	private $userManager;
 

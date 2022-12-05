@@ -3279,42 +3279,6 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given the administrator has created a json file with exported config of local storage mount :mount to :destination in temporary storage
-	 *
-	 * @param string $mount
-	 * @param string $destination
-	 *
-	 * @return void
-	 * @throws Exception
-	 * @throws GuzzleException
-	 */
-	public function theAdminHasCreatedAJsonFileWithExportedMountConfig(
-		string $mount,
-		string $destination
-	): void {
-		$actualConfig = null;
-		$commandOutput = \json_decode(
-			SetupHelper::runOcc(
-				['files_external:export'],
-				$this->getStepLineRef()
-			)['stdOut']
-		);
-
-		//identifying the correct config and also removing the "mount id" property
-		foreach ($commandOutput as $i) {
-			if ($mount === \ltrim($i->mount_point, '/')) {
-				unset($i->mount_id);
-				$actualConfig = $i;
-				break;
-			}
-		}
-
-		$actualConfig = json_encode($actualConfig);
-		$this->copyContentToFileInTemporaryStorageOnSystemUnderTest($destination, $actualConfig);
-		$this->theFileWithContentShouldExistInTheServerRoot(TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$destination", $actualConfig);
-	}
-
-	/**
 	 * @Given /^user "([^"]*)" has uploaded the following files with content "([^"]*)"$/
 	 *
 	 * @param string $user

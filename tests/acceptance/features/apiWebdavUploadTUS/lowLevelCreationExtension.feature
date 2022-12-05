@@ -4,6 +4,7 @@ Feature: low level tests of the creation extension see https://tus.io/protocols/
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: creating a new upload resource
     Given using <dav_version> DAV path
     When user "Alice" creates a new TUS resource on the WebDAV API with these headers:
@@ -24,6 +25,7 @@ Feature: low level tests of the creation extension see https://tus.io/protocols/
     Examples:
       | dav_version |
       | spaces      |
+
 
   Scenario Outline: creating a new upload resource without upload length
     Given using <dav_version> DAV path

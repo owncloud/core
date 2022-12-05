@@ -23,7 +23,6 @@ use OCP\L10N\IFactory;
 * @package Tests\Settings\Panels\Personal
 */
 class ProfileTest extends \Test\TestCase {
-
 	/** @var Profile */
 	private $panel;
 	/** @var IConfig */

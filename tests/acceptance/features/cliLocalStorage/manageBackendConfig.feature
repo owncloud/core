@@ -10,6 +10,7 @@ Feature: manage backend configuration for a mount using occ command
     And the administrator has uploaded file with content "this is a file in local storage2" to "/local_storage2/file-in-local-storage.txt"
     And the administrator has uploaded file with content "this is a file in local storage3" to "/local_storage3/new-file"
 
+
   Scenario: manage backend configuration for a local storage mount
     When the administrator configures the key "client_id" with value "owncloudUser" for the local storage mount "local_storage2"
     And the administrator configures the key "client_secret" with value "userSecretKey" for the local storage mount "local_storage2"
@@ -27,6 +28,7 @@ Feature: manage backend configuration for a mount using occ command
       | client_id: "nextOCUser"         |
       | client_secret: "nextUserSecret" |
 
+
   Scenario: manage backend configuration for a local storage mount and list the local storages with --show-password
     When the administrator configures the key "client_id" with value "owncloudUser" for the local storage mount "local_storage2"
     And the administrator configures the key "client_secret" with value "userSecretKey" for the local storage mount "local_storage2"
@@ -43,6 +45,7 @@ Feature: manage backend configuration for a mount using occ command
       | configuration                   |
       | client_id: "nextOCUser"         |
       | client_secret: "nextUserSecret" |
+
 
   Scenario: manage backend configuration for a local storage mount and test the output providing with key only
     Given the administrator has configured the key "client_id" with value "owncloudUser" for the local storage mount "local_storage2"

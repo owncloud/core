@@ -39,7 +39,6 @@ use OC_Helper;
 use OCP\Events\EventEmitterTrait;
 use OCP\IAvatarManager;
 use OCP\IImage;
-use OCP\ILogger;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IConfig;

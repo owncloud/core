@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @mailhog @public_link_share-feature-required @files_sharing-app-required
+@webUI @insulated @disablePreviews @email @public_link_share-feature-required @files_sharing-app-required
 Feature: Share a folder by public link
   As a user
   I want to share folders through a publicly accessible link
@@ -6,6 +6,7 @@ Feature: Share a folder by public link
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
+
 
   Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
     Given user "Alice" has created folder "simple-folder"
@@ -26,6 +27,7 @@ Feature: Share a folder by public link
     Then the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
+
   Scenario: creating a public link with read permissions only makes it impossible to delete files via the link
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file with content "test" to "/simple-folder/lorem.txt"
@@ -35,6 +37,7 @@ Feature: Share a folder by public link
     And the public accesses the last created public link using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
+
   Scenario: user tries to create a public link with read only permission without entering share password while enforce password on read only public share is enforced
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has logged in using the webUI
@@ -42,6 +45,7 @@ Feature: Share a folder by public link
     When the user tries to create a new public link for folder "simple-folder" using the webUI
     Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
     And the public link should not have been generated
+
 
   Scenario: user tries to create a public link with read-write permission without entering share password while enforce password on read-write public share is enforced
     Given user "Alice" has created folder "/simple-folder"
@@ -52,6 +56,7 @@ Feature: Share a folder by public link
     Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
     And the public link should not have been generated
 
+
   Scenario: user tries to create a public link with write only permission without entering share password while enforce password on write only public share is enforced
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has logged in using the webUI
@@ -60,6 +65,7 @@ Feature: Share a folder by public link
       | permission | upload |
     Then the user should see an error message on the public link share dialog saying "Passwords are enforced for link shares"
     And the public link should not have been generated
+
 
   Scenario: user creates a public link with read-write permission without entering share password while enforce password on read only public share is enforced
     Given user "Alice" has created folder "/simple-folder"
@@ -70,6 +76,7 @@ Feature: Share a folder by public link
       | permission | read-write-folder |
     And the public accesses the last created public link using the webUI
     Then file "lorem.txt" should be listed on the webUI
+
 
   Scenario: user edits the permission of an already existing public link from read-write to read
     Given user "Alice" has created folder "/simple-folder"
@@ -85,6 +92,7 @@ Feature: Share a folder by public link
     And the public accesses the last created public link using the webUI
     Then file "lorem.txt" should be listed on the webUI
     And it should not be possible to delete file "lorem.txt" using the webUI
+
 
   Scenario: user edits the permission of an already existing public link from read to read-write
     Given user "Alice" has created folder "/simple-folder"
@@ -106,6 +114,7 @@ Feature: Share a folder by public link
     Then the deleted elements should not be listed on the webUI
     And the deleted elements should not be listed on the webUI after a page reload
 
+
   Scenario: Permissions work correctly on public link share with upload-write-without-modify
     Given user "Alice" has created folder "simple-folder"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
@@ -117,6 +126,7 @@ Feature: Share a folder by public link
     And the option to delete file "lorem.txt" should not be available on the webUI
     And the option to upload file should be available on the webUI
 
+
   Scenario: Permissions work correctly on public link share with read-write
     Given user "Alice" has created folder "simple-folder"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
@@ -127,6 +137,7 @@ Feature: Share a folder by public link
     Then the option to rename file "lorem.txt" should be available on the webUI
     And the option to delete file "lorem.txt" should be available on the webUI
     And the option to upload file should be available on the webUI
+
 
   Scenario: User tries to upload existing file in public link share with permissions upload-write-without-modify
     Given user "Alice" has created folder "simple-folder"
@@ -140,6 +151,7 @@ Feature: Share a folder by public link
     And file "lorem.txt" should be listed on the webUI
     And file "lorem (2).txt" should not be listed on the webUI
 
+
   Scenario: User tries to upload existing file in public link share with permissions read-write
     Given user "Alice" has created folder "simple-folder"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
@@ -150,6 +162,7 @@ Feature: Share a folder by public link
     And the user uploads file "lorem.txt" keeping both new and existing files using the webUI
     Then file "lorem.txt" should be listed on the webUI
     And file "lorem (2).txt" should be listed on the webUI
+
 
   Scenario: Editing the permission on a existing share from read-write to upload-write-without-modify works correctly
     Given user "Alice" has created folder "/simple-folder"
@@ -166,6 +179,7 @@ Feature: Share a folder by public link
     And the user changes the permission of the public link named "Public link" to "upload-write-without-modify"
     And the public accesses the last created public link using the webUI
     Then the option to delete file "lorem-big.txt" should not be available on the webUI
+
 
   Scenario: Editing the permission on a existing share from upload-write-without-modify to read-write works correctly
     Given user "Alice" has created folder "/simple-folder"

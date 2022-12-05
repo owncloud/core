@@ -41,7 +41,6 @@ namespace OCP;
  * @since 4.0.0
  */
 class App {
-
 	/**
 	 * Adds an entry to the navigation
 	 *

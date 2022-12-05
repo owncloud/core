@@ -22,7 +22,6 @@
 namespace OCA\Comments\Tests\unit;
 
 use OCA\Comments\Activity\Listener;
-use OCP\Comments\CommentsEntityEvent;
 use Test\Traits\UserTrait;
 use OCP\IUserSession;
 use OCP\Activity\IManager;

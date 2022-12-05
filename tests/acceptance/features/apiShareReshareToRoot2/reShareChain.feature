@@ -7,6 +7,7 @@ Feature: resharing can be done on a reshared resource
       | Alice    |
       | Brian    |
 
+
   Scenario: Reshared files can be still accessed if a user in the middle removes it.
     Given user "Carol" has been created with default attributes and without skeleton files
     And user "David" has been created with default attributes and without skeleton files

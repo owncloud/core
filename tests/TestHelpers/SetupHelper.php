@@ -35,7 +35,6 @@ use SimpleXMLElement;
  *
  */
 class SetupHelper extends \PHPUnit\Framework\Assert {
-
 	/**
 	 * @var string
 	 */

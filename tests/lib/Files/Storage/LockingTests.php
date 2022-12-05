@@ -33,7 +33,6 @@ use Test\TestCase;
  * @package Test\Files\Storage
  */
 class LockingTests extends TestCase {
-
 	/** @var View */
 	private $view;
 	/** @var IPersistentLockingStorage */

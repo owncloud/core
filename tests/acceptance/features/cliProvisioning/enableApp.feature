@@ -20,6 +20,7 @@ Feature: enable an app
     And the command output should contain the text 'comments enabled'
     And app "comments" should be enabled
 
+
   Scenario: Admin tries to enable an app which is not installed in the ownCloud server
     When the administrator enables app "not-installed-app" using the occ command
     Then the command should have failed with exit code 1

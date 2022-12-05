@@ -10,6 +10,7 @@ Feature: manage options for a mount using occ command
     And the administrator has uploaded file with content "this is a file in local storage2" to "/local_storage2/file-in-local-storage.txt"
     And the administrator has uploaded file with content "this is a file in local storage3" to "/local_storage3/new-file"
 
+
   Scenario: add options for a local storage mount
     When the administrator adds an option with key "enable_sharing" and value "true" for the local storage mount "local_storage2"
     And the administrator adds an option with key "read_only" and value "1" for the local storage mount "local_storage2"

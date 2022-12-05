@@ -37,7 +37,6 @@ use Laminas\Ldap\Ldap;
  * Functions for provisioning of users and groups
  */
 trait Provisioning {
-
 	/**
 	 * list of users that were created on the local server during test runs
 	 * key is the lowercase username, value is an array of user attributes
@@ -4570,7 +4569,6 @@ trait Provisioning {
 		}
 		if (OcisHelper::isTestingWithGraphApi()) {
 			$base = '/graph/v1.0';
-			$group = $this->getAttributeOfCreatedGroup($group, "id");
 		} else {
 			$base = '/ocs/v2.php/cloud';
 		}
@@ -4942,11 +4940,17 @@ trait Provisioning {
 			},
 			$this->simplifyArray($users)
 		);
-		$respondedArray = $this->getArrayOfUsersResponded($this->response);
-		Assert::assertEqualsCanonicalizing(
-			$usersSimplified,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseUsersShouldBeInTheResponse($usersSimplified);
+		} else {
+			$respondedArray = $this->getArrayOfUsersResponded($this->response);
+			Assert::assertEqualsCanonicalizing(
+				$usersSimplified,
+				$respondedArray,
+				__METHOD__
+				. " Provided users do not match the users returned in the response."
+			);
+		}
 	}
 
 	/**
@@ -4991,10 +4995,16 @@ trait Provisioning {
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		Assert::assertEqualsCanonicalizing(
-			$groupsSimplified,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseGroupsShouldBeInTheResponse($groupsSimplified);
+		} else {
+			Assert::assertEqualsCanonicalizing(
+				$groupsSimplified,
+				$respondedArray,
+				__METHOD__
+				. " Provided groups do not match the groups returned in the response."
+			);
+		}
 	}
 
 	/**
@@ -5009,14 +5019,18 @@ trait Provisioning {
 		$this->verifyTableNodeColumnsCount($groupsList, 1);
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
-		$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
-		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		\asort($expectedGroups);
-		\asort($respondedArray);
-		Assert::assertEqualsCanonicalizing(
-			$expectedGroups,
-			$respondedArray
-		);
+		if (OcisHelper::isTestingWithGraphApi()) {
+			$this->graphContext->theseGroupsShouldBeInTheResponse($groupsSimplified);
+		} else {
+			$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
+			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+			Assert::assertEqualsCanonicalizing(
+				$expectedGroups,
+				$respondedArray,
+				__METHOD__
+				. " Provided groups do not match the groups returned in the response."
+			);
+		}
 	}
 
 	/**

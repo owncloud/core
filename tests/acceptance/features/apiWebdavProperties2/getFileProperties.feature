@@ -369,8 +369,7 @@ Feature: get file properties
       | dav_version |
       | spaces      |
 
-  @issue-36920
-    @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-reva-217
+  @issue-36920 @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-reva-217
   Scenario Outline: add multiple properties to files inside a folder and do a propfind of the parent folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/TestFolder"

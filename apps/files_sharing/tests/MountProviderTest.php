@@ -35,7 +35,6 @@ use OCP\Share\IShare;
  * @group DB
  */
 class MountProviderTest extends \Test\TestCase {
-
 	/** @var MountProvider */
 	private $provider;
 

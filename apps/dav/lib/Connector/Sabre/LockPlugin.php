@@ -33,7 +33,6 @@ use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
-use Sabre\DAV\Exception\NotImplemented;
 use Sabre\DAV\Locks\LockInfo;
 use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;

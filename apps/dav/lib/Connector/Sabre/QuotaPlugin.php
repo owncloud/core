@@ -29,7 +29,6 @@ use OCP\Files\StorageNotAvailableException;
 use Sabre\DAV\Exception\InsufficientStorage;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\INode;
-use Sabre\HTTP\RequestInterface;
 
 /**
  * This plugin check user quota and deny creating files when they exceeds the quota.
@@ -39,7 +38,6 @@ use Sabre\HTTP\RequestInterface;
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
 class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
-
 	/**
 	 * @var \OC\Files\View
 	 */

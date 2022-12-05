@@ -24,6 +24,7 @@ Feature: misc scenarios on sharing with internal users
     When the user re-logs in as "Brian" using the webUI
     Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
+
   Scenario: share a folder with another internal user who uploads, overwrites and deletes files
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -56,6 +57,7 @@ Feature: misc scenarios on sharing with internal users
     And file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
     But file "data.zip" should not be listed on the webUI
+
 
   Scenario: share a folder with another internal user who unshares the folder
     Given these users have been created with default attributes and without skeleton files:
@@ -111,6 +113,7 @@ Feature: misc scenarios on sharing with internal users
     Then file "ipsum.txt" should be listed on the webUI
     And folder "new-simple-folder" should be listed on the webUI
 
+
   Scenario: user tries to share a file from a group which is blacklisted from sharing
     Given group "grp1" has been created
     And these users have been created with default attributes and without skeleton files:
@@ -124,6 +127,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "Alice" should not be able to share file "somefile.txt" with user "Carol" using the sharing API
 
+
   Scenario: user tries to share a folder from a group which is blacklisted from sharing
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -136,6 +140,7 @@ Feature: misc scenarios on sharing with internal users
     When the administrator enables exclude groups from sharing using the webUI
     And the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "Alice" should not be able to share folder "new-folder" with user "Carol" using the sharing API
+
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file received as a share
     Given these users have been created with default attributes and without skeleton files:
@@ -152,6 +157,7 @@ Feature: misc scenarios on sharing with internal users
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "Alice" should not be able to share file "/testimage.jpg" with user "David" using the sharing API
 
+
   Scenario: member of a blacklisted from sharing group tries to re-share a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -167,6 +173,7 @@ Feature: misc scenarios on sharing with internal users
     And the administrator has browsed to the admin sharing settings page
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "Alice" should not be able to share folder "/common" with user "David" using the sharing API
+
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file inside a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
@@ -185,6 +192,7 @@ Feature: misc scenarios on sharing with internal users
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "Alice" should not be able to share file "/common/testimage.jpg" with user "David" using the sharing API
 
+
   Scenario: member of a blacklisted from sharing group tries to re-share a folder inside a folder received as a share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -202,6 +210,7 @@ Feature: misc scenarios on sharing with internal users
     When the administrator adds group "grp1" to the exclude group from sharing list using the webUI
     Then user "Alice" should not be able to share folder "/common/inside-common" with user "David" using the sharing API
 
+
   Scenario: user tries to share a file from a group which is blacklisted from sharing using webUI from files page
     Given group "grp1" has been created
     And user "Alice" has been created with default attributes and without skeleton files
@@ -214,6 +223,7 @@ Feature: misc scenarios on sharing with internal users
     And the user opens the sharing tab from the file action menu of file "testimage.jpg" using the webUI
     Then the user should see an error message on the share dialog saying "Sharing is not allowed"
     And the share-with field should not be visible in the details panel
+
 
   Scenario: user tries to re-share a file from a group which is blacklisted from sharing using webUI from shared with you page
     Given group "grp1" has been created
@@ -235,8 +245,7 @@ Feature: misc scenarios on sharing with internal users
     And the share-with field should not be visible in the details panel
     And user "Alice" should not be able to share file "testimage.jpg" with user "Carol" using the sharing API
 
-  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126
-  @mailhog
+  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @email
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created with default attributes and without skeleton files:
@@ -254,7 +263,7 @@ Feature: misc scenarios on sharing with internal users
       just letting you know that %displayname% shared lorem.txt with you.
       """
 
-  @mailhog @skipOnOcV10.3
+  @email @skipOnOcV10.3
   Scenario: user should get and error message when trying to send notification by email to a user who has not setup their email
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created without skeleton files:
@@ -270,7 +279,7 @@ Feature: misc scenarios on sharing with internal users
       | title                       | content                                                  | user  |
       | Email notification not sent | Couldn't send mail to following recipient(s): %username% | Brian |
 
-  @mailhog @skipOnOcV10.3
+  @email @skipOnOcV10.3
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created with default attributes and without skeleton files:
@@ -300,7 +309,7 @@ Feature: misc scenarios on sharing with internal users
     When the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email for user "Brian" using the webUI
 
-  @mailhog @skipOnOcV10.3
+  @email @skipOnOcV10.3
   Scenario: user without email should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created without skeleton files:

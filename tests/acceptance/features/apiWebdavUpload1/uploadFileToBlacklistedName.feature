@@ -36,8 +36,7 @@ Feature: users cannot upload a file to a blacklisted name
       | dav_version |
       | spaces      |
 
-  @skipOnOcV10.3
-  @issue-ocis-reva-54
+  @skipOnOcV10.3 @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER"

@@ -48,13 +48,11 @@ use OC\Settings\Middleware\SubadminMiddleware;
 use OCP\AppFramework\App;
 use OCP\IContainer;
 use OCP\Util;
-use OC\Files\View;
 
 /**
  * @package OC\Settings
  */
 class Application extends App {
-
 	/**
 	 * @param array $urlParams
 	 */

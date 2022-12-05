@@ -1,5 +1,5 @@
 {
     "require": {
-      "owncloud/coding-standard": "^3.0"
+      "owncloud/coding-standard": "^4.0"
     }
   }

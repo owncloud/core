@@ -24,11 +24,9 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OC\Log;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
-use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
 use OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin as PluginToTest;
 use OCP\Files\ExcludeForbiddenException;
 use OCP\Files\FileContentNotAllowedException;
-use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Exception\InsufficientStorage;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Server;
@@ -49,7 +47,6 @@ class TestLogger extends Log {
 }
 
 class ExceptionLoggerPluginTest extends TestCase {
-
 	/** @var Server */
 	private $server;
 

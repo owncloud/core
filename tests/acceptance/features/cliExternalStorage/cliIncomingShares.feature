@@ -61,6 +61,7 @@ Feature: poll incoming shares
     When the administrator invokes occ command "incoming-shares:poll"
     Then the etag of element "/" of user "Brian" should not have changed
 
+
   Scenario: poll incoming share when there is no share
     Given user "Brian" has been created with default attributes and small skeleton files
     And user "Brian" has stored etag of element "/"

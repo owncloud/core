@@ -45,7 +45,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @group DB
  */
 class HooksTest extends \Test\TestCase {
-
 	/**
 	 * @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject
 	 */

@@ -311,7 +311,6 @@ OC.L10N.register(
     "Database name" : "数据库名",
     "Database tablespace" : "数据库表空间",
     "Database host" : "数据库主机",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "请指定端口号以及主机名 (例如 localhost:5432)。",
     "Performance warning" : "性能警告",
     "SQLite will be used as database." : "SQLite 将被作为数据库使用。",
     "For larger installations we recommend to choose a different database backend." : "对于更大的安装，我们建议选择一个不同的数据库后端。",

@@ -33,7 +33,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\InputOption;
 
 class EncryptAll extends Command {
-
 	/** @var IManager */
 	protected $encryptionManager;
 

@@ -33,7 +33,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Trashbin page.
  */
 class TrashbinPage extends FilesPageBasic {
-
 	/**
 	 *
 	 * @var string $path

@@ -10,6 +10,7 @@ Feature:
     And using server "LOCAL"
     And user "Brian" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: Clean up the orphaned remote storage after deleting the original shares
     Given using OCS API version "<ocs-api-version>"
     And using server "REMOTE"

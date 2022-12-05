@@ -12,6 +12,7 @@ Feature: reshare as public link
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
 
+
   Scenario Outline: creating a public link from a share with read permission only is not allowed
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/test"
@@ -63,6 +64,7 @@ Feature: reshare as public link
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: creating a public link from a share with read+write permissions only is not allowed
     Given using OCS API version "<ocs_api_version>"

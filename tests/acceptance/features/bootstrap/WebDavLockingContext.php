@@ -36,7 +36,6 @@ require_once 'bootstrap.php';
  * context containing API steps needed for the locking mechanism of webdav
  */
 class WebDavLockingContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext

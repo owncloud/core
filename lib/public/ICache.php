@@ -37,7 +37,6 @@ namespace OCP;
  * @since 6.0.0
  */
 interface ICache {
-
 	/**
 	 * Get a value from the user cache
 	 * @param string $key

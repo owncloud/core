@@ -35,7 +35,6 @@ require_once 'bootstrap.php';
  * Occ context for test steps that test occ commands
  */
 class OccContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext
@@ -2492,7 +2491,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @Given the administrator has exported the local storage mounts using the occ command
+	 * @Given /^the administrator has exported the (local|external) storage mounts using the occ command$/
 	 *
 	 * @return void
 	 * @throws Exception

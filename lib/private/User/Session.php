@@ -57,7 +57,6 @@ use OCP\ILogger;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
-use OCP\IUserBackend;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Session\Exceptions\SessionNotAvailableException;
@@ -863,7 +862,6 @@ class Session implements IUserSession, Emitter {
 
 		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false
 			|| ($this->activeUser !== null && !$this->activeUser->isEnabled())) {
-
 			// FIXME: protect debug statement this way to avoid regressions
 			if ($this->activeUser !== null) {
 				$this->logger->debug(

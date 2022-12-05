@@ -55,6 +55,7 @@ Feature: Sharing files and folders with internal groups
     When the user re-logs in as "Carol" using the webUI
     Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
+
   Scenario: share a folder with an internal group and a member uploads, overwrites and deletes files
     Given user "Carol" has uploaded file with content "some content" to "/simple-folder/lorem.txt"
     And user "Carol" has uploaded file "filesForUpload/data.zip" to "/simple-folder/data.zip"
@@ -110,17 +111,20 @@ Feature: Sharing files and folders with internal groups
     Then file "lorem.txt" should be listed on the webUI
     And the content of file "new-simple-folder/lorem.txt" for user "Carol" should be "some content"
 
+
   Scenario: user tries to share a file in a group which is excluded from receiving share
     Given group "system-group" has been created
     And the administrator has browsed to the admin sharing settings page
     When the administrator excludes group "system-group" from receiving shares using the webUI
     Then user "Carol" should not be able to share file "lorem.txt" with group "system-group" using the sharing API
 
+
   Scenario: user tries to share a folder in a group which is excluded from receiving share
     Given group "system-group" has been created
     And the administrator has browsed to the admin sharing settings page
     When the administrator excludes group "system-group" from receiving shares using the webUI
     Then user "Carol" should not be able to share folder "simple-folder" with group "system-group" using the sharing API
+
 
   Scenario: autocompletion for a group that is excluded from receiving shares
     Given group "system-group" has been created
@@ -133,8 +137,7 @@ Feature: Sharing files and folders with internal groups
     Then a tooltip with the text "No users or groups found for system-group" should be shown near the share-with-field on the webUI
     And the autocomplete list should not be displayed on the webUI
 
-  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126
-  @mailhog
+  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @email
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "Carol" has logged in using the webUI
@@ -151,7 +154,7 @@ Feature: Sharing files and folders with internal groups
       just letting you know that %displayname% shared lorem.txt with you.
       """
 
-  @mailhog @skipOnOcV10.3
+  @email @skipOnOcV10.3
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "Carol" has logged in using the webUI
@@ -171,7 +174,7 @@ Feature: Sharing files and folders with internal groups
     When the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email for group "grp1" using the webUI
 
-  @mailhog @skipOnLDAP @skipOnOcV10.3
+  @email @skipOnLDAP @skipOnOcV10.3
   Scenario: user should not get an email notification if the user is added to the group after the mail notification was sent
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "David" has been created with default attributes and without skeleton files
@@ -183,8 +186,7 @@ Feature: Sharing files and folders with internal groups
     When the administrator adds user "David" to group "grp1" using the provisioning API
     Then the email address "david@example.org" should not have received an email
 
-  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126
-  @mailhog
+  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @email
   Scenario: user should get an error message when trying to send notification by email to the group where some user have set up their email and others haven't
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created without skeleton files:
@@ -208,6 +210,7 @@ Feature: Sharing files and folders with internal groups
       """
       just letting you know that %displayname% shared lorem.txt with you.
       """
+
 
   Scenario: user added to a group has a share that matches the skeleton of added user
     Given user "Alice" has uploaded file with content "some content" to "lorem.txt"
@@ -262,6 +265,7 @@ Feature: Sharing files and folders with internal groups
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
 
+
   Scenario: sharer should not be able to share a folder to a group which he/she is not member of when share with groups they are member of is enabled
     Given group "grp2" has been created
     And user "Alice" has created folder "/simple-folder"
@@ -271,6 +275,7 @@ Feature: Sharing files and folders with internal groups
     And the user opens the share dialog for folder "simple-folder"
     And the user types "grp2" in the share-with-field
     Then a tooltip with the text "No users or groups found for grp2" should be shown near the share-with-field on the webUI
+
 
   Scenario: sharer should not be able to share a file to a group which he/she is not member of when share with groups they are member of is enabled
     Given group "grp2" has been created
@@ -282,6 +287,7 @@ Feature: Sharing files and folders with internal groups
     And the user types "grp2" in the share-with-field
     Then a tooltip with the text "No users or groups found for grp2" should be shown near the share-with-field on the webUI
 
+
   Scenario: sharer should be able to share a folder to his/her own group when only share with groups they are member of is enabled
     Given user "Alice" has created folder "/simple-folder"
     And the administrator has browsed to the admin sharing settings page
@@ -290,6 +296,7 @@ Feature: Sharing files and folders with internal groups
     And the user shares folder "simple-folder" with group "grp1" using the webUI
     Then as "Brian" folder "/simple-folder" should exist
 
+
   Scenario: sharer should be able to share a file to his/her own group when only share with groups they are member of is enabled
     Given user "Alice" has uploaded file with content "some content" to "lorem.txt"
     And the administrator has browsed to the admin sharing settings page
@@ -297,6 +304,7 @@ Feature: Sharing files and folders with internal groups
     And the user re-logs in as "Alice" using the webUI
     And the user shares file "lorem.txt" with group "grp1" using the webUI
     Then as "Brian" file "/lorem.txt" should exist
+
 
   Scenario: share folder with a group when group has matching folder
     Given user "Alice" has created folder "test"

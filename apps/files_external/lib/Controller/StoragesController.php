@@ -44,7 +44,6 @@ use OCP\IRequest;
  * Base class for storages controllers
  */
 abstract class StoragesController extends Controller {
-
 	/**
 	 * L10N service
 	 *

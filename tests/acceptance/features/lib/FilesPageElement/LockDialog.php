@@ -34,7 +34,6 @@ use Page\FilesPageElement\LockDialogElement\LockEntry;
  *
  */
 class LockDialog extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

@@ -33,7 +33,6 @@ use OCP\Migration\ISchemaMigration;
  * migration here exists to align all update paths.
  */
 class Version20181115210344 implements ISchemaMigration {
-
 	/**
 	 * @param Schema $schema
 	 * @param array $options

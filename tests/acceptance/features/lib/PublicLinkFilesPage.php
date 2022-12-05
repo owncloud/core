@@ -576,22 +576,4 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		}
 		return $uploadedElements;
 	}
-
-	/**
-	 * adding public link share to same server instance
-	 *
-	 * @return void
-	 * @throws ElementNotFoundException
-	 */
-	public function saveToSameServer(): void {
-		$saveToElement = $this->findById($this->saveToOcButtonId);
-
-		$this->assertElementNotNull(
-			$saveToElement,
-			__METHOD__ .
-			" id $this->saveToOcButtonId could not find 'Add To' button"
-		);
-
-		$saveToElement->click();
-	}
 }

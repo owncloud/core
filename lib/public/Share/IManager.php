@@ -21,7 +21,6 @@
 
 namespace OCP\Share;
 
-use OC\User\NoUserException;
 use OCP\Files\Node;
 
 use OCP\Files\NotFoundException;
@@ -36,7 +35,6 @@ use OCP\Share\Exceptions\TransferSharesException;
  * @since 9.0.0
  */
 interface IManager {
-
 	/**
 	 * Create a Share
 	 *

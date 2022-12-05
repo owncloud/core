@@ -30,7 +30,6 @@
 namespace OCA\Files_Sharing\Tests\Controllers;
 
 use OC\Files\Filesystem;
-use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -49,7 +48,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\Files_Sharing\Controllers
  */
 class ShareControllerTest extends \Test\TestCase {
-
 	/** @var string */
 	private $user;
 	/** @var string */

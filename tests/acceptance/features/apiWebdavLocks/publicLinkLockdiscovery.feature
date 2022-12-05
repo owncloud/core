@@ -7,6 +7,7 @@ Feature: LOCKDISCOVERY for public links
     And user "Alice" has created folder "PARENT/CHILD"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/CHILD/child.txt"
 
+
   Scenario Outline: lockdiscovery root of public link when root is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT" setting the following properties
@@ -22,6 +23,7 @@ Feature: LOCKDISCOVERY for public links
       | lock-scope |
       | shared     |
       | exclusive  |
+
 
   Scenario Outline: lockdiscovery subfolder of a locked public link when root is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
@@ -39,6 +41,7 @@ Feature: LOCKDISCOVERY for public links
       | shared     |
       | exclusive  |
 
+
   Scenario Outline: lockdiscovery subfolder of a public link when subfolder is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
@@ -54,6 +57,7 @@ Feature: LOCKDISCOVERY for public links
       | lock-scope |
       | shared     |
       | exclusive  |
+
 
   Scenario Outline: lockdiscovery file in a subfolder of a public link when subfolder is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
@@ -71,6 +75,7 @@ Feature: LOCKDISCOVERY for public links
       | shared     |
       | exclusive  |
 
+
   Scenario Outline: lockdiscovery file in a subfolder of a public link when root is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT" setting the following properties
@@ -87,6 +92,7 @@ Feature: LOCKDISCOVERY for public links
       | shared     |
       | exclusive  |
 
+
   Scenario Outline: lockdiscovery file in a subfolder of a public link when the file is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD/child.txt" setting the following properties
@@ -102,6 +108,7 @@ Feature: LOCKDISCOVERY for public links
       | lock-scope |
       | shared     |
       | exclusive  |
+
 
   Scenario Outline: lockdiscovery file in a subfolder of a public link when the folder above the public link is locked
     Given user "Alice" has created a public link share of folder "PARENT/CHILD" with change permission

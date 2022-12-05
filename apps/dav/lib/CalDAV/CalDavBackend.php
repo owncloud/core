@@ -30,7 +30,6 @@ use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCA\DAV\DAV\Sharing\Backend;
 use OCA\DAV\DAV\Sharing\IShareable;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\Security\ISecureRandom;
 use Sabre\CalDAV\Backend\AbstractBackend;
@@ -56,7 +55,6 @@ use Sabre\VObject\Recur\EventIterator;
  * @package OCA\DAV\CalDAV
  */
 class CalDavBackend extends AbstractBackend implements SyncSupport, SubscriptionSupport, SchedulingSupport {
-
 	/**
 	 * We need to specify a max date, because we need to stop *somewhere*
 	 *

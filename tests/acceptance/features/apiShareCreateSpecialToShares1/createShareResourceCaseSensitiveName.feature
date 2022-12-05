@@ -296,4 +296,3 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /Shares/CASE_SENSITIVE    |
       | /Shares/123case_sensitive |
       | /Shares/CASESENSITIVE.xyz |
-

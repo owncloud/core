@@ -22,7 +22,6 @@
 
 namespace OC\Files\External;
 
-use \OCP\Files\Storage;
 use \OC\Files\Storage\Wrapper\PermissionsMask;
 use \OCP\Constants;
 
@@ -30,7 +29,6 @@ use \OCP\Constants;
  * Wrap Storage in PermissionsMask for session ephemeral use
  */
 class SessionStorageWrapper extends PermissionsMask {
-
 	/**
 	 * @param array $arguments ['storage' => $storage]
 	 */

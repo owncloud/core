@@ -51,7 +51,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 
 class Log implements ILogger {
-
 	/** @var string */
 	private $logger;
 
@@ -328,7 +327,6 @@ class Log implements ILogger {
 			$this->logConditionSatisfied = false;
 			if (!empty($logConditions)) {
 				foreach ($logConditions as $logCondition) {
-
 					// check for secret token in the request
 					if (!empty($logCondition['shared_secret'])) {
 						$request = \OC::$server->getRequest();

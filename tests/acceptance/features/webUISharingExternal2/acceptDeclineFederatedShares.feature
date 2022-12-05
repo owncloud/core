@@ -20,12 +20,14 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has logged in using the webUI
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
+
   Scenario: declining a federation share on the webUI
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
     And the user has reloaded the current page of the webUI
     When the user declines the offered federated shares using the webUI
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
+
 
   Scenario: automatically accept a federation share when it is allowed by the config
     Given parameter "autoAddServers" of app "federation" has been set to "1"
@@ -37,6 +39,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Alice" from server "LOCAL" using the sharing API
     And the user has reloaded the current page of the webUI
     Then file "lorem (2).txt" should be listed on the webUI
+
 
   Scenario: User-based auto accepting is disabled while global is enabled
     Given parameter "autoAddServers" of app "federation" has been set to "1"
@@ -50,6 +53,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Alice" from server "LOCAL" using the sharing API
     Then user "Alice" should not see the following elements
       | /lorem (2).txt |
+
 
   Scenario: one user disabling user-based auto accepting while global is enabled has no effect on other users
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -65,6 +69,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Brian" from server "LOCAL" using the sharing API
     Then user "Brian" should see the following elements
       | /lorem (2).txt |
+
 
   Scenario: User-based accepting from trusted server checkbox is not visible while global is disabled
     Given parameter "autoAddServers" of app "federation" has been set to "1"
@@ -94,6 +99,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user closes the federation sharing dialog
     And the user accepts the pending federated share using the webUI
     Then file "lorem (2).txt" should be listed in the shared-with-you page on the webUI
+
 
   Scenario: Federated share from Local user to federated user
     Given user "Alice" from server "LOCAL" has shared "/lorem.txt" with user "Alice" from server "REMOTE"

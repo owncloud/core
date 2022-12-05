@@ -21,7 +21,6 @@
 
 namespace OC\Notification\Events;
 
-use Symfony\Component\EventDispatcher\Event;
 use OCP\Notification\Events\RegisterNotifierEvent;
 use OCP\Notification\INotifier;
 use OC\Notification\Manager;

@@ -24,7 +24,6 @@ namespace OCA\DAV\Repair;
 use OCA\DAV\Connector\Sabre\Principal;
 use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IDBConnection;
-use OCP\ILogger;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
@@ -35,7 +34,6 @@ use OCP\Migration\IRepairStep;
  * @package OCA\DAV\Repair
  */
 class RemoveInvalidShares implements IRepairStep {
-
 	/** @var IDBConnection */
 	private $connection;
 	/** @var Principal */

@@ -34,7 +34,6 @@ use Sabre\DAV\IFile;
  * @package OCA\DAV\Upload
  */
 class FutureFile implements \Sabre\DAV\IFile {
-
 	/** @var Directory */
 	private $root;
 	/** @var string */

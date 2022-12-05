@@ -29,7 +29,6 @@ use OCP\IConfig;
  * @package OCA\FederatedFileSharing\Tests
  */
 class AdminPanelTest extends \Test\TestCase {
-
 	/** @var AdminPanel */
 	private $panel;
 	/** @var  FederatedShareProvider */

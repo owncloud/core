@@ -21,7 +21,6 @@
 
 namespace OCA\DAV\Tests\Unit\JobStatus\Entity;
 
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OCA\DAV\JobStatus\Entity\JobStatus;
 use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use OCP\IDBConnection;

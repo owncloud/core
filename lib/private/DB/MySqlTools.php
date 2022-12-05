@@ -25,7 +25,6 @@ namespace OC\DB;
 use OCP\IDBConnection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
-use OC\DB\Connection;
 
 /**
 * Various MySQL specific helper functions.

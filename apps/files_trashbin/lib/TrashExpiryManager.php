@@ -25,7 +25,6 @@ namespace OCA\Files_Trashbin;
 use OCP\ILogger;
 
 class TrashExpiryManager {
-
 	/* @var Expiration */
 	private $expiration;
 
@@ -74,7 +73,9 @@ class TrashExpiryManager {
 		$userTrashbinContent = Helper::getTrashFiles('/', $uid, 'mtime', false);
 		foreach ($userTrashbinContent as $key => $trashbinEntry) {
 			if ($this->expiration->isExpired($trashbinEntry->getMtime())) {
-				Trashbin::delete($trashbinEntry->getName(), $uid, $trashbinEntry->getMtime());
+				// Direct content of the trashbin's root folder will have the ".d[timestamp]" suffix
+				// The deletion timestamp is in the mtime of the trashbin entry
+				Trashbin::delete("{$trashbinEntry->getName()}.d{$trashbinEntry->getMtime()}", $uid);
 				$this->logger->info(
 					"Remove {$trashbinEntry->getName()} from {$uid} trashbin because it exceeds max retention obligation term.",
 					['app' => 'files_trashbin']
@@ -104,7 +105,9 @@ class TrashExpiryManager {
 		for ($i = 0; $i < \count($remainingUserTrashbinContent); $i++) {
 			$trashbinEntry = $remainingUserTrashbinContent[$i];
 			if ($this->expiration->isExpired($trashbinEntry->getMtime())) {
-				$availableSpace += Trashbin::delete($trashbinEntry->getName(), $uid, $trashbinEntry->getMtime());
+				// Direct content of the trashbin's root folder will have the ".d[timestamp]" suffix
+				// The deletion timestamp is in the mtime of the trashbin entry
+				$availableSpace += Trashbin::delete("{$trashbinEntry->getName()}.d{$trashbinEntry->getMtime()}", $uid);
 				$this->logger->info(
 					"Remove {$trashbinEntry->getName()} from {$uid} trashbin because it exceeds max retention obligation term.",
 					['app' => 'files_trashbin']
@@ -121,7 +124,7 @@ class TrashExpiryManager {
 		if ($availableSpace < 0) {
 			foreach ($remainingUserTrashbinContent as $trashbinEntry) {
 				if ($availableSpace < 0 && $this->expiration->isExpired($trashbinEntry->getMtime(), true)) {
-					$deletedSize = Trashbin::delete($trashbinEntry->getName(), $uid, $trashbinEntry->getMtime());
+					$deletedSize = Trashbin::delete("{$trashbinEntry->getName()}.d{$trashbinEntry->getMtime()}", $uid);
 					$this->logger->info(
 						"Remove {$trashbinEntry->getMtime()} ({$deletedSize}) to meet the limit of trash bin size ({$this->quota->getPurgeLimit()}% of available quota",
 						['app' => 'files_trashbin']

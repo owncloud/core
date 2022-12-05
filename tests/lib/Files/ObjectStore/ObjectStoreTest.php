@@ -45,7 +45,6 @@ interface IObjectStoreTest extends IObjectStore, IVersionedObjectStorage {
  * @package Test\Files\ObjectStore
  */
 class ObjectStoreTest extends TestCase {
-
 	/** @var IObjectStoreTest | \PHPUnit\Framework\MockObject\MockObject */
 	private $impl;
 	/** @var ObjectStoreStorage | \PHPUnit\Framework\MockObject\MockObject */

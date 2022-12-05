@@ -31,7 +31,6 @@
  * Doctrine with some adaptions.
  */
 class OC_DB {
-
 	/**
 	 * get MDB2 schema manager
 	 *

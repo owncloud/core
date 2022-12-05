@@ -25,7 +25,6 @@ use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\DAV\CopyPlugin;
 use OCA\DAV\Meta\MetaFile;
-use Sabre\DAV\ICollection;
 use Sabre\DAV\IFile;
 use Sabre\DAV\Server;
 use Sabre\DAV\Tree;
@@ -37,7 +36,6 @@ use OCP\Files\ForbiddenException;
 use OCA\DAV\Files\ICopySource;
 
 class CopyPluginTest extends TestCase {
-
 	/** @var Server | \PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 	/** @var CopyPlugin */

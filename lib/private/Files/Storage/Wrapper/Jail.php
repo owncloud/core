@@ -25,7 +25,6 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OC\Files\Cache\Wrapper\CacheJail;
-use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -33,8 +32,7 @@ use OCP\Lock\ILockingProvider;
  *
  * This restricts access to a subfolder of the wrapped storage with the subfolder becoming the root folder new storage
  */
-class Jail extends Wrapper /* implements IVersionedStorage */
-{
+class Jail extends Wrapper { /* implements IVersionedStorage */
 	/**
 	 * @var string
 	 */

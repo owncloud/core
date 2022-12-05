@@ -29,7 +29,6 @@ use OCP\ILogger;
 use OCP\Security\ISecureRandom;
 
 abstract class AbstractDatabase {
-
 	/** @var \OCP\IL10N */
 	protected $trans;
 	/** @var string */

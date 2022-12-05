@@ -29,7 +29,6 @@ use OCP\IUser;
  * @package OC\User
  */
 class RemoteUser implements IUser {
-
 	/** @var string */
 	private $userId;
 

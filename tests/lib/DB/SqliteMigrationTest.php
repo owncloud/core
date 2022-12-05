@@ -14,7 +14,6 @@ namespace Test\DB;
  * @group DB
  */
 class SqliteMigrationTest extends \Test\TestCase {
-
 	/** @var \Doctrine\DBAL\Connection */
 	private $connection;
 

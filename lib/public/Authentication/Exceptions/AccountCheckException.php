@@ -31,7 +31,6 @@ use OCP\AppFramework\Http\RedirectResponse;
  * @since 10.0.9
  */
 class AccountCheckException extends Exception {
-
 	/**
 	 * @var RedirectResponse
 	 */

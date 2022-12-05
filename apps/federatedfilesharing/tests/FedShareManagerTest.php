@@ -27,7 +27,6 @@ use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\Ocm\Permissions;
-use OCA\Files_Sharing\Activity;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager as ActivityManager;
 use OCP\IUserManager;

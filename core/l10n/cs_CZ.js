@@ -302,7 +302,6 @@ OC.L10N.register(
     "Database name" : "Název databáze",
     "Database tablespace" : "Tabulkový prostor databáze",
     "Database host" : "Hostitel databáze",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Prosím, zadejte číslo portu společně s názvem hostitele (např. localhost: 5432).",
     "Performance warning" : "Varování o výkonu",
     "SQLite will be used as database." : "Bude použita SQLite databáze.",
     "For larger installations we recommend to choose a different database backend." : "Pro větší instalace doporučujeme vybrat jiné databázové řešení.",

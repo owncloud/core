@@ -36,7 +36,6 @@ class LoadableRouter extends Router {
 }
 
 class RouterTest extends \Test\TestCase {
-
 	/** @var ILogger */
 	private $l;
 

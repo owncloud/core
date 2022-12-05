@@ -8,11 +8,13 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Adjust installation database details: [#40348](https://github.com/owncloud/core/pull/40348)
+* Bugfix - Properly remove file versions from the trashbin: [#40286](https://github.com/owncloud/core/issues/40286)
+* Bugfix - "available for" in the mount point configuration will show displaynames: [#40412](https://github.com/owncloud/core/pull/40412)
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
-* Change - No activities on rejected shares: [#40421](https://github.com/owncloud/core/pull/40421)
 * Change - Detect mime types of hidden files: [#40427](https://github.com/owncloud/core/pull/40427)
 * Change - Drop unneeded Google SDK services: [#40444](https://github.com/owncloud/core/pull/40444)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
@@ -20,6 +22,42 @@ Summary
 
 Details
 -------
+
+* Bugfix - Adjust installation database details: [#40348](https://github.com/owncloud/core/pull/40348)
+
+   The suggested host name and port syntax for the database host on the installation has been
+   corrected.
+
+   https://github.com/owncloud/core/issues/39871
+   https://github.com/owncloud/core/pull/40348
+
+* Bugfix - Properly remove file versions from the trashbin: [#40286](https://github.com/owncloud/core/issues/40286)
+
+   Previously, restoring or removing a file from inside a folder that was deleted (so the folder
+   and the contents are in the trashbin) didn't remove the versions of the file. Those versions
+   were left in both the DB and the FS, taking space and degrading the performance.
+
+   This is now being handled properly, so no additional resource is consumed due to the versions
+   being left stranded.
+
+   https://github.com/owncloud/core/issues/40286
+
+* Bugfix - "available for" in the mount point configuration will show displaynames: [#40412](https://github.com/owncloud/core/pull/40412)
+
+   The "available for" select of the mount configuration of external storages were using the
+   group id. This wasn't a problem because for local groups the group id matches the group
+   displayname, and for ldap groups the group id was the "cn" attribute. Due to recent changes, the
+   ldap group will now use the objectuid attribute (or a similar attribute) as group id by default.
+   This was causing the "available for" select to show that objectuid, so identifying the right
+   group was problematic.
+
+   Now, the "available for" select will show the group displayname, which for ldap is the "cn"
+   attribute by default.
+
+   Note that this happens on new installations. There is an automatic migration in place, so for
+   upgrades, the "cn" attribute will be set as groupname in order to keep the old behavior
+
+   https://github.com/owncloud/core/pull/40412
 
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
 
@@ -51,13 +89,6 @@ Details
 
    https://github.com/owncloud/core/pull/40406
 
-* Change - No activities on rejected shares: [#40421](https://github.com/owncloud/core/pull/40421)
-
-   As soon as a user has rejected a share no activities within this share are reported via the
-   activity app.
-
-   https://github.com/owncloud/core/pull/40421
-
 * Change - Detect mime types of hidden files: [#40427](https://github.com/owncloud/core/pull/40427)
 
    Mime type of hidden files are now properly detected.
@@ -74,31 +105,44 @@ Details
 
    The following have been updated: - doctrine/event-manager (1.1.2 to 1.2.0) -
    guzzlehttp/guzzle (7.4.5 to 7.5.0) - guzzlehttp/promises (1.5.1 to 1.5.2) -
-   guzzlehttp/psr7 (2.4.0 to 2.4.1) - phpseclib/phpseclib (3.0.14 to 3.0.17) -
+   guzzlehttp/psr7 (2.4.0 to 2.4.3) - phpseclib/phpseclib (3.0.14 to 3.0.17) -
    laminas/laminas-filter (2.12.0 to 2.22.0) - laminas/laminas-inputfilter (2.12.1 to
    2.21.0) - laminas/laminas-servicemanager (3.7.0 to 3.17.0) - laminas/laminas-stdlib
    (3.11.0 to 3.13.0) - laminas/laminas-validator (2.19.0 to 2.25.0) - league/flysystem
-   (1.1.9 to 1.1.10) - psr/container (1.1.1 to 1.1.2) - sabre/uri (2.2.3 to 2.3.2) -
-   sabre/vobject (4.5.0 to 4.5.1)
+   (1.1.9 to 1.1.10) - psr/container (1.1.1 to 1.1.2) - punic/punic (3.7.0 to 3.8.0) - sabre/uri
+   (2.2.3 to 2.3.2) - sabre/vobject (4.5.0 to 4.5.1)
 
    The following have been updated in apps/files_external/3rdparty: - google/auth (v1.21.1 to
    v1.23.0) - google/apiclient-services (v0.259.0 to v0.272.0) - guzzlehttp/psr7 (2.4.0 to
-   2.4.1)
+   2.4.3)
 
    https://github.com/owncloud/core/pull/40337
    https://github.com/owncloud/core/pull/40394
    https://github.com/owncloud/core/pull/40410
    https://github.com/owncloud/core/pull/40424
+   https://github.com/owncloud/core/pull/40448
    https://github.com/owncloud/core/pull/40449
+   https://github.com/owncloud/core/pull/40494
 
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
-   The following Symfony components have been updated to: - console 4.4.47 - translation 4.4.47
+   The following Symfony components have been updated to: - console 4.4.49 - translation 4.4.47
+
+   The following Symfony polyfill components have been updated: - symfony/polyfill-iconv
+   (v1.26.0 to v1.27.0) - symfony/polyfill-intl-idn (v1.26.0 to v1.27.0) -
+   symfony/polyfill-intl-normalizer (v1.26.0 to v1.27.0) - symfony/polyfill-mbstring
+   (v1.26.0 to v1.27.0) - symfony/polyfill-php72 (v1.26.0 to v1.27.0) -
+   symfony/polyfill-php73 (v1.26.0 to v1.27.0) - symfony/polyfill-php80 (v1.26.0 to
+   v1.27.0)
 
    https://github.com/owncloud/core/pull/40337
    https://github.com/owncloud/core/pull/40424
+   https://github.com/owncloud/core/pull/40448
+   https://github.com/owncloud/core/pull/40517
    https://symfony.com/blog/symfony-4-4-45-released
    https://symfony.com/blog/symfony-4-4-47-released
+   https://symfony.com/blog/symfony-4-4-48-released
+   https://symfony.com/blog/symfony-4-4-49-released
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================

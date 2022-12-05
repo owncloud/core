@@ -33,7 +33,6 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 
 class SystemTagsByIdCollection implements ICollection {
-
 	/**
 	 * @var ISystemTagManager
 	 */

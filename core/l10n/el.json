@@ -310,7 +310,6 @@
     "Database name" : "Όνομα βάσης δεδομένων",
     "Database tablespace" : "Κενά Πινάκων Βάσης Δεδομένων",
     "Database host" : "Διακομιστής βάσης δεδομένων",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Παρακαλούμε καθορίστε τον αριθμό της θύρας μαζί με το όνομα κεντρικού υπολογιστή (πχ localhost: 5432).",
     "Performance warning" : "Προειδοποίηση απόδοσης",
     "SQLite will be used as database." : "Η SQLite θα χρησιμοποιηθεί ως βάση δεδομένων.",
     "For larger installations we recommend to choose a different database backend." : "Για μεγαλύτερες εγκαταστάσεις συνιστούμε να επιλέξετε διαφορετικό σύστημα υποστήριξης βάσης δεδομένων.",

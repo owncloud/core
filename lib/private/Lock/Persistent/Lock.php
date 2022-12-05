@@ -38,7 +38,6 @@ use OCP\Lock\Persistent\ILock;
  * @package OC\Lock\Persistent
  */
 class Lock extends Entity implements ILock {
-
 	/** @var int BIGINT - foreign key to oc_filecache.fileid */
 	protected $fileId;
 	/** @var string - plain text field as transmitted by clients */

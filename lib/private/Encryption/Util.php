@@ -31,7 +31,6 @@ use OC\Encryption\Exceptions\ModuleDoesNotExistsException;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\Encryption\IEncryptionModule;
-use OCP\Files\Storage;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\IUser;
@@ -348,7 +347,6 @@ class Util {
 		$normalizedPath = Filesystem::normalizePath($path);
 		$root = \explode('/', $normalizedPath, 4);
 		if (\count($root) > 1) {
-
 			// detect alternative key storage root
 			$rootDir = $this->getKeyStorageRoot();
 			if ($rootDir !== '' &&

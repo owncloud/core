@@ -4,8 +4,7 @@ Feature: auth
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-32068 @skipOnOcV10
-  @smokeTest
+  @issue-32068 @skipOnOcV10 @smokeTest
   Scenario: using OCS anonymously
     When a user requests these endpoints with "GET" and no authentication
       | endpoint                                                    |
@@ -27,9 +26,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @issue-32068 @skipOnOcV10
-  @smokeTest
-  @skipOnBruteForceProtection @issue-brute_force_protection-112
+  @issue-32068 @skipOnOcV10 @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as normal user with wrong password
     When user "Alice" requests these endpoints with "GET" using password "invalid"
       | endpoint                                                    |

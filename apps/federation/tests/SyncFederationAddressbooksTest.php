@@ -27,7 +27,6 @@ use OCA\Federation\DbHandler;
 use OCA\Federation\SyncFederationAddressBooks;
 
 class SyncFederationAddressbooksTest extends \Test\TestCase {
-
 	/** @var array */
 	private $callBacks = [];
 

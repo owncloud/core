@@ -16,7 +16,6 @@ use OC\Settings\Panels\Personal\Version;
  * @package Tests\Settings\Panels\Personal
  */
 class VersionTest extends \Test\TestCase {
-
 	/** @var Version */
 	private $panel;
 

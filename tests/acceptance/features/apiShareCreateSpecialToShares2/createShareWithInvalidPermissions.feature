@@ -8,6 +8,7 @@ Feature: cannot share resources with invalid permissions
     And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has created folder "/PARENT"
 
+
   Scenario Outline: Cannot create a share of a file or folder with invalid permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files

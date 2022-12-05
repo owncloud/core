@@ -26,7 +26,6 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Exception;
 use Page\FilesPageElement\DetailsDialog;
-use Page\FilesPageElement\FileActionsMenu;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;

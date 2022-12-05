@@ -21,8 +21,6 @@ namespace OC\License;
 
 use OCP\L10N\IFactory;
 use OCP\License\ILicenseManager;
-use OC\License\ILicense;
-use OCP\AppFramework\Utility\ITimeFactory;
 
 /**
  * This class will provide translated messages based on the current license status

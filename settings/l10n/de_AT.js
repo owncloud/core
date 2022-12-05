@@ -9,6 +9,7 @@ OC.L10N.register(
     "Share" : "Teilen",
     "Invalid request" : "Fehlerhafte Anfrage",
     "All" : "Alle",
+    "Enabled" : "Aktiviert",
     "Very weak password" : "Sehr schwaches Passwort",
     "Weak password" : "Schwaches Passwort",
     "So-so password" : "Durchschnittliches Passwort",

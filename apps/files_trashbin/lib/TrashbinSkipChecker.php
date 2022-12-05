@@ -35,7 +35,6 @@ use OCP\Util;
  * @package OCA\Files_Trashbin
  */
 class TrashbinSkipChecker {
-
 	/**
 	 * @var ILogger
 	 */

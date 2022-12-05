@@ -30,7 +30,6 @@ use Icewind\Streams\Wrapper;
 use OC\Encryption\Exceptions\EncryptionHeaderKeyExistsException;
 
 class Encryption extends Wrapper {
-
 	/** @var \OC\Encryption\Util */
 	protected $util;
 
@@ -346,7 +345,6 @@ class Encryption extends Wrapper {
 
 			// only allow writes on seekable streams, or at the end of the encrypted stream
 			if (!($this->readOnly) && ($resultFseek || $positionInFile === $this->size)) {
-
 				// switch the writeFlag so flush() will write the block
 				$this->writeFlag = true;
 
@@ -362,7 +360,7 @@ class Encryption extends Wrapper {
 					$length += $remainingLength;
 					$data = '';
 				// if $data doesn't fit the current block, the fill the current block and reiterate
-					// after the block is filled, it is flushed and $data is updatedxxx
+				// after the block is filled, it is flushed and $data is updatedxxx
 				} else {
 					$this->cache = \substr($this->cache, 0, $blockPosition) .
 						\substr($data, 0, $this->unencryptedBlockSize - $blockPosition);

@@ -10,9 +10,9 @@
 		   href="<?php p(\OC::$server->getURLGenerator()->linkToRoute(
 	'core.TwoFactorChallenge.showChallenge',
 	[
-								'challengeProviderId' => $provider->getId(),
-								'redirect_url' => $_['redirect_url'],
-							]
+		'challengeProviderId' => $provider->getId(),
+		'redirect_url' => $_['redirect_url'],
+	]
 )) ?>">
 			<?php p($provider->getDescription()) ?>
 		</a>

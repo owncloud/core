@@ -23,7 +23,6 @@ namespace TestHelpers;
 
 use Exception;
 use InvalidArgumentException;
-use SimpleXMLElement;
 
 /**
  * Helper to read and analyze the owncloud log file

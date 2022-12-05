@@ -69,6 +69,7 @@ Feature: get user groups
     And the groups returned by the API should include "brand-new-group"
     And the groups returned by the API should not include "another-new-group"
 
+
   Scenario: normal user tries to get the groups of another user
     Given these users have been created with default attributes and without skeleton files:
       | username         |

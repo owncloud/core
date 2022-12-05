@@ -28,7 +28,6 @@ use OC\App\InfoParser;
 use Test\TestCase;
 
 class InfoCheckerTest extends TestCase {
-
 	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;
 

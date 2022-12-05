@@ -295,7 +295,6 @@ OC.L10N.register(
     "Database name" : "Heiti gagnagrunns",
     "Database tablespace" : "Töflusvæði gagnagrunns",
     "Database host" : "Netþjónn gagnagrunns",
-    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Taktu fram númer gáttar ásamt nafni hýsilvélar (t.d., localhost: 5432).",
     "Performance warning" : "Afkastaviðvörun",
     "SQLite will be used as database." : "SQLite verður notað sem gagnagrunnur.",
     "For larger installations we recommend to choose a different database backend." : "Fyrir stærri uppsetningar mælum við með að velja annan gagnagrunnsbakenda.",

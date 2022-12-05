@@ -8,6 +8,7 @@ Feature: Add group
     Given the administrator has logged in using the webUI
     And the administrator has browsed to the users page
 
+
   Scenario Outline: Add group
     When the administrator adds group <groupname> using the webUI
     Then the group name <groupname> should be listed on the webUI
@@ -15,6 +16,7 @@ Feature: Add group
     Examples:
       | groupname   |
       | "localuser" |
+
 
   Scenario Outline: group names are case-sensitive, multiple groups can exist with different upper and lower case names
     When the administrator adds group "<group_id1>" using the webUI
@@ -47,6 +49,7 @@ Feature: Add group
       | Oc-Group  | oc-group  | OC-GROUP  |
       | oc-group  | OC-GROUP  | Oc-Group  |
       | OC-GROUp  | Oc-Group  | oc-group  |
+
 
   Scenario Outline: Add groups using emojis in group names
     When the administrator adds group <groupname> using the webUI
@@ -81,6 +84,7 @@ Feature: Add group
   Scenario: Cannot add group with white-space in the name
     When the administrator adds group "whitespace " using the webUI
     Then a notification should be displayed on the webUI with the text "Error creating group: Unable to add group."
+
 
   Scenario: Add group with the same name as an existing group
     Given group "grp1" has been created

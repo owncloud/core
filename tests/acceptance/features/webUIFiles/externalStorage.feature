@@ -1,6 +1,7 @@
 @webUI @insulated @local_storage @files_external-app-required @disablePreviews
 Feature: external-storage
 
+
   Scenario: the external section shows a filtered view with just the external storage folders
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/local_storage/folder"

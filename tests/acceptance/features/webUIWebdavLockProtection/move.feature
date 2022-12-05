@@ -10,6 +10,7 @@ Feature: Locks
       | username       |
       | brand-new-user |
 
+
   Scenario Outline: moving a locked file
     Given user "brand-new-user" has created folder "/simple-empty-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -29,6 +30,7 @@ Feature: Locks
       | exclusive |
       | shared    |
 
+
   Scenario Outline: moving a file trying to overwrite a locked file
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
@@ -46,6 +48,7 @@ Feature: Locks
       | lockscope |
       | exclusive |
       | shared    |
+
 
   Scenario Outline: moving a file into a locked folder
     Given user "brand-new-user" has created folder "/simple-empty-folder"
@@ -65,6 +68,7 @@ Feature: Locks
       | lockscope |
       | exclusive |
       | shared    |
+
 
   Scenario Outline: renaming of a locked file
     Given user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"

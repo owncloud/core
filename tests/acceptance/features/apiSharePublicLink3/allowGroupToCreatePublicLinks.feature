@@ -88,6 +88,7 @@ Feature: public share sharers groups setting
       | uid_owner              | %username%       |
       | name                   |                  |
 
+
   Scenario: multiple groups can be added to public share sharers groups allow list
     Given parameter "public_share_sharers_groups_allowlist_enabled" of app "files_sharing" has been set to "yes"
     And user "Brian" has been created with default attributes and without skeleton files
