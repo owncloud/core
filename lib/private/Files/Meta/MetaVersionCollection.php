@@ -31,9 +31,9 @@ use OCP\Files\NotFoundException;
 use OCP\Files\Storage;
 
 /**
- * Class MetaVersionCollection - this class represents the versions sub folder
- * of a file
- *
+ * Collection root (current file node) of non-concurrent versions (directory children nodes). This 
+ * class represents the versions sub folder of a file
+ * 
  * @package OC\Files\Meta
  */
 class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAuthor, IProvidesVersionTag {
@@ -41,6 +41,8 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 	private $root;
 	/** @var \OCP\Files\Node */
 	private $node;
+	/** @var array */
+	private $versionInfo;
 
 	/**
 	 * MetaVersionCollection constructor.
@@ -62,17 +64,45 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getEditedBy() : string {
-		return 'admin';
+		$storage = $this->node->getStorage();
+		$internalPath = $this->node->getInternalPath();
+
+		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
+			return [];
+		}
+
+		if (!$this->versionInfo) {
+			/** @var IVersionedStorage | Storage $storage */
+			'@phan-var IVersionedStorage | Storage $storage';
+			$version = $storage->getVersionsRoot($internalPath);
+			$this->versionInfo = $version;
+		}
+
+		return $this->versionInfo['edited_by'] ?? '';
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getVersionTag() : string {
-		return '1.0';
+		$storage = $this->node->getStorage();
+		$internalPath = $this->node->getInternalPath();
+
+		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
+			return [];
+		}
+
+		if (!$this->versionInfo) {
+			/** @var IVersionedStorage | Storage $storage */
+			'@phan-var IVersionedStorage | Storage $storage';
+			$version = $storage->getVersionsRoot($internalPath);
+			$this->versionInfo = $version;
+		}
+
+		return $this->versionInfo['version_tag'] ?? '';
 	}
 
 	/**

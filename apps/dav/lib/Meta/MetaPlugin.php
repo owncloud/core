@@ -103,20 +103,32 @@ class MetaPlugin extends ServerPlugin {
 				return $baseFolder->getRelativePath($file->getPath());
 			});
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionAuthor();
+				return $node->getVersionEditedBy();
 			});
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
-				return $node->getVersionAuthorName();
+				$versionEditedBy = $node->getVersionEditedBy();
+				if (!$versionEditedBy) {
+					return '';
+				}
+				$manager = \OC::$server->getUserManager(); // FIXME: not so good
+				$user = $manager->get($versionEditedBy);
+				return $user !== null ? $user->getDisplayName() : '';
 			});
 			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
 				return $node->getVersionTag();
 			});
 		} elseif ($node instanceof MetaFile) {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionAuthor();
+				return $node->getVersionEditedBy();
 			});
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
-				return $node->getVersionAuthorName();
+				$versionEditedBy = $node->getVersionEditedBy();
+				if (!$versionEditedBy) {
+					return '';
+				}
+				$manager = \OC::$server->getUserManager(); // FIXME: not so good
+				$user = $manager->get($versionEditedBy);
+				return $user !== null ? $user->getDisplayName() : '';
 			});
 			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
 				return $node->getVersionTag();

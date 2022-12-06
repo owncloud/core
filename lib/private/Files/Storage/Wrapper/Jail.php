@@ -541,7 +541,7 @@ class Jail extends Wrapper { /* implements IVersionedStorage */
 	}
 
 	/**
-	 * List all versions for the given file
+	 * List versioning metadata of all non-concurrent versions for the given file
 	 *
 	 * @param string $internalPath
 	 * @return array
@@ -554,7 +554,20 @@ class Jail extends Wrapper { /* implements IVersionedStorage */
 	}
 
 	/**
-	 * Get one explicit version for the given file
+	 * Get versioning metadata for current version of the file (versions root)
+	 *
+	 * @param string $internalPath
+	 * @return array
+	 * @since 10.0.9
+	 */
+	public function getVersionsRoot($internalPath) {
+		$wrapperStorage = $this->getWrapperStorage();
+		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
+		return $wrapperStorage->getVersionsRoot($this->getSourcePath($internalPath));
+	}
+
+	/**
+	 * Get versioning metadata for one explicit non-concurrent version of the given file
 	 *
 	 * @param string $internalPath
 	 * @param string $versionId

@@ -37,10 +37,7 @@ use OCP\Files\Storage\IStorage;
 use OCP\IImage;
 
 /**
- * Class MetaFileVersionNode - this class represents a version of a file in the
- * meta endpoint
- * 
- * /meta/fileid/v/id
+ * Non-concurrent version of the file node. This class represents a version of a file in the meta endpoint
  *
  * @package OC\Files\Meta
  */
@@ -105,7 +102,7 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @return string
 	 */
 	public function getVersionTag() : string {
-		return $this->versionInfo['tag'] ?? '';
+		return $this->versionInfo['version_tag'] ?? '';
 	}
 
 	/**
