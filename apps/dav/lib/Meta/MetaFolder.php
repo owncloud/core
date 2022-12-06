@@ -77,17 +77,7 @@ class MetaFolder extends Collection {
 	/**
 	 * @return string
 	 */
-	public function getVersionAuthor() : string {
-		if ($this->folder instanceof IProvidesVersionAuthor) {
-			return $this->folder->getEditedBy();
-		}
-		return '';
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getVersionAuthorName() : string {
+	public function getVersionEditedBy() : string {
 		if ($this->folder instanceof IProvidesVersionAuthor) {
 			return $this->folder->getEditedBy();
 		}

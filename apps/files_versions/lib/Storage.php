@@ -241,7 +241,8 @@ class Storage {
 	 */
 	public static function storeMetaForCurrentFile(string $filename) {
 		if (self::metaEnabled()) {
-			self::$metaData->createCurrent($filename);
+			list($uid, $currentFileName) = self::getUidAndFilename($filename);
+			self::$metaData->createCurrent($currentFileName, $uid);
 		}
 	}
 
@@ -402,12 +403,7 @@ class Storage {
 			// create metadata for version if enabled
 			if (self::metaEnabled()) {
 				$versionFileInfo = $users_view->getFileInfo($version);
-				if ($versionFileInfo && !$versionFileInfo->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
-					$versionAuthor = self::$metaData->getCurrentVersionAuthorUid($uid, $filename);
-					if ($versionAuthor) {
-						self::$metaData->createForVersion($versionAuthor, $uid, $versionFileInfo);
-					}
-				}
+				self::$metaData->copyCurrentToVersion($filename, $versionFileInfo, $uid);
 			}
 		}
 
@@ -488,7 +484,31 @@ class Storage {
 	}
 
 	/**
-	 * get a list of all available versions of a file in descending chronological order
+	 * get current version of the file 
+	 * @param string $uid user id from the owner of the file
+	 * @param string $filename file to get versioning data for, relative to the user files dir
+	 */
+	public static function getCurrentVersion($uid, $filename) {
+		$version = [];
+		if ($filename === null || $filename === '') {
+			return $version;
+		}
+
+		// add author information if the feature is enabled
+		if (self::metaEnabled()) {
+			// handle only allowed metadata values
+			$versionMetadata = self::$metaData->getCurrent($filename, $uid);
+
+			$version['edited_by'] = $versionMetadata['edited_by'] ?? null;
+			$version['version_tag'] = $versionMetadata['version_tag'] ?? null;
+		}
+
+		return $version;
+	}
+
+
+	/**
+	 * get a list of all available non-concurrent versions of a file in descending chronological order
 	 * @param string $uid user id from the owner of the file
 	 * @param string $filename file to find versions of, relative to the user files dir
 	 *
@@ -542,10 +562,10 @@ class Storage {
 						if (self::metaEnabled()) {
 							$versionFileInfo = $view->getFileInfo("$dir/$entryName");
 							if ($versionFileInfo) {
-								$authorUid = self::$metaData->getAuthorUid($versionFileInfo);
-								if ($authorUid !== null) {
-									$versions[$key]['edited_by'] = $authorUid;
-								}
+								$versionMetadata = self::$metaData->getVersion($versionFileInfo);
+
+								$versions[$key]['edited_by'] = $versionMetadata['edited_by'] ?? null;
+								$versions[$key]['version_tag'] = $versionMetadata['version_tag'] ?? null;
 							}
 						}
 					}

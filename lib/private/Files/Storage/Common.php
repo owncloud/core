@@ -700,6 +700,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	public function setAvailability($isAvailable) {
 		$this->getStorageCache()->setAvailability($isAvailable);
 	}
+
 	public function getVersions($internalPath) {
 		// KISS implementation
 		if (!\OC_App::isEnabled('files_versions')) {
@@ -713,6 +714,16 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		}, \array_values(
 			\OCA\Files_Versions\Storage::getVersions($uid, $filename)
 		));
+	}
+
+	public function getVersionsRoot($internalPath) {
+		// KISS implementation
+		if (!\OC_App::isEnabled('files_versions')) {
+			return [];
+		}
+		list($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
+
+		return \OCA\Files_Versions\Storage::getCurrentVersion($uid, $filename);
 	}
 
 	/**

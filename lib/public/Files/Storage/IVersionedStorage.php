@@ -29,20 +29,29 @@ namespace OCP\Files\Storage;
  */
 interface IVersionedStorage {
 	/**
-	 * List all versions for the given file
+	 * Get metadata for current version of the file (versions root)
+	 * 
+	 * @param string $internalPath
+	 * @return array metadata or null if not supported
+	 * @since 10.12.0
+	 */
+	public function getVersionsRoot($internalPath);
+
+	/**
+	 * List metadata of all non-concurrent versions for the given file
 	 *
 	 * @param string $internalPath
-	 * @return array
+	 * @return array list of versions metadata or empty array if not supported
 	 * @since 10.0.9
 	 */
 	public function getVersions($internalPath);
 
 	/**
-	 * Get one explicit version for the given file
+	 * Get metadata of one explicit non-concurrent version for the given file.
 	 *
 	 * @param string $internalPath
 	 * @param string $versionId
-	 * @return array
+	 * @return array metadata or null if not supported
 	 * @since 10.0.9
 	 */
 	public function getVersion($internalPath, $versionId);
