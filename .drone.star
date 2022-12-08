@@ -2184,7 +2184,7 @@ def webdavService(needed):
 
     return [{
         "name": "webdav",
-        "image": OC_CI_PHP % "latest",
+        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "environment": {
             "APACHE_CONFIG_TEMPLATE": "webdav",
         },
