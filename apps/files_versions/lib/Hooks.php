@@ -72,7 +72,7 @@ class Hooks {
 		if (\OCP\App::isEnabled('files_versions')) {
 			$path = $params[\OC\Files\Filesystem::signal_param_path];
 			if ($path<>'') {
-				Storage::storeMetaForCurrentFile($path);
+				Storage::postStore($path);
 			}
 		}
 	}

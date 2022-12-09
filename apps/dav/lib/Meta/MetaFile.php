@@ -129,7 +129,7 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getVersionEditedBy() : string {
 		if ($this->file instanceof IProvidesVersionAuthor) {
@@ -139,11 +139,21 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getVersionTag() : string {
 		if ($this->file instanceof IProvidesVersionTag) {
 			return $this->file->getVersionTag();
+		}
+		return '';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getVersionRestoredFromTag() : string {
+		if ($this->file instanceof IProvidesVersionTag) {
+			return $this->file->getVersionRestoredFromTag();
 		}
 		return '';
 	}

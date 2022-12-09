@@ -37,6 +37,7 @@ class MetaPlugin extends ServerPlugin {
 	public const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-edited-by';
 	public const VERSION_EDITED_BY_PROPERTYNAME_NAME = '{http://owncloud.org/ns}meta-version-edited-by-name';
 	public const VERSION_TAG_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-tag';
+	public const VERSION_RESTORED_FROM_TAG_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-restored-from-tag';
 
 	/**
 	 * Reference to main server object
@@ -117,6 +118,9 @@ class MetaPlugin extends ServerPlugin {
 			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
 				return $node->getVersionTag();
 			});
+			$propFind->handle(self::VERSION_RESTORED_FROM_TAG_PROPERTYNAME, function () use ($node) {
+				return $node->getVersionRestoredFromTag();
+			});
 		} elseif ($node instanceof MetaFile) {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
 				return $node->getVersionEditedBy();
@@ -132,6 +136,9 @@ class MetaPlugin extends ServerPlugin {
 			});
 			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
 				return $node->getVersionTag();
+			});
+			$propFind->handle(self::VERSION_RESTORED_FROM_TAG_PROPERTYNAME, function () use ($node) {
+				return $node->getVersionRestoredFromTag();
 			});
 		}
 	}
