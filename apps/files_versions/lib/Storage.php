@@ -181,7 +181,7 @@ class Storage {
 				return false;
 			}
 
-			// Write metadata of the current file in case we have a new file
+			// no versions yet
 			if (!Filesystem::file_exists($filename)) {
 				return false;
 			}
@@ -228,7 +228,11 @@ class Storage {
 				]);
 
 				if (self::metaEnabled()) {
-					self::$metaData->moveCurrentToVersion($filename, $fileInfo, $uid);
+					// version last current file metadata into non-conncurrent version
+					self::$metaData->copyCurrentToVersion($filename, $fileInfo, $uid);
+
+					// create new current file metadata 
+					self::$metaData->createCurrent($filename, $uid);
 				}
 			}
 		}
@@ -239,10 +243,14 @@ class Storage {
 	 * @param string $filename
 	 * @throws \Exception
 	 */
-	public static function storeMetaForCurrentFile(string $filename) {
+	public static function postStore(string $filename) {
 		if (self::metaEnabled()) {
 			list($uid, $currentFileName) = self::getUidAndFilename($filename);
-			self::$metaData->createCurrent($currentFileName, $uid);
+			$versionMetadata = self::$metaData->getCurrent($currentFileName, $uid);
+			if (!$versionMetadata) {
+				// make sure metadata for current exists
+				self::$metaData->createCurrent($currentFileName, $uid);
+			}
 		}
 	}
 
@@ -428,7 +436,8 @@ class Storage {
 			Storage::scheduleExpire($uid, $filename);
 
 			if (self::metaEnabled()) {
-				self::$metaData->restore($uid, $fileToRestore, 'files' . $filename);
+				$versionFileInfo = $users_view->getFileInfo('files_versions'.$filename.'.v'.$revision);
+				self::$metaData->restore($filename, $versionFileInfo, $uid);
 			}
 
 			\OC_Hook::emit('\OCP\Versions', 'rollback', [
@@ -501,6 +510,7 @@ class Storage {
 
 			$version['edited_by'] = $versionMetadata['edited_by'] ?? null;
 			$version['version_tag'] = $versionMetadata['version_tag'] ?? null;
+			$version['restored_from_tag'] = $versionMetadata['restored_from_tag'] ?? '';
 		}
 
 		return $version;
@@ -546,7 +556,11 @@ class Storage {
 						$pathparts = \pathinfo($entryName);
 						$timestamp = \substr($pathparts['extension'], 1);
 						$filename = $pathparts['filename'];
+						
+						// ordering key
 						$key = $timestamp . '#' . $filename;
+
+						// add version info
 						$versions[$key]['version'] = $timestamp;
 						$versions[$key]['humanReadableTimestamp'] = self::getHumanReadableTimestamp($timestamp);
 						$versions[$key]['preview'] = '';
@@ -558,14 +572,15 @@ class Storage {
 						$versions[$key]['storage_location'] = "$dir/$entryName";
 						$versions[$key]['owner'] = $uid;
 
-						// add author information if the feature is enabled
+						// add version meta info
 						if (self::metaEnabled()) {
 							$versionFileInfo = $view->getFileInfo("$dir/$entryName");
 							if ($versionFileInfo) {
 								$versionMetadata = self::$metaData->getVersion($versionFileInfo);
 
-								$versions[$key]['edited_by'] = $versionMetadata['edited_by'] ?? null;
-								$versions[$key]['version_tag'] = $versionMetadata['version_tag'] ?? null;
+								$versions[$key]['edited_by'] = $versionMetadata['edited_by'] ?? '';
+								$versions[$key]['version_tag'] = $versionMetadata['version_tag'] ?? '';
+								$versions[$key]['restored_from_tag'] = $versionMetadata['restored_from_tag'] ?? '';
 							}
 						}
 					}

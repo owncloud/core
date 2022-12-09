@@ -75,7 +75,7 @@ class MetaFolder extends Collection {
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getVersionEditedBy() : string {
 		if ($this->folder instanceof IProvidesVersionAuthor) {
@@ -85,11 +85,21 @@ class MetaFolder extends Collection {
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getVersionTag() : string {
 		if ($this->folder instanceof IProvidesVersionTag) {
 			return $this->folder->getVersionTag();
+		}
+		return '';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getVersionRestoredFromTag() : string {
+		if ($this->folder instanceof IProvidesVersionTag) {
+			return $this->folder->getVersionRestoredFromTag();
 		}
 		return '';
 	}

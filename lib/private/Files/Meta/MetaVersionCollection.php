@@ -108,6 +108,27 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 	/**
 	 * @inheritdoc
 	 */
+	public function getVersionRestoredFromTag() : string {
+		$storage = $this->node->getStorage();
+		$internalPath = $this->node->getInternalPath();
+
+		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
+			return [];
+		}
+
+		if (!$this->versionInfo) {
+			/** @var IVersionedStorage | Storage $storage */
+			'@phan-var IVersionedStorage | Storage $storage';
+			$version = $storage->getVersionsRoot($internalPath);
+			$this->versionInfo = $version;
+		}
+
+		return $this->versionInfo['restored_from_tag'] ?? '';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function isEncrypted() {
 		return false;
 	}

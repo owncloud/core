@@ -92,17 +92,24 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getEditedBy() : string {
 		return $this->versionInfo['edited_by'] ?? '';
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getVersionTag() : string {
 		return $this->versionInfo['version_tag'] ?? '';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getVersionRestoredFromTag() : string {
+		return $this->versionInfo['restored_from_tag'] ?? '';
 	}
 
 	/**

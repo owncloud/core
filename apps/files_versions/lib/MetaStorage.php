@@ -58,12 +58,6 @@ class MetaStorage {
 	/** @var string File-extension of the metadata file for a specific version */
 	public const VERSION_FILE_EXT = ".json";
 
-	public const VERSION_EDITED_BY_PROPERTYNAME = 'edited_by';
-	public const VERSION_TAG_PROPERTYNAME = 'version_tag';
-
-	// LEGACY property taken from DAV interface (wrongly)
-	public const LEGACY_VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-edited-by';
-
 	/** @var string  */
 	private $dataDir;
 
@@ -107,14 +101,23 @@ class MetaStorage {
 			return false;
 		}
 
-		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions$currentFileName" . MetaStorage::CURRENT_FILE_EXT);
+		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_EXT);
 		$userView = $this->fileHelper->getUserView($uid);
 		$this->fileHelper->createMissingDirectories($userView, $currentFileName);
 
-		$authorUid = \OC_User::getUser();
+		// get metadata for old current file (if exists)
+		$oldMetadata = $this->readMetaFile($absPathOnDisk);
+
+		// generate Version Edited By property
+		$newVersionEditedBy = \OC_User::getUser();
+
+		// generate Version Tag property
+		$oldVersionTag = $oldMetadata['version_tag'] ?? '';
+		$newVersionTag = $this->incrementVersionTag($oldVersionTag);
 
 		$metadata = [
-			self::VERSION_EDITED_BY_PROPERTYNAME => $authorUid
+			'edited_by' => $newVersionEditedBy,
+			'version_tag' => $newVersionTag
 		];
 		return $this->writeMetaFile($metadata, $absPathOnDisk) !== false;
 	}
@@ -219,22 +222,42 @@ class MetaStorage {
 	 * After a version is restored, the version's metadata is also restored
 	 * and becomes the current metadata of the file.
 	 *
+	 * @param string $currentFileName
+	 * @param FileInfo $restoreVersionFile
 	 * @param string $uid
-	 * @param string $fileToRestore
-	 * @param string $target
 	 */
-	public function restore(string $uid, string $fileToRestore, string $target) {
-		$restoreDirName = \dirname($fileToRestore);
-		$restoreName = \basename($target);
+	public function restore(string $currentFileName, FileInfo $restoreVersionFile, string $uid) {
+		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_EXT);
+		$restoreMetaFile = $this->dataDir . $restoreVersionFile->getPath() . self::VERSION_FILE_EXT;
 
-		$src = self::pathToAbsDiskPath($uid, $fileToRestore) . self::VERSION_FILE_EXT;
-		$dst = self::pathToAbsDiskPath($uid, "$restoreDirName/$restoreName") . self::CURRENT_FILE_EXT;
+		if (\file_exists($restoreMetaFile)) {
+			// fetch metadata
+			$currentMetaData = $this->readMetaFile($currentMetaFile);
+			$restoreMetaData = $this->readMetaFile($restoreMetaFile);
 
-		if (\file_exists($src)) {
-			\rename($src, $dst);
-		} elseif (\file_exists($dst)) {
-			// Remove current author file in case there is no author to restore
-			\unlink($dst);
+			// keep edited by name from restored file
+			$newVersionEditedBy = $restoreMetaData['edited_by'] ?? '';
+
+			// increment version tag for current meta and preserve original restoration tag
+			if (!$restoreMetaData['restored_from_tag']) {
+				$restoreVersionTag = $restoreMetaData['version_tag'] ?? '';
+			} else {
+				$restoreVersionTag = $restoreMetaData['restored_from_tag'];
+			}
+			$oldCurrentVersionTag = $currentMetaData['version_tag'] ?? '';
+			$newCurrentVersionTag = $this->incrementVersionTag($oldCurrentVersionTag);
+			
+			// create new currentMetaFile and remove restoreMetaFile
+			$metadata = [
+				'edited_by' => $newVersionEditedBy,
+				'version_tag' => $newCurrentVersionTag,
+				'restored_from_tag' => $restoreVersionTag,
+			];
+			$this->writeMetaFile($metadata, $currentMetaFile);
+			\unlink($restoreMetaFile);
+		} elseif (\file_exists($currentMetaFile)) {
+			// Remove current metadata file in case there is no metadata to restore
+			\unlink($currentMetaFile);
 		}
 	}
 
@@ -300,6 +323,25 @@ class MetaStorage {
 	}
 
 	/**
+	 * Get the incremented version tag for a new version, which is 
+	 * latest version +0.1 or new major version [TODO].
+	 *
+	 * @param string $oldVersionTag
+	 * @return string
+	 */
+	public function incrementVersionTag($oldVersionTag) : ?string {
+		if (!$oldVersionTag) {
+			$newVersionTag = '0.1';
+		} else {
+			$versionParts = explode(".", $oldVersionTag);
+			$majorVersionPart = $versionParts[0];
+			$minorVersionPart = $versionParts[1];
+			$newVersionTag = $majorVersionPart . '.' . \strval(((int)$minorVersionPart) + 1);
+		}
+		return $newVersionTag;
+	}
+
+	/**
 	 * Helper to convert relative vfs paths to absolute on disk paths
 	 *
 	 * @param string $uid The user
@@ -325,23 +367,33 @@ class MetaStorage {
 	 * @return array metadata
 	 */
 	private function readMetaFile(string $diskPath) {
+		if (!\file_exists($diskPath)) {
+			return [];
+		}
+
 		$json = \file_get_contents($diskPath);
 		if ($decoded = \json_decode($json, true)) {
 			$metadata = [];
 
 			// handling for edited_by
-			if (isset($decoded[MetaStorage::LEGACY_VERSION_EDITED_BY_PROPERTYNAME])) {
-				$metadata[MetaStorage::VERSION_EDITED_BY_PROPERTYNAME] = $decoded[MetaStorage::LEGACY_VERSION_EDITED_BY_PROPERTYNAME];
+			if (isset($decoded['edited_by'])) {
+				$metadata['edited_by'] = $decoded['edited_by'];
 			}
 
+			// LEGACY: property wrongly taken from DAV interface
 			// backwards compatibilitiy handling for edited_by which in the bast had DAV property name
-			if (isset($decoded[MetaStorage::VERSION_EDITED_BY_PROPERTYNAME])) {
-				$metadata[MetaStorage::VERSION_EDITED_BY_PROPERTYNAME] = $decoded[MetaStorage::VERSION_EDITED_BY_PROPERTYNAME];
+			if (isset($decoded['{http://owncloud.org/ns}meta-version-edited-by'])) {
+				$metadata['edited_by'] = $decoded['{http://owncloud.org/ns}meta-version-edited-by'];
 			}
 
 			// handling for version tags
-			if (isset($decoded[MetaStorage::VERSION_TAG_PROPERTYNAME])) {
-				$metadata[MetaStorage::VERSION_TAG_PROPERTYNAME] = $decoded[MetaStorage::VERSION_TAG_PROPERTYNAME];
+			if (isset($decoded['version_tag'])) {
+				$metadata['version_tag'] = $decoded['version_tag'];
+			}
+
+			// handling for version restored file tag
+			if (isset($decoded['restored_from_tag'])) {
+				$metadata['restored_from_tag'] = $decoded['restored_from_tag'];
 			}
 			return $metadata;
 		}

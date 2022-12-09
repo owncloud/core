@@ -28,7 +28,8 @@
 		'<li data-revision="{{versionId}}" class="current-version">' +
 		'<div>' +
 		'<div class="preview-container">' +
-		'<img class="preview" src="{{previewUrl}}"/><span>{{versionTag}}</span>' +
+		'<img class="preview" src="{{previewUrl}}"/>' +
+		'<span class="has-tooltip" title="{{versionTagTooltip}}">{{formattedVersionTag}}</span>' +
 		'</div>' +
 		'<div class="version-container">' +
 		'<div class="version-headline">' +
@@ -39,7 +40,7 @@
 		'{{#hasDetails}}' +
 		'<div class="version-details">' +
 		'<span class="size has-tooltip" title="{{altSize}}">{{humanReadableSize}}</span>' +
-		'<span title="{{editedBy}}">{{editedByName}}</span>' +
+		'<span class="has-tooltip" title="{{editedBy}}">{{editedByName}}</span>' +
 		'</div>' +
 		'{{/hasDetails}}' +
 		'</div>' +
@@ -53,7 +54,8 @@
 		'<li data-revision="{{versionId}}">' +
 		'<div>' +
 		'<div class="preview-container">' +
-		'<img class="preview" src="{{previewUrl}}"/><span>{{versionTag}}</span>' +
+		'<img class="preview" src="{{previewUrl}}"/>' +
+		'<span class="has-tooltip" title="{{versionTagTooltip}}">{{formattedVersionTag}}</span>' +
 		'</div>' +
 		'<div class="version-container">' +
 		'<div class="version-headline">' +
@@ -64,7 +66,7 @@
 		'{{#hasDetails}}' +
 		'<div class="version-details">' +
 		'<span class="size has-tooltip" title="{{altSize}}">{{humanReadableSize}}</span>' +
-		'<span title="{{editedBy}}">{{editedByName}}</span>' +
+		'<span class="has-tooltip" title="{{editedBy}}">{{editedByName}}</span>' +
 		'</div>' +
 		'{{/hasDetails}}' +
 		'</div>' +
@@ -163,17 +165,29 @@
 						// temp dummy, until we can do a PROPFIND
 						etag: versionModel.get('id') + versionModel.get('timestamp')
 					});
+					OC.Notification.show(
+						t('files_versions', 
+							'File {file} has been reverted and marked as new current version',
+							{
+								file: versionModel.getFullPath()
+							}
+						),
+						{ timeout: 7 }
+					);
 				},
 
 				error: function() {
 					fileInfoModel.trigger('busy', fileInfoModel, false);
 					self.$el.find('.versions').removeClass('hidden');
 					self._toggleLoading(false);
-					OC.Notification.show(t('files_versions', 'Failed to revert {file} to revision {timestamp}.',
-						{
-							file: versionModel.getFullPath(),
-							timestamp: OC.Util.formatDate(versionModel.get('timestamp') * 1000)
-						}),
+					OC.Notification.show(
+						t('files_versions', 
+							'Failed to revert {file} to revision {timestamp}.',
+							{
+								file: versionModel.getFullPath(),
+								timestamp: OC.Util.formatDate(versionModel.get('timestamp') * 1000)
+							}
+						),
 						{
 							type: 'error'
 						}
@@ -298,7 +312,10 @@
 		_formatVersion: function(version) {
 			var timestamp = version.get('timestamp') * 1000;
 			var size = version.has('size') ? version.get('size') : 0;
-			var isMajorVersion = version.get('versionTag').indexOf('.0', version.get('versionTag').length - '.0'.length) !== -1;
+			var versionTagTooltip = version.has('versionRestoredFromTag') && version.get('versionRestoredFromTag') != '' ? 
+				t('files_versions', 'restored') : t('files_versions', 'tag');
+			var formattedVersionTag = version.has('versionRestoredFromTag') && version.get('versionRestoredFromTag') != '' ? 
+				version.get('versionTag') + ' (' + version.get('versionRestoredFromTag') + ')' : version.get('versionTag');
 
 			return _.extend({
 				versionId: version.get('id'),
@@ -316,11 +333,18 @@
 				editedBy: version.has('editedBy'),
 				editedByName: version.has('editedByName'),
 				versionTag: version.has('versionTag'),
+				versionRestoredFromTag: version.has('versionRestoredFromTag'),
+				versionTagTooltip: versionTagTooltip,
+				formattedVersionTag: formattedVersionTag
 			}, version.attributes);
 		},
 
 		_formatCurrent: function(current) {
 			var size = current.has('size') ? current.get('size') : 0;
+			var versionTagTooltip = current.has('versionRestoredFromTag') && current.get('versionRestoredFromTag') != '' ? 
+			t('files_versions', 'restored') : t('files_versions', 'tag');
+			var formattedVersionTag = current.has('versionRestoredFromTag') && current.get('versionRestoredFromTag') != '' ? 
+				current.get('versionTag') + ' (' + current.get('versionRestoredFromTag') + ')' : current.get('versionTag');
 
 			return _.extend({
 				versionId: current.get('id'),
@@ -338,6 +362,9 @@
 				editedBy: current.has('editedBy'),
 				editedByName: current.has('editedByName'),
 				versionTag: current.has('versionTag'),
+				versionRestoredFromTag: current.has('versionRestoredFromTag'),
+				versionTagTooltip: versionTagTooltip,
+				formattedVersionTag: formattedVersionTag
 			}, current.attributes);
 		},
 
@@ -346,7 +373,7 @@
 		 */
 		render: function() {
 			this.$el.html(this.template({
-				emptyResultLabel: t('files_versions', 'No other versions available'),
+				emptyResultLabel: '', // not needed anymore as we always display current file
 			}));
 			this.$el.find('.has-tooltip').tooltip();
 			this.$versionsContainer = this.$el.find('ul.versions');
