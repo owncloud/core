@@ -5450,7 +5450,7 @@ trait WebDav {
 		$this->runOcc(
 			[
 				'config:system:set',
-				'file_storage.save_version_author',
+				'file_storage.save_version_metadata',
 				'--type',
 				'boolean',
 				'--value',

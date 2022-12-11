@@ -389,7 +389,8 @@ class Trashbin {
 
 			// Temporary
 			$config = \OC::$server->getConfig();
-			$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+			$metaEnabled = (($config->getSystemValue('file_storage.save_version_metadata', false) === true)
+				|| ($config->getSystemValue('file_storage.save_version_author', false) === true));
 			/** @var MetaStorage|null  $metaStorage */
 			$metaStorage = null;
 
@@ -618,7 +619,8 @@ class Trashbin {
 
 			// Temporary
 			$config = \OC::$server->getConfig();
-			$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+			$metaEnabled = (($config->getSystemValue('file_storage.save_version_metadata', false) === true)
+				|| ($config->getSystemValue('file_storage.save_version_author', false) === true));
 			/** @var MetaStorage|null  $metaStorage */
 			$metaStorage = null;
 
