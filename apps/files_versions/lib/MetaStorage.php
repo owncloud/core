@@ -85,10 +85,12 @@ class MetaStorage {
 	 * after every modification of a file to store some metadata.
 	 *
 	 * @param string $currentFileName Path relative to the current user's home
+	 * @param string $uid
+	 * @param boolean $minor by default increases minor version, if false major
 	 * @return bool
 	 * @throws \Exception
 	 */
-	public function createCurrent(string $currentFileName, string $uid) : bool {
+	public function createCurrent(string $currentFileName, string $uid, $minor = true) : bool {
 		// if the file gets streamed we need to remove the .part extension
 		// to get the right target
 		$ext = \pathinfo($currentFileName, PATHINFO_EXTENSION);
@@ -113,7 +115,7 @@ class MetaStorage {
 
 		// generate Version Tag property
 		$oldVersionTag = $oldMetadata['version_tag'] ?? '';
-		$newVersionTag = $this->incrementVersionTag($oldVersionTag);
+		$newVersionTag = $this->incrementVersionTag($oldVersionTag, $minor);
 
 		$metadata = [
 			'edited_by' => $newVersionEditedBy,
@@ -142,6 +144,7 @@ class MetaStorage {
 	 * Get a metadata file for a current file.
 	 *
 	 * @param string $currentFileName Path relative to the current user's home
+	 * @param string $uid
 	 * @return array metadata
 	 * @throws \Exception
 	 */
@@ -327,16 +330,26 @@ class MetaStorage {
 	 * latest version +0.1 or new major version [TODO].
 	 *
 	 * @param string $oldVersionTag
+	 * @param boolean $minor by default increases minor version, if false major
 	 * @return string
 	 */
-	public function incrementVersionTag($oldVersionTag) : ?string {
+	private function incrementVersionTag($oldVersionTag, $minor = true) : ?string {
 		if (!$oldVersionTag) {
-			$newVersionTag = '0.1';
-		} else {
-			$versionParts = explode(".", $oldVersionTag);
-			$majorVersionPart = $versionParts[0];
-			$minorVersionPart = $versionParts[1];
+			return '0.1';
+		}
+		
+		$versionParts = explode(".", $oldVersionTag);
+		$majorVersionPart = $versionParts[0];
+		$minorVersionPart = $versionParts[1];
+		if ($minor) {
+			// by default increase minor version
 			$newVersionTag = $majorVersionPart . '.' . \strval(((int)$minorVersionPart) + 1);
+		} else if ($minorVersionPart !== '0') {
+			// increase major only when not already increased
+			$newVersionTag = \strval(((int)$majorVersionPart) + 1) . '.0';
+		} else {
+			// just keep old tag
+			$newVersionTag = $oldVersionTag;
 		}
 		return $newVersionTag;
 	}

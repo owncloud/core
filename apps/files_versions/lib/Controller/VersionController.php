@@ -44,7 +44,7 @@ class VersionController extends Controller {
 	}
 
 	/**
-	 * Publish
+	 * Publish current version
 	 *
 	 * @NoAdminRequired
 	 *
@@ -53,7 +53,7 @@ class VersionController extends Controller {
 	 */
 	public function publishVersion($path) {
 		try {
-			Storage::publish($path);
+			Storage::publishCurrentVersion($path);
 		} catch (\Exception $e) {
 			return new JSONResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}

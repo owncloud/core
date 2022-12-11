@@ -34,7 +34,7 @@
 		'<div class="version-container">' +
 		'<div class="version-headline">' +
 		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
-		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}} · current</span>' +
+		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}{{currentVersionLabel}}</span>' +
 		'</a>' +
 		'</div>' +
 		'{{#hasDetails}}' +
@@ -60,7 +60,7 @@
 		'<div class="version-container">' +
 		'<div class="version-headline">' +
 		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
-		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}</span>' +
+		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}{{majorVersionlabel}}</span>' +
 		'</a>' +
 		'</div>' +
 		'{{#hasDetails}}' +
@@ -133,7 +133,7 @@
 		_onClickRevertVersion: function(ev) {
 			var self = this;
 			var $target = $(ev.target);
-			var fileInfoModel = this.collection.getFileInfo();
+			var fileInfoModel = this.versionsRoot.getFileInfo();
 			var revision;
 			if (!$target.is('li')) {
 				$target = $target.closest('li');
@@ -201,43 +201,30 @@
 		},
 
 		_onClickPublishVersion: function(ev) {
-			// TODO: FIXME
+			var self = this;
+			var fileInfoModel = this.versionsRoot.getFileInfo();
+			ev.preventDefault();
 
-			// var self = this;
-			// var $target = $(ev.target);
-			// var fileInfoModel = this.collection.getFileInfo();
-			// var revision;
-			// if (!$target.is('li')) {
-			// 	$target = $target.closest('li');
-			// }
+			this.versionsRoot.publish({
+				success: function() {
+					// reset and re-fetch the updated collection
+					self.$versionsContainer.empty();
 
-			// ev.preventDefault();
-			// revision = $target.attr('data-revision');
+					self.versionsRoot.setFileInfo(fileInfoModel);
+					self.versionsRoot.fetch();
 
-			// var versionModel = this.collection.get(revision);
-			// versionModel.publish({
-			// 	success: function() {
-			// 		// reset and re-fetch the updated collection
-			// 		self.$versionsContainer.empty();
-			// 		self.collection.setFileInfo(fileInfoModel);
-			// 		self.collection.reset([], {silent: true});
-			// 		self.collection.fetch();
+					self.collection.setFileInfo(fileInfoModel);
+					self.collection.reset([], {silent: true});
+					self.collection.fetch();
 
-			// 		self.$el.find('.versions').removeClass('hidden');
-			// 		self._toggleLoading(false);
-			// 		fileInfoModel.trigger('busy', fileInfoModel, false);
-			// 	},
-			// 	error: function() {
-			// 		self.$el.find('.versions').removeClass('hidden');
-			// 		self._toggleLoading(false);
-			// 		fileInfoModel.trigger('busy', fileInfoModel, false);
-			// 		OC.Notification.show(t('files_versions', 'Failed to publish version'),{type: 'error'});
-			// 	}
-			// });
-
-			// // spinner
-			// this._toggleLoading(true);
-			// fileInfoModel.trigger('busy', fileInfoModel, true);
+					self.$el.find('.versions').removeClass('hidden');
+				},
+				error: function() {
+					self.$el.find('.versions').removeClass('hidden');
+					self._toggleLoading(false);
+					OC.Notification.show(t('files_versions', 'Failed to publish version'),{type: 'error'});
+				}
+			});
 		},
 
 		_toggleLoading: function(state) {
@@ -316,6 +303,7 @@
 				t('files_versions', 'restored') : t('files_versions', 'tag');
 			var formattedVersionTag = version.has('versionRestoredFromTag') && version.get('versionRestoredFromTag') != '' ? 
 				version.get('versionTag') + ' (' + version.get('versionRestoredFromTag') + ')' : version.get('versionTag');
+			var isMajorVersion = version.get('versionTag').indexOf('.0', version.get('versionTag').length - '.0'.length) !== -1;
 
 			return _.extend({
 				versionId: version.get('id'),
@@ -335,7 +323,8 @@
 				versionTag: version.has('versionTag'),
 				versionRestoredFromTag: version.has('versionRestoredFromTag'),
 				versionTagTooltip: versionTagTooltip,
-				formattedVersionTag: formattedVersionTag
+				formattedVersionTag: formattedVersionTag,
+				majorVersionlabel: isMajorVersion ? ' · ' + t('files_versions', 'persisted') : ''
 			}, version.attributes);
 		},
 
@@ -364,7 +353,8 @@
 				versionTag: current.has('versionTag'),
 				versionRestoredFromTag: current.has('versionRestoredFromTag'),
 				versionTagTooltip: versionTagTooltip,
-				formattedVersionTag: formattedVersionTag
+				formattedVersionTag: formattedVersionTag,
+				currentVersionLabel: ' · ' + t('files_versions', 'current')
 			}, current.attributes);
 		},
 

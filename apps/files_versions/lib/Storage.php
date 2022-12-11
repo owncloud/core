@@ -516,6 +516,18 @@ class Storage {
 		return $version;
 	}
 
+	/**
+	 * Publish the current version into major version 
+	 * that would persist the version long-term
+	 */
+	public static function publishCurrentVersion($filename) {
+		if (self::metaEnabled()) {
+			list($uid, $currentFileName) = self::getUidAndFilename($filename);
+
+			// overwrite current file metadata but with minor=false to create major version
+			self::$metaData->createCurrent($currentFileName, $uid, false);
+		}
+	}
 
 	/**
 	 * get a list of all available non-concurrent versions of a file in descending chronological order
@@ -922,14 +934,4 @@ class Storage {
 		return $users_view->fopen($storage_location, 'r');
 	}	
 	
-	/**
-	 * Publish the current version
-	 */
-	public static function publish($filename) {
-		list($uid, $filename) = self::getUidAndFilename($filename);
-		$versions = self::getVersions($uid, $filename);
-		// TODO: implement
-		\OCP\Util::writeLog('files_versions', 'NOT IMPLEMENTED publish ' . $uid . ' ' . $filename, \OCP\Util::ERROR);
-		//self::$metaData->publishCurrentVersion($versions, $filename, $uid);
-	}
 }
