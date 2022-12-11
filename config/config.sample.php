@@ -718,7 +718,7 @@ $CONFIG = [
  * Save and display the author of each version of uploaded and edited files.
  *
  * LEGACY: Please use file_storage.save_version_metadata
- * 
+ *
  * WARNING: This does not work for S3 storage backends.
  */
 'file_storage.save_version_author' => false,

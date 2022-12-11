@@ -137,7 +137,6 @@ class MetaStorage {
 			return $this->readMetaFile($absPathOnDisk);
 		}
 		return [];
-
 	}
 
 	/**
@@ -326,7 +325,7 @@ class MetaStorage {
 	}
 
 	/**
-	 * Get the incremented version tag for a new version, which is 
+	 * Get the incremented version tag for a new version, which is
 	 * latest version +0.1 or new major version [TODO].
 	 *
 	 * @param string $oldVersionTag
@@ -344,7 +343,7 @@ class MetaStorage {
 		if ($minor) {
 			// by default increase minor version
 			$newVersionTag = $majorVersionPart . '.' . \strval(((int)$minorVersionPart) + 1);
-		} else if ($minorVersionPart !== '0') {
+		} elseif ($minorVersionPart !== '0') {
 			// increase major only when not already increased
 			$newVersionTag = \strval(((int)$majorVersionPart) + 1) . '.0';
 		} else {
