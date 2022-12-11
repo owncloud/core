@@ -30,7 +30,7 @@ namespace OCP\Files\Storage;
 interface IVersionedStorage {
 	/**
 	 * Get metadata for current version of the file (versions root)
-	 * 
+	 *
 	 * @param string $internalPath
 	 * @return array metadata or null if not supported
 	 * @since 10.12.0

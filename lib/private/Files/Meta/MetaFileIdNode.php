@@ -29,7 +29,7 @@ use OCP\Files\NotFoundException;
 
 /**
  * Class MetaFileIdNode - this class represents the file id part of the meta endpoint
- * 
+ *
  * /meta/fileid
  *
  * @package OC\Files\Meta

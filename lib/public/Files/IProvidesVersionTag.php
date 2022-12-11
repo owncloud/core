@@ -31,7 +31,7 @@ namespace OCP\Files;
  */
 interface IProvidesVersionTag {
 	/**
-	 * Returns the versioning tag of the file. 
+	 * Returns the versioning tag of the file.
 	 *
 	 * @return string tag or empty string if this is the initial version
 	 * @since 10.12.0
@@ -39,7 +39,7 @@ interface IProvidesVersionTag {
 	public function getVersionTag() : string;
 
 	/**
-	 * Returns the versioning tag of the file that this file 
+	 * Returns the versioning tag of the file that this file
 	 * was originaly restored from.
 	 *
 	 * @return string tag or empty string if not applicable

@@ -231,7 +231,7 @@ class Storage {
 					// version last current file metadata into non-conncurrent version
 					self::$metaData->copyCurrentToVersion($filename, $fileInfo, $uid);
 
-					// create new current file metadata 
+					// create new current file metadata
 					self::$metaData->createCurrent($filename, $uid);
 				}
 			}
@@ -493,7 +493,7 @@ class Storage {
 	}
 
 	/**
-	 * get current version of the file 
+	 * get current version of the file
 	 * @param string $uid user id from the owner of the file
 	 * @param string $filename file to get versioning data for, relative to the user files dir
 	 */
@@ -517,7 +517,7 @@ class Storage {
 	}
 
 	/**
-	 * Publish the current version into major version 
+	 * Publish the current version into major version
 	 * that would persist the version long-term
 	 */
 	public static function publishCurrentVersion($filename) {
@@ -932,6 +932,5 @@ class Storage {
 	public static function getContentOfVersion($uid, $storage_location) {
 		$users_view = new View('/'.$uid);
 		return $users_view->fopen($storage_location, 'r');
-	}	
-	
+	}
 }

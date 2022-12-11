@@ -31,9 +31,9 @@ use OCP\Files\NotFoundException;
 use OCP\Files\Storage;
 
 /**
- * Collection root (current file node) of non-concurrent versions (directory children nodes). This 
+ * Collection root (current file node) of non-concurrent versions (directory children nodes). This
  * class represents the versions sub folder of a file
- * 
+ *
  * @package OC\Files\Meta
  */
 class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAuthor, IProvidesVersionTag {
