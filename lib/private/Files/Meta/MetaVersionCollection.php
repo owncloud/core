@@ -71,7 +71,7 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 		$internalPath = $this->node->getInternalPath();
 
 		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
-			return [];
+			return '';
 		}
 
 		if (!$this->versionInfo) {
@@ -92,7 +92,7 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 		$internalPath = $this->node->getInternalPath();
 
 		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
-			return [];
+			return '';
 		}
 
 		if (!$this->versionInfo) {
@@ -113,7 +113,7 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 		$internalPath = $this->node->getInternalPath();
 
 		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
-			return [];
+			return '';
 		}
 
 		if (!$this->versionInfo) {
