@@ -135,7 +135,9 @@ class LoginController extends Controller {
 			return new TemplateResponse(
 				'core',
 				'apacheauthredirect',
-				[],
+				[
+					'redirect_url' => $this->getDefaultUrl()
+				],
 				'guest'
 			);
 		}

@@ -1,0 +1,7 @@
+Bugfix: Add shib auth support for redirect url
+
+Without this change, server-side Apache Auth (e.g. Shibboleth) resulted in redirect to default owncloud page, instead of last visited page. We now correctly handle redirect_url.
+
+https://github.com/owncloud/core/pull/40470
+https://github.com/owncloud/core/pull/40161
+https://github.com/owncloud/enterprise/issues/5450
