@@ -12,6 +12,7 @@ Summary
 * Bugfix - Properly remove file versions from the trashbin: [#40286](https://github.com/owncloud/core/issues/40286)
 * Bugfix - "available for" in the mount point configuration will show displaynames: [#40412](https://github.com/owncloud/core/pull/40412)
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
+* Bugfix - Add shib auth support for redirect url: [#40470](https://github.com/owncloud/core/pull/40470)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
@@ -65,6 +66,15 @@ Details
    This has now been fixed and public links are being skipped.
 
    https://github.com/owncloud/core/pull/40420
+
+* Bugfix - Add shib auth support for redirect url: [#40470](https://github.com/owncloud/core/pull/40470)
+
+   Without this change, server-side Apache Auth (e.g. Shibboleth) resulted in redirect to
+   default owncloud page, instead of last visited page. We now correctly handle redirect_url.
+
+   https://github.com/owncloud/enterprise/issues/5450
+   https://github.com/owncloud/core/pull/40470
+   https://github.com/owncloud/core/pull/40161
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
