@@ -36,8 +36,8 @@ Feature: reshare as public link
       | publicUpload | false |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "some content"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "some content"
     But uploading a file should not work using the old public WebDAV API
     But uploading a file should not work using the new public WebDAV API
 
@@ -87,8 +87,8 @@ Feature: reshare as public link
       | publicUpload | false |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "some content"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "some content"
     But uploading a file should not work using the old public WebDAV API
     But uploading a file should not work using the new public WebDAV API
 
@@ -108,8 +108,8 @@ Feature: reshare as public link
       | publicUpload | true                      |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "some content"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "some content"
     And uploading a file should work using the old public WebDAV API
     And uploading a file should work using the new public WebDAV API
     Examples:

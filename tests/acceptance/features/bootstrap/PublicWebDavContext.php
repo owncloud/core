@@ -883,7 +883,9 @@ class PublicWebDavContext implements Context {
 		string $password,
 		string $content
 	):void {
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;
@@ -896,6 +898,82 @@ class PublicWebDavContext implements Context {
 		);
 
 		$this->featureContext->downloadedContentShouldBePlusEndOfLine($content);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public link shared folder using the (old|new) public WebDAV API with password "([^"]*)" and the content should be "([^"]*)"$/
+	 *
+	 * @param string $path
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPasswordAndContentShouldBe(
+		string $path,
+		string $publicWebDAVAPIVersion,
+		string $password,
+		string $content
+	):void {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+			$path,
+			$password,
+			$publicWebDAVAPIVersion
+		);
+
+		$this->featureContext->downloadedContentShouldBe($content);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public link shared folder using the (old|new) public WebDAV API without password and the content should be "([^"]*)"$/
+	 *
+	 * @param string $path
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithoutPassword(
+		string $path,
+		string $publicWebDAVAPIVersion,
+		string $content
+	):void {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+			$path,
+			"",
+			$publicWebDAVAPIVersion
+		);
+
+		$this->featureContext->downloadedContentShouldBe($content);
 
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
