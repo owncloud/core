@@ -18,10 +18,16 @@ Feature: changing a public link share
     Then the HTTP status code should be "<http-status-code>"
     And as "Alice" file "PARENT/parent.txt" <should-or-not> exist
 
-   @issue-ocis-2079  @issue-ocis-reva-292
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | permissions               | http-status-code | should-or-not | public-webdav-api-version |
       | read,update,create        | 403              | should        | old                       |
+      | read,update,create,delete | 204              | should not    | old                       |
+
+    @issue-ocis-reva-292
+    Examples:
+      | permissions               | http-status-code | should-or-not | public-webdav-api-version |
+      | read,update,create        | 403              | should        | new                       |
       | read,update,create,delete | 204              | should not    | new                       |
 
 
@@ -34,10 +40,14 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/parent.txt" should exist
     And as "Alice" file "/PARENT/newparent.txt" should not exist
 
-    @issue-ocis-reva-292 @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+    @issue-ocis-reva-292
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
   @skipOnRansomwareProtection @issue-ransomware-208
@@ -50,10 +60,14 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/parent.txt" should not exist
     And as "Alice" file "/PARENT/newparent.txt" should exist
 
-    @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
 
@@ -65,10 +79,14 @@ Feature: changing a public link share
     Then the HTTP status code should be "403"
     And as "Alice" file "/PARENT/lorem.txt" should not exist
 
-    @issue-ocis-reva-292 @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+    @issue-ocis-reva-292
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
 
@@ -84,6 +102,10 @@ Feature: changing a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
 
@@ -96,11 +118,15 @@ Feature: changing a public link share
     Then the HTTP status code should be "401"
     And as "Alice" file "PARENT/parent.txt" should exist
 
-    @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-      | new                      |
+
+
+    Examples:
+      | public-webdav-api-version |
+      | new                       |
 
 
   Scenario Outline: Public can delete file through publicly shared link with password using the valid password with the public WebDAV API
@@ -112,10 +138,14 @@ Feature: changing a public link share
     Then the HTTP status code should be "204"
     And as "Alice" file "PARENT/parent.txt" should not exist
 
-    @issue-ocis-2079  @issue-ocis-reva-292
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+    @issue-ocis-reva-292
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
 
@@ -129,10 +159,14 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/newparent.txt" should not exist
     And as "Alice" file "/PARENT/parent.txt" should exist
 
-    @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
   @skipOnRansomwareProtection @issue-ransomware-208
@@ -146,11 +180,16 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/newparent.txt" should exist
     And as "Alice" file "/PARENT/parent.txt" should not exist
 
-    @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+
+    Examples:
+      | public-webdav-api-version |
       | new                       |
+
 
   Scenario Outline: Public tries to upload to a password protected public share using an invalid password with the public WebDAV API
     Given user "Alice" has created a public link share with settings
@@ -161,10 +200,14 @@ Feature: changing a public link share
     Then the HTTP status code should be "401"
     And as "Alice" file "/PARENT/lorem.txt" should not exist
 
-    @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
 
@@ -177,10 +220,14 @@ Feature: changing a public link share
     Then the HTTP status code should be "201"
     And as "Alice" file "/PARENT/lorem.txt" should exist
 
-    @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
 
@@ -193,10 +240,14 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/parent.txt" should exist
     And as "Alice" file "/PARENT/newparent.txt" should not exist
 
-    @issue-ocis-2079 @issue-ocis-reva-292
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+    @issue-ocis-reva-292
+    Examples:
+      | public-webdav-api-version |
       | new                       |
 
 
@@ -208,8 +259,12 @@ Feature: changing a public link share
     Then the HTTP status code should be "403"
     And as "Alice" file "PARENT/parent.txt" should exist
 
-    @issue-ocis-2079 @issue-ocis-reva-292
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
+
+    @issue-ocis-reva-292
+    Examples:
+      | public-webdav-api-version |
       | new                       |
