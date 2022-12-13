@@ -138,7 +138,6 @@ OC.L10N.register(
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "¡Hola!\n\nsólo te quería decir que %s acaba de compartir %s contigo.\nVerlo: %s\n\n",
     "The share will expire on %s." : "El compartir expirará en %s.",
     "Cheers!" : "¡Saludos!",
-    "The application was authorized successfully. You can now close this window." : "La aplicación fue autorizada correctamente. Ahora puedes cerrar esta ventana.",
     "Technical details" : "Detalles técnicos",
     "Remote Address: %s" : "Dirección Remota: %s",
     "Request ID: %s" : "ID requiriente: %s",

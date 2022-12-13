@@ -266,7 +266,6 @@ OC.L10N.register(
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Sælir,\n\nbara láta þig vita að %s deildi %s með þér.\n\nSkoðaðu það: %s\n\n",
     "The share will expire on %s." : "Gildistími sameignar rennur út %s.",
     "Cheers!" : "Til hamingju!",
-    "The application was authorized successfully. You can now close this window." : "Það tókst að heimila forritið. Þú getur núna lokað þessum glugga.",
     "Internal Server Error" : "Innri villa",
     "The server encountered an internal error and was unable to complete your request." : "Innri villa kom upp á þjóninum og ekki náðist að afgreiða beiðnina.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Hafðu samband við kerfisstjóra ef þessi villa birtist oft aftur, láttu þá tæknilegu upplýsingarnar hér að neðan fylgja með.",

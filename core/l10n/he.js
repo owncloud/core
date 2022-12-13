@@ -279,7 +279,6 @@ OC.L10N.register(
     "The share will expire on %s." : "השיתוף יפוג תוקף ב- %s.",
     "Personal note from the sender: \n %s." : "מסר אישי מהשולח: \n %s.",
     "Cheers!" : "לחיים!",
-    "The application was authorized successfully. You can now close this window." : "היישום אושר בהצלחה. ניתן לסגור עכשיו את החלון.",
     "Internal Server Error" : "שגיאה פנימית בשרת",
     "The server encountered an internal error and was unable to complete your request." : "השרת נתקל בשגיאה פנימית ולא הצליח לסיים את הבקשה שלך.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "נא ליצור קשר עם מנהל השרת שלך אם שגיאה זו מופיעה שוב מספר פעמים ולכלול בדיווח את הפרטים הטכניים שלהלן.",

@@ -285,7 +285,6 @@
     "The share will expire on %s." : "El objeto dejará de ser compartido el %s.",
     "Personal note from the sender: \n %s." : "Nota personal del remitente:\n%s.",
     "Cheers!" : "¡Saludos!",
-    "The application was authorized successfully. You can now close this window." : "La aplicación ha sido autorizada,  ya puede cerrar esta ventana.",
     "Internal Server Error" : "Error interno del servidor",
     "The server encountered an internal error and was unable to complete your request." : "El servidor ha encontrado un error y no puede completar la solicitud.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Por favor, ponte en contacto con el administrador del servidor si este error aparece más veces, e incluye los detalles técnicos en tu informe a continuación.",

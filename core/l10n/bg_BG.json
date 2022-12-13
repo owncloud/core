@@ -285,7 +285,6 @@
     "The share will expire on %s." : "Срокът на валидност на споделянето ще изтече на %s.",
     "Personal note from the sender: \n %s." : "Лична бележка от подателя:\n %s.",
     "Cheers!" : "Поздрави!",
-    "The application was authorized successfully. You can now close this window." : "Приложението беше упълномощено успешно. Сега можете да затворите този прозорец.",
     "Internal Server Error" : "Вътрешна системна грешка",
     "The server encountered an internal error and was unable to complete your request." : "Сървърът се сблъска с вътрешна грешка и не можа да изпълни заявката ви.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Моля, свържете се с администратора на сървъра ако тази грешка се появява многократно и включете в доклада си техническите данни по-долу.",

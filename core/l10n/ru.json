@@ -281,7 +281,6 @@
     "The share will expire on %s." : "Доступ будет закрыт %s",
     "Personal note from the sender: \n %s." : "Личная заметка от отправителя: \n %s.",
     "Cheers!" : "Всего наилучшего!",
-    "The application was authorized successfully. You can now close this window." : "Приложение было успешно авторизовано. Теперь вы можете закрыть это окно.",
     "Internal Server Error" : "Внутренняя ошибка сервера",
     "The server encountered an internal error and was unable to complete your request." : "Запрос не выполнен, на сервере произошла ошибка.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Если эта ошибка будет повторяться, то пожалуйста свяжитесь с администратором этого сервера, и приложите к сообщению технические подробности, приведённые ниже.",

@@ -265,7 +265,6 @@ OC.L10N.register(
     "The share will expire on %s." : "Pembagian akan berakhir pada %s.",
     "Personal note from the sender: \n %s." : "Catatan personal dari pengirim:\n%s.",
     "Cheers!" : "Horee!",
-    "The application was authorized successfully. You can now close this window." : "Aplikasi telah berhasil diotorisasi. Anda dapat menutup halaman ini sekarang",
     "Internal Server Error" : "Kesalahan Server Internal",
     "The server encountered an internal error and was unable to complete your request." : "Server mengalami kesalahan internal dan tidak dapat menyelesaikan permintaan Anda.",
     "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Mohon hubungi admin server jika kesalahan terus muncul beberapa kali dan masukkan detil teknis dibawah ini dalam laporan Anda.",
