@@ -959,26 +959,7 @@ class PublicWebDavContext implements Context {
 		string $publicWebDAVAPIVersion,
 		string $content
 	):void {
-		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
-			return;
-		} elseif ($publicWebDAVAPIVersion === "new") {
-			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
-		} else {
-			$techPreviewHadToBeEnabled = false;
-		}
-
-		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
-			$path,
-			"",
-			$publicWebDAVAPIVersion
-		);
-
-		$this->featureContext->downloadedContentShouldBe($content);
-
-		if ($techPreviewHadToBeEnabled) {
-			$this->occContext->disableDAVTechPreview();
-		}
-		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+		$this->shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPasswordAndContentShouldBe($path, $publicWebDAVAPIVersion, "", $content);
 	}
 
 	/**
