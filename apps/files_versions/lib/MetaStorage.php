@@ -86,11 +86,11 @@ class MetaStorage {
 	 *
 	 * @param string $currentFileName Path relative to the current user's home
 	 * @param string $uid
-	 * @param boolean $minor by default increases minor version, if false major
+	 * @param bool $minor if true increases minor version, otherwise major
 	 * @return bool
 	 * @throws \Exception
 	 */
-	public function createCurrent(string $currentFileName, string $uid, $minor = true) : bool {
+	public function createCurrent(string $currentFileName, string $uid, bool $minor) : bool {
 		// if the file gets streamed we need to remove the .part extension
 		// to get the right target
 		$ext = \pathinfo($currentFileName, PATHINFO_EXTENSION);
@@ -326,13 +326,13 @@ class MetaStorage {
 
 	/**
 	 * Get the incremented version tag for a new version, which is
-	 * latest version +0.1 or new major version [TODO].
+	 * latest version +0.1 or new major version.
 	 *
 	 * @param string $oldVersionTag
-	 * @param boolean $minor by default increases minor version, if false major
+	 * @param bool $minor if true increases minor version, otherwise major
 	 * @return string
 	 */
-	private function incrementVersionTag($oldVersionTag, $minor = true) : ?string {
+	private function incrementVersionTag(string $oldVersionTag, bool $minor) : string {
 		if (!$oldVersionTag) {
 			return '0.1';
 		}
