@@ -270,11 +270,10 @@ class Storage {
 	 *
 	 * @param View $view
 	 * @param string $path
-	 * @return bool 
+	 * @return bool
 	 */
 	private static function checkCanExpireVersion($view, $path) {
 		if (self::metaEnabled()) {
-			
 			$versionFileInfo = $view->getFileInfo($path);
 			if ($versionFileInfo) {
 				$versionMetadata = self::$metaData->getVersion($versionFileInfo);
@@ -532,8 +531,8 @@ class Storage {
 			// handle only allowed metadata values
 			$versionMetadata = self::$metaData->getCurrent($filename, $uid);
 
-			$version['edited_by'] = $versionMetadata['edited_by'] ?? null;
-			$version['version_tag'] = $versionMetadata['version_tag'] ?? null;
+			$version['edited_by'] = $versionMetadata['edited_by'] ?? '';
+			$version['version_tag'] = $versionMetadata['version_tag'] ?? '';
 			$version['restored_from_tag'] = $versionMetadata['restored_from_tag'] ?? '';
 		}
 
