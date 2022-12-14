@@ -240,14 +240,15 @@ class MetaStorage {
 			// keep edited by name from restored file
 			$newVersionEditedBy = $restoreMetaData['edited_by'] ?? '';
 
-			// increment version tag for current meta and preserve original restoration tag
-			if (!$restoreMetaData['restored_from_tag']) {
+			// preserve original restoration tag if set
+			$restoreVersionTag = $restoreMetaData['restored_from_tag'] ?? '';
+			if (!$restoreVersionTag) {
 				$restoreVersionTag = $restoreMetaData['version_tag'] ?? '';
-			} else {
-				$restoreVersionTag = $restoreMetaData['restored_from_tag'];
 			}
+
+			// increment version tag for current meta
 			$oldCurrentVersionTag = $currentMetaData['version_tag'] ?? '';
-			$newCurrentVersionTag = $this->incrementVersionTag($oldCurrentVersionTag);
+			$newCurrentVersionTag = $this->incrementVersionTag($oldCurrentVersionTag, true);
 			
 			// create new currentMetaFile and remove restoreMetaFile
 			$metadata = [
