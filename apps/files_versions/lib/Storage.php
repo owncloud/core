@@ -232,7 +232,7 @@ class Storage {
 					self::$metaData->copyCurrentToVersion($filename, $fileInfo, $uid);
 
 					// create new current file metadata
-					self::$metaData->createCurrent($filename, $uid);
+					self::$metaData->createCurrent($filename, $uid, true);
 				}
 			}
 		}
@@ -249,7 +249,7 @@ class Storage {
 			$versionMetadata = self::$metaData->getCurrent($currentFileName, $uid);
 			if (!$versionMetadata) {
 				// make sure metadata for current exists
-				self::$metaData->createCurrent($currentFileName, $uid);
+				self::$metaData->createCurrent($currentFileName, $uid, true);
 			}
 		}
 	}
@@ -263,6 +263,30 @@ class Storage {
 		self::$deletedFiles[$path] = [
 			'uid' => $uid,
 			'filename' => $filename];
+	}
+
+	/**
+	 * check whether verion can be expired
+	 *
+	 * @param View $view
+	 * @param string $path
+	 * @return bool 
+	 */
+	private static function checkCanExpireVersion($view, $path) {
+		if (self::metaEnabled()) {
+			
+			$versionFileInfo = $view->getFileInfo($path);
+			if ($versionFileInfo) {
+				$versionMetadata = self::$metaData->getVersion($versionFileInfo);
+
+				// we should not expire major versions (published workflow)
+				$versionTag = $versionMetadata['version_tag'] ?? '';
+				if (\substr($versionTag, -\strlen('.0')) === '.0') {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -524,7 +548,7 @@ class Storage {
 		if (self::metaEnabled()) {
 			list($uid, $currentFileName) = self::getUidAndFilename($filename);
 
-			// overwrite current file metadata but with minor=false to create major version
+			// overwrite current file metadata with minor=false to create new major version
 			self::$metaData->createCurrent($currentFileName, $uid, false);
 		}
 	}
@@ -632,6 +656,9 @@ class Storage {
 		$view = new View('/' . $uid . '/files_versions');
 		if (!empty($toDelete)) {
 			foreach ($toDelete as $version) {
+				if (!self::checkCanExpireVersion($view, $version['path'] . '.v' . $version['version'])) {
+					continue;
+				}
 				$hookData = [
 					'user' => $uid,
 					'path' => $version['path'] . '.v' . $version['version'],
@@ -859,6 +886,9 @@ class Storage {
 			}
 
 			foreach ($toDelete as $key => $path) {
+				if (!self::checkCanExpireVersion($versionsFileview, $path)) {
+					continue;
+				}
 				$versionInfo = self::getFileHelper()->getPathAndRevision($path);
 				$hookData = [
 					'user' => $uid,
@@ -884,6 +914,10 @@ class Storage {
 			\reset($allVersions);
 			while ($availableSpace < 0 && $i < $numOfVersions) {
 				$version = \current($allVersions);
+
+				if (!self::checkCanExpireVersion($versionsFileview, $version['path'] . '.v' . $version['version'])) {
+					continue;
+				}
 				$hookData = [
 					'user' => $uid,
 					'path' => $version['path'].'.v'.$version['version'],
