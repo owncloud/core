@@ -246,10 +246,11 @@ class FilesVersionsContext implements Context {
 	}
 
 	/**
-	 * @Then /^as (?:users|user) "([^"]*)" the authors of the versions of file "([^"]*)" should be:$/
+	 * @Then /^as (?:users|user) "([^"]*)" the authors of the versions of file "([^"]*)" (should|should not) be:$/
 	 *
 	 * @param string $users comma-separated list of usernames
 	 * @param string $filename
+	 * @param string $shouldOrNot should or should not
 	 * @param TableNode $table
 	 *
 	 * @return void
@@ -258,6 +259,7 @@ class FilesVersionsContext implements Context {
 	public function asUsersAuthorsOfVersionsOfFileShouldBe(
 		string $users,
 		string $filename,
+		string $shouldOrNot,
 		TableNode $table
 	): void {
 		$this->featureContext->verifyTableNodeColumns(
@@ -272,6 +274,7 @@ class FilesVersionsContext implements Context {
 			foreach ($requiredVersionMetadata as $versionMetadata) {
 				$this->featureContext->theAuthorOfEditedVersionFile(
 					$versionMetadata['index'],
+					$shouldOrNot,
 					$versionMetadata['author']
 				);
 			}
