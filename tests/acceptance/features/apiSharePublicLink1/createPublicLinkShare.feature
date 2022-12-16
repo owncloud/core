@@ -25,21 +25,16 @@ Feature: create a public link share
       | uid_file_owner         | %username%      |
       | uid_owner              | %username%      |
       | name                   |                 |
-    When the public downloads the last public link shared file using the <public-webdav-api-version> public WebDAV API
-    Then the downloaded content should be "Random data"
-    And the public upload to the last publicly shared file using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "403"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
+    And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "403"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-reva-12 @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-    @issue-ocis-reva-12
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @smokeTest @notToImplementOnOCIS @issue-ocis-2079
   Scenario Outline: Creating a new public link share of a file with password using the old public WebDAV API
@@ -126,20 +121,16 @@ Feature: create a public link share
       | uid_file_owner         | %username%      |
       | uid_owner              | %username%      |
       | name                   |                 |
-    And the public should be able to download the last publicly shared file using the <public-webdav-api-version> public WebDAV API without a password and the content should be "Random data"
-    And uploading content to a public link shared file should work using the <public-webdav-api-version> public WebDAV API
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
+    And uploading content to a public link shared file should work using the old public WebDAV API
+    And uploading content to a public link shared file should work using the new public WebDAV API
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079 @issue-ocis-reva-292
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
 
   Scenario Outline: Creating a new public link share of a folder using the default permissions only grants read access and can be accessed with no password or any password using the public WebDAV API
@@ -162,21 +153,16 @@ Feature: create a public link share
       | uid_file_owner         | %username%           |
       | uid_owner              | %username%           |
       | name                   |                      |
-    When the public downloads file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
-    Then the downloaded content should be "Random data"
-    And the public upload to the last publicly shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "403"
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "Random data"
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "Random data"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-reva-12 @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-    @issue-ocis-reva-12
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
 
   Scenario Outline: Creating a new public link share of a folder, with a password and accessing using the public WebDAV API
@@ -201,22 +187,17 @@ Feature: create a public link share
       | uid_file_owner         | %username%           |
       | uid_owner              | %username%           |
       | name                   |                      |
-    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API with password "%public%"
-    And the downloaded content should be "Random data"
-    But the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API without a password
-    And the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API with password "%regular%"
-
-    @notToImplementOnOCIS @issue-ocis-2079
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the old public WebDAV API with password "%public%" and the content should be "Random data"
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "%public%" and the content should be "Random data"
+    But the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the old public WebDAV API without a password
+    And the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the old public WebDAV API with password "%regular%"
+    And the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the new public WebDAV API without a password
+    And the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "%regular%"
+    @issue-ocis-2079  @issue-ocis-reva-292
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @smokeTest @issue-ocis-reva-294
   Scenario Outline: Getting the share information of public link share from the OCS API does not expose sensitive information
@@ -277,19 +258,14 @@ Feature: create a public link share
       | id          | A_STRING    |
       | share_type  | public_link |
       | permissions | read        |
-    And the public upload to the last publicly shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-reva-41 @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-    @issue-ocis-reva-41
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
 
   Scenario Outline: Creating a public link share with read+create permissions is forbidden when public upload is disabled globally
@@ -386,19 +362,14 @@ Feature: create a public link share
       | id          | A_STRING                  |
       | share_type  | public_link               |
       | permissions | read,update,create,delete |
-    And uploading a file should work using the <public-webdav-api-version> public WebDAV API
+    And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the new public WebDAV API
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
 
   Scenario Outline: Creating a link share with upload permissions keeps it using the public WebDAV API
@@ -413,19 +384,15 @@ Feature: create a public link share
       | id          | A_STRING    |
       | share_type  | public_link |
       | permissions | read,create |
-    And uploading a file should work using the <public-webdav-api-version> public WebDAV API
+    And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the new public WebDAV API
 
-    @notToImplementOnOCIS @issue-ocis-2079
+   @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
-
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
 
   @issue-ocis-reva-283 @notToImplementOnOCIS
   Scenario Outline: Do not allow public sharing of the root on ownCloud10
@@ -459,22 +426,16 @@ Feature: create a public link share
       | uid_file_owner         | %username%           |
       | uid_owner              | %username%           |
       | name                   |                      |
-    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
-    And the downloaded content should be "Random data"
-    And the public upload to the last publicly shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "403"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
+    And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
+    And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
 
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
-
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: user creates a public link share of a file with file name longer than 64 chars using the public WebDAV API
     Given using OCS API version "<ocs_api_version>"
@@ -483,19 +444,15 @@ Feature: create a public link share
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download the last publicly shared file using the <public-webdav-api-version> public WebDAV API without a password and the content should be "long file"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "long file"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "long file"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
-
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
 
 
   Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars and access using the public WebDAV API
@@ -506,20 +463,14 @@ Feature: create a public link share
       | path | /aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
-    And the downloaded content should be "Random data"
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "Random data"
+    And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "Random data"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @issue-ocis-reva-41
   Scenario Outline: Create a public link with default expiration date set and max expiration date enforced and access using the public WebDAV API
@@ -550,15 +501,14 @@ Feature: create a public link share
       | permissions | read            |
       | uid_owner   | %username%      |
       | expiration  | +7 days         |
-    And the public should be able to download the last publicly shared file using the <public-webdav-api-version> public WebDAV API without a password and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
+    And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
 
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code | public-webdav-api-version |
-      | 1               | 100             | 200              | old                       |
-      | 2               | 200             | 200              | old                       |
-      | 1               | 100             | 200              | new                       |
-      | 2               | 200             | 200              | new                       |
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
   @issue-ocis-reva-199
   Scenario Outline: Delete a folder that has been publicly shared and try to access using the public WebDAV API
