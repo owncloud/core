@@ -49,6 +49,7 @@ class SharingDialog extends OwncloudPage {
 	private $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
 	private $suffixToIdentifyGroups = " Group";
 	private $suffixToIdentifyUsers = " User";
+	private $suffixToIdentifyMultipleUsers = " Add multiple users";
 	private $suffixToIdentifyRemoteUsers = " Federated";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "Shared with you(?: and the group (.*))? by (.*)$";
@@ -396,6 +397,31 @@ class SharingDialog extends OwncloudPage {
 		$this->shareWithUserOrGroup(
 			$name,
 			$name . $this->suffixToIdentifyUsers,
+			$session,
+			$quiet,
+			$maxRetries
+		);
+	}
+
+	/**
+	 *
+	 * @param string|null $name
+	 * @param Session $session
+	 * @param boolean $quiet
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException|Exception
+	 */
+	public function shareWithUsers(
+		?string  $name,
+		Session $session,
+		bool $quiet,
+		int     $maxRetries = 5
+	): void {
+		$this->shareWithUserOrGroup(
+			$name,
+			$name . $this->suffixToIdentifyMultipleUsers,
 			$session,
 			$quiet,
 			$maxRetries

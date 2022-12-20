@@ -353,3 +353,112 @@ Feature: Sharing files and folders with internal users
       | 123      |
       | -123     |
       | 0.0      |
+
+
+  Scenario: user shares file with multiple users at once
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with users "Brian,Carol" using the webUI
+    And the user re-logs in as "Brian" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+    When the user re-logs in as "Carol" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+
+
+  Scenario: user shares folder with multiple users at once
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with users "Brian,Carol" using the webUI
+    And the user re-logs in as "Brian" using the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
+    And the user re-logs in as "Carol" using the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
+
+
+  Scenario Outline: user shares file with multiple users including non-existing user at once
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with users "<users>" using the webUI
+    And the user re-logs in as "Brian" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+    When the user re-logs in as "Carol" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+    Examples:
+      | users             |
+      | Brian,Carol,David |
+      | Brian,David,Carol |
+      | David,Brian,Carol |
+
+
+  Scenario: user shares folder with multiple users including non-existing user at once
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with users "Brian,David,Carol" using the webUI
+    And the user re-logs in as "Brian" using the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
+    And the user re-logs in as "Carol" using the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
+
+
+  Scenario: user shares file with multiple users having exact same group name
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And group "Brian,Carol" has been created
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with users "Brian,Carol" using the webUI
+    And the user re-logs in as "Brian" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+    When the user re-logs in as "Carol" using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+
+
+  Scenario: user shares folder with multiple users having exact same group name
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And group "Brian,Carol" has been created
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with users "Brian,Carol" using the webUI
+    And the user re-logs in as "Brian" using the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
+    And the user re-logs in as "Carol" using the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared by "Alice" on the webUI

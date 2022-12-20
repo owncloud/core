@@ -175,6 +175,36 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When /^the user shares (?:file|folder) "([^"]*)" with users "([^"]*)" using the webUI$/
+	 *
+	 * @param string $folder
+	 * @param string $users
+	 * @param int $maxRetries
+	 * @param boolean $quiet
+	 * @param boolean $expectedToWork
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserSharesFileFolderWithUsersUsingTheWebUI(
+		string $folder,
+		string $users,
+		int $maxRetries = STANDARD_RETRY_COUNT,
+		bool $quiet = false,
+		bool $expectedToWork = true
+	):void {
+		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+			$folder,
+			"users",
+			null,
+			$users,
+			$maxRetries,
+			$quiet,
+			$expectedToWork
+		);
+	}
+
+	/**
 	 * @When /^the user tries to share (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" ?(?:with displayname "([^"]*)")? using the webUI$/
 	 *
 	 * @param string $folder
@@ -448,6 +478,21 @@ class WebUISharingContext extends RawMinkContext implements Context {
 					$maxRetries
 				);
 			}
+		} elseif ($userOrGroup === "users") {
+			$users = explode(",", $name);
+			$users_array = [];
+			foreach ($users as $user) {
+				if ($this->featureContext->userExists($user)) {
+					$users_array[] = $user;
+				}
+			}
+			$name = join(", ", $users_array);
+			$this->sharingDialog->shareWithUsers(
+				$name,
+				$this->getSession(),
+				$quiet,
+				$maxRetries
+			);
 		} else {
 			$this->sharingDialog->shareWithGroup(
 				$name,
