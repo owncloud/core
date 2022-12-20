@@ -115,7 +115,7 @@ Details
 
    The following have been updated: - doctrine/event-manager (1.1.2 to 1.2.0) -
    guzzlehttp/guzzle (7.4.5 to 7.5.0) - guzzlehttp/promises (1.5.1 to 1.5.2) -
-   guzzlehttp/psr7 (2.4.0 to 2.4.3) - phpseclib/phpseclib (3.0.14 to 3.0.17) -
+   guzzlehttp/psr7 (2.4.0 to 2.4.3) - phpseclib/phpseclib (3.0.14 to 3.0.18) -
    laminas/laminas-filter (2.12.0 to 2.22.0) - laminas/laminas-inputfilter (2.12.1 to
    2.21.0) - laminas/laminas-servicemanager (3.7.0 to 3.17.0) - laminas/laminas-stdlib
    (3.11.0 to 3.13.0) - laminas/laminas-validator (2.19.0 to 2.25.0) - league/flysystem
@@ -133,6 +133,7 @@ Details
    https://github.com/owncloud/core/pull/40448
    https://github.com/owncloud/core/pull/40449
    https://github.com/owncloud/core/pull/40494
+   https://github.com/owncloud/core/pull/40543
 
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
