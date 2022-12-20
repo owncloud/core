@@ -5,7 +5,7 @@ The following have been updated:
 - guzzlehttp/guzzle (7.4.5 to 7.5.0)
 - guzzlehttp/promises (1.5.1 to 1.5.2)
 - guzzlehttp/psr7 (2.4.0 to 2.4.3)
-- phpseclib/phpseclib (3.0.14 to 3.0.17)
+- phpseclib/phpseclib (3.0.14 to 3.0.18)
 - laminas/laminas-filter (2.12.0 to 2.22.0)
 - laminas/laminas-inputfilter (2.12.1 to 2.21.0)
 - laminas/laminas-servicemanager (3.7.0 to 3.17.0)
@@ -29,3 +29,4 @@ https://github.com/owncloud/core/pull/40424
 https://github.com/owncloud/core/pull/40448
 https://github.com/owncloud/core/pull/40449
 https://github.com/owncloud/core/pull/40494
+https://github.com/owncloud/core/pull/40543
