@@ -413,11 +413,11 @@ class EncryptionTest extends Storage {
 		if ($encryptionEnabled) {
 			$this->keyStore
 				->expects($this->once())
-				->method('renameKeys')
+				->method('copyKeys')
 				->willReturn($renameKeysReturn);
 		} else {
 			$this->keyStore
-				->expects($this->never())->method('renameKeys');
+				->expects($this->never())->method('copyKeys');
 		}
 		$this->util->expects($this->any())
 			->method('isFile')->willReturn(true);
