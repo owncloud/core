@@ -406,6 +406,7 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 *
 	 * @param string|null $name
+	 * @param string|null $nameToMatch
 	 * @param Session $session
 	 * @param boolean $quiet
 	 * @param int $maxRetries
@@ -415,13 +416,14 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function shareWithUsers(
 		?string  $name,
+		?string $nameToMatch,
 		Session $session,
 		bool $quiet,
 		int     $maxRetries = 5
 	): void {
 		$this->shareWithUserOrGroup(
 			$name,
-			$name . $this->suffixToIdentifyMultipleUsers,
+			$nameToMatch . $this->suffixToIdentifyMultipleUsers,
 			$session,
 			$quiet,
 			$maxRetries

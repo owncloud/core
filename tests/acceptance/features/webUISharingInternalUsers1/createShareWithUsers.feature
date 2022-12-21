@@ -364,12 +364,8 @@ Feature: Sharing files and folders with internal users
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user shares file "lorem.txt" with users "Brian,Carol" using the webUI
-    And the user re-logs in as "Brian" using the webUI
-    Then file "lorem.txt" should be listed on the webUI
-    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
-    When the user re-logs in as "Carol" using the webUI
-    Then file "lorem.txt" should be listed on the webUI
-    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+    Then as "Brian" file "lorem.txt" should exist
+    And as "Carol" file "lorem.txt" should exist
 
 
   Scenario: user shares folder with multiple users at once
@@ -381,12 +377,8 @@ Feature: Sharing files and folders with internal users
     And user "Alice" has created folder "simple-folder"
     And user "Alice" has logged in using the webUI
     When the user shares folder "simple-folder" with users "Brian,Carol" using the webUI
-    And the user re-logs in as "Brian" using the webUI
-    Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
-    And the user re-logs in as "Carol" using the webUI
-    Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
+    Then as "Brian" folder "simple-folder" should exist
+    And as "Carol" folder "simple-folder" should exist
 
 
   Scenario Outline: user shares file with multiple users including non-existing user at once
@@ -397,21 +389,18 @@ Feature: Sharing files and folders with internal users
       | Carol    |
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
     And user "Alice" has logged in using the webUI
-    When the user shares file "lorem.txt" with users "<users>" using the webUI
-    And the user re-logs in as "Brian" using the webUI
-    Then file "lorem.txt" should be listed on the webUI
-    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
-    When the user re-logs in as "Carol" using the webUI
-    Then file "lorem.txt" should be listed on the webUI
-    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+    When the user shares file "lorem.txt" with users "<usernames>" using the webUI
+    Then a notification should be displayed on the webUI with the text "Could not be shared with the following users: David"
+    And as "Brian" file "lorem.txt" should exist
+    And as "Carol" file "lorem.txt" should exist
     Examples:
-      | users             |
+      | usernames         |
       | Brian,Carol,David |
       | Brian,David,Carol |
       | David,Brian,Carol |
 
 
-  Scenario: user shares folder with multiple users including non-existing user at once
+  Scenario Outline: user shares folder with multiple users including non-existing user at once
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
@@ -419,13 +408,15 @@ Feature: Sharing files and folders with internal users
       | Carol    |
     And user "Alice" has created folder "simple-folder"
     And user "Alice" has logged in using the webUI
-    When the user shares folder "simple-folder" with users "Brian,David,Carol" using the webUI
-    And the user re-logs in as "Brian" using the webUI
-    Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
-    And the user re-logs in as "Carol" using the webUI
-    Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
+    When the user shares folder "simple-folder" with users "<usernames>" using the webUI
+    Then a notification should be displayed on the webUI with the text "Could not be shared with the following users: David"
+    And as "Brian" folder "simple-folder" should exist
+    And as "Carol" folder "simple-folder" should exist
+    Examples:
+      | usernames         |
+      | Brian,Carol,David |
+      | Brian,David,Carol |
+      | David,Brian,Carol |
 
 
   Scenario: user shares file with multiple users having exact same group name
@@ -438,12 +429,8 @@ Feature: Sharing files and folders with internal users
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user shares file "lorem.txt" with users "Brian,Carol" using the webUI
-    And the user re-logs in as "Brian" using the webUI
-    Then file "lorem.txt" should be listed on the webUI
-    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
-    When the user re-logs in as "Carol" using the webUI
-    Then file "lorem.txt" should be listed on the webUI
-    And file "lorem.txt" should be marked as shared by "Alice" on the webUI
+    Then as "Brian" file "lorem.txt" should exist
+    And as "Carol" file "lorem.txt" should exist
 
 
   Scenario: user shares folder with multiple users having exact same group name
@@ -456,9 +443,5 @@ Feature: Sharing files and folders with internal users
     And user "Alice" has created folder "simple-folder"
     And user "Alice" has logged in using the webUI
     When the user shares folder "simple-folder" with users "Brian,Carol" using the webUI
-    And the user re-logs in as "Brian" using the webUI
-    Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
-    And the user re-logs in as "Carol" using the webUI
-    Then folder "simple-folder" should be listed on the webUI
-    And folder "simple-folder" should be marked as shared by "Alice" on the webUI
+    Then as "Brian" folder "simple-folder" should exist
+    And as "Carol" folder "simple-folder" should exist

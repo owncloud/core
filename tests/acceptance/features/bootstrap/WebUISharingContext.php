@@ -486,9 +486,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 					$users_array[] = $user;
 				}
 			}
-			$name = join(", ", $users_array);
+			$nameToMatch = join(", ", $users_array);
 			$this->sharingDialog->shareWithUsers(
 				$name,
+				$nameToMatch,
 				$this->getSession(),
 				$quiet,
 				$maxRetries
