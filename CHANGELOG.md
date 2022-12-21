@@ -17,6 +17,7 @@ Summary
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
 * Change - Detect mime types of hidden files: [#40427](https://github.com/owncloud/core/pull/40427)
+* Change - Copy the encryption keys first and then rename the files: [#40433](https://github.com/owncloud/core/pull/40433)
 * Change - Drop unneeded Google SDK services: [#40444](https://github.com/owncloud/core/pull/40444)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
@@ -104,6 +105,21 @@ Details
    Mime type of hidden files are now properly detected.
 
    https://github.com/owncloud/core/pull/40427
+
+* Change - Copy the encryption keys first and then rename the files: [#40433](https://github.com/owncloud/core/pull/40433)
+
+   Having encryption enabled, when a file was renamed, first the actual file was renamed, and then
+   the encryption keys were moved to the new location. If something went wrong, it was possible
+   that the keys weren't moved. This caused the file to become inaccessible because we couldn't
+   decrypt the file due to the missing keys (which weren't in the right place)
+
+   Now, when a file is renamed, the encryption keys will be copied first, and then the file will be
+   renamed. If the encryption keys fail to be copied, the rename will fail. After the encryption
+   keys are copied, the file could failed to be renamed. In this case, the copied keys will be
+   removed, but the file will still be accessible because we still keep the old keys. The original
+   keys (not the copy) will be removed if the file is renamed successfully.
+
+   https://github.com/owncloud/core/pull/40433
 
 * Change - Drop unneeded Google SDK services: [#40444](https://github.com/owncloud/core/pull/40444)
 
