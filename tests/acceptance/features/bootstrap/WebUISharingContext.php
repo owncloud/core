@@ -175,32 +175,23 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user shares (?:file|folder) "([^"]*)" with users "([^"]*)" using the webUI$/
+	 * @When the user shares file/folder :resource with users :users using the webUI
 	 *
-	 * @param string $folder
+	 * @param string $resource
 	 * @param string $users
-	 * @param int $maxRetries
-	 * @param boolean $quiet
-	 * @param boolean $expectedToWork
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function theUserSharesFileFolderWithUsersUsingTheWebUI(
-		string $folder,
-		string $users,
-		int $maxRetries = STANDARD_RETRY_COUNT,
-		bool $quiet = false,
-		bool $expectedToWork = true
+		string $resource,
+		string $users
 	):void {
 		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
-			$folder,
+			$resource,
 			"users",
 			null,
-			$users,
-			$maxRetries,
-			$quiet,
-			$expectedToWork
+			$users
 		);
 	}
 
@@ -480,13 +471,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			}
 		} elseif ($userOrGroup === "users") {
 			$users = explode(",", $name);
-			$users_array = [];
+			$usersArray = [];
 			foreach ($users as $user) {
 				if ($this->featureContext->userExists($user)) {
-					$users_array[] = $user;
+					$usersArray[] = $user;
 				}
 			}
-			$nameToMatch = join(", ", $users_array);
+			$nameToMatch = join(", ", $usersArray);
 			$this->sharingDialog->shareWithUsers(
 				$name,
 				$nameToMatch,

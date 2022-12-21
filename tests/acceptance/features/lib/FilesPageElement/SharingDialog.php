@@ -415,11 +415,11 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException|Exception
 	 */
 	public function shareWithUsers(
-		?string  $name,
-		?string $nameToMatch,
+		string $name,
+		string $nameToMatch,
 		Session $session,
 		bool $quiet,
-		int     $maxRetries = 5
+		int $maxRetries = 5
 	): void {
 		$this->shareWithUserOrGroup(
 			$name,
