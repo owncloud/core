@@ -425,12 +425,15 @@ Feature: Sharing files and folders with internal users
       | Alice    |
       | Brian    |
       | Carol    |
+      | David    |
     And group "Brian,Carol" has been created
+    And user "David" has been added to group "Brian,Carol"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user shares file "lorem.txt" with users "Brian,Carol" using the webUI
     Then as "Brian" file "lorem.txt" should exist
     And as "Carol" file "lorem.txt" should exist
+    And as "David" file "lorem.txt" should not exist
 
 
   Scenario: user shares folder with multiple users having exact same group name
@@ -439,9 +442,12 @@ Feature: Sharing files and folders with internal users
       | Alice    |
       | Brian    |
       | Carol    |
+      | David    |
     And group "Brian,Carol" has been created
+    And user "David" has been added to group "Brian,Carol"
     And user "Alice" has created folder "simple-folder"
     And user "Alice" has logged in using the webUI
     When the user shares folder "simple-folder" with users "Brian,Carol" using the webUI
     Then as "Brian" folder "simple-folder" should exist
     And as "Carol" folder "simple-folder" should exist
+    And as "David" folder "simple-folder" should not exist
