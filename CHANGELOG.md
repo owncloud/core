@@ -13,6 +13,7 @@ Summary
 * Bugfix - "available for" in the mount point configuration will show displaynames: [#40412](https://github.com/owncloud/core/pull/40412)
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
 * Bugfix - Add shib auth support for redirect url: [#40470](https://github.com/owncloud/core/pull/40470)
+* Bugfix - Store checksums only if the whole stream has been read: [#40513](https://github.com/owncloud/core/pull/40513)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
@@ -76,6 +77,20 @@ Details
    https://github.com/owncloud/enterprise/issues/5450
    https://github.com/owncloud/core/pull/40470
    https://github.com/owncloud/core/pull/40161
+
+* Bugfix - Store checksums only if the whole stream has been read: [#40513](https://github.com/owncloud/core/pull/40513)
+
+   Previously, range downloads (or downloads requesting a specific byte range) would store a
+   checksum, if needed, based only on the requested range. This causes problems because the
+   checksum is expected to be for the whole file.
+
+   Now, those range downloads won't store a checksum because only a part of the file has been read,
+   so the checksum would be incomplete.
+
+   Some additional cases have been taken into account, mostly based on actions that could happen
+   on the data stream, but they shouldn't happen normally.
+
+   https://github.com/owncloud/core/pull/40513
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
