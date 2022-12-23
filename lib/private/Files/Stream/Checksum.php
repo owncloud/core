@@ -46,13 +46,19 @@ class Checksum extends Wrapper {
 	 */
 	private $hashingContexts;
 
+	/**
+	 * Check if the stream has been read or written from the beginning.
+	 * If `fseek` is called, this flag should be false unless the target
+	 * position of the beginning of the stream
+	 */
+	private $fromBeginning = true;
+	private $reading = false;
+
 	/** @var CappedMemoryCache Key is path, value is array of checksums */
 	private static $checksums;
 
 	public function __construct(array $algos = ['sha1', 'md5', 'adler32']) {
-		foreach ($algos as $algo) {
-			$this->hashingContexts[$algo] = \hash_init($algo);
-		}
+		$this->startHashingContexts($algos);
 
 		if (!self::$checksums) {
 			self::$checksums = new CappedMemoryCache();
@@ -72,11 +78,17 @@ class Checksum extends Wrapper {
 			]
 		]);
 
+		// need to check the underlying stream's mode
+		// The `wrapSource` will use 'r+' by default, so the
+		// `stream_open` function might use that mode wrongly.
+		$meta = \stream_get_meta_data($source);
+		$mode = $meta['mode'] ?? 'r+';
 		return Wrapper::wrapSource(
 			$source,
 			$context,
 			'occhecksum',
-			self::class
+			self::class,
+			$mode
 		);
 	}
 
@@ -100,7 +112,47 @@ class Checksum extends Wrapper {
 		$context = parent::loadContext('occhecksum');
 		$this->setSourceStream($context['source']);
 
+		switch ($mode[0]) {  // check first char of the mode
+			case 'r':
+			case 'c':
+				// "c" mode is write only, but we consider it as read because
+				// the content isn't truncated and there could be content after
+				// the pointer that should be read in order to compute the checksum
+				$this->fromBeginning = true;
+				$this->reading = true;
+				break;
+			case 'w':
+			case 'x':
+				$this->fromBeginning = true;
+				$this->reading = false;
+				break;
+			case 'a':
+				$this->fromBeginning = false;
+				$this->reading = true;
+				break;
+		}
+
 		return true;
+	}
+
+	/**
+	 * @param int $offset
+	 * @param int $whence
+	 * @return bool
+	 */
+	public function stream_seek($offset, $whence = SEEK_SET) {
+		$seeked = parent::stream_seek($offset, $whence);
+		if ($seeked) {
+			$this->fromBeginning = parent::stream_tell() === 0;
+			if ($this->fromBeginning) {
+				// start new hashing contexts if we've moved to the beginning of the stream
+				$this->startHashingContexts();
+				// mark the stream as reading because there could be content to read
+				// after the pointer even if we're only writing.
+				$this->reading = true;
+			}
+		}
+		return $seeked;
 	}
 
 	/**
@@ -137,17 +189,39 @@ class Checksum extends Wrapper {
 	public function stream_close() {
 		$currentPath = $this->getPathFromStreamContext();
 		$checksum = $this->finalizeHashingContexts();
-		self::$checksums[$currentPath] = $checksum;
+		if ($this->fromBeginning && (!$this->reading || parent::stream_eof())) {
+			// only store the checksum if we've reached the end of the stream from the beginning
+			self::$checksums[$currentPath] = $checksum;
 
-		// If current path belongs to part file, save checksum for original file
-		// As a result, call to getChecksums for original file (of this part file) will
-		// fetch checksum from cache
-		$originalFilePath = OC_Util::stripPartialFileExtension($currentPath);
-		if ($originalFilePath !== $currentPath) {
-			self::$checksums[$originalFilePath] = $checksum;
+			// If current path belongs to part file, save checksum for original file
+			// As a result, call to getChecksums for original file (of this part file) will
+			// fetch checksum from cache
+			$originalFilePath = OC_Util::stripPartialFileExtension($currentPath);
+			if ($originalFilePath !== $currentPath) {
+				self::$checksums[$originalFilePath] = $checksum;
+			}
 		}
 
 		return parent::stream_close();
+	}
+
+	/**
+	 * Start hashing contexts. If no algorithm is provided, the existing ones
+	 * will be reinitialized, otherwise the ones provided will be used
+	 * @param array|null a list of hashing algorithms or null to use the existing ones
+	 * (from a previous `startHashingContexts($algos)` call)
+	 */
+	private function startHashingContexts($algos = null) {
+		if ($algos === null) {
+			foreach ($this->hashingContexts as $key => $value) {
+				$this->hashingContexts[$key] = \hash_init($key);
+			}
+		} else {
+			$this->hashingContexts = [];
+			foreach ($algos as $algo) {
+				$this->hashingContexts[$algo] = \hash_init($algo);
+			}
+		}
 	}
 
 	/**
@@ -216,5 +290,12 @@ class Checksum extends Wrapper {
 		}
 
 		return self::$checksums;
+	}
+
+	/**
+	 * For tests
+	 */
+	public static function resetChecksums() {
+		self::$checksums = new CappedMemoryCache();
 	}
 }
