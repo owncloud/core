@@ -19,7 +19,7 @@
 		"php": ">=7.4",
 		"icewind/smb": "3.5.4",
 		"icewind/streams": "0.7.6",
-		"google/apiclient": "2.12.6"
+		"google/apiclient": "2.13.0"
 	},
 	"require-dev": {
 		"roave/security-advisories": "dev-latest"
