@@ -194,11 +194,6 @@ Feature: sharing
       | folder2_share_path |
       | /folder2           |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | folder2_share_path |
-      | /folder1/folder2   |
-
 
   Scenario Outline: Share ownership change after moving a shared file to another share
     Given these users have been created with default attributes and without skeleton files:

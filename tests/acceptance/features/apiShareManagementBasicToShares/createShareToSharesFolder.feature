@@ -585,11 +585,6 @@ Feature: sharing
       | pending_share_path |
       | /userOneFolder     |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | pending_share_path            |
-      | /userZeroFolder/userOneFolder |
-
   @issue-enterprise-3896 @issue-ocis-2201
   Scenario Outline: sharing back to original sharer is allowed
     Given these users have been created with default attributes and without skeleton files:
@@ -611,11 +606,6 @@ Feature: sharing
     Examples:
       | pending_share_path |
       | /userOneFolder     |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | pending_share_path            |
-      | /userZeroFolder/userOneFolder |
 
   @issue-enterprise-3896 @issue-ocis-2201
   Scenario Outline: sharing a subfolder to a user that already received parent folder share
@@ -641,11 +631,6 @@ Feature: sharing
     Examples:
       | pending_share_path |
       | /userOneFolder     |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | pending_share_path            |
-      | /userZeroFolder/userOneFolder |
 
   @smokeTest @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: Creating a share of a renamed file

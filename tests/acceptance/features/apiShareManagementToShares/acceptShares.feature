@@ -64,11 +64,6 @@ Feature: accept/decline shares coming from internal users
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | pending_share_path_1 | pending_share_path_2 |
-      | /PARENT/             | /textfile0.txt       |
-
 
   Scenario Outline: share a file & folder with another internal user when auto accept is disabled
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
@@ -91,11 +86,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | pending_share_path_1 | pending_share_path_2 |
-      | /PARENT/             | /textfile0.txt       |
 
   @smokeTest @issue-ocis-2131 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: accept a pending share
@@ -223,11 +213,6 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
-
   @smokeTest @issue-ocis-2128
   Scenario Outline: decline an accepted share
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -250,11 +235,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
 
 
   Scenario: deleting shares in pending state
@@ -294,11 +274,6 @@ Feature: accept/decline shares coming from internal users
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | pending_share_path_1 | pending_share_path_2 |
-      | /PARENT/             | /textfile0.txt       |
-
   @issue-ocis-2131 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: receive two shares with identical names from different users, accept one by one
     Given user "Alice" has created folder "/shared"
@@ -333,11 +308,6 @@ Feature: accept/decline shares coming from internal users
       | pending_share_path |
       | /Shares/PARENT/    |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | pending_share_path |
-      | /PARENT/           |
-
 
   Scenario Outline: user accepts file that was initially accepted from another user and then declined
     Given user "Alice" has uploaded file with content "First file" to "/testfile.txt"
@@ -363,11 +333,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | accepted_share_path |
       | /testfile (2).txt   |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | accepted_share_path |
-      | /testfile.txt       |
 
 
   Scenario Outline: user accepts shares received from multiple users with the same name when auto-accept share is disabled
@@ -399,11 +364,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | accepted_share_path_1 | accepted_share_path_2 |
       | /PARENT (2)           | /PARENT (2) (2)       |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | accepted_share_path_1 | accepted_share_path_2 |
-      | /PARENT               | /PARENT               |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: user shares folder with matching folder-name for both user involved in sharing
@@ -569,11 +529,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | declined_share_path |
       | /Shares/PARENT      |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | declined_share_path |
-      | /PARENT             |
 
   @issue-ocis-765 @issue-ocis-2131 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: shares exist after restoring already shared file to a previous version

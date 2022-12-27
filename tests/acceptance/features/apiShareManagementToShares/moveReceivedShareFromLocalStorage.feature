@@ -27,12 +27,6 @@ Feature: local-storage
       | 1               | /filetoshare.txt   |
       | 2               | /filetoshare.txt   |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | ocs_api_version | pending_share_path             |
-      | 1               | /local_storage/filetoshare.txt |
-      | 2               | /local_storage/filetoshare.txt |
-
 
   Scenario Outline: receiver renames a received folder share from local storage
     Given using OCS API version "<ocs_api_version>"
@@ -50,12 +44,6 @@ Feature: local-storage
       | ocs_api_version | pending_share_path |
       | 1               | /foo               |
       | 2               | /foo               |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | ocs_api_version | pending_share_path |
-      | 1               | /local_storage/foo |
-      | 2               | /local_storage/foo |
 
   @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: sub-folders,file inside a renamed received folder shared from local storage are accessible
@@ -83,12 +71,6 @@ Feature: local-storage
       | 1               | /foo               |
       | 2               | /foo               |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | ocs_api_version | pending_share_path |
-      | 1               | /local_storage/foo |
-      | 2               | /local_storage/foo |
-
   @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: receiver renames a received file share from local storage in group sharing
     Given using OCS API version "<ocs_api_version>"
@@ -108,10 +90,5 @@ Feature: local-storage
     Examples:
       | ocs_api_version | pending_share_path |
       | 1               | /filetoshare.txt   |
-      | 2               | /filetoshare.txt   |
-
-   @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | ocs_api_version | pending_share_path             |
-      | 1               | /local_storage/filetoshare.txt |
-      | 2               | /local_storage/filetoshare.txt |
+      | 2               | /filetoshare.txt   |      
+ 

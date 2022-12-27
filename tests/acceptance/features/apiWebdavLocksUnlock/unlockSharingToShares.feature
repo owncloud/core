@@ -30,14 +30,6 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | old      | shared     | /PARENT/parent.txt |
-      | old      | exclusive  | /PARENT/parent.txt |
-      | new      | shared     | /PARENT/parent.txt |
-      | new      | exclusive  | /PARENT/parent.txt |
-
     @personalSpace @skipOnOcV10
     Examples:
       | dav-path | lock-scope | pending_share_path |
@@ -111,14 +103,6 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | old      | shared     | /PARENT/parent.txt |
-      | old      | exclusive  | /PARENT/parent.txt |
-      | new      | shared     | /PARENT/parent.txt |
-      | new      | exclusive  | /PARENT/parent.txt |
-
     @personalSpace @skipOnOcV10
     Examples:
       | dav-path | lock-scope | pending_share_path |
@@ -143,14 +127,6 @@ Feature: UNLOCK locked items (sharing)
       | old      | exclusive  | /parent.txt        |
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | old      | shared     | /PARENT/parent.txt |
-      | old      | exclusive  | /PARENT/parent.txt |
-      | new      | shared     | /PARENT/parent.txt |
-      | new      | exclusive  | /PARENT/parent.txt |
 
     @personalSpace @skipOnOcV10
     Examples:

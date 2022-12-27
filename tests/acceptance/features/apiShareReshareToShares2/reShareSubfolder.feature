@@ -29,12 +29,6 @@ Feature: a subfolder of a received share can be reshared
       | 1               | 100             | /SUB                   |
       | 2               | 200             | /SUB                   |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | ocs_api_version | ocs_status_code | pending_sub_share_path |
-      | 1               | 100             | /TMP/SUB               |
-      | 2               | 200             | /TMP/SUB               |
-
 
   Scenario Outline: User is not allowed to reshare a sub-folder with more permissions
     Given using OCS API version "<ocs_api_version>"
@@ -116,12 +110,6 @@ Feature: a subfolder of a received share can be reshared
       | 1               | 100             | /SUB                   |
       | 2               | 200             | /SUB                   |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | ocs_api_version | ocs_status_code | pending_sub_share_path |
-      | 1               | 100             | /TMP/SUB               |
-      | 2               | 200             | /TMP/SUB               |
-
   @issue-ocis-2214
   Scenario Outline: User is allowed to update reshare of a sub-folder to the maximum allowed permissions
     Given using OCS API version "<ocs_api_version>"
@@ -146,12 +134,6 @@ Feature: a subfolder of a received share can be reshared
       | 1               | 100             | /SUB                   |
       | 2               | 200             | /SUB                   |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | ocs_api_version | ocs_status_code | pending_sub_share_path |
-      | 1               | 100             | /TMP/SUB               |
-      | 2               | 200             | /TMP/SUB               |
-
   @issue-ocis-2214
   Scenario Outline: User is not allowed to update reshare of a sub-folder with more permissions
     Given using OCS API version "<ocs_api_version>"
@@ -175,9 +157,3 @@ Feature: a subfolder of a received share can be reshared
       | ocs_api_version | http_status_code | pending_sub_share_path |
       | 1               | 200              | /SUB                   |
       | 2               | 404              | /SUB                   |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | ocs_api_version | http_status_code | pending_sub_share_path |
-      | 1               | 200              | /TMP/SUB               |
-      | 2               | 404              | /TMP/SUB               |

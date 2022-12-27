@@ -60,11 +60,6 @@ Feature: sharing
       | pending_share_path |
       | /sub               |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | pending_share_path |
-      | /common/sub        |
-
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
@@ -120,11 +115,6 @@ Feature: sharing
     Examples:
       | pending_share_path |
       | /parent.txt        |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | pending_share_path |
-      | /PARENT/parent.txt |
 
 
   Scenario: sharee of a read-only share folder tries to delete the shared folder
@@ -192,14 +182,6 @@ Feature: sharing
       | /shared                 | 1               | 200              | /Shares/shared          | /Shares/shared          |
       | /shared                 | 2               | 404              | /Shares/shared          | /Shares/shared          |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | entry_to_share          | ocs_api_version | http_status_code | received_entry          | pending_entry           |
-      | /shared/shared_file.txt | 1               | 200              | /Shares/shared_file.txt | /shared/shared_file.txt |
-      | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt | /shared/shared_file.txt |
-      | /shared                 | 1               | 200              | /Shares/shared          | /shared                 |
-      | /shared                 | 2               | 404              | /Shares/shared          | /shared                 |
-
 
   Scenario Outline: An individual share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
@@ -219,14 +201,6 @@ Feature: sharing
       | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt | /Shares/shared_file.txt |
       | /shared                 | 1               | 200              | /Shares/shared          | /Shares/shared          |
       | /shared                 | 2               | 404              | /Shares/shared          | /Shares/shared          |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | entry_to_share          | ocs_api_version | http_status_code | received_entry          | pending_entry           |
-      | /shared/shared_file.txt | 1               | 200              | /Shares/shared_file.txt | /shared/shared_file.txt |
-      | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt | /shared/shared_file.txt |
-      | /shared                 | 1               | 200              | /Shares/shared          | /shared                 |
-      | /shared                 | 2               | 404              | /Shares/shared          | /shared                 |
 
   @issue-ocis-720
   Scenario Outline: request PROPFIND after sharer deletes the collaborator
