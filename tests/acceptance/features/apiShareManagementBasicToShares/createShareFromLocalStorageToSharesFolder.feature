@@ -38,12 +38,6 @@ Feature: local-storage
       | 1               | 100             | /filetoshare.txt    |
       | 2               | 200             | /filetoshare.txt    |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-    Examples:
-      | ocs_api_version | ocs_status_code | pending_share_path             |
-      | 1               | 100             | /local_storage/filetoshare.txt |
-      | 2               | 200             | /local_storage/filetoshare.txt |
-
 
   Scenario Outline: Share a folder inside a local external storage
     Given using OCS API version "<ocs_api_version>"

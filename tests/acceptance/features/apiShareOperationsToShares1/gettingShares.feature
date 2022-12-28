@@ -221,9 +221,3 @@ Feature: sharing
       | ocs_api_version | ocs_status_code | pending_share_path |
       | 1               | 100             | /parent.txt        |
       | 2               | 200             | /parent.txt        |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | ocs_api_version | ocs_status_code | pending_share_path |
-      | 1               | 100             | /PARENT/parent.txt |
-      | 2               | 200             | /PARENT/parent.txt |

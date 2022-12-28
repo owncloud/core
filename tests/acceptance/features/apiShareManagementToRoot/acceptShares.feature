@@ -158,11 +158,6 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT (2)/          | /textfile0 (2).txt    |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
-
 
   Scenario Outline: accept a share that has been declined before
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -187,11 +182,6 @@ Feature: accept/decline shares coming from internal users
       | pending_share_path_1 | pending_share_path_2 |
       | /PARENT (2)          | /textfile0 (2).txt   |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | pending_share_path_1 | pending_share_path_2 |
-      | /PARENT              | /textfile0.txt       |
-
 
   Scenario Outline: unshare a share that has been auto-accepted
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -212,11 +202,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT (2)/          | /textfile0 (2).txt    |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
 
 
   Scenario Outline: unshare a share that was shared with a group and auto-accepted
@@ -247,11 +232,6 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT (2)/          | /textfile0 (2).txt    |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
-
 
   Scenario Outline: rename accepted share, decline it
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -272,11 +252,6 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path |
       | /PARENT-renamed/    |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path |
-      | /PARENT/            |
-
 
   Scenario Outline: rename accepted share, decline it then accept again, name stays
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -296,11 +271,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | declined_share_path |
       | /PARENT-renamed     |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path |
-      | /PARENT             |
 
 
   Scenario Outline: move accepted share, decline it, accept again
@@ -323,11 +293,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | declined_share_path |
       | /PARENT/shared      |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path |
-      | /shared             |
 
 
   Scenario Outline: move accepted share, decline it, delete parent folder, accept again
@@ -352,11 +317,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | declined_share_path |
       | /PARENT/shared      |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path |
-      | /shared             |
 
 
   Scenario: receive two shares with identical names from different users
@@ -580,11 +540,6 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT (2)/          | /textfile0 (2).txt    |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
-
 
   Scenario: deleting shares in pending state
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -679,11 +634,6 @@ Feature: accept/decline shares coming from internal users
       | accepted_share_path |
       | /testfile (2).txt   |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | accepted_share_path |
-      | /testfile.txt       |
-
 
   Scenario Outline: user accepts shares received from multiple users with the same name when auto-accept share is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -712,11 +662,6 @@ Feature: accept/decline shares coming from internal users
     Examples:
       | accepted_share_path_1 | accepted_share_path_2 |
       | /PARENT (2)           | /PARENT (2) (2)       |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | accepted_share_path_1 | accepted_share_path_2 |
-      | /PARENT               | /PARENT               |
 
 
   Scenario: user shares folder with matching folder-name for both user involved in sharing
