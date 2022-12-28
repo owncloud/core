@@ -1097,11 +1097,6 @@ BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION_ONE_DIGIT}'&&'${BEHAT_FILTER_T
 
 function version { echo "$@" | awk -F. '{ printf("%d%03d%03d\n", $1,$2,$3); }'; }
 
-# Skip tests for OC versions greater than 10.8.0
-if [ $(version $OWNCLOUD_VERSION_THREE_DIGIT) -gt $(version "10.8.0") ]; then
-	BEHAT_FILTER_TAGS='~@skipOnAllVersionsGreaterThanOcV10.8.0&&'${BEHAT_FILTER_TAGS}
-fi
-
 if [ -n "${TEST_SERVER_FED_URL}" ]
 then
 	remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "config:system:get version"
