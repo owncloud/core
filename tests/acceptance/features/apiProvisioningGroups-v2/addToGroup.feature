@@ -190,7 +190,7 @@ Feature: add users to group
     And the HTTP status code should be "403"
     And user "brand-new-user" should not belong to group "brand-new-group"
 
-  @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS
+  @skipOnLDAP @notToImplementOnOCIS
   Scenario: a subadmin can add users to other groups the subadmin is responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username         |

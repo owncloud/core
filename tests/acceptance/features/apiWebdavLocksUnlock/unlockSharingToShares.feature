@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-172 @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @issue-ocis-reva-172 @files_sharing-app-required
 Feature: UNLOCK locked items (sharing)
 
   Background:
@@ -22,7 +22,6 @@ Feature: UNLOCK locked items (sharing)
     Then the HTTP status code should be "403"
     And 1 locks should be reported for file "PARENT/parent.txt" of user "Alice" by the WebDAV API
     And 1 locks should be reported for file "Shares/parent.txt" of user "Brian" by the WebDAV API
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /parent.txt        |
@@ -95,7 +94,6 @@ Feature: UNLOCK locked items (sharing)
     Then the HTTP status code should be "204"
     And 0 locks should be reported for file "PARENT/parent.txt" of user "Alice" by the WebDAV API
     And 0 locks should be reported for file "Shares/parent.txt" of user "Brian" by the WebDAV API
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /parent.txt        |
@@ -120,7 +118,6 @@ Feature: UNLOCK locked items (sharing)
     Then the HTTP status code should be "403"
     And 1 locks should be reported for file "PARENT/parent.txt" of user "Alice" by the WebDAV API
     And 1 locks should be reported for file "Shares/parent.txt" of user "Brian" by the WebDAV API
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /parent.txt        |

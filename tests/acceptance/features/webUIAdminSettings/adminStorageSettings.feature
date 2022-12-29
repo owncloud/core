@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @admin_settings-feature-required @local_storage @files_external-app-required @skipOnOcV10.6 @skipOnOcV10.7
+@webUI @insulated @disablePreviews @admin_settings-feature-required @local_storage @files_external-app-required
 Feature: admin storage settings
   As an admin
   I want to be able to manage external storages on the ownCloud server
@@ -33,7 +33,7 @@ Feature: admin storage settings
     And user "Alice" should be able to delete file "/local_storage1/another-name.txt"
     And folder "local_storage1" should be listed on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: administrator creates a read-only local storage mount
     Given user "Alice" has been created with default attributes and without skeleton files
     And the administrator has enabled the external storage

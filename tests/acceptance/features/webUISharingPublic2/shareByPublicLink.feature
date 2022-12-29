@@ -11,7 +11,7 @@ Feature: Share by public link
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392 @skipOnOcV10.6 @skipOnOcV10.7
+  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link of a folder
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -33,7 +33,7 @@ Feature: Share by public link
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/file-in-my-own-storage.txt"
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/simple-folder/new-file-in-read-only-public-link.txt"
 
-  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392 @skipOnOcV10.6 @skipOnOcV10.7
+  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link of a file
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -51,7 +51,7 @@ Feature: Share by public link
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/file-in-my-own-storage.txt"
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/file-shared-by-public-link.txt"
 
-  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392 @skipOnOcV10.6 @skipOnOcV10.7
+  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link and overwrite file
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -192,7 +192,7 @@ Feature: Share by public link
     And the public accesses the last created public link using the webUI
     Then the content of the file shared by the last public link should be the same as "lorem.txt"
 
-  @skipOnOcV10.5 @skipOnOcV10.6
+
   Scenario: User renames a subfolder among subfolders with same names which are shared by public links
     Given user "Alice" has created folder "nf1"
     And user "Alice" has created folder "nf1/newfolder"
@@ -213,7 +213,7 @@ Feature: Share by public link
     And folder "newfolder" should be listed on the webUI
     And folder "test" should be listed on the webUI
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: User renames folders with different path in Shared by link page
     Given user "Alice" has created folder "nf1"
     And user "Alice" has created folder "nf1/test"
@@ -227,7 +227,7 @@ Feature: Share by public link
     When the user renames folder "test" to "newfolder" using the webUI
     Then folder "newfolder" with path "nf1/newfolder" should be listed on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: user tries to deletes the expiration date of already existing public link using webUI when expiration date is enforced
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
@@ -259,7 +259,7 @@ Feature: Share by public link
     And the fields of the last response to user "Alice" should include
       | expiration |  |
 
-  @email @skipOnOcV10.3
+  @email
   Scenario: user without email shares a public link via email
     Given these users have been created without skeleton files:
       | username | password |
@@ -275,7 +275,7 @@ Feature: Share by public link
 			"""
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator inside a shared folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created folder "/simple-folder/sub-folder"
@@ -288,7 +288,7 @@ Feature: Share by public link
       | sub-folder   |
       | textfile.txt |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator for file uploaded inside a shared folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created a public link share with settings
@@ -299,7 +299,7 @@ Feature: Share by public link
     Then the following resources should have share indicators on the webUI
       | new-lorem.txt |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator for folder created inside a shared folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created a public link share with settings
@@ -310,7 +310,7 @@ Feature: Share by public link
     Then the following resources should have share indicators on the webUI
       | sub-folder |
 
-  @skipOnOcV10.3
+
   Scenario: sharing details of items inside a shared folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created folder "/simple-folder/sub-folder"
@@ -324,7 +324,7 @@ Feature: Share by public link
     And the user opens the public link share tab
     Then public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: sharing details of multiple public link shares with different link names
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created folder "/simple-folder/sub-folder"
@@ -346,7 +346,7 @@ Feature: Share by public link
     Then public link "strängé लिंक नाम (#2 &).नेपाली" should be listed as share receiver via "sub-folder" on the webUI
     And public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: sharing detail of items on the webUI shared by public links with empty name
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
@@ -368,7 +368,7 @@ Feature: Share by public link
     And the public accesses the last created public link using the webUI
     Then add to your owncloud button should be displayed on the webUI
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcV10.4.1
+
   Scenario: add to your owncloud button is not present
     Given user "Alice" has created folder "/simple-folder"
     And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"

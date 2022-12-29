@@ -5,7 +5,7 @@ Feature: sharing works when a username and group name are the same
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
 
-  @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
+  @skipOnLDAP
   Scenario: creating a new share with user and a group having same name
     Given these users have been created without skeleton files:
       | username |
@@ -24,7 +24,7 @@ Feature: sharing works when a username and group name are the same
     And the content of file "randomfile.txt" for user "Brian" should be "Random data"
     And the content of file "randomfile.txt" for user "Carol" should be "Random data"
 
-  @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
+  @skipOnLDAP
   Scenario: creating a new share with group and a user having same name
     Given these users have been created without skeleton files:
       | username |

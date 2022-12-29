@@ -176,7 +176,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | spaces   |
 
-  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
+  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "testtrashbin100" has been created with default attributes and without skeleton files
@@ -198,7 +198,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | new      | 404         |
       | spaces   | 404         |
 
-  @issue-ocis-3561 @smokeTest @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
+  @issue-ocis-3561 @smokeTest @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's trashbin is prohibited with multiple files on trashbin
     Given using <dav-path> DAV path
     And user "testtrashbin101" has been created with default attributes and without skeleton files
@@ -223,7 +223,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | new      | 404         |
       | spaces   | 404         |
 
-  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3  @provisioning_api-app-required
+  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore  @provisioning_api-app-required
   Scenario Outline: Listing other user's trashbin is prohibited for newly recreated user with same name
     Given using <dav-path> DAV path
     And user "testtrashbin102" has been created with default attributes and without skeleton files

@@ -41,7 +41,7 @@ Feature: Sharing files and folders with internal groups
       | ?\?@#%@,; |
       | नेपाली    |
 
-  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+
   Scenario: Share file with a user and a group with same name
     Given these groups have been created:
       | groupname |
@@ -56,7 +56,7 @@ Feature: Sharing files and folders with internal groups
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
 
-  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+
   Scenario: Share file with a group and a user with same name
     Given these groups have been created:
       | groupname |
@@ -99,7 +99,7 @@ Feature: Sharing files and folders with internal groups
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Share file with a user and a group with same name and change sharing permissions of the group
     Given these groups have been created:
       | groupname |
@@ -130,7 +130,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | Alice          |
       | permissions | 7              |
 
-  @skipOnOcV10.3
+
   Scenario: Share file with a user and a group with same name and change sharing permissions of the user
     Given these groups have been created:
       | groupname |
@@ -161,7 +161,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | Alice          |
       | permissions | 31             |
 
-  @skipOnOcV10.3
+
   Scenario: Share file with a user and a group with same name and change sharing permissions of both user and group
     Given these groups have been created:
       | groupname |
@@ -193,7 +193,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | Alice          |
       | permissions | 23             |
 
-  @skipOnOcV10.3
+
   Scenario: Share file with a user and a group with same name and change sharing permissions and expiration date of the group
     Given these groups have been created:
       | groupname |
@@ -224,7 +224,7 @@ Feature: Sharing files and folders with internal groups
       | permissions | 31             |
       | expiration  |                |
 
-  @skipOnOcV10.3
+
   Scenario: Share file with a user and a group with same name and change sharing permissions and expiration date of the user
     Given these groups have been created:
       | groupname |
@@ -255,7 +255,7 @@ Feature: Sharing files and folders with internal groups
       | permissions | 31             |
       | expiration  |                |
 
-  @skipOnOcV10.3
+
   Scenario: Share file with a user and a group with same name and change sharing permissions and expiration date of both user and group
     Given these groups have been created:
       | groupname |
@@ -293,7 +293,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | Alice          |
       | permissions | 23             |
 
-  @skipOnOcV10.3
+
   Scenario: Check share permissions and expiration date of a group and the member of the same group
     Given these groups have been created:
       | groupname |
@@ -322,7 +322,7 @@ Feature: Sharing files and folders with internal groups
       | expiration  |                |
       | permissions | 31             |
 
-  @skipOnOcV10.3
+
   Scenario: share with multiple groups and change the sharing permissions and expiration date
     Given these groups have been created:
       | groupname |
@@ -356,7 +356,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | grp2           |
       | permissions | 7              |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+
   Scenario: Reshare with group that user is member of should not create mount in the root folder of resharer
     Given these groups have been created:
       | groupname |
@@ -375,7 +375,7 @@ Feature: Sharing files and folders with internal groups
     And as "Alice" folder "/simple-empty-folder" should not exist
     And user "Alice" should be able to create folder "/simple-empty-folder"
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+
   Scenario: Reshare with group that user is member of should allow for downgrading and upgrading permissions
     Given these groups have been created:
       | groupname |
@@ -405,7 +405,7 @@ Feature: Sharing files and folders with internal groups
     And user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "simple-empty-folder/textfile.txt"
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+
   Scenario: Reshare mount received from multiple group reshare by different users and different subfolders
     Given these groups have been created:
       | groupname |
@@ -431,7 +431,7 @@ Feature: Sharing files and folders with internal groups
       | edit  | yes |
       | share | yes |
 
-  @skipOnOcV10.6 @skipOnOcV10.7.0
+
   Scenario: Simple share of a file within nested folders to a group
     Given these groups have been created:
       | groupname |
@@ -451,7 +451,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | grp1            |
       | permissions | 19              |
 
-  @skipOnOcV10.6 @skipOnOcV10.7.0
+
   Scenario: Reshares with groups where the same file ends up in different mountpoints should have correct permissions
     Given these groups have been created:
       | groupname |
@@ -482,7 +482,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | grp3            |
       | permissions | 19              |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: Reshares with groups of subfolder with lower permissions
     Given these groups have been created:
       | groupname |
@@ -512,7 +512,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | grp3                 |
       | permissions | 31                   |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: Reshares with groups where the same file ends up in different mountpoints that are renamed should have correct permissions
     Given these groups have been created:
       | groupname |

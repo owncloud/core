@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: share resources where the sharee receives the share in multiple ways
 
   Background:
@@ -65,7 +65,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | /Shares/PARENT/parent.txt |
       | /Shares/CHILD/            |
       | /Shares/CHILD/child.txt   |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_sub_share_path |
       | 1               | 100             | /CHILD                 |
@@ -83,7 +82,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And the HTTP status code should be "200"
     And user "Brian" should be able to accept pending share "<pending_share_path>" offered by user "Alice"
     And as "Brian" folder "/Shares/sub" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_share_path |
       | 1               | 100             | /sub               |
@@ -102,7 +100,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And the HTTP status code should be "200"
     And user "Brian" should be able to accept pending share "<pending_share_path>" offered by user "Alice"
     And as "Brian" folder "/Shares/sub" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_share_path |
       | 1               | 100             | /sub               |
@@ -240,7 +237,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to create folder "/Shares/parent/fo1"
     And user "Brian" should be able to create folder "/Shares/parent/child1/fo2"
     And user "Alice" should not be able to create folder "/Shares/child1/fo3"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
+    @issue-2440
     Examples:
       | path    |
       | /child1 |
@@ -275,7 +272,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to rename file "/Shares/parent/child1/child2/textfile-2.txt" to "/Shares/parent/child1/child2/rename.txt"
     And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
     And user "Alice" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
+    @issue-2440
     Examples:
       | path    |
       | /child1 |
@@ -310,7 +307,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to delete file "/Shares/parent/child1/child2/textfile-2.txt"
     And user "Brian" should not be able to delete folder "/Shares/child1/child2"
     And user "Alice" should not be able to delete folder "/Shares/child1/child2"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
+    @issue-2440
     Examples:
       | path    |
       | /child1 |
@@ -350,7 +347,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "/Shares/child1" should exist
     And as "Alice" folder "/Shares/child1" should exist
     And as "Alice" folder "/Shares/parent" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
@@ -386,7 +382,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     But user "Brian" should not be able to create folder "/Shares/parent/fo3"
     And user "Brian" should not be able to create folder "/Shares/parent/fo3"
     And user "Alice" should not be able to create folder "/Shares/parent/fo3"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
@@ -421,7 +416,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to rename file "/Shares/child1/child2/textfile-2.txt" to "/Shares/child1/child2/rename.txt"
     And user "Brian" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
     And user "Alice" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2440
+    @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |
@@ -456,7 +451,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to delete file "/Shares/child1/child2/textfile-2.txt"
     And user "Brian" should not be able to delete folder "/Shares/parent/child1"
     And user "Alice" should not be able to delete folder "/Shares/parent/child1"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2440
+    @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |
@@ -492,7 +487,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "/Shares/parent" should exist
     And as "Alice" folder "/Shares/parent" should exist
     And as "Alice" folder "/Shares/child1" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
@@ -538,7 +532,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to create folder "/Shares/child1/child2/fo2"
     And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
     And user "Brian" should not be able to share folder "/Shares/child1" with group "grp3" with permissions "read" using the sharing API
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |

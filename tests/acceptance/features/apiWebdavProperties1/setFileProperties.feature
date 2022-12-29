@@ -25,7 +25,7 @@ Feature: set file properties
       | dav_version |
       | spaces      |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @issue-ocis-reva-217
+  @issue-ocis-reva-217
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"

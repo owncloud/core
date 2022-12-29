@@ -84,7 +84,7 @@ Feature: files and folders can be deleted from the trashbin
       | dav-path |
       | spaces   |
 
-  @skipOnOcV10.3
+
   Scenario Outline: User tries to delete another user's trashbin
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

@@ -120,7 +120,7 @@ Feature: edit users
       | new-group | NEW-GROUP | New-Group |
       | NEW-GROUP | New-Group | new-group |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: removing multiple users from a group
     Given these users have been created without skeleton files:
       | username |

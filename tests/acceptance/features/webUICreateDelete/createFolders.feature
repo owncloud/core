@@ -20,7 +20,7 @@ Feature: create folders
       | folder-!@#$%^&* ! |
       | नेपालि            |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario Outline: Create a folder using the create button
     When the user creates a folder with the name "<folder-name>" using the webUI via create button
     Then folder "<folder-name>" should be listed on the webUI
@@ -30,7 +30,7 @@ Feature: create folders
       | folder-name       |
       | folder-!@#$%^&*( ! |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: Abort create folder using the cancel button
     When the user opens the newFileMenu using the webUI
     Then the newFileMenu should be displayed on the webUI

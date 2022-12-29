@@ -9,13 +9,13 @@ Feature: File actions menu
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
-  @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6.0
+
   Scenario: show the file actions application select menu with both Collabora and the Files Texteditor
     When the user clicks on the file "lorem.txt"
     Then the file actions application select menu should be displayed with these items on the webUI
       | Open in Text Editor | Open in Collabora |
 
-  @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6.0
+
   Scenario: show the actions for Collabora and the Files Texteditor in the file action menu
     And the user opens the file action menu of file "lorem.txt" on the webUI
     Then the file actions menu should be displayed with these items on the webUI

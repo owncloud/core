@@ -27,7 +27,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
     And user "Alice" should see the following elements
       | /textfile0.txt |
 
-  @skipOnOcV10.3
+
   Scenario: rename a file to a filename that matches (or not) excluded_directories_regex
     Given user "Alice" has created folder "FOLDER"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

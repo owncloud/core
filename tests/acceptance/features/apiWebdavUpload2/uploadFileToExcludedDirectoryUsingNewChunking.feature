@@ -33,7 +33,7 @@ Feature: users cannot upload a file to or into an excluded directory using new c
     And as "Alice" folder "/FOLDER" should exist
     But as "Alice" file "/FOLDER/.github" should not exist
 
-  @skipOnOcV10.3
+
   Scenario Outline: upload a file to a filename that matches excluded_directories_regex using new chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
@@ -51,7 +51,7 @@ Feature: users cannot upload a file to or into an excluded directory using new c
       | .github                         |
       | this-containsvirusinthename.txt |
 
-  @skipOnOcV10.3
+
   Scenario: upload a file to a filename that does not match excluded_directories_regex using new chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git

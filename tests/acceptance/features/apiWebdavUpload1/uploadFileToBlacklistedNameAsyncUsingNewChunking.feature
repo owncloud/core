@@ -32,7 +32,7 @@ Feature: users cannot upload a file to a blacklisted name using new chunking
     Then the HTTP status code should be "403"
     And as "Alice" file "/blacklisted-file.txt" should not exist
 
-  @skipOnOcV10.3
+
   Scenario Outline: upload a file to a filename that matches blacklisted_files_regex using new chunking and async MOVE
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
@@ -50,7 +50,7 @@ Feature: users cannot upload a file to a blacklisted name using new chunking
       | bannedfilename.txt            |
       | this-ContainsBannedString.txt |
 
-  @skipOnOcV10.3
+
   Scenario: upload a file to a filename that does not match blacklisted_files_regex using new chunking and async MOVE
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+

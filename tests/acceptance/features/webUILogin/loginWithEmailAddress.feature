@@ -24,7 +24,7 @@ Feature: login users
     When user "Alice" logs in with email and invalid password "%alt2%" using the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
 
-  @skipOnOcV10.3 @skipOnOcV10.4
+
   Scenario: user login with email address should fail when strict_login_enforced is set
     Given the administrator has added system config key "strict_login_enforced" with value "true" and type "boolean"
     When user "Alice" logs in with their email address using the webUI

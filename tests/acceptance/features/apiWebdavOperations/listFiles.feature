@@ -373,7 +373,7 @@ Feature: list files
       | dav_version |
       | spaces      |
 
-  @depthInfinityPropfindDisabled @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @depthInfinityPropfindDisabled
   Scenario Outline: Get the list of resources in the root folder with depth infinity when depth infinity is not allowed
     Given using <dav_version> DAV path
     When user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
@@ -388,7 +388,7 @@ Feature: list files
       | dav_version |
       | spaces      |
 
-  @depthInfinityPropfindDisabled @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @depthInfinityPropfindDisabled
   Scenario Outline: Get the list of resources in a folder shared through public link with depth infinity when depth infinity is not allowed
     Given using <dav_version> DAV path
     And user "Alice" has created the following folders
@@ -412,7 +412,7 @@ Feature: list files
       | dav_version |
       | spaces      |
 
-  @depthInfinityPropfindDisabled @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @depthInfinityPropfindDisabled
   Scenario Outline: Get the list of files in the trashbin with depth infinity when depth infinity is not allowed
     Given using <dav_version> DAV path
     And user "Alice" has deleted the following resources

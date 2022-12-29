@@ -16,7 +16,7 @@ Feature: enable user
     And the HTTP status code should be "200"
     And user "Alice" should be enabled
 
-  @skipOnOcV10.3
+
   Scenario: admin enables an user with special characters in the username
     Given these users have been created without skeleton files:
       | username | email               |

@@ -46,7 +46,7 @@ Feature: add users
     When the user logs in with username "guiusr1" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
-  @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnLDAP
   Scenario: user sets his own password after being created with an Email address only and invitation link resent by a subadmin
     When the subadmin creates a user with the name "guiusr1" and the email "guiusr1@owncloud" without a password using the webUI
     And the subadmin resends the invitation email for user "guiusr1" using the webUI

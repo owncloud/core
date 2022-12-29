@@ -50,7 +50,7 @@ Feature: upload to a public link share
       | old      | old                       |
       | new      | old                       |
 
-    @skipOnOcV10.3 @skipOnOcV10.4 @issue-ocis-reva-290
+    @issue-ocis-reva-290
     Examples:
       | dav-path | public-webdav-api-version |
       | old      | new                       |

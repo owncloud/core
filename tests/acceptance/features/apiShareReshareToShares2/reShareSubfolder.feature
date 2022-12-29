@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1328 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required @issue-ocis-1328
 Feature: a subfolder of a received share can be reshared
 
   Background:
@@ -23,7 +23,6 @@ Feature: a subfolder of a received share can be reshared
     And user "Carol" should be able to accept pending share "<pending_sub_share_path>" offered by user "Brian"
     And as "Carol" folder "/Shares/SUB" should exist
     And as "Brian" folder "/Shares/TMP/SUB" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_sub_share_path |
       | 1               | 100             | /SUB                   |
@@ -104,7 +103,6 @@ Feature: a subfolder of a received share can be reshared
     But user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/Shares/SUB/textfile.txt"
     And as "Brian" folder "/Shares/TMP/SUB" should exist
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/Shares/TMP/SUB/textfile.txt"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_sub_share_path |
       | 1               | 100             | /SUB                   |
@@ -128,7 +126,6 @@ Feature: a subfolder of a received share can be reshared
     And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/Shares/SUB/textfile.txt"
     And as "Brian" folder "/Shares/TMP/SUB" should exist
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/Shares/TMP/SUB/textfile.txt"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_sub_share_path |
       | 1               | 100             | /SUB                   |
@@ -152,7 +149,6 @@ Feature: a subfolder of a received share can be reshared
     But user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/Shares/SUB/textfile.txt"
     And as "Brian" folder "/Shares/TMP/SUB" should exist
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/Shares/TMP/SUB/textfile.txt"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | http_status_code | pending_sub_share_path |
       | 1               | 200              | /SUB                   |

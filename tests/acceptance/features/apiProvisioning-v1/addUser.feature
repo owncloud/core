@@ -16,7 +16,7 @@ Feature: add user
     And user "brand-new-user" should exist
     And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
 
-  @skipOnOcV10.3
+
   Scenario: admin creates a user with special characters in the username
     Given the following users have been deleted
       | username |

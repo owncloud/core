@@ -37,25 +37,25 @@ Feature: Creation of tags
       | name       | type   |
       | RegularTag | normal |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: Creating a not user-assignable tag as regular user should fail
     When user "Alice" creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "400"
     And tag "JustARegularTagName" should not exist for the administrator
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: Creating a static tag as regular user should fail
     When user "Alice" creates a "static" tag with name "StaticTagName" using the WebDAV API
     Then the HTTP status code should be "400"
     And tag "StaticTagName" should not exist for the administrator
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: Creating a not user-visible tag as regular user should fail
     When user "Alice" creates a "not user-visible" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "400"
     And tag "JustARegularTagName" should not exist for the administrator
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario Outline: Creating a tag as administrator should work
     When the administrator creates a "<tag_type>" tag with name "JustARegularTagName" sending <sending_style> in the request using the WebDAV API
     Then the HTTP status code should be "201"
@@ -73,7 +73,7 @@ Feature: Creation of tags
       | static              | true-false-strings |
       | static              | numbers            |
 
-  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7
+  @smokeTest
   Scenario: Creating a not user-assignable tag with groups as admin should work
     When the administrator creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2" using the WebDAV API
     Then the HTTP status code should be "201"

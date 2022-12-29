@@ -1,4 +1,4 @@
-@cli @local_storage @files_external-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@cli @local_storage @files_external-app-required
 Feature: get file info using PROPFIND
 
   Background:
@@ -55,7 +55,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on external storage that is currently unavailable when depth infinity is not allowed
     Given using <dav_version> DAV path
     When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
@@ -66,7 +66,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on root folder with depth infinity not allowed when the external storage folder is unavailable
     Given using <dav_version> DAV path
     When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"

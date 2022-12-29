@@ -31,7 +31,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And as "Alice" file "/simple-folder (2)/lorem.txt" should exist
     And as "Alice" folder "/simple-empty-folder (2)" should exist
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: test the single steps of receiving a federation share
     Given using server "REMOTE"
     And these users have been created with default attributes and without skeleton files:
@@ -87,7 +87,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then the following resources should have share indicators on the webUI
       | sub-folder |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: sharing details inside folder shared using federated sharing
     Given user "Alice" has created folder "/simple-folder/sub-folder"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
@@ -99,7 +99,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user opens the share dialog for file "textfile.txt"
     Then federated user "Alice" with displayname "%username%@%remote_server% (Federated share)" should be listed as share receiver via "simple-folder" on the webUI
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: sharing details of items inside a shared folder shared with local user and federated user
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/simple-folder/sub-folder"

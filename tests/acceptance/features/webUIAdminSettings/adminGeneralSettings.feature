@@ -7,7 +7,7 @@ Feature: admin general settings
   Background:
     Given the administrator has changed their own email address to "admin@owncloud.com"
 
-  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @smokeTest
   Scenario: administrator sets email server settings
     Given the administrator has browsed to the admin general settings page
     When the administrator sets the following email server settings using the webUI
@@ -26,7 +26,7 @@ Feature: admin general settings
       If you received this email, the settings seem to be correct.
       """
 
-  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+
   Scenario: administrator sets email server credentials and re-displays them
     Given the administrator has browsed to the admin general settings page
     When the administrator sets the following email server settings using the webUI

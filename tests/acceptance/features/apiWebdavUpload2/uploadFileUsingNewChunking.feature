@@ -85,7 +85,7 @@ Feature: upload file using new chunking
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
     Then the HTTP status code should be "409"
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+
   Scenario: New chunked upload PUT using old DAV path should fail
     Given user "Alice" has created a new chunking upload with id "chunking-42"
     When using old DAV path

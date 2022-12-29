@@ -361,7 +361,7 @@ Feature: dav-versions
       | old         | Brian |
       | new         | Brian |
 
-  @skipOnOcV10.3.0 @files_sharing-app-required @issue-ocis-1238 @notToImplementOnOCIS
+  @files_sharing-app-required @issue-ocis-1238 @notToImplementOnOCIS
   Scenario: Receiver tries to get file versions of unshared file from the sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"

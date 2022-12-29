@@ -23,12 +23,12 @@ Feature: PROPFIND
       | header | value   |
       | depth  | <depth> |
     Then the HTTP status code should be "<http_status>"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS @depthInfinityPropfindEnabled
+    @notToImplementOnOCIS @depthInfinityPropfindEnabled
     Examples:
       | dav_path                    | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/files/alice | 1                      | 0        | 207         |
       | /remote.php/dav/files/alice | 1                      | infinity | 207         |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS @depthInfinityPropfindDisabled @skipOnOcV10.9.0 @skipOnOcV10.9.1
+    @notToImplementOnOCIS @depthInfinityPropfindDisabled
     Examples:
       | dav_path                    | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/files/alice | 0                      | 0        | 207         |

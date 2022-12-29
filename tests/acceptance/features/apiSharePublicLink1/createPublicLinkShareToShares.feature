@@ -6,7 +6,7 @@ Feature: create a public link share when share_folder is set to Shares
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10.5 @skipOnOcV10.6.0
+
   Scenario Outline: Creating a new public link share of a file gives the correct response
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"

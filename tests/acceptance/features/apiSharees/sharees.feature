@@ -583,7 +583,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: empty search for sharees when search min length is set to 0
     Given the administrator has updated system config key "user.search_min_length" with value "0"
     And user "sharee2" has been created with default attributes and without skeleton files
@@ -609,7 +609,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @skipOnOcV10.5 @skipOnOcV10.6.0 @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: empty search for sharees when search min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
     And user "sharee2" has been created with default attributes and without skeleton files
@@ -680,7 +680,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: search for sharees without search when min length is set to 0
     Given the administrator has updated system config key "user.search_min_length" with value "0"
     And user "sharee2" has been created with default attributes and without skeleton files
@@ -705,7 +705,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @skipOnOcV10.5 @skipOnOcV10.6.0 @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: search for sharees without search when min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
     And user "sharee2" has been created with default attributes and without skeleton files

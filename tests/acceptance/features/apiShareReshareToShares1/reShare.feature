@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1328 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required @issue-ocis-1328
 Feature: sharing
 
   Background:
@@ -137,7 +137,7 @@ Feature: sharing
       | 1               | 200              | 17                   | 15                  |
       | 2               | 404              | 17                   | 15                  |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+
   Scenario Outline: User is allowed to reshare file and set create (4) or delete (8) permissions bits, which get ignored
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"

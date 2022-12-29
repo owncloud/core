@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @systemtags-app-required @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6.0
+@webUI @insulated @disablePreviews @systemtags-app-required
 Feature: Creation of tags for the files and folders
   As a user
   I want to create tags for the files/folders

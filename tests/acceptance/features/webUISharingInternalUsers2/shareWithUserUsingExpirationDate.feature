@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @skipOnOcV10.3
+@webUI @insulated @disablePreviews
 Feature: Sharing files and folders with internal users with expiration date set/unset
   As a user
   I want to share files and folders with users with expiration date set

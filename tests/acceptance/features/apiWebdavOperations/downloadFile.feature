@@ -59,7 +59,7 @@ Feature: download file
       | dav_version |
       | spaces      |
 
-  @smokeTest @skipOnOcV10.5 @skipOnOcV10.6.0 @notToImplementOnOCIS
+  @smokeTest @notToImplementOnOCIS
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" using the WebDAV API

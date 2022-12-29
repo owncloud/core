@@ -137,7 +137,7 @@ Feature: Sharing files and folders with internal groups
     Then a tooltip with the text "No users or groups found for system-group" should be shown near the share-with-field on the webUI
     And the autocomplete list should not be displayed on the webUI
 
-  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @email
+  @skipOnEncryptionType:user-keys @issue-encryption-126 @email
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "Carol" has logged in using the webUI
@@ -154,7 +154,7 @@ Feature: Sharing files and folders with internal groups
       just letting you know that %displayname% shared lorem.txt with you.
       """
 
-  @email @skipOnOcV10.3
+  @email
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "Carol" has logged in using the webUI
@@ -166,7 +166,7 @@ Feature: Sharing files and folders with internal groups
     And the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email for group "grp1" using the webUI
 
-  @skipOnOcV10.3
+
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "no"
     And user "Carol" has logged in using the webUI
@@ -174,7 +174,7 @@ Feature: Sharing files and folders with internal groups
     When the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email for group "grp1" using the webUI
 
-  @email @skipOnLDAP @skipOnOcV10.3
+  @email @skipOnLDAP
   Scenario: user should not get an email notification if the user is added to the group after the mail notification was sent
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And user "David" has been created with default attributes and without skeleton files
@@ -186,7 +186,7 @@ Feature: Sharing files and folders with internal groups
     When the administrator adds user "David" to group "grp1" using the provisioning API
     Then the email address "david@example.org" should not have received an email
 
-  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @email
+  @skipOnEncryptionType:user-keys @issue-encryption-126 @email
   Scenario: user should get an error message when trying to send notification by email to the group where some user have set up their email and others haven't
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created without skeleton files:
@@ -331,7 +331,7 @@ Feature: Sharing files and folders with internal groups
     And the user opens the share dialog for file "lorem.txt"
     Then the group "grp1" should not be in share with group list
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator of items inside a shared folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created folder "/simple-folder/simple-empty-folder"
@@ -343,7 +343,7 @@ Feature: Sharing files and folders with internal groups
       | simple-empty-folder |
       | lorem.txt           |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator of items inside a shared folder two levels down
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created folder "/simple-folder/simple-empty-folder/"
@@ -357,7 +357,7 @@ Feature: Sharing files and folders with internal groups
       | new-folder |
       | lorem.txt  |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator of items inside a re-shared folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created folder "/simple-folder/simple-empty-folder"
@@ -370,7 +370,7 @@ Feature: Sharing files and folders with internal groups
       | simple-empty-folder |
       | lorem.txt           |
 
-  @skipOnOcV10.3
+
   Scenario: no sharing indicator of items inside a not shared folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has created folder "/simple-folder/simple-sub-folder"
@@ -381,7 +381,7 @@ Feature: Sharing files and folders with internal groups
       | simple-sub-folder |
       | lorem.txt         |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator for file uploaded inside a shared folder
     Given user "Carol" has created folder "/simple-empty-folder"
     And user "Carol" has shared folder "/simple-empty-folder" with group "grp1"
@@ -391,7 +391,7 @@ Feature: Sharing files and folders with internal groups
     Then the following resources should have share indicators on the webUI
       | new-lorem.txt |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator for folder created inside a shared folder
     Given user "Carol" has created folder "/simple-empty-folder"
     And user "Carol" has shared folder "/simple-empty-folder" with group "grp1"
@@ -401,7 +401,7 @@ Feature: Sharing files and folders with internal groups
     Then the following resources should have share indicators on the webUI
       | sub-folder |
 
-  @skipOnOcV10.3
+
   Scenario: sharing details of items inside a shared folder shared with user and group
     Given user "Carol" has created folder "/simple-folder/sub-folder"
     And user "Carol" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/sub-folder/lorem.txt"

@@ -51,7 +51,7 @@ Feature: rename folders
     And the user reloads the current page of the webUI
     Then folder "hash#And&QuestionMark?At@FolderName" should be listed on the webUI
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: Rename a folder using spaces at front and/or back of the name
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has logged in using the webUI
@@ -131,7 +131,7 @@ Feature: rename folders
     When the user renames folder "a-folder" to "a.part" using the webUI
     Then near folder "a-folder" a tooltip with the text '"a.part" has a forbidden file type/extension.' should be displayed on the webUI
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: Rename a folder which is received as a share (without change permission)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "RandomFolder"

@@ -77,7 +77,7 @@ Feature: rename files
     And the user reloads the current page of the webUI
     Then file "aaaaaa.txt" should be listed on the webUI
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: Rename a file using spaces at front and/or back of file name and type
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has logged in using the webUI
@@ -137,7 +137,7 @@ Feature: rename files
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Rename a file to a filename that matches (or not) blacklisted_files_regex
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
@@ -178,7 +178,7 @@ Feature: rename files
       | Could not rename "randomfile.txt" |
     And file "randomfile.txt" should be listed on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Rename a file to a filename that matches (or not) excluded_directories_regex
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

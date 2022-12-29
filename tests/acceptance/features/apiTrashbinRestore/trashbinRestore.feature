@@ -183,7 +183,7 @@ Feature: Restore deleted files/folders
     And as "Alice" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
     And the content of file "/local_storage/tmp/textfile0.txt" for user "Alice" should be "AA"
 
-  @smokeTest @skipOnOcV10.3
+  @smokeTest
   Scenario Outline: A deleted file cannot be restored by a different user
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -502,7 +502,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario Outline: A deleted file inside a nested folder cannot be restored without the destination
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/parent_folder"
@@ -521,7 +521,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario Outline: A deleted file cannot be restored without the destination
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "parent text" to "/parent.txt"
