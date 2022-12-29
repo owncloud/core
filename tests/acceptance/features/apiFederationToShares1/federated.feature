@@ -119,7 +119,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcV10.4.1
+
   Scenario Outline: Federated sharee requests information of only one share before accepting it
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
@@ -532,7 +532,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @issue-35154 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-35154
   Scenario: receive a local share that has the same name as a previously received federated share
     Given using server "REMOTE"
     And user "Alice" has created folder "/zzzfolder"
@@ -559,7 +559,7 @@ Feature: federated
     And the content of file "/Shares/randomfile.txt" for user "Carol" on server "LOCAL" should be "remote content"
     And the content of file "/Shares/randomfile (2).txt" for user "Carol" on server "LOCAL" should be "local content"
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: receive a federated share that has the same name as a previously received local share
     Given using server "REMOTE"
     And user "Alice" has created folder "/zzzfolder"

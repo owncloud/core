@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @systemtags-app-required @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6.0
+@webUI @insulated @disablePreviews @systemtags-app-required
 Feature: Suggestion for matching tag names
   As a user
   I want to get suggestions for adding tags from already existing tags
@@ -20,7 +20,7 @@ Feature: Suggestion for matching tag names
     And the administrator has created a "not user-assignable" tag with name "sponsored"
     And user "Alice" has logged in using the webUI
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: User should get suggestion from already existing tags
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has uploaded file with content "some content" to "/a-folder/randomfile.txt"

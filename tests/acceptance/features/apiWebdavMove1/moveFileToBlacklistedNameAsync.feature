@@ -25,7 +25,7 @@ Feature: users cannot move (rename) a file to a blacklisted name
     And user "Alice" should see the following elements
       | /textfile0.txt |
 
-  @skipOnOcV10.3
+
   Scenario: rename a file to a filename that matches (or not) blacklisted_files_regex
     Given user "Alice" has created folder "FOLDER"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

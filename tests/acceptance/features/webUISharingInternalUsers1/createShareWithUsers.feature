@@ -67,7 +67,7 @@ Feature: Sharing files and folders with internal users
     And file "lorem.txt" should not be listed in shared-with-others page on the webUI
     And as "Brian" file "lorem.txt" should not exist
 
-  @skipOnOcV10.3 @skipOnOcV10.4
+
   Scenario Outline: user shares a file with another user with unusual usernames
     Given user "Alice" has been created with default attributes and without skeleton files
     And these users have been created without skeleton files:
@@ -175,7 +175,7 @@ Feature: Sharing files and folders with internal users
     And the user shares file "lorem.txt" with user "Brian" using the webUI
     Then as "Brian" file "/lorem.txt" should exist
 
-  @skipOnOcV10.3
+
   Scenario: Create share with share permission only
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -204,7 +204,7 @@ Feature: Sharing files and folders with internal users
     And the user shares file "simple-folder/lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist
 
-  @skipOnOcV10.3
+
   Scenario: Create share with share and create permission only
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -225,7 +225,7 @@ Feature: Sharing files and folders with internal users
     Then as "Alice" file "simple-folder/textfile.txt" should exist
     And the content of "textfile.txt" should be the same as the local "textfile.txt"
 
-  @skipOnOcV10.3
+
   Scenario: Create share with share and change permission only
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -246,7 +246,7 @@ Feature: Sharing files and folders with internal users
     Then as "Alice" file "simple-folder/textfile.txt" should not exist
     And file "textfile.txt" should not be listed on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Create share with share and delete permission only
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -267,7 +267,7 @@ Feature: Sharing files and folders with internal users
     Then as "Alice" file "simple-folder/textfile.txt" should not exist
     And file "textfile.txt" should not be listed on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Create share with edit and without share permissions
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -291,7 +291,7 @@ Feature: Sharing files and folders with internal users
     And the content of "textfile.txt" should be the same as the local "textfile.txt"
     And it should not be possible to share file "textfile.txt" using the webUI
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0
+
   Scenario: reshare indicators of public links to the original share owner
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -307,7 +307,7 @@ Feature: Sharing files and folders with internal users
     And the user opens the public link share tab
     Then a public link share with name "Public link" should be visible on the webUI
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0
+
   Scenario: reshare indicators of multiple public links with same name to the original share owner
     Given these users have been created with default attributes and without skeleton files:
       | username |

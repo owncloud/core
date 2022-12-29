@@ -7,7 +7,7 @@ Feature: get user
   Background:
     Given using OCS API version "2"
 
-  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @smokeTest
   Scenario: admin gets an existing user
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
@@ -20,7 +20,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario Outline: admin gets an existing user with special characters in the username
     Given these users have been created without skeleton files:
       | username   | displayname   | email   |
@@ -38,7 +38,7 @@ Feature: get user
       | a@-+_.b  | A weird b    | a.b@example.com     |
       | a space  | A Space Name | a.space@example.com |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+ 
   Scenario: admin gets an existing user, providing uppercase username in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
@@ -58,7 +58,7 @@ Feature: get user
     And the HTTP status code should be "404"
     And the API should not return any data
 
-  @smokeTest @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @smokeTest @notToImplementOnOCIS
   Scenario: a subadmin gets information of a user in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -99,7 +99,7 @@ Feature: get user
     And the HTTP status code should be "401"
     And the API should not return any data
 
-  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @smokeTest
   Scenario: a normal user gets their own information
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -112,7 +112,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+ 
   Scenario: a normal user gets their own information, providing uppercase username as authentication
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -125,7 +125,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+ 
   Scenario: a normal user gets their own information, providing uppercase username in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -138,7 +138,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+ 
   Scenario: a mixed-case normal user gets their own information, providing lowercase username in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -151,7 +151,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+ 
   Scenario: a mixed-case normal user gets their own information, providing the mixed-case username in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -164,7 +164,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @notToImplementOnOCIS
   Scenario: admin gets information of a user with admin permissions
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
@@ -178,7 +178,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @notToImplementOnOCIS
   Scenario: a subadmin should be able to get information of a user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

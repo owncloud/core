@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @skipOnOcV10.3  @skipOnOcV10.4
+@webUI @insulated @disablePreviews
 Feature: Unlock locked files and folders
   As a user
   I would like to be able to unlock files and folders
@@ -242,7 +242,7 @@ Feature: Unlock locked files and folders
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "receiver2" by the WebDAV API
 
-  @files_sharing-app-required @skipOnLDAP @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+  @files_sharing-app-required @skipOnLDAP
   Scenario Outline: deleting a lock that was created by an other user
     Given these users have been created without skeleton files:
       | username       |

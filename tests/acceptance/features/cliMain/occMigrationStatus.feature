@@ -1,4 +1,4 @@
-@cli @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10.0
+@cli @skipOnOcV10.10.0
 Feature: Migration status of apps
   As an admin I want to be able to see the migration status of an app
   So that I can know the current and previous version

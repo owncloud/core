@@ -15,7 +15,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
-  @skipOnOcV10.3
+
   Scenario: Delete a user with special characters in the username
     Given these users have been created without skeleton files:
       | username | email               |

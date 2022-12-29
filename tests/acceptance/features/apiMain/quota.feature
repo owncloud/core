@@ -220,7 +220,7 @@ Feature: quota
     Then the HTTP status code should be "201"
     And as "Alice" folder "testQuota" should exist
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @files_sharing-app-required
+  @files_sharing-app-required
   Scenario: user cannot create file on shared folder by a user with zero quota
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -235,7 +235,7 @@ Feature: quota
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Brian" file "/shareFolder/newTextFile.txt" should not exist
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @files_sharing-app-required
+  @files_sharing-app-required
   Scenario: share receiver with 0 quota should not be able to move file from shared folder to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -249,7 +249,7 @@ Feature: quota
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @files_sharing-app-required
+  @files_sharing-app-required
   Scenario: sharer should be able to upload to a folder shared with user having zero quota
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -265,7 +265,7 @@ Feature: quota
     And the content of file "/testquota.txt" for user "Alice" should be "test"
     And as "Brian" file "/Shares/testquota" should not exist
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @files_sharing-app-required
+  @files_sharing-app-required
   Scenario: share receiver with 0 quota should be able to upload on shared folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -294,7 +294,7 @@ Feature: quota
     Then the HTTP status code should be "201"
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
-  @files_sharing-app-required @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10
+  @files_sharing-app-required @skipOnOcV10.10
   Scenario: share receiver with 0 quota can copy empty file from shared folder to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -316,7 +316,7 @@ Feature: quota
     Then the HTTP status code should be "201"
     And as "Alice" file "testquota.txt" should exist
 
-  @files_sharing-app-required @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10
+  @files_sharing-app-required @skipOnOcV10.10
   Scenario Outline: share receiver with insufficient quota should not be able to copy received shared file to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -335,7 +335,7 @@ Feature: quota
       | 0 B   | four            |
       | 10 B  | test-content-15 |
 
-  @files_sharing-app-required @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10
+  @files_sharing-app-required @skipOnOcV10.10
   Scenario Outline: share receiver with insufficient quota should not be able to copy file from shared folder to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -355,7 +355,7 @@ Feature: quota
       | 0 B   | four            |
       | 10 B  | test-content-15 |
 
-  @files_sharing-app-required @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10 @skipOnEncryption @issue-encryption-357
+  @files_sharing-app-required @skipOnOcV10.10 @skipOnEncryption @issue-encryption-357
   Scenario: share receiver of a share with insufficient quota should not be able to copy from home folder to the received shared file
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -374,7 +374,7 @@ Feature: quota
     # The copy should have failed, so Alice should still see the original content
     And the content of file "/testquota.txt" for user "Alice" should be "short"
 
-  @files_sharing-app-required @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10
+  @files_sharing-app-required @skipOnOcV10.10
   Scenario: share receiver of a share with insufficient quota should not be able to copy file from home folder to the received shared folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled

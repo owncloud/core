@@ -7,7 +7,7 @@ Feature: default capabilities for normal user
 
   # adjust this scenario after fixing tagged issues as its just created to show difference
   # in the response items in different environment (core & ocis-reva)
-  @issue-ocis-reva-175 @issue-ocis-reva-176 @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @issue-ocis-reva-175 @issue-ocis-reva-176
   Scenario: getting default capabilities with normal user
     When user "Alice" retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"

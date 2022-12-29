@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -216,7 +216,6 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And file "/Shares/parent.txt" should be included in the response
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_share_path |
       | 1               | 100             | /parent.txt        |

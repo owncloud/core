@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @systemtags-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@webUI @insulated @disablePreviews @systemtags-app-required
 Feature: Deletion of existing tags from files and folders
   As a user
   I want to delete tags from files and folders

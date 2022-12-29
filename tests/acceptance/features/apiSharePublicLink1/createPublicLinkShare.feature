@@ -100,7 +100,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcV10.9 @skipOnOcV10.10
+
   Scenario Outline: Create a new public link share of a file with edit permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -299,7 +299,7 @@ Feature: create a public link share
       | 1               | 403             |
       | 2               | 403             |
 
-  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+
   Scenario Outline: Updating a public link share with read+create permissions is forbidden when public upload is disabled globally
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
@@ -317,7 +317,7 @@ Feature: create a public link share
       | 1               | 403             |
       | 2               | 403             |
 
-  @issue-ocis-reva-41 @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @issue-ocis-reva-41
   Scenario Outline: Creating a link share with read+update+create permissions is forbidden when public upload is disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -548,7 +548,7 @@ Feature: create a public link share
       | public-webdav-api-version | response                   |
       | new                       | File not found: parent.txt |
 
-  @skipOnOcV10.3
+
   Scenario: Get the size of a file shared by public link
     Given user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
     And user "Alice" has created a public link share with settings

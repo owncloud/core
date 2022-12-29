@@ -70,7 +70,7 @@ Feature: get apps
       | files_sharing        |
       | updatenotification   |
 
-  @comments-app-required @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+  @comments-app-required
   Scenario: admin gets all apps
     Given app "comments" has been disabled
     When the administrator gets all apps using the provisioning API

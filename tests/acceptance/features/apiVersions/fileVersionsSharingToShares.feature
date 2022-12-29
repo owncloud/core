@@ -1,4 +1,4 @@
-@api @files_versions-app-required @issue-ocis-reva-275 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_versions-app-required @issue-ocis-reva-275
 
 Feature: dav-versions
 
@@ -159,7 +159,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -255,7 +255,7 @@ Feature: dav-versions
       | old         | Brian | /testshare |
       | new         | Brian | /testshare |
 
-  @skipOnOcV10.3.0 @files_sharing-app-required
+  @files_sharing-app-required
   Scenario: Receiver tries to get file versions of unshared file from the sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -302,7 +302,7 @@ Feature: dav-versions
     And the version folder of file "/Shares/sharefile.txt" for user "Brian" should contain "1" element
     And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: download old versions of a shared file as share receiver
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"

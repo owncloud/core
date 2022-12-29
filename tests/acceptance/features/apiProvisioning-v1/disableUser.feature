@@ -15,7 +15,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "Alice" should be disabled
 
-  @skipOnOcV10.3
+
   Scenario: admin disables an user with special characters in the username
     Given these users have been created without skeleton files:
       | username | email               |
@@ -189,7 +189,7 @@ Feature: disable user
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     Then the HTTP status code should be "401"
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: getting shares shared by disabled user (to shares folder)
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -216,7 +216,7 @@ Feature: disable user
     And as "Brian" file "/textfile0.txt" should exist
     And the content of file "/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: getting shares shared by disabled user in a group (to shares folder)
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled

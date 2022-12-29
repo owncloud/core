@@ -8,7 +8,7 @@ Feature: Save public shares created by oC users
     Given using server "LOCAL"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: mount public link share of a folder to local server
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
@@ -27,7 +27,7 @@ Feature: Save public shares created by oC users
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/PARENT/textfile.txt"
     And user "Brian" should not be able to delete file "PARENT/lorem.txt"
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: mount public link share of a file to local server
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "original content" to "lorem.txt"
@@ -42,7 +42,7 @@ Feature: Save public shares created by oC users
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "lorem.txt"
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: mount public link share of a folder (all permissions set) to local server
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
@@ -68,7 +68,7 @@ Feature: Save public shares created by oC users
     When the user deletes file "lorem.txt" using the webUI
     Then file "lorem.txt" should not be listed on the webUI
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: mount public link share of a file (all permissions set) to local server
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "original content" to "lorem.txt"
@@ -85,7 +85,7 @@ Feature: Save public shares created by oC users
     Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" should be the same as the local "lorem.txt"
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: mount public link share of a folder that exist in local server
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "/PARENT"
@@ -102,7 +102,7 @@ Feature: Save public shares created by oC users
     Then file "lorem.txt" should be listed on the webUI
     And the content of file "PARENT (2)/lorem.txt" for user "Brian" should be "original content"
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: mount public link share of a file that already exists in local server
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has uploaded file with content "file in local server" to "lorem.txt"
@@ -116,7 +116,7 @@ Feature: Save public shares created by oC users
     Then folder "lorem (2).txt" should be listed on the webUI
     And the content of file "lorem (2).txt" for user "Brian" should be "original content"
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: unshare mounted public link share in local server
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
@@ -154,7 +154,7 @@ Feature: Save public shares created by oC users
     And the user browses to the files page
     Then folder "PARENT" should not be listed on the webUI
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: mount public link share of a folder that already exists in remote server
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -173,7 +173,7 @@ Feature: Save public shares created by oC users
     Then file "lorem.txt" should be listed on the webUI
     And the content of file "PARENT (2)/lorem.txt" for user "Brian" on server "REMOTE" should be "original content"
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: unshare mounted public link share in remote server
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files

@@ -4,7 +4,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
   I want to share files and folders with other users
   So that those users can access the files and folders
 
-  @skipOnOcV10.3
+
   Scenario: Create share when admin disables delete in share permissions
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -33,7 +33,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
     And the user shares file "simple-folder/lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist
 
-  @skipOnOcV10.3
+
   Scenario: Create share when admin disables change in share permissions
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -62,7 +62,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
     Then as "Carol" file "lorem.txt" should exist
     And the option to delete file "lorem.txt" should be available on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Create share when admin disables create and share in share permissions
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -87,7 +87,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
     And the option to rename file "lorem.txt" should be available on the webUI
     And it should be possible to delete file "lorem.txt" using the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Create share when admin disables delete in share permissions but then user enables the permission
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -108,7 +108,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
     And it should not be possible to share file "lorem.txt" using the webUI
     And the option to delete file "lorem.txt" should be available on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Create share when admin disables multiple default share permissions but then user enables a disabled permission
     Given these users have been created with default attributes and without skeleton files:
       | username |

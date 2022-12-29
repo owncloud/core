@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: get shares filtered by type (user, group etc)
   As a user
   I want to be able to know the shares that I have made of a particular type (user, group etc)
@@ -62,7 +62,7 @@ Feature: get shares filtered by type (user, group etc)
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcV10.5 @skipOnOcV10.6.0
+
   Scenario Outline: getting shares shared to public links
     Given using OCS API version "<ocs_api_version>"
     When user "Alice" gets the public link shares shared by him using the sharing API

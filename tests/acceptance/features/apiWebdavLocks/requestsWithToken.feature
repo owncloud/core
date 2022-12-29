@@ -98,10 +98,6 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | lock-scope | webdav_api_version | http_status_code |
       | shared     | old                | 423              |
       | exclusive  | old                | 423              |
-
-    @skipOnOcV10.6 @skipOnOcV10.7
-    Examples:
-      | lock-scope | webdav_api_version | http_status_code |
       | shared     | new                | 423              |
       | exclusive  | new                | 423              |
 

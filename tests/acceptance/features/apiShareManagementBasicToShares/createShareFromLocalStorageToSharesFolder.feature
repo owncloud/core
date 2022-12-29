@@ -32,7 +32,6 @@ Feature: local-storage
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" file "/Shares/filetoshare.txt" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_share_path  |
       | 1               | 100             | /filetoshare.txt    |

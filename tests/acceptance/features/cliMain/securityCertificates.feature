@@ -1,4 +1,4 @@
-@cli @skipOnOcV10.3 @skipOnOcV10.4 @temporary_storage_on_server
+@cli @temporary_storage_on_server
 Feature: security certificates
   As an admin
   I want to be able to manage the ownCloud security certificates
@@ -15,7 +15,7 @@ Feature: security certificates
       | table_column        |
       | goodCertificate.crt |
 
-  @skipOnOcV10.5.0
+
   Scenario: Import a security certificate specifying a file that does not exist
     When the administrator imports security certificate from file "aFileThatDoesNotExist.crt" in temporary storage on the system under test
     Then the command should have failed with exit code 1
@@ -46,7 +46,7 @@ Feature: security certificates
       | table_column       |
       | badCertificate.crt |
 
-  @skipOnOcV10.5.0
+
   Scenario: Remove a security certificate that is not installed
     When the administrator removes the security certificate "someCertificate.crt"
     Then the command should have failed with exit code 1

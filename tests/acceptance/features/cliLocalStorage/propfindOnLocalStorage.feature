@@ -1,4 +1,4 @@
-@cli @local_storage @files_external-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@cli @local_storage @files_external-app-required
 Feature: get file info using PROPFIND
 
   Background:
@@ -113,7 +113,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-32
   Scenario Outline: list files on root folder with external storage using depth infinity when depth infinity is not allowed
     Given using <dav_version> DAV path
     When user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
@@ -123,7 +123,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-320 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @depthInfinityPropfindDisabled @skipOnEncryptionType:user-keys @issue-encryption-32
   Scenario Outline: list files on external storage when depth infinity is not allowed
     Given using <dav_version> DAV path
     When user "Alice" lists the resources in "/local_storage2" with depth "infinity" using the WebDAV API

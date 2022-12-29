@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-172 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @issue-ocis-reva-172
 Feature: independent locks
   Make sure all locks are independent and don't interact with other items that have the same name
 

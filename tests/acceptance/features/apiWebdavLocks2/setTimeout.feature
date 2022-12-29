@@ -7,7 +7,7 @@ Feature: set timeouts of LOCKS
     And user "Alice" has created folder "PARENT/CHILD"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
 
-  @skipOnOcV10.3 @skipOnOcV10.4
+
   Scenario Outline: do not set timeout on folder and check the default timeout
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
@@ -64,7 +64,7 @@ Feature: set timeouts of LOCKS
       | spaces   | second--1       | /Second-\d{5}$/ |
       | spaces   | second-0        | /Second-\d{4}$/ |
 
-  @skipOnOcV10.3 @skipOnOcV10.4
+
   Scenario Outline: set timeout over the maximum on folder
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"

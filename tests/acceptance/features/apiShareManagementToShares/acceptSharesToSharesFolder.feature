@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: accept/decline shares coming from internal users to the Shares folder
   As a user
   I want to have control of which received shares I accept
@@ -31,7 +31,7 @@ Feature: accept/decline shares coming from internal users to the Shares folder
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent"
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+
   Scenario: When accepting a share of a file, the response is valid
     Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
@@ -52,7 +52,7 @@ Feature: accept/decline shares coming from internal users to the Shares folder
       | share_type             | user                  |
     And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+
   Scenario: When accepting a share of a folder, the response is valid
     Given user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"

@@ -21,7 +21,6 @@ Feature: local-storage
     But as "Brian" file "/Shares/filetoshare.txt" should not exist
     And as "Alice" file "/local_storage/filetoshare.txt" should exist
     But as "Alice" file "/local_storage/newFile.txt" should not exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | pending_share_path |
       | 1               | /filetoshare.txt   |
@@ -39,7 +38,6 @@ Feature: local-storage
     But as "Brian" folder "/Shares/foo" should not exist
     And as "Alice" folder "/local_storage/foo" should exist
     But as "Alice" folder "/local_storage/newFolder" should not exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | pending_share_path |
       | 1               | /foo               |
@@ -65,7 +63,6 @@ Feature: local-storage
     But as "Brian" folder "/Shares/foo" should not exist
     And as "Alice" folder "/local_storage/foo" should exist
     But as "Alice" folder "/local_storage/newFolder" should not exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | pending_share_path |
       | 1               | /foo               |
@@ -86,7 +83,6 @@ Feature: local-storage
     But as "Brian" file "/Shares/filetoshare.txt" should not exist
     And as "Alice" file "/local_storage/filetoshare.txt" should exist
     But as "Alice" file "/local_storage/newFile.txt" should not exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | pending_share_path |
       | 1               | /filetoshare.txt   |

@@ -52,7 +52,7 @@ Feature: lock should propagate correctly if a share is reshared
       | new      | shared     |
       | new      | exclusive  |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario Outline: public uploads to a reshared share that was locked by original owner
     Given using <dav-path> DAV path
     And user "Alice" has shared folder "PARENT" with user "Brian"

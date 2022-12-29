@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -189,7 +189,6 @@ Feature: sharing
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/Shares/folder1/folder2" should not exist
     And as "Carol" folder "/Shares/folder2" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | folder2_share_path |
       | /folder2           |
@@ -235,7 +234,7 @@ Feature: sharing
       | path          |
       | /Carol-folder |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-349 @issue-ocis-reva-350 @issue-ocis-reva-352 @issue-37653
+  @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-349 @issue-ocis-reva-350 @issue-ocis-reva-352 @issue-37653
   #after fixing all the issues merge this scenario with the one below
   Scenario Outline: API responds with a full set of parameters when owner changes the permission of a share
     Given using OCS API version "<ocs_api_version>"

@@ -48,7 +48,7 @@ Feature: Reshare by public link
     And the public accesses the last created public link using the webUI
     Then the text preview of the public link should contain "some content"
 
-  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+
   Scenario: user reshares a public link of a received share via email
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has shared folder "/simple-folder" with user "Brian" with permissions "share,read"
@@ -62,7 +62,7 @@ Feature: Reshare by public link
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
-  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+
   Scenario: user reshares a public link of a file in a received shared folder via email
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file with content "some content" to "/simple-folder/randomfile.txt"
@@ -77,7 +77,7 @@ Feature: Reshare by public link
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
-  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+
   Scenario: user reshares a public link of a received shared file via email
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has shared file "/randomfile.txt" with user "Brian" with permissions "share,read"
@@ -91,7 +91,7 @@ Feature: Reshare by public link
       """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
-  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+
   Scenario: user reshares a public link of a received shared folder via email with multiple addresses
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has shared folder "/simple-folder" with user "Brian" with permissions "share,read"
@@ -110,7 +110,7 @@ Feature: Reshare by public link
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address "goo@barr.co" should have received an email containing the last shared public link
 
-  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+
   Scenario: user reshares a public link of a received shared folder via email with a personal message
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has shared folder "/simple-folder" with user "Brian" with permissions "share,read"

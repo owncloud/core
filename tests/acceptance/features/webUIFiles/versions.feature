@@ -92,7 +92,7 @@ Feature: Versions of a file
     And the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
     Then the versions list should contain 0 entries
 
-  @skipOnStorage:ceph @files_primary_s3-issue-67 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnStorage:ceph @files_primary_s3-issue-67
   Scenario: versions author is displayed
     Given the administrator has enabled the file version storage feature
     And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
@@ -106,7 +106,7 @@ Feature: Versions of a file
       | 1     | Alice  |
       | 2     | Alice  |
 
-  @skipOnStorage:ceph @files_primary_s3-issue-67 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnStorage:ceph @files_primary_s3-issue-67
   Scenario: sharee can see the versions' respective author
     Given the administrator has enabled the file version storage feature
     And user "Brian" has been created with default attributes and without skeleton files
@@ -126,7 +126,7 @@ Feature: Versions of a file
       | 2     | Alice  |
       | 3     | Alice  |
 
-  @skipOnStorage:ceph @files_primary_s3-issue-67 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnStorage:ceph @files_primary_s3-issue-67
   Scenario: sharee can see the versions' respective author after version restore
     Given the administrator has enabled the file version storage feature
     And user "Brian" has been created with default attributes and without skeleton files

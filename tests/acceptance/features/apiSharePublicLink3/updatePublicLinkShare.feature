@@ -343,7 +343,7 @@ Feature: update a public link share
     And uploading a file should not work using the old public WebDAV API
     And uploading a file should not work using the new public WebDAV API
 
-    @issue-ocis-2079 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -367,7 +367,7 @@ Feature: update a public link share
     And uploading a file should work using the old public WebDAV API
     And uploading a file should work using the new public WebDAV API
 
-    @issue-ocis-2079 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -392,7 +392,7 @@ Feature: update a public link share
     And uploading a file should not work using the old public WebDAV API
     And uploading a file should not work using the new public WebDAV API
 
-    @issue-ocis-2079 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
@@ -417,7 +417,7 @@ Feature: update a public link share
     And uploading a file should work using the old public WebDAV API
     And uploading a file should work using the new public WebDAV API
 
-  @issue-ocis-2079 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

@@ -37,7 +37,7 @@ Feature: Unassigning tags from file/folder
       | MyFirstTag  | normal |
       | MySecondTag | normal |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: Unassigning a not user-visible tag from a file shared by someone else as regular user should fail
     Given the administrator has created a "not user-visible" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"
@@ -56,7 +56,7 @@ Feature: Unassigning tags from file/folder
       | MyFirstTag  | not user-visible |
       | MySecondTag | normal           |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: Unassigning a static tag from a file and not part of static tags group shared by someone else as regular user should fail
     Given the administrator has created a "static" tag with name "StaticTag"
     And user "Alice" has created a "normal" tag with name "MySecondTag"
@@ -125,7 +125,7 @@ Feature: Unassigning tags from file/folder
     When the administrator removes tag "MyFirstTag" from file "/myFileToTag.txt" shared by "Alice" using the WebDAV API
     Then the HTTP status code should be "404"
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: Unassigning a not user-assignable tag from a file shared by someone else as regular user should fail
     Given the administrator has created a "not user-assignable" tag with name "MyFirstTag"
     And the administrator has created a "normal" tag with name "MySecondTag"

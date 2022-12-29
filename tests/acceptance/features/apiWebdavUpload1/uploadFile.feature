@@ -149,7 +149,7 @@ Feature: upload file
       | spaces      | /folder ?2.txt    | file ?2.txt  |
       | spaces      | /?fi=le&%#2 . txt | # %ab ab?=ed |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+
   Scenario Outline: attempt to upload a file into a nonexistent folder
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "nonexistent-folder/new-file.txt" using the WebDAV API
