@@ -2,6 +2,7 @@ Change: Update PHP dependencies
 
 The following have been updated:
 - doctrine/event-manager (1.1.2 to 1.2.0)
+- egulias/email-validator (3.2.1 to 3.2.2)
 - guzzlehttp/guzzle (7.4.5 to 7.5.0)
 - guzzlehttp/promises (1.5.1 to 1.5.2)
 - guzzlehttp/psr7 (2.4.0 to 2.4.3)
@@ -30,3 +31,4 @@ https://github.com/owncloud/core/pull/40448
 https://github.com/owncloud/core/pull/40449
 https://github.com/owncloud/core/pull/40494
 https://github.com/owncloud/core/pull/40543
+https://github.com/owncloud/core/pull/40554
