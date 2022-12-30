@@ -1658,4 +1658,56 @@ class PublicWebDavContext implements Context {
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->occContext = $environment->getContext('OccContext');
 	}
+
+	/**
+	 * @When /^the public sends "([^"]*)" request to the last public link share using the (old|new) public WebDAV API$/
+	 * @When /^the public sends "([^"]*)" request to the last public link share using the (old|new) public WebDAV API with password "([^"]*)"$/
+	 *
+	 * @param string $method
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function publicSendsRequestToLastPublicShare(string $method, string $publicWebDAVAPIVersion, ?string $password = ''):void {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		}
+		if ($method === "PROPFIND") {
+			$body = '<?xml version="1.0"?>
+			<d:propfind xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+				<d:prop>
+					<d:resourcetype/>
+					<oc:public-link-item-type/>
+					<oc:public-link-permission/>
+					<oc:public-link-expiration/>
+					<oc:public-link-share-datetime/>
+					<oc:public-link-share-owner/>
+				</d:prop>
+			</d:propfind>';
+		}
+		$token = $this->featureContext->getLastPublicShareToken();
+		$davPath = WebDavHelper::getDavPath(
+			null,
+			0,
+			"public-files-$publicWebDAVAPIVersion"
+		);
+		$username = $this->getUsernameForPublicWebdavApi(
+			$token,
+			$password,
+			$publicWebDAVAPIVersion
+		);
+		$fullUrl = $this->featureContext->getBaseUrl() . "/$davPath$token";
+		$response = HttpRequestHelper::sendRequest(
+			$fullUrl,
+			$this->featureContext->getStepLineRef(),
+			$method,
+			$username,
+			$password,
+			null,
+			$body
+		);
+		$this->featureContext->setResponse($response);
+	}
 }
