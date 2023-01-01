@@ -226,10 +226,10 @@ class Storage extends DAV implements ISharedStorage {
 	 */
 	public function checkStorageAvailability() {
 		// WARNING: Disabling this setting is recommended only in tightly integrated federated setups as temporarly setting,
-		//  should NOT be used in decentralized federation setup. It could cause bad user experience when dealing
-		//  with deleted external shares
+		// should NOT be used in decentralized federation setup. It could cause bad user experience when dealing
+		// with deleted external shares
 		// NOTE: This allows administrator to disable cleanup of invalid shares so only manual removal by user or admin is possible,
-		//  this is particularly useful when dealing with complex migrations that could cause unexpected server responses and instabilities.
+		// this is particularly useful when dealing with complex migrations that could cause unexpected server responses and instabilities.
 		$cleanupInvalidEnabled = $this->config->getAppValue('files_sharing', 'enable_cleanup_invalid_external_shares', 'yes');
 
 		// see if we can find out why the share is unavailable
@@ -242,7 +242,7 @@ class Storage extends DAV implements ISharedStorage {
 
 			if ($cleanupInvalidEnabled === 'yes') {
 				// FIXME: for now delete, but maybe provide a dialog in the future to the user
-				//  to inform that share no longer valid and should contact owner? Likely big refactor
+				// to inform that share no longer valid and should contact owner? Likely big refactor
 				$this->manager->removeShare($this->mountPoint);
 				$this->manager->getMountManager()->removeMount($this->mountPoint);
 				$this->logger->error(
@@ -277,14 +277,14 @@ class Storage extends DAV implements ISharedStorage {
 			// can either mean that the share no longer exists or there is no ownCloud on
 			// the remote (proxy could return 404 for that path), check remote if accessible
 			if ($this->testRemote()) {
-				// valid ownCloud instance means that the external share no longer exists
+				// valid ownCloud instance means that the external share no longer exists,
 				// since this is permanent (re-sharing the file will create a new token)
-
+				// we remove the invalid storage
 				if ($cleanupInvalidEnabled === 'yes') {
 					// FIXME: for now delete, but maybe provide a dialog in the future to the user
-					//  to inform that share no longer valid and should contact owner? Likely big refactor
-					// WARNING: we remove here to improve user experience for 99,9% of cases, but it can happen that
-					//  server is misbehaving/unstable (returning wrong responses) and valid share gets removed
+					// to inform that share no longer valid and should contact owner? Likely big refactor
+					// NOTE: we remove share here to improve user experience for 99,9% of cases, however it can happen that
+					// server is misbehaving/unstable (returning wrong responses) and valid share gets removed
 					$this->manager->removeShare($this->mountPoint);
 					$this->manager->getMountManager()->removeMount($this->mountPoint);
 					$this->logger->error(
@@ -292,6 +292,7 @@ class Storage extends DAV implements ISharedStorage {
 						['shareId' => $this->getId()]
 					);
 				} else {
+					// Ignore removal due to app config
 					$this->logger->error(
 						'Storage for external share {shareId} returns not found error. Ignoring due to app config files_sharing.enable_cleanup_invalid_external_shares={cleanupInvalidEnabled}.',
 						['shareId' => $this->getId(), 'cleanupInvalidEnabled' => $cleanupInvalidEnabled]
