@@ -93,14 +93,4 @@ class MetaFolder extends Collection {
 		}
 		return '';
 	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getVersionRestoredFromTag() : string {
-		if ($this->folder instanceof IProvidesVersionTag) {
-			return $this->folder->getVersionRestoredFromTag();
-		}
-		return '';
-	}
 }

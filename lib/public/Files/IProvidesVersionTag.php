@@ -37,13 +37,4 @@ interface IProvidesVersionTag {
 	 * @since 10.12.0
 	 */
 	public function getVersionTag() : string;
-
-	/**
-	 * Returns the versioning tag of the file that this file
-	 * was originaly restored from.
-	 *
-	 * @return string tag or empty string if not applicable
-	 * @since 10.12.0
-	 */
-	public function getVersionRestoredFromTag() : string;
 }

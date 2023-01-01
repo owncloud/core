@@ -29,7 +29,7 @@
 		'<div>' +
 		'<div class="preview-container">' +
 		'<img class="preview" src="{{previewUrl}}"/>' +
-		'<span class="has-tooltip" title="{{versionTagTooltip}}">{{formattedVersionTag}}</span>' +
+		'<span class="has-tooltip" title="{{versionTag}}">{{versionTag}}</span>' +
 		'</div>' +
 		'<div class="version-container">' +
 		'<div class="version-headline">' +
@@ -55,7 +55,7 @@
 		'<div>' +
 		'<div class="preview-container">' +
 		'<img class="preview" src="{{previewUrl}}"/>' +
-		'<span class="has-tooltip" title="{{versionTagTooltip}}">{{formattedVersionTag}}</span>' +
+		'<span class="has-tooltip" title="{{versionTag}}">{{versionTag}}</span>' +
 		'</div>' +
 		'<div class="version-container">' +
 		'<div class="version-headline">' +
@@ -299,10 +299,6 @@
 		_formatVersion: function(version) {
 			var timestamp = version.get('timestamp') * 1000;
 			var size = version.has('size') ? version.get('size') : 0;
-			var versionTagTooltip = version.has('versionRestoredFromTag') && version.get('versionRestoredFromTag') != '' ? 
-				t('files_versions', 'restored') : t('files_versions', 'tag');
-			var formattedVersionTag = version.has('versionRestoredFromTag') && version.get('versionRestoredFromTag') != '' ? 
-				version.get('versionTag') + ' (' + version.get('versionRestoredFromTag') + ')' : version.get('versionTag');
 			var isMajorVersion = version.get('versionTag').indexOf('.0', version.get('versionTag').length - '.0'.length) !== -1;
 
 			return _.extend({
@@ -321,19 +317,12 @@
 				editedBy: version.has('editedBy'),
 				editedByName: version.has('editedByName'),
 				versionTag: version.has('versionTag'),
-				versionRestoredFromTag: version.has('versionRestoredFromTag'),
-				versionTagTooltip: versionTagTooltip,
-				formattedVersionTag: formattedVersionTag,
 				majorVersionlabel: isMajorVersion ? ' · ' + t('files_versions', 'persisted') : ''
 			}, version.attributes);
 		},
 
 		_formatCurrent: function(current) {
 			var size = current.has('size') ? current.get('size') : 0;
-			var versionTagTooltip = current.has('versionRestoredFromTag') && current.get('versionRestoredFromTag') != '' ? 
-			t('files_versions', 'restored') : t('files_versions', 'tag');
-			var formattedVersionTag = current.has('versionRestoredFromTag') && current.get('versionRestoredFromTag') != '' ? 
-				current.get('versionTag') + ' (' + current.get('versionRestoredFromTag') + ')' : current.get('versionTag');
 
 			return _.extend({
 				versionId: current.get('id'),
@@ -351,9 +340,6 @@
 				editedBy: current.has('editedBy'),
 				editedByName: current.has('editedByName'),
 				versionTag: current.has('versionTag'),
-				versionRestoredFromTag: current.has('versionRestoredFromTag'),
-				versionTagTooltip: versionTagTooltip,
-				formattedVersionTag: formattedVersionTag,
 				currentVersionLabel: ' · ' + t('files_versions', 'current')
 			}, current.attributes);
 		},
