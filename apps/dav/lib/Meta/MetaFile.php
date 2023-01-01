@@ -147,14 +147,4 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 		}
 		return '';
 	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getVersionRestoredFromTag() : string {
-		if ($this->file instanceof IProvidesVersionTag) {
-			return $this->file->getVersionRestoredFromTag();
-		}
-		return '';
-	}
 }
