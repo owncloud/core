@@ -719,6 +719,7 @@ $CONFIG = [
  *
  * LEGACY: Please use file_storage.save_version_metadata
  *
+ * WARNING: This feature, once enabled CANNOT be disabled without a metadata repair
  * WARNING: This does not work for S3 storage backends.
  */
 'file_storage.save_version_author' => false,
@@ -726,6 +727,7 @@ $CONFIG = [
 /**
  * Save additional metadata (author, version tag, etc.) of each version of uploaded and edited files.
  *
+ * WARNING: This feature, once enabled CANNOT be disabled without a metadata repair
  * WARNING: This does not work for S3 storage backends.
  */
 'file_storage.save_version_metadata' => false,
