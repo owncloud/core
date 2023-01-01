@@ -581,7 +581,7 @@ class Trashbin {
 			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', ['filePath' => Filesystem::normalizePath('/' . $targetLocation),
 				'trashPath' => Filesystem::normalizePath($filename)]);
 
-			self::restoreVersions($view, $filename, $targetLocation);
+			self::restoreVersionsFromTrashbin($view, $filename, $targetLocation);
 
 			if ($timestamp) {
 				$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
@@ -603,7 +603,7 @@ class Trashbin {
 	 * @param string $location location where the file will be restored
 	 * @return false|null
 	 */
-	private static function restoreVersions(View $view, $filename, $targetLocation) {
+	private static function restoreVersionsFromTrashbin(View $view, $filename, $targetLocation) {
 		if (\OCP\App::isEnabled('files_versions')) {
 			$user = User::getUser();
 			$rootView = new View('/');

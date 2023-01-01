@@ -257,7 +257,6 @@ class MetaStorage {
 				'restored_from_tag' => $restoreVersionTag,
 			];
 			$this->writeMetaFile($metadata, $currentMetaFile);
-			\unlink($restoreMetaFile);
 		} elseif (\file_exists($currentMetaFile)) {
 			// Remove current metadata file in case there is no metadata to restore
 			\unlink($currentMetaFile);

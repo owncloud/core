@@ -425,7 +425,7 @@ class Storage {
 
 		$versionCreated = false;
 
-		//first create a new version
+		// first create a new version
 		$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
 		if (!$users_view->file_exists($version)) {
 			$users_view->copy('files'.$filename, $version);
@@ -455,7 +455,9 @@ class Storage {
 
 		// rollback
 		if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
-			$users_view->touch("/files$filename", $revision);
+			// restore/revert of versions is technically creating new file, thus increment mtime
+			$users_view->touch("/files$filename");
+
 			Storage::scheduleExpire($uid, $filename);
 
 			if (self::metaEnabled()) {
@@ -494,19 +496,14 @@ class Storage {
 		$view->lockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
 		$view->lockFile($path2, ILockingProvider::LOCK_EXCLUSIVE);
 
-		// TODO add a proper way of overwriting a file while maintaining file ids
 		if ($storage1->instanceOfStorage('\OC\Files\ObjectStore\ObjectStoreStorage') || $storage2->instanceOfStorage('\OC\Files\ObjectStore\ObjectStoreStorage')) {
 			$source = $storage1->fopen($internalPath1, 'r');
 			$target = $storage2->fopen($internalPath2, 'w');
 			list(, $result) = \OC_Helper::streamCopy($source, $target);
 			\fclose($source);
 			\fclose($target);
-
-			if ($result !== false) {
-				$storage1->unlink($internalPath1);
-			}
 		} else {
-			$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
+			$result = $storage2->copyFromStorage($storage1, $internalPath1, $internalPath2);
 		}
 
 		$view->unlockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
