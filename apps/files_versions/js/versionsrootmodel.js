@@ -8,6 +8,8 @@
  *
  */
 
+/* global moment */
+
 (function() {
 
 	_.extend(OC.Files.Client, {

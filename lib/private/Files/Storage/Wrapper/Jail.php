@@ -541,7 +541,7 @@ class Jail extends Wrapper { /* implements IVersionedStorage */
 	}
 
 	/**
-	 * List versioning metadata of all non-concurrent versions for the given file
+	 * List versioning metadata of all noncurrent versions for the given file
 	 *
 	 * @param string $internalPath
 	 * @return array
@@ -567,7 +567,7 @@ class Jail extends Wrapper { /* implements IVersionedStorage */
 	}
 
 	/**
-	 * Get versioning metadata for one explicit non-concurrent version of the given file
+	 * Get versioning metadata for one explicit noncurrent version of the given file
 	 *
 	 * @param string $internalPath
 	 * @param string $versionId

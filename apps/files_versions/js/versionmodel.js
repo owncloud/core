@@ -11,7 +11,7 @@
 (function() {
 
 	/**
-	 * Non-concurrent version in a collection
+	 * Noncurrent version in a collection
 	 * 
 	 * @memberof OCA.Versions
 	 */

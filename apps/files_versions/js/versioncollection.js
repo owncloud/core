@@ -20,7 +20,7 @@
 	});
 
 	/**
-	 * Collection of non-concurrent versions of a file
+	 * Collection of noncurrent versions of a file
 	 * 
 	 * @memberof OCA.Versions
 	 */
