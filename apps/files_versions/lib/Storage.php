@@ -403,8 +403,8 @@ class Storage {
 
 		if (self::metaEnabled()) {
 			// Also move/copy the current version
-			$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_EXT;
-			$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_EXT;
+			$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+			$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
 			self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
 		}
 

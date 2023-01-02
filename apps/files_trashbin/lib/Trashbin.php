@@ -427,22 +427,39 @@ class Trashbin {
 					}
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
+				// copy version root metadata
+				if ($metaEnabled && ($owner !== $user || $forceCopy)) {
+					$src = '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+					$dst = '/files_trashbin/versions/' . \basename($ownerPath) . MetaStorage::CURRENT_FILE_PREFIX . '.d' . $timestamp . MetaStorage::VERSION_FILE_EXT ;
+					$metaStorage->renameOrCopy('copy', $src, $owner, $dst, $owner);
+				}
+				if ($metaEnabled && !$forceCopy) {
+					$src = '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+					$dst = '/files_trashbin/versions/' . $filename . MetaStorage::CURRENT_FILE_PREFIX . '.d' . $timestamp . MetaStorage::VERSION_FILE_EXT;
+					$metaStorage->renameOrCopy('rename', $src, $owner, $dst, $user);
+				}
+
 				foreach ($versions as $v) {
 					if ($owner !== $user || $forceCopy) {
+						// copy version data
 						$src = '/files_versions' . $v['path'] . '.v' . $v['version'];
 						$dst = '/files_trashbin/versions/' . $v['name'] . '.v' . $v['version'] . '.d' . $timestamp;
 						self::copy($rootView, "$owner$src", "$owner$dst");
+
+						// copy version metadata
 						if ($metaEnabled) {
 							$metaStorage->renameOrCopy('copy', $src . MetaStorage::VERSION_FILE_EXT, $owner, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
 						}
 					}
 					if (!$forceCopy) {
+						// copy version data
 						$src = '/files_versions' . $v['path'] . '.v' . $v['version'];
 						$dst = '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.d' . $timestamp;
 						self::move($rootView, "$owner$src", "$user$dst");
+
+						// copy version metadata
 						if ($metaEnabled) {
 							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $owner, $dst . MetaStorage::VERSION_FILE_EXT, $user);
-							;
 						}
 					}
 				}
@@ -644,6 +661,13 @@ class Trashbin {
 					$filenameOnlyWithoutTimestamp = $filenameOnly;
 					$dirAndFilename = "{$dir}/{$filenameOnly}";
 				}
+				
+				if ($metaEnabled && $timestamp) {
+					$src = '/files_trashbin/versions/' . $dirAndFilename . MetaStorage::CURRENT_FILE_PREFIX . '.d' . $timestamp;
+					$dst = '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_PREFIX;
+					$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $user, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
+				}
+
 				$versions = self::getVersionsFromTrash($filenameOnlyWithoutTimestamp, $timestamp, $user);
 				foreach ($versions as $v) {
 					if ($timestamp) {

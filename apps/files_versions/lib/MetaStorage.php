@@ -52,8 +52,8 @@ use OCP\Files\FileInfo;
  *  	└── Hello.txt.v1638547177      # Content of the prev. version
  */
 class MetaStorage {
-	/** @var string File-extension of the metadata of the current file  */
-	public const CURRENT_FILE_EXT = ".current.json";
+	/** @var string File-prefix of the metadata of the current file  */
+	public const CURRENT_FILE_PREFIX = ".current";
 
 	/** @var string File-extension of the metadata file for a specific version */
 	public const VERSION_FILE_EXT = ".json";
@@ -103,7 +103,7 @@ class MetaStorage {
 			return false;
 		}
 
-		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_EXT);
+		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
 		$userView = $this->fileHelper->getUserView($uid);
 		$this->fileHelper->createMissingDirectories($userView, $currentFileName);
 
@@ -152,7 +152,7 @@ class MetaStorage {
 		if (Filesystem::is_dir($currentFileName) || !Filesystem::file_exists($currentFileName)) {
 			return [];
 		}
-		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_EXT);
+		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
 
 		return $this->readMetaFile($absPathOnDisk);
 	}
@@ -168,7 +168,7 @@ class MetaStorage {
 	 * @param string $uid
 	 */
 	public function copyCurrentToVersion(string $currentFileName, FileInfo $versionFile, string $uid) {
-		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_EXT);
+		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
 		$targetMetaFile = $this->dataDir . $versionFile->getPath() . self::VERSION_FILE_EXT;
 
 		if (\file_exists($currentMetaFile)) {
@@ -194,7 +194,7 @@ class MetaStorage {
 	 */
 	public function deleteCurrent(View $versionsView, string $filename) {
 		$uid = $versionsView->getOwner("/");
-		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$filename" . self::CURRENT_FILE_EXT);
+		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$filename" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
 
 		if (\file_exists($toDelete)) {
 			\unlink($toDelete);
@@ -210,7 +210,7 @@ class MetaStorage {
 	 * @param string $uid
 	 */
 	public function restore(string $currentFileName, FileInfo $restoreVersionFile, string $uid) {
-		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_EXT);
+		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
 		$restoreMetaFile = $this->dataDir . $restoreVersionFile->getPath() . self::VERSION_FILE_EXT;
 
 		// fetch metadata
@@ -370,7 +370,7 @@ class MetaStorage {
 			}
 
 			// LEGACY: property wrongly taken from DAV interface
-			// backwards compatibilitiy handling for edited_by which in the bast had DAV property name
+			// backwards compatibilitiy handling for edited_by which in the past had DAV property name
 			if (isset($decoded['{http://owncloud.org/ns}meta-version-edited-by'])) {
 				$metadata['edited_by'] = $decoded['{http://owncloud.org/ns}meta-version-edited-by'];
 			}
