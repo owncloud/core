@@ -336,7 +336,7 @@
 				publishIconUrl: OC.imagePath('core', 'actions/checkmark'),
 				previewUrl: getPreviewUrl(current),
 				publishLabel: t('files_versions', 'Publish version'),
-				canPublish: true,
+				canPublish: current.has('versionTag') && (current.get('versionTag') !== ''),
 				editedBy: current.has('editedBy'),
 				editedByName: current.has('editedByName'),
 				versionTag: current.has('versionTag'),
