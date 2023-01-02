@@ -1,0 +1,6 @@
+Enhancement: Persistent major file version workflow
+
+ownCloud can now automatically tag file versions with version numbers. Based on this feature, one can define the actual version to be a major version which gets a major version number upon publishin and all new upcoming versions start counting from this major number. Such persistent major versions are not subject to default retention mechanisms for file versions. Minor versions are subject to default retention. Additionaly, metadata for current file version (concurrent active version) is shown in versions panel.
+
+https://github.com/owncloud/core/pull/40531
+https://github.com/owncloud/enterprise/issues/5286
