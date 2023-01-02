@@ -228,7 +228,7 @@ class Storage {
 				]);
 
 				if (self::metaEnabled()) {
-					// version last current file metadata into non-conncurrent version
+					// version last current file metadata into noncurrent version
 					self::$metaData->copyCurrentToVersion($filename, $fileInfo, $uid);
 
 					// create new current file metadata

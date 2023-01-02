@@ -716,7 +716,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		));
 	}
 
-	public function getVersionsRoot($internalPath) {
+	public function getCurrentVersion($internalPath) {
 		// KISS implementation
 		if (!\OC_App::isEnabled('files_versions')) {
 			return [];

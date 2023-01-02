@@ -1,2 +1,0 @@
-- if feature gets disabled, huge inconsistencies can happen. We would need to erase all current.json metadata before feature can be enabled back. It can be fixed by not calling it current.json, but assigning mtime like any other version
-- problem is that version tags gest incremented based on previous "current.json" meta file, however, if there is problem in the system and somehow current.json does not get updated, inconsistencies can be huge and e.g. versioning can start from scratch making it super confusing to the users
