@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Adjust installation database details: [#40348](https://github.com/owncloud/core/pull/40348)
+* Bugfix - Bump bower_components/clipboard from v2.0.6 to v2.0.11 in /build: [#40064](https://github.com/owncloud/core/pull/40064)
 * Bugfix - Properly remove file versions from the trashbin: [#40286](https://github.com/owncloud/core/issues/40286)
 * Bugfix - "available for" in the mount point configuration will show displaynames: [#40412](https://github.com/owncloud/core/pull/40412)
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
@@ -35,6 +36,10 @@ Details
 
    https://github.com/owncloud/core/issues/39871
    https://github.com/owncloud/core/pull/40348
+
+* Bugfix - Bump bower_components/clipboard from v2.0.6 to v2.0.11 in /build: [#40064](https://github.com/owncloud/core/pull/40064)
+
+   https://github.com/owncloud/core/pull/40064
 
 * Bugfix - Properly remove file versions from the trashbin: [#40286](https://github.com/owncloud/core/issues/40286)
 
