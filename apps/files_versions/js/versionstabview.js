@@ -317,7 +317,7 @@
 				editedBy: version.has('editedBy'),
 				editedByName: version.has('editedByName'),
 				versionTag: version.has('versionTag'),
-				majorVersionlabel: isMajorVersion ? ' · ' + t('files_versions', 'persisted') : ''
+				majorVersionlabel: isMajorVersion ? ' · ' + t('files_versions', 'persistent') : ''
 			}, version.attributes);
 		},
 
