@@ -930,7 +930,7 @@ class VersioningTest extends TestCase {
 	private function doTestRestore(bool $metaDataEnabled) {
 		$filePath = $this->user1 . '/files/sub/test.txt';
 		$this->rootView->file_put_contents($filePath, 'test file');
-
+		
 		$t0 = $this->rootView->filemtime($filePath);
 
 		// not exactly the same timestamp as the file
@@ -981,8 +981,8 @@ class VersioningTest extends TestCase {
 		$info2 = $this->rootView->getFileInfo($filePath);
 
 		$this->assertNotEquals(
-			$info2['etag'],
 			$info1['etag'],
+			$info2['etag'],
 			'Etag must change after rolling back version'
 		);
 		$this->assertEquals(
@@ -990,10 +990,10 @@ class VersioningTest extends TestCase {
 			$info1['fileid'],
 			'File id must not change after rolling back version'
 		);
-		$this->assertEquals(
+		$this->assertNotEquals(
 			$info2['mtime'],
 			$t2,
-			'Restored file must have mtime from version'
+			'New version restored from past version must receive new mtime'
 		);
 
 		$newVersions = \OCA\Files_Versions\Storage::getVersions(
@@ -1003,22 +1003,26 @@ class VersioningTest extends TestCase {
 
 		$this->assertTrue(
 			$this->rootView->file_exists($this->versionsRootOfUser1 . '/sub/test.txt.v' . $t0),
-			'A version file must be created for the file before restoration'
+			'A version file must be created for the current file before restoration'
 		);
 
 		$this->assertTrue(
 			$this->rootView->file_exists($v1),
-			'Untouched version file is still there'
+			'Untouched version file must be present in files_version folder'
 		);
-		$this->assertFalse(
+		$this->assertTrue(
 			$this->rootView->file_exists($v2),
-			'Restored version file gone from files_version folder'
+			'Version file from which restore has been done must be present in files_version folder'
 		);
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
 			$this->assertTrue(
+				\file_exists("$this->dataDir/$this->versionsRootOfUser1/sub/test.txt.current" . MetaStorage::VERSION_FILE_EXT),
+				'A current version metadata-file must be present for the file'
+			);
+			$this->assertTrue(
 				\file_exists("$this->dataDir/$this->versionsRootOfUser1/sub/test.txt.v$t0" . MetaStorage::VERSION_FILE_EXT),
-				'A version metadata-file must be created for the file before restoration'
+				'A noncurrent version metadata-file must be created for the file before restoration'
 			);
 
 			$this->assertTrue(
@@ -1026,13 +1030,13 @@ class VersioningTest extends TestCase {
 				'Untouched metadata-file is still there'
 			);
 
-			$this->assertFalse(
+			$this->assertTrue(
 				\file_exists("$this->dataDir/$m2"),
-				'Restored metadata file must be gone from files_version folder'
+				'Version metadata file from which restore has been done must be present in files_version folder'
 			);
 		}
 
-		$this->assertCount(2, $newVersions, 'Additional version created');
+		$this->assertCount(3, $newVersions, 'Additional new version created for restoration from point in time');
 
 		$this->assertArrayHasKey(
 			$t0 . '#' . 'test.txt',
@@ -1042,12 +1046,12 @@ class VersioningTest extends TestCase {
 		$this->assertArrayHasKey(
 			$t1 . '#' . 'test.txt',
 			$newVersions,
-			'Untouched version is still there'
+			'Untouched version metadata file must be present in files_version folder'
 		);
-		$this->assertArrayNotHasKey(
+		$this->assertArrayHasKey(
 			$t2 . '#' . 'test.txt',
 			$newVersions,
-			'Restored version is not in the list any more'
+			'Version metadata file from which restore has been done must be present in files_version folder'
 		);
 	}
 

@@ -560,10 +560,10 @@ class Jail extends Wrapper { /* implements IVersionedStorage */
 	 * @return array
 	 * @since 10.0.9
 	 */
-	public function getVersionsRoot($internalPath) {
+	public function getCurrentVersion($internalPath) {
 		$wrapperStorage = $this->getWrapperStorage();
 		'@phan-var \OC\Files\Storage\Common $wrapperStorage';
-		return $wrapperStorage->getVersionsRoot($this->getSourcePath($internalPath));
+		return $wrapperStorage->getCurrentVersion($this->getSourcePath($internalPath));
 	}
 
 	/**

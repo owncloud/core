@@ -77,7 +77,7 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 		if (!$this->versionInfo) {
 			/** @var IVersionedStorage | Storage $storage */
 			'@phan-var IVersionedStorage | Storage $storage';
-			$version = $storage->getVersionsRoot($internalPath);
+			$version = $storage->getCurrentVersion($internalPath);
 			$this->versionInfo = $version;
 		}
 
@@ -98,7 +98,7 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 		if (!$this->versionInfo) {
 			/** @var IVersionedStorage | Storage $storage */
 			'@phan-var IVersionedStorage | Storage $storage';
-			$version = $storage->getVersionsRoot($internalPath);
+			$version = $storage->getCurrentVersion($internalPath);
 			$this->versionInfo = $version;
 		}
 
