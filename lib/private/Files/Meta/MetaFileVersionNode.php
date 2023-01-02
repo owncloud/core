@@ -37,7 +37,7 @@ use OCP\Files\Storage\IStorage;
 use OCP\IImage;
 
 /**
- * Non-concurrent version of the file node. This class represents a version of a file in the meta endpoint
+ * Noncurrent version of the file node. This class represents a version of a file in the meta endpoint
  *
  * @package OC\Files\Meta
  */

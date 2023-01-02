@@ -38,7 +38,7 @@ interface IVersionedStorage {
 	public function getVersionsRoot($internalPath);
 
 	/**
-	 * List metadata of all non-concurrent versions for the given file
+	 * List metadata of all noncurrent versions for the given file
 	 *
 	 * @param string $internalPath
 	 * @return array list of versions metadata or empty array if not supported
@@ -47,7 +47,7 @@ interface IVersionedStorage {
 	public function getVersions($internalPath);
 
 	/**
-	 * Get metadata of one explicit non-concurrent version for the given file.
+	 * Get metadata of one explicit noncurrent version for the given file.
 	 *
 	 * @param string $internalPath
 	 * @param string $versionId

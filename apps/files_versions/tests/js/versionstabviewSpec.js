@@ -8,11 +8,12 @@
  *
  */
 describe('OCA.Versions.VersionsTabView', function() {
+	var VersionsRootModel = OCA.Versions.VersionsRootModel;
 	var VersionCollection = OCA.Versions.VersionCollection;
 	var VersionModel = OCA.Versions.VersionModel;
 	var VersionsTabView = OCA.Versions.VersionsTabView;
 
-	var fetchStub, fileInfoModel, tabView, testVersions, clock;
+	var fetchRootModelStub, fetchCollectionStub, fileInfoModel, tabView, testVersions, clock;
 
 	beforeEach(function() {
 		clock = sinon.useFakeTimers(Date.UTC(2015, 6, 17, 1, 2, 0, 3));
@@ -38,7 +39,8 @@ describe('OCA.Versions.VersionsTabView', function() {
 
 		testVersions = [version1, version2];
 
-		fetchStub = sinon.stub(VersionCollection.prototype, 'fetch');
+		fetchRootModelStub = sinon.stub(VersionsRootModel.prototype, 'fetch');
+		fetchCollectionStub = sinon.stub(VersionCollection.prototype, 'fetch');
 		fileInfoModel = new OCA.Files.FileInfoModel({
 			id: 123,
 			name: 'test.txt',
@@ -49,7 +51,8 @@ describe('OCA.Versions.VersionsTabView', function() {
 	});
 
 	afterEach(function() {
-		fetchStub.restore();
+		fetchRootModelStub.restore();
+		fetchCollectionStub.restore();
 		tabView.remove();
 		clock.restore();
 	});
@@ -57,7 +60,8 @@ describe('OCA.Versions.VersionsTabView', function() {
 	describe('rendering', function() {
 		it('reloads matching versions when setting file info model', function() {
 			tabView.setFileInfo(fileInfoModel);
-			expect(fetchStub.calledOnce).toEqual(true);
+			expect(fetchRootModelStub.calledOnce).toEqual(true);
+			expect(fetchCollectionStub.calledOnce).toEqual(true);
 		});
 
 		it('renders loading icon while fetching versions', function() {

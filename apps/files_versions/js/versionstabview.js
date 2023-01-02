@@ -106,7 +106,7 @@
 			this.versionsRoot = new OCA.Versions.VersionsRootModel();
 			this.versionsRoot.on('sync', this._onAddVersionsRootModel, this);
 
-			// versions collection - non-concurrent versions
+			// versions collection - noncurrent versions
 			this.collection = new OCA.Versions.VersionCollection();
 			this.collection.on('request', this._onCollectionRequest, this);
 			this.collection.on('sync', this._onCollectionEndRequest, this);
@@ -299,7 +299,7 @@
 		_formatVersion: function(version) {
 			var timestamp = version.get('timestamp') * 1000;
 			var size = version.has('size') ? version.get('size') : 0;
-			var isMajorVersion = version.get('versionTag').indexOf('.0', version.get('versionTag').length - '.0'.length) !== -1;
+			var isMajorVersion = version.has('versionTag') && version.get('versionTag').indexOf('.0', version.get('versionTag').length - '.0'.length) !== -1;
 
 			return _.extend({
 				versionId: version.get('id'),

@@ -550,7 +550,7 @@ class Storage {
 	}
 
 	/**
-	 * get a list of all available non-concurrent versions of a file in descending chronological order
+	 * get a list of all available noncurrent versions of a file in descending chronological order
 	 * @param string $uid user id from the owner of the file
 	 * @param string $filename file to find versions of, relative to the user files dir
 	 *
