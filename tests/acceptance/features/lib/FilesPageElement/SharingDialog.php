@@ -353,7 +353,11 @@ class SharingDialog extends OwncloudPage {
 			);
 			$userFound = false;
 			foreach ($userElements as $user) {
-				if ($this->getTrimmedText($user) === $nameToMatch) {
+				$trimmedText = $this->getTrimmedText($user);
+				// The logic is changed due to "Add multiple users" because the order of users in autocomplete items is not fixed
+				$trimmedUsers = preg_split("/[\s,]+/", $trimmedText);
+				$usersToMatch = preg_split("/[\s,]+/", $nameToMatch);
+				if (empty(array_diff($trimmedUsers, $usersToMatch))) {
 					$user->click();
 					$this->waitForAjaxCallsToStartAndFinish($session);
 					$userFound = true;
