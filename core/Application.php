@@ -27,7 +27,7 @@
  */
 
 namespace OC\Core;
-
+//N SOMEE ewgrewg
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Core\Controller\AvatarController;
