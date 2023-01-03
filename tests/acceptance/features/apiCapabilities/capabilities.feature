@@ -37,57 +37,94 @@ Feature: capabilities
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the capabilities should contain
-      | capability    | path_to_element                           | value             |
-      | core          | pollinterval                              | 30000             |
-      | core          | webdav-root                               | remote.php/webdav |
-      | core          | status@@@edition                          | %edition%         |
-      | core          | status@@@productname                      | %productname%     |
-      | core          | status@@@version                          | %version%         |
-      | core          | status@@@versionstring                    | %versionstring%   |
-      | files_sharing | api_enabled                               | 1                 |
-      | files_sharing | default_permissions                       | 31                |
-      | files_sharing | search_min_length                         | 2                 |
-      | files_sharing | public@@@enabled                          | 1                 |
-      | files_sharing | public@@@multiple                         | 1                 |
-      | files_sharing | public@@@upload                           | 1                 |
-      | files_sharing | public@@@supports_upload_only             | 1                 |
-      | files_sharing | public@@@send_mail                        | EMPTY             |
-      | files_sharing | public@@@social_share                     | 1                 |
-      | files_sharing | public@@@enforced                         | EMPTY             |
-      | files_sharing | public@@@enforced_for@@@read_only         | EMPTY             |
-      | files_sharing | public@@@enforced_for@@@read_write        | EMPTY             |
-      | files_sharing | public@@@enforced_for@@@upload_only       | EMPTY             |
-      | files_sharing | public@@@enforced_for@@@read_write_delete | EMPTY             |
-      | files_sharing | public@@@expire_date@@@enabled            | EMPTY             |
-      | files_sharing | public@@@defaultPublicLinkShareName       | Public link       |
-      | files_sharing | resharing                                 | 1                 |
-      | files_sharing | federation@@@outgoing                     | 1                 |
-      | files_sharing | federation@@@incoming                     | 1                 |
-      | files_sharing | group_sharing                             | 1                 |
-      | files_sharing | share_with_group_members_only             | EMPTY             |
-      | files_sharing | share_with_membership_groups_only         | EMPTY             |
-      | files_sharing | auto_accept_share                         | 1                 |
-      | files_sharing | user_enumeration@@@enabled                | 1                 |
-      | files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
-      | files_sharing | user@@@send_mail                          | EMPTY             |
-      | files         | bigfilechunking                           | 1                 |
-      | files         | privateLinks                              | 1                 |
-      | files         | privateLinksDetailsParam                  | 1                 |
+    Then the data of the response data should contain
+    """
+    {
+      "capabilities": {
+        "core": {
+          "pollinterval": "30000",
+          "webdav-root": "/remote\\.php\\/webdav/",
+          "status": {
+            "version": "%version%",
+            "versionstring": "%versionstring%",
+            "edition": "%edition%",
+            "productname": "%productname%"
+          }
+        },
+        "files": {
+          "privateLinks": "1",
+          "privateLinksDetailsParam": "1",
+          "bigfilechunking": "1"
+        },
+        "files_sharing": {
+          "api_enabled": "1",
+          "public": {
+            "enabled": "1",
+            "send_mail": {},
+            "social_share": "1",
+            "upload": "1",
+            "multiple": "1",
+            "supports_upload_only": "1",
+            "defaultPublicLinkShareName": "Public link"
+          },
+          "resharing": "1",
+          "group_sharing": "1",
+          "auto_accept_share": "1",
+          "share_with_group_members_only": {},
+          "share_with_membership_groups_only": {},
+          "can_share": "1",
+          "user_enumeration": {
+            "enabled": "1",
+            "group_members_only": {}
+          },
+          "default_permissions": "31",
+          "search_min_length": "2"
+        }
+      }
+    }
+    """
 
   @smokeTest @skipOnOcis
   Scenario: getting default capabilities with admin user with new values
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the capabilities should contain
-      | capability    | path_to_element                                          | value             |
-      | files_sharing | user@@@expire_date@@@enabled                             | EMPTY             |
-      | files_sharing | group@@@expire_date@@@enabled                            | EMPTY             |
-      | files_sharing | providers_capabilities@@@ocinternal@@@user@@@element[0]  | shareExpiration   |
-      | files_sharing | providers_capabilities@@@ocinternal@@@group@@@element[0] | shareExpiration   |
-      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[0]  | shareExpiration   |
-      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[1]  | passwordProtected |
+    And the data of the response data should contain
+    """
+    {
+      "capabilities": {
+        "files_sharing": {
+          "api_enabled": "1",
+          "user": {
+            "expire_date": {
+              "enabled": {}
+            }
+          },
+          "group": {
+            "expire_date": {
+              "enabled": {}
+            }
+          },
+          "providers_capabilities": {
+            "ocinternal": {
+              "user": {
+                "element": "shareExpiration"
+              },
+              "group": {
+                "element": "shareExpiration"
+              },
+              "link": {
+                "element": [
+                  "shareExpiration",
+                  "passwordProtected"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+    """
 
   @smokeTest @skipOnOcis
   Scenario: the default capabilities should include share expiration for all of user, group, link and remote (federated)
