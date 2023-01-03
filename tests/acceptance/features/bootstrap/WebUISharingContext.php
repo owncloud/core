@@ -175,6 +175,27 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user shares file/folder :resource with users :users using the webUI
+	 *
+	 * @param string $resource
+	 * @param string $users
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserSharesFileFolderWithUsersUsingTheWebUI(
+		string $resource,
+		string $users
+	):void {
+		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
+			$resource,
+			"users",
+			null,
+			$users
+		);
+	}
+
+	/**
 	 * @When /^the user tries to share (?:file|folder) "([^"]*)" with (?:(remote|federated)\s)?user "([^"]*)" ?(?:with displayname "([^"]*)")? using the webUI$/
 	 *
 	 * @param string $folder
@@ -448,6 +469,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 					$maxRetries
 				);
 			}
+		} elseif ($userOrGroup === "users") {
+			$users = explode(",", $name);
+			$usersArray = [];
+			foreach ($users as $user) {
+				if ($this->featureContext->userExists($user)) {
+					$usersArray[] = $user;
+				}
+			}
+			$nameToMatch = join(", ", $usersArray);
+			$this->sharingDialog->shareWithUsers(
+				$name,
+				$nameToMatch,
+				$this->getSession(),
+				$quiet,
+				$maxRetries
+			);
 		} else {
 			$this->sharingDialog->shareWithGroup(
 				$name,

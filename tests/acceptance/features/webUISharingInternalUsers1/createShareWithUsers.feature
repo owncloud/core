@@ -353,3 +353,101 @@ Feature: Sharing files and folders with internal users
       | 123      |
       | -123     |
       | 0.0      |
+
+
+  Scenario: user shares file with multiple users at once
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with users "Brian,Carol" using the webUI
+    Then as "Brian" file "lorem.txt" should exist
+    And as "Carol" file "lorem.txt" should exist
+
+
+  Scenario: user shares folder with multiple users at once
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with users "Brian,Carol" using the webUI
+    Then as "Brian" folder "simple-folder" should exist
+    And as "Carol" folder "simple-folder" should exist
+
+
+  Scenario Outline: user shares file with multiple users including non-existing user at once
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with users "<usernames>" using the webUI
+    Then a notification should be displayed on the webUI with the text "Could not be shared with the following users: David"
+    And as "Brian" file "lorem.txt" should exist
+    And as "Carol" file "lorem.txt" should exist
+    Examples:
+      | usernames         |
+      | Brian,Carol,David |
+      | Brian,David,Carol |
+      | David,Brian,Carol |
+
+
+  Scenario Outline: user shares folder with multiple users including non-existing user at once
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with users "<usernames>" using the webUI
+    Then a notification should be displayed on the webUI with the text "Could not be shared with the following users: David"
+    And as "Brian" folder "simple-folder" should exist
+    And as "Carol" folder "simple-folder" should exist
+    Examples:
+      | usernames         |
+      | Brian,Carol,David |
+      | Brian,David,Carol |
+      | David,Brian,Carol |
+
+
+  Scenario: user shares file with multiple users having exact same group name
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+      | David    |
+    And group "Brian,Carol" has been created
+    And user "David" has been added to group "Brian,Carol"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    When the user shares file "lorem.txt" with users "Brian,Carol" using the webUI
+    Then as "Brian" file "lorem.txt" should exist
+    And as "Carol" file "lorem.txt" should exist
+    And as "David" file "lorem.txt" should not exist
+
+
+  Scenario: user shares folder with multiple users having exact same group name
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
+      | David    |
+    And group "Brian,Carol" has been created
+    And user "David" has been added to group "Brian,Carol"
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with users "Brian,Carol" using the webUI
+    Then as "Brian" folder "simple-folder" should exist
+    And as "Carol" folder "simple-folder" should exist
+    And as "David" folder "simple-folder" should not exist
