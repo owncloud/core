@@ -199,7 +199,6 @@
 
 "@bower_components/backbone@jashkenas/backbone#1.4.1":
   version "1.4.1"
-  uid "9260f3cb43d26b0e185f5800b31d9ae913999a1f"
   resolved "https://codeload.github.com/jashkenas/backbone/tar.gz/9260f3cb43d26b0e185f5800b31d9ae913999a1f"
   dependencies:
     underscore ">=1.8.3"
@@ -226,7 +225,6 @@
 
 "@bower_components/clipboard@zenorocha/clipboard.js#v2.0.11":
   version "2.0.11"
-  uid "2b2f9eef6fd1cf951612740e16e422db2848c00a"
   resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/2b2f9eef6fd1cf951612740e16e422db2848c00a"
   dependencies:
     good-listener "^1.2.2"
@@ -265,9 +263,9 @@
   version "1.0.6"
   resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/bd595ed253292934991a414979007f3d51a1547d"
 
-"@bower_components/moment@moment/moment#2.29.1":
-  version "2.29.1"
-  resolved "https://codeload.github.com/moment/moment/tar.gz/b7ec8e2ec068e03de4f832f28362675bb9e02261"
+"@bower_components/moment@moment/moment#2.29.4":
+  version "2.29.4"
+  resolved "https://codeload.github.com/moment/moment/tar.gz/000ac1800e620f770f4eb31b5ae908f6167b0ab2"
 
 "@bower_components/select2@ivaynberg/select2#3.5.4":
   version "3.5.4"
@@ -275,7 +273,6 @@
 
 "@bower_components/showdown@showdownjs/showdown#2.0.0":
   version "2.0.0"
-  uid "32a1aaa39b39cff6d9a85b070d64db6829b79b26"
   resolved "https://codeload.github.com/showdownjs/showdown/tar.gz/32a1aaa39b39cff6d9a85b070d64db6829b79b26"
   dependencies:
     yargs "^17.2.1"
@@ -290,7 +287,6 @@
 
 "@bower_components/underscore@jashkenas/underscore#1.13.2":
   version "1.13.2"
-  uid "33383fe35cdaf90ff1aa12e20067f44cbe267e87"
   resolved "https://codeload.github.com/jashkenas/underscore/tar.gz/33383fe35cdaf90ff1aa12e20067f44cbe267e87"
 
 "@bower_components/zxcvbn@dropbox/zxcvbn#4.4.2":
