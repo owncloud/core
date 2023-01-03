@@ -968,6 +968,10 @@ class VersioningTest extends TestCase {
 		$this->connectMockHooks('rollback', $params);
 
 		$v = $oldVersions["$t2#test.txt"];
+
+		// make sure mtime could increase before attempt to restore from past version to new file as we test for it
+		\sleep(1);
+
 		$this->assertTrue(\OCA\Files_Versions\Storage::restoreVersion($this->user1, $v['path'], $v['storage_location'], $t2));
 		$expectedParams = [
 			'path' => '/sub/test.txt',
