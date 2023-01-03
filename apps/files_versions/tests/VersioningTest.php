@@ -37,7 +37,6 @@ require_once __DIR__ . '/../appinfo/app.php';
 
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Storage\Temporary;
-use OCA\DAV\Meta\MetaPlugin;
 use OCA\Files_Versions\FileHelper;
 use OCA\Files_Versions\MetaStorage;
 use OCP\Files\Storage;
@@ -211,11 +210,11 @@ class VersioningTest extends TestCase {
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
 			// one metadata file for each version
-			$m1 = $versionsFolder2 . '/test.txt.v' . $t1 . '.json';
-			$m2 = $versionsFolder2 . '/test.txt.v' . $t2 . '.json';
+			$m1 = $versionsFolder2 . '/test.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
+			$m2 = $versionsFolder2 . '/test.txt.v' . $t2 . MetaStorage::VERSION_FILE_EXT;
 
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2]));
 		}
 
 		// move file into the shared folder as recipient
@@ -240,8 +239,8 @@ class VersioningTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Renamed));
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$m1Renamed = $versionsFolder1 . '/folder1/test.txt.v' . $t1 . '.json';
-			$m2Renamed = $versionsFolder1 . '/folder1/test.txt.v' . $t2 . '.json';
+			$m1Renamed = $versionsFolder1 . '/folder1/test.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
+			$m2Renamed = $versionsFolder1 . '/folder1/test.txt.v' . $t2 . MetaStorage::VERSION_FILE_EXT;
 
 			$this->assertTrue($this->rootView->file_exists($m1Renamed));
 			$this->assertTrue($this->rootView->file_exists($m2Renamed));
@@ -410,20 +409,20 @@ class VersioningTest extends TestCase {
 		// create some versions
 		$v1 = $this->versionsRootOfUser1 . '/test.txt.v' . $t1;
 		$v2 = $this->versionsRootOfUser1 . '/test.txt.v' . $t2;
-		$m1 = $this->versionsRootOfUser1 . '/test.txt.v' . $t1 . '.json';
-		$m2 = $this->versionsRootOfUser1 . '/test.txt.v' . $t1 . '.json';
+		$m1 = $this->versionsRootOfUser1 . '/test.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
+		$m2 = $this->versionsRootOfUser1 . '/test.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
 
 		$v1Renamed = $this->versionsRootOfUser1 . '/test2.txt.v' . $t1;
 		$v2Renamed = $this->versionsRootOfUser1 . '/test2.txt.v' . $t2;
-		$m1Renamed = $this->versionsRootOfUser1 . '/test2.txt.v' . $t1 . '.json';
-		$m2Renamed = $this->versionsRootOfUser1 . '/test2.txt.v' . $t1 . '.json';
+		$m1Renamed = $this->versionsRootOfUser1 . '/test2.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
+		$m2Renamed = $this->versionsRootOfUser1 . '/test2.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
 
 		$this->rootView->file_put_contents($v1, 'version1');
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2]));
 		}
 
 		// execute rename hook of versions app
@@ -465,20 +464,20 @@ class VersioningTest extends TestCase {
 		// create some versions
 		$v1 = $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t1;
 		$v2 = $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t2;
-		$m1 = $v1 . '.json';
-		$m2 = $v2 . '.json';
+		$m1 = $v1 . MetaStorage::VERSION_FILE_EXT;
+		$m2 = $v2 . MetaStorage::VERSION_FILE_EXT;
 
 		$v1Renamed = $this->versionsRootOfUser1 . '/folder1/folder2/test.txt.v' . $t1;
 		$v2Renamed = $this->versionsRootOfUser1 . '/folder1/folder2/test.txt.v' . $t2;
-		$m1Renamed = $v1Renamed . '.json';
-		$m2Renamed = $v2Renamed . '.json';
+		$m1Renamed = $v1Renamed . MetaStorage::VERSION_FILE_EXT;
+		$m2Renamed = $v2Renamed . MetaStorage::VERSION_FILE_EXT;
 
 		$this->rootView->file_put_contents($v1, 'version1');
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
 		}
 
 		$node = \OC::$server->getUserFolder($this->user1)->get('folder1');
@@ -540,17 +539,17 @@ class VersioningTest extends TestCase {
 		$v1Renamed = $this->versionsRootOfUser1 . '/folder2/folder1/test.txt.v' . $t1;
 		$v2Renamed = $this->versionsRootOfUser1 . '/folder2/folder1/test.txt.v' . $t2;
 
-		$m1 = $v1 . '.json';
-		$m2 = $v2 . '.json';
-		$m1Renamed = $v1Renamed . '.json';
-		$m2Renamed = $v2Renamed . '.json';
+		$m1 = $v1 . MetaStorage::VERSION_FILE_EXT;
+		$m2 = $v2 . MetaStorage::VERSION_FILE_EXT;
+		$m1Renamed = $v1Renamed . MetaStorage::VERSION_FILE_EXT;
+		$m2Renamed = $v2Renamed . MetaStorage::VERSION_FILE_EXT;
 
 		$this->rootView->file_put_contents($v1, 'version1');
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
 		}
 
 		// execute rename hook of versions app
@@ -608,10 +607,10 @@ class VersioningTest extends TestCase {
 		$v2 = $versionsFolder2 . '/folder2/test.txt.v' . $t2;
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$m1 = $v1 . '.json';
-			$m2 = $v2 . '.json';
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
+			$m1 = $v1 . MetaStorage::VERSION_FILE_EXT;
+			$m2 = $v2 . MetaStorage::VERSION_FILE_EXT;
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2]));
 		}
 
 		$this->rootView->file_put_contents($v1, 'version1');
@@ -629,8 +628,8 @@ class VersioningTest extends TestCase {
 
 		$v1Renamed = $versionsFolder1 . '/folder1/folder2/test.txt.v' . $t1;
 		$v2Renamed = $versionsFolder1 . '/folder1/folder2/test.txt.v' . $t2;
-		$m1Renamed = $v1Renamed . '.json';
-		$m2Renamed = $v2Renamed . '.json';
+		$m1Renamed = $v1Renamed . MetaStorage::VERSION_FILE_EXT;
+		$m2Renamed = $v2Renamed . MetaStorage::VERSION_FILE_EXT;
 
 		$this->assertTrue($this->rootView->file_exists($v1Renamed));
 		$this->assertTrue($this->rootView->file_exists($v2Renamed));
@@ -660,20 +659,20 @@ class VersioningTest extends TestCase {
 		// create some versions
 		$v1 = $this->versionsRootOfUser1 . '/test.txt.v' . $t1;
 		$v2 = $this->versionsRootOfUser1 . '/test.txt.v' . $t2;
-		$m1 = $v1 . '.json';
-		$m2 = $v2 . '.json';
+		$m1 = $v1 . MetaStorage::VERSION_FILE_EXT;
+		$m2 = $v2 . MetaStorage::VERSION_FILE_EXT;
 		// the renamed versions should not exist! Because we only moved the mount point!
 		$v1Renamed = $this->versionsRootOfUser1 . '/test2.txt.v' . $t1;
 		$v2Renamed = $this->versionsRootOfUser1 . '/test2.txt.v' . $t2;
-		$m1Renamed = $v1Renamed . '.json';
-		$m2Renamed = $v2Renamed . '.json';
+		$m1Renamed = $v1Renamed . MetaStorage::VERSION_FILE_EXT;
+		$m2Renamed = $v2Renamed . MetaStorage::VERSION_FILE_EXT;
 
 		$this->rootView->file_put_contents($v1, 'version1');
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
 		}
 
 		$node = \OC::$server->getUserFolder($this->user1)->get('test.txt');
@@ -731,17 +730,17 @@ class VersioningTest extends TestCase {
 		$v1Copied = $this->versionsRootOfUser1 . '/test2.txt.v' . $t1;
 		$v2Copied = $this->versionsRootOfUser1 . '/test2.txt.v' . $t2;
 
-		$m1 = $v1 . '.json';
-		$m2 = $v2 . '.json';
-		$m1Copied = $v1Copied . '.json';
-		$m2Copied = $v2Copied . '.json';
+		$m1 = $v1 . MetaStorage::VERSION_FILE_EXT;
+		$m2 = $v2 . MetaStorage::VERSION_FILE_EXT;
+		$m1Copied = $v1Copied . MetaStorage::VERSION_FILE_EXT;
+		$m2Copied = $v2Copied . MetaStorage::VERSION_FILE_EXT;
 
 		$this->rootView->file_put_contents($v1, 'version1');
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
 		}
 
 		// execute copy hook of versions app
@@ -799,8 +798,8 @@ class VersioningTest extends TestCase {
 		// create some versions
 		$v1 = $this->versionsRootOfUser1 . $filepath . '.v' . $t1;
 		$v2 = $this->versionsRootOfUser1 . $filepath . '.v' . $t2;
-		$m1 = $v1 . '.json';
-		$m2 = $v2 . '.json';
+		$m1 = $v1 . MetaStorage::VERSION_FILE_EXT;
+		$m2 = $v2 . MetaStorage::VERSION_FILE_EXT;
 
 		$this->rootView->mkdir($this->versionsRootOfUser1 . $parent);
 
@@ -808,8 +807,8 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($enableMetadata && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
 		}
 
 		// execute copy hook of versions app
@@ -942,16 +941,27 @@ class VersioningTest extends TestCase {
 		$v1 = $this->versionsRootOfUser1 . '/sub/test.txt.v' . $t1;
 		$v2 = $this->versionsRootOfUser1 . '/sub/test.txt.v' . $t2;
 
-		$m1 = $v1 . '.json';
-		$m2 = $v2 . '.json';
+		$m0 = $this->versionsRootOfUser1 . '/sub/test.txt' . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+		$m1 = $v1 . MetaStorage::VERSION_FILE_EXT;
+		$m2 = $v2 . MetaStorage::VERSION_FILE_EXT;
 
 		$this->rootView->mkdir($this->versionsRootOfUser1 . '/sub');
 		$this->rootView->file_put_contents($v1, 'version1');
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
+			\file_put_contents("$this->dataDir/$m0", \json_encode([
+				'edited_by' => $this->user1,
+				'version_tag' => '0.3'
+			]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode([
+				'edited_by' => $this->user1,
+				'version_tag' => '0.2'
+			]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode([
+				'edited_by' => $this->user2,
+				'version_tag' => '0.1'
+			]));
 		}
 
 		$oldVersions = \OCA\Files_Versions\Storage::getVersions(
@@ -1021,7 +1031,7 @@ class VersioningTest extends TestCase {
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
 			$this->assertTrue(
-				\file_exists("$this->dataDir/$this->versionsRootOfUser1/sub/test.txt.current" . MetaStorage::VERSION_FILE_EXT),
+				\file_exists("$this->dataDir/$this->versionsRootOfUser1/sub/test.txt" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT),
 				'A current version metadata-file must be present for the file'
 			);
 			$this->assertTrue(
@@ -1057,6 +1067,29 @@ class VersioningTest extends TestCase {
 			$newVersions,
 			'Version metadata file from which restore has been done must be present in files_version folder'
 		);
+
+		$currentVersion = \OCA\Files_Versions\Storage::getCurrentVersion(
+			$this->user1,
+			'/sub/test.txt'
+		);
+
+		if ($metaDataEnabled && !$this->objectStoreEnabled) {
+			// make sure versions tags are incremented correctly
+			$this->assertEquals($this->user1, $currentVersion['edited_by']);
+			$this->assertEquals('0.4', $currentVersion['version_tag']);
+
+			$this->assertEquals($this->user1, $newVersions[$t0 . '#' . 'test.txt']['edited_by']);
+			$this->assertEquals('0.3', $newVersions[$t0 . '#' . 'test.txt']['version_tag']);
+
+			$this->assertEquals($this->user1, $newVersions[$t1 . '#' . 'test.txt']['edited_by']);
+			$this->assertEquals('0.2', $newVersions[$t1 . '#' . 'test.txt']['version_tag']);
+
+			$this->assertEquals($this->user2, $newVersions[$t2 . '#' . 'test.txt']['edited_by']);
+			$this->assertEquals('0.1', $newVersions[$t2 . '#' . 'test.txt']['version_tag']);
+
+			// make sure restored version tags is preserved
+			$this->assertEquals('0.1', $currentVersion['restored_from_tag']);
+		}
 	}
 
 	/**
