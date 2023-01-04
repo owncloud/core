@@ -414,29 +414,25 @@ class Trashbin {
 					$src = $owner . '/files_versions/' . $ownerPath;
 					$dst = $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp;
 					self::copy_recursive($src, $dst, $rootView);
-					if ($metaEnabled) {
-						$metaStorage->copyRecursiveMetaDataFiles('/files_versions/' . $ownerPath, $owner, '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $owner);
-					}
 				}
 				if (!$forceCopy) {
 					$src = '/files_versions/' . $ownerPath;
 					$dst ='/files_trashbin/versions/' . $filename . '.d' . $timestamp;
 					self::move($rootView, "$owner$src", "$user$dst");
-					if ($metaEnabled) {
-						$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $owner, $dst . MetaStorage::VERSION_FILE_EXT, $user);
-					}
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
 				// copy version root metadata
-				if ($metaEnabled && ($owner !== $user || $forceCopy)) {
-					$src = '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
-					$dst = '/files_trashbin/versions/' . \basename($ownerPath) . MetaStorage::CURRENT_FILE_PREFIX . '.d' . $timestamp . MetaStorage::VERSION_FILE_EXT ;
-					$metaStorage->renameOrCopy('copy', $src, $owner, $dst, $owner);
-				}
-				if ($metaEnabled && !$forceCopy) {
-					$src = '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
-					$dst = '/files_trashbin/versions/' . $filename . MetaStorage::CURRENT_FILE_PREFIX . '.d' . $timestamp . MetaStorage::VERSION_FILE_EXT;
-					$metaStorage->renameOrCopy('rename', $src, $owner, $dst, $user);
+				if ($metaEnabled) {
+					if ($owner !== $user || $forceCopy) {
+						$src = '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+						$dst = '/files_trashbin/versions/' . \basename($ownerPath) . MetaStorage::CURRENT_FILE_PREFIX . '.d' . $timestamp . MetaStorage::VERSION_FILE_EXT ;
+						$metaStorage->renameOrCopy('copy', $src, $owner, $dst, $owner);
+					}
+					if (!$forceCopy) {
+						$src = '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+						$dst = '/files_trashbin/versions/' . $filename . MetaStorage::CURRENT_FILE_PREFIX . '.d' . $timestamp . MetaStorage::VERSION_FILE_EXT;
+						$metaStorage->renameOrCopy('rename', $src, $owner, $dst, $user);
+					}
 				}
 
 				foreach ($versions as $v) {

@@ -259,8 +259,11 @@ class VersioningTest extends TestCase {
 		\OC::$server->getShareManager()->deleteShare($share);
 	}
 
-	public function testPublishCurrentVersion() {
-		$this->overwriteConfig(true);
+	/**
+	 * @dataProvider metaDataEnabledProvider
+	 */
+	public function testPublishCurrentVersion(bool $metaDataEnabled) {
+		$this->overwriteConfig($metaDataEnabled);
 
 		\OC\Files\Filesystem::mkdir('folder1');
 		\OC\Files\Filesystem::mkdir('folder2');
@@ -269,20 +272,35 @@ class VersioningTest extends TestCase {
 		// create some versions
 		$this->rootView->mkdir($this->versionsRootOfUser1 . '/folder1');
 
-		$m0 = $this->versionsRootOfUser1 . '/folder1/test.txt' . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
-		\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1']));
+		if ($metaDataEnabled && !$this->objectStoreEnabled) {
+			$m0 = $this->versionsRootOfUser1 . '/folder1/test.txt' . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1']));
+		}
 
 		$current0 = \OCA\Files_Versions\Storage::getCurrentVersion($this->user1, '/folder1/test.txt');
-		$this->assertEquals('1.1', $current0['version_tag']);
+
+		if ($metaDataEnabled && !$this->objectStoreEnabled) {
+			$this->assertEquals('1.1', $current0['version_tag']);
+		} else {
+			$this->assertEmpty($current0);
+		}
 
 		\OCA\Files_Versions\Storage::publishCurrentVersion('/folder1/test.txt');
 
 		$current1 = \OCA\Files_Versions\Storage::getCurrentVersion($this->user1, '/folder1/test.txt');
-		$this->assertEquals('2.0', $current1['version_tag']);
+
+		if ($metaDataEnabled && !$this->objectStoreEnabled) {
+			$this->assertEquals('2.0', $current1['version_tag']);
+		} else {
+			$this->assertEmpty($current1);
+		}
 	}
 
-	public function testExpire() {
-		$this->overwriteConfig(true);
+	/**
+	 * @dataProvider metaDataEnabledProvider
+	 */
+	public function testExpire(bool $metaDataEnabled) {
+		$this->overwriteConfig($metaDataEnabled);
 
 		\OC\Files\Filesystem::file_put_contents('test.txt', 'test file');
 
@@ -307,19 +325,21 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v4, 'version4');
 		$this->rootView->file_put_contents($v5, 'version5');
 
-		// one metadata file for each version
-		$m0 = $this->versionsRootOfUser1 . '/test.txt' . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
-		$m1 = $this->versionsRootOfUser1 . '/test.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
-		$m2 = $this->versionsRootOfUser1 . '/test.txt.v' . $t2 . MetaStorage::VERSION_FILE_EXT;
-		$m3 = $this->versionsRootOfUser1 . '/test.txt.v' . $t3 . MetaStorage::VERSION_FILE_EXT;
-		$m4 = $this->versionsRootOfUser1 . '/test.txt.v' . $t4 . MetaStorage::VERSION_FILE_EXT;
-		$m5 = $this->versionsRootOfUser1 . '/test.txt.v' . $t5 . MetaStorage::VERSION_FILE_EXT;
-		\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.2']));
-		\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1']));
-		\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.0'])); // published
-		\file_put_contents("$this->dataDir/$m3", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.3']));
-		\file_put_contents("$this->dataDir/$m4", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.2']));
-		\file_put_contents("$this->dataDir/$m5", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.1']));
+		if ($metaDataEnabled && !$this->objectStoreEnabled) {
+			// one metadata file for each version
+			$m0 = $this->versionsRootOfUser1 . '/test.txt' . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+			$m1 = $this->versionsRootOfUser1 . '/test.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
+			$m2 = $this->versionsRootOfUser1 . '/test.txt.v' . $t2 . MetaStorage::VERSION_FILE_EXT;
+			$m3 = $this->versionsRootOfUser1 . '/test.txt.v' . $t3 . MetaStorage::VERSION_FILE_EXT;
+			$m4 = $this->versionsRootOfUser1 . '/test.txt.v' . $t4 . MetaStorage::VERSION_FILE_EXT;
+			$m5 = $this->versionsRootOfUser1 . '/test.txt.v' . $t5 . MetaStorage::VERSION_FILE_EXT;
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.2']));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1']));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.0'])); // published
+			\file_put_contents("$this->dataDir/$m3", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.3']));
+			\file_put_contents("$this->dataDir/$m4", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.2']));
+			\file_put_contents("$this->dataDir/$m5", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.1']));
+		}
 
 		$versions = \OCA\Files_Versions\Storage::getVersions($this->user1, '/test.txt');
 		$this->assertEquals(5, \count($versions));
@@ -327,10 +347,22 @@ class VersioningTest extends TestCase {
 		\OCA\Files_Versions\Storage::expire('/test.txt', $this->user1);
 
 		$versions = \OCA\Files_Versions\Storage::getVersions($this->user1, '/test.txt');
-		$this->assertEquals(4, \count($versions));
+
+		if ($metaDataEnabled && !$this->objectStoreEnabled) {
+			// one expires due to retention and being minor,
+			// and another one does not expire due to retention due to publishing
+			$this->assertEquals(4, \count($versions));
+		} else {
+			$this->assertEquals(3, \count($versions));
+		}
 
 		$this->assertTrue($this->rootView->file_exists($v1));
-		$this->assertTrue($this->rootView->file_exists($v2)); // due to being published
+		if ($metaDataEnabled && !$this->objectStoreEnabled) {
+			// due to being published
+			$this->assertTrue($this->rootView->file_exists($v2));
+		} else {
+			$this->assertFalse($this->rootView->file_exists($v2));
+		}
 		$this->assertTrue($this->rootView->file_exists($v3));
 		$this->assertTrue($this->rootView->file_exists($v4));
 		$this->assertFalse($this->rootView->file_exists($v5));
@@ -373,11 +405,11 @@ class VersioningTest extends TestCase {
 		$this->loginAsUser($this->user1);
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$this->assertFalse(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t1));
-			$this->assertTrue(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t2));
-		} else {
 			$this->assertTrue(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t1));
-			$this->assertTrue(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t2));
+			$this->assertFalse(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t2));
+		} else {
+			$this->assertFalse(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t1));
+			$this->assertFalse(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t2));
 		}
 	}
 
