@@ -272,7 +272,7 @@ class Storage {
 	 * @param string $path
 	 * @return bool
 	 */
-	private static function checkCanExpireVersion($view, $path) {
+	protected static function isPublishedVersion($view, $path) {
 		if (self::metaEnabled()) {
 			$versionFileInfo = $view->getFileInfo($path);
 			if ($versionFileInfo) {
@@ -652,7 +652,7 @@ class Storage {
 		$view = new View('/' . $uid . '/files_versions');
 		if (!empty($toDelete)) {
 			foreach ($toDelete as $version) {
-				if (!self::checkCanExpireVersion($view, $version['path'] . '.v' . $version['version'])) {
+				if (!self::isPublishedVersion($view, $version['path'] . '.v' . $version['version'])) {
 					continue;
 				}
 				$hookData = [
@@ -882,7 +882,7 @@ class Storage {
 			}
 
 			foreach ($toDelete as $key => $path) {
-				if (!self::checkCanExpireVersion($versionsFileview, $path)) {
+				if (!self::isPublishedVersion($versionsFileview, $path)) {
 					continue;
 				}
 				$versionInfo = self::getFileHelper()->getPathAndRevision($path);
@@ -911,7 +911,7 @@ class Storage {
 			while ($availableSpace < 0 && $i < $numOfVersions) {
 				$version = \current($allVersions);
 
-				if (!self::checkCanExpireVersion($versionsFileview, $version['path'] . '.v' . $version['version'])) {
+				if (!self::isPublishedVersion($versionsFileview, $version['path'] . '.v' . $version['version'])) {
 					continue;
 				}
 				$hookData = [
