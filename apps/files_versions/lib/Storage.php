@@ -281,11 +281,11 @@ class Storage {
 				// we should not expire major versions (published workflow)
 				$versionTag = $versionMetadata['version_tag'] ?? '';
 				if (\substr($versionTag, -\strlen('.0')) === '.0') {
-					return false;
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -385,6 +385,13 @@ class Storage {
 			// create missing dirs if necessary
 			self::getFileHelper()->createMissingDirectories(new View("/$targetOwner"), $targetPath);
 
+			if (self::metaEnabled()) {
+				// Also move/copy the current version
+				$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+				$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+				self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
+			}
+
 			foreach ($versions as $v) {
 				// move each version one by one to the target directory
 				$rootView->$operation(
@@ -399,13 +406,6 @@ class Storage {
 					self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
 				}
 			}
-		}
-
-		if (self::metaEnabled()) {
-			// Also move/copy the current version
-			$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
-			$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
-			self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
 		}
 
 		// if we moved versions directly for a file, schedule expiration check for that file
@@ -458,12 +458,12 @@ class Storage {
 			// restore/revert of versions is technically creating new file, thus increment mtime
 			$users_view->touch("/files$filename");
 
-			Storage::scheduleExpire($uid, $filename);
-
 			if (self::metaEnabled()) {
 				$versionFileInfo = $users_view->getFileInfo('files_versions'.$filename.'.v'.$revision);
 				self::$metaData->restore($filename, $versionFileInfo, $uid);
 			}
+
+			Storage::scheduleExpire($uid, $filename);
 
 			\OC_Hook::emit('\OCP\Versions', 'rollback', [
 				'path' => $filename,
@@ -652,7 +652,7 @@ class Storage {
 		$view = new View('/' . $uid . '/files_versions');
 		if (!empty($toDelete)) {
 			foreach ($toDelete as $version) {
-				if (!self::isPublishedVersion($view, $version['path'] . '.v' . $version['version'])) {
+				if (self::isPublishedVersion($view, $version['path'] . '.v' . $version['version'])) {
 					continue;
 				}
 				$hookData = [
@@ -882,7 +882,7 @@ class Storage {
 			}
 
 			foreach ($toDelete as $key => $path) {
-				if (!self::isPublishedVersion($versionsFileview, $path)) {
+				if (self::isPublishedVersion($versionsFileview, $path)) {
 					continue;
 				}
 				$versionInfo = self::getFileHelper()->getPathAndRevision($path);
@@ -911,7 +911,7 @@ class Storage {
 			while ($availableSpace < 0 && $i < $numOfVersions) {
 				$version = \current($allVersions);
 
-				if (!self::isPublishedVersion($versionsFileview, $version['path'] . '.v' . $version['version'])) {
+				if (self::isPublishedVersion($versionsFileview, $version['path'] . '.v' . $version['version'])) {
 					continue;
 				}
 				$hookData = [
