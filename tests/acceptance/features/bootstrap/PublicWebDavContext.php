@@ -1660,8 +1660,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public sends "([^"]*)" request to the last public link share using the (old|new) public WebDAV API$/
-	 * @When /^the public sends "([^"]*)" request to the last public link share using the (old|new) public WebDAV API with password "([^"]*)"$/
+	 * @When /^the public sends "([^"]*)" request to the last public link share using the (old|new) public WebDAV API(?: with password "([^"]*)")?$/
 	 *
 	 * @param string $method
 	 * @param string $publicWebDAVAPIVersion
@@ -1690,7 +1689,7 @@ class PublicWebDavContext implements Context {
 		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			null,
-			0,
+			null,
 			"public-files-$publicWebDAVAPIVersion"
 		);
 		$username = $this->getUsernameForPublicWebdavApi(
