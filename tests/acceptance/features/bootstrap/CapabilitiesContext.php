@@ -70,23 +70,31 @@ class CapabilitiesContext implements Context {
 	}
 	/**
 	 * Determines if the given array is multidimensional or not
-	 * The XML converted array can have only values but may be faked as multidimensional
-	 * by having a single key named 'element' with the value being an array
-	 *
-	 * This function checks if the array has only one key named 'element'
 	 *
 	 * @param array $arrayToCheck
 	 *
 	 * @return bool
 	 */
 	public function isMultiDimensionalArray(array $arrayToCheck): bool {
+		if (\count($arrayToCheck) === 0) {
+			return false;
+		}
+		// The XML converted array can have only values but may be faked as multidimensional
+		// by having a single key named 'element' with the value being an array or a string
+		// This function checks if the array has only one key named 'element'
 		// if 'element' is as the array key, then it is not a multidimensional array
 		$keys = \array_keys($arrayToCheck);
 		if ($keys === ["element"]) {
 			return false;
 		}
 
-		return true;
+		$values = \array_values($arrayToCheck);
+
+		// rsort will sort the array in descending order
+		// if any values in the array are arrays, then the first element will be an array
+		// if the first element is an array, then it is a multidimensional array
+		\rsort($values);
+		return \is_array($values[0]);
 	}
 
 	/**
