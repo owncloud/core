@@ -19,6 +19,7 @@ Summary
 * Bugfix - Bump json5 from 2.2.0 to 2.2.3 in /build: [#40556](https://github.com/owncloud/core/pull/40556)
 * Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: [#40558](https://github.com/owncloud/core/pull/40558)
 * Bugfix - Bump moments.js from 2.29.1 to 2.29.4 in /build: [#40560](https://github.com/owncloud/core/pull/40560)
+* Bugfix - Set length of oc_calendars.components to 255: [#40563](https://github.com/owncloud/core/pull/40563)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
@@ -116,6 +117,11 @@ Details
 * Bugfix - Bump moments.js from 2.29.1 to 2.29.4 in /build: [#40560](https://github.com/owncloud/core/pull/40560)
 
    https://github.com/owncloud/core/pull/40560
+
+* Bugfix - Set length of oc_calendars.components to 255: [#40563](https://github.com/owncloud/core/pull/40563)
+
+   https://github.com/owncloud/core/issues/40537
+   https://github.com/owncloud/core/pull/40563
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
