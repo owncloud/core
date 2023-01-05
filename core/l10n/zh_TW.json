@@ -344,7 +344,6 @@
     "Cancel login" : "取消登入",
     "Please authenticate using the selected factor." : "請使用所選因素進行身份驗證。",
     "An error occurred while verifying the token" : "驗證令牌時發生錯誤",
-    "You are accessing the server from an untrusted domain." : "你正在從一個未信任的網域存取伺服器",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "請連絡管理員。若您就是管理員，請設定 config/config.php 的 trusted_domains 的配置",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "設定範例在 config/config.sample.php 有提供，或查看<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">說明文件</a>。",
     "App update required" : "需要更新應用程式",

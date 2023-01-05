@@ -354,7 +354,6 @@ OC.L10N.register(
     "Cancel login" : "Cancelar o login",
     "Please authenticate using the selected factor." : "Por favor autenticar usando o fator selecionado.",
     "An error occurred while verifying the token" : "Ocorreu um erro enquanto verificava o token",
-    "You are accessing the server from an untrusted domain." : "Você está acessando o servidor a partir de um domínio não confiável.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Entre em contato com o administrador. Se você é um administrador desta instância, configure a opção \"trusted_domains\" em config/config.php.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Uma configuração de exemplo é fornecida em config/config.sample.php ou em <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentação</a>.",
     "App update required" : "Atualização de aplicativo é requerida",

@@ -320,7 +320,6 @@ OC.L10N.register(
     "Cancel login" : "로그인 취소",
     "Please authenticate using the selected factor." : "선택한 방식으로 인증하십시오.",
     "An error occurred while verifying the token" : "토큰을 검사하는 중 오류 발생",
-    "You are accessing the server from an untrusted domain." : "신뢰할 수 없는 도메인으로 서버에 접근하고 있습니다.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "시스템 관리자에게 연락하십시오. 만약 시스템 관리자라면 config/configphp의 \"trusted_domains\" 설정을 편집하십시오.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "예제 설정 파일은 config/config.sample.php 또는 <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">문서</a>를 참조하십시오.",
     "App update required" : "앱 업데이트 필요",

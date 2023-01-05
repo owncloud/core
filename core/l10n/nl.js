@@ -323,7 +323,6 @@ OC.L10N.register(
     "Cancel login" : "Inlog annuleren",
     "Please authenticate using the selected factor." : "Log in met de geselecteerde factor.",
     "An error occurred while verifying the token" : "Er trad een fout op bij het verifiëren van het token",
-    "You are accessing the server from an untrusted domain." : "U benadert de server vanaf een niet vertrouwd domein.",
     "App update required" : "Bijwerken App vereist",
     "%s will be updated to version %s" : "%s wordt bijgewerkt naar versie %s",
     "These apps will be updated:" : "Deze apps worden bijgewerkt:",

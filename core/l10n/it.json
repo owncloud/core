@@ -346,7 +346,6 @@
     "Cancel login" : "Annulla l'accesso",
     "Please authenticate using the selected factor." : "Autentica utilizzando il fattore selezionato.",
     "An error occurred while verifying the token" : "Si è verificato un errore durante la verifica del token",
-    "You are accessing the server from an untrusted domain." : "Stai accedendo al server da un dominio non attendibile.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Contatta il tuo amministratore di sistema. Se sei un amministratore di questa istanza, configura l'impostazione \"trusted_domains\" in config/config.php.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Viene fornita una configurazione di esempio in config/config.sample.php o nella <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentazione</a>.",
     "App update required" : "Aggiornamento dell'applicazione richiesto",

@@ -338,7 +338,6 @@
     "Cancel login" : "Zrušit přihlášení",
     "Please authenticate using the selected factor." : "Přihlašte se za použití vybraného faktoru.",
     "An error occurred while verifying the token" : "Chyba při ověřování tokenu",
-    "You are accessing the server from an untrusted domain." : "Přistupujete na server z nedůvěryhodné domény.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Kontaktujte prosím svého správce. Pokud spravujete tuto instalaci, nastavte \"trusted_domains\" v souboru config/config.php.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Ukázková konfigurace je v souboru config/config.sample.php nebo v <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentaci</a>.",
     "App update required" : "Vyžadována aktualizace aplikace",

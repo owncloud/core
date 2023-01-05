@@ -344,7 +344,6 @@
     "Cancel login" : "ביטול התחברות",
     "Please authenticate using the selected factor." : "יש לאמת באמצעות גורם נבחר.",
     "An error occurred while verifying the token" : "שגיאה אירעה בזמן אימות המחרוזת",
-    "You are accessing the server from an untrusted domain." : "נכנסת לשרת משם מתחם / דומיין שאינו מהימן.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "נא ליצור קשר עם מנהל השרת שלך. אם אחריות הניהול על המופע הזה היא בידיך, עליך להגדיר את ההגדרה „trusted_domains” תחת config/config.php.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "מצורפת תצורה לדוגמה תחת config/config.sample.php או ב<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">תיעוד</a>.",
     "App update required" : "נדרש עדכון יישום",

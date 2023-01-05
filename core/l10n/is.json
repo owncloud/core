@@ -329,7 +329,6 @@
     "Cancel login" : "Hætta við innskráningu",
     "Please authenticate using the selected factor." : "Auðkenndu þig með völdu þrepi.",
     "An error occurred while verifying the token" : "Villa kom upp við að sannreyna teiknið",
-    "You are accessing the server from an untrusted domain." : "Þú ert að tengjast þjóninum frá ótreystu léni.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Hafðu samband við kerfisstjóra. Ef þú ert stjórnandi á þessu tilviki, stilltu \"trusted_domains\" setninguna í config/config.php. ",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Dæmi um stillingar má sjá í config/config.sample.php. eða í <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">hjálparskjölunum</a>.",
     "App update required" : "Forrit þarfnast uppfærslu ",

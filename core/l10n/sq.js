@@ -356,7 +356,6 @@ OC.L10N.register(
     "Cancel login" : "Anuloje hyrjen",
     "Please authenticate using the selected factor." : "Ju lutemi, bëni mirëfilltësimin duke përdorur faktorin e përzgjedhur.",
     "An error occurred while verifying the token" : "Ndodhi një gabim gjatë verifikimit të token-it",
-    "You are accessing the server from an untrusted domain." : "Po hyni në shërbyes nga një përkatësi jo e besuar.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Ju lutemi, lidhuni me përgjegjësin tuaj. Nëse jeni përgjegjësi i kësaj instance, formësoni rregullimin \"trusted_domains\" te config/config.php. ",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Një shembull formësimi jepet te config/config.sample.php ose te <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentimi</a>.",
     "App update required" : "Lypset përditësim aplikacioni",

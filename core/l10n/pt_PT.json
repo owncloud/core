@@ -303,7 +303,6 @@
     "Cancel login" : "Cancelar entrada",
     "Please authenticate using the selected factor." : "Por favor, autentique utilizando um segundo fator.",
     "An error occurred while verifying the token" : "Ocorreu um erro durante a verificação do código",
-    "You are accessing the server from an untrusted domain." : "Está a aceder ao servidor a partir de um domínio que não é de confiança.",
     "App update required" : "É necessário atualizar a aplicação",
     "%s will be updated to version %s" : "%s será atualizada para a versão %s.",
     "These apps will be updated:" : "Estas aplicações irão ser atualizadas.",

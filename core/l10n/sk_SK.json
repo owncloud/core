@@ -279,7 +279,6 @@
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Vo vašom účte bola zapnutá vyššia bezpečnosť. Prosím, ovarte svoju totožnosť druhým krokom.",
     "Cancel login" : "Zrušiť prihlásenie",
     "Please authenticate using the selected factor." : "Prosím, overte svoju totožnosť vybraným krokom.",
-    "You are accessing the server from an untrusted domain." : "Pristupujete na server v nedôveryhodnej doméne.",
     "App update required" : "Je nutná aktualizácia aplikácie",
     "%s will be updated to version %s" : "%s bude zaktualizovaný na verziu %s.",
     "These apps will be updated:" : "Tieto aplikácie budú aktualizované:",

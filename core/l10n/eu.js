@@ -251,7 +251,6 @@ OC.L10N.register(
     "This means only administrators can use the instance." : "Honek administradoreak bakarrik erabili dezakeela esan nahi du.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Jarri harremanetan zure sistema administratzailearekin mezu hau irauten badu edo bat-batean agertu bada.",
     "Thank you for your patience." : "Milesker zure patzientziagatik.",
-    "You are accessing the server from an untrusted domain." : "Zerbitzaria domeinu ez fidagarri batetik eskuratzen ari zara.",
     "The theme %s has been disabled." : "%s gaia desgaitu da.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Ekin aurretik egiazta ezazu datu basearen, ezarpenen karpetaren eta datuen karpetaren babeskopia duzula.",
     "Start update" : "Hasi eguneraketa",

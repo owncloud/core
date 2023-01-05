@@ -321,7 +321,6 @@ OC.L10N.register(
     "Cancel login" : "Avbryt innlogging",
     "Please authenticate using the selected factor." : "Vennligst bekreft med valgt faktor",
     "An error occurred while verifying the token" : "Det oppstod en feil ved verifisering av nøkkelen",
-    "You are accessing the server from an untrusted domain." : "Du aksesserer serveren fra et ikke-klarert domene.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Vennligst kontakt administratoren. Hvis du er administrator for denne instansen, konfigurer innstillingen \"trusted_domain\" i config/config.php. ",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Et eksempel på konfigurasjon finnes i config / config.sample.php eller i <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentasjonen</a>.",
     "App update required" : "App-oppdatering kreves",

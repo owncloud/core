@@ -320,7 +320,6 @@ OC.L10N.register(
     "This means only administrators can use the instance." : "Ini berarti hanya administrator yang dapat menggunakan ownCloud.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Hubungi administrator sistem anda jika pesan ini terus muncul atau muncul tiba-tiba.",
     "Thank you for your patience." : "Terima kasih atas kesabaran anda.",
-    "You are accessing the server from an untrusted domain." : "Anda mengakses server dari domain yang tidak terpercaya.",
     "App update required" : "Diperlukan perbarui aplikasi",
     "%s will be updated to version %s" : "%s akan diperbaarui ke versi %s",
     "These apps will be updated:" : "Aplikasi berikut akan diperbarui:",

@@ -354,7 +354,6 @@
     "Cancel login" : "Girişi iptal et",
     "Please authenticate using the selected factor." : "Lütfen seçilen yöntemle kimlik doğrulaması yapın.",
     "An error occurred while verifying the token" : "Belirteç onaylanırken bir hata oluştu",
-    "You are accessing the server from an untrusted domain." : "Sunucuya güvenilmeyen bir alan adından ulaşıyorsunuz.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Lütfen yöneticiniz ile iletişime geçin. Eğer bu örneğin bir yöneticisi iseniz, config/config.php dosyası içerisindeki \"trusted_domain\" ayarını yapılandırın.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Örnek bir yapılandırma config/config.sample.php dosyasında veya <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">belgelerde</a> sağlanmıştır.",
     "App update required" : "Uygulama güncellemesi gerekli",

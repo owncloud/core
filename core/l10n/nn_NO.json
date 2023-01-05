@@ -300,7 +300,6 @@
     "Cancel login" : "Avbryta pålogging",
     "Please authenticate using the selected factor." : "Ver venleg å autentiser med vald faktor.",
     "An error occurred while verifying the token" : "Feil ved verifikasjon av symbol.",
-    "You are accessing the server from an untrusted domain." : "Du når denne tenaren frå eit domene som ikkje er klarert.",
     "App update required" : "Forbetring av program er påkrevd",
     "%s will be updated to version %s" : "%s vil bli forbetra til versjon %s",
     "These apps will be updated:" : "Desse programma vil bli oppdatert:",

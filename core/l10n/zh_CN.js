@@ -350,7 +350,6 @@ OC.L10N.register(
     "Cancel login" : "取消登录",
     "Please authenticate using the selected factor." : "请使用所选择的因素验证。",
     "An error occurred while verifying the token" : "在验证令牌时出错",
-    "You are accessing the server from an untrusted domain." : "您正在访问来自不信任域名的服务器。",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "请联系你的系统管理员。如果你是系统管理员，配置 config/config.php 文件中参数 \"trusted_domain\" 设置。",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "一个示例配置在 config/config.sample.php 文件或 <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">文档</a>中有提供。",
     "App update required" : "必须的应用更新",

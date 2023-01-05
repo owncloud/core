@@ -273,7 +273,6 @@ OC.L10N.register(
     "Cancel login" : "Cancellar session",
     "Please authenticate using the selected factor." : "Per favor, authentica te usante le factor seligite.",
     "An error occurred while verifying the token" : "Un error ha occurrite durante le verification del token.",
-    "You are accessing the server from an untrusted domain." : "Tu accede al servitor ab un dominio non fidite.",
     "App update required" : "Actualisation del app necessari",
     "%s will be updated to version %s" : "%s essera actualisate al version %s",
     "These apps will be updated:" : "Iste apps essera actualisate:",

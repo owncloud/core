@@ -300,7 +300,6 @@
     "Cancel login" : "لغو ورود",
     "Please authenticate using the selected factor." : "لطفا با استفاده از عامل انتخاب شده تایید کنید.",
     "An error occurred while verifying the token" : "هنگام تایید برچسب خطایی روی داد",
-    "You are accessing the server from an untrusted domain." : "شما از یک دامنه غیر قابل اعتماد به سرور دسترسی پیدا می کنید.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "لطفا با مدیر خود تماس بگیرید. اگر شما مدیری از این نمونه ها هستید، تنظیمات \"دامنه های قابل اعتماد\" در config/config.php را پیکربندی کنید.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "نمونه ای از پیکربندی در config/config.sample.php در <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>ارائه شده است.",
     "App update required" : "نیاز به بروزرسانی برنامه وجود دارد",

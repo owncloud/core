@@ -350,7 +350,6 @@ OC.L10N.register(
     "Cancel login" : "ยกเลิกการเข้าสู่ระบบ",
     "Please authenticate using the selected factor." : "กรุณาตรวจสอบโดยเลือกปัจจัยอื่น ๆ",
     "An error occurred while verifying the token" : "เกิดข้อผิดพลาดขณะทำการตรวจสอบโทเค็น",
-    "You are accessing the server from an untrusted domain." : "คุณกำลังเข้าถึงเซิร์ฟเวอร์จากโดเมนที่ไม่น่าเชื่อถือ",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "โปรดติดต่อผู้ดูแลระบบของคุณ ถ้าคุณเป็นผู้ดูแลระบบของอินสแตนซ์นี้ให้กำหนดการตั้งค่า \"trusted_domains\" ใน config/config.php",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "ตัวอย่างการกำหนดค่าสามารถดูได้ที่  config/config.sample.php หรือที่ <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">เอกสาร</a>",
     "App update required" : "จำเป็นต้องอัปเดตแอปฯ",

@@ -354,7 +354,6 @@
     "Cancel login" : "Отмяна на влизането",
     "Please authenticate using the selected factor." : "Моля, удостоверете автентичността си, като използвате избрания фактор.",
     "An error occurred while verifying the token" : "Възникна грешка при проверката на токена",
-    "You are accessing the server from an untrusted domain." : "Имате достъп до сървъра от ненадежден домейн.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Моля свържете се с вашия администратор. Ако вие сте администратор на тази система, конфигурирайте настройката \"trusted_domains\" в config/config.php.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Примерната конфигурация е предоставена в config/config.sample.php или в <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацията</a>.",
     "App update required" : "Актуализацията на приложението е задължително",

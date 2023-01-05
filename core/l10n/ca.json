@@ -266,7 +266,6 @@
     "Thank you for your patience." : "Gràcies per la paciència.",
     "Cancel login" : "Cancel·lar l'accés",
     "An error occurred while verifying the token" : "Detectat un problema al verificar l'identificador",
-    "You are accessing the server from an untrusted domain." : "Esteu accedint al servidor des d'un domini no fiable",
     "App update required" : "Cal que actualitzeu la aplicació",
     "%s will be updated to version %s" : "%s s'actualitzarà a la versió %s",
     "These apps will be updated:" : "Aquestes aplicacions s'actualitzaran:",

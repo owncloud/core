@@ -214,7 +214,6 @@ OC.L10N.register(
     "This means only administrators can use the instance." : "То значи да га могу користити само администратори.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Контактирајте администратора ако се порука понавља или се неочекивано појавила.",
     "Thank you for your patience." : "Хвала вам на стрпљењу.",
-    "You are accessing the server from an untrusted domain." : "Приступате серверу са непоузданог домена.",
     "The theme %s has been disabled." : "Тема %s је онемогућена.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Проверите да ли сте направили резервну копију фасцикли са подешавањима и подацима пре него што наставите.",
     "Start update" : "Почни надоградњу",

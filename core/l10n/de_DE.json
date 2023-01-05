@@ -354,7 +354,6 @@
     "Cancel login" : "Anmelden abbrechen",
     "Please authenticate using the selected factor." : "Bitte authentisieren Sie sich mit dem ausgewählten zweiten Faktor. ",
     "An error occurred while verifying the token" : "Es ist ein Fehler bei der Verifizierung des Tokens aufgetreten",
-    "You are accessing the server from an untrusted domain." : "Sie greifen von einer nicht vertrauenswürdigen Domain auf den Server zu.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Bitte kontaktieren Sie Ihren Administrator. Wenn Sie Administrator dieser Instanz sind, konfigurieren Sie bitte die „trusted_domains“-Einstellung in config/config.php.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Eine Beispielkonfiguration wird unter config/config.sample.php in der <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">Dokumentation</a> bereitgestellt.",
     "App update required" : "App-Update notwendig",

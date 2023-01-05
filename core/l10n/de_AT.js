@@ -263,7 +263,6 @@ OC.L10N.register(
     "This means only administrators can use the instance." : "Dies bedeutet, dass diese Instanz nur von Administratoren genutzt werden kann.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Kontaktiere Deinen Systemadministrator, wenn diese Meldung dauerhaft oder unerwartet erscheint.",
     "Thank you for your patience." : "Vielen Dank für Deine Geduld.",
-    "You are accessing the server from an untrusted domain." : "Du greifst von einer nicht vertrauenswürdigen Domain auf den Server zu.",
     "App update required" : "Appupdate notwendig",
     "%s will be updated to version %s" : "%s wird auf Version %s aktuallisiert",
     "These apps will be updated:" : "Diese Apps werden aktuallisiert:",

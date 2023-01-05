@@ -351,7 +351,6 @@ OC.L10N.register(
     "Cancel login" : "Ακύρωση εισόδου",
     "Please authenticate using the selected factor." : "Παρακαλούμε πιστοποιήστε με την χρήση του επιλεγμένου παράγοντα.",
     "An error occurred while verifying the token" : "Παρουσιάστηκε σφάλμα κατά την επαλήθευση του διακριτικού",
-    "You are accessing the server from an untrusted domain." : "Η προσπέλαση του διακομιστή γίνεται από μη έμπιστο τομέα.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Παρακαλούμε επικοινωνήστε με τον διαχειριστή σας. Εάν είστε διαχειριστής αυτής της εγκατάστασης, ρυθμίστε τη επιλογή \"trusted_domains\" στο config/config.php. ",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Ένα παράδειγμα ρύθμισης παρέχεται στο config/config.sample.php ή στη <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">τεκμηρίωση</a>.",
     "App update required" : "Απαιτείται ενημέρωση εφαρμογής",

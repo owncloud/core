@@ -326,7 +326,6 @@ OC.L10N.register(
     "Cancel login" : "Bejelentkezés megszakítása",
     "Please authenticate using the selected factor." : "Kérjük a bejelentkezéshez használja a kiválasztott faktort.",
     "An error occurred while verifying the token" : "Egy hiba merült fel a token érvényesítése közben",
-    "You are accessing the server from an untrusted domain." : "A kiszolgálót nem megbízható domain névvel éri el.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Kérjük lépjen kapcsolatba a rendszergazdával. Ha a rendszer adminisztrátora, állítsa be a config / config.php \"trusted_domains\" beállítást.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Példa konfiguráció a config / config.sample.php vagy a <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\"> dokumentáció </a>.",
     "App update required" : "Alkalmazás frissítése szükséges",
