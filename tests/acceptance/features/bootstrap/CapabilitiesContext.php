@@ -189,14 +189,18 @@ class CapabilitiesContext implements Context {
 	}
 
 	/**
-	 * @param string|int $expected
-	 * @param string $actual
-	 * @param string $checkingForKey
+	 * Checks if the given string is a regex or not
+	 * If it is a regex, then it compares the actual value against the regex
+	 * If it is not a regex, then it compares the actual value against the expected value
+	 *
+	 * @param string $expected expected value to compare
+	 * @param string $actual actual value to compare against
+	 * @param string $checkingForKey the key that is being checked
 	 *
 	 * @return void
 	 */
-	public function assertStringEqualsRegexOrSubstitution($expected, string $actual, string $checkingForKey) {
-		if (\is_string($expected) && $this->isRegex($expected)) {
+	public function assertStringEqualsRegexOrSubstitution(string $expected, string $actual, string $checkingForKey) {
+		if ($this->isRegex($expected)) {
 			// if the value is a regex, then compare against the actual value
 			// a value is a regex if it starts and ends with a slash
 			// if a slash is needed in the regex, then it needs to be escaped
@@ -207,10 +211,10 @@ class CapabilitiesContext implements Context {
 				"\nChecking for key: '" . $checkingForKey . "'"
 			);
 		} else {
-			$expectedSubstitutedValue = $this->featureContext->substituteInLineCodes((string) $expected);
+			$expectedSubstitutedValue = $this->featureContext->substituteInLineCodes($expected);
 			Assert::assertEquals(
 				$expectedSubstitutedValue,
-				(string)$actual,
+				$actual,
 				"Expected value '$expected' does not match." .
 				"\nSubstituted value: " . $expectedSubstitutedValue .
 				"\nActual value: '" . $actual . "'" .
@@ -220,9 +224,11 @@ class CapabilitiesContext implements Context {
 	}
 
 	/**
-	 * @param array $expectedArray
-	 * @param array $actualArray
-	 * @param string $checkingForKey
+	 * Checks if the values of the expected array are in the actual array
+	 *
+	 * @param array $expectedArray the expected array to check
+	 * @param array $actualArray the actual array to check against
+	 * @param string $checkingForKey the key that is being checked
 	 *
 	 * @return void
 	 * @throws Exception
@@ -237,6 +243,8 @@ class CapabilitiesContext implements Context {
 	}
 
 	/**
+	 * Checks if the values of the values expected array the actual array are equal
+	 *
 	 * @param array $expectedArray
 	 * @param array $actualArray
 	 * @param string $checkingForKey
@@ -259,80 +267,68 @@ class CapabilitiesContext implements Context {
 		);
 
 		foreach ($expectedValues as $key => $expectedValue) {
-			$expectedValues[$key] = $this->featureContext->substituteInLineCodes($expectedValue);
-			if (\is_string($expectedValue) && $this->isRegex($expectedValue)) {
-				Assert::assertTrue(
-					(bool) \preg_match($expectedValue, $actualValues[$key]),
-					"Expected regex '$expectedValue' did not match." .
-					"\nActual array: '" . \json_encode($actualValues) . "'" .
-					"\nChecking for key: '" . $checkingForKey . "'"
-				);
-			} else {
-				Assert::assertEquals(
-					$expectedValues[$key],
-					$actualValues[$key],
-					"Expected value '$expectedValues[$key]' was not found in the actual array." .
-					"\nActual array: '" . \json_encode($actualValues) . "'" .
-					"\nChecking for key: '" . $checkingForKey . "'"
-				);
-			}
+			$this->assertStringEqualsRegexOrSubstitution($expectedValue, $actualValues[$key], $checkingForKey);
 		}
 	}
 
 	/**
-	 * @param array $expected
-	 * @param array $actual
+	 * Checks if the actual array contains the expected array
+	 *
+	 * @param array $expectedArray array to compare
+	 * @param array $actualArray array to compare against
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function assertArrayContains(array $expected, array $actual) {
-		foreach ($expected as $key => $value) {
+	public function assertArrayContains(array $expectedArray, array $actualArray) {
+		foreach ($expectedArray as $key => $value) {
 			// if the types of expected and actual values are different, then the assertion fails right away
 			Assert::assertEquals(
 				\gettype($value),
-				\gettype($actual[$key]),
+				\gettype($actualArray[$key]),
 				"The type of the value for key '$key' was not the expected type.\n" .
 				"Expected: '" . \gettype($value) . "'\n" .
-				"Actual: '" . \gettype($actual[$key]) . "'"
+				"Actual: '" . \gettype($actualArray[$key]) . "'"
 			);
 
 			if (\is_array($value)) {
 				if (\count($value) === 0) {
 					Assert::assertEquals(
 						0,
-						\count($actual[$key]),
+						\count($actualArray[$key]),
 						"Expected an empty array for key '$key' but got a non-empty array.\n" .
-						"Actual: '" . \json_encode($actual[$key]) . "'"
+						"Actual: '" . \json_encode($actualArray[$key]) . "'"
 					);
 				}
-				if ($this->isMultiDimensionalArray($actual[$key])) {
+				if ($this->isMultiDimensionalArray($actualArray[$key])) {
 					// if the value is a multidimensional array then, all of the
 					// expected keys must be present in the actual array keys
 					Assert::assertEquals(
-						\array_diff(\array_keys($expected), \array_keys($actual)),
+						\array_diff(\array_keys($expectedArray), \array_keys($actualArray)),
 						[],
 						'The expected keys were not found in the actual array.' .
-						"\nFound keys: " . \implode(', ', \array_keys($actual)) .
-						"\nExpected keys: " . \implode(', ', \array_keys($expected))
+						"\nFound keys: " . \implode(', ', \array_keys($actualArray)) .
+						"\nExpected keys: " . \implode(', ', \array_keys($expectedArray))
 					);
-					$this->assertArrayContains($value, $actual[$key]);
+					$this->assertArrayContains($value, $actualArray[$key]);
 				} else {
-					$this->assert1DArrayContains($value, $actual[$key], $key);
+					$this->assert1DArrayContains($value, $actualArray[$key], $key);
 				}
 			} else {
-				if (\is_array($actual[$key])) {
-					$this->assertArrayContainsRegexOrSubstitution($value, $actual[$key], $key);
+				if (\is_array($actualArray[$key])) {
+					$this->assertArrayContainsRegexOrSubstitution($value, $actualArray[$key], $key);
 				} else {
-					$this->assertStringEqualsRegexOrSubstitution($value, $actual[$key], $key);
+					$this->assertStringEqualsRegexOrSubstitution($value, $actualArray[$key], $key);
 				}
 			}
 		}
 	}
 
 	/**
-	 * @param array $expected
-	 * @param array $actual
+	 * Checks if the actual array equals the expected array
+	 *
+	 * @param array $expected array to compare
+	 * @param array $actual array to compare against
 	 *
 	 * @return void
 	 * @throws Exception
@@ -349,6 +345,7 @@ class CapabilitiesContext implements Context {
 				"\nChecking against key: '" . $key . "'"
 				. " within data: " . \json_encode($actual, JSON_PRETTY_PRINT)
 			);
+			// if the types of expected and actual values are different, then the assertion fails right away
 			Assert::assertEquals(
 				\gettype($value),
 				\gettype($actual[$key]),
