@@ -94,7 +94,7 @@ Feature: capabilities
     {
       "capabilities": {
         "files_sharing": {
-          "api_enabled": "1",
+          "api_enabled": 1,
           "user": {
             "expire_date": {
               "enabled": {}
