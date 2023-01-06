@@ -344,7 +344,6 @@ OC.L10N.register(
     "Cancel login" : "ログインを中止",
     "Please authenticate using the selected factor." : "選択したデバイスを利用して認証してください。",
     "An error occurred while verifying the token" : "トークンの検証中にエラーが発生しました",
-    "You are accessing the server from an untrusted domain." : "信頼されていないドメインからサーバーにアクセスしています。",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "管理者にお問い合わせください。もしあなたが管理者ならば、config/config.php にある”trusted_domains\"を設定してください。",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "設定の例は config/config.sample.php または<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">ドキュメント</a>を参照してください。",
     "App update required" : "アプリの更新が必要です",
