@@ -23,15 +23,16 @@ Feature: file versions remember the author of each version
     And user "David" has uploaded file with content "uploaded content david" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "3"
-    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
-    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
-    And as users "Alice,Brian,Carol,David" the authors of the versions of file "/test/textfile0.txt" should be:
+    And the number of noncurrent versions should be "3"
+    And the content of noncurrent version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
+    And the content of noncurrent version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol,David" the authors of the current and noncurrent versions of file "/test/textfile0.txt" should be:
       | index | author |
-      | 1     | Carol  |
-      | 2     | Brian  |
-      | 3     | Alice  |
+      | 1     | David  |
+      | 2     | Carol  |
+      | 3     | Brian  |
+      | 4     | Alice  |
 
   @skip_on_objectstore
   Scenario: enable file versioning and check the history of changes from multiple users for shared folder in the group
@@ -46,13 +47,14 @@ Feature: file versions remember the author of each version
     And user "Carol" has uploaded file with content "uploaded content carol" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "2"
-    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
-    And as users "Alice,Brian,Carol" the authors of the versions of file "/test/textfile0.txt" should be:
+    And the number of noncurrent versions should be "2"
+    And the content of noncurrent version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol" the authors of the current and noncurrent versions of file "/test/textfile0.txt" should be:
       | index | author |
-      | 1     | Brian  |
-      | 2     | Alice  |
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
 
   @skip_on_objectstore
   Scenario: enable file versioning and check the history of changes from multiple users for shared file in the group
@@ -66,13 +68,14 @@ Feature: file versions remember the author of each version
     And user "Carol" has uploaded file with content "uploaded content carol" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "2"
-    And the content of version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
-    And as users "Alice,Brian,Carol" the authors of the versions of file "/textfile0.txt" should be:
+    And the number of noncurrent versions should be "2"
+    And the content of noncurrent version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol" the authors of the current and noncurrent versions of file "/textfile0.txt" should be:
       | index | author |
-      | 1     | Brian  |
-      | 2     | Alice  |
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
 
   @skip_on_objectstore @skipOnEncryption @issue-encryption-321
   Scenario: enable file versioning and check the history of changes from multiple users while moving file in/out of a subfolder
@@ -90,15 +93,16 @@ Feature: file versions remember the author of each version
     And user "Brian" has moved file "/textfile0.txt" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "3"
-    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
-    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
-    And as users "Alice,Brian,Carol" the authors of the versions of file "/test/textfile0.txt" should be:
+    And the number of noncurrent versions should be "3"
+    And the content of noncurrent version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
+    And the content of noncurrent version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol" the authors of the current and noncurrent versions of file "/test/textfile0.txt" should be:
       | index | author |
-      | 1     | Carol  |
-      | 2     | Brian  |
-      | 3     | Alice  |
+      | 1     | Brian  |
+      | 2     | Carol  |
+      | 3     | Brian  |
+      | 4     | Alice  |
 
   @skip_on_objectstore
   Scenario: enable file versioning and check the history of changes from multiple users after renaming file by sharer
@@ -113,17 +117,19 @@ Feature: file versions remember the author of each version
     And user "Alice" has moved file "/exist.txt" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "2"
-    And the content of version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
-    And as user "Alice" the authors of the versions of file "/textfile0.txt" should be:
+    And the number of noncurrent versions should be "2"
+    And the content of noncurrent version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as user "Alice" the authors of the current and noncurrent versions of file "/textfile0.txt" should be:
       | index | author |
-      | 1     | Brian  |
-      | 2     | Alice  |
-    And as users "Brian,Carol" the authors of the versions of file "/exist.txt" should be:
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
+    And as users "Brian,Carol" the authors of the current and noncurrent versions of file "/exist.txt" should be:
       | index | author |
-      | 1     | Brian  |
-      | 2     | Alice  |
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
 
   @skip_on_objectstore
   Scenario: enable file versioning and check the history of changes in sharer after renaming file by sharee
@@ -138,17 +144,19 @@ Feature: file versions remember the author of each version
     And user "Brian" has moved file "/exist.txt" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "exist.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "2"
-    And the content of version index "1" of file "/exist.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "2" of file "/exist.txt" for user "Alice" should be "uploaded content alice"
-    And as users "Alice,Carol" the authors of the versions of file "/exist.txt" should be:
+    And the number of noncurrent versions should be "2"
+    And the content of noncurrent version index "1" of file "/exist.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "2" of file "/exist.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Carol" the authors of the current and noncurrent versions of file "/exist.txt" should be:
       | index | author |
-      | 1     | Brian  |
-      | 2     | Alice  |
-    And as user "Brian" the authors of the versions of file "/textfile0.txt" should be:
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
+    And as user "Brian" the authors of the current and noncurrent versions of file "/textfile0.txt" should be:
       | index | author |
-      | 1     | Brian  |
-      | 2     | Alice  |
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
 
   @skip_on_objectstore
   Scenario: enable file versioning and check the history of changes from multiple users when reshared after unshared by sharer
@@ -166,15 +174,16 @@ Feature: file versions remember the author of each version
     And user "Alice" has shared folder "/test" with group "grp1"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "3"
-    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
-    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
-    And as users "Alice,Brian,Carol" the authors of the versions of file "/test/textfile0.txt" should be:
+    And the number of noncurrent versions should be "3"
+    And the content of noncurrent version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
+    And the content of noncurrent version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol" the authors of the current and noncurrent versions of file "/test/textfile0.txt" should be:
       | index | author |
-      | 1     | Carol  |
-      | 2     | Brian  |
-      | 3     | Alice  |
+      | 1     | Alice  |
+      | 2     | Carol  |
+      | 3     | Brian  |
+      | 4     | Alice  |
 
   @skip_on_objectstore
   Scenario: enable file versioning and check the history of changes from multiple users who have a matching folder/file
@@ -194,30 +203,36 @@ Feature: file versions remember the author of each version
     And user "David" has uploaded file with content "uploaded content david" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "3"
-    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
-    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
-    And as users "Alice,David" the authors of the versions of file "/test/textfile0.txt" should be:
+    And the number of noncurrent versions should be "3"
+    And the content of noncurrent version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
+    And the content of noncurrent version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,David" the authors of the current and noncurrent versions of file "/test/textfile0.txt" should be:
       | index | author |
-      | 1     | Carol  |
-      | 2     | Brian  |
-      | 3     | Alice  |
-    And as users "Brian,Carol" the authors of the versions of file "/test (2)/textfile0.txt" should be:
+      | 1     | David  |
+      | 2     | Carol  |
+      | 3     | Brian  |
+      | 4     | Alice  |
+    And as users "Brian,Carol" the authors of the current and noncurrent versions of file "/test (2)/textfile0.txt" should be:
       | index | author |
-      | 1     | Carol  |
-      | 2     | Brian  |
-      | 3     | Alice  |
+      | 1     | David  |
+      | 2     | Carol  |
+      | 3     | Brian  |
+      | 4     | Alice  |
     When user "Brian" gets the number of versions of file "/test/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "1"
-    And the content of version index "1" of file "/test/textfile0.txt" for user "Brian" should be "duplicate brian"
-    And as user "Brian" the authors of the versions of file "/test/textfile0.txt" should be:
+    And the number of noncurrent versions should be "1"
+    And the content of noncurrent version index "1" of file "/test/textfile0.txt" for user "Brian" should be "duplicate brian"
+    And as user "Brian" the authors of the current and noncurrent versions of file "/test/textfile0.txt" should be:
       | index | author |
       | 1     | Brian  |
+      | 2     | Brian  |
     When user "Carol" gets the number of versions of file "/test/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "0"
+    And the number of noncurrent versions should be "0"
+    And as user "Carol" the authors of the current and noncurrent versions of file "/test/textfile0.txt" should be:
+      | index | author |
+      | 1     | Carol  |
 
   @skip_on_objectstore
   Scenario: enable file versioning and check the history of changes from multiple users who have a matching file
@@ -234,30 +249,36 @@ Feature: file versions remember the author of each version
     And user "David" has uploaded file with content "uploaded content david" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "3"
-    And the content of version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content carol"
-    And the content of version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
-    And the content of version index "3" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
-    And as users "Alice,David" the authors of the versions of file "/textfile0.txt" should be:
+    And the number of noncurrent versions should be "3"
+    And the content of noncurrent version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content carol"
+    And the content of noncurrent version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of noncurrent version index "3" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,David" the authors of the current and noncurrent versions of file "/textfile0.txt" should be:
       | index | author |
-      | 1     | Carol  |
-      | 2     | Brian  |
-      | 3     | Alice  |
-    And as users "Brian,Carol" the authors of the versions of file "/textfile0 (2).txt" should be:
+      | 1     | David  |
+      | 2     | Carol  |
+      | 3     | Brian  |
+      | 4     | Alice  |
+    And as users "Brian,Carol" the authors of the current and noncurrent versions of file "/textfile0 (2).txt" should be:
       | index | author |
-      | 1     | Carol  |
-      | 2     | Brian  |
-      | 3     | Alice  |
+      | 1     | David  |
+      | 2     | Carol  |
+      | 3     | Brian  |
+      | 4     | Alice  |
     When user "Brian" gets the number of versions of file "/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "1"
-    And the content of version index "1" of file "/textfile0.txt" for user "Brian" should be "duplicate brian"
-    And as user "Brian" the authors of the versions of file "/textfile0.txt" should be:
+    And the number of noncurrent versions should be "1"
+    And the content of noncurrent version index "1" of file "/textfile0.txt" for user "Brian" should be "duplicate brian"
+    And as user "Brian" the authors of the current and noncurrent versions of file "/textfile0.txt" should be:
       | index | author |
       | 1     | Brian  |
+      | 2     | Brian  |
     When user "Carol" gets the number of versions of file "/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "0"
+    And the number of noncurrent versions should be "0"
+    And as user "Carol" the authors of the current and noncurrent versions of file "/textfile0.txt" should be:
+      | index | author |
+      | 1     | Carol  |
 
   @skip_on_objectstore
   Scenario: enable file versioning and check the version author after restoring a version of a file inside a folder

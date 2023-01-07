@@ -245,6 +245,11 @@ class Storage {
 	 */
 	public static function postStore(string $filename) {
 		if (self::metaEnabled()) {
+			// we don't support versioned directories
+			if (Filesystem::is_dir($filename) || !Filesystem::file_exists($filename)) {
+				return false;
+			}
+
 			list($uid, $currentFileName) = self::getUidAndFilename($filename);
 			$versionMetadata = self::$metaData->getCurrent($currentFileName, $uid);
 			if (!$versionMetadata) {
@@ -542,6 +547,11 @@ class Storage {
 	 */
 	public static function publishCurrentVersion($filename) {
 		if (self::metaEnabled()) {
+			// we don't support versioned directories
+			if (Filesystem::is_dir($filename) || !Filesystem::file_exists($filename)) {
+				return false;
+			}
+			
 			list($uid, $currentFileName) = self::getUidAndFilename($filename);
 
 			// overwrite current file metadata with minor=false to create new major version

@@ -98,11 +98,6 @@ class MetaStorage {
 			$currentFileName = \substr($currentFileName, 0, \strlen($currentFileName) - 5);
 		}
 
-		// we don't support versioned directories
-		if (Filesystem::is_dir($currentFileName) || !Filesystem::file_exists($currentFileName)) {
-			return false;
-		}
-
 		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
 		$userView = $this->fileHelper->getUserView($uid);
 		$this->fileHelper->createMissingDirectories($userView, $currentFileName);
@@ -148,10 +143,6 @@ class MetaStorage {
 	 * @throws \Exception
 	 */
 	public function getCurrent(string $currentFileName, string $uid) : array {
-		// we don't support versioned directories
-		if (Filesystem::is_dir($currentFileName) || !Filesystem::file_exists($currentFileName)) {
-			return [];
-		}
 		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
 
 		return $this->readMetaFile($absPathOnDisk);

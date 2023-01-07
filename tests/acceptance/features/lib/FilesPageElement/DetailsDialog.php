@@ -67,7 +67,7 @@ class DetailsDialog extends OwncloudPage {
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
-	private $tagEditInputXpath = "//input[@id='view12-rename-input']";
+	private $tagEditInputXpath = "//input[@id='view13-rename-input']";
 	protected $tagDeleteConfirmButtonXpath
 		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='Yes']";
 
@@ -81,7 +81,7 @@ class DetailsDialog extends OwncloudPage {
 
 	private $versionsListXpath = "//div[@id='versionsTabView']//ul[@class='versions']";
 	private $versionDetailsXpath = "//div[@id='versionsTabView']//ul[@class='versions']/li//div[@class='version-details']";
-	private $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[1]/div/a";
+	private $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[2]/div/a";
 
 	/**
 	 *

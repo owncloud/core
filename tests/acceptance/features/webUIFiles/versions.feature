@@ -12,7 +12,7 @@ Feature: Versions of a file
       | Alice    |
 
   @skipOnStorage:ceph @files_primary_s3-issue-67
-  Scenario: upload new file with same name to see if different versions are shown
+  Scenario: upload new file with same name to see if current version and noncurrent versions are shown
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
@@ -20,7 +20,7 @@ Feature: Versions of a file
     And user "Alice" has uploaded file with content "new lorem content" to "/randomfile.txt"
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
     Then the content of file "randomfile.txt" for user "Alice" should be "new lorem content"
-    And the versions list should contain 2 entries
+    And the versions list should contain 3 entries
 
 
   Scenario: restoring file to old version changes the content of the file
@@ -33,7 +33,7 @@ Feature: Versions of a file
     Then the content of file "randomfile.txt" for user "Alice" should be "lorem content"
 
   @files_sharing-app-required
-  Scenario: sharee can see the versions of a file
+  Scenario: sharee can see the current version and noncurrent versions of a file
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "lorem content" to "/randomfile.txt"
     And user "Alice" has uploaded file with content "lorem" to "/randomfile.txt"
@@ -43,10 +43,10 @@ Feature: Versions of a file
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
     Then the content of file "randomfile.txt" for user "Brian" should be "new lorem content"
-    And the versions list should contain 2 entries
+    And the versions list should contain 3 entries
 
   @skipOnStorage:ceph @files_primary_s3-issue-155
-  Scenario: file versions cannot be seen on the webUI after deleting versions
+  Scenario: file versions should show only current version on the webUI after deleting versions
     Given user "Alice" has uploaded file with content "lorem content" to "/randomfile.txt"
     And user "Alice" has uploaded file with content "lorem" to "/randomfile.txt"
     And user "Alice" has uploaded file with content "new lorem content" to "/randomfile.txt"
@@ -54,7 +54,7 @@ Feature: Versions of a file
     And the user has browsed to the files page
     And the administrator has cleared the versions for user "Alice"
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    And the versions list should contain 0 entries
+    And the versions list should contain 1 entries
 
   @skipOnStorage:ceph @files_primary_s3-issue-155
   Scenario: file versions cannot be seen on the webUI only for user whose versions is deleted
@@ -67,15 +67,15 @@ Feature: Versions of a file
     And the user has browsed to the files page
     And the administrator has cleared the versions for user "Alice"
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the versions list should contain 0 entries
+    Then the versions list should contain 1 entries
     When the user logs out of the webUI
     And user "Brian" logs in using the webUI
     And the user has browsed to the files page
     And the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the versions list should contain 1 entries
+    Then the versions list should contain 2 entries
 
   @skipOnStorage:ceph @files_primary_s3-issue-155
-  Scenario: file versions cannot be seen on the webUI for all users after deleting versions for all users
+  Scenario: file versions show only current version on the webUI for all users after deleting versions for all users
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "lorem content" to "/randomfile.txt"
     And user "Alice" has uploaded file with content "lorem" to "/randomfile.txt"
@@ -85,12 +85,12 @@ Feature: Versions of a file
     And the user has browsed to the files page
     And the administrator has cleared the versions for all users
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the versions list should contain 0 entries
+    Then the versions list should contain 1 entries
     When the user logs out of the webUI
     And user "Brian" logs in using the webUI
     And the user has browsed to the files page
     And the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the versions list should contain 0 entries
+    Then the versions list should contain 1 entries
 
   @skipOnStorage:ceph @files_primary_s3-issue-67
   Scenario: versions author is displayed
@@ -101,7 +101,7 @@ Feature: Versions of a file
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the authors of the versions of file "randomfile.txt" should be:
+    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Alice  |
       | 2     | Alice  |
@@ -120,11 +120,12 @@ Feature: Versions of a file
     And user "Carol" has logged in using the webUI
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the authors of the versions of file "randomfile.txt" should be:
+    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Brian  |
-      | 2     | Alice  |
+      | 2     | Brian  |
       | 3     | Alice  |
+      | 4     | Alice  |
 
   @skipOnStorage:ceph @files_primary_s3-issue-67
   Scenario: sharee can see the versions' respective author after version restore
@@ -140,14 +141,17 @@ Feature: Versions of a file
     And user "Carol" has logged in using the webUI
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the authors of the versions of file "randomfile.txt" should be:
-      | index | author |
-      | 1     | Alice  |
-      | 2     | Brian  |
-      | 3     | Alice  |
-    When the user restores the file to last version using the webUI
-    Then the authors of the versions of file "randomfile.txt" should be:
+    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Carol  |
-      | 2     | Brian  |
+      | 2     | Alice  |
+      | 3     | Brian  |
+      | 4     | Alice  |
+    When the user restores the file to last version using the webUI
+    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
+      | index | author |
+      | 1     | Carol  |
+      | 2     | Carol  |
       | 3     | Alice  |
+      | 4     | Brian  |
+      | 5     | Alice  |

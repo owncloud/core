@@ -512,14 +512,14 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the number of versions should be :arg1
+	 * @Then the number of noncurrent versions should be :arg1
 	 *
 	 * @param int $number
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theNumberOfVersionsShouldBe(int $number):void {
+	public function theNumberOfNoncurrentVersionsShouldBe(int $number):void {
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml(
