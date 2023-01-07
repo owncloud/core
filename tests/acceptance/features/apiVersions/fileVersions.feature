@@ -95,7 +95,7 @@ Feature: dav-versions
     And the content of file "/davtest.txt" for user "Alice" should be "Back To The Future."
 
   @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161
-  Scenario Outline: Uploading a chunked file does create the correct version that can be restored
+  Scenario Outline: Uploading a chunked file does create the correct version that can be restored from past version
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/textfile0.txt" in 2 chunks using the WebDAV API
@@ -115,14 +115,14 @@ Feature: dav-versions
       | new      | 204         |
 
   @skipOnStorage:ceph @files_primary_s3-issue-161 @newChunking @skipOnStorage:scality
-  Scenario: Uploading a file asynchronously does create the correct version that can be restored
+  Scenario: Uploading a file asynchronously does create the correct version that can be restored from past version
     Given the administrator has enabled async operations
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "textfile0.txt" in 2 chunks using the WebDAV API
     And user "Alice" uploads file "filesForUpload/lorem.txt" asynchronously to "textfile0.txt" in 2 chunks using the WebDAV API
     And user "Alice" restores version index "1" of file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code of responses on all endpoints should be "202"
-    And the version folder of file "/textfile0.txt" for user "Alice" should contain "2" elements
+    And the version folder of file "/textfile0.txt" for user "Alice" should contain "3" elements
     And the content of file "/textfile0.txt" for user "Alice" should be "Dav-Test"
 
   @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-156
@@ -381,7 +381,7 @@ Feature: dav-versions
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
     Then the HTTP status code should be "207"
-    And the number of versions should be "3"
+    And the number of noncurrent versions should be "3"
 
 
   Scenario: User cannot access meta folder of a file which does not exist
@@ -420,14 +420,14 @@ Feature: dav-versions
     When user "Alice" moves file "textfile0.txt" to "/testFolder/textfile0.txt" using the WebDAV API
     And user "Alice" gets the number of versions of file "/testFolder/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "3"
+    And the number of noncurrent versions should be "3"
 
 
   Scenario: Original file has version number 0
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of versions should be "0"
+    And the number of noncurrent versions should be "0"
 
 
   Scenario: the number of etag elements in response changes according to version of the file
@@ -437,7 +437,7 @@ Feature: dav-versions
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the HTTP status code should be "207"
     And the number of etag elements in the response should be "2"
-    And the number of versions should be "2"
+    And the number of noncurrent versions should be "2"
 
 
   Scenario: download old versions of a file
@@ -458,7 +458,7 @@ Feature: dav-versions
     And the downloaded content should be "uploaded content"
 
   @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-463
-  Scenario: download an old version of a restored file
+  Scenario: download an old version of a restored file should make sure versions are immutable
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
     And user "Alice" has uploaded file with content "version 2" to "textfile0.txt"
@@ -474,7 +474,7 @@ Feature: dav-versions
     And the following headers should be set
       | header              | value                                                                |
       | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content"
+    And the downloaded content should be "version 1"
 
 
   Scenario: User can retrieve meta information of a root folder

@@ -2649,7 +2649,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the author(s) of the version(s) of file/folder :resource should be:
+	 * @Then the author(s) of the current and noncurrent version(s) of file/folder :resource should be:
 	 *
 	 * @param string $resource
 	 * @param TableNode $versionTable
@@ -2657,7 +2657,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAuthorsOfVersionsOfFileShouldBe(string $resource, TableNode $versionTable):void {
+	public function theAuthorsOfCurrentAndNoncurrentVersionsOfFileShouldBe(string $resource, TableNode $versionTable):void {
 		$this->featureContext->verifyTableNodeColumns(
 			$versionTable,
 			['index', 'author']
@@ -2693,6 +2693,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->filesPage->getDetailsDialog()->restoreCurrentFileToLastVersion(
 			$this->getSession()
 		);
+		$session = $this->getSession();
+		$this->filesPage->waitTillPageIsLoaded($session);
 	}
 
 	/**

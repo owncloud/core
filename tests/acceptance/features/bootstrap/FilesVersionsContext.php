@@ -246,7 +246,7 @@ class FilesVersionsContext implements Context {
 	}
 
 	/**
-	 * @Then /^as (?:users|user) "([^"]*)" the authors of the versions of file "([^"]*)" should be:$/
+	 * @Then /^as (?:users|user) "([^"]*)" the authors of the current and noncurrent versions of file "([^"]*)" should be:$/
 	 *
 	 * @param string $users comma-separated list of usernames
 	 * @param string $filename
@@ -255,7 +255,7 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function asUsersAuthorsOfVersionsOfFileShouldBe(
+	public function asUsersAuthorsOfCurrentAndNoncurrentVersionsOfFileShouldBe(
 		string $users,
 		string $filename,
 		TableNode $table
@@ -314,7 +314,7 @@ class FilesVersionsContext implements Context {
 	}
 
 	/**
-	 * @Then /^the content of version index "([^"]*)" of file "([^"]*)" for user "([^"]*)" should be "([^"]*)"$/
+	 * @Then /^the content of noncurrent version index "([^"]*)" of file "([^"]*)" for user "([^"]*)" should be "([^"]*)"$/
 	 *
 	 * @param string $index
 	 * @param string $path
@@ -324,7 +324,7 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theContentOfVersionIndexOfFileForUserShouldBe(
+	public function theContentOfNoncurrentVersionIndexOfFileForUserShouldBe(
 		string $index,
 		string $path,
 		string $user,
