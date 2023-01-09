@@ -1,0 +1,7 @@
+Bugfix: Prevent creation of empty files/folders for accounts having no available quota
+
+Until now it was possible for users having 0 quota or who already reached the limit of their assigned quota
+to still create empty files/folders, which generates confusion. The PR fixes this behaviour.
+
+https://github.com/owncloud/core/pull/40567
+https://github.com/owncloud/enterprise/issues/5478
