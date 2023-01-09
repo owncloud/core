@@ -1,4 +1,4 @@
-Bugfix: Prevent creation of empty files/folders for accounts having no available quota
+Bugfix: Prevent creation of empty files/folders when no available quota
 
 Until now it was possible for users having 0 quota or who already reached the limit of their assigned quota to still create empty files/folders, which generates confusion. The PR fixes this behaviour.
 
