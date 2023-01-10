@@ -91,7 +91,7 @@ config = {
                 "oracle",
             ],
         },
-        "external-samba": {
+        "external-samba-windows": {
             "phpVersions": [
                 DEFAULT_PHP_VERSION,
             ],
@@ -100,6 +100,7 @@ config = {
             ],
             "externalTypes": [
                 "samba",
+                "windows",
             ],
             "coverage": True,
             "extraCommandsBeforeTestRun": [
