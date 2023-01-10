@@ -21,7 +21,7 @@
 
 namespace OCP\Notification\Events;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use OCP\Notification\IApp;
 
 /**
@@ -51,7 +51,7 @@ abstract class RegisterConsumerEvent extends Event {
 	 *
 	 * @since 10.0.8
 	 */
-	public function stopPropagation() {
+	public function stopPropagation(): void {
 	}
 
 	/**
