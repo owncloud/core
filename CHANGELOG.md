@@ -20,6 +20,7 @@ Summary
 * Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: [#40558](https://github.com/owncloud/core/pull/40558)
 * Bugfix - Bump moments.js from 2.29.1 to 2.29.4 in /build: [#40560](https://github.com/owncloud/core/pull/40560)
 * Bugfix - Set length of oc_calendars.components to 255: [#40563](https://github.com/owncloud/core/pull/40563)
+* Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
@@ -123,6 +124,10 @@ Details
    https://github.com/owncloud/core/issues/40537
    https://github.com/owncloud/core/pull/40563
 
+* Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
+
+   https://github.com/owncloud/core/pull/40568
+
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
    Before this change, objectstorages were reporting only infinite storage space. This could
@@ -177,7 +182,7 @@ Details
 
    The following have been updated: - doctrine/event-manager (1.1.2 to 1.2.0) -
    doctrine/instantiator (1.4.1 to 1.5.0) - doctrine/lexer (1.2.3 to 2.1.0) -
-   egulias/email-validator (3.2.1 to 3.2.4) - guzzlehttp/guzzle (7.4.5 to 7.5.0) -
+   egulias/email-validator (3.2.1 to 3.2.5) - guzzlehttp/guzzle (7.4.5 to 7.5.0) -
    guzzlehttp/promises (1.5.1 to 1.5.2) - guzzlehttp/psr7 (2.4.0 to 2.4.3) -
    phpseclib/phpseclib (3.0.14 to 3.0.18) - laminas/laminas-filter (2.12.0 to 2.22.0) -
    laminas/laminas-inputfilter (2.12.1 to 2.21.0) - laminas/laminas-servicemanager (3.7.0
@@ -198,6 +203,7 @@ Details
    https://github.com/owncloud/core/pull/40494
    https://github.com/owncloud/core/pull/40543
    https://github.com/owncloud/core/pull/40554
+   https://github.com/owncloud/core/pull/40568
 
 * Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
 
