@@ -28,7 +28,7 @@ set_up_external_storage() {
       FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
       ;;
     windows)
-      wait-for-it -t 600 fsweb.test.owncloud.com:445
+      wait-for-it -t 600 ${SMB_WINDOWS_HOST}:445
       cp tests/drone/configs/config.files_external.smb-windows.php apps/files_external/tests/config.smb.php
       FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
       ;;
