@@ -91,7 +91,7 @@ config = {
                 "oracle",
             ],
         },
-        "external-samba-windows": {
+        "external-samba": {
             "phpVersions": [
                 DEFAULT_PHP_VERSION,
             ],
@@ -100,9 +100,40 @@ config = {
             ],
             "externalTypes": [
                 "samba",
+            ],
+            "coverage": True,
+            "extraCommandsBeforeTestRun": [
+                "ls -l /var/cache",
+                "mkdir /var/cache/samba",
+                "ls -l /var/cache",
+                "ls -l /var/cache/samba",
+            ],
+        },
+        "external-windows": {
+            "phpVersions": [
+                DEFAULT_PHP_VERSION,
+            ],
+            "databases": [
+                "sqlite",
+            ],
+            "externalTypes": [
                 "windows",
             ],
             "coverage": True,
+            "extraEnvironment": {
+                "SMB_WINDOWS_HOST": {
+                    "from_secret": "SMB_WINDOWS_HOST",
+                },
+                "SMB_WINDOWS_USERNAME": {
+                    "from_secret": "SMB_WINDOWS_USERNAME",
+                },
+                "SMB_WINDOWS_PWD": {
+                    "from_secret": "SMB_WINDOWS_PWD",
+                },
+                "SMB_WINDOWS_DOMAIN": {
+                    "from_secret": "SMB_WINDOWS_DOMAIN",
+                },
+            },
             "extraCommandsBeforeTestRun": [
                 "ls -l /var/cache",
                 "mkdir /var/cache/samba",
