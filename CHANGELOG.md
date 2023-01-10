@@ -28,7 +28,7 @@ Summary
 * Change - Copy the encryption keys first and then rename the files: [#40433](https://github.com/owncloud/core/pull/40433)
 * Change - Drop unneeded Google SDK services: [#40444](https://github.com/owncloud/core/pull/40444)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
-* Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
+* Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
 
 Details
 -------
@@ -205,7 +205,7 @@ Details
    https://github.com/owncloud/core/pull/40554
    https://github.com/owncloud/core/pull/40568
 
-* Change - Update Symfony components: [#40337](https://github.com/owncloud/core/pull/40337)
+* Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
 
    The following Symfony components have been updated to: - console 4.4.49 - translation 4.4.47
 
@@ -216,14 +216,18 @@ Details
    symfony/polyfill-php73 (v1.26.0 to v1.27.0) - symfony/polyfill-php80 (v1.26.0 to
    v1.27.0)
 
+   Https://symfony.com/blog/symfony-4-4-45-released
    https://github.com/owncloud/core/pull/40337
-   https://github.com/owncloud/core/pull/40424
-   https://github.com/owncloud/core/pull/40448
-   https://github.com/owncloud/core/pull/40517
-   https://symfony.com/blog/symfony-4-4-45-released
    https://symfony.com/blog/symfony-4-4-47-released
+   https://github.com/owncloud/core/pull/40424
    https://symfony.com/blog/symfony-4-4-48-released
+   https://github.com/owncloud/core/pull/40448
    https://symfony.com/blog/symfony-4-4-49-released
+   https://github.com/owncloud/core/pull/40517
+
+   Code that has been deprecated in Symfony 4 has been refactored to be ready for Symfony 5.
+
+   https://github.com/owncloud/core/pull/40521
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
