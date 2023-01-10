@@ -62,7 +62,7 @@ class LoggingContext implements Context {
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
 		string    $comparingMode,
-		int       $ignoredLines = 0,
+		int       $ignoredLines = 1,
 		?TableNode $expectedLogEntries = null
 	):void {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
