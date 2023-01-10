@@ -1443,6 +1443,16 @@ def phpTests(ctx, testType, withCoverage):
                     for app, command in params["extraApps"].items():
                         extraAppsDict[app] = command
 
+                    environment = {}
+                    for env in params["extraEnvironment"]:
+                        environment[env] = params["extraEnvironment"][env]
+
+                    environment["COVERAGE"] = params["coverage"]
+                    environment["DB_TYPE"] = getDbName(db)
+                    environment["FILES_EXTERNAL_TYPE"] = filesExternalType
+                    environment["PRIMARY_OBJECTSTORE"] = primaryObjectStore
+                    environment["SCALITY"] = needScality
+
                     result = {
                         "kind": "pipeline",
                         "type": "docker",
@@ -1463,13 +1473,7 @@ def phpTests(ctx, testType, withCoverage):
                                      {
                                          "name": "%s-tests" % testType,
                                          "image": OC_CI_PHP % phpVersion,
-                                         "environment": {
-                                             "COVERAGE": params["coverage"],
-                                             "DB_TYPE": getDbName(db),
-                                             "FILES_EXTERNAL_TYPE": filesExternalType,
-                                             "PRIMARY_OBJECTSTORE": primaryObjectStore,
-                                             "SCALITY": needScality,
-                                         },
+                                         "environment": environment,
                                          "commands": params["extraCommandsBeforeTestRun"] + [
                                              command,
                                          ],
