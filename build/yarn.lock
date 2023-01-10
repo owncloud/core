@@ -285,9 +285,10 @@
   version "0.5.9"
   resolved "https://codeload.github.com/MorrisJobke/strengthify/tar.gz/d78452649da2cd59df594a2a5c210cb7045ac899"
 
-"@bower_components/underscore@jashkenas/underscore#1.13.2":
-  version "1.13.2"
-  resolved "https://codeload.github.com/jashkenas/underscore/tar.gz/33383fe35cdaf90ff1aa12e20067f44cbe267e87"
+"@bower_components/underscore@jashkenas/underscore#1.13.6":
+  version "1.13.6"
+  uid bd2d35c87620a7da36250a006c97fdae89f4902d
+  resolved "https://codeload.github.com/jashkenas/underscore/tar.gz/bd2d35c87620a7da36250a006c97fdae89f4902d"
 
 "@bower_components/zxcvbn@dropbox/zxcvbn#4.4.2":
   version "4.4.2"
