@@ -5477,16 +5477,15 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the author of the created version with index :index (should|should not) be :expectedUsername
+	 * @Then the author of the created version with index :index should be :expectedUsername
 	 *
 	 * @param string $index
-	 * @param string $shouldOrNot should or should not
 	 * @param string $expectedUsername
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAuthorOfEditedVersionFile(string $index, string $shouldOrNot, string $expectedUsername): void {
+	public function theAuthorOfEditedVersionFile(string $index, string $expectedUsername): void {
 		$expectedUserDisplayName = $this->getUserDisplayName($expectedUsername);
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
@@ -5496,42 +5495,53 @@ trait WebDav {
 			);
 			$this->setResponseXmlObject($resXml);
 		}
+
 		// the username should be in oc:meta-version-edited-by
-		$ocMetaVersionEditedByXmlPart = $resXml->xpath("//oc:meta-version-edited-by//text()");
-
-		// the user's display name should be in oc:meta-version-edited-by-name
-		$ocMetaVersionEditedByNameXmlPart = $resXml->xpath("//oc:meta-version-edited-by-name//text()");
-
-		if ($shouldOrNot === 'should not') {
-			if (isset($ocMetaVersionEditedByXmlPart[$index - 1]) || isset($ocMetaVersionEditedByNameXmlPart[$index - 1])) {
-				Assert::fail(
-					'find version with index "' . $index . '" for oc:meta-version-edited-by property or oc:meta-version-edited-by-name in response to user "' . $this->responseUser . '"'
-				);
+		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by");
+		$authors = [];
+		foreach ($xmlPart as $idx => $author) {
+			// The first element is the root path element which is not a version
+			// So skipping it
+			if ($idx !== 0) {
+				$authors[] = $author->__toString();
 			}
-		} else {
-			if (!isset($ocMetaVersionEditedByXmlPart[$index - 1])) {
-				Assert::fail(
-					'could not find version with index "' . $index . '" for oc:meta-version-edited-by property in response to user "' . $this->responseUser . '"'
-				);
-			}
-			$actualUser = $ocMetaVersionEditedByXmlPart[$index - 1][0];
-			Assert::assertEquals(
-				$expectedUsername,
-				$actualUser,
-				"Expected user of version with index $index in response to user '$this->responseUser' was '$expectedUsername', but got '$actualUser'"
-			);
-
-			if (!isset($ocMetaVersionEditedByNameXmlPart[$index - 1])) {
-				Assert::fail(
-					'could not find version with index "' . $index . '" for oc:meta-version-edited-by-name property in response to user "' . $this->responseUser . '"'
-				);
-			}
-			$actualUserDisplayName = $ocMetaVersionEditedByNameXmlPart[$index - 1][0];
-			Assert::assertEquals(
-				$expectedUserDisplayName,
-				$actualUserDisplayName,
-				"Expected display name of version with index $index in response to user '$this->responseUser' was '$expectedUsername', but got '$actualUser'"
+		}
+		// reverse the array to get the latest version first
+		\array_reverse($authors);
+		if (!isset($authors[$index - 1])) {
+			Assert::fail(
+				'could not find version with index "' . $index . '" for oc:meta-version-edited-by property in response to user "' . $this->responseUser . '"'
 			);
 		}
+		$actualUser = $authors[$index - 1];
+		Assert::assertEquals(
+			$expectedUsername,
+			$actualUser,
+			"Expected user of version with index $index in response to user '$this->responseUser' was '$expectedUsername', but got '$actualUser'"
+		);
+
+		// the user's display name should be in oc:meta-version-edited-by-name
+		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by-name");
+		$displaynames = [];
+		foreach ($xmlPart as $idx => $displayname) {
+			// The first element is the root path element which is not a version
+			// So skipping it
+			if ($idx !== 0) {
+				$displaynames[] = $displayname->__toString();
+			}
+		}
+		// reverse the array to get the latest version first
+		\array_reverse($displaynames);
+		if (!isset($displaynames[$index - 1])) {
+			Assert::fail(
+				'could not find version with index "' . $index . '" for oc:meta-version-edited-by-name property in response to user "' . $this->responseUser . '"'
+			);
+		}
+		$actualUserDisplayName = $displaynames[$index - 1];
+		Assert::assertEquals(
+			$expectedUserDisplayName,
+			$actualUserDisplayName,
+			"Expected display name of version with index $index in response to user '$this->responseUser' was '$expectedUserDisplayName', but got '$actualUserDisplayName'"
+		);
 	}
 }
