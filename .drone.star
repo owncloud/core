@@ -133,6 +133,9 @@ config = {
                 "SMB_WINDOWS_DOMAIN": {
                     "from_secret": "SMB_WINDOWS_DOMAIN",
                 },
+                "SMB_WINDOWS_SHARE_NAME": {
+                    "from_secret": "SMB_WINDOWS_SHARE_NAME",
+                },
             },
             "extraCommandsBeforeTestRun": [
                 "ls -l /var/cache",
