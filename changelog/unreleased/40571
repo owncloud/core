@@ -1,0 +1,12 @@
+Bugfix: Fix the dav:cleanup-chunks command to work with a configured folder
+
+The ownCloud's FS was initialized partially to prevent contacting the LDAP
+server if it was configured. This was causing problems because the upload
+folder where the chunks were expected was a mountpoint, and due to the
+partial FS initialization such mountpoint was missing, so we were checking
+a different folder (the default one).
+
+Now, the ownCloud's FS will be fully initialized instead, so the mountpoint
+will be present and we check the right location.
+
+https://github.com/owncloud/core/pull/40571
