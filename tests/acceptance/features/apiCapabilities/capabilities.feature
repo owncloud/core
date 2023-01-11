@@ -37,7 +37,7 @@ Feature: capabilities
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    Then the data of the response data should contain
+    Then the data of the response should contain
     """
     {
       "capabilities": {
@@ -89,7 +89,7 @@ Feature: capabilities
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And the data of the response data should contain
+    And the data of the response should contain
     """
     {
       "capabilities": {

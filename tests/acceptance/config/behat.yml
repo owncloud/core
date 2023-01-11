@@ -67,6 +67,7 @@ default:
         - CapabilitiesContext:
         - OccContext:
         - AppConfigurationContext:
+        - AssertArrayContext:
 
     apiComments:
       paths:
