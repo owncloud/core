@@ -381,6 +381,14 @@ class ShareesController extends OCSController {
 	 * @return void
 	 */
 	protected function getRemote($search) {
+		if (\OC::$server->getAppManager()->isEnabledForUser('sciencemesh')) {
+			$this->result['remotes'] = [];
+			$plugin = new \OCA\ScienceMesh\Plugins\ScienceMeshSearchPlugin($this->config, $this->userManager, $this->userSession);
+			$result = $plugin->search($search, 100, 0);
+			$this->result['exact']['remotes'] = $result;
+			$this->reachedEndFor[] = 'remotes';
+			return;
+		}
 		$this->result['remotes'] = [];
 		// Fetch remote search properties from app config
 		/**
