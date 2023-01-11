@@ -27,9 +27,9 @@ use PHPUnit\Framework\Assert;
 use SimpleXMLElement;
 
 /**
- * WebDAV related asserts
+ * Array related asserts
  */
-class AArray {
+class ArrayUtils {
 	/**
 	 * Converts a XML response into an array
 	 *

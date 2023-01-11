@@ -25,9 +25,12 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
-use TestHelpers\Asserts\AArray;
+use TestHelpers\Asserts\ArrayUtils;
 
-class AssertArrayContext implements Context {
+/**
+ * Context for asserting xml responses as JSON
+ */
+class ResponseContext implements Context {
 	/**
 	 *
 	 * @var FeatureContext
@@ -45,7 +48,7 @@ class AssertArrayContext implements Context {
 	 */
 	public function assertArrayContainsRegexOrSubstitution($needle, array $actualArray, string $checkingForKey) {
 		$match = false;
-		if (AArray::isRegex($needle)) {
+		if (ArrayUtils::isRegex($needle)) {
 			// if the value is a regex, then compare against the actual value
 			// a value is a regex if it starts and ends with a slash
 			// if a slash is needed in the regex, then it needs to be escaped
@@ -94,7 +97,7 @@ class AssertArrayContext implements Context {
 	 * @return void
 	 */
 	public function assertValueEqualsRegexOrSubstitution($expected, string $actual, string $checkingForKey) {
-		if (AArray::isRegex($expected)) {
+		if (ArrayUtils::isRegex($expected)) {
 			// if the value is a regex, then compare against the actual value
 			// a value is a regex if it starts and ends with a slash
 			// if a slash is needed in the regex, then it needs to be escaped
@@ -132,8 +135,8 @@ class AssertArrayContext implements Context {
 	 * @throws Exception
 	 */
 	public function assert1DArrayContains(array $expectedArray, array $actualArray, string $checkingForKey) {
-		$actualValues = AArray::getArrayValues($actualArray);
-		$expectedValues = AArray::getArrayValues($expectedArray);
+		$actualValues = ArrayUtils::getArrayValues($actualArray);
+		$expectedValues = ArrayUtils::getArrayValues($expectedArray);
 
 		foreach ($expectedValues as $expectedValue) {
 			$this->assertArrayContainsRegexOrSubstitution($expectedValue, $actualValues, $checkingForKey);
@@ -151,8 +154,8 @@ class AssertArrayContext implements Context {
 	 * @throws Exception
 	 */
 	public function assert1DArrayEquals(array $expectedArray, array $actualArray, string $checkingForKey) {
-		$actualValues = AArray::getArrayValues($actualArray);
-		$expectedValues = AArray::getArrayValues($expectedArray);
+		$actualValues = ArrayUtils::getArrayValues($actualArray);
+		$expectedValues = ArrayUtils::getArrayValues($expectedArray);
 
 		Assert::assertEquals(
 			\count($expectedValues),
@@ -179,7 +182,7 @@ class AssertArrayContext implements Context {
 	public function assertArrayContains(array $expectedArray, array $actualArray) {
 		foreach ($expectedArray as $key => $value) {
 			// if the types of expected and actual values are different, then the assertion fails right away
-			AArray::assertTypeEquals($value, $actualArray[$key], $key);
+			ArrayUtils::assertTypeEquals($value, $actualArray[$key], $key);
 
 			if (\is_array($value)) {
 				if (\count($value) === 0) {
@@ -190,7 +193,7 @@ class AssertArrayContext implements Context {
 						"\n+ Actual array: '" . \json_encode($actualArray[$key], JSON_PRETTY_PRINT) . "'"
 					);
 				}
-				if (AArray::isMultiDimensionalArray($actualArray[$key])) {
+				if (ArrayUtils::isMultiDimensionalArray($actualArray[$key])) {
 					// if the value is a multidimensional array then, all of the
 					// expected keys must be present in the actual array keys
 					Assert::assertEquals(
@@ -235,10 +238,10 @@ class AssertArrayContext implements Context {
 				"+\n+ Actual array: " . \json_encode($actual, JSON_PRETTY_PRINT)
 			);
 			// if the types of expected and actual values are different, then the assertion fails right away
-			AArray::assertTypeEquals($value, $actual[$key], $key);
+			ArrayUtils::assertTypeEquals($value, $actual[$key], $key);
 
 			if (\is_array($value)) {
-				AArray::isMultiDimensionalArray($value)
+				ArrayUtils::isMultiDimensionalArray($value)
 					// if the value is an array, we need to check it recursively
 					? $this->assertArrayEquals($value, $actual[$key])
 					: $this->assert1DArrayEquals($value, $actual[$key], $key);
@@ -258,9 +261,9 @@ class AssertArrayContext implements Context {
 	 */
 	public function theDataOfTheResponseShouldMatch(PyStringNode $schemaString): void {
 		$responseXml = $this->featureContext->getResponseXml()->data;
-		$actualResponseArray = AArray::simpleXMLElementToArray($responseXml);
+		$actualResponseArray = ArrayUtils::simpleXMLElementToArray($responseXml);
 
-		$expectedResponseArray = AArray::getArrayFromPyString($schemaString);
+		$expectedResponseArray = ArrayUtils::getArrayFromPyString($schemaString);
 
 		$this->assertArrayEquals($expectedResponseArray, $actualResponseArray);
 	}
@@ -275,9 +278,9 @@ class AssertArrayContext implements Context {
 	 */
 	public function theResponseDataShouldContain(PyStringNode $schemaString): void {
 		$responseXml = $this->featureContext->getResponseXml()->data;
-		$actualResponseArray = AArray::simpleXMLElementToArray($responseXml);
+		$actualResponseArray = ArrayUtils::simpleXMLElementToArray($responseXml);
 
-		$expectedResponseArray = AArray::getArrayFromPyString($schemaString);
+		$expectedResponseArray = ArrayUtils::getArrayFromPyString($schemaString);
 
 		$this->assertArrayContains($expectedResponseArray, $actualResponseArray);
 	}
