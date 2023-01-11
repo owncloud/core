@@ -1513,7 +1513,8 @@ class ShareesTest extends TestCase {
 
 		$configMap = [
 			['trusted_domains', [], ['trusted.domain.tld', 'trusted2.domain.tld']],
-			['accounts.enable_medial_search', true, true]
+			['accounts.enable_medial_search', true, true],
+			['sharing.remoteShareesSearch', '', '']
 		];
 
 		$this->config->expects($this->any())

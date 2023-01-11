@@ -381,6 +381,15 @@ class ShareesController extends OCSController {
 	 * @return void
 	 */
 	protected function getRemote($search) {
+		$pluginClass = $this->config->getSystemValue('sharing.remoteShareesSearch');
+		if ($pluginClass !== '') {
+			$this->result['remotes'] = [];
+			$plugin = new $pluginClass($this->config, $this->userManager, $this->userSession);
+			$result = $plugin->search($search);
+			$this->result['exact']['remotes'] = $result;
+			$this->reachedEndFor[] = 'remotes';
+			return;
+		}
 		$this->result['remotes'] = [];
 		// Fetch remote search properties from app config
 		/**
