@@ -100,6 +100,10 @@ class Quota extends Wrapper {
 				} else {
 					$free = $quotaFree;
 				}
+				$free = \intval($free);
+				if ($free === PHP_INT_MAX) {
+					return \OCP\Files\FileInfo::SPACE_UNKNOWN;
+				}
 				return $free;
 			}
 		}

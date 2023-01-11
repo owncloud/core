@@ -315,10 +315,6 @@ class Local extends Common {
 		if ($space === false || $space === null) {
 			return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 		}
-		$space = \intval($space);
-		if ($space === PHP_INT_MAX) {
-			return \OCP\Files\FileInfo::SPACE_UNKNOWN;
-		}
 		return $space;
 	}
 
