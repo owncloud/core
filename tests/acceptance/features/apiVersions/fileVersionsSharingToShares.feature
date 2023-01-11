@@ -325,7 +325,8 @@ Feature: dav-versions
 
   @skip_on_objectstore @files_sharing-app-required
   Scenario: enable file versioning and check the version author after restoring a version of a file inside a folder
-    Given user "Brian" has been created with default attributes and without skeleton files
+    Given the administrator has enabled the file version storage feature
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
     And user "Alice" has shared folder "/test" with user "Brian" with permissions "all"
@@ -348,7 +349,8 @@ Feature: dav-versions
 
   @skip_on_objectstore @files_sharing-app-required
   Scenario: enable file versioning and check the version author after restoring a version of a file
-    Given user "Brian" has been created with default attributes and without skeleton files
+    Given the administrator has enabled the file version storage feature
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "uploaded content alice" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
