@@ -19,6 +19,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Bump moments.js from 2.29.1 to 2.29.4 in /build: <a href="https://github.com/owncloud/core/pull/40560">#40560</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Set length of oc_calendars.components to 255: <a href="https://github.com/owncloud/core/pull/40563">#40563</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: <a href="https://github.com/owncloud/core/pull/40568">#40568</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: <a href="https://github.com/owncloud/core/pull/40571">#40571</a></li>
         <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
         <li class="type-change changelog-item">Change - Test indirect resource existence: <a href="https://github.com/owncloud/core/pull/40406">#40406</a></li>
@@ -117,6 +118,16 @@
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: <a href="https://github.com/owncloud/core/pull/40568">#40568</a></p>
             <p>https://github.com/owncloud/core/pull/40568<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: <a href="https://github.com/owncloud/core/pull/40571">#40571</a></p>
+            <p>The ownCloud's FS was initialized partially to prevent contacting the LDAP server if it was
+   configured. This was causing problems because the upload folder where the chunks were
+   expected was a mountpoint, and due to the partial FS initialization such mountpoint was
+   missing, so we were checking a different folder (the default one).Now, the ownCloud's FS will be fully initialized instead, so the mountpoint will be present and
+   we check the right location.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40571<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>

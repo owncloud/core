@@ -21,6 +21,7 @@ Summary
 * Bugfix - Bump moments.js from 2.29.1 to 2.29.4 in /build: [#40560](https://github.com/owncloud/core/pull/40560)
 * Bugfix - Set length of oc_calendars.components to 255: [#40563](https://github.com/owncloud/core/pull/40563)
 * Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
+* Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: [#40571](https://github.com/owncloud/core/pull/40571)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
@@ -127,6 +128,18 @@ Details
 * Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
 
    https://github.com/owncloud/core/pull/40568
+
+* Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: [#40571](https://github.com/owncloud/core/pull/40571)
+
+   The ownCloud's FS was initialized partially to prevent contacting the LDAP server if it was
+   configured. This was causing problems because the upload folder where the chunks were
+   expected was a mountpoint, and due to the partial FS initialization such mountpoint was
+   missing, so we were checking a different folder (the default one).
+
+   Now, the ownCloud's FS will be fully initialized instead, so the mountpoint will be present and
+   we check the right location.
+
+   https://github.com/owncloud/core/pull/40571
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
