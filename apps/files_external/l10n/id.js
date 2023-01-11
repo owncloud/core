@@ -28,6 +28,7 @@ OC.L10N.register(
     "Not permitted to use authentication mechanism \"%s\"" : "Tidak diizinkan menggunakan mekanisme otentikasi \"%s\"",
     "Unsatisfied backend parameters" : "Parameter backend tidak lengkap",
     "Unsatisfied authentication mechanism parameters" : "Parameter mekanisme otentikasi tidak lengkap",
+    "%s" : "%s",
     "OAuth1" : "OAuth1",
     "App key" : "Kunci Apl",
     "App secret" : "Rahasia Apl",

@@ -310,6 +310,7 @@ OC.L10N.register(
     "Please try again or contact your administrator." : "Mohon coba lagi atau hubungi administrator Anda.",
     "Login" : "Masuk",
     "Wrong password. Reset it?" : "Sandi salah. Atur ulang?",
+    "Wrong password." : "Kata sandi salah",
     "Stay logged in" : "Tetap masuk",
     "Alternative Logins" : "Cara Alternatif untuk Masuk",
     "Use the following link to reset your password: {link}" : "Gunakan tautan berikut untuk menyetel ulang sandi Anda: {link}",
