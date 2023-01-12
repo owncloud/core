@@ -154,9 +154,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			if (!$this->fileView->isCreatable($this->path)) {
 				throw new SabreForbidden();
 			}
-
+			// We are using == instead of === as apparently the computerFileSize method
+			// which is used to get the quota may return a float type. Note that the same
+			// has been observed for the disk_free_space function in local storage
 			list($used, $free) = $this->getQuotaInfo();
-			if ($free === 0) {
+			if ($free == 0) {
 				throw new SabreForbidden('Creation of empty files is forbidden in case of no available quota');
 			}
 
@@ -217,9 +219,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			if (!$this->info->isCreatable()) {
 				throw new SabreForbidden();
 			}
-
+			// We are using == instead of === as apparently the computerFileSize method
+			// which is used to get the quota may return a float type. Note that the same
+			// has been observed for the disk_free_space function in local storage
 			list($used, $free) = $this->getQuotaInfo();
-			if ($free === 0) {
+			if ($free == 0) {
 				throw new SabreForbidden('Creation of empty directories is forbidden in case of no available quota');
 			}
 
