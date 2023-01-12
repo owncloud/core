@@ -21,10 +21,17 @@ namespace OCP\Authentication\LoginPolicies;
 
 use OCP\IUser;
 
+/**
+ * Manage the login policies
+ *
+ * @since 10.12.0
+ */
 interface ILoginPolicyManager {
 	/**
 	 * Register the policy. The implementation should be sure that the
 	 * policy isn't duplicated
+	 *
+	 * @since 10.12.0
 	 */
 	public function registerPolicy(ILoginPolicy $loginPolicy);
 
@@ -32,6 +39,9 @@ interface ILoginPolicyManager {
 	 * Check if the user is allowed to login based on the configured policies.
 	 * This method will throw a LoginException if the user is rejected. If the
 	 * user is allowed, this method won't return anything.
+	 *
+	 * @since 10.12.0
+	 *
 	 * @throws LoginException if the user is rejected
 	 */
 	public function checkUserLogin(string $loginType, IUser $user);

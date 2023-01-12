@@ -1747,7 +1747,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	}
 
 	/**
-	 * @return ILoginPolicyManager
+	 * @return \OCP\Authentication\LoginPolicies\ILoginPolicyManager
 	 */
 	public function getLoginPolicyManager() {
 		return $this->query(LoginPolicyManager::class);

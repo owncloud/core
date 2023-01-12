@@ -24,6 +24,8 @@ use OCP\IUser;
 /**
  * Interface for a login policy, for example "users belonging to group A must
  * login by username and password"
+ *
+ * @since 10.12.0
  */
 interface ILoginPolicy {
 	/**
@@ -34,6 +36,8 @@ interface ILoginPolicy {
 	 * the user is rejected. If such thing isn't possible, returning false is an
 	 * alternative; the LoginPolicyManager should throw a LoginException on
 	 * its behalf along with a generic error message.
+	 *
+	 * @since 10.12.0
 	 *
 	 * @param string $loginType the login type the user is using to access ownCloud
 	 * @param IUser $user the user accessing
