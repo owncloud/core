@@ -207,7 +207,7 @@ class TrustedServersTest extends TestCase {
 			->willReturn($server);
 		$this->dispatcher->expects($this->once())->method('dispatch')
 			->willReturnCallback(
-				function ($eventId, $event) {
+				function ($event, $eventId) {
 					$this->assertSame($eventId, 'OCP\Federation\TrustedServerEvent::remove');
 					$this->assertInstanceOf('Symfony\Component\EventDispatcher\GenericEvent', $event);
 					/** @var \Symfony\Component\EventDispatcher\GenericEvent $event */
