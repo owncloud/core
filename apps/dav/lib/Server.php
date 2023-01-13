@@ -145,7 +145,7 @@ class Server {
 
 		// allow setup of additional auth backends
 		$event = new SabrePluginEvent($this->server);
-		$dispatcher->dispatch('OCA\DAV\Connector\Sabre::authInit', $event);
+		$dispatcher->dispatch($event, 'OCA\DAV\Connector\Sabre::authInit');
 
 		// because we are throwing exceptions this plugin has to be the last one
 		$authPlugin->addBackend($authBackend);

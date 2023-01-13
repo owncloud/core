@@ -143,7 +143,6 @@ class FedShareManager {
 		);
 
 		$this->eventDispatcher->dispatch(
-			'\OCA\FederatedFileSharing::remote_shareReceived',
 			new GenericEvent(
 				null,
 				[
@@ -154,7 +153,8 @@ class FedShareManager {
 					'sharedby' => $sharedByAddress->getUserId(),
 					'remoteid' => $remoteId
 				]
-			)
+			),
+			'\OCA\FederatedFileSharing::remote_shareReceived'
 		);
 		$this->publishActivity(
 			$shareWith,
