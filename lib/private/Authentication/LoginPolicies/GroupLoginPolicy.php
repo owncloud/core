@@ -68,16 +68,14 @@ class GroupLoginPolicy implements ILoginPolicy {
 			return true;
 		}
 
-		if (isset($policyConfig[$loginType])) {
-			$policyForType = $policyConfig[$loginType];
+		$policyForType = $policyConfig[$loginType] ?? [];  // empty map if not defined: reject and allowOnly won't be set
 
-			if (isset($policyForType['reject'])) {
-				$this->checkRejectGroupPolicy($user, $policyForType['reject']);
-			}
+		if (isset($policyForType['reject'])) {
+			$this->checkRejectGroupPolicy($user, $policyForType['reject']);
+		}
 
-			if (isset($policyForType['allowOnly'])) {
-				return $this->checkAllowGroupPolicy($user, $policyForType['allowOnly']);
-			}
+		if (isset($policyForType['allowOnly'])) {
+			return $this->checkAllowGroupPolicy($user, $policyForType['allowOnly']);
 		}
 
 		return true;
