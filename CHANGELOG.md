@@ -241,6 +241,7 @@ Details
    Code that has been deprecated in Symfony 4 has been refactored to be ready for Symfony 5.
 
    https://github.com/owncloud/core/pull/40521
+   https://github.com/owncloud/core/pull/40575
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
