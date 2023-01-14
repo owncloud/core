@@ -34,6 +34,8 @@
  *
  */
 
+use Symfony\Contracts\EventDispatcher\Event;
+
 OC_Util::checkSubAdminUser();
 
 \OC::$server->getNavigationManager()->setActiveEntry('core_users');
@@ -104,7 +106,7 @@ $defaultQuota=$config->getAppValue('files', 'default_quota', 'none');
 $defaultQuotaIsUserDefined=\array_search($defaultQuota, $quotaPreset)===false
 	&& \array_search($defaultQuota, ['none', 'default'])===false;
 
-\OC::$server->getEventDispatcher()->dispatch('OC\Settings\Users::loadAdditionalScripts');
+\OC::$server->getEventDispatcher()->dispatch(new Event(), 'OC\Settings\Users::loadAdditionalScripts');
 
 $tmpl = new OC_Template("settings", "users/main", "user");
 $tmpl->assign('groups', $groups);
