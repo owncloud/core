@@ -167,7 +167,7 @@ class TrustedServers {
 		$server = $this->dbHandler->getServerById($id);
 		$this->dbHandler->removeServer($id);
 		$event = new GenericEvent($server['url_hash']);
-		$this->dispatcher->dispatch('OCP\Federation\TrustedServerEvent::remove', $event);
+		$this->dispatcher->dispatch($event, 'OCP\Federation\TrustedServerEvent::remove');
 	}
 
 	/**

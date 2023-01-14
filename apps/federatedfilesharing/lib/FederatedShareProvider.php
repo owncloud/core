@@ -554,7 +554,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * a message that the file was unshared
 	 *
 	 * @param IShare $share
-	 * @param bool $isOwner the user can either be the owner or the user who re-sahred it
+	 * @param bool $isOwner the user can either be the owner or the user who re-shared it
 	 * @throws ShareNotFound
 	 * @throws \OC\HintException
 	 */
@@ -921,7 +921,7 @@ class FederatedShareProvider implements IShareProvider {
 	}
 
 	/**
-	 * Create a share object from an database row
+	 * Create a share object from a database row
 	 *
 	 * @param array $data
 	 * @return IShare
@@ -1153,8 +1153,8 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	public function getAccepted($remote, $shareWith) {
 		$event = $this->eventDispatcher->dispatch(
-			'remoteshare.received',
-			new GenericEvent('', ['remote' => $remote])
+			new GenericEvent('', ['remote' => $remote]),
+			'remoteshare.received'
 		);
 		'@phan-var GenericEvent $event';
 		if ($event->getArgument('autoAddServers')) {

@@ -152,14 +152,14 @@ class ManagerTest extends TestCase {
 			->method('dispatch')
 			->withConsecutive(
 				[
-					AcceptShare::class,
 					$this->callback(
 						function ($event) use ($openShares) {
 							return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class);
 						}
-					)
+					),
+					AcceptShare::class
 				],
-				['remoteshare.accepted', $event]
+				[$event, 'remoteshare.accepted']
 			);
 
 		// Accept the first share
@@ -206,14 +206,14 @@ class ManagerTest extends TestCase {
 			->method('dispatch')
 			->withConsecutive(
 				[
-					DeclineShare::class,
 					$this->callback(
 						function ($event) use ($openShares) {
 							return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class);
 						}
-					)
+					),
+					DeclineShare::class
 				],
-				['remoteshare.declined', $event2]
+				[$event2, 'remoteshare.declined']
 			);
 
 		// Decline the third share
@@ -243,20 +243,20 @@ class ManagerTest extends TestCase {
 			->method('dispatch')
 			->withConsecutive(
 				[
-					DeclineShare::class,
 					$this->callback(
 						function ($event) use ($openShares) {
 							return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class);
 						}
-					)
+					),
+					DeclineShare::class
 				],
 				[
-					DeclineShare::class,
 					$this->callback(
 						function ($event) use ($acceptedShares) {
 							return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class);
 						}
-					)
+					),
+					DeclineShare::class
 				],
 			);
 

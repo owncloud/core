@@ -161,10 +161,10 @@ class File extends Node implements IFile, IFileNode {
 		$path = $this->fileView->getAbsolutePath($this->path);
 		$beforeEvent = new GenericEvent(null, ['path' => $path]);
 		if (!$this->fileView->file_exists($this->path)) {
-			\OC::$server->getEventDispatcher()->dispatch('file.beforecreate', $beforeEvent);
+			\OC::$server->getEventDispatcher()->dispatch($beforeEvent, 'file.beforecreate');
 			$newFile = true;
 		} else {
-			\OC::$server->getEventDispatcher()->dispatch('file.beforeupdate', $beforeEvent);
+			\OC::$server->getEventDispatcher()->dispatch($beforeEvent, 'file.beforeupdate');
 		}
 
 		list($partStorage) = $this->fileView->resolvePath($this->path);
@@ -311,9 +311,9 @@ class File extends Node implements IFile, IFileNode {
 
 		$afterEvent = new GenericEvent(null, ['path' => $path]);
 		if ($newFile === true) {
-			\OC::$server->getEventDispatcher()->dispatch('file.aftercreate', $afterEvent);
+			\OC::$server->getEventDispatcher()->dispatch($afterEvent, 'file.aftercreate');
 		} else {
-			\OC::$server->getEventDispatcher()->dispatch('file.afterupdate', $afterEvent);
+			\OC::$server->getEventDispatcher()->dispatch($afterEvent, 'file.afterupdate');
 		}
 		return '"' . $this->info->getEtag() . '"';
 	}
@@ -365,7 +365,7 @@ class File extends Node implements IFile, IFileNode {
 			]);
 			if ($run) {
 				$event->setArgument('run', $run);
-				\OC::$server->getEventDispatcher()->dispatch('file.beforeCreate', $event);
+				\OC::$server->getEventDispatcher()->dispatch($event, 'file.beforeCreate');
 				$run = $event->getArgument('run');
 			}
 		} else {
@@ -375,7 +375,7 @@ class File extends Node implements IFile, IFileNode {
 			]);
 			if ($run) {
 				$event->setArgument('run', $run);
-				\OC::$server->getEventDispatcher()->dispatch('file.beforeUpdate', $event);
+				\OC::$server->getEventDispatcher()->dispatch($event, 'file.beforeUpdate');
 				$run = $event->getArgument('run');
 			}
 		}
@@ -385,7 +385,7 @@ class File extends Node implements IFile, IFileNode {
 		]);
 		if ($run) {
 			$event->setArgument('run', $run);
-			\OC::$server->getEventDispatcher()->dispatch('file.beforeWrite', $event);
+			\OC::$server->getEventDispatcher()->dispatch($event, 'file.beforeWrite');
 			$run = $event->getArgument('run');
 		}
 		return $run;
@@ -545,10 +545,10 @@ class File extends Node implements IFile, IFileNode {
 			$beforeEvent = new GenericEvent(null, ['path' => $absPath]);
 			$newFile = false;
 			if (!$this->fileView->file_exists($targetPath)) {
-				\OC::$server->getEventDispatcher()->dispatch('file.beforecreate', $beforeEvent);
+				\OC::$server->getEventDispatcher()->dispatch($beforeEvent, 'file.beforecreate');
 				$newFile = true;
 			} else {
-				\OC::$server->getEventDispatcher()->dispatch('file.beforeupdate', $beforeEvent);
+				\OC::$server->getEventDispatcher()->dispatch($beforeEvent, 'file.beforeupdate');
 			}
 
 			/** @var \OC\Files\Storage\Storage $targetStorage */
@@ -626,9 +626,9 @@ class File extends Node implements IFile, IFileNode {
 				if ($etag !== null) {
 					$afterEvent = new GenericEvent(null, ['path' => $absPath]);
 					if ($newFile === true) {
-						\OC::$server->getEventDispatcher()->dispatch('file.aftercreate', $afterEvent);
+						\OC::$server->getEventDispatcher()->dispatch($afterEvent, 'file.aftercreate');
 					} else {
-						\OC::$server->getEventDispatcher()->dispatch('file.afterupdate', $afterEvent);
+						\OC::$server->getEventDispatcher()->dispatch($afterEvent, 'file.afterupdate');
 					}
 				}
 				return $etag;

@@ -552,11 +552,11 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 		if ($this->dispatcher !== null) {
 			$this->dispatcher->dispatch(
-				'\OCA\DAV\CardDAV\CardDavBackend::createCard',
 				new GenericEvent(null, [
 					'addressBookId' => $addressBookId,
 					'cardUri' => $cardUri,
-					'cardData' => $cardData])
+					'cardData' => $cardData]),
+				'\OCA\DAV\CardDAV\CardDavBackend::createCard',
 			);
 		}
 
@@ -605,11 +605,11 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 		if ($this->dispatcher !== null) {
 			$this->dispatcher->dispatch(
-				'\OCA\DAV\CardDAV\CardDavBackend::updateCard',
 				new GenericEvent(null, [
 					'addressBookId' => $addressBookId,
 					'cardUri' => $cardUri,
-					'cardData' => $cardData])
+					'cardData' => $cardData]),
+				'\OCA\DAV\CardDAV\CardDavBackend::updateCard'
 			);
 		}
 
@@ -639,10 +639,10 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 		if ($this->dispatcher !== null) {
 			$this->dispatcher->dispatch(
-				'\OCA\DAV\CardDAV\CardDavBackend::deleteCard',
 				new GenericEvent(null, [
 					'addressBookId' => $addressBookId,
-					'cardUri' => $cardUri])
+					'cardUri' => $cardUri]),
+				'\OCA\DAV\CardDAV\CardDavBackend::deleteCard'
 			);
 		}
 

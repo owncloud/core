@@ -666,7 +666,7 @@ class User implements IUser {
 	 * are allowed to go up. The exceptions are not caught in this method.
 	 *
 	 *
-	 * @param bool $clearCache, set to true if user attributes should be created every time, else false is set to reuse the userExtendedAttributes cache.
+	 * @param bool $clearCache set to true if user attributes should be created every time, else false is set to reuse the userExtendedAttributes cache.
 	 * @return array
 	 * @throws NotPermittedActionException
 	 * @since 10.11.0
@@ -689,7 +689,7 @@ class User implements IUser {
 			 */
 			$this->allowUserAccountUpdate = false;
 			try {
-				$this->eventDispatcher->dispatch(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent);
+				$this->eventDispatcher->dispatch($userExtendedAttributesEvent, UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES);
 			} finally {
 				//Reset the flag to true so that account table can now be allowed to update.
 				$this->allowUserAccountUpdate = true;

@@ -256,8 +256,8 @@ class Manager {
 			$fileId = $this->getShareFileId($share, $mountPoint);
 
 			$this->eventDispatcher->dispatch(
-				AcceptShare::class,
-				new AcceptShare($share)
+				new AcceptShare($share),
+				AcceptShare::class
 			);
 
 			$event = new GenericEvent(
@@ -271,7 +271,7 @@ class Manager {
 					'shareRecipient' => $this->uid,
 				]
 			);
-			$this->eventDispatcher->dispatch('remoteshare.accepted', $event);
+			$this->eventDispatcher->dispatch($event, 'remoteshare.accepted');
 			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
 
 			$this->processNotification($id);
@@ -296,13 +296,13 @@ class Manager {
 			$removeShare->execute([$id, $this->uid]);
 
 			$this->eventDispatcher->dispatch(
-				DeclineShare::class,
-				new DeclineShare($share)
+				new DeclineShare($share),
+				DeclineShare::class
 			);
 
 			$event = new GenericEvent(null, ['sharedItem' => $share['name'], 'shareAcceptedFrom' => $share['owner'],
 				'remoteUrl' => $share['remote']]);
-			$this->eventDispatcher->dispatch('remoteshare.declined', $event);
+			$this->eventDispatcher->dispatch($event, 'remoteshare.declined');
 
 			$this->processNotification($id);
 			return true;
@@ -421,8 +421,8 @@ class Manager {
 			$share = $getShare->fetch();
 			if ($share !== false) {
 				$this->eventDispatcher->dispatch(
-					DeclineShare::class,
-					new DeclineShare($share)
+					new DeclineShare($share),
+					DeclineShare::class
 				);
 			}
 		}
@@ -438,7 +438,7 @@ class Manager {
 		if ($result) {
 			$this->removeReShares($id);
 			$event = new GenericEvent(null, ['user' => $this->uid, 'targetmount' => $mountPoint]);
-			$this->eventDispatcher->dispatch('\OCA\Files_Sharing::unshareEvent', $event);
+			$this->eventDispatcher->dispatch($event, '\OCA\Files_Sharing::unshareEvent');
 		}
 
 		return $result;
@@ -483,8 +483,8 @@ class Manager {
 			$shares = $getShare->fetchAll();
 			foreach ($shares as $share) {
 				$this->eventDispatcher->dispatch(
-					DeclineShare::class,
-					new DeclineShare($share)
+					new DeclineShare($share),
+					DeclineShare::class
 				);
 			}
 		}

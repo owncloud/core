@@ -600,7 +600,7 @@ class UserTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->once())
 			->method('dispatch')
-			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent);
+			->with($userExtendedAttributesEvent, UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES);
 
 		$this->assertEquals($this->user->getExtendedAttributes($clearCache), []);
 	}
@@ -615,7 +615,7 @@ class UserTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->once())
 			->method('dispatch')
-			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent)
+			->with($userExtendedAttributesEvent, UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES)
 			->willThrowException(new NotPermittedActionException());
 
 		$this->user->getExtendedAttributes();
@@ -631,7 +631,7 @@ class UserTest extends TestCase {
 		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
 		$this->eventDispatcher->expects($this->once())
 			->method('dispatch')
-			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent);
+			->with($userExtendedAttributesEvent, UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES);
 
 		$this->user->getExtendedAttributes();
 		$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
@@ -646,7 +646,7 @@ class UserTest extends TestCase {
 		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
 		$this->eventDispatcher->expects($this->once())
 			->method('dispatch')
-			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent)
+			->with($userExtendedAttributesEvent, UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES)
 			->willThrowException(new NotPermittedActionException());
 
 		try {
@@ -665,7 +665,7 @@ class UserTest extends TestCase {
 		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
 		$this->eventDispatcher->expects($this->once())
 			->method('dispatch')
-			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent)
+			->with($userExtendedAttributesEvent, UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES)
 			->willThrowException(new \Exception());
 
 		try {
@@ -684,7 +684,7 @@ class UserTest extends TestCase {
 		$userExtendedAttributesEvent = new UserExtendedAttributesEvent($this->user);
 		$this->eventDispatcher->expects($this->once())
 			->method('dispatch')
-			->with(UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES, $userExtendedAttributesEvent)
+			->with($userExtendedAttributesEvent, UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES)
 			->will($this->returnCallback(function () {
 				$this->user->getExtendedAttributes();
 			}));

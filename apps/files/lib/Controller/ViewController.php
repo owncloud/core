@@ -300,7 +300,7 @@ class ViewController extends Controller {
 				'resolvedWebLink' => null,
 				'resolvedDavLink' => null,
 			]);
-			$this->eventDispatcher->dispatch('files.resolvePrivateLink', $event);
+			$this->eventDispatcher->dispatch($event, 'files.resolvePrivateLink');
 
 			$webUrl = $event->getArgument('resolvedWebLink');
 			$webdavUrl = $event->getArgument('resolvedDavLink');

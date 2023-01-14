@@ -105,7 +105,7 @@ class ExternalSharesController extends Controller {
 					'shareRecipient' => $shareInfo['user'],
 				]
 			);
-			$this->dispatcher->dispatch('remoteshare.accepted', $event);
+			$this->dispatcher->dispatch($event, 'remoteshare.accepted');
 			$this->externalManager->acceptShare($id);
 		}
 		return new JSONResponse();
@@ -130,7 +130,7 @@ class ExternalSharesController extends Controller {
 					'remoteUrl' => $shareInfo['remote']
 				]
 			);
-			$this->dispatcher->dispatch('remoteshare.declined', $event);
+			$this->dispatcher->dispatch($event, 'remoteshare.declined');
 			$this->externalManager->declineShare($id);
 		}
 		return new JSONResponse();
