@@ -421,6 +421,8 @@ class Trashbin {
 					self::move($rootView, "$owner$src", "$user$dst");
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
+				// NOTE: move logic for versions metadata to versions storage (including current version logic for parent file)
+
 				// copy version root metadata
 				if ($metaEnabled) {
 					if ($owner !== $user || $forceCopy) {

@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Jannik Stehle <jstehle@owncloud.com>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
@@ -24,9 +25,8 @@ namespace OCA\Files_Versions\Controller;
 use OCA\Files_Versions\Storage;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
-use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IRequest;
-use OCP\IUserSession;
 use OCP\AppFramework\Http\JSONResponse;
 
 /**
@@ -35,12 +35,21 @@ use OCP\AppFramework\Http\JSONResponse;
  * @package OCA\Files\Controller
  */
 class VersionController extends Controller {
+	/** @var ILogger */
+	private $logger;
+
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
+	 * @param ILogger $logger
 	 */
-	public function __construct($appName, IRequest $request) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		ILogger $logger
+	) {
 		parent::__construct($appName, $request);
+		$this->logger = $logger;
 	}
 
 	/**
@@ -55,6 +64,7 @@ class VersionController extends Controller {
 		try {
 			Storage::publishCurrentVersion($path);
 		} catch (\Exception $e) {
+			$this->logger->logException($e, ['app' => 'files_versions']);
 			return new JSONResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
