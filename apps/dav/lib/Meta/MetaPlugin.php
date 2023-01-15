@@ -35,7 +35,7 @@ class MetaPlugin extends ServerPlugin {
 	public const PATH_FOR_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}meta-path-for-user';
 
 	public const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-edited-by';
-	public const VERSION_EDITED_BY_PROPERTYNAME_NAME = '{http://owncloud.org/ns}meta-version-edited-by-name';
+	public const VERSION_EDITED_BY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-edited-by-name';
 	public const VERSION_TAG_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-tag';
 
 	/**
@@ -105,7 +105,7 @@ class MetaPlugin extends ServerPlugin {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
 				return $node->getVersionEditedBy();
 			});
-			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
+			$propFind->handle(self::VERSION_EDITED_BY_NAME_PROPERTYNAME, function () use ($node) {
 				$versionEditedBy = $node->getVersionEditedBy();
 				if (!$versionEditedBy) {
 					return '';
@@ -121,7 +121,7 @@ class MetaPlugin extends ServerPlugin {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
 				return $node->getVersionEditedBy();
 			});
-			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
+			$propFind->handle(self::VERSION_EDITED_BY_NAME_PROPERTYNAME, function () use ($node) {
 				$versionEditedBy = $node->getVersionEditedBy();
 				if (!$versionEditedBy) {
 					return '';
