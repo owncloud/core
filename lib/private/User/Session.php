@@ -933,10 +933,11 @@ class Session implements IUserSession, Emitter {
 	 *
 	 * @param IUser $user The user
 	 * @param String $password The user's password
+	 * @param string $authModuleClass the classname of the module used to login
 	 * @return boolean True if the user can be authenticated, false otherwise
 	 * @throws LoginException if an app canceled the login process or the user is not enabled
 	 */
-	public function loginUser(IUser $user = null, $password = null, $authModuleClass = null) {
+	public function loginUser(IUser $user = null, $password = null, $authModuleClass = '') {
 		if ($user === null) {
 			$this->emitFailedLogin(null);
 			return false;
