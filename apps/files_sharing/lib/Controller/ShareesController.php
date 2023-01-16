@@ -43,7 +43,6 @@ use OCP\IUserSession;
 use OCP\Share;
 use OCA\Files_Sharing\SharingBlacklist;
 use OCP\Util\UserSearch;
-use OCA\ScienceMesh\Plugins\ScienceMeshSearchPlugin;
 
 class ShareesController extends OCSController {
 	/** @var IGroupManager */
@@ -382,9 +381,10 @@ class ShareesController extends OCSController {
 	 * @return void
 	 */
 	protected function getRemote($search) {
-		if (\OC::$server->getAppManager()->isEnabledForUser('sciencemesh')) {
+		$pluginClass = $this->config->getSystemValue('sharing.remoteShareesSearch');
+		if ($pluginClass !== '') {
 			$this->result['remotes'] = [];
-			$plugin = new ScienceMeshSearchPlugin($this->config, $this->userManager, $this->userSession);
+			$plugin = new $pluginClass($this->config, $this->userManager, $this->userSession);
 			$result = $plugin->search($search);
 			$this->result['exact']['remotes'] = $result;
 			$this->reachedEndFor[] = 'remotes';
