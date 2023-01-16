@@ -384,7 +384,7 @@ class ShareesController extends OCSController {
 		if (\OC::$server->getAppManager()->isEnabledForUser('sciencemesh')) {
 			$this->result['remotes'] = [];
 			$plugin = new \OCA\ScienceMesh\Plugins\ScienceMeshSearchPlugin($this->config, $this->userManager, $this->userSession);
-			$result = $plugin->search($search, 100, 0);
+			$result = $plugin->search($search);
 			$this->result['exact']['remotes'] = $result;
 			$this->reachedEndFor[] = 'remotes';
 			return;
