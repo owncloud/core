@@ -1760,4 +1760,72 @@ $CONFIG = [
  */
 'grace_period.demo_key.link' => 'https://owncloud.com/try-enterprise/',
 
+/**
+ * The order of the login policies that will be checked, if any.
+ * Policies must be registered in order to use / activate them. This is usually
+ * done automatically by core or the app containing the policy.
+ *
+ * The names of the policies must be documented if they come from an app.
+ * Core provide the following list of policies (only one for now):
+ * - 'OC\Authentication\LoginPolicies\GroupLoginPolicy'
+ *
+ * In order to use / activate the policy, include the name in the policy
+ * order below, such as:
+ * 'loginPolicy.order' => ['OC\Authentication\LoginPolicies\GroupLoginPolicy'],
+ *
+ * Multiple policies could be use as long as they're registered (the
+ * "SubnetPolicy" is just an example):
+ * 'loginPolicy.order' => [
+ *   'OC\Authentication\LoginPolicies\GroupLoginPolicy',
+ *   'OCA\CustomPolicies\SubnetPolicy'
+ * ],
+ *
+ * The configuration of the policies depends on the policy itself, so they could
+ * be configured in multiple and different ways. We won't cover them here.
+ */
+'loginPolicy.order' => [],
+
+/**
+ * Povide configuration for the
+ * 'OC\Authentication\LoginPolicies\GroupLoginPolicy' policy.
+ *
+ * The configuration will be something like:
+ * 'loginPolicy.groupLoginPolicy.forbidMap' => [
+ *   'password' => [
+ *     'allowOnly' => ['group1', 'group2'],
+ *     'reject' => ['group3'],
+ *   ],
+ * ],
+ *
+ * In a more generic way:
+ * 'loginPolicy.groupLoginPolicy.forbidMap' => [
+ *   '<loginType>' => [
+ *     'allowOnly' => ['<group1>', ......, '<groupN>'],
+ *     'reject' => ['<group1>', ........, '<groupN>'],
+ *   ],
+ * ],
+ *
+ * Each login type can have a list of groups that will be the ones
+ * only allowed to login using that login type, and also a list of
+ * groups that will be rejected from using that login type.
+ * Note that this applies to users beloging to thos groups. If a user
+ * is member of an "allowOnly" group and also of a "reject" group,
+ * the "reject" will take priority, so the user won't be able to login
+ * using that login type.
+ *
+ * List of known login types:
+ * - 'password' -> for the login page and basic auth (for webdav, for example)
+ * - 'token' -> for app passwords (using an app password in the login page will
+ * be considered as 'token' login type, not 'password')
+ * Coming from different apps (you'll have to install those):
+ * - 'apache' -> for the user_shibboleth app (data comes from the apache server)
+ * - 'OCA\OAuth2\AuthModule' -> for oAuth2
+ * - 'OCA\OpenIdConnect\OpenIdConnectAuthModule' -> for openidconnect
+ * - 'OCA\Kerberos\AuthModule' -> for kerberos
+ *
+ * In some weird circumstances, the login type could be the empty string.
+ * This could happen in earlier versions of the openidconnect app when using
+ * the web UI.
+ */
+'loginPolicy.groupLoginPolicy.forbidMap' => [],
 ];
