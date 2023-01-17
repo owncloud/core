@@ -42,11 +42,6 @@ Feature: list files
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Get the list of resources in the root folder with depth 1
     Given using <dav_version> DAV path
@@ -67,11 +62,6 @@ Feature: list files
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @depthInfinityPropfindEnabled
   Scenario Outline: Get the list of resources in the root folder with depth infinity
@@ -98,11 +88,6 @@ Feature: list files
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Get the list of resources in a folder with depth 0
     Given using <dav_version> DAV path
@@ -121,11 +106,6 @@ Feature: list files
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Get the list of resources in a folder with depth 1
@@ -150,11 +130,6 @@ Feature: list files
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @depthInfinityPropfindEnabled
   Scenario Outline: Get the list of resources in a folder with depth infinity
     Given using <dav_version> DAV path
@@ -175,11 +150,6 @@ Feature: list files
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Get the list of resources in a folder shared through public link with depth 0
@@ -303,11 +273,6 @@ Feature: list files
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Get the list of files in the trashbin with depth 1
     Given using <dav_version> DAV path
@@ -336,11 +301,6 @@ Feature: list files
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @depthInfinityPropfindEnabled
   Scenario Outline: Get the list of files in the trashbin with depth infinity
     Given using <dav_version> DAV path
@@ -368,11 +328,6 @@ Feature: list files
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @depthInfinityPropfindDisabled
   Scenario Outline: Get the list of resources in the root folder with depth infinity when depth infinity is not allowed
     Given using <dav_version> DAV path
@@ -382,11 +337,6 @@ Feature: list files
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @depthInfinityPropfindDisabled
   Scenario Outline: Get the list of resources in a folder shared through public link with depth infinity when depth infinity is not allowed
@@ -407,11 +357,6 @@ Feature: list files
       | dav_version |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @depthInfinityPropfindDisabled
   Scenario Outline: Get the list of files in the trashbin with depth infinity when depth infinity is not allowed
     Given using <dav_version> DAV path
@@ -426,8 +371,3 @@ Feature: list files
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

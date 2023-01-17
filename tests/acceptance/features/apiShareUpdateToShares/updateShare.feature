@@ -229,11 +229,6 @@ Feature: sharing
       | path                 |
       | /Shares/Carol-folder |
 
-    @skipOnOcV10 @issue-2442
-    Examples:
-      | path          |
-      | /Carol-folder |
-
   @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-349 @issue-ocis-reva-350 @issue-ocis-reva-352 @issue-37653
   #after fixing all the issues merge this scenario with the one below
   Scenario Outline: API responds with a full set of parameters when owner changes the permission of a share

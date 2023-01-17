@@ -20,11 +20,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-12
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
@@ -35,11 +30,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: download a file larger than 4MB (ref: https://github.com/sabre-io/http/pull/119 )
@@ -53,11 +43,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @smokeTest @notToImplementOnOCIS
   Scenario Outline: Downloading a file should serve security headers
@@ -117,11 +102,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-98
   Scenario Outline: Get the content-length response header of a pdf file
     Given using <dav_version> DAV path
@@ -136,11 +116,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-98
   Scenario Outline: Get the content-length response header of an image file
     Given using <dav_version> DAV path
@@ -154,11 +129,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Download a file with comma in the filename
@@ -176,13 +146,6 @@ Feature: download file
       | new         | ",,,.txt"      |
       | new         | ",,,.,"        |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | filename          |
-      | spaces         | "sample,1.txt" |
-      | spaces         | ",,,.txt"      |
-      | spaces         | ",,,.,"        |
-
 
   Scenario Outline: download a file with single part ranges
     Given using <dav_version> DAV path
@@ -197,11 +160,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: download a file with multipart ranges
@@ -229,11 +187,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: download a file with last byte range out of bounds
     Given using <dav_version> DAV path
@@ -244,11 +197,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: download a range at the end of a file
@@ -261,11 +209,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: download a file with range out of bounds
     Given using <dav_version> DAV path
@@ -275,11 +218,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: download hidden files
@@ -303,11 +241,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @smokeTest @skipOnOcV10
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
@@ -328,11 +261,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario: download a zero byte size file

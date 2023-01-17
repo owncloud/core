@@ -19,11 +19,6 @@ Feature: get quota
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @smokeTest
   Scenario Outline: Retrieving folder quota when quota is set
     Given using <dav_version> DAV path
@@ -34,11 +29,6 @@ Feature: get quota
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required
   Scenario Outline: Retrieving folder quota of shared folder with quota when no quota is set for recipient
@@ -62,11 +52,6 @@ Feature: get quota
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Retrieving folder quota when quota is set and a file was uploaded
     Given using <dav_version> DAV path
@@ -81,11 +66,6 @@ Feature: get quota
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required
   Scenario Outline: Retrieving folder quota when quota is set and a file was received
@@ -103,8 +83,3 @@ Feature: get quota
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

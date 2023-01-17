@@ -23,11 +23,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @smokeTest
   Scenario Outline: Moving and overwriting a file
     Given using <dav_version> DAV path
@@ -43,11 +38,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Moving (renaming) a file to be only different case
     Given using <dav_version> DAV path
@@ -60,11 +50,6 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @smokeTest
   Scenario Outline: Moving (renaming) a file to a file with only different case to an existing file
@@ -80,11 +65,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Moving (renaming) a file to a file in a folder with only different case to an existing file
     Given using <dav_version> DAV path
@@ -99,11 +79,6 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required @skipOnOcis
   Scenario Outline: Moving a file into a shared folder as the sharee and as the sharer
@@ -202,11 +177,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-211
   Scenario Outline: rename a file into an invalid filename
     Given using <dav_version> DAV path
@@ -217,11 +187,6 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Checking file id after a move
@@ -238,11 +203,6 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required @skipOnOcis
   Scenario Outline: Checking file id after a move between received shares
@@ -287,11 +247,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @sqliteDB
   Scenario Outline: renaming to a file with special characters
     Given using <dav_version> DAV path
@@ -315,11 +270,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-265
   #after fixing the issues merge this Scenario into the one above
   Scenario Outline: renaming to a file with question mark in its name
@@ -332,11 +282,6 @@ Feature: move (rename) file
       | dav_version | renamed_file  |
       | old         | #oc ab?cd=ef# |
       | new         | #oc ab?cd=ef# |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | renamed_file  |
-      | spaces      | #oc ab?cd=ef# |
 
 
   Scenario Outline: renaming file with dots in the path
@@ -361,16 +306,6 @@ Feature: move (rename) file
       | new         | /...          | ...         |
       | new         | /..upload     | ..abc       |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | folder_name   | file_name   |
-      | spaces      | /upload.      | abc.        |
-      | spaces      | /upload.      | abc .       |
-      | spaces      | /upload.1     | abc         |
-      | spaces      | /upload...1.. | abc...txt.. |
-      | spaces      | /...          | abcd.txt    |
-      | spaces      | /...          | ...         |
-
   @smokeTest
   Scenario Outline: user tries to move a file that doesnt exist into a folder
     Given using <dav_version> DAV path
@@ -383,11 +318,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @smokeTest
   Scenario Outline: user tries to rename a file that doesnt exist
     Given using <dav_version> DAV path
@@ -398,11 +328,6 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Moving a hidden file
@@ -430,11 +355,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Renaming to/from a hidden file
     Given using <dav_version> DAV path
@@ -459,11 +379,6 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Moving a file (deep moves with various folder and file names)
@@ -495,18 +410,6 @@ Feature: move (rename) file
       | new         | texta         | file.txt    | textb         | 0           |
       | new         | texta         | file.txt    | textb         | 1           |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | source_folder | source_file | target_folder | target_file |
-      | spaces      | text          | file.txt    | 0             | file.txt    |
-      | spaces      | text          | file.txt    | 1             | file.txt    |
-      | spaces      | 0             | file.txt    | text          | file.txt    |
-      | spaces      | 1             | file.txt    | text          | file.txt    |
-      | spaces      | texta         | 0           | textb         | file.txt    |
-      | spaces      | texta         | 1           | textb         | file.txt    |
-      | spaces      | texta         | file.txt    | textb         | 0           |
-      | spaces      | texta         | file.txt    | textb         | 1           |
-
 
   Scenario Outline: Moving a file from a folder to the root
     Given using <dav_version> DAV path
@@ -532,16 +435,6 @@ Feature: move (rename) file
       | new         | texta         | file.txt    | 0           |
       | new         | texta         | file.txt    | 0           |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | source_folder | source_file | target_file |
-      | spaces      | 0             | file.txt    | file.txt    |
-      | spaces      | 1             | file.txt    | file.txt    |
-      | spaces      | texta         | 0           | file.txt    |
-      | spaces      | texta         | 1           | file.txt    |
-      | spaces      | texta         | file.txt    | 0           |
-      | spaces      | texta         | file.txt    | 0           |
-
 
   Scenario Outline: move a file of size zero byte
     Given using <dav_version> DAV path
@@ -556,11 +449,6 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: rename a file of size zero byte
     Given using <dav_version> DAV path
@@ -573,8 +461,3 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

@@ -23,11 +23,6 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: overwriting a file inside a folder changes its etag
     Given using <dav_version> DAV path
@@ -46,11 +41,6 @@ Feature: propagation of etags when uploading data
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-product-280
   Scenario Outline: as share receiver uploading a file inside a received shared folder should update etags for all collaborators
@@ -172,8 +162,3 @@ Feature: propagation of etags when uploading data
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

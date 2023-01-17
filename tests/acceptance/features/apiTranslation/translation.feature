@@ -26,11 +26,3 @@ Feature: translate messages in api response to preferred language
       | new         | es-ES    |
       | new         | zh-CN    |
       | new         | fr-FR    |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | language |
-      | spaces      | de-DE    |
-      | spaces      | es-ES    |
-      | spaces      | zh-CN    |
-      | spaces      | fr-FR    |

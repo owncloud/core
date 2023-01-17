@@ -25,11 +25,6 @@ Feature: upload file using old chunking
       | dav_version |
       | old         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Upload chunked file desc
     Given using <dav_version> DAV path
@@ -45,11 +40,6 @@ Feature: upload file using old chunking
       | dav_version |
       | old         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Upload chunked file random
     Given using <dav_version> DAV path
@@ -64,11 +54,6 @@ Feature: upload file using old chunking
     Examples:
       | dav_version |
       | old         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Checking file id after a move overwrite using old chunking endpoint
@@ -94,11 +79,6 @@ Feature: upload file using old chunking
       | dav_version |
       | old         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @smokeTest
   # This smokeTest scenario does ordinary checks for chunked upload,
   # without adjusting the log level. This allows it to run in test environments
@@ -118,12 +98,6 @@ Feature: upload file using old chunking
       | dav_version | file-name                       |
       | old         | &#? TIÄFÜ @a#8a=b?c=d ?abc=oc # |
       | old         | 0                               |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | file-name                       |
-      | spaces      | &#? TIÄFÜ @a#8a=b?c=d ?abc=oc # |
-      | spaces      | 0                               |
 
   # This scenario does extra checks with the log level set to debug.
   # It does not run in smoke test runs. (see comments in scenario above)
@@ -152,16 +126,6 @@ Feature: upload file using old chunking
       | old         | @a#8a=b?c=d |
       | old         | ?abc=oc #   |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | file-name   |
-      | spaces      | file-name   |
-      | spaces      | &#?         |
-      | spaces      | TIÄFÜ       |
-      | spaces      | 0           |
-      | spaces      | @a#8a=b?c=d |
-      | spaces      | ?abc=oc #   |
-
   @skipOnOcV10 @issue-36115
   Scenario Outline: Upload chunked file with old chunking with lengthy filenames
     Given using <dav_version> DAV path
@@ -183,8 +147,3 @@ Feature: upload file using old chunking
     Examples:
       | dav_version |
       | old         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

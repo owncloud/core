@@ -39,12 +39,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             | /Shares/textfile0 (2).txt |
       | 2               | 200             | /Shares/textfile0 (2).txt |
 
-    @skipOnOcV10 @issue-2131
-    Examples:
-      | ocs_api_version | ocs_status_code | file_target        |
-      | 1               | 100             | /textfile0 (2).txt |
-      | 2               | 200             | /textfile0 (2).txt |
-
   @issue-ocis-1289
   Scenario Outline: Share of folder and sub-folder to same user
     Given using OCS API version "<ocs_api_version>"
@@ -135,12 +129,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | /Shares/randomfile.txt | /Shares/randomfile (2).txt |
       | 2               | /Shares/randomfile.txt | /Shares/randomfile (2).txt |
 
-    @skipOnOcV10 @issue-ocis-2131
-    Examples:
-      | ocs_api_version | file_target_1   | file_target_2       |
-      | 1               | /randomfile.txt | /randomfile (2).txt |
-      | 2               | /randomfile.txt | /randomfile (2).txt |
-
 
   Scenario Outline: multiple users share a folder with the same name to a user
     Given using OCS API version "<ocs_api_version>"
@@ -174,12 +162,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | ocs_api_version | file_target_1     | file_target_2         | ocs_status_code |
       | 1               | /Shares/zzzfolder | /Shares/zzzfolder (2) | 100             |
       | 2               | /Shares/zzzfolder | /Shares/zzzfolder (2) | 200             |
-
-    @skipOnOcV10 @issue-ocis-2131
-    Examples:
-      | ocs_api_version | file_target_1 | file_target_2  | ocs_status_code |
-      | 1               | /zzzfolder    | /zzzfolder (2) | 100             |
-      | 2               | /zzzfolder    | /zzzfolder (2) | 200             |
 
   @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP @skipOnGraph
   Scenario Outline: share with a group and then add a user to that group that already has a file with the shared name

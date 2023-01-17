@@ -13,11 +13,6 @@ Feature: checksums
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @smokeTest @issue-ocis-reva-196
   Scenario Outline: Uploading a file with checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
@@ -28,11 +23,6 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @smokeTest @issue-ocis-reva-98
   Scenario Outline: Uploading a file with checksum should return the checksum in the download header
@@ -46,11 +36,6 @@ Feature: checksums
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-196
   Scenario Outline: Moving a file with checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
@@ -62,11 +47,6 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-98
   Scenario Outline: Downloading a file with checksum should return the checksum in the download header
@@ -81,11 +61,6 @@ Feature: checksums
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-196
   Scenario Outline: Uploading a chunked file with checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
@@ -99,11 +74,6 @@ Feature: checksums
       | dav_version |
       | old         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-17
   Scenario Outline: Uploading a chunked file with checksum should return the checksum in the download header
     Given using <dav_version> DAV path
@@ -116,11 +86,6 @@ Feature: checksums
     Examples:
       | dav_version |
       | old         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @local_storage @files_external-app-required @notToImplementOnOCIS
   Scenario Outline: Downloading a file from local storage has correct checksum
@@ -151,11 +116,6 @@ Feature: checksums
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-196
   Scenario Outline: Copying a file with checksum should return the checksum in the propfind using new DAV path
     Given using <dav_version> DAV path
@@ -167,11 +127,6 @@ Feature: checksums
       | dav_version |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-98
   Scenario Outline: Copying file with checksum should return the checksum in the download header using new DAV path
     Given using <dav_version> DAV path
@@ -182,11 +137,6 @@ Feature: checksums
     Examples:
       | dav_version |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required @issue-ocis-reva-196
   Scenario Outline: Sharing a file with checksum should return the checksum in the propfind using new DAV path
@@ -303,11 +253,6 @@ Feature: checksums
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Upload a file where checksum does match
     Given using <dav_version> DAV path
@@ -317,11 +262,6 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-99
   Scenario Outline: Uploaded file should have the same checksum when downloaded
@@ -336,11 +276,6 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @local_storage @files_external-app-required @notToImplementOnOCIS @skipOnEncryptionType:user-keys @encryption-issue-42
   Scenario Outline: Uploaded file to external storage should have the same checksum when downloaded
@@ -368,11 +303,6 @@ Feature: checksums
       | dav_version |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   ## upload overwriting
   @issue-ocis-reva-196
   Scenario Outline: Uploading a file with MD5 checksum overwriting an existing file
@@ -392,11 +322,6 @@ Feature: checksums
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-196
   Scenario Outline: Uploading a file with SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
@@ -415,11 +340,6 @@ Feature: checksums
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224 @issue-ocis-reva-196
   Scenario Outline: Uploading a file with invalid SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
@@ -432,11 +352,6 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload overwriting a file with new chunking and correct checksum
@@ -477,9 +392,3 @@ Feature: checksums
       | old         | "# %ab ab?=ed"    |
       | new         | " oc?test=ab&cd " |
       | new         | "# %ab ab?=ed"    |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | renamed_file      |
-      | spaces      | " oc?test=ab&cd " |
-      | spaces      | "# %ab ab?=ed"    |

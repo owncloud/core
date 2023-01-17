@@ -22,11 +22,6 @@ Feature: auth
       | dav_path           |
       | /remote.php/webdav |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_path              |
-      | /dav/spaces/%spaceid% |
-
   @smokeTest @notToImplementOnOCIS @issue-ocis-reva-28
   Scenario: using WebDAV with token auth
     Given a new client token for "Alice" has been generated

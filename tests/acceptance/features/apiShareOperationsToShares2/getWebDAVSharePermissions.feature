@@ -24,11 +24,6 @@ Feature: sharing
       | old      |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: Correct webdav share-permissions for received file with edit and reshare permissions
     Given using <dav-path> DAV path
@@ -154,11 +149,6 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions

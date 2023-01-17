@@ -33,18 +33,6 @@ Feature: create files and folder
       | new         | /😀 🤖          |
       | new         | /new&folder     |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | folder_name |
-      | spaces      | /upload         |
-      | spaces      | /strängé folder |
-      | spaces      | /C++ folder.cpp |
-      | spaces      | /नेपाली           |
-      | spaces      | /folder #2      |
-      | spaces      | /folder ?2      |
-      | spaces      | /😀 🤖          |
-      | spaces      | /new&folder     |
-
   @smokeTest
   Scenario Outline: Creating a folder
     Given using <dav_version> DAV path
@@ -59,11 +47,6 @@ Feature: create files and folder
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Creating a folder with special chars
     Given using <dav_version> DAV path
@@ -77,11 +60,6 @@ Feature: create files and folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-15
   Scenario Outline: Creating a directory which contains .part should not be possible
@@ -98,11 +76,6 @@ Feature: create files and folder
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-168
   Scenario Outline: try to create a folder that already exists
     Given using <dav_version> DAV path
@@ -117,11 +90,6 @@ Feature: create files and folder
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-168
   Scenario Outline: try to create a folder with a name of an existing file
     Given using <dav_version> DAV path
@@ -135,11 +103,6 @@ Feature: create files and folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Create a file
@@ -166,15 +129,3 @@ Feature: create files and folder
       | new         | /file ?2.pdf     |
       | new         | /😀 🤖.txt       |
       | new         | /new&file.txt    |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | file_name        |
-      | spaces      | /upload.txt      |
-      | spaces      | /strängéfile.txt |
-      | spaces      | /C++ file.cpp    |
-      | spaces      | /नेपाली            |
-      | spaces      | /file #2.txt     |
-      | spaces      | /file ?2.pdf     |
-      | spaces      | /😀 🤖.txt       |
-      | spaces      | /new&file.txt    |

@@ -28,7 +28,3 @@ Feature: resources shared with the same name are received with unique names
     Examples:
       | share            |
       | /Shares/foo (2)/ |
-    @skipOnOcV10
-    Examples:
-      | share            |
-      | /Shares/foo (1)/ |
