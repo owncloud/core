@@ -1761,6 +1761,7 @@ $CONFIG = [
 'grace_period.demo_key.link' => 'https://owncloud.com/try-enterprise/',
 
 /**
+ * Order of login policies
  * The order of the login policies that will be checked, if any.
  * Policies must be registered in order to use / activate them. This is usually
  * done automatically by core or the app containing the policy.
@@ -1786,6 +1787,7 @@ $CONFIG = [
 'loginPolicy.order' => [],
 
 /**
+ * Configuration of the Group Login Policy
  * Povide configuration for the
  * 'OC\Authentication\LoginPolicies\GroupLoginPolicy' policy.
  *
