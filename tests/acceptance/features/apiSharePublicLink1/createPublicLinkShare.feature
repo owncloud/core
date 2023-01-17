@@ -639,3 +639,19 @@ Feature: create a public link share
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
+
+
+  Scenario: check the href of a public link file
+    Given using new DAV path
+    And user "Alice" has uploaded file with content "Random data" to "/file.txt"
+    And user "Alice" has created a public link share with settings
+      | path        | file.txt |
+      | permissions | read     |
+    When the public lists the resources in the last created public link with depth "1" using the WebDAV API
+    Then the HTTP status code should be "207"
+    And the value of the item "//d:response[2]//d:href" in the response should match "/%base_path%\/remote.php\/dav\/public-files\/%public_token%\/file.txt$/"
+    When the public gets the following properties of entry "/file.txt" in the last created public link using the WebDAV API
+      | propertyName |
+      | d:href       |
+    Then the HTTP status code should be "207"
+    And the value of the item "//d:href" in the response should match "/%base_path%\/remote.php\/dav\/public-files\/%public_token%\/file.txt$/"
