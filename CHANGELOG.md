@@ -22,6 +22,7 @@ Summary
 * Bugfix - Set length of oc_calendars.components to 255: [#40563](https://github.com/owncloud/core/pull/40563)
 * Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
 * Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: [#40571](https://github.com/owncloud/core/pull/40571)
+* Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 * Change - Test indirect resource existence: [#40406](https://github.com/owncloud/core/pull/40406)
@@ -140,6 +141,10 @@ Details
    we check the right location.
 
    https://github.com/owncloud/core/pull/40571
+
+* Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
+
+   https://github.com/owncloud/core/pull/40579
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
