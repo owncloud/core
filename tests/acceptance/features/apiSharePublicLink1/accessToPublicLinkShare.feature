@@ -57,3 +57,14 @@ Feature: accessing a public link share
       | testavatar.jpg |
       | textfile0.txt  |
     Then the HTTP status code of responses on all endpoints should be "200"
+
+
+  Scenario Outline: Request to non-existent public link
+    When a user requests "<endpoint>" with "<method>" and no authentication
+    Then the HTTP status code should be "404"
+    Examples: 
+      | endpoint                                        | method   |
+      | /remote.php/dav/public-files/thisWillNeverExist | GET      |
+      | /remote.php/dav/public-files/thisWillNeverExist | PUT      |
+      | /remote.php/dav/public-files/thisWillNeverExist | PROPFIND |
+      | /s/thisWillNeverExist                           | GET      |
