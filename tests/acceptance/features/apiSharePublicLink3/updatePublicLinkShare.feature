@@ -515,12 +515,6 @@ Feature: update a public link share
       | new      | 1               | 100             |
       | new      | 2               | 200             |
 
-    @personalSpace
-    Examples:
-      | dav-path | ocs_api_version | ocs_status_code |
-      | spaces   | 1               | 100             |
-      | spaces   | 2               | 200             |
-
   @notToImplementOnOCIS @issue-39820
   Scenario Outline: API responds with a full set of parameters when owner renames the file with a public link (bug demonstration)
     Given using OCS API version "<ocs_api_version>"
@@ -604,9 +598,3 @@ Feature: update a public link share
       | old      | 2               | 200             |
       | new      | 1               | 100             |
       | new      | 2               | 200             |
-
-    @personalSpace
-    Examples:
-      | dav-path | ocs_api_version | ocs_status_code |
-      | spaces   | 1               | 100             |
-      | spaces   | 2               | 200             |

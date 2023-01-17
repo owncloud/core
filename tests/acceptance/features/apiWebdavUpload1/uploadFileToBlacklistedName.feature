@@ -31,11 +31,6 @@ Feature: users cannot upload a file to a blacklisted name
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
@@ -69,8 +64,3 @@ Feature: users cannot upload a file to a blacklisted name
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

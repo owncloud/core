@@ -19,11 +19,6 @@ Feature: delete folder
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-269
   Scenario Outline: delete a folder when 2 folder exist with different case
     Given using <dav_version> DAV path
@@ -36,11 +31,6 @@ Feature: delete folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-269
   Scenario Outline: delete a sub-folder
@@ -56,11 +46,6 @@ Feature: delete folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required @notToImplementOnOCIS
   Scenario Outline: delete a folder when there is a default folder for received shares
@@ -129,14 +114,3 @@ Feature: delete folder
       | new         | /..fo       |
       | new         | /fo.xyz     |
       | new         | /fo.exe     |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | folder_name |
-      | spaces      | /fo.        |
-      | spaces      | /fo.1       |
-      | spaces      | /fo...1..   |
-      | spaces      | /...        |
-      | spaces      | /..fo       |
-      | spaces      | /fo.xyz     |
-      | spaces      | /fo.exe     |

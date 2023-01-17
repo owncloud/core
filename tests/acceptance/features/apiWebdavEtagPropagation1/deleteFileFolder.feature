@@ -27,11 +27,6 @@ Feature: propagation of etags when deleting a file or folder
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-product-280
   Scenario Outline: deleting a folder changes the etags of all parents
     Given using <dav_version> DAV path
@@ -51,11 +46,6 @@ Feature: propagation of etags when deleting a file or folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: deleting a folder with content changes the etags of all parents
@@ -77,11 +67,6 @@ Feature: propagation of etags when deleting a file or folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: as share receiver deleting a file changes the etags of all parents for all collaborators
@@ -231,11 +216,6 @@ Feature: propagation of etags when deleting a file or folder
       | old         |
       | new         |
 
-  @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-product-280
   Scenario Outline: deleting a folder in a publicly shared folder changes its etag for the sharer
     Given using <dav_version> DAV path
@@ -255,8 +235,3 @@ Feature: propagation of etags when deleting a file or folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

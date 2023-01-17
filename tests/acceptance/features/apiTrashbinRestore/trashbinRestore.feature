@@ -198,11 +198,6 @@ Feature: Restore deleted files/folders
       | dav-path | status-code |
       | old      | 401         |
       | new      | 401         |
-    @skipOnOcV10
-    Examples:
-      | dav-path | status-code |
-      | old      | 404         |
-      | new      | 404         |
 
   @smokeTest
   Scenario Outline: A deleted file cannot be restored with invalid password

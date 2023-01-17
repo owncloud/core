@@ -20,11 +20,6 @@ Feature: users cannot upload a file to or into an excluded directory
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
@@ -38,11 +33,6 @@ Feature: users cannot upload a file to or into an excluded directory
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) excluded_directories_regex
@@ -79,8 +69,3 @@ Feature: users cannot upload a file to or into an excluded directory
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

@@ -56,11 +56,6 @@ Feature: upload to a public link share
       | old      | new                       |
       | new      | new                       |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | public-webdav-api-version |
-      | spaces   | new                       |
-
 
   Scenario Outline: Uploading file to a public read-only share folder with public API does not work
     Given user "Alice" has created a public link share with settings

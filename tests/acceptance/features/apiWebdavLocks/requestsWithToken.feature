@@ -125,8 +125,3 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | dav-path |
       | old      |
       | new      |
-
-    @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |

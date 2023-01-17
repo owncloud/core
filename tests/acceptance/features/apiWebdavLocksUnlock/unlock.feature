@@ -40,11 +40,6 @@ Feature: UNLOCK locked items
       | old      |
       | new      |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path |
-      | spaces   |
-
   @notToImplementOnOCIS
   Scenario Outline: unlocking a file that was locked by the user locking the folder above is not possible
     Given using <dav-path> DAV path
@@ -130,9 +125,3 @@ Feature: UNLOCK locked items
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |

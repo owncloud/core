@@ -42,11 +42,6 @@ Feature: Search
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: search for entries by only some letters from the middle of the entry name
     Given using <dav_version> DAV path
@@ -63,11 +58,6 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: search for files by extension
@@ -87,11 +77,6 @@ Feature: Search
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: search with empty field
     Given using <dav_version> DAV path
@@ -101,11 +86,6 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: limit returned search entries
@@ -126,11 +106,6 @@ Feature: Search
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: limit returned search entries to only 1 entry
     Given using <dav_version> DAV path
@@ -149,11 +124,6 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: limit returned search entries to more entires than there are
@@ -174,11 +144,6 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-4712
   Scenario Outline: report extra properties in search entries for a file
@@ -208,11 +173,6 @@ Feature: Search
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-4712
   Scenario Outline: report extra properties in search entries for a folder
     Given using <dav_version> DAV path
@@ -240,11 +200,6 @@ Feature: Search
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: search for entry with emoji by pattern
     Given using <dav_version> DAV path
@@ -264,11 +219,6 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario: search for entry by tags using REPORT method

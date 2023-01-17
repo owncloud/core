@@ -19,11 +19,6 @@ Feature: users cannot move (rename) a file to a blacklisted name
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: rename a file to a banned filename
     Given using <dav_version> DAV path
@@ -34,11 +29,6 @@ Feature: users cannot move (rename) a file to a blacklisted name
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: rename a file to a filename that matches (or not) blacklisted_files_regex
@@ -73,8 +63,3 @@ Feature: users cannot move (rename) a file to a blacklisted name
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

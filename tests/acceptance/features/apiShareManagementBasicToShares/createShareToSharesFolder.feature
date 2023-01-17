@@ -528,11 +528,6 @@ Feature: sharing
       | ocs_api_version | ocs_status_code | path                  |
       | 1               | 100             | /Shares/textfile0.txt |
       | 2               | 200             | /Shares/textfile0.txt |
-    @skipOnOcV10 @issue-ocis-2441
-    Examples:
-      | ocs_api_version | ocs_status_code | path           |
-      | 1               | 100             | /textfile0.txt |
-      | 2               | 200             | /textfile0.txt |
 
   @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-2146
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share

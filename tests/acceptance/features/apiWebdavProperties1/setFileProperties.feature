@@ -20,11 +20,6 @@ Feature: set file properties
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-217
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path
@@ -36,11 +31,6 @@ Feature: set file properties
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-276
   Scenario Outline: Setting custom DAV property and reading it after the file is renamed
@@ -54,11 +44,6 @@ Feature: set file properties
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required @issue-ocis-reva-217
   Scenario Outline: Setting custom DAV property on a shared file as an owner and reading as a recipient
@@ -78,11 +63,6 @@ Feature: set file properties
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-276
   Scenario Outline: Setting custom DAV property using one endpoint and reading it with other endpoint
     Given using <action_dav_version> DAV path
@@ -95,11 +75,3 @@ Feature: set file properties
       | action_dav_version | other_dav_version |
       | old                | new               |
       | new                | old               |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | action_dav_version | other_dav_version |
-      | spaces             | new               |
-      | spaces             | old               |
-      | new                | spaces            |
-      | old                | spaces            |
