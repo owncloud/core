@@ -9,11 +9,6 @@ Feature: dav-versions
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and without skeleton files
 
-
-  Scenario: Upload file and no version is available
-    When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
-
   @files_sharing-app-required
   Scenario: User can access meta folder of a file which is owned by somebody else but shared with that user
     Given user "Brian" has been created with default attributes and without skeleton files
