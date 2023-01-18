@@ -236,7 +236,7 @@ class ScanExternalSharesJob extends TimedJob {
 			);
 		} catch (\Exception $e) {
 			$this->logger->debug(
-				"Skipping external share {$share['mountpoint']} for uid {$share['user']} from remote {$share['remote']}  due to internal server error"
+				"Skipping external share {$share['mountpoint']} for uid {$share['user']} from remote {$share['remote']} due to internal server error"
 			);
 			$this->logger->logException($e, ['app' => 'federatedfilesharing']);
 		}
