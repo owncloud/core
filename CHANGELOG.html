@@ -28,6 +28,7 @@
         <li class="type-change changelog-item">Change - Detect mime types of hidden files: <a href="https://github.com/owncloud/core/pull/40427">#40427</a></li>
         <li class="type-change changelog-item">Change - Copy the encryption keys first and then rename the files: <a href="https://github.com/owncloud/core/pull/40433">#40433</a></li>
         <li class="type-change changelog-item">Change - Drop unneeded Google SDK services: <a href="https://github.com/owncloud/core/pull/40444">#40444</a></li>
+        <li class="type-change changelog-item">Change - Allow to temporarily ignore invalid federated shares: <a href="https://github.com/owncloud/core/pull/40503">#40503</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/40521">#40521</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
@@ -198,6 +199,18 @@
             <p>Unused Google SDK services are removed to reduce package size.
             </p>
             <p>https://github.com/owncloud/core/pull/40444<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Allow to temporarily ignore invalid federated shares: <a href="https://github.com/owncloud/core/pull/40503">#40503</a></p>
+            <p>This change is targeted mostly at tightly federated setupsCurrently, if federated share is invalid or api endpoint returns not found, availability
+   check would validate whether this is a problem with a server and if checks complete that given
+   share is removed. However, in some cases these checks might not be enough (e.g. complex
+   migrations in tightly federated setups), and in that case invalidation behaviour can be
+   disabled using below app setting:Files_sharing.enable_cleanup_invalid_external_shares='no'
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5427<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40503<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/40521">#40521</a></p>

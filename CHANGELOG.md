@@ -30,6 +30,7 @@ Summary
 * Change - Detect mime types of hidden files: [#40427](https://github.com/owncloud/core/pull/40427)
 * Change - Copy the encryption keys first and then rename the files: [#40433](https://github.com/owncloud/core/pull/40433)
 * Change - Drop unneeded Google SDK services: [#40444](https://github.com/owncloud/core/pull/40444)
+* Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
 * Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
 
 Details
@@ -222,6 +223,21 @@ Details
    Unused Google SDK services are removed to reduce package size.
 
    https://github.com/owncloud/core/pull/40444
+
+* Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
+
+   This change is targeted mostly at tightly federated setups
+
+   Currently, if federated share is invalid or api endpoint returns not found, availability
+   check would validate whether this is a problem with a server and if checks complete that given
+   share is removed. However, in some cases these checks might not be enough (e.g. complex
+   migrations in tightly federated setups), and in that case invalidation behaviour can be
+   disabled using below app setting:
+
+   Files_sharing.enable_cleanup_invalid_external_shares='no'
+
+   https://github.com/owncloud/enterprise/issues/5427
+   https://github.com/owncloud/core/pull/40503
 
 * Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
 
