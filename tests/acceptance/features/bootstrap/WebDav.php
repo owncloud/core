@@ -5497,13 +5497,23 @@ trait WebDav {
 		}
 
 		// the username should be in oc:meta-version-edited-by
-		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by//text()");
-		if (!isset($xmlPart[$index - 1])) {
+		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by");
+		$authors = [];
+		foreach ($xmlPart as $idx => $author) {
+			// The first element is the root path element which is not a version
+			// So skipping it
+			if ($idx !== 0) {
+				$authors[] = $author->__toString();
+			}
+		}
+		// reverse the array to get the latest version first
+		\array_reverse($authors);
+		if (!isset($authors[$index - 1])) {
 			Assert::fail(
 				'could not find version with index "' . $index . '" for oc:meta-version-edited-by property in response to user "' . $this->responseUser . '"'
 			);
 		}
-		$actualUser = $xmlPart[$index - 1][0];
+		$actualUser = $authors[$index - 1];
 		Assert::assertEquals(
 			$expectedUsername,
 			$actualUser,
@@ -5511,17 +5521,27 @@ trait WebDav {
 		);
 
 		// the user's display name should be in oc:meta-version-edited-by-name
-		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by-name//text()");
-		if (!isset($xmlPart[$index - 1])) {
+		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by-name");
+		$displaynames = [];
+		foreach ($xmlPart as $idx => $displayname) {
+			// The first element is the root path element which is not a version
+			// So skipping it
+			if ($idx !== 0) {
+				$displaynames[] = $displayname->__toString();
+			}
+		}
+		// reverse the array to get the latest version first
+		\array_reverse($displaynames);
+		if (!isset($displaynames[$index - 1])) {
 			Assert::fail(
 				'could not find version with index "' . $index . '" for oc:meta-version-edited-by-name property in response to user "' . $this->responseUser . '"'
 			);
 		}
-		$actualUserDisplayName = $xmlPart[$index - 1][0];
+		$actualUserDisplayName = $displaynames[$index - 1];
 		Assert::assertEquals(
 			$expectedUserDisplayName,
 			$actualUserDisplayName,
-			"Expected display name of version with index $index in response to user '$this->responseUser' was '$expectedUsername', but got '$actualUser'"
+			"Expected display name of version with index $index in response to user '$this->responseUser' was '$expectedUserDisplayName', but got '$actualUserDisplayName'"
 		);
 	}
 }

@@ -554,3 +554,46 @@ Feature: dav-versions
     When user "Alice" restores version index "1" of file "/file.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And the version folder of file "/file.txt" for user "Alice" should contain "0" element
+
+
+  Scenario: Receiver tries get file versions of shared file before receiving it
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And auto-accept shares has been disabled
+    And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 2" to "textfile0.txt"
+    And we save it into "FILEID"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
+    Then the HTTP status code should be "404"
+    And the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
+
+
+  Scenario: sharer tries get file versions of shared file when the sharee changes the content of the file
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "First content" to "sharefile.txt"
+    And user "Alice" has shared file "sharefile.txt" with user "Brian"
+    When user "Brian" has uploaded file with content "Second content" to "/sharefile.txt"
+    Then the HTTP status code should be "204"
+    And the version folder of file "/sharefile.txt" for user "Brian" should contain "1" element
+    And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element
+
+
+  Scenario: download old versions of a shared file as share receiver
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 2" to "textfile0.txt"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    When user "Brian" downloads the version of file "/textfile0.txt" with the index "1"
+    Then the HTTP status code should be "200"
+    And the following headers should be set
+      | header              | value                                                                |
+      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
+    And the downloaded content should be "version 1"
+    When user "Brian" downloads the version of file "/textfile0.txt" with the index "2"
+    Then the HTTP status code should be "200"
+    And the following headers should be set
+      | header              | value                                                                |
+      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
+    And the downloaded content should be "uploaded content"
