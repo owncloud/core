@@ -241,27 +241,6 @@ Feature: download file
       | old         |
       | new         |
 
-  @smokeTest @skipOnOcV10
-  Scenario Outline: Downloading a file should serve security headers
-    Given using <dav_version> DAV path
-    When user "Alice" downloads file "/welcome.txt" using the WebDAV API
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header                            | value                                                            |
-      | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
-      | Content-Security-Policy           | default-src 'none';                                              |
-      | X-Content-Type-Options            | nosniff                                                          |
-      | X-Download-Options                | noopen                                                           |
-      | X-Frame-Options                   | SAMEORIGIN                                                       |
-      | X-Permitted-Cross-Domain-Policies | none                                                             |
-      | X-Robots-Tag                      | none                                                             |
-      | X-XSS-Protection                  | 1; mode=block                                                    |
-    And the downloaded content should start with "Welcome"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
 
   Scenario: download a zero byte size file
     Given user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"

@@ -95,13 +95,3 @@ Feature: moving a share inside another share
     And as "Brian" folder "/Shares/folderA/localFolder/subFolder" should exist
     And as "Alice" file "/folderA/localFolder/localFile.txt" should exist
     And as "Brian" file "/Shares/folderA/localFolder/localFile.txt" should exist
-
-  @skipOnOcV10
-  Scenario: share receiver tries to move a whole share inside a local folder
-    Given user "Brian" has created folder "localFolder"
-    And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"
-    # On oCIS you cannot move received shares out of the "Shares" folder
-    When user "Brian" moves folder "Shares/folderB" to "localFolder/folderB" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" file "/folderB/fileB.txt" should exist
-    And as "Brian" file "/Shares/folderB/fileB.txt" should exist

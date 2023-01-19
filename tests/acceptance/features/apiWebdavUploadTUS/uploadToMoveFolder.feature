@@ -20,9 +20,3 @@ Feature: move folders
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-

@@ -31,11 +31,6 @@ Feature: upload file
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: attempt to upload a file into a nonexistent folder within correctly received share
     Given using <dav_version> DAV path
