@@ -41,6 +41,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
+use OCA\Files_Sharing\AppInfo\Application;
 use OCA\Files_Sharing\SharingBlacklist;
 use OCP\Util\UserSearch;
 
@@ -384,7 +385,10 @@ class ShareesController extends OCSController {
 		$pluginClass = $this->config->getSystemValue('sharing.remoteShareesSearch');
 		if ($pluginClass !== '') {
 			$this->result['remotes'] = [];
-			$plugin = new $pluginClass($this->config, $this->userManager, $this->userSession);
+			$app = new Application();
+			$container = $app->getContainer();
+			/** @var \OCP\Share\IRemoteShareesSearch $plugin */
+			$plugin = $container->query($pluginClass);
 			$result = $plugin->search($search);
 			$this->result['exact']['remotes'] = $result;
 			$this->reachedEndFor[] = 'remotes';
