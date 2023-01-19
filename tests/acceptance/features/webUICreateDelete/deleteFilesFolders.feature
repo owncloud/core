@@ -151,7 +151,7 @@ Feature: deleting files and folders
     And file "zzzz-must-be-last-file-in-folder.txt" should not be listed on the webUI
 
   @files_sharing-app-required
-  Scenario: delete files from shared with others page
+  Scenario: resources cannot be deleted from the shared with others page
     Given user "Alice" has created folder "simple-folder"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -159,28 +159,19 @@ Feature: deleting files and folders
     And user "Alice" has shared folder "simple-folder" with user "Brian"
     And user "Alice" has logged in using the webUI
     And the user has browsed to the shared-with-others page
-    When the user deletes file "lorem.txt" using the webUI
-    And the user deletes folder "simple-folder" using the webUI
-    Then as "Alice" file "lorem.txt" should not exist
-    And as "Alice" folder "simple-folder" should not exist
-    And file "lorem.txt" should not be listed on the webUI
-    And folder "simple-folder" should not be listed on the webUI
-    When the user browses to the files page
-    Then file "lorem.txt" should not be listed on the webUI
-    And folder "simple-folder" should not be listed on the webUI
+    Then file "lorem.txt" should be listed on the webUI
+    And folder "simple-folder" should be listed on the webUI
+    But it should not be possible to delete file "lorem.txt" using the webUI
+    And it should not be possible to delete folder "simple-folder" using the webUI
 
   @public_link_share-feature-required @files_sharing-app-required
-  Scenario: delete files from shared by link page
+  Scenario: resources cannot be deleted from the shared by link page
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
     And user "Alice" has logged in using the webUI
     And the user has created a public link share of file "lorem.txt"
     And the user has browsed to the shared-by-link page
     Then file "lorem.txt" should be listed on the webUI
-    When the user deletes file "lorem.txt" using the webUI
-    Then as "Alice" file "lorem.txt" should not exist
-    And file "lorem.txt" should not be listed on the webUI
-    When the user browses to the files page
-    Then file "lorem.txt" should not be listed on the webUI
+    But it should not be possible to delete file "lorem.txt" using the webUI
 
   @systemtags-app-required
   Scenario: delete files from tags page
