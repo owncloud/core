@@ -28,6 +28,7 @@
         <li class="type-change changelog-item">Change - Detect mime types of hidden files: <a href="https://github.com/owncloud/core/pull/40427">#40427</a></li>
         <li class="type-change changelog-item">Change - Copy the encryption keys first and then rename the files: <a href="https://github.com/owncloud/core/pull/40433">#40433</a></li>
         <li class="type-change changelog-item">Change - Drop unneeded Google SDK services: <a href="https://github.com/owncloud/core/pull/40444">#40444</a></li>
+        <li class="type-change changelog-item">Change - Delete action is removed from sharing sections: <a href="https://github.com/owncloud/core/pull/40497">#40497</a></li>
         <li class="type-change changelog-item">Change - Allow to temporarily ignore invalid federated shares: <a href="https://github.com/owncloud/core/pull/40503">#40503</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/40521">#40521</a></li>
     </ul>
@@ -199,6 +200,16 @@
             <p>Unused Google SDK services are removed to reduce package size.
             </p>
             <p>https://github.com/owncloud/core/pull/40444<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Delete action is removed from sharing sections: <a href="https://github.com/owncloud/core/pull/40497">#40497</a></p>
+            <p>In the files apps, the "shared with others" and "shared by link" sections allowed people to use a
+   delete action on a file or folder present in that list. This was causing problems because people
+   accidentally removed the folder when, in fact, they wanted to unshare it.This delete action isn't present any longer. You can unshare from those views by accessing the
+   file or folder's details. If you want to delete the file or folder, you can do it from the regular
+   "all files" section.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40497<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Allow to temporarily ignore invalid federated shares: <a href="https://github.com/owncloud/core/pull/40503">#40503</a></p>

@@ -30,6 +30,7 @@ Summary
 * Change - Detect mime types of hidden files: [#40427](https://github.com/owncloud/core/pull/40427)
 * Change - Copy the encryption keys first and then rename the files: [#40433](https://github.com/owncloud/core/pull/40433)
 * Change - Drop unneeded Google SDK services: [#40444](https://github.com/owncloud/core/pull/40444)
+* Change - Delete action is removed from sharing sections: [#40497](https://github.com/owncloud/core/pull/40497)
 * Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
 * Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
 
@@ -223,6 +224,18 @@ Details
    Unused Google SDK services are removed to reduce package size.
 
    https://github.com/owncloud/core/pull/40444
+
+* Change - Delete action is removed from sharing sections: [#40497](https://github.com/owncloud/core/pull/40497)
+
+   In the files apps, the "shared with others" and "shared by link" sections allowed people to use a
+   delete action on a file or folder present in that list. This was causing problems because people
+   accidentally removed the folder when, in fact, they wanted to unshare it.
+
+   This delete action isn't present any longer. You can unshare from those views by accessing the
+   file or folder's details. If you want to delete the file or folder, you can do it from the regular
+   "all files" section.
+
+   https://github.com/owncloud/core/pull/40497
 
 * Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
 
