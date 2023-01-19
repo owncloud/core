@@ -22,7 +22,7 @@
 namespace OCP\Share;
 
 class ShareeValue {
-  public int $shareType;
+	public int $shareType;
 	public string $shareWith;
 }
 
@@ -33,6 +33,9 @@ class Sharee {
 
 /**
  * Interface IRemoteShareesSearch
+ * Used in the ShareesController of the files_sharing app.
+ * See the 'sciencemesh' app for an example implementation
+ * of this interface.
  *
  * @package OCP\Share
  * @since 10.11.0
