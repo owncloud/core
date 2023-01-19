@@ -494,7 +494,19 @@ class OC_Image implements \OCP\IImage {
 	public function loadFromFileHandle($handle) {
 		$contents = \stream_get_contents($handle);
 		if ($this->loadFromData($contents)) {
-			$this->loadExifData($handle);
+			// The loadExifData function has problems using the $handle resource
+			// so the exif data isn't loaded with some files (checked with jpg).
+			// Note that this error doesn't happen with all the (jpg) files, but
+			// some of them.
+			// As workaround, we write the contents in a temporary stream
+			// and load the exif data from there
+			$ff = \fopen('php://temp', 'w+');
+			\fwrite($ff, $contents);
+			// no need to seek to the initial position because the underlying
+			// exif_read_data is expected to handle it on its own. It works
+			// without seeking
+			$this->loadExifData($ff);
+			\fclose($ff);
 			return $this->resource;
 		}
 		return false;
