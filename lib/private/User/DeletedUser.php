@@ -103,9 +103,9 @@ class DeletedUser implements IUser {
 	}
 
 	/**
-         * Reset user creation time (return 0)
-         * @return int
-	 */
+		  * Reset user creation time (return 0)
+		  * @return int
+	*/
 	public function getCreationTime() {
 		return 0;
 	}

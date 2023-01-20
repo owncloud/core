@@ -1,0 +1,6 @@
+Enhancement: Add account creation time
+
+Adding account creation time in oc_accounts table
+
+https://github.com/owncloud/enterprise/issues/2298
+https://github.com/owncloud/core/pull/40588
