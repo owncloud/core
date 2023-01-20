@@ -438,7 +438,7 @@ $CONFIG = [
 
 /**
  * Define the SMTP security style
- * Depends on `mail_smtpmode`. Specify when you are using `ssl` or `tls`.
+ * Depends on `mail_smtpmode`. Specify when you are using `ssl` or not.
  * Leave empty for no encryption.
  */
 'mail_smtpsecure' => '',
@@ -448,13 +448,6 @@ $CONFIG = [
  * Depends on `mail_smtpmode`. Change this to `true` if your mail server requires authentication.
  */
 'mail_smtpauth' => false,
-
-/**
- * Define the SMTP authentication type
- * Depends on `mail_smtpmode`. If SMTP authentication is required,
- * choose the authentication type as `LOGIN` (default) or `PLAIN`.
- */
-'mail_smtpauthtype' => 'LOGIN',
 
 /**
  * Define the SMTP authentication username

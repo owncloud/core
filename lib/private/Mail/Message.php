@@ -22,55 +22,38 @@
 
 namespace OC\Mail;
 
-use Swift_Message;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 /**
- * Class Message provides a wrapper around SwiftMail
+ * Class Message provides a wrapper around Symfony\Component\Mime\Email
  *
  * @package OC\Mail
  */
 class Message {
-	/** @var Swift_Message */
-	private $swiftMessage;
+	private Email $message;
+	private array $from = [];
+	private array $replyTo = [];
+	private array $to = [];
+	private array $cc = [];
+	private array $bcc = [];
 
-	/**
-	 * @param Swift_Message $swiftMessage
-	 */
-	public function __construct(Swift_Message $swiftMessage) {
-		$this->swiftMessage = $swiftMessage;
+	public function __construct(Email $swiftMessage) {
+		$this->message = $swiftMessage;
 	}
 
 	/**
-	 * SwiftMailer does currently not work with IDN domains, this function therefore converts the domains
-	 * FIXME: Remove this once SwiftMailer supports IDN
-	 *
 	 * @param array $addresses Array of mail addresses, key will get converted
-	 * @return array Converted addresses if `idn_to_ascii` exists
+	 * @return Address[] Converted addresses if `idn_to_ascii` exists
 	 */
-	protected function convertAddresses($addresses) {
-		if (!\function_exists('idn_to_ascii')) {
-			return $addresses;
-		}
-
+	protected function convertAddresses(array $addresses): array {
 		$convertedAddresses = [];
 
 		foreach ($addresses as $email => $readableName) {
-			if (!\is_numeric($email)) {
-				list($name, $domain) = \explode('@', $email, 2);
-				if (\defined('INTL_IDNA_VARIANT_UTS46')) {
-					$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
-				} else {
-					$domain = \idn_to_ascii($domain);
-				}
-				$convertedAddresses[$name.'@'.$domain] = $readableName;
+			if (\is_numeric($email)) {
+				$convertedAddresses[] = new Address($readableName);
 			} else {
-				list($name, $domain) = \explode('@', $readableName, 2);
-				if (\defined('INTL_IDNA_VARIANT_UTS46')) {
-					$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
-				} else {
-					$domain = \idn_to_ascii($domain);
-				}
-				$convertedAddresses[$email] = $name.'@'.$domain;
+				$convertedAddresses[] = new Address($email, $readableName ?? '');
 			}
 		}
 
@@ -83,12 +66,11 @@ class Message {
 	 * If no "From" address is used \OC\Mail\Mailer will use mail_from_address and mail_domain from config.php
 	 *
 	 * @param array $addresses Example: array('sender@domain.org', 'other@domain.org' => 'A name')
-	 * @return $this
 	 */
-	public function setFrom(array $addresses) {
-		$addresses = $this->convertAddresses($addresses);
+	public function setFrom(array $addresses): Message {
+		$this->message->from(...$this->convertAddresses($addresses));
 
-		$this->swiftMessage->setFrom($addresses);
+		$this->from = $addresses;
 		return $this;
 	}
 
@@ -97,42 +79,36 @@ class Message {
 	 *
 	 * @return array
 	 */
-	public function getFrom() {
-		return $this->swiftMessage->getFrom();
+	public function getFrom(): array {
+		return $this->from;
 	}
 
 	/**
 	 * Set the Reply-To address of this message
-	 *
-	 * @param array $addresses
-	 * @return $this
 	 */
-	public function setReplyTo(array $addresses) {
-		$addresses = $this->convertAddresses($addresses);
+	public function setReplyTo(array $addresses): Message {
+		$this->message->replyTo(...$this->convertAddresses($addresses));
 
-		$this->swiftMessage->setReplyTo($addresses);
+		$this->replyTo = $addresses;
 		return $this;
 	}
 
 	/**
 	 * Returns the Reply-To address of this message
-	 *
-	 * @return array
 	 */
-	public function getReplyTo() {
-		return $this->swiftMessage->getReplyTo();
+	public function getReplyTo(): array {
+		return $this->replyTo;
 	}
 
 	/**
-	 * Set the to addresses of this message.
+	 * Set the to-addresses of this message.
 	 *
 	 * @param array $recipients Example: array('recipient@domain.org', 'other@domain.org' => 'A name')
-	 * @return $this
 	 */
-	public function setTo(array $recipients) {
-		$recipients = $this->convertAddresses($recipients);
+	public function setTo(array $recipients): Message {
+		$this->message->to(...$this->convertAddresses($recipients));
 
-		$this->swiftMessage->setTo($recipients);
+		$this->to = $recipients;
 		return $this;
 	}
 
@@ -141,82 +117,68 @@ class Message {
 	 *
 	 * @return array
 	 */
-	public function getTo() {
-		return $this->swiftMessage->getTo();
+	public function getTo(): array {
+		return $this->to;
 	}
 
 	/**
 	 * Set the CC recipients of this message.
 	 *
 	 * @param array $recipients Example: array('recipient@domain.org', 'other@domain.org' => 'A name')
-	 * @return $this
 	 */
-	public function setCc(array $recipients) {
-		$recipients = $this->convertAddresses($recipients);
+	public function setCc(array $recipients): Message {
+		$this->message->cc(...$this->convertAddresses($recipients));
 
-		$this->swiftMessage->setCc($recipients);
+		$this->cc = $recipients;
 		return $this;
 	}
 
 	/**
 	 * Get the cc address of this message.
-	 *
-	 * @return array
 	 */
-	public function getCc() {
-		return $this->swiftMessage->getCc();
+	public function getCc(): array {
+		return $this->cc;
 	}
 
 	/**
 	 * Set the BCC recipients of this message.
 	 *
 	 * @param array $recipients Example: array('recipient@domain.org', 'other@domain.org' => 'A name')
-	 * @return $this
 	 */
-	public function setBcc(array $recipients) {
-		$recipients = $this->convertAddresses($recipients);
+	public function setBcc(array $recipients): Message {
+		$this->message->bcc(...$this->convertAddresses($recipients));
 
-		$this->swiftMessage->setBcc($recipients);
+		$this->bcc = $recipients;
 		return $this;
 	}
 
 	/**
 	 * Get the Bcc address of this message.
-	 *
-	 * @return array
 	 */
-	public function getBcc() {
-		return $this->swiftMessage->getBcc();
+	public function getBcc(): array {
+		return $this->bcc;
 	}
 
 	/**
 	 * Set the subject of this message.
-	 *
-	 * @param $subject
-	 * @return $this
 	 */
-	public function setSubject($subject) {
-		$this->swiftMessage->setSubject($subject);
+	public function setSubject(string $subject): Message {
+		$this->message->subject($subject);
 		return $this;
 	}
 
 	/**
-	 * Get the from subject of this message.
-	 *
-	 * @return string
+	 * Get the subject of this message.
 	 */
-	public function getSubject() {
-		return $this->swiftMessage->getSubject();
+	public function getSubject(): string {
+		return $this->message->getSubject();
 	}
 
 	/**
 	 * Set the plain-text body of this message.
-	 *
-	 * @param string $body
-	 * @return $this
 	 */
-	public function setPlainBody($body) {
-		$this->swiftMessage->setBody($body);
+	public function setPlainBody(string $body): Message {
+		$this->message->text($body);
 		return $this;
 	}
 
@@ -225,8 +187,8 @@ class Message {
 	 *
 	 * @return string
 	 */
-	public function getPlainBody() {
-		return $this->swiftMessage->getBody();
+	public function getPlainBody(): string {
+		return $this->message->getTextBody() ?? '';
 	}
 
 	/**
@@ -235,26 +197,27 @@ class Message {
 	 * @param string $body
 	 * @return $this
 	 */
-	public function setHtmlBody($body) {
-		$this->swiftMessage->addPart($body, 'text/html');
+	public function setHtmlBody(string $body): Message {
+		$this->message->html($body);
 		return $this;
 	}
 
-	/**
-	 * Get's the underlying SwiftMessage
-	 * @return Swift_Message
-	 */
-	public function getSwiftMessage() {
-		return $this->swiftMessage;
+	public function getMessage(): Email {
+		return $this->message;
 	}
 
-	/**
-	 * @param string $body
-	 * @param string $contentType
-	 * @return $this
-	 */
-	public function setBody($body, $contentType) {
-		$this->swiftMessage->setBody($body, $contentType);
+	public function setBody(string $body, string $contentType): Message {
+		if ($contentType === 'text/html') {
+			$this->message->html($body);
+		} else {
+			$this->message->text($body);
+		}
+
+		return $this;
+	}
+
+	public function attach($body, string $name = null, string $contentType = null): self {
+		$this->message->attach($body, $name, $contentType);
 		return $this;
 	}
 }

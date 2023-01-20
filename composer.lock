@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93d7fcb848a1edf15d8bfbf1681912a9",
+    "content-hash": "ff6e7b393d6a03ac2588cc305b877672",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -3374,82 +3374,6 @@
             "time": "2023-06-28T12:56:05+00:00"
         },
         {
-            "name": "swiftmailer/swiftmailer",
-            "version": "v6.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "8a5d5072dca8f48460fce2f4131fcc495eec654c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/8a5d5072dca8f48460fce2f4131fcc495eec654c",
-                "reference": "8a5d5072dca8f48460fce2f4131fcc495eec654c",
-                "shasum": ""
-            },
-            "require": {
-                "egulias/email-validator": "^2.0|^3.1",
-                "php": ">=7.0.0",
-                "symfony/polyfill-iconv": "^1.0",
-                "symfony/polyfill-intl-idn": "^1.10",
-                "symfony/polyfill-mbstring": "^1.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "symfony/phpunit-bridge": "^4.4|^5.4"
-            },
-            "suggest": {
-                "ext-intl": "Needed to support internationalized email addresses"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.2-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "lib/swift_required.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Chris Corbyn"
-                },
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "Swiftmailer, free feature-rich PHP mailer",
-            "homepage": "https://swiftmailer.symfony.com",
-            "keywords": [
-                "email",
-                "mail",
-                "mailer"
-            ],
-            "support": {
-                "issues": "https://github.com/swiftmailer/swiftmailer/issues",
-                "source": "https://github.com/swiftmailer/swiftmailer/tree/v6.3.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/swiftmailer/swiftmailer",
-                    "type": "tidelift"
-                }
-            ],
-            "abandoned": "symfony/mailer",
-            "time": "2021-10-18T15:26:12+00:00"
-        },
-        {
             "name": "symfony/console",
             "version": "v5.4.28",
             "source": {
@@ -3780,6 +3704,166 @@
             "time": "2022-01-02T09:53:40+00:00"
         },
         {
+            "name": "symfony/mailer",
+            "version": "v5.4.22",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mailer.git",
+                "reference": "6330cd465dfd8b7a07515757a1c37069075f7b0b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/6330cd465dfd8b7a07515757a1c37069075f7b0b",
+                "reference": "6330cd465dfd8b7a07515757a1c37069075f7b0b",
+                "shasum": ""
+            },
+            "require": {
+                "egulias/email-validator": "^2.1.10|^3|^4",
+                "php": ">=7.2.5",
+                "psr/event-dispatcher": "^1",
+                "psr/log": "^1|^2|^3",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/event-dispatcher": "^4.4|^5.0|^6.0",
+                "symfony/mime": "^5.2.6|^6.0",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/service-contracts": "^1.1|^2|^3"
+            },
+            "conflict": {
+                "symfony/http-kernel": "<4.4"
+            },
+            "require-dev": {
+                "symfony/http-client": "^4.4|^5.0|^6.0",
+                "symfony/messenger": "^4.4|^5.0|^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mailer\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Helps sending emails",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/mailer/tree/v5.4.22"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-03-10T10:15:32+00:00"
+        },
+        {
+            "name": "symfony/mime",
+            "version": "v5.4.26",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mime.git",
+                "reference": "2ea06dfeee20000a319d8407cea1d47533d5a9d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/2ea06dfeee20000a319d8407cea1d47533d5a9d2",
+                "reference": "2ea06dfeee20000a319d8407cea1d47533d5a9d2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-intl-idn": "^1.10",
+                "symfony/polyfill-mbstring": "^1.0",
+                "symfony/polyfill-php80": "^1.16"
+            },
+            "conflict": {
+                "egulias/email-validator": "~3.0.0",
+                "phpdocumentor/reflection-docblock": "<3.2.2",
+                "phpdocumentor/type-resolver": "<1.4.0",
+                "symfony/mailer": "<4.4",
+                "symfony/serializer": "<5.4.26|>=6,<6.2.13|>=6.3,<6.3.2"
+            },
+            "require-dev": {
+                "egulias/email-validator": "^2.1.10|^3.1|^4",
+                "phpdocumentor/reflection-docblock": "^3.0|^4.0|^5.0",
+                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/property-access": "^4.4|^5.1|^6.0",
+                "symfony/property-info": "^4.4|^5.1|^6.0",
+                "symfony/serializer": "^5.4.26|~6.2.13|^6.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mime\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Allows manipulating MIME messages",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "mime",
+                "mime-type"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/mime/tree/v5.4.26"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-07-27T06:29:31+00:00"
+        },
+        {
             "name": "symfony/polyfill-ctype",
             "version": "v1.28.0",
             "source": {
@@ -3844,89 +3928,6 @@
             ],
             "support": {
                 "source": "https://github.com/symfony/polyfill-ctype/tree/v1.28.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2023-01-26T09:26:14+00:00"
-        },
-        {
-            "name": "symfony/polyfill-iconv",
-            "version": "v1.28.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-iconv.git",
-                "reference": "6de50471469b8c9afc38164452ab2b6170ee71c1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/6de50471469b8c9afc38164452ab2b6170ee71c1",
-                "reference": "6de50471469b8c9afc38164452ab2b6170ee71c1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "provide": {
-                "ext-iconv": "*"
-            },
-            "suggest": {
-                "ext-iconv": "For best performance"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Iconv\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for the Iconv extension",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "iconv",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-iconv/tree/v1.28.0"
             },
             "funding": [
                 {
@@ -7490,19 +7491,19 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4",
-        "ext-json": "*",
-        "ext-curl": "*",
         "ext-apcu": "*",
-        "ext-zip": "*",
-        "ext-memcached": "*",
-        "ext-gd": "*",
-        "ext-pdo": "*",
-        "ext-libxml": "*",
-        "ext-simplexml": "*",
-        "ext-fileinfo": "*",
+        "ext-curl": "*",
         "ext-exif": "*",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
         "ext-imagick": "*",
-        "ext-posix": "*"
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-memcached": "*",
+        "ext-pdo": "*",
+        "ext-posix": "*",
+        "ext-simplexml": "*",
+        "ext-zip": "*"
     },
     "platform-dev": [],
     "platform-overrides": {
