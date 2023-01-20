@@ -1,118 +1,118 @@
 {
-    "name": "owncloud/core",
-    "description": "A safe home for all your data",
-    "license": "AGPL-1.0",
-    "config" : {
-        "vendor-dir": "lib/composer",
-        "optimize-autoloader": true,
-        "classmap-authoritative": false,
-        "platform": {
-            "php": "7.4"
-        },
-        "allow-plugins": {
-            "bamarni/composer-bin-plugin": true,
-            "dg/composer-cleaner": true
-        }
+  "name": "owncloud/core",
+  "description": "A safe home for all your data",
+  "license": "AGPL-1.0",
+  "config" : {
+    "vendor-dir": "lib/composer",
+    "optimize-autoloader": true,
+    "classmap-authoritative": false,
+    "platform": {
+      "php": "7.4"
     },
-    "autoload" : {
-        "psr-4": {
-            "OC\\": "lib/private",
-            "OC\\Core\\": "core/",
-            "OC\\Settings\\": "settings/",
-            "OCP\\": "lib/public"
-        },
-        "classmap": ["lib/private/legacy"],
-        "files": [
-            "apps/files_external/lib/config.php"
-        ]
-
-    },
-    "autoload-dev" : {
-        "files": [
-            "tests/lib/TestCase.php"
-        ]
-    },
-    "require-dev": {
-        "bamarni/composer-bin-plugin": "^1.8",
-        "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.5",
-        "roave/security-advisories": "dev-latest"
-    },
-    "require": {
-        "php": ">=7.4",
-        "ext-apcu": "*",
-        "ext-ctype": "*",
-        "ext-curl": "*",
-        "ext-exif": "*",
-        "ext-fileinfo": "*",
-        "ext-gd": "*",
-        "ext-iconv": "*",
-        "ext-imagick": "*",
-        "ext-intl": "*",
-        "ext-json": "*",
-        "ext-libxml": "*",
-        "ext-mbstring": "*",
-        "ext-memcached": "*",
-        "ext-pdo": "*",
-        "ext-posix": "*",
-        "ext-simplexml": "*",
-        "ext-zip": "*",
-        "bantu/ini-get-wrapper": "v1.0.1",
-        "christophwurst/id3parser": "^0.1.4",
-        "composer/semver": "^3.3",
-        "deepdiver/zipstreamer": "^2.0",
-        "dg/composer-cleaner": "^2.2",
-        "doctrine/dbal": "^2.13",
-        "firebase/php-jwt": "^6.8",
-        "google/apiclient": "^2.15",
-        "guzzlehttp/guzzle": "^7.7",
-        "icewind/smb": "^3.6",
-        "icewind/streams": "0.7.7",
-        "interfasys/lognormalizer": "^v1.0",
-        "laminas/laminas-inputfilter": "^2.21",
-        "laminas/laminas-servicemanager": "^3.17",
-        "laminas/laminas-validator": "^2.25",
-        "laravel/serializable-closure": "^1.3",
-        "league/flysystem": "^1.1",
-        "nikic/php-parser": "^4.15",
-        "owncloud/tarstreamer": "v2.1.0",
-        "pear/archive_tar": "1.4.14",
-        "pear/pear-core-minimal": "^v1.10",
-        "phpseclib/phpseclib": "^3.0",
-        "pimple/pimple": "^3.5",
-        "punic/punic": "^3.8",
-        "sabre/dav": "^4.4",
-        "sabre/http": "^5.1",
-        "sabre/vobject": "^4.5",
-        "swiftmailer/swiftmailer": "^6.3",
-        "symfony/console": "^5.4",
-        "symfony/event-dispatcher": "^5.4",
-        "symfony/process": "^5.4",
-        "symfony/routing": "^5.4",
-        "symfony/translation": "^5.4"
-    },
-    "replace": {
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-intl-grapheme": "*",
-        "symfony/polyfill-intl-idn": "*",
-        "symfony/polyfill-intl-normalizer": "*",
-        "symfony/polyfill-mbstring": "*",
-        "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php73": "*"
-    },
-    "scripts": {
-        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
-    },
-    "extra": {
-        "bamarni-bin": {
-            "bin-links": false
-        },
-        "cleaner-ignore": {
-            "phpunit/phpunit": true
-        },
-        "google/apiclient-services": [
-            "Drive"
-        ]
+    "allow-plugins": {
+      "bamarni/composer-bin-plugin": true,
+      "dg/composer-cleaner": true
     }
+  },
+  "autoload" : {
+    "psr-4": {
+      "OC\\": "lib/private",
+      "OC\\Core\\": "core/",
+      "OC\\Settings\\": "settings/",
+      "OCP\\": "lib/public"
+    },
+    "classmap": ["lib/private/legacy"],
+    "files": [
+      "apps/files_external/lib/config.php"
+    ]
+
+  },
+  "autoload-dev" : {
+    "files": [
+      "tests/lib/TestCase.php"
+    ]
+  },
+  "require-dev": {
+    "bamarni/composer-bin-plugin": "^1.8",
+    "mikey179/vfsstream": "^1.6",
+    "phpunit/phpunit": "^9.5",
+    "roave/security-advisories": "dev-latest"
+  },
+  "require": {
+    "php": ">=7.4",
+    "ext-apcu": "*",
+    "ext-ctype": "*",
+    "ext-curl": "*",
+    "ext-exif": "*",
+    "ext-fileinfo": "*",
+    "ext-gd": "*",
+    "ext-iconv": "*",
+    "ext-imagick": "*",
+    "ext-intl": "*",
+    "ext-json": "*",
+    "ext-libxml": "*",
+    "ext-mbstring": "*",
+    "ext-memcached": "*",
+    "ext-pdo": "*",
+    "ext-posix": "*",
+    "ext-simplexml": "*",
+    "ext-zip": "*",
+    "bantu/ini-get-wrapper": "v1.0.1",
+    "christophwurst/id3parser": "^0.1.4",
+    "composer/semver": "^3.3",
+    "deepdiver/zipstreamer": "^2.0",
+    "dg/composer-cleaner": "^2.2",
+    "doctrine/dbal": "^2.13",
+    "firebase/php-jwt": "^6.8",
+    "google/apiclient": "^2.15",
+    "guzzlehttp/guzzle": "^7.7",
+    "icewind/smb": "^3.6",
+    "icewind/streams": "0.7.7",
+    "interfasys/lognormalizer": "^v1.0",
+    "laminas/laminas-inputfilter": "^2.21",
+    "laminas/laminas-servicemanager": "^3.17",
+    "laminas/laminas-validator": "^2.25",
+    "laravel/serializable-closure": "^1.3",
+    "league/flysystem": "^1.1",
+    "nikic/php-parser": "^4.15",
+    "owncloud/tarstreamer": "v2.1.0",
+    "pear/archive_tar": "1.4.14",
+    "pear/pear-core-minimal": "^v1.10",
+    "phpseclib/phpseclib": "^3.0",
+    "pimple/pimple": "^3.5",
+    "punic/punic": "^3.8",
+    "sabre/dav": "^4.4",
+    "sabre/http": "^5.1",
+    "sabre/vobject": "^4.5",
+    "symfony/console": "^5.4",
+    "symfony/event-dispatcher": "^5.4",
+    "symfony/mailer": "^5.4",
+    "symfony/process": "^5.4",
+    "symfony/routing": "^5.4",
+    "symfony/translation": "^5.4"
+  },
+  "replace": {
+    "symfony/polyfill-ctype": "*",
+    "symfony/polyfill-iconv": "*",
+    "symfony/polyfill-intl-grapheme": "*",
+    "symfony/polyfill-intl-idn": "*",
+    "symfony/polyfill-intl-normalizer": "*",
+    "symfony/polyfill-mbstring": "*",
+    "symfony/polyfill-php72": "*",
+    "symfony/polyfill-php73": "*"
+  },
+  "scripts": {
+    "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+  },
+  "extra": {
+    "bamarni-bin": {
+      "bin-links": false
+    },
+    "cleaner-ignore": {
+      "phpunit/phpunit": true
+    },
+    "google/apiclient-services": [
+      "Drive"
+    ]
+  }
 }

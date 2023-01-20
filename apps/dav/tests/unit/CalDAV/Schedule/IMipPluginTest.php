@@ -60,7 +60,7 @@ class IMipPluginTest extends TestCase {
 		$this->assertEquals('Fellowship meeting', $mailMessage->getSubject());
 		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
 		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
-		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getSwiftMessage()->getContentType());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getMessage()->getContentType());
 	}
 
 	public function testFailedDeliveryWithException() {
@@ -91,7 +91,7 @@ class IMipPluginTest extends TestCase {
 		$this->assertEquals('Fellowship meeting', $mailMessage->getSubject());
 		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
 		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
-		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getSwiftMessage()->getContentType());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getMessage()->getContentType());
 	}
 
 	public function testFailedDelivery() {
@@ -123,7 +123,7 @@ class IMipPluginTest extends TestCase {
 		$this->assertEquals('Fellowship meeting', $mailMessage->getSubject());
 		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
 		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
-		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getSwiftMessage()->getContentType());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=REQUEST', $mailMessage->getMessage()->getContentType());
 	}
 
 	public function testDeliveryOfCancel() {
@@ -154,7 +154,7 @@ class IMipPluginTest extends TestCase {
 		$this->assertEquals('Cancelled: Fellowship meeting', $mailMessage->getSubject());
 		$this->assertEquals(['frodo@hobb.it' => null], $mailMessage->getTo());
 		$this->assertEquals(['gandalf@wiz.ard' => null], $mailMessage->getReplyTo());
-		$this->assertEquals('text/calendar; charset=UTF-8; method=CANCEL', $mailMessage->getSwiftMessage()->getContentType());
+		$this->assertEquals('text/calendar; charset=UTF-8; method=CANCEL', $mailMessage->getMessage()->getContentType());
 		$this->assertEquals('CANCELLED', $message->message->VEVENT->STATUS->getValue());
 	}
 }

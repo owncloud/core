@@ -23,9 +23,16 @@ namespace OC\Mail;
 
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
+use OC_Defaults;
 use OCP\IConfig;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Transport\SendmailTransport;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Transport\Smtp\Stream\SocketStream;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * Class Mailer provides some basic functions to create a mail message that can be used in combination with
@@ -46,24 +53,15 @@ use OCP\ILogger;
  * @package OC\Mail
  */
 class Mailer implements IMailer {
-	/** @var \Swift_SmtpTransport|\Swift_SendmailTransport Cached transport */
-	private $instance = null;
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
-	/** @var \OC_Defaults */
-	private $defaults;
+	private ?TransportInterface $instance = null;
+	private IConfig $config;
+	private ILogger $logger;
+	private OC_Defaults $defaults;
 
-	/**
-	 * @param IConfig $config
-	 * @param ILogger $logger
-	 * @param \OC_Defaults $defaults
-	 */
 	public function __construct(
 		IConfig $config,
 		ILogger $logger,
-		\OC_Defaults $defaults
+		OC_Defaults $defaults
 	) {
 		$this->config = $config;
 		$this->logger = $logger;
@@ -72,11 +70,9 @@ class Mailer implements IMailer {
 
 	/**
 	 * Creates a new message object that can be passed to send()
-	 *
-	 * @return Message
 	 */
-	public function createMessage() {
-		return new Message(new \Swift_Message());
+	public function createMessage(): Message {
+		return new Message(new Email());
 	}
 
 	/**
@@ -89,7 +85,8 @@ class Mailer implements IMailer {
 	 * @throws \Exception In case it was not possible to send the message. (for example if an invalid mail address
 	 * has been supplied.)
 	 */
-	public function send(Message $message) {
+	public function send(Message $message): array {
+		# TODO: implement this ????
 		$debugMode = $this->config->getSystemValue('mail_smtpdebug', false);
 
 		if (!\is_array($message->getFrom()) || \count($message->getFrom()) === 0) {
@@ -98,9 +95,11 @@ class Mailer implements IMailer {
 
 		$failedRecipients = [];
 
-		$mailer = $this->getInstance();
-
-		$mailer->send($message->getSwiftMessage(), $failedRecipients);
+		try {
+			$this->getInstance()->send($message->getMessage());
+		} catch (TransportExceptionInterface $e) {
+			# TODO: handle exception
+		}
 
 		$allRecipients = [];
 		if (!empty($message->getTo())) {
@@ -131,9 +130,9 @@ class Mailer implements IMailer {
 	 * @param string $email Email address to be validated
 	 * @return bool True if the mail address is valid, false otherwise
 	 */
-	public function validateMailAddress($email) {
-		$validator = new EmailValidator();
-		return $validator->isValid($this->convertEmail($email), new RFCValidation());
+	public function validateMailAddress(string $email): bool {
+		return (new EmailValidator())
+			->isValid($this->convertEmail($email), new RFCValidation());
 	}
 
 	/**
@@ -144,12 +143,12 @@ class Mailer implements IMailer {
 	 * @param string $email
 	 * @return string Converted mail address if `idn_to_ascii` exists
 	 */
-	protected function convertEmail($email) {
+	protected function convertEmail(string $email): string {
 		if (!\function_exists('idn_to_ascii') || \strpos($email, '@') === false) {
 			return $email;
 		}
 
-		list($name, $domain) = \explode('@', $email, 2);
+		[$name, $domain] = \explode('@', $email, 2);
 		if (\defined('INTL_IDNA_VARIANT_UTS46')) {
 			$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 		} else {
@@ -158,80 +157,51 @@ class Mailer implements IMailer {
 		return $name.'@'.$domain;
 	}
 
-	/**
-	 * Returns whatever transport is configured within the config
-	 *
-	 * @return \Swift_SmtpTransport|\Swift_SendmailTransport
-	 */
-	protected function getInstance() {
+	protected function getInstance(): TransportInterface {
 		if ($this->instance !== null) {
 			return $this->instance;
 		}
 
 		$mailMode = $this->config->getSystemValue('mail_smtpmode', 'php');
 		if ($mailMode === 'smtp') {
-			$instance = $this->getSmtpInstance();
+			$transport = $this->getSmtpInstance();
 		} else {
-			// FIXME: Move into the return statement but requires proper testing
-			//       for SMTP and mail as well. Thus not really doable for a
-			//       minor release.
-			$instance = new \Swift_Mailer($this->getSendMailInstance());
+			$transport = $this->getSendMailInstance();
 		}
 
-		// Register plugins
-
-		// Enable logger if debug mode is enabled
-		if ($this->config->getSystemValue('mail_smtpdebug', false)) {
-			$mailLogger = new \Swift_Plugins_Loggers_ArrayLogger();
-			$instance->registerPlugin(new \Swift_Plugins_LoggerPlugin($mailLogger));
-		}
-
-		// Enable antiflood on smtp connection (defaults to 100 mails before reconnect)
-		$instance->registerPlugin(new \Swift_Plugins_AntiFloodPlugin());
-
-		$this->instance = $instance;
+		$this->instance = $transport;
 
 		return $this->instance;
 	}
 
-	/**
-	 * Returns the SMTP transport
-	 *
-	 * @return \Swift_SmtpTransport
-	 */
-	protected function getSmtpInstance() {
-		$transport = new \Swift_SmtpTransport();
-		$transport->setTimeout($this->config->getSystemValue('mail_smtptimeout', 10));
-		$transport->setHost($this->config->getSystemValue('mail_smtphost', '127.0.0.1'));
-		$transport->setPort($this->config->getSystemValue('mail_smtpport', 25));
+	protected function getSmtpInstance(): EsmtpTransport {
+		$timeout = $this->config->getSystemValue('mail_smtptimeout', 10);
+		$host = $this->config->getSystemValue('mail_smtphost', '127.0.0.1');
+		$port = $this->config->getSystemValue('mail_smtpport', 25);
+		$smtpSecurity = $this->config->getSystemValue('mail_smtpsecure', '');
+		$tls = $smtpSecurity === 'ssl' ? true : null;
+		$transport = new EsmtpTransport($host, $port, $tls);
 		if ($this->config->getSystemValue('mail_smtpauth', false)) {
 			$transport->setUsername($this->config->getSystemValue('mail_smtpname', ''));
 			$transport->setPassword($this->config->getSystemValue('mail_smtppassword', ''));
-			$transport->setAuthMode($this->config->getSystemValue('mail_smtpauthtype', 'LOGIN'));
 		}
-		$smtpSecurity = $this->config->getSystemValue('mail_smtpsecure', '');
-		if (!empty($smtpSecurity)) {
-			$transport->setEncryption($smtpSecurity);
+		$stream = $transport->getStream();
+		if ($stream instanceof SocketStream) {
+			$stream->setTimeout($timeout);
 		}
-		$transport->start();
+
 		return $transport;
 	}
 
-	/**
-	 * Returns the sendmail transport
-	 *
-	 * @return \Swift_SendmailTransport
-	 */
-	protected function getSendMailInstance() {
-		switch ($this->config->getSystemValue('mail_smtpmode', 'sendmail')) {
-			case 'qmail':
-				$binaryPath = '/var/qmail/bin/sendmail';
-				break;
-			default:
-				$binaryPath = '/usr/sbin/sendmail';
-				break;
+	protected function getSendMailInstance(): SendmailTransport {
+		$i = $this->config->getSystemValue('mail_smtpmode', 'sendmail');
+		if ($i === 'qmail') {
+			$binaryPath = '/var/qmail/bin/sendmail';
+		} else {
+			$binaryPath = '/usr/sbin/sendmail';
 		}
 
-		return new \Swift_SendmailTransport($binaryPath . ' -bs');
+		# TODO: add logger ???
+		return new SendmailTransport($binaryPath . ' -bs');
 	}
 }

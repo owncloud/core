@@ -403,6 +403,7 @@ $CONFIG = [
 /**
  * Enable or disable SMTP class debugging
  */
+# TODO: unused / deprecated
 'mail_smtpdebug' => false,
 
 /**
@@ -461,6 +462,7 @@ $CONFIG = [
  * Depends on `mail_smtpmode`. If SMTP authentication is required,
  * choose the authentication type as `LOGIN` (default) or `PLAIN`.
  */
+# TODO: drop it - symfony mailer is auto detecting this
 'mail_smtpauthtype' => 'LOGIN',
 
 /**
