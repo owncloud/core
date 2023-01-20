@@ -21,16 +21,6 @@
 
 namespace OCP\Share;
 
-class ShareeValue {
-	public int $shareType;
-	public string $shareWith;
-}
-
-class Sharee {
-	public string $label;
-	public ShareeValue $value;
-}
-
 /**
  * Interface IRemoteShareesSearch
  * Used in the ShareesController of the files_sharing app.
@@ -44,8 +34,14 @@ interface IRemoteShareesSearch {
 	/**
 	 * Return the identifier of this provider.
 	 * @param string search string for autocomplete
-	 * @return Shareee[] one ISharee object per match
-	 * @since 10.0.0
+	 * @return array[] this function should return an array
+	 * where each element is an associative array, containing:
+	 * - label: a string to display as label
+	 * - value: an associative array containing:
+	 *   - shareType: int, to be used as share type
+	 *   - shareWith: string, identifying the sharee
+	 *
+	 * @since 10.11.0
 	 */
 	public function search($search);
 }
