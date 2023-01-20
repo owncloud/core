@@ -40,6 +40,7 @@ class ListUsers extends Base {
 		'quota',
 		'enabled',
 		'lastLogin',
+				'creationTime',
 		'home',
 		'backend',
 		'cloudId',
@@ -109,6 +110,7 @@ class ListUsers extends Base {
 					'quota' => $user->getQuota(),
 					'enabled' => $user->isEnabled(),
 					'lastLogin' => $user->getLastLogin(),
+										'creationTime' => $user->getCreationTime(),
 					'home' => $user->getHome(),
 					'backend' => $user->getBackendClassName(),
 					'cloudId' => $user->getCloudId(),
@@ -137,6 +139,9 @@ class ListUsers extends Base {
 						case 'lastlogin':
 							$this->add($row, 'lastLogin', $user->getLastLogin(), $useKey);
 							break;
+						case 'creationtime':
+							$this->add($row, 'creationTime', $user->getCreationTime(), $useKey);
+							// no break
 						case 'home':
 							$this->add($row, 'home', $user->getHome(), $useKey);
 							break;

@@ -62,6 +62,15 @@ translation('settings');
 						<?php p($l->t('Show storage location')) ?>
 					</label>
 				</p>
+                                <p>
+                                        <input type="checkbox" name="CreationTime" value="CreationTime" id="CheckboxCreationTime"
+                                                class="checkbox" <?php if ($_['show_creation_time'] === 'true') {
+                                                	print_unescaped('checked="checked"');
+                                                } ?> />
+                                        <label for="CheckboxCreationTime">
+                                                <?php p($l->t('Show creation time')) ?>
+                                        </label>
+                                </p>
 				<p>
 					<input type="checkbox" name="LastLogin" value="LastLogin" id="CheckboxLastLogin"
 						class="checkbox" <?php if ($_['show_last_login'] === 'true') {

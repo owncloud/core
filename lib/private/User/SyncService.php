@@ -412,6 +412,7 @@ class SyncService {
 		$a->setUserId($uid);
 		$a->setState(Account::STATE_ENABLED);
 		$a->setBackend($backend);
+		$a->setCreationTime(\time());
 		return $a;
 	}
 
