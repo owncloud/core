@@ -3535,6 +3535,10 @@ class UsersControllerTest extends TestCase {
 			->method('send')
 			->with($message)
 			->willReturn([]);
+		$l10n->method('t')
+			->willReturnCallback(function ($text, $parameters = []) {
+				return \vsprintf($text, $parameters);
+			});
 
 		$result = $usersController->setPassword('fooBaZ1', 'foo', '123');
 		$this->assertEquals(new Http\JSONResponse(['status' => 'success']), $result);
