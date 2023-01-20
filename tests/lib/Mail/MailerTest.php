@@ -12,6 +12,8 @@ use OC\Mail\Mailer;
 use OC_Defaults;
 use OCP\IConfig;
 use OCP\ILogger;
+use Symfony\Component\Mailer\Transport\SendmailTransport;
+use Symfony\Component\Mime\Email;
 use Test\TestCase;
 use OC\Mail\Message;
 
@@ -42,11 +44,12 @@ class MailerTest extends TestCase {
 			->expects($this->once())
 			->method('getSystemValue')
 			->with('mail_smtpmode', 'sendmail')
-			->will($this->returnValue('sendmail'));
+			->willReturn('sendmail');
 
+		/** @var SendmailTransport $mailer */
 		$mailer = self::invokePrivate($this->mailer, 'getSendMailInstance');
-		$this->assertInstanceOf(\Swift_SendmailTransport::class, $mailer);
-		$this->assertEquals('/usr/sbin/sendmail -bs', $mailer->getCommand());
+		$this->assertInstanceOf(SendmailTransport::class, $mailer);
+		$this->assertEquals('/usr/sbin/sendmail -bs', self::invokePrivate($mailer, 'command'));
 	}
 
 	public function testGetSendMailInstanceSendMailQmail(): void {
@@ -54,30 +57,24 @@ class MailerTest extends TestCase {
 			->expects($this->once())
 			->method('getSystemValue')
 			->with('mail_smtpmode', 'sendmail')
-			->will($this->returnValue('qmail'));
+			->willReturn('qmail');
 		$mailer = self::invokePrivate($this->mailer, 'getSendMailInstance');
-		$this->assertInstanceOf(\Swift_SendmailTransport::class, $mailer);
-		$this->assertEquals('/var/qmail/bin/sendmail -bs', $mailer->getCommand());
+		$this->assertInstanceOf(SendmailTransport::class, $mailer);
+		$this->assertEquals('/var/qmail/bin/sendmail -bs', self::invokePrivate($mailer, 'command'));
 	}
 
 	public function testGetInstanceDefault(): void {
-		$this->assertInstanceOf(\Swift_Mailer::class, self::invokePrivate($this->mailer, 'getInstance'));
+		$this->assertInstanceOf(SendmailTransport::class, self::invokePrivate($this->mailer, 'getInstance'));
 	}
 
 	public function testGetInstanceSendmail(): void {
 		$this->config
 			->method('getSystemValue')
-			->will($this->returnValue('sendmail'));
+			->willReturn('sendmail');
 
-		$this->assertInstanceOf(\Swift_Mailer::class, self::invokePrivate($this->mailer, 'getInstance'));
+		$this->assertInstanceOf(SendmailTransport::class, self::invokePrivate($this->mailer, 'getInstance'));
 	}
 
-	public function testCreateMessage(): void {
-		$this->assertInstanceOf(Message::class, $this->mailer->createMessage());
-	}
-
-	/**
-	 */
 	public function testSendInvalidMailException(): void {
 		$this->expectException(\Exception::class);
 
@@ -85,8 +82,8 @@ class MailerTest extends TestCase {
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message->expects($this->once())
-			->method('getSwiftMessage')
-			->will($this->returnValue(new \Swift_Message()));
+			->method('getMessage')
+			->willReturn(new Email());
 
 		$this->mailer->send($message);
 	}
@@ -119,14 +116,14 @@ class MailerTest extends TestCase {
 			->setMethods(['getInstance'])
 			->getMock();
 
-		$this->mailer->method('getInstance')->willReturn($this->createMock(\Swift_SendmailTransport::class));
+		$this->mailer->method('getInstance')->willReturn($this->createMock(SendmailTransport::class));
 
 		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message->expects($this->once())
-			->method('getSwiftMessage')
-			->will($this->returnValue(new \Swift_Message()));
+			->method('getMessage')
+			->willReturn(new Email());
 
 		$from = ['from@example.org' => 'From Address'];
 		$to = ['to1@example.org' => 'To Address 1', 'to2@example.org' => 'To Address 2'];
