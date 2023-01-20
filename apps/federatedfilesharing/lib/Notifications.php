@@ -100,6 +100,7 @@ class Notifications {
 		$name,
 		$remote_id
 	) {
+		error_log("sendRemoteShare");
 		$remoteShareSuccess = false;
 		if ($shareWithAddress->getUserId() && $shareWithAddress->getCloudId()) {
 			$remoteShareSuccess = $this->sendOcmRemoteShare(
@@ -333,6 +334,7 @@ class Notifications {
 	 * @throws \Exception
 	 */
 	protected function tryHttpPostToShareEndpoint($remoteDomain, $urlSuffix, array $fields, $useOcm = false) {
+		error_log("tryHttpPostToShareEndpoint $remoteDomain $urlSuffix");
 		$client = $this->httpClientService->newClient();
 		$protocol = 'https://';
 		$result = [
@@ -357,6 +359,7 @@ class Notifications {
 				];
 				$sendAs = $useOcm === true ? 'json' : 'body';
 				$options[$sendAs] = $fields;
+				error_log("posting to $endpoint");
 				$response = $client->post($endpoint, $options);
 				$result['result'] = $response->getBody();
 				$result['statusCode'] = $response->getStatusCode();
@@ -400,6 +403,8 @@ class Notifications {
 	 * @throws \Exception
 	 */
 	protected function sendOcmRemoteShare(Address $shareWithAddress, Address $ownerAddress, Address $sharedByAddress, $token, $name, $remote_id) {
+		error_log("sendOcmRemoteShare");
+
 		$fields = [
 			'shareWith' => $shareWithAddress->getCloudId(),
 			'name' => $name,
@@ -419,6 +424,7 @@ class Notifications {
 		];
 
 		$url = $shareWithAddress->getHostName();
+		error_log("Calling try...");
 		$result = $this->tryHttpPostToShareEndpoint($url, '/shares', $fields, true);
 
 		if (isset($result['statusCode']) && $result['statusCode'] === Http::STATUS_CREATED) {

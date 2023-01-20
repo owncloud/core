@@ -68,6 +68,7 @@ class ExternalSharesController extends Controller {
 		EventDispatcherInterface $eventDispatcher
 	) {
 		parent::__construct($appName, $request);
+		error_log("external shares controller construct");
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
 		$this->dispatcher = $eventDispatcher;
@@ -83,6 +84,8 @@ class ExternalSharesController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function index() {
+		error_log("external shares controller index");
+
 		$federatedGroupResult = [];
 		if ($this->groupExternalManager !== null) {
 			$federatedGroupResult = $this->groupExternalManager->getOpenShares();

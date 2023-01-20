@@ -178,7 +178,9 @@ class OcmController extends Controller {
 		$protocol
 	) {
 		// Allow the Federated Groups app to overwrite the behaviour of this endpoint (but only for group shares)
+		error_log("in core OcmController $shareType " . (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups') ? 'yes' : 'no'));
 		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups') && ($shareType === 'group')) {
+			error_log("in core OcmController yes");
 			$controller = \OCA\FederatedGroups\Application::getOcmController($this->request);
 			return $controller->createShare(
 				$shareWith,
@@ -194,6 +196,7 @@ class OcmController extends Controller {
 				$protocol
 			);
 		}
+		error_log("in core OcmController no");
 		try {
 			$this->ocmMiddleware->assertIncomingSharingEnabled();
 			$this->ocmMiddleware->assertNotNull(
