@@ -235,7 +235,7 @@ class UsersController extends Controller {
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin() * 1000,
-						'creationTime' => $user->getCreationTime() * 1000,
+			'creationTime' => $user->getCreationTime() * 1000,
 			'backend' => $user->getBackendClassName(),
 			'email' => $displayName,
 			'isRestoreDisabled' => !$restorePossible,

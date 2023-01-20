@@ -271,24 +271,24 @@ class User implements IUser {
 		$this->mapper->update($this->account);
 	}
 
-		/**
-		  * returns the timestamp of the user's creation time
-		  *
-		  * @return int
-		  */
-		 public function getCreationTime() {
-		 	return (int)$this->account->getCreationTime();
-		 }
+	/**
+	 * returns the timestamp of the user's creation time
+	 *
+	 * @return int
+	 */
+	public function getCreationTime() {
+		return (int)$this->account->getCreationTime();
+	}
  
-		/**
-		  * set the timestamp of the user's creation time
-		  *
-		  * @return void
-		  */
-		 public function setCreationTime() {
-		 	$this->account->setCreationTime(\time());
-		 	$this->mapper->update($this->account);
-		 }
+	/**
+	 * set the timestamp of the user's creation time
+	 *
+	 * @return void
+	*/
+	public function setCreationTime() {
+		$this->account->setCreationTime(\time());
+		$this->mapper->update($this->account);
+	}
 
 	/**
 	 * Delete the user

@@ -88,12 +88,12 @@ class RemoteUser implements IUser {
 	public function updateLastLoginTimestamp() {
 	}
 
-		 /**
-		 * @inheritdoc
-		 */
-		public function getCreationTime() {
-			return 0;
-		}
+	/**
+	 * @inheritdoc
+	 */
+	public function getCreationTime() {
+		return 0;
+	}
 
 	/**
 	 * @inheritdoc

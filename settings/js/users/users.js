@@ -1078,7 +1078,6 @@ $(document).ready(function () {
 		}
 	});
 
-
 	if ($('#CheckboxStorageLocation').is(':checked')) {
 		$("#userlist .storageLocation").show();
 	}
@@ -1092,10 +1091,9 @@ $(document).ready(function () {
 			OC.AppConfig.setValue('core', 'umgmt_show_storage_location', 'false');
 		}
 	});
-
      
         if ($('#CheckboxCreationTime').is(':checked')) {
-                  $("#userlist .creationTime").show();
+                $("#userlist .creationTime").show();
         }
         // Option to display/hide the "Creation Time" column
         $('#CheckboxCreationTime').click(function() {

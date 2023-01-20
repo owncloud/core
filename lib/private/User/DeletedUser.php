@@ -102,13 +102,13 @@ class DeletedUser implements IUser {
 		return true;
 	}
 
-		 /**
-		  * Reset user creation time (return 0)
-		  * @return int
-		  */
-		 public function getCreationTime() {
-		 	return 0;
-		 }
+	/**
+         * Reset user creation time (return 0)
+         * @return int
+	 */
+	public function getCreationTime() {
+		return 0;
+	}
 
 	/**
 	 * This is mostly copied from \OC\User\User, but taking into account the
