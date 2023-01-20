@@ -61,7 +61,6 @@ class Mail implements ISettings {
 		$template->assign('mail_smtpsecure', $this->config->getSystemValue("mail_smtpsecure", ''));
 		$template->assign('mail_smtphost', $this->config->getSystemValue("mail_smtphost", ''));
 		$template->assign('mail_smtpport', $this->config->getSystemValue("mail_smtpport", ''));
-		$template->assign('mail_smtpauthtype', $this->config->getSystemValue("mail_smtpauthtype", ''));
 		$template->assign('mail_smtpauth', $this->config->getSystemValue("mail_smtpauth", false));
 		$template->assign('mail_smtpname', $this->config->getSystemValue("mail_smtpname", ''));
 		$template->assign('mail_user_email', $this->userSession->getUser()->getEMailAddress());
