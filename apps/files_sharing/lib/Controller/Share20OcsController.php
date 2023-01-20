@@ -552,7 +552,7 @@ class Share20OcsController extends OCSController {
 			if ($password !== '') {
 				$share->setPassword($password);
 			}
-		} elseif ($shareType === Share::SHARE_TYPE_REMOTE) {
+		} elseif ($shareType === Share::SHARE_TYPE_REMOTE || $shareType === Share::SHARE_TYPE_REMOTE_GROUP) {
 			if (!$this->shareManager->outgoingServer2ServerSharesAllowed()) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 403, $this->l->t('Sharing %s failed because the back end does not allow shares from type %s', [$path->getPath(), $shareType]));

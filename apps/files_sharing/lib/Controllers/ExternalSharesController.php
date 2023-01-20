@@ -39,8 +39,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\Files_Sharing\Controllers
  */
 class ExternalSharesController extends Controller {
+
 	/** @var \OCA\Files_Sharing\External\Manager */
 	private $externalManager;
+	/** @var \OCA\Files_Sharing\External\Manager */
+	private $groupExternalManager = null;
 	/** @var IClientService */
 	private $clientService;
 	/**
@@ -68,6 +71,9 @@ class ExternalSharesController extends Controller {
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
 		$this->dispatcher = $eventDispatcher;
+		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
+			$this->groupExternalManager  = \OCA\FederatedGroups\Application::getExternalManager();
+		}
 	}
 
 	/**
@@ -77,7 +83,12 @@ class ExternalSharesController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function index() {
-		return new JSONResponse($this->externalManager->getOpenShares());
+		$federatedGroupResult = [];
+		if ($this->groupExternalManager !== null) {
+			$federatedGroupResult = $this->groupExternalManager->getOpenShares();
+		}
+		$result = array_merge($federatedGroupResult,  $this->externalManager->getOpenShares());
+		return new JSONResponse($result);
 	}
 
 	/**
@@ -87,11 +98,17 @@ class ExternalSharesController extends Controller {
 	 * @param int $id
 	 * @return JSONResponse
 	 */
-	public function create($id) {
-		$shareInfo = $this->externalManager->getShare($id);
+	public function create($id, $share_type) {
+		if($share_type === "group" && $this->groupExternalManager !== null) {
+			$manager = $this->groupExternalManager;
+		} else {
+			$manager = $this->externalManager;
+		}
+		$shareInfo = $manager->getShare($id);
+		
 		if ($shareInfo !== false) {
-			$mountPoint = $this->externalManager->getShareRecipientMountPoint($shareInfo);
-			$fileId = $this->externalManager->getShareFileId($shareInfo, $mountPoint);
+			$mountPoint = $manager->getShareRecipientMountPoint($shareInfo);
+			$fileId = $manager->getShareFileId($shareInfo, $mountPoint);
 
 			$event = new GenericEvent(
 				null,
@@ -105,7 +122,7 @@ class ExternalSharesController extends Controller {
 					'shareRecipient' => $shareInfo['user'],
 				]
 			);
-			$this->dispatcher->dispatch($event, 'remoteshare.accepted');
+			$this->dispatcher->dispatch($event, 'remoteshare.accepted', $event);
 			$this->externalManager->acceptShare($id);
 		}
 		return new JSONResponse();

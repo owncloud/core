@@ -177,6 +177,23 @@ class OcmController extends Controller {
 		$resourceType,
 		$protocol
 	) {
+		// Allow the Federated Groups app to overwrite the behaviour of this endpoint (but only for group shares)
+		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups') && ($shareType === 'group')) {
+			$controller = \OCA\FederatedGroups\Application::getOcmController($this->request);
+			return $controller->createShare(
+				$shareWith,
+				$name,
+				$description,
+				$providerId,
+				$owner,
+				$ownerDisplayName,
+				$sender,
+				$senderDisplayName,
+				$shareType,
+				$resourceType,
+				$protocol
+			);
+		}
 		try {
 			$this->ocmMiddleware->assertIncomingSharingEnabled();
 			$this->ocmMiddleware->assertNotNull(
@@ -284,6 +301,17 @@ class OcmController extends Controller {
 		$providerId,
 		$notification
 	) {
+		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
+		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
+			$controller = \OCA\FederatedGroups\Application::getOcmController($this->request);
+			return $controller->processNotification(
+				$notificationType,
+				$resourceType,
+				$providerId,
+				$notification
+			);
+		}
+
 		try {
 			if (!\is_array($notification)) {
 				throw new BadRequestException(
