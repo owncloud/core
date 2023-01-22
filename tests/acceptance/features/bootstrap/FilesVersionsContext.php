@@ -154,6 +154,9 @@ class FilesVersionsContext implements Context {
 			WebDavHelper::getDavPath($user, 2) . \trim($path, "/");
 		$fullUrl = $this->featureContext->getBaseUrlWithoutPath() .
 			$xmlPart[$versionIndex];
+			
+		\usleep(VERSION_MTIME_WAIT_TIMEOUT_MICROSEC); // make sure new version gets generated
+
 		$response = HttpRequestHelper::sendRequest(
 			$fullUrl,
 			$this->featureContext->getStepLineRef(),
@@ -246,7 +249,7 @@ class FilesVersionsContext implements Context {
 	}
 
 	/**
-	 * @Then /^as (?:users|user) "([^"]*)" the authors of the current and noncurrent versions of file "([^"]*)" should be:$/
+	 * @Then /^as (?:users|user) "([^"]*)" the authors of the noncurrent versions of file "([^"]*)" should be:$/
 	 *
 	 * @param string $users comma-separated list of usernames
 	 * @param string $filename
@@ -255,7 +258,7 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function asUsersAuthorsOfCurrentAndNoncurrentVersionsOfFileShouldBe(
+	public function asUsersAuthorsOfNoncurrentVersionsOfFileShouldBe(
 		string $users,
 		string $filename,
 		TableNode $table
@@ -270,7 +273,7 @@ class FilesVersionsContext implements Context {
 			$actualUsername = $this->featureContext->getActualUsername($username);
 			$this->userGetsVersionMetadataOfFile($actualUsername, $filename);
 			foreach ($requiredVersionMetadata as $versionMetadata) {
-				$this->featureContext->theAuthorOfEditedVersionFile(
+				$this->featureContext->theAuthorOfNoncurrentVersionFile(
 					$versionMetadata['index'],
 					$versionMetadata['author']
 				);
