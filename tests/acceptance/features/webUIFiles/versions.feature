@@ -136,22 +136,59 @@ Feature: Versions of a file
     And user "Alice" has shared file "randomfile.txt" with user "Brian"
     And user "Alice" has shared file "randomfile.txt" with user "Carol"
     And user "Brian" has uploaded file with content "Brian lorem content" to "/randomfile.txt"
-    And user "Carol" has uploaded file with content "Carol lorem content" to "/randomfile.txt"
     And user "Alice" has uploaded file with content "Alice lorem content" to "/randomfile.txt"
+    And user "Carol" has uploaded file with content "Carol lorem content" to "/randomfile.txt"
     And user "Carol" has logged in using the webUI
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
     Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
       | index | author |
-      | 1     | Alice  |
-      | 2     | Carol  |
+      | 1     | Carol  |
+      | 2     | Alice  |
       | 3     | Brian  |
       | 4     | Alice  |
     When the user restores the file to last version using the webUI
     Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Carol  |
+      | 2     | Carol  |
+      | 3     | Alice  |
+      | 4     | Brian  |
+      | 5     | Alice  |
+
+  @skipOnStorage:ceph @files_primary_s3-issue-67
+  Scenario: sharer can see the versions' respective author after version restore
+    Given the administrator has enabled the file version storage feature
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "Alice" has shared file "randomfile.txt" with user "Brian"
+    And user "Alice" has shared file "randomfile.txt" with user "Carol"
+    And user "Brian" has uploaded file with content "Brian lorem content" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Alice lorem content" to "/randomfile.txt"
+    And user "Carol" has uploaded file with content "Carol lorem content" to "/randomfile.txt"
+    And user "Carol" has logged in using the webUI
+    And the user has browsed to the files page
+    When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
+    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
+      | index | author |
+      | 1     | Carol  |
       | 2     | Alice  |
-      | 3     | Carol  |
+      | 3     | Brian  |
+      | 4     | Alice  |
+    When the user logs out of the webUI
+    And user "Carol" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
+    And the user restores the file to last version using the webUI
+    And the user logs out of the webUI
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
+    And the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
+    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
+      | index | author |
+      | 1     | Carol  |
+      | 2     | Carol  |
+      | 3     | Alice  |
       | 4     | Brian  |
       | 5     | Alice  |

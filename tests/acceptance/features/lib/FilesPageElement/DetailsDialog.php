@@ -661,6 +661,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function restoreCurrentFileToLastVersion(Session $session): void {
+		\usleep(VERSION_MTIME_WAIT_TIMEOUT_MICROSEC); // make sure new version gets generated
 		$revertBtn = $this->getLastVersionRevertButton();
 		$revertBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
