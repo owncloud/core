@@ -167,7 +167,7 @@ Details
    laminas/laminas-inputfilter (2.12.1 to 2.21.0) - laminas/laminas-servicemanager (3.7.0
    to 3.17.0) - laminas/laminas-stdlib (3.11.0 to 3.13.0) - laminas/laminas-validator
    (2.19.0 to 2.25.0) - league/flysystem (1.1.9 to 1.1.10) - psr/container (1.1.1 to 1.1.2) -
-   punic/punic (3.7.0 to 3.8.0) - sabre/uri (2.2.3 to 2.3.2) - sabre/vobject (4.5.0 to 4.5.1)
+   punic/punic (3.7.0 to 3.8.0) - sabre/uri (2.2.3 to 2.3.2) - sabre/vobject (4.5.0 to 4.5.3)
 
    The following have been updated in apps/files_external/3rdparty: - google/auth (v1.21.1 to
    v1.23.0) - google/apiclient-services (v0.259.0 to v0.272.0) - guzzlehttp/psr7 (2.4.0 to
@@ -183,6 +183,7 @@ Details
    https://github.com/owncloud/core/pull/40543
    https://github.com/owncloud/core/pull/40554
    https://github.com/owncloud/core/pull/40568
+   https://github.com/owncloud/core/pull/40591
 
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
 
