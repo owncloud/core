@@ -111,7 +111,7 @@ interface IUser {
 	/**
 	 * set the timestamp of the user's creation time
 	 *
-	 * @return int
+	 * @return void
 	 * @since 10.12.0
 	 */
 	public function setCreationTime();
