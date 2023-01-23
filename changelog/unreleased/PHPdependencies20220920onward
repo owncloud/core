@@ -18,7 +18,7 @@ The following have been updated:
 - psr/container (1.1.1 to 1.1.2)
 - punic/punic (3.7.0 to 3.8.0)
 - sabre/uri (2.2.3 to 2.3.2)
-- sabre/vobject (4.5.0 to 4.5.1)
+- sabre/vobject (4.5.0 to 4.5.3)
 
 The following have been updated in apps/files_external/3rdparty:
 - google/auth (v1.21.1 to v1.23.0)
@@ -35,3 +35,4 @@ https://github.com/owncloud/core/pull/40494
 https://github.com/owncloud/core/pull/40543
 https://github.com/owncloud/core/pull/40554
 https://github.com/owncloud/core/pull/40568
+https://github.com/owncloud/core/pull/40591
