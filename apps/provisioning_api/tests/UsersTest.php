@@ -727,6 +727,7 @@ class UsersTest extends OriginalTest {
 				'home' => '/var/ocdata/UserToGet',
 				'two_factor_auth_enabled' => 'false',
 				'last_login' => '1618230656',
+                                'creation_time' => '1674507398',
 				'language' => 'de'
 			]
 		);
@@ -801,6 +802,7 @@ class UsersTest extends OriginalTest {
 				'displayname' => 'Demo User',
 				'two_factor_auth_enabled' => 'false',
 				'last_login' => '1618230656',
+                                'creation_time' => '1674507398',
 				'language' => 'de'
 			]
 		);
@@ -896,6 +898,7 @@ class UsersTest extends OriginalTest {
 			'home' => '/var/ocdata/UserToGet',
 			'two_factor_auth_enabled' => 'false',
 			'last_login' => '1618230656',
+                        'creation_time' => '1674507398',
 			'language' => 'de'
 		]);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'subadmin']));
