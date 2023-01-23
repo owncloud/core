@@ -708,6 +708,10 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getLastLogin')
 			->willReturn('1618230656');
+		$targetUser
+			->expects($this->once())
+			->method('getCreationTime')
+			->willReturn('1674507398');
 		$this->config
 			->expects($this->once())
 			->method('getUserValue')
@@ -778,6 +782,10 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getLastLogin')
 			->willReturn('1618230656');
+		$targetUser
+			->expects($this->once())
+			->method('getCreationTime')
+			->willReturn('1674507398');
 		$this->config
 			->expects($this->once())
 			->method('getUserValue')
@@ -871,6 +879,10 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getLastLogin')
 			->willReturn('1618230656');
+		$targetUser
+			->expects($this->once())
+			->method('getCreationTime')
+			->willReturn('1674507398');
 		$this->config
 			->expects($this->once())
 			->method('getUserValue')
