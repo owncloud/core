@@ -28,7 +28,7 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Add account creation time in oc_accounts table
  */
-class Version20230117120816 implements ISchemaMigration {
+class Version20230120101715 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		$accountsTable = $schema->getTable("${prefix}accounts");
