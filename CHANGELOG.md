@@ -277,6 +277,7 @@ Details
 
    https://github.com/owncloud/core/pull/40521
    https://github.com/owncloud/core/pull/40575
+   https://github.com/owncloud/core/pull/40592
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
