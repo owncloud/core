@@ -386,7 +386,7 @@ class OC_Image implements \OCP\IImage {
 			return;
 		}
 
-		$this->exifData = @\exif_read_data($file, 'IFD0');
+		$this->exifData = \exif_read_data($file, 'IFD0');
 	}
 
 	/**
@@ -494,10 +494,59 @@ class OC_Image implements \OCP\IImage {
 	public function loadFromFileHandle($handle) {
 		$contents = \stream_get_contents($handle);
 		if ($this->loadFromData($contents)) {
+			$this->adjustStreamChunkSize($handle);
 			$this->loadExifData($handle);
 			return $this->resource;
 		}
 		return false;
+	}
+
+	/**
+	 * Adjust the size of the chunks in the stream. This is required for
+	 * the "exif_red_data" native method to read a whole chunk of metadata
+	 * from the image in one go, otherwise there could be problems with
+	 * the function.
+	 *
+	 * The expected max size of a metadata chunk should be 64 kB, at least for JPEG
+	 * images.
+	 *
+	 * We'll adjust the chunk size only for custom wrappers (the stream_type
+	 * should be "user-space") because those are the ones having this problem.
+	 * Native streams seem to work without this workaround.
+	 *
+	 * This adjustment must be made in all the wrappers. This means that we must
+	 * have access to all the wrapped streams and adjust the chunk size of all
+	 * of them. A "getSource" method must be present in the custom wrapper
+	 * providing access to the underlying stream, otherwise a warning will be
+	 * logged because it could cause problems.
+	 */
+	private function adjustStreamChunkSize($handle) {
+		$stream = $handle;
+		$metadata = \stream_get_meta_data($stream);
+		while ($metadata['stream_type'] === 'user-space') {
+			\stream_set_chunk_size($stream, 64 * 1024);
+			if (isset($metadata['wrapper_data'])) {
+				$streamObj = $metadata['wrapper_data'];
+				if (\method_exists($streamObj, 'getSource')) {
+					// underlying stream must be adjusted too
+					$stream = $streamObj->getSource();
+					$metadata = \stream_get_meta_data($stream);
+				} else {
+					// can't access to the underlying stream, so we'll stop here
+					$this->logger->warning(
+						"Cannot get the underlying stream of class " . \get_class($streamObj) . "with uri {$metadata['uri']}",
+						['app' => 'core']
+					);
+					break;
+				}
+			} else {
+				$this->logger->warning(
+					"No wrapper data found in the metadata of stream {$metadata['uri']}",
+					['app' => 'core']
+				);
+				break;
+			}
+		}
 	}
 
 	/**
