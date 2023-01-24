@@ -221,14 +221,6 @@ Feature: quota
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Alice" folder "testQuota" should not exist
 
-  
-  Scenario: User with zero quota cannot create a file
-     Given the quota of user "Alice" has been set to "0 B"
-     When user "Alice" create file "testquota.txt" using the WebDAV API
-     Then the HTTP status code should be "507"
-     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
-     And as "Alice" file "testquota.txt" should not exist
-
   @files_sharing-app-required
   Scenario: user cannot create file on shared folder by a user with zero quota
     Given the administrator has set the default folder for received shares to "Shares"
@@ -319,11 +311,12 @@ Feature: quota
     And as "Brian" file "testquota.txt" should exist
 
 
-  Scenario: User with zero quota can upload an empty file
+  Scenario: User with zero quota cannot upload an empty file
     Given the quota of user "Alice" has been set to "0 B"
     When user "Alice" uploads file with content "" to "testquota.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "testquota.txt" should exist
+    Then the HTTP status code should be "507"
+    And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+    And as "Alice" file "testquota.txt" should not exist
 
   @files_sharing-app-required @skipOnOcV10.10
   Scenario Outline: share receiver with insufficient quota should not be able to copy received shared file to home folder
