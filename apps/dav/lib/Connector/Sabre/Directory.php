@@ -49,6 +49,7 @@ use Sabre\DAV\Exception\Forbidden as SabreForbidden;
 use Sabre\DAV\Exception\Locked as SabreLocked;
 use Sabre\DAV\Exception\NotFound as SabreNotFound;
 use Sabre\DAV\Exception\ServiceUnavailable as SabreServiceUnavailable;
+use Sabre\DAV\Exception\InsufficientStorage as SabreInsufficientStorage;
 use Sabre\DAV\ICollection;
 use Sabre\DAV\IFile;
 use Sabre\DAV\IMoveTarget;
@@ -159,7 +160,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			// has been observed for the disk_free_space function in local storage
 			list($used, $free) = $this->getQuotaInfo();
 			if ($free == 0) {
-				throw new SabreForbidden('Creation of empty files is forbidden in case of no available quota');
+				throw new SabreInsufficientStorage('Creation of empty files is forbidden in case of no available quota');
 			}
 
 			$this->fileView->verifyPath($this->path, $name);
@@ -224,7 +225,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			// has been observed for the disk_free_space function in local storage
 			list($used, $free) = $this->getQuotaInfo();
 			if ($free == 0) {
-				throw new SabreForbidden('Creation of empty directories is forbidden in case of no available quota');
+				throw new SabreInsufficientStorage('Creation of empty directories is forbidden in case of no available quota');
 			}
 
 			$this->fileView->verifyPath($this->path, $name);
