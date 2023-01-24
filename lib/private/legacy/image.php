@@ -386,7 +386,55 @@ class OC_Image implements \OCP\IImage {
 			return;
 		}
 
-		$this->exifData = \exif_read_data($file, 'IFD0');
+		$detectedType = false;
+		if (\is_resource($file)) {
+			$detectedType = $this->detectImageTypeFromStream($file);
+		} else {
+			// it should be a string pointing to a valid file
+			$detectedType = \exif_imagetype($file);
+		}
+
+		if (\in_array($detectedType, [IMAGETYPE_JPEG, IMAGETYPE_TIFF_II, IMAGETYPE_TIFF_MM], true)) {
+			// as of 24/1/2023, "exif_read_data" only supports those image types
+			$this->exifData = \exif_read_data($file, 'IFD0');
+		} else {
+			// other image types aren't supported by the exif_read_data function, so
+			// the function should return false
+			$this->exifData = false;
+		}
+	}
+
+	/**
+	 * Detect the image type from the stream.
+	 * The detection code is copied from the php source code,
+	 * from the exif extension. As such, it only detects jpeg
+	 * and tiff formats.
+	 * This is intended to be used only to check if the stream
+	 * can be used with the "exif_read_data" function or not.
+	 */
+	private function detectImageTypeFromStream($stream) {
+		$detectedType = false;
+
+		\rewind($stream);
+		$bytes = \fread($stream, 2);
+		switch ($bytes) {
+			case "\xff\xd8":
+				$detectedType = IMAGETYPE_JPEG;
+				break;
+			case "II":
+				$nextBytes = \fread($stream, 2);
+				if ($nextBytes === "\x2a\x00") {
+					$detectedType = IMAGETYPE_TIFF_II;
+				}
+				break;
+			case "MM":
+				$nextBytes = \fread($stream, 2);
+				if ($nextBytes === "\x00\x2a") {
+					$detectedType = IMAGETYPE_TIFF_MM;
+				}
+				break;
+		}
+		return $detectedType;
 	}
 
 	/**
