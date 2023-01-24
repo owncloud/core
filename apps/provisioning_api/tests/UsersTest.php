@@ -35,6 +35,7 @@ use OCP\API;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase as OriginalTest;
 use OCP\IUser;
 use OC\SubAdmin;
@@ -43,19 +44,19 @@ use OC\Authentication\TwoFactorAuth\Manager;
 use OCP\IConfig;
 
 class UsersTest extends OriginalTest {
-	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserManager | MockObject */
 	protected $userManager;
-	/** @var \OC\Group\Manager | PHPUnit\Framework\MockObject\MockObject */
+	/** @var \OC\Group\Manager | MockObject */
 	protected $groupManager;
-	/** @var IUserSession | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserSession | MockObject */
 	protected $userSession;
-	/** @var ILogger | PHPUnit\Framework\MockObject\MockObject */
+	/** @var ILogger | MockObject */
 	protected $logger;
-	/** @var IConfig | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IConfig | MockObject */
 	protected $config;
-	/** @var Users | PHPUnit\Framework\MockObject\MockObject */
+	/** @var Users | MockObject */
 	protected $api;
-	/** @var \OC\Authentication\TwoFactorAuth\Manager | PHPUnit\Framework\MockObject\MockObject */
+	/** @var \OC\Authentication\TwoFactorAuth\Manager | MockObject */
 	private $twoFactorAuthManager;
 
 	protected function tearDown(): void {
@@ -78,7 +79,7 @@ class UsersTest extends OriginalTest {
 			->disableOriginalConstructor()
 			->setMethods(['isTwoFactorAuthenticated', 'enableTwoFactorAuthentication'])
 			->getMock();
-		$this->twoFactorAuthManager->expects($this->any())
+		$this->twoFactorAuthManager
 			->method('isTwoFactorAuthenticated')
 			->willReturn(false);
 		$this->api = $this->getMockBuilder(Users::class)
@@ -106,7 +107,7 @@ class UsersTest extends OriginalTest {
 		$this->groupManager
 			->expects($numberOfCalls)
 			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
+			->willReturn($subAdminManager);
 		return $subAdminManager;
 	}
 
@@ -116,7 +117,7 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('isUserAccessible')
 			->with($loggedInUser, $targetUser)
-			->will($this->returnValue($isUserAccessible));
+			->willReturn($isUserAccessible);
 		return $subAdminManager;
 	}
 
@@ -130,37 +131,37 @@ class UsersTest extends OriginalTest {
 		return $subAdminManager;
 	}
 
-	public function testGetUsersNotLoggedIn() {
+	public function testGetUsersNotLoggedIn(): void {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
 		$this->assertEquals($expected, $this->api->getUsers());
 	}
 
-	public function testGetUsersAsAdmin() {
+	public function testGetUsersAsAdmin(): void {
 		$_GET['search'] = 'MyCustomSearch';
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->userManager
 			->expects($this->once())
 			->method('search')
 			->with('MyCustomSearch', null, null)
-			->will($this->returnValue(['Admin' => [], 'Foo' => [], 'Bar' => []]));
+			->willReturn(['Admin' => [], 'Foo' => [], 'Bar' => []]);
 
 		$expected = new Result([
 			'users' => [
@@ -172,40 +173,39 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUsers());
 	}
 
-	public function testGetUsersAsSubAdmin() {
+	public function testGetUsersAsSubAdmin(): void {
 		$_GET['search'] = 'MyCustomSearch';
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$firstGroup = $this->createMock(IGroup::class);
 		$firstGroup
 			->expects($this->once())
 			->method('getGID')
-			->will($this->returnValue('FirstGroup'));
+			->willReturn('FirstGroup');
 		$secondGroup = $this->createMock(IGroup::class);
 		$secondGroup
 			->expects($this->once())
 			->method('getGID')
-			->will($this->returnValue('SecondGroup'));
+			->willReturn('SecondGroup');
 		$subAdminManager = $this->setupIsSubadminMock($loggedInUser);
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
 			->with($loggedInUser)
-			->will($this->returnValue([$firstGroup, $secondGroup]));
+			->willReturn([$firstGroup, $secondGroup]);
 		$this->groupManager
-			->expects($this->any())
 			->method('displayNamesInGroup')
 			->will($this->onConsecutiveCalls(['AnotherUserInTheFirstGroup' => []], ['UserInTheSecondGroup' => []]));
 
@@ -218,35 +218,35 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUsers());
 	}
 
-	public function testGetUsersAsRegularUser() {
+	public function testGetUsersAsRegularUser(): void {
 		$_GET['search'] = 'MyCustomSearch';
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('regularUser'));
+			->willReturn('regularUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->setupIsSubadminMock($loggedInUser, false);
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
 		$this->assertEquals($expected, $this->api->getUsers());
 	}
 
-	public function testAddUserAlreadyExisting() {
+	public function testAddUserAlreadyExisting(): void {
 		$_POST['userid'] = 'AlreadyExistingUser';
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
 			->with('AlreadyExistingUser')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->logger
 			->expects($this->once())
 			->method('error')
@@ -255,11 +255,11 @@ class UsersTest extends OriginalTest {
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('adminUser'));
+			->willReturn('adminUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -270,7 +270,7 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserNonExistingGroup() {
+	public function testAddUserNonExistingGroup(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['groups'] = ['NonExistingGroup'];
 		$this->userManager
@@ -282,11 +282,11 @@ class UsersTest extends OriginalTest {
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('adminUser'));
+			->willReturn('adminUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -302,7 +302,7 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserExistingGroupNonExistingGroup() {
+	public function testAddUserExistingGroupNonExistingGroup(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['groups'] = ['ExistingGroup', 'NonExistingGroup'];
 		$this->userManager
@@ -314,11 +314,11 @@ class UsersTest extends OriginalTest {
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('adminUser'));
+			->willReturn('adminUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -331,23 +331,23 @@ class UsersTest extends OriginalTest {
 				['ExistingGroup'],
 				['NonExistingGroup']
 			)
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['ExistingGroup', true],
 				['NonExistingGroup', false]
-			]));
+			]);
 
 		$expected = new Result(null, 104, 'group NonExistingGroup does not exist');
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserSuccessful() {
+	public function testAddUserSuccessful(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
 			->with('NewUser')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->userManager
 			->expects($this->once())
 			->method('createUser')
@@ -360,11 +360,11 @@ class UsersTest extends OriginalTest {
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('adminUser'));
+			->willReturn('adminUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -375,7 +375,7 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserExistingGroup() {
+	public function testAddUserExistingGroup(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
 		$_POST['groups'] = ['ExistingGroup'];
@@ -388,11 +388,11 @@ class UsersTest extends OriginalTest {
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('adminUser'));
+			->willReturn('adminUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -431,14 +431,14 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserUnsuccessful() {
+	public function testAddUserUnsuccessful(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
 		$this->userManager
 			->expects($this->once())
 			->method('userExists')
 			->with('NewUser')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->userManager
 			->expects($this->once())
 			->method('createUser')
@@ -452,11 +452,11 @@ class UsersTest extends OriginalTest {
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('adminUser'));
+			->willReturn('adminUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -467,18 +467,18 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserAsRegularUser() {
+	public function testAddUserAsRegularUser(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('regularUser'));
+			->willReturn('regularUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -490,18 +490,18 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserAsSubAdminNoGroup() {
+	public function testAddUserAsSubAdminNoGroup(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('regularUser'));
+			->willReturn('regularUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -513,7 +513,7 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserAsSubAdminValidGroupNotSubAdmin() {
+	public function testAddUserAsSubAdminValidGroupNotSubAdmin(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
 		$_POST['groups'] = ['ExistingGroup'];
@@ -521,11 +521,11 @@ class UsersTest extends OriginalTest {
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('regularUser'));
+			->willReturn('regularUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -553,7 +553,7 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testAddUserAsSubAdminExistingGroups() {
+	public function testAddUserAsSubAdminExistingGroups(): void {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
 		$_POST['groups'] = ['ExistingGroup1', 'ExistingGroup2'];
@@ -566,11 +566,11 @@ class UsersTest extends OriginalTest {
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('subAdminUser'));
+			->willReturn('subAdminUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
@@ -609,10 +609,10 @@ class UsersTest extends OriginalTest {
 				['ExistingGroup1'],
 				['ExistingGroup2']
 			)
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['ExistingGroup1', $existingGroup1],
 				['ExistingGroup2', $existingGroup2]
-			]));
+			]);
 		$this->logger
 			->expects($this->exactly(3))
 			->method('info')
@@ -635,38 +635,38 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
-	public function testGetUserNotLoggedIn() {
+	public function testGetUserNotLoggedIn(): void {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
 	}
 
-	public function testGetUserTargetDoesNotExist() {
+	public function testGetUserTargetDoesNotExist(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToGet')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, API::RESPOND_NOT_FOUND, 'The requested user could not be found');
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
 	}
 
-	public function testGetUserAsAdmin() {
+	public function testGetUserAsAdmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser->expects($this->once())
 			->method('getEMailAddress')
@@ -677,29 +677,29 @@ class UsersTest extends OriginalTest {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToGet')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('admin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->api
 			->expects($this->once())
 			->method('fillStorageInfo')
 			->with('UserToGet')
-			->will($this->returnValue(['DummyValue']));
+			->willReturn(['DummyValue']);
 		$targetUser
 			->method('getUID')
-			->will($this->returnValue('UserToGet'));
+			->willReturn('UserToGet');
 		$targetUser
 			->expects($this->once())
 			->method('getDisplayName')
-			->will($this->returnValue('Demo User'));
+			->willReturn('Demo User');
 		$targetUser
 			->expects($this->once())
 			->method('isEnabled')
@@ -734,12 +734,12 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
 	}
 
-	public function testGetUserAsSubAdminAndUserIsAccessible() {
+	public function testGetUserAsSubAdminAndUserIsAccessible(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
@@ -751,30 +751,30 @@ class UsersTest extends OriginalTest {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToGet')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, true);
 		$this->api
 			->expects($this->once())
 			->method('fillStorageInfo')
 			->with('UserToGet')
-			->will($this->returnValue(['DummyValue']));
+			->willReturn(['DummyValue']);
 		$targetUser
 			->expects($this->once())
 			->method('getDisplayName')
-			->will($this->returnValue('Demo User'));
+			->willReturn('Demo User');
 		$targetUser
 			->method('getUID')
-			->will($this->returnValue('UserToGet'));
+			->willReturn('UserToGet');
 		$targetUser
 			->expects($this->once())
 			->method('isEnabled')
@@ -809,39 +809,39 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
 	}
 
-	public function testGetUserAsSubAdminAndUserIsNotAccessible() {
+	public function testGetUserAsSubAdminAndUserIsNotAccessible(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToGet')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
 	}
 
-	public function testGetUserAsSubAdminSelfLookup() {
+	public function testGetUserAsSubAdminSelfLookup(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser->expects($this->once())
 			->method('getHome')
@@ -849,34 +849,34 @@ class UsersTest extends OriginalTest {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('subadmin')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 		$this->api
 			->expects($this->once())
 			->method('fillStorageInfo')
 			->with('subadmin')
-			->will($this->returnValue(['DummyValue']));
+			->willReturn(['DummyValue']);
 		$targetUser
 			->expects($this->once())
 			->method('getDisplayName')
-			->will($this->returnValue('Subadmin User'));
+			->willReturn('Subadmin User');
 		$targetUser
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser
 			->expects($this->once())
 			->method('getEMailAddress')
-			->will($this->returnValue('subadmin@owncloud.com'));
+			->willReturn('subadmin@owncloud.com');
 		$targetUser
 			->expects($this->once())
 			->method('getLastLogin')
@@ -904,32 +904,31 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'subadmin']));
 	}
 
-	public function testEditUserNotLoggedIn() {
+	public function testEditUserNotLoggedIn(): void {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit']));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeDisplay() {
+	public function testEditUserRegularUserSelfEditChangeDisplay(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 		$targetUser
 			->expects($this->once())
@@ -940,22 +939,21 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'display', 'value' => 'NewDisplayName']]));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeDisplayName() {
+	public function testEditUserRegularUserSelfEditChangeDisplayName(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 		$targetUser
 			->expects($this->once())
@@ -966,19 +964,19 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeDisplaynameProhibited() {
+	public function testEditUserRegularUserSelfEditChangeDisplaynameProhibited(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 		$this->config
 			->method('getSystemValue')
@@ -992,22 +990,21 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeEmailValid() {
+	public function testEditUserRegularUserSelfEditChangeEmailValid(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 		$targetUser
 			->expects($this->once())
@@ -1018,19 +1015,19 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.com']]));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeEmailProhibited() {
+	public function testEditUserRegularUserSelfEditChangeEmailProhibited(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 		$this->config
 			->method('getSystemValue')
@@ -1044,22 +1041,21 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.com']]));
 	}
 
-	public function testEditUserRegularUserSelfEditClearEmail() {
+	public function testEditUserRegularUserSelfEditClearEmail(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$targetUser
 			->expects($this->once())
 			->method('setEMailAddress')
@@ -1070,44 +1066,42 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => '']]));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeEmailInvalid() {
+	public function testEditUserRegularUserSelfEditChangeEmailInvalid(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 
 		$expected = new Result(null, 102);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo.org']]));
 	}
 
-	public function testEditUserRegularUserSelfEditChangePassword() {
+	public function testEditUserRegularUserSelfEditChangePassword(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$targetUser
 			->expects($this->once())
 			->method('setPassword')
@@ -1118,44 +1112,42 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'password', 'value' => 'NewPassword']]));
 	}
 
-	public function testEditUserRegularUserSelfEditChangeQuota() {
+	public function testEditUserRegularUserSelfEditChangeQuota(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => 'NewQuota']]));
 	}
 
-	public function testEditTwoFactor() {
+	public function testEditTwoFactor(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->twoFactorAuthManager
 			->expects($this->once())
 			->method('enableTwoFactorAuthentication');
@@ -1165,12 +1157,11 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'two_factor_auth_enabled', 'value' => true]]));
 	}
 
-	public function testEditUserAdminUserSelfEditChangeValidQuota() {
+	public function testEditUserAdminUserSelfEditChangeValidQuota(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser->expects($this->once())
 			->method('setQuota')
@@ -1178,51 +1169,50 @@ class UsersTest extends OriginalTest {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('UserToEdit')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
 	}
 
-	public function testEditUserAdminUserSelfEditChangeInvalidQuota() {
+	public function testEditUserAdminUserSelfEditChangeInvalidQuota(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('UserToEdit')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 
 		$expected = new Result(null, 103, 'Invalid quota value ABC');
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => 'ABC']]));
 	}
 
-	public function providesQuota() {
+	public function providesQuota(): array {
 		return [
 			'2.9 MB' => [ '2.9 MB', '3042824'],
 			'default' => [ 'default', 'default'],
@@ -1236,12 +1226,11 @@ class UsersTest extends OriginalTest {
 	 * @param $expectedQuotaValueOnSetQuota
 	 * @param $valueInRequest
 	 */
-	public function testEditUserAdminUserEditChangeValidQuota($expectedQuotaValueOnSetQuota, $valueInRequest) {
+	public function testEditUserAdminUserEditChangeValidQuota($expectedQuotaValueOnSetQuota, $valueInRequest): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser->expects($this->once())
 			->method('setQuota')
@@ -1249,17 +1238,17 @@ class UsersTest extends OriginalTest {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('admin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->setupBasicSubadminMock();
 
 		$expected = new Result(null, 100);
@@ -1269,12 +1258,11 @@ class UsersTest extends OriginalTest {
 		));
 	}
 
-	public function testEditUserSubadminUserAccessible() {
+	public function testEditUserSubadminUserAccessible(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser->expects($this->once())
 			->method('setQuota')
@@ -1282,640 +1270,621 @@ class UsersTest extends OriginalTest {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
 	}
 
-	public function testEditUserSubadminUserInaccessible() {
+	public function testEditUserSubadminUserInaccessible(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
 	}
 
-	public function testDeleteUserNotLoggedIn() {
+	public function testDeleteUserNotLoggedIn(): void {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
 	}
 
-	public function testDeleteUserNotExistingUser() {
+	public function testDeleteUserNotExistingUser(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToEdit'));
+			->willReturn('UserToEdit');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 101);
 		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
 	}
 
-	public function testDeleteUserSelf() {
+	public function testDeleteUserSelf(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('UserToDelete'));
+			->willReturn('UserToDelete');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToDelete'));
+			->willReturn('UserToDelete');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 
 		$expected = new Result(null, 101);
 		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
 	}
 
-	public function testDeleteSuccessfulUserAsAdmin() {
+	public function testDeleteSuccessfulUserAsAdmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToDelete'));
+			->willReturn('UserToDelete');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('admin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$targetUser
 			->expects($this->once())
 			->method('delete')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
 	}
 
-	public function testDeleteUnsuccessfulUserAsAdmin() {
+	public function testDeleteUnsuccessfulUserAsAdmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToDelete'));
+			->willReturn('UserToDelete');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('admin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$targetUser
 			->expects($this->once())
 			->method('delete')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 101);
 		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
 	}
 
-	public function testDeleteSuccessfulUserAsSubadmin() {
+	public function testDeleteSuccessfulUserAsSubadmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToDelete'));
+			->willReturn('UserToDelete');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, true);
 		$targetUser
 			->expects($this->once())
 			->method('delete')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
 	}
 
-	public function testDeleteUnsuccessfulUserAsSubadmin() {
+	public function testDeleteUnsuccessfulUserAsSubadmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToDelete'));
+			->willReturn('UserToDelete');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, true);
 		$targetUser
 			->expects($this->once())
 			->method('delete')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 101);
 		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
 	}
 
-	public function testDeleteUserAsSubAdminAndUserIsNotAccessible() {
+	public function testDeleteUserAsSubAdminAndUserIsNotAccessible(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToDelete'));
+			->willReturn('UserToDelete');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToDelete')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->deleteUser(['userid' => 'UserToDelete']));
 	}
 
-	public function testGetUsersGroupsNotLoggedIn() {
+	public function testGetUsersGroupsNotLoggedIn(): void {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
 
-	public function testGetUsersGroupsTargetUserNotExisting() {
+	public function testGetUsersGroupsTargetUserNotExisting(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 
 		$expected = new Result(null, 998);
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
 
-	public function testGetUsersGroupsSelfTargeted() {
+	public function testGetUsersGroupsSelfTargeted(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToLookup'));
+			->willReturn('UserToLookup');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToLookup'));
+			->willReturn('UserToLookup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToLookup')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('getUserGroupIds')
 			->with($targetUser)
-			->will($this->returnValue(['DummyValue']));
+			->willReturn(['DummyValue']);
 
 		$expected = new Result(['groups' => ['DummyValue']]);
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
 
-	public function testGetUsersGroupsForAdminUser() {
+	public function testGetUsersGroupsForAdminUser(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToLookup'));
+			->willReturn('UserToLookup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToLookup')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('getUserGroupIds')
 			->with($targetUser)
-			->will($this->returnValue(['DummyValue']));
+			->willReturn(['DummyValue']);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('admin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(['groups' => ['DummyValue']]);
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
 
-	public function testGetUsersGroupsForSubAdminUserAndUserIsAccessible() {
+	public function testGetUsersGroupsForSubAdminUserAndUserIsAccessible(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToLookup'));
+			->willReturn('UserToLookup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToLookup')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$subAdminManager = $this->setupIsUserAccessibleMock($loggedInUser, $targetUser, true);
 		$group1 = $this->createMock(IGroup::class);
 		$group1
-			->expects($this->any())
 			->method('getGID')
-			->will($this->returnValue('Group1'));
+			->willReturn('Group1');
 		$group2 = $this->createMock(IGroup::class);
 		$group2
-			->expects($this->any())
 			->method('getGID')
-			->will($this->returnValue('Group2'));
+			->willReturn('Group2');
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
 			->with($loggedInUser)
-			->will($this->returnValue([$group1, $group2]));
+			->willReturn([$group1, $group2]);
 		$this->groupManager
-			->expects($this->any())
 			->method('getUserGroupIds')
 			->with($targetUser)
-			->will($this->returnValue(['Group1']));
+			->willReturn(['Group1']);
 
 		$expected = new Result(['groups' => ['Group1']]);
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
 
-	public function testGetUsersGroupsForSubAdminUserAndUserIsInaccessible() {
+	public function testGetUsersGroupsForSubAdminUserAndUserIsInaccessible(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('UserToLookup'));
+			->willReturn('UserToLookup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('UserToLookup')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 		$this->groupManager
-			->expects($this->any())
 			->method('getUserGroupIds')
 			->with($targetUser)
-			->will($this->returnValue(['Group1']));
+			->willReturn(['Group1']);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
 
-	public function testAddToGroupUnsuccessfulNotLoggedIn() {
+	public function testAddToGroupUnsuccessfulNotLoggedIn(): void {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->addToGroup([]));
 	}
 
-	public function testAddToGroupUnsuccessfulWithTargetGroupNotExisting() {
+	public function testAddToGroupUnsuccessfulWithTargetGroupNotExisting(): void {
 		$_POST['groupid'] = 'GroupToAddTo';
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('GroupToAddTo')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 102);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
 	}
 
-	public function testAddToGroupUnsuccessfulWithNoGroupSpecified() {
+	public function testAddToGroupUnsuccessfulWithNoGroupSpecified(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 
 		$expected = new Result(null, 101);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
 	}
 
-	public function testAddToGroupUnsuccessfulWithTargetUserNotExisting() {
+	public function testAddToGroupUnsuccessfulWithTargetUserNotExisting(): void {
 		$_POST['groupid'] = 'GroupToAddTo';
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('GroupToAddTo')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 
 		$expected = new Result(null, 103);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
 	}
 
-	public function testAddToGroupUnsuccessfulWithoutAnyPermission() {
+	public function testAddToGroupUnsuccessfulWithoutAnyPermission(): void {
 		$_POST['groupid'] = 'GroupToAddTo';
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->method('getUID')
-			->will($this->returnValue('unauthorizedUser'));
+			->willReturn('unauthorizedUser');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->method('get')
 			->with('GroupToAddTo')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->setupBasicSubadminMock();
 		$this->groupManager
 			->method('isAdmin')
 			->with('unauthorizedUser')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 104);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
 	}
 
-	public function testAddToGroupUnsuccessfulAsSubadminAndUserIsNotAccessible() {
+	public function testAddToGroupUnsuccessfulAsSubadminAndUserIsNotAccessible(): void {
 		$_POST['groupid'] = 'GroupToAddTo';
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->method('get')
 			->with('GroupToAddTo')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$this->groupManager
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$subAdminManager
 			->method('isSubAdminOfGroup')
 			->with($loggedInUser, $targetGroup)
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 104);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'TargetUser']));
 	}
 
-	public function testAddToGroupUnsuccessfulAsSubAdminFromSubAdminWithOutsideGroup() {
+	public function testAddToGroupUnsuccessfulAsSubAdminFromSubAdminWithOutsideGroup(): void {
 		$_POST['groupid'] = 'outsidegroup';
 
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('subadmin')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$subadminGroup = $this->createMock(IGroup::class);
 		$subadminGroup
-			->expects($this->any())
 			->method('getGID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetGroup = $this->createMock(IGroup::class);
 		$targetGroup
-			->expects($this->any())
 			->method('getGID')
-			->will($this->returnValue('outsidegroup'));
+			->willReturn('outsidegroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
-			->expects($this->any())
 			->method('get')
-			->will($this->returnValueMap([
+			->willReturnMap([
 				['subadmin', $subadminGroup],
 				['outsidegroup', $targetGroup]
-			]));
+			]);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->method('isSubAdminofGroup')
 			->with($loggedInUser, $targetGroup)
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 104);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'subadmin']));
 	}
 
-	public function testAddToGroupSuccessfulAsAdmin() {
+	public function testAddToGroupSuccessfulAsAdmin(): void {
 		$_POST['groupid'] = 'admin';
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('admin')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('AnotherUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('admin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$targetGroup
 			->expects($this->once())
 			->method('addUser')
@@ -1925,31 +1894,29 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'AnotherUser']));
 	}
 
-	public function testAddToGroupSuccessfulAsSubadminWithAccessibleUser() {
+	public function testAddToGroupSuccessfulAsSubadminWithAccessibleUser(): void {
 		$_POST['groupid'] = 'group1';
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->method('get')
 			->with('group1')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->userManager
 			->method('get')
 			->with('AnotherUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$targetGroup
 			->method('addUser')
 			->with($targetUser);
@@ -1957,219 +1924,212 @@ class UsersTest extends OriginalTest {
 		$subAdminManager
 			->method('isSubAdminOfGroup')
 			->with($loggedInUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 104);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'AnotherUser']));
 	}
-	public function testRemoveFromGroupUnsuccessfulNotLoggedIn() {
+	public function testRemoveFromGroupUnsuccessfulNotLoggedIn(): void {
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => ['groupid' => 'TargetGroup']]));
 	}
 
-	public function testRemoveFromGroupUnsuccessfulWithNoGroupSpecified() {
+	public function testRemoveFromGroupUnsuccessfulWithNoGroupSpecified(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$expected = new Result(null, 101);
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => []]));
 	}
 
-	public function testRemoveFromGroupWithWithTargetGroupNotExisting() {
+	public function testRemoveFromGroupWithWithTargetGroupNotExisting(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$this->userSession
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->method('get')
 			->with('TargetGroup')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 102);
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => ['groupid' => 'TargetGroup']]));
 	}
 
-	public function testRemoveFromGroupUnsuccessfulWithTargetUserNotExisting() {
+	public function testRemoveFromGroupUnsuccessfulWithTargetUserNotExisting(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetGroup')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminofGroup')
 			->with($loggedInUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 103);
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => ['groupid' => 'TargetGroup']]));
 	}
 
-	public function testRemoveFromGroupUnsuccessfulWithoutAnyPermission() {
+	public function testRemoveFromGroupUnsuccessfulWithoutAnyPermission(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('unauthorizedUser'));
+			->willReturn('unauthorizedUser');
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetGroup')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->setupBasicSubadminMock();
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
 			->with('unauthorizedUser')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 104);
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'TargetUser', '_delete' => ['groupid' => 'TargetGroup']]));
 	}
 	
-	public function testRemoveFromGroupUnsuccessfulAsAdminFromAdmin() {
+	public function testRemoveFromGroupUnsuccessfulAsAdminFromAdmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$targetGroup
 			->expects($this->once())
 			->method('getGID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('admin')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('admin')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('admin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 105, 'Cannot remove yourself from the admin group');
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'admin', '_delete' => ['groupid' => 'admin']]));
 	}
 
-	public function testRemoveFromGroupUnsuccessfulAsSubAdminFromSubAdmin() {
+	public function testRemoveFromGroupUnsuccessfulAsSubAdminFromSubAdmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$targetGroup
-			->expects($this->any())
 			->method('getGID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('subadmin')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('subadmin')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$subAdminManager = $this->setupBasicSubadminMock(false);
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminofGroup')
 			->with($loggedInUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
 			->with($loggedInUser)
-			->will($this->returnValue([$targetGroup]));
+			->willReturn([$targetGroup]);
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 105, 'Cannot remove yourself from this group as you are a SubAdmin');
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'subadmin', '_delete' => ['groupid' => 'subadmin']]));
 	}
 
-	public function testRemoveFromGroupSuccessfulAsAdmin() {
+	public function testRemoveFromGroupSuccessfulAsAdmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('admin')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('AnotherUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('admin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$targetGroup
 			->expects($this->once())
 			->method('removeUser')
@@ -2179,33 +2139,31 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'AnotherUser', '_delete' => ['groupid' => 'admin']]));
 	}
 
-	public function testRemoveFromGroupSuccessfulAsSubadmin() {
+	public function testRemoveFromGroupSuccessfulAsSubadmin(): void {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('subadmin'));
+			->willReturn('subadmin');
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('group1')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('AnotherUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
-			->expects($this->any())
 			->method('isAdmin')
 			->with('subadmin')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$targetGroup
 			->expects($this->once())
 			->method('removeUser')
@@ -2215,25 +2173,25 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
 			->with($loggedInUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->removeFromGroup(['userid' => 'AnotherUser', '_delete' => ['groupid' => 'group1']]));
 	}
 
-	public function testAddSubAdminWithNotExistingTargetUser() {
+	public function testAddSubAdminWithNotExistingTargetUser(): void {
 		$_POST['groupid'] = 'nevermind';
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('NotExistingUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 101, 'User does not exist');
 		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'NotExistingUser']));
 	}
 
-	public function testAddSubAdminWithNotExistingTargetGroup() {
+	public function testAddSubAdminWithNotExistingTargetGroup(): void {
 		$_POST['groupid'] = 'NotExistingGroup';
 
 		$targetUser = $this->createMock(IUser::class);
@@ -2241,18 +2199,18 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('NotExistingGroup')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 102, 'Group:NotExistingGroup does not exist');
 		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
 	}
 
-	public function testAddSubAdminToAdminGroup() {
+	public function testAddSubAdminToAdminGroup(): void {
 		$_POST['groupid'] = 'ADmiN';
 
 		$targetUser = $this->createMock(IUser::class);
@@ -2261,18 +2219,18 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('ADmiN')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 
 		$expected = new Result(null, 103, 'Cannot create subadmins for admin group');
 		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
 	}
 
-	public function testAddSubAdminTwice() {
+	public function testAddSubAdminTwice(): void {
 		$_POST['groupid'] = 'TargetGroup';
 
 		$targetUser = $this->createMock(IUser::class);
@@ -2281,24 +2239,24 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetGroup')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
 	}
 
-	public function testAddSubAdminSuccessful() {
+	public function testAddSubAdminSuccessful(): void {
 		$_POST['groupid'] = 'TargetGroup';
 
 		$targetUser = $this->createMock(IUser::class);
@@ -2307,29 +2265,29 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetGroup')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$subAdminManager
 			->expects($this->once())
 			->method('createSubAdmin')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
 	}
 
-	public function testAddSubAdminUnsuccessful() {
+	public function testAddSubAdminUnsuccessful(): void {
 		$_POST['groupid'] = 'TargetGroup';
 
 		$targetUser = $this->createMock(IUser::class);
@@ -2338,303 +2296,303 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('TargetGroup')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$subAdminManager
 			->expects($this->once())
 			->method('createSubAdmin')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 103, 'Unknown error occurred');
 		$this->assertEquals($expected, $this->api->addSubAdmin(['userid' => 'ExistingUser']));
 	}
 
-	public function testRemoveSubAdminNotExistingTargetUser() {
+	public function testRemoveSubAdminNotExistingTargetUser(): void {
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('NotExistingUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 101, 'User does not exist');
 		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'NotExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
 	}
 
-	public function testRemoveSubAdminNotExistingTargetGroup() {
+	public function testRemoveSubAdminNotExistingTargetGroup(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('GroupToDeleteFrom')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 101, 'Group does not exist');
 		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
 	}
 
-	public function testRemoveSubAdminFromNotASubadmin() {
+	public function testRemoveSubAdminFromNotASubadmin(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('GroupToDeleteFrom')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 102, 'User is not a subadmin of this group');
 		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
 	}
 
-	public function testRemoveSubAdminSuccessful() {
+	public function testRemoveSubAdminSuccessful(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('GroupToDeleteFrom')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$subAdminManager
 			->expects($this->once())
 			->method('deleteSubAdmin')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
 	}
 
-	public function testRemoveSubAdminUnsuccessful() {
+	public function testRemoveSubAdminUnsuccessful(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('ExistingUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
 			->with('GroupToDeleteFrom')
-			->will($this->returnValue($targetGroup));
+			->willReturn($targetGroup);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('isSubAdminOfGroup')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$subAdminManager
 			->expects($this->once())
 			->method('deleteSubAdmin')
 			->with($targetUser, $targetGroup)
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$expected = new Result(null, 103, 'Unknown error occurred');
 		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
 	}
 
-	public function testGetUserSubAdminGroupsNoCurrentUserInSession() {
+	public function testGetUserSubAdminGroupsNoCurrentUserInSession(): void {
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsNotExistingTargetUser() {
+	public function testGetUserSubAdminGroupsNotExistingTargetUser(): void {
 		$currentUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($currentUser));
+			->willReturn($currentUser);
 		$currentUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('RequestedUser'));
+			->willReturn('RequestedUser');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$expected = new Result(null, 998, 'The requested user could not be found');
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsWithGroupsAsSameUser() {
+	public function testGetUserSubAdminGroupsWithGroupsAsSameUser(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('RequestedUser'));
+			->willReturn('RequestedUser');
 		$targetGroup
 			->expects($this->once())
 			->method('getGID')
-			->will($this->returnValue('TargetGroup'));
+			->willReturn('TargetGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
 			->with($targetUser)
-			->will($this->returnValue([$targetGroup]));
+			->willReturn([$targetGroup]);
 
 		$expected = new Result(['TargetGroup'], 100);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsAsSubadmin() {
+	public function testGetUserSubAdminGroupsAsSubadmin(): void {
 		$currentUser = $this->createMock(IUser::class);
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($currentUser));
+			->willReturn($currentUser);
 		$targetGroup
 			->expects($this->once())
 			->method('getGID')
-			->will($this->returnValue('TargetGroup'));
+			->willReturn('TargetGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
 			->with($targetUser)
-			->will($this->returnValue([$targetGroup]));
+			->willReturn([$targetGroup]);
 		$subAdminManager
 			->expects($this->once())
 			->method('isUserAccessible')
 			->with($currentUser, $targetUser)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(['TargetGroup'], 100);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsAsSubadminUserNotAccessible() {
+	public function testGetUserSubAdminGroupsAsSubadminUserNotAccessible(): void {
 		$currentUser = $this->createMock(IUser::class);
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($currentUser));
+			->willReturn($currentUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->setupIsUserAccessibleMock($currentUser, $targetUser, false);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsWithGroupsAsAdmin() {
+	public function testGetUserSubAdminGroupsWithGroupsAsAdmin(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$targetGroup
 			->expects($this->once())
 			->method('getGID')
-			->will($this->returnValue('TargetGroup'));
+			->willReturn('TargetGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
 			->with($targetUser)
-			->will($this->returnValue([$targetGroup]));
+			->willReturn([$targetGroup]);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(['TargetGroup'], 100);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsWithoutAnyGroups() {
+	public function testGetUserSubAdminGroupsWithoutAnyGroups(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$subAdminManager = $this->setupBasicSubadminMock();
 		$subAdminManager
 			->expects($this->once())
 			->method('getSubAdminsGroups')
 			->with($targetUser)
-			->will($this->returnValue([]));
+			->willReturn([]);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result([], 100);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testEnableUser() {
+	public function testEnableUser(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser->expects($this->once())
 			->method('setEnabled')
@@ -2643,26 +2601,26 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->enableUser(['userid' => 'RequestedUser']));
 	}
 
-	public function testDisableUser() {
+	public function testDisableUser(): void {
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser->expects($this->once())
 			->method('setEnabled')
@@ -2671,20 +2629,20 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
-			->will($this->returnValue($targetUser));
+			->willReturn($targetUser);
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
-			->will($this->returnValue('admin'));
+			->willReturn('admin');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($loggedInUser));
+			->willReturn($loggedInUser);
 		$this->groupManager
 			->expects($this->once())
 			->method('isAdmin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->disableUser(['userid' => 'RequestedUser']));
