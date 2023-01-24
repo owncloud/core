@@ -91,7 +91,7 @@ Feature: remove a user from a group
       | brand-new-user | Mgmt\Middle         |
       | brand-new-user | 😁 😂               |
 
-  @toImplementOnOCIS @issue-product-284
+  @issue-product-284
   Scenario: admin removes a user from a group with % and # in their names
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And these groups have been created:
@@ -155,7 +155,7 @@ Feature: remove a user from a group
       | brand-new-user | Mgmt//NSW/Sydney |
       | brand-new-user | priv/subadmins/1 |
 
-  @toImplementOnOCIS @issue-product-283
+  @issue-product-283
   Scenario Outline: remove a user from a group using mixes of upper and lower case in user and group names
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "<group_id1>" has been created
@@ -229,7 +229,7 @@ Feature: remove a user from a group
     And user "another-new-user" should belong to group "brand-new-group"
 
   # merge this with scenario on line 62 once the issue is fixed
-  @issue-31015 @skipOnOcV10 @toImplementOnOCIS @issue-product-284
+  @issue-31015 @skipOnOcV10 @issue-product-284
   Scenario Outline: admin removes a user from a group that has a forward-slash and dot in the group name
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "<group_id>" has been created
