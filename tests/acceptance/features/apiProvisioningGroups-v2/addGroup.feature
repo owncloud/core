@@ -53,7 +53,7 @@ Feature: add groups
       | Mgmt\Middle         |
       | 😅 😆               |
 
-  @toImplementOnOCIS @issue-product-284
+  @issue-product-284
   Scenario: admin creates a group with % in name
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname           | comment                                 |
@@ -74,7 +74,7 @@ Feature: add groups
       | 50%2Eagle           |
       | staff?group         |
 
-  @toImplementOnOCIS
+
   Scenario: group names are case-sensitive, multiple groups can exist with different upper and lower case names
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname             |
@@ -100,7 +100,7 @@ Feature: add groups
       | case-sensitive-group2 |
       | Case-Sensitive-Group3 |
 
-  @issue-31015 @skipOnOcV10 @toImplementOnOCIS
+  @issue-31015 @skipOnOcV10
   Scenario: admin creates a group with a forward-slash in the group name
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname        | comment                            |

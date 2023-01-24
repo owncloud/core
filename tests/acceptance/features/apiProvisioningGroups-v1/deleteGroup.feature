@@ -41,7 +41,7 @@ Feature: delete groups
       | Mgmt\Middle         | Backslash                               |
       | 😁 😂               | emoji                                   |
 
-  @toImplementOnOCIS
+
   Scenario Outline: admin deletes a group
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API
@@ -57,7 +57,7 @@ Feature: delete groups
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | staff?group         | Question mark                           |
 
-  @toImplementOnOCIS
+
   Scenario Outline: group names are case-sensitive, the correct group is deleted
     Given group "<group_id1>" has been created
     And group "<group_id2>" has been created
@@ -107,7 +107,7 @@ Feature: delete groups
     And the HTTP status code should be "401"
     And group "brand-new-group" should exist
 
-  @issue-31015 @skipOnOcV10 @toImplementOnOCIS
+  @issue-31015 @skipOnOcV10
   Scenario Outline: admin deletes a group that has a forward-slash in the group name
     Given group "<group_id>" has been created
     When the administrator deletes group "<group_id>" using the provisioning API
