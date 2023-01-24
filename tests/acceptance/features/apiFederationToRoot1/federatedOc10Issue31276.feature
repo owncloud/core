@@ -1,4 +1,4 @@
-@api @federation-app-required @files_sharing-app-required @notToImplementOnOCIS
+@api @federation-app-required @files_sharing-app-required
 Feature: current oC10 behavior for issue-31276
 
   Background:

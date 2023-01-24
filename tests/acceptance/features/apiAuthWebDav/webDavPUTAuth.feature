@@ -79,7 +79,7 @@ Feature: get file info using PUT
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @notToImplementOnOCIS @issue-ocis-reva-37
+	@issue-ocis-reva-37
   Scenario: send PUT requests to webDav endpoints using token authentication should not work
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
@@ -93,7 +93,7 @@ Feature: get file info using PUT
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @notToImplementOnOCIS @issue-ocis-reva-37
+	@issue-ocis-reva-37
   Scenario: send PUT requests to webDav endpoints using app password token as password
     Given token auth has been enforced
     And a new browser session for "Alice" has been started

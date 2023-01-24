@@ -214,7 +214,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"

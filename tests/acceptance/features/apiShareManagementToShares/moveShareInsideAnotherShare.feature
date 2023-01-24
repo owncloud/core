@@ -41,7 +41,7 @@ Feature: moving a share inside another share
     And as "Brian" file "/Shares/folderA/folderB/fileB.txt" should exist
     And as "Brian" file "/Shares/folderB/fileB.txt" should exist
 
-  @notToImplementOnOCIS
+
   Scenario: share receiver moves a whole share inside a local folder
     Given user "Brian" has created folder "localFolder"
     And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"
@@ -52,7 +52,7 @@ Feature: moving a share inside another share
     And as "Brian" file "/localFolder/localFile.txt" should exist
     But as "Brian" file "/Shares/folderB/fileB.txt" should not exist
 
-  @notToImplementOnOCIS
+
   Scenario: share receiver moves a whole share inside a local folder then moves the local folder inside a received share
     Given user "Brian" has created folder "localFolder"
     And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"
@@ -69,7 +69,7 @@ Feature: moving a share inside another share
     But as "Alice" folder "/folderA/localFolder/folderB" should not exist
     And as "Brian" folder "/Shares/folderA/localFolder/folderB" should not exist
 
-  @notToImplementOnOCIS
+
   Scenario: share receiver moves a whole share inside a local folder then tries to move the share inside a received share
     Given user "Brian" has created folder "localFolder"
     And user "Brian" has uploaded file with content "local text" to "/localFolder/localFile.txt"

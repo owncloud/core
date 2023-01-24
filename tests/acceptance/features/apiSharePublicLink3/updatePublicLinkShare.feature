@@ -78,7 +78,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @notToImplementOnOCIS @issue-39820
+	@issue-39820
   Scenario Outline: API responds with a full set of parameters when owner renames the folder with a public link (bug demonstration)
     Given using OCS API version "<ocs_api_version>"
     And using <dav-path> DAV path
@@ -463,19 +463,15 @@ Feature: update a public link share
     And as "Alice" file "PARENT/CHILD/child.txt" should not exist
     And as "Alice" file "PARENT/parent.txt" should not exist
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | public-webdav-api-version |
       | 1               | old                       |
       | 2               | old                       |
-
-
-    Examples:
-      | ocs_api_version | public-webdav-api-version |
       | 1               | new                       |
       | 2               | new                       |
 
-  @notToImplementOnOCIS @issue-39820
+	@issue-39820
   Scenario Outline: API responds with a full set of parameters when owner renames the file with a public link (bug demonstration)
     Given using OCS API version "<ocs_api_version>"
     And using <dav-path> DAV path

@@ -8,7 +8,7 @@ Feature: users cannot upload a file to a blacklisted name
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-ocis-reva-15 @notToImplementOnOCIS
+  @issue-ocis-reva-15
   Scenario Outline: upload a file to a filename that is banned by default
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to ".htaccess" using the WebDAV API

@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api
 Feature: delete file/folder
 
   Background:

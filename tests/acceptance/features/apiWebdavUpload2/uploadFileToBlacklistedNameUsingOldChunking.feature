@@ -9,7 +9,7 @@ Feature: users cannot upload a file to a blacklisted name using old chunking
     And using old DAV path
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10 @issue-36645 @notToImplementOnOCIS
+  @skipOnOcV10 @issue-36645
   Scenario: Upload a file to a filename that is banned by default using old chunking
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/.htaccess" in 3 chunks using the WebDAV API
     Then the HTTP status code should be "403"

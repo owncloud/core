@@ -117,7 +117,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -181,7 +181,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -196,7 +196,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -224,7 +224,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: favorite a file inside of a received share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -236,7 +236,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: favorite a folder inside of a received share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -249,7 +249,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: favorite a received share itself
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

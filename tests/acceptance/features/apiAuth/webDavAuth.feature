@@ -17,13 +17,13 @@ Feature: auth
       | dav_path           |
       | /remote.php/webdav |
 
-  @smokeTest @notToImplementOnOCIS @issue-ocis-reva-28
+  @smokeTest @issue-ocis-reva-28
   Scenario: using WebDAV with token auth
     Given a new client token for "Alice" has been generated
     When user "Alice" requests "/remote.php/webdav" with "PROPFIND" using basic token auth
     Then the HTTP status code should be "207"
 
-  @smokeTest  @notToImplementOnOCIS
+  @smokeTest
   Scenario: using WebDAV with browser session
     Given a new browser session for "Alice" has been started
     When the user requests "/remote.php/webdav" with "PROPFIND" using the browser session

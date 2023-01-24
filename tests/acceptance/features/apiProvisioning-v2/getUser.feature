@@ -58,7 +58,7 @@ Feature: get user
     And the HTTP status code should be "404"
     And the API should not return any data
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: a subadmin gets information of a user in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -75,7 +75,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS
+
   Scenario: a subadmin tries to get information of a user not in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -164,7 +164,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS
+
   Scenario: admin gets information of a user with admin permissions
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
@@ -178,7 +178,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS
+
   Scenario: a subadmin should be able to get information of a user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -196,7 +196,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS
+
   Scenario: a subadmin should not be able to get information of another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

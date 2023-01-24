@@ -1,4 +1,4 @@
-@api @skipOnLDAP @notToImplementOnOCIS
+@api @skipOnLDAP
 Feature: AppManagement
 
   Scenario: Update of patch version of an app

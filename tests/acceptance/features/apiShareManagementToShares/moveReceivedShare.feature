@@ -11,7 +11,7 @@ Feature: sharing
       | Brian    |
       | Carol    |
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: Keep usergroup shares (#22143)
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
@@ -44,7 +44,7 @@ Feature: sharing
     And user "Brian" should see the following elements
       | /Shares/new/|
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: keep user shared file name same after one of recipient has renamed the file
     Given user "Alice" has uploaded file with content "foo" to "/sharefile.txt"
     And user "Alice" has shared file "/sharefile.txt" with user "Brian"
@@ -70,7 +70,7 @@ Feature: sharing
     And as "Alice" file "/sharefile.txt" should exist
     And as "Brian" file "/Shares/sharefile.txt" should exist
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: keep user shared file directory same in respect to respective user if one of the recipient has moved the file
     Given user "Alice" has uploaded file with content "foo" to "/sharefile.txt"
     And user "Alice" has shared file "/sharefile.txt" with user "Brian"
@@ -84,7 +84,7 @@ Feature: sharing
     And as "Alice" file "/sharefile.txt" should exist
     And as "Brian" file "/Shares/sharefile.txt" should exist
 
-  @issue-ocis-2146 @notToImplementOnOCIS
+  @issue-ocis-2146
   Scenario Outline: move folder inside received folder with special characters
     Given group "grp1" has been created
     And user "Carol" has been added to group "grp1"
@@ -109,7 +109,7 @@ Feature: sharing
       | ?abc=oc #     | ?abc=oc g%rp#   | # oc?test=oc&a  |
       | @a#8a=b?c=d   | @a#8a=b?c=d grp | ?a#8 a=b?c=d    |
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: receiver renames a received share with share, read, change permissions
     Given user "Alice" has created folder "folderToShare"
     And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileInside"
@@ -141,7 +141,7 @@ Feature: sharing
     And as "Alice" file "/folderToShare/renamedFile" should exist
     But as "Alice" file "/folderToShare/fileInside" should not exist
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: receiver tries to rename a received share with share, read permissions
     Given user "Alice" has created folder "folderToShare"
     And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileInside"
@@ -215,7 +215,7 @@ Feature: sharing
     And as "Brian" folder "/Shares/myFolder" should exist
     But as "Alice" folder "myFolder" should not exist
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: receiver renames a received file share with read,update,share permissions in group sharing
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
@@ -239,7 +239,7 @@ Feature: sharing
     And as "Brian" file "/Shares/newFile.txt" should exist
     But as "Alice" file "/Shares/newFile.txt" should not exist
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: receiver renames a received folder share with share, read, change permissions in group sharing
     Given group "grp1" has been created
     And user "Alice" has created folder "PARENT"
@@ -263,7 +263,7 @@ Feature: sharing
     And as "Brian" folder "/Shares/myFolder" should exist
     But as "Alice" folder "/Shares/myFolder" should not exist
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: receiver renames a received file share with share, read permissions in group sharing
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
@@ -287,7 +287,7 @@ Feature: sharing
     And as "Brian" file "/Shares/newFile.txt" should exist
     But as "Alice" file "/Shares/newFile.txt" should not exist
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: receiver renames a received folder share with share, read permissions in group sharing
     Given group "grp1" has been created
     And user "Alice" has created folder "PARENT"
@@ -359,7 +359,7 @@ Feature: sharing
       | ?abc=oc #     | ?abc=oc g%rp#   | # oc?test=oc&a |
       | @a#8a=b?c=d   | @a#8a=b?c=d grp | ?a#8 a=b?c=d   |
 
-  @issue-ocis-2141 @notToImplementOnOCIS
+  @issue-ocis-2141
   Scenario: receiver moves file within a received folder to new folder
     Given user "Alice" has created folder "folderToShare"
     And user "Brian" has created folder "FOLDER"

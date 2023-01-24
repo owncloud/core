@@ -1,4 +1,4 @@
-@api @federation-app-required @files_sharing-app-required @notToImplementOnOCIS
+@api @federation-app-required @files_sharing-app-required
 Feature: Save public shares created by oC users
 
   Background:

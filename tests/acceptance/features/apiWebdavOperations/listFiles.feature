@@ -173,13 +173,10 @@ Feature: list files
       | /simple-folder1/simple-folder2/welcome.txt                   |
       | /simple-folder1/simple-folder2/simple-folder3                |
       | /simple-folder1/simple-folder2/simple-folder3/simple-folder4 |
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | dav_version |
       | old         |
-
-    Examples:
-      | dav_version |
       | new         |
 
 
@@ -206,13 +203,10 @@ Feature: list files
       | /simple-folder1/simple-folder2                               |
       | /simple-folder1/textfile0.txt                                |
       | /simple-folder1/simple-folder2/simple-folder3/simple-folder4 |
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | dav_version |
       | old         |
-
-    Examples:
-      | dav_version |
       | new         |
 
   @depthInfinityPropfindEnabled
@@ -238,13 +232,10 @@ Feature: list files
       | /simple-folder1/simple-folder2/welcome.txt                   |
       | /simple-folder1/simple-folder2/simple-folder3                |
       | /simple-folder1/simple-folder2/simple-folder3/simple-folder4 |
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | dav_version |
       | old         |
-
-    Examples:
-      | dav_version |
       | new         |
 
 
@@ -348,13 +339,10 @@ Feature: list files
     And user "Alice" has created a public link share of folder "simple-folder"
     When the public lists the resources in the last created public link with depth "infinity" using the WebDAV API
     Then the HTTP status code should be "412"
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | dav_version |
       | old         |
-
-    Examples:
-      | dav_version |
       | new         |
 
   @depthInfinityPropfindDisabled

@@ -1,4 +1,4 @@
-@api @files_trashbin-app-required @files_sharing-app-required @notToImplementOnOCIS
+@api @files_trashbin-app-required @files_sharing-app-required
 Feature: using trashbin together with sharing
 
   Background:

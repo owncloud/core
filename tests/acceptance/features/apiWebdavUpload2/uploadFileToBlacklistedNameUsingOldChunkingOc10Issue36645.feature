@@ -1,4 +1,4 @@
-@notToImplementOnOCIS @api @issue-ocis-reva-15
+@api @issue-ocis-reva-15
 Feature: users cannot upload a file to a blacklisted name using old chunking
   As an administrator
   I want to be able to prevent users from uploading files to specified file names

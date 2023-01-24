@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS @files_external-app-required @issue-32068
+@api @files_external-app-required @issue-32068
 Feature: current oC10 behavior for issue-32068
 
   Background:

@@ -150,7 +150,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
-  @notToImplementOnOCIS @issue-ocis-reva-30 @issue-ocis-reva-28
+  @issue-ocis-reva-30 @issue-ocis-reva-28
   Scenario: using OCS with token auth of a normal user
     Given a new client token for "Alice" has been generated
     When user "Alice" requests these endpoints with "GET" using basic token auth
@@ -182,7 +182,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
-  @notToImplementOnOCIS
+
   Scenario: using OCS with browser session of normal user
     Given a new browser session for "Alice" has been started
     When the user requests these endpoints with "GET" using a new browser session
@@ -214,7 +214,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
-  @notToImplementOnOCIS
+
   Scenario: using OCS with an app password of a normal user
     Given a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"

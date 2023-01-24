@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS @issue-ocis-reva-172
+@api @issue-ocis-reva-172
 Feature: UNLOCK locked items
 
   @issue-34302 @files_sharing-app-required

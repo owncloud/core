@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-14 @notToImplementOnOCIS
+@api @issue-ocis-reva-14
 Feature: users cannot move (rename) a file to a blacklisted name
   As an administrator
   I want to be able to prevent users from moving (renaming) files to specified file names

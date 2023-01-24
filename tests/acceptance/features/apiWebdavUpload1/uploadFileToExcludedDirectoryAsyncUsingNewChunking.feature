@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
+@api @issue-ocis-reva-56 @newChunking @issue-ocis-1321
 Feature: users cannot upload a file to or into an excluded directory using new chunking
   As an administrator
   I want to be able to exclude directories (folders) from being processed. Any attempt to upload a file to one of those names should be refused.

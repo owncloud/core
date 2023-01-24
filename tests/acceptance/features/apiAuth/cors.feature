@@ -32,7 +32,7 @@ Feature: CORS headers
       | 1               | /config                                          | 100      | 200       |
       | 2               | /config                                          | 200      | 200       |
 
-    @files_external-app-required @notToImplementOnOCIS
+    @files_external-app-required
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
       | 1               | /apps/files_external/api/v1/mounts               | 100      | 200       |
@@ -100,7 +100,7 @@ Feature: CORS headers
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
 
-    @files_external-app-required @notToImplementOnOCIS
+    @files_external-app-required
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
       | 1               | /apps/files_external/api/v1/mounts               | 100      | 200       |
@@ -166,7 +166,7 @@ Feature: CORS headers
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
 
-    @files_external-app-required @notToImplementOnOCIS
+    @files_external-app-required
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
       | 1               | /apps/files_external/api/v1/mounts               | 997      | 401       |

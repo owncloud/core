@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
+@api @issue-ocis-reva-56 @newChunking @issue-ocis-1321
 Feature: users cannot upload a file to a blacklisted name using new chunking
   As an administrator
   I want to be able to prevent users from uploading files to specified file names

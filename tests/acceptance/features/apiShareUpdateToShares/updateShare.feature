@@ -30,7 +30,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-1289 @notToImplementOnOCIS
+  @issue-ocis-1289
   Scenario Outline: keep group permissions in sync when the share is moved to another folder by the receiver and then the sharer updates the permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files

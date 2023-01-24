@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: Sharing resources with different case names with the sharee and checking the coexistence of resources on sharee/receivers side
 
   Background:
