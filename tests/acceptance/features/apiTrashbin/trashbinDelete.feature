@@ -82,7 +82,6 @@ Feature: files and folders can be deleted from the trashbin
     And as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
     And as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
     And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should exist in the trashbin
-    @skipOnOcis
     Examples:
       | dav-path | status-code |
       | new      | 401         |

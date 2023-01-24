@@ -33,7 +33,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | mimetype               | text/plain                |
       | storage_id             | ANY_VALUE                 |
       | share_type             | user                      |
-    @skipOnOcis
     Examples:
       | ocs_api_version | ocs_status_code | file_target               |
       | 1               | 100             | /Shares/textfile0 (2).txt |
@@ -123,7 +122,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read,update     |
     And the content of file "/Shares/randomfile.txt" for user "Alice" should be "First data"
     And the content of file "/Shares/randomfile (2).txt" for user "Alice" should be "Second data"
-    @skipOnOcis
     Examples:
       | ocs_api_version | file_target_1          | file_target_2              |
       | 1               | /Shares/randomfile.txt | /Shares/randomfile (2).txt |
@@ -157,7 +155,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read,share      |
     And as "Alice" folder "/Shares/zzzfolder/Brian" should exist
     And as "Alice" folder "/Shares/zzzfolder (2)/Carol" should exist
-    @skipOnOcis
     Examples:
       | ocs_api_version | file_target_1     | file_target_2         | ocs_status_code |
       | 1               | /Shares/zzzfolder | /Shares/zzzfolder (2) | 100             |

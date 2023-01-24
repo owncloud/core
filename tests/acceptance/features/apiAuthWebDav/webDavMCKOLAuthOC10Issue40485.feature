@@ -1,4 +1,4 @@
-@api @skipOnOcis
+@api
 Feature: create folder using MKCOL
 
   Background:

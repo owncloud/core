@@ -193,7 +193,6 @@ Feature: Restore deleted files/folders
     And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
     And user "Alice" should not see the following elements
       | /textfile0.txt |
-    @skipOnOcis
     Examples:
       | dav-path | status-code |
       | old      | 401         |

@@ -523,7 +523,6 @@ Feature: sharing
     And file "/textfile0.txt" should not be included as path in the response
     And as "Brian" file "/Shares/textfile0.txt" should not exist
     And as "Carol" file "/Shares/textfile0.txt" should not exist
-    @skipOnOcis
     Examples:
       | ocs_api_version | ocs_status_code | path                  |
       | 1               | 100             | /Shares/textfile0.txt |

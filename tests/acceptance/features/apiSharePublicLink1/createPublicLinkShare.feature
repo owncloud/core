@@ -333,7 +333,7 @@ Feature: create a public link share
       | 1               | 403             |
       | 2               | 403             |
 
-  @issue-ocis-reva-41 @skipOnOcis
+  @issue-ocis-reva-41
   Scenario Outline: Creating a link share with update permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
