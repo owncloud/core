@@ -246,8 +246,6 @@ Feature: get file properties
     Then the HTTP status code should be "404"
     And the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message1>" or "<message2>"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
-
-    @skipOnOcis
     Examples:
       | url                                  | message1                                     | message2 |
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |          |

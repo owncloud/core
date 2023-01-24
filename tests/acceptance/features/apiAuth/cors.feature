@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-26 @issue-ocis-reva-27 @skipOnOcis
+@api @issue-ocis-reva-26 @issue-ocis-reva-27
 Feature: CORS headers
 
   Background:

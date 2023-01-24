@@ -95,7 +95,7 @@ Feature: add and delete app configs using occ command
     Then the command should have been successful
     And the system config key "installed" from the last command output should match value "true" of type "boolean"
 
-  @skipOnOcis
+
   Scenario: Check that search_min_length can be changed
     Given using OCS API version "1"
     When the administrator updates system config key "user.search_min_length" with value "4" using the occ command

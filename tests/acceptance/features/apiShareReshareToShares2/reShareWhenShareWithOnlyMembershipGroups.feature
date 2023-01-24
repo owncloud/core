@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1289 @issue-ocis-reva-194 @issue-ocis-1328 @skipOnOcis
+@api @files_sharing-app-required @issue-ocis-1289 @issue-ocis-reva-194 @issue-ocis-1328
 Feature: resharing a resource with an expiration date
 
   Background:

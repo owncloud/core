@@ -4,35 +4,35 @@ Feature: capabilities
   Background:
     Given using OCS API version "1"
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: Check that the sharing API can be enabled
     Given parameter "shareapi_enabled" of app "core" has been set to "no"
     And the capabilities setting of "files_sharing" path "api_enabled" has been confirmed to be ""
     When the administrator sets parameter "shareapi_enabled" of app "core" to "yes"
     Then the capabilities setting of "files_sharing" path "api_enabled" should be "1"
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: Check that the sharing API can be disabled
     Given parameter "shareapi_enabled" of app "core" has been set to "yes"
     And the capabilities setting of "files_sharing" path "api_enabled" has been confirmed to be "1"
     When the administrator sets parameter "shareapi_enabled" of app "core" to "no"
     Then the capabilities setting of "files_sharing" path "api_enabled" should be ""
 
-  @skipOnOcis
+
   Scenario: Check that group sharing can be enabled
     Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
     And the capabilities setting of "files_sharing" path "group_sharing" has been confirmed to be ""
     When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "yes"
     Then the capabilities setting of "files_sharing" path "group_sharing" should be "1"
 
-  @skipOnOcis
+
   Scenario: Check that group sharing can be disabled
     Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "yes"
     And the capabilities setting of "files_sharing" path "group_sharing" has been confirmed to be "1"
     When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "no"
     Then the capabilities setting of "files_sharing" path "group_sharing" should be ""
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: getting default capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -75,7 +75,7 @@ Feature: capabilities
       | files         | privateLinks                              | 1                 |
       | files         | privateLinksDetailsParam                  | 1                 |
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: getting default capabilities with admin user with new values
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -89,7 +89,7 @@ Feature: capabilities
       | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[0]  | shareExpiration   |
       | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[1]  | passwordProtected |
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: the default capabilities should include share expiration for all of user, group, link and remote (federated)
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -104,7 +104,7 @@ Feature: capabilities
       | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[0]           | shareExpiration |
       | files_sharing | providers_capabilities@@@ocFederatedSharing@@@remote@@@element[0] | shareExpiration |
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: getting new default capabilities in versions after 10.5.0 with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -115,7 +115,7 @@ Feature: capabilities
       | files      | file_locking_support            | 1     |
       | files      | file_locking_enable_file_action | EMPTY |
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: lock file action can be enabled
     Given parameter "enable_lock_file_action" of app "files" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -126,7 +126,7 @@ Feature: capabilities
       | files      | file_locking_support            | 1     |
       | files      | file_locking_enable_file_action | 1     |
 
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: getting default capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -153,7 +153,7 @@ Feature: capabilities
       | capability | path_to_element | value |
       | files      | versioning      | 1     |
 
-  @skipOnOcis
+
   Scenario: getting default_permissions capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -162,7 +162,7 @@ Feature: capabilities
       | capability    | path_to_element     | value |
       | files_sharing | default_permissions | 31    |
 
-  @skipOnOcis
+
   Scenario: default_permissions capability can be changed
     Given parameter "shareapi_default_permissions" of app "core" has been set to "7"
     When the administrator retrieves the capabilities using the capabilities API
@@ -172,7 +172,7 @@ Feature: capabilities
       | capability    | path_to_element     | value |
       | files_sharing | default_permissions | 7     |
 
-  @skipOnOcis
+
   Scenario: .htaccess is reported as a blacklisted file by default
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -181,7 +181,7 @@ Feature: capabilities
       | capability | path_to_element                | value     |
       | files      | blacklisted_files@@@element[0] | .htaccess |
 
-  @skipOnOcis
+
   Scenario: multiple files can be reported as blacklisted
     Given the administrator has updated system config key "blacklisted_files" with value '["test.txt",".htaccess"]' and type "json"
     When the administrator retrieves the capabilities using the capabilities API
@@ -192,7 +192,7 @@ Feature: capabilities
       | files      | blacklisted_files@@@element[0] | test.txt  |
       | files      | blacklisted_files@@@element[1] | .htaccess |
 
-  @skipOnOcis
+
   Scenario: user expire date can be enabled
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -204,7 +204,7 @@ Feature: capabilities
       | files_sharing | user@@@expire_date@@@days     | 7     |
       | files_sharing | user@@@expire_date@@@enforced | EMPTY |
 
-  @skipOnOcis
+
   Scenario: user expire date can be enforced
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
@@ -217,7 +217,7 @@ Feature: capabilities
       | files_sharing | user@@@expire_date@@@days     | 7     |
       | files_sharing | user@@@expire_date@@@enforced | 1     |
 
-  @skipOnOcis
+
   Scenario: user expire date days can be set
     Given parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "14"
@@ -230,7 +230,7 @@ Feature: capabilities
       | files_sharing | user@@@expire_date@@@days     | 14    |
       | files_sharing | user@@@expire_date@@@enforced | EMPTY |
 
-  @skipOnOcis
+
   Scenario: group expire date can be enabled
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -242,7 +242,7 @@ Feature: capabilities
       | files_sharing | group@@@expire_date@@@days     | 7     |
       | files_sharing | group@@@expire_date@@@enforced | EMPTY |
 
-  @skipOnOcis
+
   Scenario: group expire date can be enforced
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
@@ -255,7 +255,7 @@ Feature: capabilities
       | files_sharing | group@@@expire_date@@@days     | 7     |
       | files_sharing | group@@@expire_date@@@enforced | 1     |
 
-  @skipOnOcis
+
   Scenario: group expire date days can be set
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "14"
@@ -269,7 +269,7 @@ Feature: capabilities
       | files_sharing | group@@@expire_date@@@enforced | EMPTY |
 
   #feature added in #31824 released in 10.0.10
-  @smokeTest @skipOnOcis
+  @smokeTest
   Scenario: getting capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
@@ -278,8 +278,8 @@ Feature: capabilities
       | capability    | path_to_element | value |
       | files_sharing | can_share       | 1     |
 
+
   #feature added in #32414 released in 10.0.10
-  @skipOnOcis
   Scenario: getting async capabilities when async operations are enabled
     Given the administrator has enabled async operations
     When the administrator retrieves the capabilities using the capabilities API
@@ -297,7 +297,7 @@ Feature: capabilities
       | capability | path_to_element | value |
       | async      |                 | EMPTY |
 
-  @skipOnOcis
+
   Scenario: Changing public upload
     Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -323,7 +323,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Disabling share api
     Given parameter "shareapi_enabled" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -343,7 +343,7 @@ Feature: capabilities
       | files_sharing | federation@@@incoming | 1                 |
       | files         | bigfilechunking       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Disabling public links
     Given parameter "shareapi_allow_links" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -367,7 +367,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing resharing
     Given parameter "shareapi_allow_resharing" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -392,7 +392,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing federation outgoing
     Given parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -417,7 +417,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing federation incoming
     Given parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -442,7 +442,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing "password enforced for read-only public link shares"
     Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -470,7 +470,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
       | files         | bigfilechunking                                | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing "password enforced for read-write public link shares"
     Given parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -498,7 +498,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
       | files         | bigfilechunking                                | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing "password enforced for write-only public link shares"
     Given parameter "shareapi_enforce_links_password_write_only" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -526,7 +526,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
       | files         | bigfilechunking                                | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing public notifications
     Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -551,7 +551,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing public social share
     Given parameter "shareapi_allow_social_share" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -576,7 +576,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing expire date
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -602,7 +602,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing expire date enforcing
     Given parameter "shareapi_default_expire_date" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
@@ -630,7 +630,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing group sharing allowed
     Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -655,7 +655,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing only share with group member
     Given parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -680,7 +680,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing only share with membership groups
     Given parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -706,7 +706,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing auto accept share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -733,7 +733,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing allow share dialog user enumeration
     Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
     When the administrator retrieves the capabilities using the capabilities API
@@ -757,7 +757,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled    | EMPTY             |
       | files         | bigfilechunking               | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing allow share dialog user enumeration for group members only
     Given parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -782,7 +782,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | 1                 |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing allow mail notification
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     When the administrator retrieves the capabilities using the capabilities API
@@ -808,7 +808,7 @@ Feature: capabilities
       | files_sharing | user@@@send_mail                      | 1                 |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: Changing exclude groups from sharing
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And group "group1" has been created
@@ -837,7 +837,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: When in a group that is excluded from sharing, can_share is off
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And user "Alice" has been created with default attributes and without skeleton files
@@ -869,7 +869,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: When not in any group that is excluded from sharing, can_share is on
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And user "Alice" has been created with default attributes and without skeleton files
@@ -901,7 +901,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: When in a group that is excluded from sharing and in another group, can_share is off
     Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And user "Alice" has been created with default attributes and without skeleton files
@@ -934,7 +934,7 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
 
-  @skipOnOcis
+
   Scenario: blacklisted_files_regex is reported in capabilities
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"

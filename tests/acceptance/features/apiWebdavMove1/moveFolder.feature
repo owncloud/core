@@ -113,7 +113,7 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Moving a folder out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -137,7 +137,7 @@ Feature: move (rename) folder
       | new         | Alice |
       | new         | Brian |
 
-  @files_sharing-app-required @skipOnOcis
+  @files_sharing-app-required
   Scenario Outline: Moving a folder into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
