@@ -12,7 +12,7 @@ Feature: quota
     When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
 
-	@newChunking @issue-ocis-1321
+  @newChunking @issue-ocis-1321
   Scenario: Uploading a file as owner having enough quota (new chunking)
     Given the quota of user "Alice" has been set to "10 MB"
     And using new DAV path
@@ -41,7 +41,7 @@ Feature: quota
     When user "Alice" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
-	@newChunking @issue-ocis-1321
+  @newChunking @issue-ocis-1321
   Scenario: Overwriting a file as owner having enough quota (new chunking)
     Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "10 MB"
@@ -57,7 +57,7 @@ Feature: quota
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
-	@newChunking @issue-ocis-1321
+  @newChunking @issue-ocis-1321
   Scenario: Overwriting a file as owner having insufficient quota (new chunking)
     Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "10 B"

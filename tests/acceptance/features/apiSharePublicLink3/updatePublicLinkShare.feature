@@ -78,7 +78,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-	@issue-39820
+  @issue-39820
   Scenario Outline: API responds with a full set of parameters when owner renames the folder with a public link (bug demonstration)
     Given using OCS API version "<ocs_api_version>"
     And using <dav-path> DAV path
@@ -471,7 +471,7 @@ Feature: update a public link share
       | 1               | new                       |
       | 2               | new                       |
 
-	@issue-39820
+  @issue-39820
   Scenario Outline: API responds with a full set of parameters when owner renames the file with a public link (bug demonstration)
     Given using OCS API version "<ocs_api_version>"
     And using <dav-path> DAV path

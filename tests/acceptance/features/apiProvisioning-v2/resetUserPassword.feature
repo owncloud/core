@@ -18,7 +18,7 @@ Feature: reset user password
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
-	@issue-37992
+  @issue-37992
   Scenario: admin tries to reset the password of a user that does not exist
     When the administrator resets the password of user "nonexistentuser" to "%alt1%" using the provisioning API
     Then the OCS status code should be "997"
