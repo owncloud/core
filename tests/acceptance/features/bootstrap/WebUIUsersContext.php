@@ -759,6 +759,36 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the administrator should be able to see the creation time of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table table of usernames and last logins with a heading | username | and | creation time |
+	 *
+	 * @return void
+	 * @throws ElementNotVisible
+	 * @throws Exception
+	 */
+	public function theAdministratorShouldBeAbleToSeeCreationTimeOfTheseUsers(
+		TableNode $table
+	):void {
+		$this->featureContext->verifyTableNodeColumns($table, ['username', 'creation time']);
+		foreach ($table as $row) {
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$userCreationTime = $this->usersPage->getCreationTimeOfUser($user);
+
+			Assert::assertStringContainsString(
+				$row['creation time'],
+				$userCreationTime,
+				__METHOD__
+				. "'"
+				. $row['creation time']
+				. "' is not contained in the creation time of '"
+				. $user
+				. "'."
+			);
+		}
+	}
+
+	/**
 	 * This will run before EVERY scenario.
 	 *
 	 * @BeforeScenario @webUI

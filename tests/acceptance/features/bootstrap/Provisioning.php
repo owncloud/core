@@ -5405,6 +5405,18 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the creation time returned by the API should be a current Unix timestamp$/
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theCreationTimeReturnedByTheApiShouldBe():void {
+		$responseCreationTime = (string) $this->getResponseXml(null, __METHOD__)->data[0]->creation_time;
+		Assert::assertIsNumeric($responseCreationTime);
+		Assert::assertGreaterThan($this->scenarioStartTime, (int) $responseCreationTime);
+	}
+
+	/**
 	 * Parses the xml answer to get the array of users returned.
 	 *
 	 * @param ResponseInterface $resp

@@ -19,6 +19,7 @@ Feature: get user
     And the quota definition returned by the API should be "default"
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
+    And the creation time returned by the API should be a current Unix timestamp
 
 
   Scenario Outline: admin gets an existing user with special characters in the username

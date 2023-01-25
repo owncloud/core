@@ -52,6 +52,7 @@ class UsersPage extends OwncloudPage {
 	protected $quotaColumnXpath = "//td[@class='quota']";
 	protected $storageLocationColumnXpath = "//td[@class='storageLocation']";
 	protected $lastLoginXpath = "//td[@class='lastLogin']";
+	protected $creationTimeXpath = "//td[@class='creationTime']";
 
 	protected $manualQuotaInputXpath
 		= "//input[contains(@data-original-title,'Please enter storage quota')]";
@@ -327,6 +328,37 @@ class UsersPage extends OwncloudPage {
 		};
 
 		return $this->getTrimmedText($userLastLogin);
+	}
+
+	/**
+	 * @param string $username
+	 *
+	 * @return string creation time of a user
+	 * @throws ElementNotFoundException|ElementNotVisible|Exception
+	 */
+	public function getCreationTimeOfUser(string $username): string {
+		$userTr = $this->findUserInTable($username);
+		$userCreationTime = $userTr->find(
+			'xpath',
+			$this->creationTimeXpath
+		);
+
+		if ($userCreationTime === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->creationTimeXpath " .
+				"creation time of user " . $username . " not found"
+			);
+		}
+
+		if (!$userCreationTime->isVisible()) {
+			throw new ElementNotVisible(
+				__METHOD__ .
+				" creation time of user " . $username . " is not visible"
+			);
+		};
+
+		return $this->getTrimmedText($userCreationTime);
 	}
 
 	/**
