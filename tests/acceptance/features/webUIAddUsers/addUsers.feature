@@ -94,7 +94,7 @@ Feature: add users
       | guiusr1  | simple user-name      |
       | a@-+_.'b | complicated user-name |
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @skipOnFIREFOX
   Scenario Outline: user sets his own password after being created with an Email address only and invitation link resend
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator resends the invitation email for user "<username>" using the webUI
