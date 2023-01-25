@@ -551,7 +551,7 @@ class OC_Image implements \OCP\IImage {
 
 	/**
 	 * Adjust the size of the chunks in the stream. This is required for
-	 * the "exif_red_data" native method to read a whole chunk of metadata
+	 * the "exif_read_data" native method to read a whole chunk of metadata
 	 * from the image in one go, otherwise there could be problems with
 	 * the function.
 	 *

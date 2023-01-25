@@ -1,0 +1,12 @@
+Bugfix: Fix orientation of images with exif data
+
+Some images with a large exif data had problems with the orientation
+when they were shown. This was caused by the native function failing
+to retrieve the exif data. Images with small exif data didn't have
+this problem.
+
+By making the chunk size of the stream bigger, the native function
+is able to load the exif data properly and return the information, and
+with such information we can fix the orientation of the image.
+
+https://github.com/owncloud/core/pull/40600
