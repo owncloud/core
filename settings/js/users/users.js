@@ -189,7 +189,7 @@ var UserList = {
                 /**
                  * creation time
                  */
-                var creationTimeRel = t('settings', 'never');
+                var creationTimeRel = t('settings', 'unknown');
                 var creationTimeAbs = creationTimeRel;
                 if(user.creationTime !== 0) {
                         creationTimeRel = OC.Util.relativeModifiedDate(user.creationTime);
