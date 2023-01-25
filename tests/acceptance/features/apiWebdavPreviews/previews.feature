@@ -89,7 +89,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixels wide and "32" pixels high
 
-  @notToImplementOnOCIS
+
   Scenario: download previews of shared files (to root)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
@@ -184,7 +184,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "204"
     And as user "Alice" the preview of "/parent.txt" with width "32" and height "32" should have been changed
 
-  @notToImplementOnOCIS
+
   Scenario: when owner updates a shared file, previews for sharee are also updated
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
@@ -264,7 +264,7 @@ Feature: previews of files downloaded through the webdav API
     And as user "Brian" the preview of "Shares/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Carol" the preview of "Shares/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
 
-  @notToImplementOnOCIS
+
   Scenario: JPEG preview quality can be determined by config
     Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testavatar_low.jpg"
     And the administrator has updated system config key "previewJPEGImageDisplayQuality" with value "1"

@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: a default expiration date can be specified for shares with users or groups
 
   Background:

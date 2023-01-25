@@ -7,7 +7,7 @@ Feature: get user groups
   Background:
     Given using OCS API version "1"
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: admin gets groups of an user
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created
@@ -52,7 +52,7 @@ Feature: get user groups
       | var/../etc       |
       | priv/subadmins/1 |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: subadmin tries to get other groups of a user in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -82,7 +82,7 @@ Feature: get user groups
     And the HTTP status code should be "401"
     And the API should not return any data
 
-  @notToImplementOnOCIS
+
   Scenario: admin gets groups of an user who is not in any groups
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created
@@ -91,7 +91,7 @@ Feature: get user groups
     And the HTTP status code should be "200"
     And the list of groups returned by the API should be empty
 
-  @notToImplementOnOCIS
+
   Scenario: normal user gets his/her groups
     Given these users have been created with default attributes and without skeleton files:
       | username |

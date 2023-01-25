@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: share resources where the sharee receives the share in multiple ways
 
   # These are the bug demonstration scenarios for https://github.com/owncloud/core/issues/39347

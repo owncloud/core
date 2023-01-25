@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: current oC10 behavior for issue-32068
 
   @smokeTest @issue-32068 @issue-ocis-reva-30 @issue-ocis-reva-65 @skipOnBruteForceProtection @issue-brute_force_protection-112

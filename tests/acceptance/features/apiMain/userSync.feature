@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS @issue-ocis-1241
+@api @issue-ocis-1241
 Feature: Users sync
 
   Background:

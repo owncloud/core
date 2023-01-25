@@ -21,7 +21,7 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: if a parent resource is exclusively locked a child resource cannot be locked again
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -40,7 +40,7 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: if a parent resource is exclusively locked with depth 0 a child resource can be locked again
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -60,7 +60,7 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
-  @skipOnOcV10 @issue-34358 @notToImplementOnOCIS
+  @skipOnOcV10 @issue-34358
   Scenario Outline: if a child resource is exclusively locked a parent resource cannot be locked again
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -79,7 +79,7 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: if a child resource is exclusively locked a parent resource can be locked with depth 0
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"

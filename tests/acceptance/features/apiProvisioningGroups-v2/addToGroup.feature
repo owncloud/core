@@ -163,7 +163,7 @@ Feature: add users to group
     And the HTTP status code should be "400"
     And the API should not return any data
 
-  @skipOnLDAP @notToImplementOnOCIS
+  @skipOnLDAP
   Scenario: subadmin adds users to groups the subadmin is responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -176,7 +176,7 @@ Feature: add users to group
     And the HTTP status code should be "403"
     And user "brand-new-user" should not belong to group "brand-new-group"
 
-  @skipOnLDAP @notToImplementOnOCIS
+  @skipOnLDAP
   Scenario: subadmin tries to add user to groups the subadmin is not responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -190,7 +190,7 @@ Feature: add users to group
     And the HTTP status code should be "403"
     And user "brand-new-user" should not belong to group "brand-new-group"
 
-  @skipOnLDAP @notToImplementOnOCIS
+  @skipOnLDAP
   Scenario: a subadmin can add users to other groups the subadmin is responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username         |

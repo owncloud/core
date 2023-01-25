@@ -6,7 +6,7 @@ Feature: upload to a public link share
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "FOLDER"
 
-  @smokeTest @notToImplementOnOCIS @issue-ocis-2079
+  @smokeTest @issue-ocis-2079
   Scenario: Uploading same file to a public upload-only share multiple times via old API
     # The old API needs to have the header OC-Autorename: 1 set to do the autorename
     Given user "Alice" has created a public link share with settings
@@ -44,7 +44,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "404"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | dav-path | public-webdav-api-version |
       | old      | old                       |
@@ -64,7 +64,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "403"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -85,14 +85,10 @@ Feature: upload to a public link share
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -105,14 +101,10 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -125,14 +117,10 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -144,7 +132,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "507"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -163,7 +151,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "507"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -182,7 +170,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -197,7 +185,7 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "403"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -218,7 +206,7 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -237,17 +225,13 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
-  @smokeTest @notToImplementOnOCIS @issue-ocis-2079
+  @smokeTest @issue-ocis-2079
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with old public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |

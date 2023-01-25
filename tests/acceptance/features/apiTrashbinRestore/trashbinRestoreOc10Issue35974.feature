@@ -1,4 +1,4 @@
-@api @files_trashbin-app-required @issue-ocis-reva-52 @notToImplementOnOCIS
+@api @files_trashbin-app-required @issue-ocis-reva-52
 Feature: Restore deleted files/folders
   As a user
   I would like to restore files/folders

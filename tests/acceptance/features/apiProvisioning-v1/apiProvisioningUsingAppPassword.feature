@@ -7,7 +7,7 @@ Feature: access user provisioning API using app password
   Background:
     Given using OCS API version "1"
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: admin deletes the user
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -18,7 +18,7 @@ Feature: access user provisioning API using app password
     Then the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin gets users in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -47,7 +47,7 @@ Feature: access user provisioning API using app password
     Then the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin tries to get users of other group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

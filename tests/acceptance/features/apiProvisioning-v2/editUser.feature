@@ -84,7 +84,7 @@ Feature: edit users
     And the HTTP status code should be "200"
     And the email address of user "brand-new-user" should be ""
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: a subadmin should be able to edit the user information in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -136,7 +136,7 @@ Feature: edit users
       | quota definition | default |
     And the quota definition of user "brand-new-user" should be "default"
 
-  @notToImplementOnOCIS
+
   Scenario: the administrator can edit user information with admin permissions
     Given these users have been created with default attributes and without skeleton files:
       | username      |
@@ -151,7 +151,7 @@ Feature: edit users
     And the email address of user "another-admin" should be "another-admin@example.com"
     And the quota definition of user "another-admin" should be "12 MB"
 
-  @notToImplementOnOCIS
+
   Scenario: a subadmin should be able to edit user information with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -170,7 +170,7 @@ Feature: edit users
     And the email address of user "another-subadmin" should be "brand-new-user@example.com"
     And the quota definition of user "another-subadmin" should be "12 MB"
 
-  @notToImplementOnOCIS
+
   Scenario: a subadmin should not be able to edit user information of another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -212,7 +212,7 @@ Feature: edit users
       | email | alice@gmail.com |
     And the email address of user "Alice" should be "alice@gmail.com"
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their email address
     Given user "Alice" has been created with default attributes and without skeleton files
     And the administrator has updated system config key "allow_user_to_change_mail_address" with value "false" and type "boolean"
@@ -223,7 +223,7 @@ Feature: edit users
       | email | alice@example.org |
     And the email address of user "Alice" should not have changed
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their email address, admin can still change the email address
     Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
@@ -234,7 +234,7 @@ Feature: edit users
       | email | alice@gmail.com |
     And the email address of user "Alice" should be "alice@gmail.com"
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their email address, admin can still change their own email address
     When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
     And the administrator changes the email of user "admin" to "something@example.com" using the provisioning API
@@ -244,7 +244,7 @@ Feature: edit users
       | email | something@example.com |
     And the email address of user "admin" should be "something@example.com"
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their email address, subadmin can still change the email address of a user they are subadmin of
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -261,7 +261,7 @@ Feature: edit users
       | email | alice@gmail.com |
     And the email address of user "Alice" should be "alice@gmail.com"
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their email address, subadmin cannot change the email address of a user they are not subadmin of
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -289,7 +289,7 @@ Feature: edit users
       | displayname | Alice Wonderland |
     And the display name of user "Alice" should be "Alice Wonderland"
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
     And the administrator has updated system config key "allow_user_to_change_display_name" with value "false" and type "boolean"
@@ -300,7 +300,7 @@ Feature: edit users
       | displayname | Alice Hansen |
     And the display name of user "Alice" should not have changed
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their display name, admin can still change display name
     Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
@@ -311,7 +311,7 @@ Feature: edit users
       | displayname | Alice Wonderland |
     And the display name of user "Alice" should be "Alice Wonderland"
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their display name, admin can still change their own display name
     When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
     And the administrator changes the display name of user "admin" to "The Administrator" using the provisioning API
@@ -321,7 +321,7 @@ Feature: edit users
       | displayname | The Administrator |
     And the display name of user "admin" should be "The Administrator"
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their display name, subadmin can still change the display name of a user they are subadmin of
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -337,7 +337,7 @@ Feature: edit users
       | displayname | Alice Wonderland |
     And the display name of user "Alice" should be "Alice Wonderland"
 
-  @notToImplementOnOCIS
+
   Scenario: Admin does not give access to users to change their display name, subadmin cannot change the display name of a user they are not subadmin of
     Given these users have been created with default attributes and without skeleton files:
       | username |

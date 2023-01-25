@@ -44,7 +44,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" using the WebDAV API
@@ -65,7 +65,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
@@ -77,7 +77,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session

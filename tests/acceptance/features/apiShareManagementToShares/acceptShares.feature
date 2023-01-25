@@ -127,7 +127,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT        |
       | /Shares/textfile0.txt |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: accept a pending share when there is a default folder for received shares
     Given the administrator has set the default folder for received shares to "<share_folder>"
     And user "Alice" has shared folder "/PARENT" with user "Brian"

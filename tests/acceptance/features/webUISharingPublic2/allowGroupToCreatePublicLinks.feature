@@ -1,4 +1,4 @@
-@webUI @files_sharing-app-required @notToImplementOnOcis
+@webUI @files_sharing-app-required
 Feature: public share sharers groups setting
   As an admin
   I should be able to allow only certain groups to create public links

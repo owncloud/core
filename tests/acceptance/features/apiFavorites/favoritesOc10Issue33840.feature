@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api
 Feature: current oC10 behavior for issue-33840
 
   Background:

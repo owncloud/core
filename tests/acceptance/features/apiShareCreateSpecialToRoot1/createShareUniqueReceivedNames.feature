@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: resources shared with the same name are received with unique names
 
   Background:

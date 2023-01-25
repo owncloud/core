@@ -12,7 +12,7 @@ Feature: Save public shares created by oC users
     Given using server "LOCAL"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-38763 @notToImplementOnOCIS
+  @issue-38763
   Scenario: mount public link share of a folder and the sharer deletes the folder
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
@@ -34,7 +34,7 @@ Feature: Save public shares created by oC users
     When the user browses to the files page
     Then folder "PARENT" should not be listed on the webUI
 
-  @issue-38763 @notToImplementOnOCIS
+  @issue-38763
   Scenario: mount public link share of a folder in remote server and the sharer deletes the folder
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files

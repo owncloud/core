@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: get shares filtered by type (user, group etc)
   As a user
   I want to be able to know the shares that I have made of a particular type (user, group etc)

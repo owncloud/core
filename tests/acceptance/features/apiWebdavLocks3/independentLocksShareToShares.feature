@@ -8,7 +8,7 @@ Feature: independent locks
     And user "Alice" has been created with default attributes and without skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
 
-  @notToImplementOnOCIS
+
   Scenario Outline: locking a received share does not lock other shares that had the same name on the sharer side (shares from different users)
     Given using <dav-path> DAV path
     And user "Carol" has been created with default attributes and without skeleton files
@@ -30,7 +30,7 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: locking a received share does not lock other shares that had the same name on the sharer side (shares from the same user)
     Given using <dav-path> DAV path
     And user "Alice" has created folder "locked/"

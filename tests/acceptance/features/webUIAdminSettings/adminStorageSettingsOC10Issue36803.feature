@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @admin_settings-feature-required @local_storage @files_external-app-required @notToImplementOnOCIS
+@webUI @insulated @disablePreviews @admin_settings-feature-required @local_storage @files_external-app-required
 Feature: admin storage settings
   As an admin
   I want to be able to manage external storages on the ownCloud server

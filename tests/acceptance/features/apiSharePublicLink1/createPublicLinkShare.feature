@@ -36,7 +36,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @notToImplementOnOCIS @issue-ocis-2079
+  @smokeTest @issue-ocis-2079
   Scenario Outline: Creating a new public link share of a file with password using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -277,7 +277,7 @@ Feature: create a public link share
       | permissions | read,create |
     Then the OCS status code should be "<ocs_status_code>"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
@@ -293,7 +293,7 @@ Feature: create a public link share
       | permissions | create   |
     Then the OCS status code should be "<ocs_status_code>"
 
-    @notToImplementOnOCIS @issue-ocis-2079 @issue-ocis-reva-41
+    @issue-ocis-2079 @issue-ocis-reva-41
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
@@ -311,7 +311,7 @@ Feature: create a public link share
       | permissions | read,create |
     Then the OCS status code should be "<ocs_status_code>"
 
-    @notToImplementOnOCIS @issue-ocis-2079 @issue-ocis-reva-41
+    @issue-ocis-2079 @issue-ocis-reva-41
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
@@ -327,7 +327,7 @@ Feature: create a public link share
       | permissions | read,update,create |
     Then the OCS status code should be "<ocs_status_code>"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
@@ -394,7 +394,7 @@ Feature: create a public link share
       | 2               | 200             |
 
 
-  @issue-ocis-reva-283 @notToImplementOnOCIS
+  @issue-ocis-reva-283
   Scenario Outline: Do not allow public sharing of the root on ownCloud10
     Given using OCS API version "<ocs_api_version>"
     When user "Alice" creates a public link share using the sharing API with settings
@@ -474,7 +474,7 @@ Feature: create a public link share
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -490,7 +490,7 @@ Feature: create a public link share
     When user "Alice" deletes folder "PARENT" using the WebDAV API
     And the public download of file "/parent.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "404"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -511,7 +511,7 @@ Feature: create a public link share
     Then the value of the item "//s:message" in the response should be "<response>"
     And the HTTP status code should be "404"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | public-webdav-api-version | response |
       | old                       |          |
@@ -585,7 +585,7 @@ Feature: create a public link share
     And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
     And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Set multiple expiration dates, the expired date shouldn't affect the future expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"

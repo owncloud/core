@@ -47,7 +47,7 @@ Feature: enable user
     And the HTTP status code should be "200"
     And user "another-admin" should be enabled
 
-  @notToImplementOnOCIS
+
   Scenario: admin enables subadmins in the same group
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -82,7 +82,7 @@ Feature: enable user
     And the HTTP status code should be "401"
     And user "Brian" should be disabled
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin tries to enable himself
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -94,7 +94,7 @@ Feature: enable user
     And the HTTP status code should be "401"
     And user "subadmin" should be disabled
 
-  @notToImplementOnOCIS
+
   Scenario: Making a web request with an enabled user
     Given user "Alice" has been created with default attributes and without skeleton files
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"

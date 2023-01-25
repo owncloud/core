@@ -1,4 +1,4 @@
-@api @files_external-app-required @notToImplementOnOCIS
+@api @files_external-app-required
 Feature: auth
 
   Background:

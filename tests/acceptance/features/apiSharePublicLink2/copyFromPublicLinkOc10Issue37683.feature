@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-310 @notToImplementOnOCIS
+@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-310
 Feature: copying from public link share
 
   Background:

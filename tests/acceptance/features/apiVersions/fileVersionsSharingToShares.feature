@@ -125,7 +125,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/Shares/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer, when the folder has been moved by the sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -140,7 +140,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is at the top level of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "old content" to "/sharefile.txt"
@@ -154,7 +154,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -238,15 +238,10 @@ Feature: dav-versions
     And as "Brian" file "/testshare/testfile.txt" should not exist
     And the version folder of file "/testfile.txt" for user "<mover>" should contain "2" elements
 
-    @notToImplementOnOCIS
     Examples:
       | dav_version | mover | src-folder        |
       | old         | Alice | /Shares/testshare |
       | new         | Alice | /Shares/testshare |
-
-
-    Examples:
-      | dav_version | mover | src-folder |
       | old         | Brian | /testshare |
       | new         | Brian | /testshare |
 
