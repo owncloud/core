@@ -126,7 +126,7 @@ class ExternalSharesController extends Controller {
 				]
 			);
 			$this->dispatcher->dispatch($event, 'remoteshare.accepted', $event);
-			$this->externalManager->acceptShare($id);
+			$manager->acceptShare($id);
 		}
 		return new JSONResponse();
 	}
