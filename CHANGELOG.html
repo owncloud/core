@@ -31,6 +31,7 @@
         <li class="type-change changelog-item">Change - Delete action is removed from sharing sections: <a href="https://github.com/owncloud/core/pull/40497">#40497</a></li>
         <li class="type-change changelog-item">Change - Allow to temporarily ignore invalid federated shares: <a href="https://github.com/owncloud/core/pull/40503">#40503</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/40521">#40521</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -240,6 +241,17 @@
    https://github.com/owncloud/core/pull/40517Code that has been deprecated in Symfony 4 has been refactored to be ready for Symfony 5.
             </p>
             <p>https://github.com/owncloud/core/pull/40521<br>https://github.com/owncloud/core/pull/40575<br>https://github.com/owncloud/core/pull/40592<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></p>
+            <p>Support for login policies has been added in order to block the login of users under some
+   circumstances. By default, there isn't any restriction, so any user can login normally
+   (assuming the password is correct)A group login policy has been added. This policy allows or denies the user from login based on the
+   login type being used by the user (username + password, openidconnect, etc) and whether he
+   belongs to specific groups. This can be used to ensure a group of users are always authenticated
+   using a determined authentication mechanism.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40574<br></p>
         </li>
     </ul>
     <h2 id="10.11.0" class="version"> Changelog for ownCloud Core [10.11.0] (2022-08-23)</h2>

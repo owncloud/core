@@ -33,6 +33,7 @@ Summary
 * Change - Delete action is removed from sharing sections: [#40497](https://github.com/owncloud/core/pull/40497)
 * Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
 * Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
+* Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 
 Details
 -------
@@ -278,6 +279,19 @@ Details
    https://github.com/owncloud/core/pull/40521
    https://github.com/owncloud/core/pull/40575
    https://github.com/owncloud/core/pull/40592
+
+* Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
+
+   Support for login policies has been added in order to block the login of users under some
+   circumstances. By default, there isn't any restriction, so any user can login normally
+   (assuming the password is correct)
+
+   A group login policy has been added. This policy allows or denies the user from login based on the
+   login type being used by the user (username + password, openidconnect, etc) and whether he
+   belongs to specific groups. This can be used to ensure a group of users are always authenticated
+   using a determined authentication mechanism.
+
+   https://github.com/owncloud/core/pull/40574
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
