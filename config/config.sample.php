@@ -1774,7 +1774,7 @@ $CONFIG = [
  * order below, such as:
  * 'loginPolicy.order' => ['OC\Authentication\LoginPolicies\GroupLoginPolicy'],
  *
- * Multiple policies could be use as long as they're registered (the
+ * Multiple policies could be used as long as they're registered (the
  * "SubnetPolicy" is just an example):
  * 'loginPolicy.order' => [
  *   'OC\Authentication\LoginPolicies\GroupLoginPolicy',
