@@ -143,7 +143,7 @@ $CONFIG = [
 /**
  * Define the ownCloud database user
  * This must be unique across ownCloud instances using the same SQL database.
- * This is setup during installation, so you shouldn't need to change it.
+ * This is set up during installation, so you shouldn't need to change it.
  */
 'dbuser' => '',
 
@@ -224,7 +224,7 @@ $CONFIG = [
  * The web UI might send a "heartbeat" based on the activity happening
  * in order to extend the session lifetime and keeping it from timing out
  * prematurely. If there is no activity happening and the lifetime is
- * reached, you'll have to login again.
+ * reached, you'll have to log in again.
  * The default is 20 minutes, expressed in seconds.
  */
 'session_lifetime' => 60 * 20,
@@ -417,7 +417,7 @@ $CONFIG = [
 
 /**
  * Define the IP address of your mail server host
- * Depends on `mail_smtpmode`. May contain multiple hosts separated by a semi-colon.
+ * Depends on `mail_smtpmode`. May contain multiple hosts separated by a semicolon.
  * If you need to specify the port number, append it to the IP address separated by
  * a colon, like this: `127.0.0.1:24`.
  */
@@ -518,7 +518,7 @@ $CONFIG = [
  * As an example, alerts shown in the browser to upgrade an app are triggered by
  * a cron background process and therefore uses the url of this key, even if the user
  * has logged on via a different domain defined in key `trusted_domains`. When the
- * user clicks an alert like this, they will be redirected to that URL and must logon again.
+ * user clicks an alert like this, they will be redirected to that URL and must log on again.
  */
 'overwrite.cli.url' => '',
 
@@ -702,7 +702,7 @@ $CONFIG = [
  *     rules. Please refer to https://doc.owncloud.com/server/latest/admin_manual/configuration/files/file_versioning.html
  *    for more information.
  * * `D, auto`
- *     keep versions at least for D days, apply expire rules to all versions
+ *     keep versions at least for D days, apply expiry rules to all versions
  *     that are older than D days
  * * `auto, D`
  *     delete all versions that are older than D days automatically, delete
@@ -898,7 +898,7 @@ $CONFIG = [
 /**
  * Alternate Code Locations
  *
- * Some of the ownCloud code may be stored in alternate locations.
+ * Some ownCloud code may be stored in alternate locations.
  */
 
 /**
@@ -1165,7 +1165,7 @@ $CONFIG = [
 	'host' => 'localhost', // can also be a unix domain socket: '/tmp/redis.sock'
 	'port' => 6379,
 	'timeout' => 0.0,
-	'password' => '', // Optional, if not defined no password will be used.
+	'password' => '', // Optional, if not defined, no password will be used.
 	'dbindex' => 0,   // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index. Out of the box, every Redis instance supports 16 databases so `<dbIndex>` has to be set between 0 and 15.
 	 // Optional config option
 	 // In order to use connection_parameters php-redis extension >= 5.3.0 is required
@@ -1196,14 +1196,14 @@ $CONFIG = [
  *  - \RedisCluster::FAILOVER_DISTRIBUTE - randomly distribute read commands across primary and replica nodes
  */
 'redis.cluster' => [
-	'seeds' => [ // provide some/all of the cluster servers to bootstrap discovery, port required
+	'seeds' => [ // provide some/all the cluster servers to bootstrap discovery, port required
 	  'localhost:7000',
 	  'localhost:7001'
 	],
 	'timeout' => 0.0,
 	'read_timeout' => 0.0,
 	'failover_mode' => \RedisCluster::FAILOVER_DISTRIBUTE,
-	'password' => '', // Optional, if not defined no password will be used.
+	'password' => '', // Optional, if not defined, no password will be used.
 	 // Optional config option
 	 // In order to use connection_parameters php-redis extension >= 5.3.0 is required
 	 // In order to use SSL/TLS redis server >= 6.0 is required
@@ -1491,7 +1491,7 @@ $CONFIG = [
  * The list of apps that are allowed and must not have a signature.json file present.
  * Besides ownCloud apps, this is particularly useful when creating ownCloud themes,
  * because themes are treated as apps. The app is identified with it´s app-id.
- * The app-id can be identified by the foldername of the app in your apps directory.
+ * The app-id can be identified by the folder name of the app in your apps directory.
  * The following example allows app-1 and theme-2 to have no signature.json file.
  */
 'integrity.ignore.missing.app.signature' => [
@@ -1675,7 +1675,7 @@ $CONFIG = [
 'upgrade.disable-web' => false,
 
 /**
- * Define whether or not to enable automatic update of market apps
+ * Define whether to enable automatic update of market apps
  * Set to `false` to disable.
  */
 'upgrade.automatic-app-update' => true,
@@ -1760,4 +1760,74 @@ $CONFIG = [
  */
 'grace_period.demo_key.link' => 'https://owncloud.com/try-enterprise/',
 
+/**
+ * Order of login policies
+ * The order of the login policies that will be checked, if any.
+ * Policies must be registered in order to use / activate them. This is usually
+ * done automatically by core or the app containing the policy.
+ *
+ * The names of the policies must be documented if they come from an app.
+ * Core provide the following list of policies (only one for now):
+ * - 'OC\Authentication\LoginPolicies\GroupLoginPolicy'
+ *
+ * In order to use / activate the policy, include the name in the policy
+ * order below, such as:
+ * 'loginPolicy.order' => ['OC\Authentication\LoginPolicies\GroupLoginPolicy'],
+ *
+ * Multiple policies could be used as long as they're registered (the
+ * "SubnetPolicy" is just an example):
+ * 'loginPolicy.order' => [
+ *   'OC\Authentication\LoginPolicies\GroupLoginPolicy',
+ *   'OCA\CustomPolicies\SubnetPolicy'
+ * ],
+ *
+ * The configuration of the policies depends on the policy itself, so they could
+ * be configured in multiple and different ways. We won't cover them here.
+ */
+'loginPolicy.order' => [],
+
+/**
+ * Configuration of the Group Login Policy
+ * Provide configuration for the
+ * 'OC\Authentication\LoginPolicies\GroupLoginPolicy' policy.
+ *
+ * The configuration will be something like:
+ * 'loginPolicy.groupLoginPolicy.forbidMap' => [
+ *   'password' => [
+ *     'allowOnly' => ['group1', 'group2'],
+ *     'reject' => ['group3'],
+ *   ],
+ * ],
+ *
+ * In a more generic way:
+ * 'loginPolicy.groupLoginPolicy.forbidMap' => [
+ *   '<loginType>' => [
+ *     'allowOnly' => ['<group1>', ......, '<groupN>'],
+ *     'reject' => ['<group1>', ........, '<groupN>'],
+ *   ],
+ * ],
+ *
+ * Each login type can have a list of groups that will be the ones
+ * only allowed to log in using that login type, and also a list of
+ * groups that will be rejected from using that login type.
+ * Note that this applies to users belonging to those groups. If a user
+ * is member of an "allowOnly" group and also of a "reject" group,
+ * the "reject" will take priority, so the user won't be able to log in
+ * using that login type.
+ *
+ * List of known login types:
+ * - 'password' -> for the login page and basic auth (for webdav, for example)
+ * - 'token' -> for app passwords (using an app password in the login page will
+ * be considered as 'token' login type, not 'password')
+ * Coming from different apps (you'll have to install those):
+ * - 'apache' -> for the user_shibboleth app (data comes from the apache server)
+ * - 'OCA\OAuth2\AuthModule' -> for oAuth2
+ * - 'OCA\OpenIdConnect\OpenIdConnectAuthModule' -> for openidconnect
+ * - 'OCA\Kerberos\AuthModule' -> for kerberos
+ *
+ * In some weird circumstances, the login type could be the empty string.
+ * This could happen in earlier versions of the openidconnect app when using
+ * the web UI.
+ */
+'loginPolicy.groupLoginPolicy.forbidMap' => [],
 ];

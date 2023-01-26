@@ -1,0 +1,15 @@
+Enhancement: Add support for login policies
+
+Support for login policies has been added in order to block
+the login of users under some circumstances. By default, there
+isn't any restriction, so any user can login normally (assuming
+the password is correct)
+
+A group login policy has been added. This policy allows or denies
+the user from login based on the login type being used by the user
+(username + password, openidconnect, etc) and whether he belongs
+to specific groups. This can be used to ensure a group of users
+are always authenticated using a determined authentication
+mechanism.
+
+https://github.com/owncloud/core/pull/40574

@@ -548,4 +548,10 @@ interface IServerContainer extends IContainer {
 	 * @since 10.5.0
 	 */
 	public function getLicenseManager();
+
+	/**
+	 * @return \OCP\Authentication\LoginPolicies\ILoginPolicyManager
+	 * @since 10.12.0
+	 */
+	public function getLoginPolicyManager();
 }

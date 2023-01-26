@@ -45,6 +45,8 @@ use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Authentication\AccountModule\Manager as AccountModuleManager;
+use OC\Authentication\LoginPolicies\LoginPolicyManager;
+use OC\Authentication\LoginPolicies\GroupLoginPolicy;
 use OC\Command\AsyncBus;
 use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\QueryLogger;
@@ -332,6 +334,9 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 			$userSyncService = new SyncService($c->getConfig(), $c->getLogger(), $c->getAccountMapper());
 
+			// The LoginPolicyManager in the userSession can't be injected
+			// due to a cyclic dependency: LoginPolicyManager needs L10N to translate
+			// the error messages, and L10N depends on the userSession
 			$userSession = new Session(
 				$manager,
 				$session,
@@ -946,6 +951,23 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getTimeFactory(),
 				$c->getLogger()
 			);
+		});
+
+		$this->registerService(LoginPolicyManager::class, function ($c) {
+			$policyManager = new LoginPolicyManager(
+				$c->getConfig(),
+				$c->getLogger(),
+				$c->getL10N('lib')
+			);
+			// register basic core login policies
+			$policyManager->registerPolicy(
+				new GroupLoginPolicy(
+					$c->getGroupManager(),
+					$c->getConfig(),
+					$c->getL10N('lib')
+				)
+			);
+			return $policyManager;
 		});
 	}
 
@@ -1722,5 +1744,12 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 	public function getLicenseManager() {
 		return $this->query(ILicenseManager::class);
+	}
+
+	/**
+	 * @return \OCP\Authentication\LoginPolicies\ILoginPolicyManager
+	 */
+	public function getLoginPolicyManager() {
+		return $this->query(LoginPolicyManager::class);
 	}
 }
