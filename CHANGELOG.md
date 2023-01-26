@@ -33,6 +33,7 @@ Summary
 * Change - Delete action is removed from sharing sections: [#40497](https://github.com/owncloud/core/pull/40497)
 * Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
 * Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
+* Enhancement - Add account creation time: [#2298](https://github.com/owncloud/enterprise/issues/2298)
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 
 Details
@@ -279,6 +280,13 @@ Details
    https://github.com/owncloud/core/pull/40521
    https://github.com/owncloud/core/pull/40575
    https://github.com/owncloud/core/pull/40592
+
+* Enhancement - Add account creation time: [#2298](https://github.com/owncloud/enterprise/issues/2298)
+
+   Adding account creation time in oc_accounts table
+
+   https://github.com/owncloud/enterprise/issues/2298
+   https://github.com/owncloud/core/pull/40588
 
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 
