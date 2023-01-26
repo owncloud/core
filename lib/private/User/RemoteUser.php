@@ -252,7 +252,4 @@ class RemoteUser implements IUser {
 	public function getExtendedAttributes($clearCache = false) {
 		return [];
 	}
-
-	public function setCreationTime() {
-	}
 }

@@ -109,14 +109,6 @@ interface IUser {
 	public function getCreationTime();
  
 	/**
-	 * set the timestamp of the user's creation time
-	 *
-	 * @return void
-	 * @since 10.12.0
-	 */
-	public function setCreationTime();
-
-	/**
 	 * Delete the user
 	 *
 	 * @return bool

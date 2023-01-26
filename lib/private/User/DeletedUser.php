@@ -249,8 +249,4 @@ class DeletedUser implements IUser {
 	public function getExtendedAttributes($clearCache = false) {
 		return [];
 	}
-
-	public function setCreationTime() {
-		throw new \Exception("Not Implemented", 1);
-	}
 }

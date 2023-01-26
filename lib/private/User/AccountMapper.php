@@ -65,6 +65,7 @@ class AccountMapper extends Mapper {
 	 * @return Entity the saved entity with the set id
 	 */
 	public function insert(Entity $entity) {
+		$entity->setCreationTime(\time());
 		// run the normal entity insert operation to get an id
 		$entity = parent::insert($entity);
 
