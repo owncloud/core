@@ -28,7 +28,6 @@
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.8",
-        "jakub-onderka/php-console-highlighter": "^0.4",
         "mikey179/vfsstream": "^1.6",
         "phpunit/phpunit": "^9.5",
         "roave/security-advisories": "dev-latest"
