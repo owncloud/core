@@ -73,7 +73,7 @@ class ExternalSharesController extends Controller {
 		$this->clientService = $clientService;
 		$this->dispatcher = $eventDispatcher;
 		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
-			$this->groupExternalManager  = \OCA\FederatedGroups\Application::getExternalManager();
+			$this->groupExternalManager  = \OCA\FederatedGroups\AppInfo\Application::getExternalManager();
 		}
 	}
 
