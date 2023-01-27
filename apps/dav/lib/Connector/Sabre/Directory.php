@@ -155,13 +155,6 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			if (!$this->fileView->isCreatable($this->path)) {
 				throw new SabreForbidden();
 			}
-			// We are using == instead of === as the computerFileSize method which is
-			// used to get the quota may return a float type. Note that the same
-			// has been observed for the disk_free_space function in local storage
-			list($used, $free) = $this->getQuotaInfo();
-			if ($free == 0) {
-				throw new SabreInsufficientStorage('Creation of empty files is forbidden in case of no available quota');
-			}
 
 			$this->fileView->verifyPath($this->path, $name);
 
@@ -220,11 +213,15 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			if (!$this->info->isCreatable()) {
 				throw new SabreForbidden();
 			}
+
+			$absolutePath = Filesystem::normalizePath($this->fileView->getAbsolutePath($name));
+			list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($absolutePath);
+
 			// We are using == instead of === as the computerFileSize method which is
 			// used to get the quota may return a float type. Note that the same
 			// has been observed for the disk_free_space function in local storage
 			list($used, $free) = $this->getQuotaInfo();
-			if ($free == 0) {
+			if ($free == 0 && $targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage') === true) {
 				throw new SabreInsufficientStorage('Creation of empty directories is forbidden in case of no available quota');
 			}
 
