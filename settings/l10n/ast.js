@@ -88,6 +88,7 @@ OC.L10N.register(
     "deleted {groupName}" : "desaniciáu {groupName}",
     "undo" : "desfacer",
     "never" : "enxamás",
+    "unknown" : "desconocí­u",
     "deleted {userName}" : "desaniciáu {userName}",
     "Group already exists" : "El grupu yá esiste",
     "add group" : "amestar Grupu",

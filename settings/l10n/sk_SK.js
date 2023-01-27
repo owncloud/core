@@ -72,6 +72,7 @@ OC.L10N.register(
     "undo" : "vrátiť",
     "Delete group" : "Odstrániť skupinu",
     "never" : "nikdy",
+    "unknown" : "neznámy",
     "deleted {userName}" : "vymazané {userName}",
     "Group already exists" : "Skupina už existuje",
     "add group" : "pridať skupinu",

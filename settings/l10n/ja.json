@@ -117,6 +117,7 @@
     "Delete group" : "グループを削除",
     "Resend invitation email" : "招待メールを再送信",
     "never" : "なし",
+    "unknown" : "不明",
     "deleted {userName}" : "{userName} を削除しました",
     "Delete user" : "ユーザーを削除",
     "Group already exists" : "グループはすでに存在します",

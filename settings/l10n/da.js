@@ -103,6 +103,7 @@ OC.L10N.register(
     "undo" : "fortryd",
     "Delete group" : "Slet gruppe",
     "never" : "aldrig",
+    "unknown" : "ukendt",
     "deleted {userName}" : "slettede {userName}",
     "Group already exists" : "Gruppen findes allerede",
     "add group" : "Tilføj gruppe",

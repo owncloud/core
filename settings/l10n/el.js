@@ -125,6 +125,7 @@ OC.L10N.register(
     "Delete group" : "Διαγραφή ομάδας",
     "Resend invitation email" : "Επανάληψη αποστολής πρόσκλησης",
     "never" : "ποτέ",
+    "unknown" : "άγνωστο",
     "deleted {userName}" : "διαγράφηκε ο {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Πρόκειται να διαγράψετε έναν χρήστη. Αυτή η ενέργεια δεν μπορεί να ανακληθεί και είναι μόνιμη. Όλα τα δεδομένα χρήστη, αρχεία και κοινόχρηστα στοιχεία θα διαγραφούν. Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά τον χρήστη {userName};",
     "Delete user" : "Διαγραφή χρήστη",

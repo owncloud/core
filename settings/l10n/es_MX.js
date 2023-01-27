@@ -67,6 +67,7 @@ OC.L10N.register(
     "undo" : "deshacer",
     "Delete group" : "Eliminar grupo",
     "never" : "nunca",
+    "unknown" : "desconocido",
     "Group already exists" : "El grupo ya existe",
     "add group" : "añadir Grupo",
     "enabled" : "activado",

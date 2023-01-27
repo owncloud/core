@@ -123,6 +123,7 @@ OC.L10N.register(
     "You are about to delete a group. This action can't be undone and is permanent. Are you sure that you want to permanently delete {groupName}?" : "מדובר במחיקת קבוצה. לא ניתן לבטל פעולה זו. האם באמת למחוק לצמיתות את {groupName}?",
     "Delete group" : "מחק קבוצה",
     "never" : "לעולם לא",
+    "unknown" : "לא ידוע",
     "deleted {userName}" : "נמחק {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "מדובר במחיקת משתמש. לא ניתן לבטל פעולה זו. כל נתוני המשתמש, הקבצים והשיתופים שלו יימחקו. האם האם באמת למחוק לצמיתות את {userName}?",
     "Delete user" : "מחיקת משתמש",

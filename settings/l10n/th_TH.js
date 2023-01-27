@@ -125,6 +125,7 @@ OC.L10N.register(
     "Delete group" : "ลบกลุ่ม",
     "Resend invitation email" : "ส่งอีเมลคำเชิญอีกครั้ง",
     "never" : "ไม่ต้องเลย",
+    "unknown" : "ไม่รู้จัก",
     "deleted {userName}" : "ลบผู้ใช้ {userName} เรียบร้อยแล้ว",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "คุณแน่ใจหรือว่าต้องการลบผู้ใช้ {userName} แบบถาวร? การดำเนินการนี้ไม่สามารถยกเลิกได้",
     "Delete user" : "ลบผู้ใช้",

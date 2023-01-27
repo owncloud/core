@@ -90,6 +90,7 @@ OC.L10N.register(
     "deleted {groupName}" : "{groupName} s-a șters",
     "undo" : "desfă",
     "never" : "niciodată",
+    "unknown" : "necunoscut",
     "deleted {userName}" : "{userName} șters",
     "Group already exists" : "Grupul există deja",
     "add group" : "adăugaţi grupul",

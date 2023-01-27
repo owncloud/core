@@ -119,6 +119,7 @@
     "You are about to delete a group. This action can't be undone and is permanent. Are you sure that you want to permanently delete {groupName}?" : "Chystáte se smazat skupina. Tuto akci není možné vrátit a je trvalá. Jste si jisti, že chcete smazat {groupName}?",
     "Delete group" : "Smazat skupinu",
     "never" : "nikdy",
+    "unknown" : "neznámý",
     "deleted {userName}" : "smazán {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Chystáte se smazat uživatele. Tuto akci není možné vrátit a je trvalá. Všechna uživatelská data, soubory a příspěvky budou smazány. Jste si jisti, že chcete smazat {userName}?",
     "Delete user" : "Smazat uživatele",

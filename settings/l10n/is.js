@@ -114,6 +114,7 @@ OC.L10N.register(
     "undo" : "afturkalla",
     "Delete group" : "Eyða hópi",
     "never" : "aldrei",
+    "unknown" : "óþekkt",
     "deleted {userName}" : "eyddi {userName}",
     "Delete user" : "Eyða notanda",
     "Group already exists" : "Hópur er þegar til",

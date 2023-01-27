@@ -11,6 +11,7 @@ OC.L10N.register(
     "Updated" : "ਅੱਪਡੇਟ ਕੀਤਾ",
     "Groups" : "ਗਰੁੱਪ",
     "undo" : "ਵਾਪਸ",
+    "unknown" : "ਅਣਜਾਣ",
     "add group" : "ਗਰੁੱਪ ਸ਼ਾਮਲ",
     "Sharing" : "ਸਾਂਝ",
     "Login" : "ਲਾਗਇਨ",

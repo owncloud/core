@@ -125,6 +125,7 @@ OC.L10N.register(
     "Delete group" : "Fshije grupin",
     "Resend invitation email" : "Ridërgo email ftesë",
     "never" : "kurrë",
+    "unknown" : "i panjohur",
     "deleted {userName}" : "u fshi {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Ju ndan një hap nga fshirja e një përdoruesi. Ky veprim s’mund të zhbëhet dhe është përfundimtar. Do të fshihen krejt të dhënat, kartelat dhe pjesët e përdoruesit. Jeni i sigurt se doni të fshihet përgjithnjë {userName}?",
     "Delete user" : "Fshije përdoruesin",

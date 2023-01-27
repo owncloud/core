@@ -95,6 +95,7 @@ OC.L10N.register(
     "undo" : "kumoa",
     "Delete group" : "Poista ryhmä",
     "never" : "ei koskaan",
+    "unknown" : "tuntematon",
     "deleted {userName}" : "poistettu {userName}",
     "Group already exists" : "Ryhmä on jo olemassa",
     "add group" : "lisää ryhmä",

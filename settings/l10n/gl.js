@@ -124,6 +124,7 @@ OC.L10N.register(
     "You are about to delete a group. This action can't be undone and is permanent. Are you sure that you want to permanently delete {groupName}?" : "Está a piques de eliminar un grupo. Esta acción non pode desfacerse e é permanente. Confirma que quere eliminar de xeito permanente {groupName}? ",
     "Delete group" : "Eliminar grupo",
     "never" : "nunca",
+    "unknown" : "descoñecido",
     "deleted {userName}" : "{userName} foi eliminado",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Está a piques de eliminar un usuario. Esta acción non pode desfacerse e é permanente. Confirma que quere eliminar de xeito permanente {userName}?",
     "Delete user" : "Eliminar usuario",

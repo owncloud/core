@@ -89,6 +89,7 @@ OC.L10N.register(
     "You are about to delete a group. This action can't be undone and is permanent. Are you sure that you want to permanently delete {groupName}?" : "Jūs gatavojaties izdzēst grupu. Šo darbību nevar atsaukt, un tā ir neatgriezeniska. Vai tiešām vēlaties neatgriezeniski izdzēst {groupName}?",
     "Delete group" : "Dzēst grupu",
     "never" : "nekad",
+    "unknown" : "nezināms",
     "deleted {userName}" : "lietotājs {userName} dzēsts",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Jūs gatavojaties izdzēst lietotāju. Šo darbību nevar atsaukt, un tā ir neatgriezeniska. Vai tiešām vēlaties neatgriezeniski izdzēst lietotāju {userName}?",
     "Delete user" : "Dzēst lietotāju",

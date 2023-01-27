@@ -123,6 +123,7 @@
     "Delete group" : "Удалить группу",
     "Resend invitation email" : "Повторно послать письмо с приглашением",
     "never" : "никогда",
+    "unknown" : "неизвестно",
     "deleted {userName}" : "удалён {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Вы собираетесь удалить пользователя. Это действие окончательное, его невозможно отменить. Вы уверены, что хотите окончательно удалить {userName}?",
     "Delete user" : "Удалить пользователя",

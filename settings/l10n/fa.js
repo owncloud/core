@@ -105,6 +105,7 @@ OC.L10N.register(
     "undo" : "بازگشت",
     "Delete group" : "حذف گروه",
     "never" : "هرگز",
+    "unknown" : "نامشخّص",
     "deleted {userName}" : "کاربر {userName} حذف شد",
     "Group already exists" : "این گروه در حال حاضر موجود است",
     "add group" : "افزودن گروه",
