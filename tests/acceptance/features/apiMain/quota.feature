@@ -221,17 +221,27 @@ Feature: quota
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Alice" folder "testQuota" should not exist
 
+
+  Scenario: User with no remaining quota cannot create a folder
+    Given the quota of user "Alice" has been set to "10 B"
+    And user "Alice" has uploaded file with content "ten bytes." to "useUpQuota.txt"
+    When user "Alice" creates folder "testQuota" using the WebDAV API
+    Then the HTTP status code should be "507"
+    And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+    And as "Alice" folder "testQuota" should not exist
+
   @files_sharing-app-required
-  Scenario: user cannot create file on shared folder by a user with zero quota
+  Scenario: user cannot create an empty file in a shared folder of a user with no remaining quota
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Brian" has been created with default attributes and without skeleton files
-    And the quota of user "Brian" has been set to "0 B"
+    And the quota of user "Brian" has been set to "10 B"
     And the quota of user "Alice" has been set to "10 MB"
     And user "Brian" has created folder "shareFolder"
     And user "Brian" has shared file "/shareFolder" with user "Alice"
+    And user "Brian" has uploaded file with content "ten bytes." to "useUpQuota.txt"
     And user "Alice" has accepted share "/shareFolder" offered by user "Brian"
-    When user "Alice" uploads file with content "uploaded content" to "/Shares/shareFolder/newTextFile.txt" using the WebDAV API
+    When user "Alice" uploads file with content "" to "/Shares/shareFolder/newTextFile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Brian" file "/shareFolder/newTextFile.txt" should not exist
@@ -313,6 +323,15 @@ Feature: quota
 
   Scenario: User with zero quota cannot upload an empty file
     Given the quota of user "Alice" has been set to "0 B"
+    When user "Alice" uploads file with content "" to "testquota.txt" using the WebDAV API
+    Then the HTTP status code should be "507"
+    And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+    And as "Alice" file "testquota.txt" should not exist
+
+
+  Scenario: User with no remaining quota cannot upload an empty file
+    Given the quota of user "Alice" has been set to "10 B"
+    And user "Alice" has uploaded file with content "ten bytes." to "useUpQuota.txt"
     When user "Alice" uploads file with content "" to "testquota.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
