@@ -181,7 +181,7 @@ class OcmController extends Controller {
 		error_log("in core OcmController $shareType " . (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups') ? 'yes' : 'no'));
 		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups') && ($shareType === 'group')) {
 			error_log("in core OcmController yes");
-			$controller = \OCA\FederatedGroups\Application::getOcmController($this->request);
+			$controller = \OCA\FederatedGroups\AppInfo\Application::getOcmController($this->request);
 			return $controller->createShare(
 				$shareWith,
 				$name,
@@ -306,7 +306,7 @@ class OcmController extends Controller {
 	) {
 		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
 		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
-			$controller = \OCA\FederatedGroups\Application::getOcmController($this->request);
+			$controller = \OCA\FederatedGroups\AppInfo\Application::getOcmController($this->request);
 			return $controller->processNotification(
 				$notificationType,
 				$resourceType,
