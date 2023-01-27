@@ -1,0 +1,8 @@
+Bugfix: Fix header title and claim is rendered as escaped HTML in files_sharing public template
+
+The files_sharing application template was escaping the HTML from
+the title and claim provided by the theme. This caused raw HTML
+to be displayed in the page header.
+
+https://github.com/owncloud/core/issues/40605
+https://github.com/owncloud/core/pull/40606
