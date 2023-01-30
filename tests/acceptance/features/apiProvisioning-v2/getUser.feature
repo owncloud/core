@@ -7,7 +7,7 @@ Feature: get user
   Background:
     Given using OCS API version "2"
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: admin gets an existing user
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
@@ -20,6 +20,19 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
     And the creation time returned by the API should be a current Unix timestamp
+
+  @smokeTest @skipOnOcV10.12
+  Scenario: admin gets an existing user
+    Given these users have been created with default attributes and without skeleton files:
+      | username       | displayname    |
+      | brand-new-user | Brand New User |
+    When the administrator retrieves the information of user "brand-new-user" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the display name returned by the API should be "Brand New User"
+    And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
+    And the last login returned by the API should be a current Unix timestamp
 
 
   Scenario Outline: admin gets an existing user with special characters in the username
