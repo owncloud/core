@@ -130,7 +130,12 @@ class RemoteOcsController extends OCSController {
 		error_log("HELLO in core RemoteOcsController " . (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups') ? 'yes' : 'no'));
 		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
 			error_log("in core RemoteOcsController yes");
-			$controller = \OCA\FederatedGroups\AppInfo\Application::getRemoteOcsController($this->request);
+			$controller = \OCA\FederatedGroups\AppInfo\Application::getRemoteOcsController(
+				$this->request,
+				$this->externalManager,
+				$this->uid
+			);
+			error_log("got controller");
 			return $controller->getShares($includingPending);
 		} else {
 			error_log("in core RemoteOcsController no");
