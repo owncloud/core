@@ -125,6 +125,17 @@ class RemoteOcsController extends OCSController {
 	 * @return Result
 	 */
 	public function getShares($includingPending = false) {
+		// https://oc2.docker/ocs/v1.php/apps/files_sharing/api/v1/remote_shares/all?format=json&include_tags=true
+		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
+		error_log("HELLO in core RemoteOcsController " . (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups') ? 'yes' : 'no'));
+		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
+			error_log("in core RemoteOcsController yes");
+			$controller = \OCA\FederatedGroups\AppInfo\Application::getRemoteOcsController($this->request);
+			return $controller->getShares($includingPending);
+		} else {
+			error_log("in core RemoteOcsController no");
+		}
+
 		$shares = [];
 		foreach ($this->externalManager->getAcceptedShares() as $shareInfo) {
 			try {
