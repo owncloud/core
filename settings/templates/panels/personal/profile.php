@@ -152,14 +152,14 @@ if ($_['passwordChangeSupported']) {
 </form>
 
 <?php
-if ( !empty($_['legal_privacy_policy']) || !empty($_['legal_imprint'])) {
-?><div class="section">
+if (!empty($_['legal_privacy_policy']) || !empty($_['legal_imprint'])) {
+	?><div class="section">
         <h2 class="legal"><?php p($l->t('Legal'));?></h2>
-        <?php if ( !empty($_['legal_imprint'])) { ?>
+        <?php if (!empty($_['legal_imprint'])) { ?>
         <p>
                 <label for="legal_imprint"><?php p($l->t('Our imprint conditions:')); ?></label> <a href="<?php p($_['legal_imprint']) ?>"><?php p($_['legal_imprint']) ?></a>
         </p>
-        <?php } if ( !empty($_['legal_privacy_policy'])) { ?>
+        <?php } if (!empty($_['legal_privacy_policy'])) { ?>
         <p>
                 <label for="legal_privacy_policy"><?php p($l->t('Our Privacy Policy conditions:')); ?></label> <a href="<?php p($_['legal_privacy_policy']) ?>"><?php p($_['legal_privacy_policy']) ?></a>
         </p>
