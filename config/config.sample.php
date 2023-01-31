@@ -1834,7 +1834,7 @@ $CONFIG = [
  *                 using an app password in the login page will
  *                 be considered as 'token' login type, not 'password'.
  *
- * Types from different apps which have to be install first:
+ * Types from different apps which have to be installed first:
  * - 'apache'                                    -> for the 'user_shibboleth' app
  *                                                  (data comes from the apache server)
  * - 'OCA\OAuth2\AuthModule'                     -> for oAuth2
