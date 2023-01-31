@@ -273,7 +273,7 @@ $CONFIG = [
  * login using openid connect. The config parameters `mode` and `search-attribute` will be used
  * to create a unique user so that the lookup mechanism can find the user again. This is where
  * an LDAP setup is usually required. The profile picture will only be transferred upon account
- * creation, but will not get updated afterwards like when it get changed.
+ * creation, but will not be updated afterwards if it changes in the connected IdP.
  * If `auto-provision` is not setup or required, it is expected that the user exists and you
  * MUST declare this with `['enabled' => false]` like shown in the Easy Setup example.
  * `auto-provision` holds several sub keys, see the example setup with the explanations below.
