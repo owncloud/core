@@ -423,6 +423,9 @@ class SyncService {
 	 */
 	private function readUserConfig($uid, $app, $key) {
 		$keys = $this->config->getUserKeys($uid, $app);
+		echo "user config ------------";
+		var_dump($keys);
+		echo "user config ------------";
 		if (\in_array($key, $keys, true)) {
 			$enabled = $this->config->getUserValue($uid, $app, $key);
 			return [true, $enabled];
