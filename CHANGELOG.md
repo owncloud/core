@@ -34,6 +34,7 @@ Summary
 * Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
 * Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
 * Enhancement - Add account creation time: [#2298](https://github.com/owncloud/enterprise/issues/2298)
+* Enhancement - Show username on personal profile page: [#40510](https://github.com/owncloud/core/pull/40510)
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 
 Details
@@ -287,6 +288,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/2298
    https://github.com/owncloud/core/pull/40588
+
+* Enhancement - Show username on personal profile page: [#40510](https://github.com/owncloud/core/pull/40510)
+
+   The username as well as the full name of a user is now shown on their personal general settings
+   page.
+
+   https://github.com/owncloud/core/pull/40510
 
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 
