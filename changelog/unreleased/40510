@@ -1,0 +1,6 @@
+Enhancement: Show username on personal profile page
+
+The username as well as the full name of a user is now shown on their personal
+general settings page.
+
+https://github.com/owncloud/core/pull/40510
