@@ -53,7 +53,7 @@
 			'<a>' +
 				'<div class="share-autocomplete-item">' +
 					'{{#if showAvatar}}' +
-					'<div class="avatardiv"></div>' +
+						'<div class="avatardiv"></div>' +
 					'{{/if}}' +
 					'<div class="autocomplete-item-text">' +
 						'<span class="autocomplete-item-displayname">{{displayName}}</span>' +
@@ -62,6 +62,9 @@
 						'{{/if}}' +
 						'<br/><span class="autocomplete-item-typeInfo">{{typeInfo}}</span>' +
 					'</div>' +
+					'{{#if showIcon}}' +
+						'<span class="icon icon-{{iconClass}}"></span>' +
+					'{{/if}}' +
 				'</div>' +
 			'</a>' +
 		'</li>';
@@ -353,6 +356,9 @@
 		},
 
 		autocompleteRenderItem: function(ul, item) {
+			// its added to share.js 
+			// this is just for backward compatibility(just in time share.js gets change)
+			OC.Share.SHARE_TYPE_REMOTE_GROUP = 7
 
 			var text = item.label;
 			var typeInfo = t('core', 'User');
@@ -362,6 +368,9 @@
 			}
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
 				typeInfo = t('core', 'Group');
+			}
+			if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE_GROUP) {
+				typeInfo = t('core', 'Federated Group');
 			}
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GUEST) {
 				typeInfo = t('core', 'Guest');
@@ -383,6 +392,8 @@
 			var $el = $(template({
 				showAvatar: this.configModel.areAvatarsEnabled(),
 				displayName: text,
+				showIcon: Boolean(item.value.shareType === OC.Share.SHARE_TYPE_REMOTE_GROUP),
+				iconClass: item.value.shareType === OC.Share.SHARE_TYPE_REMOTE_GROUP && "group",
 				typeInfo: typeInfo,
 				additionalInfo: item.value.shareWithAdditionalInfo,
 				shareTypeClass: (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) ? 'group' : 'user'
