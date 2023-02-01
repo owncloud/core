@@ -53,7 +53,13 @@
 
 .share-autocomplete-item {
 	display: flex;
+	align-items: center;
 	max-width: 220px;
+}
+
+.share-autocomplete-item .icon {
+	margin-left: auto;
+	margin-right: 5px;
 }
 
 @media (min-width: 1152px) {
