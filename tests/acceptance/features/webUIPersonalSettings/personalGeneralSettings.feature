@@ -35,6 +35,13 @@ Feature: personal general settings
     And group "new-group" should be displayed on the personal general settings page on the webUI
     And group "another-group" should be displayed on the personal general settings page on the webUI
 
+  @skipOnOcV10.11 @skipOnOcV10.10
+  Scenario: user sees their username displayed on the personal general settings page
+    Given the administrator has changed the display name of user "Alice" to "New display name"
+    And the user has reloaded the current page of the webUI
+    Then "New display name" should be shown as the name of the current user on the webUI
+    And username "Alice" should be displayed on the personal general settings page on the webUI
+
 
   Scenario: User sets profile picture from their existing cloud file
     Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"

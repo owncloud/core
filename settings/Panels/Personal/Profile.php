@@ -104,6 +104,7 @@ class Profile implements ISettings {
 		$tmpl->assign('passwordChangeSupported', $this->userSession->getUser()->canChangePassword());
 		$groups = $this->groupManager->getUserGroups($this->userSession->getUser());
 		$tmpl->assign('groups', $groups);
+		$tmpl->assign('username', $this->userSession->getUser()->getUID());
 		$tmpl->assign('languageSelector', $selector->fetchPage());
 		return $tmpl;
 	}

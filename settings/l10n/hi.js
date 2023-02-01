@@ -7,10 +7,10 @@ OC.L10N.register(
     "Save" : "सहेजें",
     "Add" : "डाले",
     "Cancel" : "रद्द करें ",
+    "Username" : "प्रयोक्ता का नाम",
     "Password" : "पासवर्ड",
     "New password" : "नया पासवर्ड",
     "Change password" : "पासवर्ड बदलें",
-    "Username" : "प्रयोक्ता का नाम",
     "Personal" : "यक्तिगत",
     "Settings" : "सेटिंग्स"
 },

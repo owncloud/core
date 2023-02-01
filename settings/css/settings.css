@@ -51,6 +51,7 @@ input#webdav {
 #groups,
 #language,
 #emailform,
+#username,
 #passwordform {
 	display: inline-block;
 	margin-bottom: 0;

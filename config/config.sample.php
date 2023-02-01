@@ -1767,22 +1767,27 @@ $CONFIG = [
  * done automatically by core or the app containing the policy.
  *
  * The names of the policies must be documented if they come from an app.
- * Core provide the following list of policies (only one for now):
+ * ownCloud core provides the following list of policies:
+ *
  * - 'OC\Authentication\LoginPolicies\GroupLoginPolicy'
  *
  * In order to use / activate the policy, include the name in the policy
  * order below, such as:
+ *
  * 'loginPolicy.order' => ['OC\Authentication\LoginPolicies\GroupLoginPolicy'],
  *
- * Multiple policies could be used as long as they're registered (the
+ * Multiple policies could be used as long as they are registered (the
  * "SubnetPolicy" is just an example):
+ * [source,php]
+ * ....
  * 'loginPolicy.order' => [
  *   'OC\Authentication\LoginPolicies\GroupLoginPolicy',
  *   'OCA\CustomPolicies\SubnetPolicy'
  * ],
+ * ....
  *
  * The configuration of the policies depends on the policy itself, so they could
- * be configured in multiple and different ways. We won't cover them here.
+ * be configured in multiple and different ways which are not covered in detail here.
  */
 'loginPolicy.order' => [],
 
@@ -1791,21 +1796,27 @@ $CONFIG = [
  * Provide configuration for the
  * 'OC\Authentication\LoginPolicies\GroupLoginPolicy' policy.
  *
- * The configuration will be something like:
- * 'loginPolicy.groupLoginPolicy.forbidMap' => [
- *   'password' => [
- *     'allowOnly' => ['group1', 'group2'],
- *     'reject' => ['group3'],
- *   ],
- * ],
- *
- * In a more generic way:
+ * The generic configuration is, 'allowOnly' and 'reject' do not need to be both present:
+ * [source,php]
+ * ....
  * 'loginPolicy.groupLoginPolicy.forbidMap' => [
  *   '<loginType>' => [
  *     'allowOnly' => ['<group1>', ......, '<groupN>'],
  *     'reject' => ['<group1>', ........, '<groupN>'],
  *   ],
  * ],
+ * ....
+ *
+ * As an example:
+ * [source,php]
+ * ....
+ * 'loginPolicy.groupLoginPolicy.forbidMap' => [
+ *   'password' => [
+ *     'allowOnly' => ['group1', 'group2'],
+ *     'reject' => ['group3'],
+ *   ],
+ * ],
+ * ....
  *
  * Each login type can have a list of groups that will be the ones
  * only allowed to log in using that login type, and also a list of
@@ -1816,18 +1827,23 @@ $CONFIG = [
  * using that login type.
  *
  * List of known login types:
- * - 'password' -> for the login page and basic auth (for webdav, for example)
- * - 'token' -> for app passwords (using an app password in the login page will
- * be considered as 'token' login type, not 'password')
- * Coming from different apps (you'll have to install those):
- * - 'apache' -> for the user_shibboleth app (data comes from the apache server)
- * - 'OCA\OAuth2\AuthModule' -> for oAuth2
- * - 'OCA\OpenIdConnect\OpenIdConnectAuthModule' -> for openidconnect
- * - 'OCA\Kerberos\AuthModule' -> for kerberos
+ * [source,plaintext]
+ * ....
+ * - 'password' -> for the login page and basic auth (like for webdav)
+ * - 'token'    -> for app passwords
+ *                 using an app password in the login page will
+ *                 be considered as 'token' login type, not 'password'.
  *
- * In some weird circumstances, the login type could be the empty string.
- * This could happen in earlier versions of the openidconnect app when using
- * the web UI.
+ * Types from different apps which have to be installed first:
+ * - 'apache'                                    -> for the 'user_shibboleth' app
+ *                                                  (data comes from the apache server)
+ * - 'OCA\OAuth2\AuthModule'                     -> for oAuth2
+ * - 'OCA\OpenIdConnect\OpenIdConnectAuthModule' -> for openidconnect
+ * - 'OCA\Kerberos\AuthModule'                   -> for kerberos
+ * ....
+ *
+ * In some rare circumstances, the login type could be the empty string.
+ * This could happen in earlier versions of the openidconnect app when using the web UI.
  */
 'loginPolicy.groupLoginPolicy.forbidMap' => [],
 ];

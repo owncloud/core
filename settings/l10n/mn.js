@@ -17,8 +17,8 @@ OC.L10N.register(
     "Log" : "Лог бичилт",
     "Cancel" : "Цуцлах",
     "Email" : "И-мэйл",
-    "Password" : "Нууц үг",
     "Username" : "Хэрэглэгчийн нэр",
+    "Password" : "Нууц үг",
     "Done" : "Болсон",
     "Settings" : "Тохиргоо",
     "Group" : "Грүпп"

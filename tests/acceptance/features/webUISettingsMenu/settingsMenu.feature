@@ -49,7 +49,7 @@ Feature: add users
       | Alice    | seconds ago |
       | Brian    | never       |
 
-
+  @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: administrator should be able to see creation time of a user
     When the administrator enables the setting "Show creation time" in the User Management page using the webUI
     Then the administrator should be able to see the creation time of these users in the User Management page:
