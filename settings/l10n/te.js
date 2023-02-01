@@ -9,10 +9,10 @@ OC.L10N.register(
     "Cancel" : "రద్దుచేయి",
     "Email" : "ఈమెయిలు",
     "Your email address" : "మీ ఈమెయిలు చిరునామా",
+    "Username" : "వాడుకరి పేరు",
     "Password" : "సంకేతపదం",
     "New password" : "కొత్త సంకేతపదం",
     "Name" : "పేరు",
-    "Username" : "వాడుకరి పేరు",
     "Personal" : "వ్యక్తిగతం",
     "Settings" : "అమరికలు"
 },
