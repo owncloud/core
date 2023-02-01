@@ -188,6 +188,10 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($length === null) {
 			$length = $this->getLength();
 		}
+                $freeSpace = $this->getFreeSpace($path);
+                if (!$length && $freeSpace == 0) {
+                        throw new InsufficientStorage('Creation of empty files is forbidden in case quota is not available');
+		}
 		if ($length) {
 			list($parentPath, $newName) = \Sabre\Uri\split($path);
 			if ($parentPath === null) {

@@ -215,7 +215,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			}
 
 			$absolutePath = Filesystem::normalizePath($this->fileView->getAbsolutePath($name));
-			list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($absolutePath);
+			list($targetStorage, $targetInternalPath) = Filesystem::resolvePath($absolutePath);
 
 			// We are using == instead of === as the computerFileSize method which is
 			// used to get the quota may return a float type. Note that the same
