@@ -1035,7 +1035,7 @@ class OC_Util {
 					' ".ocdata" in its root.')
 			];
 		}
-		if (\OC::$CLI) {
+		if (\OC::$CLI && !empty($errors)) {
 			print "Value of Data directory was: '$dataDirectory'" . PHP_EOL;
 		}
 		return $errors;
