@@ -188,27 +188,30 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($length === null) {
 			$length = $this->getLength();
 		}
-		list($parentPath, $newName) = \Sabre\Uri\split($path);
-		if ($parentPath === null) {
-			$parentPath = '';
-		}
-		$req = $this->server->httpRequest;
-		if ($req->getHeader('OC-Chunked')) {
-			$info = \OC_FileChunking::decodeName($newName);
-			$chunkHandler = $this->getFileChunking($info);
-			// subtract the already uploaded size to see whether
-			// there is still enough space for the remaining chunks
-			$length -= $chunkHandler->getCurrentSize();
-			// use target file name for free space check in case of shared files
-			$path = \rtrim($parentPath, '/') . '/' . $info['name'];
-		}
-		$freeSpace = $this->getFreeSpace($path);
-		$availableSpace = $freeSpace + $extraSpace;
-		if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace == 0))) {
-			if (isset($chunkHandler)) {
-				$chunkHandler->cleanup();
+		if ($length !== null) {
+			list($parentPath, $newName) = \Sabre\Uri\split($path);
+			if ($parentPath === null) {
+				$parentPath = '';
 			}
-			throw new InsufficientStorage();
+			$req = $this->server->httpRequest;
+			if ($req->getHeader('OC-Chunked')) {
+				$info = \OC_FileChunking::decodeName($newName);
+				$chunkHandler = $this->getFileChunking($info);
+				// subtract the already uploaded size to see whether
+				// there is still enough space for the remaining chunks
+				$length -= $chunkHandler->getCurrentSize();
+				// use target file name for free space check in case of shared files
+				$path = \rtrim($parentPath, '/') . '/' . $info['name'];
+			}
+			$freeSpace = $this->getFreeSpace($path);
+			// freeSpace might be false, or an int. Anyway, availableSpace will be an int. (false + int returns an int)
+			$availableSpace = $freeSpace + $extraSpace;
+			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace === 0))) {
+				if (isset($chunkHandler)) {
+					$chunkHandler->cleanup();
+				}
+				throw new InsufficientStorage();
+			}
 		}
 		return true;
 	}
