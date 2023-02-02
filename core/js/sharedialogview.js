@@ -63,7 +63,7 @@
 						'<br/><span class="autocomplete-item-typeInfo">{{typeInfo}}</span>' +
 					'</div>' +
 					'{{#if showIcon}}' +
-						'<span class="icon icon-{{iconClass}}"></span>' +
+						'<span class="icon {{iconClass}}"></span>' +
 					'{{/if}}' +
 				'</div>' +
 			'</a>' +
@@ -374,7 +374,7 @@
 			if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE_GROUP) {
 				typeInfo = t('core', 'Federated Group');
 				showIcon = true
-				iconClass = "group"
+				iconClass = "icon-contacts-dark"
 			}
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GUEST) {
 				typeInfo = t('core', 'Guest');
