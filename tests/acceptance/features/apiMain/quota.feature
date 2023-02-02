@@ -213,7 +213,7 @@ Feature: quota
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
 
-
+  @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: User with zero quota cannot create a folder
     Given the quota of user "Alice" has been set to "0 B"
     When user "Alice" creates folder "testQuota" using the WebDAV API
@@ -221,7 +221,7 @@ Feature: quota
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Alice" folder "testQuota" should not exist
 
-
+  @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: User with no remaining quota cannot create a folder
     Given the quota of user "Alice" has been set to "10 B"
     And user "Alice" has uploaded file with content "ten bytes." to "useUpQuota.txt"
@@ -230,7 +230,7 @@ Feature: quota
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Alice" folder "testQuota" should not exist
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: user cannot create an empty file in a shared folder of a user with no remaining quota
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -320,7 +320,7 @@ Feature: quota
     Then the HTTP status code should be "507"
     And as "Brian" file "testquota.txt" should not exist
 
-
+  @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: User with zero quota cannot upload an empty file
     Given the quota of user "Alice" has been set to "0 B"
     When user "Alice" uploads file with content "" to "testquota.txt" using the WebDAV API
@@ -328,7 +328,7 @@ Feature: quota
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Alice" file "testquota.txt" should not exist
 
-
+  @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: User with no remaining quota cannot upload an empty file
     Given the quota of user "Alice" has been set to "10 B"
     And user "Alice" has uploaded file with content "ten bytes." to "useUpQuota.txt"
