@@ -204,8 +204,8 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 				$path = \rtrim($parentPath, '/') . '/' . $info['name'];
 			}
 			$freeSpace = $this->getFreeSpace($path);
-			// freeSpace might be false, or an int. Anyway, availableSpace will be an int. (false + int returns an int)
-			$availableSpace = $freeSpace + $extraSpace;
+			// freeSpace might be false, or an int. Anyway, make sure that availableSpace will be an int.
+			$availableSpace = (int) $freeSpace + $extraSpace;
 			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace === 0))) {
 				if (isset($chunkHandler)) {
 					$chunkHandler->cleanup();
