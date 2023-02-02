@@ -305,8 +305,8 @@ Feature: quota
     Then the HTTP status code should be "201"
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
-  @files_sharing-app-required @skipOnOcV10.10
-  Scenario: share receiver with 0 quota can copy empty file from shared folder to home folder
+  @files_sharing-app-required @skipOnOcV10.10 @skipOnOcV10.11
+  Scenario: share receiver with 0 quota cannot copy empty file from shared folder to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Brian" has been created with default attributes and without skeleton files
@@ -317,8 +317,8 @@ Feature: quota
     And user "Alice" has shared folder "/shareFolder" with user "Brian"
     And user "Brian" has accepted share "/shareFolder" offered by user "Alice"
     When user "Brian" copies file "/Shares/shareFolder/testquota.txt" to "/testquota.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Brian" file "testquota.txt" should exist
+    Then the HTTP status code should be "507"
+    And as "Brian" file "testquota.txt" should not exist
 
 
   Scenario: User with zero quota cannot upload an empty file
