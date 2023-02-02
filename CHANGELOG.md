@@ -35,6 +35,7 @@ Summary
 * Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
 * Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
 * Enhancement - Add account creation time: [#2298](https://github.com/owncloud/enterprise/issues/2298)
+* Enhancement - Show WebDAV Url in personal setting under app passwords: [#40509](https://github.com/owncloud/core/pull/40509)
 * Enhancement - Show username on personal profile page: [#40510](https://github.com/owncloud/core/pull/40510)
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 * Enhancement - Tweak rewrite conditions in .htaccess: [#40584](https://github.com/owncloud/core/pull/40584)
@@ -298,6 +299,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/2298
    https://github.com/owncloud/core/pull/40588
+
+* Enhancement - Show WebDAV Url in personal setting under app passwords: [#40509](https://github.com/owncloud/core/pull/40509)
+
+   For easy access of files through WebDAV the url is displayed right under the app password
+   section.
+
+   https://github.com/owncloud/core/pull/40509
 
 * Enhancement - Show username on personal profile page: [#40510](https://github.com/owncloud/core/pull/40510)
 
