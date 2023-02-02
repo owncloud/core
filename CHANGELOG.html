@@ -21,6 +21,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: <a href="https://github.com/owncloud/core/pull/40568">#40568</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: <a href="https://github.com/owncloud/core/pull/40571">#40571</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: <a href="https://github.com/owncloud/core/pull/40579">#40579</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix header title and claim rendered as escaped HTML: <a href="https://github.com/owncloud/core/issues/40605">#40605</a></li>
         <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
@@ -139,6 +140,15 @@
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: <a href="https://github.com/owncloud/core/pull/40579">#40579</a></p>
             <p>https://github.com/owncloud/core/pull/40579<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix header title and claim rendered as escaped HTML: <a href="https://github.com/owncloud/core/issues/40605">#40605</a></p>
+            <p>The files_sharing application template was escaping the HTML from the title and claim
+   provided by the theme. This caused raw HTML to be displayed in the page header.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40605<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40606<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>

@@ -23,6 +23,7 @@ Summary
 * Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
 * Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: [#40571](https://github.com/owncloud/core/pull/40571)
 * Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
+* Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
@@ -151,6 +152,14 @@ Details
 * Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
 
    https://github.com/owncloud/core/pull/40579
+
+* Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
+
+   The files_sharing application template was escaping the HTML from the title and claim
+   provided by the theme. This caused raw HTML to be displayed in the page header.
+
+   https://github.com/owncloud/core/issues/40605
+   https://github.com/owncloud/core/pull/40606
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
