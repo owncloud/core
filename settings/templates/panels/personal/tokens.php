@@ -51,4 +51,9 @@ script('settings', 'panels/authtoken_view');
 			<button id="app-password-hide" class="button"><?php p($l->t('Done')); ?></button>
 		</div>
 	</div>
+	<div>
+		<br/>
+		<p><?php p($l->t('To access your files through WebDAV, please use the following URL:'));?></p>
+		<p><code><?php p(\OCP\Util::linkToRemote('webdav')); ?></code></p>
+	</div>
 </div>
