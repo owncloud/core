@@ -1,4 +1,4 @@
-@api @files_trashbin-app-required @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_trashbin-app-required @files_sharing-app-required
 Feature: using trashbin together with sharing
 
   Background:
@@ -23,11 +23,6 @@ Feature: using trashbin together with sharing
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: deleting a file in a received folder moves it to trashbin of both users
     Given using <dav-path> DAV path
@@ -44,11 +39,6 @@ Feature: using trashbin together with sharing
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: sharee deleting a file in a group-shared folder moves it to the trashbin of sharee and sharer only
@@ -72,11 +62,6 @@ Feature: using trashbin together with sharing
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: sharer deleting a file in a group-shared folder moves it to the trashbin of sharer only
     Given using <dav-path> DAV path
@@ -98,11 +83,6 @@ Feature: using trashbin together with sharing
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: sharee deleting a folder in a group-shared folder moves it to the trashbin of sharee and sharer only
@@ -127,11 +107,6 @@ Feature: using trashbin together with sharing
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: sharer deleting a folder in a group-shared folder moves it to the trashbin of sharer only
     Given using <dav-path> DAV path
@@ -154,11 +129,6 @@ Feature: using trashbin together with sharing
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path
@@ -183,11 +153,6 @@ Feature: using trashbin together with sharing
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: restoring a file to a read-only folder
     Given using <dav-path> DAV path
@@ -205,11 +170,6 @@ Feature: using trashbin together with sharing
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: restoring a file to a read-only sub-folder
@@ -229,8 +189,3 @@ Feature: using trashbin together with sharing
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |

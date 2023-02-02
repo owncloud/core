@@ -3330,7 +3330,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getPersonalSpaceIdForUser(string $user, bool $alwaysDoIt = false): ?string {
 		if ($alwaysDoIt || ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES)) {
-			return WebDavHelper::getPersonalSpaceIdForUser(
+			return WebDavHelper::getPersonalSpaceIdForUserOrFakeIfNotFound(
 				$this->getBaseUrl(),
 				$user,
 				$this->getPasswordForUser($user),

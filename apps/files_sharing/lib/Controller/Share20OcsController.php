@@ -256,7 +256,7 @@ class Share20OcsController extends OCSController {
 			$result['share_with_displayname'] = $group !== null ? $group->getDisplayName() : $share->getSharedWith();
 		} elseif ($share->getShareType() === Share::SHARE_TYPE_LINK) {
 			if ($share->getPassword() !== null) {
-				// Misleading names ahead!: This fields are miss-used to
+				// Misleading names ahead!: These fields are miss-used to
 				// read/write public link password-hashes
 				$result['share_with'] = '***redacted***';
 				$result['share_with_displayname'] = '***redacted***';
@@ -307,7 +307,7 @@ class Share20OcsController extends OCSController {
 				$share = $this->formatShare($share);
 				return new Result([$share]);
 			} catch (NotFoundException $e) {
-				//Fall trough
+				//Fall through
 			} catch (StorageNotAvailableException $e) {
 				// could happen if the share node points to a storage which isn't available
 				// TODO: This should go through an injected logger instance
@@ -453,7 +453,7 @@ class Share20OcsController extends OCSController {
 				return new Result(null, 404, $this->l->t('Please specify a valid user'));
 			}
 
-			// Fetch the UID to match exactly with the user (case sensitive).
+			// Fetch the UID to match exactly with the user (case-sensitive).
 			$share->setSharedWith($user->getUID());
 			$share->setPermissions($permissions);
 			if ($userAutoAccept) {
@@ -1018,7 +1018,7 @@ class Share20OcsController extends OCSController {
 
 		try {
 			$share = $this->getShareById($id, $this->userSession->getUser()->getUID());
-			$this->eventDispatcher->dispatch('share.before' . $eventName, new GenericEvent(null, ['share' => $share]));
+			$this->eventDispatcher->dispatch(new GenericEvent(null, ['share' => $share]), 'share.before' . $eventName);
 		} catch (ShareNotFound $e) {
 			return new Result(null, 404, $this->l->t('Wrong share ID, share doesn\'t exist'));
 		}
@@ -1041,7 +1041,7 @@ class Share20OcsController extends OCSController {
 
 		if ($share->getState() === $state) {
 			if ($eventName !== '') {
-				$this->eventDispatcher->dispatch('share.after' . $eventName, new GenericEvent(null, ['share' => $share]));
+				$this->eventDispatcher->dispatch(new GenericEvent(null, ['share' => $share]), 'share.after' . $eventName);
 			}
 			// if there are no changes in the state, just return the share as if the change was successful
 			$node->unlock(ILockingProvider::LOCK_SHARED);
@@ -1084,7 +1084,7 @@ class Share20OcsController extends OCSController {
 		$this->notificationPublisher->discardNotificationForUser($share, $this->userSession->getUser()->getUID());
 
 		if ($eventName !== '') {
-			$this->eventDispatcher->dispatch('share.after' . $eventName, new GenericEvent(null, ['share' => $share]));
+			$this->eventDispatcher->dispatch(new GenericEvent(null, ['share' => $share]), 'share.after' . $eventName);
 		}
 		return new Result([$this->formatShare($share, true)]);
 	}

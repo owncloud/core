@@ -137,11 +137,6 @@ Feature: multilinksharing
       | old      |
       | new      |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: Deleting one public link share of a file doesn't affect the rest
     Given using OCS API version "<ocs_api_version>"
@@ -204,11 +199,6 @@ Feature: multilinksharing
       | old      |
       | new      |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path |
-      | spaces   |
-
   @issue-ocis-reva-335
   Scenario Outline: Renaming a folder doesn't remove its public shares
     Given using OCS API version "1"
@@ -238,8 +228,3 @@ Feature: multilinksharing
       | dav-path |
       | old      |
       | new      |
-
-  @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path |
-      | spaces   |

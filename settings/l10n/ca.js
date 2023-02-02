@@ -80,6 +80,7 @@ OC.L10N.register(
     "You are about to delete a group. This action can't be undone and is permanent. Are you sure that you want to permanently delete {groupName}?" : "Estàs a punt d'esborrar un grup. Aquesta acció no es pot desfer i és permanent. Segur que vols esborrar definitivament el grup {groupName}?",
     "Delete group" : "Elimina grup",
     "never" : "mai",
+    "unknown" : "desconegut",
     "deleted {userName}" : "eliminat {userName}",
     "Delete user" : "Esborra usuari",
     "Group already exists" : "El grup ja existeix",

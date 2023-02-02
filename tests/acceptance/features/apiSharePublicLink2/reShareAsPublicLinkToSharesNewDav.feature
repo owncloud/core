@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required @public_link_share-feature-required
 Feature: reshare as public link
   As a user
   I want to create public link shares from files/folders shared with me

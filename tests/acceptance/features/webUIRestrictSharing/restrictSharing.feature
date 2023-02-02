@@ -60,7 +60,7 @@ Feature: restrict Sharing
     And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: Editing share permission of existing share when sharing with groups is forbidden
     Given the user has shared folder "simple-folder" with group "grp1"
     And the setting "Allow sharing with groups" in the section "Sharing" has been disabled
@@ -75,7 +75,7 @@ Feature: restrict Sharing
     Then the following permissions are seen for "simple-folder" in the sharing dialog for group "grp1"
       | share | yes |
 
-  @skipOnOcV10.3
+
   Scenario: Editing create permission of existing share when sharing with groups is forbidden
     Given the user has shared folder "simple-folder" with group "grp1"
     And the setting "Allow sharing with groups" in the section "Sharing" has been disabled

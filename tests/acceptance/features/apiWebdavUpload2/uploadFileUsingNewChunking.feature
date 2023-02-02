@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
+@api @issue-ocis-reva-56 @newChunking @issue-ocis-1321
 Feature: upload file using new chunking
   As a user
   I want to be able to upload "large" files in chunks
@@ -85,7 +85,7 @@ Feature: upload file using new chunking
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
     Then the HTTP status code should be "409"
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+
   Scenario: New chunked upload PUT using old DAV path should fail
     Given user "Alice" has created a new chunking upload with id "chunking-42"
     When using old DAV path

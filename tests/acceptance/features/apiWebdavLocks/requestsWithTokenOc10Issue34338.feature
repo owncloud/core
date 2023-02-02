@@ -1,7 +1,7 @@
-@api @notToImplementOnOCIS @issue-ocis-reva-172
+@api @issue-ocis-reva-172
 Feature: actions on a locked item are possible if the token is sent with the request
 
-  @issue-34338 @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-34338 @files_sharing-app-required
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given these users have been created with default attributes and without skeleton files:
       | username |

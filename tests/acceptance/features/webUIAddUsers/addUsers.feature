@@ -24,14 +24,14 @@ Feature: add users
       | null     | %regular% |
       | nil      | %regular% |
 
-  @skipOnOcV10.3
+
   Scenario: use the webUI to create a user with special valid characters
     When the administrator creates a user with the name "@-+_.'" and the password "%regular%" using the webUI
     And the administrator logs out of the webUI
     And user "@-+_.'" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
-  @skipOnOcV10.3
+
   Scenario: use the webUI to create a user with special invalid characters
     When the administrator attempts to create these users then the notifications should be as listed
       | user | password    | notification                                                                                                    |
@@ -41,7 +41,7 @@ Feature: add users
       | a(=  | "%alt3%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
       | a`*^ | "%alt4%"    | Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "+_.@-'" |
 
-  @skipOnOcV10.3 @skipOnOcV10.4
+
   Scenario: use the webUI to create a user with special invalid username
     When the administrator attempts to create these users then the notifications should be as listed
       | user | password | notification                                                  |
@@ -76,7 +76,7 @@ Feature: add users
       Access it:
       """
 
-  @smokeTest @skipOnLDAP @skipOnOcV10.3
+  @smokeTest @skipOnLDAP
   Scenario Outline: user sets his own password after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
@@ -94,7 +94,7 @@ Feature: add users
       | guiusr1  | simple user-name      |
       | a@-+_.'b | complicated user-name |
 
-  @smokeTest @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7
+  @smokeTest @skipOnLDAP @skipOnFIREFOX
   Scenario Outline: user sets his own password after being created with an Email address only and invitation link resend
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator resends the invitation email for user "<username>" using the webUI
@@ -115,7 +115,7 @@ Feature: add users
       | guiusr1  | simple user-name      |
       | a@-+_.'b | complicated user-name |
 
-  @skipOnOcV10.3
+
   Scenario Outline: user sets his own password but retypes it wrongly after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
     And the administrator logs out of the webUI

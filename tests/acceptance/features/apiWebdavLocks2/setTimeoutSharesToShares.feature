@@ -1,4 +1,4 @@
-@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS
+@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172
 Feature: set timeouts of LOCKS on shares
 
   Background:

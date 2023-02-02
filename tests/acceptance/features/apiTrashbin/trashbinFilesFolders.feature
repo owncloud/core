@@ -19,11 +19,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
   @smokeTest
   Scenario Outline: deleting a folder moves it to trashbin
     Given using <dav-path> DAV path
@@ -34,11 +29,6 @@ Feature: files and folders exist in the trashbin after being deleted
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: deleting a file in a folder moves it to the trashbin root
@@ -53,11 +43,6 @@ Feature: files and folders exist in the trashbin after being deleted
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
   @files_sharing-app-required
   Scenario Outline: deleting a file in a shared folder moves it to the trashbin root
@@ -75,11 +60,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
   @files_sharing-app-required
   Scenario Outline: deleting a shared folder moves it to trashbin
     Given using <dav-path> DAV path
@@ -93,11 +73,6 @@ Feature: files and folders exist in the trashbin after being deleted
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
   @skipOnOcV10 @issue-23151
   # This scenario deletes many files as close together in time as the test can run.
@@ -130,11 +105,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
   # Note: the underlying acceptance test code ensures that each delete step is separated by a least 1 second
   Scenario Outline: trashbin can store two files with the same name but different origins when the deletes are separated by at least 1 second
     Given using <dav-path> DAV path
@@ -153,11 +123,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
   @local_storage @files_external-app-required @skipOnEncryptionType:user-keys @encryption-issue-42 @skip_on_objectstore
   Scenario Outline: Deleting a folder into external storage moves it to the trashbin
     Given using <dav-path> DAV path
@@ -171,12 +136,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
-  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
+  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
     And user "testtrashbin100" has been created with default attributes and without skeleton files
@@ -188,17 +148,11 @@ Feature: files and folders exist in the trashbin after being deleted
     And the last webdav response should not contain the following elements
       | path          | user            |
       | textfile1.txt | testtrashbin100 |
-    @skipOnOcis
     Examples:
       | dav-path | status-code |
       | new      | 401         |
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path | status-code |
-      | new      | 404         |
-      | spaces   | 404         |
 
-  @issue-ocis-3561 @smokeTest @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
+  @issue-ocis-3561 @smokeTest @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's trashbin is prohibited with multiple files on trashbin
     Given using <dav-path> DAV path
     And user "testtrashbin101" has been created with default attributes and without skeleton files
@@ -213,17 +167,11 @@ Feature: files and folders exist in the trashbin after being deleted
       | path          | user            |
       | textfile0.txt | testtrashbin101 |
       | textfile2.txt | testtrashbin101 |
-    @skipOnOcis
     Examples:
       | dav-path | status-code |
       | new      | 401         |
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path | status-code |
-      | new      | 404         |
-      | spaces   | 404         |
 
-  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3  @provisioning_api-app-required
+  @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore  @provisioning_api-app-required
   Scenario Outline: Listing other user's trashbin is prohibited for newly recreated user with same name
     Given using <dav-path> DAV path
     And user "testtrashbin102" has been created with default attributes and without skeleton files
@@ -243,15 +191,9 @@ Feature: files and folders exist in the trashbin after being deleted
       | textfile0.txt | testtrashbin102 |
       | textfile2.txt | testtrashbin102 |
       | textfile3.txt | testtrashbin102 |
-    @skipOnOcis
     Examples:
       | dav-path | status-code |
       | new      | 401         |
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path | status-code |
-      | new      | 404         |
-      | spaces   | 404         |
 
   @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing other user's empty unused trashbin is prohibited
@@ -260,15 +202,9 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "testtrashbinempty" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
     When user "Alice" tries to list the trashbin content for user "testtrashbinempty"
     Then the HTTP status code should be "<status-code>"
-    @skipOnOcis
     Examples:
       | dav-path | status-code |
       | new      | 401         |
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path | status-code |
-      | new      | 404         |
-      | spaces   | 404         |
 
   @issue-ocis-3561 @skipOnLDAP @skip_on_objectstore
   Scenario Outline: Listing non-existent user's trashbin is prohibited
@@ -278,11 +214,6 @@ Feature: files and folders exist in the trashbin after being deleted
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
   @smokeTest
   Scenario Outline: Get trashbin content with wrong password
@@ -298,11 +229,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
   @smokeTest
   Scenario Outline: Get trashbin content without password
     Given using <dav-path> DAV path
@@ -316,11 +242,6 @@ Feature: files and folders exist in the trashbin after being deleted
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: user with unusual username deletes a file
@@ -340,16 +261,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | new      | -123     |
       | new      | 0.0      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path | username |
-      | spaces   | dash-123 |
-      | spaces   | null     |
-      | spaces   | nil      |
-      | spaces   | 123      |
-      | spaces   | -123     |
-      | spaces   | 0.0      |
-
 
   Scenario Outline: deleting a file with comma in the filename moves it to trashbin
     Given using <dav-path> DAV path
@@ -361,11 +272,6 @@ Feature: files and folders exist in the trashbin after being deleted
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: deleting a folder moves all its content to the trashbin
@@ -382,11 +288,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
   @issue-ocis-541
   Scenario Outline: deleted file has appropriate deletion time information
     Given using <dav-path> DAV path
@@ -398,11 +299,6 @@ Feature: files and folders exist in the trashbin after being deleted
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
   @issue-ocis-1547
   Scenario Outline: deleting files with special characters moves it to trashbin
@@ -436,11 +332,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
   @issue-ocis-1547
   Scenario Outline: deleting folders with special characters moves it to trashbin
     Given using <dav-path> DAV path
@@ -472,8 +363,3 @@ Feature: files and folders exist in the trashbin after being deleted
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |

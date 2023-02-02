@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: write directly into the folder for received shares
   On ownCloud10 with the folder for received shares set, for example, to "Shares"
   A user should see a "Shares" folder when they have received a share.

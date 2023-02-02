@@ -458,7 +458,7 @@ class LoginControllerTest extends TestCase {
 			->expects($this->never())
 			->method('isLoggedIn');
 		$this->loginController = $this->getMockBuilder(LoginController::class)
-			->setMethods(['handleApacheAuth'])
+			->setMethods(['handleApacheAuth', 'getDefaultUrl'])
 			->setConstructorArgs([
 				'core',
 				$this->request,
@@ -474,11 +474,14 @@ class LoginControllerTest extends TestCase {
 		$this->loginController->expects($this->once())
 			->method('handleApacheAuth')
 			->willReturn(true);
+		$this->loginController->expects($this->once())
+			->method('getDefaultUrl')
+			->willReturn('redirect_url/test');
 
 		$expectedResponse = new TemplateResponse(
 			'core',
 			'apacheauthredirect',
-			[],
+			['redirect_url' => 'redirect_url/test'],
 			'guest'
 		);
 		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('0', '', ''));

@@ -287,6 +287,22 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
+	 * @Then username :userName should be displayed on the personal general settings page on the webUI
+	 *
+	 * @param string $userName
+	 *
+	 * @return void
+	 */
+	public function usernameShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui(string $userName):void {
+		Assert::assertEquals(
+			$userName,
+			$this->personalGeneralSettingsPage->getUsername(),
+			__METHOD__
+			. " Username '$userName' is not displayed on the personal general settings page on the webUI."
+		);
+	}
+
+	/**
 	 * @When the user follows the email change confirmation link received by :emailAddress using the webUI
 	 * @Given the user has followed the email change confirmation link received by :emailAddress using the webUI
 	 *

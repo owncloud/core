@@ -53,7 +53,7 @@ Feature: add groups
       | Mgmt\Middle         |
       | 😅 😆               |
 
-  @toImplementOnOCIS @issue-product-284
+  @issue-product-284
   Scenario: admin creates a group with % in name
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname           | comment                                 |
@@ -74,7 +74,7 @@ Feature: add groups
       | 50%2Eagle           |
       | staff?group         |
 
-  @toImplementOnOCIS
+
   Scenario: group names are case-sensitive, multiple groups can exist with different upper and lower case names
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname             |
@@ -100,7 +100,7 @@ Feature: add groups
       | case-sensitive-group2 |
       | Case-Sensitive-Group3 |
 
-  @issue-31015 @skipOnOcV10 @toImplementOnOCIS
+  @issue-31015 @skipOnOcV10
   Scenario: admin creates a group with a forward-slash in the group name
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname        | comment                            |
@@ -119,7 +119,7 @@ Feature: add groups
 
   # A group name must not end in "/subadmins" because that would create ambiguity
   # with the endpoint for getting the subadmins of a group
-  @issue-31015 @skipOnOcV10 @notToImplementOnOCIS
+  @issue-31015 @skipOnOcV10
   Scenario: admin tries to create a group with name ending in "/subadmins"
     Given group "brand-new-group" has been created
     When the administrator tries to send a group creation request for group "priv/subadmins" using the provisioning API
@@ -143,7 +143,7 @@ Feature: add groups
     And the HTTP status code should be "401"
     And group "brand-new-group" should not exist
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin tries to create a group
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -153,7 +153,7 @@ Feature: add groups
     And the HTTP status code should be "401"
     And group "another-new-group" should not exist
 
-  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+
   Scenario: admin tries to create a group that has white space at the end of the name
     When the administrator sends a group creation request for group "white-space-at-end " using the provisioning API
     Then the OCS status code should be "400"
@@ -161,7 +161,7 @@ Feature: add groups
     And group "white-space-at-end " should not exist
     And group "white-space-at-end" should not exist
 
-  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+
   Scenario: admin tries to create a group that has white space at the start of the name
     When the administrator sends a group creation request for group " white-space-at-start" using the provisioning API
     Then the OCS status code should be "400"
@@ -169,7 +169,7 @@ Feature: add groups
     And group " white-space-at-start" should not exist
     And group "white-space-at-start" should not exist
 
-  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+
   Scenario: admin tries to create a group that is a single space
     When the administrator sends a group creation request for group " " using the provisioning API
     Then the OCS status code should be "400"

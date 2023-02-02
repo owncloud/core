@@ -2,10 +2,13 @@ Change: Update PHP dependencies
 
 The following have been updated:
 - doctrine/event-manager (1.1.2 to 1.2.0)
+- doctrine/instantiator (1.4.1 to 1.5.0)
+- doctrine/lexer (1.2.3 to 2.1.0)
+- egulias/email-validator (3.2.1 to 3.2.5)
 - guzzlehttp/guzzle (7.4.5 to 7.5.0)
 - guzzlehttp/promises (1.5.1 to 1.5.2)
 - guzzlehttp/psr7 (2.4.0 to 2.4.3)
-- phpseclib/phpseclib (3.0.14 to 3.0.17)
+- phpseclib/phpseclib (3.0.14 to 3.0.18)
 - laminas/laminas-filter (2.12.0 to 2.22.0)
 - laminas/laminas-inputfilter (2.12.1 to 2.21.0)
 - laminas/laminas-servicemanager (3.7.0 to 3.17.0)
@@ -15,7 +18,7 @@ The following have been updated:
 - psr/container (1.1.1 to 1.1.2)
 - punic/punic (3.7.0 to 3.8.0)
 - sabre/uri (2.2.3 to 2.3.2)
-- sabre/vobject (4.5.0 to 4.5.1)
+- sabre/vobject (4.5.0 to 4.5.3)
 
 The following have been updated in apps/files_external/3rdparty:
 - google/auth (v1.21.1 to v1.23.0)
@@ -29,3 +32,7 @@ https://github.com/owncloud/core/pull/40424
 https://github.com/owncloud/core/pull/40448
 https://github.com/owncloud/core/pull/40449
 https://github.com/owncloud/core/pull/40494
+https://github.com/owncloud/core/pull/40543
+https://github.com/owncloud/core/pull/40554
+https://github.com/owncloud/core/pull/40568
+https://github.com/owncloud/core/pull/40591

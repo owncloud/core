@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -252,7 +252,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @newChunking @issue-ocis-1321
   Scenario: Uploading a file in to a shared folder without edit permissions
     Given using new DAV path
     And user "Brian" has been created with default attributes and without skeleton files

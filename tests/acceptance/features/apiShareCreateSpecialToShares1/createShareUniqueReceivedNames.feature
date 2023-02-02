@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: resources shared with the same name are received with unique names
 
   Background:
@@ -24,11 +24,6 @@ Feature: resources shared with the same name are received with unique names
     And user "Carol" should see the following elements
       | Shares/foo/ |
       | <share>     |
-    @skipOnOcis
     Examples:
       | share            |
       | /Shares/foo (2)/ |
-    @skipOnOcV10
-    Examples:
-      | share            |
-      | /Shares/foo (1)/ |

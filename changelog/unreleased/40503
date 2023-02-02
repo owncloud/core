@@ -1,0 +1,15 @@
+Change: Allow to temporarily ignore invalid federated shares
+
+This change is targeted mostly at tightly federated setups
+
+Currently, if federated share is invalid or api endpoint returns not found, 
+availability check would validate whether this is a problem with a server and 
+if checks complete that given share is removed. 
+However, in some cases these checks might not be enough (e.g. complex 
+migrations in tightly federated setups), and in that case invalidation 
+behaviour can be disabled using below app setting:
+
+files_sharing.enable_cleanup_invalid_external_shares='no'
+
+https://github.com/owncloud/core/pull/40503
+https://github.com/owncloud/enterprise/issues/5427

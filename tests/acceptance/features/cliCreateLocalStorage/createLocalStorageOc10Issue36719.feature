@@ -1,4 +1,4 @@
-@cli @local_storage @files_external-app-required @skipOnLDAP @issue-36719 @notToImplementOnOCIS
+@cli @local_storage @files_external-app-required @skipOnLDAP @issue-36719
 Feature: create local storage from the command line
   As an admin
   I want to create local storage from the command line

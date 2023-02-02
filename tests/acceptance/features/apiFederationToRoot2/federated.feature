@@ -1,4 +1,4 @@
-@api @federation-app-required @files_sharing-app-required @notToImplementOnOCIS
+@api @federation-app-required @files_sharing-app-required
 Feature: federated
 
   Background:
@@ -584,7 +584,7 @@ Feature: federated
       | 1               | 100             | 201, 200         |
       | 2               | 200             | 201, 403         |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: Federated share a file with another server with expiration date
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
@@ -616,7 +616,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: Federated sharing with default expiration date enabled but not enforced, user shares without specifying expireDate
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
@@ -631,7 +631,7 @@ Feature: federated
       | 1               | 100        |
 #      | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: Federated sharing with default expiration date enabled and enforced, user shares without specifying expireDate
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
@@ -647,7 +647,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: Federated sharing with default expiration date disabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "no"
@@ -662,7 +662,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: Expiration date is enforced for federated share, user modifies expiration date
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
@@ -681,7 +681,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: Federated sharing with default expiration date enabled and enforced, user shares with expiration date more than the default
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
@@ -699,7 +699,7 @@ Feature: federated
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: User modifies expiration date for federated reshare of a file with another server with default expiration date
     Given using OCS API version "<ocs_api_version>"
     And using server "LOCAL"
@@ -722,7 +722,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: User modifies expiration date more than the default for federated reshare of a file
     Given using OCS API version "<ocs_api_version>"
     And using server "LOCAL"
@@ -745,7 +745,7 @@ Feature: federated
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnFedOcV10.7 @skipOnFedOcV10.6
+  @skipOnFedOcV10.7 @skipOnFedOcV10.6
   Scenario: set a federated user share to expire yesterday and verify that it is not accessible
     Given using OCS API version "2"
     And using server "REMOTE"

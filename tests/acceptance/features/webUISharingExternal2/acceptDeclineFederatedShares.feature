@@ -92,7 +92,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then user "Alice" should see the following elements
       | /lorem (2).txt |
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0
+
   Scenario: Local user accepts a pending federated share on the webUI
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
     When the user browses to the shared-with-you page

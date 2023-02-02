@@ -304,7 +304,6 @@ OC.L10N.register(
     "Cancel login" : "Prekliči prijavo",
     "Please authenticate using the selected factor." : "Overite z uporabo izbranega faktorja.",
     "An error occurred while verifying the token" : "Prišlo je do napake med preverjanjem žetona",
-    "You are accessing the server from an untrusted domain." : "Trenutno je vzpostavljena povezava s strežnikom prek ne-varne domene.",
     "App update required" : "Zahtevana je posodobitev programa",
     "%s will be updated to version %s" : "%s bo posodobljen na različico %s.",
     "These apps will be updated:" : "Posodobljeni bodo naslednji vstavki:",

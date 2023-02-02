@@ -88,6 +88,7 @@ OC.L10N.register(
     "undo" : "anuliuoti",
     "Delete group" : "Trinti grupę",
     "never" : "niekada",
+    "unknown" : "nežinomas",
     "deleted {userName}" : "{userName} ištrintas",
     "Group already exists" : "Grupė jau egzistuoja",
     "add group" : "pridėti grupę",

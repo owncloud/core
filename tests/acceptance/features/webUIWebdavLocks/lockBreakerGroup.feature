@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @skipOnOcV10.7 @skipOnOcV10.8.0
+@webUI @insulated @disablePreviews
 Feature: Unlock locked files and folders
   As a member of a lock breaker group
   I would like to be able to unlock files and folders

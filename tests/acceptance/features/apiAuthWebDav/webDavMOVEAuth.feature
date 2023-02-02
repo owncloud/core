@@ -22,15 +22,6 @@ Feature: MOVE file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
-  Scenario: send MOVE requests to webDav endpoints as normal user with wrong password using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "MOVE" using password "invalid" about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
-      | /remote.php/dav/spaces/%spaceid%/PARENT            |
-      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "401"
-
   @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send MOVE requests to webDav endpoints as normal user with no password
     When user "Alice" requests these endpoints with "MOVE" using password "" about user "Alice"
@@ -42,15 +33,6 @@ Feature: MOVE file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
-  Scenario: send MOVE requests to webDav endpoints as normal user with no password using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "MOVE" using password "" about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
-      | /remote.php/dav/spaces/%spaceid%/PARENT            |
-      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "401"
-
   @issue-ocis-reva-14
   Scenario: send MOVE requests to another user's webDav endpoints as normal user
     When user "Brian" requests these endpoints with "MOVE" about user "Alice"
@@ -58,15 +40,6 @@ Feature: MOVE file/folder
       | /remote.php/dav/files/%username%/textfile0.txt     |
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "403"
-
-  @skipOnOcV10 @personalSpace @issue-ocis-reva-14
-  Scenario: send MOVE requests to another user's webDav endpoints as normal user using the spaces WebDAV API
-    When user "Brian" requests these endpoints with "MOVE" about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
-      | /remote.php/dav/spaces/%spaceid%/PARENT            |
-      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "403"
 
 
@@ -80,15 +53,6 @@ Feature: MOVE file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @skipOnOcV10 @personalSpace
-  Scenario: send MOVE requests to webDav endpoints using invalid username but correct password using the spaces WebDAV API
-    When user "usero" requests these endpoints with "MOVE" using the password of user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
-      | /remote.php/dav/spaces/%spaceid%/PARENT            |
-      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "401"
-
 
   Scenario: send MOVE requests to webDav endpoints using valid password and username of different user
     When user "Brian" requests these endpoints with "MOVE" using the password of user "Alice"
@@ -98,15 +62,6 @@ Feature: MOVE file/folder
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "401"
-
-  @skipOnOcV10 @personalSpace
-  Scenario: send MOVE requests to webDav endpoints using valid password and username of different user using the spaces WebDAV API
-    When user "Brian" requests these endpoints with "MOVE" using the password of user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
-      | /remote.php/dav/spaces/%spaceid%/PARENT            |
-      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
   @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
@@ -120,16 +75,7 @@ Feature: MOVE file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
-  Scenario: send MOVE requests to webDav endpoints without any authentication using the spaces WebDAV API
-    When a user requests these endpoints with "MOVE" with no authentication about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
-      | /remote.php/dav/spaces/%spaceid%/PARENT            |
-      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "401"
-
-  @notToImplementOnOCIS @issue-ocis-reva-37
+  @issue-ocis-reva-37
   Scenario: send MOVE requests to webDav endpoints using token authentication should not work
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
@@ -143,7 +89,7 @@ Feature: MOVE file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @notToImplementOnOCIS @issue-ocis-reva-37
+  @issue-ocis-reva-37
   Scenario: send MOVE requests to webDav endpoints using app password token as password
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
@@ -168,13 +114,4 @@ Feature: MOVE file/folder
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/webdav/PARENT/parent.txt               |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "415"
-
-  @skipOnOcV10 @personalSpace
-  Scenario: send MOVE requests to webDav endpoints with body as normal user using the spaces WebDAV API
-    When user "Alice" requests these endpoints with "MOVE" including body "doesnotmatter" about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
-      | /remote.php/dav/spaces/%spaceid%/PARENT            |
-      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "415"

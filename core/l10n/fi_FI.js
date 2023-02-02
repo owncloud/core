@@ -309,7 +309,6 @@ OC.L10N.register(
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Tililläsi on käytössä lisäturvatoimia. Tunnistaudu käyttäen kaksivaiheista vahvistusta.",
     "Cancel login" : "Peru kirjautuminen",
     "Please authenticate using the selected factor." : "Tunnistaudu käyttäen valittua vahvistusta.",
-    "You are accessing the server from an untrusted domain." : "Olet yhteydessä palvelimeen epäluotettavasta verkko-osoitteesta.",
     "App update required" : "Sovelluksen päivittäminen vaaditaan",
     "%s will be updated to version %s" : "%s päivitetään versioon %s",
     "These apps will be updated:" : "Nämä sovellukset päivitetään:",

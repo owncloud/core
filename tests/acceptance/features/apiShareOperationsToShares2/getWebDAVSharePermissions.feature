@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -23,11 +23,6 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: Correct webdav share-permissions for received file with edit and reshare permissions
@@ -154,11 +149,6 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions

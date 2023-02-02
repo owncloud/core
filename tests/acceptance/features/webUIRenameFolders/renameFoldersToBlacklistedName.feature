@@ -7,7 +7,7 @@ Feature: users cannot rename a folder to a blacklisted name
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10.3
+
   Scenario: Rename a folder to a foldername that matches (or not) blacklisted_files_regex
     Given user "Alice" has created folder "a-folder"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

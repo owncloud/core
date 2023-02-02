@@ -5,7 +5,7 @@ Feature: independent locks
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @notToImplementOnOCIS
+
   Scenario Outline: locking a folder does not lock other items with the same name in other parts of the file system
     Given using <dav-path> DAV path
     And user "Alice" has created folder "locked"
@@ -27,7 +27,7 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: locking a folder on the root level does not lock other folders with the same name in other parts of the file system
     Given using <dav-path> DAV path
     And user "Alice" has created folder "notlocked"
@@ -67,12 +67,6 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
-
 
   Scenario Outline: locking a file/folder with git specific names does not lock other items with the same name in other parts of the file system
     Given using <dav-path> DAV path
@@ -98,11 +92,3 @@ Feature: independent locks
       | new      | shared     | .git       | config   | .git/config |
       | new      | exclusive  | .git       | config   | .git        |
       | new      | exclusive  | .git       | config   | .git/config |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope | foldername | filename | to-lock     |
-      | spaces   | shared     | .git       | config   | .git        |
-      | spaces   | shared     | .git       | config   | .git/config |
-      | spaces   | exclusive  | .git       | config   | .git        |
-      | spaces   | exclusive  | .git       | config   | .git/config |

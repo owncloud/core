@@ -204,14 +204,10 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the public should be able to download the last publicly shared file using the <webdav_api_version> public WebDAV API without a password and the content should be "Random data"
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | webdav_api_version |
       | old                |
-
-
-    Examples:
-      | webdav_api_version |
       | new                |
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
@@ -324,7 +320,7 @@ Feature: transfer-ownership
     Then the command output should contain the text "No files/folders to transfer"
     And the command should have failed with exit code 1
 
-  @skipOnEncryptionType:user-keys @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+  @skipOnEncryptionType:user-keys
   Scenario: troubleshoot transfer ownerships for all with share and reshare
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
@@ -343,7 +339,7 @@ Feature: transfer-ownership
     And the command output should contain the text "Searching for shares that have invalid uid_owner"
     And the command output should contain the text "Found 0 invalid share owners"
 
-  @skipOnEncryptionType:user-keys @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+  @skipOnEncryptionType:user-keys
   Scenario: troubleshoot transfer ownerships for invalid-initiator with reshare
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
@@ -358,7 +354,7 @@ Feature: transfer-ownership
     And the command output should contain the text "Searching for reshares that have invalid uid_initiator"
     And the command output should contain the text "Found 0 invalid initiator reshares"
 
-  @skipOnEncryptionType:user-keys @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+  @skipOnEncryptionType:user-keys
   Scenario: troubleshoot transfer ownerships for invalid-owner with share
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files

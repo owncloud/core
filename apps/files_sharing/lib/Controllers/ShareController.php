@@ -56,6 +56,7 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class ShareController
@@ -192,7 +193,7 @@ class ShareController extends Controller {
 	 */
 	private function linkShareAuth(\OCP\Share\IShare $share, $password = null) {
 		$beforeEvent = new GenericEvent(null, ['shareObject' => $share]);
-		$this->eventDispatcher->dispatch('share.beforelinkauth', $beforeEvent);
+		$this->eventDispatcher->dispatch($beforeEvent, 'share.beforelinkauth');
 		if ($password !== null) {
 			if ($this->shareManager->checkPassword($share, $password)) {
 				$this->session->set('public_link_authenticated', (string)$share->getId());
@@ -208,7 +209,7 @@ class ShareController extends Controller {
 			}
 		}
 		$afterEvent = new GenericEvent(null, ['shareObject' => $share]);
-		$this->eventDispatcher->dispatch('share.afterlinkauth', $afterEvent);
+		$this->eventDispatcher->dispatch($afterEvent, 'share.afterlinkauth');
 		return true;
 	}
 
@@ -253,7 +254,7 @@ class ShareController extends Controller {
 				['shareObject' => $cloneShare, 'errorCode' => $errorCode,
 					'errorMessage' => $errorMessage]
 			);
-			$this->eventDispatcher->dispatch('share.linkaccess', $publicShareLinkAccessEvent);
+			$this->eventDispatcher->dispatch($publicShareLinkAccessEvent, 'share.linkaccess');
 		}
 
 		if ($exception !== null) {
@@ -394,7 +395,7 @@ class ShareController extends Controller {
 			$shareTmpl['previewImage'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath('core', 'favicon-fb.png'));
 		}
 
-		$this->eventDispatcher->dispatch('OCA\Files_Sharing::loadAdditionalScripts');
+		$this->eventDispatcher->dispatch(new Event(), 'OCA\Files_Sharing::loadAdditionalScripts');
 
 		$csp = new OCP\AppFramework\Http\ContentSecurityPolicy();
 		$csp->addAllowedFrameDomain('\'self\'');

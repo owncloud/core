@@ -6,7 +6,7 @@ Feature: accessing a public link share
       | username |
       | Alice    |
 
-  @skipOnOcV10.3
+
   Scenario: Access to the preview of password protected public link without providing the password is not allowed
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "testavatar.jpg"
@@ -27,7 +27,7 @@ Feature: accessing a public link share
     When the public accesses the preview of file "testavatar.jpg" from the last shared public link using the sharing API
     Then the HTTP status code should be "200"
 
-  @skipOnOcV10.3
+
   Scenario: Access to the preview of password protected public shared file inside a folder without providing the password is not allowed
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "FOLDER"
@@ -57,3 +57,14 @@ Feature: accessing a public link share
       | testavatar.jpg |
       | textfile0.txt  |
     Then the HTTP status code of responses on all endpoints should be "200"
+
+
+  Scenario Outline: Request to non-existent public link
+    When a user requests "<endpoint>" with "<method>" and no authentication
+    Then the HTTP status code should be "404"
+    Examples: 
+      | endpoint                                        | method   |
+      | /remote.php/dav/public-files/thisWillNeverExist | GET      |
+      | /remote.php/dav/public-files/thisWillNeverExist | PUT      |
+      | /remote.php/dav/public-files/thisWillNeverExist | PROPFIND |
+      | /s/thisWillNeverExist                           | GET      |

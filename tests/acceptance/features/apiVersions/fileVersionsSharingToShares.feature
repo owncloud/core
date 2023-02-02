@@ -1,4 +1,4 @@
-@api @files_versions-app-required @issue-ocis-reva-275 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_versions-app-required @issue-ocis-reva-275
 
 Feature: dav-versions
 
@@ -8,11 +8,6 @@ Feature: dav-versions
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and without skeleton files
-
-
-  Scenario: Upload file and no version is available
-    When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" using the WebDAV API
-    Then the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
 
   @files_sharing-app-required
   Scenario: User can access meta folder of a file which is owned by somebody else but shared with that user
@@ -130,7 +125,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/Shares/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer, when the folder has been moved by the sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -141,11 +136,11 @@ Feature: dav-versions
     And user "Brian" has created folder "/received"
     And user "Brian" has moved folder "/Shares/sharingfolder" to "/received/sharingfolder"
     When user "Brian" restores version index "1" of file "/received/sharingfolder/sharefile.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "204"
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is at the top level of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "old content" to "/sharefile.txt"
@@ -155,11 +150,11 @@ Feature: dav-versions
     And user "Brian" has created folder "/received"
     And user "Brian" has moved file "/Shares/sharefile.txt" to "/received/sharefile.txt"
     When user "Brian" restores version index "1" of file "/received/sharefile.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "204"
     And the content of file "/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @files_sharing-app-required
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -170,7 +165,7 @@ Feature: dav-versions
     And user "Brian" has created folder "/received"
     And user "Brian" has moved file "/Shares/sharefile.txt" to "/received/sharefile.txt"
     When user "Brian" restores version index "1" of file "/received/sharefile.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "204"
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
@@ -243,19 +238,14 @@ Feature: dav-versions
     And as "Brian" file "/testshare/testfile.txt" should not exist
     And the version folder of file "/testfile.txt" for user "<mover>" should contain "2" elements
 
-    @notToImplementOnOCIS
     Examples:
       | dav_version | mover | src-folder        |
       | old         | Alice | /Shares/testshare |
       | new         | Alice | /Shares/testshare |
-
-
-    Examples:
-      | dav_version | mover | src-folder |
       | old         | Brian | /testshare |
       | new         | Brian | /testshare |
 
-  @skipOnOcV10.3.0 @files_sharing-app-required
+  @files_sharing-app-required
   Scenario: Receiver tries to get file versions of unshared file from the sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -302,7 +292,7 @@ Feature: dav-versions
     And the version folder of file "/Shares/sharefile.txt" for user "Brian" should contain "1" element
     And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: download old versions of a shared file as share receiver
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"

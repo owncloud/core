@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: share resources where the sharee receives the share in multiple ways
 
   # These are the bug demonstration scenarios for https://github.com/owncloud/core/issues/39347

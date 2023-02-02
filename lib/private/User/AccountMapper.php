@@ -65,6 +65,7 @@ class AccountMapper extends Mapper {
 	 * @return Entity the saved entity with the set id
 	 */
 	public function insert(Entity $entity) {
+		$entity->setCreationTime(\time());
 		// run the normal entity insert operation to get an id
 		$entity = parent::insert($entity);
 
@@ -163,7 +164,7 @@ class AccountMapper extends Mapper {
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->selectAlias('DISTINCT a.id', 'id')
-			->addSelect(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'backend', 'state', 'quota', 'home'])
+			->addSelect(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'creation_time', 'backend', 'state', 'quota', 'home'])
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
 			->orderBy('display_name')

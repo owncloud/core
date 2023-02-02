@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\OcisHelper;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -130,6 +131,9 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function deleteFileFromPublicShare(string $fileName, string $publicWebDAVAPIVersion, string $password = ""):void {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		}
 		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
@@ -181,6 +185,9 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function renameFileFromPublicShare(string $fileName, string $toFileName, string $publicWebDAVAPIVersion, ?string $password = ""):void {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		}
 		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
@@ -719,7 +726,9 @@ class PublicWebDavContext implements Context {
 		string $password,
 		string $expectedContent
 	):void {
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;
@@ -874,7 +883,9 @@ class PublicWebDavContext implements Context {
 		string $password,
 		string $content
 	):void {
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;
@@ -892,6 +903,63 @@ class PublicWebDavContext implements Context {
 			$this->occContext->disableDAVTechPreview();
 		}
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public link shared folder using the (old|new) public WebDAV API with password "([^"]*)" and the content should be "([^"]*)"$/
+	 *
+	 * @param string $path
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPasswordAndContentShouldBe(
+		string $path,
+		string $publicWebDAVAPIVersion,
+		string $password,
+		string $content
+	):void {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
+			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
+		} else {
+			$techPreviewHadToBeEnabled = false;
+		}
+
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+			$path,
+			$password,
+			$publicWebDAVAPIVersion
+		);
+
+		$this->featureContext->downloadedContentShouldBe($content);
+
+		if ($techPreviewHadToBeEnabled) {
+			$this->occContext->disableDAVTechPreview();
+		}
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Then /^the public should be able to download file "([^"]*)" from inside the last public link shared folder using the (old|new) public WebDAV API without password and the content should be "([^"]*)"$/
+	 *
+	 * @param string $path
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithoutPassword(
+		string $path,
+		string $publicWebDAVAPIVersion,
+		string $content
+	):void {
+		$this->shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPasswordAndContentShouldBe($path, $publicWebDAVAPIVersion, "", $content);
 	}
 
 	/**
@@ -937,7 +1005,9 @@ class PublicWebDavContext implements Context {
 		string $publicWebDAVAPIVersion,
 		string $password
 	):void {
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;
@@ -971,7 +1041,9 @@ class PublicWebDavContext implements Context {
 		string $password,
 		string $expectedHttpCode = "401"
 	):void {
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;
@@ -1061,8 +1133,9 @@ class PublicWebDavContext implements Context {
 		string $expectedHttpCode
 	):void {
 		$filename = "";
-
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$filename = (string)$this->featureContext->getLastPublicShareData()->data[0]->file_target;
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
@@ -1099,7 +1172,9 @@ class PublicWebDavContext implements Context {
 		string $publicWebDAVAPIVersion,
 		string $expectedHttpCode = null
 	):void {
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;
@@ -1200,7 +1275,9 @@ class PublicWebDavContext implements Context {
 		$path = "whateverfilefortesting-$publicWebDAVAPIVersion-publicWebDAVAPI.txt";
 		$content = "test $publicWebDAVAPIVersion";
 
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;
@@ -1246,8 +1323,9 @@ class PublicWebDavContext implements Context {
 	):void {
 		$content = "test $publicWebDAVAPIVersion";
 		$should = ($shouldOrNot !== "not");
-
-		if ($publicWebDAVAPIVersion === "new") {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		} elseif ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 			$path = $this->featureContext->getLastPublicSharePath();
 		} else {
@@ -1499,6 +1577,9 @@ class PublicWebDavContext implements Context {
 		array $additionalHeaders = [],
 		string $publicWebDAVAPIVersion = "old"
 	):void {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		}
 		$password = $this->featureContext->getActualPassword($password);
 		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
@@ -1576,5 +1657,56 @@ class PublicWebDavContext implements Context {
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->occContext = $environment->getContext('OccContext');
+	}
+
+	/**
+	 * @When /^the public sends "([^"]*)" request to the last public link share using the (old|new) public WebDAV API(?: with password "([^"]*)")?$/
+	 *
+	 * @param string $method
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 */
+	public function publicSendsRequestToLastPublicShare(string $method, string $publicWebDAVAPIVersion, ?string $password = ''):void {
+		if (OcisHelper::isTestingOnOcisOrReva() && $publicWebDAVAPIVersion === "old") {
+			return;
+		}
+		if ($method === "PROPFIND") {
+			$body = '<?xml version="1.0"?>
+			<d:propfind xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+				<d:prop>
+					<d:resourcetype/>
+					<oc:public-link-item-type/>
+					<oc:public-link-permission/>
+					<oc:public-link-expiration/>
+					<oc:public-link-share-datetime/>
+					<oc:public-link-share-owner/>
+				</d:prop>
+			</d:propfind>';
+		}
+		$token = $this->featureContext->getLastPublicShareToken();
+		$davPath = WebDavHelper::getDavPath(
+			null,
+			null,
+			"public-files-$publicWebDAVAPIVersion"
+		);
+		$username = $this->getUsernameForPublicWebdavApi(
+			$token,
+			$password,
+			$publicWebDAVAPIVersion
+		);
+		$fullUrl = $this->featureContext->getBaseUrl() . "/$davPath$token";
+		$response = HttpRequestHelper::sendRequest(
+			$fullUrl,
+			$this->featureContext->getStepLineRef(),
+			$method,
+			$username,
+			$password,
+			null,
+			$body
+		);
+		$this->featureContext->setResponse($response);
 	}
 }

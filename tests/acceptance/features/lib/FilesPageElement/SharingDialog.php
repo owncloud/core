@@ -49,6 +49,7 @@ class SharingDialog extends OwncloudPage {
 	private $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
 	private $suffixToIdentifyGroups = " Group";
 	private $suffixToIdentifyUsers = " User";
+	private $suffixToIdentifyMultipleUsers = " Add multiple users";
 	private $suffixToIdentifyRemoteUsers = " Federated";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "Shared with you(?: and the group (.*))? by (.*)$";
@@ -352,7 +353,11 @@ class SharingDialog extends OwncloudPage {
 			);
 			$userFound = false;
 			foreach ($userElements as $user) {
-				if ($this->getTrimmedText($user) === $nameToMatch) {
+				$trimmedText = $this->getTrimmedText($user);
+				// The logic is changed due to "Add multiple users" because the order of users in autocomplete items is not fixed
+				$trimmedUsers = preg_split("/[\s,]+/", $trimmedText);
+				$usersToMatch = preg_split("/[\s,]+/", $nameToMatch);
+				if (empty(array_diff($trimmedUsers, $usersToMatch))) {
 					$user->click();
 					$this->waitForAjaxCallsToStartAndFinish($session);
 					$userFound = true;
@@ -396,6 +401,33 @@ class SharingDialog extends OwncloudPage {
 		$this->shareWithUserOrGroup(
 			$name,
 			$name . $this->suffixToIdentifyUsers,
+			$session,
+			$quiet,
+			$maxRetries
+		);
+	}
+
+	/**
+	 *
+	 * @param string|null $name
+	 * @param string|null $nameToMatch
+	 * @param Session $session
+	 * @param boolean $quiet
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException|Exception
+	 */
+	public function shareWithUsers(
+		string $name,
+		string $nameToMatch,
+		Session $session,
+		bool $quiet,
+		int $maxRetries = 5
+	): void {
+		$this->shareWithUserOrGroup(
+			$name,
+			$nameToMatch . $this->suffixToIdentifyMultipleUsers,
 			$session,
 			$quiet,
 			$maxRetries

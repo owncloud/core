@@ -1,4 +1,4 @@
-@notToImplementOnOCIS @api @issue-ocis-reva-15
+@api @issue-ocis-reva-15
 Feature: users cannot upload a file to or into an excluded directory using old chunking
   As an administrator
   I want to be able to exclude directories (folders) from being processed. Any attempt to upload a file to one of those names should be refused.
@@ -27,7 +27,7 @@ Feature: users cannot upload a file to or into an excluded directory using old c
     And as "Alice" folder "/FOLDER" should exist
     But as "Alice" file "/FOLDER/.github" should not exist
 
-  @skipOnOcV10.3 @issue-36645
+  @issue-36645
   Scenario Outline: upload a file to a filename that matches excluded_directories_regex using old chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git

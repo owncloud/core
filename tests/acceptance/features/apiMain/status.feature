@@ -1,7 +1,7 @@
 @api
 Feature: Status
 
-  @smokeTest @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @smokeTest
   Scenario: Status.php is correct
     When the administrator requests status.php
     Then the status.php response should include

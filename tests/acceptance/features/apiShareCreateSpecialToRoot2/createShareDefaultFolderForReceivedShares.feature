@@ -1,10 +1,10 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: shares are received in the default folder for received shares
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10.3.0 @skipOnOcV10.3.1
+
   Scenario Outline: Do not allow sharing of the entire share_folder
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files

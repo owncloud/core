@@ -8,25 +8,22 @@ Feature: tests of the creation extension see https://tus.io/protocols/resumable-
   Scenario Outline: creating a new upload resource using creation with upload extension
     Given using <dav_version> DAV path
     When user "Alice" creates a new TUS resource with content "uploaded content" on the WebDAV API with these headers:
-      | Upload-Length   | 100                             |
+      | Upload-Length   | 16                              |
       | Tus-Resumable   | 1.0.0                           |
       | Content-Type    | application/offset+octet-stream |
       #    dGVzdC50eHQ= is the base64 encode of test.txt
       | Upload-Metadata | filename dGVzdC50eHQ=           |
+      | Tus-Extension   | creation-with-upload            |
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | Tus-Resumable | /1\.0\.0/                       |
       | Location      | /http[s]?:\/\/.*:\d+\/data\/.*/ |
       | Upload-Offset | /\d+/                           |
+    And the content of file "/test.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: creating a new resource and upload data in multiple bytes using creation with upload extension
@@ -37,8 +34,3 @@ Feature: tests of the creation extension see https://tus.io/protocols/resumable-
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

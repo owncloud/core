@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS @skipOnGraph
+@api @provisioning_api-app-required @skipOnLDAP @skipOnGraph
 Feature: remove subadmin
   As an admin
   I want to be able to remove subadmin rights to a user from a group

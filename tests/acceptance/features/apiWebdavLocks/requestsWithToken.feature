@@ -4,7 +4,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: rename a file in a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -22,7 +22,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: move a file into a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -41,7 +41,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: move a file into a locked folder is impossible when using the wrong token
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -63,7 +63,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-  @skipOnOcV10 @issue-34338 @files_sharing-app-required @notToImplementOnOCIS
+  @skipOnOcV10 @issue-34338 @files_sharing-app-required
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -84,7 +84,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: public cannot overwrite a file in a folder locked by the owner even when sending the locktoken
     Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
@@ -98,10 +98,6 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | lock-scope | webdav_api_version | http_status_code |
       | shared     | old                | 423              |
       | exclusive  | old                | 423              |
-
-    @skipOnOcV10.6 @skipOnOcV10.7
-    Examples:
-      | lock-scope | webdav_api_version | http_status_code |
       | shared     | new                | 423              |
       | exclusive  | new                | 423              |
 
@@ -129,8 +125,3 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | dav-path |
       | old      |
       | new      |
-
-    @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |

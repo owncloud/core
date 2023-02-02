@@ -4,11 +4,11 @@
 
 .PHONY: l10n-push
 l10n-push:
-	tx -d push -s --skip --no-interactive
+	tx push -s --skip
 
 .PHONY: l10n-pull
 l10n-pull:
-	tx -d pull -a --skip
+	tx pull -a --skip
 	rm -r fr_FR
 
 .PHONY: l10n-clean

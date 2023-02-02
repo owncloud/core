@@ -17,7 +17,7 @@ Feature: Control access to edit email address of user through config file
     Then the attributes of user "Alice" returned by the API should include
       | email | new-address@owncloud.com |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: Admin does not give access to users to change their email address
     Given the administrator has updated system config key "allow_user_to_change_mail_address" with value "false" and type "boolean"
     When the user browses to the personal general settings page

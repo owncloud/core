@@ -109,6 +109,7 @@ OC.L10N.register(
     "undo" : "visszavonás",
     "Delete group" : "Csoport törlése",
     "never" : "soha",
+    "unknown" : "ismeretlen",
     "deleted {userName}" : "törölve: {userName}",
     "Delete user" : "Felhasználó törlése",
     "Group already exists" : "A csoport már létezik",

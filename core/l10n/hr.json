@@ -178,7 +178,6 @@
     "This means only administrators can use the instance." : "To znači da tu instancu mogu koristiti samo administratori.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Kontaktirajte svog administratora sustava ako se ova poruka ponavlja ili sepojavila neočekivano.",
     "Thank you for your patience." : "Hvala vam na strpljenju",
-    "You are accessing the server from an untrusted domain." : "Poslužitelju pristupate iz nepouzdane domene.",
     "The theme %s has been disabled." : "Tema %s je onemogućena",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Prije nego li nastavite, molimo osigurajte da su baza podataka, mapa konfiguracije i mapaza podatke sigurnosno kopirani.",
     "Start update" : "Započnite ažuriranje",

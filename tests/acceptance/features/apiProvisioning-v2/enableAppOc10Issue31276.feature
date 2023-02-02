@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @comments-app-required @skipOnLDAP @notToImplementOnOCIS @skipOnGraph
+@api @provisioning_api-app-required @comments-app-required @skipOnLDAP @skipOnGraph
 Feature: enable an app - current oC10 behavior for issue-31276
   As an admin
   I want to be able to enable a disabled app

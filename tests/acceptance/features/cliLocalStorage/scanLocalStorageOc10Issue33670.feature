@@ -1,4 +1,4 @@
-@cli @local_storage @files_external-app-required @issue-33670 @notToImplementOnOCIS
+@cli @local_storage @files_external-app-required @issue-33670
 Feature: Scanning files on local storage
   As an admin
   I want to be able to control the scanning of local storage for changes

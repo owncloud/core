@@ -41,19 +41,19 @@ Feature: add and delete app configs using occ command
     And the command output should contain the text 'System config value con set to empty string'
     And system config key "con" should have value ""
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: admin tries to add an empty config key for an app using the occ command
     When the administrator adds config key "''" with value "conkey" in app "core" using the occ command
     Then the command should have failed with exit code 1
     And the command output should contain the text 'Config name must not be empty.'
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: admin tries to add a config key and specifying the empty string as the app name using the occ command
     When the administrator adds config key "con" with value "conkey" in app "''" using the occ command
     Then the command should have failed with exit code 1
     And the command output should contain the text 'App name must not be empty.'
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: admin tries to add an empty system config key using the occ command
     When the administrator adds system config key "''" with value "conkey" using the occ command
     Then the command should have failed with exit code 1
@@ -95,7 +95,7 @@ Feature: add and delete app configs using occ command
     Then the command should have been successful
     And the system config key "installed" from the last command output should match value "true" of type "boolean"
 
-  @skipOnOcis
+
   Scenario: Check that search_min_length can be changed
     Given using OCS API version "1"
     When the administrator updates system config key "user.search_min_length" with value "4" using the occ command

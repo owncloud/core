@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @skipOnOcV10.3 @skipOnOcV10.4
+@webUI @insulated @disablePreviews
 Feature: Manually lock a file
   As a user
   I want to be able to manually lock a file

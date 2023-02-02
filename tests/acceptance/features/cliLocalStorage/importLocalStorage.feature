@@ -9,7 +9,7 @@ Feature: import exported local storage mounts from the command line
       | username |
       | Alice    |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnEncryption @issue-encryption-203
+  @skipOnEncryption @issue-encryption-203
   Scenario: import local storage mounts from a file
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage2" to "/local_storage2/file-in-local-storage2.txt"
@@ -25,7 +25,7 @@ Feature: import exported local storage mounts from the command line
     And as "Alice" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Alice" should be "this is a file in local storage2"
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnEncryption @issue-encryption-203
+  @skipOnEncryption @issue-encryption-203
   Scenario: import local storage mounts from a file with various user and group settings
     Given these users have been created with default attributes and without skeleton files:
       | username |

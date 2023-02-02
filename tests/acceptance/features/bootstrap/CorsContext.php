@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
+use TestHelpers\OcisHelper;
 
 require_once 'bootstrap.php';
 
@@ -48,65 +49,69 @@ class CorsContext implements Context {
 	 * @throws Exception
 	 */
 	public function addDomainToPrivateCORSLists(string $user, string $domain):void {
-		$user = $this->featureContext->getActualUsername($user);
-		$occStatus = $this->featureContext->runOcc(
-			[
-				'user:setting',
-				$user,
-				'core',
-				'domains'
-			]
-		);
-		if ($occStatus === 0) {
-			$domainsJson = $this->featureContext->getStdOutOfOccCommand();
-			$domains = \json_decode($domainsJson);
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			echo "WARNING: server is expected to start with 'OCIS_CORS_ALLOW_ORIGINS=' environment";
 		} else {
-			$domainsJson = "";
-			$domains = [];
-		}
-		if ($user === $this->featureContext->getAdminUsername()
-			&& $this->originalAdminCorsDomains === null
-		) {
-			$this->originalAdminCorsDomains = $domainsJson;
-		}
-
-		$domains[] = $domain;
-		$valueString = \json_encode($domains);
-		$occStatus = $this->featureContext->runOcc(
-			[
-				'user:setting',
-				$user,
-				'core',
-				'domains',
-				'--value=\'' . $valueString . '\''
-			]
-		);
-		if ($occStatus !== 0) {
-			throw new \Exception(
-				"could not set CORS domain. " .
-				$this->featureContext->getStdErrOfOccCommand()
+			$user = $this->featureContext->getActualUsername($user);
+			$occStatus = $this->featureContext->runOcc(
+				[
+					'user:setting',
+					$user,
+					'core',
+					'domains'
+				]
 			);
-		}
-		//double check if it was set
-		$this->featureContext->runOcc(
-			[
-				'user:setting',
-				$user,
-				'core',
-				'domains'
-			]
-		);
-		$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
+			if ($occStatus === 0) {
+				$domainsJson = $this->featureContext->getStdOutOfOccCommand();
+				$domains = \json_decode($domainsJson);
+			} else {
+				$domainsJson = "";
+				$domains = [];
+			}
+			if ($user === $this->featureContext->getAdminUsername()
+				&& $this->originalAdminCorsDomains === null
+			) {
+				$this->originalAdminCorsDomains = $domainsJson;
+			}
 
-		Assert::assertIsArray(
-			$domains,
-			__METHOD__ . " The output of 'occ user:setting $user core domains' was not valid JSON"
-		);
-
-		if (!\in_array($domain, $domains)) {
-			throw new \Exception(
-				"domain $domain is not included in CORS domain $domains, but was expected to be"
+			$domains[] = $domain;
+			$valueString = \json_encode($domains);
+			$occStatus = $this->featureContext->runOcc(
+				[
+					'user:setting',
+					$user,
+					'core',
+					'domains',
+					'--value=\'' . $valueString . '\''
+				]
 			);
+			if ($occStatus !== 0) {
+				throw new \Exception(
+					"could not set CORS domain. " .
+					$this->featureContext->getStdErrOfOccCommand()
+				);
+			}
+			//double check if it was set
+			$this->featureContext->runOcc(
+				[
+					'user:setting',
+					$user,
+					'core',
+					'domains'
+				]
+			);
+			$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
+
+			Assert::assertIsArray(
+				$domains,
+				__METHOD__ . " The output of 'occ user:setting $user core domains' was not valid JSON"
+			);
+
+			if (!\in_array($domain, $domains)) {
+				throw new \Exception(
+					"domain $domain is not included in CORS domain $domains, but was expected to be"
+				);
+			}
 		}
 	}
 

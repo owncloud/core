@@ -4,7 +4,7 @@ Feature: UNLOCK locked items
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: unlock a single lock set by the user itself
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -40,12 +40,7 @@ Feature: UNLOCK locked items
       | old      |
       | new      |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path |
-      | spaces   |
 
-  @notToImplementOnOCIS
   Scenario Outline: unlocking a file that was locked by the user locking the folder above is not possible
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -64,7 +59,7 @@ Feature: UNLOCK locked items
       | new      | shared     |
       | new      | exclusive  |
 
-  @skipOnOcV10 @issue-34302 @files_sharing-app-required @skipOnOcV10.3
+  @skipOnOcV10 @issue-34302 @files_sharing-app-required
   Scenario Outline: as public unlocking a file in a share that was locked by the file owner is not possible. To unlock use the owners locktoken
     Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
@@ -79,7 +74,7 @@ Feature: UNLOCK locked items
       | shared     |
       | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: unlocking a file or folder does not unlock another folder with the same name in another part of the file system
     Given using <dav-path> DAV path
     And user "Alice" has created folder "locked"
@@ -130,9 +125,3 @@ Feature: UNLOCK locked items
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |

@@ -1,4 +1,4 @@
-@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172 @notToImplementOnOCIS
+@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172
 Feature: LOCKDISCOVERY for public links
 
   Background:

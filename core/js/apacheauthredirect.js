@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
- (function() {
+ $(document).ready(function() {
 
-	window.location = OC.generateUrl('/');
+	var redirect_url = document.getElementById('redirect_url').value;
+	window.location = redirect_url;
 
-})();
+});

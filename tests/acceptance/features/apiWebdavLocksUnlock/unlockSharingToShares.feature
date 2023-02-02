@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-172 @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @issue-ocis-reva-172 @files_sharing-app-required
 Feature: UNLOCK locked items (sharing)
 
   Background:
@@ -22,27 +22,12 @@ Feature: UNLOCK locked items (sharing)
     Then the HTTP status code should be "403"
     And 1 locks should be reported for file "PARENT/parent.txt" of user "Alice" by the WebDAV API
     And 1 locks should be reported for file "Shares/parent.txt" of user "Brian" by the WebDAV API
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /parent.txt        |
       | old      | exclusive  | /parent.txt        |
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | old      | shared     | /PARENT/parent.txt |
-      | old      | exclusive  | /PARENT/parent.txt |
-      | new      | shared     | /PARENT/parent.txt |
-      | new      | exclusive  | /PARENT/parent.txt |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | spaces   | shared     | /parent.txt        |
-      | spaces   | exclusive  | /parent.txt        |
 
 
   Scenario Outline: as share receiver unlocking a file in a share locked by the file owner is not possible. To unlock use the owners locktoken
@@ -62,13 +47,7 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
 
-  @notToImplementOnOCIS
   Scenario Outline: as share receiver unlocking a shared folder locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT/CHILD"
@@ -103,27 +82,12 @@ Feature: UNLOCK locked items (sharing)
     Then the HTTP status code should be "204"
     And 0 locks should be reported for file "PARENT/parent.txt" of user "Alice" by the WebDAV API
     And 0 locks should be reported for file "Shares/parent.txt" of user "Brian" by the WebDAV API
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /parent.txt        |
       | old      | exclusive  | /parent.txt        |
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | old      | shared     | /PARENT/parent.txt |
-      | old      | exclusive  | /PARENT/parent.txt |
-      | new      | shared     | /PARENT/parent.txt |
-      | new      | exclusive  | /PARENT/parent.txt |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | spaces   | shared     | /parent.txt        |
-      | spaces   | exclusive  | /parent.txt        |
 
 
   Scenario Outline: as owner unlocking a shared file locked by the receiver is not possible. To unlock use the receivers locktoken
@@ -136,27 +100,12 @@ Feature: UNLOCK locked items (sharing)
     Then the HTTP status code should be "403"
     And 1 locks should be reported for file "PARENT/parent.txt" of user "Alice" by the WebDAV API
     And 1 locks should be reported for file "Shares/parent.txt" of user "Brian" by the WebDAV API
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /parent.txt        |
       | old      | exclusive  | /parent.txt        |
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | old      | shared     | /PARENT/parent.txt |
-      | old      | exclusive  | /PARENT/parent.txt |
-      | new      | shared     | /PARENT/parent.txt |
-      | new      | exclusive  | /PARENT/parent.txt |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope | pending_share_path |
-      | spaces   | shared     | /parent.txt        |
-      | spaces   | exclusive  | /parent.txt        |
 
 
   Scenario Outline: as owner unlocking a file in a share that was locked by the share receiver is not possible. To unlock use the receivers locktoken
@@ -176,13 +125,7 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     |
       | new      | exclusive  |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | lock-scope |
-      | spaces   | shared     |
-      | spaces   | exclusive  |
 
-  @notToImplementOnOCIS
   Scenario Outline: as owner unlocking a shared folder locked by the share receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT/CHILD"

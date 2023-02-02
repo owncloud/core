@@ -300,7 +300,6 @@ OC.L10N.register(
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Посилена безпека увімкнена для вашого облікового запису. Будь ласка, автентифікуйтесь, використовуючи другий фактор.",
     "Cancel login" : "Скасувати вхід",
     "Please authenticate using the selected factor." : "Будь ласка, пройдіть процедуру аутентифікації за допомогою обраного фактора.",
-    "You are accessing the server from an untrusted domain." : "Ви намагаєтеся отримати доступ до сервера з непідтвердженого домену.",
     "App update required" : "Додаток потребує оновлення",
     "%s will be updated to version %s" : "%s буде оновлено до версії %s",
     "These apps will be updated:" : "Ці додатки будуть оновлені:",

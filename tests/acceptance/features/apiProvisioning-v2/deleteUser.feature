@@ -15,7 +15,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
-  @skipOnOcV10.3
+
   Scenario: Delete a user with special characters in the username
     Given these users have been created without skeleton files:
       | username | email               |
@@ -40,7 +40,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "brand-new-user" should not exist
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: subadmin deletes a user in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -65,7 +65,7 @@ Feature: delete users
     And the HTTP status code should be "401"
     And user "Brian" should exist
 
-  @notToImplementOnOCIS
+
   Scenario: administrator deletes another admin user
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -76,7 +76,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "another-admin" should not exist
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin deletes a user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -91,7 +91,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "another-subadmin" should not exist
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin should not be able to delete another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -105,7 +105,7 @@ Feature: delete users
     And the HTTP status code should be "401"
     And user "another-subadmin" should exist
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin should not be able to delete a user with admin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -120,7 +120,7 @@ Feature: delete users
     And the HTTP status code should be "401"
     And user "another-admin" should exist
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin should not be able to delete a user not in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |

@@ -1,4 +1,4 @@
-@api @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2413 @notToImplementOnOCIS
+@api @issue-ocis-2413
 Feature: UNLOCK locked items
 
   Background:

@@ -287,7 +287,6 @@ OC.L10N.register(
     "Thank you for your patience." : "Täname kannatlikkuse eest.",
     "Two-step verification" : "Kahe-etapiline kinnitamine",
     "Cancel login" : "Tühista sisselogimine",
-    "You are accessing the server from an untrusted domain." : "Sa kasutad serverit usalduseta asukohast",
     "App update required" : "Rakenduse uuendus on nõutud",
     "These apps will be updated:" : "Neid rakendusi uuendatakse:",
     "The theme %s has been disabled." : "Teema %s on keelatud.",

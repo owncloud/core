@@ -276,7 +276,6 @@ OC.L10N.register(
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Habilitóse pa la so cuenta la seguridá ameyorada. Por favor autentica por aciu d'un segundu factor.",
     "Cancel login" : "Encaboxar aniciu de sesión",
     "Please authenticate using the selected factor." : "Por favor autentificate usando'l factor escoyíu.",
-    "You are accessing the server from an untrusted domain." : "Tas accediendo al sirvidor dende un dominiu non confiáu.",
     "App update required" : "Actualización de l'aplicación riquida",
     "%s will be updated to version %s" : "%s anovaráse a la versión %s",
     "These apps will be updated:" : "Estes aplicaciones van anovase:",

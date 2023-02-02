@@ -80,6 +80,7 @@ OC.L10N.register(
     "undo" : "tagasi",
     "Delete group" : "Kustuta grupp",
     "never" : "mitte kunagi",
+    "unknown" : "tundmatu",
     "deleted {userName}" : "kustutatud {userName}",
     "Delete user" : "Kustuta kasutaja",
     "Group already exists" : "Grupp on juba olemas",

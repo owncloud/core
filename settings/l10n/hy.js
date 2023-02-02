@@ -34,6 +34,7 @@ OC.L10N.register(
     "Groups" : "Խմբեր",
     "undo" : "ետարկել",
     "never" : "երբեք",
+    "unknown" : "անհայտ",
     "deleted {userName}" : "ջնջված {userName}",
     "add group" : "խումբ ավելացնել",
     "enabled" : "միացված",

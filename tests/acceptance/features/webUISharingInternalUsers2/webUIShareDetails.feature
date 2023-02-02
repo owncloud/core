@@ -4,7 +4,7 @@ Feature: WebUI share details for shares created using internal users
   I want to share files and folders with other users
   So that those users can access the files and folders
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator of items inside a shared folder
     Given these users have been created without skeleton files:
       | username |
@@ -20,7 +20,7 @@ Feature: WebUI share details for shares created using internal users
       | simple-empty-folder |
       | lorem.txt           |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator of items inside a shared folder two levels down
     Given these users have been created without skeleton files:
       | username |
@@ -38,7 +38,7 @@ Feature: WebUI share details for shares created using internal users
       | new-folder |
       | lorem.txt  |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator of items inside a re-shared folder
     Given these users have been created without skeleton files:
       | username |
@@ -56,7 +56,7 @@ Feature: WebUI share details for shares created using internal users
       | simple-empty-folder |
       | lorem.txt           |
 
-  @skipOnOcV10.3
+
   Scenario: no sharing indicator of items inside a not shared folder
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "simple-folder"
@@ -68,7 +68,7 @@ Feature: WebUI share details for shares created using internal users
       | simple-empty-folder |
       | lorem.txt           |
 
-  @skipOnOcV10.3
+
   Scenario: sharing details of items inside a shared folder
     Given these users have been created without skeleton files:
       | username |
@@ -85,7 +85,7 @@ Feature: WebUI share details for shares created using internal users
     When the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
     Then user "Brian" should be listed as share receiver via "simple-folder" on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: sharing details of items inside a re-shared folder
     Given these users have been created without skeleton files:
       | username |
@@ -104,7 +104,7 @@ Feature: WebUI share details for shares created using internal users
     When the user opens the sharing tab from the file action menu of file "lorem.txt" using the webUI
     Then user "Carol" should be listed as share receiver via "simple-folder" on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator for file uploaded inside a shared folder
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -118,7 +118,7 @@ Feature: WebUI share details for shares created using internal users
     Then the following resources should have share indicators on the webUI
       | new-lorem.txt |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator for folder created inside a shared folder
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -132,7 +132,7 @@ Feature: WebUI share details for shares created using internal users
     Then the following resources should have share indicators on the webUI
       | sub-folder |
 
-  @skipOnOcV10.3
+
   Scenario: sharing details of items inside a shared folder shared with multiple users
     Given these users have been created with default attributes and without skeleton files:
       | username |

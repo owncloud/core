@@ -80,7 +80,7 @@ Feature: misc scenarios on sharing with internal users
     Then file "lorem.txt" should be listed on the webUI
     And the content of file "/new-simple-folder/lorem.txt" for user "Brian" should be "some content"
 
-  @skipOnMICROSOFTEDGE @skipOnOcV10.3
+  @skipOnMICROSOFTEDGE
   Scenario: share a folder with another internal user and prohibit deleting
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -245,7 +245,7 @@ Feature: misc scenarios on sharing with internal users
     And the share-with field should not be visible in the details panel
     And user "Alice" should not be able to share file "testimage.jpg" with user "Carol" using the sharing API
 
-  @skipOnOcV10.3 @skipOnEncryptionType:user-keys @issue-encryption-126 @email
+  @skipOnEncryptionType:user-keys @issue-encryption-126 @email
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created with default attributes and without skeleton files:
@@ -263,7 +263,7 @@ Feature: misc scenarios on sharing with internal users
       just letting you know that %displayname% shared lorem.txt with you.
       """
 
-  @email @skipOnOcV10.3
+  @email
   Scenario: user should get and error message when trying to send notification by email to a user who has not setup their email
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created without skeleton files:
@@ -279,7 +279,7 @@ Feature: misc scenarios on sharing with internal users
       | title                       | content                                                  | user  |
       | Email notification not sent | Couldn't send mail to following recipient(s): %username% | Brian |
 
-  @email @skipOnOcV10.3
+  @email
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created with default attributes and without skeleton files:
@@ -296,7 +296,7 @@ Feature: misc scenarios on sharing with internal users
     And the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email for user "Brian" using the webUI
 
-  @skipOnOcV10.3
+
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "no"
     And these users have been created without skeleton files:
@@ -309,7 +309,7 @@ Feature: misc scenarios on sharing with internal users
     When the user opens the share dialog for file "lorem.txt"
     Then the user should not be able to send the share notification by email for user "Brian" using the webUI
 
-  @email @skipOnOcV10.3
+  @email
   Scenario: user without email should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
     And these users have been created without skeleton files:
@@ -340,7 +340,7 @@ Feature: misc scenarios on sharing with internal users
     When the user re-logs in as "Alice" using the webUI
     And the content of file "lorem.txt" for user "Alice" should be "edited original content"
 
-  @skipOnOcV10.3
+
   Scenario: share with two users having same display name
     Given these users have been created with default attributes and without skeleton files:
       | username |

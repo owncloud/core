@@ -38,6 +38,7 @@ use OCP\IUser;
 use OCP\IUserSession;
 use OCP\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
 /**
@@ -487,10 +488,17 @@ class ViewControllerTest extends TestCase {
 			->with(123)
 			->will($this->returnValue([]));
 
+		$event = new GenericEvent(null, [
+			'fileid' => 123,
+			'uid' => $this->userSession->getUser()->getUID(),
+			'resolvedWebLink' => null,
+			'resolvedDavLink' => null,
+		]);
+
 		$this->eventDispatcher->expects($this->once())
 			->method('dispatch')
-			->with('files.resolvePrivateLink')
-			->will($this->returnCallback(function ($eventName, $event) {
+			->with($event, 'files.resolvePrivateLink')
+			->will($this->returnCallback(function ($event, $eventName) {
 				$event->setArgument('resolvedWebLink', '/owncloud/weblink/' . $event->getArgument('uid') . '/' . $event->getArgument('fileid'));
 				$event->setArgument('resolvedDavLink', '/owncloud/davlink/' . $event->getArgument('uid') . '/' . $event->getArgument('fileid'));
 			}));

@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-reva-41 @skipOnOcis
+@api @files_sharing-app-required @issue-ocis-reva-41
 Feature: cannot share resources when in a group that is excluded from sharing
 
   Background:

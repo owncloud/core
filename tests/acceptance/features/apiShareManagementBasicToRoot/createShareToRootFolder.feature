@@ -1,10 +1,10 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @skipOnEncryptionType:user-keys @issue-32322 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  @smokeTest @skipOnEncryptionType:user-keys @issue-32322
   Scenario Outline: Creating a share of a file with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -338,7 +338,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |

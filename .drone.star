@@ -91,7 +91,7 @@ config = {
                 "oracle",
             ],
         },
-        "external-samba-windows": {
+        "external-samba": {
             "phpVersions": [
                 DEFAULT_PHP_VERSION,
             ],
@@ -100,9 +100,43 @@ config = {
             ],
             "externalTypes": [
                 "samba",
+            ],
+            "coverage": True,
+            "extraCommandsBeforeTestRun": [
+                "ls -l /var/cache",
+                "mkdir /var/cache/samba",
+                "ls -l /var/cache",
+                "ls -l /var/cache/samba",
+            ],
+        },
+        "external-windows": {
+            "phpVersions": [
+                DEFAULT_PHP_VERSION,
+            ],
+            "databases": [
+                "sqlite",
+            ],
+            "externalTypes": [
                 "windows",
             ],
             "coverage": True,
+            "extraEnvironment": {
+                "SMB_WINDOWS_HOST": {
+                    "from_secret": "SMB_WINDOWS_HOST",
+                },
+                "SMB_WINDOWS_USERNAME": {
+                    "from_secret": "SMB_WINDOWS_USERNAME",
+                },
+                "SMB_WINDOWS_PWD": {
+                    "from_secret": "SMB_WINDOWS_PWD",
+                },
+                "SMB_WINDOWS_DOMAIN": {
+                    "from_secret": "SMB_WINDOWS_DOMAIN",
+                },
+                "SMB_WINDOWS_SHARE_NAME": {
+                    "from_secret": "SMB_WINDOWS_SHARE_NAME",
+                },
+            },
             "extraCommandsBeforeTestRun": [
                 "ls -l /var/cache",
                 "mkdir /var/cache/samba",
@@ -1443,6 +1477,16 @@ def phpTests(ctx, testType, withCoverage):
                     for app, command in params["extraApps"].items():
                         extraAppsDict[app] = command
 
+                    environment = {}
+                    for env in params["extraEnvironment"]:
+                        environment[env] = params["extraEnvironment"][env]
+
+                    environment["COVERAGE"] = params["coverage"]
+                    environment["DB_TYPE"] = getDbName(db)
+                    environment["FILES_EXTERNAL_TYPE"] = filesExternalType
+                    environment["PRIMARY_OBJECTSTORE"] = primaryObjectStore
+                    environment["SCALITY"] = needScality
+
                     result = {
                         "kind": "pipeline",
                         "type": "docker",
@@ -1463,13 +1507,7 @@ def phpTests(ctx, testType, withCoverage):
                                      {
                                          "name": "%s-tests" % testType,
                                          "image": OC_CI_PHP % phpVersion,
-                                         "environment": {
-                                             "COVERAGE": params["coverage"],
-                                             "DB_TYPE": getDbName(db),
-                                             "FILES_EXTERNAL_TYPE": filesExternalType,
-                                             "PRIMARY_OBJECTSTORE": primaryObjectStore,
-                                             "SCALITY": needScality,
-                                         },
+                                         "environment": environment,
                                          "commands": params["extraCommandsBeforeTestRun"] + [
                                              command,
                                          ],
@@ -2184,7 +2222,7 @@ def webdavService(needed):
 
     return [{
         "name": "webdav",
-        "image": OC_CI_PHP % "latest",
+        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "environment": {
             "APACHE_CONFIG_TEMPLATE": "webdav",
         },

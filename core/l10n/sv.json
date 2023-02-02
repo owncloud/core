@@ -329,7 +329,6 @@
     "Cancel login" : "Avbryt inloggning",
     "Please authenticate using the selected factor." : "Vänligen autentisera med vald faktor.",
     "An error occurred while verifying the token" : "Ett fel inträffade vid verifiering av nyckeln",
-    "You are accessing the server from an untrusted domain." : "Du ansluter till servern från en osäker domän.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Var god kontakta din administratör. Om du är en administratör för denna installationen konfigurera inställningen \"trusted_domains\" i config/config.php.",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : " En exempelkonfiguration finns tillgänglig i config/config.sample.php eller i dokumentationen <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentation</a>.",
     "App update required" : "Appen behöver uppdateras",

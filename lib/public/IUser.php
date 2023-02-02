@@ -101,6 +101,14 @@ interface IUser {
 	public function updateLastLoginTimestamp();
 
 	/**
+	 * returns the timestamp of the user's creation time
+	 *
+	 * @return int
+	 * @since 10.12.0
+	 */
+	public function getCreationTime();
+ 
+	/**
 	 * Delete the user
 	 *
 	 * @return bool

@@ -88,7 +88,6 @@ OC.L10N.register(
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Xüsusilə fayl sinxronizasiyası üçün desktop client-dən istifadə edilərsə, SQLite məsləhət görülmür.",
     "Search" : "Axtarış",
     "Login" : "Giriş",
-    "New password" : "Yeni şifrə",
-    "You are accessing the server from an untrusted domain." : "Siz serverə inamsız domain-dən girməyə çalışırsız."
+    "New password" : "Yeni şifrə"
 },
 "nplurals=2; plural=(n != 1);");

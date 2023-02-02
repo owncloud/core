@@ -107,7 +107,7 @@ Feature: User can open the details panel for any file or folder
     When the user switches to the "comments" tab in the details panel using the webUI
     Then the "comments" details panel should be visible
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario Outline: Breadcrumb through folders
     Given user "Alice" has created folder "<grand-parent>"
     And user "Alice" has created folder "<grand-parent>/<parent>"

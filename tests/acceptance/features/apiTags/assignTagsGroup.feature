@@ -6,7 +6,7 @@ Feature: Assign tag to groups
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: User can assign tags when in the tag's groups
     Given group "grp1" has been created
     And user "Alice" has been added to group "grp1"
@@ -22,7 +22,7 @@ Feature: Assign tag to groups
     Then the HTTP status code should be "201"
     And user "Alice" should be able to assign the "static" tag with name "TagWithGroups"
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario: User cannot assign tags when not in the tag's groups
     When the administrator creates a "not user-assignable" tag with name "TagWithGroups" and groups "grp2|group2" using the WebDAV API
     Then the HTTP status code should be "201"

@@ -1,4 +1,4 @@
-@api @federation-app-required @files_sharing-app-required @notToImplementOnOCIS
+@api @federation-app-required @files_sharing-app-required
 Feature: federated
 
   Background:
@@ -116,7 +116,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcV10.4.1
+
   Scenario Outline: Federated sharee requests information of only one share before accepting it
     Given using OCS API version "<ocs-api-version>"
     And using server "REMOTE"

@@ -87,7 +87,7 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 		 * dav.public.delete.before
 		 */
 		$eventName = "dav.public.{$lowercaseMethod}.before";
-		$this->dispatcher->dispatch($eventName, $event);
+		$this->dispatcher->dispatch($event, $eventName);
 	}
 
 	/**
@@ -128,6 +128,6 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 		 * dav.public.delete.after
 		 */
 		$eventName = "dav.public.{$lowercaseMethod}.after";
-		$this->dispatcher->dispatch($eventName, $event);
+		$this->dispatcher->dispatch($event, $eventName);
 	}
 }

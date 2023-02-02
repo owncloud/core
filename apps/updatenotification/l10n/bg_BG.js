@@ -14,7 +14,7 @@ OC.L10N.register(
     "Checked on %s" : "Проверено на %s",
     "Update channel:" : "Актуализиране на канал:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Винаги можете да актуализирате до по-нова версия / експериментален канал. Но никога повече няма да можете да се върнете към по-стабилен канал.",
-    "Notify members of the following groups about available updates:" : "Уведомяване на членовете на следните групи за излязлите нови версии:",
+    "Notify members of the following groups about available updates:" : "Уведомяване на членовете на следните групи за наличните актуализации:",
     "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Налични са само известия за актуализации на приложения, тъй като избраният канал за актуализация на самия ownCloud не позволява известия."
 },
 "nplurals=2; plural=(n != 1);");

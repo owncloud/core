@@ -63,7 +63,7 @@ Feature: Add group
       | "⛷"       |
       | "⛹"       |
 
-  @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnLDAP
   Scenario: adding multiple users to a group
     Given these users have been created without skeleton files:
       | username |
@@ -80,7 +80,7 @@ Feature: Add group
     When the administrator reloads the users page
     Then the user count of group "grp1" should display 3 users on the webUI
 
-  @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10
+  @skipOnOcV10.10
   Scenario: Cannot add group with white-space in the name
     When the administrator adds group "whitespace " using the webUI
     Then a notification should be displayed on the webUI with the text "Error creating group: Unable to add group."

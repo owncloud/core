@@ -865,7 +865,15 @@ class WebDavPropertiesContext implements Context {
 		$pattern = $this->featureContext->substituteInLineCodes(
 			$pattern,
 			$user,
-			['preg_quote' => ['/']]
+			['preg_quote' => ['/']],
+			[
+				[
+					"code" => "%public_token%",
+					"function" =>
+					[$this->featureContext, "getLastPublicShareToken"],
+					"parameter" => []
+				],
+			]
 		);
 		Assert::assertMatchesRegularExpression(
 			$pattern,

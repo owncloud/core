@@ -94,6 +94,7 @@
     "undo" : "ångra",
     "Delete group" : "Radera grupp",
     "never" : "aldrig",
+    "unknown" : "okänt",
     "deleted {userName}" : "raderade {userName}",
     "Group already exists" : "Gruppen finns redan",
     "add group" : "lägg till grupp",

@@ -1,4 +1,4 @@
-@api @files_trashbin-app-required @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7
+@api @files_trashbin-app-required
 Feature: files and folders can be deleted completely skipping the trashbin
   As an admin
   I want to configure some files to be deleted without the trashbin

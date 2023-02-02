@@ -24,11 +24,6 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @smokeTest
   Scenario Outline: Copying and overwriting a file
     Given using <dav_version> DAV path
@@ -39,11 +34,6 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Copying a file when 2 files exist with different case
@@ -58,12 +48,7 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
-  @files_sharing-app-required @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -82,7 +67,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @files_sharing-app-required @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: Copying a file to overwrite a file into a folder with no permissions
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -120,11 +105,6 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-387
   Scenario Outline: copy a file over the top of an existing folder
     Given using <dav_version> DAV path
@@ -139,11 +119,6 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-387
   Scenario Outline: copy a folder over the top of an existing file
     Given using <dav_version> DAV path
@@ -156,11 +131,6 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-387
   Scenario Outline: copy a folder into another folder at different level
@@ -178,11 +148,6 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-387
   Scenario Outline: copy a file into a folder at different level
@@ -203,11 +168,6 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-387
   Scenario Outline: copy a file into a file at different level
     Given using <dav_version> DAV path
@@ -225,11 +185,6 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-387
   Scenario Outline: copy a folder into a file at different level
@@ -250,12 +205,7 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a file over the top of an existing folder received as a user share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -274,7 +224,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a folder over the top of an existing file received as a user share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -292,7 +242,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a folder into another folder at different level which is received as a user share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -315,7 +265,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a file into a folder at different level received as a user share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -340,7 +290,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a file into a file at different level received as a user share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -364,7 +314,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a folder into a file at different level received as a user share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -388,7 +338,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a file over the top of an existing folder received as a group share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -410,12 +360,7 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a folder over the top of an existing file received as a group share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -436,12 +381,7 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a folder into another folder at different level which is received as a group share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -467,7 +407,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a file into a folder at different level received as a group share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -495,7 +435,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a file into a file at different level received as a group share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -522,7 +462,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-1239 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-1239
   Scenario Outline: copy a folder into a file at different level received as a group share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -563,11 +503,6 @@ Feature: copy file
       | old         |
       | new         |
 
-  @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Copy file into a nonexistent folder
     Given using <dav_version> DAV path
@@ -580,11 +515,6 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Copy a nonexistent file into a folder
     Given using <dav_version> DAV path
@@ -595,11 +525,6 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Copy a folder into a nonexistent one
@@ -613,11 +538,6 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required
   Scenario Outline: Copying a file into a shared folder as the sharee
@@ -725,11 +645,6 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @files_sharing-app-required
   Scenario Outline: Copying a file between shares received from different users
@@ -839,11 +754,6 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-3023
   Scenario Outline: Copying a folder into a sub-folder of itself
     Given using <dav_version> DAV path
@@ -860,11 +770,6 @@ Feature: copy file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Copying a folder with a file into another folder
     Given using <dav_version> DAV path
@@ -880,8 +785,3 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

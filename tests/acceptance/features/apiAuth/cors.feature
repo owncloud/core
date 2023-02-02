@@ -4,7 +4,7 @@ Feature: CORS headers
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
@@ -32,7 +32,7 @@ Feature: CORS headers
       | 1               | /config                                          | 100      | 200       |
       | 2               | /config                                          | 200      | 200       |
 
-    @files_external-app-required @notToImplementOnOCIS
+    @files_external-app-required
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
       | 1               | /apps/files_external/api/v1/mounts               | 100      | 200       |
@@ -48,7 +48,7 @@ Feature: CORS headers
       | 1               | /apps/files_sharing/api/v1/shares                | 100      | 200       |
       | 2               | /apps/files_sharing/api/v1/shares                | 200      | 200       |
 
-  @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header (admin only endpoints)
     Given using OCS API version "<ocs_api_version>"
     And the administrator has added "https://aphno.badal" to the list of personal CORS domains
@@ -100,7 +100,7 @@ Feature: CORS headers
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
 
-    @files_external-app-required @notToImplementOnOCIS
+    @files_external-app-required
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
       | 1               | /apps/files_external/api/v1/mounts               | 100      | 200       |
@@ -166,7 +166,7 @@ Feature: CORS headers
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
 
-    @files_external-app-required @notToImplementOnOCIS
+    @files_external-app-required
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
       | 1               | /apps/files_external/api/v1/mounts               | 997      | 401       |

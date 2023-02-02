@@ -50,6 +50,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 
 	protected $versionSectionXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Version']";
 	protected $federatedCloudIDXpath = "//*[@id='fileSharingSettings']/p/strong";
+	protected $usernameXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']/div[@id='username']";
 	protected $groupListXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']/div[@id='groups']";
 
 	protected $setProfilePicFromFilesBtnXpath = "//*[@id='selectavatar']";
@@ -198,6 +199,18 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	public function getFederatedCloudID(): string {
 		$this->waitTillElementIsNotNull($this->federatedCloudIDXpath);
 		return $this->find("xpath", $this->federatedCloudIDXpath)->getText();
+	}
+
+	/**
+	 * get username displayed in the UI
+	 *
+	 * @return string
+	 */
+	public function getUsername(): string {
+		$this->waitTillElementIsNotNull($this->usernameXpath);
+		// The text is like "Username Alice"
+		$text = $this->find("xpath", $this->usernameXpath)->getText();
+		return \substr($text, \strlen("Username "));
 	}
 
 	/**

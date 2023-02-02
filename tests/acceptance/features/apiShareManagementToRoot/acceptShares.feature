@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: accept/decline shares coming from internal users
   As a user
   I want to have control of which received shares I accept
@@ -153,15 +153,9 @@ Feature: accept/decline shares coming from internal users
       | path                    |
       | <declined_share_path_1> |
       | <declined_share_path_2> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT (2)/          | /textfile0 (2).txt    |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
 
 
   Scenario Outline: accept a share that has been declined before
@@ -182,15 +176,9 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | pending_share_path_1 | pending_share_path_2 |
       | /PARENT (2)          | /textfile0 (2).txt   |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | pending_share_path_1 | pending_share_path_2 |
-      | /PARENT              | /textfile0.txt       |
 
 
   Scenario Outline: unshare a share that has been auto-accepted
@@ -208,15 +196,9 @@ Feature: accept/decline shares coming from internal users
       | path                    |
       | <declined_share_path_1> |
       | <declined_share_path_2> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT (2)/          | /textfile0 (2).txt    |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
 
 
   Scenario Outline: unshare a share that was shared with a group and auto-accepted
@@ -242,15 +224,9 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT (2)/          | /textfile0 (2).txt    |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
 
 
   Scenario Outline: rename accepted share, decline it
@@ -267,15 +243,9 @@ Feature: accept/decline shares coming from internal users
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path                  |
       | <declined_share_path> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path |
       | /PARENT-renamed/    |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path |
-      | /PARENT/            |
 
 
   Scenario Outline: rename accepted share, decline it then accept again, name stays
@@ -292,15 +262,9 @@ Feature: accept/decline shares coming from internal users
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path             |
       | /PARENT-renamed/ |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path |
       | /PARENT-renamed     |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path |
-      | /PARENT             |
 
 
   Scenario Outline: move accepted share, decline it, accept again
@@ -319,15 +283,9 @@ Feature: accept/decline shares coming from internal users
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path            |
       | /PARENT/shared/ |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path |
       | /PARENT/shared      |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path |
-      | /shared             |
 
 
   Scenario Outline: move accepted share, decline it, delete parent folder, accept again
@@ -348,15 +306,9 @@ Feature: accept/decline shares coming from internal users
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path     |
       | /shared/ |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path |
       | /PARENT/shared      |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path |
-      | /shared             |
 
 
   Scenario: receive two shares with identical names from different users
@@ -470,7 +422,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario Outline: accept a pending share when there is a default folder for received shares
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And the administrator has set the default folder for received shares to "<share_folder>"
@@ -575,15 +527,9 @@ Feature: accept/decline shares coming from internal users
       | path                    |
       | <declined_share_path_1> |
       | <declined_share_path_2> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT (2)/          | /textfile0 (2).txt    |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | declined_share_path_1 | declined_share_path_2 |
-      | /PARENT/              | /textfile0.txt        |
 
 
   Scenario: deleting shares in pending state
@@ -674,15 +620,9 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/testfile.txt" for user "Carol" should be "Third file"
     And the content of file "/testfile (2).txt" for user "Carol" should be "Second file"
     And the content of file "/testfile (2) (2).txt" for user "Carol" should be "First file"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | accepted_share_path |
       | /testfile (2).txt   |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | accepted_share_path |
-      | /testfile.txt       |
 
 
   Scenario Outline: user accepts shares received from multiple users with the same name when auto-accept share is disabled
@@ -708,15 +648,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/         | David     |
       | /PARENT (2) (2)/     | Carol     |
       | /PARENT (2) (2) (2)/ | Brian     |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | accepted_share_path_1 | accepted_share_path_2 |
       | /PARENT (2)           | /PARENT (2) (2)       |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | accepted_share_path_1 | accepted_share_path_2 |
-      | /PARENT               | /PARENT               |
 
 
   Scenario: user shares folder with matching folder-name for both user involved in sharing
@@ -840,7 +774,7 @@ Feature: accept/decline shares coming from internal users
       | /textfile0.txt     |
       | /textfile0 (2).txt |
 
-  @skipOnLDAP @skipOnOcV10.5 @skipOnOcV10.6.0
+  @skipOnLDAP
   Scenario: user shares folder with matching folder name a user before that user has logged in
     Given these users have been created with small skeleton files but not initialized:
       | username |
@@ -867,8 +801,7 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"
     And user "Alice" has shared file "/toShareFile.txt" with user "Brian"
     When user "Alice" restores version index "1" of file "/toShareFile.txt" using the WebDAV API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
+    And the HTTP status code should be "204"
     And the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
     And the content of file "/toShareFile.txt" for user "Brian" should be "Test Content."
 

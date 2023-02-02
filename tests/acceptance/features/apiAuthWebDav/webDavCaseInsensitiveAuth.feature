@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api
 Feature: usernames are case-insensitive in webDAV requests with app passwords
 
   Background:
@@ -11,7 +11,7 @@ Feature: usernames are case-insensitive in webDAV requests with app passwords
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
 
-  @skipOnOcV10.8 @skipOnOcV10.9 @skipOnOcV10.10.0
+  @skipOnOcV10.10.0
   Scenario: send PUT requests to webDav endpoints using app password token as password and lowercase of username
     Given token auth has been enforced
     And a new browser session for "Alice" has been started

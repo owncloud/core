@@ -9,7 +9,7 @@ Feature: users cannot upload a file to a blacklisted name using old chunking
     And using old DAV path
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcV10 @issue-36645 @notToImplementOnOCIS
+  @skipOnOcV10 @issue-36645
   Scenario: Upload a file to a filename that is banned by default using old chunking
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/.htaccess" in 3 chunks using the WebDAV API
     Then the HTTP status code should be "403"
@@ -22,7 +22,7 @@ Feature: users cannot upload a file to a blacklisted name using old chunking
     Then the HTTP status code should be "403"
     And as "Alice" file "blacklisted-file.txt" should not exist
 
-  @skipOnOcV10 @skipOnOcV10.3 @issue-36645
+  @skipOnOcV10 @issue-36645
   Scenario Outline: upload a file to a filename that matches blacklisted_files_regex using old chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
@@ -36,7 +36,7 @@ Feature: users cannot upload a file to a blacklisted name using old chunking
       | bannedfilename.txt            | 403         |
       | this-ContainsBannedString.txt | 403         |
 
-  @skipOnOcV10.3
+
   Scenario: upload a file to a filename that does not match blacklisted_files_regex using old chunking
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+

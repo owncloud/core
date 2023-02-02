@@ -40,6 +40,7 @@ class LoggingContext implements Context {
 	private $featureContext;
 
 	private $oldLogLevel = null;
+	private $logLevel = null;
 	private $oldLogBackend = null;
 	private $oldLogTimezone = null;
 
@@ -69,6 +70,9 @@ class LoggingContext implements Context {
 			// Currently we don't interact with the log file on reva or OCIS
 			// So skip processing this test step.
 			return;
+		}
+		if ($this->logLevel === "info") {
+			$ignoredLines = 1;
 		}
 		$ignoredLines = (int) $ignoredLines;
 		//-1 because getRows gives also the header
@@ -442,6 +446,7 @@ class LoggingContext implements Context {
 	 * @throws Exception
 	 */
 	public function owncloudLogLevelIsSetTo(string $logLevel):void {
+		$this->logLevel = $logLevel;
 		LoggingHelper::setLogLevel(
 			$logLevel,
 			$this->featureContext->getStepLineRef()

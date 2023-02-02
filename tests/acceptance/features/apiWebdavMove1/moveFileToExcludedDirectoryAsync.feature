@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-14 @notToImplementOnOCIS
+@api @issue-ocis-reva-14
 Feature: users cannot move (rename) a file to or into an excluded directory
   As an administrator
   I want to be able to exclude directories (folders) from being processed. Any attempt to rename an existing file or folder to one of those names should be refused.
@@ -27,7 +27,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
     And user "Alice" should see the following elements
       | /textfile0.txt |
 
-  @skipOnOcV10.3
+
   Scenario: rename a file to a filename that matches (or not) excluded_directories_regex
     Given user "Alice" has created folder "FOLDER"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it

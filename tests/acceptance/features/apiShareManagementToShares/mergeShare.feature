@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-reva-1328 @issues-ocis-1289 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required @issue-ocis-reva-1328 @issues-ocis-1289
 Feature: sharing
 
   Background:
@@ -108,11 +108,6 @@ Feature: sharing
     And as user "Brian" folder "/merge-test-inside-twogroups-perms" should contain a property "oc:permissions" with value "<expected_permission_1>" or with value "<expected_permission_2>"
     And as "Brian" folder "/Shares/merge-test-inside-twogroups-perms" should not exist
     And as "Brian" folder "/Shares/merge-test-inside-twogroups-perms (2)" should not exist
-    @skipOnOcV10
-    Examples:
-      | expected_permission_1 | expected_permission_2 |
-      | RDNVCKZ               | RMDNVCKZ              |
-    @skipOnOcis
     Examples:
       | expected_permission_1 | expected_permission_2 |
       | RDNVCK                | RMDNVCK               |

@@ -124,6 +124,7 @@ OC.L10N.register(
     "Delete group" : "Elimina gruppo",
     "Resend invitation email" : "Re-invia l'email di invito",
     "never" : "mai",
+    "unknown" : "sconosciuto",
     "deleted {userName}" : "{userName} eliminato",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Stai per eliminare un utente. Questa azione non può essere annullata ed è permanente. Tutti i dati, file e condivisioni dell'utente saranno eliminati. Sei sicuro di voler eliminare definitivamente {userName}?",
     "Delete user" : "Elimina utente",

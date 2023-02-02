@@ -1,7 +1,7 @@
-@api @notToImplementOnOCIS @issue-ocis-reva-172
+@api @issue-ocis-reva-172
 Feature: UNLOCK locked items
 
-  @issue-34302 @files_sharing-app-required @skipOnOcV10.3
+  @issue-34302 @files_sharing-app-required
   Scenario Outline: as public unlocking a file in a share that was locked by the file owner is not possible. To unlock use the owners locktoken
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "PARENT"

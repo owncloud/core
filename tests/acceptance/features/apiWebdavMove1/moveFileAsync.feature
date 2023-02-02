@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-14 @notToImplementOnOCIS
+@api @issue-ocis-reva-14
 Feature: move (rename) file
   As a user
   I want to be able to move and rename files asynchronously

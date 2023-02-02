@@ -45,7 +45,7 @@ Feature: reset user password
     Then the command should have failed with exit code 1
     And the command output should contain the text "Email address is not set for the user %username%" about user "brand-new-user"
 
-  @skipOnOcV10.3
+
   Scenario: administrator gets error message while trying to reset specifying user password with send email when the email address of the user is not setup
     Given these users have been created with small skeleton files:
       | username       | password  | displayname |

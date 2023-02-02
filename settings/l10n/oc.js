@@ -78,6 +78,7 @@ OC.L10N.register(
     "deleted {groupName}" : "{groupName} suprimit",
     "undo" : "anullar",
     "never" : "pas jamai",
+    "unknown" : "Desconegut",
     "deleted {userName}" : "{userName} suprimit",
     "Group already exists" : "Lo grop existís ja",
     "add group" : "apondre un grop",

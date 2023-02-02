@@ -34,8 +34,3 @@ Feature: refuse access
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version    |
-      | spaces         |

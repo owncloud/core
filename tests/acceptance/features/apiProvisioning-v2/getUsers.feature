@@ -7,7 +7,7 @@ Feature: get users
   Background:
     Given using OCS API version "2"
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: admin gets all users where default admin user exists
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator gets the list of all users using the provisioning API
@@ -26,7 +26,7 @@ Feature: get users
     And the users returned by the API should include
       | brand-new-user |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: subadmin gets the users in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

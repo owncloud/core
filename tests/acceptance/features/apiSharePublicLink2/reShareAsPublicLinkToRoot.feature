@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @notToImplementOnOCIS
+@api @files_sharing-app-required @public_link_share-feature-required
 Feature: reshare as public link
   As a user
   I want to create public link shares from files/folders shared with me
@@ -36,22 +36,15 @@ Feature: reshare as public link
       | publicUpload | false |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
-    And the downloaded content should be "some content"
-    But uploading a file should not work using the <public-webdav-api-version> public WebDAV API
-
-    @notToImplementOnOCIS
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "some content"
+    But uploading a file should not work using the old public WebDAV API
+    But uploading a file should not work using the new public WebDAV API
 
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
-
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: creating an upload public link from a share with share+read only permissions is not allowed
     Given using OCS API version "<ocs_api_version>"
@@ -94,22 +87,15 @@ Feature: reshare as public link
       | publicUpload | false |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
-    And the downloaded content should be "some content"
-    But uploading a file should not work using the <public-webdav-api-version> public WebDAV API
-
-    @notToImplementOnOCIS
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "some content"
+    But uploading a file should not work using the old public WebDAV API
+    But uploading a file should not work using the new public WebDAV API
 
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
-
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: creating an upload public link from a share with share+read+write permissions is allowed
     Given using OCS API version "<ocs_api_version>"
@@ -122,21 +108,14 @@ Feature: reshare as public link
       | publicUpload | true                      |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download file "file.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API
-    And the downloaded content should be "some content"
-    And uploading a file should work using the <public-webdav-api-version> public WebDAV API
-
-    @notToImplementOnOCIS
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "some content"
+    And the public should be able to download file "file.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "some content"
+    And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the new public WebDAV API
     Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | old                       |
-      | 2               | 200             | old                       |
-
-
-    Examples:
-      | ocs_api_version | ocs_status_code | public-webdav-api-version |
-      | 1               | 100             | new                       |
-      | 2               | 200             | new                       |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
 
   Scenario Outline: creating an upload public link from a sub-folder of a share with share+read only permissions is not allowed
@@ -169,19 +148,13 @@ Feature: reshare as public link
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And uploading a file should not work using the <public-webdav-api-version> public WebDAV API
-
-    @notToImplementOnOCIS
-    Examples:
-      | ocs_api_version | http_status_code | public-webdav-api-version |
-      | 1               | 200              | old                       |
-      | 2               | 404              | old                       |
-
+    And uploading a file should not work using the old public WebDAV API
+    And uploading a file should not work using the new public WebDAV API
 
     Examples:
-      | ocs_api_version | http_status_code | public-webdav-api-version |
-      | 1               | 200              | new                       |
-      | 2               | 404              | new                       |
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
 
 
   Scenario Outline: increasing permissions of a public link from a sub-folder of a share with share+read only permissions is not allowed
@@ -193,21 +166,16 @@ Feature: reshare as public link
       | path         | /test/sub |
       | permissions  | read      |
       | publicUpload | false     |
-    And uploading a file should not work using the <public-webdav-api-version> public WebDAV API
+    And uploading a file should not work using the old public WebDAV API
+    And uploading a file should not work using the new public WebDAV API
     When user "Brian" updates the last public link share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And uploading a file should not work using the <public-webdav-api-version> public WebDAV API
-
-    @notToImplementOnOCIS
-    Examples:
-      | ocs_api_version | http_status_code | public-webdav-api-version |
-      | 1               | 200              | old                       |
-      | 2               | 404              | old                       |
-
+    And uploading a file should not work using the old public WebDAV API
+    And uploading a file should not work using the new public WebDAV API
 
     Examples:
-      | ocs_api_version | http_status_code | public-webdav-api-version |
-      | 1               | 200              | new                       |
-      | 2               | 404              | new                       |
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |

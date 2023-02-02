@@ -19,11 +19,6 @@ Feature: delete folder
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-269
   Scenario Outline: delete a folder when 2 folder exist with different case
     Given using <dav_version> DAV path
@@ -36,11 +31,6 @@ Feature: delete folder
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-reva-269
   Scenario Outline: delete a sub-folder
@@ -57,12 +47,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: delete a folder when there is a default folder for received shares
     Given using <dav_version> DAV path
     And the administrator has set the default folder for received shares to "<share_folder>"
@@ -84,7 +69,7 @@ Feature: delete folder
       | new         | ReceivedShares  |
       | new         | /ReceivedShares |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: delete a folder when there is a default folder for received shares that is a multi-level path
     Given using <dav_version> DAV path
     And the administrator has set the default folder for received shares to "/My/Received/Shares"
@@ -129,14 +114,3 @@ Feature: delete folder
       | new         | /..fo       |
       | new         | /fo.xyz     |
       | new         | /fo.exe     |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | folder_name |
-      | spaces      | /fo.        |
-      | spaces      | /fo.1       |
-      | spaces      | /fo...1..   |
-      | spaces      | /...        |
-      | spaces      | /..fo       |
-      | spaces      | /fo.xyz     |
-      | spaces      | /fo.exe     |

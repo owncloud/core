@@ -41,6 +41,7 @@ OC.L10N.register(
     "undo" : "malfari",
     "Delete group" : "Forigi grupon",
     "never" : "neniam",
+    "unknown" : "nekonata",
     "deleted {userName}" : "{userName} foriĝis",
     "Group already exists" : "La grupo jam ekzistas",
     "add group" : "aldoni grupon",

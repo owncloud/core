@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: Exclude groups from receiving shares
   As an admin
   I want to exclude groups from receiving shares
@@ -18,7 +18,7 @@ Feature: Exclude groups from receiving shares
     And user "Brian" has been added to group "grp1"
     And user "David" has been added to group "grp2"
 
-  @skipOnOcis
+
   Scenario Outline: user cannot share with a group that is excluded from receiving shares but can share with other groups
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
@@ -45,7 +45,7 @@ Feature: Exclude groups from receiving shares
       | 1               | 200              |
       | 2               | 403              |
 
-  @skipOnOcis
+
   Scenario Outline: exclude multiple groups from receiving shares stops the user to share with any of them
     Given using OCS API version "<ocs_api_version>"
     And group "grp3" has been created
@@ -77,7 +77,7 @@ Feature: Exclude groups from receiving shares
       | 1               | 200              |
       | 2               | 403              |
 
-  @skipOnOcis
+
   Scenario Outline: user cannot reshare a received share with a group that is excluded from receiving shares but can share with other groups
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has created folder "PARENT"

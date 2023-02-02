@@ -22,11 +22,6 @@ Feature: users cannot move (rename) a folder to or into an excluded directory
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Rename a folder to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
@@ -42,12 +37,7 @@ Feature: users cannot move (rename) a folder to or into an excluded directory
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
-  @skipOnOcV10.3
   Scenario Outline: rename a folder to a folder name that matches (or not) excluded_directories_regex
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -83,8 +73,3 @@ Feature: users cannot move (rename) a folder to or into an excluded directory
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

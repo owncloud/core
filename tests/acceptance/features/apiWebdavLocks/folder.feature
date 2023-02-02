@@ -4,7 +4,7 @@ Feature: lock folders
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: upload to a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -20,7 +20,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: upload to a subfolder of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -37,7 +37,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: create folder in a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -53,7 +53,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: create folder in a subfolder of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -70,7 +70,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Move file out of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -88,7 +88,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Move file out of a locked sub folder one level higher into locked parent folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -107,7 +107,7 @@ Feature: lock folders
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: lockdiscovery of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"

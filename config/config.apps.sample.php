@@ -269,11 +269,12 @@ $CONFIG = [
  * login without requiring the user to click a button. The default is `false`.
  *
  * auto-provision::
- * If auto-provision is setup, an ownCloud user will be created if not exists, after successful
+ * If `auto-provision` is setup, an ownCloud user will be created if not exists, after successful
  * login using openid connect. The config parameters `mode` and `search-attribute` will be used
  * to create a unique user so that the lookup mechanism can find the user again. This is where
- * an LDAP setup is usually required.
- * If auto-provision is not setup or required, it is expected that the user exists and you
+ * an LDAP setup is usually required. The profile picture will only be transferred upon account
+ * creation, but will not be updated afterwards if it changes in the connected IdP.
+ * If `auto-provision` is not setup or required, it is expected that the user exists and you
  * MUST declare this with `['enabled' => false]` like shown in the Easy Setup example.
  * `auto-provision` holds several sub keys, see the example setup with the explanations below.
  *
@@ -387,12 +388,8 @@ $CONFIG = [
 		  // auto-update user account info with current information provided by the
 		  // OpenID Connect provider account attributes, that will be updated,
 		  // can be specified in `attributes` config option
-		'auto-provision' => [
-			'update' => [
-				  // enable the user info auto-update mode
-				'enabled' => true,
-			],
-		],
+		'update' => ['enabled' => true],
+		  // enable the user info auto-update mode
 	],
 	  // `mode` and `search-attribute` will be used to create a unique user in ownCloud
 	'mode' => 'email',

@@ -20,11 +20,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-12
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
@@ -35,11 +30,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: download a file larger than 4MB (ref: https://github.com/sabre-io/http/pull/119 )
@@ -54,12 +44,7 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
-  @smokeTest @skipOnOcV10.5 @skipOnOcV10.6.0 @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" using the WebDAV API
@@ -80,7 +65,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
@@ -92,7 +77,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
@@ -117,11 +102,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-98
   Scenario Outline: Get the content-length response header of a pdf file
     Given using <dav_version> DAV path
@@ -136,11 +116,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
   @issue-ocis-reva-98
   Scenario Outline: Get the content-length response header of an image file
     Given using <dav_version> DAV path
@@ -154,11 +129,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Download a file with comma in the filename
@@ -176,13 +146,6 @@ Feature: download file
       | new         | ",,,.txt"      |
       | new         | ",,,.,"        |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version | filename          |
-      | spaces         | "sample,1.txt" |
-      | spaces         | ",,,.txt"      |
-      | spaces         | ",,,.,"        |
-
 
   Scenario Outline: download a file with single part ranges
     Given using <dav_version> DAV path
@@ -197,11 +160,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: download a file with multipart ranges
@@ -229,11 +187,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: download a file with last byte range out of bounds
     Given using <dav_version> DAV path
@@ -244,11 +197,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: download a range at the end of a file
@@ -261,11 +209,6 @@ Feature: download file
       | old         |
       | new         |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: download a file with range out of bounds
     Given using <dav_version> DAV path
@@ -275,11 +218,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: download hidden files
@@ -302,37 +240,6 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
-  @smokeTest @skipOnOcV10
-  Scenario Outline: Downloading a file should serve security headers
-    Given using <dav_version> DAV path
-    When user "Alice" downloads file "/welcome.txt" using the WebDAV API
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header                            | value                                                            |
-      | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
-      | Content-Security-Policy           | default-src 'none';                                              |
-      | X-Content-Type-Options            | nosniff                                                          |
-      | X-Download-Options                | noopen                                                           |
-      | X-Frame-Options                   | SAMEORIGIN                                                       |
-      | X-Permitted-Cross-Domain-Policies | none                                                             |
-      | X-Robots-Tag                      | none                                                             |
-      | X-XSS-Protection                  | 1; mode=block                                                    |
-    And the downloaded content should start with "Welcome"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario: download a zero byte size file

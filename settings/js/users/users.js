@@ -47,6 +47,7 @@ var UserList = {
 	 *				'enabled'			'true'
 	 *				'quota': 			'10 GB',
 	 *				'storageLocation':	'/srv/www/owncloud/data/username',
+         *                              'creationTime':         '1418632333',
 	 *				'lastLogin':		'1418632333'
 	 *				'backend':			'LDAP',
 	 *				'email':			'username@example.org'
@@ -184,6 +185,21 @@ var UserList = {
 		$tdLastLogin.attr('title', lastLoginAbs);
 		// setup tooltip with #app-content as container to prevent the td to resize on hover
 		$tdLastLogin.tooltip({placement: 'top', container: '#app-content'});
+
+                /**
+                 * creation time
+                 */
+                var creationTimeRel = t('settings', 'unknown');
+                var creationTimeAbs = creationTimeRel;
+                if(user.creationTime !== 0) {
+                        creationTimeRel = OC.Util.relativeModifiedDate(user.creationTime);
+                        creationTimeAbs = OC.Util.formatDate(user.creationTime);
+                }
+                var $tdCreationTime = $tr.find('td.creationTime');
+                $tdCreationTime.text(creationTimeRel);
+                $tdCreationTime.attr('title', creationTimeAbs);
+                // setup tooltip with #app-content as container to prevent the td to resize on hover
+                $tdCreationTime.tooltip({placement: 'top', container: '#app-content'});
 
 		/**
 		 * append generated row to user list
@@ -1062,7 +1078,6 @@ $(document).ready(function () {
 		}
 	});
 
-
 	if ($('#CheckboxStorageLocation').is(':checked')) {
 		$("#userlist .storageLocation").show();
 	}
@@ -1076,6 +1091,20 @@ $(document).ready(function () {
 			OC.AppConfig.setValue('core', 'umgmt_show_storage_location', 'false');
 		}
 	});
+     
+        if ($('#CheckboxCreationTime').is(':checked')) {
+                $("#userlist .creationTime").show();
+        }
+        // Option to display/hide the "Creation Time" column
+        $('#CheckboxCreationTime').click(function() {
+                if ($('#CheckboxCreationTime').is(':checked')) {
+                        $("#userlist .creationTime").show();
+                        OC.AppConfig.setValue('core', 'umgmt_show_creation_time', 'true');
+                } else {
+                        $("#userlist .creationTime").hide();
+                        OC.AppConfig.setValue('core', 'umgmt_show_creation_time', 'false');
+                }
+        });
 
 	if ($('#CheckboxLastLogin').is(':checked')) {
 		$("#userlist .lastLogin").show();

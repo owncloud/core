@@ -41,7 +41,7 @@ if (!\OC\Files\Filesystem::file_exists($filename)) {
 
 //Dispatch an event to see if any apps have problem with download
 $event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['path' => $filename]);
-OC::$server->getEventDispatcher()->dispatch('file.beforeGetDirect', $event);
+OC::$server->getEventDispatcher()->dispatch($event, 'file.beforeGetDirect');
 if ($event->hasArgument('errorMessage')) {
 	\http_response_code(403);
 	$tmpl = new OCP\Template('', '403', 'guest');

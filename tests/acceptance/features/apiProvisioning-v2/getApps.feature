@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @files_sharing-app-required @skipOnLDAP @notToImplementOnOCIS @skipOnGraph
+@api @provisioning_api-app-required @files_sharing-app-required @skipOnLDAP @skipOnGraph
 Feature: get apps
   As an admin
   I want to be able to get the list of apps on my ownCloud
@@ -70,7 +70,7 @@ Feature: get apps
       | files_sharing        |
       | updatenotification   |
 
-  @comments-app-required @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+  @comments-app-required
   Scenario: admin gets all apps
     Given app "comments" has been disabled
     When the administrator gets all apps using the provisioning API

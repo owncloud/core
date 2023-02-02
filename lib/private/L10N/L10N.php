@@ -25,9 +25,11 @@ namespace OC\L10N;
 use OCP\IL10N;
 use OCP\L10N\IFactory;
 use Punic\Calendar;
-use Symfony\Component\Translation\PluralizationRules;
+use Symfony\Contracts\Translation\TranslatorTrait;
 
 class L10N implements IL10N {
+	use TranslatorTrait;
+
 	/** @var IFactory */
 	protected $factory;
 
@@ -200,6 +202,6 @@ class L10N implements IL10N {
 	 * @return int
 	 */
 	public function computePlural($number) {
-		return PluralizationRules::get($number, $this->lang);
+		return $this->getPluralizationRule($number, $this->lang);
 	}
 }

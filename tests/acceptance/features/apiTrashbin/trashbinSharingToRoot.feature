@@ -1,4 +1,4 @@
-@api @files_trashbin-app-required @files_sharing-app-required @notToImplementOnOCIS
+@api @files_trashbin-app-required @files_sharing-app-required
 Feature: using trashbin together with sharing
 
   Background:
@@ -140,7 +140,7 @@ Feature: using trashbin together with sharing
       | dav-path |
       | new      |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario Outline: restoring a file to a read-only folder is not allowed
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -158,7 +158,7 @@ Feature: using trashbin together with sharing
       | dav-path |
       | new      |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+
   Scenario Outline: restoring a file to a read-only sub-folder is not allowed
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

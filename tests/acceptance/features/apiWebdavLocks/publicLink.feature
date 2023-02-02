@@ -1,4 +1,4 @@
-@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172 @notToImplementOnOCIS
+@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172
 Feature: persistent-locking in case of a public link
 
   Background:
@@ -24,16 +24,12 @@ Feature: persistent-locking in case of a public link
       | old      | exclusive  | old                       |
       | new      | shared     | old                       |
       | new      | exclusive  | old                       |
-
-    @skipOnOcV10.6 @skipOnOcV10.7
-    Examples:
-      | dav-path | lock-scope | public-webdav-api-version |
       | old      | shared     | new                       |
       | old      | exclusive  | new                       |
       | new      | shared     | new                       |
       | new      | exclusive  | new                       |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
@@ -48,7 +44,7 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7
+  @smokeTest
   Scenario Outline: Overwrite a file inside a locked public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT" setting the following properties
@@ -66,7 +62,7 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+
   Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
@@ -86,7 +82,7 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-  @smokeTest @skipOnOcV10.3
+  @smokeTest
   Scenario Outline: Public locking is not supported
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     When the public locks "/CHILD" in the last public link shared folder using the <public-webdav-api-version> public WebDAV API setting the following properties

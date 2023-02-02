@@ -29,12 +29,6 @@ Feature: files and folders can be deleted from the trashbin
       | new      | textfile0.txt | textfile1.txt |
       | new      | sample,0.txt  | sample,1.txt  |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path | filename1     | filename2     |
-      | spaces   | textfile0.txt | textfile1.txt |
-      | spaces   | sample,0.txt  | sample,1.txt  |
-
   @smokeTest
   Scenario Outline: delete a single file from the trashbin
     Given using <dav-path> DAV path
@@ -51,11 +45,6 @@ Feature: files and folders can be deleted from the trashbin
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
   @smokeTest
   Scenario Outline: delete multiple files from the trashbin and make sure the correct ones are gone
@@ -79,12 +68,7 @@ Feature: files and folders can be deleted from the trashbin
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
-  @skipOnOcV10.3
   Scenario Outline: User tries to delete another user's trashbin
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -98,15 +82,9 @@ Feature: files and folders can be deleted from the trashbin
     And as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
     And as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
     And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should exist in the trashbin
-    @skipOnOcis
     Examples:
       | dav-path | status-code |
       | new      | 401         |
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path | status-code |
-      | new      | 404         |
-      | spaces   | 404         |
 
 
   Scenario Outline: User tries to delete trashbin file using invalid password
@@ -126,11 +104,6 @@ Feature: files and folders can be deleted from the trashbin
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: User tries to delete trashbin file using no password
     Given using <dav-path> DAV path
@@ -148,11 +121,6 @@ Feature: files and folders can be deleted from the trashbin
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: delete a folder that contains a file from the trashbin
@@ -174,11 +142,6 @@ Feature: files and folders can be deleted from the trashbin
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: delete a subfolder from a deleted folder from the trashbin
     Given using <dav-path> DAV path
@@ -198,11 +161,6 @@ Feature: files and folders can be deleted from the trashbin
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: delete files with special characters from the trashbin
@@ -236,11 +194,6 @@ Feature: files and folders can be deleted from the trashbin
       | dav-path |
       | new      |
 
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
-
 
   Scenario Outline: delete folders with special characters from the trashbin
     Given using <dav-path> DAV path
@@ -272,11 +225,6 @@ Feature: files and folders can be deleted from the trashbin
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |
 
 
   Scenario Outline: delete folders with dot in the name from the trashbin
@@ -321,8 +269,3 @@ Feature: files and folders can be deleted from the trashbin
     Examples:
       | dav-path |
       | new      |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav-path |
-      | spaces   |

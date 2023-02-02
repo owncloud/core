@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS @skipOnGraph
+@api @provisioning_api-app-required @skipOnLDAP @skipOnGraph
 Feature: get subadmin groups
   As an admin
   I want to be able to get the groups in which the user is subadmin
@@ -21,7 +21,7 @@ Feature: get subadmin groups
       | brand-new-group |
       | 😅 😆           |
 
-  @skipOnOcV10.5 @skipOnOcV10.6.0
+
   Scenario: admin tries to get subadmin groups of a user which does not exist
     Given user "nonexistentuser" has been deleted
     And group "brand-new-group" has been created
@@ -30,7 +30,7 @@ Feature: get subadmin groups
     And the HTTP status code should be "404"
     And the API should not return any data
 
-  @issue-owncloud-sdk-658 @skipOnOcV10.5 @skipOnOcV10.6.0
+  @issue-owncloud-sdk-658
   Scenario: subadmin gets groups where he/she is subadmin
     Given user "Alice" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created

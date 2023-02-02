@@ -325,7 +325,6 @@
     "Cancel login" : "Откажи најава",
     "Please authenticate using the selected factor." : "Ве молиме да се идентификувате со користење на избраната опција.",
     "An error occurred while verifying the token" : "Настана грешка при верификација на токенот",
-    "You are accessing the server from an untrusted domain." : "Пристапувате на серверот од неверодостоен домен.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. " : "Контактирајте со администраторот. Доколку вие сте администратор, конфигурирајте го овој домен \"trusted_domains\" во config/config.php ",
     "An example configuration is provided in config/config.sample.php or at the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Примерна конфигурација е дадена во config/config.sample.php или во<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацијата</a>.",
     "App update required" : "Неопходно е ажурирање на апликацијата",

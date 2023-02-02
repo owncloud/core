@@ -1596,15 +1596,15 @@ class Manager implements IManager {
 			return false;
 		}
 		$beforeEvent = new GenericEvent(null, ['shareObject' => $share]);
-		$this->eventDispatcher->dispatch('share.beforepasswordcheck', $beforeEvent);
+		$this->eventDispatcher->dispatch($beforeEvent, 'share.beforepasswordcheck');
 		$newHash = '';
 		if (!$this->hasher->verify($password, $share->getPassword(), $newHash)) {
 			$failEvent = new GenericEvent(null, ['shareObject' => $share]);
-			$this->eventDispatcher->dispatch('share.failedpasswordcheck', $failEvent);
+			$this->eventDispatcher->dispatch($failEvent, 'share.failedpasswordcheck');
 			return false;
 		}
 		$afterEvent = new GenericEvent(null, ['shareObject' => $share]);
-		$this->eventDispatcher->dispatch('share.afterpasswordcheck', $afterEvent);
+		$this->eventDispatcher->dispatch($afterEvent, 'share.afterpasswordcheck');
 		if (!empty($newHash)) {
 			$share->setPassword($newHash);
 			$provider = $this->factory->getProviderForType($share->getShareType());

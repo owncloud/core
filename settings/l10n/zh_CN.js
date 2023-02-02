@@ -125,6 +125,7 @@ OC.L10N.register(
     "Delete group" : "删除分组",
     "Resend invitation email" : "重新发送邀请电子邮件",
     "never" : "从不",
+    "unknown" : "未知",
     "deleted {userName}" : "已删除 {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "即将删除一个用户。此操作无法撤销，永久生效。全部用户数据、文件和分享都将被删除。确定想要永久删除 {userName} ？",
     "Delete user" : "删除用户",

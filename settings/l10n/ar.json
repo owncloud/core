@@ -121,6 +121,7 @@
     "You are about to delete a group. This action can't be undone and is permanent. Are you sure that you want to permanently delete {groupName}?" : "أنت على وشك حذف مجموعة. هذا الإجراء نهائي ولا يمكن التراجع عنه. هل أنت متأكد من رغبتك في حذف {groupName} نهائيًا؟",
     "Delete group" : "حذف مجموعة",
     "never" : "أبدًا",
+    "unknown" : "غير معروف",
     "deleted {userName}" : "{userName} محذوف",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "أنت على وشك حذف مستخدم. هذا الإجراء نهائي ولا يمكن التراجع عنه. وسيتم حذف جميع بيانات المستخدم وملفاته ومشاركاته. هل أنت متأكد من رغبتك في حذف {userName} نهائيًا؟",
     "Delete user" : "حذف المستخدم",

@@ -123,6 +123,7 @@
     "Delete group" : "刪除群組",
     "Resend invitation email" : "重新發送邀請電子郵件",
     "never" : "永不",
+    "unknown" : "未知",
     "deleted {userName}" : "刪除 {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "您將要刪除使用者。關於此操作無法撤消，並且是永久性的。所有使用者數據，文件和共享將被刪除。您確定要永久刪除{userName}嗎？",
     "Delete user" : "刪除使用者",

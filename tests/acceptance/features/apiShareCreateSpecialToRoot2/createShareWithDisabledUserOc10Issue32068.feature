@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: share resources with a disabled user - current oC10 behavior for issue-32068
 
   Background:

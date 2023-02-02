@@ -980,7 +980,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			]
 		);
 		$this->eventDispatcher->method('dispatch')
-			->with('remoteshare.received', $this->anything())
+			->with($this->anything(), 'remoteshare.received')
 			->willReturn($event);
 
 		$shouldAutoAccept = $this->provider->getAccepted('remote', 'user@server.com');

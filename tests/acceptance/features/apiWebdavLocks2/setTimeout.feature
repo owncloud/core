@@ -1,4 +1,4 @@
-@api @smokeTest @public_link_share-feature-required @issue-ocis-reva-172 @notToImplementOnOCIS
+@api @smokeTest @public_link_share-feature-required @issue-ocis-reva-172
 Feature: set timeouts of LOCKS
 
   Background:
@@ -7,7 +7,7 @@ Feature: set timeouts of LOCKS
     And user "Alice" has created folder "PARENT/CHILD"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
 
-  @skipOnOcV10.3 @skipOnOcV10.4
+
   Scenario Outline: do not set timeout on folder and check the default timeout
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
@@ -25,12 +25,6 @@ Feature: set timeouts of LOCKS
       | old      | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
       | new      | 120             | 3600        | /Second-(120\|11[1-9])$/   |
       | new      | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | default-timeout | max-timeout | result                     |
-      | spaces   | 120             | 3600        | /Second-(120\|11[1-9])$/   |
-      | spaces   | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
 
 
   Scenario Outline: set timeout on folder
@@ -55,16 +49,7 @@ Feature: set timeouts of LOCKS
       | new      | second--1       | /Second-\d{5}$/ |
       | new      | second-0        | /Second-\d{4}$/ |
 
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | timeout         | result          |
-      | spaces   | second-999      | /Second-\d{3}$/ |
-      | spaces   | second-99999999 | /Second-\d{5}$/ |
-      | spaces   | infinite        | /Second-\d{5}$/ |
-      | spaces   | second--1       | /Second-\d{5}$/ |
-      | spaces   | second-0        | /Second-\d{4}$/ |
 
-  @skipOnOcV10.3 @skipOnOcV10.4
   Scenario Outline: set timeout over the maximum on folder
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
@@ -90,16 +75,6 @@ Feature: set timeouts of LOCKS
       | new      | second-10000 | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
       | new      | infinite     | 120             | 3600        | /Second-(3600\|359[1-9])$/ |
       | new      | infinite     | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
-
-    @personalSpace @skipOnOcV10
-    Examples:
-      | dav-path | timeout      | default-timeout | max-timeout | result                     |
-      | spaces   | second-600   | 120             | 3600        | /Second-(600\|59[1-9])$/   |
-      | spaces   | second-600   | 99999           | 3600        | /Second-(600\|59[1-9])$/   |
-      | spaces   | second-10000 | 120             | 3600        | /Second-(3600\|359[1-9])$/ |
-      | spaces   | second-10000 | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
-      | spaces   | infinite     | 120             | 3600        | /Second-(3600\|359[1-9])$/ |
-      | spaces   | infinite     | 99999           | 3600        | /Second-(3600\|359[1-9])$/ |
 
   @files_sharing-app-required
   Scenario Outline: as owner set timeout on folder as public check it

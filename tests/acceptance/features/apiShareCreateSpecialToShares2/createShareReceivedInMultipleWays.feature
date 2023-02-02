@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@api @files_sharing-app-required
 Feature: share resources where the sharee receives the share in multiple ways
 
   Background:
@@ -33,17 +33,10 @@ Feature: share resources where the sharee receives the share in multiple ways
       | mimetype               | text/plain                |
       | storage_id             | ANY_VALUE                 |
       | share_type             | user                      |
-    @skipOnOcis
     Examples:
       | ocs_api_version | ocs_status_code | file_target               |
       | 1               | 100             | /Shares/textfile0 (2).txt |
       | 2               | 200             | /Shares/textfile0 (2).txt |
-
-    @skipOnOcV10 @issue-2131
-    Examples:
-      | ocs_api_version | ocs_status_code | file_target        |
-      | 1               | 100             | /textfile0 (2).txt |
-      | 2               | 200             | /textfile0 (2).txt |
 
   @issue-ocis-1289
   Scenario Outline: Share of folder and sub-folder to same user
@@ -65,17 +58,10 @@ Feature: share resources where the sharee receives the share in multiple ways
       | /Shares/PARENT/parent.txt |
       | /Shares/CHILD/            |
       | /Shares/CHILD/child.txt   |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_sub_share_path |
       | 1               | 100             | /CHILD                 |
       | 2               | 200             | /CHILD                 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | ocs_api_version | ocs_status_code | pending_sub_share_path |
-      | 1               | 100             | /PARENT/CHILD          |
-      | 2               | 200             | /PARENT/CHILD          |
 
   @issue-ocis-2021
   Scenario Outline: sharing subfolder when parent already shared
@@ -89,17 +75,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And the HTTP status code should be "200"
     And user "Brian" should be able to accept pending share "<pending_share_path>" offered by user "Alice"
     And as "Brian" folder "/Shares/sub" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_share_path |
       | 1               | 100             | /sub               |
       | 2               | 200             | /sub               |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | ocs_api_version | ocs_status_code | pending_share_path |
-      | 1               | 100             | /test/sub          |
-      | 2               | 200             | /test/sub          |
 
   @issue-ocis-2021
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
@@ -114,17 +93,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And the HTTP status code should be "200"
     And user "Brian" should be able to accept pending share "<pending_share_path>" offered by user "Alice"
     And as "Brian" folder "/Shares/sub" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | pending_share_path |
       | 1               | 100             | /sub               |
       | 2               | 200             | /sub               |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | ocs_api_version | ocs_status_code | pending_share_path |
-      | 1               | 100             | /test/sub          |
-      | 2               | 200             | /test/sub          |
 
 
   Scenario Outline: multiple users share a file with the same name but different permissions to a user
@@ -150,17 +122,10 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read,update     |
     And the content of file "/Shares/randomfile.txt" for user "Alice" should be "First data"
     And the content of file "/Shares/randomfile (2).txt" for user "Alice" should be "Second data"
-    @skipOnOcis
     Examples:
       | ocs_api_version | file_target_1          | file_target_2              |
       | 1               | /Shares/randomfile.txt | /Shares/randomfile (2).txt |
       | 2               | /Shares/randomfile.txt | /Shares/randomfile (2).txt |
-
-    @skipOnOcV10 @issue-ocis-2131
-    Examples:
-      | ocs_api_version | file_target_1   | file_target_2       |
-      | 1               | /randomfile.txt | /randomfile (2).txt |
-      | 2               | /randomfile.txt | /randomfile (2).txt |
 
 
   Scenario Outline: multiple users share a folder with the same name to a user
@@ -190,17 +155,10 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read,share      |
     And as "Alice" folder "/Shares/zzzfolder/Brian" should exist
     And as "Alice" folder "/Shares/zzzfolder (2)/Carol" should exist
-    @skipOnOcis
     Examples:
       | ocs_api_version | file_target_1     | file_target_2         | ocs_status_code |
       | 1               | /Shares/zzzfolder | /Shares/zzzfolder (2) | 100             |
       | 2               | /Shares/zzzfolder | /Shares/zzzfolder (2) | 200             |
-
-    @skipOnOcV10 @issue-ocis-2131
-    Examples:
-      | ocs_api_version | file_target_1 | file_target_2  | ocs_status_code |
-      | 1               | /zzzfolder    | /zzzfolder (2) | 100             |
-      | 2               | /zzzfolder    | /zzzfolder (2) | 200             |
 
   @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP @skipOnGraph
   Scenario Outline: share with a group and then add a user to that group that already has a file with the shared name
@@ -258,15 +216,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to create folder "/Shares/parent/fo1"
     And user "Brian" should be able to create folder "/Shares/parent/child1/fo2"
     And user "Alice" should not be able to create folder "/Shares/child1/fo3"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
+    @issue-2440
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to user with all permissions and its child folder to group with read permission then check rename operation
@@ -298,15 +251,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to rename file "/Shares/parent/child1/child2/textfile-2.txt" to "/Shares/parent/child1/child2/rename.txt"
     And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
     And user "Alice" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
+    @issue-2440
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to user with all permissions and its child folder to group with read permission then check delete operation
@@ -338,15 +286,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to delete file "/Shares/parent/child1/child2/textfile-2.txt"
     And user "Brian" should not be able to delete folder "/Shares/child1/child2"
     And user "Alice" should not be able to delete folder "/Shares/child1/child2"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
+    @issue-2440
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to user with all permissions and its child folder to group with read permission then check reshare operation
@@ -383,15 +326,9 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "/Shares/child1" should exist
     And as "Alice" folder "/Shares/child1" should exist
     And as "Alice" folder "/Shares/parent" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to group with read permission and its child folder to user with all permissions then check create operation
@@ -424,15 +361,9 @@ Feature: share resources where the sharee receives the share in multiple ways
     But user "Brian" should not be able to create folder "/Shares/parent/fo3"
     And user "Brian" should not be able to create folder "/Shares/parent/fo3"
     And user "Alice" should not be able to create folder "/Shares/parent/fo3"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to group with read permission and its child folder to user with all permissions then check rename operation
@@ -464,15 +395,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to rename file "/Shares/child1/child2/textfile-2.txt" to "/Shares/child1/child2/rename.txt"
     And user "Brian" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
     And user "Alice" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2440
+    @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to group with read permission and its child folder to user with all permissions then check delete operation
@@ -504,15 +430,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to delete file "/Shares/child1/child2/textfile-2.txt"
     And user "Brian" should not be able to delete folder "/Shares/parent/child1"
     And user "Alice" should not be able to delete folder "/Shares/parent/child1"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2440
+    @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to group with read permission and its child folder to user with all permissions then check reshare operation
@@ -545,15 +466,9 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "/Shares/parent" should exist
     And as "Alice" folder "/Shares/parent" should exist
     And as "Alice" folder "/Shares/child1" should exist
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to one group with all permissions and its child folder to another group with read permission
@@ -596,15 +511,9 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to create folder "/Shares/child1/child2/fo2"
     And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
     And user "Brian" should not be able to share folder "/Shares/child1" with group "grp3" with permissions "read" using the sharing API
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
-
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
 
   @skipOnOcV10 @issue-39347
   Scenario Outline: Share receiver renames the received group share and shares same folder through user share again
