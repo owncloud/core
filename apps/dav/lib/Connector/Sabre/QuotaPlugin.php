@@ -188,32 +188,27 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($length === null) {
 			$length = $this->getLength();
 		}
-		$freeSpace = $this->getFreeSpace($path);
-		if (!$length && $freeSpace == 0) {
-			throw new InsufficientStorage('Creation of empty files is forbidden in case quota is not available');
+		list($parentPath, $newName) = \Sabre\Uri\split($path);
+		if ($parentPath === null) {
+			$parentPath = '';
 		}
-		if ($length) {
-			list($parentPath, $newName) = \Sabre\Uri\split($path);
-			if ($parentPath === null) {
-				$parentPath = '';
+		$req = $this->server->httpRequest;
+		if ($req->getHeader('OC-Chunked')) {
+			$info = \OC_FileChunking::decodeName($newName);
+			$chunkHandler = $this->getFileChunking($info);
+			// subtract the already uploaded size to see whether
+			// there is still enough space for the remaining chunks
+			$length -= $chunkHandler->getCurrentSize();
+			// use target file name for free space check in case of shared files
+			$path = \rtrim($parentPath, '/') . '/' . $info['name'];
+		}
+		$freeSpace = $this->getFreeSpace($path);
+		$availableSpace = $freeSpace + $extraSpace;
+		if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace == 0))) {
+			if (isset($chunkHandler)) {
+				$chunkHandler->cleanup();
 			}
-			$req = $this->server->httpRequest;
-			if ($req->getHeader('OC-Chunked')) {
-				$info = \OC_FileChunking::decodeName($newName);
-				$chunkHandler = $this->getFileChunking($info);
-				// subtract the already uploaded size to see whether
-				// there is still enough space for the remaining chunks
-				$length -= $chunkHandler->getCurrentSize();
-				// use target file name for free space check in case of shared files
-				$path = \rtrim($parentPath, '/') . '/' . $info['name'];
-			}
-			$freeSpace = $this->getFreeSpace($path);
-			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && $length > $freeSpace + $extraSpace) {
-				if (isset($chunkHandler)) {
-					$chunkHandler->cleanup();
-				}
-				throw new InsufficientStorage();
-			}
+			throw new InsufficientStorage();
 		}
 		return true;
 	}
