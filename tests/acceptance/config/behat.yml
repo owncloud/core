@@ -67,7 +67,6 @@ default:
         - CapabilitiesContext:
         - OccContext:
         - AppConfigurationContext:
-        - ResponseContext:
 
     apiComments:
       paths:
