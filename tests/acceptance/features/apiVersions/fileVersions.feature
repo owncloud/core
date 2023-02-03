@@ -140,7 +140,7 @@ Feature: dav-versions
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "123" to "/davtest.txt"
     And we save it into "FILEID"
-    When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/<<FILEID>>"
+    When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/<<FILEIDi"
     Then the HTTP status code should be "400" or "404"
 
   @files_sharing-app-required

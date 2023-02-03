@@ -34,7 +34,8 @@
 		'<div class="version-container">' +
 		'<div class="version-headline">' +
 		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
-		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}{{currentVersionLabel}}</span>' +
+		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}</span>' +
+		'<span class="versionstatus"> · {{currentVersionLabel}}</span>' +
 		'</a>' +
 		'</div>' +
 		'{{#hasDetails}}' +
@@ -44,9 +45,11 @@
 		'</div>' +
 		'{{/hasDetails}}' +
 		'</div>' +
+		'<div class="action-container">' +
 		'{{#canPublish}}' +
 		'<a href="#" class="publishVersion" title="{{publishLabel}}"><img src="{{publishIconUrl}}" /></a>' +
 		'{{/canPublish}}' +
+		'</div>' +
 		'</div>' +
 		'</li>';
 
@@ -60,7 +63,8 @@
 		'<div class="version-container">' +
 		'<div class="version-headline">' +
 		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
-		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}{{majorVersionlabel}}</span>' +
+		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}</span>' +
+		'<span class="versionstatus">{{#isMajorVersion}} · {{/isMajorVersion}}{{majorVersionlabel}}</span>' +
 		'</a>' +
 		'</div>' +
 		'{{#hasDetails}}' +
@@ -70,9 +74,11 @@
 		'</div>' +
 		'{{/hasDetails}}' +
 		'</div>' +
+		'<div class="action-container">' +
 		'{{#canRevert}}' +
 		'<a href="#" class="revertVersion" title="{{revertLabel}}"><img src="{{revertIconUrl}}" /></a>' +
 		'{{/canRevert}}' +
+		'</div>' +
 		'</div>' +
 		'</li>';
 
@@ -317,7 +323,8 @@
 				editedBy: version.has('editedBy'),
 				editedByName: version.has('editedByName'),
 				versionTag: version.has('versionTag'),
-				majorVersionlabel: isMajorVersion ? ' · ' + t('files_versions', 'persistent') : ''
+				isMajorVersion: isMajorVersion,
+				majorVersionlabel: isMajorVersion ? t('files_versions', 'persistent') : ''
 			}, version.attributes);
 		},
 
@@ -340,7 +347,7 @@
 				editedBy: current.has('editedBy'),
 				editedByName: current.has('editedByName'),
 				versionTag: current.has('versionTag'),
-				currentVersionLabel: ' · ' + t('files_versions', 'current')
+				currentVersionLabel: t('files_versions', 'current')
 			}, current.attributes);
 		},
 

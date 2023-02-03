@@ -65,12 +65,27 @@
 	vertical-align: super;
 }
 
+.versionsTabView .versionstatus {
+	vertical-align: super;
+}
+
+/* FIXME: we need to find better solution for this ref. https://github.com/owncloud/core/pull/40531#issuecomment-1420926550 */
+@media(max-width: 1200px) {
+	.versionsTabView .versionstatus {
+		display: none;
+	}
+}
+
 .versionsTabView .version-details {
 	text-align: left;
 }
 
 .versionsTabView .version-details > span {
 	padding: 0 10px;
+}
+
+.versionsTabView .action-container {
+	display: inline;
 }
 
 .versionsTabView .revertVersion {
