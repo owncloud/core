@@ -102,11 +102,7 @@ class ExternalSharesController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function create($id, $share_type) {
-		if($share_type === "group" && $this->groupExternalManager !== null) {
-			$manager = $this->groupExternalManager;
-		} else {
-			$manager = $this->externalManager;
-		}
+		$manager = $this->getRelatedManager($share_type);
 		$shareInfo = $manager->getShare($id);
 		
 		if ($shareInfo !== false) {
@@ -138,8 +134,9 @@ class ExternalSharesController extends Controller {
 	 * @param integer $id
 	 * @return JSONResponse
 	 */
-	public function destroy($id) {
-		$shareInfo = $this->externalManager->getShare($id);
+	public function destroy($id, $share_type) {
+		$manager = $this->getRelatedManager($share_type);  
+		$shareInfo = $manager->getShare($id);
 		if ($shareInfo !== false) {
 			$event = new GenericEvent(
 				null,
@@ -151,9 +148,19 @@ class ExternalSharesController extends Controller {
 				]
 			);
 			$this->dispatcher->dispatch($event, 'remoteshare.declined');
-			$this->externalManager->declineShare($id);
+			$manager->declineShare($id);
 		}
 		return new JSONResponse();
+	}
+
+	private function getRelatedManager($share_type){
+		if($share_type === "group" && $this->groupExternalManager !== null) {
+			$manager = $this->groupExternalManager;
+		} else {
+			$manager = $this->externalManager;
+		}
+		return $manager;
+
 	}
 
 	/**
