@@ -81,7 +81,7 @@ class DetailsDialog extends OwncloudPage {
 
 	private $versionsListXpath = "//div[@id='versionsTabView']//ul[@class='versions']";
 	private $versionDetailsXpath = "//div[@id='versionsTabView']//ul[@class='versions']/li//div[@class='version-details']";
-	private $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[2]/div/a";
+	private $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[2]/div/div[@class='action-container']/a";
 
 	/**
 	 *

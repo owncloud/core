@@ -65,12 +65,26 @@
 	vertical-align: super;
 }
 
+.versionsTabView .versionstatus {
+	vertical-align: super;
+}
+
+@media(max-width: 768px) {
+	.versionsTabView .versionstatus {
+		display: none;
+	}
+}
+
 .versionsTabView .version-details {
 	text-align: left;
 }
 
 .versionsTabView .version-details > span {
 	padding: 0 10px;
+}
+
+.versionsTabView .action-container {
+	display: inline;
 }
 
 .versionsTabView .revertVersion {

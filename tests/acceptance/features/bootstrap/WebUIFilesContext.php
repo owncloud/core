@@ -2695,7 +2695,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		);
 		$session = $this->getSession();
 		$this->filesPage->waitTillPageIsLoaded($session);
-		\usleep(MINIMUM_UI_WAIT_TIMEOUT_MILLISEC); // sleep to really make sure all rendering is over
 	}
 
 	/**
