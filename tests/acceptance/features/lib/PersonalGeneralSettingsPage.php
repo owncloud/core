@@ -51,6 +51,8 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	protected $versionSectionXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Version']";
 	protected $federatedCloudIDXpath = "//*[@id='fileSharingSettings']/p/strong";
 	protected $usernameXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']/div[@id='username']";
+	protected $legalImprintXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']/div/p/a[@id='legal_imprint']";
+	protected $legalPrivacyPolicyXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']/div/p/a[@id='legal_privacy_policy']";
 	protected $groupListXpath = "//div[@id='OC\\Settings\\Panels\\Personal\\Profile']/div[@id='groups']";
 
 	protected $setProfilePicFromFilesBtnXpath = "//*[@id='selectavatar']";
@@ -211,6 +213,28 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		// The text is like "Username Alice"
 		$text = $this->find("xpath", $this->usernameXpath)->getText();
 		return \substr($text, \strlen("Username "));
+	}
+
+	/**
+	 * get the legal imprint link displayed in the UI
+	 *
+	 * @return string
+	 */
+	public function getLegalImprint(): string {
+		$this->waitTillElementIsNotNull($this->legalImprintXpath);
+		$text = $this->find("xpath", $this->legalImprintXpath)->getText();
+		return $text;
+	}
+
+	/**
+	 * get the legal privacy policy link displayed in the UI
+	 *
+	 * @return string
+	 */
+	public function getLegalPrivacyPolicy(): string {
+		$this->waitTillElementIsNotNull($this->legalPrivacyPolicyXpath);
+		$text = $this->find("xpath", $this->legalPrivacyPolicyXpath)->getText();
+		return $text;
 	}
 
 	/**
