@@ -209,7 +209,7 @@ OCA.Sharing.App = {
 		fileList.fileSummary.$el.find('.filesize').remove();
 	},
 
-	_setShareState: function(fileId, state, isRemote) {
+	_setShareState: function(fileId, state, isRemote, shareType) {
 		var method = 'POST';
 		if (state === OC.Share.STATE_REJECTED) {
 			method = 'DELETE';
@@ -221,6 +221,9 @@ OCA.Sharing.App = {
 			contentType: 'application/json',
 			dataType: 'json',
 			type: method,
+			data: { 
+				...(!!shareType && {shareType}),
+			},
 		});
 		xhr.fail(function(response) {
 			var message = '';
@@ -252,7 +255,7 @@ OCA.Sharing.App = {
 		}
 
 		context.fileList.showFileBusyState(context.$file, true);
-		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState, isRemote)
+		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState, isRemote, 0)
 			.then(responseCallback);
 	},
 
