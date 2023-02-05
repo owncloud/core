@@ -2,7 +2,7 @@ OC.L10N.register(
     "updatenotification",
     {
     "Update notifications" : "Njoftime përditësimesh",
-    "{version} is available. Get more information on how to update." : "Është gati {version}. Merrni më tepër informacion se si ta përditësoni.",
+    "{version} is available. Get more information on how to update." : "Është gati {version}. Merrni më tepër hollësi se si ta përditësoni.",
     "Updated channel" : "Kanali u përditësua",
     "ownCloud core" : "baza e ownCloud-it",
     "Update for %1$s to version %2$s is available." : "Është gati përditësimi për %1$s në version %2$s.",

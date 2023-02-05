@@ -31,7 +31,7 @@
     "Disconnect storage" : "Shkëpute depozitën",
     "Unshare" : "Hiqi ndarjen me të tjerë",
     "How do you want to open this file?" : "Si doni të hapet kjo kartelë?",
-    "Could not load info for file \"{file}\"" : "S’u ngarkuan dot të dhëna ose kartelë \"{file}\"",
+    "Could not load info for file \"{file}\"" : "S’u ngarkuan dot hollësi për kartelën “{file}”",
     "Files" : "Kartela",
     "Details" : "Hollësi",
     "Select" : "Përzgjidhe",
