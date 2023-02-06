@@ -1,4 +1,4 @@
-@api @systemtags-app-required @issue-ocis-reva-51
+@api @systemtags-app-required
 Feature: tags
 
   Background:

@@ -30,7 +30,7 @@ Feature: create a public link share
     And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "403"
 
-    @issue-ocis-reva-12 @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -158,7 +158,7 @@ Feature: create a public link share
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
 
-    @issue-ocis-reva-12 @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -261,7 +261,7 @@ Feature: create a public link share
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
 
-    @issue-ocis-reva-41 @issue-ocis-2079
+    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -293,7 +293,6 @@ Feature: create a public link share
       | permissions | create   |
     Then the OCS status code should be "<ocs_status_code>"
 
-    @issue-ocis-2079 @issue-ocis-reva-41
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
@@ -311,13 +310,12 @@ Feature: create a public link share
       | permissions | read,create |
     Then the OCS status code should be "<ocs_status_code>"
 
-    @issue-ocis-2079 @issue-ocis-reva-41
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
       | 2               | 403             |
 
-  @issue-ocis-reva-41
+
   Scenario Outline: Creating a link share with read+update+create permissions is forbidden when public upload is disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -333,7 +331,7 @@ Feature: create a public link share
       | 1               | 403             |
       | 2               | 403             |
 
-  @issue-ocis-reva-41
+
   Scenario Outline: Creating a link share with update permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -442,7 +440,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-41
+
   Scenario Outline: Create a public link with default expiration date set and max expiration date enforced and access using the public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date" of app "core" has been set to "yes"

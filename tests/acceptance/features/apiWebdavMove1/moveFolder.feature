@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-14
+@api
 Feature: move (rename) folder
   As a user
   I want to be able to move and rename folders

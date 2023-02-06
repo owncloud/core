@@ -48,7 +48,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @files_sharing-app-required @issue-ocis-reva-11
+  @files_sharing-app-required
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -67,7 +67,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @files_sharing-app-required @issue-ocis-reva-11
+  @files_sharing-app-required
   Scenario Outline: Copying a file to overwrite a file into a folder with no permissions
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -88,7 +88,7 @@ Feature: copy file
       | old         |
       | new         |
 
-  @issue-ocis-reva-15
+
   Scenario Outline: Copying file to a path with extension .part should not be possible
     Given using <dav_version> DAV path
     When user "Alice" copies file "/textfile1.txt" to "/textfile1.part" using the WebDAV API

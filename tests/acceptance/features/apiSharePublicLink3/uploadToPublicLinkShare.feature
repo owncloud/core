@@ -190,7 +190,6 @@ Feature: upload to a public link share
       | public-webdav-api-version |
       | old                       |
 
-    @issue-ocis-reva-41
     Examples:
       | public-webdav-api-version |
       | new                       |
@@ -211,7 +210,6 @@ Feature: upload to a public link share
       | public-webdav-api-version |
       | old                       |
 
-    @issue-ocis-reva-41
     Examples:
       | public-webdav-api-version |
       | new                       |

@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-reva-34
+@api @files_sharing-app-required
 Feature: sharees
 
   Background:

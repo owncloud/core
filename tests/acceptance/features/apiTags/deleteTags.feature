@@ -1,4 +1,4 @@
-@api @systemtags-app-required @issue-ocis-reva-51
+@api @systemtags-app-required
 Feature: Deletion of tags
   As a user
   I want to delete the tags that are already created

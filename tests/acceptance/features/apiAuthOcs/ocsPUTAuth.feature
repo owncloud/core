@@ -4,7 +4,7 @@ Feature: auth
   Background:
     Given user "another-admin" has been created with default attributes and without skeleton files
 
-  @issue-ocis-reva-30 @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
+  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send PUT request to OCS endpoints as admin with wrong password
     Given user "another-admin" has been added to group "admin"
     When user "another-admin" requests these endpoints with "PUT" including body "doesnotmatter" using password "invalid" about user "Alice"

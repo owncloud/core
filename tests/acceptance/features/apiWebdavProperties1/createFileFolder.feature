@@ -61,7 +61,7 @@ Feature: create files and folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-15
+
   Scenario Outline: Creating a directory which contains .part should not be possible
     Given using <dav_version> DAV path
     When user "Alice" creates folder "/folder.with.ext.part" using the WebDAV API

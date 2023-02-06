@@ -157,7 +157,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-34
+
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -182,7 +182,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-34
+
   Scenario Outline: Creating a share of a folder with a group, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -396,7 +396,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-11
+
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -434,7 +434,7 @@ Feature: sharing
       | /Shares/randomfile.txt |
     And the content of file "/Shares/randomfile.txt" for user "Brian" should be "Random data"
 
-  @issue-ocis-reva-34
+
   Scenario Outline: Share of folder to a group with emoji in the name
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:

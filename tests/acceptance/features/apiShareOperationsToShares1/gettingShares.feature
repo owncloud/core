@@ -24,7 +24,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-65
+
   Scenario Outline: getting all shares of a user using another user
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"

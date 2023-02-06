@@ -1,4 +1,4 @@
-@api @systemtags-app-required @issue-ocis-reva-51
+@api @systemtags-app-required
 Feature: Creation of tags
   As a user
   I should be able to create tags
