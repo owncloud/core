@@ -194,7 +194,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "204"
     And as user "Brian" the preview of "/parent.txt" with width "32" and height "32" should have been changed
 
-  @issue-ocis-2538
+
   Scenario: when owner updates a shared file, previews for sharee are also updated (to shared folder)
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled

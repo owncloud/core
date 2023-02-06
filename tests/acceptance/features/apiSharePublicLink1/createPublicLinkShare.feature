@@ -30,7 +30,6 @@ Feature: create a public link share
     And the public upload to the last publicly shared file using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared file using the new public WebDAV API should fail with HTTP status code "403"
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -158,7 +157,6 @@ Feature: create a public link share
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -261,7 +259,6 @@ Feature: create a public link share
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -277,7 +274,6 @@ Feature: create a public link share
       | permissions | read,create |
     Then the OCS status code should be "<ocs_status_code>"
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
@@ -325,7 +321,6 @@ Feature: create a public link share
       | permissions | read,update,create |
     Then the OCS status code should be "<ocs_status_code>"
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 403             |
@@ -363,7 +358,6 @@ Feature: create a public link share
     And uploading a file should work using the old public WebDAV API
     And uploading a file should work using the new public WebDAV API
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -385,7 +379,6 @@ Feature: create a public link share
     And uploading a file should work using the old public WebDAV API
     And uploading a file should work using the new public WebDAV API
 
-   @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -415,7 +408,6 @@ Feature: create a public link share
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "long file"
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "long file"
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -434,7 +426,6 @@ Feature: create a public link share
     And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "Random data"
     And the public should be able to download file "/randomfile.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "Random data"
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -472,7 +463,6 @@ Feature: create a public link share
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
 
-    @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
@@ -488,7 +478,6 @@ Feature: create a public link share
     When user "Alice" deletes folder "PARENT" using the WebDAV API
     And the public download of file "/parent.txt" from inside the last public link shared folder using the <public-webdav-api-version> public WebDAV API should fail with HTTP status code "404"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -509,7 +498,6 @@ Feature: create a public link share
     Then the value of the item "//s:message" in the response should be "<response>"
     And the HTTP status code should be "404"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version | response |
       | old                       |          |

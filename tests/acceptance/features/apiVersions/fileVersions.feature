@@ -410,7 +410,7 @@ Feature: dav-versions
     Then the HTTP status code should be "204"
     And the content of file "/renamedfile.txt" for user "Alice" should be "old content"
 
-  @issue-ocis-1238
+
   Scenario: User can access version number after moving a file
     Given user "Alice" has created folder "testFolder"
     And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
@@ -429,7 +429,7 @@ Feature: dav-versions
     Then the HTTP status code should be "207"
     And the number of versions should be "0"
 
-  @issue-ocis-1234
+
   Scenario: the number of etag elements in response changes according to version of the file
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
