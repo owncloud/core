@@ -22,6 +22,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: <a href="https://github.com/owncloud/core/pull/40571">#40571</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: <a href="https://github.com/owncloud/core/pull/40579">#40579</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix header title and claim rendered as escaped HTML: <a href="https://github.com/owncloud/core/issues/40605">#40605</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Use correct themed l10n app folder when app lives outside of server root: <a href="https://github.com/owncloud/core/pull/40607">#40607</a></li>
         <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
@@ -151,6 +152,15 @@
             <p>https://github.com/owncloud/core/issues/40605<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40606<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Use correct themed l10n app folder when app lives outside of server root: <a href="https://github.com/owncloud/core/pull/40607">#40607</a></p>
+            <p>When an app_path is pointing outside of the ownCloud server root or uses an symlink under
+   certain conditions the l10n folder points to an invalid location and results in a crash of the
+   server. This happened due to the assumption that app paths always start with the server root
+   path.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40607<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>

@@ -24,6 +24,7 @@ Summary
 * Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: [#40571](https://github.com/owncloud/core/pull/40571)
 * Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
 * Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
+* Bugfix - Use correct themed l10n app folder when app lives outside of server root: [#40607](https://github.com/owncloud/core/pull/40607)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
@@ -162,6 +163,15 @@ Details
 
    https://github.com/owncloud/core/issues/40605
    https://github.com/owncloud/core/pull/40606
+
+* Bugfix - Use correct themed l10n app folder when app lives outside of server root: [#40607](https://github.com/owncloud/core/pull/40607)
+
+   When an app_path is pointing outside of the ownCloud server root or uses an symlink under
+   certain conditions the l10n folder points to an invalid location and results in a crash of the
+   server. This happened due to the assumption that app paths always start with the server root
+   path.
+
+   https://github.com/owncloud/core/pull/40607
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
