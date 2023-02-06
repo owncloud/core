@@ -478,10 +478,6 @@ Feature: create a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -496,12 +492,8 @@ Feature: create a public link share
     And the HTTP status code should be "404"
 
     Examples:
-      | public-webdav-api-version | response |
-      | old                       |          |
-
-
-    Examples:
       | public-webdav-api-version | response                   |
+      | old                       |                            |
       | new                       | File not found: parent.txt |
 
 

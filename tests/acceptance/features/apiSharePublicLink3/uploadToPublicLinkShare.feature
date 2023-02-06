@@ -48,9 +48,6 @@ Feature: upload to a public link share
       | dav-path | public-webdav-api-version |
       | old      | old                       |
       | new      | old                       |
-
-    Examples:
-      | dav-path | public-webdav-api-version |
       | old      | new                       |
       | new      | new                       |
 
@@ -65,9 +62,6 @@ Feature: upload to a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -128,9 +122,6 @@ Feature: upload to a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -145,9 +136,6 @@ Feature: upload to a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -176,9 +164,6 @@ Feature: upload to a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -195,9 +180,6 @@ Feature: upload to a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
   @smokeTest

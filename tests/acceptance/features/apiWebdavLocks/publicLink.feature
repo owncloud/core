@@ -93,8 +93,5 @@ Feature: persistent-locking in case of a public link
       | public-webdav-api-version | lock-scope |
       | old                       | shared     |
       | old                       | exclusive  |
-
-    Examples:
-      | public-webdav-api-version | lock-scope |
       | new                       | shared     |
       | new                       | exclusive  |
