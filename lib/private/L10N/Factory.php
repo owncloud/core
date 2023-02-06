@@ -52,11 +52,6 @@ class Factory implements IFactory {
 	 */
 	protected $availableLanguages = [];
 
-	/**
-	 * @var array Structure: string => callable
-	 */
-	protected $pluralFunctions = [];
-
 	/** @var IConfig */
 	protected $config;
 
@@ -76,7 +71,7 @@ class Factory implements IFactory {
 	 * @param IConfig $config
 	 * @param IRequest $request
 	 * @param IThemeService $themeService
-	 * @param IUserSession $userSession
+	 * @param IUserSession|null $userSession
 	 * @param string $serverRoot
 	 */
 	public function __construct(
@@ -194,10 +189,9 @@ class Factory implements IFactory {
 		$available = \array_merge($available, $this->findAvailableLanguageFiles($dir));
 
 		// merge with translations from themes
-		$relativePath = \substr($dir, \strlen($this->serverRoot));
 		$themeDir = $this->getActiveThemeDirectory();
 		if ($themeDir !== '') {
-			$themeDir .= $relativePath;
+			$themeDir = $this->findL10nDirInTheme($themeDir, $app);
 			$available = \array_merge($available, $this->findAvailableLanguageFiles($themeDir));
 		}
 
@@ -290,10 +284,9 @@ class Factory implements IFactory {
 		}
 
 		// merge with translations from themes
-		$relativePath = \substr($transFile, \strlen($this->serverRoot));
 		$themeDir = $this->getActiveThemeDirectory();
 		if ($themeDir !== '') {
-			$themeTransFile = $themeDir . $relativePath;
+			$themeTransFile = $this->findL10nDirInTheme($themeDir, $app) . "/$lang.json";
 			if (\file_exists($themeTransFile)) {
 				$languageFiles[] = $themeTransFile;
 			}
@@ -305,10 +298,10 @@ class Factory implements IFactory {
 	/**
 	 * find the l10n directory
 	 *
-	 * @param string $app App id or empty string for core
+	 * @param string|null $app App id or empty string for core
 	 * @return string directory
 	 */
-	protected function findL10nDir($app = null) {
+	protected function findL10nDir($app): string {
 		if (\in_array($app, ['core', 'lib', 'settings'])) {
 			if (\file_exists($this->serverRoot . '/' . $app . '/l10n/')) {
 				return $this->serverRoot . '/' . $app . '/l10n/';
@@ -318,6 +311,20 @@ class Factory implements IFactory {
 			return \OC_App::getAppPath($app) . '/l10n/';
 		}
 		return $this->serverRoot . '/core/l10n/';
+	}
+
+	protected function findL10nDirInTheme(string $themeDir, $app): string {
+		if ($app) {
+			if (\in_array($app, ['core', 'lib', 'settings'])) {
+				$p = $themeDir . '/' . $app . '/l10n/';
+			} else {
+				$p = $themeDir . '/apps/' . $app . '/l10n/';
+			}
+			if (\file_exists($p)) {
+				return $p;
+			}
+		}
+		return $themeDir . '/core/l10n/';
 	}
 
 	/**
