@@ -14,5 +14,8 @@
         "phpunit/phpunit": "^9.5",
         "laminas/laminas-ldap": "^2.15",
         "ankitpokhrel/tus-php": "^2.3"
+    },
+    "require-dev": {
+        "helmich/phpunit-json-assert": "^3.4"
     }
 }
