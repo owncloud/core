@@ -521,7 +521,7 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path |
       | /Shares/PARENT      |
 
-  @issue-ocis-765
+
   Scenario: shares exist after restoring already shared file to a previous version
     And user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
     And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"
