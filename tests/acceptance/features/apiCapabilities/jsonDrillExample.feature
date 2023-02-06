@@ -9,6 +9,25 @@ Feature: capabilities
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
+#    And the capabilities should contain
+#      | capability    | path_to_element                       | value             |
+#      | core          | pollinterval                          | 30000             |
+#      | core          | webdav-root                           | remote.php/webdav |
+#      | files_sharing | api_enabled                           | 1                 |
+#      | files_sharing | can_share                             | 1                 |
+#      | files_sharing | public@@@enabled                      | 1                 |
+#      | files_sharing | public@@@multiple                     | 1                 |
+#      | files_sharing | public@@@upload                       | EMPTY             |
+#      | files_sharing | public@@@send_mail                    | EMPTY             |
+#      | files_sharing | public@@@social_share                 | 1                 |
+#      | files_sharing | resharing                             | 1                 |
+#      | files_sharing | federation@@@outgoing                 | 1                 |
+#      | files_sharing | federation@@@incoming                 | 1                 |
+#      | files_sharing | group_sharing                         | 1                 |
+#      | files_sharing | share_with_group_members_only         | EMPTY             |
+#      | files_sharing | user_enumeration@@@enabled            | 1                 |
+#      | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
+#      | files         | bigfilechunking                       | 1                 |
     And the data of the response should match
       """
       {
@@ -279,6 +298,14 @@ Feature: capabilities
     When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
+#    And the capabilities should contain
+#      | capability    | path_to_element                                          | value             |
+#      | files_sharing | user@@@expire_date@@@enabled                             | EMPTY             |
+#      | files_sharing | group@@@expire_date@@@enabled                            | EMPTY             |
+#      | files_sharing | providers_capabilities@@@ocinternal@@@user@@@element[0]  | shareExpiration   |
+#      | files_sharing | providers_capabilities@@@ocinternal@@@group@@@element[0] | shareExpiration   |
+#      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[0]  | shareExpiration   |
+#      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[1]  | passwordProtected |
     And the data of the response should match
     """
     {
