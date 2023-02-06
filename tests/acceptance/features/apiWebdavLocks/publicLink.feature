@@ -1,4 +1,4 @@
-@api @smokeTest @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-172
+@api @smokeTest @public_link_share-feature-required @files_sharing-app-required
 Feature: persistent-locking in case of a public link
 
   Background:

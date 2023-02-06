@@ -537,7 +537,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @skipOnLDAP @issue-ocis-1317
+  @skipOnLDAP
   Scenario Outline: Enumerate only group members - only accept exact group match from non-memberships
     Given using OCS API version "<ocs-api-version>"
     And group "ShareeGroupNonMember" has been created

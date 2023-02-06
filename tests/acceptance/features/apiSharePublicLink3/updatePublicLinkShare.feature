@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-252
+@api @files_sharing-app-required @public_link_share-feature-required
 Feature: update a public link share
 
   Background:
@@ -45,7 +45,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-reva-336
+  @smokeTest
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
@@ -161,7 +161,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-336
+
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info (ocis Bug demonstration)
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
@@ -194,7 +194,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-336
+
   Scenario Outline: Creating a new public link share, updating its password and getting its info
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
@@ -226,7 +226,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-336
+
   Scenario Outline: Creating a new public link share, updating its permissions and getting its info
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
@@ -258,7 +258,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-336
+
   Scenario Outline: Creating a new public link share, updating its permissions to view download and upload and getting its info
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
@@ -290,7 +290,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-336
+
   Scenario Outline: Creating a new public link share, updating publicUpload option and getting its info
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
@@ -433,7 +433,6 @@ Feature: update a public link share
     And the HTTP status code of responses on all endpoints should be "403"
     And as "Alice" file "PARENT/CHILD/child.txt" should exist
 
-   @issue-ocis-2079 @issue-ocis-reva-292
     Examples:
       | ocs_api_version |
       | 1               |

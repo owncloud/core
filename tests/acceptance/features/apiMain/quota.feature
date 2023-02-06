@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-101 @skipOnGraph
+@api @skipOnGraph
 Feature: quota
 
   Background:

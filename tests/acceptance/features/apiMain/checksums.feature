@@ -13,7 +13,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @smokeTest @issue-ocis-reva-196
+  @smokeTest
   Scenario Outline: Uploading a file with checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
@@ -36,7 +36,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @issue-ocis-reva-196
+
   Scenario Outline: Moving a file with checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
@@ -61,7 +61,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @issue-ocis-reva-196
+
   Scenario Outline: Uploading a chunked file with checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
     And user "Alice" has uploaded chunk file "1" of "3" with "AAAAA" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
@@ -116,7 +116,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @issue-ocis-reva-196
+
   Scenario Outline: Copying a file with checksum should return the checksum in the propfind using new DAV path
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
@@ -138,7 +138,7 @@ Feature: checksums
       | dav_version |
       | new         |
 
-  @files_sharing-app-required @issue-ocis-reva-196
+  @files_sharing-app-required
   Scenario Outline: Sharing a file with checksum should return the checksum in the propfind using new DAV path
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -154,7 +154,7 @@ Feature: checksums
       | dav_version |
       | new         |
 
-  @files_sharing-app-required @issue-ocis-reva-196 @skipOnOcV10
+  @files_sharing-app-required
   Scenario Outline: Modifying a shared file should return correct checksum in the propfind using new DAV path
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -340,7 +340,7 @@ Feature: checksums
       | old         |
       | new         |
 
-  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224 @issue-ocis-reva-196
+  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-224
   Scenario Outline: Uploading a file with invalid SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
