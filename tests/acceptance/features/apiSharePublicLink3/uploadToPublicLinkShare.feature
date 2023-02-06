@@ -44,7 +44,6 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "404"
 
-    @issue-ocis-2079
     Examples:
       | dav-path | public-webdav-api-version |
       | old      | old                       |
@@ -64,7 +63,6 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "403"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -85,7 +83,6 @@ Feature: upload to a public link share
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -101,7 +98,6 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -117,7 +113,6 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -132,7 +127,6 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "507"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -151,7 +145,6 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "507"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -170,7 +163,6 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -185,12 +177,10 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "403"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
 
-    @issue-ocis-reva-41
     Examples:
       | public-webdav-api-version |
       | new                       |
@@ -206,12 +196,10 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
 
-    @issue-ocis-reva-41
     Examples:
       | public-webdav-api-version |
       | new                       |
@@ -225,7 +213,6 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |

@@ -1,4 +1,4 @@
-@api @systemtags-app-required @issue-ocis-reva-51
+@api @systemtags-app-required
 Feature: Editing the tags
   As a user
   I want to be able to change the tags I have created

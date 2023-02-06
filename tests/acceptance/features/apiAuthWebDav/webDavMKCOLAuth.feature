@@ -30,7 +30,7 @@ Feature: create folder using MKCOL
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @skipOnOcV10 @issue-ocis-5049 @issue-ocis-reva-9 @issue-ocis-reva-197
+  @skipOnOcV10 @issue-ocis-reva-197
   Scenario: send MKCOL requests to another user's webDav endpoints as normal user
     Given user "Brian" has been created with default attributes and without skeleton files
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
@@ -41,7 +41,7 @@ Feature: create folder using MKCOL
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "404"
 
-  @skipOnOcV10 @issue-ocis-5049 @issue-ocis-reva-9 @issue-ocis-reva-197
+  @skipOnOcV10 @issue-ocis-reva-197
   Scenario: send MKCOL requests to non-existent user's webDav endpoints as normal user
     Given user "Brian" has been created with default attributes and without skeleton files
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "non-existent-user"
@@ -86,7 +86,7 @@ Feature: create folder using MKCOL
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @issue-ocis-reva-37
+
   Scenario: send MKCOL requests to webDav endpoints using token authentication should not work
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
@@ -100,7 +100,7 @@ Feature: create folder using MKCOL
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @issue-ocis-reva-37
+
   Scenario: send MKCOL requests to webDav endpoints using app password token as password
     Given token auth has been enforced
     And a new browser session for "Alice" has been started

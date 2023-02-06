@@ -13,7 +13,7 @@ Feature: dav-versions
     Then the HTTP status code should be "201"
     And the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
 
-  @issue-ocis-reva-17 @issue-ocis-reva-56
+
   Scenario: Upload file and no version is available using various chunking methods (except new chunking)
     When user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code should be "200"
@@ -21,13 +21,13 @@ Feature: dav-versions
     And the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "0" elements
     And the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "0" elements
 
-  @issue-ocis-reva-17 @issue-ocis-reva-56 @newChunking @issue-ocis-1321
+  @newChunking @issue-ocis-1321
   Scenario: Upload file and no version is available using new chunking
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     Then the HTTP status code should be "201"
     And the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
 
-  @issue-ocis-reva-56 @newChunking @issue-ocis-1321
+  @newChunking @issue-ocis-1321
   Scenario: Upload file and no version is available using async upload
     Given the administrator has enabled async operations
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 3 chunks with new chunking and using the WebDAV API
@@ -42,7 +42,7 @@ Feature: dav-versions
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
     And the content length of file "/davtest.txt" with version index "1" for user "Alice" in versions folder should be "8"
 
-  @issue-ocis-reva-17 @issue-ocis-reva-56
+
   Scenario: Upload a file twice and versions are available using various chunking methods (except new chunking)
     When user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms except new chunking using the WebDAV API
     And user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms except new chunking using the WebDAV API
@@ -51,14 +51,14 @@ Feature: dav-versions
     And the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "1" element
     And the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "1" element
 
-  @issue-ocis-reva-17 @issue-ocis-reva-56 @newChunking @issue-ocis-1321
+  @newChunking @issue-ocis-1321
   Scenario: Upload a file twice and versions are available using new chunking
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     And user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     Then the HTTP status code of responses on each endpoint should be "201, 204" respectively
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
 
-  @issue-ocis-reva-17 @issue-ocis-reva-56 @newChunking @issue-ocis-1321
+  @newChunking @issue-ocis-1321
   Scenario: Upload a file twice and versions are available using async upload
     Given the administrator has enabled async operations
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
@@ -94,7 +94,7 @@ Feature: dav-versions
     Then the HTTP status code should be "204"
     And the content of file "/davtest.txt" for user "Alice" should be "Back To The Future."
 
-  @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161 @issue-ocis-reva-17 @issue-ocis-reva-56
+  @smokeTest @skipOnStorage:ceph @files_primary_s3-issue-161
   Scenario Outline: Uploading a chunked file does create the correct version that can be restored
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -114,7 +114,7 @@ Feature: dav-versions
       | dav-path | status-code |
       | new      | 204         |
 
-  @skipOnStorage:ceph @files_primary_s3-issue-161 @newChunking @issue-ocis-1321 @issue-ocis-reva-17 @issue-ocis-reva-56 @skipOnStorage:scality
+  @skipOnStorage:ceph @files_primary_s3-issue-161 @newChunking @skipOnStorage:scality
   Scenario: Uploading a file asynchronously does create the correct version that can be restored
     Given the administrator has enabled async operations
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -410,7 +410,7 @@ Feature: dav-versions
     Then the HTTP status code should be "204"
     And the content of file "/renamedfile.txt" for user "Alice" should be "old content"
 
-  @issue-ocis-1238
+
   Scenario: User can access version number after moving a file
     Given user "Alice" has created folder "testFolder"
     And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
@@ -429,7 +429,7 @@ Feature: dav-versions
     Then the HTTP status code should be "207"
     And the number of versions should be "0"
 
-  @issue-ocis-1234
+
   Scenario: the number of etag elements in response changes according to version of the file
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"

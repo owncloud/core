@@ -62,7 +62,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @issue-ocis-2213
+
   Scenario Outline: Correct webdav share-permissions for received file with edit permissions but no reshare permissions
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -77,7 +77,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @issue-ocis-2213
+
   Scenario Outline: Correct webdav share-permissions for received group shared file with edit permissions but no reshare permissions
     Given using <dav-path> DAV path
     And group "grp1" has been created
@@ -99,7 +99,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @issue-ocis-2213
+
   Scenario Outline: Correct webdav share-permissions for received file with reshare permissions but no edit permissions
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "foo" to "/tmp.txt"
@@ -187,7 +187,7 @@ Feature: sharing
       | old      |
       | new      |
 
-  @issue-ocis-2213
+
   Scenario Outline: Correct webdav share-permissions for received folder with all permissions but edit
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"

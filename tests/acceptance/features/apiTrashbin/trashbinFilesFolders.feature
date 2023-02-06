@@ -1,4 +1,4 @@
-@api @files_trashbin-app-required @issue-ocis-reva-52
+@api @files_trashbin-app-required
 Feature: files and folders exist in the trashbin after being deleted
   As a user
   I want deleted files and folders to be available in the trashbin
@@ -288,7 +288,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-  @issue-ocis-541
+
   Scenario Outline: deleted file has appropriate deletion time information
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "file.txt" with mtime "Thu, 08 Aug 2018 04:18:13 GMT" using the WebDAV API
@@ -300,7 +300,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-  @issue-ocis-1547
+
   Scenario Outline: deleting files with special characters moves it to trashbin
     Given using <dav-path> DAV path
     And user "Alice" has uploaded the following files with content "special character file"
@@ -332,7 +332,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | new      |
 
-  @issue-ocis-1547
+
   Scenario Outline: deleting folders with special characters moves it to trashbin
     Given using <dav-path> DAV path
     And user "Alice" has created the following folders

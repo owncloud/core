@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-14
+@api
 Feature: users cannot move (rename) a folder to or into an excluded directory
   As an administrator
   I want to be able to exclude directories (folders) from being processed. Any attempt to rename an existing folder to one of those names should be refused.

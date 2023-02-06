@@ -7,7 +7,7 @@ Feature: share resources with a disabled user
     And user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
 
-  @issue-ocis-2212
+
   Scenario Outline: Creating a new share with a disabled user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files

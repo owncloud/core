@@ -81,7 +81,7 @@ Feature: cannot share resources with invalid permissions
       | 1               | 400             | 200              | create,delete |
       | 2               | 400             | 400              | create,delete |
 
-  @issue-ocis-reva-34
+
   Scenario Outline: Cannot create a share of a file with a group with only create permission
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -100,7 +100,7 @@ Feature: cannot share resources with invalid permissions
       | 1               | 400             | 200              |
       | 2               | 400             | 400              |
 
-  @issue-ocis-reva-34
+
   Scenario Outline: Cannot create a share of a file with a group with only (create,delete) permission
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created

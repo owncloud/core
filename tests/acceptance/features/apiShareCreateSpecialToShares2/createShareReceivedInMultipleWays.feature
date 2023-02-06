@@ -38,7 +38,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             | /Shares/textfile0 (2).txt |
       | 2               | 200             | /Shares/textfile0 (2).txt |
 
-  @issue-ocis-1289
+
   Scenario Outline: Share of folder and sub-folder to same user
     Given using OCS API version "<ocs_api_version>"
     And group "grp4" has been created
@@ -63,7 +63,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             | /CHILD                 |
       | 2               | 200             | /CHILD                 |
 
-  @issue-ocis-2021
+
   Scenario Outline: sharing subfolder when parent already shared
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -80,7 +80,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             | /sub               |
       | 2               | 200             | /sub               |
 
-  @issue-ocis-2021
+
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
     And group "grp0" has been created
@@ -395,7 +395,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to rename file "/Shares/child1/child2/textfile-2.txt" to "/Shares/child1/child2/rename.txt"
     And user "Brian" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
     And user "Alice" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
-    @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |
@@ -430,7 +429,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to delete file "/Shares/child1/child2/textfile-2.txt"
     And user "Brian" should not be able to delete folder "/Shares/parent/child1"
     And user "Alice" should not be able to delete folder "/Shares/parent/child1"
-    @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |

@@ -18,7 +18,6 @@ Feature: changing a public link share
     Then the HTTP status code should be "<http-status-code>"
     And as "Alice" file "PARENT/parent.txt" <should-or-not> exist
 
-    @issue-ocis-2079
     Examples:
       | permissions               | http-status-code | should-or-not | public-webdav-api-version |
       | read,update,create        | 403              | should        | old                       |
@@ -40,7 +39,6 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/parent.txt" should exist
     And as "Alice" file "/PARENT/newparent.txt" should not exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -60,7 +58,6 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/parent.txt" should not exist
     And as "Alice" file "/PARENT/newparent.txt" should exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -75,7 +72,6 @@ Feature: changing a public link share
     Then the HTTP status code should be "403"
     And as "Alice" file "/PARENT/lorem.txt" should not exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -94,7 +90,6 @@ Feature: changing a public link share
     Then the HTTP status code should be "201"
     And the content of file "PARENT/lorem.txt" for user "Alice" should be "test"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -114,7 +109,6 @@ Feature: changing a public link share
     Then the HTTP status code should be "401"
     And as "Alice" file "PARENT/parent.txt" should exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -130,7 +124,6 @@ Feature: changing a public link share
     Then the HTTP status code should be "204"
     And as "Alice" file "PARENT/parent.txt" should not exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -151,7 +144,6 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/newparent.txt" should not exist
     And as "Alice" file "/PARENT/parent.txt" should exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -168,7 +160,6 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/newparent.txt" should exist
     And as "Alice" file "/PARENT/parent.txt" should not exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -184,7 +175,6 @@ Feature: changing a public link share
     Then the HTTP status code should be "401"
     And as "Alice" file "/PARENT/lorem.txt" should not exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -200,7 +190,6 @@ Feature: changing a public link share
     Then the HTTP status code should be "201"
     And as "Alice" file "/PARENT/lorem.txt" should exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -216,7 +205,6 @@ Feature: changing a public link share
     And as "Alice" file "/PARENT/parent.txt" should exist
     And as "Alice" file "/PARENT/newparent.txt" should not exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -235,7 +223,6 @@ Feature: changing a public link share
     Then the HTTP status code should be "403"
     And as "Alice" file "PARENT/parent.txt" should exist
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |

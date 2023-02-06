@@ -204,7 +204,6 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the public should be able to download the last publicly shared file using the <webdav_api_version> public WebDAV API without a password and the content should be "Random data"
 
-    @issue-ocis-2079
     Examples:
       | webdav_api_version |
       | old                |
