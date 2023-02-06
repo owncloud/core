@@ -137,21 +137,18 @@ Feature: Versions of a file
     And user "Alice" has shared file "randomfile.txt" with user "Carol"
     And user "Brian" has uploaded file with content "Brian lorem content" to "/randomfile.txt"
     And user "Alice" has uploaded file with content "Alice lorem content" to "/randomfile.txt"
-    And user "Carol" has uploaded file with content "Carol lorem content" to "/randomfile.txt"
     And user "Carol" has logged in using the webUI
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
+    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
+      | index | author |
+      | 1     | Alice  |
+      | 2     | Brian  |
+      | 3     | Alice  |
+    When the user restores the file to last version using the webUI
     Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Carol  |
       | 2     | Alice  |
       | 3     | Brian  |
       | 4     | Alice  |
-    When the user restores the file to last version using the webUI
-    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
-      | index | author |
-      | 1     | Carol  |
-      | 2     | Carol  |
-      | 3     | Alice  |
-      | 4     | Brian  |
-      | 5     | Alice  |
