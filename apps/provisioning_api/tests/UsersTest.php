@@ -1154,7 +1154,7 @@ class UsersTest extends OriginalTest {
 		$this->setupIsUserAccessibleMock($loggedInUser, $targetUser, false);
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'two_factor_auth_enabled', 'value' => true]]));
+		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'two_factor_auth_enabled', 'value' => 'true']]));
 	}
 
 	public function testEditUserAdminUserSelfEditChangeValidQuota(): void {
