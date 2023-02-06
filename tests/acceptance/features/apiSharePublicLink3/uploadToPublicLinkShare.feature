@@ -6,7 +6,7 @@ Feature: upload to a public link share
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "FOLDER"
 
-  @smokeTest @issue-ocis-2079
+  @smokeTest
   Scenario: Uploading same file to a public upload-only share multiple times via old API
     # The old API needs to have the header OC-Autorename: 1 set to do the autorename
     Given user "Alice" has created a public link share with settings
@@ -218,7 +218,7 @@ Feature: upload to a public link share
       | old                       |
       | new                       |
 
-  @smokeTest @issue-ocis-2079
+  @smokeTest
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with old public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |

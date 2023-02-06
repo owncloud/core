@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1289 @issue-ocis-1328
+@api @files_sharing-app-required @issue-ocis-1289
 Feature: updating shares to users and groups that have the same name
 
   Background:

@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1289 @issue-ocis-1328
+@api @files_sharing-app-required @issue-ocis-1289
 Feature: accept/decline shares coming from internal users
   As a user
   I want to have control of which received shares I accept
@@ -85,7 +85,7 @@ Feature: accept/decline shares coming from internal users
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
 
-  @smokeTest @issue-ocis-2131
+  @smokeTest
   Scenario: accept a pending share
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
@@ -210,7 +210,7 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
 
-  @smokeTest @issue-ocis-2128
+  @smokeTest
   Scenario Outline: decline an accepted share
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
@@ -521,7 +521,7 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path |
       | /Shares/PARENT      |
 
-  @issue-ocis-765 @issue-ocis-2131
+  @issue-ocis-765
   Scenario: shares exist after restoring already shared file to a previous version
     And user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
     And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"

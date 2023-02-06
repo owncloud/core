@@ -1,4 +1,4 @@
-@api @issue-ocis-2413
+@api
 Feature: UNLOCK locked items
 
   Background:

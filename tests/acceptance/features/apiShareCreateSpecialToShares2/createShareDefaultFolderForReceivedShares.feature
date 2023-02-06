@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1327
+@api @files_sharing-app-required
 Feature: shares are received in the default folder for received shares
 
   Background:

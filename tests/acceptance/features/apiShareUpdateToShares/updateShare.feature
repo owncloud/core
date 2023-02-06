@@ -158,7 +158,7 @@ Feature: sharing
       | 1               | 200              | create,delete |
       | 2               | 400              | create,delete |
 
-  @skipOnFilesClassifier @issue-files-classifier-291 @toFixOnOCIS @issue-ocis-2201
+  @skipOnFilesClassifier @issue-files-classifier-291 @toFixOnOCIS
   Scenario Outline: Share ownership change after moving a shared file outside of an outer share
     Given these users have been created with default attributes and without skeleton files:
       | username |
