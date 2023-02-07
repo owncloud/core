@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-315 @issue-ocis-reva-316
+@api @files_sharing-app-required @public_link_share-feature-required
 
 Feature: changing a public link share
 
@@ -22,10 +22,6 @@ Feature: changing a public link share
       | permissions               | http-status-code | should-or-not | public-webdav-api-version |
       | read,update,create        | 403              | should        | old                       |
       | read,update,create,delete | 204              | should not    | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | permissions               | http-status-code | should-or-not | public-webdav-api-version |
       | read,update,create        | 403              | should        | new                       |
       | read,update,create,delete | 204              | should not    | new                       |
 
@@ -42,10 +38,6 @@ Feature: changing a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
   @skipOnRansomwareProtection @issue-ransomware-208
@@ -75,10 +67,6 @@ Feature: changing a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -93,10 +81,6 @@ Feature: changing a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -127,10 +111,6 @@ Feature: changing a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -208,10 +188,6 @@ Feature: changing a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -226,8 +202,4 @@ Feature: changing a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | public-webdav-api-version |
       | new                       |

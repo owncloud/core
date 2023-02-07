@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-315 @issue-ocis-reva-316
+@api @files_sharing-app-required @public_link_share-feature-required
 
 Feature: create a public link share
 
@@ -35,7 +35,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-2079
+  @smokeTest
   Scenario Outline: Creating a new public link share of a file with password using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -67,7 +67,7 @@ Feature: create a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-reva-199
+  @smokeTest
   Scenario Outline: Creating a new public link share of a file with password using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -125,7 +125,6 @@ Feature: create a public link share
     And uploading content to a public link shared file should work using the old public WebDAV API
     And uploading content to a public link shared file should work using the new public WebDAV API
 
-    @issue-ocis-2079 @issue-ocis-reva-292
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -191,13 +190,12 @@ Feature: create a public link share
     And the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the old public WebDAV API with password "%regular%"
     And the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the new public WebDAV API without a password
     And the public should not be able to download file "/randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "%regular%"
-    @issue-ocis-2079  @issue-ocis-reva-292
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-reva-294
+  @smokeTest
   Scenario Outline: Getting the share information of public link share from the OCS API does not expose sensitive information
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
@@ -385,7 +383,6 @@ Feature: create a public link share
       | 2               | 200             |
 
 
-  @issue-ocis-reva-283
   Scenario Outline: Do not allow public sharing of the root on ownCloud10
     Given using OCS API version "<ocs_api_version>"
     When user "Alice" creates a public link share using the sharing API with settings
@@ -468,7 +465,7 @@ Feature: create a public link share
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
-  @issue-ocis-reva-199
+
   Scenario Outline: Delete a folder that has been publicly shared and try to access using the public WebDAV API
     Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/parent.txt"
@@ -481,13 +478,9 @@ Feature: create a public link share
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
-  @issue-ocis-reva-292
+
   Scenario Outline: try to download from a public share that has upload only permissions using the public webdav api
     Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/parent.txt"
@@ -499,12 +492,8 @@ Feature: create a public link share
     And the HTTP status code should be "404"
 
     Examples:
-      | public-webdav-api-version | response |
-      | old                       |          |
-
-
-    Examples:
       | public-webdav-api-version | response                   |
+      | old                       |                            |
       | new                       | File not found: parent.txt |
 
 

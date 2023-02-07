@@ -1,4 +1,4 @@
-@api @files_versions-app-required @issue-ocis-reva-275
+@api @files_versions-app-required
 
 Feature: file versions remember the author of each version
 

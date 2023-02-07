@@ -26,7 +26,7 @@ Feature: get file properties
       | new         | /नेपाली.txt         |
       | new         | s,a,m,p,l,e.txt   |
 
-  @issue-ocis-reva-214
+
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
@@ -45,7 +45,7 @@ Feature: get file properties
       | new         | /file ?2.txt  | remote.php/dav/files/%username%/file ?2.txt   |
       | new         | /file &2.txt  | remote.php/dav/files/%username%/file &2.txt   |
 
-  @issue-ocis-reva-214
+
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
@@ -94,7 +94,7 @@ Feature: get file properties
       | new         | /नेपाली                          | नेपाली                        |
       | new         | /folder #2.txt                   | file #2.txt                   |
 
-  @issue-ocis-reva-265
+
   #after fixing all issues delete this Scenario and merge with the one above
   Scenario Outline: Do a PROPFIND of various files inside various folders
     Given using <dav_version> DAV path
@@ -226,7 +226,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @smokeTest @issue-ocis-reva-216
+  @smokeTest
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
@@ -251,7 +251,7 @@ Feature: get file properties
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |          |
       | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |          |
 
-  @issue-ocis-reva-217
+
   Scenario Outline: add, receive multiple custom meta properties to a file
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/TestFolder"
@@ -274,7 +274,7 @@ Feature: get file properties
       | dav_version |
       | new         |
 
-  @issue-36920 @issue-ocis-reva-217
+  @issue-36920
   Scenario Outline: add multiple properties to files inside a folder and do a propfind of the parent folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/TestFolder"

@@ -19,7 +19,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-269
+
   Scenario Outline: delete a folder when 2 folder exist with different case
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/parent"
@@ -32,7 +32,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-269
+
   Scenario Outline: delete a sub-folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/PARENT/CHILD"
