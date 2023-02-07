@@ -15,6 +15,7 @@ Summary
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
 * Bugfix - Add shib auth support for redirect url: [#40470](https://github.com/owncloud/core/pull/40470)
 * Bugfix - Store checksums only if the whole stream has been read: [#40513](https://github.com/owncloud/core/pull/40513)
+* Bugfix - Performance fix when deleting thumbnails: [#40514](https://github.com/owncloud/core/pull/40514)
 * Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: [#40522](https://github.com/owncloud/core/pull/40522)
 * Bugfix - Bump json5 from 2.2.0 to 2.2.3 in /build: [#40556](https://github.com/owncloud/core/pull/40556)
 * Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: [#40558](https://github.com/owncloud/core/pull/40558)
@@ -114,6 +115,13 @@ Details
    on the data stream, but they shouldn't happen normally.
 
    https://github.com/owncloud/core/pull/40513
+
+* Bugfix - Performance fix when deleting thumbnails: [#40514](https://github.com/owncloud/core/pull/40514)
+
+   Detecting unused thumbnails is now using a better optimized SQL statements which consumes
+   less database and web server resources.
+
+   https://github.com/owncloud/core/pull/40514
 
 * Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: [#40522](https://github.com/owncloud/core/pull/40522)
 

@@ -13,6 +13,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Skip public links when updating permissions of share's children: <a href="https://github.com/owncloud/core/pull/40420">#40420</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add shib auth support for redirect url: <a href="https://github.com/owncloud/core/pull/40470">#40470</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Store checksums only if the whole stream has been read: <a href="https://github.com/owncloud/core/pull/40513">#40513</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Performance fix when deleting thumbnails: <a href="https://github.com/owncloud/core/pull/40514">#40514</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: <a href="https://github.com/owncloud/core/pull/40522">#40522</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump json5 from 2.2.0 to 2.2.3 in /build: <a href="https://github.com/owncloud/core/pull/40556">#40556</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: <a href="https://github.com/owncloud/core/pull/40558">#40558</a></li>
@@ -103,6 +104,13 @@
    on the data stream, but they shouldn't happen normally.
             </p>
             <p>https://github.com/owncloud/core/pull/40513<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Performance fix when deleting thumbnails: <a href="https://github.com/owncloud/core/pull/40514">#40514</a></p>
+            <p>Detecting unused thumbnails is now using a better optimized SQL statements which consumes
+   less database and web server resources.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40514<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: <a href="https://github.com/owncloud/core/pull/40522">#40522</a></p>
