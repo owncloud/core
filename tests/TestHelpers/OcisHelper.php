@@ -43,15 +43,8 @@ class OcisHelper {
 	/**
 	 * @return bool
 	 */
-	public static function isTestingOnReva():bool {
-		return (\getenv("TEST_REVA") === "true");
-	}
-
-	/**
-	 * @return bool
-	 */
 	public static function isTestingOnOcisOrReva():bool {
-		return (self::isTestingOnOcis() || self::isTestingOnReva());
+		return self::isTestingOnOcis();
 	}
 
 	/**
