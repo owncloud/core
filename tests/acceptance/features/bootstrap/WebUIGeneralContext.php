@@ -198,6 +198,19 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given the browser window has been set to :width pixels wide and :height pixels high
+	 *
+	 * @param string $width
+	 * @param string $height
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theBrowserWindowHasBeenSetTo(string $width, string $height):void {
+		$this->getSession()->resizeWindow((int) $width, (int) $height);
+	}
+
+	/**
 	 * @When the administrator logs in using the webUI
 	 * @Given the administrator has logged in using the webUI
 	 *

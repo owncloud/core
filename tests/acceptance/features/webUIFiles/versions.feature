@@ -129,7 +129,8 @@ Feature: Versions of a file
 
   @skipOnStorage:ceph @files_primary_s3-issue-67
   Scenario: sharee can see the versions' respective author after version restore
-    Given the administrator has enabled the file version storage feature
+    Given the browser window has been set to 1200 pixels wide and 768 pixels high
+    And the administrator has enabled the file version storage feature
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
