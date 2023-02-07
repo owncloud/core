@@ -80,6 +80,18 @@ class RemoteOcsController extends OCSController {
 	 * @return Result
 	 */
 	public function acceptShare($id) {
+		$shareType = $this->request->getParam('shareType', null);
+
+		// error_log("==============================");
+		// error_log($shareType);
+		// error_log("==============================");
+		// decide what manager to use
+		// switch ($shareType) {
+		// 	case "group":
+		// 	  	break;
+		// 	default:
+		// }
+
 		if ($this->externalManager->acceptShare((int) $id)) {
 			$share = $this->externalManager->getShare($id);
 			// Frontend part expects a list of accepted shares having state and mountpoint at least
@@ -107,6 +119,12 @@ class RemoteOcsController extends OCSController {
 	 * @return Result
 	 */
 	public function declineShare($id) {
+		$shareType = $this->request->getParam('shareType', null);
+
+		// error_log("==============================");
+		// error_log($shareType);
+		// error_log("==============================");
+
 		if ($this->externalManager->declineShare((int) $id)) {
 			return new Result();
 		}

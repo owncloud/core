@@ -221,9 +221,9 @@ OCA.Sharing.App = {
 			contentType: 'application/json',
 			dataType: 'json',
 			type: method,
-			data: { 
-				...(!!shareType && {shareType}),
-			},
+			data: JSON.stringify({
+				...(!!shareType && { shareType }),
+			}),
 		});
 		xhr.fail(function(response) {
 			var message = '';
@@ -239,6 +239,7 @@ OCA.Sharing.App = {
 	_shareStateActionHandler: function(context, newState) {
 		var targetFileData = context.fileList.elementToFile(context.$file);
 		var isRemote = targetFileData.shareLocationType === 'remote';
+		const { shareType } = targetFileData;
 		function responseCallback(response, status) {
 			if (status === 'success') {
 				var meta = response.ocs.meta;
@@ -255,7 +256,7 @@ OCA.Sharing.App = {
 		}
 
 		context.fileList.showFileBusyState(context.$file, true);
-		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState, isRemote, 0)
+		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState, isRemote, shareType)
 			.then(responseCallback);
 	},
 
