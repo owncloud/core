@@ -5350,19 +5350,6 @@ trait WebDav {
 		if ($multistatusResults !== null) {
 			foreach ($multistatusResults as $multistatusResult) {
 				$entryPath = $multistatusResult['value'][0]['value'];
-				if (OcisHelper::isTestingOnOcis() && $method === "REPORT") {
-					if ($entryNameToSearch !== null && str_ends_with($entryPath, $entryNameToSearch)) {
-						return $multistatusResult;
-					} else {
-						$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ? WebDavHelper::$SPACE_ID_FROM_OCIS : WebDavHelper::getPersonalSpaceIdForUser(
-							$this->getBaseUrl(),
-							$user,
-							$this->getPasswordForUser($user),
-							$this->getStepLineRef()
-						);
-						$topWebDavPath = "/remote.php/dav/spaces/" . $spaceId . "/" . $folderPath;
-					}
-				}
 				$entryName = \str_replace($topWebDavPath, "", $entryPath);
 				$entryName = \rawurldecode($entryName);
 				$entryName = \trim($entryName, "/");
