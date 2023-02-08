@@ -358,6 +358,6 @@ class ImageTest extends \Test\TestCase {
 
 		$img->loadFromFileHandle($stream);
 		\fclose($stream);
-		$this->assertSame(6, $img->getOrientation());  // orientation = right, top
+		self::assertSame(6, $img->getOrientation());  // orientation = right, top
 	}
 }
