@@ -28,7 +28,7 @@ Feature: capabilities
 #      | files_sharing | user_enumeration@@@enabled            | 1                 |
 #      | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 #      | files         | bigfilechunking                       | 1                 |
-    And the data of the response should match
+    And the JSON data of the response should match
       """
       {
         "type": "object",
@@ -53,9 +53,9 @@ Feature: capabilities
                 ],
                 "properties": {
                   "pollinterval": {
-                    "type": "string",
+                    "type": "integer",
                     "enum": [
-                      "30000"
+                      30000
                     ]
                   },
                   "webdav-root": {
@@ -110,21 +110,21 @@ Feature: capabilities
                 ],
                 "properties": {
                   "bigfilechunking": {
-                    "type": "string",
+                    "type": "boolean",
                     "enum": [
-                      "1"
+                      true
                     ]
                   },
                   "privateLinks": {
-                    "type": "string",
+                    "type": "boolean",
                     "enum": [
-                      "1"
+                      true
                     ]
                   },
                   "privateLinksDetailsParam": {
-                    "type": "string",
+                    "type": "boolean",
                     "enum": [
-                      "1"
+                      true
                     ]
                   }
                 }
@@ -146,21 +146,21 @@ Feature: capabilities
                 ],
                 "properties": {
                   "api_enabled": {
-                    "type": "string",
+                    "type": "boolean",
                     "enum": [
-                      "1"
+                      true
                     ]
                   },
                   "default_permissions": {
-                    "type": "string",
+                    "type": "integer",
                     "enum": [
-                      "31"
+                      31
                     ]
                   },
                   "search_min_length": {
-                    "type": "string",
+                    "type": "integer",
                     "enum": [
-                      "2"
+                      2
                     ]
                   },
                   "public": {
@@ -176,36 +176,39 @@ Feature: capabilities
                     ],
                     "properties": {
                       "enabled": {
-                        "type": "string",
+                        "type": "boolean",
                         "enum": [
-                          "1"
+                          true
                         ]
                       },
                       "multiple": {
-                        "type": "string",
+                        "type": "boolean",
                         "enum": [
-                          "1"
+                          true
                         ]
                       },
                       "upload": {
-                        "type": "string",
-                        "pattern": "1"
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ]
                       },
                       "supports_upload_only": {
-                        "type": "string",
+                        "type": "boolean",
                         "enum": [
-                          "1"
+                          true
                         ]
                       },
                       "send_mail": {
-                        "type": "object",
-                        "required": [
+                        "type": "boolean",
+                        "enum": [
+                          false
                         ]
                       },
                       "social_share": {
-                        "type": "string",
+                        "type": "boolean",
                         "enum": [
-                          "1"
+                          true
                         ]
                       },
                       "defaultPublicLinkShareName": {
@@ -217,9 +220,9 @@ Feature: capabilities
                     }
                   },
                   "resharing": {
-                    "type": "string",
+                    "type": "boolean",
                     "enum": [
-                      "1"
+                      true
                     ]
                   },
                   "federation": {
@@ -230,39 +233,41 @@ Feature: capabilities
                     ],
                     "properties": {
                       "outgoing": {
-                        "type": "string",
+                        "type": "boolean",
                         "enum": [
-                          "1"
+                          true
                         ]
                       },
                       "incoming": {
-                        "type": "string",
+                        "type": "boolean",
                         "enum": [
-                          "1"
+                          true
                         ]
                       }
                     }
                   },
                   "group_sharing": {
-                    "type": "string",
+                    "type": "boolean",
                     "enum": [
-                      "1"
+                      true
                     ]
                   },
                   "share_with_group_members_only": {
-                    "type": "object",
-                    "required": [
+                    "type": "boolean",
+                    "enum": [
+                      false
                     ]
                   },
                   "share_with_membership_groups_only": {
-                    "type": "object",
-                    "required": [
+                    "type": "boolean",
+                    "enum": [
+                      false
                     ]
                   },
                   "auto_accept_share": {
-                    "type": "string",
+                    "type": "boolean",
                     "enum": [
-                      "1"
+                      true
                     ]
                   },
                   "user_enumeration": {
@@ -273,14 +278,15 @@ Feature: capabilities
                     ],
                     "properties": {
                       "enabled": {
-                        "type": "string",
+                        "type": "boolean",
                         "enum": [
-                          "1"
+                          true
                         ]
                       },
                       "group_members_only": {
-                        "type": "object",
-                        "required": [
+                        "type": "boolean",
+                        "enum": [
+                          false
                         ]
                       }
                     }
@@ -306,129 +312,107 @@ Feature: capabilities
 #      | files_sharing | providers_capabilities@@@ocinternal@@@group@@@element[0] | shareExpiration   |
 #      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[0]  | shareExpiration   |
 #      | files_sharing | providers_capabilities@@@ocinternal@@@link@@@element[1]  | passwordProtected |
-    And the data of the response should match
-    """
-    {
-      "type": "object",
-      "required": [
-        "capabilities"
-      ],
-      "properties": {
-        "capabilities": {
-          "type": "object",
-          "required": [
-            "core",
-            "files",
-            "files_sharing"
-          ],
-          "properties": {
-            "files_sharing": {
-              "type": "object",
-              "required": [
-                "user",
-                "group",
-                "providers_capabilities"
-              ],
-              "properties": {
-                "user": {
-                  "type": "object",
-                  "required": [
-                    "expire_date"
-                  ],
-                  "properties": {
-                    "expire_date": {
-                      "type": "object",
-                      "required": [
-                        "enabled"
-                      ],
-                      "properties": {
-                        "enabled": {
-                          "type": "object",
-                          "required": [
-                          ]
+    And the JSON data of the response should match
+      """
+      {
+        "type": "object",
+        "required": [
+          "capabilities"
+        ],
+        "properties": {
+          "capabilities": {
+            "type": "object",
+            "required": [
+              "core",
+              "files",
+              "files_sharing"
+            ],
+            "properties": {
+              "files_sharing": {
+                "type": "object",
+                "required": [
+                  "user",
+                  "group",
+                  "providers_capabilities"
+                ],
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "required": [
+                      "expire_date"
+                    ],
+                    "properties": {
+                      "expire_date": {
+                        "type": "object",
+                        "required": [
+                          "enabled"
+                        ],
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "enum": [
+                              false
+                            ]
+                          }
                         }
                       }
                     }
-                  }
-                },
-                "group": {
-                  "type": "object",
-                  "required": [
-                    "expire_date"
-                  ],
-                  "properties": {
-                    "expire_date": {
-                      "type": "object",
-                      "required": [
-                        "enabled"
-                      ],
-                      "properties": {
-                        "enabled": {
-                          "type": "object",
-                          "required": [
-                          ]
+                  },
+                  "group": {
+                    "type": "object",
+                    "required": [
+                      "expire_date"
+                    ],
+                    "properties": {
+                      "expire_date": {
+                        "type": "object",
+                        "required": [
+                          "enabled"
+                        ],
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "enum": [
+                              false
+                            ]
+                          }
                         }
                       }
                     }
-                  }
-                },
-                "providers_capabilities": {
-                  "type": "object",
-                  "required": [
-                    "ocinternal"
-                  ],
-                  "properties": {
-                    "ocinternal": {
-                      "type": "object",
-                      "required": [
-                        "user",
-                        "group",
-                        "link"
-                      ],
-                      "properties": {
-                        "user": {
-                          "type": "object",
-                          "required": [
-                            "element"
-                          ],
-                          "properties": {
-                            "element": {
+                  },
+                  "providers_capabilities": {
+                    "type": "object",
+                    "required": [
+                      "ocinternal"
+                    ],
+                    "properties": {
+                      "ocinternal": {
+                        "type": "object",
+                        "required": [
+                          "user",
+                          "group",
+                          "link"
+                        ],
+                        "properties": {
+                          "user": {
+                            "type": "array",
+                            "items": {
                               "type": "string",
-                              "enum": [
-                                "shareExpiration"
-                              ]
+                              "enum": ["shareExpiration"]
                             }
-                          }
-                        },
-                        "group": {
-                          "type": "object",
-                          "required": [
-                            "element"
-                          ],
-                          "properties": {
-                            "element": {
+                          },
+                          "group": {
+                            "type": "array",
+                            "items": {
                               "type": "string",
-                              "enum": [
-                                "shareExpiration"
-                              ]
+                              "enum": ["shareExpiration"]
                             }
-                          }
-                        },
-                        "link": {
-                          "type": "object",
-                          "required": [
-                            "element"
-                          ],
-                          "properties": {
-                            "element": {
-                              "type": "array",
-                              "items": {
-                                "type": "string",
-                                "enum": [
-                                  "shareExpiration",
-                                  "passwordProtected"
-                                ]
-                              }
+                          },
+                          "link": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": ["shareExpiration", "passwordProtected"]
                             }
                           }
                         }
@@ -441,5 +425,4 @@ Feature: capabilities
           }
         }
       }
-    }
-    """
+     """

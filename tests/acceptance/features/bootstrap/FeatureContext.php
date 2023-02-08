@@ -1647,7 +1647,17 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @Then the data of the response should match
+	 * returns json decoded body content of a json response as an object
+	 *
+	 * @return object
+	 */
+	public function getJsonDecodedResponseBodyContent(): object {
+		$this->response->getBody()->rewind();
+		return json_decode($this->response->getBody()->getContents());
+	}
+
+	/**
+	 * @Then the JSON data of the response should match
 	 *
 	 * @param PyStringNode $schemaString
 	 *
@@ -1658,11 +1668,9 @@ class FeatureContext extends BehatVariablesContext {
 	public function theDataOfTheResponseShouldMatch(
 		PyStringNode $schemaString
 	): void {
-		$responseXml = $this->getResponseXml()->data;
-		$jsonResponse = json_encode($responseXml);
-		$arrayResponse = json_decode($jsonResponse);
+		$jsonResponse = $this->getJsonDecodedResponseBodyContent();
 		JsonAssertions::assertJsonDocumentMatchesSchema(
-			$arrayResponse,
+			$jsonResponse->ocs->data,
 			$this->getJSONSchema($schemaString)
 		);
 	}
@@ -2978,6 +2986,20 @@ class FeatureContext extends BehatVariablesContext {
 		return \json_decode(
 			(string) $response->getBody(),
 			true
+		);
+	}
+
+	/**
+	 * @param ResponseInterface|null $response
+	 *
+	 * @return array
+	 */
+	public function getJsonDecodedResponse1(?ResponseInterface $response = null) {
+		if ($response === null) {
+			$response = $this->getResponse();
+		}
+		return \json_decode(
+			(string) $response->getBody(),
 		);
 	}
 

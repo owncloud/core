@@ -798,6 +798,7 @@ class OCSContext implements Context {
 		$responseStatusCode = $this->getOCSResponseStatusCode(
 			$this->featureContext->getResponse()
 		);
+
 		if (\is_array($statusCodes)) {
 			if ($message === "") {
 				$message = "OCS status code is not any of the expected values " . \implode(",", $statusCodes) . " got " . $responseStatusCode;
@@ -931,12 +932,12 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function getOCSResponseStatusCode(ResponseInterface $response):string {
-		$responseXml = $this->featureContext->getResponseXml($response, __METHOD__);
-		if (isset($responseXml->meta[0], $responseXml->meta[0]->statuscode)) {
-			return (string) $responseXml->meta[0]->statuscode;
+		$jsonResponse = $this->featureContext->getJsonDecodedResponseBodyContent();
+		if ($jsonResponse->ocs->meta->statuscode) {
+			return (string) $jsonResponse->ocs->meta->statuscode;
 		}
 		throw new Exception(
-			"No OCS status code found in responseXml"
+			"No OCS status code found in the response."
 		);
 	}
 

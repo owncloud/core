@@ -138,7 +138,7 @@ class AppConfigurationContext implements Context {
 				$user,
 				$password,
 				'GET',
-				'/cloud/capabilities',
+				'/cloud/capabilities?format=json',
 				$this->featureContext->getStepLineRef(),
 				[],
 				$this->featureContext->getOcsApiVersion()
