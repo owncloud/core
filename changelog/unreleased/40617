@@ -1,0 +1,5 @@
+Bugfix: Enable 2FA via provisioning API
+
+Two factor authentication can now be enabled using the provisioning api.
+
+https://github.com/owncloud/core/issues/40617
