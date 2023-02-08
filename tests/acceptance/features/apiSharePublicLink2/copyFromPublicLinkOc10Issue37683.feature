@@ -5,7 +5,7 @@ Feature: copying from public link share
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
 
-
+  @issue-37683 @skipOnLDAP @issue-user_ldap-702
   Scenario: Copy folder within a public link folder to the same folder name as an already existing file
     Given user "Alice" has created folder "/PARENT/testFolder"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/testFolder/testfile.txt"
