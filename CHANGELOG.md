@@ -24,6 +24,7 @@ Summary
 * Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
 * Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: [#40571](https://github.com/owncloud/core/pull/40571)
 * Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
+* Bugfix - Fix orientation of images with exif data: [#40600](https://github.com/owncloud/core/pull/40600)
 * Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
 * Bugfix - Use correct themed l10n app folder when app lives outside of server root: [#40607](https://github.com/owncloud/core/pull/40607)
 * Bugfix - Enable 2FA via provisioning API: [#40617](https://github.com/owncloud/core/issues/40617)
@@ -164,6 +165,18 @@ Details
 * Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
 
    https://github.com/owncloud/core/pull/40579
+
+* Bugfix - Fix orientation of images with exif data: [#40600](https://github.com/owncloud/core/pull/40600)
+
+   Some images with a large exif data had problems with the orientation when they were shown. This
+   was caused by the native function failing to retrieve the exif data. Images with small exif data
+   didn't have this problem.
+
+   By making the chunk size of the stream bigger, the native function is able to load the exif data
+   properly and return the information, and with such information we can fix the orientation of
+   the image.
+
+   https://github.com/owncloud/core/pull/40600
 
 * Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
 
