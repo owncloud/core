@@ -66,11 +66,6 @@ class LoggingContext implements Context {
 		int       $ignoredLines = 0,
 		?TableNode $expectedLogEntries = null
 	):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we don't interact with the log file on reva or OCIS
-			// So skip processing this test step.
-			return;
-		}
 		if ($this->logLevel === "info") {
 			$ignoredLines = 1;
 		}
@@ -283,11 +278,6 @@ class LoggingContext implements Context {
 		TableNode $expectedLogEntries,
 		bool $regexCompare = false
 	):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we don't interact with the log file on reva or OCIS
-			// So skip processing this test step.
-			return;
-		}
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -391,11 +381,6 @@ class LoggingContext implements Context {
 		$withOrContaining,
 		TableNode $logEntriesExpectedNotToExist
 	):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we don't interact with the log file on reva or OCIS
-			// So skip processing this test step.
-			return;
-		}
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
