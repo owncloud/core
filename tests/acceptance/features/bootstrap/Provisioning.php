@@ -1213,7 +1213,7 @@ trait Provisioning {
 			$this->manuallyAddSkeletonFiles($usersAttributes);
 		}
 
-		if ($initialize && $this->isEmptySkeleton()) {
+		if ($initialize) {
 			// We need to initialize each user using the individual authentication of each user.
 			// That is not possible in Guzzle6 batch mode. So we do it with normal requests in serial.
 			$this->initializeUsers($users);
