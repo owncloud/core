@@ -341,6 +341,8 @@ OC.L10N.register(
     "New password" : "Fjalëkalim i ri",
     "Change password" : "Ndryshoni fjalëkalimin",
     "Help translate" : "Ndihmoni në përkthim",
+    "Our imprint conditions:" : "Kushte tonat “imprint”:",
+    "Our Privacy Policy conditions:" : "Kushte tonat për Rregulla Privatësie",
     "You are using %s" : "Po përdorni %s",
     "You are using %s of %s (%s %%)" : "Po përdorni %s nga %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Krijuar nga {communityopen}bashkësia ownCloud{linkclose}, {githubopen}kodi burim{linkclose} mund të përdoret sipas licencës {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
