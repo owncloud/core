@@ -1651,7 +1651,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return object
 	 */
-	public function getJsonDecodedResponseBodyContent(): object {
+	public function getJsonDecodedResponseBodyContent():?object {
 		$this->response->getBody()->rewind();
 		return json_decode($this->response->getBody()->getContents());
 	}

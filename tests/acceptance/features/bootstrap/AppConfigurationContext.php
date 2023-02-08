@@ -138,6 +138,31 @@ class AppConfigurationContext implements Context {
 				$user,
 				$password,
 				'GET',
+				'/cloud/capabilities',
+				$this->featureContext->getStepLineRef(),
+				[],
+				$this->featureContext->getOcsApiVersion()
+			)
+		);
+	}
+
+	/**
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 * @throws JsonException
+	 */
+	public function userRetrivessCapabilities(string $username):void {
+		$user = $this->featureContext->getActualUsername($username);
+		$password = $this->featureContext->getPasswordForUser($user);
+		$this->featureContext->setResponse(
+			OcsApiHelper::sendRequest(
+				$this->featureContext->getBaseUrl(),
+				$user,
+				$password,
+				'GET',
 				'/cloud/capabilities?format=json',
 				$this->featureContext->getStepLineRef(),
 				[],
@@ -198,7 +223,7 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorGetsCapabilities():void {
-		$this->userGetsCapabilities($this->getAdminUsernameForCapabilitiesCheck());
+		$this->userRetrivessCapabilities($this->getAdminUsernameForCapabilitiesCheck());
 	}
 
 	/**
