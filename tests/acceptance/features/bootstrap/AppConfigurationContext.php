@@ -192,20 +192,7 @@ class AppConfigurationContext implements Context {
 	 * @throws Exception
 	 */
 	public function getAdminUsernameForCapabilitiesCheck():string {
-		if (\TestHelpers\OcisHelper::isTestingOnReva()) {
-			// When testing on reva we don't have a user called "admin" to use
-			// to access the capabilities. So create an ordinary user on-the-fly
-			// with a default password. That user should be able to get a
-			// capabilities response that the test can process.
-			$adminUsername = "PseudoAdminForRevaTest";
-			$createdUsers = $this->featureContext->getCreatedUsers();
-			if (!\array_key_exists($adminUsername, $createdUsers)) {
-				$this->featureContext->createUser($adminUsername);
-			}
-		} else {
-			$adminUsername = $this->featureContext->getAdminUsername();
-		}
-		return $adminUsername;
+		return $this->featureContext->getAdminUsername();
 	}
 
 	/**

@@ -1581,14 +1581,10 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return bool
 	 */
 	public function isAPublicLinkUrl(string $url):bool {
-		if (OcisHelper::isTestingOnReva()) {
-			$urlEnding = \ltrim($url, '/');
-		} else {
-			if (\substr($url, 0, 4) !== "http") {
-				return false;
-			}
-			$urlEnding = \substr($url, \strlen($this->getBaseUrl() . '/'));
+		if (\substr($url, 0, 4) !== "http") {
+			return false;
 		}
+		$urlEnding = \substr($url, \strlen($this->getBaseUrl() . '/'));
 
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$matchResult = \preg_match("%^(#/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
@@ -2932,15 +2928,12 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function theFileWithContentShouldExistInTheServerRoot(string $path, string $content):void {
-		if (OcisHelper::isTestingOnOcis()) {
-			$fileContent = $this->readFileInServerRootForOCIS($path);
-		} else {
-			$this->readFileInServerRootForCore($path);
-			$this->theHTTPStatusCodeShouldBe(200, 'Failed to read the file $path');
-			$fileContent = $this->getResponseXml();
-			$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
-			$fileContent = \urldecode($fileContent);
-		}
+		$this->readFileInServerRootForCore($path);
+		$this->theHTTPStatusCodeShouldBe(200, 'Failed to read the file $path');
+		$fileContent = $this->getResponseXml();
+		$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
+		$fileContent = \urldecode($fileContent);
+
 		Assert::assertSame(
 			$content,
 			$fileContent,
