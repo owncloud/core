@@ -933,7 +933,7 @@ class OCSContext implements Context {
 	 */
 	public function getOCSResponseStatusCode(ResponseInterface $response):string {
 		$jsonResponse = $this->featureContext->getJsonDecodedResponseBodyContent();
-		if ($jsonResponse !== null) {
+		if (\is_object($jsonResponse) && $jsonResponse->ocs->meta->statuscode) {
 			return (string) $jsonResponse->ocs->meta->statuscode;
 		}
 		// go to xml response when json response is null (it means not formated and get status code)
