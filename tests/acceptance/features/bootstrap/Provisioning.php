@@ -598,51 +598,36 @@ trait Provisioning {
 	 */
 	public function connectToLdap(array $suiteParameters):void {
 		$useSsl = false;
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$this->ldapBaseDN = OcisHelper::getBaseDN();
-			$this->ldapUsersOU = OcisHelper::getUsersOU();
-			$this->ldapGroupsOU = OcisHelper::getGroupsOU();
-			$this->ldapGroupSchema = OcisHelper::getGroupSchema();
-			$this->ldapHost = OcisHelper::getHostname();
-			$this->ldapPort = OcisHelper::getLdapPort();
-			$useSsl = OcisHelper::useSsl();
-			$this->ldapAdminUser = OcisHelper::getBindDN();
-			$this->ldapAdminPassword = OcisHelper::getBindPassword();
-			$this->skipImportLdif = (\getenv("REVA_LDAP_SKIP_LDIF_IMPORT") === "true");
-			if ($useSsl === true) {
-				\putenv('LDAPTLS_REQCERT=never');
-			}
-		} else {
-			$occResult = SetupHelper::runOcc(
-				['ldap:show-config', 'LDAPTestId', '--output=json'],
-				$this->getStepLineRef()
-			);
+		$occResult = SetupHelper::runOcc(
+			['ldap:show-config', 'LDAPTestId', '--output=json'],
+			$this->getStepLineRef()
+		);
 
-			Assert::assertSame(
-				'0',
-				$occResult['code'],
-				"could not read current LDAP config. stdOut: " .
-				$occResult['stdOut'] .
-				" stdErr: " . $occResult['stdErr']
-			);
+		Assert::assertSame(
+			'0',
+			$occResult['code'],
+			"could not read current LDAP config. stdOut: " .
+			$occResult['stdOut'] .
+			" stdErr: " . $occResult['stdErr']
+		);
 
-			$ldapConfig = \json_decode(
-				$occResult['stdOut'],
-				true
-			);
-			Assert::assertNotNull(
-				$ldapConfig,
-				"could not json decode current LDAP config. stdOut: " . $occResult['stdOut']
-			);
+		$ldapConfig = \json_decode(
+			$occResult['stdOut'],
+			true
+		);
+		Assert::assertNotNull(
+			$ldapConfig,
+			"could not json decode current LDAP config. stdOut: " . $occResult['stdOut']
+		);
 
-			$this->ldapBaseDN = (string)$ldapConfig['ldapBase'][0];
-			$this->ldapHost = (string)$ldapConfig['ldapHost'];
-			$this->ldapPort = (int)$ldapConfig['ldapPort'];
-			$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
-			$this->ldapGroupSchema = "rfc2307";
-			$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
-			$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
-		}
+		$this->ldapBaseDN = (string)$ldapConfig['ldapBase'][0];
+		$this->ldapHost = (string)$ldapConfig['ldapHost'];
+		$this->ldapPort = (int)$ldapConfig['ldapPort'];
+		$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
+		$this->ldapGroupSchema = "rfc2307";
+		$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
+		$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
+
 		if ($this->ldapAdminPassword === "") {
 			$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
 		}
@@ -680,7 +665,7 @@ trait Provisioning {
 	 */
 	public function theLdapUsersHaveBeenReSynced():void {
 		// we need to sync ldap users when testing for parallel deployment
-		if (!OcisHelper::isTestingOnOcisOrReva() || OcisHelper::isTestingParallelDeployment()) {
+		if (OcisHelper::isTestingParallelDeployment()) {
 			$occResult = SetupHelper::runOcc(
 				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
 				$this->getStepLineRef()
@@ -899,24 +884,13 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function deleteLdapUsersAndGroups():void {
-		$isOcisOrReva = OcisHelper::isTestingOnOcisOrReva();
 		foreach ($this->ldapCreatedUsers as $user) {
-			if ($isOcisOrReva) {
-				$this->ldap->delete(
-					"uid=" . ldap_escape($user, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
-				);
-			}
 			$this->rememberThatUserIsNotExpectedToExist($user);
 		}
 		foreach ($this->ldapCreatedGroups as $group) {
-			if ($isOcisOrReva) {
-				$this->ldap->delete(
-					"cn=" . ldap_escape($group, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
-				);
-			}
 			$this->rememberThatGroupIsNotExpectedToExist($group);
 		}
-		if (!$isOcisOrReva || !$this->skipImportLdif) {
+		if (!$this->skipImportLdif) {
 			//delete ou from LDIF import
 			$this->ldap->delete(
 				"ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
@@ -1072,19 +1046,6 @@ trait Provisioning {
 				$attributesToCreateUser['userid'] = $userAttributes['userid'];
 				$attributesToCreateUser['password'] = $userAttributes['password'];
 				$attributesToCreateUser['displayname'] = $userAttributes['displayName'];
-				if (OcisHelper::isTestingOnOcisOrReva()) {
-					$attributesToCreateUser['username'] = $userAttributes['userid'];
-					if ($userAttributes['email'] === null) {
-						Assert::assertArrayHasKey(
-							'userid',
-							$userAttributes,
-							__METHOD__ . " userAttributes array does not have key 'userid'"
-						);
-						$attributesToCreateUser['email'] = $userAttributes['userid'] . '@owncloud.com';
-					} else {
-						$attributesToCreateUser['email'] = $userAttributes['email'];
-					}
-				}
 				if ($useGraph) {
 					$body = \TestHelpers\GraphHelper::prepareCreateUserPayload(
 						$attributesToCreateUser['userid'],
@@ -1172,17 +1133,6 @@ trait Provisioning {
 				$userAttributes['id']
 			);
 
-			if (OcisHelper::isTestingOnOcisOrReva()) {
-				OcisHelper::createEOSStorageHome(
-					$this->getBaseUrl(),
-					$userAttributes['userid'],
-					$userAttributes['password'],
-					$this->getStepLineRef()
-				);
-				// We don't need to set displayName and email while running in oCIS
-				// As they are set when creating the user
-				continue;
-			}
 			if (isset($userAttributes['displayName'])) {
 				$editData[] = ['user' => $userAttributes['userid'], 'key' => 'displayname', 'value' => $userAttributes['displayName']];
 			}
@@ -1191,7 +1141,7 @@ trait Provisioning {
 			}
 		}
 		// Edit the users in parallel to make the process faster.
-		if (!OcisHelper::isTestingOnOcisOrReva() && !$useLdap && \count($editData) > 0) {
+		if (!$useLdap && \count($editData) > 0) {
 			UserHelper::editUserBatch(
 				$this->getBaseUrl(),
 				$editData,
@@ -1203,14 +1153,6 @@ trait Provisioning {
 
 		if (isset($exceptionToThrow)) {
 			throw $exceptionToThrow;
-		}
-
-		// If the user should have skeleton files, and we are testing on OCIS
-		// then do some work to "manually" put the skeleton files in place.
-		// When testing on ownCloud 10 the user is already getting whatever
-		// skeleton dir is defined in the server-under-test.
-		if ($skeleton && OcisHelper::isTestingOnOcisOrReva()) {
-			$this->manuallyAddSkeletonFiles($usersAttributes);
 		}
 
 		if ($initialize) {
@@ -1499,12 +1441,6 @@ trait Provisioning {
 		$displayname = \array_key_exists("displayname", $table) ? $table["displayname"] : null;
 		$email = \array_key_exists("email", $table) ? $table["email"] : null;
 
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			if ($email === null) {
-				$email = $username . '@owncloud.com';
-			}
-		}
-
 		$userAttributes = [
 			["userid", $username],
 			["password", $password],
@@ -1516,10 +1452,6 @@ trait Provisioning {
 
 		if ($email !== null) {
 			$userAttributes[] = ["email", $email];
-		}
-
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$userAttributes[] = ["username", $username];
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1536,9 +1468,6 @@ trait Provisioning {
 			null,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$this->manuallyAddSkeletonFilesForUser($username, $password);
-		}
 	}
 
 	/**
@@ -1553,20 +1482,9 @@ trait Provisioning {
 	public function adminSendsUserCreationRequestUsingTheProvisioningApi(string $user, string $password):void {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $user . '@owncloud.com';
-			$bodyTable = new TableNode(
-				[
-					['userid', $user],
-					['password', $password],
-					['username', $user],
-					['email', $email]
-				]
-			);
-		} else {
-			$email = null;
-			$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
-		}
+		$email = null;
+		$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
+
 		$this->emptyLastHTTPStatusCodesArray();
 		$this->emptyLastOCSStatusCodesArray();
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1585,15 +1503,6 @@ trait Provisioning {
 			null,
 			$success
 		);
-		if (OcisHelper::isTestingOnOcisOrReva() && $success) {
-			OcisHelper::createEOSStorageHome(
-				$this->getBaseUrl(),
-				$user,
-				$password,
-				$this->getStepLineRef()
-			);
-			$this->manuallyAddSkeletonFilesForUser($user, $password);
-		}
 	}
 
 	/**
@@ -1625,20 +1534,9 @@ trait Provisioning {
 	public function userSendsUserCreationRequestUsingTheProvisioningApi(string $user, string $userToCreate, string $password):void {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $userToCreate . '@owncloud.com';
-			$bodyTable = new TableNode(
-				[
-					['userid', $userToCreate],
-					['password', $password],
-					['username', $userToCreate],
-					['email', $email]
-				]
-			);
-		} else {
-			$email = null;
-			$bodyTable = new TableNode([['userid', $userToCreate], ['password', $password]]);
-		}
+		$email = null;
+		$bodyTable = new TableNode([['userid', $userToCreate], ['password', $password]]);
+
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			"POST",
@@ -1672,23 +1570,11 @@ trait Provisioning {
 	):void {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $user . '@owncloud.com';
-			$bodyTable = new TableNode(
-				[
-					['userid', $user],
-					['password', $password],
-					['username', $user],
-					['email', $email],
-					['groups[]', $group],
-				]
-			);
-		} else {
-			$email = null;
-			$bodyTable = new TableNode(
-				[['userid', $user], ['password', $password], ['groups[]', $group]]
-			);
-		}
+		$email = null;
+		$bodyTable = new TableNode(
+			[['userid', $user], ['password', $password], ['groups[]', $group]]
+		);
+		
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
@@ -1703,9 +1589,6 @@ trait Provisioning {
 			null,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$this->manuallyAddSkeletonFilesForUser($user, $password);
-		}
 	}
 
 	/**
@@ -1727,23 +1610,11 @@ trait Provisioning {
 	):void {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $userToCreate . '@owncloud.com';
-			$bodyTable = new TableNode(
-				[
-					['userid', $userToCreate],
-					['password', $userToCreate],
-					['username', $userToCreate],
-					['email', $email],
-					['groups[]', $group],
-				]
-			);
-		} else {
-			$email = null;
-			$bodyTable = new TableNode(
-				[['userid', $userToCreate], ['password', $password], ['groups[]', $group]]
-			);
-		}
+		$email = null;
+		$bodyTable = new TableNode(
+			[['userid', $userToCreate], ['password', $password], ['groups[]', $group]]
+		);
+
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$groupadmin,
 			"POST",
@@ -1758,9 +1629,6 @@ trait Provisioning {
 			null,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$this->manuallyAddSkeletonFilesForUser($userToCreate, $password);
-		}
 	}
 
 	/**
@@ -1781,23 +1649,11 @@ trait Provisioning {
 	):void {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $userToCreate . '@owncloud.com';
-			$bodyTable = new TableNode(
-				[
-					['userid', $userToCreate],
-					['password', $userToCreate],
-					['username', $userToCreate],
-					['email', $email],
-					['groups[]', $group],
-				]
-			);
-		} else {
-			$email = null;
-			$bodyTable = new TableNode(
-				[['userid', $userToCreate], ['password', $password], ['groups[]', $group]]
-			);
-		}
+		$email = null;
+		$bodyTable = new TableNode(
+			[['userid', $userToCreate], ['password', $password], ['groups[]', $group]]
+		);
+
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$groupadmin,
 			"POST",
@@ -3427,25 +3283,9 @@ trait Provisioning {
 		// sending the username in lowercase in the auth but in uppercase in
 		// the URL see https://github.com/owncloud/core/issues/36822
 		$user = $this->getActualUsername($user);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// In OCIS an intermittent issue restricts users to list their own account
-			// So use admin account to list the user
-			// https://github.com/owncloud/ocis/issues/820
-			// The special code can be reverted once the issue is fixed
-			if (OcisHelper::isTestingParallelDeployment()) {
-				$requestingUser = $this->getActualUsername($user);
-				$requestingPassword = $this->getPasswordForUser($user);
-			} elseif (OcisHelper::isTestingWithGraphApi()) {
-				$requestingUser = $this->getAdminUsername();
-				$requestingPassword = $this->getAdminPassword();
-			} else {
-				$requestingUser = $this->getActualUsername($user);
-				$requestingPassword = $this->getPasswordForUser($requestingUser);
-			}
-		} else {
-			$requestingUser = $this->getAdminUsername();
-			$requestingPassword = $this->getAdminPassword();
-		}
+		$requestingUser = $this->getAdminUsername();
+		$requestingPassword = $this->getAdminPassword();
+
 		$path = (OcisHelper::isTestingWithGraphApi())
 			? "/graph/v1.0"
 			: "/ocs/v2.php/cloud";
@@ -4546,14 +4386,6 @@ trait Provisioning {
 	 * @throws GuzzleException
 	 */
 	public function groupExists(string $group):bool {
-		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcisOrReva()) {
-			$baseDN = $this->getLdapBaseDN();
-			$newDN = 'cn=' . $group . ',ou=' . $this->ldapGroupsOU . ',' . $baseDN;
-			if ($this->ldap->getEntry($newDN) !== null) {
-				return true;
-			}
-			return false;
-		}
 		if (OcisHelper::isTestingWithGraphApi()) {
 			$base = '/graph/v1.0';
 		} else {
@@ -5826,11 +5658,7 @@ trait Provisioning {
 		$this->waitForDavRequestsToFinish();
 		$this->restoreParametersAfterScenario();
 
-		if (OcisHelper::isTestingOnOcisOrReva() && $this->someUsersHaveBeenCreated()) {
-			foreach ($this->getCreatedUsers() as $user) {
-				OcisHelper::deleteRevaUserData($user["actualUsername"]);
-			}
-		} elseif (OcisHelper::isTestingOnOc10()) {
+		if (OcisHelper::isTestingOnOc10()) {
 			$this->resetAdminUserAttributes();
 		}
 		if ($this->isTestingWithLdap()) {
@@ -5917,18 +5745,16 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function rememberAppEnabledDisabledState():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
-			SetupHelper::init(
-				$this->getAdminUsername(),
-				$this->getAdminPassword(),
-				$this->getBaseUrl(),
-				$this->getOcPath()
-			);
-			$this->runOcc(['app:list', '--output json']);
-			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
-			$this->enabledApps = \array_keys($apps["enabled"]);
-			$this->disabledApps = \array_keys($apps["disabled"]);
-		}
+		SetupHelper::init(
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->getBaseUrl(),
+			$this->getOcPath()
+		);
+		$this->runOcc(['app:list', '--output json']);
+		$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+		$this->enabledApps = \array_keys($apps["enabled"]);
+		$this->disabledApps = \array_keys($apps["disabled"]);
 	}
 
 	/**
@@ -5948,7 +5774,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function restoreAppEnabledDisabledState():void {
-		if (!OcisHelper::isTestingOnOcisOrReva() && !$this->isRunningForDbConversion()) {
+		if (!$this->isRunningForDbConversion()) {
 			$this->runOcc(['app:list', '--output json']);
 
 			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
@@ -6121,37 +5947,24 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	private function setSkeletonDirByType(string $skeletonType): string {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$originalSkeletonPath = \getenv("SKELETON_DIR");
-			if ($originalSkeletonPath === false) {
-				$originalSkeletonPath = '';
-			}
-			if ($skeletonType !== '') {
-				$skeletonDirName = $skeletonType . "Skeleton";
-				$newSkeletonPath = \dirname($originalSkeletonPath) . '/' . $skeletonDirName;
-				\putenv(
-					"SKELETON_DIR=" . $newSkeletonPath
-				);
-			}
-		} else {
-			$baseUrl = $this->getBaseUrl();
-			$originalSkeletonPath = $this->getSkeletonDirectory($baseUrl);
+		$baseUrl = $this->getBaseUrl();
+		$originalSkeletonPath = $this->getSkeletonDirectory($baseUrl);
 
-			if ($skeletonType !== '') {
-				OcsApiHelper::sendRequest(
-					$baseUrl,
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					'POST',
-					"/apps/testing/api/v1/testingskeletondirectory",
-					$this->getStepLineRef(),
-					[
-						'directory' => $skeletonType . "Skeleton"
-					],
-					$this->getOcsApiVersion()
-				);
-			}
+		if ($skeletonType !== '') {
+			OcsApiHelper::sendRequest(
+				$baseUrl,
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				'POST',
+				"/apps/testing/api/v1/testingskeletondirectory",
+				$this->getStepLineRef(),
+				[
+					'directory' => $skeletonType . "Skeleton"
+				],
+				$this->getOcsApiVersion()
+			);
 		}
+
 		return $originalSkeletonPath;
 	}
 
@@ -6166,23 +5979,17 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	private function setSkeletonDir(string $skeletonDir): string {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$originalSkeletonPath = \getenv("SKELETON_DIR");
-			if ($skeletonDir !== '') {
-				\putenv("SKELETON_DIR=" . $skeletonDir);
-			}
-		} else {
-			$baseUrl = $this->getBaseUrl();
-			$originalSkeletonPath = $this->getSkeletonDirectory($baseUrl);
-			if ($skeletonDir !== '') {
-				$this->runOcc(
-					["config:system:set skeletondirectory --value $skeletonDir"],
-					null,
-					null,
-					$baseUrl
-				);
-			}
+		$baseUrl = $this->getBaseUrl();
+		$originalSkeletonPath = $this->getSkeletonDirectory($baseUrl);
+		if ($skeletonDir !== '') {
+			$this->runOcc(
+				["config:system:set skeletondirectory --value $skeletonDir"],
+				null,
+				null,
+				$baseUrl
+			);
 		}
+
 		return $originalSkeletonPath;
 	}
 }

@@ -1586,11 +1586,7 @@ class FeatureContext extends BehatVariablesContext {
 		}
 		$urlEnding = \substr($url, \strlen($this->getBaseUrl() . '/'));
 
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$matchResult = \preg_match("%^(#/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
-		} else {
-			$matchResult = \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
-		}
+		$matchResult = \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
 
 		// preg_match returns (int) 1 for a match, we want to return a boolean.
 		if ($matchResult === 1) {
@@ -3830,12 +3826,10 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function clearFileLocks():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
-			$this->authContext->deleteTokenAuthEnforcedAfterScenario();
-			$this->clearFileLocksForServer($this->getBaseUrl());
-			if ($this->remoteBaseUrl !== $this->localBaseUrl) {
-				$this->clearFileLocksForServer($this->getRemoteBaseUrl());
-			}
+		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
+		$this->clearFileLocksForServer($this->getBaseUrl());
+		if ($this->remoteBaseUrl !== $this->localBaseUrl) {
+			$this->clearFileLocksForServer($this->getRemoteBaseUrl());
 		}
 	}
 
@@ -3862,9 +3856,6 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public static function useBigFileIDs(BeforeSuiteScope $scope):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return;
-		}
 		$fullUrl = \getenv('TEST_SERVER_URL');
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
@@ -4261,17 +4252,15 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function restoreParametersAfterScenario():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
-			$this->authContext->deleteTokenAuthEnforcedAfterScenario();
-			$user = $this->getCurrentUser();
-			$this->setCurrentUser($this->getAdminUsername());
-			$this->runFunctionOnEveryServer(
-				function ($server) {
-					$this->restoreParameters($server);
-				}
-			);
-			$this->setCurrentUser($user);
-		}
+		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
+		$user = $this->getCurrentUser();
+		$this->setCurrentUser($this->getAdminUsername());
+		$this->runFunctionOnEveryServer(
+			function ($server) {
+				$this->restoreParameters($server);
+			}
+		);
+		$this->setCurrentUser($user);
 	}
 
 	/**
@@ -4353,28 +4342,26 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function prepareParametersBeforeScenario():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
-			$user = $this->getCurrentUser();
-			$this->setCurrentUser($this->getAdminUsername());
-			$previousServer = $this->getCurrentServer();
-			foreach (['LOCAL', 'REMOTE'] as $server) {
-				if (($server === 'LOCAL') || $this->federatedServerExists()) {
-					$this->usingServer($server);
-					$this->resetAppConfigs();
-					$result = SetupHelper::runOcc(
-						['config:list', '--private'],
-						$this->getStepLineRef(),
-						$this->getAdminUsername(),
-						$this->getAdminPassword(),
-						$this->getBaseUrl(),
-						$this->getOcPath()
-					);
-					$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
-				}
+		$user = $this->getCurrentUser();
+		$this->setCurrentUser($this->getAdminUsername());
+		$previousServer = $this->getCurrentServer();
+		foreach (['LOCAL', 'REMOTE'] as $server) {
+			if (($server === 'LOCAL') || $this->federatedServerExists()) {
+				$this->usingServer($server);
+				$this->resetAppConfigs();
+				$result = SetupHelper::runOcc(
+					['config:list', '--private'],
+					$this->getStepLineRef(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$this->getBaseUrl(),
+					$this->getOcPath()
+				);
+				$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
 			}
-			$this->usingServer($previousServer);
-			$this->setCurrentUser($user);
 		}
+		$this->usingServer($previousServer);
+		$this->setCurrentUser($user);
 	}
 
 	/**
