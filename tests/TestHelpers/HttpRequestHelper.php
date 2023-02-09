@@ -76,11 +76,6 @@ class HttpRequestHelper {
 	 * @return int
 	 */
 	public static function numRetriesOnHttpTooEarly():int {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently reva and oCIS may return HTTP_TOO_EARLY
-			// So try up to 10 times before giving up.
-			return 10;
-		}
 		return 0;
 	}
 

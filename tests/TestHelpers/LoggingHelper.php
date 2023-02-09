@@ -53,10 +53,6 @@ class LoggingHelper {
 	public static function getLogFilePath(
 		?string $xRequestId = ''
 	):string {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we don't interact with the log file on reva or OCIS
-			return "";
-		}
 		$result = SetupHelper::runOcc(
 			['log:owncloud'],
 			$xRequestId
@@ -132,9 +128,6 @@ class LoggingHelper {
 	public static function getLogLevel(
 		?string $xRequestId = ''
 	):string {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return "debug";
-		}
 		$result = SetupHelper::runOcc(
 			["log:manage"],
 			$xRequestId
@@ -163,10 +156,6 @@ class LoggingHelper {
 		?string $logLevel,
 		?string $xRequestId = ''
 	):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we can't manage log file settings on reva or OCIS
-			return;
-		}
 		if (!\in_array($logLevel, self::LOG_LEVEL_ARRAY)) {
 			throw new InvalidArgumentException("invalid log level");
 		}
@@ -193,9 +182,6 @@ class LoggingHelper {
 	public static function getLogBackend(
 		?string $xRequestId = ''
 	):string {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return "errorlog";
-		}
 		$result = SetupHelper::runOcc(
 			["log:manage"],
 			$xRequestId
@@ -232,10 +218,6 @@ class LoggingHelper {
 		if (!\in_array($backend, ["owncloud", "syslog", "errorlog"])) {
 			throw new InvalidArgumentException("invalid log backend");
 		}
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we can't manage log file settings on reva or OCIS
-			return;
-		}
 		$result = SetupHelper::runOcc(
 			["log:manage", "--backend=$backend"],
 			$xRequestId
@@ -259,9 +241,6 @@ class LoggingHelper {
 	public static function getLogTimezone(
 		?string  $xRequestId = ''
 	):string {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return "UTC";
-		}
 		$result = SetupHelper::runOcc(
 			["log:manage"],
 			$xRequestId
@@ -295,10 +274,6 @@ class LoggingHelper {
 		?string $timezone,
 		?string $xRequestId = ''
 	):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we can't manage log file settings on reva or OCIS
-			return;
-		}
 		$result = SetupHelper::runOcc(
 			["log:manage", "--timezone=$timezone"],
 			$xRequestId
@@ -327,10 +302,6 @@ class LoggingHelper {
 		?string $adminPassword,
 		?string $xRequestId = ''
 	):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we don't interact with the log file on reva or OCIS
-			return;
-		}
 		$result = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUsername,
@@ -360,10 +331,6 @@ class LoggingHelper {
 		?string $timezone,
 		?string $xRequestId = ''
 	):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// Currently we don't interact with the log file on reva or OCIS
-			return;
-		}
 		if (!\in_array(\strtolower($logLevel), self::LOG_LEVEL_ARRAY)) {
 			throw new InvalidArgumentException("invalid log level");
 		}
@@ -408,13 +375,6 @@ class LoggingHelper {
 	public static function getLogInfo(
 		?string $xRequestId = ''
 	):array {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return [
-				"level" => "debug",
-				"backend" => "errorlog",
-				"timezone" => "UTC"
-			];
-		}
 		$result = SetupHelper::runOcc(
 			["log:manage"],
 			$xRequestId

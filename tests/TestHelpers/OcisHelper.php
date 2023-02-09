@@ -36,15 +36,8 @@ class OcisHelper {
 	/**
 	 * @return bool
 	 */
-	public static function isTestingOnOcisOrReva():bool {
-		return false;
-	}
-
-	/**
-	 * @return bool
-	 */
 	public static function isTestingOnOc10():bool {
-		return (!self::isTestingOnOcisOrReva());
+		return true;
 	}
 
 	/**
@@ -293,7 +286,7 @@ class OcisHelper {
 	 */
 	private static function getOcisRevaDataRoot():string {
 		$root = \getenv("OCIS_REVA_DATA_ROOT");
-		if (($root === false || $root === "") && self::isTestingOnOcisOrReva()) {
+		if ($root === false || $root === "") {
 			$root = "/var/tmp/ocis/owncloud/";
 		}
 		if (!\file_exists($root)) {
