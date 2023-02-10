@@ -42,6 +42,7 @@ Summary
 * Enhancement - Show WebDAV Url in personal setting under app passwords: [#40509](https://github.com/owncloud/core/pull/40509)
 * Enhancement - Show username on personal profile page: [#40510](https://github.com/owncloud/core/pull/40510)
 * Enhancement - Add legal privacy polciy and imprint links to personal settings: [#40511](https://github.com/owncloud/core/pull/40511)
+* Enhancement - Persistent major file version workflow: [#40531](https://github.com/owncloud/core/pull/40531)
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 * Enhancement - Tweak rewrite conditions in .htaccess: [#40584](https://github.com/owncloud/core/pull/40584)
 
@@ -360,6 +361,23 @@ Details
    These are only displayed if they are set.
 
    https://github.com/owncloud/core/pull/40511
+
+* Enhancement - Persistent major file version workflow: [#40531](https://github.com/owncloud/core/pull/40531)
+
+   - Restore operation logic changed. Now restore is creating new current version of the file from
+   one of past noncurrent versions of the file. Current version also receives incremented mtime
+   for the file, and author of the files is the user that restored the file. The old noncurrent
+   version is no longer removed upon restore and current version no longer receives mtime of the
+   version. - The current version of the file is now shown in the Versions Tab, highlighted with
+   "gray" background - Versions now persist additional extended metadata on versioning tags,
+   that allow easier identification of the versions. Each update increases minor version for the
+   file. Current version of the file now can be published, which increases major version tag. -
+   Each new edit of the file would create noncurrent versions. The ones tagged with major version
+   due to publishing, will be persisted long term and wont be subject to any retention policies. -
+   Migrate from deprecated save_version_author to save_version_metadata
+
+   https://github.com/owncloud/enterprise/issues/5286
+   https://github.com/owncloud/core/pull/40531
 
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 

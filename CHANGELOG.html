@@ -40,6 +40,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Show WebDAV Url in personal setting under app passwords: <a href="https://github.com/owncloud/core/pull/40509">#40509</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Show username on personal profile page: <a href="https://github.com/owncloud/core/pull/40510">#40510</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add legal privacy polciy and imprint links to personal settings: <a href="https://github.com/owncloud/core/pull/40511">#40511</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Persistent major file version workflow: <a href="https://github.com/owncloud/core/pull/40531">#40531</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Tweak rewrite conditions in .htaccess: <a href="https://github.com/owncloud/core/pull/40584">#40584</a></li>
     </ul>
@@ -323,6 +324,24 @@
    These are only displayed if they are set.
             </p>
             <p>https://github.com/owncloud/core/pull/40511<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Persistent major file version workflow: <a href="https://github.com/owncloud/core/pull/40531">#40531</a></p>
+            <p>- Restore operation logic changed. Now restore is creating new current version of the file from
+   one of past noncurrent versions of the file. Current version also receives incremented mtime
+   for the file, and author of the files is the user that restored the file. The old noncurrent
+   version is no longer removed upon restore and current version no longer receives mtime of the
+   version. - The current version of the file is now shown in the Versions Tab, highlighted with
+   "gray" background - Versions now persist additional extended metadata on versioning tags,
+   that allow easier identification of the versions. Each update increases minor version for the
+   file. Current version of the file now can be published, which increases major version tag. -
+   Each new edit of the file would create noncurrent versions. The ones tagged with major version
+   due to publishing, will be persisted long term and wont be subject to any retention policies. -
+   Migrate from deprecated save_version_author to save_version_metadata
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5286<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40531<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></p>
