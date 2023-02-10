@@ -333,7 +333,7 @@ trait WebDav {
 	public function getFullDavFilesPath(string $user):string {
 		$spaceId = null;
 		if ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES) {
-			$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ? WebDavHelper::$SPACE_ID_FROM_OCIS : WebDavHelper::getPersonalSpaceIdForUser(
+			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
 				$this->getBaseUrl(),
 				$user,
 				$this->getPasswordForUser($user),
