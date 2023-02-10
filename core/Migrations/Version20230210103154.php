@@ -5,7 +5,7 @@ use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
 
 /**
- * Auto-generated migration step: Please modify to your needs!
+ * Migrate from deprecated save_version_author to save_version_metadata
  */
 class Version20230210103154 implements ISimpleMigration {
 	/**
