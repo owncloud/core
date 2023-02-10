@@ -25,7 +25,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use TestHelpers\LoggingHelper;
-use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';

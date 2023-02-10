@@ -23,7 +23,6 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
-use TestHelpers\OcisHelper;
 
 require_once 'bootstrap.php';
 

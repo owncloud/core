@@ -25,7 +25,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\Assert;
-use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 use Behat\Gherkin\Node\PyStringNode;
 
