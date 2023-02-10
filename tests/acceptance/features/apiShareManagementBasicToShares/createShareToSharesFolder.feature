@@ -235,7 +235,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @skipOnReva # reva doesn't have a pre-created admin user
+  @smokeTest
   Scenario Outline: User included in multiple groups receives a share from the admin
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
