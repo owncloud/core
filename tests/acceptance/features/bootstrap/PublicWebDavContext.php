@@ -24,7 +24,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
-use TestHelpers\OcisHelper;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';

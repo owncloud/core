@@ -36,7 +36,6 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\UploadHelper;
-use TestHelpers\OcisHelper;
 use Laminas\Ldap\Ldap;
 use TestHelpers\WebDavHelper;
 
@@ -2720,59 +2719,28 @@ class FeatureContext extends BehatVariablesContext {
 		$jsonExpectedDecoded['product'] = $product;
 		$jsonExpectedDecoded['productname'] = $productName;
 
-		if (OcisHelper::isTestingOnOc10()) {
-			// On oC10 get the expected version values by parsing the output of "occ status"
-			$runOccStatus = $this->runOcc(['status']);
-			if ($runOccStatus === 0) {
-				$output = \explode("- ", $this->lastStdOut);
-				$version = \explode(": ", $output[3]);
-				Assert::assertEquals(
-					"version",
-					$version[0],
-					"Expected 'version' but got $version[0]"
-				);
-				$versionString = \explode(": ", $output[4]);
-				Assert::assertEquals(
-					"versionstring",
-					$versionString[0],
-					"Expected 'versionstring' but got $versionString[0]"
-				);
-				$jsonExpectedDecoded['version'] = \trim($version[1]);
-				$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
-			} else {
-				Assert::fail(
-					"Cannot get version variables from occ - status $runOccStatus"
-				);
-			}
+		// On oC10 get the expected version values by parsing the output of "occ status"
+		$runOccStatus = $this->runOcc(['status']);
+		if ($runOccStatus === 0) {
+			$output = \explode("- ", $this->lastStdOut);
+			$version = \explode(": ", $output[3]);
+			Assert::assertEquals(
+				"version",
+				$version[0],
+				"Expected 'version' but got $version[0]"
+			);
+			$versionString = \explode(": ", $output[4]);
+			Assert::assertEquals(
+				"versionstring",
+				$versionString[0],
+				"Expected 'versionstring' but got $versionString[0]"
+			);
+			$jsonExpectedDecoded['version'] = \trim($version[1]);
+			$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
 		} else {
-			// We are on oCIS or reva or some other implementation. We cannot do "occ status".
-			// So get the expected version values by looking in the capabilities response.
-			$version = $this->appConfigurationContext->getParameterValueFromXml(
-				$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
-				'core',
-				'status@@@version'
+			Assert::fail(
+				"Cannot get version variables from occ - status $runOccStatus"
 			);
-
-			if (!\strlen($version)) {
-				Assert::fail(
-					"Cannot get version from core capabilities"
-				);
-			}
-
-			$versionString = $this->appConfigurationContext->getParameterValueFromXml(
-				$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
-				'core',
-				'status@@@versionstring'
-			);
-
-			if (!\strlen($versionString)) {
-				Assert::fail(
-					"Cannot get versionstring from core capabilities"
-				);
-			}
-
-			$jsonExpectedDecoded['version'] = $version;
-			$jsonExpectedDecoded['versionstring'] = $versionString;
 		}
 		$errorMessage = "";
 		$errorFound = false;
@@ -3634,12 +3602,6 @@ class FeatureContext extends BehatVariablesContext {
 		if ($this->isTestingWithLdap()) {
 			$suiteParameters = SetupHelper::getSuiteParameters($scope);
 			$this->connectToLdap($suiteParameters);
-		}
-
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext = new GraphContext();
-			$this->graphContext->before($scope);
-			$environment->registerContext($this->graphContext);
 		}
 	}
 

@@ -27,7 +27,6 @@ use Behat\Gherkin\Node\TableNode;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
-use TestHelpers\OcisHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\SetupHelper;

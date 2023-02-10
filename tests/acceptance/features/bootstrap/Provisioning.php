@@ -28,7 +28,6 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
-use TestHelpers\OcisHelper;
 use TestHelpers\WebDavHelper;
 use Laminas\Ldap\Exception\LdapException;
 use Laminas\Ldap\Ldap;
@@ -644,13 +643,6 @@ trait Provisioning {
 		$this->ldap->bind();
 
 		$ldifFile = __DIR__ . (string)$suiteParameters['ldapInitialUserFilePath'];
-		if (OcisHelper::isTestingParallelDeployment()) {
-			$behatYml = \getenv("BEHAT_YML");
-			if ($behatYml) {
-				$configPath = \dirname($behatYml);
-				$ldifFile = $configPath . "/" . \basename($ldifFile);
-			}
-		}
 		if (!$this->skipImportLdif) {
 			$this->importLdifFile($ldifFile);
 		}
@@ -665,14 +657,12 @@ trait Provisioning {
 	 */
 	public function theLdapUsersHaveBeenReSynced():void {
 		// we need to sync ldap users when testing for parallel deployment
-		if (OcisHelper::isTestingParallelDeployment()) {
-			$occResult = SetupHelper::runOcc(
-				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
-				$this->getStepLineRef()
-			);
-			if ($occResult['code'] !== "0") {
-				throw new Exception(__METHOD__ . " could not sync LDAP users " . $occResult['stdErr']);
-			}
+		$occResult = SetupHelper::runOcc(
+			['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
+			$this->getStepLineRef()
+		);
+		if ($occResult['code'] !== "0") {
+			throw new Exception(__METHOD__ . " could not sync LDAP users " . $occResult['stdErr']);
 		}
 	}
 
@@ -777,10 +767,6 @@ trait Provisioning {
 		$entry['gidNumber'] = 5000;
 		$entry['uidNumber'] = $uidNumber;
 
-		if (OcisHelper::isTestingParallelDeployment()) {
-			$entry['ownCloudSelector'] = $this->getOCSelector();
-		}
-
 		if ($this->federatedServerExists()) {
 			if (!\in_array($setting['userid'], $this->ldapCreatedUsers)) {
 				$this->ldap->add($newDN, $entry);
@@ -816,9 +802,7 @@ trait Provisioning {
 		$this->ldap->add($newDN, $entry);
 		$this->ldapCreatedGroups[] = $group;
 		// For syncing the ldap groups
-		if (OcisHelper::isTestingOnOc10()) {
-			$this->runOcc(['group:list']);
-		}
+		$this->runOcc(['group:list']);
 	}
 
 	/**
@@ -980,27 +964,6 @@ trait Provisioning {
 				'but no "OCIS_REVA_DATA_ROOT" given'
 			);
 		}
-		if ($skeletonStrategy === 'upload') {
-			foreach ($usersAttributes as $userAttributes) {
-				OcisHelper::recurseUpload(
-					$this->getBaseUrl(),
-					$skeletonDir,
-					$userAttributes['userid'],
-					$userAttributes['password'],
-					$this->getStepLineRef()
-				);
-			}
-		}
-		if ($skeletonStrategy === 'copy') {
-			foreach ($usersAttributes as $userAttributes) {
-				$user = $userAttributes['userid'];
-				$dataDir = $revaRoot . "$user/files";
-				if (!\file_exists($dataDir)) {
-					\mkdir($dataDir, 0777, true);
-				}
-				OcisHelper::recurseCopy($skeletonDir, $dataDir);
-			}
-		}
 	}
 
 	/**
@@ -1032,7 +995,6 @@ trait Provisioning {
 		$useGraph = false;
 		if ($method === null) {
 			$useLdap = $this->isTestingWithLdap();
-			$useGraph = OcisHelper::isTestingWithGraphApi();
 		} elseif ($method === "ldap") {
 			$useLdap = true;
 		} elseif ($method === "graph") {
@@ -1300,17 +1262,10 @@ trait Provisioning {
 		string $user,
 		string $password
 	):void {
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->adminChangesPasswordOfUserToUsingTheGraphApi(
-				$user,
-				$password
-			);
-		} else {
-			$this->adminChangesPasswordOfUserToUsingTheProvisioningApi(
-				$user,
-				$password
-			);
-		}
+		$this->adminChangesPasswordOfUserToUsingTheProvisioningApi(
+			$user,
+			$password
+		);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
 			"could not change password of user $user"
@@ -1930,28 +1885,14 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function adminHasChangedTheEmailOfUserTo(string $user, string $email):void {
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->userHasBeenEditedUsingTheGraphApi(
-				$user,
-				null,
-				null,
-				$email
-			);
-			$updatedUserData = $this->getJsonDecodedResponse();
-			Assert::assertEquals(
-				$email,
-				$updatedUserData['mail']
-			);
-		} else {
-			$this->adminChangesTheEmailOfUserToUsingTheProvisioningApi(
-				$user,
-				$email
-			);
-			$this->theHTTPStatusCodeShouldBe(
-				200,
-				"could not change email of user $user"
-			);
-		}
+		$this->adminChangesTheEmailOfUserToUsingTheProvisioningApi(
+			$user,
+			$email
+		);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			"could not change email of user $user"
+		);
 	}
 
 	/**
@@ -2057,29 +1998,12 @@ trait Provisioning {
 	):void {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->userHasBeenEditedUsingTheGraphApi(
-				$targetUser,
-				null,
-				null,
-				$email,
-				null,
-				$requestingUser,
-				$this->getPasswordForUser($requestingUser)
-			);
-			$updatedUserData = $this->getJsonDecodedResponse();
-			Assert::assertEquals(
-				$email,
-				$updatedUserData['mail'],
-			);
-		} else {
-			$this->userChangesUserEmailUsingProvisioningApi(
-				$requestingUser,
-				$targetUser,
-				$email
-			);
-			$this->theHTTPStatusCodeShouldBeSuccess();
-		}
+		$this->userChangesUserEmailUsingProvisioningApi(
+			$requestingUser,
+			$targetUser,
+			$email
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 		$this->rememberUserEmailAddress($targetUser, $email);
 	}
 
@@ -2129,19 +2053,6 @@ trait Provisioning {
 			$this->editLdapUserDisplayName(
 				$user,
 				$displayName
-			);
-		} elseif (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->userHasBeenEditedUsingTheGraphApi(
-				$user,
-				null,
-				null,
-				null,
-				$displayName
-			);
-			$updatedUserData = $this->getJsonDecodedResponse();
-			Assert::assertEquals(
-				$displayName,
-				$updatedUserData['displayName']
 			);
 		} else {
 			$this->adminChangesTheDisplayNameOfUserUsingKey(
@@ -2334,30 +2245,14 @@ trait Provisioning {
 	):void {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->userHasBeenEditedUsingTheGraphApi(
-				$targetUser,
-				null,
-				null,
-				null,
-				$displayName,
-				$requestingUser,
-				$this->getPasswordForUser($requestingUser)
-			);
-			$updatedUserData = $this->getJsonDecodedResponse();
-			Assert::assertEquals(
-				$displayName,
-				$updatedUserData['displayName']
-			);
-		} else {
-			$this->userChangesTheDisplayNameOfUserUsingKey(
-				$requestingUser,
-				$targetUser,
-				'displayname',
-				$displayName
-			);
-			$this->theHTTPStatusCodeShouldBeSuccess();
-		}
+		$this->userChangesTheDisplayNameOfUserUsingKey(
+			$requestingUser,
+			$targetUser,
+			'displayname',
+			$displayName
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+		
 		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 	/**
@@ -2553,12 +2448,8 @@ trait Provisioning {
 	public function adminHasRetrievedTheInformationOfUserUsingTheProvisioningApi(
 		string $user
 	):void {
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->adminHasRetrievedUserUsingTheGraphApi($user);
-		} else {
-			$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
-			$this->theHTTPStatusCodeShouldBeSuccess();
-		}
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -2615,18 +2506,11 @@ trait Provisioning {
 		string $requestingUser,
 		string $targetUser
 	):void {
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->userHasRetrievedUserUsingTheGraphApi(
-				$requestingUser,
-				$targetUser
-			);
-		} else {
-			$this->userRetrieveUserInformationUsingProvisioningApi(
-				$requestingUser,
-				$targetUser
-			);
-			$this->theHTTPStatusCodeShouldBeSuccess();
-		}
+		$this->userRetrieveUserInformationUsingProvisioningApi(
+			$requestingUser,
+			$targetUser
+		);
+		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
 	/**
@@ -2755,19 +2639,14 @@ trait Provisioning {
 	public function theseGroupsShouldNotExist(string $shouldOrNot, TableNode $table):void {
 		$should = ($shouldOrNot !== "not");
 		$this->verifyTableNodeColumns($table, ['groupname']);
-		$useGraph = OcisHelper::isTestingWithGraphApi();
-		if ($useGraph) {
-			$this->graphContext->theseGroupsShouldNotExist($shouldOrNot, $table);
-		} else {
-			$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
-			foreach ($table as $row) {
-				if (\in_array($row['groupname'], $groups, true) !== $should) {
-					throw new Exception(
-						"group '" . $row['groupname'] .
-						"' does" . ($should ? " not" : "") .
-						" exist but should" . ($should ? "" : " not")
-					);
-				}
+		$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
+		foreach ($table as $row) {
+			if (\in_array($row['groupname'], $groups, true) !== $should) {
+				throw new Exception(
+					"group '" . $row['groupname'] .
+					"' does" . ($should ? " not" : "") .
+					" exist but should" . ($should ? "" : " not")
+				);
 			}
 		}
 	}
@@ -3161,8 +3040,6 @@ trait Provisioning {
 		if ($method === null && $this->isTestingWithLdap()) {
 			//guess yourself
 			$method = "ldap";
-		} elseif (OcisHelper::isTestingWithGraphApi()) {
-			$method = "graph";
 		} elseif ($method === null) {
 			$method = "api";
 		}
@@ -3249,11 +3126,7 @@ trait Provisioning {
 	 */
 	public function cleanupGroup(string $group):void {
 		try {
-			if (OcisHelper::isTestingWithGraphApi()) {
-				$this->graphContext->adminHasDeletedGroupUsingTheGraphApi($group);
-			} else {
-				$this->deleteTheGroupUsingTheProvisioningApi($group);
-			}
+			$this->deleteTheGroupUsingTheProvisioningApi($group);
 		} catch (Exception $e) {
 			\error_log(
 				"INFORMATION: There was an unexpected problem trying to delete group " .
@@ -3286,9 +3159,7 @@ trait Provisioning {
 		$requestingUser = $this->getAdminUsername();
 		$requestingPassword = $this->getAdminPassword();
 
-		$path = (OcisHelper::isTestingWithGraphApi())
-			? "/graph/v1.0"
-			: "/ocs/v2.php/cloud";
+		$path = "/ocs/v2.php/cloud";
 		$fullUrl = $this->getBaseUrl() . $path . "/users/$user";
 
 		$this->response = HttpRequestHelper::get(
@@ -3315,31 +3186,24 @@ trait Provisioning {
 	public function userShouldBelongToGroup(string $user, string $group):void {
 		$user = $this->getActualUsername($user);
 		$respondedArray = [];
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->userShouldBeMemberInGroupUsingTheGraphApi(
-				$user,
-				$group
-			);
-		} else {
-			$this->theAdministratorGetsAllTheGroupsOfUser($user);
-			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-			\sort($respondedArray);
-			Assert::assertContains(
-				$group,
-				$respondedArray,
-				__METHOD__ . " Group '$group' does not exist in '"
-				. \implode(', ', $respondedArray)
-				. "'"
-			);
-			Assert::assertEquals(
-				200,
-				$this->response->getStatusCode(),
-				__METHOD__
-				. " Expected status code is '200' but got '"
-				. $this->response->getStatusCode()
-				. "'"
-			);
-		}
+		$this->theAdministratorGetsAllTheGroupsOfUser($user);
+		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+		\sort($respondedArray);
+		Assert::assertContains(
+			$group,
+			$respondedArray,
+			__METHOD__ . " Group '$group' does not exist in '"
+			. \implode(', ', $respondedArray)
+			. "'"
+		);
+		Assert::assertEquals(
+			200,
+			$this->response->getStatusCode(),
+			__METHOD__
+			. " Expected status code is '200' but got '"
+			. $this->response->getStatusCode()
+			. "'"
+		);
 	}
 
 	/**
@@ -3381,24 +3245,20 @@ trait Provisioning {
 	 */
 	public function userShouldNotBelongToGroup(string $user, string $group):void {
 		$user = $this->getActualUsername($user);
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->userShouldNotBeMemberInGroupUsingTheGraphApi($user, $group);
-		} else {
-			$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
-			$this->response = HttpRequestHelper::get(
-				$fullUrl,
-				$this->getStepLineRef(),
-				$this->getAdminUsername(),
-				$this->getAdminPassword()
-			);
-			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-			\sort($respondedArray);
-			Assert::assertNotContains($group, $respondedArray);
-			Assert::assertEquals(
-				200,
-				$this->response->getStatusCode()
-			);
-		}
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl,
+			$this->getStepLineRef(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
+		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+		\sort($respondedArray);
+		Assert::assertNotContains($group, $respondedArray);
+		Assert::assertEquals(
+			200,
+			$this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -3609,8 +3469,6 @@ trait Provisioning {
 		) {
 			//guess yourself
 			$method = "ldap";
-		} elseif ($method === null && OcisHelper::isTestingWithGraphApi()) {
-			$method = "graph";
 		} elseif ($method === null) {
 			$method = "api";
 		}
@@ -3871,8 +3729,6 @@ trait Provisioning {
 		if ($method === null) {
 			if ($this->isTestingWithLdap()) {
 				$method = "ldap";
-			} elseif (OcisHelper::isTestingWithGraphApi()) {
-				$method = "graph";
 			} else {
 				$method = "api";
 			}
@@ -4230,19 +4086,14 @@ trait Provisioning {
 		$this->emptyLastHTTPStatusCodesArray();
 		$this->emptyLastOCSStatusCodesArray();
 		// Always try to delete the user
-		if (OcisHelper::isTestingWithGraphApi()) {
-			// users can be deleted using the username in the GraphApi too
-			$this->graphContext->adminDeletesUserUsingTheGraphApi($user);
-		} else {
-			$this->response = UserHelper::deleteUser(
-				$this->getBaseUrl(),
-				$user,
-				$this->getAdminUsername(),
-				$this->getAdminPassword(),
-				$this->getStepLineRef(),
-				$this->ocsApiVersion
-			);
-		}
+		$this->response = UserHelper::deleteUser(
+			$this->getBaseUrl(),
+			$user,
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->getStepLineRef(),
+			$this->ocsApiVersion
+		);
 		$this->pushToLastStatusCodesArrays();
 
 		// Only log a message if the test really expected the user to have been
@@ -4288,11 +4139,7 @@ trait Provisioning {
 	 * @throws GuzzleException
 	 */
 	public function groupHasBeenDeleted(string $group):void {
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->adminHasDeletedGroupUsingTheGraphApi($group);
-		} else {
-			$this->deleteGroup($group);
-		}
+		$this->deleteGroup($group);
 		$this->groupShouldNotExist($group);
 	}
 
@@ -4386,11 +4233,7 @@ trait Provisioning {
 	 * @throws GuzzleException
 	 */
 	public function groupExists(string $group):bool {
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$base = '/graph/v1.0';
-		} else {
-			$base = '/ocs/v2.php/cloud';
-		}
+		$base = '/ocs/v2.php/cloud';
 		$group = \rawurlencode($group);
 		$fullUrl = $this->getBaseUrl() . "$base/groups/$group";
 		$this->response = HttpRequestHelper::get(
@@ -4471,8 +4314,6 @@ trait Provisioning {
 			&& \in_array($group, $this->ldapCreatedGroups)
 		) {
 			$this->removeUserFromLdapGroup($user, $group);
-		} elseif (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->adminHasRemovedUserFromGroupUsingTheGraphApi($user, $group);
 		} else {
 			$this->removeUserFromGroupAsAdminUsingTheProvisioningApi(
 				$user,
@@ -4759,17 +4600,13 @@ trait Provisioning {
 			},
 			$this->simplifyArray($users)
 		);
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->theseUsersShouldBeInTheResponse($usersSimplified);
-		} else {
-			$respondedArray = $this->getArrayOfUsersResponded($this->response);
-			Assert::assertEqualsCanonicalizing(
-				$usersSimplified,
-				$respondedArray,
-				__METHOD__
-				. " Provided users do not match the users returned in the response."
-			);
-		}
+		$respondedArray = $this->getArrayOfUsersResponded($this->response);
+		Assert::assertEqualsCanonicalizing(
+			$usersSimplified,
+			$respondedArray,
+			__METHOD__
+			. " Provided users do not match the users returned in the response."
+		);
 	}
 
 	/**
@@ -4814,16 +4651,12 @@ trait Provisioning {
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->theseGroupsShouldBeInTheResponse($groupsSimplified);
-		} else {
-			Assert::assertEqualsCanonicalizing(
-				$groupsSimplified,
-				$respondedArray,
-				__METHOD__
-				. " Provided groups do not match the groups returned in the response."
-			);
-		}
+		Assert::assertEqualsCanonicalizing(
+			$groupsSimplified,
+			$respondedArray,
+			__METHOD__
+			. " Provided groups do not match the groups returned in the response."
+		);
 	}
 
 	/**
@@ -4838,18 +4671,14 @@ trait Provisioning {
 		$this->verifyTableNodeColumnsCount($groupsList, 1);
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext->theseGroupsShouldBeInTheResponse($groupsSimplified);
-		} else {
-			$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
-			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-			Assert::assertEqualsCanonicalizing(
-				$expectedGroups,
-				$respondedArray,
-				__METHOD__
-				. " Provided groups do not match the groups returned in the response."
-			);
-		}
+		$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
+		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+		Assert::assertEqualsCanonicalizing(
+			$expectedGroups,
+			$respondedArray,
+			__METHOD__
+			. " Provided groups do not match the groups returned in the response."
+		);
 	}
 
 	/**
@@ -5658,9 +5487,7 @@ trait Provisioning {
 		$this->waitForDavRequestsToFinish();
 		$this->restoreParametersAfterScenario();
 
-		if (OcisHelper::isTestingOnOc10()) {
-			$this->resetAdminUserAttributes();
-		}
+		$this->resetAdminUserAttributes();
 		if ($this->isTestingWithLdap()) {
 			$this->deleteLdapUsersAndGroups();
 		}
@@ -5717,23 +5544,11 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			if (OcisHelper::isTestingWithGraphApi()) {
-				$this->graphContext->adminDeletesGroupWithGroupId(
-					$groupData['id']
-				);
-			} else {
-				$this->cleanupGroup((string)$group);
-			}
+			$this->cleanupGroup((string)$group);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
-			if (OcisHelper::isTestingWithGraphApi()) {
-				$this->graphContext->adminDeletesGroupWithGroupId(
-					$groupData['id']
-				);
-			} else {
-				$this->cleanupGroup((string)$remoteGroup);
-			}
+			$this->cleanupGroup((string)$remoteGroup);
 		}
 		$this->usingServer($previousServer);
 	}
