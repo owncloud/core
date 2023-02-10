@@ -217,11 +217,14 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			$absolutePath = Filesystem::normalizePath($this->fileView->getAbsolutePath($name));
 			list($targetStorage, $targetInternalPath) = Filesystem::resolvePath($absolutePath);
 
+			// Detect if we are trying to create a folder for chunk upload
+			$isChunk = substr($targetInternalPath, 0, strlen('uploads/web-file-upload-')) === 'uploads/web-file-upload-';
+
 			// We are using == instead of === as the computerFileSize method which is
 			// used to get the quota may return a float type. Note that the same
 			// has been observed for the disk_free_space function in local storage
 			list($used, $free) = $this->getQuotaInfo();
-			if ($free == 0 && $targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage') === true) {
+			if ($free == 0 && ($targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage') === true) && !$isChunk) {
 				throw new SabreInsufficientStorage('Creation of empty directories is forbidden in case of no available quota');
 			}
 
