@@ -67,14 +67,14 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 	 * @inheritdoc
 	 */
 	public function getEditedBy() : string {
-		$storage = $this->node->getStorage();
-		$internalPath = $this->node->getInternalPath();
-
-		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
-			return '';
-		}
-
 		if (!$this->versionInfo) {
+			$storage = $this->node->getStorage();
+			$internalPath = $this->node->getInternalPath();
+	
+			if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
+				return '';
+			}
+
 			/** @var IVersionedStorage | Storage $storage */
 			'@phan-var IVersionedStorage | Storage $storage';
 			$version = $storage->getCurrentVersion($internalPath);
@@ -88,14 +88,14 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 	 * @inheritdoc
 	 */
 	public function getVersionTag() : string {
-		$storage = $this->node->getStorage();
-		$internalPath = $this->node->getInternalPath();
-
-		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
-			return '';
-		}
-
 		if (!$this->versionInfo) {
+			$storage = $this->node->getStorage();
+			$internalPath = $this->node->getInternalPath();
+	
+			if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
+				return '';
+			}
+
 			/** @var IVersionedStorage | Storage $storage */
 			'@phan-var IVersionedStorage | Storage $storage';
 			$version = $storage->getCurrentVersion($internalPath);

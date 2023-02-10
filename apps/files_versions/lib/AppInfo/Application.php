@@ -24,7 +24,6 @@
 namespace OCA\Files_Versions\AppInfo;
 
 use OC\AllConfig;
-use OCA\Files_Versions\Controller\VersionController;
 use OCA\Files_Versions\Expiration;
 use OCA\Files_Versions\FileHelper;
 use OCA\Files_Versions\MetaStorage;

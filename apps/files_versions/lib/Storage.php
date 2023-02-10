@@ -232,7 +232,7 @@ class Storage {
 					self::$metaData->copyCurrentToVersion($filename, $fileInfo, $uid);
 
 					// create new current file metadata
-					self::$metaData->createCurrent($filename, $uid, true);
+					self::$metaData->createForCurrent($filename, $uid, true);
 				}
 			}
 		}
@@ -251,10 +251,10 @@ class Storage {
 			}
 
 			list($uid, $currentFileName) = self::getUidAndFilename($filename);
-			$versionMetadata = self::$metaData->getCurrent($currentFileName, $uid);
+			$versionMetadata = self::$metaData->getCurrentMetadata($currentFileName, $uid);
 			if (!$versionMetadata) {
 				// make sure metadata for current exists
-				self::$metaData->createCurrent($currentFileName, $uid, true);
+				self::$metaData->createForCurrent($currentFileName, $uid, true);
 			}
 		}
 	}
@@ -281,7 +281,7 @@ class Storage {
 		if (self::metaEnabled()) {
 			$versionFileInfo = $view->getFileInfo($path);
 			if ($versionFileInfo) {
-				$versionMetadata = self::$metaData->getVersion($versionFileInfo);
+				$versionMetadata = self::$metaData->getVersionMetadata($versionFileInfo);
 
 				// we should not expire major versions (published workflow)
 				$versionTag = $versionMetadata['version_tag'] ?? '';
@@ -341,7 +341,7 @@ class Storage {
 				}
 			}
 			if (self::metaEnabled()) {
-				self::$metaData->deleteCurrent($view, $filename);
+				self::$metaData->deleteForCurrent($view, $filename);
 			}
 		}
 		unset(self::$deletedFiles[$path]);
@@ -391,6 +391,8 @@ class Storage {
 			self::getFileHelper()->createMissingDirectories(new View("/$targetOwner"), $targetPath);
 
 			if (self::metaEnabled()) {
+				// NOTE: we need to move current file first as in case of interuption lack of this file could cause issues
+				
 				// Also move/copy the current version
 				$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
 				$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
@@ -531,11 +533,10 @@ class Storage {
 		// add author information if the feature is enabled
 		if (self::metaEnabled()) {
 			// handle only allowed metadata values
-			$versionMetadata = self::$metaData->getCurrent($filename, $uid);
+			$versionMetadata = self::$metaData->getCurrentMetadata($filename, $uid);
 
 			$version['edited_by'] = $versionMetadata['edited_by'] ?? '';
 			$version['version_tag'] = $versionMetadata['version_tag'] ?? '';
-			$version['restored_from_tag'] = $versionMetadata['restored_from_tag'] ?? '';
 		}
 
 		return $version;
@@ -555,7 +556,7 @@ class Storage {
 			list($uid, $currentFileName) = self::getUidAndFilename($filename);
 
 			// overwrite current file metadata with minor=false to create new major version
-			self::$metaData->createCurrent($currentFileName, $uid, false);
+			self::$metaData->createForCurrent($currentFileName, $uid, false);
 		}
 	}
 
@@ -618,11 +619,10 @@ class Storage {
 						if (self::metaEnabled()) {
 							$versionFileInfo = $view->getFileInfo("$dir/$entryName");
 							if ($versionFileInfo) {
-								$versionMetadata = self::$metaData->getVersion($versionFileInfo);
+								$versionMetadata = self::$metaData->getVersionMetadata($versionFileInfo);
 
 								$versions[$key]['edited_by'] = $versionMetadata['edited_by'] ?? '';
 								$versions[$key]['version_tag'] = $versionMetadata['version_tag'] ?? '';
-								$versions[$key]['restored_from_tag'] = $versionMetadata['restored_from_tag'] ?? '';
 							}
 						}
 					}

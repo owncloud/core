@@ -38,8 +38,7 @@ class Hooks {
 		\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');
 
 		$config = \OC::$server->getConfig();
-		$metaEnabled = (($config->getSystemValue('file_storage.save_version_metadata', false) === true)
-			|| ($config->getSystemValue('file_storage.save_version_author', false) === true));
+		$metaEnabled = ($config->getSystemValue('file_storage.save_version_metadata', false) === true);
 
 		if ($metaEnabled) {
 			\OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Versions\Hooks', 'post_write_hook');

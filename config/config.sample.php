@@ -715,11 +715,6 @@ $CONFIG = [
 'versions_retention_obligation' => 'auto',
 
 /**
- * LEGACY: Please use file_storage.save_version_metadata
- */
-'file_storage.save_version_author' => false,
-
-/**
  * Save additional metadata (author, version tag, etc.) of each version of uploaded and edited files.
  *
  * WARNING: This feature CANNOT be temporarily disabled once enabled. Consequitive enabling would require repair job that erases all extended versions metadata.

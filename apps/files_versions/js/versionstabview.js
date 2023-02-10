@@ -213,7 +213,8 @@
 
 			this.versionsRoot.publish({
 				success: function() {
-					// reset and re-fetch the updated collection
+					// reset and re-fetch the updated root for publishing metadata, 
+					// and collection just in case new version got generated in the meanwhile by other process
 					self.$versionsContainer.empty();
 
 					self.versionsRoot.setFileInfo(fileInfoModel);

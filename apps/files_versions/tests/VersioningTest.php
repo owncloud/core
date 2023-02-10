@@ -1274,7 +1274,6 @@ class VersioningTest extends TestCase {
 			// make sure restored version tags is preserved
 			$this->assertEquals($this->user1, $currentVersion['edited_by']);
 			$this->assertEquals('0.4', $currentVersion['version_tag']);
-			$this->assertEquals('0.1', $currentVersion['restored_from_tag']);
 
 			$this->assertEquals($this->user1, $newVersions[$t0 . '#' . 'test.txt']['edited_by']);
 			$this->assertEquals('0.3', $newVersions[$t0 . '#' . 'test.txt']['version_tag']);
