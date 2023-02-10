@@ -511,14 +511,14 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the number of versions should be :arg1
+	 * @Then the number of noncurrent versions should be :arg1
 	 *
 	 * @param int $number
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theNumberOfVersionsShouldBe(int $number):void {
+	public function theNumberOfNoncurrentVersionsShouldBe(int $number):void {
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml(
@@ -5450,7 +5450,7 @@ trait WebDav {
 		$this->runOcc(
 			[
 				'config:system:set',
-				'file_storage.save_version_author',
+				'file_storage.save_version_metadata',
 				'--type',
 				'boolean',
 				'--value',
@@ -5459,7 +5459,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the author of the created version with index :index should be :expectedUsername
+	 * @Then the author of the noncurrent version with index :index should be :expectedUsername
 	 *
 	 * @param string $index
 	 * @param string $expectedUsername
@@ -5467,7 +5467,7 @@ trait WebDav {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAuthorOfEditedVersionFile(string $index, string $expectedUsername): void {
+	public function theAuthorOfNoncurrentVersionFile(string $index, string $expectedUsername): void {
 		$expectedUserDisplayName = $this->getUserDisplayName($expectedUsername);
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
@@ -5482,7 +5482,7 @@ trait WebDav {
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by");
 		$authors = [];
 		foreach ($xmlPart as $idx => $author) {
-			// The first element is the root path element which is not a version
+			// The first element is the root path element (current version) which is not a noncurrent version
 			// So skipping it
 			if ($idx !== 0) {
 				$authors[] = $author->__toString();
@@ -5506,7 +5506,7 @@ trait WebDav {
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by-name");
 		$displaynames = [];
 		foreach ($xmlPart as $idx => $displayname) {
-			// The first element is the root path element which is not a version
+			// The first element is the root path element (current version) which is not a noncurrent version
 			// So skipping it
 			if ($idx !== 0) {
 				$displaynames[] = $displayname->__toString();

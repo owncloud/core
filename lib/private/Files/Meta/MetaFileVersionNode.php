@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2022, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ use OCP\Files\IProvidesAdditionalHeaders;
 use OC\Preview;
 use OCA\Files_Sharing\SharedStorage;
 use OCP\Files\IProvidesVersionAuthor;
+use OCP\Files\IProvidesVersionTag;
 use OCP\Files\IRootFolder;
 use OCP\Files\IPreviewNode;
 use OCP\Files\Storage\IVersionedStorage;
@@ -36,12 +37,11 @@ use OCP\Files\Storage\IStorage;
 use OCP\IImage;
 
 /**
- * Class MetaFileVersionNode - this class represents a version of a file in the
- * meta endpoint
+ * Noncurrent version of the file node. This class represents a version of a file in the meta endpoint
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor {
+class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor, IProvidesVersionTag {
 	/** @var string */
 	private $versionId;
 	/** @var MetaVersionCollection */
@@ -80,7 +80,18 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	}
 
 	/**
-	 * @return string
+	 * @inheritdoc
+	 */
+	public function getName() {
+		return $this->versionId;
+	}
+
+	public function getPath() {
+		return $this->parent->getPath() . '/' . $this->getName();
+	}
+
+	/**
+	 * @inheritdoc
 	 */
 	public function getEditedBy() : string {
 		return $this->versionInfo['edited_by'] ?? '';
@@ -89,8 +100,8 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	/**
 	 * @inheritdoc
 	 */
-	public function getName() {
-		return $this->versionId;
+	public function getVersionTag() : string {
+		return $this->versionInfo['version_tag'] ?? '';
 	}
 
 	/**
@@ -165,10 +176,6 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 
 	public function getId() {
 		return $this->parent->getId();
-	}
-
-	public function getPath() {
-		return $this->parent->getPath() . '/' . $this->getName();
 	}
 
 	public function getMountPoint() {

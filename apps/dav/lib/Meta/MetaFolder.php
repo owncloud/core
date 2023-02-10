@@ -24,6 +24,8 @@ namespace OCA\DAV\Meta;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\Node;
+use OCP\Files\IProvidesVersionAuthor;
+use OCP\Files\IProvidesVersionTag;
 use Sabre\DAV\Collection;
 
 /**
@@ -70,5 +72,25 @@ class MetaFolder extends Collection {
 			return new MetaFile($node);
 		}
 		throw new \InvalidArgumentException();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getVersionEditedBy() : string {
+		if ($this->folder instanceof IProvidesVersionAuthor) {
+			return $this->folder->getEditedBy();
+		}
+		return '';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getVersionTag() : string {
+		if ($this->folder instanceof IProvidesVersionTag) {
+			return $this->folder->getVersionTag();
+		}
+		return '';
 	}
 }

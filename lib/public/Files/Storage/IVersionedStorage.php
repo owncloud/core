@@ -29,26 +29,35 @@ namespace OCP\Files\Storage;
  */
 interface IVersionedStorage {
 	/**
-	 * List all versions for the given file
+	 * Get metadata for current version of the file (versions root)
 	 *
 	 * @param string $internalPath
-	 * @return array
+	 * @return array metadata or null if not supported
+	 * @since 10.12.0
+	 */
+	public function getCurrentVersion($internalPath);
+
+	/**
+	 * List metadata of all noncurrent versions for the given file
+	 *
+	 * @param string $internalPath
+	 * @return array list of versions metadata or empty array if not supported
 	 * @since 10.0.9
 	 */
 	public function getVersions($internalPath);
 
 	/**
-	 * Get one explicit version for the given file
+	 * Get metadata of one explicit noncurrent version for the given file.
 	 *
 	 * @param string $internalPath
 	 * @param string $versionId
-	 * @return array
+	 * @return array metadata or null if not supported
 	 * @since 10.0.9
 	 */
 	public function getVersion($internalPath, $versionId);
 
 	/**
-	 * Get the content of a given version of a given file as stream resource
+	 * Get the content of a given noncurrent version of a given file as stream resource
 	 *
 	 * @param string $internalPath
 	 * @param string $versionId
@@ -58,7 +67,7 @@ interface IVersionedStorage {
 	public function getContentOfVersion($internalPath, $versionId);
 
 	/**
-	 * Restore the given version of a given file
+	 * Restore the given noncurrent version of a given file to current version
 	 *
 	 * @param string $internalPath
 	 * @param string $versionId
@@ -68,7 +77,7 @@ interface IVersionedStorage {
 	public function restoreVersion($internalPath, $versionId);
 
 	/**
-	 * Tells the storage to explicitly create a version of a given file
+	 * Tells the storage to explicitly create a new noncurrent version of a file
 	 *
 	 * @param string $internalPath
 	 * @return bool
