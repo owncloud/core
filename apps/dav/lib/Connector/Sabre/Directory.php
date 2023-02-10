@@ -218,7 +218,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			list($targetStorage, $targetInternalPath) = Filesystem::resolvePath($absolutePath);
 
 			// Detect if we are trying to create a folder for chunk upload
-			$isChunk = substr($targetInternalPath, 0, \strlen('uploads/web-file-upload-')) === 'uploads/web-file-upload-';
+			$isChunk = substr($targetInternalPath, 0, \strlen('uploads')) === 'uploads';
 
 			// We are using == instead of === as the computerFileSize method which is
 			// used to get the quota may return a float type. Note that the same
