@@ -915,59 +915,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * Manually add skeleton files for a single user on OCIS and reva systems
-	 *
-	 * @param string $user
-	 * @param string $password
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function manuallyAddSkeletonFilesForUser(string $user, string $password):void {
-		$settings = [];
-		$setting["userid"] = $user;
-		$setting["password"] = $password;
-		$settings[] = $setting;
-		$this->manuallyAddSkeletonFiles($settings);
-	}
-
-	/**
-	 * Manually add skeleton files on OCIS and reva systems
-	 *
-	 * @param array $usersAttributes
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function manuallyAddSkeletonFiles(array $usersAttributes):void {
-		if ($this->isEmptySkeleton()) {
-			// The empty skeleton has no files. There is nothing to do so return early.
-			return;
-		}
-		$skeletonDir = \getenv("SKELETON_DIR");
-		$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
-		$skeletonStrategy = \getenv("OCIS_SKELETON_STRATEGY");
-		if (!$skeletonStrategy) {
-			$skeletonStrategy = 'upload'; //slower, but safer, so make it the default
-		}
-		if ($skeletonStrategy !== 'upload' && $skeletonStrategy !== 'copy') {
-			throw new Exception(
-				'Wrong OCIS_SKELETON_STRATEGY environment variable. ' .
-				'OCIS_SKELETON_STRATEGY has to be set to "upload" or "copy"'
-			);
-		}
-		if (!$skeletonDir) {
-			throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
-		}
-		if ($skeletonStrategy === 'copy' && !$revaRoot) {
-			throw new Exception(
-				'OCIS_SKELETON_STRATEGY is set to "copy" ' .
-				'but no "OCIS_REVA_DATA_ROOT" given'
-			);
-		}
-	}
-
-	/**
 	 * This function will allow us to send user creation requests in parallel.
 	 * This will be faster in comparison to waiting for each request to complete before sending another request.
 	 *

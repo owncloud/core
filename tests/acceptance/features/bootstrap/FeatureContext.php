@@ -2807,23 +2807,6 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * read a server file for ocis
-	 *
-	 * @param string $path
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	public function readFileInServerRootForOCIS(string $path):string {
-		$pathToOcis = \getenv("PATH_TO_OCIS");
-		$targetFile = \rtrim($pathToOcis, "/") . "/" . "services/web/assets" . "/" . ltrim($path, '/');
-		if (!\file_exists($targetFile)) {
-			throw new Exception('Target File ' . $targetFile . ' could not be found');
-		}
-		return \file_get_contents($targetFile);
-	}
-
-	/**
 	 * send request to list a server file
 	 *
 	 * @param string $path

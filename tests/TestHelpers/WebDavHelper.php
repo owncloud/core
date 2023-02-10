@@ -41,7 +41,6 @@ class WebDavHelper {
 	public const DAV_VERSION_OLD = 1;
 	public const DAV_VERSION_NEW = 2;
 	public const DAV_VERSION_SPACES = 3;
-	public static $SPACE_ID_FROM_OCIS = '';
 
 	/**
 	 * @var array of users with their different spaces ids
@@ -629,19 +628,7 @@ class WebDavHelper {
 			$path = "";
 		}
 
-		// get space id if testing with spaces dav
-		if (self::$SPACE_ID_FROM_OCIS === '' && $davPathVersionToUse === self::DAV_VERSION_SPACES) {
-			$spaceId = self::getPersonalSpaceIdForUserOrFakeIfNotFound(
-				$baseUrl,
-				$doDavRequestAsUser ?? $user,
-				$password,
-				$xRequestId
-			);
-		} else {
-			$spaceId = self::$SPACE_ID_FROM_OCIS;
-		}
-
-		$davPath = self::getDavPath($doDavRequestAsUser ?? $user, $davPathVersionToUse, $type, $spaceId);
+		$davPath = self::getDavPath($doDavRequestAsUser ?? $user, $davPathVersionToUse, $type);
 
 		//replace %, # and ? and in the path, Guzzle will not encode them
 		$urlSpecialChar = [['%', '#', '?'], ['%25', '%23', '%3F']];
@@ -684,8 +671,6 @@ class WebDavHelper {
 			}
 		}
 
-		//Clear the space ID from ocis after each request
-		self::$SPACE_ID_FROM_OCIS = '';
 		return HttpRequestHelper::sendRequest(
 			$fullUrl,
 			$xRequestId,
