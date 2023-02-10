@@ -47,6 +47,21 @@ class MetaRootNode extends AbstractFolder {
 		$this->rootFolder = $rootFolder;
 		$this->userSession = $userSession;
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getName() {
+		return 'meta';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getPath() {
+		return '/meta';
+	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -123,13 +138,6 @@ class MetaRootNode extends AbstractFolder {
 	/**
 	 * @inheritdoc
 	 */
-	public function getPath() {
-		return '/meta';
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public function getPermissions() {
 		return Constants::PERMISSION_READ;
 	}
@@ -161,12 +169,5 @@ class MetaRootNode extends AbstractFolder {
 	 */
 	public function isShareable() {
 		return false;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getName() {
-		return 'meta';
 	}
 }

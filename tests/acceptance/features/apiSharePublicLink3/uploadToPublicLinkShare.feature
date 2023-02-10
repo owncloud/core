@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @issue-ocis-reva-315 @issue-ocis-reva-316
+@api @files_sharing-app-required @public_link_share-feature-required
 
 Feature: upload to a public link share
 
@@ -6,7 +6,7 @@ Feature: upload to a public link share
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "FOLDER"
 
-  @smokeTest @issue-ocis-2079
+  @smokeTest
   Scenario: Uploading same file to a public upload-only share multiple times via old API
     # The old API needs to have the header OC-Autorename: 1 set to do the autorename
     Given user "Alice" has created a public link share with settings
@@ -20,7 +20,7 @@ Feature: upload to a public link share
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
     And the content of file "/FOLDER/test (2).txt" for user "Alice" should be "test2"
 
-  @smokeTest @issue-ocis-reva-286
+  @smokeTest
   Scenario: Uploading same file to a public upload-only share multiple times via new API
     # The new API does the autorename automatically in upload-only folders
     Given user "Alice" has created a public link share with settings
@@ -44,15 +44,10 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "404"
 
-    @issue-ocis-2079
     Examples:
       | dav-path | public-webdav-api-version |
       | old      | old                       |
       | new      | old                       |
-
-    @issue-ocis-reva-290
-    Examples:
-      | dav-path | public-webdav-api-version |
       | old      | new                       |
       | new      | new                       |
 
@@ -64,14 +59,9 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "403"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-292
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -85,7 +75,6 @@ Feature: upload to a public link share
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -101,7 +90,6 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -117,7 +105,6 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -132,14 +119,9 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "507"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-195
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -151,14 +133,9 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "507"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-195
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -170,7 +147,6 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "403"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
@@ -185,14 +161,9 @@ Feature: upload to a public link share
     When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     And the HTTP status code should be "403"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-41
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
 
@@ -206,14 +177,9 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
-
-    @issue-ocis-reva-41
-    Examples:
-      | public-webdav-api-version |
       | new                       |
 
   @smokeTest
@@ -225,13 +191,12 @@ Feature: upload to a public link share
     Then the HTTP status code should be "201"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-    @issue-ocis-2079
     Examples:
       | public-webdav-api-version |
       | old                       |
       | new                       |
 
-  @smokeTest @issue-ocis-2079
+  @smokeTest
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with old public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |
@@ -248,7 +213,7 @@ Feature: upload to a public link share
     Then the HTTP status code should be "403"
     And the content of file "/FOLDER/test.txt" for user "Alice" should be "test"
 
-  @smokeTest @issue-ocis-reva-286
+  @smokeTest
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with new public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |

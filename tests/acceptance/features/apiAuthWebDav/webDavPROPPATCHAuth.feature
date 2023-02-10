@@ -34,7 +34,7 @@ Feature: PROPPATCH file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @issue-ocis-reva-9 @issue-ocis-reva-197
+
   Scenario: send PROPPATCH requests to another user's webDav endpoints as normal user
     When user "Brian" requests these endpoints with "PROPPATCH" to set property "favorite" about user "Alice"
       | endpoint                                           |
@@ -76,7 +76,7 @@ Feature: PROPPATCH file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @issue-ocis-reva-37
+
   Scenario: send PROPPATCH requests to webDav endpoints using token authentication should not work
     Given token auth has been enforced
     And a new browser session for "Alice" has been started
@@ -90,7 +90,7 @@ Feature: PROPPATCH file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @issue-ocis-reva-37
+
   Scenario: send PROPPATCH requests to webDav endpoints using app password token as password
     Given token auth has been enforced
     And a new browser session for "Alice" has been started

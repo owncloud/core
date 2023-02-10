@@ -40,7 +40,7 @@ Feature: upload file
       | new         | "C++ file.cpp" |
       | new         | "file #2.txt"  |
 
-  @issue-ocis-reva-265
+
   #after fixing all issues delete this Scenario and merge with the one above
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
@@ -91,7 +91,7 @@ Feature: upload file
       | new         | /नेपाली                          | नेपाली                        |
       | new         | /folder #2.txt                   | file #2.txt                   |
 
-  @issue-ocis-reva-265
+
     #after fixing all issues delete this Scenario and merge with the one above
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
@@ -118,7 +118,7 @@ Feature: upload file
       | old         |
       | new         |
 
-  @issue-ocis-reva-15
+
   Scenario Outline: Uploading file to path with extension .part should not be possible
     Given using <dav_version> DAV path
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/textfile.part" using the WebDAV API
@@ -155,7 +155,7 @@ Feature: upload file
       | new         | /upload...1.. | abc...txt.. |
       | new         | /...          | ...         |
 
-  @issue-ocis-reva-174
+
   Scenario Outline: upload file with mtime
     Given using <dav_version> DAV path
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "file.txt" with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the WebDAV API
@@ -167,7 +167,7 @@ Feature: upload file
       | old         |
       | new         |
 
-  @issue-ocis-reva-174
+
   Scenario Outline: upload a file with mtime in a folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "testFolder"
@@ -180,7 +180,7 @@ Feature: upload file
       | old         |
       | new         |
 
-  @issue-ocis-reva-174
+
   Scenario Outline: moving a file does not change its mtime
     Given using <dav_version> DAV path
     And user "Alice" has created folder "testFolder"
@@ -194,7 +194,7 @@ Feature: upload file
       | old         |
       | new         |
 
-  @issue-ocis-reva-174
+
   Scenario Outline: overwriting a file changes its mtime
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "first time upload content" to "file.txt"

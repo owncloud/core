@@ -1,0 +1,6 @@
+Enhancement: Show WebDAV Url in personal setting under app passwords
+
+For easy access of files through WebDAV the url is displayed right under the
+app password section.
+
+https://github.com/owncloud/core/pull/40509

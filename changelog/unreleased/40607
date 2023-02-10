@@ -1,0 +1,8 @@
+Bugfix: Use correct themed l10n app folder when app lives outside of server root
+
+When an app_path is pointing outside of the ownCloud server root or uses an
+symlink under certain conditions the l10n folder points to an invalid location
+and results in a crash of the server. This happened due to the assumption that
+app paths always start with the server root path.
+
+https://github.com/owncloud/core/pull/40607

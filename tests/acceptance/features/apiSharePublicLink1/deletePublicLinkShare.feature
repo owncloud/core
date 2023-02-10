@@ -20,7 +20,7 @@ Feature: delete a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-product-60 @issue-ocis-reva-311
+  @issue-product-60
   Scenario Outline: Deleting a public link after renaming a file
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"

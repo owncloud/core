@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-39
+@api
 Feature: Search
   As a user
   I would like to be able to search for files
@@ -145,7 +145,7 @@ Feature: Search
       | old         |
       | new         |
 
-  @issue-ocis-4712
+
   Scenario Outline: report extra properties in search entries for a file
     Given using <dav_version> DAV path
     When user "Alice" searches for "upload" using the WebDAV API requesting these properties:
@@ -173,7 +173,7 @@ Feature: Search
       | old         |
       | new         |
 
-  @issue-ocis-4712
+
   Scenario Outline: report extra properties in search entries for a folder
     Given using <dav_version> DAV path
     When user "Alice" searches for "upload" using the WebDAV API requesting these properties:

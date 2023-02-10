@@ -80,7 +80,7 @@ class PreviewCleanup {
 		$sql = "select `fileid`, `name`, `user_id` from `*PREFIX*filecache` `fc`
 join `*PREFIX*mounts` on `storage` = `storage_id`
 where `parent` in (select `fileid` from `*PREFIX*filecache` where `storage` in (select `numeric_id` from `oc_storages` where `id` like 'home::%' or `id` like 'object::user:%') and `path` = 'thumbnails')
-  and not exists(select `fileid` from `*PREFIX*filecache` where `fc`.`name` = CAST(`*PREFIX*filecache`.`fileid` as CHAR(24)))
+  and `fc`.`fileid` not in (select `fileid` from `*PREFIX*filecache` where `fc`.`name` = CAST(`*PREFIX*filecache`.`fileid` as CHAR(24)))
   and `fc`.`fileid` > ?
   order by `user_id`, `fileid`";
 

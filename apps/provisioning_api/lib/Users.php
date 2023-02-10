@@ -320,7 +320,7 @@ class Users {
 				}
 				break;
 			case 'two_factor_auth_enabled':
-				if ($parameters['_put']['value'] === true) {
+				if ($parameters['_put']['value'] === 'true') {
 					$this->twoFactorAuthManager->enableTwoFactorAuthentication($targetUser);
 				} else {
 					$this->twoFactorAuthManager->disableTwoFactorAuthentication($targetUser);

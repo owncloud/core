@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-172
+@api
 Feature: UNLOCK locked items
 
   Background:

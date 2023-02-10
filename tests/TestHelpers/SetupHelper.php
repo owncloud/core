@@ -789,9 +789,6 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		?string $adminPassword = null,
 		?string $baseUrl = null
 	):array {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return [];
-		}
 		$baseUrl = self::checkBaseUrl($baseUrl, "runOcc");
 		$adminUsername = self::checkAdminUsername($adminUsername, "runOcc");
 		$adminPassword = self::checkAdminPassword($adminPassword, "runOcc");
@@ -864,9 +861,6 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		?string $ocPath = null,
 		?array $envVariables = null
 	):array {
-		if (OcisHelper::isTestingOnOcisOrReva() && !OcisHelper::isTestingParallelDeployment()) {
-			return ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
-		}
 		$baseUrl = self::checkBaseUrl($baseUrl, "runOcc");
 		$adminUsername = self::checkAdminUsername($adminUsername, "runOcc");
 		$adminPassword = self::checkAdminPassword($adminPassword, "runOcc");

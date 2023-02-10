@@ -59,11 +59,11 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 		 data-owner-display-name="<?php p($_['displayName']) ?>" data-owner="<?php p($_['owner']) ?>" data-name="<?php p($_['filename']) ?>">
 		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" title="" id="owncloud-public">
 			<h1 class="logo-icon">
-				<?php p($theme->getHTMLName()); ?>
+				<?php print_unescaped($theme->getHTMLName()); ?>
 			</h1>
 		</a>
 
-		<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+		<div id="logo-claim" style="display:none;"><?php print_unescaped($theme->getLogoClaim()); ?></div>
 		<?php
 			if ($_['canDownload']) {
 				?>

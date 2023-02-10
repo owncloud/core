@@ -1,4 +1,4 @@
-@api @issue-ocis-1241
+@api
 Feature: Users sync
 
   Background:

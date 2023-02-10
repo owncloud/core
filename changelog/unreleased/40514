@@ -1,0 +1,6 @@
+Bugfix: Performance fix when deleting thumbnails
+
+Detecting unused thumbnails is now using a better optimized SQL statements which
+consumes less database and web server resources.
+
+https://github.com/owncloud/core/pull/40514

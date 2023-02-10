@@ -15,6 +15,7 @@ Summary
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
 * Bugfix - Add shib auth support for redirect url: [#40470](https://github.com/owncloud/core/pull/40470)
 * Bugfix - Store checksums only if the whole stream has been read: [#40513](https://github.com/owncloud/core/pull/40513)
+* Bugfix - Performance fix when deleting thumbnails: [#40514](https://github.com/owncloud/core/pull/40514)
 * Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: [#40522](https://github.com/owncloud/core/pull/40522)
 * Bugfix - Bump json5 from 2.2.0 to 2.2.3 in /build: [#40556](https://github.com/owncloud/core/pull/40556)
 * Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: [#40558](https://github.com/owncloud/core/pull/40558)
@@ -23,6 +24,10 @@ Summary
 * Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
 * Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: [#40571](https://github.com/owncloud/core/pull/40571)
 * Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
+* Bugfix - Fix orientation of images with exif data: [#40600](https://github.com/owncloud/core/pull/40600)
+* Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
+* Bugfix - Use correct themed l10n app folder when app lives outside of server root: [#40607](https://github.com/owncloud/core/pull/40607)
+* Bugfix - Enable 2FA via provisioning API: [#40617](https://github.com/owncloud/core/issues/40617)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
@@ -34,8 +39,12 @@ Summary
 * Change - Allow to temporarily ignore invalid federated shares: [#40503](https://github.com/owncloud/core/pull/40503)
 * Change - Update Symfony components: [#40521](https://github.com/owncloud/core/pull/40521)
 * Enhancement - Add account creation time: [#2298](https://github.com/owncloud/enterprise/issues/2298)
+* Enhancement - Show WebDAV Url in personal setting under app passwords: [#40509](https://github.com/owncloud/core/pull/40509)
 * Enhancement - Show username on personal profile page: [#40510](https://github.com/owncloud/core/pull/40510)
+* Enhancement - Add legal privacy polciy and imprint links to personal settings: [#40511](https://github.com/owncloud/core/pull/40511)
+* Enhancement - Persistent major file version workflow: [#40531](https://github.com/owncloud/core/pull/40531)
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
+* Enhancement - Tweak rewrite conditions in .htaccess: [#40584](https://github.com/owncloud/core/pull/40584)
 
 Details
 -------
@@ -110,6 +119,13 @@ Details
 
    https://github.com/owncloud/core/pull/40513
 
+* Bugfix - Performance fix when deleting thumbnails: [#40514](https://github.com/owncloud/core/pull/40514)
+
+   Detecting unused thumbnails is now using a better optimized SQL statements which consumes
+   less database and web server resources.
+
+   https://github.com/owncloud/core/pull/40514
+
 * Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: [#40522](https://github.com/owncloud/core/pull/40522)
 
    https://github.com/owncloud/core/pull/40522
@@ -150,6 +166,41 @@ Details
 * Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
 
    https://github.com/owncloud/core/pull/40579
+
+* Bugfix - Fix orientation of images with exif data: [#40600](https://github.com/owncloud/core/pull/40600)
+
+   Some images with a large exif data had problems with the orientation when they were shown. This
+   was caused by the native function failing to retrieve the exif data. Images with small exif data
+   didn't have this problem.
+
+   By making the chunk size of the stream bigger, the native function is able to load the exif data
+   properly and return the information, and with such information we can fix the orientation of
+   the image.
+
+   https://github.com/owncloud/core/pull/40600
+
+* Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
+
+   The files_sharing application template was escaping the HTML from the title and claim
+   provided by the theme. This caused raw HTML to be displayed in the page header.
+
+   https://github.com/owncloud/core/issues/40605
+   https://github.com/owncloud/core/pull/40606
+
+* Bugfix - Use correct themed l10n app folder when app lives outside of server root: [#40607](https://github.com/owncloud/core/pull/40607)
+
+   When an app_path is pointing outside of the ownCloud server root or uses an symlink under
+   certain conditions the l10n folder points to an invalid location and results in a crash of the
+   server. This happened due to the assumption that app paths always start with the server root
+   path.
+
+   https://github.com/owncloud/core/pull/40607
+
+* Bugfix - Enable 2FA via provisioning API: [#40617](https://github.com/owncloud/core/issues/40617)
+
+   Two factor authentication can now be enabled using the provisioning api.
+
+   https://github.com/owncloud/core/issues/40617
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
@@ -289,12 +340,44 @@ Details
    https://github.com/owncloud/enterprise/issues/2298
    https://github.com/owncloud/core/pull/40588
 
+* Enhancement - Show WebDAV Url in personal setting under app passwords: [#40509](https://github.com/owncloud/core/pull/40509)
+
+   For easy access of files through WebDAV the url is displayed right under the app password
+   section.
+
+   https://github.com/owncloud/core/pull/40509
+
 * Enhancement - Show username on personal profile page: [#40510](https://github.com/owncloud/core/pull/40510)
 
    The username as well as the full name of a user is now shown on their personal general settings
    page.
 
    https://github.com/owncloud/core/pull/40510
+
+* Enhancement - Add legal privacy polciy and imprint links to personal settings: [#40511](https://github.com/owncloud/core/pull/40511)
+
+   The links for legal.privacy_policy_url and legal.imprint_url are now displayed on the
+   personal general settings page so that they are conveniently available for all users to see.
+   These are only displayed if they are set.
+
+   https://github.com/owncloud/core/pull/40511
+
+* Enhancement - Persistent major file version workflow: [#40531](https://github.com/owncloud/core/pull/40531)
+
+   - Restore operation logic changed. Now restore is creating new current version of the file from
+   one of past noncurrent versions of the file. Current version also receives incremented mtime
+   for the file, and author of the files is the user that restored the file. The old noncurrent
+   version is no longer removed upon restore and current version no longer receives mtime of the
+   version. - The current version of the file is now shown in the Versions Tab, highlighted with
+   "gray" background - Versions now persist additional extended metadata on versioning tags,
+   that allow easier identification of the versions. Each update increases minor version for the
+   file. Current version of the file now can be published, which increases major version tag. -
+   Each new edit of the file would create noncurrent versions. The ones tagged with major version
+   due to publishing, will be persisted long term and wont be subject to any retention policies. -
+   Migrate from deprecated save_version_author to save_version_metadata
+
+   https://github.com/owncloud/enterprise/issues/5286
+   https://github.com/owncloud/core/pull/40531
 
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 
@@ -308,6 +391,12 @@ Details
    using a determined authentication mechanism.
 
    https://github.com/owncloud/core/pull/40574
+
+* Enhancement - Tweak rewrite conditions in .htaccess: [#40584](https://github.com/owncloud/core/pull/40584)
+
+   Changed the RewriteCond rules in the `.htaccess` file to match the expected paths.
+
+   https://github.com/owncloud/core/pull/40584
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================

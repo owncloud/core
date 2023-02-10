@@ -177,7 +177,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @issue-ocis-reva-211
+
   Scenario Outline: rename a file into an invalid filename
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToRename.txt"
@@ -229,7 +229,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @issue-ocis-reva-211
+
   Scenario Outline: Renaming a file to a path with extension .part should not be possible
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToRename.txt"
@@ -270,7 +270,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @issue-ocis-reva-265
+
   #after fixing the issues merge this Scenario into the one above
   Scenario Outline: renaming to a file with question mark in its name
     Given using <dav_version> DAV path

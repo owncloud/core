@@ -13,6 +13,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Skip public links when updating permissions of share's children: <a href="https://github.com/owncloud/core/pull/40420">#40420</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add shib auth support for redirect url: <a href="https://github.com/owncloud/core/pull/40470">#40470</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Store checksums only if the whole stream has been read: <a href="https://github.com/owncloud/core/pull/40513">#40513</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Performance fix when deleting thumbnails: <a href="https://github.com/owncloud/core/pull/40514">#40514</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: <a href="https://github.com/owncloud/core/pull/40522">#40522</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump json5 from 2.2.0 to 2.2.3 in /build: <a href="https://github.com/owncloud/core/pull/40556">#40556</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: <a href="https://github.com/owncloud/core/pull/40558">#40558</a></li>
@@ -21,6 +22,10 @@
         <li class="type-bugfix changelog-item">Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: <a href="https://github.com/owncloud/core/pull/40568">#40568</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: <a href="https://github.com/owncloud/core/pull/40571">#40571</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: <a href="https://github.com/owncloud/core/pull/40579">#40579</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix orientation of images with exif data: <a href="https://github.com/owncloud/core/pull/40600">#40600</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix header title and claim rendered as escaped HTML: <a href="https://github.com/owncloud/core/issues/40605">#40605</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Use correct themed l10n app folder when app lives outside of server root: <a href="https://github.com/owncloud/core/pull/40607">#40607</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Enable 2FA via provisioning API: <a href="https://github.com/owncloud/core/issues/40617">#40617</a></li>
         <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
@@ -32,8 +37,12 @@
         <li class="type-change changelog-item">Change - Allow to temporarily ignore invalid federated shares: <a href="https://github.com/owncloud/core/pull/40503">#40503</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/40521">#40521</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add account creation time: <a href="https://github.com/owncloud/enterprise/issues/2298">#2298</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Show WebDAV Url in personal setting under app passwords: <a href="https://github.com/owncloud/core/pull/40509">#40509</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Show username on personal profile page: <a href="https://github.com/owncloud/core/pull/40510">#40510</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add legal privacy polciy and imprint links to personal settings: <a href="https://github.com/owncloud/core/pull/40511">#40511</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Persistent major file version workflow: <a href="https://github.com/owncloud/core/pull/40531">#40531</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Tweak rewrite conditions in .htaccess: <a href="https://github.com/owncloud/core/pull/40584">#40584</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -100,6 +109,13 @@
             <p>https://github.com/owncloud/core/pull/40513<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Performance fix when deleting thumbnails: <a href="https://github.com/owncloud/core/pull/40514">#40514</a></p>
+            <p>Detecting unused thumbnails is now using a better optimized SQL statements which consumes
+   less database and web server resources.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40514<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: <a href="https://github.com/owncloud/core/pull/40522">#40522</a></p>
             <p>https://github.com/owncloud/core/pull/40522<br></p>
         </li>
@@ -138,6 +154,41 @@
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: <a href="https://github.com/owncloud/core/pull/40579">#40579</a></p>
             <p>https://github.com/owncloud/core/pull/40579<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix orientation of images with exif data: <a href="https://github.com/owncloud/core/pull/40600">#40600</a></p>
+            <p>Some images with a large exif data had problems with the orientation when they were shown. This
+   was caused by the native function failing to retrieve the exif data. Images with small exif data
+   didn't have this problem.By making the chunk size of the stream bigger, the native function is able to load the exif data
+   properly and return the information, and with such information we can fix the orientation of
+   the image.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40600<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix header title and claim rendered as escaped HTML: <a href="https://github.com/owncloud/core/issues/40605">#40605</a></p>
+            <p>The files_sharing application template was escaping the HTML from the title and claim
+   provided by the theme. This caused raw HTML to be displayed in the page header.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40605<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40606<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Use correct themed l10n app folder when app lives outside of server root: <a href="https://github.com/owncloud/core/pull/40607">#40607</a></p>
+            <p>When an app_path is pointing outside of the ownCloud server root or uses an symlink under
+   certain conditions the l10n folder points to an invalid location and results in a crash of the
+   server. This happened due to the assumption that app paths always start with the server root
+   path.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40607<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Enable 2FA via provisioning API: <a href="https://github.com/owncloud/core/issues/40617">#40617</a></p>
+            <p>Two factor authentication can now be enabled using the provisioning api.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40617<br>
+            </p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>
@@ -253,11 +304,44 @@
             <p>https://github.com/owncloud/core/pull/40588<br></p>
         </li>
         <li class="type-enhancement changelog-item">
+            <p>Enhancement - Show WebDAV Url in personal setting under app passwords: <a href="https://github.com/owncloud/core/pull/40509">#40509</a></p>
+            <p>For easy access of files through WebDAV the url is displayed right under the app password
+   section.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40509<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
             <p>Enhancement - Show username on personal profile page: <a href="https://github.com/owncloud/core/pull/40510">#40510</a></p>
             <p>The username as well as the full name of a user is now shown on their personal general settings
    page.
             </p>
             <p>https://github.com/owncloud/core/pull/40510<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add legal privacy polciy and imprint links to personal settings: <a href="https://github.com/owncloud/core/pull/40511">#40511</a></p>
+            <p>The links for legal.privacy_policy_url and legal.imprint_url are now displayed on the
+   personal general settings page so that they are conveniently available for all users to see.
+   These are only displayed if they are set.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40511<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Persistent major file version workflow: <a href="https://github.com/owncloud/core/pull/40531">#40531</a></p>
+            <p>- Restore operation logic changed. Now restore is creating new current version of the file from
+   one of past noncurrent versions of the file. Current version also receives incremented mtime
+   for the file, and author of the files is the user that restored the file. The old noncurrent
+   version is no longer removed upon restore and current version no longer receives mtime of the
+   version. - The current version of the file is now shown in the Versions Tab, highlighted with
+   "gray" background - Versions now persist additional extended metadata on versioning tags,
+   that allow easier identification of the versions. Each update increases minor version for the
+   file. Current version of the file now can be published, which increases major version tag. -
+   Each new edit of the file would create noncurrent versions. The ones tagged with major version
+   due to publishing, will be persisted long term and wont be subject to any retention policies. -
+   Migrate from deprecated save_version_author to save_version_metadata
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5286<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40531<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></p>
@@ -269,6 +353,12 @@
    using a determined authentication mechanism.
             </p>
             <p>https://github.com/owncloud/core/pull/40574<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Tweak rewrite conditions in .htaccess: <a href="https://github.com/owncloud/core/pull/40584">#40584</a></p>
+            <p>Changed the RewriteCond rules in the `.htaccess` file to match the expected paths.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40584<br></p>
         </li>
     </ul>
     <h2 id="10.11.0" class="version"> Changelog for ownCloud Core [10.11.0] (2022-08-23)</h2>

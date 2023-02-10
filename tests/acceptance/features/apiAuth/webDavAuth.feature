@@ -17,7 +17,7 @@ Feature: auth
       | dav_path           |
       | /remote.php/webdav |
 
-  @smokeTest @issue-ocis-reva-28
+  @smokeTest
   Scenario: using WebDAV with token auth
     Given a new client token for "Alice" has been generated
     When user "Alice" requests "/remote.php/webdav" with "PROPFIND" using basic token auth

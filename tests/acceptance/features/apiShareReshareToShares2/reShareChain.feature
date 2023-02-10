@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-2141
+@api @files_sharing-app-required
 Feature: resharing can be done on a reshared resource
 
   Background:

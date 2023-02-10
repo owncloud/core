@@ -1,4 +1,4 @@
-@api @files_trashbin-app-required @issue-ocis-reva-52
+@api @files_trashbin-app-required
 Feature: Restore deleted files/folders
   As a user
   I would like to restore files/folders
@@ -167,7 +167,7 @@ Feature: Restore deleted files/folders
     And as "Alice" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
     And the content of file "/local_storage/tmp/textfile0.txt" for user "Alice" should be "AA"
 
-  @local_storage @files_external-app-required @skipOnEncryptionType:user-keys @encryption-issue-42 @skip_on_objectstore @newChunking @issue-ocis-1321
+  @local_storage @files_external-app-required @skipOnEncryptionType:user-keys @encryption-issue-42 @skip_on_objectstore @newChunking
   Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored with new chunking
     Given using new DAV path
     And the administrator has invoked occ command "files:scan --all"
