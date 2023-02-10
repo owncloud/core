@@ -106,8 +106,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @toFixOnOCIS
-  #after fixing all the issues merge this scenario with the one below
+  @smokeTest
   Scenario Outline: getting share info of a share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "some data" to "/file_to_share.txt"
@@ -133,38 +132,6 @@ Feature: sharing
       | share_with_displayname | %displayname%             |
       | displayname_owner      | %displayname%             |
       | mimetype               | text/plain                |
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
-
-  @smokeTest @toFixOnOCIS
-  #after fixing all the issues merge this scenario with the one above
-  Scenario Outline: getting share info of a share (Bug demonstration for ocis)
-    Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has uploaded file with content "some data" to "/file_to_share.txt"
-    And user "Alice" has shared file "file_to_share.txt" with user "Brian"
-    And user "Brian" has accepted share "/file_to_share.txt" offered by user "Alice"
-    When user "Alice" gets the info of the last share using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | id          | A_STRING                  |
-      | item_type   | file                      |
-      | item_source | A_STRING                  |
-      | share_type  | user                      |
-      | share_with  | %username%                |
-      | file_source | A_STRING                  |
-      | file_target | /Shares/file_to_share.txt |
-      | path        | /file_to_share.txt        |
-      | permissions | share,read,update         |
-      | stime       | A_NUMBER                  |
-      | storage     | A_STRING                  |
-      | mail_send   | 0                         |
-      | uid_owner   | %username%                |
-#      | share_with_displayname | %displayname%      |
-#      | displayname_owner      | %displayname%      |
-#      | mimetype               | text/plain         |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

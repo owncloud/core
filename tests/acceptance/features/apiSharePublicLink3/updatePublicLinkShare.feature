@@ -162,39 +162,6 @@ Feature: update a public link share
       | 2               | 200             |
 
 
-  Scenario Outline: Creating a new public link share, updating its expiration date and getting its info (ocis Bug demonstration)
-    Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has created folder "FOLDER"
-    And user "Alice" has created a public link share with settings
-      | path | FOLDER |
-    And user "Alice" has updated the last public link share with
-      | expireDate | +3 days |
-    When user "Alice" gets the info of the last public link share using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And the fields of the last response to user "Alice" should include
-      | id                | A_STRING             |
-      | item_type         | folder               |
-      | item_source       | A_STRING             |
-      | share_type        | public_link          |
-      | file_source       | A_STRING             |
-      | file_target       | /FOLDER              |
-      | permissions       | read                 |
-      | stime             | A_NUMBER             |
-      | expiration        | +3 days              |
-      | token             | A_TOKEN              |
-      | storage           | A_STRING             |
-      | mail_send         | 0                    |
-      | uid_owner         | %username%           |
-      | displayname_owner | %displayname%        |
-      | url               | AN_URL               |
-      | mimetype          | httpd/unix-directory |
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
-
-
   Scenario Outline: Creating a new public link share, updating its password and getting its info
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
