@@ -43,27 +43,6 @@ class HttpRequestHelper {
 	public const HTTP_TOO_EARLY = 425;
 
 	/**
-	 * @var string
-	 */
-	private static $oCSelectorCookie = null;
-
-	/**
-	 * @return string
-	 */
-	public static function getOCSelectorCookie(): string {
-		return self::$oCSelectorCookie;
-	}
-
-	/**
-	 * @param string $oCSelectorCookie	"owncloud-selector=oc10;path=/;"
-	 *
-	 * @return void
-	 */
-	public static function setOCSelectorCookie(string $oCSelectorCookie): void {
-		self::$oCSelectorCookie = $oCSelectorCookie;
-	}
-
-	/**
 	 * Some systems-under-test do async post-processing of operations like upload,
 	 * move etc. If a client does a request on the resource before the post-processing
 	 * is finished, then the server should return HTTP_TOO_EARLY "425". Clients are

@@ -656,13 +656,14 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theLdapUsersHaveBeenReSynced():void {
-		// we need to sync ldap users when testing for parallel deployment
-		$occResult = SetupHelper::runOcc(
-			['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
-			$this->getStepLineRef()
-		);
-		if ($occResult['code'] !== "0") {
-			throw new Exception(__METHOD__ . " could not sync LDAP users " . $occResult['stdErr']);
+		if ($this->isTestingWithLdap()) {
+			$occResult = SetupHelper::runOcc(
+				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
+				$this->getStepLineRef()
+			);
+			if ($occResult['code'] !== "0") {
+				throw new Exception(__METHOD__ . " could not sync LDAP users " . $occResult['stdErr']);
+			}
 		}
 	}
 
