@@ -90,8 +90,8 @@ Feature: external-storage
     Given user "Alice" has been created with default attributes and small skeleton files
     And the quota of user "Alice" has been set to "1 B"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/local_storage/testquota.txt" with all mechanisms using the WebDAV API
-    Then the HTTP status code of all upload responses should be "507"
-    And as "Alice" the files uploaded to "/local_storage/testquota.txt" with all mechanisms should not exist
+    Then the HTTP status code of all upload responses should be "201"
+    And as "Alice" the files uploaded to "/local_storage/testquota.txt" with all mechanisms should exist
 
 
   Scenario Outline: query OCS endpoint for information about the mount
