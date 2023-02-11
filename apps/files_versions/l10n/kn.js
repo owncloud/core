@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Versions" : "ಆವೃತ್ತಿಗಳು",
     "Failed to revert {file} to revision {timestamp}." : "{timestamp} ದ ಪರಿಷ್ಕರಣೆ ಇಂದ  {file}  ಕಡತವನ್ನು ಹಿಂದಿರುಗಿಸಲು ವಿಫಲವಾಗಿದೆ.",
-    "Restore" : "ಮರುಸ್ಥಾಪಿಸು",
-    "No other versions available" : "ಇನ್ನಿತರೆ ಯಾವುದೇ ಆವೃತ್ತಿಗಳು ಲಭ್ಯವಿಲ್ಲ"
+    "Restore" : "ಮರುಸ್ಥಾಪಿಸು"
 },
 "nplurals=2; plural=(n > 1);");

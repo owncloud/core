@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Versions" : "Տարբերակներ",
     "_%n byte_::_%n bytes_" : ["%n բայտ","%n բայտ"],
-    "Restore" : "Վերականգնել",
-    "No other versions available" : "Այլ տարբերակներ չկան"
+    "Restore" : "Վերականգնել"
 },
 "nplurals=2; plural=(n != 1);");

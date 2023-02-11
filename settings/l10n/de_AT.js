@@ -19,6 +19,7 @@ OC.L10N.register(
     "Cheers!" : "Noch einen schönen Tag!",
     "Language" : "Sprache",
     "Save" : "Speichern",
+    "Login" : "Anmelden",
     "Server address" : "Adresse des Servers",
     "Port" : "Port",
     "Credentials" : "Zugangsdaten",
