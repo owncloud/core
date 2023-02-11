@@ -719,7 +719,7 @@ $CONFIG = [
  * Save additional metadata (author, version tag, etc.) of each version of uploaded and edited files.
  *
  * WARNING: This feature CANNOT be temporarily disabled once enabled.
- * Consequitive enabling would require repair job that erases all extended versions metadata.
+ * Consecutive enabling would require repair job that erases all extended versions metadata.
  * WARNING: This does not work for S3 storage backends.
  */
 'file_storage.save_version_metadata' => false,
