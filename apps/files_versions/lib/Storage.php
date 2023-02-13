@@ -294,23 +294,86 @@ class Storage {
 	}
 
 	/**
+	 * Check if the directory in the view is empty or not.
+	 * Folders such as "." and ".." will be ignored, so if the
+	 * directory only contains those ones, it will be considered
+	 * as empty.
+	 * This function will return false if the directory can't be opened
+	 * @param View $view
+	 * @param string $dir the directory inside the view
+	 * @return bool true if empty, false otherwise
+	 */
+	private static function isFolderEmpty($view, $dir) {
+		$isEmpty = false;
+		$dirResource = $view->opendir($dir);
+
+		if ($dirResource === false) {
+			return false;
+		}
+
+		// we need to check at most 3 entries (need to ignore "." and "..")
+		// in order to know if the folder is empty or not
+		for ($i = 0; $i < 3; $i++) {
+			$entry = \readdir($dirResource);
+			if ($entry === false) {
+				// if there aren't any more entries, then the folder is empty. We should
+				// have exited earlier otherwise
+				$isEmpty = true;
+				break;
+			} elseif ($entry !== '.' && $entry !== '..') {
+				// the folder isn't empty.
+				$isEmpty = false;
+				break;
+			}
+			// if we've reached here, $entry is either '.' or '..', so we
+			// need to check the next entry
+		}
+
+		\closedir($dirResource);
+		return $isEmpty;
+	}
+
+	/**
+	 * Remove parent folders until the current folder isn't empty
+	 * or we've reached to root folder
+	 * @param View $view
+	 * @param string $path the path inside the view that has been
+	 * renamed or removed. This function will start checking from
+	 * the parent directory of that path.
+	 */
+	private static function cleanupEmptyVersionFolder($view, $path) {
+		// check if folder is empty in order to delete it too
+		$parentPath = \dirname($path);
+		$isEmpty = self::isFolderEmpty($view, $parentPath);
+		while ($isEmpty && ($parentPath !== '.' && $parentPath !== '/')) {
+			$view->rmdir($parentPath);
+
+			$parentPath = \dirname($parentPath);
+			$isEmpty = self::isFolderEmpty($view, $parentPath);
+		}
+	}
+
+	/**
 	 * delete the version from the storage and cache
 	 *
 	 * @param View $view
 	 * @param string $path
 	 */
 	protected static function deleteVersion($view, $path) {
-		$view->unlink($path);
-		/**
-		 * @var \OC\Files\Storage\Storage $storage
-		 * @var string $internalPath
-		 */
-		list($storage, $internalPath) = $view->resolvePath($path);
-		$cache = $storage->getCache($internalPath);
-		$cache->remove($internalPath);
+		$deleted = $view->unlink($path);
 
-		if (self::metaEnabled()) {
-			self::$metaData->deleteForVersion($view, $path);
+		if ($deleted) {
+			/**
+			 * @var \OC\Files\Storage\Storage $storage
+			 * @var string $internalPath
+			 */
+			list($storage, $internalPath) = $view->resolvePath($path);
+			$cache = $storage->getCache($internalPath);
+			$cache->remove($internalPath);
+
+			if (self::metaEnabled()) {
+				self::$metaData->deleteForVersion($view, $path);
+			}
 		}
 	}
 
@@ -343,6 +406,8 @@ class Storage {
 			if (self::metaEnabled()) {
 				self::$metaData->deleteForCurrent($view, $filename);
 			}
+
+			self::cleanupEmptyVersionFolder($view, $path);
 		}
 		unset(self::$deletedFiles[$path]);
 	}
@@ -418,6 +483,12 @@ class Storage {
 		// if we moved versions directly for a file, schedule expiration check for that file
 		if (!$rootView->is_dir('/' . $targetOwner . '/files/' . $targetPath)) {
 			self::scheduleExpire($targetOwner, $targetPath);
+		}
+
+		if ($operation === 'rename') {
+			// if it's a rename, try to cleanup possible empty folders
+			$view = new View("/{$sourceOwner}/files_versions");
+			self::cleanupEmptyVersionFolder($view, $sourcePath);
 		}
 	}
 
@@ -650,9 +721,13 @@ class Storage {
 		}
 
 		$toDelete = [];
+		$dirsToCheck = [];
 		foreach (\array_reverse($versions['all']) as $key => $version) {
 			if (\intval($version['version'])<$threshold) {
 				$toDelete[$key] = $version;
+				// we're also interested in the directories. It doesn't matter if
+				// the versions are overwritten
+				$dirsToCheck[\dirname($version['path'])] = $version['path'];
 			} else {
 				//Versions are sorted by time - nothing mo to iterate.
 				break;
@@ -675,6 +750,10 @@ class Storage {
 				\OC_Hook::emit('\OCP\Versions', 'preDelete', $hookData);
 				self::deleteVersion($view, $version['path'] . '.v' . $version['version']);
 				\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
+			}
+
+			foreach ($dirsToCheck as $pathInDir) {
+				self::cleanupEmptyVersionFolder($view, $pathInDir);
 			}
 		}
 	}
@@ -891,6 +970,9 @@ class Storage {
 				$versionsSize = $versionsSize - $sizeOfDeletedVersions;
 			}
 
+			// we need to check if we have to remove any empty folder based on the
+			// deleted versions
+			$dirsToCheck = [];
 			foreach ($toDelete as $key => $path) {
 				if (self::isPublishedVersion($versionsFileview, $path)) {
 					continue;
@@ -908,6 +990,7 @@ class Storage {
 				\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
 				unset($allVersions[$key]); // update array with the versions we keep
 				\OCP\Util::writeLog('files_versions', "Expire: " . $path, \OCP\Util::INFO);
+				$dirsToCheck[\dirname($path)] = $path;
 			}
 
 			// Check if enough space is available after versions are rearranged.
@@ -935,10 +1018,15 @@ class Storage {
 				self::deleteVersion($versionsFileview, $version['path'] . '.v' . $version['version']);
 				\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
 				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'], \OCP\Util::INFO);
+				$dirsToCheck[\dirname($version['path'])] = $version['path'];
 				$versionsSize -= $version['size'];
 				$availableSpace += $version['size'];
 				\next($allVersions);
 				$i++;
+			}
+
+			foreach ($dirsToCheck as $pathInDir) {
+				self::cleanupEmptyVersionFolder($versionsFileview, $pathInDir);
 			}
 
 			return $versionsSize; // finally return the new size of the version history

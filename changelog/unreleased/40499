@@ -1,0 +1,10 @@
+Bugfix: Remove empty directories from the files_versions
+
+Empty directories were left when the contained versions were deleted
+or moved. Large installations might end up with too many of these
+empty directories.
+
+Now, when a version is deleted, the containing directory will also
+be deleted if there aren't any more versions inside.
+
+https://github.com/owncloud/core/pull/40499

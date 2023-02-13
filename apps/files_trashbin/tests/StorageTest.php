@@ -359,6 +359,70 @@ class StorageTest extends TestCase {
 		// versions deleted
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
 		$this->assertCount(0, $results);
+		// empty folder should be deleted
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/');
+		$this->assertCount(0, $results);
+	}
+
+	public function testDeleteVersionsOfFilesInFolder() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
+		\OCA\Files_Versions\Hooks::connectHooks();
+
+		// trigger a version (multiple would not work because of the expire logic)
+		$this->userView->file_put_contents('folder/inside.txt', 'v1');
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
+		$this->assertCount(1, $results);
+
+		$this->userView->unlink('folder/inside.txt');
+
+		// rescan trash storage
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		$rootStorage->getScanner()->scan('');
+
+		// check if versions are in trashbin
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions');
+		$this->assertCount(1, $results);
+		$name = $results[0]->getName();
+		$this->assertEquals('inside.txt.v', \substr($name, 0, \strlen('inside.txt.v')));
+
+		// versions deleted
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
+		$this->assertCount(0, $results);
+		// empty folder should be deleted
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/');
+		$this->assertCount(0, $results);
+	}
+
+	public function testDeleteVersionsOfFilesInFolder2() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
+		\OCA\Files_Versions\Hooks::connectHooks();
+
+		// trigger a version (multiple would not work because of the expire logic)
+		$this->userView->file_put_contents('folder/inside.txt', 'v1');
+		$this->userView->file_put_contents('folder/digidoo.txt', 'v1');
+		$this->userView->file_put_contents('folder/digidoo.txt', 'v2');
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
+		$this->assertCount(2, $results);
+
+		$this->userView->unlink('folder/inside.txt');
+
+		// rescan trash storage
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		$rootStorage->getScanner()->scan('');
+
+		// check if versions are in trashbin
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions');
+		$this->assertCount(1, $results);
+		$name = $results[0]->getName();
+		$this->assertEquals('inside.txt.v', \substr($name, 0, \strlen('inside.txt.v')));
+
+		// versions deleted
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
+		$this->assertCount(1, $results);
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/');
+		$this->assertCount(1, $results);
 	}
 
 	/**
@@ -555,6 +619,94 @@ class StorageTest extends TestCase {
 		// versions were moved too
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/substorage/folder/');
 		$this->assertCount(1, $results);
+
+		// check that nothing got trashed by the rename's unlink() call
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
+		$this->assertCount(0, $results);
+
+		// check that versions were moved and not trashed
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions/');
+		$this->assertCount(0, $results);
+	}
+
+	public function testKeepFileAndVersionsWhenMovingFileInFolderBetweenStorages() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
+		\OCA\Files_Versions\Hooks::connectHooks();
+
+		$storage2 = new Temporary([]);
+		\OC\Files\Filesystem::mount($storage2, [], $this->user . '/files/substorage');
+
+		// trigger a version (multiple would not work because of the expire logic)
+		$this->userView->file_put_contents('folder/inside.txt', 'v1');
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
+		$this->assertCount(0, $results);
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
+		$this->assertCount(1, $results);
+
+		// move to another storage
+		$this->userView->mkdir('substorage/folder');
+		$this->userView->rename('folder/inside.txt', 'substorage/folder/inside.txt');
+		$this->assertTrue($this->userView->file_exists('substorage/folder/inside.txt'));
+
+		// rescan trash storage
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		$rootStorage->getScanner()->scan('');
+
+		// versions were moved too
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/substorage/folder/');
+		$this->assertCount(1, $results);
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
+		$this->assertCount(0, $results);
+		// empty version folder should have been removed
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/');
+		$this->assertCount(1, $results);
+		$this->assertSame('substorage', $results[0]->getName());
+
+		// check that nothing got trashed by the rename's unlink() call
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
+		$this->assertCount(0, $results);
+
+		// check that versions were moved and not trashed
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions/');
+		$this->assertCount(0, $results);
+	}
+
+	public function testKeepFileAndVersionsWhenMovingFileInFolderBetweenStorages2() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
+		\OCA\Files_Versions\Hooks::connectHooks();
+
+		$storage2 = new Temporary([]);
+		\OC\Files\Filesystem::mount($storage2, [], $this->user . '/files/substorage');
+
+		// trigger a version (multiple would not work because of the expire logic)
+		$this->userView->file_put_contents('folder/inside.txt', 'v1');
+		$this->userView->file_put_contents('folder/digidoo.txt', 'v1');
+		$this->userView->file_put_contents('folder/digidoo.txt', 'v2');
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
+		$this->assertCount(0, $results);
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
+		$this->assertCount(2, $results);
+
+		// move to another storage
+		$this->userView->mkdir('substorage/folder');
+		$this->userView->rename('folder/inside.txt', 'substorage/folder/inside.txt');
+		$this->assertTrue($this->userView->file_exists('substorage/folder/inside.txt'));
+
+		// rescan trash storage
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		$rootStorage->getScanner()->scan('');
+
+		// versions were moved too
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/substorage/folder/');
+		$this->assertCount(1, $results);
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
+		$this->assertCount(1, $results);
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/');
+		$this->assertCount(2, $results);  // "folder" and "substorage"
 
 		// check that nothing got trashed by the rename's unlink() call
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
