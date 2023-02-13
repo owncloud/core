@@ -715,9 +715,11 @@ $CONFIG = [
 'versions_retention_obligation' => 'auto',
 
 /**
+ * Save additional metadata for versions
  * Save additional metadata (author, version tag, etc.) of each version of uploaded and edited files.
  *
- * WARNING: This feature CANNOT be temporarily disabled once enabled. Consequitive enabling would require repair job that erases all extended versions metadata.
+ * WARNING: This feature CANNOT be temporarily disabled once enabled.
+ * Disabling and re-enabling would require a repair job that erases all extended versions metadata.
  * WARNING: This does not work for S3 storage backends.
  */
 'file_storage.save_version_metadata' => false,

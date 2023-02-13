@@ -4,7 +4,6 @@ OC.L10N.register(
     "Versions" : "Versionen",
     "Failed to revert {file} to revision {timestamp}." : "Konnte {file} der Revision {timestamp} nicht rückgängig machen.",
     "_%n byte_::_%n bytes_" : ["%n Byte","%n Bytes"],
-    "Restore" : "Wiederherstellen",
-    "No other versions available" : "Keine anderen Versionen verfügbar"
+    "Restore" : "Wiederherstellen"
 },
 "nplurals=2; plural=(n != 1);");

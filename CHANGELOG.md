@@ -28,6 +28,7 @@ Summary
 * Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
 * Bugfix - Use correct themed l10n app folder when app lives outside of server root: [#40607](https://github.com/owncloud/core/pull/40607)
 * Bugfix - Enable 2FA via provisioning API: [#40617](https://github.com/owncloud/core/issues/40617)
+* Bugfix - Add index on oc_filecache: [#40633](https://github.com/owncloud/core/issues/40633)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
@@ -201,6 +202,12 @@ Details
    Two factor authentication can now be enabled using the provisioning api.
 
    https://github.com/owncloud/core/issues/40617
+
+* Bugfix - Add index on oc_filecache: [#40633](https://github.com/owncloud/core/issues/40633)
+
+   This index can help to speed-up bulk file operations.
+
+   https://github.com/owncloud/core/issues/40633
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
