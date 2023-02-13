@@ -53,7 +53,7 @@ class ChunkLocationProviderTest extends TestCase {
 			->with('dav.chunk_base_dir')
 			->willReturn('');
 		$this->assertEquals([], $this->provider->getMountsForUser($this->user, $this->factory));
-                $this->config->expects($this->once())
+		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('datadirectory')
 			->willReturn('');
