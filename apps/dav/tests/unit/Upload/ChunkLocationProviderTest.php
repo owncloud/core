@@ -50,6 +50,11 @@ class ChunkLocationProviderTest extends TestCase {
 	public function testProviderIfNotConfigured() {
 		$this->config->expects($this->once())
 			->method('getSystemValue')
+			->with('dav.chunk_base_dir')
+			->willReturn('');
+		$this->assertEquals([], $this->provider->getMountsForUser($this->user, $this->factory));
+                $this->config->expects($this->once())
+			->method('getSystemValue')
 			->with('datadirectory')
 			->willReturn('');
 		$this->assertEquals([], $this->provider->getMountsForUser($this->user, $this->factory));
