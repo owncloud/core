@@ -85,7 +85,7 @@ Feature: external-storage
     # in the folder. The file cache will be cleared after the local storage is scanned.
     And as "Alice" file "local_storage/foo3/textfile0.txt" should exist
 
-  @skipOnOcV10.10 @skipOnOcV10.11
+
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "Alice" has been created with default attributes and small skeleton files
     And the quota of user "Alice" has been set to "1 B"
