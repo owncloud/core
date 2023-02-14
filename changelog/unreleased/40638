@@ -1,0 +1,7 @@
+Bugfix:  PDF display issue - Update CSP object-src policy
+
+PDF display is associated with object-src policy with blob values. 
+
+We allow those for the owncloud domain space only : 'self' blob: data:;
+
+https://github.com/owncloud/core/pull/40638
