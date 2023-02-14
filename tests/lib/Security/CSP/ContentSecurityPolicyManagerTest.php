@@ -66,7 +66,7 @@ class ContentSecurityPolicyManagerTest extends TestCase {
 		$expected->addAllowedImageDomain('anotherdomain.de');
 		$expected->addAllowedImageDomain('example.org');
 		$expected->addAllowedChildSrcDomain('childdomain');
-		$expectedStringPolicy = 'default-src \'none\';manifest-src \'self\';script-src \'self\' \'unsafe-inline\' \'unsafe-eval\';style-src \'self\' \'unsafe-inline\';img-src \'self\' data: blob: anotherdomain.de example.org;font-src \'self\' mydomain.com example.com anotherFontDomain;connect-src \'self\';media-src \'self\';child-src childdomain';
+		$expectedStringPolicy = 'default-src \'none\';manifest-src \'self\';script-src \'self\' \'unsafe-inline\' \'unsafe-eval\';style-src \'self\' \'unsafe-inline\';img-src \'self\' data: blob: anotherdomain.de example.org;font-src \'self\' mydomain.com example.com anotherFontDomain;connect-src \'self\';media-src \'self\';object-src \'self\' data: blob:;child-src childdomain';
 
 		$this->assertEquals($expected, $this->contentSecurityPolicyManager->getDefaultPolicy());
 		$this->assertSame($expectedStringPolicy, $this->contentSecurityPolicyManager->getDefaultPolicy()->buildPolicy());
