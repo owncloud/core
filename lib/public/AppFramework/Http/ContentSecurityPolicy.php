@@ -74,7 +74,11 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 		'\'self\'',
 	];
 	/** @var array Domains from which object elements can be loaded */
-	protected $allowedObjectDomains = [];
+	protected $allowedObjectDomains = [
+		'\'self\'',
+		'data:',
+		'blob:',
+	];
 	/** @var array Domains from which iframes can be loaded */
 	protected $allowedFrameDomains = [];
 	/** @var array Domains from which fonts can be loaded */
