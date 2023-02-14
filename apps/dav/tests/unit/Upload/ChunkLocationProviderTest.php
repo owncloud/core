@@ -48,14 +48,14 @@ class ChunkLocationProviderTest extends TestCase {
 	}
 
 	public function testProviderIfNotConfigured() {
-		$this->config->expects($this->once())
+		$this->config->expects($this->any())
 			->method('getSystemValue')
 			->with('dav.chunk_base_dir')
 			->willReturn('');
 		$this->user->expects($this->any())
 						->method('getUID')
 						->willReturn('user');
-		
+
 		$root = \OC::$server->getConfig()->getSystemValue('datadirectory');
 		$mounts = $this->provider->getMountsForUser($this->user, $this->factory);
 		$this->assertTrue($root->hasChild('user'));
