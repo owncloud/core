@@ -47,6 +47,7 @@ Summary
 * Enhancement - Persistent major file version workflow: [#40531](https://github.com/owncloud/core/pull/40531)
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 * Enhancement - Tweak rewrite conditions in .htaccess: [#40584](https://github.com/owncloud/core/pull/40584)
+* Enhancement - Improve UX on occ user:sync: [#40640](https://github.com/owncloud/core/pull/40640)
 
 Details
 -------
@@ -415,6 +416,12 @@ Details
    Changed the RewriteCond rules in the `.htaccess` file to match the expected paths.
 
    https://github.com/owncloud/core/pull/40584
+
+* Enhancement - Improve UX on occ user:sync: [#40640](https://github.com/owncloud/core/pull/40640)
+
+   Backend class aliases have been added to improve usability of this command.
+
+   https://github.com/owncloud/core/pull/40640
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
