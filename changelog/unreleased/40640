@@ -1,0 +1,7 @@
+Enhancement: Improve UX on occ user:sync
+
+Backend class aliases have been added to improve usability of this command.
+
+https://github.com/owncloud/core/pull/40640
+
+
