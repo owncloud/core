@@ -56,14 +56,14 @@ class ResponseTest extends TestCase {
 
 		$this->childResponse->setHeaders($expected);
 		$headers = $this->childResponse->getHeaders();
-		$expected['Content-Security-Policy'] = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';object-src 'self' data: blob:";
+		$expected['Content-Security-Policy'] = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';object-src 'self' blob:;frame-src 'self' blob:";
 
 		$this->assertEquals($expected, $headers);
 	}
 
 	public function testOverwriteCsp() {
 		$expected = [
-			'Content-Security-Policy' => "default-src 'none';script-src 'self' 'unsafe-inline' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self';font-src 'self';connect-src 'self';media-src 'self';object-src 'self' data: blob:",
+			'Content-Security-Policy' => "default-src 'none';script-src 'self' 'unsafe-inline' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self';font-src 'self';connect-src 'self';media-src 'self';object-src 'self' blob:;frame-src 'self' blob:",
 		];
 		$policy = new ContentSecurityPolicy();
 		$policy->allowInlineScript(true);

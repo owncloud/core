@@ -76,11 +76,16 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var array Domains from which object elements can be loaded */
 	protected $allowedObjectDomains = [
 		'\'self\'',
-		'data:',
 		'blob:',
 	];
 	/** @var array Domains from which iframes can be loaded */
-	protected $allowedFrameDomains = [];
+	/**
+	 * from \lib\public\AppFramework\Http\EmptyContentSecurityPolicy.php
+	 * blob: is always added if this array is not empty
+	 */
+	protected $allowedFrameDomains = [
+		'\'self\'',
+	];
 	/** @var array Domains from which fonts can be loaded */
 	protected $allowedFontDomains = [
 		'\'self\'',
