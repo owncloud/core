@@ -397,6 +397,7 @@ Details
 
    https://github.com/owncloud/enterprise/issues/5286
    https://github.com/owncloud/core/pull/40531
+   https://github.com/owncloud/core/pull/40641
 
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 
