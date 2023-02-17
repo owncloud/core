@@ -72,7 +72,8 @@ describe('OCA.Sharing.PublicUploadView tests', function() {
 	describe('uploading', function() {
 		it('sets conflict mode to autorename on server side', function() {
 			var dummyUpload = {
-				setConflictMode: sinon.stub()
+				setConflictMode: sinon.stub(),
+				getFile: sinon.stub().returns( { relativePath: '/sub/' } )
 			};
 			dummyUploader.trigger('beforeadd', dummyUpload);
 
