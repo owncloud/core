@@ -73,6 +73,15 @@
 		},
 
 		_onUploadBeforeAdd: function(upload) {
+			// Flatten out any subdirectories.
+			// When the user wants to upload folder via drag and drop, the foldername
+			// (and possible further subdirectores) are in relativePath.
+			// This will cause uploader.ensureFolderExists() to fail, as it picks up the
+			// extra path components via getFullPath().
+			// Subdirectories are not needed here. We want all files in the upload folder, flat.
+			// To allow folder upload via drag and drop, we only need to clear out relativePath.
+			// This works nicely together with the autorename feature.
+			upload.getFile().relativePath = '';
 			// add autorename header to deduplicate names on the server in case of conflict
 			upload.setConflictMode(OC.FileUpload.CONFLICT_MODE_AUTORENAME_SERVER);
 		},
