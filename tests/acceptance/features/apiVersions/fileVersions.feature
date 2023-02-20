@@ -114,7 +114,7 @@ Feature: dav-versions
       | dav-path | status-code |
       | new      | 204         |
 
-  @skipOnStorage:ceph @files_primary_s3-issue-161 @newChunking @skipOnStorage:scality
+  @skipOnStorage:ceph @files_primary_s3-issue-161 @newChunking @skipOnStorage:scality @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: Uploading a file asynchronously does create the correct version that can be restored from past version
     Given the administrator has enabled async operations
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -457,7 +457,7 @@ Feature: dav-versions
       | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
     And the downloaded content should be "uploaded content"
 
-  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-463
+  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-463 @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: download an old version of a restored file should make sure versions are immutable
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
@@ -547,7 +547,7 @@ Feature: dav-versions
     Then the HTTP status code should be "204"
     And the version folder of file "/file.txt" for user "Alice" should contain "1" element
 
-  @skip_on_objectstore
+  @skip_on_objectstore @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: Upload the same file twice with the same mtime and restoring does not generate new version as mtime is static
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "file.txt" with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the WebDAV API
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "file.txt" with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the WebDAV API
