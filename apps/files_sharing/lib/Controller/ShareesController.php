@@ -385,10 +385,8 @@ class ShareesController extends OCSController {
 		$pluginClass = $this->config->getSystemValue('sharing.remoteShareesSearch');
 		if ($pluginClass !== '') {
 			$this->result['remotes'] = [];
-			$app = new Application();
-			$container = $app->getContainer();
 			/** @var \OCP\Share\IRemoteShareesSearch $plugin */
-			$plugin = $container->query($pluginClass);
+			$plugin = \OC::$server->query($pluginClass);
 			$result = $plugin->search($search);
 			$this->result['exact']['remotes'] = $result;
 			$this->reachedEndFor[] = 'remotes';
