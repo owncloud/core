@@ -1,4 +1,4 @@
-@api @files_versions-app-required
+@api @files_versions-app-required @skipOnOcV10.10 @skipOnOcV10.11
 
 Feature: file versions remember the author of each version
 
