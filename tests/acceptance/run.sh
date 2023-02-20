@@ -25,6 +25,21 @@ then
 	STEP_THROUGH_OPTION="--step-through"
 fi
 
+if [ -n "${PLAIN_OUTPUT}" ]
+then
+	# explicitly tell Behat to not do colored output
+	COLORS_OPTION="--no-colors"
+	# Use the Bash "null" command to do nothing, rather than use tput to set a color
+	RED_COLOR = ":"
+	GREEN_COLOR = ":"
+	YELLOW_COLOR = ":"
+else
+	COLORS_OPTION="--colors"
+	RED_COLOR = "tput setaf 1"
+	GREEN_COLOR = "tput setaf 2"
+	YELLOW_COLOR = "tput setaf 3"
+fi
+
 # The following environment variables can be specified:
 #
 # ACCEPTANCE_TEST_TYPE - see "--type" description
@@ -392,7 +407,7 @@ function run_behat_tests() {
 		cat ${SCRIPT_PATH}/usernames.json
 	fi
 
-	${BEHAT} --colors --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v 2>&1 | tee -a ${TEST_LOG_FILE}
+	${BEHAT} ${COLORS_OPTION} --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v 2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
@@ -419,7 +434,7 @@ function run_behat_tests() {
 		# So exit the tests and do not lint expected failures when undefined steps exist.
 		if [[ ${SCENARIO_RESULTS} == *"undefined"* ]]
 		then
-			echo -e "\033[31m Undefined steps: There were some undefined steps found."
+			${RED_COLOR}; echo -e "Undefined steps: There were some undefined steps found."
 			exit 1
 		fi
 		# If there were no scenarios in the requested suite or feature that match
@@ -593,7 +608,7 @@ function run_behat_tests() {
 				fi
 
 				echo "Rerun failed scenario: ${FAILED_SCENARIO_PATH}"
-				${BEHAT} --colors --strict -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v 2>&1 | tee -a ${TEST_LOG_FILE}
+				${BEHAT} ${COLORS_OPTION} --strict -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v 2>&1 | tee -a ${TEST_LOG_FILE}
 				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 				if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 				then
@@ -623,7 +638,7 @@ function run_behat_tests() {
 		# Big red error output is displayed if there are no matching scenarios - send it to null
 		DRY_RUN_FILE=$(mktemp)
 		SKIP_TAGS="${TEST_TYPE_TAG}&&@skip"
-		${BEHAT} --dry-run --colors -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
+		${BEHAT} --dry-run ${COLORS_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
 		if grep -q -m 1 'No scenarios' "${DRY_RUN_FILE}"
 		then
 			# If there are no skip scenarios, then no need to report that
@@ -1314,24 +1329,24 @@ fi
 
 if [ "${UNEXPECTED_FAILURE}" = true ]
 then
-	tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
-	tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
+	${YELLOW_COLOR}; echo "runsh: Total unexpected failed scenarios throughout the test run:"
+	${RED_COLOR}; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
 else
-	tput setaf 2; echo "runsh: There were no unexpected failures."
+	${GREEN_COLOR}; echo "runsh: There were no unexpected failures."
 fi
 
 if [ "${UNEXPECTED_SUCCESS}" = true ]
 then
-	tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
-	tput setaf 1; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
+	${YELLOW_COLOR}; echo "runsh: Total unexpected passed scenarios throughout the test run:"
+	${RED_COLOR}; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
 else
-	tput setaf 2; echo "runsh: There were no unexpected success."
+	${GREEN_COLOR}; echo "runsh: There were no unexpected success."
 fi
 
 if [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = true ]
 then
-	tput setaf 3; echo "runsh: The following Behat test runs exited with non-zero status:"
-	tput setaf 1; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
+	${YELLOW_COLOR}; echo "runsh: The following Behat test runs exited with non-zero status:"
+	${RED_COLOR}; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
 fi
 
 # sync the file-system so all output will be flushed to storage.
