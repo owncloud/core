@@ -69,15 +69,17 @@ class ChunkLocationProvider implements IMountProvider {
 			if (!\file_exists($cacheDir)) {
 				\mkdir($cacheDir, 0770, true);
 			}
-			return $cacheDir;
+			return [
+				new MountPoint(Local::class, $cacheDir, ['datadir' => $dataDir, $loader])
+			];
 		} else {
 			$cacheDir = \rtrim($chunkBaseDir, '/') . '/' . $user->getUID();
 			if (!\file_exists($cacheDir)) {
 				\mkdir($cacheDir, 0770, true);
 			}
+			return [
+				new MountPoint(Local::class, '/' . $user->getUID() . '/uploads', ['datadir' => $cacheDir, $loader])
+			];
 		}
-		return [
-			new MountPoint(Local::class, '/' . $user->getUID() . '/uploads', ['datadir' => $cacheDir, $loader])
-		];
 	}
 }
