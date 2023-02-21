@@ -438,6 +438,115 @@ class EncryptionTest extends Storage {
 		$this->assertSame($sourceMeta['encrypted'], $targetMeta['encrypted']);
 		$this->assertSame($sourceMeta['size'], $targetMeta['size']);
 	}
+	
+	public function testCopyFileToFile() {
+		$storage = $this->getMockBuilder(\OC\Files\Storage\Storage::class)
+			->disableOriginalConstructor()->getMock();
+
+		$userManager = $this->createMock(Manager::class);
+		$util = $this->getMockBuilder(Util::class)
+			->setConstructorArgs(
+				[
+					new View(),
+					$userManager,
+					$this->groupManager,
+					$this->config,
+					$this->arrayCache
+				]
+			)->getMock();
+
+		/** @var Encryption |MockObject  $instance */
+		$instance = $this->getMockBuilder(Encryption::class)
+			->setConstructorArgs(
+				[
+					[
+						'storage' => $storage,
+						'root' => 'foo',
+						'mountPoint' => '/mountPoint',
+						'mount' => $this->mount
+					],
+					$this->encryptionManager,
+					$this->util,
+					$this->logger,
+					$this->file,
+					null,
+					$this->keyStore,
+					$this->update,
+					$this->mountManager,
+					$this->arrayCache
+				]
+			)
+			->setMethods(['copyFromStorage', 'isVersion', 'unlink'])
+			->getMock();
+
+		$util->expects($this->any())->method('isExcluded')-> willReturn(false);
+
+		$instance->expects($this->once())->method('unlink')
+			->with('test.txt');
+		$instance->expects($this->any())->method('isVersion')
+			->willReturn(false);
+		$instance->expects($this->once())->method('copyFromStorage')
+			->with($instance, 'test.txt.v1', 'test.txt')
+			->willReturn(true);
+
+		$result = $instance->copy('test.txt.v1', 'test.txt');
+
+		$this->assertSame(true, $result);
+	}
+
+	public function testCopyVersionToFile() {
+		$storage = $this->getMockBuilder(\OC\Files\Storage\Storage::class)
+			->disableOriginalConstructor()->getMock();
+
+		$userManager = $this->createMock(Manager::class);
+		$util = $this->getMockBuilder(Util::class)
+			->setConstructorArgs(
+				[
+					new View(),
+					$userManager,
+					$this->groupManager,
+					$this->config,
+					$this->arrayCache
+				]
+			)->getMock();
+
+		/** @var Encryption |MockObject  $instance */
+		$instance = $this->getMockBuilder(Encryption::class)
+			->setConstructorArgs(
+				[
+					[
+						'storage' => $storage,
+						'root' => 'foo',
+						'mountPoint' => '/mountPoint',
+						'mount' => $this->mount
+					],
+					$this->encryptionManager,
+					$this->util,
+					$this->logger,
+					$this->file,
+					null,
+					$this->keyStore,
+					$this->update,
+					$this->mountManager,
+					$this->arrayCache
+				]
+			)
+			->setMethods(['copyFromStorage', 'isVersion', 'unlink'])
+			->getMock();
+
+		$util->expects($this->any())->method('isExcluded')-> willReturn(false);
+
+		$instance->expects($this->never())->method('unlink');
+		$instance->expects($this->once())->method('isVersion')
+			->willReturn(true);
+		$instance->expects($this->once())->method('copyFromStorage')
+			->with($instance, 'test.txt.v1', 'test.txt')
+			->willReturn(true);
+
+		$result = $instance->copy('test.txt.v1', 'test.txt');
+
+		$this->assertSame(true, $result);
+	}
 
 	/**
 	 * data provider for testCopyTesting() and dataTestCopyAndRename()

@@ -13,6 +13,7 @@
         "guzzlehttp/guzzle": "^7.5",
         "phpunit/phpunit": "^9.5",
         "laminas/laminas-ldap": "^2.15",
-        "ankitpokhrel/tus-php": "^2.3"
+        "ankitpokhrel/tus-php": "^2.3",
+        "helmich/phpunit-json-assert": "^3.4"
     }
 }

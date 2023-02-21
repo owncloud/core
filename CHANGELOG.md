@@ -14,6 +14,7 @@ Summary
 * Bugfix - "available for" in the mount point configuration will show displaynames: [#40412](https://github.com/owncloud/core/pull/40412)
 * Bugfix - Skip public links when updating permissions of share's children: [#40420](https://github.com/owncloud/core/pull/40420)
 * Bugfix - Add shib auth support for redirect url: [#40470](https://github.com/owncloud/core/pull/40470)
+* Bugfix - Remove empty directories from the files_versions: [#40499](https://github.com/owncloud/core/pull/40499)
 * Bugfix - Store checksums only if the whole stream has been read: [#40513](https://github.com/owncloud/core/pull/40513)
 * Bugfix - Performance fix when deleting thumbnails: [#40514](https://github.com/owncloud/core/pull/40514)
 * Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: [#40522](https://github.com/owncloud/core/pull/40522)
@@ -46,6 +47,7 @@ Summary
 * Enhancement - Persistent major file version workflow: [#40531](https://github.com/owncloud/core/pull/40531)
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 * Enhancement - Tweak rewrite conditions in .htaccess: [#40584](https://github.com/owncloud/core/pull/40584)
+* Enhancement - Improve UX on occ user:sync: [#40640](https://github.com/owncloud/core/pull/40640)
 
 Details
 -------
@@ -105,6 +107,16 @@ Details
    https://github.com/owncloud/enterprise/issues/5450
    https://github.com/owncloud/core/pull/40470
    https://github.com/owncloud/core/pull/40161
+
+* Bugfix - Remove empty directories from the files_versions: [#40499](https://github.com/owncloud/core/pull/40499)
+
+   Empty directories were left when the contained versions were deleted or moved. Large
+   installations might end up with too many of these empty directories.
+
+   Now, when a version is deleted, the containing directory will also be deleted if there aren't
+   any more versions inside.
+
+   https://github.com/owncloud/core/pull/40499
 
 * Bugfix - Store checksums only if the whole stream has been read: [#40513](https://github.com/owncloud/core/pull/40513)
 
@@ -385,6 +397,7 @@ Details
 
    https://github.com/owncloud/enterprise/issues/5286
    https://github.com/owncloud/core/pull/40531
+   https://github.com/owncloud/core/pull/40641
 
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 
@@ -404,6 +417,12 @@ Details
    Changed the RewriteCond rules in the `.htaccess` file to match the expected paths.
 
    https://github.com/owncloud/core/pull/40584
+
+* Enhancement - Improve UX on occ user:sync: [#40640](https://github.com/owncloud/core/pull/40640)
+
+   Backend class aliases have been added to improve usability of this command.
+
+   https://github.com/owncloud/core/pull/40640
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================

@@ -67,7 +67,7 @@ class DetailsDialog extends OwncloudPage {
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
-	private $tagEditInputXpath = "//input[@id='view13-rename-input']";
+	private $tagEditInputXpath = "//input[contains(@id, 'rename-input') and contains(@value, %s)]";
 	protected $tagDeleteConfirmButtonXpath
 		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='Yes']";
 
@@ -145,14 +145,15 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
-	 * find the xpath of comment with given content
+	 * substitute value in the xpath
 	 *
+	 * @param string $xPath
 	 * @param string $content
 	 *
 	 * @return string
 	 */
-	private function getCommentXpath(string $content): string {
-		return \sprintf($this->commentXpath, $content);
+	private function getSubstitutedValueInXpath(string $xPath, string $content): string {
+		return \sprintf($xPath, $content);
 	}
 
 	/**
@@ -231,17 +232,6 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
-	 * get xpath for button to switch tab
-	 *
-	 * @param string $tabId
-	 *
-	 * @return string
-	 */
-	public function getTabSwitchBtnXpath(string $tabId): string {
-		return \sprintf($this->tabSwitchBtnXpath, $tabId);
-	}
-
-	/**
 	 * change the active tab of details panel
 	 *
 	 * @param string $tabName e.g. comments, sharing, versions
@@ -251,7 +241,7 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function changeDetailsTab(string $tabName): void {
 		$tabId = $this->getDetailsTabId($tabName);
-		$tabSwitchXpath = $this->getTabSwitchBtnXpath($tabId);
+		$tabSwitchXpath = $this->getSubstitutedValueInXpath($this->tabSwitchBtnXpath, $tabId);
 		$tabSwitch = $this->detailsDialogElement->find("xpath", $tabSwitchXpath);
 		$this->assertElementNotNull(
 			$tabSwitch,
@@ -342,7 +332,7 @@ class DetailsDialog extends OwncloudPage {
 		);
 		$postButton->focus();
 		$postButton->click();
-		$this->waitTillElementIsNotNull($this->getCommentXpath($content));
+		$this->waitTillElementIsNotNull($this->getSubstitutedValueInXpath($this->commentXpath, $content));
 	}
 
 	/**
@@ -356,7 +346,7 @@ class DetailsDialog extends OwncloudPage {
 	public function deleteComment(string $content): void {
 		$commentList = $this->detailsDialogElement->find(
 			"xpath",
-			$this->getCommentXpath($content)
+			$this->getSubstitutedValueInXpath($this->commentXpath, $content)
 		);
 		$this->assertElementNotNull(
 			$commentList,
@@ -600,12 +590,12 @@ class DetailsDialog extends OwncloudPage {
 				$editBtn->click();
 				$editInput = $this->find(
 					"xpath",
-					$this->tagEditInputXpath
+					$this->getSubstitutedValueInXpath($this->tagEditInputXpath, $tagName)
 				);
 				$this->assertElementNotNull(
 					$editInput,
 					__METHOD__ .
-					"xpath: $this->tagEditInputXpath" .
+					"xpath: " . $this->getSubstitutedValueInXpath($this->tagEditInputXpath, $tagName) .
 					" could not find tag edit input"
 				);
 				$editInput->focus();

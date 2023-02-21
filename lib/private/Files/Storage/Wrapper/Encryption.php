@@ -384,7 +384,14 @@ class Encryption extends Wrapper {
 
 		// need to stream copy file by file in case we copy between a encrypted
 		// and a unencrypted storage
-		$this->unlink($path2);
+
+		if (!($this->isVersion($path2) || $this->isVersion($path1))) {
+			// NOTE: this is legacy code-path, and it is not clear why this is needed for standard files,
+			// however for versions we should not unlink, because versions should always use the
+			// key from the original file. Just create a 1:1 copy and done
+			// ref. https://github.com/owncloud/encryption/issues/383
+			$this->unlink($path2);
+		}
 		$result = $this->copyFromStorage($this, $path1, $path2);
 
 		return $result;

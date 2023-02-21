@@ -8,4 +8,5 @@ Current version of the file now can be published, which increases major version 
 - Migrate from deprecated save_version_author to save_version_metadata
 
 https://github.com/owncloud/core/pull/40531
+https://github.com/owncloud/core/pull/40641
 https://github.com/owncloud/enterprise/issues/5286

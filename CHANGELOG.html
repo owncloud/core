@@ -12,6 +12,7 @@
         <li class="type-bugfix changelog-item">Bugfix - "available for" in the mount point configuration will show displaynames: <a href="https://github.com/owncloud/core/pull/40412">#40412</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Skip public links when updating permissions of share's children: <a href="https://github.com/owncloud/core/pull/40420">#40420</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add shib auth support for redirect url: <a href="https://github.com/owncloud/core/pull/40470">#40470</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Remove empty directories from the files_versions: <a href="https://github.com/owncloud/core/pull/40499">#40499</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Store checksums only if the whole stream has been read: <a href="https://github.com/owncloud/core/pull/40513">#40513</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Performance fix when deleting thumbnails: <a href="https://github.com/owncloud/core/pull/40514">#40514</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: <a href="https://github.com/owncloud/core/pull/40522">#40522</a></li>
@@ -44,6 +45,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Persistent major file version workflow: <a href="https://github.com/owncloud/core/pull/40531">#40531</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Tweak rewrite conditions in .htaccess: <a href="https://github.com/owncloud/core/pull/40584">#40584</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Improve UX on occ user:sync: <a href="https://github.com/owncloud/core/pull/40640">#40640</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -98,6 +100,14 @@
             <p>https://github.com/owncloud/enterprise/issues/5450<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40470<br>https://github.com/owncloud/core/pull/40161<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Remove empty directories from the files_versions: <a href="https://github.com/owncloud/core/pull/40499">#40499</a></p>
+            <p>Empty directories were left when the contained versions were deleted or moved. Large
+   installations might end up with too many of these empty directories.Now, when a version is deleted, the containing directory will also be deleted if there aren't
+   any more versions inside.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40499<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Store checksums only if the whole stream has been read: <a href="https://github.com/owncloud/core/pull/40513">#40513</a></p>
@@ -349,7 +359,7 @@
             </p>
             <p>https://github.com/owncloud/enterprise/issues/5286<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/40531<br></p>
+            <p>https://github.com/owncloud/core/pull/40531<br>https://github.com/owncloud/core/pull/40641<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></p>
@@ -367,6 +377,12 @@
             <p>Changed the RewriteCond rules in the `.htaccess` file to match the expected paths.
             </p>
             <p>https://github.com/owncloud/core/pull/40584<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Improve UX on occ user:sync: <a href="https://github.com/owncloud/core/pull/40640">#40640</a></p>
+            <p>Backend class aliases have been added to improve usability of this command.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40640<br></p>
         </li>
     </ul>
     <h2 id="10.11.0" class="version"> Changelog for ownCloud Core [10.11.0] (2022-08-23)</h2>

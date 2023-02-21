@@ -1,15 +1,30 @@
 #!/usr/bin/env bash
 
 log_error() {
-	echo -e "\e[31m$1\e[0m"
+	if [ -n "${PLAIN_OUTPUT}" ]
+	then
+		echo -e "$1"
+	else
+		echo -e "\e[31m$1\e[0m"
+	fi
 }
 
 log_info() {
-	echo -e "\e[34m$1\e[0m"
+	if [ -n "${PLAIN_OUTPUT}" ]
+	then
+		echo -e "$1"
+	else
+		echo -e "\e[34m$1\e[0m"
+	fi
 }
 
 log_success() {
-	echo -e "\e[32m$1\e[0m"
+	if [ -n "${PLAIN_OUTPUT}" ]
+	then
+		echo -e "$1"
+	else
+		echo -e "\e[32m$1\e[0m"
+	fi
 }
 
 declare -A scenarioLines
