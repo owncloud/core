@@ -64,8 +64,8 @@ class ChunkLocationProvider implements IMountProvider {
 		if ($chunkBaseDir === '') {
 			// this is needed as otherwise the returned mount point will be in the home storage rather
 			// than in the "local" external storage and this would cause troubles when applying quota.
-			$datadir = $this->config->getSystemValue('datadirectory');
-			$cacheDir = \rtrim($datadir, '/') . '/' . $user->getUID() . '/uploads';
+			$dataDir = $this->config->getSystemValue('datadirectory');
+			$cacheDir = \rtrim($dataDir, '/') . '/' . $user->getUID() . '/uploads';
 			if (!\file_exists($cacheDir)) {
 				\mkdir($cacheDir, 0770, true);
 			}
