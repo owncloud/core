@@ -932,7 +932,7 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function getOCSResponseStatusCode(ResponseInterface $response):string {
-		$jsonResponse = $this->featureContext->getJsonDecodedResponseBodyContent();
+		$jsonResponse = $this->featureContext->getJsonDecodedResponseBodyContent($response);
 		if (\is_object($jsonResponse) && $jsonResponse->ocs->meta->statuscode) {
 			return (string) $jsonResponse->ocs->meta->statuscode;
 		}
