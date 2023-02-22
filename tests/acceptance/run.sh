@@ -30,14 +30,14 @@ then
 	# explicitly tell Behat to not do colored output
 	COLORS_OPTION="--no-colors"
 	# Use the Bash "null" command to do nothing, rather than use tput to set a color
-	RED_COLOR = ":"
-	GREEN_COLOR = ":"
-	YELLOW_COLOR = ":"
+	RED_COLOR=":"
+	GREEN_COLOR=":"
+	YELLOW_COLOR=":"
 else
 	COLORS_OPTION="--colors"
-	RED_COLOR = "tput setaf 1"
-	GREEN_COLOR = "tput setaf 2"
-	YELLOW_COLOR = "tput setaf 3"
+	RED_COLOR="tput setaf 1"
+	GREEN_COLOR="tput setaf 2"
+	YELLOW_COLOR="tput setaf 3"
 fi
 
 # The following environment variables can be specified:
