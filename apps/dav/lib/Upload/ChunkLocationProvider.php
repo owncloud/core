@@ -66,7 +66,7 @@ class ChunkLocationProvider implements IMountProvider {
 			// than in the "local" external storage and this would cause troubles when applying quota.
 			$cacheDir = $this->config->getSystemValue('datadirectory');
 			return [
-			        new MountPoint(Local::class, '/' . $user->getUID() . '/uploads', ['datadir' => $cacheDir . '/' . $user->getUID() . '/uploads', $loader])
+				new MountPoint(Local::class, '/' . $user->getUID() . '/uploads', ['datadir' => $cacheDir . '/' . $user->getUID() . '/uploads', $loader])
 			];
 		} else {
 			$cacheDir = \rtrim($chunkBaseDir, '/') . '/' . $user->getUID();
