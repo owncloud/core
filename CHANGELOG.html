@@ -26,6 +26,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix orientation of images with exif data: <a href="https://github.com/owncloud/core/pull/40600">#40600</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix header title and claim rendered as escaped HTML: <a href="https://github.com/owncloud/core/issues/40605">#40605</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Use correct themed l10n app folder when app lives outside of server root: <a href="https://github.com/owncloud/core/pull/40607">#40607</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix share into share move scenario: <a href="https://github.com/owncloud/core/pull/40612">#40612</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Enable 2FA via provisioning API: <a href="https://github.com/owncloud/core/issues/40617">#40617</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add index on oc_filecache: <a href="https://github.com/owncloud/core/issues/40633">#40633</a></li>
         <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
@@ -193,6 +194,15 @@
    path.
             </p>
             <p>https://github.com/owncloud/core/pull/40607<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix share into share move scenario: <a href="https://github.com/owncloud/core/pull/40612">#40612</a></p>
+            <p>Public links were lost upon moving share into another share as the share owner was not correctly
+   set. This has been now partially fixed.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5565<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40612<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Enable 2FA via provisioning API: <a href="https://github.com/owncloud/core/issues/40617">#40617</a></p>

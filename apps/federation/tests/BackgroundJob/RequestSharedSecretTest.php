@@ -139,7 +139,7 @@ class RequestSharedSecretTest extends TestCase {
 			->with(
 				$target . '/ocs/v2.php/apps/federation/api/v1/request-shared-secret?format=json',
 				[
-					'body' =>
+					'form_params' =>
 						[
 							'url' => $source,
 							'token' => $token

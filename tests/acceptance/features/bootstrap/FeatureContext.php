@@ -1649,12 +1649,15 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * returns json decoded body content of a json response as an object
 	 *
+	 * @param ResponseInterface|null $response
+	 *
 	 * @return object
 	 */
-	public function getJsonDecodedResponseBodyContent():?object {
-		if ($this->response !== null) {
-			$this->response->getBody()->rewind();
-			return json_decode($this->response->getBody()->getContents());
+	public function getJsonDecodedResponseBodyContent(ResponseInterface $response = null):?object {
+		$response = $response ?? $this->response;
+		if ($response !== null) {
+			$response->getBody()->rewind();
+			return json_decode($response->getBody()->getContents());
 		}
 		return null;
 	}

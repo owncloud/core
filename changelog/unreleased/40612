@@ -1,0 +1,6 @@
+Bugfix: Fix share into share move scenario
+
+Public links were lost upon moving share into another share as the share owner was not correctly set. This has been now partially fixed.
+
+https://github.com/owncloud/core/pull/40612
+https://github.com/owncloud/enterprise/issues/5565

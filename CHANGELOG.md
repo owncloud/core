@@ -28,6 +28,7 @@ Summary
 * Bugfix - Fix orientation of images with exif data: [#40600](https://github.com/owncloud/core/pull/40600)
 * Bugfix - Fix header title and claim rendered as escaped HTML: [#40605](https://github.com/owncloud/core/issues/40605)
 * Bugfix - Use correct themed l10n app folder when app lives outside of server root: [#40607](https://github.com/owncloud/core/pull/40607)
+* Bugfix - Fix share into share move scenario: [#40612](https://github.com/owncloud/core/pull/40612)
 * Bugfix - Enable 2FA via provisioning API: [#40617](https://github.com/owncloud/core/issues/40617)
 * Bugfix - Add index on oc_filecache: [#40633](https://github.com/owncloud/core/issues/40633)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
@@ -208,6 +209,14 @@ Details
    path.
 
    https://github.com/owncloud/core/pull/40607
+
+* Bugfix - Fix share into share move scenario: [#40612](https://github.com/owncloud/core/pull/40612)
+
+   Public links were lost upon moving share into another share as the share owner was not correctly
+   set. This has been now partially fixed.
+
+   https://github.com/owncloud/enterprise/issues/5565
+   https://github.com/owncloud/core/pull/40612
 
 * Bugfix - Enable 2FA via provisioning API: [#40617](https://github.com/owncloud/core/issues/40617)
 
