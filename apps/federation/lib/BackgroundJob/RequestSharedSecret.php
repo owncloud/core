@@ -140,7 +140,7 @@ class RequestSharedSecret extends Job {
 			$result = $this->httpClient->post(
 				$target . $this->endPoint,
 				[
-					'body' => [
+					'form_params' => [
 						'url' => $source,
 						'token' => $token,
 					],

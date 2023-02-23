@@ -88,10 +88,10 @@ interface IClient {
 	 * Sends a POST request
 	 * @param string $uri
 	 * @param array $options Array such as
-	 *              'body' => [
-	 *                  'field' => 'abc',
-	 *                  'other_field' => '123',
-	 *                  'file_name' => fopen('/path/to/file', 'r'),
+	 *              'multipart' => [
+	 *                  ['name' => 'field', 'contents' => 'abc'],
+	 *                  ['name' => 'other_field', 'contents' => '123'],
+	 *                  ['name' => 'file_name', 'contents' => fopen('/path/to/file', 'r'), 'filename' => 'custom_name.txt'],
 	 *              ],
 	 *              'headers' => [
 	 *                  'foo' => 'bar',
@@ -118,10 +118,10 @@ interface IClient {
 	 * Sends a PUT request
 	 * @param string $uri
 	 * @param array $options Array such as
-	 *              'body' => [
-	 *                  'field' => 'abc',
-	 *                  'other_field' => '123',
-	 *                  'file_name' => fopen('/path/to/file', 'r'),
+	 *              'multipart' => [
+	 *                  ['name' => 'field', 'contents' => 'abc'],
+	 *                  ['name' => 'other_field', 'contents' => '123'],
+	 *                  ['name' => 'file_name', 'contents' => fopen('/path/to/file', 'r'), 'filename' => 'custom_name.txt'],
 	 *              ],
 	 *              'headers' => [
 	 *                  'foo' => 'bar',
@@ -148,10 +148,10 @@ interface IClient {
 	 * Sends a DELETE request
 	 * @param string $uri
 	 * @param array $options Array such as
-	 *              'body' => [
-	 *                  'field' => 'abc',
-	 *                  'other_field' => '123',
-	 *                  'file_name' => fopen('/path/to/file', 'r'),
+	 *              'multipart' => [
+	 *                  ['name' => 'field', 'contents' => 'abc'],
+	 *                  ['name' => 'other_field', 'contents' => '123'],
+	 *                  ['name' => 'file_name', 'contents' => fopen('/path/to/file', 'r'), 'filename' => 'custom_name.txt'],
 	 *              ],
 	 *              'headers' => [
 	 *                  'foo' => 'bar',
@@ -178,10 +178,10 @@ interface IClient {
 	 * Sends a options request
 	 * @param string $uri
 	 * @param array $options Array such as
-	 *              'body' => [
-	 *                  'field' => 'abc',
-	 *                  'other_field' => '123',
-	 *                  'file_name' => fopen('/path/to/file', 'r'),
+	 *              'multipart' => [
+	 *                  ['name' => 'field', 'contents' => 'abc'],
+	 *                  ['name' => 'other_field', 'contents' => '123'],
+	 *                  ['name' => 'file_name', 'contents' => fopen('/path/to/file', 'r'), 'filename' => 'custom_name.txt'],
 	 *              ],
 	 *              'headers' => [
 	 *                  'foo' => 'bar',

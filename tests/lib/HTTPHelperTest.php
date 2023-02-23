@@ -63,7 +63,7 @@ class HTTPHelperTest extends \Test\TestCase {
 			->with(
 				'https://owncloud.com',
 				[
-					'body' => [
+					'form_params' => [
 						'Foo' => 'Bar',
 					],
 					'connect_timeout' => 10,
@@ -97,7 +97,7 @@ class HTTPHelperTest extends \Test\TestCase {
 			->with(
 				'https://owncloud.com',
 				[
-					'body' => [
+					'form_params' => [
 						'Foo' => 'Bar',
 					],
 					'connect_timeout' => 10,

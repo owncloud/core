@@ -107,7 +107,7 @@ class HTTPHelper {
 			$response = $client->post(
 				$url,
 				[
-					'body' => $fields,
+					'form_params' => $fields,
 					'connect_timeout' => 10,
 				]
 			);
