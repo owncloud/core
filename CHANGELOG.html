@@ -20,6 +20,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: <a href="https://github.com/owncloud/core/pull/40558">#40558</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump moments.js from 2.29.1 to 2.29.4 in /build: <a href="https://github.com/owncloud/core/pull/40560">#40560</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Set length of oc_calendars.components to 255: <a href="https://github.com/owncloud/core/pull/40563">#40563</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent creation of empty files/folders when no available quota: <a href="https://github.com/owncloud/core/pull/40567">#40567</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: <a href="https://github.com/owncloud/core/pull/40568">#40568</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: <a href="https://github.com/owncloud/core/pull/40571">#40571</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: <a href="https://github.com/owncloud/core/pull/40579">#40579</a></li>
@@ -149,6 +150,16 @@
             <p>https://github.com/owncloud/core/issues/40537<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40563<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent creation of empty files/folders when no available quota: <a href="https://github.com/owncloud/core/pull/40567">#40567</a></p>
+            <p>Until now it was possible for users having 0 quota or who already reached the limit of their
+   assigned quota to still create empty files/folders, which generates confusion. The PR fixes
+   this behaviour.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5478<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40567<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: <a href="https://github.com/owncloud/core/pull/40568">#40568</a></p>

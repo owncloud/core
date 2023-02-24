@@ -22,6 +22,7 @@ Summary
 * Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: [#40558](https://github.com/owncloud/core/pull/40558)
 * Bugfix - Bump moments.js from 2.29.1 to 2.29.4 in /build: [#40560](https://github.com/owncloud/core/pull/40560)
 * Bugfix - Set length of oc_calendars.components to 255: [#40563](https://github.com/owncloud/core/pull/40563)
+* Bugfix - Prevent creation of empty files/folders when no available quota: [#40567](https://github.com/owncloud/core/pull/40567)
 * Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
 * Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: [#40571](https://github.com/owncloud/core/pull/40571)
 * Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: [#40579](https://github.com/owncloud/core/pull/40579)
@@ -161,6 +162,15 @@ Details
 
    https://github.com/owncloud/core/issues/40537
    https://github.com/owncloud/core/pull/40563
+
+* Bugfix - Prevent creation of empty files/folders when no available quota: [#40567](https://github.com/owncloud/core/pull/40567)
+
+   Until now it was possible for users having 0 quota or who already reached the limit of their
+   assigned quota to still create empty files/folders, which generates confusion. The PR fixes
+   this behaviour.
+
+   https://github.com/owncloud/enterprise/issues/5478
+   https://github.com/owncloud/core/pull/40567
 
 * Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: [#40568](https://github.com/owncloud/core/pull/40568)
 
