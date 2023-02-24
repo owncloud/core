@@ -29,6 +29,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix share into share move scenario: <a href="https://github.com/owncloud/core/pull/40612">#40612</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Enable 2FA via provisioning API: <a href="https://github.com/owncloud/core/issues/40617">#40617</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add index on oc_filecache: <a href="https://github.com/owncloud/core/issues/40633">#40633</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Adjust request body options for Guzzle7: <a href="https://github.com/owncloud/core/pull/40652">#40652</a></li>
         <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
@@ -217,6 +218,17 @@
             </p>
             <p>https://github.com/owncloud/core/issues/40633<br>
             </p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Adjust request body options for Guzzle7: <a href="https://github.com/owncloud/core/pull/40652">#40652</a></p>
+            <p>In Guzzle major version 7 the body option of a request must be a string or similar. Requests that
+   send arrays of items have been adjusted to use the form_params option. Developers of apps that
+   use lib/private/Http/Client/IClient.php should check any calls to ensure that arrays of
+   items are not passed in the body option. See the diffs of PHP docs in the linked PR for examples.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40649<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40652<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>

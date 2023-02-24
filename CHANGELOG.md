@@ -31,6 +31,7 @@ Summary
 * Bugfix - Fix share into share move scenario: [#40612](https://github.com/owncloud/core/pull/40612)
 * Bugfix - Enable 2FA via provisioning API: [#40617](https://github.com/owncloud/core/issues/40617)
 * Bugfix - Add index on oc_filecache: [#40633](https://github.com/owncloud/core/issues/40633)
+* Bugfix - Adjust request body options for Guzzle7: [#40652](https://github.com/owncloud/core/pull/40652)
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 * Change - Update PHP dependencies: [#40337](https://github.com/owncloud/core/pull/40337)
 * Change - Drop PHP 7.3 support across the platform: [#40394](https://github.com/owncloud/core/pull/40394)
@@ -229,6 +230,16 @@ Details
    This index can help to speed-up bulk file operations.
 
    https://github.com/owncloud/core/issues/40633
+
+* Bugfix - Adjust request body options for Guzzle7: [#40652](https://github.com/owncloud/core/pull/40652)
+
+   In Guzzle major version 7 the body option of a request must be a string or similar. Requests that
+   send arrays of items have been adjusted to use the form_params option. Developers of apps that
+   use lib/private/Http/Client/IClient.php should check any calls to ensure that arrays of
+   items are not passed in the body option. See the diffs of PHP docs in the linked PR for examples.
+
+   https://github.com/owncloud/core/issues/40649
+   https://github.com/owncloud/core/pull/40652
 
 * Change - Allow specifying available space for objectstorages: [#40192](https://github.com/owncloud/core/pull/40192)
 
