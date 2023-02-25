@@ -51,6 +51,7 @@ Summary
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 * Enhancement - Tweak rewrite conditions in .htaccess: [#40584](https://github.com/owncloud/core/pull/40584)
 * Enhancement - Improve UX on occ user:sync: [#40640](https://github.com/owncloud/core/pull/40640)
+* Enhancement - Drag & Drop folders into public file upload: [#40643](https://github.com/owncloud/core/pull/40643)
 
 Details
 -------
@@ -453,6 +454,15 @@ Details
    Backend class aliases have been added to improve usability of this command.
 
    https://github.com/owncloud/core/pull/40640
+
+* Enhancement - Drag & Drop folders into public file upload: [#40643](https://github.com/owncloud/core/pull/40643)
+
+   Previously only files were accepted via drag & drop. Users can now also drag folders into a
+   public link that has the filedrop flag. When adding a folder, the hierarchy is flattened out and
+   all files are added without any subfolders. Name collisons are avoided as usual.
+
+   https://github.com/owncloud/enterprise/issues/5489
+   https://github.com/owncloud/core/pull/40643
 
 Changelog for ownCloud Core [10.11.0] (2022-08-23)
 =======================================
