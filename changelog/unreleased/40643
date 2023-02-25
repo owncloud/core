@@ -1,0 +1,9 @@
+Enhancement: Drag & Drop folders into public file upload
+
+Previously only files were accepted via drag & drop.
+Users can now also drag folders into a public link that has the filedrop flag.
+When adding a folder, the hierarchy is flattened out and
+all files are added without any subfolders. Name collisons are avoided as usual.
+
+https://github.com/owncloud/core/pull/40643
+https://github.com/owncloud/enterprise/issues/5489
