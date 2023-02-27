@@ -1,6 +1,6 @@
 Enhancement: Add per-user storage view
 
-Adding option for displaying used storage on per-user basis
+Adding option for displaying used storage on per-user basis.
 
 https://github.com/owncloud/enterprise/issues/5468
 https://github.com/owncloud/core/pull/40657
