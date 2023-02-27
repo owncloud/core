@@ -788,7 +788,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		}
 	}
 
-        /**
+	/**
 	 * @Then /^the administrator should be able to see the used storage of these users in the User Management page:$/
 	 *
 	 * @param TableNode $table table of usernames and last logins with a heading | username | and | used storage |

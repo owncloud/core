@@ -53,7 +53,7 @@ class UsersPage extends OwncloudPage {
 	protected $storageLocationColumnXpath = "//td[@class='storageLocation']";
 	protected $lastLoginXpath = "//td[@class='lastLogin']";
 	protected $creationTimeXpath = "//td[@class='creationTime']";
-        protected $usedStorageXpath = "//td[@class='usedStorage']";
+	protected $usedStorageXpath = "//td[@class='usedStorage']";
 
 	protected $manualQuotaInputXpath
 		= "//input[contains(@data-original-title,'Please enter storage quota')]";
@@ -362,7 +362,7 @@ class UsersPage extends OwncloudPage {
 		return $this->getTrimmedText($userCreationTime);
 	}
 
-        /**
+	/**
 	 * @param string $username
 	 *
 	 * @return string used storage of a user
