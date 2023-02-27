@@ -229,7 +229,7 @@ class FederatedShareProvider implements IShareProvider {
 			$share->getExpirationDate(),
 			$token
 		);
-
+		
 		try {
 			$sharedBy = $share->getSharedBy();
 			if ($this->userManager->userExists($sharedBy)) {
@@ -248,7 +248,8 @@ class FederatedShareProvider implements IShareProvider {
 				$sharedByAddress,
 				$token,
 				$share->getNode()->getName(),
-				$shareId
+				$shareId,
+				$share->getShareType()
 			);
 
 			/* Check for failure or null return from sending and pick up an error message

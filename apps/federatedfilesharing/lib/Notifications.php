@@ -98,7 +98,8 @@ class Notifications {
 		Address $sharedByAddress,
 		$token,
 		$name,
-		$remote_id
+		$remote_id,
+		$shareType
 	) {
 		error_log("sendRemoteShare");
 		$remoteShareSuccess = false;
@@ -109,7 +110,8 @@ class Notifications {
 				$sharedByAddress,
 				$token,
 				$name,
-				$remote_id
+				$remote_id,
+				$shareType
 			);
 			if (!$remoteShareSuccess) {
 				$remoteShareSuccess = $this->sendPreOcmRemoteShare(
@@ -402,8 +404,12 @@ class Notifications {
 	 * @return bool
 	 * @throws \Exception
 	 */
-	protected function sendOcmRemoteShare(Address $shareWithAddress, Address $ownerAddress, Address $sharedByAddress, $token, $name, $remote_id) {
+	protected function sendOcmRemoteShare(Address $shareWithAddress, Address $ownerAddress, Address $sharedByAddress, $token, $name, $remote_id, $shareType) {
 		error_log("sendOcmRemoteShare");
+		$_shareType = 'user';
+		if($shareType){
+			$_shareType = 'group';
+		}
 
 		$fields = [
 			'shareWith' => $shareWithAddress->getCloudId(),
@@ -413,7 +419,7 @@ class Notifications {
 			'ownerDisplayName' => $ownerAddress->getDisplayName(),
 			'sender' => $sharedByAddress->getCloudId(),
 			'senderDisplayName' => $sharedByAddress->getDisplayName(),
-			'shareType' => 'user',
+			'shareType' => $_shareType,
 			'resourceType' => 'file',
 			'protocol' => [
 				'name' => 'webdav',
