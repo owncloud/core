@@ -63,6 +63,15 @@ translation('settings');
 					</label>
 				</p>
                                 <p>
+                                        <input type="checkbox" name="StorageUsed" value="StorageUsed" id="CheckboxStorageUsed"
+                                                class="checkbox" <?php if ($_['show_storage_used'] === 'true') {
+                                                	print_unescaped('checked="checked"');
+                                                } ?> />
+                                        <label for="CheckboxStorageUsed">
+                                                <?php p($l->t('Show storage used')) ?>
+                                        </label>
+                                </p>
+                                <p>
                                         <input type="checkbox" name="CreationTime" value="CreationTime" id="CheckboxCreationTime"
                                                 class="checkbox" <?php if ($_['show_creation_time'] === 'true') {
                                                 	print_unescaped('checked="checked"');

@@ -166,6 +166,11 @@ var UserList = {
 		 */
 		$tr.find('td.storageLocation').text(user.storageLocation);
 
+                /**
+                * storage used
+                */
+                $tr.find('td.storageUsed').text(user.storageUsed);
+
 		/**
 		 * user backend
 		 */
@@ -1091,7 +1096,21 @@ $(document).ready(function () {
 			OC.AppConfig.setValue('core', 'umgmt_show_storage_location', 'false');
 		}
 	});
-     
+
+        if ($('#CheckboxStorageUsed').is(':checked')) {
+                 $("#userlist .storageUsed").show();
+        }
+        // Option to display/hide the "Storage used" column
+        $('#CheckboxStorageUsed').click(function() {
+                 if ($('#CheckboxStorageUsed').is(':checked')) {
+                         $("#userlist .storageUsed").show();
+                         OC.AppConfig.setValue('core', 'umgmt_show_storage_used', 'true');
+                 } else {
+                         $("#userlist .storageUsed").hide();
+                         OC.AppConfig.setValue('core', 'umgmt_show_storage_used', 'false');
+                 }
+        });
+
         if ($('#CheckboxCreationTime').is(':checked')) {
                 $("#userlist .creationTime").show();
         }
