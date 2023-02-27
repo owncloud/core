@@ -53,6 +53,7 @@ class UsersPage extends OwncloudPage {
 	protected $storageLocationColumnXpath = "//td[@class='storageLocation']";
 	protected $lastLoginXpath = "//td[@class='lastLogin']";
 	protected $creationTimeXpath = "//td[@class='creationTime']";
+        protected $usedStorageXpath = "//td[@class='usedStorage']";
 
 	protected $manualQuotaInputXpath
 		= "//input[contains(@data-original-title,'Please enter storage quota')]";
@@ -359,6 +360,37 @@ class UsersPage extends OwncloudPage {
 		};
 
 		return $this->getTrimmedText($userCreationTime);
+	}
+
+        /**
+	 * @param string $username
+	 *
+	 * @return string used storage of a user
+	 * @throws ElementNotFoundException|ElementNotVisible|Exception
+	 */
+	public function getUsedStorageOfUser(string $username): string {
+		$userTr = $this->findUserInTable($username);
+		$userUsedStorage = $userTr->find(
+			'xpath',
+			$this->usedStorageXpath
+		);
+
+		if ($userUsedStorage === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->usedStorageXpath " .
+				"used storage of user " . $username . " not found"
+			);
+		}
+
+		if (!$userUsedStorage->isVisible()) {
+			throw new ElementNotVisible(
+				__METHOD__ .
+				" used storage of user " . $username . " is not visible"
+			);
+		};
+
+		return $this->getTrimmedText($userUsedStorage);
 	}
 
 	/**

@@ -57,6 +57,13 @@ Feature: add users
       | Alice    | seconds ago   |
       | Brian    | seconds ago   |
 
+  Scenario: administrator should be able to see used storage of a user
+    When the administrator enables the setting "Show storage used" in the User Management page using the webUI
+    Then the administrator should be able to see the used storage of these users in the User Management page:
+      | username | used storage |
+      | Alice    | 1 GB         |
+      | Brian    | 5 GB         |
+
 
   Scenario: administrator should be able to see password column of user
     When the administrator enables the setting "Show password field" in the User Management page using the webUI

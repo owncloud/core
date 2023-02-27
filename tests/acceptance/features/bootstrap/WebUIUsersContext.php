@@ -788,6 +788,36 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		}
 	}
 
+        /**
+	 * @Then /^the administrator should be able to see the used storage of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table table of usernames and last logins with a heading | username | and | used storage |
+	 *
+	 * @return void
+	 * @throws ElementNotVisible
+	 * @throws Exception
+	 */
+	public function theAdministratorShouldBeAbleToSeeUsedStorageOfTheseUsers(
+		TableNode $table
+	):void {
+		$this->featureContext->verifyTableNodeColumns($table, ['username', 'used storage']);
+		foreach ($table as $row) {
+			$user = $this->featureContext->getActualUsername($row['username']);
+			$userUsedStorage = $this->usersPage->getUsedStorageOfUser($user);
+
+			Assert::assertStringContainsString(
+				$row['used storage'],
+				$userUsedStorage,
+				__METHOD__
+				. "'"
+				. $row['used storage']
+				. "' is not contained in the used storage of '"
+				. $user
+				. "'."
+			);
+		}
+	}
+
 	/**
 	 * This will run before EVERY scenario.
 	 *
