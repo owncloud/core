@@ -578,11 +578,19 @@ class OC_Image implements \OCP\IImage {
 				if (\method_exists($streamObj, 'getSource')) {
 					// underlying stream must be adjusted too
 					$stream = $streamObj->getSource();
+					if (!$stream) {
+						// current streamObj doesn't wrap any other stream opened with `fopen`,
+						// or it's the last one of the chain
+						break;
+					}
 					$metadata = \stream_get_meta_data($stream);
 				} else {
 					// can't access to the underlying stream, so we'll stop here
 					$this->logger->warning(
-						"Cannot get the underlying stream of class " . \get_class($streamObj) . "with uri {$metadata['uri']}",
+						"Cannot get the underlying stream of class " . \get_class($streamObj) .
+						" with uri {$metadata['uri']}. The " . \get_class($streamObj) .
+						" class should have a \"getSource\" method returning the underlying" .
+						" stream, or false / null if it isn't wrapping any other stream",
 						['app' => 'core']
 					);
 					break;
