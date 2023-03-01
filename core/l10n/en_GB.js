@@ -106,6 +106,7 @@ OC.L10N.register(
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?",
     "I know what I'm doing" : "I know what I'm doing",
     "Password can not be changed. Please contact your administrator." : "Password can not be changed. Please contact your administrator.",
+    "Passwords do not match" : "Passwords do not match",
     "Error adding {addItem}: {addItem} already exists" : "Error adding {addItem}: {addItem} already exists",
     "No" : "No",
     "Yes" : "Yes",
