@@ -298,12 +298,20 @@ class Storage {
 	 * Folders such as "." and ".." will be ignored, so if the
 	 * directory only contains those ones, it will be considered
 	 * as empty.
+	 * The view's root folder won't be considered as empty even if it
+	 * doesn't contain any file, so this function will always
+	 * return false in that case.
 	 * This function will return false if the directory can't be opened
 	 * @param View $view
 	 * @param string $dir the directory inside the view
 	 * @return bool true if empty, false otherwise
 	 */
 	private static function isFolderEmpty($view, $dir) {
+		if ($dir === '' || $dir === '.' || $dir === '/') {
+			// root folder won't be considered as empty
+			return false;
+		}
+
 		$isEmpty = false;
 		$dirResource = $view->opendir($dir);
 
@@ -344,8 +352,12 @@ class Storage {
 	private static function cleanupEmptyVersionFolder($view, $path) {
 		// check if folder is empty in order to delete it too
 		$parentPath = \dirname($path);
+		while (!$view->file_exists($parentPath) && ($parentPath !== '.' && $parentPath !== '/' && $parentPath !== '')) {
+			$parentPath = \dirname($parentPath);
+		}
+
 		$isEmpty = self::isFolderEmpty($view, $parentPath);
-		while ($isEmpty && ($parentPath !== '.' && $parentPath !== '/')) {
+		while ($isEmpty && ($parentPath !== '.' && $parentPath !== '/' && $parentPath !== '')) {
 			$view->rmdir($parentPath);
 
 			$parentPath = \dirname($parentPath);
