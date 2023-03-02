@@ -725,9 +725,15 @@ class Share20OcsController extends OCSController {
 			Share::SHARE_TYPE_REMOTE => false,
 		];
 
+		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
+			$shareTypes[] = Share::SHARE_TYPE_REMOTE_GROUP;
+			$requestedShareTypes[Share::SHARE_TYPE_REMOTE_GROUP] = false;
+		}
+
 		if ($this->shareManager->outgoingServer2ServerSharesAllowed() === false) {
 			// if outgoing remote shares aren't allowed, the remote share type can't be chosen
 			unset($requestedShareTypes[Share::SHARE_TYPE_REMOTE]);
+			unset($requestedShareTypes[Share::SHARE_TYPE_REMOTE_GROUP]);
 		}
 		foreach ($shareTypes as $shareType) {
 			if (isset($requestedShareTypes[$shareType])) {
