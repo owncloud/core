@@ -267,7 +267,7 @@ class Share20OcsController extends OCSController {
 			if ($share->getToken() !== null) {
 				$result['url'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $share->getToken()]);
 			}
-		} elseif ($share->getShareType() === Share::SHARE_TYPE_REMOTE) {
+		} elseif ($share->getShareType() === Share::SHARE_TYPE_REMOTE || $share->getShareType() === Share::SHARE_TYPE_REMOTE_GROUP ) {
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $share->getSharedWith();
 			$result['token'] = $share->getToken();
