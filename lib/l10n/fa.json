@@ -61,6 +61,7 @@
     "Users" : "کاربران",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "امکان نصب برنامه \"%s\" با توجه به برآورده نکردن نیازمندی زیر وجود ندارد: %s",
     "Imprint" : "مهر زدن",
+    "Privacy Policy" : "سیاست حفظ حریم خصوصی",
     "File is currently busy, please try again later" : "فایل در حال حاضر مشغول است، لطفا مجددا تلاش کنید",
     "Application is not enabled" : "برنامه فعال نشده است",
     "Authentication error" : "خطا در اعتبار سنجی",
