@@ -405,12 +405,12 @@ class MailNotifications {
 		$removesenderdisplayname = $this->config->getSystemValue('remove_sender_display_name', false);
 		if ($removesenderdisplayname) {
 			return [
-			        Util::getDefaultEmailAddress('sharing-noreply') => (string) $l10n->t(
-					'%s',
-					[
-						$this->defaults->getName()
-					]
-				)
+					Util::getDefaultEmailAddress('sharing-noreply') => (string) $l10n->t(
+						'%s',
+						[
+							$this->defaults->getName()
+						]
+					)
 			];
 		}
 		return [
