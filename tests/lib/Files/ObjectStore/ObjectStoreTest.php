@@ -97,10 +97,11 @@ class ObjectStoreTest extends TestCase {
 	}
 	public function providersFreeSpace() {
 		return [
-			[100, 10, 90],
-			[100, -1, 100],
-			[100, 110, 0],
-			[null, 10, FileInfo::SPACE_UNLIMITED]
+			[100, 10, FileInfo::SPACE_UNKNOWN],
+			[100, -1, FileInfo::SPACE_UNKNOWN],
+			[100, 110, FileInfo::SPACE_UNKNOWN],
+			[null, 10, FileInfo::SPACE_UNKNOWN],
+			[null, 10, FileInfo::SPACE_UNKNOWN]
 		];
 	}
 
@@ -112,13 +113,12 @@ class ObjectStoreTest extends TestCase {
 	 */
 	public function testFreeSpace($availableStorage, $usedStorage, $expected) {
 		$objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
-			->setMethods(['getTotalUsedStorage'])
+			->onlyMethods([])
 			->setConstructorArgs([[
 				'objectstore' => $this->impl,
 				'availableStorage' => $availableStorage
 			]])
 			->getMock();
-		$objectStore->method('getTotalUsedStorage')->willReturn($usedStorage);
 		$free = $objectStore->free_space('test');
 		$this->assertEquals($expected, $free);
 	}
