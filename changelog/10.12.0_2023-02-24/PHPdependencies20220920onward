@@ -15,6 +15,7 @@ The following have been updated:
 - laminas/laminas-stdlib (3.11.0 to 3.13.0)
 - laminas/laminas-validator (2.19.0 to 2.25.0)
 - league/flysystem (1.1.9 to 1.1.10)
+- phpseclib/phpseclib (3.0.18 tp 3.0.19)
 - psr/container (1.1.1 to 1.1.2)
 - punic/punic (3.7.0 to 3.8.0)
 - sabre/uri (2.2.3 to 2.3.2)
@@ -36,3 +37,4 @@ https://github.com/owncloud/core/pull/40543
 https://github.com/owncloud/core/pull/40554
 https://github.com/owncloud/core/pull/40568
 https://github.com/owncloud/core/pull/40591
+https://github.com/owncloud/core/pull/40668
