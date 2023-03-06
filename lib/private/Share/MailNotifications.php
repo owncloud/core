@@ -402,6 +402,17 @@ class MailNotifications {
 	 * @return string[]
 	 */
 	protected function getFrom($l10n, $senderDisplayName) {
+		$removesenderdisplayname = $this->config->getSystemValue('remove_sender_display_name', false);
+		if ($removesenderdisplayname) {
+			return [
+			        Util::getDefaultEmailAddress('sharing-noreply') => (string) $l10n->t(
+					'%s',
+					[
+						$this->defaults->getName()
+					]
+				)
+			];
+		}
 		return [
 			Util::getDefaultEmailAddress('sharing-noreply') => (string) $l10n->t(
 				'%s via %s',
