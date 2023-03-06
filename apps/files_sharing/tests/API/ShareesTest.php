@@ -43,6 +43,7 @@ use OCP\IUserSession;
 use OCP\Share;
 use OCP\User;
 use OCP\Util\UserSearch;
+use OCP\Share\IRemoteShareesSearch;
 
 /**
  * Class ShareesTest
@@ -81,6 +82,9 @@ class ShareesTest extends TestCase {
 
 	/** @var UserSearch|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userSearch;
+
+	/** @var IRemoteShareesSearch */
+	protected $customRemoteSearchMock;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -121,6 +125,8 @@ class ShareesTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->customRemoteSearchMock = $this->createMock(IRemoteShareesSearch::class);
+
 		$this->sharees = new ShareesController(
 			'files_sharing',
 			$this->request,
@@ -135,6 +141,15 @@ class ShareesTest extends TestCase {
 			$this->sharingBlacklist,
 			$this->userSearch
 		);
+	}
+
+	protected function tearDown(): void {
+		// needed for the testGetRemoteCustom
+		if (isset(\OC::$server[\get_class($this->customRemoteSearchMock)])) {
+			unset(\OC::$server[\get_class($this->customRemoteSearchMock)]);
+		}
+
+		parent::tearDown();
 	}
 
 	/**
@@ -1547,6 +1562,37 @@ class ShareesTest extends TestCase {
 		$this->assertEquals($exactExpected, $result['exact']['remotes']);
 		$this->assertEquals($expected, $result['remotes']);
 		$this->assertCount((int) $reachedEnd, $this->invokePrivate($this->sharees, 'reachedEndFor'));
+	}
+
+	public function testGetRemoteCustom() {
+		$mockedRemoteClass = \get_class($this->customRemoteSearchMock);
+
+		// need to register the mock as service. It will be removed in the tearDown
+		\OC::$server->registerService($mockedRemoteClass, function () {
+			return $this->customRemoteSearchMock;
+		});
+
+		$this->config->method('getSystemValue')
+			->with('sharing.remoteShareesSearch')
+			->willReturn($mockedRemoteClass);
+
+		$this->customRemoteSearchMock->expects($this->once())
+			->method('search')
+			->with('abcd1234')
+			->willReturn([
+				['label' => 'a label for u1', 'value' => ['shareType' => 7, 'shareWith' => 'u1']],
+				['label' => 'u2 label', 'value' => ['shareType' => 8, 'shareWith' => 'u2', 'server' => 'https://custom.server']],
+			]);
+
+		$exactExpected = [
+			['label' => 'a label for u1', 'value' => ['shareType' => 7, 'shareWith' => 'u1']],
+			['label' => 'u2 label', 'value' => ['shareType' => 8, 'shareWith' => 'u2', 'server' => 'https://custom.server']],
+		];
+
+		$this->invokePrivate($this->sharees, 'getRemote', ['abcd1234']);
+		$result = $this->invokePrivate($this->sharees, 'result');
+
+		$this->assertEquals($exactExpected, $result['exact']['remotes']);
 	}
 
 	public function dataSearch() {
