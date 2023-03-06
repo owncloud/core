@@ -1,0 +1,13 @@
+Enhancement: Add support for OCM via ScienceMesh
+
+
+We've added an if-statement in the files_sharing ShareesController
+code that searches for remote sharees. When the config entry
+`sharing.remoteShareesSearch` is set to the name of a class
+that is registered in the server container and that implements
+`IRemoteShareesSearch`, for instance the 'ScienceMeshSearchPlugin'
+that the 'sciencemesh' app registers, use it instead of the
+federatedfilesharing app to find sharee matches for OCM sharing.
+
+https://github.com/owncloud/core/issues/40577
+https://github.com/pondersource/oc-sciencemesh/pull/39
