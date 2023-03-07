@@ -611,10 +611,10 @@ class MailNotificationsTest extends TestCase {
 			->willReturn('Recipient');
 		$recipient->method('getUID')
 			->willReturn('Recipient');
-		$this->config->expects($this->once())
+		$this->config->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('default_language', 'en')
-			->willReturn('en');
+			->withConsecutive(['default_language', 'en'], ['remove_sender_display_name', false])
+			->willReturnOnConsecutiveCalls('en', false);
 		$this->config->expects($this->once())
 			->method('getUserValue')
 			->with('Recipient', 'core', 'lang', 'en')
