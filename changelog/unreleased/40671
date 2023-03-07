@@ -1,0 +1,7 @@
+Enhancement: Make sender display name in mail notifications configurable
+
+In some cases mail notifications related to sharing activities are blocked by mail filters as they are flagged as email impersonation. In such cases it may be desirable for an oC admin to have a config option for removing the sender display name from the "From" address. This is now possible by setting the following config.php parameter:
+
+remove_sender_display_name => true
+
+https://github.com/owncloud/core/pull/40671
