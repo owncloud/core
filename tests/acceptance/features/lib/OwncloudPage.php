@@ -45,6 +45,17 @@ class OwncloudPage extends Page {
 	protected $avatarImgXpath = ".//div[@id='settings']//div[contains(@class, 'avatardiv')]/img";
 	protected $titleXpath = ".//title";
 	protected $searchBoxId = "searchbox";
+	protected $sidebarNavXpath = "//li[@data-id='%s']";
+	private $sidebarItemId = [
+		'All files' => "files",
+		'Favorites' => "favorites",
+		'Shared with you' => "sharingin",
+		'Shared with others' => "sharingout",
+		'Shared with others' => "sharingout",
+		'Shared by link' => "sharinglinks",
+		'Tags' => "systemtagsfilter",
+		'Deleted files' => "trashbin",
+	];
 
 	/**
 	 * used to store the unchanged path string when $path gets changed
@@ -913,5 +924,46 @@ class OwncloudPage extends Page {
 		if ($element === null) {
 			throw new ElementNotFoundException($message);
 		}
+	}
+
+	/**
+	 * Lookup the id for the requested sidebar item.
+	 * If the id is not known, then return the passed-in parameter as the id.
+	 *
+	 * @param string $sidebar e.g. All files, Tags, Deleted files
+	 *
+	 * @return string
+	 */
+	public function getSidebarItemId(string $sidebar): string {
+		if (isset($this->sidebarItemId[$sidebar])) {
+			$id = $this->sidebarItemId[$sidebar];
+		} else {
+			$id = $sidebar;
+		}
+		return $id;
+	}
+
+	/**
+	 *
+	 * @param string $sidebar
+	 *
+	 * @return bool
+	 */
+	public function isSidebarNavVisible(string $sidebar): bool {
+		try {
+			$sidebarNav = $this->find(
+				"xpath",
+				\sprintf($this->sidebarNavXpath, $this->getSidebarItemId($sidebar))
+			);
+			$this->assertElementNotNull(
+				$sidebarNav,
+				__METHOD__ .
+				" could not find '$sidebar' sidebar navigation"
+			);
+			$visible = $sidebarNav->isVisible();
+		} catch (ElementNotFoundException $e) {
+			$visible = false;
+		}
+		return $visible;
 	}
 }
