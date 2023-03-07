@@ -27,12 +27,14 @@ use OCP\Defaults;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
+use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Mail\IMailer;
+use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
 use OCP\Util;
@@ -525,8 +527,9 @@ class MailNotificationsTest extends TestCase {
 	/**
 	 * @param string $subject
 	 * @param bool $exceptionOnSend
+	 * @param bool $removeSenderDisplayName
 	 */
-	protected function setupMailerMock($subject, $exceptionOnSend = true) {
+	protected function setupMailerMock($subject, $exceptionOnSend = true, $removeSenderDisplayName = false) {
 		$message = $this->createMock(Message::class);
 		$message
 				->expects($this->once())
@@ -541,10 +544,15 @@ class MailNotificationsTest extends TestCase {
 		$message
 				->expects($this->any())
 				->method('setPlainBody');
+		if ($removeSenderDisplayName) {
+			$senderText = 'UnitTestCloud';
+		} else {
+			$senderText = 'TestUser via UnitTestCloud';
+		}
 		$message
 				->expects($this->any())
 				->method('setFrom')
-				->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
+				->with([Util::getDefaultEmailAddress('sharing-noreply') => $senderText]);
 
 		$this->mailer
 				->expects($this->once())
@@ -577,8 +585,10 @@ class MailNotificationsTest extends TestCase {
 
 	public function providesLanguages(): array {
 		return [
-			['es', 'en', 'TestUser ha compartido »<welcome>.txt« contigo'],
-			['en', 'en', 'TestUser shared »<welcome>.txt« with you']
+			['es', 'en', 'TestUser ha compartido »<welcome>.txt« contigo', false],
+			['en', 'en', 'TestUser shared »<welcome>.txt« with you', false],
+			['es', 'en', 'TestUser ha compartido »<welcome>.txt« contigo', true],
+			['en', 'en', 'TestUser shared »<welcome>.txt« with you', true]
 		];
 	}
 
@@ -587,15 +597,21 @@ class MailNotificationsTest extends TestCase {
 	 * @param string $recipientLanguage
 	 * @param string $senderLanguage
 	 * @param string $expectedSubject
-	 * @throws \OCP\Files\NotFoundException
-	 * @throws \OCP\Share\Exceptions\GenericShareException
+	 * @param bool $removeSenderDisplayName
+	 * @throws NotFoundException
+	 * @throws GenericShareException
 	 */
-	public function testSendInternalShareWithRecipientLanguageCode($recipientLanguage, $senderLanguage, $expectedSubject) {
+	public function testSendInternalShareWithRecipientLanguageCode(
+		$recipientLanguage,
+		$senderLanguage,
+		$expectedSubject,
+		$removeSenderDisplayName
+	) {
 		$this->config
 			->method('getAppValue')
 			->with('core', 'shareapi_allow_mail_notification', 'no')
 			->willReturn('yes');
-		$this->setupMailerMock($expectedSubject, false);
+		$this->setupMailerMock($expectedSubject, false, $removeSenderDisplayName);
 		$shareMock = $this->getShareMock(
 			['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => '2017-01-01T15:03:01.012345Z']
 		);
@@ -614,7 +630,7 @@ class MailNotificationsTest extends TestCase {
 		$this->config->expects($this->exactly(2))
 			->method('getSystemValue')
 			->withConsecutive(['default_language', 'en'], ['remove_sender_display_name', false])
-			->willReturnOnConsecutiveCalls('en', false);
+			->willReturnOnConsecutiveCalls('en', $removeSenderDisplayName);
 		$this->config->expects($this->once())
 			->method('getUserValue')
 			->with('Recipient', 'core', 'lang', 'en')
