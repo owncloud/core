@@ -451,7 +451,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theTabNameDetailsPanelShouldNotBeVisible(string $tabName):void {
 		$detailsDialog = $this->filesPage->getDetailsDialog();
 		Assert::assertFalse(
-			$detailsDialog->isDetailsPanelVisible($tabName),
+			$detailsDialog->isDetailsTabAvailable($tabName),
 			"the $tabName panel is visible in the details panel but should not be"
 		);
 	}

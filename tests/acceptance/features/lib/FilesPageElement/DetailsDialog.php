@@ -407,6 +407,32 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
+	 * checks if the requested tab in the details tab is available
+	 *
+	 * @param string $tabName
+	 *
+	 * @return bool
+	 */
+	public function isDetailsTabAvailable(string $tabName): bool {
+		try {
+			$tabXpath = $this->getSubstitutedValueInXpath($this->tabSwitchBtnXpath, $this->getDetailsTabId($tabName));
+			$tab = $this->detailsDialogElement->find(
+				"xpath",
+				$tabXpath
+			);
+			$this->assertElementNotNull(
+				$tab,
+				__METHOD__ .
+				" could not find details tab with id '$tabName'"
+			);
+			$visible = $tab->isVisible();
+		} catch (ElementNotFoundException $e) {
+			$visible = false;
+		}
+		return $visible;
+	}
+
+	/**
 	 *
 	 * @return NodeElement of the whole container holding the thumbnail
 	 * @throws ElementNotFoundException
