@@ -1,10 +1,10 @@
 <div id="changelog-owncloud-core">
-<h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
-    <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
+<h2 id="10.12.0" class="version"> Changelog for ownCloud Core [10.12.0] (2023-02-24)</h2>
+    <p>The following sections list the changes in ownCloud core 10.12.0 relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.11.0...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.11.0...v10.12.0">Full list of changes in 10.12.0</a>
     </p>
-    <h3 id="unreleased-summary">Summary</h3>
+    <h3 id="10.12.0-summary">Summary</h3>
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Bump bower_components/clipboard from v2.0.6 to v2.0.11 in /build: <a href="https://github.com/owncloud/core/pull/40064">#40064</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Properly remove file versions from the trashbin: <a href="https://github.com/owncloud/core/issues/40286">#40286</a></li>
@@ -31,8 +31,8 @@
         <li class="type-bugfix changelog-item">Bugfix - Enable 2FA via provisioning API: <a href="https://github.com/owncloud/core/issues/40617">#40617</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add index on oc_filecache: <a href="https://github.com/owncloud/core/issues/40633">#40633</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Adjust request body options for Guzzle7: <a href="https://github.com/owncloud/core/pull/40652">#40652</a></li>
-        <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></li>
+        <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40389">#40389</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
         <li class="type-change changelog-item">Change - Test indirect resource existence: <a href="https://github.com/owncloud/core/pull/40406">#40406</a></li>
         <li class="type-change changelog-item">Change - Detect mime types of hidden files: <a href="https://github.com/owncloud/core/pull/40427">#40427</a></li>
@@ -47,11 +47,13 @@
         <li class="type-enhancement changelog-item">Enhancement - Add legal privacy polciy and imprint links to personal settings: <a href="https://github.com/owncloud/core/pull/40511">#40511</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Persistent major file version workflow: <a href="https://github.com/owncloud/core/pull/40531">#40531</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add support for OCM via ScienceMesh: <a href="https://github.com/owncloud/core/issues/40577">#40577</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Tweak rewrite conditions in .htaccess: <a href="https://github.com/owncloud/core/pull/40584">#40584</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve UX on occ user:sync: <a href="https://github.com/owncloud/core/pull/40640">#40640</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Drag & Drop folders into public file upload: <a href="https://github.com/owncloud/core/pull/40643">#40643</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Make sender display name in mail notifications configurable: <a href="https://github.com/owncloud/core/pull/40671">#40671</a></li>
     </ul>
-    <h3 id="unreleased-details">Details</h3>
+    <h3 id="10.12.0-details">Details</h3>
     <ul class="details">
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump bower_components/clipboard from v2.0.6 to v2.0.11 in /build: <a href="https://github.com/owncloud/core/pull/40064">#40064</a></p>
@@ -243,16 +245,6 @@
             <p>https://github.com/owncloud/core/pull/40652<br></p>
         </li>
         <li class="type-change changelog-item">
-            <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>
-            <p>Before this change, objectstorages were reporting only infinite storage space. This could
-   have caused problems in other apps that rely on this storage method, e.g. metrics app that
-   monitors available space
-            </p>
-            <p>https://github.com/owncloud/enterprise/issues/5384<br>
-            </p>
-            <p>https://github.com/owncloud/core/pull/40192<br></p>
-        </li>
-        <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></p>
             <p>The following have been updated: - doctrine/event-manager (1.1.2 to 1.2.0) -
    doctrine/instantiator (1.4.1 to 1.5.0) - doctrine/lexer (1.2.3 to 2.1.0) -
@@ -261,12 +253,24 @@
    phpseclib/phpseclib (3.0.14 to 3.0.18) - laminas/laminas-filter (2.12.0 to 2.22.0) -
    laminas/laminas-inputfilter (2.12.1 to 2.21.0) - laminas/laminas-servicemanager (3.7.0
    to 3.17.0) - laminas/laminas-stdlib (3.11.0 to 3.13.0) - laminas/laminas-validator
-   (2.19.0 to 2.25.0) - league/flysystem (1.1.9 to 1.1.10) - psr/container (1.1.1 to 1.1.2) -
-   punic/punic (3.7.0 to 3.8.0) - sabre/uri (2.2.3 to 2.3.2) - sabre/vobject (4.5.0 to 4.5.3)The following have been updated in apps/files_external/3rdparty: - google/auth (v1.21.1 to
+   (2.19.0 to 2.25.0) - league/flysystem (1.1.9 to 1.1.10) - phpseclib/phpseclib (3.0.18 tp
+   3.0.19) - psr/container (1.1.1 to 1.1.2) - punic/punic (3.7.0 to 3.8.0) - sabre/uri (2.2.3 to
+   2.3.2) - sabre/vobject (4.5.0 to 4.5.3)The following have been updated in apps/files_external/3rdparty: - google/auth (v1.21.1 to
    v1.23.0) - google/apiclient-services (v0.259.0 to v0.272.0) - guzzlehttp/psr7 (2.4.0 to
    2.4.3)
             </p>
-            <p>https://github.com/owncloud/core/pull/40337<br>https://github.com/owncloud/core/pull/40394<br>https://github.com/owncloud/core/pull/40410<br>https://github.com/owncloud/core/pull/40424<br>https://github.com/owncloud/core/pull/40448<br>https://github.com/owncloud/core/pull/40449<br>https://github.com/owncloud/core/pull/40494<br>https://github.com/owncloud/core/pull/40543<br>https://github.com/owncloud/core/pull/40554<br>https://github.com/owncloud/core/pull/40568<br>https://github.com/owncloud/core/pull/40591<br></p>
+            <p>https://github.com/owncloud/core/pull/40337<br>https://github.com/owncloud/core/pull/40394<br>https://github.com/owncloud/core/pull/40410<br>https://github.com/owncloud/core/pull/40424<br>https://github.com/owncloud/core/pull/40448<br>https://github.com/owncloud/core/pull/40449<br>https://github.com/owncloud/core/pull/40494<br>https://github.com/owncloud/core/pull/40543<br>https://github.com/owncloud/core/pull/40554<br>https://github.com/owncloud/core/pull/40568<br>https://github.com/owncloud/core/pull/40591<br>https://github.com/owncloud/core/pull/40668<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40389">#40389</a></p>
+            <p>Objectstorages are reporting only unknown storage space. This causes problems in other apps
+   that rely on this storage method, e.g. metrics app that monitors available space. Now, new
+   configuration in the storage level is added, allowing for using the system configuration
+   variable by the apps or further extension of storage class for objectstorage.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40665<br>https://github.com/owncloud/enterprise/issues/5384<br>https://github.com/owncloud/enterprise/issues/5006<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40389<br>https://github.com/owncloud/core/pull/40669<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></p>
@@ -407,6 +411,19 @@
             <p>https://github.com/owncloud/core/pull/40574<br></p>
         </li>
         <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add support for OCM via ScienceMesh: <a href="https://github.com/owncloud/core/issues/40577">#40577</a></p>
+            <p>We've added an if-statement in the files_sharing ShareesController code that searches for
+   remote sharees. When the config entry `sharing.remoteShareesSearch` is set to the name of a
+   class that is registered in the server container and that implements
+   `IRemoteShareesSearch`, for instance the 'ScienceMeshSearchPlugin' that the
+   'sciencemesh' app registers, use it instead of the federatedfilesharing app to find sharee
+   matches for OCM sharing.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40577<br>
+            </p>
+            <p>https://github.com/pondersource/oc-sciencemesh/pull/39<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
             <p>Enhancement - Tweak rewrite conditions in .htaccess: <a href="https://github.com/owncloud/core/pull/40584">#40584</a></p>
             <p>Changed the RewriteCond rules in the `.htaccess` file to match the expected paths.
             </p>
@@ -427,6 +444,15 @@
             <p>https://github.com/owncloud/enterprise/issues/5489<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40643<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Make sender display name in mail notifications configurable: <a href="https://github.com/owncloud/core/pull/40671">#40671</a></p>
+            <p>In some cases mail notifications related to sharing activities are blocked by mail filters as
+   they are flagged as email impersonation. In such cases it may be desirable for an oC admin to have
+   a config option for removing the sender display name from the "From" address. This is now
+   possible by setting the following config.php parameter:Remove_sender_display_name =&gt; true
+            </p>
+            <p>https://github.com/owncloud/core/pull/40671<br></p>
         </li>
     </ul>
     <h2 id="10.11.0" class="version"> Changelog for ownCloud Core [10.11.0] (2022-08-23)</h2>
