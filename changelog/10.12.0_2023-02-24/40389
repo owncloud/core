@@ -1,0 +1,9 @@
+Change: Allow specifying available space for objectstorages
+
+Objectstorages are reporting only unknown storage space. This causes problems in other apps that rely on this storage method, e.g. metrics app that monitors available space. Now, new configuration in the storage level is added, allowing for using the system configuration variable by the apps or further extension of storage class for objectstorage.
+
+https://github.com/owncloud/core/pull/40389
+https://github.com/owncloud/core/pull/40669
+https://github.com/owncloud/core/issues/40665
+https://github.com/owncloud/enterprise/issues/5384
+https://github.com/owncloud/enterprise/issues/5006

@@ -469,6 +469,14 @@ $CONFIG = [
 'mail_smtppassword' => '',
 
 /**
+ * Remove the sender display name in sharing emails
+ * Mail notifications about shares include the display name of the sharer in the email
+ * "from" address. This can cause some email filters to block these as impersonation
+ * attempts. Set remove_sender_display_name to true to not include this information.
+ */
+'remove_sender_display_name' => false,
+
+/**
  * Proxy Configurations
  */
 
