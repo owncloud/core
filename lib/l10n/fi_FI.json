@@ -76,6 +76,7 @@
     "Set an admin password." : "Aseta ylläpitäjän salasana.",
     "Invalid Federated Cloud ID" : "Virheellinen federoidun pilven tunniste",
     "%s shared »%s« with you" : "%s jakoi kohteen »%s« kanssasi",
+    "%s" : "%s",
     "Sharing %s failed, because the file does not exist" : "Kohteen %s jakaminen epäonnistui, koska tiedostoa ei ole olemassa",
     "You are not allowed to share %s" : "Oikeutesi eivät riitä kohteen %s jakamiseen.",
     "Sharing %s failed, because you can not share with yourself" : "Kohteen %s jakaminen epäonnistui, koska et voi jakaa itsesi kanssa",

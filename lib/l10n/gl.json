@@ -102,6 +102,7 @@
     "Internal mail notification for shared files is not allowed" : "Non se permite a notificación interna de correo para os ficheiros compartidos",
     "%s shared »%s« with you" : "%s compartiu «%s» con vostede",
     "Public link mail notification is not allowed" : "Non se permite a notificación por correo de ligazóns públicas",
+    "%s" : "%s",
     "%s via %s" : "%s vía %s",
     "Sharing %s failed, because the backend does not allow shares from type %d" : "Fallou a compartición de %s, xa que a infraestrutura non permite accións do tipo %d",
     "Sharing %s failed, because the file does not exist" : "Fallou a compartición de %s, o ficheiro non existe",
