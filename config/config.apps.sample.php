@@ -337,14 +337,6 @@ $CONFIG = [
  * If set to `true` any user information will be read from the access token.
  * If set to `false` the userinfo endpoint is used (starting app version 1.1.0).
  *
- * use-token-introspection-endpoint::
- * If set to `true`, the token introspection endpoint is used to verify a given access
- * token - only needed if the access token is not a JWT. If set to `false`, the userinfo
- * endpoint is used (requires version >= 1.1.0)
- * Tokens which are not JSON WebToken (JWT) may not have information like the
- * expiry. In these cases, the OpenID Connect Provider needs to call on the token
- * introspection endpoint to get this information. The default value is `false`. See
- * https://datatracker.ietf.org/doc/html/rfc7662 for more information on token introspection.
  */
 
 /**
@@ -420,7 +412,6 @@ $CONFIG = [
 		'userinfo_endpoint' => '...'
 	],
 	'provider-url' => '...',
-	'use-token-introspection-endpoint' => true
 ],
 
 /**
@@ -435,7 +426,6 @@ $CONFIG = [
 	'loginButtonName' => 'node-oidc-provider',
 	'mode' => 'userid',
 	'search-attribute' => 'sub',
-	'use-token-introspection-endpoint' => true,
 	  // do not verify tls host or peer
 	'insecure' => true
 ],
