@@ -1,6 +1,7 @@
 Change: Update PHP dependencies
 
 The following have been updated:
+- guzzlehttp/psr7 (2.4.3 to 2.4.4)
 - icewind/streams (0.7.6 to 0.7.7)
 
 https://github.com/owncloud/core/pull/40691
