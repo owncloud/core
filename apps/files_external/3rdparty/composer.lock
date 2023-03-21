@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4543ee76b5931fac797ba8d290660931",
+    "content-hash": "2412fe3dcf8d85d9e1fbccbce1261521",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -290,16 +290,16 @@
         },
         {
             "name": "icewind/streams",
-            "version": "v0.7.6",
+            "version": "v0.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/Streams.git",
-                "reference": "6e347e48d44cf9759cb6c98faab4e8ffd2f5a288"
+                "reference": "64200fd7cfcc7f550c3c695c48d8fd8bba97fecb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/6e347e48d44cf9759cb6c98faab4e8ffd2f5a288",
-                "reference": "6e347e48d44cf9759cb6c98faab4e8ffd2f5a288",
+                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/64200fd7cfcc7f550c3c695c48d8fd8bba97fecb",
+                "reference": "64200fd7cfcc7f550c3c695c48d8fd8bba97fecb",
                 "shasum": ""
             },
             "require": {
@@ -329,9 +329,9 @@
             "description": "A set of generic stream wrappers",
             "support": {
                 "issues": "https://github.com/icewind1991/Streams/issues",
-                "source": "https://github.com/icewind1991/Streams/tree/v0.7.6"
+                "source": "https://github.com/icewind1991/Streams/tree/v0.7.7"
             },
-            "time": "2022-06-09T13:47:06+00:00"
+            "time": "2023-03-16T14:52:25+00:00"
         },
         {
             "name": "monolog/monolog",
