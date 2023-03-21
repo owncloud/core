@@ -31,7 +31,7 @@ use Google\Service\Drive\ReplyList;
 class Replies extends \Google\Service\Resource
 {
   /**
-   * Creates a new reply to a comment. (replies.create)
+   * Creates a reply to a comment. (replies.create)
    *
    * @param string $fileId The ID of the file.
    * @param string $commentId The ID of the comment.

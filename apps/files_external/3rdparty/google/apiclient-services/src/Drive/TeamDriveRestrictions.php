@@ -34,6 +34,10 @@ class TeamDriveRestrictions extends \Google\Model
   /**
    * @var bool
    */
+  public $sharingFoldersRequiresOrganizerPermission;
+  /**
+   * @var bool
+   */
   public $teamMembersOnly;
 
   /**
@@ -77,6 +81,20 @@ class TeamDriveRestrictions extends \Google\Model
   public function getDomainUsersOnly()
   {
     return $this->domainUsersOnly;
+  }
+  /**
+   * @param bool
+   */
+  public function setSharingFoldersRequiresOrganizerPermission($sharingFoldersRequiresOrganizerPermission)
+  {
+    $this->sharingFoldersRequiresOrganizerPermission = $sharingFoldersRequiresOrganizerPermission;
+  }
+  /**
+   * @return bool
+   */
+  public function getSharingFoldersRequiresOrganizerPermission()
+  {
+    return $this->sharingFoldersRequiresOrganizerPermission;
   }
   /**
    * @param bool

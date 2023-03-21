@@ -31,7 +31,7 @@ use Google\Service\Drive\DriveList;
 class Drives extends \Google\Service\Resource
 {
   /**
-   * Creates a new shared drive. (drives.create)
+   * Creates a shared drive. (drives.create)
    *
    * @param string $requestId An ID, such as a random UUID, which uniquely
    * identifies this user's request for idempotent creation of a shared drive. A
