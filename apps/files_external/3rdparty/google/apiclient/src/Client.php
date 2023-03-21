@@ -55,7 +55,7 @@ class Client
     const USER_AGENT_SUFFIX = "google-api-php-client/";
     const OAUTH2_REVOKE_URI = 'https://oauth2.googleapis.com/revoke';
     const OAUTH2_TOKEN_URI = 'https://oauth2.googleapis.com/token';
-    const OAUTH2_AUTH_URL = 'https://accounts.google.com/o/oauth2/auth';
+    const OAUTH2_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
     const API_BASE_PATH = 'https://www.googleapis.com';
 
     /**
@@ -386,6 +386,7 @@ class Client
             'login_hint' => $this->config['login_hint'],
             'openid.realm' => $this->config['openid.realm'],
             'prompt' => $this->config['prompt'],
+            'redirect_uri' => $this->config['redirect_uri'],
             'response_type' => 'code',
             'scope' => $scope,
             'state' => $this->config['state'],
@@ -1184,7 +1185,6 @@ class Client
         if (defined('\GuzzleHttp\ClientInterface::MAJOR_VERSION')) {
             $guzzleVersion = ClientInterface::MAJOR_VERSION;
         } elseif (defined('\GuzzleHttp\ClientInterface::VERSION')) {
-            // @phpstan-ignore-next-line
             $guzzleVersion = (int)substr(ClientInterface::VERSION, 0, 1);
         }
 
