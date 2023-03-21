@@ -63,10 +63,10 @@ class ChunkLocationProvider implements IMountProvider {
 		$chunkBaseDir = $this->config->getSystemValue('dav.chunk_base_dir', '');
 		if ($chunkBaseDir === '') {
 			// this is needed as otherwise the returned mount point will be in the home storage rather
-			// than in the "local" external storage and this would cause troubles when applying quota.
-			$cacheDir = $this->config->getSystemValue('datadirectory');
+			// than in the "local" external storage and this would cause trouble when applying quota.
+			$cacheDir = $user->getHome();
 			return [
-				new MountPoint(Local::class, '/' . $user->getUID() . '/uploads', ['datadir' => $cacheDir . '/' . $user->getUID() . '/uploads', $loader])
+				new MountPoint(Local::class, '/' . $user->getUID() . '/uploads', ['datadir' => $cacheDir . '/uploads'], $loader)
 			];
 		} else {
 			$cacheDir = \rtrim($chunkBaseDir, '/') . '/' . $user->getUID();
@@ -74,7 +74,7 @@ class ChunkLocationProvider implements IMountProvider {
 				\mkdir($cacheDir, 0770, true);
 			}
 			return [
-				new MountPoint(Local::class, '/' . $user->getUID() . '/uploads', ['datadir' => $cacheDir, $loader])
+				new MountPoint(Local::class, '/' . $user->getUID() . '/uploads', ['datadir' => $cacheDir], $loader)
 			];
 		}
 	}
