@@ -1,3 +1,25 @@
+Changelog for ownCloud Core [unreleased] (UNRELEASED)
+=======================================
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v10.12.0...master
+
+Summary
+-------
+
+* Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
+
+Details
+-------
+
+* Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
+
+   The following have been updated: - guzzlehttp/psr7 (2.4.3 to 2.4.4) - icewind/streams (0.7.6
+   to 0.7.7)
+
+   https://github.com/owncloud/core/pull/40691
+
 Changelog for ownCloud Core [10.12.0] (2023-02-24)
 =======================================
 The following sections list the changes in ownCloud core 10.12.0 relevant to
