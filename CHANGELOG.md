@@ -19,10 +19,11 @@ Details
    to 0.7.7)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
-   (2.12.6 to 2.13.1)
+   (2.12.6 to 2.13.1) - icewind/streams (0.7.6 to 0.7.7)
 
    https://github.com/owncloud/core/pull/40691
    https://github.com/owncloud/core/pull/40683
+   https://github.com/owncloud/core/pull/40690
 
 Changelog for ownCloud Core [10.12.0] (2023-02-24)
 =======================================
