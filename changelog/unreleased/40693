@@ -1,0 +1,5 @@
+Bugfix: Respect configured home directory for chunks uploads when the User Home Folder Naming Rule is being used
+
+When using the User Home Folder Naming Rule (configurable in the Advanced tab of the LDAP wizard), which allows to specify the home folder by means of an LDAP attribute, chunks of users' uploads were wrongly created under the default data directory rather than inside the configured home directory. We are now using the getHome() method for getting the user's home so that chunks uploads respect the configured home directory.
+
+https://github.com/owncloud/core/pull/40693
