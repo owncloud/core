@@ -494,7 +494,7 @@ class Setup {
 		if ($rewriteBase !== '') {
 			$rewriteBaseRe = preg_quote($rewriteBase);
 			if ($rewriteBaseRe === '/') {
-			  $rewriteBaseRe = '';
+				$rewriteBaseRe = '';
 			}
 			$content .= "\n<IfModule mod_rewrite.c>";
 			$content .= "\n  Options -MultiViews";
