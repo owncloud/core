@@ -489,7 +489,7 @@ class Setup {
 		//custom 404 error page
 		$content.= "\nErrorDocument 404 ".$webRoot."/core/templates/404.php";
 
-		// Add rewrite rules if the RewriteBase is configured
+		// Add rewrite rules if the RewriteBase is configured XXXXX
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
 		if ($rewriteBase !== '') {
 			$content .= "\n<IfModule mod_rewrite.c>";
@@ -500,7 +500,7 @@ class Setup {
 			$content .= "\n  RewriteCond %{REQUEST_URI} !\\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json|properties)$";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/core/img/favicon\\.ico$";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/robots\\.txt$";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/XXXX/remote\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^/remote\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/public\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/cron\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/core/ajax/update\\.php";
