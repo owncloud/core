@@ -224,7 +224,7 @@ class Manager implements IManager {
 		$rwdEnforcement = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE)) &&
 			$this->shareApiLinkEnforcePasswordReadWriteDelete();
 		// use read & write enforcement for the rest of the cases
-		$rwEnforcement = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE)) && $this->shareApiLinkEnforcePasswordReadWrite();
+		$rwEnforcement = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE)) && $this->shareApiLinkEnforcePasswordReadWrite();
 		if ($roEnforcement || $woEnforcement || $rwEnforcement || $rwdEnforcement) {
 			return true;
 		} else {
