@@ -492,8 +492,8 @@ class Setup {
 		// Add rewrite rules if the RewriteBase is configured
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
 		if ($rewriteBase !== '') {
-			$rewriteBaseRe = preg_quote(trim($rewriteBase, '/'));
-			if (strlen($rewriteBaseRe) > 0) {
+			$rewriteBaseRe = \preg_quote(\trim($rewriteBase, '/'));
+			if (\strlen($rewriteBaseRe) > 0) {
 				$rewriteBaseRe = '/' . $rewriteBaseRe;
 			}
 			$content .= "\n<IfModule mod_rewrite.c>";
