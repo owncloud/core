@@ -490,6 +490,7 @@ class Setup {
 		$content.= "\nErrorDocument 404 ".$webRoot."/core/templates/404.php";
 
 		// Add rewrite rules if the RewriteBase is configured
+		//   x x x . . . . . . . . . . :ok
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
 		if ($rewriteBase !== '') {
 			$rewriteBaseRe = \preg_quote(\trim($rewriteBase, '/'));
@@ -505,16 +506,16 @@ class Setup {
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/core/img/favicon\\.ico$";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/robots\\.txt$";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/remote\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/public\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/cron\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/core/ajax/update\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/status\\.php$";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/ocs/v1\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/ocs/v2\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/updater/";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/ocs-provider/";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/ocm-provider/";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/\\.well-known/(acme-challenge|pki-validation)/.*";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/public\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/cron\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/core/ajax/update\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/status\\.php$";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/ocs/v1\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/ocs/v2\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/updater/";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/ocs-provider/";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/ocm-provider/";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/\\.well-known/(acme-challenge|pki-validation)/.*";
 			$content .= "\n  RewriteRule . index.php [PT,E=PATH_INFO:$1]";
 			$content .= "\n  RewriteBase " . $rewriteBase;
 			$content .= "\n  <IfModule mod_env.c>";
