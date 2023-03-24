@@ -500,7 +500,7 @@ class Setup {
 			$content .= "\n  RewriteCond %{REQUEST_URI} !\\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json|properties)$";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/core/img/favicon\\.ico$";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/robots\\.txt$";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/remote\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^/XXXX/remote\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/public\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/cron\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/core/ajax/update\\.php";
