@@ -492,7 +492,7 @@ class Setup {
 		// Add rewrite rules if the RewriteBase is configured
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
 		if ($rewriteBase !== '') {
-			$rewriteBase_re = \preg_quote($rewriteBase_re);
+			$rewriteBase_re = \preg_quote($rewriteBase);
 			// Make sure we don't add a double slash
 			if ($rewriteBase_re === '/') {
 				$rewriteBase_re = '';
