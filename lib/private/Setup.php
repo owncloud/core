@@ -492,9 +492,10 @@ class Setup {
 		// Add rewrite rules if the RewriteBase is configured
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
 		if ($rewriteBase !== '') {
+			$rewriteBase_re = \preg_quote($rewriteBase_re);
 			// Make sure we don't add a double slash
-			if ($rewriteBase === '/') {
-				$rewriteBase = '';
+			if ($rewriteBase_re === '/') {
+				$rewriteBase_re = '';
 			}
 
 			$content .= "\n<IfModule mod_rewrite.c>";
@@ -503,21 +504,21 @@ class Setup {
 			$content .= "\n  RewriteRule ^core/js/oc.js$ index.php [PT,E=PATH_INFO:$1]";
 			$content .= "\n  RewriteRule ^core/preview.png$ index.php [PT,E=PATH_INFO:$1]";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !\\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json|properties)$";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/core/img/favicon\\.ico$";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/robots\\.txt$";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/remote\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/public\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/cron\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/core/ajax/update\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/status\\.php$";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/ocs/v1\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/ocs/v2\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/updater/";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/ocs-provider/";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/ocm-provider/";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/\\.well-known/(acme-challenge|pki-validation)/.*";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/core/img/favicon\\.ico$";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/robots\\.txt$";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/remote\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/public\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/cron\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/core/ajax/update\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/status\\.php$";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/ocs/v1\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/ocs/v2\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/updater/";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/ocs-provider/";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/ocm-provider/";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase_re/\\.well-known/(acme-challenge|pki-validation)/.*";
 			$content .= "\n  RewriteRule . index.php [PT,E=PATH_INFO:$1]";
-			$content .= "\n  RewriteBase " . $config->getSystemValue('htaccess.RewriteBase', '');
+			$content .= "\n  RewriteBase " . $rewriteBase;
 			$content .= "\n  <IfModule mod_env.c>";
 			$content .= "\n    SetEnv front_controller_active true";
 			$content .= "\n    <IfModule mod_dir.c>";
