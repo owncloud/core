@@ -5,6 +5,7 @@
     "Please select tags to filter by" : "Please select tags to filter by",
     "No files found for the selected tags" : "No files found for the selected tags",
     "<strong>System tags</strong> for a file have been modified" : "<strong>System tags</strong> for a file have been modified",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "System tag %3$s was assigned to %2$s due to automation rule",
     "You assigned system tag %3$s" : "You assigned system tag %3$s",
     "%1$s assigned system tag %3$s" : "%1$s assigned system tag %3$s",
     "You unassigned system tag %3$s" : "You unassigned system tag %3$s",

@@ -1,4 +1,4 @@
-@api @issue-39597 @skipOnOcis
+@api @issue-39597
 Feature: get file info using PUT
 
   Background:

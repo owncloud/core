@@ -13,7 +13,7 @@ Feature: favorite
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
 
-  @issue-ocis-reva-276
+
   Scenario Outline: Favorite a folder
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
@@ -29,7 +29,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @issue-ocis-reva-276
+
   Scenario Outline: Unfavorite a folder
     Given using <dav_version> DAV path
     And user "Alice" has favorited element "/FOLDER"
@@ -46,7 +46,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @smokeTest @issue-ocis-reva-276
+  @smokeTest
   Scenario Outline: Favorite a file
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/textfile0.txt" using the WebDAV API
@@ -62,7 +62,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @smokeTest @issue-ocis-reva-276
+  @smokeTest
   Scenario Outline: Unfavorite a file
     Given using <dav_version> DAV path
     And user "Alice" has favorited element "/textfile0.txt"
@@ -117,7 +117,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -181,7 +181,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -196,7 +196,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -224,7 +224,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: favorite a file inside of a received share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -236,7 +236,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: favorite a folder inside of a received share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -249,7 +249,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: favorite a received share itself
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files

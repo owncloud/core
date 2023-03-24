@@ -72,6 +72,7 @@
     "Can't create or write into the data directory %s" : "Ei suuda luua või kirjutada andmete kataloogi %s",
     "Can't update %s" : "Ei saa uuendada %s",
     "%s shared »%s« with you" : "%s jagas sinuga »%s«",
+    "%s" : "%s",
     "%s via %s" : "%s läbi %s",
     "Sharing %s failed, because the file does not exist" : "%s jagamine ebaõnnestus, kuna faili pole olemas",
     "You are not allowed to share %s" : "Sul pole lubatud %s jagada",

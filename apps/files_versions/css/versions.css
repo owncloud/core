@@ -5,7 +5,7 @@
 .versionsTabView li {
 	width: 100%;
 	cursor: default;
-	height: 56px;
+	height: 60px;
 	float: left;
 	border-bottom: 1px solid rgba(100,100,100,.1);
 }
@@ -34,9 +34,13 @@
 
 .versionsTabView .preview-container {
 	display: inline-block;
-  vertical-align: top;
+  	vertical-align: top;
+	text-align: center;
 }
 
+.versionsTabView .preview-container {
+	padding: 5px;
+}
 .versionsTabView img {
 	cursor: pointer;
 	padding-right: 4px;
@@ -47,15 +51,29 @@
 	background-size: 32px;
 	width: 32px;
 	height: 32px;
+	display: block;
+	margin: 0 auto;
 }
 
 .versionsTabView .version-container {
 	display: inline-block;
+	margin-top: 5px;
 }
 
 .versionsTabView .versiondate {
 	min-width: 100px;
 	vertical-align: super;
+}
+
+.versionsTabView .versionstatus {
+	vertical-align: super;
+}
+
+/* FIXME: we need to find better solution for this ref. https://github.com/owncloud/core/pull/40531#issuecomment-1420926550 */
+@media(max-width: 1200px) {
+	.versionsTabView .versionstatus {
+		display: none;
+	}
 }
 
 .versionsTabView .version-details {
@@ -66,8 +84,24 @@
 	padding: 0 10px;
 }
 
+.versionsTabView .action-container {
+	display: inline;
+}
+
 .versionsTabView .revertVersion {
 	cursor: pointer;
 	float: right;
 	margin-right: -10px;
+}
+
+.versionsTabView .publishVersion {
+	cursor: pointer;
+	float: right;
+	margin-right: -10px;
+}
+.versionsTabView .current-version .version-headline {
+	font-weight: bold;
+}
+.versionsTabView .current-version {
+	background: #f8f8f8;
 }

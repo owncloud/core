@@ -38,7 +38,7 @@ Feature: get group
     Then the OCS status code should be "404"
     And the HTTP status code should be "404"
 
-  @toImplementOnOCIS @issue-product-283
+  @issue-product-283
   Scenario Outline: admin tries to get users in a group but using wrong case of the group name
     Given group "<group_id1>" has been created
     When the administrator gets all the members of group "<group_id2>" using the provisioning API
@@ -53,7 +53,7 @@ Feature: get group
       | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: subadmin gets users in a group they are responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -71,7 +71,7 @@ Feature: get group
       | Alice |
       | Brian |
 
-  @issue-31276 @skipOnOcV10 @notToImplementOnOCIS
+  @issue-31276 @skipOnOcV10
   Scenario: subadmin tries to get users in a group they are not responsible for
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created

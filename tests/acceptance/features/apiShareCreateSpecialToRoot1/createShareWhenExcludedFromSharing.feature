@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: cannot share resources when in a group that is excluded from sharing
 
   Background:

@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-172 @files_sharing-app-required
+@api @files_sharing-app-required
 Feature: UNLOCK locked items (sharing)
 
   Background:
@@ -47,7 +47,7 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: as share receiver unlocking a shared folder locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT/CHILD"
@@ -125,7 +125,7 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: as owner unlocking a shared folder locked by the share receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT/CHILD"

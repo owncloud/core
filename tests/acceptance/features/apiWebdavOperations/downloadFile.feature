@@ -20,7 +20,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @issue-ocis-reva-12
+
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" with range "bytes=24-50" using the WebDAV API
@@ -44,7 +44,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" using the WebDAV API
@@ -65,7 +65,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
@@ -77,7 +77,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
@@ -102,7 +102,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @issue-ocis-reva-98
+
   Scenario Outline: Get the content-length response header of a pdf file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/simple.pdf" to "/simple.pdf"
@@ -116,7 +116,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @issue-ocis-reva-98
+
   Scenario Outline: Get the content-length response header of an image file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/testavatar.png" to "/testavatar.png"
@@ -236,27 +236,6 @@ Feature: download file
       | path                 |
       | .hidden_file         |
       | /FOLDER/.hidden_file |
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
-  @smokeTest @skipOnOcV10
-  Scenario Outline: Downloading a file should serve security headers
-    Given using <dav_version> DAV path
-    When user "Alice" downloads file "/welcome.txt" using the WebDAV API
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header                            | value                                                            |
-      | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
-      | Content-Security-Policy           | default-src 'none';                                              |
-      | X-Content-Type-Options            | nosniff                                                          |
-      | X-Download-Options                | noopen                                                           |
-      | X-Frame-Options                   | SAMEORIGIN                                                       |
-      | X-Permitted-Cross-Domain-Policies | none                                                             |
-      | X-Robots-Tag                      | none                                                             |
-      | X-XSS-Protection                  | 1; mode=block                                                    |
-    And the downloaded content should start with "Welcome"
     Examples:
       | dav_version |
       | old         |

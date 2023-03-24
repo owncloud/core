@@ -183,6 +183,7 @@ class ApplicationDefaultCredentials
             $creds = new AppIdentityCredentials($anyScope);
         } elseif (self::onGce($httpHandler, $cacheConfig, $cache)) {
             $creds = new GCECredentials(null, $anyScope, null, $quotaProject);
+            $creds->setIsOnGce(true); // save the credentials a trip to the metadata server
         }
 
         if (is_null($creds)) {
@@ -297,6 +298,7 @@ class ApplicationDefaultCredentials
             $creds = new ServiceAccountCredentials(null, $jsonKey, null, $targetAudience);
         } elseif (self::onGce($httpHandler, $cacheConfig, $cache)) {
             $creds = new GCECredentials(null, null, $targetAudience);
+            $creds->setIsOnGce(true); // save the credentials a trip to the metadata server
         }
 
         if (is_null($creds)) {

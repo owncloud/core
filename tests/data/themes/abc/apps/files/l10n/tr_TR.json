@@ -1,0 +1,11 @@
+{ "translations": {
+    "Close" : "Kapat",
+    "Download" : "İndir",
+    "Rename" : "Yeniden adlandır",
+    "Files" : "Dosyalar",
+    "Name" : "Adı",
+    "New folder" : "Yeni klasör",
+    "Upload" : "Yükle",
+    "Settings" : "Ayarlar"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

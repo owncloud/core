@@ -1,4 +1,4 @@
-@api @skipOnOcis
+@api
 Feature: COPY file/folder
 
   As a user

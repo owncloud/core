@@ -20,7 +20,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has logged in using the webUI
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
-  @issue-34742 @notToImplementOnOCIS
+  @issue-34742
   Scenario: User-based & global auto accepting is enabled but remote server is not trusted
     Given parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     And parameter "autoAddServers" of app "federation" has been set to "0"

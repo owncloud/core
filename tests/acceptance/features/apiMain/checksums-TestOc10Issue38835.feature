@@ -1,11 +1,11 @@
-@api @notToImplementOnOCIS
+@api
 Feature: checksums
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
   # this is a bug demo scenario for https://github.com/owncloud/core/issues/38835
-  # Once this scenario is fixed Delete this file and remove @skipOnOcV10 tag from tests/acceptance/features/apiMain/checksums.feature:132
+  # Once this scenario is fixed Delete this file and remove @skipOnOcV10 tag from tests/acceptance/features/apiMain/checksums.feature:158
   @files_sharing-app-required @skipOnStorage:ceph @skipOnStorage:scality
   Scenario: Sharing and modifying a file should return correct checksum in the propfind using new DAV path
     Given the administrator has set the default folder for received shares to "Shares"

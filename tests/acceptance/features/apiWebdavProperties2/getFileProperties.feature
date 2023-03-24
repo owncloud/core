@@ -26,7 +26,7 @@ Feature: get file properties
       | new         | /नेपाली.txt         |
       | new         | s,a,m,p,l,e.txt   |
 
-  @issue-ocis-reva-214
+
   Scenario Outline: Do a PROPFIND of various file names
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
@@ -45,7 +45,7 @@ Feature: get file properties
       | new         | /file ?2.txt  | remote.php/dav/files/%username%/file ?2.txt   |
       | new         | /file &2.txt  | remote.php/dav/files/%username%/file &2.txt   |
 
-  @issue-ocis-reva-214
+
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
@@ -94,7 +94,7 @@ Feature: get file properties
       | new         | /नेपाली                          | नेपाली                        |
       | new         | /folder #2.txt                   | file #2.txt                   |
 
-  @issue-ocis-reva-265
+
   #after fixing all issues delete this Scenario and merge with the one above
   Scenario Outline: Do a PROPFIND of various files inside various folders
     Given using <dav_version> DAV path
@@ -122,7 +122,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @files_sharing-app-required @issue-ocis-reva-11
+  @files_sharing-app-required
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -143,7 +143,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @files_sharing-app-required @issue-ocis-reva-11
+  @files_sharing-app-required
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
@@ -164,7 +164,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-11
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -182,7 +182,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-11
+  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -214,7 +214,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
@@ -226,7 +226,7 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @smokeTest @issue-ocis-reva-216
+  @smokeTest
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
@@ -246,14 +246,12 @@ Feature: get file properties
     Then the HTTP status code should be "404"
     And the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message1>" or "<message2>"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
-
-    @skipOnOcis
     Examples:
       | url                                  | message1                                     | message2 |
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |          |
       | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |          |
 
-  @issue-ocis-reva-217
+
   Scenario Outline: add, receive multiple custom meta properties to a file
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/TestFolder"
@@ -276,7 +274,7 @@ Feature: get file properties
       | dav_version |
       | new         |
 
-  @issue-36920 @issue-ocis-reva-217
+  @issue-36920
   Scenario Outline: add multiple properties to files inside a folder and do a propfind of the parent folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/TestFolder"

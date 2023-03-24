@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-101 @skipOnGraph
+@api @skipOnGraph
 Feature: quota
 
   Background:
@@ -12,7 +12,7 @@ Feature: quota
     When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
 
-  @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @newChunking
   Scenario: Uploading a file as owner having enough quota (new chunking)
     Given the quota of user "Alice" has been set to "10 MB"
     And using new DAV path
@@ -26,7 +26,7 @@ Feature: quota
     Then the HTTP status code of all upload responses should be "507"
     And as "Alice" the files uploaded to "/testquota.txt" with all mechanisms except new chunking should not exist
 
-  @smokeTest @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @smokeTest @newChunking
   Scenario: Uploading a file as owner having insufficient quota (new chunking)
     Given the quota of user "Alice" has been set to "10 B"
     And using new DAV path
@@ -41,7 +41,7 @@ Feature: quota
     When user "Alice" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
-  @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @newChunking
   Scenario: Overwriting a file as owner having enough quota (new chunking)
     Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "10 MB"
@@ -57,7 +57,7 @@ Feature: quota
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
-  @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @newChunking
   Scenario: Overwriting a file as owner having insufficient quota (new chunking)
     Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "10 B"
@@ -78,7 +78,7 @@ Feature: quota
     When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
 
-  @files_sharing-app-required @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @files_sharing-app-required @newChunking
   Scenario: Uploading a file in received folder having enough quota (new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/testquota"
@@ -100,7 +100,7 @@ Feature: quota
     Then the HTTP status code of all upload responses should be "507"
     And as "Brian" the files uploaded to "/testquota/testquota.txt" with all mechanisms except new chunking should not exist
 
-  @files_sharing-app-required @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @files_sharing-app-required @newChunking
   Scenario: Uploading a file in a received folder having insufficient quota (new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/testquota"
@@ -123,7 +123,7 @@ Feature: quota
     When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
-  @files_sharing-app-required @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @files_sharing-app-required @newChunking
   Scenario: Overwriting a file in received folder having enough quota (new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/testquota"
@@ -147,7 +147,7 @@ Feature: quota
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota/testquota.txt" for user "Alice" should be "test"
 
-  @files_sharing-app-required @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @files_sharing-app-required @newChunking
   Scenario: Overwriting a file in received folder having insufficient quota (new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/testquota"
@@ -172,7 +172,7 @@ Feature: quota
     When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
-  @files_sharing-app-required @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @files_sharing-app-required @newChunking
   Scenario: Overwriting a received file having enough quota (new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "test" to "/testquota.txt"
@@ -194,7 +194,7 @@ Feature: quota
     Then the HTTP status code of all upload responses should be "507"
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
-  @files_sharing-app-required @notToImplementOnOCIS @newChunking @issue-ocis-1321
+  @files_sharing-app-required @newChunking
   Scenario: Overwriting a received file having insufficient quota (new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "test" to "/testquota.txt"
@@ -213,24 +213,35 @@ Feature: quota
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
 
-
-  Scenario: User with zero quota can create a folder
+  @skipOnOcV10.10 @skipOnOcV10.11
+  Scenario: User with zero quota cannot create a folder
     Given the quota of user "Alice" has been set to "0 B"
     When user "Alice" creates folder "testQuota" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" folder "testQuota" should exist
+    Then the HTTP status code should be "507"
+    And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+    And as "Alice" folder "testQuota" should not exist
 
-  @files_sharing-app-required
-  Scenario: user cannot create file on shared folder by a user with zero quota
+  @skipOnOcV10.10 @skipOnOcV10.11
+  Scenario: User with no remaining quota cannot create a folder
+    Given the quota of user "Alice" has been set to "10 B"
+    And user "Alice" has uploaded file with content "ten bytes." to "useUpQuota.txt"
+    When user "Alice" creates folder "testQuota" using the WebDAV API
+    Then the HTTP status code should be "507"
+    And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+    And as "Alice" folder "testQuota" should not exist
+
+  @files_sharing-app-required @skipOnOcV10.10 @skipOnOcV10.11
+  Scenario: user cannot create an empty file in a shared folder of a user with no remaining quota
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Brian" has been created with default attributes and without skeleton files
-    And the quota of user "Brian" has been set to "0 B"
+    And the quota of user "Brian" has been set to "10 B"
     And the quota of user "Alice" has been set to "10 MB"
     And user "Brian" has created folder "shareFolder"
     And user "Brian" has shared file "/shareFolder" with user "Alice"
+    And user "Brian" has uploaded file with content "ten bytes." to "useUpQuota.txt"
     And user "Alice" has accepted share "/shareFolder" offered by user "Brian"
-    When user "Alice" uploads file with content "uploaded content" to "/Shares/shareFolder/newTextFile.txt" using the WebDAV API
+    When user "Alice" uploads file with content "" to "/Shares/shareFolder/newTextFile.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Brian" file "/shareFolder/newTextFile.txt" should not exist
@@ -294,8 +305,8 @@ Feature: quota
     Then the HTTP status code should be "201"
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
-  @files_sharing-app-required @skipOnOcV10.10
-  Scenario: share receiver with 0 quota can copy empty file from shared folder to home folder
+  @files_sharing-app-required @skipOnOcV10.10 @skipOnOcV10.11
+  Scenario: share receiver with 0 quota cannot copy empty file from shared folder to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Brian" has been created with default attributes and without skeleton files
@@ -306,15 +317,25 @@ Feature: quota
     And user "Alice" has shared folder "/shareFolder" with user "Brian"
     And user "Brian" has accepted share "/shareFolder" offered by user "Alice"
     When user "Brian" copies file "/Shares/shareFolder/testquota.txt" to "/testquota.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Brian" file "testquota.txt" should exist
+    Then the HTTP status code should be "507"
+    And as "Brian" file "testquota.txt" should not exist
 
-
-  Scenario: User with zero quota can upload an empty file
+  @skipOnOcV10.10 @skipOnOcV10.11
+  Scenario: User with zero quota cannot upload an empty file
     Given the quota of user "Alice" has been set to "0 B"
     When user "Alice" uploads file with content "" to "testquota.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "testquota.txt" should exist
+    Then the HTTP status code should be "507"
+    And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+    And as "Alice" file "testquota.txt" should not exist
+
+  @skipOnOcV10.10 @skipOnOcV10.11
+  Scenario: User with no remaining quota cannot upload an empty file
+    Given the quota of user "Alice" has been set to "10 B"
+    And user "Alice" has uploaded file with content "ten bytes." to "useUpQuota.txt"
+    When user "Alice" uploads file with content "" to "testquota.txt" using the WebDAV API
+    Then the HTTP status code should be "507"
+    And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+    And as "Alice" file "testquota.txt" should not exist
 
   @files_sharing-app-required @skipOnOcV10.10
   Scenario Outline: share receiver with insufficient quota should not be able to copy received shared file to home folder

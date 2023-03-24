@@ -181,7 +181,7 @@ class Storage {
 				return false;
 			}
 
-			// Write metadata of the current file in case we have a new file
+			// no versions yet
 			if (!Filesystem::file_exists($filename)) {
 				return false;
 			}
@@ -228,7 +228,11 @@ class Storage {
 				]);
 
 				if (self::metaEnabled()) {
-					self::$metaData->moveCurrentToVersion($filename, $fileInfo, $uid);
+					// version last current file metadata into noncurrent version
+					self::$metaData->copyCurrentToVersion($filename, $fileInfo, $uid);
+
+					// create new current file metadata
+					self::$metaData->createForCurrent($filename, $uid, true);
 				}
 			}
 		}
@@ -239,9 +243,19 @@ class Storage {
 	 * @param string $filename
 	 * @throws \Exception
 	 */
-	public static function storeMetaForCurrentFile(string $filename) {
+	public static function postStore(string $filename) {
 		if (self::metaEnabled()) {
-			self::$metaData->createCurrent($filename);
+			// we don't support versioned directories
+			if (Filesystem::is_dir($filename) || !Filesystem::file_exists($filename)) {
+				return false;
+			}
+
+			list($uid, $currentFileName) = self::getUidAndFilename($filename);
+			$versionMetadata = self::$metaData->getCurrentMetadata($currentFileName, $uid);
+			if (!$versionMetadata) {
+				// make sure metadata for current exists
+				self::$metaData->createForCurrent($currentFileName, $uid, true);
+			}
 		}
 	}
 
@@ -257,23 +271,121 @@ class Storage {
 	}
 
 	/**
+	 * check whether verion can be expired
+	 *
+	 * @param View $view
+	 * @param string $path
+	 * @return bool
+	 */
+	protected static function isPublishedVersion($view, $path) {
+		if (self::metaEnabled()) {
+			$versionFileInfo = $view->getFileInfo($path);
+			if ($versionFileInfo) {
+				$versionMetadata = self::$metaData->getVersionMetadata($versionFileInfo);
+
+				// we should not expire major versions (published workflow)
+				$versionTag = $versionMetadata['version_tag'] ?? '';
+				if (\substr($versionTag, -\strlen('.0')) === '.0') {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the directory in the view is empty or not.
+	 * Folders such as "." and ".." will be ignored, so if the
+	 * directory only contains those ones, it will be considered
+	 * as empty.
+	 * The view's root folder won't be considered as empty even if it
+	 * doesn't contain any file, so this function will always
+	 * return false in that case.
+	 * This function will return false if the directory can't be opened
+	 * @param View $view
+	 * @param string $dir the directory inside the view
+	 * @return bool true if empty, false otherwise
+	 */
+	private static function isFolderEmpty($view, $dir) {
+		if ($dir === '' || $dir === '.' || $dir === '/') {
+			// root folder won't be considered as empty
+			return false;
+		}
+
+		$isEmpty = false;
+		$dirResource = $view->opendir($dir);
+
+		if ($dirResource === false) {
+			return false;
+		}
+
+		// we need to check at most 3 entries (need to ignore "." and "..")
+		// in order to know if the folder is empty or not
+		for ($i = 0; $i < 3; $i++) {
+			$entry = \readdir($dirResource);
+			if ($entry === false) {
+				// if there aren't any more entries, then the folder is empty. We should
+				// have exited earlier otherwise
+				$isEmpty = true;
+				break;
+			} elseif ($entry !== '.' && $entry !== '..') {
+				// the folder isn't empty.
+				$isEmpty = false;
+				break;
+			}
+			// if we've reached here, $entry is either '.' or '..', so we
+			// need to check the next entry
+		}
+
+		\closedir($dirResource);
+		return $isEmpty;
+	}
+
+	/**
+	 * Remove parent folders until the current folder isn't empty
+	 * or we've reached to root folder
+	 * @param View $view
+	 * @param string $path the path inside the view that has been
+	 * renamed or removed. This function will start checking from
+	 * the parent directory of that path.
+	 */
+	private static function cleanupEmptyVersionFolder($view, $path) {
+		// check if folder is empty in order to delete it too
+		$parentPath = \dirname($path);
+		while (!$view->file_exists($parentPath) && ($parentPath !== '.' && $parentPath !== '/' && $parentPath !== '')) {
+			$parentPath = \dirname($parentPath);
+		}
+
+		$isEmpty = self::isFolderEmpty($view, $parentPath);
+		while ($isEmpty && ($parentPath !== '.' && $parentPath !== '/' && $parentPath !== '')) {
+			$view->rmdir($parentPath);
+
+			$parentPath = \dirname($parentPath);
+			$isEmpty = self::isFolderEmpty($view, $parentPath);
+		}
+	}
+
+	/**
 	 * delete the version from the storage and cache
 	 *
 	 * @param View $view
 	 * @param string $path
 	 */
 	protected static function deleteVersion($view, $path) {
-		$view->unlink($path);
-		/**
-		 * @var \OC\Files\Storage\Storage $storage
-		 * @var string $internalPath
-		 */
-		list($storage, $internalPath) = $view->resolvePath($path);
-		$cache = $storage->getCache($internalPath);
-		$cache->remove($internalPath);
+		$deleted = $view->unlink($path);
 
-		if (self::metaEnabled()) {
-			self::$metaData->deleteForVersion($view, $path);
+		if ($deleted) {
+			/**
+			 * @var \OC\Files\Storage\Storage $storage
+			 * @var string $internalPath
+			 */
+			list($storage, $internalPath) = $view->resolvePath($path);
+			$cache = $storage->getCache($internalPath);
+			$cache->remove($internalPath);
+
+			if (self::metaEnabled()) {
+				self::$metaData->deleteForVersion($view, $path);
+			}
 		}
 	}
 
@@ -304,8 +416,10 @@ class Storage {
 				}
 			}
 			if (self::metaEnabled()) {
-				self::$metaData->deleteCurrent($view, $filename);
+				self::$metaData->deleteForCurrent($view, $filename);
 			}
+
+			self::cleanupEmptyVersionFolder($view, $path);
 		}
 		unset(self::$deletedFiles[$path]);
 	}
@@ -353,6 +467,15 @@ class Storage {
 			// create missing dirs if necessary
 			self::getFileHelper()->createMissingDirectories(new View("/$targetOwner"), $targetPath);
 
+			if (self::metaEnabled()) {
+				// NOTE: we need to move current file first as in case of interuption lack of this file could cause issues
+				
+				// Also move/copy the current version
+				$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+				$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
+				self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
+			}
+
 			foreach ($versions as $v) {
 				// move each version one by one to the target directory
 				$rootView->$operation(
@@ -369,16 +492,15 @@ class Storage {
 			}
 		}
 
-		if (self::metaEnabled()) {
-			// Also move/copy the current version
-			$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_EXT;
-			$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_EXT;
-			self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
-		}
-
 		// if we moved versions directly for a file, schedule expiration check for that file
 		if (!$rootView->is_dir('/' . $targetOwner . '/files/' . $targetPath)) {
 			self::scheduleExpire($targetOwner, $targetPath);
+		}
+
+		if ($operation === 'rename') {
+			// if it's a rename, try to cleanup possible empty folders
+			$view = new View("/{$sourceOwner}/files_versions");
+			self::cleanupEmptyVersionFolder($view, $sourcePath);
 		}
 	}
 
@@ -393,7 +515,7 @@ class Storage {
 
 		$versionCreated = false;
 
-		//first create a new version
+		// first create a new version
 		$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
 		if (!$users_view->file_exists($version)) {
 			$users_view->copy('files'.$filename, $version);
@@ -402,12 +524,7 @@ class Storage {
 			// create metadata for version if enabled
 			if (self::metaEnabled()) {
 				$versionFileInfo = $users_view->getFileInfo($version);
-				if ($versionFileInfo && !$versionFileInfo->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
-					$versionAuthor = self::$metaData->getCurrentVersionAuthorUid($uid, $filename);
-					if ($versionAuthor) {
-						self::$metaData->createForVersion($versionAuthor, $uid, $versionFileInfo);
-					}
-				}
+				self::$metaData->copyCurrentToVersion($filename, $versionFileInfo, $uid);
 			}
 		}
 
@@ -428,12 +545,15 @@ class Storage {
 
 		// rollback
 		if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
-			$users_view->touch("/files$filename", $revision);
-			Storage::scheduleExpire($uid, $filename);
+			// restore/revert of versions is technically creating new file, thus increment mtime
+			$users_view->touch("/files$filename");
 
 			if (self::metaEnabled()) {
-				self::$metaData->restore($uid, $fileToRestore, 'files' . $filename);
+				$versionFileInfo = $users_view->getFileInfo('files_versions'.$filename.'.v'.$revision);
+				self::$metaData->restore($filename, $versionFileInfo, $uid);
 			}
+
+			Storage::scheduleExpire($uid, $filename);
 
 			\OC_Hook::emit('\OCP\Versions', 'rollback', [
 				'path' => $filename,
@@ -466,19 +586,14 @@ class Storage {
 		$view->lockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
 		$view->lockFile($path2, ILockingProvider::LOCK_EXCLUSIVE);
 
-		// TODO add a proper way of overwriting a file while maintaining file ids
 		if ($storage1->instanceOfStorage('\OC\Files\ObjectStore\ObjectStoreStorage') || $storage2->instanceOfStorage('\OC\Files\ObjectStore\ObjectStoreStorage')) {
 			$source = $storage1->fopen($internalPath1, 'r');
 			$target = $storage2->fopen($internalPath2, 'w');
 			list(, $result) = \OC_Helper::streamCopy($source, $target);
 			\fclose($source);
 			\fclose($target);
-
-			if ($result !== false) {
-				$storage1->unlink($internalPath1);
-			}
 		} else {
-			$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
+			$result = $storage2->copyFromStorage($storage1, $internalPath1, $internalPath2);
 		}
 
 		$view->unlockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
@@ -488,7 +603,48 @@ class Storage {
 	}
 
 	/**
-	 * get a list of all available versions of a file in descending chronological order
+	 * get current version of the file
+	 * @param string $uid user id from the owner of the file
+	 * @param string $filename file to get versioning data for, relative to the user files dir
+	 */
+	public static function getCurrentVersion($uid, $filename) {
+		$version = [];
+		if ($filename === null || $filename === '') {
+			return $version;
+		}
+
+		// add author information if the feature is enabled
+		if (self::metaEnabled()) {
+			// handle only allowed metadata values
+			$versionMetadata = self::$metaData->getCurrentMetadata($filename, $uid);
+
+			$version['edited_by'] = $versionMetadata['edited_by'] ?? '';
+			$version['version_tag'] = $versionMetadata['version_tag'] ?? '';
+		}
+
+		return $version;
+	}
+
+	/**
+	 * Publish the current version into major version
+	 * that would persist the version long-term
+	 */
+	public static function publishCurrentVersion($filename) {
+		if (self::metaEnabled()) {
+			// we don't support versioned directories
+			if (Filesystem::is_dir($filename) || !Filesystem::file_exists($filename)) {
+				return false;
+			}
+			
+			list($uid, $currentFileName) = self::getUidAndFilename($filename);
+
+			// overwrite current file metadata with minor=false to create new major version
+			self::$metaData->createForCurrent($currentFileName, $uid, false);
+		}
+	}
+
+	/**
+	 * get a list of all available noncurrent versions of a file in descending chronological order
 	 * @param string $uid user id from the owner of the file
 	 * @param string $filename file to find versions of, relative to the user files dir
 	 *
@@ -515,7 +671,8 @@ class Storage {
 		if ($dirContent === false) {
 			return $versions;
 		}
-
+		
+		// add historical versions
 		if (\is_resource($dirContent)) {
 			while (($entryName = \readdir($dirContent)) !== false) {
 				if (!Filesystem::isIgnoredDir($entryName)) {
@@ -525,7 +682,11 @@ class Storage {
 						$pathparts = \pathinfo($entryName);
 						$timestamp = \substr($pathparts['extension'], 1);
 						$filename = $pathparts['filename'];
+						
+						// ordering key
 						$key = $timestamp . '#' . $filename;
+
+						// add version info
 						$versions[$key]['version'] = $timestamp;
 						$versions[$key]['humanReadableTimestamp'] = self::getHumanReadableTimestamp($timestamp);
 						$versions[$key]['preview'] = '';
@@ -537,14 +698,14 @@ class Storage {
 						$versions[$key]['storage_location'] = "$dir/$entryName";
 						$versions[$key]['owner'] = $uid;
 
-						// add author information if the feature is enabled
+						// add version meta info
 						if (self::metaEnabled()) {
 							$versionFileInfo = $view->getFileInfo("$dir/$entryName");
 							if ($versionFileInfo) {
-								$authorUid = self::$metaData->getAuthorUid($versionFileInfo);
-								if ($authorUid !== null) {
-									$versions[$key]['edited_by'] = $authorUid;
-								}
+								$versionMetadata = self::$metaData->getVersionMetadata($versionFileInfo);
+
+								$versions[$key]['edited_by'] = $versionMetadata['edited_by'] ?? '';
+								$versions[$key]['version_tag'] = $versionMetadata['version_tag'] ?? '';
 							}
 						}
 					}
@@ -572,9 +733,13 @@ class Storage {
 		}
 
 		$toDelete = [];
+		$dirsToCheck = [];
 		foreach (\array_reverse($versions['all']) as $key => $version) {
 			if (\intval($version['version'])<$threshold) {
 				$toDelete[$key] = $version;
+				// we're also interested in the directories. It doesn't matter if
+				// the versions are overwritten
+				$dirsToCheck[\dirname($version['path'])] = $version['path'];
 			} else {
 				//Versions are sorted by time - nothing mo to iterate.
 				break;
@@ -584,6 +749,9 @@ class Storage {
 		$view = new View('/' . $uid . '/files_versions');
 		if (!empty($toDelete)) {
 			foreach ($toDelete as $version) {
+				if (self::isPublishedVersion($view, $version['path'] . '.v' . $version['version'])) {
+					continue;
+				}
 				$hookData = [
 					'user' => $uid,
 					'path' => $version['path'] . '.v' . $version['version'],
@@ -594,6 +762,10 @@ class Storage {
 				\OC_Hook::emit('\OCP\Versions', 'preDelete', $hookData);
 				self::deleteVersion($view, $version['path'] . '.v' . $version['version']);
 				\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
+			}
+
+			foreach ($dirsToCheck as $pathInDir) {
+				self::cleanupEmptyVersionFolder($view, $pathInDir);
 			}
 		}
 	}
@@ -810,7 +982,13 @@ class Storage {
 				$versionsSize = $versionsSize - $sizeOfDeletedVersions;
 			}
 
+			// we need to check if we have to remove any empty folder based on the
+			// deleted versions
+			$dirsToCheck = [];
 			foreach ($toDelete as $key => $path) {
+				if (self::isPublishedVersion($versionsFileview, $path)) {
+					continue;
+				}
 				$versionInfo = self::getFileHelper()->getPathAndRevision($path);
 				$hookData = [
 					'user' => $uid,
@@ -824,6 +1002,7 @@ class Storage {
 				\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
 				unset($allVersions[$key]); // update array with the versions we keep
 				\OCP\Util::writeLog('files_versions', "Expire: " . $path, \OCP\Util::INFO);
+				$dirsToCheck[\dirname($path)] = $path;
 			}
 
 			// Check if enough space is available after versions are rearranged.
@@ -836,6 +1015,10 @@ class Storage {
 			\reset($allVersions);
 			while ($availableSpace < 0 && $i < $numOfVersions) {
 				$version = \current($allVersions);
+
+				if (self::isPublishedVersion($versionsFileview, $version['path'] . '.v' . $version['version'])) {
+					continue;
+				}
 				$hookData = [
 					'user' => $uid,
 					'path' => $version['path'].'.v'.$version['version'],
@@ -847,10 +1030,15 @@ class Storage {
 				self::deleteVersion($versionsFileview, $version['path'] . '.v' . $version['version']);
 				\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
 				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'], \OCP\Util::INFO);
+				$dirsToCheck[\dirname($version['path'])] = $version['path'];
 				$versionsSize -= $version['size'];
 				$availableSpace += $version['size'];
 				\next($allVersions);
 				$i++;
+			}
+
+			foreach ($dirsToCheck as $pathInDir) {
+				self::cleanupEmptyVersionFolder($versionsFileview, $pathInDir);
 			}
 
 			return $versionsSize; // finally return the new size of the version history

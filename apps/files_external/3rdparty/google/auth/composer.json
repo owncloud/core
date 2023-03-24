@@ -19,8 +19,8 @@
   "require-dev": {
     "guzzlehttp/promises": "0.1.1|^1.3",
     "squizlabs/php_codesniffer": "^3.5",
-    "phpunit/phpunit": "^7.5||^8.5",
-    "phpspec/prophecy-phpunit": "^1.1",
+    "phpunit/phpunit": "^7.5||^9.0.0",
+    "phpspec/prophecy-phpunit": "^1.1||^2.0",
     "sebastian/comparator": ">=1.2.3",
     "phpseclib/phpseclib": "^2.0.31",
     "kelvinmo/simplejwt": "^0.2.5|^0.5.1"

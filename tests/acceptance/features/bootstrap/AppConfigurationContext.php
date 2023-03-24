@@ -73,9 +73,6 @@ class AppConfigurationContext implements Context {
 	public function serverParameterHasBeenSetTo(string $parameter, string $app, string $value):void {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		if (\TestHelpers\OcisHelper::isTestingOnOcisOrReva()) {
-			return;
-		}
 		$value = \trim($value, $value[0]);
 		$this->modifyAppConfig($app, $parameter, $value);
 		$this->featureContext->clearStatusCodeArrays();
@@ -132,7 +129,21 @@ class AppConfigurationContext implements Context {
 	 * @throws GuzzleException
 	 * @throws JsonException
 	 */
-	public function userGetsCapabilities(string $username):void {
+	public function userRetrievesCapabilities(string $username):void {
+		$user = $this->featureContext->getActualUsername($username);
+		$this->userGetsCapabilities($user, true);
+	}
+
+	/**
+	 *
+	 * @param string $username
+	 * @param boolean $formatJson // this  parameter if true formats the response in json
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 * @throws JsonException
+	 */
+	public function userGetsCapabilities(string $username, ?bool $formatJson = false):void {
 		$user = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getPasswordForUser($user);
 		$this->featureContext->setResponse(
@@ -141,7 +152,7 @@ class AppConfigurationContext implements Context {
 				$user,
 				$password,
 				'GET',
-				'/cloud/capabilities',
+				($formatJson) ? '/cloud/capabilities?format=json' : '/cloud/capabilities',
 				$this->featureContext->getStepLineRef(),
 				[],
 				$this->featureContext->getOcsApiVersion()
@@ -158,7 +169,7 @@ class AppConfigurationContext implements Context {
 	 * @throws Exception
 	 */
 	public function userGetsCapabilitiesCheckResponse(string $username):void {
-		$this->userGetsCapabilities($username);
+		$this->userGetsCapabilities($username, false);
 		$statusCode = $this->featureContext->getResponse()->getStatusCode();
 		if ($statusCode !== 200) {
 			throw new \Exception(
@@ -192,20 +203,7 @@ class AppConfigurationContext implements Context {
 	 * @throws Exception
 	 */
 	public function getAdminUsernameForCapabilitiesCheck():string {
-		if (\TestHelpers\OcisHelper::isTestingOnReva()) {
-			// When testing on reva we don't have a user called "admin" to use
-			// to access the capabilities. So create an ordinary user on-the-fly
-			// with a default password. That user should be able to get a
-			// capabilities response that the test can process.
-			$adminUsername = "PseudoAdminForRevaTest";
-			$createdUsers = $this->featureContext->getCreatedUsers();
-			if (!\array_key_exists($adminUsername, $createdUsers)) {
-				$this->featureContext->createUser($adminUsername);
-			}
-		} else {
-			$adminUsername = $this->featureContext->getAdminUsername();
-		}
-		return $adminUsername;
+		return $this->featureContext->getAdminUsername();
 	}
 
 	/**
@@ -214,7 +212,8 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorGetsCapabilities():void {
-		$this->userGetsCapabilities($this->getAdminUsernameForCapabilitiesCheck());
+		$user = $this->getAdminUsernameForCapabilitiesCheck();
+		$this->userGetsCapabilities($user, true);
 	}
 
 	/**

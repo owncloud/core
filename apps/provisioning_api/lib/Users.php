@@ -224,6 +224,7 @@ class Users {
 		$data['home'] = $targetUserObject->getHome();
 		$data['two_factor_auth_enabled'] = $this->twoFactorAuthManager->isTwoFactorAuthenticated($targetUserObject) ? 'true' : 'false';
 		$data['last_login'] = $targetUserObject->getLastLogin();
+		$data['creation_time'] = $targetUserObject->getCreationTime();
 		$data['language'] =  $this->config->getUserValue($targetUserObject->getUID(), 'core', 'lang', $this->config->getSystemValue('default_language', 'en'));
 
 		return new Result($data);
@@ -319,7 +320,7 @@ class Users {
 				}
 				break;
 			case 'two_factor_auth_enabled':
-				if ($parameters['_put']['value'] === true) {
+				if ($parameters['_put']['value'] === 'true') {
 					$this->twoFactorAuthManager->enableTwoFactorAuthentication($targetUser);
 				} else {
 					$this->twoFactorAuthManager->disableTwoFactorAuthentication($targetUser);

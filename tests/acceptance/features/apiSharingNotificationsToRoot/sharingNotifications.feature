@@ -1,4 +1,4 @@
-@api @app-required @notifications-app-required @files_sharing-app-required @notToImplementOnOCIS
+@api @app-required @notifications-app-required @files_sharing-app-required
 Feature: Display notifications when receiving a share
   As a user
   I want to see notifications about shares that have been offered to me

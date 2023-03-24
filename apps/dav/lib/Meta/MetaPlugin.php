@@ -1,6 +1,8 @@
 <?php
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Jannik Stehle <jstehle@owncloud.com>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license AGPL-3.0
@@ -33,7 +35,9 @@ class MetaPlugin extends ServerPlugin {
 	public const PATH_FOR_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}meta-path-for-user';
 
 	public const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-edited-by';
-	public const VERSION_EDITED_BY_PROPERTYNAME_NAME = '{http://owncloud.org/ns}meta-version-edited-by-name';
+	public const VERSION_EDITED_BY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-edited-by-name';
+	public const VERSION_TAG_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-tag';
+
 	/**
 	 * Reference to main server object
 	 *
@@ -98,12 +102,36 @@ class MetaPlugin extends ServerPlugin {
 				$file = \current($files);
 				return $baseFolder->getRelativePath($file->getPath());
 			});
+			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
+				return $node->getVersionEditedBy();
+			});
+			$propFind->handle(self::VERSION_EDITED_BY_NAME_PROPERTYNAME, function () use ($node) {
+				$versionEditedBy = $node->getVersionEditedBy();
+				if (!$versionEditedBy) {
+					return '';
+				}
+				$manager = \OC::$server->getUserManager(); // FIXME: not so good
+				$user = $manager->get($versionEditedBy);
+				return $user !== null ? $user->getDisplayName() : '';
+			});
+			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
+				return $node->getVersionTag();
+			});
 		} elseif ($node instanceof MetaFile) {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionAuthor();
+				return $node->getVersionEditedBy();
 			});
-			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME_NAME, function () use ($node) {
-				return $node->getVersionAuthorName();
+			$propFind->handle(self::VERSION_EDITED_BY_NAME_PROPERTYNAME, function () use ($node) {
+				$versionEditedBy = $node->getVersionEditedBy();
+				if (!$versionEditedBy) {
+					return '';
+				}
+				$manager = \OC::$server->getUserManager(); // FIXME: not so good
+				$user = $manager->get($versionEditedBy);
+				return $user !== null ? $user->getDisplayName() : '';
+			});
+			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
+				return $node->getVersionTag();
 			});
 		}
 	}

@@ -99,6 +99,7 @@
     "Internal mail notification for shared files is not allowed" : "שליחת התראות דוא״ל פנימיות לקבצים משותפים אסורה",
     "%s shared »%s« with you" : "%s שיתף/שיתפה איתך את »%s«",
     "Public link mail notification is not allowed" : "שליחת התראות דוא״ל על קישורים ציבוריים אסורה",
+    "%s" : "%s",
     "%s via %s" : "%s על בסיס %s",
     "Sharing %s failed, because the backend does not allow shares from type %d" : "שיתוף %s נכשל, כיוון שצד השרת אינו מאפשר שיתופים מסוג %d",
     "Sharing %s failed, because the file does not exist" : "השיתוף %s נכשל, כיוון שהקובץ אינו קיים",

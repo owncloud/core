@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @public_link_share-feature-required @notToImplementOnOCIS
+@api @files_sharing-app-required @public_link_share-feature-required
 
 Feature: create a public link share
 

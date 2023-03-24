@@ -1,0 +1,7 @@
+Enhancement: Add legal privacy polciy and imprint links to personal settings
+
+The links for legal.privacy_policy_url and legal.imprint_url are now displayed
+on the personal general settings page so that they are conveniently available
+for all users to see. These are only displayed if they are set.
+
+https://github.com/owncloud/core/pull/40511

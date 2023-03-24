@@ -386,7 +386,55 @@ class OC_Image implements \OCP\IImage {
 			return;
 		}
 
-		$this->exifData = @\exif_read_data($file, 'IFD0');
+		$detectedType = false;
+		if (\is_resource($file)) {
+			$detectedType = $this->detectImageTypeFromStream($file);
+		} else {
+			// it should be a string pointing to a valid file
+			$detectedType = \exif_imagetype($file);
+		}
+
+		if (\in_array($detectedType, [IMAGETYPE_JPEG, IMAGETYPE_TIFF_II, IMAGETYPE_TIFF_MM], true)) {
+			// as of 24/1/2023, "exif_read_data" only supports those image types
+			$this->exifData = \exif_read_data($file, 'IFD0');
+		} else {
+			// other image types aren't supported by the exif_read_data function, so
+			// the function should return false
+			$this->exifData = false;
+		}
+	}
+
+	/**
+	 * Detect the image type from the stream.
+	 * The detection code is copied from the php source code,
+	 * from the exif extension. As such, it only detects jpeg
+	 * and tiff formats.
+	 * This is intended to be used only to check if the stream
+	 * can be used with the "exif_read_data" function or not.
+	 */
+	private function detectImageTypeFromStream($stream) {
+		$detectedType = false;
+
+		\rewind($stream);
+		$bytes = \fread($stream, 2);
+		switch ($bytes) {
+			case "\xff\xd8":
+				$detectedType = IMAGETYPE_JPEG;
+				break;
+			case "II":
+				$nextBytes = \fread($stream, 2);
+				if ($nextBytes === "\x2a\x00") {
+					$detectedType = IMAGETYPE_TIFF_II;
+				}
+				break;
+			case "MM":
+				$nextBytes = \fread($stream, 2);
+				if ($nextBytes === "\x00\x2a") {
+					$detectedType = IMAGETYPE_TIFF_MM;
+				}
+				break;
+		}
+		return $detectedType;
 	}
 
 	/**
@@ -494,10 +542,67 @@ class OC_Image implements \OCP\IImage {
 	public function loadFromFileHandle($handle) {
 		$contents = \stream_get_contents($handle);
 		if ($this->loadFromData($contents)) {
+			$this->adjustStreamChunkSize($handle);
 			$this->loadExifData($handle);
 			return $this->resource;
 		}
 		return false;
+	}
+
+	/**
+	 * Adjust the size of the chunks in the stream. This is required for
+	 * the "exif_read_data" native method to read a whole chunk of metadata
+	 * from the image in one go, otherwise there could be problems with
+	 * the function.
+	 *
+	 * The expected max size of a metadata chunk should be 64 kB, at least for JPEG
+	 * images.
+	 *
+	 * We'll adjust the chunk size only for custom wrappers (the stream_type
+	 * should be "user-space") because those are the ones having this problem.
+	 * Native streams seem to work without this workaround.
+	 *
+	 * This adjustment must be made in all the wrappers. This means that we must
+	 * have access to all the wrapped streams and adjust the chunk size of all
+	 * of them. A "getSource" method must be present in the custom wrapper
+	 * providing access to the underlying stream, otherwise a warning will be
+	 * logged because it could cause problems.
+	 */
+	private function adjustStreamChunkSize($handle) {
+		$stream = $handle;
+		$metadata = \stream_get_meta_data($stream);
+		while ($metadata['stream_type'] === 'user-space') {
+			\stream_set_chunk_size($stream, 64 * 1024);
+			if (isset($metadata['wrapper_data'])) {
+				$streamObj = $metadata['wrapper_data'];
+				if (\method_exists($streamObj, 'getSource')) {
+					// underlying stream must be adjusted too
+					$stream = $streamObj->getSource();
+					if (!$stream) {
+						// current streamObj doesn't wrap any other stream opened with `fopen`,
+						// or it's the last one of the chain
+						break;
+					}
+					$metadata = \stream_get_meta_data($stream);
+				} else {
+					// can't access to the underlying stream, so we'll stop here
+					$this->logger->warning(
+						"Cannot get the underlying stream of class " . \get_class($streamObj) .
+						" with uri {$metadata['uri']}. The " . \get_class($streamObj) .
+						" class should have a \"getSource\" method returning the underlying" .
+						" stream, or false / null if it isn't wrapping any other stream",
+						['app' => 'core']
+					);
+					break;
+				}
+			} else {
+				$this->logger->warning(
+					"No wrapper data found in the metadata of stream {$metadata['uri']}",
+					['app' => 'core']
+				);
+				break;
+			}
+		}
 	}
 
 	/**

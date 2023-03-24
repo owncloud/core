@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api
 Feature: MOVE file/folder
 
   Background:

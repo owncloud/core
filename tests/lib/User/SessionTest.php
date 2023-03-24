@@ -2004,7 +2004,9 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->atLeastOnce())
 			->method('updateLastLoginTimestamp');
 
-		$result = $this->invokePrivate($userSession, 'loginUser', [$iUser, 'foo']);
+		// loginPolicyManager shouldn't have any policy active here, so it won't do anything
+
+		$result = $this->invokePrivate($userSession, 'loginUser', [$iUser, 'foo', 'authModuleClassname']);
 		$this->assertTrue($result);
 	}
 
@@ -2047,7 +2049,7 @@ class SessionTest extends TestCase {
 
 		$beforeEvent = new GenericEvent(
 			null,
-			['loginType' => null, 'login' => 'foo', 'uid' => 'foo',  // loginType == null because no authModule specified
+			['loginType' => 'authModuleClassname', 'login' => 'foo', 'uid' => 'foo',  // loginType == null because no authModule specified
 				'_uid' => 'deprecated: please use \'login\', the real uid is not yet known',
 				'password' => 'bar']
 		);
@@ -2055,6 +2057,6 @@ class SessionTest extends TestCase {
 			->method('dispatch')
 			->with($this->equalTo($beforeEvent), $this->equalTo('user.beforelogin'));
 
-		$this->invokePrivate($userSession, 'loginUser', [$iUser, 'bar']);
+		$this->invokePrivate($userSession, 'loginUser', [$iUser, 'bar', 'authModuleClassname']);
 	}
 }

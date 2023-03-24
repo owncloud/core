@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Versions" : "Versiones",
     "Failed to revert {file} to revision {timestamp}." : "Falló al revertir {file} a la revisión {timestamp}.",
-    "Restore" : "Recuperar",
-    "No other versions available" : "No hay más versiones disponibles"
+    "Restore" : "Recuperar"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

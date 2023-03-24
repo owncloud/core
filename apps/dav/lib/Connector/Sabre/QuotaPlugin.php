@@ -188,7 +188,7 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($length === null) {
 			$length = $this->getLength();
 		}
-		if ($length) {
+		if ($length !== null) {
 			list($parentPath, $newName) = \Sabre\Uri\split($path);
 			if ($parentPath === null) {
 				$parentPath = '';
@@ -204,7 +204,9 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 				$path = \rtrim($parentPath, '/') . '/' . $info['name'];
 			}
 			$freeSpace = $this->getFreeSpace($path);
-			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && $length > $freeSpace + $extraSpace) {
+			// freeSpace might be false, or an int. Anyway, make sure that availableSpace will be an int.
+			$availableSpace = (int) $freeSpace + $extraSpace;
+			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace === 0))) {
 				if (isset($chunkHandler)) {
 					$chunkHandler->cleanup();
 				}

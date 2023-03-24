@@ -38,6 +38,7 @@ use OC;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
+use OC\Authentication\LoginPolicies\LoginPolicyManager;
 use OC\Authentication\Token\IProvider;
 use OC\Authentication\Token\IToken;
 use OC\Hooks\Emitter;
@@ -573,19 +574,11 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 
-		try {
-			$loginOk = $this->loginInOwnCloud('token', $user, $password);
+		$loginOk = $this->loginInOwnCloud('token', $user, $password);
 
-			// set the app password
-			if ($loginOk) {
-				$this->session->set('app_password', $token);
-			} else {
-				$this->tokenProvider->invalidateToken($token);
-			}
-		} catch (LoginException $e) {
-			// need to invalidate the token
-			$this->tokenProvider->invalidateToken($token);
-			throw $e;
+		// set the app password
+		if ($loginOk) {
+			$this->session->set('app_password', $token);
 		}
 
 		return $loginOk;
@@ -940,10 +933,11 @@ class Session implements IUserSession, Emitter {
 	 *
 	 * @param IUser $user The user
 	 * @param String $password The user's password
+	 * @param string $authModuleClass the classname of the module used to login
 	 * @return boolean True if the user can be authenticated, false otherwise
 	 * @throws LoginException if an app canceled the login process or the user is not enabled
 	 */
-	public function loginUser(IUser $user = null, $password = null, $authModuleClass = null) {
+	public function loginUser(IUser $user = null, $password = null, $authModuleClass = '') {
 		if ($user === null) {
 			$this->emitFailedLogin(null);
 			return false;
@@ -1006,6 +1000,16 @@ class Session implements IUserSession, Emitter {
 	 */
 	private function loginInOwnCloud($loginType, $user, $password, $options = []) {
 		$login = $user->getUID();
+
+		// check the login policies first. It will throw a LoginException if needed
+		// The LoginPolicyManager can't be injected due to cyclic dependency
+		try {
+			$loginPolicyManager = \OC::$server->getLoginPolicyManager();
+			$loginPolicyManager->checkUserLogin($loginType, $user);
+		} catch (LoginException $e) {
+			$this->emitFailedLogin($login);
+			throw $e;
+		}
 
 		if (!isset($options['ignoreEvents']) || !$options['ignoreEvents'] === true) {
 			// loginWithCookie won't trigger these events

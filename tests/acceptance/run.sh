@@ -25,6 +25,21 @@ then
 	STEP_THROUGH_OPTION="--step-through"
 fi
 
+if [ -n "${PLAIN_OUTPUT}" ]
+then
+	# explicitly tell Behat to not do colored output
+	COLORS_OPTION="--no-colors"
+	# Use the Bash "null" command to do nothing, rather than use tput to set a color
+	RED_COLOR=":"
+	GREEN_COLOR=":"
+	YELLOW_COLOR=":"
+else
+	COLORS_OPTION="--colors"
+	RED_COLOR="tput setaf 1"
+	GREEN_COLOR="tput setaf 2"
+	YELLOW_COLOR="tput setaf 3"
+fi
+
 # The following environment variables can be specified:
 #
 # ACCEPTANCE_TEST_TYPE - see "--type" description
@@ -183,10 +198,6 @@ export LANG=C
 # sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml data
 # @return occ return code given in the xml data
 function remote_occ() {
-	if [ "${TEST_OCIS}" == "true" ] || [ "${TEST_REVA}" == "true" ]
-	then
-		return 0
-	fi
 	COMMAND=`echo $3 | xargs`
 	CURL_OCC_RESULT=`curl -k -s -u $1 $2 -d "command=${COMMAND}"`
 	# xargs is (miss)used to trim the output
@@ -208,10 +219,6 @@ function remote_occ() {
 # @param $3 commands
 # exists with 1 and sets $REMOTE_OCC_STDERR if any of the occ commands returned a non-zero code
 function remote_bulk_occ() {
-	if [ "${TEST_OCIS}" == "true" ] || [ "${TEST_REVA}" == "true" ]
-	then
-		return 0
-	fi
 	CURL_OCC_RESULT=`curl -k -s -u $1 $2/bulk -d "${3}"`
 	COUNT_RESULTS=`echo ${CURL_OCC_RESULT} | xmllint --xpath "ocs/data/element/code" - | wc -l`
 
@@ -323,10 +330,6 @@ function assert_testing_app_enabled() {
 # $4 text description of the server being checked, e.g. "local", "remote"
 # return 0 if given module is enabled, else return with 1
 function check_apache_module_enabled() {
-	if [ "${TEST_OCIS}" == "true" ] || [ "${TEST_REVA}" == "true" ]
-	then
-		return 0
-	fi
 	# test if mod_rewrite is enabled
 	CURL_RESULT=`curl -k -s -u $1 $2apache_modules/$3`
 	STATUS_CODE=`echo ${CURL_RESULT} | xmllint --xpath "string(ocs/meta/statuscode)" -`
@@ -404,7 +407,7 @@ function run_behat_tests() {
 		cat ${SCRIPT_PATH}/usernames.json
 	fi
 
-	${BEHAT} --colors --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v 2>&1 | tee -a ${TEST_LOG_FILE}
+	${BEHAT} ${COLORS_OPTION} --strict ${STEP_THROUGH_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v 2>&1 | tee -a ${TEST_LOG_FILE}
 
 	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
@@ -431,7 +434,7 @@ function run_behat_tests() {
 		# So exit the tests and do not lint expected failures when undefined steps exist.
 		if [[ ${SCENARIO_RESULTS} == *"undefined"* ]]
 		then
-			echo -e "\033[31m Undefined steps: There were some undefined steps found."
+			${RED_COLOR}; echo -e "Undefined steps: There were some undefined steps found."
 			exit 1
 		fi
 		# If there were no scenarios in the requested suite or feature that match
@@ -605,7 +608,7 @@ function run_behat_tests() {
 				fi
 
 				echo "Rerun failed scenario: ${FAILED_SCENARIO_PATH}"
-				${BEHAT} --colors --strict -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v 2>&1 | tee -a ${TEST_LOG_FILE}
+				${BEHAT} ${COLORS_OPTION} --strict -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FAILED_SCENARIO_PATH} -v 2>&1 | tee -a ${TEST_LOG_FILE}
 				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 				if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
 				then
@@ -635,7 +638,7 @@ function run_behat_tests() {
 		# Big red error output is displayed if there are no matching scenarios - send it to null
 		DRY_RUN_FILE=$(mktemp)
 		SKIP_TAGS="${TEST_TYPE_TAG}&&@skip"
-		${BEHAT} --dry-run --colors -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
+		${BEHAT} --dry-run ${COLORS_OPTION} -c ${BEHAT_YML} -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
 		if grep -q -m 1 'No scenarios' "${DRY_RUN_FILE}"
 		then
 			# If there are no skip scenarios, then no need to report that
@@ -739,10 +742,7 @@ then
 	OCC_URL="${TESTING_APP_URL}occ"
 	# test that server is up and running, and testing app is enabled.
 	assert_server_up ${TEST_SERVER_URL}
-	if [ "${TEST_OCIS}" != "true" ] && [ "${TEST_REVA}" != "true" ]
-	then
-		assert_testing_app_enabled ${TEST_SERVER_URL}
-	fi
+	assert_testing_app_enabled ${TEST_SERVER_URL}
 
 	if [ -n "${TEST_SERVER_FED_URL}" ]
 	then
@@ -750,10 +750,7 @@ then
 		OCC_FED_URL="${TESTING_APP_FED_URL}occ"
 		# test that fed server is up and running, and testing app is enabled.
 		assert_server_up ${TEST_SERVER_FED_URL}
-		if [ "${TEST_OCIS}" != "true" ] && [ "${TEST_REVA}" != "true" ]
-		then
-			assert_testing_app_enabled ${TEST_SERVER_URL}
-		fi
+		assert_testing_app_enabled ${TEST_SERVER_URL}
 	fi
 
 	echo "Not using php inbuilt server for running scenario ..."
@@ -1205,13 +1202,10 @@ export IPV4_URL
 export IPV6_URL
 export FILES_FOR_UPLOAD="${SCRIPT_PATH}/filesForUpload/"
 
-if [ "${TEST_OCIS}" != "true" ] && [ "${TEST_REVA}" != "true" ]
-then
-	# We are testing on an ownCloud core server.
-	# Tell the tests to wait 1 second between each upload/delete action
-	# to avoid problems with actions that depend on timestamps in seconds.
-	export UPLOAD_DELETE_WAIT_TIME=1
-fi
+# We are testing on an ownCloud core server.
+# Tell the tests to wait 1 second between each upload/delete action
+# to avoid problems with actions that depend on timestamps in seconds.
+export UPLOAD_DELETE_WAIT_TIME=1
 
 TEST_LOG_FILE=$(mktemp)
 SCENARIOS_THAT_PASSED=0
@@ -1335,24 +1329,24 @@ fi
 
 if [ "${UNEXPECTED_FAILURE}" = true ]
 then
-	tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
-	tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
+	${YELLOW_COLOR}; echo "runsh: Total unexpected failed scenarios throughout the test run:"
+	${RED_COLOR}; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
 else
-	tput setaf 2; echo "runsh: There were no unexpected failures."
+	${GREEN_COLOR}; echo "runsh: There were no unexpected failures."
 fi
 
 if [ "${UNEXPECTED_SUCCESS}" = true ]
 then
-	tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
-	tput setaf 1; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
+	${YELLOW_COLOR}; echo "runsh: Total unexpected passed scenarios throughout the test run:"
+	${RED_COLOR}; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
 else
-	tput setaf 2; echo "runsh: There were no unexpected success."
+	${GREEN_COLOR}; echo "runsh: There were no unexpected success."
 fi
 
 if [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = true ]
 then
-	tput setaf 3; echo "runsh: The following Behat test runs exited with non-zero status:"
-	tput setaf 1; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
+	${YELLOW_COLOR}; echo "runsh: The following Behat test runs exited with non-zero status:"
+	${RED_COLOR}; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
 fi
 
 # sync the file-system so all output will be flushed to storage.

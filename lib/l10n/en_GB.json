@@ -93,6 +93,7 @@
     "Internal mail notification for shared files is not allowed" : "Internal mail notification for shared files is not allowed",
     "%s shared »%s« with you" : "%s shared \"%s\" with you",
     "Public link mail notification is not allowed" : "Public link mail notification is not allowed",
+    "%s" : "%s",
     "%s via %s" : "%s via %s",
     "Sharing %s failed, because the backend does not allow shares from type %d" : "Sharing %s failed, because the backend does not allow shares from type %d",
     "Sharing %s failed, because the file does not exist" : "Sharing %s failed, because the file does not exist",

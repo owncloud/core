@@ -28,7 +28,11 @@ namespace OCP\Share;
  * of this interface.
  *
  * @package OCP\Share
+<<<<<<< HEAD
  * @since 10.11.0
+=======
+ * @since 10.12.0
+>>>>>>> master
  */
 interface IRemoteShareesSearch {
 	/**
@@ -40,8 +44,15 @@ interface IRemoteShareesSearch {
 	 * - value: an associative array containing:
 	 *   - shareType: int, to be used as share type
 	 *   - shareWith: string, identifying the sharee
+<<<<<<< HEAD
 	 *
 	 * @since 10.11.0
+=======
+	 *   - server (optional): string, URL of the server, e.g.
+	 * https://github.com/owncloud/core/blob/v10.12.0-beta.1/apps/files_sharing/lib/Controller/ShareesController.php#L421
+	 *
+	 * @since 10.12.0
+>>>>>>> master
 	 */
 	public function search($search);
 }

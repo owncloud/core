@@ -1,7 +1,7 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: current oC10 behavior for issue-32068
 
-  @smokeTest @issue-32068 @issue-ocis-reva-30 @issue-ocis-reva-65 @skipOnBruteForceProtection @issue-brute_force_protection-112
+  @smokeTest @issue-32068 @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send DELETE requests to OCS endpoints as admin with wrong password
     Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"

@@ -8,7 +8,7 @@ Feature: users cannot upload a file to or into an excluded directory
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-ocis-reva-54
+
   Scenario Outline: upload a file to an excluded directory name
     Given using <dav_version> DAV path
     And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
@@ -20,7 +20,7 @@ Feature: users cannot upload a file to or into an excluded directory
       | old         |
       | new         |
 
-  @issue-ocis-reva-54
+
   Scenario Outline: upload a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -34,7 +34,7 @@ Feature: users cannot upload a file to or into an excluded directory
       | old         |
       | new         |
 
-  @issue-ocis-reva-54
+
   Scenario Outline: upload a file to a filename that matches (or not) excluded_directories_regex
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER"

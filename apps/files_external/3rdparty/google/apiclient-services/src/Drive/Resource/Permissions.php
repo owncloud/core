@@ -31,7 +31,8 @@ use Google\Service\Drive\PermissionList;
 class Permissions extends \Google\Service\Resource
 {
   /**
-   * Creates a permission for a file or shared drive. (permissions.create)
+   * Creates a permission for a file or shared drive. For more information on
+   * creating permissions, see Share files, folders & drives. (permissions.create)
    *
    * @param string $fileId The ID of the file or shared drive.
    * @param Permission $postBody

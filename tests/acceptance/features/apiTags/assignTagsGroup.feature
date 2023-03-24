@@ -1,4 +1,4 @@
-@api @systemtags-app-required @issue-ocis-reva-51
+@api @systemtags-app-required
 Feature: Assign tag to groups
   As a user
   I should be able to assign tag to groups

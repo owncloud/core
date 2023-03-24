@@ -40,80 +40,15 @@ class CapabilitiesContext implements Context {
 	private $featureContext;
 
 	/**
-	 * @Then the capabilities should contain
-	 *
-	 * @param TableNode|null $formData
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function checkCapabilitiesResponse(TableNode $formData):void {
-		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml(__METHOD__);
-		$assertedSomething = false;
-
-		$this->featureContext->verifyTableNodeColumns($formData, ['value', 'path_to_element', 'capability']);
-
-		foreach ($formData->getHash() as $row) {
-			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
-			Assert::assertEquals(
-				$row['value'] === "EMPTY" ? '' : $row['value'],
-				$this->featureContext->appConfigurationContext->getParameterValueFromXml(
-					$capabilitiesXML,
-					$row['capability'],
-					$row['path_to_element']
-				),
-				"Failed field {$row['capability']} {$row['path_to_element']}"
-			);
-			$assertedSomething = true;
-		}
-
-		Assert::assertTrue(
-			$assertedSomething,
-			'there was nothing in the table of expected capabilities'
-		);
-	}
-
-	/**
-	 * @Then the version data in the response should contain
-	 *
-	 * @param TableNode|null $formData
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function checkVersionResponse(TableNode $formData):void {
-		$versionXML = $this->featureContext->appConfigurationContext->getVersionXml(__METHOD__);
-		$assertedSomething = false;
-
-		$this->featureContext->verifyTableNodeColumns($formData, ['name', 'value']);
-
-		foreach ($formData->getHash() as $row) {
-			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
-			$actualValue = $versionXML->{$row['name']};
-
-			Assert::assertEquals(
-				$row['value'] === "EMPTY" ? '' : $row['value'],
-				$actualValue,
-				"Failed field {$row['name']}"
-			);
-			$assertedSomething = true;
-		}
-
-		Assert::assertTrue(
-			$assertedSomething,
-			'there was nothing in the table of expected version data'
-		);
-	}
-
-	/**
 	 * @Then the major-minor-micro version data in the response should match the version string
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function checkVersionMajorMinorMicroResponse():void {
-		$versionXML = $this->featureContext->appConfigurationContext->getVersionXml(__METHOD__);
-		$versionString = (string) $versionXML->string;
+		$jsonResponse = $this->featureContext->getJsonDecodedResponseBodyContent();
+		$versionData = $jsonResponse->ocs->data->version;
+		$versionString = (string) $versionData->string;
 		// We expect that versionString will be in a format like "10.9.2 beta" or "10.9.2-alpha" or "10.9.2"
 		$result = \preg_match('/^[0-9]+\.[0-9]+\.[0-9]+/', $versionString, $matches);
 		Assert::assertSame(
@@ -126,9 +61,9 @@ class CapabilitiesContext implements Context {
 		$expectedMajor = $semVerParts[0];
 		$expectedMinor = $semVerParts[1];
 		$expectedMicro = $semVerParts[2];
-		$actualMajor = (string) $versionXML->major;
-		$actualMinor = (string) $versionXML->minor;
-		$actualMicro = (string) $versionXML->micro;
+		$actualMajor = (string) $versionData->major;
+		$actualMinor = (string) $versionData->minor;
+		$actualMicro = (string) $versionData->micro;
 		Assert::assertSame(
 			$expectedMajor,
 			$actualMajor,
@@ -172,35 +107,6 @@ class CapabilitiesContext implements Context {
 			$value === "EMPTY" ? '' : $value,
 			$actualValue,
 			"Expected {$pathToElement} capability of files sharing app to be {$value}, but got {$actualValue}"
-		);
-	}
-
-	/**
-	 * @Then the capabilities should not contain
-	 *
-	 * @param TableNode|null $formData
-	 *
-	 * @return void
-	 */
-	public function theCapabilitiesShouldNotContain(TableNode $formData):void {
-		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml(__METHOD__);
-		$assertedSomething = false;
-
-		foreach ($formData->getHash() as $row) {
-			Assert::assertFalse(
-				$this->featureContext->appConfigurationContext->parameterValueExistsInXml(
-					$capabilitiesXML,
-					$row['capability'],
-					$row['path_to_element']
-				),
-				"Capability {$row['capability']} {$row['path_to_element']} exists but it should not exist"
-			);
-			$assertedSomething = true;
-		}
-
-		Assert::assertTrue(
-			$assertedSomething,
-			'there was nothing in the table of not expected capabilities'
 		);
 	}
 

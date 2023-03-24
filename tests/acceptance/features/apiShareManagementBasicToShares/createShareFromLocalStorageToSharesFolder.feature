@@ -1,4 +1,4 @@
-@api @local_storage @files_external-app-required @notToImplementOnOCIS @files_sharing-app-required
+@api @local_storage @files_external-app-required @files_sharing-app-required
 Feature: local-storage
 
   Background:

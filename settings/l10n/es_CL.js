@@ -3,8 +3,8 @@ OC.L10N.register(
     {
     "Share" : "Compartir",
     "Cancel" : "Cancelar",
-    "Password" : "Clave",
     "Username" : "Usuario",
+    "Password" : "Clave",
     "Personal" : "Personal",
     "Admin" : "Administración",
     "Settings" : "Configuración"

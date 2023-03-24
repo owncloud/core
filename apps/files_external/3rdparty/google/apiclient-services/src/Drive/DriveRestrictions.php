@@ -35,6 +35,10 @@ class DriveRestrictions extends \Google\Model
    * @var bool
    */
   public $driveMembersOnly;
+  /**
+   * @var bool
+   */
+  public $sharingFoldersRequiresOrganizerPermission;
 
   /**
    * @param bool
@@ -91,6 +95,20 @@ class DriveRestrictions extends \Google\Model
   public function getDriveMembersOnly()
   {
     return $this->driveMembersOnly;
+  }
+  /**
+   * @param bool
+   */
+  public function setSharingFoldersRequiresOrganizerPermission($sharingFoldersRequiresOrganizerPermission)
+  {
+    $this->sharingFoldersRequiresOrganizerPermission = $sharingFoldersRequiresOrganizerPermission;
+  }
+  /**
+   * @return bool
+   */
+  public function getSharingFoldersRequiresOrganizerPermission()
+  {
+    return $this->sharingFoldersRequiresOrganizerPermission;
   }
 }
 

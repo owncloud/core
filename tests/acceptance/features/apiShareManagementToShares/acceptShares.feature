@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1289 @issue-ocis-1328
+@api @files_sharing-app-required
 Feature: accept/decline shares coming from internal users
   As a user
   I want to have control of which received shares I accept
@@ -59,7 +59,6 @@ Feature: accept/decline shares coming from internal users
       | path                   |
       | <pending_share_path_1> |
       | <pending_share_path_2> |
-    @issue-ocis-2540
     Examples:
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
@@ -82,12 +81,11 @@ Feature: accept/decline shares coming from internal users
       | path                   |
       | <pending_share_path_1> |
       | <pending_share_path_2> |
-    @issue-ocis-2540
     Examples:
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
 
-  @smokeTest @issue-ocis-2131
+  @smokeTest
   Scenario: accept a pending share
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
@@ -127,7 +125,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT        |
       | /Shares/textfile0.txt |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: accept a pending share when there is a default folder for received shares
     Given the administrator has set the default folder for received shares to "<share_folder>"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -208,12 +206,11 @@ Feature: accept/decline shares coming from internal users
       | path                    |
       | <declined_share_path_1> |
       | <declined_share_path_2> |
-    @issue-ocis-2540
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
 
-  @smokeTest @issue-ocis-2128
+  @smokeTest
   Scenario Outline: decline an accepted share
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
@@ -231,7 +228,6 @@ Feature: accept/decline shares coming from internal users
       | path                    |
       | <declined_share_path_1> |
       | <declined_share_path_2> |
-    @issue-ocis-2540
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
@@ -269,12 +265,11 @@ Feature: accept/decline shares coming from internal users
       | path                  |
       | /Shares/PARENT/       |
       | /Shares/textfile0.txt |
-    @issue-ocis-2540
     Examples:
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
 
-  @issue-ocis-2131
+
   Scenario: receive two shares with identical names from different users, accept one by one
     Given user "Alice" has created folder "/shared"
     And user "Alice" has created folder "/shared/Alice"
@@ -303,7 +298,6 @@ Feature: accept/decline shares coming from internal users
       | path                 |
       | <pending_share_path> |
     And the sharing API should report that no shares are shared with user "Alice"
-    @issue-ocis-2540
     Examples:
       | pending_share_path |
       | /Shares/PARENT/    |
@@ -514,7 +508,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/ |
     And the content of file "/Shares/PARENT/abc.txt" for user "David" should be "uploaded content"
 
-  @issue-ocis-1123
+
   Scenario Outline: deleting a share accepted file and folder
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
@@ -523,12 +517,11 @@ Feature: accept/decline shares coming from internal users
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path                  |
       | <declined_share_path> |
-    @issue-ocis-2540
     Examples:
       | declined_share_path |
       | /Shares/PARENT      |
 
-  @issue-ocis-765 @issue-ocis-2131
+
   Scenario: shares exist after restoring already shared file to a previous version
     And user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
     And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"
@@ -539,7 +532,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
     And the content of file "/Shares/toShareFile.txt" for user "Brian" should be "Test Content."
 
-  @issue-ocis-2131
+
   Scenario: a user receives multiple group shares for matching file and folder name
     Given group "grp2" has been created
     And user "Alice" has been added to group "grp2"
@@ -604,7 +597,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT (2).txt" for user "Brian" should be "from carol to grp1"
     And the content of file "/Shares/parent.txt" for user "Brian" should be "from carol to grp1"
 
-  @issue-ocis-2131
+
   Scenario: a group receives multiple shares from non-member for matching file and folder name
     Given user "Brian" has been removed from group "grp1"
     And user "Alice" has created folder "/PaRent"

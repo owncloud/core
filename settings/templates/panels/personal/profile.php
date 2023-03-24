@@ -110,6 +110,11 @@ if ($_['mailAddressChangeSupported']) {
 
 </div>
 
+<div id="username" class="section">
+       <h2 class="username"><?php p($l->t('Username')); ?></h2>
+       <p><?php p($_['username']); ?></p>
+</div>
+
 <?php
 if ($_['passwordChangeSupported']) {
 	script('jquery-showpassword'); ?>
@@ -145,3 +150,21 @@ if ($_['passwordChangeSupported']) {
 	</a>
 	<?php endif; ?>
 </form>
+
+<?php
+if (!empty($_['legal_privacy_policy']) || !empty($_['legal_imprint'])) {
+	?><div id="legal" class="section">
+        <h2 class="legal"><?php p($l->t('Legal'));?></h2>
+        <?php if (!empty($_['legal_imprint'])) { ?>
+        <p>
+                <label for="legal_imprint"><?php p($l->t('Our imprint conditions:')); ?></label> <a id="legal_imprint" href="<?php p($_['legal_imprint']) ?>" target="_blank" rel="noopener noreferrer"><?php p($_['legal_imprint']) ?></a>
+        </p>
+        <?php } if (!empty($_['legal_privacy_policy'])) { ?>
+        <p>
+                <label for="legal_privacy_policy"><?php p($l->t('Our Privacy Policy conditions:')); ?></label> <a id="legal_privacy_policy" href="<?php p($_['legal_privacy_policy']) ?>" target="_blank" rel="noopener noreferrer"><?php p($_['legal_privacy_policy']) ?></a>
+        </p>
+        <?php } ?>
+</div>
+<?php
+}
+?>

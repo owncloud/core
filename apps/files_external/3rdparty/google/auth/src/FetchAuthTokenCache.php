@@ -61,6 +61,14 @@ class FetchAuthTokenCache implements
     }
 
     /**
+     * @return FetchAuthTokenInterface
+     */
+    public function getFetcher()
+    {
+        return $this->fetcher;
+    }
+
+    /**
      * Implements FetchAuthTokenInterface#fetchAuthToken.
      *
      * Checks the cache for a valid auth token and fetches the auth tokens

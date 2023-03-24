@@ -31,7 +31,7 @@ use Google\Service\Drive\CommentList;
 class Comments extends \Google\Service\Resource
 {
   /**
-   * Creates a new comment on a file. (comments.create)
+   * Creates a comment on a file. (comments.create)
    *
    * @param string $fileId The ID of the file.
    * @param Comment $postBody

@@ -56,6 +56,7 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class ShareController
@@ -394,7 +395,7 @@ class ShareController extends Controller {
 			$shareTmpl['previewImage'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath('core', 'favicon-fb.png'));
 		}
 
-		$this->eventDispatcher->dispatch('OCA\Files_Sharing::loadAdditionalScripts');
+		$this->eventDispatcher->dispatch(new Event(), 'OCA\Files_Sharing::loadAdditionalScripts');
 
 		$csp = new OCP\AppFramework\Http\ContentSecurityPolicy();
 		$csp->addAllowedFrameDomain('\'self\'');

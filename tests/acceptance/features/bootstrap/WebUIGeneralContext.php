@@ -681,6 +681,34 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the user should see :sidebarItem sidebar navigation on the webUI
+	 *
+	 * @param string $sidebarItem
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeSidebarNavigation(string $sidebarItem):void {
+		Assert::assertTrue(
+			$this->owncloudPage->isSidebarNavVisible($sidebarItem),
+			"the sidebar navigation '$sidebarItem' is not visible but should be"
+		);
+	}
+
+	/**
+	 * @Then the user should not see :sidebarItem sidebar navigation on the webUI
+	 *
+	 * @param string $sidebarItem
+	 *
+	 * @return void
+	 */
+	public function theUserShouldNotSeeSidebarNavigation(string $sidebarItem):void {
+		Assert::assertFalse(
+			$this->owncloudPage->isSidebarNavVisible($sidebarItem),
+			"the sidebar navigation '$sidebarItem' is visible but should not be"
+		);
+	}
+
+	/**
 	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope

@@ -7,7 +7,21 @@ Feature: get user
   Background:
     Given using OCS API version "1"
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.10 @skipOnOcV10.11
+  Scenario: admin gets an existing user
+    Given these users have been created with default attributes and without skeleton files:
+      | username       | displayname    |
+      | brand-new-user | Brand New User |
+    When the administrator retrieves the information of user "brand-new-user" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the display name returned by the API should be "Brand New User"
+    And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
+    And the last login returned by the API should be a current Unix timestamp
+    And the creation time returned by the API should be a current Unix timestamp
+
+  @smokeTest @skipOnOcV10.12
   Scenario: admin gets an existing user
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
@@ -58,7 +72,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the API should not return any data
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: a subadmin gets information of a user in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -75,7 +89,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS
+
   Scenario: a subadmin tries to get information of a user not in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -160,7 +174,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS
+
   Scenario: a subadmin should be able to get information of a user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -178,7 +192,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
-  @notToImplementOnOCIS
+
   Scenario: a subadmin should not be able to get information of another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

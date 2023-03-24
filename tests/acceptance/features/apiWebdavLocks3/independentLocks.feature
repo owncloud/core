@@ -1,11 +1,11 @@
-@api @issue-ocis-reva-172
+@api
 Feature: independent locks
   Make sure all locks are independent and don't interact with other items that have the same name
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @notToImplementOnOCIS
+
   Scenario Outline: locking a folder does not lock other items with the same name in other parts of the file system
     Given using <dav-path> DAV path
     And user "Alice" has created folder "locked"
@@ -27,7 +27,7 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
-  @notToImplementOnOCIS
+
   Scenario Outline: locking a folder on the root level does not lock other folders with the same name in other parts of the file system
     Given using <dav-path> DAV path
     And user "Alice" has created folder "notlocked"

@@ -69,6 +69,7 @@
     "Set an admin password." : "Setează o parolă de administrator.",
     "Invalid Federated Cloud ID" : "ID invalid cloud federalizat",
     "%s shared »%s« with you" : "%s Partajat »%s« cu tine de",
+    "%s" : "%s",
     "%s via %s" : "%s via %s",
     "You are not allowed to share %s" : "Nu există permisiunea de partajare %s",
     "Sharing %s failed, because this item is already shared with %s" : "Partajarea %s a eșuat deoarece acest element este deja partajat cu %s",

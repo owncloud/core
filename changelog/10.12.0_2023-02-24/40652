@@ -1,0 +1,10 @@
+Bugfix: Adjust request body options for Guzzle7
+
+In Guzzle major version 7 the body option of a request must be a string
+or similar. Requests that send arrays of items have been adjusted to use the
+form_params option. Developers of apps that use lib/private/Http/Client/IClient.php
+should check any calls to ensure that arrays of items are not passed in the body
+option. See the diffs of PHP docs in the linked PR for examples.
+
+https://github.com/owncloud/core/pull/40652
+https://github.com/owncloud/core/issues/40649

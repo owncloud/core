@@ -91,6 +91,13 @@ class RemoteUser implements IUser {
 	/**
 	 * @inheritdoc
 	 */
+	public function getCreationTime() {
+		return 0;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function delete() {
 		return false;
 	}

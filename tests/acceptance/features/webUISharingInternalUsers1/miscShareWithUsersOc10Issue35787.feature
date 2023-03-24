@@ -1,7 +1,7 @@
 @webUI @insulated @disablePreviews @files_sharing-app-required
 Feature: misc scenarios on sharing with internal users
 
-  @issue-35787 @notToImplementOnOCIS
+  @issue-35787
   Scenario: share a file after changing its content to a user before the user has logged in
     Given these users have been created with default attributes and without skeleton files:
       | username |

@@ -25,7 +25,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\Assert;
-use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 use Behat\Gherkin\Node\PyStringNode;
 
@@ -1049,17 +1048,6 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasSetTheDefaultFolderForReceivedSharesTo(string $folder):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// The default folder for received shares is already "Shares" on OCIS and REVA.
-			// If the step is asking for a different folder, then fail.
-			// Otherwise just return - the setting is already done by default.
-			Assert::assertEquals(
-				"Shares",
-				\trim($folder, "/"),
-				__METHOD__ . " tried to set the default folder for received shares to $folder but that is not possible on OCIS"
-			);
-			return;
-		}
 		$this->addSystemConfigKeyUsingTheOccCommand(
 			"share_folder",
 			$folder

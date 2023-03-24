@@ -1,4 +1,4 @@
-@api @systemtags-app-required @files_sharing-app-required @issue-ocis-reva-51
+@api @systemtags-app-required @files_sharing-app-required
 Feature: Unassigning tags from file/folder
   As a user
   I want to be able to remove tags from file/folder

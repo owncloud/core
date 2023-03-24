@@ -2,9 +2,40 @@
 <h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
     <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.11.0...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.12.0...master">Full list of changes in unreleased </a>
     </p>
     <h3 id="unreleased-summary">Summary</h3>
+    <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></li>
+        <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></li>
+    </ul>
+    <h3 id="unreleased-details">Details</h3>
+    <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></p>
+            <p>When using the User Home Folder Naming Rule (configurable in the Advanced tab of the LDAP
+   wizard), which allows to specify the home folder by means of an LDAP attribute, chunks of users'
+   uploads were wrongly created under the default data directory rather than inside the
+   configured home directory. We are now using the getHome() method for getting the user's home so
+   that chunks uploads respect the configured home directory.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40693<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></p>
+            <p>The following have been updated: - guzzlehttp/psr7 (2.4.3 to 2.4.4) - icewind/streams (0.7.6
+   to 0.7.7)The following have been updated in apps/files_external/3rdparty: - google/apiclient
+   (2.12.6 to 2.13.1) - icewind/streams (0.7.6 to 0.7.7)
+            </p>
+            <p>https://github.com/owncloud/core/pull/40691<br>https://github.com/owncloud/core/pull/40683<br>https://github.com/owncloud/core/pull/40690<br></p>
+        </li>
+    </ul>
+    <h2 id="10.12.0" class="version"> Changelog for ownCloud Core [10.12.0] (2023-02-24)</h2>
+    <p>The following sections list the changes in ownCloud core 10.12.0 relevant to ownCloud admins and users.</p>
+    <p>
+    <a href="https://github.com/owncloud/core/compare/v10.11.0...v10.12.0">Full list of changes in 10.12.0</a>
+    </p>
+    <h3 id="10.12.0-summary">Summary</h3>
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Bump bower_components/clipboard from v2.0.6 to v2.0.11 in /build: <a href="https://github.com/owncloud/core/pull/40064">#40064</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Properly remove file versions from the trashbin: <a href="https://github.com/owncloud/core/issues/40286">#40286</a></li>
@@ -12,17 +43,27 @@
         <li class="type-bugfix changelog-item">Bugfix - "available for" in the mount point configuration will show displaynames: <a href="https://github.com/owncloud/core/pull/40412">#40412</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Skip public links when updating permissions of share's children: <a href="https://github.com/owncloud/core/pull/40420">#40420</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add shib auth support for redirect url: <a href="https://github.com/owncloud/core/pull/40470">#40470</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Remove empty directories from the files_versions: <a href="https://github.com/owncloud/core/pull/40499">#40499</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Store checksums only if the whole stream has been read: <a href="https://github.com/owncloud/core/pull/40513">#40513</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Performance fix when deleting thumbnails: <a href="https://github.com/owncloud/core/pull/40514">#40514</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: <a href="https://github.com/owncloud/core/pull/40522">#40522</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump json5 from 2.2.0 to 2.2.3 in /build: <a href="https://github.com/owncloud/core/pull/40556">#40556</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump karma from 6.3.19 to 6.4.1 in /build: <a href="https://github.com/owncloud/core/pull/40558">#40558</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump moments.js from 2.29.1 to 2.29.4 in /build: <a href="https://github.com/owncloud/core/pull/40560">#40560</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Set length of oc_calendars.components to 255: <a href="https://github.com/owncloud/core/pull/40563">#40563</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent creation of empty files/folders when no available quota: <a href="https://github.com/owncloud/core/pull/40567">#40567</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: <a href="https://github.com/owncloud/core/pull/40568">#40568</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix the dav:cleanup-chunks command to work with a configured folder: <a href="https://github.com/owncloud/core/pull/40571">#40571</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: <a href="https://github.com/owncloud/core/pull/40579">#40579</a></li>
-        <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix orientation of images with exif data: <a href="https://github.com/owncloud/core/pull/40600">#40600</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix header title and claim rendered as escaped HTML: <a href="https://github.com/owncloud/core/issues/40605">#40605</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Use correct themed l10n app folder when app lives outside of server root: <a href="https://github.com/owncloud/core/pull/40607">#40607</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix share into share move scenario: <a href="https://github.com/owncloud/core/pull/40612">#40612</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Enable 2FA via provisioning API: <a href="https://github.com/owncloud/core/issues/40617">#40617</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Add index on oc_filecache: <a href="https://github.com/owncloud/core/issues/40633">#40633</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Adjust request body options for Guzzle7: <a href="https://github.com/owncloud/core/pull/40652">#40652</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></li>
+        <li class="type-change changelog-item">Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40389">#40389</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></li>
         <li class="type-change changelog-item">Change - Test indirect resource existence: <a href="https://github.com/owncloud/core/pull/40406">#40406</a></li>
         <li class="type-change changelog-item">Change - Detect mime types of hidden files: <a href="https://github.com/owncloud/core/pull/40427">#40427</a></li>
@@ -31,8 +72,19 @@
         <li class="type-change changelog-item">Change - Delete action is removed from sharing sections: <a href="https://github.com/owncloud/core/pull/40497">#40497</a></li>
         <li class="type-change changelog-item">Change - Allow to temporarily ignore invalid federated shares: <a href="https://github.com/owncloud/core/pull/40503">#40503</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/40521">#40521</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add account creation time: <a href="https://github.com/owncloud/enterprise/issues/2298">#2298</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Show WebDAV Url in personal setting under app passwords: <a href="https://github.com/owncloud/core/pull/40509">#40509</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Show username on personal profile page: <a href="https://github.com/owncloud/core/pull/40510">#40510</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add legal privacy polciy and imprint links to personal settings: <a href="https://github.com/owncloud/core/pull/40511">#40511</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Persistent major file version workflow: <a href="https://github.com/owncloud/core/pull/40531">#40531</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add support for OCM via ScienceMesh: <a href="https://github.com/owncloud/core/issues/40577">#40577</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Tweak rewrite conditions in .htaccess: <a href="https://github.com/owncloud/core/pull/40584">#40584</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Improve UX on occ user:sync: <a href="https://github.com/owncloud/core/pull/40640">#40640</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Drag & Drop folders into public file upload: <a href="https://github.com/owncloud/core/pull/40643">#40643</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Make sender display name in mail notifications configurable: <a href="https://github.com/owncloud/core/pull/40671">#40671</a></li>
     </ul>
-    <h3 id="unreleased-details">Details</h3>
+    <h3 id="10.12.0-details">Details</h3>
     <ul class="details">
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump bower_components/clipboard from v2.0.6 to v2.0.11 in /build: <a href="https://github.com/owncloud/core/pull/40064">#40064</a></p>
@@ -87,6 +139,14 @@
             <p>https://github.com/owncloud/core/pull/40470<br>https://github.com/owncloud/core/pull/40161<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Remove empty directories from the files_versions: <a href="https://github.com/owncloud/core/pull/40499">#40499</a></p>
+            <p>Empty directories were left when the contained versions were deleted or moved. Large
+   installations might end up with too many of these empty directories.Now, when a version is deleted, the containing directory will also be deleted if there aren't
+   any more versions inside.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40499<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - Store checksums only if the whole stream has been read: <a href="https://github.com/owncloud/core/pull/40513">#40513</a></p>
             <p>Previously, range downloads (or downloads requesting a specific byte range) would store a
    checksum, if needed, based only on the requested range. This causes problems because the
@@ -95,6 +155,13 @@
    on the data stream, but they shouldn't happen normally.
             </p>
             <p>https://github.com/owncloud/core/pull/40513<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Performance fix when deleting thumbnails: <a href="https://github.com/owncloud/core/pull/40514">#40514</a></p>
+            <p>Detecting unused thumbnails is now using a better optimized SQL statements which consumes
+   less database and web server resources.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40514<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump minimatch from 3.0.4 to 3.1.2 in /build: <a href="https://github.com/owncloud/core/pull/40522">#40522</a></p>
@@ -119,6 +186,16 @@
             <p>https://github.com/owncloud/core/pull/40563<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent creation of empty files/folders when no available quota: <a href="https://github.com/owncloud/core/pull/40567">#40567</a></p>
+            <p>Until now it was possible for users having 0 quota or who already reached the limit of their
+   assigned quota to still create empty files/folders, which generates confusion. The PR fixes
+   this behaviour.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5478<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40567<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - Bump underscore from 1.13.2 to 1.13.6 in /build: <a href="https://github.com/owncloud/core/pull/40568">#40568</a></p>
             <p>https://github.com/owncloud/core/pull/40568<br></p>
         </li>
@@ -136,15 +213,67 @@
             <p>Bugfix - Bump bower_components/showdown from 2.0.0 to 2.1.0 in /build: <a href="https://github.com/owncloud/core/pull/40579">#40579</a></p>
             <p>https://github.com/owncloud/core/pull/40579<br></p>
         </li>
-        <li class="type-change changelog-item">
-            <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40192">#40192</a></p>
-            <p>Before this change, objectstorages were reporting only infinite storage space. This could
-   have caused problems in other apps that rely on this storage method, e.g. metrics app that
-   monitors available space
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix orientation of images with exif data: <a href="https://github.com/owncloud/core/pull/40600">#40600</a></p>
+            <p>Some images with a large exif data had problems with the orientation when they were shown. This
+   was caused by the native function failing to retrieve the exif data. Images with small exif data
+   didn't have this problem.By making the chunk size of the stream bigger, the native function is able to load the exif data
+   properly and return the information, and with such information we can fix the orientation of
+   the image.
             </p>
-            <p>https://github.com/owncloud/enterprise/issues/5384<br>
+            <p>https://github.com/owncloud/core/pull/40600<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix header title and claim rendered as escaped HTML: <a href="https://github.com/owncloud/core/issues/40605">#40605</a></p>
+            <p>The files_sharing application template was escaping the HTML from the title and claim
+   provided by the theme. This caused raw HTML to be displayed in the page header.
             </p>
-            <p>https://github.com/owncloud/core/pull/40192<br></p>
+            <p>https://github.com/owncloud/core/issues/40605<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40606<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Use correct themed l10n app folder when app lives outside of server root: <a href="https://github.com/owncloud/core/pull/40607">#40607</a></p>
+            <p>When an app_path is pointing outside of the ownCloud server root or uses an symlink under
+   certain conditions the l10n folder points to an invalid location and results in a crash of the
+   server. This happened due to the assumption that app paths always start with the server root
+   path.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40607<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix share into share move scenario: <a href="https://github.com/owncloud/core/pull/40612">#40612</a></p>
+            <p>Public links were lost upon moving share into another share as the share owner was not correctly
+   set. This has been now partially fixed.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5565<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40612<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Enable 2FA via provisioning API: <a href="https://github.com/owncloud/core/issues/40617">#40617</a></p>
+            <p>Two factor authentication can now be enabled using the provisioning api.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40617<br>
+            </p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Add index on oc_filecache: <a href="https://github.com/owncloud/core/issues/40633">#40633</a></p>
+            <p>This index can help to speed-up bulk file operations.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40633<br>
+            </p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Adjust request body options for Guzzle7: <a href="https://github.com/owncloud/core/pull/40652">#40652</a></p>
+            <p>In Guzzle major version 7 the body option of a request must be a string or similar. Requests that
+   send arrays of items have been adjusted to use the form_params option. Developers of apps that
+   use lib/private/Http/Client/IClient.php should check any calls to ensure that arrays of
+   items are not passed in the body option. See the diffs of PHP docs in the linked PR for examples.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40649<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40652<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40337">#40337</a></p>
@@ -155,12 +284,24 @@
    phpseclib/phpseclib (3.0.14 to 3.0.18) - laminas/laminas-filter (2.12.0 to 2.22.0) -
    laminas/laminas-inputfilter (2.12.1 to 2.21.0) - laminas/laminas-servicemanager (3.7.0
    to 3.17.0) - laminas/laminas-stdlib (3.11.0 to 3.13.0) - laminas/laminas-validator
-   (2.19.0 to 2.25.0) - league/flysystem (1.1.9 to 1.1.10) - psr/container (1.1.1 to 1.1.2) -
-   punic/punic (3.7.0 to 3.8.0) - sabre/uri (2.2.3 to 2.3.2) - sabre/vobject (4.5.0 to 4.5.1)The following have been updated in apps/files_external/3rdparty: - google/auth (v1.21.1 to
+   (2.19.0 to 2.25.0) - league/flysystem (1.1.9 to 1.1.10) - phpseclib/phpseclib (3.0.18 tp
+   3.0.19) - psr/container (1.1.1 to 1.1.2) - punic/punic (3.7.0 to 3.8.0) - sabre/uri (2.2.3 to
+   2.3.2) - sabre/vobject (4.5.0 to 4.5.3)The following have been updated in apps/files_external/3rdparty: - google/auth (v1.21.1 to
    v1.23.0) - google/apiclient-services (v0.259.0 to v0.272.0) - guzzlehttp/psr7 (2.4.0 to
    2.4.3)
             </p>
-            <p>https://github.com/owncloud/core/pull/40337<br>https://github.com/owncloud/core/pull/40394<br>https://github.com/owncloud/core/pull/40410<br>https://github.com/owncloud/core/pull/40424<br>https://github.com/owncloud/core/pull/40448<br>https://github.com/owncloud/core/pull/40449<br>https://github.com/owncloud/core/pull/40494<br>https://github.com/owncloud/core/pull/40543<br>https://github.com/owncloud/core/pull/40554<br>https://github.com/owncloud/core/pull/40568<br></p>
+            <p>https://github.com/owncloud/core/pull/40337<br>https://github.com/owncloud/core/pull/40394<br>https://github.com/owncloud/core/pull/40410<br>https://github.com/owncloud/core/pull/40424<br>https://github.com/owncloud/core/pull/40448<br>https://github.com/owncloud/core/pull/40449<br>https://github.com/owncloud/core/pull/40494<br>https://github.com/owncloud/core/pull/40543<br>https://github.com/owncloud/core/pull/40554<br>https://github.com/owncloud/core/pull/40568<br>https://github.com/owncloud/core/pull/40591<br>https://github.com/owncloud/core/pull/40668<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Allow specifying available space for objectstorages: <a href="https://github.com/owncloud/core/pull/40389">#40389</a></p>
+            <p>Objectstorages are reporting only unknown storage space. This causes problems in other apps
+   that rely on this storage method, e.g. metrics app that monitors available space. Now, new
+   configuration in the storage level is added, allowing for using the system configuration
+   variable by the apps or further extension of storage class for objectstorage.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40665<br>https://github.com/owncloud/enterprise/issues/5384<br>https://github.com/owncloud/enterprise/issues/5006<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40389<br>https://github.com/owncloud/core/pull/40669<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.3 support across the platform: <a href="https://github.com/owncloud/core/pull/40394">#40394</a></p>
@@ -239,7 +380,110 @@
    https://symfony.com/blog/symfony-4-4-49-released
    https://github.com/owncloud/core/pull/40517Code that has been deprecated in Symfony 4 has been refactored to be ready for Symfony 5.
             </p>
-            <p>https://github.com/owncloud/core/pull/40521<br>https://github.com/owncloud/core/pull/40575<br></p>
+            <p>https://github.com/owncloud/core/pull/40521<br>https://github.com/owncloud/core/pull/40575<br>https://github.com/owncloud/core/pull/40592<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add account creation time: <a href="https://github.com/owncloud/enterprise/issues/2298">#2298</a></p>
+            <p>Adding account creation time in oc_accounts table
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/2298<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40588<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Show WebDAV Url in personal setting under app passwords: <a href="https://github.com/owncloud/core/pull/40509">#40509</a></p>
+            <p>For easy access of files through WebDAV the url is displayed right under the app password
+   section.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40509<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Show username on personal profile page: <a href="https://github.com/owncloud/core/pull/40510">#40510</a></p>
+            <p>The username as well as the full name of a user is now shown on their personal general settings
+   page.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40510<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add legal privacy polciy and imprint links to personal settings: <a href="https://github.com/owncloud/core/pull/40511">#40511</a></p>
+            <p>The links for legal.privacy_policy_url and legal.imprint_url are now displayed on the
+   personal general settings page so that they are conveniently available for all users to see.
+   These are only displayed if they are set.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40511<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Persistent major file version workflow: <a href="https://github.com/owncloud/core/pull/40531">#40531</a></p>
+            <p>- Restore operation logic changed. Now restore is creating new current version of the file from
+   one of past noncurrent versions of the file. Current version also receives incremented mtime
+   for the file, and author of the files is the user that restored the file. The old noncurrent
+   version is no longer removed upon restore and current version no longer receives mtime of the
+   version. - The current version of the file is now shown in the Versions Tab, highlighted with
+   "gray" background - Versions now persist additional extended metadata on versioning tags,
+   that allow easier identification of the versions. Each update increases minor version for the
+   file. Current version of the file now can be published, which increases major version tag. -
+   Each new edit of the file would create noncurrent versions. The ones tagged with major version
+   due to publishing, will be persisted long term and wont be subject to any retention policies. -
+   Migrate from deprecated save_version_author to save_version_metadata
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5286<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40531<br>https://github.com/owncloud/core/pull/40641<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add support for login policies: <a href="https://github.com/owncloud/core/pull/40574">#40574</a></p>
+            <p>Support for login policies has been added in order to block the login of users under some
+   circumstances. By default, there isn't any restriction, so any user can login normally
+   (assuming the password is correct)A group login policy has been added. This policy allows or denies the user from login based on the
+   login type being used by the user (username + password, openidconnect, etc) and whether he
+   belongs to specific groups. This can be used to ensure a group of users are always authenticated
+   using a determined authentication mechanism.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40574<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add support for OCM via ScienceMesh: <a href="https://github.com/owncloud/core/issues/40577">#40577</a></p>
+            <p>We've added an if-statement in the files_sharing ShareesController code that searches for
+   remote sharees. When the config entry `sharing.remoteShareesSearch` is set to the name of a
+   class that is registered in the server container and that implements
+   `IRemoteShareesSearch`, for instance the 'ScienceMeshSearchPlugin' that the
+   'sciencemesh' app registers, use it instead of the federatedfilesharing app to find sharee
+   matches for OCM sharing.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40577<br>
+            </p>
+            <p>https://github.com/pondersource/oc-sciencemesh/pull/39<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Tweak rewrite conditions in .htaccess: <a href="https://github.com/owncloud/core/pull/40584">#40584</a></p>
+            <p>Changed the RewriteCond rules in the `.htaccess` file to match the expected paths.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40584<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Improve UX on occ user:sync: <a href="https://github.com/owncloud/core/pull/40640">#40640</a></p>
+            <p>Backend class aliases have been added to improve usability of this command.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40640<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Drag & Drop folders into public file upload: <a href="https://github.com/owncloud/core/pull/40643">#40643</a></p>
+            <p>Previously only files were accepted via drag & drop. Users can now also drag folders into a
+   public link that has the filedrop flag. When adding a folder, the hierarchy is flattened out and
+   all files are added without any subfolders. Name collisons are avoided as usual.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5489<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40643<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Make sender display name in mail notifications configurable: <a href="https://github.com/owncloud/core/pull/40671">#40671</a></p>
+            <p>In some cases mail notifications related to sharing activities are blocked by mail filters as
+   they are flagged as email impersonation. In such cases it may be desirable for an oC admin to have
+   a config option for removing the sender display name from the "From" address. This is now
+   possible by setting the following config.php parameter:Remove_sender_display_name =&gt; true
+            </p>
+            <p>https://github.com/owncloud/core/pull/40671<br></p>
         </li>
     </ul>
     <h2 id="10.11.0" class="version"> Changelog for ownCloud Core [10.11.0] (2022-08-23)</h2>

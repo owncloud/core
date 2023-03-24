@@ -338,4 +338,26 @@ class ImageTest extends \Test\TestCase {
 		\unlink($tempFile);
 		$this->assertEquals($mimeType, $actualMimeType);
 	}
+
+	public function exifDataBigStreamProvider() {
+		return [
+			[OC::$SERVERROOT.'/tests/data/bigexif.jpg'],
+			// TIFF images can't be loaded at the moment
+		];
+	}
+
+	/**
+	 * @dataProvider exifDataBigStreamProvider
+	 */
+	public function testExifDataBigStream($targetFile) {
+		$img = new \OC_Image();
+
+		\OC\Files\Stream\Close::registerCallback($targetFile, function () {
+		});
+		$stream = \fopen("close://{$targetFile}", 'rb');
+
+		$img->loadFromFileHandle($stream);
+		\fclose($stream);
+		self::assertSame(6, $img->getOrientation());  // orientation = right, top
+	}
 }

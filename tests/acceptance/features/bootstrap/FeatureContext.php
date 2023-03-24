@@ -23,6 +23,7 @@
 
 use Behat\Behat\Hook\Scope\BeforeStepScope;
 use GuzzleHttp\Exception\GuzzleException;
+use Helmich\JsonAssert\JsonAssertions;
 use rdx\behatvars\BehatVariablesContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
@@ -36,7 +37,6 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\UploadHelper;
-use TestHelpers\OcisHelper;
 use Laminas\Ldap\Ldap;
 use TestHelpers\WebDavHelper;
 
@@ -1581,20 +1581,12 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return bool
 	 */
 	public function isAPublicLinkUrl(string $url):bool {
-		if (OcisHelper::isTestingOnReva()) {
-			$urlEnding = \ltrim($url, '/');
-		} else {
-			if (\substr($url, 0, 4) !== "http") {
-				return false;
-			}
-			$urlEnding = \substr($url, \strlen($this->getBaseUrl() . '/'));
+		if (\substr($url, 0, 4) !== "http") {
+			return false;
 		}
+		$urlEnding = \substr($url, \strlen($this->getBaseUrl() . '/'));
 
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$matchResult = \preg_match("%^(#/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
-		} else {
-			$matchResult = \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
-		}
+		$matchResult = \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
 
 		// preg_match returns (int) 1 for a match, we want to return a boolean.
 		if ($matchResult === 1) {
@@ -1638,6 +1630,55 @@ class FeatureContext extends BehatVariablesContext {
 			);
 		}
 		$this->emptyLastHTTPStatusCodesArray();
+	}
+
+	/**
+	 * @param PyStringNode $schemaString
+	 *
+	 * @return mixed
+	 */
+	private function getJSONSchema(PyStringNode $schemaString) {
+		$schemaRawString = $schemaString->getRaw();
+		// substitute the inline codes or values
+		$schemaRawString = $this->substituteInLineCodes($schemaRawString);
+		$schema = json_decode($schemaRawString);
+		Assert::assertNotNull($schema, 'schema is not valid JSON');
+		return $schema;
+	}
+
+	/**
+	 * returns json decoded body content of a json response as an object
+	 *
+	 * @param ResponseInterface|null $response
+	 *
+	 * @return object
+	 */
+	public function getJsonDecodedResponseBodyContent(ResponseInterface $response = null):?object {
+		$response = $response ?? $this->response;
+		if ($response !== null) {
+			$response->getBody()->rewind();
+			return json_decode($response->getBody()->getContents());
+		}
+		return null;
+	}
+
+	/**
+	 * @Then the JSON data of the response should match
+	 *
+	 * @param PyStringNode $schemaString
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function theDataOfTheResponseShouldMatch(
+		PyStringNode $schemaString
+	): void {
+		$jsonResponse = $this->getJsonDecodedResponseBodyContent();
+		JsonAssertions::assertJsonDocumentMatchesSchema(
+			$jsonResponse->ocs->data,
+			$this->getJSONSchema($schemaString)
+		);
 	}
 
 	/**
@@ -2728,59 +2769,28 @@ class FeatureContext extends BehatVariablesContext {
 		$jsonExpectedDecoded['product'] = $product;
 		$jsonExpectedDecoded['productname'] = $productName;
 
-		if (OcisHelper::isTestingOnOc10()) {
-			// On oC10 get the expected version values by parsing the output of "occ status"
-			$runOccStatus = $this->runOcc(['status']);
-			if ($runOccStatus === 0) {
-				$output = \explode("- ", $this->lastStdOut);
-				$version = \explode(": ", $output[3]);
-				Assert::assertEquals(
-					"version",
-					$version[0],
-					"Expected 'version' but got $version[0]"
-				);
-				$versionString = \explode(": ", $output[4]);
-				Assert::assertEquals(
-					"versionstring",
-					$versionString[0],
-					"Expected 'versionstring' but got $versionString[0]"
-				);
-				$jsonExpectedDecoded['version'] = \trim($version[1]);
-				$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
-			} else {
-				Assert::fail(
-					"Cannot get version variables from occ - status $runOccStatus"
-				);
-			}
+		// On oC10 get the expected version values by parsing the output of "occ status"
+		$runOccStatus = $this->runOcc(['status']);
+		if ($runOccStatus === 0) {
+			$output = \explode("- ", $this->lastStdOut);
+			$version = \explode(": ", $output[3]);
+			Assert::assertEquals(
+				"version",
+				$version[0],
+				"Expected 'version' but got $version[0]"
+			);
+			$versionString = \explode(": ", $output[4]);
+			Assert::assertEquals(
+				"versionstring",
+				$versionString[0],
+				"Expected 'versionstring' but got $versionString[0]"
+			);
+			$jsonExpectedDecoded['version'] = \trim($version[1]);
+			$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
 		} else {
-			// We are on oCIS or reva or some other implementation. We cannot do "occ status".
-			// So get the expected version values by looking in the capabilities response.
-			$version = $this->appConfigurationContext->getParameterValueFromXml(
-				$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
-				'core',
-				'status@@@version'
+			Assert::fail(
+				"Cannot get version variables from occ - status $runOccStatus"
 			);
-
-			if (!\strlen($version)) {
-				Assert::fail(
-					"Cannot get version from core capabilities"
-				);
-			}
-
-			$versionString = $this->appConfigurationContext->getParameterValueFromXml(
-				$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
-				'core',
-				'status@@@versionstring'
-			);
-
-			if (!\strlen($versionString)) {
-				Assert::fail(
-					"Cannot get versionstring from core capabilities"
-				);
-			}
-
-			$jsonExpectedDecoded['version'] = $version;
-			$jsonExpectedDecoded['versionstring'] = $versionString;
 		}
 		$errorMessage = "";
 		$errorFound = false;
@@ -2844,23 +2854,6 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getStepLineRef()
 		);
 		$this->setResponse($response);
-	}
-
-	/**
-	 * read a server file for ocis
-	 *
-	 * @param string $path
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	public function readFileInServerRootForOCIS(string $path):string {
-		$pathToOcis = \getenv("PATH_TO_OCIS");
-		$targetFile = \rtrim($pathToOcis, "/") . "/" . "services/web/assets" . "/" . ltrim($path, '/');
-		if (!\file_exists($targetFile)) {
-			throw new Exception('Target File ' . $targetFile . ' could not be found');
-		}
-		return \file_get_contents($targetFile);
 	}
 
 	/**
@@ -2932,15 +2925,12 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function theFileWithContentShouldExistInTheServerRoot(string $path, string $content):void {
-		if (OcisHelper::isTestingOnOcis()) {
-			$fileContent = $this->readFileInServerRootForOCIS($path);
-		} else {
-			$this->readFileInServerRootForCore($path);
-			$this->theHTTPStatusCodeShouldBe(200, 'Failed to read the file $path');
-			$fileContent = $this->getResponseXml();
-			$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
-			$fileContent = \urldecode($fileContent);
-		}
+		$this->readFileInServerRootForCore($path);
+		$this->theHTTPStatusCodeShouldBe(200, 'Failed to read the file $path');
+		$fileContent = $this->getResponseXml();
+		$fileContent = (string) $fileContent->data->element->contentUrlEncoded;
+		$fileContent = \urldecode($fileContent);
+
 		Assert::assertSame(
 			$content,
 			$fileContent,
@@ -3646,12 +3636,6 @@ class FeatureContext extends BehatVariablesContext {
 			$suiteParameters = SetupHelper::getSuiteParameters($scope);
 			$this->connectToLdap($suiteParameters);
 		}
-
-		if (OcisHelper::isTestingWithGraphApi()) {
-			$this->graphContext = new GraphContext();
-			$this->graphContext->before($scope);
-			$environment->registerContext($this->graphContext);
-		}
 	}
 
 	/**
@@ -3837,12 +3821,10 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function clearFileLocks():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
-			$this->authContext->deleteTokenAuthEnforcedAfterScenario();
-			$this->clearFileLocksForServer($this->getBaseUrl());
-			if ($this->remoteBaseUrl !== $this->localBaseUrl) {
-				$this->clearFileLocksForServer($this->getRemoteBaseUrl());
-			}
+		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
+		$this->clearFileLocksForServer($this->getBaseUrl());
+		if ($this->remoteBaseUrl !== $this->localBaseUrl) {
+			$this->clearFileLocksForServer($this->getRemoteBaseUrl());
 		}
 	}
 
@@ -3869,9 +3851,6 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public static function useBigFileIDs(BeforeSuiteScope $scope):void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return;
-		}
 		$fullUrl = \getenv('TEST_SERVER_URL');
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
@@ -4268,17 +4247,15 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function restoreParametersAfterScenario():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
-			$this->authContext->deleteTokenAuthEnforcedAfterScenario();
-			$user = $this->getCurrentUser();
-			$this->setCurrentUser($this->getAdminUsername());
-			$this->runFunctionOnEveryServer(
-				function ($server) {
-					$this->restoreParameters($server);
-				}
-			);
-			$this->setCurrentUser($user);
-		}
+		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
+		$user = $this->getCurrentUser();
+		$this->setCurrentUser($this->getAdminUsername());
+		$this->runFunctionOnEveryServer(
+			function ($server) {
+				$this->restoreParameters($server);
+			}
+		);
+		$this->setCurrentUser($user);
 	}
 
 	/**
@@ -4360,28 +4337,26 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function prepareParametersBeforeScenario():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
-			$user = $this->getCurrentUser();
-			$this->setCurrentUser($this->getAdminUsername());
-			$previousServer = $this->getCurrentServer();
-			foreach (['LOCAL', 'REMOTE'] as $server) {
-				if (($server === 'LOCAL') || $this->federatedServerExists()) {
-					$this->usingServer($server);
-					$this->resetAppConfigs();
-					$result = SetupHelper::runOcc(
-						['config:list', '--private'],
-						$this->getStepLineRef(),
-						$this->getAdminUsername(),
-						$this->getAdminPassword(),
-						$this->getBaseUrl(),
-						$this->getOcPath()
-					);
-					$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
-				}
+		$user = $this->getCurrentUser();
+		$this->setCurrentUser($this->getAdminUsername());
+		$previousServer = $this->getCurrentServer();
+		foreach (['LOCAL', 'REMOTE'] as $server) {
+			if (($server === 'LOCAL') || $this->federatedServerExists()) {
+				$this->usingServer($server);
+				$this->resetAppConfigs();
+				$result = SetupHelper::runOcc(
+					['config:list', '--private'],
+					$this->getStepLineRef(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$this->getBaseUrl(),
+					$this->getOcPath()
+				);
+				$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
 			}
-			$this->usingServer($previousServer);
-			$this->setCurrentUser($user);
 		}
+		$this->usingServer($previousServer);
+		$this->setCurrentUser($user);
 	}
 
 	/**

@@ -42,6 +42,10 @@ class DriveCapabilities extends \Google\Model
   /**
    * @var bool
    */
+  public $canChangeSharingFoldersRequiresOrganizerPermissionRestriction;
+  /**
+   * @var bool
+   */
   public $canComment;
   /**
    * @var bool
@@ -165,6 +169,20 @@ class DriveCapabilities extends \Google\Model
   public function getCanChangeDriveMembersOnlyRestriction()
   {
     return $this->canChangeDriveMembersOnlyRestriction;
+  }
+  /**
+   * @param bool
+   */
+  public function setCanChangeSharingFoldersRequiresOrganizerPermissionRestriction($canChangeSharingFoldersRequiresOrganizerPermissionRestriction)
+  {
+    $this->canChangeSharingFoldersRequiresOrganizerPermissionRestriction = $canChangeSharingFoldersRequiresOrganizerPermissionRestriction;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanChangeSharingFoldersRequiresOrganizerPermissionRestriction()
+  {
+    return $this->canChangeSharingFoldersRequiresOrganizerPermissionRestriction;
   }
   /**
    * @param bool

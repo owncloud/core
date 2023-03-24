@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 #When this issue is fixed, please delete this file and use the one from ocsPUTAuth.feature
 Feature: current oC10 behavior for issue-38423
 

@@ -1,4 +1,4 @@
-@api @issue-ocis-2413 @notToImplementOnOCIS
+@api
 Feature: UNLOCK locked items
 
   Background:

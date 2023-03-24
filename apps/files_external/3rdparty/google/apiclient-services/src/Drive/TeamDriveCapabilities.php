@@ -34,6 +34,10 @@ class TeamDriveCapabilities extends \Google\Model
   /**
    * @var bool
    */
+  public $canChangeSharingFoldersRequiresOrganizerPermissionRestriction;
+  /**
+   * @var bool
+   */
   public $canChangeTeamDriveBackground;
   /**
    * @var bool
@@ -141,6 +145,20 @@ class TeamDriveCapabilities extends \Google\Model
   public function getCanChangeDomainUsersOnlyRestriction()
   {
     return $this->canChangeDomainUsersOnlyRestriction;
+  }
+  /**
+   * @param bool
+   */
+  public function setCanChangeSharingFoldersRequiresOrganizerPermissionRestriction($canChangeSharingFoldersRequiresOrganizerPermissionRestriction)
+  {
+    $this->canChangeSharingFoldersRequiresOrganizerPermissionRestriction = $canChangeSharingFoldersRequiresOrganizerPermissionRestriction;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanChangeSharingFoldersRequiresOrganizerPermissionRestriction()
+  {
+    return $this->canChangeSharingFoldersRequiresOrganizerPermissionRestriction;
   }
   /**
    * @param bool

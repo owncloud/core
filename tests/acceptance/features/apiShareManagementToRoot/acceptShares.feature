@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: accept/decline shares coming from internal users
   As a user
   I want to have control of which received shares I accept
@@ -795,7 +795,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/ |
     And the content of file "/PARENT/abc.txt" for user "David" should be "uploaded content"
 
-  @issue-ocis-765
+
   Scenario: shares exist after restoring already shared file to a previous version
     Given user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
     And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"

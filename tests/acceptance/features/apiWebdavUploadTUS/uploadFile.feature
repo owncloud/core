@@ -29,17 +29,6 @@ Feature: upload file
       | new         | /?fi=le&%#2 . txt |
       | new         | /# %ab ab?=ed     |
 
-    @personalSpace
-    Examples:
-      | dav_version | file_name         |
-      | spaces      | /upload.txt       |
-      | spaces      | /strängé file.txt |
-      | spaces      | /नेपाली.txt       |
-      | spaces      | /s,a,m,p,l,e.txt  |
-      | spaces      | /C++ file.cpp     |
-      | spaces      | /?fi=le&%#2 . txt |
-      | spaces      | /# %ab ab?=ed     |
-
 
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
@@ -63,17 +52,6 @@ Feature: upload file
       | new         | /folder ?2.txt                   | file ?2.txt                   |
       | new         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
 
-    @personalSpace
-    Examples:
-      | dav_version | folder_name                      | file_name                     |
-      | spaces      | /upload                          | abc.txt                       |
-      | spaces      | /strängé folder (duplicate #2 &) | strängé file (duplicate #2 &) |
-      | spaces      | /C++ folder                      | C++ file.cpp                  |
-      | spaces      | /नेपाली                          | नेपाली                        |
-      | spaces      | /folder #2.txt                   | file #2.txt                   |
-      | spaces      | /folder ?2.txt                   | file ?2.txt                   |
-      | spaces      | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
-
 
   Scenario Outline: Upload chunked file with TUS
     Given using <dav_version> DAV path
@@ -84,11 +62,6 @@ Feature: upload file
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: Upload 1 byte chunks with TUS
     Given using <dav_version> DAV path
@@ -98,11 +71,6 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: Upload to overwriting a file
@@ -115,11 +83,6 @@ Feature: upload file
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: upload a file and no version is available
     Given using <dav_version> DAV path
@@ -129,11 +92,6 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: upload a file twice and versions are available
@@ -146,11 +104,6 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: upload a file in chunks with TUS and no version is available
@@ -174,11 +127,6 @@ Feature: upload file
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: upload a file with invalid-name
     Given using <dav_version> DAV path
@@ -201,11 +149,3 @@ Feature: upload file
       | new         | "filewithLF-and-CR\r\n" | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
       | new         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
       | new         | "my\\file"              | bXkMaWxl                     |
-
-  @personalSpace
-  Examples:
-    | dav_version | file_name               | metadata                     |
-    | spaces      | " "                     | IA==                         |
-    | spaces      | "filewithLF-and-CR\r\n" | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
-    | spaces      | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
-    | spaces      | "my\\file"              | bXkMaWxl                     |

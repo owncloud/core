@@ -6,7 +6,7 @@ OC.L10N.register(
     "Delete" : "Hapus",
     "Cancel" : "Batal",
     "Email" : "Email",
-    "Password" : "Kata Sandi",
-    "Username" : "Nama pengguna"
+    "Username" : "Nama pengguna",
+    "Password" : "Kata Sandi"
 },
 "nplurals=1; plural=0;");

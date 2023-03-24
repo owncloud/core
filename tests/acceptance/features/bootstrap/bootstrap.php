@@ -20,19 +20,9 @@
  *
  */
 
-$pathToOcis = \getenv("PATH_TO_OCIS");
-
 $classLoader = new \Composer\Autoload\ClassLoader();
 $classLoader->addPsr4("Page\\", __DIR__ . "/../lib", true);
 $classLoader->addPsr4("TestHelpers\\", __DIR__ . "/../../../TestHelpers", true);
-if ($pathToOcis && \is_dir($pathToOcis)) {
-	$classLoader->addPsr4("TestHelpers\\", $pathToOcis . "/tests/TestHelpers", true);
-	$classLoader->addPsr4(
-		"",
-		$pathToOcis . "/tests/acceptance/features/bootstrap",
-		true
-	);
-}
 $classLoader->register();
 
 // Sleep for 10 milliseconds
@@ -46,6 +36,9 @@ const STANDARD_UI_WAIT_TIMEOUT_MILLISEC = 10000;
 // Minimum timeout for use in code that needs to wait for the UI
 const MINIMUM_UI_WAIT_TIMEOUT_MILLISEC = 500;
 const MINIMUM_UI_WAIT_TIMEOUT_MICROSEC = MINIMUM_UI_WAIT_TIMEOUT_MILLISEC * 1000;
+
+// Minimum mtime difference for new version to generate
+const VERSION_MTIME_WAIT_TIMEOUT_MICROSEC = 1000000;
 
 // Minimum timeout for emails
 const EMAIL_WAIT_TIMEOUT_SEC = 10;

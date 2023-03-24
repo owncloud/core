@@ -1,7 +1,7 @@
 @api
 Feature: PROPFIND
 
-  @issue-ocis-751
+
   Scenario Outline: PROPFIND to "/remote.php/dav/(files|spaces)"
     Given user "Alice" has been created with default attributes and without skeleton files
     When user "Alice" requests "<dav_path>" with "PROPFIND" using basic auth
@@ -18,12 +18,12 @@ Feature: PROPFIND
       | header | value   |
       | depth  | <depth> |
     Then the HTTP status code should be "<http_status>"
-    @notToImplementOnOCIS @depthInfinityPropfindEnabled
+    @depthInfinityPropfindEnabled
     Examples:
       | dav_path                    | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/files/alice | 1                      | 0        | 207         |
       | /remote.php/dav/files/alice | 1                      | infinity | 207         |
-    @notToImplementOnOCIS @depthInfinityPropfindDisabled
+    @depthInfinityPropfindDisabled
     Examples:
       | dav_path                    | depth_infinity_allowed | depth    | http_status |
       | /remote.php/dav/files/alice | 0                      | 0        | 207         |

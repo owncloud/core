@@ -11,14 +11,15 @@ OC.L10N.register(
     "Updated" : "ਅੱਪਡੇਟ ਕੀਤਾ",
     "Groups" : "ਗਰੁੱਪ",
     "undo" : "ਵਾਪਸ",
+    "unknown" : "ਅਣਜਾਣ",
     "add group" : "ਗਰੁੱਪ ਸ਼ਾਮਲ",
     "Sharing" : "ਸਾਂਝ",
     "Login" : "ਲਾਗਇਨ",
     "Server address" : "ਸਰਵਰ ਐਡਰੈਸ",
     "Cancel" : "ਰੱਦ ਕਰੋ",
+    "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
     "Password" : "ਪਾਸਵਰ",
     "Change password" : "ਪਾਸਵਰਡ ਬਦਲੋ",
-    "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
     "Settings" : "ਸੈਟਿੰਗ"
 },
 "nplurals=2; plural=(n != 1);");

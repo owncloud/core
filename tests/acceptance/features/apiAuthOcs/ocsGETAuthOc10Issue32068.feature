@@ -1,10 +1,10 @@
-@api @notToImplementOnOCIS @files_sharing-app-required @issue-32068
+@api @files_sharing-app-required @issue-32068
 Feature: current oC10 behavior for issue-32068
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-32068 @issue-ocis-reva-30 @smokeTest
+  @issue-32068 @smokeTest
   Scenario: using OCS anonymously
     When a user requests these endpoints with "GET" and no authentication
       | endpoint                                                    |
@@ -26,7 +26,7 @@ Feature: current oC10 behavior for issue-32068
     And the OCS status code of responses on all endpoints should be "997"
     #And the OCS status code of responses on all endpoints should be "401"
 
-  @issue-32068 @issue-ocis-reva-11 @issue-ocis-reva-30 @issue-ocis-reva-31 @issue-ocis-reva-32 @issue-ocis-reva-33 @issue-ocis-reva-34 @issue-ocis-reva-35
+  @issue-32068
   Scenario: using OCS with non-admin basic auth
     When the user "Alice" requests these endpoints with "GET" with basic auth
       | endpoint                                                    |
@@ -58,7 +58,7 @@ Feature: current oC10 behavior for issue-32068
     And the OCS status code of responses on all endpoints should be "997"
     #And the OCS status code of responses on all endpoints should be "401"
 
-  @issue-32068 @issue-ocis-reva-29 @issue-ocis-reva-30 @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
+  @issue-32068 @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: using OCS as normal user with wrong password
     When user "Alice" requests these endpoints with "GET" using password "invalid"
       | endpoint                                                    |

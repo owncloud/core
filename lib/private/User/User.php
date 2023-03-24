@@ -272,6 +272,15 @@ class User implements IUser {
 	}
 
 	/**
+	 * returns the timestamp of the user's creation time
+	 *
+	 * @return int
+	 */
+	public function getCreationTime() {
+		return (int)$this->account->getCreationTime();
+	}
+ 
+	/**
 	 * Delete the user
 	 *
 	 * @return bool

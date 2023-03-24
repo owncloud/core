@@ -36,7 +36,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @skipOnEncryptionType:user-keys @issue-32322 @issue-ocis-2133
+  @smokeTest @skipOnEncryptionType:user-keys @issue-32322
   Scenario Outline: Creating a share of a file containing commas in the filename, with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -65,7 +65,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-2133 @issue-ocis-reva-301 @issue-ocis-reva-302
+
   Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -132,7 +132,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @issue-ocis-2133
+
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -157,7 +157,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-34
+
   Scenario Outline: Creating a share of a file with a group, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -182,7 +182,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-34
+
   Scenario Outline: Creating a share of a folder with a group, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -235,7 +235,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @skipOnReva # reva doesn't have a pre-created admin user
+  @smokeTest
   Scenario Outline: User included in multiple groups receives a share from the admin
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -294,7 +294,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-2201
+
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -396,7 +396,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-11
+
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -434,7 +434,7 @@ Feature: sharing
       | /Shares/randomfile.txt |
     And the content of file "/Shares/randomfile.txt" for user "Brian" should be "Random data"
 
-  @issue-ocis-reva-34
+
   Scenario Outline: Share of folder to a group with emoji in the name
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -523,13 +523,12 @@ Feature: sharing
     And file "/textfile0.txt" should not be included as path in the response
     And as "Brian" file "/Shares/textfile0.txt" should not exist
     And as "Carol" file "/Shares/textfile0.txt" should not exist
-    @skipOnOcis
     Examples:
       | ocs_api_version | ocs_status_code | path                  |
       | 1               | 100             | /Shares/textfile0.txt |
       | 2               | 200             | /Shares/textfile0.txt |
 
-  @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-2146
+  @skipOnFilesClassifier @issue-files-classifier-291
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -558,7 +557,7 @@ Feature: sharing
     And the content of file "/Shares/common/sub/textfile0.txt" for user "Brian" should be "BLABLABLA" plus end-of-line
     And the content of file "/common/sub/textfile0.txt" for user "Alice" should be "BLABLABLA" plus end-of-line
 
-  @issue-enterprise-3896 @issue-ocis-2201
+  @issue-enterprise-3896
   Scenario Outline: sharing back to resharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -579,7 +578,7 @@ Feature: sharing
       | pending_share_path |
       | /userOneFolder     |
 
-  @issue-enterprise-3896 @issue-ocis-2201
+  @issue-enterprise-3896
   Scenario Outline: sharing back to original sharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -600,7 +599,7 @@ Feature: sharing
       | pending_share_path |
       | /userOneFolder     |
 
-  @issue-enterprise-3896 @issue-ocis-2201
+  @issue-enterprise-3896
   Scenario Outline: sharing a subfolder to a user that already received parent folder share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -654,7 +653,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-903
+
   Scenario Outline: shares to a deleted user should not be listed as shares for the sharer
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -677,7 +676,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-719
+
   Scenario Outline: Creating a share of a renamed file when another share exists
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -710,7 +709,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-1710
+
   Scenario Outline: Sharing a same file twice to the same group is not possible
     Given using OCS API version "<ocs-api-version>"
     And group "grp1" has been created
@@ -725,7 +724,7 @@ Feature: sharing
       | 1               | 200         |
       | 2               | 403         |
 
-  @issue-ocis-2215
+
   Scenario Outline: Sharing the shares folder to users is not possible
     Given using OCS API version "<ocs-api-version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -742,7 +741,7 @@ Feature: sharing
       | 1               | 200         |
       | 2               | 403         |
 
-  @issue-ocis-2215
+
   Scenario Outline: Sharing the shares folder to groups is not possible
     Given using OCS API version "<ocs-api-version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -761,7 +760,7 @@ Feature: sharing
       | 1               | 200         |
       | 2               | 403         |
 
-  @issue-ocis-2215
+
   Scenario Outline: Sharing the shares folder as public link is not possible
     Given using OCS API version "<ocs-api-version>"
     And user "Brian" has been created with default attributes and without skeleton files

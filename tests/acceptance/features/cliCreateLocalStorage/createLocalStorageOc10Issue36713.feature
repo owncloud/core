@@ -10,7 +10,7 @@ Feature: create local storage from the command line
       | Alice    |
       | Brian    |
 
-  @issue-36713 @notToImplementOnOCIS
+  @issue-36713
   Scenario: create local storage that already exists
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"

@@ -1,0 +1,5 @@
+Bugfix: Add index on oc_filecache
+
+This index can help to speed-up bulk file operations.
+
+https://github.com/owncloud/core/issues/40633

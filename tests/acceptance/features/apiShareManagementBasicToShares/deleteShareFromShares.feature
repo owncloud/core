@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1328 @issue-ocis-1289
+@api @files_sharing-app-required
 Feature: sharing
 
   Background:
@@ -198,7 +198,7 @@ Feature: sharing
       | /shared                 | 1               | 200              | /Shares/shared          | /Shares/shared          |
       | /shared                 | 2               | 404              | /Shares/shared          | /Shares/shared          |
 
-  @issue-ocis-720
+
   Scenario Outline: request PROPFIND after sharer deletes the collaborator
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
@@ -213,7 +213,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-1229
+
   Scenario Outline: delete a share with wrong authentication
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"

@@ -21,11 +21,6 @@ Feature: low level tests of the creation extension see https://tus.io/protocols/
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: creating a new upload resource without upload length
     Given using <dav_version> DAV path
@@ -41,8 +36,3 @@ Feature: low level tests of the creation extension see https://tus.io/protocols/
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

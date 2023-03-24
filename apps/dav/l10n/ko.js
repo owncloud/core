@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "연락처에 등록된 생일",
+    "User unknown" : "알 수 없는 사용자",
     "User disabled" : "사용자 비활성화됨",
     "Personal" : "개인",
     "Contacts" : "연락처",

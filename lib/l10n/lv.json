@@ -54,6 +54,7 @@
     "Set an admin password." : "Iestatiet administratora paroli.",
     "Can't update %s" : "Nevar atjaunināt %s",
     "%s shared »%s« with you" : "%s kopīgots »%s« ar jums",
+    "%s" : "%s",
     "%s via %s" : "%s iekš %s",
     "Sharing %s failed, because the file does not exist" : "%s kopīgošana neizdevās, jo fails vairāk neeksistē",
     "You are not allowed to share %s" : "Jums nav atļauts kopīgot %s",

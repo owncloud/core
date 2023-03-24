@@ -8,7 +8,7 @@ Feature: set file properties
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @issue-ocis-reva-276
+  @smokeTest
   Scenario Outline: Setting custom DAV property and reading it
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
@@ -20,7 +20,7 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @issue-ocis-reva-217
+
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
@@ -32,7 +32,7 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @issue-ocis-reva-276
+
   Scenario Outline: Setting custom DAV property and reading it after the file is renamed
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testcustompropwithmove.txt"
@@ -45,7 +45,7 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @files_sharing-app-required @issue-ocis-reva-217
+  @files_sharing-app-required
   Scenario Outline: Setting custom DAV property on a shared file as an owner and reading as a recipient
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -63,7 +63,7 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @issue-ocis-reva-276
+
   Scenario Outline: Setting custom DAV property using one endpoint and reading it with other endpoint
     Given using <action_dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testnewold.txt"

@@ -34,6 +34,8 @@
  *
  */
 
+use Symfony\Contracts\EventDispatcher\Event;
+
 OC_Util::checkSubAdminUser();
 
 \OC::$server->getNavigationManager()->setActiveEntry('core_users');
@@ -104,7 +106,7 @@ $defaultQuota=$config->getAppValue('files', 'default_quota', 'none');
 $defaultQuotaIsUserDefined=\array_search($defaultQuota, $quotaPreset)===false
 	&& \array_search($defaultQuota, ['none', 'default'])===false;
 
-\OC::$server->getEventDispatcher()->dispatch('OC\Settings\Users::loadAdditionalScripts');
+\OC::$server->getEventDispatcher()->dispatch(new Event(), 'OC\Settings\Users::loadAdditionalScripts');
 
 $tmpl = new OC_Template("settings", "users/main", "user");
 $tmpl->assign('groups', $groups);
@@ -121,6 +123,7 @@ $tmpl->assign('enableAvatars', \OC::$server->getConfig()->getSystemValue('enable
 
 $tmpl->assign('show_is_enabled', $config->getAppValue('core', 'umgmt_show_is_enabled', 'false'));
 $tmpl->assign('show_storage_location', $config->getAppValue('core', 'umgmt_show_storage_location', 'false'));
+$tmpl->assign('show_creation_time', $config->getAppValue('core', 'umgmt_show_creation_time', 'false'));
 $tmpl->assign('show_last_login', $config->getAppValue('core', 'umgmt_show_last_login', 'false'));
 $tmpl->assign('show_email', $config->getAppValue('core', 'umgmt_show_email', 'false'));
 $tmpl->assign('show_backend', $config->getAppValue('core', 'umgmt_show_backend', 'false'));

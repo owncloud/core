@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Versions" : "Bertsioak",
     "Failed to revert {file} to revision {timestamp}." : "Errore bat izan da {fitxategia} {timestamp} bertsiora leheneratzean.",
-    "Restore" : "Berrezarri",
-    "No other versions available" : "Ez dago bertsio gehiago eskuragarri"
+    "Restore" : "Berrezarri"
 },
 "nplurals=2; plural=(n != 1);");

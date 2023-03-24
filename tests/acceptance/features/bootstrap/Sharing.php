@@ -27,7 +27,6 @@ use Behat\Gherkin\Node\TableNode;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
-use TestHelpers\OcisHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\SetupHelper;
@@ -423,12 +422,6 @@ trait Sharing {
 	 * @return void
 	 */
 	public function autoAcceptSharesHasBeenDisabled():void {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// auto-accept shares is disabled by default on OCIS.
-			// so there is nothing to do, just return
-			return;
-		}
-
 		$this->appConfigurationContext->serverParameterHasBeenSetTo(
 			"shareapi_auto_accept_share",
 			"core",

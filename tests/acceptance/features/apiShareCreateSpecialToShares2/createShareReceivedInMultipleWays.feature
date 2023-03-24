@@ -33,13 +33,12 @@ Feature: share resources where the sharee receives the share in multiple ways
       | mimetype               | text/plain                |
       | storage_id             | ANY_VALUE                 |
       | share_type             | user                      |
-    @skipOnOcis
     Examples:
       | ocs_api_version | ocs_status_code | file_target               |
       | 1               | 100             | /Shares/textfile0 (2).txt |
       | 2               | 200             | /Shares/textfile0 (2).txt |
 
-  @issue-ocis-1289
+
   Scenario Outline: Share of folder and sub-folder to same user
     Given using OCS API version "<ocs_api_version>"
     And group "grp4" has been created
@@ -64,7 +63,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             | /CHILD                 |
       | 2               | 200             | /CHILD                 |
 
-  @issue-ocis-2021
+
   Scenario Outline: sharing subfolder when parent already shared
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -81,7 +80,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             | /sub               |
       | 2               | 200             | /sub               |
 
-  @issue-ocis-2021
+
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
     And group "grp0" has been created
@@ -123,7 +122,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read,update     |
     And the content of file "/Shares/randomfile.txt" for user "Alice" should be "First data"
     And the content of file "/Shares/randomfile (2).txt" for user "Alice" should be "Second data"
-    @skipOnOcis
     Examples:
       | ocs_api_version | file_target_1          | file_target_2              |
       | 1               | /Shares/randomfile.txt | /Shares/randomfile (2).txt |
@@ -157,7 +155,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read,share      |
     And as "Alice" folder "/Shares/zzzfolder/Brian" should exist
     And as "Alice" folder "/Shares/zzzfolder (2)/Carol" should exist
-    @skipOnOcis
     Examples:
       | ocs_api_version | file_target_1     | file_target_2         | ocs_status_code |
       | 1               | /Shares/zzzfolder | /Shares/zzzfolder (2) | 100             |
@@ -398,7 +395,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to rename file "/Shares/child1/child2/textfile-2.txt" to "/Shares/child1/child2/rename.txt"
     And user "Brian" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
     And user "Alice" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
-    @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |
@@ -433,7 +429,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should be able to delete file "/Shares/child1/child2/textfile-2.txt"
     And user "Brian" should not be able to delete folder "/Shares/parent/child1"
     And user "Alice" should not be able to delete folder "/Shares/parent/child1"
-    @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |

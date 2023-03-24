@@ -143,7 +143,7 @@ OC.L10N.register(
     "the item was removed" : "objekti është hequr",
     "the link expired" : "lidhja ka skaduar",
     "sharing is disabled" : "ndarjet janë çaktivizuar",
-    "For more info, please ask the person who sent this link." : "Për më shumë të dhëna, ju lutemi, pyetni personin që ju dërgoi këtë lidhje.",
+    "For more info, please ask the person who sent this link." : "Për më shumë hollësi, ju lutemi, pyetni personin që ju dërgoi këtë lidhje.",
     "%s is publicly shared" : "%s ndahet publikisht me të tjerët",
     "Download" : "Shkarko",
     "Download %s" : "Shkarko %s",

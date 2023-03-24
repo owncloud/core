@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS @issue-ocis-reva-28
+@api
 Feature: auth
 
   Background:

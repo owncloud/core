@@ -19,7 +19,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-269
+
   Scenario Outline: delete a folder when 2 folder exist with different case
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/parent"
@@ -32,7 +32,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-269
+
   Scenario Outline: delete a sub-folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/PARENT/CHILD"
@@ -47,7 +47,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: delete a folder when there is a default folder for received shares
     Given using <dav_version> DAV path
     And the administrator has set the default folder for received shares to "<share_folder>"
@@ -69,7 +69,7 @@ Feature: delete folder
       | new         | ReceivedShares  |
       | new         | /ReceivedShares |
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario Outline: delete a folder when there is a default folder for received shares that is a multi-level path
     Given using <dav_version> DAV path
     And the administrator has set the default folder for received shares to "/My/Received/Shares"

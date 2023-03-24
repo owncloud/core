@@ -34,6 +34,8 @@ use OCP\UserInterface;
  * @method void setEmail(string $email)
  * @method int getLastLogin()
  * @method void setLastLogin(int $lastLogin)
+ * @method int getCreationTime()
+ * @method void setCreationTime(int $creationTime)
  * @method string getBackend()
  * @method void setBackend(string $backEnd)
  * @method int getState()
@@ -56,6 +58,7 @@ class Account extends Entity {
 	protected $displayName;
 	protected $quota;
 	protected $lastLogin;
+	protected $creationTime;
 	protected $backend;
 	protected $state;
 	protected $home;
@@ -66,6 +69,7 @@ class Account extends Entity {
 	public function __construct() {
 		$this->addType('state', 'integer');
 		$this->addType('lastLogin', 'integer');
+		$this->addType('creationTime', 'integer');
 	}
 
 	/**

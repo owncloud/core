@@ -87,6 +87,7 @@ module.exports = function(config) {
 				srcFiles: [
 					// need to enforce loading order...
 					'apps/files_versions/js/versionmodel.js',
+					'apps/files_versions/js/versionsrootmodel.js',
 					'apps/files_versions/js/versioncollection.js',
 					'apps/files_versions/js/versionstabview.js'
 				],

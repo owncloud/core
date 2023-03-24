@@ -27,7 +27,6 @@ use GuzzleHttp\Ring\Exception\ConnectException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Stream\StreamInterface;
-use TestHelpers\OcisHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -334,7 +333,7 @@ trait WebDav {
 	public function getFullDavFilesPath(string $user):string {
 		$spaceId = null;
 		if ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES) {
-			$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ? WebDavHelper::$SPACE_ID_FROM_OCIS : WebDavHelper::getPersonalSpaceIdForUser(
+			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
 				$this->getBaseUrl(),
 				$user,
 				$this->getPasswordForUser($user),
@@ -512,14 +511,14 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the number of versions should be :arg1
+	 * @Then the number of noncurrent versions should be :arg1
 	 *
 	 * @param int $number
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theNumberOfVersionsShouldBe(int $number):void {
+	public function theNumberOfNoncurrentVersionsShouldBe(int $number):void {
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml(
@@ -4465,10 +4464,6 @@ trait WebDav {
 	public function encodePath(string $path):string {
 		// slashes need to stay
 		$encodedPath = \str_replace('%2F', '/', \rawurlencode($path));
-		// in ocis even brackets are encoded
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return $encodedPath;
-		}
 		// do not encode '(' and ')' for oc10
 		$encodedPath = \str_replace('%28', '(', $encodedPath);
 		$encodedPath = \str_replace('%29', ')', $encodedPath);
@@ -5350,19 +5345,6 @@ trait WebDav {
 		if ($multistatusResults !== null) {
 			foreach ($multistatusResults as $multistatusResult) {
 				$entryPath = $multistatusResult['value'][0]['value'];
-				if (OcisHelper::isTestingOnOcis() && $method === "REPORT") {
-					if ($entryNameToSearch !== null && str_ends_with($entryPath, $entryNameToSearch)) {
-						return $multistatusResult;
-					} else {
-						$spaceId = (WebDavHelper::$SPACE_ID_FROM_OCIS) ? WebDavHelper::$SPACE_ID_FROM_OCIS : WebDavHelper::getPersonalSpaceIdForUser(
-							$this->getBaseUrl(),
-							$user,
-							$this->getPasswordForUser($user),
-							$this->getStepLineRef()
-						);
-						$topWebDavPath = "/remote.php/dav/spaces/" . $spaceId . "/" . $folderPath;
-					}
-				}
 				$entryName = \str_replace($topWebDavPath, "", $entryPath);
 				$entryName = \rawurldecode($entryName);
 				$entryName = \trim($entryName, "/");
@@ -5468,7 +5450,7 @@ trait WebDav {
 		$this->runOcc(
 			[
 				'config:system:set',
-				'file_storage.save_version_author',
+				'file_storage.save_version_metadata',
 				'--type',
 				'boolean',
 				'--value',
@@ -5477,7 +5459,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the author of the created version with index :index should be :expectedUsername
+	 * @Then the author of the noncurrent version with index :index should be :expectedUsername
 	 *
 	 * @param string $index
 	 * @param string $expectedUsername
@@ -5485,7 +5467,7 @@ trait WebDav {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAuthorOfEditedVersionFile(string $index, string $expectedUsername): void {
+	public function theAuthorOfNoncurrentVersionFile(string $index, string $expectedUsername): void {
 		$expectedUserDisplayName = $this->getUserDisplayName($expectedUsername);
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
@@ -5500,7 +5482,7 @@ trait WebDav {
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by");
 		$authors = [];
 		foreach ($xmlPart as $idx => $author) {
-			// The first element is the root path element which is not a version
+			// The first element is the root path element (current version) which is not a noncurrent version
 			// So skipping it
 			if ($idx !== 0) {
 				$authors[] = $author->__toString();
@@ -5524,7 +5506,7 @@ trait WebDav {
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by-name");
 		$displaynames = [];
 		foreach ($xmlPart as $idx => $displayname) {
-			// The first element is the root path element which is not a version
+			// The first element is the root path element (current version) which is not a noncurrent version
 			// So skipping it
 			if ($idx !== 0) {
 				$displaynames[] = $displayname->__toString();

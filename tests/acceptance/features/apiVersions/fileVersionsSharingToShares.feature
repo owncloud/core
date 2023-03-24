@@ -1,4 +1,4 @@
-@api @files_versions-app-required @issue-ocis-reva-275
+@api @files_versions-app-required
 
 Feature: dav-versions
 
@@ -125,7 +125,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/Shares/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer, when the folder has been moved by the sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -140,7 +140,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is at the top level of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "old content" to "/sharefile.txt"
@@ -154,7 +154,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @notToImplementOnOCIS
+  @files_sharing-app-required
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -169,7 +169,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @issue-ocis-reva-34
+  @files_sharing-app-required
   Scenario: sharer can restore a file inside a group shared folder modified by sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Carol" has been created with default attributes and without skeleton files
@@ -189,7 +189,7 @@ Feature: dav-versions
     And the content of file "/Shares/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
     And the content of file "/Shares/sharingfolder/sharefile.txt" for user "Carol" should be "First content"
 
-  @files_sharing-app-required @issue-ocis-reva-386
+  @files_sharing-app-required
   Scenario Outline: Moving a file (with versions) into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -217,7 +217,7 @@ Feature: dav-versions
       | old         | Brian | /testshare        |
       | new         | Brian | /testshare        |
 
-  @files_sharing-app-required @issue-ocis-reva-386
+  @files_sharing-app-required
   Scenario Outline: Moving a file (with versions) out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -238,15 +238,10 @@ Feature: dav-versions
     And as "Brian" file "/testshare/testfile.txt" should not exist
     And the version folder of file "/testfile.txt" for user "<mover>" should contain "2" elements
 
-    @notToImplementOnOCIS
     Examples:
       | dav_version | mover | src-folder        |
       | old         | Alice | /Shares/testshare |
       | new         | Alice | /Shares/testshare |
-
-
-    Examples:
-      | dav_version | mover | src-folder |
       | old         | Brian | /testshare |
       | new         | Brian | /testshare |
 
@@ -272,7 +267,7 @@ Feature: dav-versions
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
     Then the HTTP status code should be "207"
-    And the number of versions should be "3"
+    And the number of noncurrent versions should be "3"
 
 
   Scenario: Receiver tries get file versions of shared file before receiving it

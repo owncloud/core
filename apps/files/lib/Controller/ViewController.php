@@ -43,6 +43,7 @@ use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OCP\AppFramework\Http;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class ViewController
@@ -243,7 +244,7 @@ class ViewController extends Controller {
 			$contentItems[] = $contentItem;
 		}
 
-		$this->eventDispatcher->dispatch('OCA\Files::loadAdditionalScripts');
+		$this->eventDispatcher->dispatch(new Event(), 'OCA\Files::loadAdditionalScripts');
 
 		$params = [];
 		$params['usedSpacePercent'] = (int)$storageInfo['relative'];

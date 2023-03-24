@@ -16,9 +16,9 @@ OC.L10N.register(
     "Port" : "Port",
     "Domain" : "Domäne",
     "Cancel" : "Abbrechen",
+    "Username" : "Benutzername",
     "Password" : "Passwort",
     "Name" : "Name",
-    "Username" : "Benutzername",
     "Personal" : "Persönlich",
     "Settings" : "Einstellungen"
 },

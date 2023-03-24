@@ -32,7 +32,7 @@ Feature: disable user
       | a@-+_.b  |
       | a space  |
 
-  @smokeTest @notToImplementOnOCIS
+  @smokeTest
   Scenario: Subadmin should be able to disable an user in their group
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -47,7 +47,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "Alice" should be disabled
 
-  @notToImplementOnOCIS
+
   Scenario: Subadmin should not be able to disable an user not in their group
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -63,7 +63,7 @@ Feature: disable user
     And the HTTP status code should be "401"
     And user "Alice" should be enabled
 
-  @notToImplementOnOCIS
+
   Scenario: Subadmins should not be able to disable users that have admin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username      |
@@ -88,7 +88,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "another-admin" should be disabled
 
-  @notToImplementOnOCIS
+
   Scenario: Admin can disable subadmins in the same group
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -120,7 +120,7 @@ Feature: disable user
     And the HTTP status code should be "401"
     And user "Brian" should be enabled
 
-  @notToImplementOnOCIS
+
   Scenario: Subadmin should not be able to disable himself
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
@@ -204,7 +204,7 @@ Feature: disable user
     And as "Brian" file "/Shares/textfile0.txt" should exist
     And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
-  @notToImplementOnOCIS
+
   Scenario: getting shares shared by disabled user (to root)
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
@@ -233,7 +233,7 @@ Feature: disable user
     And as "Brian" folder "/Shares/PARENT" should exist
     And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
 
-  @notToImplementOnOCIS
+
   Scenario: getting shares shared by disabled user in a group (to root)
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
@@ -271,7 +271,7 @@ Feature: disable user
       | old         |
       | new         |
 
-  @notToImplementOnOCIS
+
   Scenario: Subadmin should be able to disable user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -286,7 +286,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "another-subadmin" should be disabled
 
-  @notToImplementOnOCIS
+
   Scenario: Subadmin should not be able to disable another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

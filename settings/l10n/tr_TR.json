@@ -1,0 +1,8 @@
+{ "translations": {
+    "Add" : "Ekle",
+    "Username" : "Kullanıcı adı",
+    "Password" : "Şifre",
+    "Name" : "Adı",
+    "Settings" : "Ayarlar"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

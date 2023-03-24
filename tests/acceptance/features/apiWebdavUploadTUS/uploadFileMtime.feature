@@ -17,11 +17,6 @@ Feature: upload file
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: upload file with future mtime
     Given using <dav_version> DAV path
@@ -31,11 +26,6 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
 
   Scenario Outline: upload a file with mtime in a folder
@@ -48,11 +38,6 @@ Feature: upload file
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: overwriting a file changes its mtime
     Given using <dav_version> DAV path
@@ -63,8 +48,3 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

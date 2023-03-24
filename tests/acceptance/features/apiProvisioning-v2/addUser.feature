@@ -54,7 +54,7 @@ Feature: add user
     And the HTTP status code should be "400"
     And the API should not return any data
 
-  @notToImplementOnOCIS
+
   Scenario: Admin creates a new user and adds him directly to a group
     Given group "brand-new-group" has been created
     When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" group "brand-new-group" using the provisioning API
@@ -164,7 +164,7 @@ Feature: add user
       | -123     |
       | 0.0      |
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin should not be able to create a user
     Given user "brand-new-user" has been deleted
     And user "subadmin" has been created with default attributes and without skeleton files
@@ -185,7 +185,7 @@ Feature: add user
     And the HTTP status code should be "401"
     And user "brand-new-user" should not exist
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin should be able to create a new user into their group
     Given user "brand-new-user" has been deleted
     And user "subadmin" has been created with default attributes and without skeleton files
@@ -197,7 +197,7 @@ Feature: add user
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
 
-  @notToImplementOnOCIS
+
   Scenario: subadmin should not be able to create a new user into other group
     Given user "brand-new-user" has been deleted
     And user "subadmin" has been created with default attributes and without skeleton files

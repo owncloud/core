@@ -357,7 +357,7 @@ class Notifications {
 					'timeout' => 10,
 					'connect_timeout' => 10,
 				];
-				$sendAs = $useOcm === true ? 'json' : 'body';
+				$sendAs = $useOcm === true ? 'json' : 'form_params';
 				$options[$sendAs] = $fields;
 				error_log("posting to $endpoint");
 				$response = $client->post($endpoint, $options);

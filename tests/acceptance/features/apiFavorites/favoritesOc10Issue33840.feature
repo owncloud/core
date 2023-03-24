@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api
 Feature: current oC10 behavior for issue-33840
 
   Background:
@@ -13,7 +13,7 @@ Feature: current oC10 behavior for issue-33840
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
 
-  @issue-33840 @issue-ocis-reva-39
+  @issue-33840
   Scenario Outline: Get favorited elements and limit count of entries
     Given using <dav_version> DAV path
     And user "Alice" has favorited element "/textfile0.txt"
@@ -35,7 +35,7 @@ Feature: current oC10 behavior for issue-33840
       | old         |
       | new         |
 
-  @issue-33840 @issue-ocis-reva-39
+  @issue-33840
   Scenario Outline: Get favorited elements paginated in subfolder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/subfolder"

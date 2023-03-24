@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api
 Feature: CORS headers current oC10 behavior for issue-34679
 
   Background:
@@ -36,7 +36,7 @@ Feature: CORS headers current oC10 behavior for issue-34679
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
 
-    @files_external-app-required @notToImplementOnOCIS
+    @files_external-app-required
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
       | 1               | /apps/files_external/api/v1/mounts               | 997      | 401       |

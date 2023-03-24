@@ -287,6 +287,54 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
+	 * @Then username :userName should be displayed on the personal general settings page on the webUI
+	 *
+	 * @param string $userName
+	 *
+	 * @return void
+	 */
+	public function usernameShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui(string $userName):void {
+		Assert::assertEquals(
+			$userName,
+			$this->personalGeneralSettingsPage->getUsername(),
+			__METHOD__
+			. " Username '$userName' is not displayed on the personal general settings page on the webUI."
+		);
+	}
+
+	/**
+	 * @Then the legal imprint conditions link :linkText should be displayed on the personal general settings page on the webUI
+	 *
+	 * @param string $linkText
+	 *
+	 * @return void
+	 */
+	public function legalImprintShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui(string $linkText):void {
+		Assert::assertEquals(
+			$linkText,
+			$this->personalGeneralSettingsPage->getLegalImprint(),
+			__METHOD__
+			. " Legal imprint conditions link '$linkText' is not displayed on the personal general settings page on the webUI."
+		);
+	}
+
+	/**
+	 * @Then the legal privacy policy link :linkText should be displayed on the personal general settings page on the webUI
+	 *
+	 * @param string $linkText
+	 *
+	 * @return void
+	 */
+	public function legalPrivacyPolicyShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui(string $linkText):void {
+		Assert::assertEquals(
+			$linkText,
+			$this->personalGeneralSettingsPage->getLegalPrivacyPolicy(),
+			__METHOD__
+			. " Legal privacy policy link '$linkText' is not displayed on the personal general settings page on the webUI."
+		);
+	}
+
+	/**
 	 * @When the user follows the email change confirmation link received by :emailAddress using the webUI
 	 * @Given the user has followed the email change confirmation link received by :emailAddress using the webUI
 	 *

@@ -89,6 +89,7 @@
     "Can't update %s" : "Impossibile aggiornare %s",
     "Invalid Federated Cloud ID" : "ID di cloud federata non valido",
     "%s shared »%s« with you" : "%s ha condiviso «%s» con te",
+    "%s" : "%s",
     "%s via %s" : "%s tramite %s",
     "Sharing %s failed, because the file does not exist" : "Condivisione di %s non riuscita, poiché il file non esiste",
     "You are not allowed to share %s" : "Non ti è consentito condividere %s",

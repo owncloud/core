@@ -25,11 +25,6 @@ Feature: tests of the creation extension see https://tus.io/protocols/resumable-
       | old         |
       | new         |
 
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
-
 
   Scenario Outline: creating a new resource and upload data in multiple bytes using creation with upload extension
     Given using <dav_version> DAV path
@@ -39,8 +34,3 @@ Feature: tests of the creation extension see https://tus.io/protocols/resumable-
       | dav_version |
       | old         |
       | new         |
-
-    @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |

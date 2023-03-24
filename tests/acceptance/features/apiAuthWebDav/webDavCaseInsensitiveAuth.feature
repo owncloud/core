@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api
 Feature: usernames are case-insensitive in webDAV requests with app passwords
 
   Background:

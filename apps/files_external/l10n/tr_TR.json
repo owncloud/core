@@ -1,0 +1,8 @@
+{ "translations": {
+    "Username" : "Kullanıcı adı",
+    "Password" : "Şifre",
+    "URL" : "Bağlantı",
+    "Name" : "Adı",
+    "Folder name" : "Klasör adı"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

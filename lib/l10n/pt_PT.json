@@ -85,6 +85,7 @@
     "Can't create or write into the data directory %s" : "Não é possível criar ou escrever na diretoria 'data' %s",
     "Invalid Federated Cloud ID" : "Id. de Nuvem Federada Inválida",
     "%s shared »%s« with you" : "%s partilhou »%s« consigo",
+    "%s" : "%s",
     "%s via %s" : "%s via %s",
     "Sharing %s failed, because the file does not exist" : "A partilha de %s falhou, porque o ficheiro não existe",
     "You are not allowed to share %s" : "Não está autorizado a partilhar %s",
