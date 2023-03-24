@@ -6,10 +6,21 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></p>
+            <p>When using the User Home Folder Naming Rule (configurable in the Advanced tab of the LDAP
+   wizard), which allows to specify the home folder by means of an LDAP attribute, chunks of users'
+   uploads were wrongly created under the default data directory rather than inside the
+   configured home directory. We are now using the getHome() method for getting the user's home so
+   that chunks uploads respect the configured home directory.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40693<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></p>
             <p>The following have been updated: - guzzlehttp/psr7 (2.4.3 to 2.4.4) - icewind/streams (0.7.6
