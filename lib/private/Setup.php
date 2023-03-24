@@ -491,7 +491,12 @@ class Setup {
 
 		// Add rewrite rules if the RewriteBase is configured
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
-		if ($rewriteBase !== '' && $rewriteBase !== '/') {
+		if ($rewriteBase !== '') {
+			// Make sure we don't add a double slash
+			if ($rewriteBase === '/') {
+				$rewriteBase = '';
+			}
+
 			$content .= "\n<IfModule mod_rewrite.c>";
 			$content .= "\n  Options -MultiViews";
 			$content .= "\n  RewriteRule ^favicon.ico$ core/img/favicon.ico [L]";
@@ -512,7 +517,7 @@ class Setup {
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/ocm-provider/";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBase/\\.well-known/(acme-challenge|pki-validation)/.*";
 			$content .= "\n  RewriteRule . index.php [PT,E=PATH_INFO:$1]";
-			$content .= "\n  RewriteBase " . $rewriteBase;
+			$content .= "\n  RewriteBase " . $config->getSystemValue('htaccess.RewriteBase', '');
 			$content .= "\n  <IfModule mod_env.c>";
 			$content .= "\n    SetEnv front_controller_active true";
 			$content .= "\n    <IfModule mod_dir.c>";
