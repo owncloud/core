@@ -124,6 +124,7 @@ OC.L10N.register(
     "Accept" : "수락",
     "Decline" : "거절",
     "Automatically accept new incoming local user shares" : "새로 들어오는 로컬 사용자 공유를 자동으로 수락",
+    "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "공유 대화 상자에서 자동 완성으로 찾을 수 있게끔 허용합니다. 이 설정이 꺼져 있으면 전체 사용자 이름을 입력해야 합니다.",
     "This share is password-protected" : "이 공유는 암호로 보호되어 있습니다",
     "Password" : "암호",
     "The password is wrong. Try again." : "암호가 잘못되었습니다. 다시 입력해 주십시오.",
