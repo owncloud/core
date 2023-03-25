@@ -71,7 +71,7 @@ class EncryptAllTest extends TestCase {
 		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 	}
 
-	public function testEncryptAll() {
+	public function testSingleUserAndTrashbin() {
 		// trash bin needs to be disabled in order to avoid adding dummy files to the users
 		// trash bin which gets deleted during the encryption process
 		$this->appManager->expects($this->once())->method('disableApp')->with('files_trashbin');
@@ -99,12 +99,11 @@ class EncryptAllTest extends TestCase {
 		$this->config->expects($this->any())
 			->method('getAppValue')
 			->willReturnMap([
-				['encryption', 'useMasterKey', '', ''],
+				['encryption', 'useMasterKey', '', '1'], // enabled
 				['encryption', 'userSpecificKey', '', '']
 			]);
-		$this->config->expects($this->once())
-			->method('setAppValue')
-			->willReturn(null);
+		$this->config->expects($this->never())
+			->method('setAppValue');
 
 		if ($answer === 'Y' || $answer === 'y') {
 			$this->encryptionManager->expects($this->once())
@@ -127,13 +126,29 @@ class EncryptAllTest extends TestCase {
 
 	/**
 	 */
-	public function testExecuteException() {
+	public function testExecuteEncryptionNotEnabled() {
 		$this->expectException(\Exception::class);
 
 		$command = new EncryptAll($this->encryptionManager, $this->appManager, $this->config, $this->questionHelper);
 		$this->encryptionManager->expects($this->once())->method('isEnabled')->willReturn(false);
 		$this->encryptionManager->expects($this->never())->method('getEncryptionModule');
 		$this->encryptionModule->expects($this->never())->method('encryptAll');
+		$this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+	}
+
+	/**
+	 */
+	public function testExecuteEncryptionModuleNotEnabled() {
+		$this->expectException(\Exception::class);
+
+		$command = new EncryptAll($this->encryptionManager, $this->appManager, $this->config, $this->questionHelper);
+		$this->encryptionManager->expects($this->once())->method('isEnabled')->willReturn(true);
+		$this->config->expects($this->any())
+			->method('getAppValue')
+			->willReturnMap([
+				['encryption', 'useMasterKey', '', ''],
+				['encryption', 'userSpecificKey', '', '']
+			]);
 		$this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 }
