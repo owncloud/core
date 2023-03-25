@@ -492,6 +492,8 @@ class Setup {
 		// Add rewrite rules if the RewriteBase is configured
 		//   x x x . . . . . . . . . . :ok
 		//   x x x x x x . . . . . . . :ok
+		//   x x x x x x . . . x x x x :ok
+		//   x x x x x x . x x x x x x :
 		//   x x x x x x x x x x x x x :killed
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
 		if ($rewriteBase !== '') {
@@ -512,8 +514,8 @@ class Setup {
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/cron\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/core/ajax/update\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^/status\\.php$";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/ocs/v1\\.php";
-			$content .= "\n  RewriteCond %{REQUEST_URI} !^/ocs/v2\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/ocs/v1\\.php";
+			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/ocs/v2\\.php";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/updater/";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/ocs-provider/";
 			$content .= "\n  RewriteCond %{REQUEST_URI} !^$rewriteBaseRe/ocm-provider/";
