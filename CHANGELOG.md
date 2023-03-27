@@ -84,7 +84,7 @@ Summary
 * Enhancement - Add account creation time: [#2298](https://github.com/owncloud/enterprise/issues/2298)
 * Enhancement - Show WebDAV Url in personal setting under app passwords: [#40509](https://github.com/owncloud/core/pull/40509)
 * Enhancement - Show username on personal profile page: [#40510](https://github.com/owncloud/core/pull/40510)
-* Enhancement - Add legal privacy polciy and imprint links to personal settings: [#40511](https://github.com/owncloud/core/pull/40511)
+* Enhancement - Add legal privacy policy and imprint links to personal settings: [#40511](https://github.com/owncloud/core/pull/40511)
 * Enhancement - Persistent major file version workflow: [#40531](https://github.com/owncloud/core/pull/40531)
 * Enhancement - Add support for login policies: [#40574](https://github.com/owncloud/core/pull/40574)
 * Enhancement - Add support for OCM via ScienceMesh: [#40577](https://github.com/owncloud/core/issues/40577)
@@ -450,7 +450,7 @@ Details
 
    https://github.com/owncloud/core/pull/40510
 
-* Enhancement - Add legal privacy polciy and imprint links to personal settings: [#40511](https://github.com/owncloud/core/pull/40511)
+* Enhancement - Add legal privacy policy and imprint links to personal settings: [#40511](https://github.com/owncloud/core/pull/40511)
 
    The links for legal.privacy_policy_url and legal.imprint_url are now displayed on the
    personal general settings page so that they are conveniently available for all users to see.
