@@ -1,6 +1,6 @@
 Change: Do not auto-enable user-key ecryption
 
-Executing occ encryption:encrypt-all would not auto-enable user-key encryption.
+Executing occ encryption:encrypt-all will no longer auto-enable user-key encryption.
 
 https://github.com/owncloud/core/pull/40702
 https://github.com/owncloud/enterprise/issues/4939
