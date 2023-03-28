@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: [#40693](https://github.com/owncloud/core/pull/40693)
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
+* Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
 
 Details
 -------
@@ -35,6 +36,14 @@ Details
    https://github.com/owncloud/core/pull/40691
    https://github.com/owncloud/core/pull/40683
    https://github.com/owncloud/core/pull/40690
+
+* Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
+
+   Executing occ encryption:encrypt-all will no longer auto-enable user-key encryption.
+
+   https://github.com/owncloud/enterprise/issues/4939
+   https://github.com/owncloud/core/pull/40702
+   https://doc.owncloud.com/docs/next/server_release_notes.html#deprecation-note-for-user-key-storage-encryption
 
 Changelog for ownCloud Core [10.12.0] (2023-02-24)
 =======================================

@@ -8,6 +8,7 @@
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></li>
+        <li class="type-change changelog-item">Change - Do not auto-enable user-key ecryption: <a href="https://github.com/owncloud/core/pull/40702">#40702</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -28,6 +29,15 @@
    (2.12.6 to 2.13.1) - icewind/streams (0.7.6 to 0.7.7)
             </p>
             <p>https://github.com/owncloud/core/pull/40691<br>https://github.com/owncloud/core/pull/40683<br>https://github.com/owncloud/core/pull/40690<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Do not auto-enable user-key ecryption: <a href="https://github.com/owncloud/core/pull/40702">#40702</a></p>
+            <p>Executing occ encryption:encrypt-all will no longer auto-enable user-key encryption.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4939<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40702<br></p>
+            <p>https://doc.owncloud.com/docs/next/server_release_notes.html#deprecation-note-for-user-key-storage-encryption<br></p>
         </li>
     </ul>
     <h2 id="10.12.0" class="version"> Changelog for ownCloud Core [10.12.0] (2023-02-24)</h2>
