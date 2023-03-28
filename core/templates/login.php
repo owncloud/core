@@ -60,27 +60,28 @@ script('core', [
 			$label = $l->t('Username or email');
 		}
 ?>
-			<label for="user" class=""><?php p($label); ?></label>
-			
+
 			<input type="text" name="user" id="user"
 				value="<?php p($_['loginName']); ?>"
 				aria-label="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
-				placeholder="<?php p($label); ?>"
 				autocomplete="on" autocorrect="off" required>
-			
+            <span class="login-input"></span>
+			<label for="user" class="" style="text-align: right;"><?php p($label); ?></label>
 		</div>
 
 		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
 			echo ' shake';
 		} ?>">
-			<label for="password" class=""><?php p($l->t('Password')); ?></label>
+
 			
 			<input type="password" name="password" id="password" value=""
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				aria-label="<?php p($l->t('Password')); ?>"
-				placeholder="<?php p($l->t('Password')); ?>"
 				autocomplete="off" autocorrect="off" required>
+                <span class="login-input"></span>
+				<label for="password" class=""><?php p($l->t('Password')); ?></label>
+
 		</div>
 		
 		<div class="submit-wrap">

@@ -19,7 +19,6 @@ body {
 	font-size: .8em;
 	line-height: 1.6em;
 	font-family: 'Open Sans', Frutiger, Calibri, 'Myriad Pro', Myriad, sans-serif;
-	color: #000;
 	height: auto;
 }
 
@@ -29,6 +28,22 @@ body {
 	background-position: right bottom;
 	background-repeat: no-repeat;
 	background-size: cover;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: rgba(255, 255, 255, 1) !important;
+  caret-color: white;
+  font-size: .8em;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .two-factor-provider {
@@ -226,15 +241,21 @@ a.two-factor-cancel {
 #body-login form .warning-info,
 #body-login form input[type="checkbox"]+label {
 	text-align: center;
-	color: #fff;
+	color: rgba(255, 255, 255, 1);
 }
 
 #body-login form label {
-	color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 5px;
+	color: rgba(255, 0, 255, 1);
 	text-align: left;
-	margin-bottom: .5rem;
+    transform: translateY(-50%);
 	font-weight: bold;
+	pointer-events: none;
+	transition: .5s;
 }
+
 /* overrides another !important statement that sets this to unreadable black */
 #body-login form .warning input[type="checkbox"]:hover+label,
 #body-login form .warning input[type="checkbox"]:focus+label,
@@ -356,12 +377,26 @@ a.two-factor-cancel {
 #body-login input[type="text"],
 #body-login input[type="password"],
 #body-login input[type="email"] {
-	border: none;
 	font-weight: 300;
+	padding: 0 5px;
+	height: 40px;
+	border: none;
+	background: none;
+	outline: none;
+	color: #ffffff;
 }
 
 
+#body-login input:focus ~ label,
+#body-login input:valid ~ label {
+    top: -7px;
+    color: #4e85c8;
+}
+
+
+
 /* Nicely grouping input field sets */
+
 .grouptop,
 .groupmiddle,
 .groupbottom {
@@ -377,13 +412,25 @@ a.two-factor-cancel {
 	margin: 0 auto 1.2rem;
 }
 
-#body-login .grouptop input,
-.grouptop input,
-#body-login .groupmiddle input,
-.groupmiddle input,
-#body-login .groupbottom input,
-.groupbottom input {
-	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
+.grouptop,
+.groupbottom {
+    border-bottom: 2px solid #adadad;
+    margin: 30px 0;
+}
+
+#body-login span.login-input::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #4e85c8;
+    transition: .5s;
+}
+
+#body-login input:focus ~ span.login-input::before,
+#body-login input:valid ~ span.login-input::before {
+    width: 100%;
 }
 
 #body-login .submit-wrap {
@@ -675,6 +722,7 @@ html #body-login button[type="submit"] {
 	color: #ffffff;
 	border-width: 1px;
 	border-color: rgba(0,0,0,0);
+	border-radius: 30px;
 	font-size: 1rem;
 	font-weight: 600;
 	background-color: #4e85c8;
