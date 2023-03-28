@@ -304,16 +304,6 @@ class OcmController extends Controller {
 		$providerId,
 		$notification
 	) {
-		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
-		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
-			$controller = \OCA\FederatedGroups\AppInfo\Application::getOcmController($this->request);
-			return $controller->processNotification(
-				$notificationType,
-				$resourceType,
-				$providerId,
-				$notification
-			);
-		}
 
 		try {
 			if (!\is_array($notification)) {
@@ -402,6 +392,7 @@ class OcmController extends Controller {
 						$providerId,
 						$notification['sharedSecret']
 					);
+					///Todo: probably we have problem on this action	
 					$this->fedShareManager->updateOcmPermissions(
 						$share,
 						$notification['permission']
