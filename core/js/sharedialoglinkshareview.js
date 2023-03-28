@@ -116,14 +116,31 @@
 			return (permissions) ? parseInt(permissions, 10) : OC.PERMISSION_READ;
 		},
 
+		/**
+		 * These are all cases as per OCA.Share.ShareDialogLinkShareView.render,
+		 * matching passwordMustBeEnforced from server side
+		 * 
+		 * @returns {boolean}
+		 */
 		_shouldRequirePassword: function() {
-			// matching passwordMustBeEnforced from server side
 			var permissions = this._getPermissions();
-			var roEnforcement = permissions === OC.PERMISSION_READ && this.configModel.get('enforceLinkPasswordReadOnly');
-			var woEnforcement = permissions === OC.PERMISSION_CREATE && this.configModel.get('enforceLinkPasswordWriteOnly');
-			var rwEnforcement = (permissions === (OC.PERMISSION_READ | OC.PERMISSION_CREATE) && this.configModel.get('enforceLinkPasswordReadWrite'));
-			var rwdEnforcement = (permissions === (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE) && this.configModel.get('enforceLinkPasswordReadWriteDelete'));
-			if (roEnforcement || woEnforcement || rwEnforcement || rwdEnforcement) {
+
+			// Download / View (file and folder)
+			var publicRead = permissions === OC.PERMISSION_READ && this.configModel.get('enforceLinkPasswordReadOnly');
+
+			// Upload only (File Drop folder)
+			var publicUploadFolder = permissions === OC.PERMISSION_CREATE && this.configModel.get('enforceLinkPasswordWriteOnly');
+
+			// Download / View / Upload (folder)
+			var publicReadUploadFolder = (permissions === (OC.PERMISSION_READ | OC.PERMISSION_CREATE) && this.configModel.get('enforceLinkPasswordReadWrite'));
+
+			// Download / View / Upload / Edit (folder)
+			var publicReadWriteFolder = (permissions === (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE) && this.configModel.get('enforceLinkPasswordReadWriteDelete'));
+
+			// Download / View / Edit (file)
+			var publicReadWriteFile = (permissions === (OC.PERMISSION_READ | OC.PERMISSION_UPDATE) && this.configModel.get('enforceLinkPasswordReadWriteDelete'));
+
+			if (publicRead || publicUploadFolder || publicReadUploadFolder || publicReadWriteFolder || publicReadWriteFile) {
 				return true;
 			} else {
 				return false;
