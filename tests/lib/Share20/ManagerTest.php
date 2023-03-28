@@ -664,7 +664,7 @@ class ManagerTest extends \Test\TestCase {
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
-		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE]));
+		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE]));
 	}
 
 	public function testPasswordMustBeEnforcedForReadWriteDelete() {
