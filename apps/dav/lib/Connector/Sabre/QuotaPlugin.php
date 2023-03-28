@@ -214,14 +214,15 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 					}
 					throw new InsufficientStorage();
 				}
-			}
-			// freeSpace might be false, or an int. Anyway, make sure that availableSpace will be an int.
-			$availableSpace = (int) $freeSpace + $extraSpace;
-			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace === 0))) {
-				if (isset($chunkHandler)) {
-					$chunkHandler->cleanup();
+			} else {
+				// freeSpace might be false, or an int. Anyway, make sure that availableSpace will be an int.
+				$availableSpace = (int) $freeSpace + $extraSpace;
+				if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace === 0))) {
+					if (isset($chunkHandler)) {
+						$chunkHandler->cleanup();
+					}
+					throw new InsufficientStorage();
 				}
-				throw new InsufficientStorage();
 			}
 		}
 		return true;
