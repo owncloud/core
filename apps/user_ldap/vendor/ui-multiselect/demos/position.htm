@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery MultiSelect Widget Demo</title>
+<link rel="stylesheet" type="text/css" href="../jquery.multiselect.css" />
+<link rel="stylesheet" type="text/css" href="assets/style.css" />
+<link rel="stylesheet" type="text/css" href="assets/prettify.css" />
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../src/jquery.multiselect.js"></script>
+<script type="text/javascript" src="assets/prettify.js"></script>
+<script type="text/javascript">
+$(function(){
+
+	$("select")
+		.eq(0)
+		.multiselect({
+			position: {
+				my: 'center',
+				at: 'center'
+			}
+		}).end()
+		.eq(1)
+		.multiselect({
+			position: {
+				my: 'left bottom',
+				at: 'left top'
+			}
+		});
+	
+});
+</script>
+
+</head>
+<body onload="prettyPrint();">
+
+<h2>Position Utility</h2>
+
+<p>Using the jQuery UI <a href="http://jqueryui.com/demos/position/">position utility</a> to position the menu above the input.  This is especially useful when you want collision detection with the bottom of the window, and automatically open the menu above the button.</p>
+<p><strong>Please use jQuery 1.4.3 with the positioning option.  Bugs in jQuery 1.4.2 prevent the menu from being positioned correctly the first time multiselect is opened in Webkit/IE.</strong></p>
+
+
+
+<form>
+	<h3>Center the menu over the button</h3>
+<pre class="prettyprint">
+$("select").multiselect({
+   position: {
+      my: 'center',
+      at: 'center'
+      
+     // only include the "of" property if you want to position
+     // the menu against an element other than the button.
+     // multiselect automatically sets "of" unless you explictly
+     // pass in a value.
+   }
+});
+</pre>
+	<p>
+		<select name="demo" multiple="multiple" size="5">
+		<option value="option1">Option 1</option>
+		<option value="option2">Option 2</option>
+		<option value="option3">Option 3</option>
+		</select>
+	</p>
+	
+<h3>Open the menu upwards</h3>
+<pre class="prettyprint">
+$("select").multiselect({
+   position: {
+      my: 'left bottom',
+      at: 'left top'
+   }
+});
+</pre>
+	<p>
+		<select name="demo" multiple="multiple" size="5">
+		<option value="option1">Option 1</option>
+		<option value="option2">Option 2</option>
+		<option value="option3">Option 3</option>
+		</select>
+	</p>
+</form>
+
+</body>
+</html>

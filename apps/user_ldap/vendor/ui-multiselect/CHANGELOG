@@ -1,0 +1,157 @@
+jQuery UI MultiSelect Widget Changelog
+
+Version 1.13 - 08/19/2012
+==============================================
+- Fixed: jQuery 1.8 compatibility
+- Fixed: make sure the widget doesn't spit out duplicate IDs (#236)
+- Fixed: select boxes with a single option work properly now (#199, #222)
+- Fixed: speed improvements (#157)
+- Added: getButton() method (#205)
+- Added: list items now inherit the classes from their option/optgroups (#244, thanks doits)
+- Added: Japanese translation (thanks dtaniwaki)
+- Added: Italian translation (thanks mastropinguino)
+- Added: Turkish translation (thanks realsby)
+- Added: French translation (thanks csanqeur)
+
+Version 1.12 - 11/26/2011
+==============================================
+- Fixed: append the widget menu to the body rather than directly after the button (#38, 181).
+- Fixed: optgroups disappeared when refresh() was called on a closed widget (thx anakinj, #154).
+- Fixed: use the span element's nodeValue rather than the title attribute in selectedList (#135).
+- Fixed: keep focus on the inputs as much as possible as to not break the esc key (partial fix for #165).
+- Fixed: do not alter selected attributes at all - just properties (#104).
+- Fixed: other minor bug fixes & perf enhancements.
+- Added: Filter: option to automatically clear the last search on widget close (#166).
+- Added: MIT license file (#143).
+
+Version 1.11 - 8/29/2011
+==============================================
+- Fixed: set/remove the "selected" attribute on option tags instead of just the property (#104).
+- Fixed: filter widget: do not exclude options with empty values (#105).
+- Added: allow options to display tooltips (thanks rogerschlachter)
+- Added: fire the select box's change event when checkbox/radio inputs are changed (#124).
+- Added: started unit tests for the filter widget.
+- Added: Chinese translation (thanks benz303).
+- Added: German translation (thanks CitySim).
+- Added: Czech translation (thanks Michi).
+- Added: license file.
+
+Version 1.10 - 5/18/2011
+==============================================
+- Fixed: full support for jQuery 1.6+ (#85, #100).
+- Fixed: invalid unit tests (#70, et. al.).
+- Fixed: all inputs with no values (#79).
+- Fixed: make sure the button inherits the original tab index (#76).
+- Fixed: incorrect items sent to the server after filtering, checking all, then submitting the form (#48).
+- Fixed: make sure the menu is closed before triggering the close event.
+- Fixed: in single select mode with the filter widget, make sure only the radio buttons are hidden, not the text input as well.
+- Fixed: make sure the escape key doesn't accidently abort any active xhrs in FF.
+- Modified: refactored create logic to use native JS instead of jQuery. Menus will build much faster now, especially in IE.
+- Added: beforeoptgrouptoggle event.
+
+
+Version 1.9 - 2/2/2011
+==============================================
+- Added: auto-close single select menus when an item is chosen.
+- Added: if the optgrouptoggle handler returns false, prevent the items from being selected.
+- Added: namespaced all events.
+- Added: brazilian and spanish localizations (thanks Vinicius).
+- Fixed: when an item is chosen via the enter key, the underlying option tag wasn't being selected properly (thanks zlamma).
+- Fixed: refactored redundant close logic when clicking on the document to close the widget (thanks zlamma).
+- Modified: hide option tags in single selects, and add the ui-state-active class instead.
+
+
+Version 1.8 - 12/21/2010
+==============================================
+- Fixed: Chrome was not honoring pre-selected tags in a single select.
+- Fixed: Do no hide the header on single selects; just the check all/none links.
+- Fixed: when filtering plugin is used and an optgroup label is clicked, select the underlying option tags.
+- Fixed: issues manually triggering click on a checkbox.
+- Fixed: filter plugin was allowing regex patterns as values.
+- Fixed: removed word boundry from filtering.
+- Fixed: when filtering with optgroups, if no children match the keyword, do not show the optgroup label.
+- Modified: use input type=serach on the filter widget.
+- Modified: improved selectors to work with querySelectorAll.
+- Added: public refresh method.  BOOM!
+- Added: various bug fixes, performance optimizations, and unit tests.
+
+
+Version 1.7 - 12/2/2010
+==============================================
+- Modified: completely refactored creation code to be consistent with the official jQuery UI widgets.
+- Fixed: clicking on an optgroup label now selects the correct option tags on the underlying select.
+- Fixed: filtering widget now works properly on optgroups (thx Dario).
+- Fixed: manually triggering click on an input now correctly updates the selectedText.
+- Added: ARIA support.
+- Added: filter widget now uses input type=search for a better experience in WebKit.
+- Added: various bug fixes, performance optimizations, and unit tests.
+
+
+Version 1.6 - 10/26/2010
+==============================================
+- Fixed: a number of single select issues, especially in IE7.
+- Fixed: jumpy keyboard traversal.  MUCH better now (thx Angel Garcia).
+- Fixed: button text wasn't updating correctly on form reset.
+- Fixed: ID attribute wasn't being retrieved from the original select correctly.
+
+
+Version 1.5 - 10/11/2010
+==============================================
+- Added: 'classes' option (string), allowing you to apply additional classes to the widget.
+- Fixed: single select regression is fixed.
+- Fixed: namespaced all events.
+- Fixed: filter plugin cache included options with blank values (thx to Peter Bengtsson).
+- Fixed: filter plugin wasn't wasn't working with optgroups.
+- Fixed: webkit wouldn't open the menu if you clicked on the span inside the button.  Fixed for good now.
+- Fixed: make sure the click event is only triggered by checkbox/radio buttons.
+- Fixed: destroy method now calls the widget factory's base destroy.
+- Modified: use event.which instead of event.keyCode for keydown events.
+- Modified: better filter plugin matching (thx to Peter Bengtsson).
+- Modified: replaced hard-coded default animation speed with $.fx.speeds._default.
+
+
+Version 1.4.1 - 09/22/2010
+==============================================
+- Fixed: now works with the position utility.
+- Modified: now removing the attr attribute from the original select to ensure they're not also submitted with the form.
+- Modified: slight refactoring
+
+
+Version 1.4 - 09/16/2010
+==============================================
+- Fixed: move focus to the first checkbox on open (better keyboard support)
+- Fixed: workaround jQuery bug when triggering a checkbox click event vs. actually clicking on it
+- Modified: refactored how original select elements are handled.  option tags are no longer detached, and the
+  original select is no longer disabled.
+- Fixed: do not stop propagation when the button is clicked on.  more customizable this way
+- Fixed: missing comma in var declarations
+- Fixed: cannot set noneSelectedText to an empty string
+- Fixed: missing pound sign in href links, causing weird behavior
+- Fixed: checkAll bug when the menu is closed
+- Added: started option unit tests
+- Added: "formal" introduction of filtering widget
+- Added: support for the position plugin... although it's buggy and undocumented at the moment
+
+
+Version 1.3 - 07/08/2010
+==============================================
+- Fixed: clicking on the button icon in webkit didn't open the widget correctly
+- Modified: refactored logic to close other instances when one opens
+- Modified: changed arrow icon
+- Modified: instead of removing the original option tags they're detached, preserving pre-existing events/data
+- Added: public getChecked() method
+
+Version 1.2 - 07/06/2010
+==============================================
+- Fixed: namespacing issues with destroy()
+- Fixed: support NaN values in _setMenuWidth() calculations
+
+
+Version 1.1 - 05/26/2010
+==============================================
+- Modified: renamed "_updateSelected" to "update", exposing it as a method in the process
+
+
+Version 1.0
+==============================================
+- Initial release

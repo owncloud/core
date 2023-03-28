@@ -1,0 +1,9 @@
+{ "translations": {
+    "Groups" : "Խմբեր",
+    "Help" : "Օգնություն",
+    "Host" : "Հոստ",
+    "Password" : "Գաղտնաբառ",
+    "Back" : "Հետ",
+    "Continue" : "Շարունակել"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

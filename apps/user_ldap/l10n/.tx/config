@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+lang_map = ja_JP: ja
+
+[o:owncloud-org:p:owncloud:r:user_ldap]
+file_filter = <lang>/user_ldap.po
+source_file = templates/user_ldap.pot
+source_lang = en
+type = PO

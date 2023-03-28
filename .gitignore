@@ -20,6 +20,7 @@
 !/apps/comments
 !/apps/dav
 !/apps/files
+!/apps/user_ldap
 !/apps/federatedfilesharing
 !/apps/federation
 !/apps/files_external

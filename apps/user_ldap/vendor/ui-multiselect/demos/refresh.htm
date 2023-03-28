@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery MultiSelect Widget Demo</title>
+<link rel="stylesheet" type="text/css" href="../jquery.multiselect.css" />
+<link rel="stylesheet" type="text/css" href="assets/style.css" />
+<link rel="stylesheet" type="text/css" href="assets/prettify.css" />
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="assets/prettify.js"></script>
+<script type="text/javascript" src="../src/jquery.multiselect.js"></script>
+<script type="text/javascript">
+$(function(){
+	var el = $("select").multiselect(),
+		disabled = $('#disabled'),
+		selected = $('#selected'),
+		newItem = $('#newItem');
+	
+	$("#add").click(function(){
+		var v = newItem.val(), opt = $('<option />', {
+			value: v,
+			text: v
+		});
+		
+		if(disabled.is(':checked')){
+			opt.attr('disabled','disabled');
+		}
+		if(selected.is(':checked')){
+			opt.attr('selected','selected');
+		}
+		
+		opt.appendTo( el );
+		
+		el.multiselect('refresh');
+	});
+});
+</script>
+</head>
+<body id="test" onload="prettyPrint();">
+
+<h2>Refresh Method</h2>
+
+<p>Calling <code>refresh</code> allows you to re-build the multiselect menu from your original select.  This is useful
+when the contents of the select box changes dynamically (through either AJAX, DOM manipulation, etc.) and you want the
+multiselect widget to reflect the changes.</p>
+
+<pre class="prettyprint">
+// once the "add" button is clicked below:
+$("select").multiselect('refresh');
+</pre>
+
+<div style="float:left; width:325px">
+	<h3 style="margin-top:0">Add an item:</h3>
+	<p>Type in the text of a new option tag to add dynamically.</p>
+	<input type="text" id="newItem" />
+	<input type="button" id="add" value="Add" />
+	<p>
+		<label style="margin-right:8px"><input type="checkbox" id="selected" /> Selected?</label>
+		<label><input type="checkbox" id="disabled" /> Disabled?</label>
+	</p>
+</div>
+
+<div style="float:left;">
+	<select title="Refresh Exanmple" name="example-refresh" multiple="multiple" size="5">
+	<option value="foo">foo</option>
+	<option value="bar">bar</option>
+	<option value="baz">baz</option>
+	</select>
+</div>
+
+
+</body>
+</html>

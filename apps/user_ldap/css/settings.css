@@ -1,0 +1,447 @@
+#ldap {
+	width: calc(100% - 40px);
+}
+
+@media all and (min-width: 1200px) {
+	#ldap section {
+		width: 65% !important;
+	}
+}
+
+#ldap section {
+	margin-bottom: 2rem;
+}
+
+#ldap section h3 {
+	border-bottom: 1px solid #efefef;
+	margin-left: -41px;
+	padding-left: 41px;
+	padding-bottom: 5px;
+}
+
+.table {
+	display: table;
+	width: 85%;
+}
+
+.tablerow {
+	text-align: left;
+	margin-bottom: 1rem;
+}
+
+#ldap .tablerow label {
+	margin-left: 0;
+	display: inline-block;
+}
+
+#ldap .tablerow input, 
+#ldap .tablerow textarea,
+#ldap .tablerow select,
+#ldap .tablerow button.ui-multiselect {
+	display: block;
+	width: calc(100% - 10px) !important;
+	padding: 10px 5px 10px 5px;
+	margin-bottom: .5rem;
+}
+
+#ldap .tablerow input, 
+#ldap .tablerow textarea,
+#ldap .tablerow select {
+	height: auto;
+}
+
+#ldap .tablerow .inline > div {
+	display: inline-block;
+}
+
+#ldap .tablerow .inline > div:first-of-type {
+	margin-right: 15px;
+}
+
+#ldap .tablerow .inline > div:first-of-type {
+	margin-right: 15px;
+	width: calc(66% - 8px) !important;
+}
+
+#ldap .tablerow .inline > div:last-of-type {
+	width: calc(33% - 5px) !important;
+}
+#ldap .tablerow .inline select {
+	width: 100% !important;
+}
+
+#ldap .tablerow input[type="checkbox"] {
+	width: 15px !important;
+	float: left;
+}
+
+#ldap .tablerow .hint {
+	clear: both;
+	font-size: .8em;
+	position: relative;
+	padding-left: 1rem;
+}
+
+#ldap .tablerow .hint:before {
+	background: url('/core/img/actions/info.svg');
+    background-size: contain;
+	background-position: 50% 100%;
+	background-repeat: no-repeat;
+	display: inline-block;
+	height: 1.3em;
+	width: 1.3em;
+	margin-right: 0rem;
+	content: ' ';
+	position: absolute;
+	margin-left: -1rem;
+	top: 3px;
+}
+
+#ldap .tablerow .hint img {
+	height:1.75ex;
+}
+
+.ldapIconCopy {
+	background-image: url('../img/copy.svg');
+}
+
+.invisible {
+	visibility: hidden;
+}
+
+.forceHidden {
+	display: none !important;
+}
+
+
+.ldapWizardControls {
+	display: flex;
+	flex-direction: row;
+	justify-content: end;
+}
+
+.ldapWizardControls > div {
+	margin-right: 1rem;
+}
+
+.ldapWizardInfo {
+	width: 100% !important;
+	height: 50px;
+	background-color: lightyellow;
+	border-radius: 8px;
+	padding: 10px 8px 6px !important;
+	margin-bottom: 5px;
+}
+
+#ldapWizard1 .host {
+	width: 100%;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.tableCellInput {
+	margin-left: -40%;
+	width: 100%;
+}
+
+.tableCellLabel {
+	text-align: right;
+	padding-right: 25%;
+}
+
+.ldapIndent {
+	margin-left: 50px;
+}
+
+.ldapwarning {
+	margin-left: 22px;
+	color: #FF3B3B;
+}
+
+.ldapSpinner {
+	height: 15px;
+	margin: 5px;
+}
+
+.ldap_count {
+	line-height: 45px;
+}
+
+.ldapSettingControls {
+	margin-top: 3px;
+}
+
+#ldap fieldset p label {
+	width: 20%;
+	max-width: 200px;
+	display: inline-block;
+	vertical-align: top;
+	text-align: right;
+	padding-top: 9px;
+	padding-right: 5px;
+}
+
+#ldap fieldset input[type=submit] {
+	width: auto;
+}
+
+.ldapManyGroupsSupport {
+	display: flex;
+	align-items: center;
+}
+
+.ldapManyGroupsSupport > div:first-child,
+.ldapManyGroupsSupport > div:last-child {
+	width: 20rem;
+}
+
+.ldapManyGroupsSupport > div {
+	height: 10rem;
+}
+
+.ldapManyGroupsSupport select {
+	height: calc(100% - 20px) !important;
+	margin: 0 !important;
+	width: 100% !important;
+}
+
+.ldapManyGroupsSupport .selectbuttonwrap {
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+	justify-content: center;
+	padding: 0 1rem;
+}
+
+.ldapManyGroupsSupport .selectbuttonwrap button {
+	margin: 0;
+}
+
+.ldapManyGroupsSupport .selectbuttonwrap button:first-child{
+	margin-bottom: 10px;
+}
+
+.ldapManyGroupsSupport .buttonSpan {
+	display: inline-block;
+	vertical-align: top;
+	height: 150px;
+}
+
+.ldapManyGroupsSupport .buttonSpan button {
+	margin-top: 35px;
+}
+
+.ldapManyGroupsSearch {
+	width: 425px !important;
+}
+
+.ldapGroupList {
+	height: 150px;
+	width: 200px;
+}
+
+#ldap fieldset input, #ldap fieldset textarea {
+ 	width: 60%;
+}
+
+#ldap fieldset textarea ~ button {
+	vertical-align: text-bottom;
+}
+
+input.ldapVerifyInput {
+	width: 150px !important;
+}
+
+.ldapInputColElement {
+	width: 35%;
+	display: inline-block;
+	padding-left: 10px;
+}
+
+.ldapToggle {
+	text-decoration: underline;
+}
+
+span.ldapInputColElement {
+	margin-top: 9px;
+}
+
+select[multiple=multiple] + button {
+	height: 28px !important;
+	padding-top: 6px !important;
+	min-width: 40%;
+	max-width: 40%;
+}
+
+.save-cursor {
+	cursor: wait;
+}
+
+#ldap .app-name .ldap_config_state_indicator_container {
+	display: inline-block;
+	margin-left: 2em;
+}
+
+@media all and (min-width: 768px) {
+	#ldap .app-name .ldap_config_state_indicator_container {
+		display: none;
+	}
+}
+
+
+.ldap_config_state_indicator_sign {
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	vertical-align: text-bottom;
+}
+.ldap_config_state_indicator_sign.success {
+	background: #37ce02;
+	border-radius: 8px;
+}
+.ldap_config_state_indicator_sign.error {
+	background: #ce3702;
+}
+
+.ldap_grey {
+	color: #777;
+}
+
+.outoftheway {
+	position: absolute;
+	left: -2000px;
+}
+
+
+.ui-widget-header {
+	border: none;
+	border-bottom: 1px solid #efefef;
+	background: transparent;
+	color: #ffffff;
+}
+
+#ldap .header {
+	background: #fff;
+	top: 5.5em;
+	padding-top: 1.7em;
+	z-index: 1;
+	width: calc(100% - 40px);
+}
+
+@media all and (min-width: 768px) {
+	#ldap .header {
+		top: 3.5em;
+	}
+}
+
+#ldap .ui-tabs {
+	background: transparent;
+	border: none;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li {
+	background: #efefef;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.ui-state-active {
+	background: #fff;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li a {
+    padding: 0.7em 1.3em;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.warn a {
+	padding-left: 3em;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.warn a::before {
+	content: url("../img/exclamation-triangle-solid.svg");
+	height: 16px;
+	width: 16px;
+	transform: translate(0, 2px);
+	margin-right: .5em;
+	position: absolute;
+	left: 1.3em;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.stateIndicator,
+#ldap .ui-tabs .ui-tabs-nav li.ldap_saving_wrapper {
+	color: #333333;
+	border: none;
+	background: transparent;
+	padding: 0.2rem 1.3rem;
+	display: none;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.ldap_saving_wrapper {
+	padding: 0.5rem 1.3rem;
+	display: block; 
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.ldap_saving_wrapper .ldap_saving {
+	margin-right: 15px;
+	color: orange;
+	font-weight: bold;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.ldap_saving_wrapper .ldap_saving .done {
+	display: none;
+	color: #128c12;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.ldap_saving_wrapper .ldap_saving.done img {
+	display: none;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.ldap_saving_wrapper .ldap_saving.done .done {
+	display: inline;
+}
+
+#ldap .ui-tabs .ui-tabs-nav li.ldap_saving_wrapper .ldap_saving.done .working {
+	display: none;
+}
+
+#ldap .ldap_config_state_indicator_subline {
+	font-weight: 100;
+	font-size: 75%;
+}
+
+@media all and (min-width: 768px) {
+	#ldap .ui-tabs .ui-tabs-nav li.stateIndicator {
+		display: block;
+	}
+}
+
+.ui-tabs .ui-tabs-panel {
+	margin-top: 1rem;
+}
+
+#ldap button {
+	padding: 11px 15px;
+	margin: 0 5px 10px 0;
+	width: auto;
+	height: auto;
+}
+
+#ldap button span {
+	padding: 0;
+}
+
+#ldap .resultscontainer {
+	display: inline-block;
+}
+
+#ldap fieldset p label {
+    width: auto;
+    max-width: none;
+    display: block;
+    text-align: left;
+    padding-top: 0;
+    padding-right: 5px;
+	margin-top: 1em;
+}
+
+#ldap p {
+	margin-bottom: 1em;
+}

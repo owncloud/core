@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery UI MultiSelect Widget by Eric Hynds</title>
+<link type="text/css" rel="stylesheet" href="http://www.erichynds.com/examples/style.css" />
+
+<style type="text/css">
+h1 { margin-bottom:10px }
+h2 { font-size:14px; padding:0; margin:25px 0 5px 0 }
+p { margin:5px 0; padding:0 }
+#callback { color:green; font-weight:bold }
+#switcher { margin:0 0 20px 0 }
+
+#menu { float:left; width:200px; background:#f1f1f1; padding:0; list-style:none; margin:0 10px 0 0 }
+#menu a { display:block; padding:10px 6px; border-bottom:1px solid #ccc }
+#menu a:hover,
+#menu a.active { background:#C3D3DA; text-decoration:none }
+#menu a.active { color:#252823 }
+ 
+#body { border:4px solid #f1f1f1; float:left }
+#body #footer { display:block; width:710px; padding:5px; text-align:right; background:#f1f1f1; color:#000; font-size:11px; }
+#body #footer a { margin:0; padding:0; color:#000 }
+</style>
+</head>
+
+<body>
+
+<div id="bar">
+	<h1><a href="http://www.erichynds.com">eric<span>hynds</span></a></h1>
+	<div><a href="http://www.erichynds.com/jquery/jquery-ui-multiselect-widget">&laquo; Return to Blog Post</a></div>
+</div>
+
+<div id="content">
+	<h1>jQuery UI MultiSelect Widget Demos</h1>
+	
+	<p style="margin:10px 0 15px 0"><a href="http://github.com/ehynds/jquery-ui-multiselect-widget">Download</a> &nbsp;|&nbsp; <a href="http://www.erichynds.com/jquery/jquery-ui-multiselect-widget">Return to Blog Post &amp; Documentation</a></p>
+	
+	<ul id="menu">
+	<li><a href="#basic" class="active">Basic</a></li>
+	<li><a href="#animations">Open/Close Animations</a></li>
+	<li><a href="#callbacks">Callbacks &amp; Events</a></li>
+	<li><a href="#headers">Customize the Header</a></li>
+	<li><a href="#selectedlist">Using selectedText/selectedList</a></li>
+	<li><a href="#maxchecked">Max Checked</a></li>
+	<li><a href="#preselected">Pre-selected/disabled Options</a></li>
+	<li><a href="#single">Single Select</a></li>
+	<li><a href="#enabledisable">Enable/Disable</a></li>
+	<li><a href="#refresh">Using the Refresh Method</a></li>
+	<li><a href="#position">Using the Position Utility</a></li>
+	<li><a href="#filter" class="last">Filter Plugin</a></li>
+	</ul>
+	
+	<div id="body">
+		<iframe id="placeholder" frameborder="0" src="basic.htm" marginwidth="10" marginheight="10" width="710" height="550"></iframe>
+		<div id="footer"><a href="basic.htm">Open Demo in New Window &raquo;</a></div>
+	</div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js" type="text/javascript"></script>
+<script src="assets/ba.hashchange.js" type="text/javascript"></script>
+<script type="text/javascript">
+(function($){
+
+	// cache some objs
+	var $placeholder = $("#placeholder"),
+		$demo = $("#footer a"),
+		$links = $("#menu a");
+	
+	$(window).bind("hashchange", function(){
+		var hash = location.hash || "#basic", url = hash.replace("#", "")+'.htm';
+		
+		// load in demo
+		$placeholder.attr("src", url);
+		$demo.attr("href", url);
+		
+		// set active link
+		$links.each(function(){
+			var $this = $(this);
+			$this[ $this.attr('href') === hash ? 'addClass' : 'removeClass' ]('active');
+		});
+	});
+	
+	$(window).trigger("hashchange");
+	
+})(jQuery);
+</script>
+
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-17093650-1']);
+_gaq.push(['_trackPageview']);
+
+(function(){
+var ga = document.createElement('script');
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ga.setAttribute('async', 'true');
+document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+</body>
+</html>
