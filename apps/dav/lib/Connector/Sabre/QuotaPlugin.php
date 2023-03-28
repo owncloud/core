@@ -204,6 +204,17 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 				$path = \rtrim($parentPath, '/') . '/' . $info['name'];
 			}
 			$freeSpace = $this->getFreeSpace($path);
+			// workaround to guarantee compatibility on 32-bit systems as otherwise this would cause an int overflow on such systems
+			// in case $freeSpace is above the max supported value. $freeSpace should be a float so we are using the <= 0.0 comparison
+			if (PHP_INT_SIZE === 4) {
+				$availableSpace = $freeSpace + $extraSpace;
+				if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace <= 0.0))) {
+					if (isset($chunkHandler)) {
+						$chunkHandler->cleanup();
+					}
+					throw new InsufficientStorage();
+				}
+			}
 			// freeSpace might be false, or an int. Anyway, make sure that availableSpace will be an int.
 			$availableSpace = (int) $freeSpace + $extraSpace;
 			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace === 0))) {
