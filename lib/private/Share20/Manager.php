@@ -213,19 +213,31 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * Check if a password must be enforced if the shared has those permissions
+	 * Check if a password must be enforced if the shared has those permissions.
+	 * These are roles as per OCA.Share.ShareDialogLinkShareView.render in the UI
+	 *
 	 * @param int $permissions \OCP\Constants::PERMISSION_* ("|" can be use for sets of permissions)
 	 * @return bool true if the password must be enforced, false otherwise
 	 */
 	protected function passwordMustBeEnforced($permissions) {
-		$roEnforcement = $permissions === \OCP\Constants::PERMISSION_READ && $this->shareApiLinkEnforcePasswordReadOnly();
-		$woEnforcement = $permissions === \OCP\Constants::PERMISSION_CREATE && $this->shareApiLinkEnforcePasswordWriteOnly();
-		// use read, write & delete enforcement for the case
-		$rwdEnforcement = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE)) &&
+		// Download / View (file and folder)
+		$publicRead = $permissions === \OCP\Constants::PERMISSION_READ && $this->shareApiLinkEnforcePasswordReadOnly();
+
+		// Upload only (File Drop folder)
+		$publicUploadFolder = $permissions === \OCP\Constants::PERMISSION_CREATE && $this->shareApiLinkEnforcePasswordWriteOnly();
+
+		// Download / View / Upload (folder)
+		$publicReadUploadFolder = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE)) && $this->shareApiLinkEnforcePasswordReadWrite();
+
+		// Download / View / Upload / Edit (folder)
+		$publicReadWriteFolder = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE)) &&
 			$this->shareApiLinkEnforcePasswordReadWriteDelete();
-		// use read & write enforcement for the rest of the cases
-		$rwEnforcement = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE)) && $this->shareApiLinkEnforcePasswordReadWrite();
-		if ($roEnforcement || $woEnforcement || $rwEnforcement || $rwdEnforcement) {
+
+		// Download / View / Edit (file)
+		$publicReadWriteFile = ($permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE)) &&
+			$this->shareApiLinkEnforcePasswordReadWriteDelete();
+		
+		if ($publicRead || $publicUploadFolder || $publicReadUploadFolder || $publicReadWriteFolder || $publicReadWriteFile) {
 			return true;
 		} else {
 			return false;
