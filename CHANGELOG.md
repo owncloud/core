@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: [#40567](https://github.com/owncloud/core/pull/40567)
 * Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: [#40693](https://github.com/owncloud/core/pull/40693)
+* Bugfix - Add rewrite base to .htaccess: [#40696](https://github.com/owncloud/core/issues/40696)
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
 * Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
 
@@ -76,6 +77,18 @@ Details
    that chunks uploads respect the configured home directory.
 
    https://github.com/owncloud/core/pull/40693
+
+* Bugfix - Add rewrite base to .htaccess: [#40696](https://github.com/owncloud/core/issues/40696)
+
+   In previous core versions the rewrite base config.php option was not added to the generated
+   .htaccess file. The use of a more hardened .htaccess file in version 10.12.0 (being introduced
+   by https://github.com/owncloud/core/pull/40584) caused the files view in the web UI to be
+   empty in URL via subfolder plus index.php-less setups. Additionally, the desktop app was not
+   be able to sync and an error 405 (Method not allowed) was returned. Rewrite base is now correctly
+   added to the .htaccess file.
+
+   https://github.com/owncloud/core/issues/40696
+   https://github.com/owncloud/core/pull/40697
 
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
 
