@@ -272,9 +272,12 @@ class FedShareManager {
 	 * @return void
 	 */
 	public function unshare($id, $token) {
+
 		$shareRow = $this->federatedShareProvider->unshare($id, $token);
 		if ($shareRow === false) {
-			return;
+			//return;
+			throw new ShareNotFound('share not found in share_external table');
+			
 		}
 		$ownerAddress = new Address($shareRow['owner'] . '@' . $shareRow['remote']);
 		$mountpoint = $shareRow['mountpoint'];

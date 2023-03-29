@@ -36,6 +36,7 @@ use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Class OcmController
@@ -304,7 +305,7 @@ class OcmController extends Controller {
 		$providerId,
 		$notification
 	) {
-
+		error_log("=================>>>>>". get_class($this->fedShareManager));
 		try {
 			if (!\is_array($notification)) {
 				throw new BadRequestException(
@@ -399,11 +400,21 @@ class OcmController extends Controller {
 					);
 					break;
 				case FileNotification::NOTIFICATION_TYPE_SHARE_UNSHARED:
-					$this->fedShareManager->unshare(
-						$providerId,
-						$notification['sharedSecret']
-					);
-					break;
+					{	
+						try{
+							$this->fedShareManager->unshare(
+								$providerId,
+								$notification['sharedSecret']
+							);
+						}catch(ShareNotFound $ex){
+							/*$gFedSharemanager = Application::getFedShareManager();
+							$gFedSharemanager->unshare(
+								$providerId,
+								$notification['sharedSecret']
+							);*/
+						}
+						break;
+					}
 				case FileNotification::NOTIFICATION_TYPE_RESHARE_UNDO:
 					// Stub. Let it fallback to the prev endpoint for now
 					return new JSONResponse(
