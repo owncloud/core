@@ -8,12 +8,64 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: [#40567](https://github.com/owncloud/core/pull/40567)
 * Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: [#40693](https://github.com/owncloud/core/pull/40693)
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
 * Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
 
 Details
 -------
+
+* Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: [#40567](https://github.com/owncloud/core/pull/40567)
+
+   https://github.com/owncloud/core/pull/40567
+   With
+   the
+   introduction
+   of
+   compatibility
+   to
+   32-bit
+   systems
+   broke
+   as
+   we
+   are
+   now
+   casting
+   $freeSpace
+   to
+   int
+   and
+   this
+   caused
+   an
+   integer
+   overflow
+   on
+   such
+   systems
+   when
+   the
+   free
+   space
+   was
+   above
+   the
+   max
+   supported
+   value.
+   We
+   added
+   therefore
+   an
+   additional
+   check
+   for
+   32-bit
+   systems
+   in
+   QuotaPlugin.php.
 
 * Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: [#40693](https://github.com/owncloud/core/pull/40693)
 

@@ -6,12 +6,18 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: <a href="https://github.com/owncloud/core/pull/40567">#40567</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></li>
         <li class="type-change changelog-item">Change - Do not auto-enable user-key ecryption: <a href="https://github.com/owncloud/core/pull/40702">#40702</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: <a href="https://github.com/owncloud/core/pull/40567">#40567</a></p>
+            <p>https://github.com/owncloud/core/pull/40567<br></p>
+            <p>With<br>the<br>introduction<br>of<br>compatibility<br>to<br>32-bit<br>systems<br>broke<br>as<br>we<br>are<br>now<br>casting<br>$freeSpace<br>to<br>int<br>and<br>this<br>caused<br>an<br>integer<br>overflow<br>on<br>such<br>systems<br>when<br>the<br>free<br>space<br>was<br>above<br>the<br>max<br>supported<br>value.<br>We<br>added<br>therefore<br>an<br>additional<br>check<br>for<br>32-bit<br>systems<br>in<br>QuotaPlugin.php.<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></p>
             <p>When using the User Home Folder Naming Rule (configurable in the Advanced tab of the LDAP
