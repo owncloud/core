@@ -1,0 +1,12 @@
+Bugfix: Add rewrite base to .htaccess
+
+In previous core versions the rewrite base config.php option was not added to
+the generated .htaccess file. The use of a more hardened .htaccess file in version
+10.12.0 (being introduced by https://github.com/owncloud/core/pull/40584) caused the
+files view in the web UI to be empty in URL via subfolder plus index.php-less
+setups. Additionally, the desktop app was not be able to sync and an error 405
+(Method not allowed) was returned. Rewrite base is now correctly added to the
+.htaccess file.
+
+https://github.com/owncloud/core/issues/40696
+https://github.com/owncloud/core/pull/40697
