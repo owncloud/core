@@ -1,0 +1,8 @@
+Bugfix: Add rewrite base to .htaccess
+
+In the previous core version the rewrite base was not added to the generated
+.htaccess file which caused complete breakage of the web UI in combination with
+the hardened .htaccess file introduced with https://github.com/owncloud/core/pull/40584
+
+https://github.com/owncloud/core/issues/40696
+https://github.com/owncloud/core/pull/40697
