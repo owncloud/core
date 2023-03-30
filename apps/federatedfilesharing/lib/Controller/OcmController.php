@@ -407,11 +407,14 @@ class OcmController extends Controller {
 								$notification['sharedSecret']
 							);
 						}catch(ShareNotFound $ex){
-							/*$gFedSharemanager = Application::getFedShareManager();
-							$gFedSharemanager->unshare(
-								$providerId,
-								$notification['sharedSecret']
-							);*/
+							
+							if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
+								$groupFedShareManager = \OCA\FederatedGroups\AppInfo\Application::getFedSharemanager();
+								$groupFedShareManager->unshare(
+									$providerId,
+									$notification['sharedSecret']
+								);
+							}
 						}
 						break;
 					}
