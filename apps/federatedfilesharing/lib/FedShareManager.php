@@ -30,6 +30,7 @@ use OCP\Notification\IManager as NotificationManager;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Class FedShareManager holds the share logic
