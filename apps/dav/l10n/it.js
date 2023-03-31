@@ -2,6 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Compleanni dei contatti",
+    "User unknown" : "Utente sconosciuto",
     "User disabled" : "Utente disabilitato",
     "Personal" : "Personale",
     "Contacts" : "Contatti",
