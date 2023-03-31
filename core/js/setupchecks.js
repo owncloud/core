@@ -245,8 +245,12 @@
 				};
 
 				for (var header in securityHeaders) {
-					if (!xhr.getResponseHeader(header) || header === 'X-Robots-Tag') {
-						xRobotsTagValues = xhr.getResponseHeader(header).split(',').map(item=>item.trim())
+					if (header === 'X-Robots-Tag') {
+						xRobotsTagValues = [];
+						if(xhr.getResponseHeader(header)) {
+							xRobotsTagValues = xhr.getResponseHeader(header).split(',').map(item=>item.trim());
+						}
+
 						if (!xRobotsTagValues.includes('none') && !(xRobotsTagValues.includes('noindex') && xRobotsTagValues.includes('nofollow'))) {
 							messages.push({
 								msg: t('core', 'The "{header}" HTTP header is misconfigured. Expected values are "none" or "noindex, nofollow". This is a potential security or privacy risk and we recommend adjusting this setting.', {header: header}),
