@@ -12,6 +12,7 @@ Summary
 * Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: [#40693](https://github.com/owncloud/core/pull/40693)
 * Bugfix - Add rewrite base to .htaccess: [#40696](https://github.com/owncloud/core/issues/40696)
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
+* Change - Fix permission bits when enforcing passwords on public links: [#40701](https://github.com/owncloud/core/pull/40701)
 * Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
 
 Details
@@ -101,6 +102,14 @@ Details
    https://github.com/owncloud/core/pull/40691
    https://github.com/owncloud/core/pull/40683
    https://github.com/owncloud/core/pull/40690
+
+* Change - Fix permission bits when enforcing passwords on public links: [#40701](https://github.com/owncloud/core/pull/40701)
+
+   It was not possible to enforce passwords on public link files with read + write permission. The
+   admin can now check 'Enforce password protection for read + write + delete links' to do so.
+
+   https://github.com/owncloud/core/issues/40699
+   https://github.com/owncloud/core/pull/40701
 
 * Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
 

@@ -10,6 +10,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add rewrite base to .htaccess: <a href="https://github.com/owncloud/core/issues/40696">#40696</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></li>
+        <li class="type-change changelog-item">Change - Fix permission bits when enforcing passwords on public links: <a href="https://github.com/owncloud/core/pull/40701">#40701</a></li>
         <li class="type-change changelog-item">Change - Do not auto-enable user-key ecryption: <a href="https://github.com/owncloud/core/pull/40702">#40702</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
@@ -49,6 +50,15 @@
    (2.12.6 to 2.13.1) - icewind/streams (0.7.6 to 0.7.7)
             </p>
             <p>https://github.com/owncloud/core/pull/40691<br>https://github.com/owncloud/core/pull/40683<br>https://github.com/owncloud/core/pull/40690<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Fix permission bits when enforcing passwords on public links: <a href="https://github.com/owncloud/core/pull/40701">#40701</a></p>
+            <p>It was not possible to enforce passwords on public link files with read + write permission. The
+   admin can now check 'Enforce password protection for read + write + delete links' to do so.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40699<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40701<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Do not auto-enable user-key ecryption: <a href="https://github.com/owncloud/core/pull/40702">#40702</a></p>
