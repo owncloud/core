@@ -4,4 +4,4 @@ Setup checks now allows other values other than "none" for X-Robots-Tag header.
 If "none" or "noindex" and "nofollow" are missing, a security warning is raised.
 Previously a header value with "noindex" and "nofollow" wasn't allowed event if it was valid.
 
-<https://github.com/owncloud/core/pull/40715>
+https://github.com/owncloud/core/pull/40715
