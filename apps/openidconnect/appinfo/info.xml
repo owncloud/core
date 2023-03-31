@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<info>
+    <id>openidconnect</id>
+    <name>OpenID Connect</name>
+    <summary>Authentication and SSO with OpenID Connect (OIDC)</summary>
+    <description>
+This extension adds support for [OpenID Connect](https://openid.net/connect/) to ownCloud Server.
+
+OpenID Connect is an open standard for single sign-on and identity and access management. With ownCloud it can be used for user authentication and client authorization against an external Identity Provider.
+
+**Benefits of using ownCloud with OpenID Connect**
+
+- Increased security by shifting user authentication to an external Identity Provider
+- Seamless integration into single sign-on (SSO) environments as well as with third party products
+- Centralized client management within the Identity Provider
+- Enterprise-grade security through the use of authentication security features (e.g., multi-factor authentication) and policies (e.g., automatic token expiration on certain conditions) provided by Identity Providers
+
+The integration requires an Identity Provider that supports OpenID Connect (e.g., Keycloak, Kopano Konnect, Ping Federate, ADFS, Azure AD or others).
+More information on setup, configuration and migration can be found in the ownCloud Documentation.</description>
+    <licence>GPLv2</licence>
+    <author>Thomas Müller</author>
+    <version>2.2.0</version>
+    <namespace>OpenIdConnect</namespace>
+    <category>integration</category>
+    <documentation>
+      <admin>https://doc.owncloud.com/server/latest/admin_manual/configuration/user/oidc/index.html</admin>
+    </documentation>
+    <website>https://github.com/owncloud/openidconnect</website>
+    <bugs>https://github.com/owncloud/openidconnect/issues</bugs>
+    <repository type="git">https://github.com/owncloud/openidconnect.git</repository>
+    <screenshot>https://raw.githubusercontent.com/owncloud/screenshots/master/openidconnect/openidconnect.png</screenshot>
+    <dependencies>
+        <owncloud min-version="10" max-version="10"/>
+        <php min-version="7.3" />
+    </dependencies>
+    <types>
+        <authentication/>
+    </types>
+    <auth-modules>
+        <module>OCA\OpenIdConnect\OpenIdConnectAuthModule</module>
+    </auth-modules>
+</info>

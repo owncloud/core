@@ -1,0 +1,24 @@
+{
+    "name": "jumbojett/openid-connect-php",
+    "description": "Bare-bones OpenID Connect client",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=5.4",
+        "phpseclib/phpseclib" : "~2.0 || ^3.0",
+        "ext-json": "*",
+        "ext-curl": "*",
+        "paragonie/random_compat": ">=2"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master",
+        "yoast/phpunit-polyfills": "^1.0"
+    },
+    "archive" : {
+        "exclude" : [
+            ".*"
+        ]
+    },
+    "autoload" : {
+         "classmap": [ "src/"]
+    }
+}

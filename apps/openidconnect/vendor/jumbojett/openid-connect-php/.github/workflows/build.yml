@@ -1,0 +1,38 @@
+---
+name: build
+
+on: [push, pull_request]
+
+env:
+    DEFAULT_COMPOSER_FLAGS: "--prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi"
+
+jobs:
+    phpunit:
+        name: PHP ${{ matrix.php }} on ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ubuntu-latest]
+                php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+            - name: Get composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+            - name: Cache composer dependencies
+              uses: actions/cache@v1
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: ${{ runner.os }}-composer-
+            - name: Install dependencies
+              run: composer update $DEFAULT_COMPOSER_FLAGS
+            - name: Run unit tests
+              run: vendor/bin/phpunit --verbose --colors=always tests

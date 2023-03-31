@@ -21,6 +21,7 @@
 !/apps/dav
 !/apps/files
 !/apps/user_ldap
+!/apps/openidconnect
 !/apps/federatedfilesharing
 !/apps/federation
 !/apps/files_external

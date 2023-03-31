@@ -1,0 +1,12 @@
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "use": "sig",
+      "kid": "konnectd-tokens-signing-key",
+      "n": "10hb3pFUVcqJcS-d1pLCkFTyTqVD1GavlAai582CoRwFcyIQxCPJz0LJVgkUNwxSRkY0g0PcgFN_MmuuzpFXMkkiMIC9O_KwnuL34FrbijZvcGpnDn7kb9KAM883OVTr_w3wFeQIyh0ksSwVQ9CxVQ-ZeCXP73CCGk99uDb8SeF8_vncXJmaak99pK6HKJteSLkA-Ywxo9HOINZK2vW06UYcSkeoQnSI27Cd5-T6GVgqKH0Su4c5Ydou_w0tL_UkbZA4fIbMZC6dtWmBQf6tyYsCM9fbWNIVOj_7WlWcAOSTFNF2We2dxJrOzt6vDND3k1nCgg_EEM6cgBO3swUCktTFuQxo1sryYX5WXz9wnJb38b9mTXhOeF0bd9y_VQq8erSlcyRu8UGzX65tIf534hLL16KQaHbjROGSQvzqFrISmSBjBTjkPedTZSYOhiVJ95-em_Y6uLi-T7V4bs4dcg3oa0H_glXltoC9JxzS6gfMGGLgh-NpGEOdC_QosyzVVfzT70TurOGnsB1_VcAm_fK-T1Zv_ztpr5OZNfXWXC3Pfq_3sxP5HDKMk8luZ7LOWk7HVSYBdCFmOM1A3KmHNS2fEs-QHIr-XjYQ7QrXsRFP3dmoEPfiYlu03m8Xs3UMB70eGeGQx7OhZSuogxV_oCfApV5EJfuz97tVmOg8iMs",
+      "e": "AQAB"
+    }
+  ],
+  "kty": ""
+}
