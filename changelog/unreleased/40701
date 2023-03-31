@@ -1,6 +1,6 @@
 Change: fix permission bits when enforcing passwords on public links
 
-It was not possible to enforce passwords on public link files with read+write permission.
+It was not possible to enforce passwords on public link files with read + write permission.
 The admin can now check 'Enforce password protection for read + write + delete links' to do so.
 
 https://github.com/owncloud/core/pull/40701
