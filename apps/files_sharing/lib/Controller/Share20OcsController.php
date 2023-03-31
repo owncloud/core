@@ -1215,16 +1215,25 @@ class Share20OcsController extends OCSController {
 	 */
 	private function getShareById($id, $recipient = null) {
 		$share = null;
-
+		$providerIds =
+		[
+			"ocinternal", 
+			"ocFederatedSharing",
+			"ocGroupFederatedSharing",
+			"ocMixFederatedSharing"
+		];
 		// First check if it is an internal share.
-		try {
-			$share = $this->shareManager->getShareById('ocinternal:'.$id, $recipient);
-		} catch (ShareNotFound $e) {
-			if (!$this->shareManager->outgoingServer2ServerSharesAllowed()) {
-				throw new ShareNotFound();
-			}
+		foreach($providerIds as $providerId){
+			try {
+				$share = $this->shareManager->getShareById($providerId .":". $id, $recipient);
+				return $share;
+			} catch (ShareNotFound $e) {
+				if (!$this->shareManager->outgoingServer2ServerSharesAllowed()) {
+					throw new ShareNotFound();
+				}
 
-			$share = $this->shareManager->getShareById('ocFederatedSharing:' . $id, $recipient);
+				continue;
+			}
 		}
 
 		return $share;

@@ -36,6 +36,7 @@ use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Class OcmController
@@ -304,17 +305,7 @@ class OcmController extends Controller {
 		$providerId,
 		$notification
 	) {
-		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
-		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
-			$controller = \OCA\FederatedGroups\AppInfo\Application::getOcmController($this->request);
-			return $controller->processNotification(
-				$notificationType,
-				$resourceType,
-				$providerId,
-				$notification
-			);
-		}
-
+		error_log("=================>>>>>". get_class($this->fedShareManager));
 		try {
 			if (!\is_array($notification)) {
 				throw new BadRequestException(
@@ -402,17 +393,31 @@ class OcmController extends Controller {
 						$providerId,
 						$notification['sharedSecret']
 					);
+					///Todo: probably we have problem on this action	
 					$this->fedShareManager->updateOcmPermissions(
 						$share,
 						$notification['permission']
 					);
 					break;
 				case FileNotification::NOTIFICATION_TYPE_SHARE_UNSHARED:
-					$this->fedShareManager->unshare(
-						$providerId,
-						$notification['sharedSecret']
-					);
-					break;
+					{	
+						try{
+							$this->fedShareManager->unshare(
+								$providerId,
+								$notification['sharedSecret']
+							);
+						}catch(ShareNotFound $ex){
+							
+							if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
+								$groupFedShareManager = \OCA\FederatedGroups\AppInfo\Application::getFedSharemanager();
+								$groupFedShareManager->unshare(
+									$providerId,
+									$notification['sharedSecret']
+								);
+							}
+						}
+						break;
+					}
 				case FileNotification::NOTIFICATION_TYPE_RESHARE_UNDO:
 					// Stub. Let it fallback to the prev endpoint for now
 					return new JSONResponse(

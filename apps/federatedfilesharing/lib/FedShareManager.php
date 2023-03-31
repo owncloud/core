@@ -30,6 +30,7 @@ use OCP\Notification\IManager as NotificationManager;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Class FedShareManager holds the share logic
@@ -272,9 +273,12 @@ class FedShareManager {
 	 * @return void
 	 */
 	public function unshare($id, $token) {
+
 		$shareRow = $this->federatedShareProvider->unshare($id, $token);
 		if ($shareRow === false) {
-			return;
+			//return;
+			throw new ShareNotFound('share not found in share_external table');
+			
 		}
 		$ownerAddress = new Address($shareRow['owner'] . '@' . $shareRow['remote']);
 		$mountpoint = $shareRow['mountpoint'];
