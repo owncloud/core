@@ -1,4 +1,4 @@
-Bugfix: X-Robots-Tag header valid values check
+Enhancement: Improve X-Robots-Tag header values check
 
 Setup checks now allows other values other than "none" for X-Robots-Tag header.
 If "none" or "noindex" and "nofollow" are missing, a security warning is raised.
