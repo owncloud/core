@@ -2683,16 +2683,16 @@
         },
         {
             "name": "punic/punic",
-            "version": "3.8.0",
+            "version": "3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/punic/punic.git",
-                "reference": "f24eb487f05fafe3ab1cbe33f75a589d50a1677f"
+                "reference": "142707201a246a9c2ea909605cd56177af87f961"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/punic/punic/zipball/f24eb487f05fafe3ab1cbe33f75a589d50a1677f",
-                "reference": "f24eb487f05fafe3ab1cbe33f75a589d50a1677f",
+                "url": "https://api.github.com/repos/punic/punic/zipball/142707201a246a9c2ea909605cd56177af87f961",
+                "reference": "142707201a246a9c2ea909605cd56177af87f961",
                 "shasum": ""
             },
             "require": {
@@ -2754,7 +2754,7 @@
             ],
             "support": {
                 "issues": "https://github.com/punic/punic/issues",
-                "source": "https://github.com/punic/punic/tree/3.8.0"
+                "source": "https://github.com/punic/punic/tree/3.8.1"
             },
             "funding": [
                 {
@@ -2766,7 +2766,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-10-19T09:00:13+00:00"
+            "time": "2023-03-29T06:56:57+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
