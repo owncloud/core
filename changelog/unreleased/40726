@@ -1,0 +1,5 @@
+Change: fix name length check on federated shares
+
+A federated share with a too long name results in inaccessible data.
+
+https://github.com/owncloud/core/pull/40726

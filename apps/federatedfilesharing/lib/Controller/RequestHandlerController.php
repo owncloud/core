@@ -26,6 +26,7 @@
 
 namespace OCA\FederatedFileSharing\Controller;
 
+use OC\Files\View;
 use OC\OCS\Result;
 use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
@@ -37,6 +38,7 @@ use OCA\FederatedFileSharing\Ocm\Exception\NotImplementedException;
 use OCA\FederatedFileSharing\Ocm\Exception\OcmException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\OCSController;
+use OCP\Files\InvalidPathException;
 use OCP\IRequest;
 use OCP\IUserManager;
 
@@ -120,7 +122,7 @@ class RequestHandlerController extends OCSController {
 				]
 			);
 
-			if (!\OCP\Util::isValidFileName($name)) {
+			if (!$this->isFileNameValid($name)) {
 				throw new BadRequestException(
 					'The mountpoint name contains invalid characters.'
 				);
@@ -405,5 +407,19 @@ class RequestHandlerController extends OCSController {
 		}
 
 		return new Result();
+	}
+
+	private function isFileNameValid(?string $name): bool {
+		if ($name === null) {
+			return false;
+		}
+		$v = new View();
+		try {
+			# new shares will show up in user home - therefore we test with /
+			$v->verifyPath('/', $name);
+		} catch (InvalidPathException $e) {
+			return false;
+		}
+		return true;
 	}
 }

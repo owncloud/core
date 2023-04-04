@@ -1,4 +1,4 @@
-Change: Do not auto-enable user-key ecryption
+Change: Do not auto-enable user-key encryption
 
 Executing occ encryption:encrypt-all will no longer auto-enable user-key encryption.
 
