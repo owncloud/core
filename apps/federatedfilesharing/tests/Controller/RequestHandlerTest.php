@@ -42,6 +42,7 @@ use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\Share;
 use OCP\Share\IShare;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Class RequestHandlerControllerTest
@@ -53,7 +54,7 @@ class RequestHandlerTest extends TestCase {
 	public const DEFAULT_TOKEN = 'abc';
 
 	/**
-	 * @var IRequest | \PHPUnit\Framework\MockObject\MockObject
+	 * @var IRequest | MockObject
 	 */
 	private $request;
 
@@ -63,24 +64,21 @@ class RequestHandlerTest extends TestCase {
 	private $ocmMiddleware;
 
 	/**
-	 * @var IUserManager | \PHPUnit\Framework\MockObject\MockObject
+	 * @var IUserManager | MockObject
 	 */
 	private $userManager;
 
 	/**
-	 * @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject
+	 * @var AddressHandler | MockObject
 	 */
 	private $addressHandler;
 
 	/**
-	 * @var FedShareManager | \PHPUnit\Framework\MockObject\MockObject
+	 * @var FedShareManager | MockObject
 	 */
 	private $fedShareManager;
 
-	/**
-	 * @var RequestHandlerController
-	 */
-	private $requestHandlerController;
+	private RequestHandlerController $requestHandlerController;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -100,53 +98,64 @@ class RequestHandlerTest extends TestCase {
 		);
 	}
 
-	public function testShareIsNotCreatedWhenSharingIsDisabled() {
+	public function testShareIsNotCreatedWhenSharingIsDisabled(): void {
 		$this->ocmMiddleware->method('assertIncomingSharingEnabled')
 			->willThrowException(new NotImplementedException());
 		$this->fedShareManager->expects($this->never())
 			->method('createShare');
 		$response = $this->requestHandlerController->createShare();
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_NOT_IMPLEMENTED,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testShareIsNotCreatedWithEmptyParams() {
+	public function testShareIsNotCreatedWithEmptyParams(): void {
 		$response = $this->requestHandlerController->createShare();
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_BAD_REQUEST,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testShareIsNotCreatedForNonExistingUser() {
-		$this->request->expects($this->any())
+	public function testShareIsNotCreatedForNonExistingUser(): void {
+		$this->request
 			->method('getParam')
 			->willReturn('a');
 		$this->userManager->expects($this->once())
 			->method('userExists')
 			->willReturn(false);
 		$response = $this->requestHandlerController->createShare();
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_BAD_REQUEST,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testShareIsNotCreatedForEmptyPath() {
-		$this->request->expects($this->any())
+	public function testShareIsNotCreatedForEmptyPath(): void {
+		$this->request
 			->method('getParam')
 			->willReturn('');
 		$response = $this->requestHandlerController->createShare();
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_BAD_REQUEST,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testShareIsCreated() {
-		$this->request->expects($this->any())
+	public function testShareIsNotCreatedForTooLongPath(): void {
+		$this->request
+			->method('getParam')
+			->willReturn('LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsum');
+		$response = $this->requestHandlerController->createShare();
+		self::assertEquals(
+			Http::STATUS_BAD_REQUEST,
+			$response->getStatusCode()
+		);
+	}
+
+	public function testShareIsCreated(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$this->userManager->expects($this->once())
@@ -155,38 +164,38 @@ class RequestHandlerTest extends TestCase {
 		$this->fedShareManager->expects($this->once())
 			->method('createShare');
 		$response = $this->requestHandlerController->createShare();
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_CONTINUE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testReshareFailedForEmptyParams() {
+	public function testReShareFailedForEmptyParams(): void {
 		$this->ocmMiddleware->method('assertNotNull')
 			->willThrowException(new BadRequestException());
-		$response = $this->requestHandlerController->reShare(2);
-		$this->assertEquals(
+		$response = $this->requestHandlerController->ReShare(2);
+		self::assertEquals(
 			Http::STATUS_BAD_REQUEST,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testReshareFailedForWrongShareId() {
-		$this->request->expects($this->any())
+	public function testReShareFailedForWrongShareId(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$this->ocmMiddleware->expects($this->once())
 			->method('getValidShare')
 			->willThrowException(new Share\Exceptions\ShareNotFound());
-		$response = $this->requestHandlerController->reShare('a99');
-		$this->assertEquals(
+		$response = $this->requestHandlerController->ReShare('a99');
+		self::assertEquals(
 			Http::STATUS_BAD_REQUEST,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testReshareFailedForSharingBackToOwner() {
-		$this->request->expects($this->any())
+	public function testReShareFailedForSharingBackToOwner(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
@@ -195,18 +204,18 @@ class RequestHandlerTest extends TestCase {
 		$this->ocmMiddleware->expects($this->once())
 			->method('getValidShare')
 			->willReturn($share);
-		$this->ocmMiddleware->expects($this->any())
+		$this->ocmMiddleware
 			->method('assertNotSameUser')
 			->willThrowException(new ForbiddenException());
-		$response = $this->requestHandlerController->reShare('a99');
-		$this->assertEquals(
+		$response = $this->requestHandlerController->ReShare('a99');
+		self::assertEquals(
 			Http::STATUS_FORBIDDEN,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testReshareFailedForWrongPermissions() {
-		$this->request->expects($this->any())
+	public function testReShareFailedForWrongPermissions(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$this->addressHandler->method('getLocalUserFederatedAddress')
@@ -218,31 +227,31 @@ class RequestHandlerTest extends TestCase {
 		$this->ocmMiddleware->expects($this->once())
 			->method('assertSharingPermissionSet')
 			->willThrowException(new BadRequestException());
-		$response = $this->requestHandlerController->reShare('a99');
-		$this->assertEquals(
+		$response = $this->requestHandlerController->ReShare('a99');
+		self::assertEquals(
 			Http::STATUS_BAD_REQUEST,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testReshareFailedForTokenMismatch() {
+	public function testReShareFailedForTokenMismatch(): void {
 		$this->ocmMiddleware->expects($this->once())
 			->method('getValidShare')
 			->willThrowException(new ForbiddenException());
 
-		$response = $this->requestHandlerController->reShare('a99');
-		$this->assertEquals(
+		$response = $this->requestHandlerController->ReShare('a99');
+		self::assertEquals(
 			Http::STATUS_FORBIDDEN,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testReshareSuccess() {
-		$this->request->expects($this->any())
+	public function testReShareSuccess(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
-		$share->expects($this->any())
+		$share
 			->method('getPermissions')
 			->willReturn(Constants::PERMISSION_SHARE);
 		$this->ocmMiddleware->expects($this->once())
@@ -253,44 +262,44 @@ class RequestHandlerTest extends TestCase {
 
 		$resultShare = $this->getMockBuilder(IShare::class)
 			->disableOriginalConstructor()->getMock();
-		$resultShare->expects($this->any())
+		$resultShare
 			->method('getToken')
 			->willReturn('token');
-		$resultShare->expects($this->any())
+		$resultShare
 			->method('getId')
 			->willReturn(55);
 
 		$this->fedShareManager->expects($this->once())
-			->method('reShare')
+			->method('ReShare')
 			->willReturn($resultShare);
-		$response = $this->requestHandlerController->reShare(123);
-		$this->assertEquals(
+		$response = $this->requestHandlerController->ReShare(123);
+		self::assertEquals(
 			Http::STATUS_CONTINUE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testAcceptFailedWhenSharingIsDisabled() {
+	public function testAcceptFailedWhenSharingIsDisabled(): void {
 		$this->ocmMiddleware->method('assertOutgoingSharingEnabled')
 			->willThrowException(new NotImplementedException());
 		$this->fedShareManager->expects($this->never())
 			->method('acceptShare');
 		$response = $this->requestHandlerController->acceptShare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_SERVICE_UNAVAILABLE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testAcceptSuccess() {
-		$this->request->expects($this->any())
+	public function testAcceptSuccess(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
-		$share->expects($this->any())
+		$share
 			->method('getShareOwner')
 			->willReturn('Alice');
-		$share->expects($this->any())
+		$share
 			->method('getSharedBy')
 			->willReturn('Bob');
 
@@ -302,14 +311,14 @@ class RequestHandlerTest extends TestCase {
 			->method('acceptShare');
 
 		$response = $this->requestHandlerController->acceptShare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_CONTINUE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testAcceptFailedWhenInvalidShareId() {
-		$this->request->expects($this->any())
+	public function testAcceptFailedWhenInvalidShareId(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 
@@ -320,14 +329,14 @@ class RequestHandlerTest extends TestCase {
 			->method('acceptShare');
 
 		$response = $this->requestHandlerController->acceptShare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_GONE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testAcceptFailedWhenShareIdHasInvalidSecret() {
-		$this->request->expects($this->any())
+	public function testAcceptFailedWhenShareIdHasInvalidSecret(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 
@@ -338,33 +347,33 @@ class RequestHandlerTest extends TestCase {
 			->method('acceptShare');
 
 		$response = $this->requestHandlerController->acceptShare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_FORBIDDEN,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testDeclineFailedWhenSharingIsDisabled() {
+	public function testDeclineFailedWhenSharingIsDisabled(): void {
 		$this->ocmMiddleware->method('assertOutgoingSharingEnabled')
 			->willThrowException(new NotImplementedException());
 		$this->fedShareManager->expects($this->never())
 			->method('declineShare');
 		$response = $this->requestHandlerController->acceptShare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_SERVICE_UNAVAILABLE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testDeclineSuccess() {
-		$this->request->expects($this->any())
+	public function testDeclineSuccess(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
-		$share->expects($this->any())
+		$share
 			->method('getShareOwner')
 			->willReturn('Alice');
-		$share->expects($this->any())
+		$share
 			->method('getSharedBy')
 			->willReturn('Bob');
 
@@ -376,14 +385,14 @@ class RequestHandlerTest extends TestCase {
 			->method('declineShare');
 
 		$response = $this->requestHandlerController->declineShare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_CONTINUE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testDeclineFailedWhenInvalidShareId() {
-		$this->request->expects($this->any())
+	public function testDeclineFailedWhenInvalidShareId(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 
@@ -394,14 +403,14 @@ class RequestHandlerTest extends TestCase {
 			->method('declineShare');
 
 		$response = $this->requestHandlerController->declineShare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_GONE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testDeclineFailedWhenShareIdHasInvalidSecret() {
-		$this->request->expects($this->any())
+	public function testDeclineFailedWhenShareIdHasInvalidSecret(): void {
+		$this->request
 			->method('getParam')
 			->willReturn(self::DEFAULT_TOKEN);
 
@@ -412,36 +421,36 @@ class RequestHandlerTest extends TestCase {
 			->method('declineShare');
 
 		$response = $this->requestHandlerController->declineShare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_FORBIDDEN,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testUnshareFailedWhenSharingIsDisabled() {
+	public function testUnshareFailedWhenSharingIsDisabled(): void {
 		$this->ocmMiddleware->method('assertOutgoingSharingEnabled')
 			->willThrowException(new NotImplementedException());
 		$this->fedShareManager->expects($this->never())
 			->method('unshare');
 		$response = $this->requestHandlerController->unshare(2);
-		$this->assertEquals(
+		self::assertEquals(
 			Http::STATUS_SERVICE_UNAVAILABLE,
 			$response->getStatusCode()
 		);
 	}
 
-	public function testUpdatePermissions() {
+	public function testUpdatePermissions(): void {
 		$requestMap = [
 			['token', null, self::DEFAULT_TOKEN],
 			['permissions', null, Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE]
 		];
-		$this->request->expects($this->any())
+		$this->request
 			->method('getParam')
-			->will(
-				$this->returnValueMap($requestMap)
+			->willReturnMap(
+				$requestMap
 			);
 		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
-		$share->expects($this->any())
+		$share
 			->method('getPermissions')
 			->willReturn(Constants::PERMISSION_SHARE);
 		$this->ocmMiddleware->expects($this->once())
@@ -456,10 +465,10 @@ class RequestHandlerTest extends TestCase {
 	protected function getValidShareMock($token) {
 		$share = $this->getMockBuilder(IShare::class)
 			->disableOriginalConstructor()->getMock();
-		$share->expects($this->any())
+		$share
 			->method('getToken')
 			->willReturn($token);
-		$share->expects($this->any())
+		$share
 			->method('getShareType')
 			->willReturn(FederatedShareProvider::SHARE_TYPE_REMOTE);
 		return $share;
