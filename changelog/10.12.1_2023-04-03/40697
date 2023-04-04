@@ -8,5 +8,5 @@ setups. Additionally, the desktop app was not be able to sync and an error 405
 (Method not allowed) was returned. Rewrite base is now correctly added to the
 .htaccess file.
 
-https://github.com/owncloud/core/issues/40696
 https://github.com/owncloud/core/pull/40697
+https://github.com/owncloud/core/issues/40696
