@@ -12,7 +12,6 @@ Summary
 * Bugfix - Add rewrite base to .htaccess: [#40697](https://github.com/owncloud/core/pull/40697)
 * Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: [#40709](https://github.com/owncloud/core/pull/40709)
 * Change - Fix permission bits when enforcing passwords on public links: [#40701](https://github.com/owncloud/core/pull/40701)
-* Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
 
 Details
@@ -57,14 +56,6 @@ Details
 
    https://github.com/owncloud/core/issues/40699
    https://github.com/owncloud/core/pull/40701
-
-* Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
-
-   Executing occ encryption:encrypt-all will no longer auto-enable user-key encryption.
-
-   https://github.com/owncloud/enterprise/issues/4939
-   https://github.com/owncloud/core/pull/40702
-   https://doc.owncloud.com/docs/next/server_release_notes.html#deprecation-note-for-user-key-storage-encryption
 
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
 
