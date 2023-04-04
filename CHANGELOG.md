@@ -13,7 +13,8 @@ Summary
 * Bugfix - Add rewrite base to .htaccess: [#40696](https://github.com/owncloud/core/issues/40696)
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
 * Change - Fix permission bits when enforcing passwords on public links: [#40701](https://github.com/owncloud/core/pull/40701)
-* Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
+* Change - Do not auto-enable user-key encryption: [#40702](https://github.com/owncloud/core/pull/40702)
+* Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
 Details
 -------
@@ -112,13 +113,19 @@ Details
    https://github.com/owncloud/core/issues/40699
    https://github.com/owncloud/core/pull/40701
 
-* Change - Do not auto-enable user-key ecryption: [#40702](https://github.com/owncloud/core/pull/40702)
+* Change - Do not auto-enable user-key encryption: [#40702](https://github.com/owncloud/core/pull/40702)
 
    Executing occ encryption:encrypt-all will no longer auto-enable user-key encryption.
 
    https://github.com/owncloud/enterprise/issues/4939
    https://github.com/owncloud/core/pull/40702
    https://doc.owncloud.com/docs/next/server_release_notes.html#deprecation-note-for-user-key-storage-encryption
+
+* Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
+
+   A federated share with a too long name results in inaccessible data.
+
+   https://github.com/owncloud/core/pull/40726
 
 Changelog for ownCloud Core [10.12.0] (2023-02-24)
 =======================================
