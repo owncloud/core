@@ -115,7 +115,10 @@ class EncryptAll extends Command {
 		$masterKeyEnabled = $this->config->getAppValue('encryption', 'useMasterKey', '');
 		$userKeyEnabled = $this->config->getAppValue('encryption', 'userSpecificKey', '');
 		if (($masterKeyEnabled === '') && ($userKeyEnabled === '')) {
-			throw new \Exception('None of the encryption modules is enabled');
+			/**
+			 * Enable user specific encryption if nothing is enabled.
+			 */
+			$this->config->setAppValue('encryption', 'userSpecificKey', '1');
 		}
 
 		$output->writeln("\n");
