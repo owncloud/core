@@ -80,7 +80,10 @@ interface ICacheEntry {
 	/**
 	 * Get the file size in bytes
 	 *
-	 * @return int
+	 * It should return the size as integer, but it could return it
+	 * as float if the size doesn't fit
+	 *
+	 * @return int|float
 	 * @since 9.0.0
 	 */
 	public function getSize();
