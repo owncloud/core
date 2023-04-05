@@ -849,7 +849,14 @@ class Cache implements ICache {
 	 * @param array $data (optional) meta data of the folder
 	 */
 	public function correctFolderSize($path, $data = null) {
-		$this->calculateFolderSize($path, $data);
+		$newSize = $this->calculateFolderSize($path, $data);
+		if ($newSize < 0) {
+			// newSize < 0 implies the folder needs a scan or it's
+			// shallow scanned. In both cases, we don't need to correct
+			// the parent folders
+			return;
+		}
+
 		if ($path !== '') {
 			$parent = \dirname($path);
 			if ($parent === '.' or $parent === '/') {
