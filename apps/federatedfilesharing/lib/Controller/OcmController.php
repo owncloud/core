@@ -336,11 +336,26 @@ class OcmController extends Controller {
 			switch ($notificationType) {
 				case FileNotification::NOTIFICATION_TYPE_SHARE_ACCEPTED:
 					$this->ocmMiddleware->assertOutgoingSharingEnabled();
-					$share = $this->ocmMiddleware->getValidShare(
-						$providerId,
-						$notification['sharedSecret']
-					);
-					$this->fedShareManager->acceptShare($share);
+					$share = null;
+					try{
+						$share = $this->ocmMiddleware->getValidShare(
+							$providerId,
+							$notification['sharedSecret']
+						);
+						$this->fedShareManager->acceptShare($share);
+					}catch(ShareNotFound $ex){
+						
+						if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
+							$groupOcmMiddleware = \OCA\FederatedGroups\AppInfo\Application::getOcmMiddleware();
+							$share = $groupOcmMiddleware->getValidShare(
+								$providerId,
+								$notification['sharedSecret']
+							);
+							$groupFedShareManager = \OCA\FederatedGroups\AppInfo\Application::getFedSharemanager();
+							$groupFedShareManager->acceptShare($share);
+						}
+					}
+					
 					break;
 				case FileNotification::NOTIFICATION_TYPE_SHARE_DECLINED:
 					$this->ocmMiddleware->assertOutgoingSharingEnabled();
