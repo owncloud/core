@@ -245,7 +245,7 @@ abstract class Node implements FilesNode {
 	/**
 	 * Get the size of the file or folder in bytes
 	 *
-	 * @return int
+	 * @return int|float
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function getSize() {

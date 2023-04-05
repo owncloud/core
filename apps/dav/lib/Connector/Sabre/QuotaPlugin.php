@@ -179,8 +179,8 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	 * This method is called before any HTTP method and validates there is enough free space to store the file
 	 *
 	 * @param string $path path of the user's home
-	 * @param int $length size to check whether it fits
-	 * @param int $extraSpace additional space granted, usually used when overwriting files
+	 * @param int|float $length size to check whether it fits
+	 * @param int|float $extraSpace additional space granted, usually used when overwriting files
 	 * @throws InsufficientStorage
 	 * @return bool
 	 */

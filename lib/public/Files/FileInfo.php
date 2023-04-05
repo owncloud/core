@@ -74,7 +74,7 @@ interface FileInfo {
 	/**
 	 * Get the size in bytes for the file or folder
 	 *
-	 * @return int
+	 * @return int|foat
 	 * @since 7.0.0
 	 */
 	public function getSize();
