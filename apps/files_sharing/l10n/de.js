@@ -10,7 +10,7 @@ OC.L10N.register(
     "Shared with you" : "Mit Dir geteilt",
     "Shared with others" : "Von Dir geteilt",
     "Shared by link" : "Geteilt über einen Link",
-    "Anonymous upload" : "Anonymes hochladen",
+    "Anonymous upload" : "Anonymes Hochladen",
     "Click to select files or use drag & drop to upload" : "Dateien auswählen oder Datei zum Hochladen hereinziehen",
     "Uploaded files" : "Hochgeladene Dateien",
     "Uploading..." : "Hochladen…",
