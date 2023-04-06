@@ -136,7 +136,10 @@ interface Node extends FileInfo {
 	/**
 	 * Get the size of the file or folder in bytes
 	 *
-	 * @return int
+	 * An integer should be returned. A float can also be returned,
+	 * usually if the size doesn't fit in an integer
+	 *
+	 * @return int|float
 	 * @throws InvalidPathException
 	 * @throws NotFoundException
 	 * @since 6.0.0

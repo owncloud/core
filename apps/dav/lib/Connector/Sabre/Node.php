@@ -220,7 +220,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * size because the actual size value isn't returned by google. This function
 	 * will return null in this case)
 	 *
-	 * @return integer|null
+	 * @return integer|float|null
 	 */
 	public function getSize() {
 		$size = $this->info->getSize();
