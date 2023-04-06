@@ -173,7 +173,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	}
 
 	/**
-	 * @return int
+	 * @return int|float
 	 */
 	public function getSize() {
 		return isset($this->data['size']) ? $this->data['size'] : 0;
