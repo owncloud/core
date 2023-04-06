@@ -285,7 +285,7 @@ config = {
                 "cliEncryption",
             ],
             "extraApps": {
-                "encryption": "git checkout v1.5.3",
+                "encryption": "git checkout v1.5.3; composer install",
             },
             "testingRemoteSystem": False,
             "extraSetup": [{
