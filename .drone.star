@@ -285,7 +285,7 @@ config = {
                 "cliEncryption",
             ],
             "extraApps": {
-                "encryption": "composer install",
+                "encryption": "php occ market:install encryption",
             },
             "testingRemoteSystem": False,
             "extraSetup": [{
