@@ -292,8 +292,11 @@ config = {
                 "name": "configure-encryption",
                 "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
                 "commands": [
+                    "rm -rf /drone/src/apps/encryption",
+                    "php occ market:install encryption",
                     "php occ maintenance:singleuser --on",
                     "php occ encryption:enable",
+                    "php occ app:list encryption",
                     "php occ encryption:select-encryption-type masterkey --yes",
                     "php occ encryption:encrypt-all --yes",
                     "php occ encryption:status",
