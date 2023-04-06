@@ -285,15 +285,13 @@ config = {
                 "cliEncryption",
             ],
             "extraApps": {
-                "encryption": "composer install",
+                "encryption": "git checkout v1.5.3; composer install",
             },
             "testingRemoteSystem": False,
             "extraSetup": [{
                 "name": "configure-encryption",
                 "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
                 "commands": [
-                    "rm -rf /drone/src/apps/encryption",
-                    "php occ market:install encryption",
                     "php occ maintenance:singleuser --on",
                     "php occ encryption:enable",
                     "php occ app:list encryption",
