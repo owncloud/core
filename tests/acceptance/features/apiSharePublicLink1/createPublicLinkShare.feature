@@ -105,30 +105,32 @@ Feature: create a public link share
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | randomfile.txt            |
-      | permissions | read,update,create,delete |
+      | permissions | <requested_permissions>   |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include
-      | item_type              | file            |
-      | mimetype               | text/plain      |
-      | file_target            | /randomfile.txt |
-      | path                   | /randomfile.txt |
-      | permissions            | read,update     |
-      | share_type             | public_link     |
-      | displayname_file_owner | %displayname%   |
-      | displayname_owner      | %displayname%   |
-      | uid_file_owner         | %username%      |
-      | uid_owner              | %username%      |
-      | name                   |                 |
+      | item_type              | file                  |
+      | mimetype               | text/plain            |
+      | file_target            | /randomfile.txt       |
+      | path                   | /randomfile.txt       |
+      | permissions            | <granted_permissions> |
+      | share_type             | public_link           |
+      | displayname_file_owner | %displayname%         |
+      | displayname_owner      | %displayname%         |
+      | uid_file_owner         | %username%            |
+      | uid_owner              | %username%            |
+      | name                   |                       |
     And the public should be able to download the last publicly shared file using the old public WebDAV API without a password and the content should be "Random data"
     And the public should be able to download the last publicly shared file using the new public WebDAV API without a password and the content should be "Random data"
-    And uploading content to a public link shared file should work using the old public WebDAV API
-    And uploading content to a public link shared file should work using the new public WebDAV API
+    And uploading content to a public link shared file <upload_works_or_not> using the old public WebDAV API
+    And uploading content to a public link shared file <upload_works_or_not> using the new public WebDAV API
 
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | requested_permissions     | granted_permissions | upload_works_or_not |
+      | 1               | 100             | read,update,create,delete | read,update         | should work         |
+      | 2               | 200             | read,update,create,delete | read,update         | should work         |
+      | 1               | 100             | all                       | read                | should not work     |
+      | 2               | 200             | all                       | read                | should not work     |
 
 
   Scenario Outline: Creating a new public link share of a folder using the default permissions only grants read access and can be accessed with no password or any password using the public WebDAV API
