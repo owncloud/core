@@ -98,12 +98,13 @@ Details
    to 0.7.7) - punic/punic (3.8.0 to 3.8.1)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
-   (2.12.6 to 2.13.1) - icewind/streams (0.7.6 to 0.7.7)
+   (2.12.6 to 2.13.2) - icewind/streams (0.7.6 to 0.7.7)
 
    https://github.com/owncloud/core/pull/40691
    https://github.com/owncloud/core/pull/40683
    https://github.com/owncloud/core/pull/40690
    https://github.com/owncloud/core/pull/40724
+   https://github.com/owncloud/core/pull/40731
 
 * Change - Fix permission bits when enforcing passwords on public links: [#40701](https://github.com/owncloud/core/pull/40701)
 
