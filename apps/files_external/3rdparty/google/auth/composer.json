@@ -22,8 +22,8 @@
     "phpunit/phpunit": "^7.5||^9.0.0",
     "phpspec/prophecy-phpunit": "^1.1||^2.0",
     "sebastian/comparator": ">=1.2.3",
-    "phpseclib/phpseclib": "^2.0.31",
-    "kelvinmo/simplejwt": "^0.2.5|^0.5.1"
+    "phpseclib/phpseclib": "^2.0.31||^3.0",
+    "kelvinmo/simplejwt": "0.7.0"
   },
   "suggest": {
     "phpseclib/phpseclib": "May be used in place of OpenSSL for signing strings or for token management. Please require version ^2."

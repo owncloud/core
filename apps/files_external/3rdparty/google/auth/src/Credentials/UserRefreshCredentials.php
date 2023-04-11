@@ -139,4 +139,14 @@ class UserRefreshCredentials extends CredentialsLoader implements GetQuotaProjec
     {
         return $this->quotaProject;
     }
+
+    /**
+     * Get the granted scopes (if they exist) for the last fetched token.
+     *
+     * @return string|null
+     */
+    public function getGrantedScope()
+    {
+        return $this->auth->getGrantedScope();
+    }
 }
