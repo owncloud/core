@@ -39,7 +39,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\Files_Sharing\Controllers
  */
 class ExternalSharesController extends Controller {
-
 	/** @var \OCA\Files_Sharing\External\Manager */
 	private $externalManager;
 	/** @var \OCA\Files_Sharing\External\Manager */
@@ -71,8 +70,10 @@ class ExternalSharesController extends Controller {
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
 		$this->dispatcher = $eventDispatcher;
-		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
-			$this->groupExternalManager  = \OCA\FederatedGroups\Application::getExternalManager();
+		// Allow other apps to add an external manager for user-to-group shares
+		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
+		if ($managerClass !== '') {
+			$this->groupExternalManager = \OC::$server->query($managerClass);
 		}
 	}
 

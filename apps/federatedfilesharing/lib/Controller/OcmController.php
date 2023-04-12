@@ -177,10 +177,11 @@ class OcmController extends Controller {
 		$resourceType,
 		$protocol
 	) {
-		// Allow the Federated Groups app to overwrite the behaviour of this endpoint (but only for group shares)
-		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups') && ($shareType === 'group')) {
-			$controller = \OCA\FederatedGroups\Application::getOcmController($this->request);
-			return $controller->createShare(
+		// Allow other apps to overwrite the behaviour of this endpoint
+		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
+		if ($controllerClass !== '') {
+			$controller = \OC::$server->query($controllerClass);
+		  return $controller->createShare(
 				$shareWith,
 				$name,
 				$description,
@@ -301,10 +302,11 @@ class OcmController extends Controller {
 		$providerId,
 		$notification
 	) {
-		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
-		if (\OC::$server->getAppManager()->isEnabledForUser('federatedgroups')) {
-			$controller = \OCA\FederatedGroups\Application::getOcmController($this->request);
-			return $controller->processNotification(
+		// Allow other apps to overwrite the behaviour of this endpoint
+		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
+		if ($controllerClass !== '') {
+			$controller = \OC::$server->query($controllerClass);
+		  return $controller->processNotification(
 				$notificationType,
 				$resourceType,
 				$providerId,
