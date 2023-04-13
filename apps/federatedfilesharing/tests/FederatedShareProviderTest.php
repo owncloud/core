@@ -937,7 +937,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	 */
 	public function testIsIncomingServer2serverShareEnabled($isEnabled, $expected) {
 		$this->config->expects($this->once())->method('getAppValue')
-			->with('files_sharing', 'incoming_server2server_share_enabled', 'yes')
+			->with('files_sharing', 'incoming_server2server_share_enabled', 'no')
 			->willReturn($isEnabled);
 
 		$this->assertSame(

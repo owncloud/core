@@ -1,0 +1,9 @@
+Change: Don't enable incoming federated share requests by default
+
+Federated share requests can be used for spamming the user with unwanted shares.
+Therefore, we decided to disable incoming federated share requests by default.
+
+Please revise your setting under Settings > Admin > Sharing > Federation
+> Allow users on this server to receive shares from other servers
+
+https://github.com/owncloud/core/pull/40736

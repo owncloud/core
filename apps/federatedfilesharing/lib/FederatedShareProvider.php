@@ -1056,7 +1056,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * @return bool
 	 */
 	public function isIncomingServer2serverShareEnabled() {
-		$result = $this->config->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes');
+		$result = $this->config->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'no');
 		return ($result === 'yes') ? true : false;
 	}
 
