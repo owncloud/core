@@ -88,7 +88,7 @@ class ExternalSharesController extends Controller {
 		if ($this->groupExternalManager !== null) {
 			$federatedGroupResult = $this->groupExternalManager->getOpenShares();
 		}
-		$result = array_merge($federatedGroupResult,  $this->externalManager->getOpenShares());
+		$result = array_merge($federatedGroupResult, $this->externalManager->getOpenShares());
 		return new JSONResponse($result);
 	}
 
@@ -100,7 +100,7 @@ class ExternalSharesController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function create($id, $share_type) {
-		if($share_type === "group" && $this->groupExternalManager !== null) {
+		if ($share_type === "group" && $this->groupExternalManager !== null) {
 			$manager = $this->groupExternalManager;
 		} else {
 			$manager = $this->externalManager;
