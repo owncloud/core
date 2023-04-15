@@ -247,18 +247,22 @@
 				for (var header in securityHeaders) {
 					if (header === 'X-Robots-Tag') {
 						xRobotsTagValues = [];
-						if(xhr.getResponseHeader(header)) {
-							xRobotsTagValues = xhr.getResponseHeader(header).split(',').map(item=>item.trim());
+						if (xhr.getResponseHeader(header)) {
+							xRobotsTagValues = xhr.getResponseHeader(header).split(',').map(function(item) {
+								return item.trim();
+							});
 						}
 
-						if (!xRobotsTagValues.includes('none') && !(xRobotsTagValues.includes('noindex') && xRobotsTagValues.includes('nofollow'))) {
+						var hasNoneDirective = xRobotsTagValues.indexOf('none') !== -1;
+            			var hasNoIndexAndNoFollowDirectives = xRobotsTagValues.indexOf('noindex') !== -1 && xRobotsTagValues.indexOf('nofollow') !== -1;
+
+						if (!hasNoneDirective && !hasNoIndexAndNoFollowDirectives) {
 							messages.push({
 								msg: t('core', 'The "{header}" HTTP header is misconfigured. Expected values are "none" or "noindex, nofollow". This is a potential security or privacy risk and we recommend adjusting this setting.', {header: header}),
 								type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 							});
 						}
-					}
-					else if(!xhr.getResponseHeader(header) || xhr.getResponseHeader(header).toLowerCase() !== securityHeaders[header].toLowerCase()) {
+					} else if (!xhr.getResponseHeader(header) || xhr.getResponseHeader(header).toLowerCase() !== securityHeaders[header].toLowerCase()) {
 						messages.push({
 						    msg: t('core', 'The "{header}" HTTP header is not configured to equal to "{expected}". This is a potential security or privacy risk and we recommend adjusting this setting.', {header: header, expected: securityHeaders[header]}),
 						    type: OC.SetupChecks.MESSAGE_TYPE_WARNING
