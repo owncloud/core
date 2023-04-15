@@ -254,7 +254,7 @@
 						}
 
 						var hasNoneDirective = xRobotsTagValues.indexOf('none') !== -1;
-            			var hasNoIndexAndNoFollowDirectives = xRobotsTagValues.indexOf('noindex') !== -1 && xRobotsTagValues.indexOf('nofollow') !== -1;
+						var hasNoIndexAndNoFollowDirectives = xRobotsTagValues.indexOf('noindex') !== -1 && xRobotsTagValues.indexOf('nofollow') !== -1;
 
 						if (!hasNoneDirective && !hasNoIndexAndNoFollowDirectives) {
 							messages.push({
