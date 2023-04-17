@@ -285,7 +285,7 @@ config = {
                 "cliEncryption",
             ],
             "extraApps": {
-                "encryption": "git checkout v1.5.3; composer install",
+                "encryption": "composer install",
             },
             "testingRemoteSystem": False,
             "extraSetup": [{
@@ -294,8 +294,6 @@ config = {
                 "commands": [
                     "php occ maintenance:singleuser --on",
                     "php occ encryption:enable",
-                    "php occ app:list encryption",
-                    "php occ encryption:select-encryption-type masterkey --yes",
                     "php occ encryption:encrypt-all --yes",
                     "php occ encryption:status",
                     "php occ maintenance:singleuser --off",
