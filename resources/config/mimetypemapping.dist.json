@@ -39,6 +39,7 @@
 	"docx": ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
 	"dot": ["application/msword"],
 	"dotx": ["application/vnd.openxmlformats-officedocument.wordprocessingml.template"],
+	"drawio": ["application/xml"],
 	"dv": ["video/dv"],
 	"eml": ["message/rfc822"],
 	"eot": ["application/vnd.ms-fontobject"],

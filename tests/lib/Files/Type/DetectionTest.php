@@ -23,10 +23,12 @@ namespace Test\Files\Type;
 
 use OC\Files\Type\Detection;
 use org\bovigo\vfs\vfsStream;
+use Test\TestCase;
+use OCP\IURLGenerator;
 
-class DetectionTest extends \Test\TestCase {
-	/** @var Detection */
-	private $detection;
+class DetectionTest extends TestCase {
+
+	private Detection $detection;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -58,6 +60,10 @@ class DetectionTest extends \Test\TestCase {
 
 		$result = $this->detection->detect($dir."/testimage.png");
 		$expected = 'image/png';
+		$this->assertEquals($expected, $result);
+
+		$result = $this->detection->detect($dir."/diagram.drawio");
+		$expected = 'application/xml';
 		$this->assertEquals($expected, $result);
 	}
 
@@ -96,15 +102,18 @@ class DetectionTest extends \Test\TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+	/**
+	 * @throws \JsonException
+	 */
 	public function testMimeTypeIcon(): void {
 		$confDir = vfsStream::setup();
 		$mimetypealiases_dist = vfsStream::newFile('mimetypealiases.dist.json')->at($confDir);
 
 		//Empty alias file
-		$mimetypealiases_dist->setContent(\json_encode([], JSON_FORCE_OBJECT));
+		$mimetypealiases_dist->setContent(\json_encode([], JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT));
 
 		//Mock UrlGenerator
-		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -122,7 +131,7 @@ class DetectionTest extends \Test\TestCase {
 		 * Test dir-shareed mimetype
 		 */
 		//Mock UrlGenerator
-		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +150,7 @@ class DetectionTest extends \Test\TestCase {
 		 */
 
 		//Mock UrlGenerator
-		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -160,7 +169,7 @@ class DetectionTest extends \Test\TestCase {
 		 */
 
 		//Mock UrlGenerator
-		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -179,7 +188,7 @@ class DetectionTest extends \Test\TestCase {
 		 */
 
 		//Mock UrlGenerator
-		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -206,7 +215,7 @@ class DetectionTest extends \Test\TestCase {
 		 */
 
 		//Mock UrlGenerator
-		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -234,7 +243,7 @@ class DetectionTest extends \Test\TestCase {
 		 */
 
 		//Mock UrlGenerator
-		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -255,10 +264,10 @@ class DetectionTest extends \Test\TestCase {
 		 */
 
 		//Put alias
-		$mimetypealiases_dist->setContent(\json_encode(['foo' => 'foobar/baz'], JSON_FORCE_OBJECT));
+		$mimetypealiases_dist->setContent(\json_encode(['foo' => 'foobar/baz'], JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT));
 
 		//Mock UrlGenerator
-		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
