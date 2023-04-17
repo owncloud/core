@@ -110,6 +110,11 @@ class RequestHandlerController extends OCSController {
 				'sharedByFederatedId',
 				null
 			);
+
+			if (\strlen($token) > 128) {
+				throw new BadRequestException('Token too long');
+			}
+
 			$ownerFederatedId = $this->request->getParam('ownerFederatedId', null);
 			$this->ocmMiddleware->assertNotNull(
 				[
