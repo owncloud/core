@@ -85,46 +85,6 @@ class EncryptionContext implements Context {
 	}
 
 	/**
-	 * @param string $encryptionType
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function setEncryptionTypeUsingTheOccCommand(string $encryptionType):int {
-		return($this->featureContext->runOcc(
-			["encryption:select-encryption-type", $encryptionType, "-y"]
-		)
-		);
-	}
-
-	/**
-	 * @When the administrator sets the encryption type to :encryptionType using the occ command
-	 *
-	 * @param string $encryptionType
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theAdministratorSetsEncryptionTypeToUsingTheOccCommand(string $encryptionType):void {
-		$this->featureContext->setOccLastCode(
-			$this->setEncryptionTypeUsingTheOccCommand($encryptionType)
-		);
-	}
-
-	/**
-	 * @Given the administrator has set the encryption type to :encryptionType
-	 *
-	 * @param string $encryptionType
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theAdministratorHasSetEncryptionTypeToUsingTheOccCommand(string $encryptionType):void {
-		$this->setEncryptionTypeUsingTheOccCommand($encryptionType);
-		$this->occContext->theCommandShouldHaveBeenSuccessful();
-	}
-
-	/**
 	 * @return void
 	 * @throws Exception
 	 */
