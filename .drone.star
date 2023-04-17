@@ -1124,7 +1124,7 @@ def litmus():
                                  "commands": [
                                      "source .env",
                                      "export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN",
-                                     litmusCommand,
+                                     "%s/tests/litmus/run.sh" % dir["server"],
                                  ],
                              },
                          ],
