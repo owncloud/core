@@ -1086,12 +1086,40 @@ def litmus():
                                  ],
                              },
                              {
-                                 "name": "public-share",
+                                 "name": "pub-share-copymove",
                                  "image": OC_LITMUS,
                                  "environment": {
                                      "LITMUS_PASSWORD": "admin",
                                      "LITMUS_USERNAME": "admin",
-                                     "TESTS": "basic copymove http",
+                                     "TESTS": "copymove",
+                                 },
+                                 "commands": [
+                                     "source .env",
+                                     "export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN",
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "pub-share-http",
+                                 "image": OC_LITMUS,
+                                 "environment": {
+                                     "LITMUS_PASSWORD": "admin",
+                                     "LITMUS_USERNAME": "admin",
+                                     "TESTS": "http",
+                                 },
+                                 "commands": [
+                                     "source .env",
+                                     "export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN",
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "pub-share-basic",
+                                 "image": OC_LITMUS,
+                                 "environment": {
+                                     "LITMUS_PASSWORD": "admin",
+                                     "LITMUS_USERNAME": "admin",
+                                     "TESTS": "basic",
                                  },
                                  "commands": [
                                      "source .env",
