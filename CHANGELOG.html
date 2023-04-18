@@ -2,25 +2,37 @@
 <h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
     <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.12.0...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.12.1...master">Full list of changes in unreleased </a>
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
-        <li class="type-bugfix changelog-item">Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: <a href="https://github.com/owncloud/core/pull/40567">#40567</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Add rewrite base to .htaccess: <a href="https://github.com/owncloud/core/issues/40696">#40696</a></li>
-        <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></li>
-        <li class="type-change changelog-item">Change - Fix permission bits when enforcing passwords on public links: <a href="https://github.com/owncloud/core/pull/40701">#40701</a></li>
-        <li class="type-change changelog-item">Change - Do not auto-enable user-key encryption: <a href="https://github.com/owncloud/core/pull/40702">#40702</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
-        <li class="type-bugfix changelog-item">
-            <p>Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: <a href="https://github.com/owncloud/core/pull/40567">#40567</a></p>
-            <p>https://github.com/owncloud/core/pull/40567<br></p>
-            <p>With<br>the<br>introduction<br>of<br>compatibility<br>to<br>32-bit<br>systems<br>broke<br>as<br>we<br>are<br>now<br>casting<br>$freeSpace<br>to<br>int<br>and<br>this<br>caused<br>an<br>integer<br>overflow<br>on<br>such<br>systems<br>when<br>the<br>free<br>space<br>was<br>above<br>the<br>max<br>supported<br>value.<br>We<br>added<br>therefore<br>an<br>additional<br>check<br>for<br>32-bit<br>systems<br>in<br>QuotaPlugin.php.<br></p>
+        <li class="type-change changelog-item">
+            <p>Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></p>
+            <p>A federated share with a too long name results in inaccessible data.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40726<br></p>
         </li>
+    </ul>
+    <h2 id="10.12.1" class="version"> Changelog for ownCloud Core [10.12.1] (2023-04-03)</h2>
+    <p>The following sections list the changes in ownCloud core 10.12.1 relevant to ownCloud admins and users.</p>
+    <p>
+    <a href="https://github.com/owncloud/core/compare/v10.12.0...v10.12.1">Full list of changes in 10.12.1</a>
+    </p>
+    <h3 id="10.12.1-summary">Summary</h3>
+    <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Add rewrite base to .htaccess: <a href="https://github.com/owncloud/core/pull/40697">#40697</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: <a href="https://github.com/owncloud/core/pull/40709">#40709</a></li>
+        <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></li>
+        <li class="type-change changelog-item">Change - Fix permission bits when enforcing passwords on public links: <a href="https://github.com/owncloud/core/pull/40701">#40701</a></li>
+        <li class="type-change changelog-item">Change - Do not auto-enable user-key encryption: <a href="https://github.com/owncloud/core/pull/40702">#40702</a></li>
+    </ul>
+    <h3 id="10.12.1-details">Details</h3>
+    <ul class="details">
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: <a href="https://github.com/owncloud/core/pull/40693">#40693</a></p>
             <p>When using the User Home Folder Naming Rule (configurable in the Advanced tab of the LDAP
@@ -29,10 +41,10 @@
    configured home directory. We are now using the getHome() method for getting the user's home so
    that chunks uploads respect the configured home directory.
             </p>
-            <p>https://github.com/owncloud/core/pull/40693<br></p>
+            <p>https://github.com/owncloud/core/pull/40693<br>https://github.com/owncloud/core/pull/40719<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Add rewrite base to .htaccess: <a href="https://github.com/owncloud/core/issues/40696">#40696</a></p>
+            <p>Bugfix - Add rewrite base to .htaccess: <a href="https://github.com/owncloud/core/pull/40697">#40697</a></p>
             <p>In previous core versions the rewrite base config.php option was not added to the generated
    .htaccess file. The use of a more hardened .htaccess file in version 10.12.0 (being introduced
    by https://github.com/owncloud/core/pull/40584) caused the files view in the web UI to be
@@ -43,6 +55,15 @@
             <p>https://github.com/owncloud/core/issues/40696<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40697<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent 507 Insufficient Storage on 32-bit systems: <a href="https://github.com/owncloud/core/pull/40709">#40709</a></p>
+            <p>With the introduction of https://github.com/owncloud/core/pull/40567 compatibility to
+   32-bit systems broke as we are now casting $freeSpace to int and this caused an integer overflow
+   on such systems when the free space was above the max supported value. We added therefore an
+   additional check for 32-bit systems in QuotaPlugin.php.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40709<br>https://github.com/owncloud/core/pull/40729<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40691">#40691</a></p>
@@ -69,12 +90,6 @@
             </p>
             <p>https://github.com/owncloud/core/pull/40702<br></p>
             <p>https://doc.owncloud.com/docs/next/server_release_notes.html#deprecation-note-for-user-key-storage-encryption<br></p>
-        </li>
-        <li class="type-change changelog-item">
-            <p>Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></p>
-            <p>A federated share with a too long name results in inaccessible data.
-            </p>
-            <p>https://github.com/owncloud/core/pull/40726<br></p>
         </li>
     </ul>
     <h2 id="10.12.0" class="version"> Changelog for ownCloud Core [10.12.0] (2023-02-24)</h2>
