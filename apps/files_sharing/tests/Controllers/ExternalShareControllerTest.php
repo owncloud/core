@@ -108,7 +108,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			$called[] = 'remoteshare.accepted';
 			\array_push($called, $event);
 		});
-		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create($shareId));
+		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create($shareId, "user"));
 
 		$this->assertSame('remoteshare.accepted', $called[0]);
 		$this->assertInstanceOf(GenericEvent::class, $called[1]);
@@ -138,7 +138,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			\array_push($called, $event);
 		});
 
-		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->destroy($shareId));
+		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->destroy($shareId, "user"));
 
 		$this->assertSame('remoteshare.declined', $called[0]);
 		$this->assertInstanceOf(GenericEvent::class, $called[1]);

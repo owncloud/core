@@ -1221,6 +1221,10 @@ class Share20OcsController extends OCSController {
 			}
 		}
 
+		if ($share  === null) {
+			throw new ShareNotFound();
+		}
+
 		return $share;
 	}
 
