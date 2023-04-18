@@ -133,7 +133,9 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			\OCP\Share::SHARE_TYPE_USER,
 			\OCP\Share::SHARE_TYPE_GROUP,
 			\OCP\Share::SHARE_TYPE_LINK,
-			\OCP\Share::SHARE_TYPE_REMOTE
+			\OCP\Share::SHARE_TYPE_REMOTE,
+			\OCP\Share::SHARE_TYPE_REMOTE_GROUP
+
 		];
 
 		// Query DB for share types for specified node IDs

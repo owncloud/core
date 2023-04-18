@@ -174,7 +174,7 @@ describe('OCA.Sharing external tests', function() {
 			var request = fakeServer.requests[1];
 			var query = OC.parseQueryString(request.requestBody);
 			expect(request.method).toEqual('POST');
-			expect(query).toEqual({id: '123'});
+			expect(query).toEqual({id: '123', share_type: 'user'});
 			expect(request.url).toEqual(
 				OC.webroot + '/index.php/apps/files_sharing/api/externalShares'
 			);
@@ -200,7 +200,7 @@ describe('OCA.Sharing external tests', function() {
 			var request = fakeServer.requests[1];
 			expect(request.method).toEqual('DELETE');
 			expect(request.url).toEqual(
-				OC.webroot + '/index.php/apps/files_sharing/api/externalShares/123'
+				OC.webroot + '/index.php/apps/files_sharing/api/externalShares/123?share_type=user'
 			);
 
 			expect(plugin.filesApp.fileList.reload.notCalled).toEqual(true);

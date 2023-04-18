@@ -121,6 +121,20 @@ class Share20OcsControllerTest extends TestCase {
 			->expects($this->any())
 			->method('newShare')
 			->willReturn($this->newShare());
+		$this->shareManager
+			->method('getProvidersCapabilities')
+			->willReturn([
+							"ocinternal" =>
+								[
+									"user" => ["shareExpiration"],
+									"group" => ["shareExpiration"],
+									"link" => ["shareExpiration", "passwordProtected"]
+								],
+							"ocFederatedSharing"=>
+								[
+									"remote" => ["shareExpiration"]
+								],
+						]);
 		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->request = $this->createMock(IRequest::class);

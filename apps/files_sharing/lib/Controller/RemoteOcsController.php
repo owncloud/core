@@ -29,6 +29,8 @@ use OCP\IRequest;
 use OCP\Share;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Files\StorageInvalidException;
+use OCP\IConfig;
+use OCP\ILogger;
 
 class RemoteOcsController extends OCSController {
 	/** @var IRequest */
@@ -41,22 +43,38 @@ class RemoteOcsController extends OCSController {
 	protected $uid;
 
 	/**
+	 * @var IConfig
+	 */
+	protected $config;
+
+	/**
+	 * @var ILogger
+	 */
+	protected $logger;
+
+	/**
 	 * RemoteOcsController constructor.
 	 *
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param Manager $externalManager
+	 * @param IConfig config
+	 * @param ILogger $loggar
 	 * @param string $uid
 	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
 		Manager $externalManager,
+		IConfig $config,
+		ILogger $logger,
 		$uid
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
 		$this->externalManager = $externalManager;
+		$this->config = $config;
+		$this->logger = $logger;
 		$this->uid = $uid;
 	}
 
@@ -126,6 +144,8 @@ class RemoteOcsController extends OCSController {
 	 */
 	public function getShares($includingPending = false) {
 		$shares = [];
+		$groupExternalManager = null;
+
 		foreach ($this->externalManager->getAcceptedShares() as $shareInfo) {
 			try {
 				$shares[] = $this->extendShareInfo($shareInfo);
@@ -136,6 +156,22 @@ class RemoteOcsController extends OCSController {
 			}
 		}
 
+		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
+		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
+		if (!empty($managerClass)) {
+			$groupExternalManager = \OC::$server->query($managerClass);
+			
+			foreach ($groupExternalManager->getAcceptedShares() as $shareInfo) {
+				try {
+					$shares[] = $this->extendShareInfo($shareInfo);
+				} catch (StorageNotAvailableException $e) {
+					$this->logger->logException($e, ['app' => 'files_sharing']);
+				} catch (StorageInvalidException $e) {
+					$this->logger->logException($e, ['app' => 'files_sharing']);
+				}
+			}
+		}
+		
 		if ($includingPending === true) {
 			/**
 			 * pending shares have mountpoint looking like
@@ -152,7 +188,10 @@ class RemoteOcsController extends OCSController {
 					$share['mountpoint'] = \rtrim($share['mountpoint'], '}');
 					return $share;
 				},
-				$this->externalManager->getOpenShares()
+				\array_merge(
+					$this->externalManager->getOpenShares(),
+					$groupExternalManager === null ? [] : $groupExternalManager->getOpenShares()
+				)
 			);
 			$shares = \array_merge($shares, $openShares);
 		}

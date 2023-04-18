@@ -209,18 +209,19 @@ OCA.Sharing.App = {
 		fileList.fileSummary.$el.find('.filesize').remove();
 	},
 
-	_setShareState: function(fileId, state, isRemote) {
+	_setShareState: function(fileId, state, isRemote, shareType) {
 		var method = 'POST';
 		if (state === OC.Share.STATE_REJECTED) {
 			method = 'DELETE';
 		}
-
 		var endPoint = isRemote === true ? 'remote_shares/pending/' : 'shares/pending/';
 		var xhr = $.ajax({
 			url: OC.linkToOCS('apps/files_sharing/api/v1') + endPoint + encodeURIComponent(fileId) + '?format=json',
 			contentType: 'application/json',
 			dataType: 'json',
 			type: method,
+			// be aware that `shareType` should not be an empty string
+			data: JSON.stringify((shareType !== undefined ? { shareType: shareType } : {})),
 		});
 		xhr.fail(function(response) {
 			var message = '';
@@ -236,6 +237,7 @@ OCA.Sharing.App = {
 	_shareStateActionHandler: function(context, newState) {
 		var targetFileData = context.fileList.elementToFile(context.$file);
 		var isRemote = targetFileData.shareLocationType === 'remote';
+		const shareType = targetFileData.shareType;
 		function responseCallback(response, status) {
 			if (status === 'success') {
 				var meta = response.ocs.meta;
@@ -252,7 +254,7 @@ OCA.Sharing.App = {
 		}
 
 		context.fileList.showFileBusyState(context.$file, true);
-		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState, isRemote)
+		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState, isRemote, shareType)
 			.then(responseCallback);
 	},
 

@@ -62,6 +62,9 @@
 						'{{/if}}' +
 						'<br/><span class="autocomplete-item-typeInfo">{{typeInfo}}</span>' +
 					'</div>' +
+					'{{#if showIcon}}' +
+						'<span class="icon {{iconClass}}"></span>' +
+					'{{/if}}' +
 				'</div>' +
 			'</a>' +
 		'</li>';
@@ -353,8 +356,9 @@
 		},
 
 		autocompleteRenderItem: function(ul, item) {
-
 			var text = item.label;
+			let showIcon = false;
+			let iconClass = ""
 			var typeInfo = t('core', 'User');
 
 			if (item.batch) {
@@ -362,6 +366,11 @@
 			}
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
 				typeInfo = t('core', 'Group');
+			}
+			if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE_GROUP) {
+				typeInfo = t('core', 'Federated Group');
+				showIcon = true
+				iconClass = "icon-contacts-dark"
 			}
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GUEST) {
 				typeInfo = t('core', 'Guest');
@@ -375,7 +384,7 @@
 					typeInfo = t('core', 'Federated');
 				}
 			}
-			if(item.value.userType === OC.User.USER_TYPE_GUEST){
+			if (item.value.userType === OC.User.USER_TYPE_GUEST) {
 				typeInfo = t('core', 'Guest');
 			}
 
@@ -383,12 +392,14 @@
 			var $el = $(template({
 				showAvatar: this.configModel.areAvatarsEnabled(),
 				displayName: text,
+				showIcon,
+				iconClass,
 				typeInfo: typeInfo,
 				additionalInfo: item.value.shareWithAdditionalInfo,
 				shareTypeClass: (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) ? 'group' : 'user'
 			}));
 
-			if(this.configModel.areAvatarsEnabled()) {
+			if (this.configModel.areAvatarsEnabled()) {
 				var $avatar = $el.find('.avatardiv');
 				if (item.value.shareType === OC.Share.SHARE_TYPE_USER) {
 					$avatar.avatar(item.value.shareWith, 32, undefined, undefined, undefined, item.label);

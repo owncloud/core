@@ -32,10 +32,12 @@ use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Ocm\Exception\OcmException;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Class OcmController
@@ -75,6 +77,9 @@ class OcmController extends Controller {
 	 */
 	protected $logger;
 
+	/** @var IConfig */
+	private $config;
+
 	/**
 	 * OcmController constructor.
 	 *
@@ -86,6 +91,7 @@ class OcmController extends Controller {
 	 * @param AddressHandler $addressHandler
 	 * @param FedShareManager $fedShareManager
 	 * @param ILogger $logger
+	 * @param IConfig $config
 	 */
 	public function __construct(
 		$appName,
@@ -95,7 +101,8 @@ class OcmController extends Controller {
 		IUserManager $userManager,
 		AddressHandler $addressHandler,
 		FedShareManager $fedShareManager,
-		ILogger $logger
+		ILogger $logger,
+		IConfig $config
 	) {
 		parent::__construct($appName, $request);
 
@@ -105,6 +112,7 @@ class OcmController extends Controller {
 		$this->addressHandler = $addressHandler;
 		$this->fedShareManager = $fedShareManager;
 		$this->logger = $logger;
+		$this->config = $config;
 	}
 
 	/**
@@ -177,6 +185,24 @@ class OcmController extends Controller {
 		$resourceType,
 		$protocol
 	) {
+		// Allow other apps to overwrite the behaviour of this endpoint
+		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
+		if (($controllerClass !== '') && ($controllerClass !== null)) {
+			$controller = \OC::$server->query($controllerClass);
+			return $controller->createShare(
+				$shareWith,
+				$name,
+				$description,
+				$providerId,
+				$owner,
+				$ownerDisplayName,
+				$sender,
+				$senderDisplayName,
+				$shareType,
+				$resourceType,
+				$protocol
+			);
+		}
 		try {
 			$this->ocmMiddleware->assertIncomingSharingEnabled();
 			$this->ocmMiddleware->assertNotNull(
@@ -284,6 +310,17 @@ class OcmController extends Controller {
 		$providerId,
 		$notification
 	) {
+		// Allow other apps to overwrite the behaviour of this endpoint
+		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
+		if (($controllerClass !== '') && ($controllerClass !== null)) {
+			$controller = \OC::$server->query($controllerClass);
+			return $controller->processNotification(
+				$notificationType,
+				$resourceType,
+				$providerId,
+				$notification
+			);
+		}
 		try {
 			if (!\is_array($notification)) {
 				throw new BadRequestException(
