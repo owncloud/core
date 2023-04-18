@@ -52,6 +52,7 @@ use OCP\Share\Exceptions\TransferSharesException;
 use OCP\Share\IAttributes;
 use OCP\Share\IManager;
 use OCP\Share\IProviderFactory;
+use OC\Share20\Exception\ProviderException;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -266,7 +267,7 @@ class Manager implements IManager {
 			if ($share->getSharedWith() !== null) {
 				throw new \InvalidArgumentException('SharedWith should be empty');
 			}
-		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE) {
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE || $share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE_GROUP) {
 			if ($share->getSharedWith() === null) {
 				throw new \InvalidArgumentException('SharedWith should not be empty');
 			}
@@ -1529,8 +1530,25 @@ class Manager implements IManager {
 
 		// If it is not a link share try to fetch a federated share by token
 		if ($share === null) {
-			$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_REMOTE);
-			$share = $provider->getShareByToken($token);
+			try {
+				$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_REMOTE);
+				$share = $provider->getShareByToken($token);
+			} catch(ShareNotFound $ex) {
+				$this->logger->error(
+					"shared file not found by token: $token for federated user share, try to check federated group share.",
+					['app' => __CLASS__]
+				);
+			}
+		}
+
+		if ($share === null) {
+			try {
+				$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_REMOTE_GROUP);
+				if ($provider !== null) {
+					$share = $provider->getShareByToken($token);
+				}
+			} catch (ProviderException $ex) {
+			}
 		}
 
 		if (self::shareHasExpired($share)) {

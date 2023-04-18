@@ -32,6 +32,7 @@ use OCP\Http\Client\IClientService;
 use OCP\IRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\IConfig;
 
 /**
  * Class ExternalSharesController
@@ -41,12 +42,19 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ExternalSharesController extends Controller {
 	/** @var \OCA\Files_Sharing\External\Manager */
 	private $externalManager;
+	/** @var \OCA\Files_Sharing\External\Manager */
+	private $groupExternalManager = null;
 	/** @var IClientService */
 	private $clientService;
 	/**
 	 * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
 	 */
 	private $dispatcher;
+
+	/**
+	 * @var IConfig
+	 */
+	protected $config;
 
 	/**
 	 * ExternalSharesController constructor.
@@ -56,18 +64,27 @@ class ExternalSharesController extends Controller {
 	 * @param \OCA\Files_Sharing\External\Manager $externalManager
 	 * @param IClientService $clientService
 	 * @param EventDispatcherInterface $eventDispatcher
+	 * @param IConfig $config
 	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
 		\OCA\Files_Sharing\External\Manager $externalManager,
 		IClientService $clientService,
-		EventDispatcherInterface $eventDispatcher
+		EventDispatcherInterface $eventDispatcher,
+		IConfig $config
 	) {
 		parent::__construct($appName, $request);
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
 		$this->dispatcher = $eventDispatcher;
+		$this->config = \OC::$server->getConfig();
+		
+		// Allow other apps to add an external manager for user-to-group shares
+		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
+		if ($managerClass !== '') {
+			$this->groupExternalManager = \OC::$server->query($managerClass);
+		}
 	}
 
 	/**
@@ -77,7 +94,12 @@ class ExternalSharesController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function index() {
-		return new JSONResponse($this->externalManager->getOpenShares());
+		$federatedGroupResult = [];
+		if ($this->groupExternalManager !== null) {
+			$federatedGroupResult = $this->groupExternalManager->getOpenShares();
+		}
+		$result = array_merge($federatedGroupResult, $this->externalManager->getOpenShares());
+		return new JSONResponse($result);
 	}
 
 	/**
@@ -87,11 +109,17 @@ class ExternalSharesController extends Controller {
 	 * @param int $id
 	 * @return JSONResponse
 	 */
-	public function create($id) {
-		$shareInfo = $this->externalManager->getShare($id);
+	public function create($id, $share_type) {
+		if ($share_type === "group" && $this->groupExternalManager !== null) {
+			$manager = $this->groupExternalManager;
+		} else {
+			$manager = $this->externalManager;
+		}
+		$shareInfo = $manager->getShare($id);
+		
 		if ($shareInfo !== false) {
-			$mountPoint = $this->externalManager->getShareRecipientMountPoint($shareInfo);
-			$fileId = $this->externalManager->getShareFileId($shareInfo, $mountPoint);
+			$mountPoint = $manager->getShareRecipientMountPoint($shareInfo);
+			$fileId = $manager->getShareFileId($shareInfo, $mountPoint);
 
 			$event = new GenericEvent(
 				null,
@@ -106,7 +134,7 @@ class ExternalSharesController extends Controller {
 				]
 			);
 			$this->dispatcher->dispatch($event, 'remoteshare.accepted');
-			$this->externalManager->acceptShare($id);
+			$manager->acceptShare($id);
 		}
 		return new JSONResponse();
 	}
@@ -118,8 +146,9 @@ class ExternalSharesController extends Controller {
 	 * @param integer $id
 	 * @return JSONResponse
 	 */
-	public function destroy($id) {
-		$shareInfo = $this->externalManager->getShare($id);
+	public function destroy($id, $share_type) {
+		$manager = $this->getManagerForShareType($share_type);
+		$shareInfo = $manager->getShare($id);
 		if ($shareInfo !== false) {
 			$event = new GenericEvent(
 				null,
@@ -131,9 +160,18 @@ class ExternalSharesController extends Controller {
 				]
 			);
 			$this->dispatcher->dispatch($event, 'remoteshare.declined');
-			$this->externalManager->declineShare($id);
+			$manager->declineShare($id);
 		}
 		return new JSONResponse();
+	}
+
+	private function getManagerForShareType($share_type) {
+		if ($share_type === "group" && $this->groupExternalManager !== null) {
+			$manager = $this->groupExternalManager;
+		} else {
+			$manager = $this->externalManager;
+		}
+		return $manager;
 	}
 
 	/**
