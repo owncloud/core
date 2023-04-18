@@ -8,10 +8,23 @@ ownCloud admins and users.
 Summary
 -------
 
+* Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
 Details
 -------
+
+* Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
+
+   The following have been updated: - guzzlehttp/guzzle (7.5.0 to 7.5.1) - punic/punic (3.8.0 to
+   3.8.1)
+
+   The following have been updated in apps/files_external/3rdparty: - google/apiclient
+   (2.13.1 to 2.13.2)
+
+   https://github.com/owncloud/core/pull/40724
+   https://github.com/owncloud/core/pull/40731
+   https://github.com/owncloud/core/pull/40742
 
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
@@ -75,16 +88,14 @@ Details
 * Change - Update PHP dependencies: [#40691](https://github.com/owncloud/core/pull/40691)
 
    The following have been updated: - guzzlehttp/psr7 (2.4.3 to 2.4.4) - icewind/streams (0.7.6
-   to 0.7.7) - punic/punic (3.8.0 to 3.8.1)
+   to 0.7.7)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
-   (2.12.6 to 2.13.2) - icewind/streams (0.7.6 to 0.7.7)
+   (2.12.6 to 2.13.1) - icewind/streams (0.7.6 to 0.7.7)
 
    https://github.com/owncloud/core/pull/40691
    https://github.com/owncloud/core/pull/40683
    https://github.com/owncloud/core/pull/40690
-   https://github.com/owncloud/core/pull/40724
-   https://github.com/owncloud/core/pull/40731
 
 * Change - Fix permission bits when enforcing passwords on public links: [#40701](https://github.com/owncloud/core/pull/40701)
 
