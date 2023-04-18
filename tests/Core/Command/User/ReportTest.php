@@ -70,6 +70,12 @@ class ReportTest extends TestCase {
 		$this->loginAsUser('admin');
 	}
 
+	protected function tearDown(): void {
+		parent::tearDown();
+		$this->restoreService('AllConfig');
+		$this->restoreService('AppManager');
+	}
+
 	public function objectStorageProvider() {
 		return [
 			[true],
@@ -131,8 +137,6 @@ EOS;
 
 		if ($objectStorageUsed) {
 			$this->assertStringContainsString('We detected that the instance is running on a S3 primary object storage, user directories count might not be accurate', $output);
-			$this->restoreService('AllConfig');
-			$this->restoreService('AppManager');
 		}
 	}
 
