@@ -88,6 +88,7 @@
 			$dateColumn.before($tr.children('td:first'));
 			$tr.find('td.filename input:checkbox').remove();
 			$tr.attr('data-share-location-type', fileData.shareLocationType);
+			$tr.attr('data-share-type', fileData.shareType);
 			$tr.attr('data-share-id', _.pluck(fileData.shares, 'id').join(','));
 			// add row with expiration date for link only shares - influenced by _createRow of filelist
 			if (this._linksOnly) {
@@ -309,7 +310,8 @@
 			}
 
 			fileInfo.shareState = parseInt($el.attr('data-share-state'), 10);
-			fileInfo.shareLocationType =  $el.attr('data-share-location-type');
+			fileInfo.shareLocationType = $el.attr('data-share-location-type');
+			fileInfo.shareType = $el.attr('data-share-type') || "";
 			return fileInfo;
 		},
 
@@ -344,6 +346,7 @@
 			files = _.chain(files)
 				// convert share data to file data
 				.map(function(share) {
+					const {} = share
 					var file = {
 						shareOwner: share.owner + '@' + share.remote.replace(/.*?:\/\//g, ""),
 						shareState: !!parseInt(share.accepted, 10) ? OC.Share.STATE_ACCEPTED : OC.Share.STATE_PENDING,
@@ -355,7 +358,8 @@
 						path: OC.dirname(share.mountpoint),
 						permissions: share.permissions,
 						tags: share.tags || [],
-						shareLocationType: 'remote'
+						shareLocationType: 'remote',
+						shareType: share.share_type || ''
 					};
 
 					file.shares = [{

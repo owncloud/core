@@ -142,16 +142,20 @@
 							shares[index],
 							false,
 							function(result, share) {
+								let shareType = "user";
+								if (share.hasOwnProperty('share_type') ){
+									shareType = share.share_type;
+								}
 								if (result) {
 									// Accept
-									$.post(OC.generateUrl('/apps/files_sharing/api/externalShares'), {id: share.id})
+									$.post(OC.generateUrl('/apps/files_sharing/api/externalShares'), {id: share.id, share_type: shareType })
 										.then(function() {
 											fileList.reload();
 										});
 								} else {
 									// Delete
 									$.ajax({
-										url: OC.generateUrl('/apps/files_sharing/api/externalShares/'+share.id),
+										url: OC.generateUrl('/apps/files_sharing/api/externalShares/'+share.id+"?share_type="+shareType),
 										type: 'DELETE'
 									});
 								}

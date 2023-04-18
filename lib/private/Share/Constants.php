@@ -31,6 +31,7 @@ class Constants {
 	public const SHARE_TYPE_GUEST = 4;
 	public const SHARE_TYPE_CONTACT = 5; // ToDo Check if it is still in use otherwise remove it
 	public const SHARE_TYPE_REMOTE = 6;
+	public const SHARE_TYPE_REMOTE_GROUP = 7;
 
 	public const CONVERT_SHARE_TYPE_TO_STRING = [
 		self::SHARE_TYPE_USER => 'user',
@@ -39,6 +40,7 @@ class Constants {
 		self::SHARE_TYPE_GUEST => 'guest',
 		self::SHARE_TYPE_CONTACT => 'contact',
 		self::SHARE_TYPE_REMOTE => 'remote',
+		self::SHARE_TYPE_REMOTE_GROUP => 'remote_group',
 	];
 
 	/**
