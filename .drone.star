@@ -14,7 +14,7 @@ OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_SAMBA = "owncloudci/samba:latest"
 OC_CI_SCALITY_S3SERVER = "owncloudci/scality-s3server:latest"
 OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
-OC_LITMUS = "owncloud/litmus:latest"
+OC_LITMUS = "owncloudci/litmus:latest"
 OC_SERVER = "owncloud/server"
 OC_UBUNTU = "owncloud/ubuntu:20.04"
 OSIXIA_OPENLDAP = "osixia/openldap"
@@ -1086,17 +1086,45 @@ def litmus():
                                  ],
                              },
                              {
-                                 "name": "public-share",
+                                 "name": "pub-share-copymove",
                                  "image": OC_LITMUS,
                                  "environment": {
                                      "LITMUS_PASSWORD": "admin",
                                      "LITMUS_USERNAME": "admin",
-                                     "TESTS": "basic copymove http",
+                                     "TESTS": "copymove",
                                  },
                                  "commands": [
                                      "source .env",
                                      "export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN",
                                      litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "pub-share-http",
+                                 "image": OC_LITMUS,
+                                 "environment": {
+                                     "LITMUS_PASSWORD": "admin",
+                                     "LITMUS_USERNAME": "admin",
+                                     "TESTS": "http",
+                                 },
+                                 "commands": [
+                                     "source .env",
+                                     "export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN",
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "pub-share-basic",
+                                 "image": OC_LITMUS,
+                                 "environment": {
+                                     "LITMUS_PASSWORD": "admin",
+                                     "LITMUS_USERNAME": "admin",
+                                     "TESTS": "basic",
+                                 },
+                                 "commands": [
+                                     "source .env",
+                                     "export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN",
+                                     "%s/tests/litmus/run.sh" % dir["server"],
                                  ],
                              },
                          ],
