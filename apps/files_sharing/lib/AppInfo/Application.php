@@ -81,7 +81,8 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('ExternalManager'),
 				$c->query('HttpClientService'),
-				$server->getEventDispatcher()
+				$server->getEventDispatcher(),
+				$server->getConfig()
 			);
 		});
 
@@ -119,6 +120,7 @@ class Application extends App {
 					$server->getEventDispatcher(),
 					$uid
 				),
+				$server->getConfig(),
 				$uid
 			);
 		});
