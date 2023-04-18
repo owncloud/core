@@ -98,6 +98,7 @@ class ChunkingPlugin extends ServerPlugin {
 			return;
 		}
 		$actualSize = $this->sourceNode->getSize();
+		// $actualSize could be either an int or a float
 		if ($expectedSize != $actualSize) {
 			throw new BadRequest("Chunks on server do not sum up to $expectedSize but to $actualSize");
 		}

@@ -191,7 +191,7 @@ class Node implements \OCP\Files\Node {
 	}
 
 	/**
-	 * @return int
+	 * @return int|float
 	 * @throws InvalidPathException
 	 * @throws NotFoundException
 	 */

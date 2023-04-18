@@ -316,8 +316,13 @@ interface IStorage {
 	/**
 	 * see http://php.net/manual/en/function.free_space.php
 	 *
+	 * This method should return an int if possible. If the free space doesn't fit in
+	 * an integer, a float can be used instead
+	 * The local storage implementation uses the disk_free_space function, which returns
+	 * a float.
+	 *
 	 * @param string $path
-	 * @return int|false
+	 * @return int|float|false
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */

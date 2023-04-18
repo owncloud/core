@@ -179,8 +179,8 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	 * This method is called before any HTTP method and validates there is enough free space to store the file
 	 *
 	 * @param string $path path of the user's home
-	 * @param int $length size to check whether it fits
-	 * @param int $extraSpace additional space granted, usually used when overwriting files
+	 * @param int|float $length size to check whether it fits
+	 * @param int|float $extraSpace additional space granted, usually used when overwriting files
 	 * @throws InsufficientStorage
 	 * @return bool
 	 */
@@ -204,25 +204,20 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 				$path = \rtrim($parentPath, '/') . '/' . $info['name'];
 			}
 			$freeSpace = $this->getFreeSpace($path);
-			// workaround to guarantee compatibility on 32-bit systems as otherwise this would cause an int overflow on such systems
-			// when $freeSpace is above the max supported value. $freeSpace should be a float so we are using the <= 0.0 comparison
-			if (PHP_INT_SIZE === 4) {
-				$availableSpace = $freeSpace + $extraSpace;
-				if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace <= 0.0))) {
-					if (isset($chunkHandler)) {
-						$chunkHandler->cleanup();
-					}
-					throw new InsufficientStorage();
+			if ($freeSpace === false) {
+				$freeSpace = 0;
+			}
+			// There could be cases where both $freeSpace and $extraSpace are floats:
+			// * $freeSpace could come from local storage, which calls disk_free_space, which returns float
+			// * $extraSpace could come from the DB. "size" column is bigint, which is returned as string. The storage
+			// cache uses `0 + $data['size']` where the $data['size'] should be a string, which should return an int if
+			// the result fits inside, but it could also be a float if it doesn't (more likely in 32 bits)
+			$availableSpace = $freeSpace + $extraSpace;
+			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace <= 0.0))) {
+				if (isset($chunkHandler)) {
+					$chunkHandler->cleanup();
 				}
-			} else {
-				// freeSpace might be false, or an int. Anyway, make sure that availableSpace will be an int.
-				$availableSpace = (int) $freeSpace + $extraSpace;
-				if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && (($length > $availableSpace) || ($availableSpace === 0))) {
-					if (isset($chunkHandler)) {
-						$chunkHandler->cleanup();
-					}
-					throw new InsufficientStorage();
-				}
+				throw new InsufficientStorage();
 			}
 		}
 		return true;
