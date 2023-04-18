@@ -36,6 +36,8 @@ use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use OCP\IConfig;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Class OcmController
@@ -76,6 +78,11 @@ class OcmController extends Controller {
 	protected $logger;
 
 	/**
+	 * @var IConfig
+	 */
+	protected $config;
+
+	/**
 	 * OcmController constructor.
 	 *
 	 * @param string $appName
@@ -86,6 +93,7 @@ class OcmController extends Controller {
 	 * @param AddressHandler $addressHandler
 	 * @param FedShareManager $fedShareManager
 	 * @param ILogger $logger
+	 * @param IConfig $config
 	 */
 	public function __construct(
 		$appName,
@@ -95,7 +103,8 @@ class OcmController extends Controller {
 		IUserManager $userManager,
 		AddressHandler $addressHandler,
 		FedShareManager $fedShareManager,
-		ILogger $logger
+		ILogger $logger,
+		IConfig $config
 	) {
 		parent::__construct($appName, $request);
 
@@ -105,6 +114,7 @@ class OcmController extends Controller {
 		$this->addressHandler = $addressHandler;
 		$this->fedShareManager = $fedShareManager;
 		$this->logger = $logger;
+		$this->config = $config;
 	}
 
 	/**
@@ -177,6 +187,14 @@ class OcmController extends Controller {
 		$resourceType,
 		$protocol
 	) {
+		// Allow other apps to overwrite the behaviour of this endpoint
+		if ($shareType === 'group') {
+			$controllerClass = $this->config->getSystemValue('sharing.ocmController');
+			if ($controllerClass !== '') {
+				$controller = \OC::$server->query($controllerClass);
+				return $controller->createShare(...\func_get_args());
+			}
+		}
 		try {
 			$this->ocmMiddleware->assertIncomingSharingEnabled();
 			$this->ocmMiddleware->assertNotNull(
@@ -284,6 +302,12 @@ class OcmController extends Controller {
 		$providerId,
 		$notification
 	) {
+		// Allow other apps to overwrite the behaviour of this endpoint
+		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
+		if ($controllerClass !== '') {
+			$controller = \OC::$server->query($controllerClass);
+			return $controller->processNotification(...\func_get_args());
+		}
 		try {
 			if (!\is_array($notification)) {
 				throw new BadRequestException(

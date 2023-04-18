@@ -29,6 +29,7 @@ use OCP\IRequest;
 use OCP\Share;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Files\StorageInvalidException;
+use OCP\IConfig;
 
 class RemoteOcsController extends OCSController {
 	/** @var IRequest */
@@ -41,22 +42,30 @@ class RemoteOcsController extends OCSController {
 	protected $uid;
 
 	/**
+	 * @var IConfig
+	 */
+	protected $config;
+
+	/**
 	 * RemoteOcsController constructor.
 	 *
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param Manager $externalManager
+	 * @param IConfig config
 	 * @param string $uid
 	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
 		Manager $externalManager,
+		IConfig $config,
 		$uid
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
 		$this->externalManager = $externalManager;
+		$this->config = $config;
 		$this->uid = $uid;
 	}
 
@@ -126,6 +135,8 @@ class RemoteOcsController extends OCSController {
 	 */
 	public function getShares($includingPending = false) {
 		$shares = [];
+		$groupExternalManager = null;
+
 		foreach ($this->externalManager->getAcceptedShares() as $shareInfo) {
 			try {
 				$shares[] = $this->extendShareInfo($shareInfo);
@@ -136,6 +147,22 @@ class RemoteOcsController extends OCSController {
 			}
 		}
 
+		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
+		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
+		if ($managerClass !== '') {
+			$groupExternalManager = \OC::$server->query($managerClass);
+			
+			foreach ($groupExternalManager->getAcceptedShares() as $shareInfo) {
+				try {
+					$shares[] = $this->extendShareInfo($shareInfo);
+				} catch (StorageNotAvailableException $e) {
+					//TODO: Log the exception here? There are several logs already below the stack
+				} catch (StorageInvalidException $e) {
+					//TODO: Log the exception here? There are several logs already below the stack
+				}
+			}
+		}
+		
 		if ($includingPending === true) {
 			/**
 			 * pending shares have mountpoint looking like
@@ -152,7 +179,10 @@ class RemoteOcsController extends OCSController {
 					$share['mountpoint'] = \rtrim($share['mountpoint'], '}');
 					return $share;
 				},
-				$this->externalManager->getOpenShares()
+				\array_merge(
+					$this->externalManager->getOpenShares(),
+					$groupExternalManager == null ? [] : $groupExternalManager->getOpenShares()
+				)
 			);
 			$shares = \array_merge($shares, $openShares);
 		}

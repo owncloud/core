@@ -65,7 +65,8 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			$this->request,
 			$this->externalManager,
 			$this->clientService,
-			\OC::$server->getEventDispatcher()
+			\OC::$server->getEventDispatcher(),
+			\OC::$server->getConfig()
 		);
 	}
 

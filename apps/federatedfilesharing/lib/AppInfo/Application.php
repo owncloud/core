@@ -140,7 +140,8 @@ class Application extends App {
 					$server->getUserManager(),
 					$c->query('AddressHandler'),
 					$c->query('FederatedShareManager'),
-					$server->getLogger()
+					$server->getLogger(),
+					$server->getConfig()
 				);
 			}
 		);
