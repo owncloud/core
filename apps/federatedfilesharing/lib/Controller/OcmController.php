@@ -190,7 +190,7 @@ class OcmController extends Controller {
 		// Allow other apps to overwrite the behaviour of this endpoint
 		if ($shareType === 'group') {
 			$controllerClass = $this->config->getSystemValue('sharing.ocmController');
-			if ($controllerClass !== '') {
+			if (!empty($controllerClass)) {
 				$controller = \OC::$server->query($controllerClass);
 				return $controller->createShare(...\func_get_args());
 			}
@@ -304,7 +304,7 @@ class OcmController extends Controller {
 	) {
 		// Allow other apps to overwrite the behaviour of this endpoint
 		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
-		if ($controllerClass !== '') {
+		if (!empty($controllerClass)) {
 			$controller = \OC::$server->query($controllerClass);
 			return $controller->processNotification(...\func_get_args());
 		}
