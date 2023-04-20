@@ -149,7 +149,7 @@ class RemoteOcsController extends OCSController {
 
 		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
 		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
-		if ($managerClass !== '') {
+		if (!empty($managerClass)) {
 			$groupExternalManager = \OC::$server->query($managerClass);
 			
 			foreach ($groupExternalManager->getAcceptedShares() as $shareInfo) {
