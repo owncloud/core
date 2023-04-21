@@ -76,7 +76,7 @@ class OcmController extends Controller {
 	 */
 	protected $logger;
 
-	/** @var IConfig $config */
+	/** @var IConfig */
 	private $config;
 
 	/**

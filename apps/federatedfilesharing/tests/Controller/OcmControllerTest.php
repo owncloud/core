@@ -33,6 +33,7 @@ use OCA\FederatedFileSharing\Ocm\Notification\FileNotification;
 use OCA\FederatedFileSharing\Tests\TestCase;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http;
+use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
@@ -87,6 +88,11 @@ class OcmControllerTest extends TestCase {
 	private $logger;
 
 	/**
+	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
+	 */
+	private $config;
+
+	/**
 	 * @var OcmController
 	 */
 	private $ocmController;
@@ -107,6 +113,7 @@ class OcmControllerTest extends TestCase {
 		$this->addressHandler = $this->createMock(AddressHandler::class);
 		$this->fedShareManager = $this->createMock(FedShareManager::class);
 		$this->logger = $this->createMock(ILogger::class);
+		$this->config = $this->createMock(IConfig::class);
 
 		$this->ocmController = new OcmController(
 			'federatedfilesharing',
@@ -116,7 +123,8 @@ class OcmControllerTest extends TestCase {
 			$this->userManager,
 			$this->addressHandler,
 			$this->fedShareManager,
-			$this->logger
+			$this->logger,
+			$this->config
 		);
 	}
 

@@ -51,7 +51,7 @@ class ExternalSharesController extends Controller {
 	 */
 	private $dispatcher;
 
-	/** @var IConfig $config */
+	/** @var IConfig */
 	private $config;
 
 	/**
