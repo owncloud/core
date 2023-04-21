@@ -88,6 +88,11 @@ class OcmControllerTest extends TestCase {
 	private $logger;
 
 	/**
+	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
+	 */
+	private $config;
+
+	/**
 	 * @var OcmController
 	 */
 	private $ocmController;

@@ -29,10 +29,10 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\Http\Client\IClientService;
+use OCP\IConfig;
 use OCP\IRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use OCP\IConfig;
 
 /**
  * Class ExternalSharesController
@@ -51,10 +51,8 @@ class ExternalSharesController extends Controller {
 	 */
 	private $dispatcher;
 
-	/**
-	 * @var IConfig
-	 */
-	protected $config;
+	/** @var IConfig $config */
+	private $config;
 
 	/**
 	 * ExternalSharesController constructor.
@@ -78,8 +76,7 @@ class ExternalSharesController extends Controller {
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
 		$this->dispatcher = $eventDispatcher;
-		$this->config = \OC::$server->getConfig();
-		
+		$this->config = $config;
 		// Allow other apps to add an external manager for user-to-group shares
 		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
 		if ($managerClass !== '') {
@@ -107,6 +104,7 @@ class ExternalSharesController extends Controller {
 	 * @NoOutgoingFederatedSharingRequired
 	 *
 	 * @param int $id
+	 * @param string $share_type
 	 * @return JSONResponse
 	 */
 	public function create($id, $share_type) {
