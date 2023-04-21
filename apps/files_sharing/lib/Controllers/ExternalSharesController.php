@@ -103,6 +103,7 @@ class ExternalSharesController extends Controller {
 	 * @NoOutgoingFederatedSharingRequired
 	 *
 	 * @param int $id
+	 * @param string $share_type
 	 * @return JSONResponse
 	 */
 	public function create($id, $share_type) {
