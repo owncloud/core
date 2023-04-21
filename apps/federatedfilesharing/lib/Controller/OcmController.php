@@ -306,7 +306,7 @@ class OcmController extends Controller {
 		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
 		if ($controllerClass !== '') {
 			$controller = \OC::$server->query($controllerClass);
-		  	return $controller->processNotification(
+			return $controller->processNotification(
 				$notificationType,
 				$resourceType,
 				$providerId,
