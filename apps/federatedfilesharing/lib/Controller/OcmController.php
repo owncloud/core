@@ -185,7 +185,7 @@ class OcmController extends Controller {
 	) {
 		// Allow other apps to overwrite the behaviour of this endpoint
 		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
-		if ($controllerClass !== '') {
+		if (($controllerClass !== '') && ($controllerClass !== null)) {
 			$controller = \OC::$server->query($controllerClass);
 			return $controller->createShare(
 				$shareWith,
@@ -310,7 +310,7 @@ class OcmController extends Controller {
 	) {
 		// Allow other apps to overwrite the behaviour of this endpoint
 		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
-		if ($controllerClass !== '') {
+		if (($controllerClass !== '') && ($controllerClass !== null)) {
 			$controller = \OC::$server->query($controllerClass);
 			return $controller->processNotification(
 				$notificationType,
