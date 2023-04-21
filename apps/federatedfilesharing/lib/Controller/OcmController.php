@@ -32,11 +32,11 @@ use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Ocm\Exception\OcmException;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
-use OCP\IConfig;
 use OCP\Share\Exceptions\ShareNotFound;
 
 /**
@@ -77,10 +77,8 @@ class OcmController extends Controller {
 	 */
 	protected $logger;
 
-	/**
-	 * @var IConfig
-	 */
-	protected $config;
+	/** @var IConfig */
+	private $config;
 
 	/**
 	 * OcmController constructor.
@@ -188,12 +186,22 @@ class OcmController extends Controller {
 		$protocol
 	) {
 		// Allow other apps to overwrite the behaviour of this endpoint
-		if ($shareType === 'group') {
-			$controllerClass = $this->config->getSystemValue('sharing.ocmController');
-			if (!empty($controllerClass)) {
-				$controller = \OC::$server->query($controllerClass);
-				return $controller->createShare(...\func_get_args());
-			}
+		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
+		if (($controllerClass !== '') && ($controllerClass !== null)) {
+			$controller = \OC::$server->query($controllerClass);
+			return $controller->createShare(
+				$shareWith,
+				$name,
+				$description,
+				$providerId,
+				$owner,
+				$ownerDisplayName,
+				$sender,
+				$senderDisplayName,
+				$shareType,
+				$resourceType,
+				$protocol
+			);
 		}
 		try {
 			$this->ocmMiddleware->assertIncomingSharingEnabled();
@@ -304,9 +312,14 @@ class OcmController extends Controller {
 	) {
 		// Allow other apps to overwrite the behaviour of this endpoint
 		$controllerClass = $this->config->getSystemValue('sharing.ocmController');
-		if (!empty($controllerClass)) {
+		if (($controllerClass !== '') && ($controllerClass !== null)) {
 			$controller = \OC::$server->query($controllerClass);
-			return $controller->processNotification(...\func_get_args());
+			return $controller->processNotification(
+				$notificationType,
+				$resourceType,
+				$providerId,
+				$notification
+			);
 		}
 		try {
 			if (!\is_array($notification)) {
