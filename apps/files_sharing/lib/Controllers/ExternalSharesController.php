@@ -78,6 +78,11 @@ class ExternalSharesController extends Controller {
 		$this->clientService = $clientService;
 		$this->dispatcher = $eventDispatcher;
 		$this->config = $config;
+		// Allow other apps to add an external manager for user-to-group shares
+		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
+		if ($managerClass !== '') {
+			$this->groupExternalManager = \OC::$server->query($managerClass);
+		}
 	}
 
 	/**
