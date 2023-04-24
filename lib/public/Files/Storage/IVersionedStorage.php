@@ -84,4 +84,15 @@ interface IVersionedStorage {
 	 * @since 10.0.9
 	 */
 	public function saveVersion($internalPath);
+
+	/**
+	 * Save metadata with a current or non-current version
+	 *
+	 * @param string $internalPath
+	 * @param string|null $versionId
+	 * @param array $data
+	 * @return mixed
+	 * @since 10.13.0
+	 */
+	public function setMetaData(string $internalPath, ?string $versionId, array $data): void;
 }

@@ -35,14 +35,22 @@ namespace OCA\Files_Versions\Tests;
 
 require_once __DIR__ . '/../appinfo/app.php';
 
+use OC\Files\Cache\Watcher;
+use OC\Files\Filesystem;
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Storage\Temporary;
+use OC\Files\View;
+use OC\Share\Constants;
+use OC\User\NoUserException;
+use OCA\Files_Sharing\AppInfo\Application;
 use OCA\Files_Versions\FileHelper;
+use OCA\Files_Versions\Hooks;
 use OCA\Files_Versions\MetaStorage;
 use OCA\Files_Versions\Expiration;
 use OCP\Files\Storage;
 use OCP\IConfig;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\Share;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
@@ -55,28 +63,20 @@ use Test\TestCase;
 class VersioningTest extends TestCase {
 	public const USERS_VERSIONS_ROOT = '/test-versions-user/files_versions';
 
-	/** @var string */
-	private $user1;
-	/** @var string */
-	private $user2;
-	/** @var string */
-	private $versionsRootOfUser1;
-	/** @var IConfig|MockObject */
-	private $mockConfig;
+	private string $user1;
+	private string $user2;
+	private string $versionsRootOfUser1;
 	/** @var string */
 	private $dataDir;
 	/** @var bool */
-	private $objectStoreEnabled;
+	private bool $objectStoreEnabled;
 
-	/**
-	 * @var \OC\Files\View
-	 */
-	private $rootView;
+	private View $rootView;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
-		$application = new \OCA\Files_Sharing\AppInfo\Application();
+		$application = new Application();
 		$application->registerMountProviders();
 	}
 
@@ -99,7 +99,7 @@ class VersioningTest extends TestCase {
 		// Default to user1
 		self::loginHelper($this->user1);
 
-		$this->rootView = new \OC\Files\View();
+		$this->rootView = new View();
 		if (!$this->rootView->file_exists($this->versionsRootOfUser1)) {
 			$this->rootView->mkdir($this->versionsRootOfUser1);
 		}
@@ -122,12 +122,12 @@ class VersioningTest extends TestCase {
 
 		$user = \OC::$server->getUserManager()->get($this->user1);
 		if ($user !== null) {
-			$this->logout();
+			self::logout();
 			$user->delete();
 		}
 		$user = \OC::$server->getUserManager()->get($this->user2);
 		if ($user !== null) {
-			$this->logout();
+			self::logout();
 			$user->delete();
 		}
 
@@ -139,26 +139,28 @@ class VersioningTest extends TestCase {
 	/**
 	 * Enables customizing system config for unit-testing.
 	 */
-	private function overwriteConfig($saveVersionMetadata=false, $versionsRetentionObligation='auto') {
+	private function overwriteConfig($saveVersionMetadata=false, $versionsRetentionObligation='auto'): void {
 		$config = \OC::$server->getConfig();
-		$this->mockConfig = $this->createMock('\OCP\IConfig');
-		$this->mockConfig->expects($this->any())
+		$mockConfig = $this->createMock('\OCP\IConfig');
+		$mockConfig
 			->method('getSystemValue')
-			->will($this->returnCallback(
-				function ($key, $default) use ($config, $saveVersionMetadata, $versionsRetentionObligation) {
-					if ($key === 'filesystem_check_changes') {
-						return \OC\Files\Cache\Watcher::CHECK_ONCE;
-					} elseif ($key === 'file_storage.save_version_metadata') {
-						return $saveVersionMetadata;
-					} elseif ($key === 'versions_retention_obligation') {
-						return $versionsRetentionObligation;
-					} else {
-						return $config->getSystemValue($key, $default);
-					}
+			->willReturnCallback(function ($key, $default) use ($config, $saveVersionMetadata, $versionsRetentionObligation) {
+				if ($key === 'filesystem_check_changes') {
+					return Watcher::CHECK_ONCE;
 				}
-			));
 
-		$this->overwriteService('AllConfig', $this->mockConfig);
+				if ($key === 'file_storage.save_version_metadata') {
+					return $saveVersionMetadata;
+				}
+
+				if ($key === 'versions_retention_obligation') {
+					return $versionsRetentionObligation;
+				}
+
+				return $config->getSystemValue($key, $default);
+			});
+
+		$this->overwriteService('AllConfig', $mockConfig);
 
 		// clear hooks
 		\OC_Hook::clear();
@@ -169,7 +171,7 @@ class VersioningTest extends TestCase {
 			\OCA\Files_Versions\Storage::enableMetaData(new MetaStorage($this->dataDir, new FileHelper()));
 		}
 
-		\OCA\Files_Versions\Hooks::connectHooks();
+		Hooks::connectHooks();
 	}
 
 	public function metaDataEnabledProvider(): array {
@@ -182,16 +184,16 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testMoveFileIntoSharedFolderAsRecipient(bool $metaDataEnabled) {
+	public function testMoveFileIntoSharedFolderAsRecipient(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::mkdir('folder1');
-		$fileInfo = \OC\Files\Filesystem::getFileInfo('folder1');
+		Filesystem::mkdir('folder1');
+		$fileInfo = Filesystem::getFileInfo('folder1');
 
 		$node = \OC::$server->getUserFolder($this->user1)->get('folder1');
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setNode($node)
-			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setShareType(Share::SHARE_TYPE_USER)
 			->setSharedBy($this->user1)
 			->setSharedWith($this->user2)
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
@@ -199,7 +201,7 @@ class VersioningTest extends TestCase {
 
 		self::loginHelper($this->user2);
 		$versionsFolder2 = '/' . $this->user2 . '/files_versions';
-		\OC\Files\Filesystem::file_put_contents('test.txt', 'test file');
+		Filesystem::file_put_contents('test.txt', 'test file');
 
 		$t1 = \time();
 		// second version is two weeks older, this way we make sure that no
@@ -225,15 +227,15 @@ class VersioningTest extends TestCase {
 		}
 
 		// move file into the shared folder as recipient
-		\OC\Files\Filesystem::rename('/test.txt', '/folder1/test.txt');
+		Filesystem::rename('/test.txt', '/folder1/test.txt');
 
 		$this->assertFalse($this->rootView->file_exists($v1));
 		$this->assertFalse($this->rootView->file_exists($v2));
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$this->assertFalse(\file_exists("$this->dataDir/$m0"));
-			$this->assertFalse(\file_exists("$this->dataDir/$m1"));
-			$this->assertFalse(\file_exists("$this->dataDir/$m2"));
+			$this->assertFileDoesNotExist("$this->dataDir/$m0");
+			$this->assertFileDoesNotExist("$this->dataDir/$m1");
+			$this->assertFileDoesNotExist("$this->dataDir/$m2");
 		}
 
 		self::loginHelper($this->user1);
@@ -262,12 +264,12 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testPublishCurrentVersion(bool $metaDataEnabled) {
+	public function testPublishCurrentVersion(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::mkdir('folder1');
-		\OC\Files\Filesystem::mkdir('folder2');
-		\OC\Files\Filesystem::file_put_contents('folder1/test.txt', 'test file');
+		Filesystem::mkdir('folder1');
+		Filesystem::mkdir('folder2');
+		Filesystem::file_put_contents('folder1/test.txt', 'test file');
 
 		// create some versions
 		$this->rootView->mkdir($this->versionsRootOfUser1 . '/folder1');
@@ -302,7 +304,7 @@ class VersioningTest extends TestCase {
 	public function testExpire(bool $metaDataEnabled) {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::file_put_contents('test.txt', 'test file');
+		Filesystem::file_put_contents('test.txt', 'test file');
 
 		// create some versions
 		$this->rootView->mkdir($this->versionsRootOfUser1);
@@ -351,9 +353,9 @@ class VersioningTest extends TestCase {
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
 			// one expires due to retention and being minor,
 			// and another one does not expire due to retention due to publishing
-			$this->assertEquals(4, \count($versions));
+			$this->assertCount(4, $versions);
 		} else {
-			$this->assertEquals(3, \count($versions));
+			$this->assertCount(3, $versions);
 		}
 
 		$this->assertTrue($this->rootView->file_exists($v1));
@@ -371,12 +373,12 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testIsPublishedVersion(bool $metaDataEnabled) {
+	public function testIsPublishedVersion(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::mkdir('folder1');
-		\OC\Files\Filesystem::mkdir('folder2');
-		\OC\Files\Filesystem::file_put_contents('folder1/test.txt', 'test file');
+		Filesystem::mkdir('folder1');
+		Filesystem::mkdir('folder2');
+		Filesystem::file_put_contents('folder1/test.txt', 'test file');
 
 		$t1 = \time();
 		// second version is 2 weeks old
@@ -402,7 +404,7 @@ class VersioningTest extends TestCase {
 			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.1']));
 		}
 
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
 			$this->assertTrue(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t1));
@@ -418,7 +420,7 @@ class VersioningTest extends TestCase {
 	 * test expire logic
 	 * @dataProvider versionsProvider
 	 */
-	public function testGetExpireList($versions, $sizeOfAllDeletedFiles) {
+	public function testGetExpireList($versions, $sizeOfAllDeletedFiles): void {
 		$this->overwriteConfig();
 
 		// last interval end at 2592000
@@ -441,7 +443,7 @@ class VersioningTest extends TestCase {
 		}
 	}
 
-	public function versionsProvider() {
+	public function versionsProvider(): array {
 		return [
 			// first set of versions uniformly distributed versions
 			[
@@ -562,8 +564,8 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testRename(bool $metaDataEnabled) {
-		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
+	public function testRename(bool $metaDataEnabled): void {
+		Filesystem::file_put_contents("test.txt", "test file");
 		$this->overwriteConfig($metaDataEnabled);
 
 		$t1 = \time();
@@ -594,7 +596,7 @@ class VersioningTest extends TestCase {
 		}
 
 		// execute rename hook of versions app
-		\OC\Files\Filesystem::rename("test.txt", "test2.txt");
+		Filesystem::rename("test.txt", "test2.txt");
 
 		$this->runCommands();
 
@@ -605,9 +607,9 @@ class VersioningTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Renamed));
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$this->assertFalse(\file_exists("$this->dataDir/$m0"));
-			$this->assertFalse(\file_exists("$this->dataDir/$m1"));
-			$this->assertFalse(\file_exists("$this->dataDir/$m2"));
+			$this->assertFileDoesNotExist("$this->dataDir/$m0");
+			$this->assertFileDoesNotExist("$this->dataDir/$m1");
+			$this->assertFileDoesNotExist("$this->dataDir/$m2");
 
 			$this->assertTrue($this->rootView->file_exists($m0Renamed));
 			$this->assertTrue($this->rootView->file_exists($m1Renamed));
@@ -618,12 +620,12 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testRenameInSharedFolder(bool $metaDataEnabled) {
+	public function testRenameInSharedFolder(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::mkdir('folder1');
-		\OC\Files\Filesystem::mkdir('folder1/folder2');
-		\OC\Files\Filesystem::file_put_contents("folder1/test.txt", "test file");
+		Filesystem::mkdir('folder1');
+		Filesystem::mkdir('folder1/folder2');
+		Filesystem::file_put_contents("folder1/test.txt", "test file");
 
 		$t1 = \time();
 		// second version is two weeks older, this way we make sure that no
@@ -656,7 +658,7 @@ class VersioningTest extends TestCase {
 		$node = \OC::$server->getUserFolder($this->user1)->get('folder1');
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setNode($node)
-			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setShareType(Share::SHARE_TYPE_USER)
 			->setSharedBy($this->user1)
 			->setSharedWith($this->user2)
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
@@ -664,10 +666,10 @@ class VersioningTest extends TestCase {
 
 		self::loginHelper($this->user2);
 
-		$this->assertTrue(\OC\Files\Filesystem::file_exists('folder1/test.txt'));
+		$this->assertTrue(Filesystem::file_exists('folder1/test.txt'));
 
 		// execute rename hook of versions app
-		\OC\Files\Filesystem::rename('/folder1/test.txt', '/folder1/folder2/test.txt');
+		Filesystem::rename('/folder1/test.txt', '/folder1/folder2/test.txt');
 
 		$this->runCommands();
 
@@ -680,9 +682,9 @@ class VersioningTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Renamed));
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$this->assertFalse(\file_exists("$this->dataDir/$m0"));
-			$this->assertFalse(\file_exists("$this->dataDir/$m1"));
-			$this->assertFalse(\file_exists("$this->dataDir/$m2"));
+			$this->assertFileDoesNotExist("$this->dataDir/$m0");
+			$this->assertFileDoesNotExist("$this->dataDir/$m1");
+			$this->assertFileDoesNotExist("$this->dataDir/$m2");
 
 			$this->assertTrue($this->rootView->file_exists($m0Renamed));
 			$this->assertTrue($this->rootView->file_exists($m1Renamed));
@@ -695,12 +697,12 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testMoveFolder(bool $metaDataEnabled) {
+	public function testMoveFolder(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::mkdir('folder1');
-		\OC\Files\Filesystem::mkdir('folder2');
-		\OC\Files\Filesystem::file_put_contents('folder1/test.txt', 'test file');
+		Filesystem::mkdir('folder1');
+		Filesystem::mkdir('folder2');
+		Filesystem::file_put_contents('folder1/test.txt', 'test file');
 
 		$t1 = \time();
 		// second version is two weeks older, this way we make sure that no
@@ -731,7 +733,7 @@ class VersioningTest extends TestCase {
 		}
 
 		// execute rename hook of versions app
-		\OC\Files\Filesystem::rename('folder1', 'folder2/folder1');
+		Filesystem::rename('folder1', 'folder2/folder1');
 
 		$this->runCommands();
 
@@ -742,9 +744,9 @@ class VersioningTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Renamed));
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$this->assertFalse(\file_exists("$this->dataDir/$m0"));
-			$this->assertFalse(\file_exists("$this->dataDir/$m1"));
-			$this->assertFalse(\file_exists("$this->dataDir/$m2"));
+			$this->assertFileDoesNotExist("$this->dataDir/$m0");
+			$this->assertFileDoesNotExist("$this->dataDir/$m1");
+			$this->assertFileDoesNotExist("$this->dataDir/$m2");
 
 			$this->assertTrue($this->rootView->file_exists($m0Renamed));
 			$this->assertTrue($this->rootView->file_exists($m1Renamed));
@@ -755,15 +757,15 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testMoveFolderIntoSharedFolderAsRecipient(bool $metaDataEnabled) {
+	public function testMoveFolderIntoSharedFolderAsRecipient(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::mkdir('folder1');
+		Filesystem::mkdir('folder1');
 
 		$node = \OC::$server->getUserFolder($this->user1)->get('folder1');
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setNode($node)
-			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setShareType(Share::SHARE_TYPE_USER)
 			->setSharedBy($this->user1)
 			->setSharedWith($this->user2)
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
@@ -771,8 +773,8 @@ class VersioningTest extends TestCase {
 
 		self::loginHelper($this->user2);
 		$versionsFolder2 = '/' . $this->user2. '/files_versions';
-		\OC\Files\Filesystem::mkdir('folder2');
-		\OC\Files\Filesystem::file_put_contents('folder2/test.txt', 'test file');
+		Filesystem::mkdir('folder2');
+		Filesystem::file_put_contents('folder2/test.txt', 'test file');
 
 		$t1 = \time();
 		// second version is two weeks older, this way we make sure that no
@@ -799,7 +801,7 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		// move file into the shared folder as recipient
-		\OC\Files\Filesystem::rename('/folder2', '/folder1/folder2');
+		Filesystem::rename('/folder2', '/folder1/folder2');
 
 		$this->assertFalse($this->rootView->file_exists($v1));
 		$this->assertFalse($this->rootView->file_exists($v2));
@@ -829,10 +831,10 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testRenameSharedFile(bool $metaDataEnabled) {
+	public function testRenameSharedFile(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
+		Filesystem::file_put_contents("test.txt", "test file");
 
 		$t1 = \time();
 		// second version is two weeks older, this way we make sure that no
@@ -866,7 +868,7 @@ class VersioningTest extends TestCase {
 		$node = \OC::$server->getUserFolder($this->user1)->get('test.txt');
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setNode($node)
-			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setShareType(Constants::SHARE_TYPE_USER)
 			->setSharedBy($this->user1)
 			->setSharedWith($this->user2)
 			->setPermissions(\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE);
@@ -874,10 +876,10 @@ class VersioningTest extends TestCase {
 
 		self::loginHelper($this->user2);
 
-		$this->assertTrue(\OC\Files\Filesystem::file_exists('test.txt'));
+		$this->assertTrue(Filesystem::file_exists('test.txt'));
 
 		// execute rename hook of versions app
-		\OC\Files\Filesystem::rename('test.txt', 'test2.txt');
+		Filesystem::rename('test.txt', 'test2.txt');
 
 		self::loginHelper($this->user1);
 
@@ -890,9 +892,9 @@ class VersioningTest extends TestCase {
 		$this->assertFalse($this->rootView->file_exists($v2Renamed));
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$this->assertTrue(\file_exists("$this->dataDir/$m0"));
-			$this->assertTrue(\file_exists("$this->dataDir/$m1"));
-			$this->assertTrue(\file_exists("$this->dataDir/$m2"));
+			$this->assertFileExists("$this->dataDir/$m0");
+			$this->assertFileExists("$this->dataDir/$m1");
+			$this->assertFileExists("$this->dataDir/$m2");
 
 			$this->assertFalse($this->rootView->file_exists($m0Renamed));
 			$this->assertFalse($this->rootView->file_exists($m1Renamed));
@@ -905,9 +907,9 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testCopy(bool $metaDataEnabled) {
+	public function testCopy(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
-		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
+		Filesystem::file_put_contents("test.txt", "test file");
 
 		$t1 = \time();
 		// second version is two weeks older, this way we make sure that no
@@ -937,7 +939,7 @@ class VersioningTest extends TestCase {
 		}
 
 		// execute copy hook of versions app
-		\OC\Files\Filesystem::copy("test.txt", "test2.txt");
+		Filesystem::copy("test.txt", "test2.txt");
 
 		$this->runCommands();
 
@@ -948,9 +950,9 @@ class VersioningTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Copied));
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$this->assertTrue(\file_exists("$this->dataDir/$m0"));
-			$this->assertTrue(\file_exists("$this->dataDir/$m1"));
-			$this->assertTrue(\file_exists("$this->dataDir/$m2"));
+			$this->assertFileExists("$this->dataDir/$m0");
+			$this->assertFileExists("$this->dataDir/$m1");
+			$this->assertFileExists("$this->dataDir/$m2");
 
 			$this->assertTrue($this->rootView->file_exists($m0Copied));
 			$this->assertTrue($this->rootView->file_exists($m1Copied));
@@ -958,7 +960,7 @@ class VersioningTest extends TestCase {
 		}
 	}
 
-	public function getVersionsProvider() {
+	public function getVersionsProvider(): array {
 		return [
 			['/test.txt', false],
 			['/subfolder/test.txt', false],
@@ -977,9 +979,8 @@ class VersioningTest extends TestCase {
 	 * the correct 'path' and 'name'
 	 *
 	 * @dataProvider getVersionsProvider
-	 * @param string $filepath
 	 */
-	public function testGetVersions(string $filepath, bool $enableMetadata) {
+	public function testGetVersions(string $filepath, bool $enableMetadata): void {
 		$this->overwriteConfig($enableMetadata);
 
 		$t1 = \time();
@@ -1032,7 +1033,7 @@ class VersioningTest extends TestCase {
 	 *
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testGetVersionsEmptyFile(bool $metaDataEnabled) {
+	public function testGetVersionsEmptyFile(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
 		// execute copy hook of versions app
@@ -1046,10 +1047,10 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testExpireNonexistingFile(bool $metaDataEnabled) {
+	public function testExpireNotExistingFile(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		$this->logout();
+		self::logout();
 		// needed to have a FS setup (the background job does this)
 		\OC_Util::setupFS($this->user1);
 
@@ -1059,14 +1060,14 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testExpireNonexistingUser(bool $metaDataEnabled) {
-		$this->expectException(\OC\User\NoUserException::class);
+	public function testExpireNotExistingUser(bool $metaDataEnabled): void {
+		$this->expectException(NoUserException::class);
 		$this->overwriteConfig($metaDataEnabled);
 
-		$this->logout();
+		self::logout();
 		// needed to have a FS setup (the background job does this)
 		\OC_Util::setupFS($this->user1);
-		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
+		Filesystem::file_put_contents("test.txt", "test file");
 
 		$this->assertFalse(\OCA\Files_Versions\Storage::expire('test.txt', 'unexist'));
 	}
@@ -1074,21 +1075,21 @@ class VersioningTest extends TestCase {
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testRestoreSameStorage(bool $metaDataEnabled) {
+	public function testRestoreSameStorage(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		\OC\Files\Filesystem::mkdir('sub');
+		Filesystem::mkdir('sub');
 		$this->doTestRestore($metaDataEnabled);
 	}
 
 	/**
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testRestoreCrossStorage(bool $metaDataEnabled) {
+	public function testRestoreCrossStorage(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
 		$storage2 = new Temporary([]);
-		\OC\Files\Filesystem::mount($storage2, [], $this->user1 . '/files/sub');
+		Filesystem::mount($storage2, [], $this->user1 . '/files/sub');
 
 		$this->doTestRestore($metaDataEnabled);
 	}
@@ -1097,7 +1098,7 @@ class VersioningTest extends TestCase {
 	 * @param string $hookName name of hook called
 	 * @param array $params variable to receive parameters provided by hook
 	 */
-	private function connectMockHooks($hookName, &$params) {
+	private function connectMockHooks(string $hookName, array &$params): void {
 		if ($hookName === null) {
 			return;
 		}
@@ -1108,11 +1109,9 @@ class VersioningTest extends TestCase {
 
 		$eventHandler->expects($this->any())
 			->method('callback')
-			->will($this->returnCallback(
-				function ($p) use (&$params) {
-					$params = $p;
-				}
-			));
+			->willReturnCallback(function ($p) use (&$params) {
+				$params = $p;
+			});
 
 		\OCP\Util::connectHook(
 			'\OCP\Versions',
@@ -1122,7 +1121,7 @@ class VersioningTest extends TestCase {
 		);
 	}
 
-	private function doTestRestore(bool $metaDataEnabled) {
+	private function doTestRestore(bool $metaDataEnabled): void {
 		$filePath = $this->user1 . '/files/sub/test.txt';
 		$this->rootView->file_put_contents($filePath, 'test file');
 		
@@ -1226,22 +1225,22 @@ class VersioningTest extends TestCase {
 		);
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			$this->assertTrue(
-				\file_exists("$this->dataDir/$this->versionsRootOfUser1/sub/test.txt" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT),
+			$this->assertFileExists(
+				"$this->dataDir/$this->versionsRootOfUser1/sub/test.txt" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT,
 				'A current version metadata-file must be present for the file'
 			);
-			$this->assertTrue(
-				\file_exists("$this->dataDir/$this->versionsRootOfUser1/sub/test.txt.v$t0" . MetaStorage::VERSION_FILE_EXT),
+			$this->assertFileExists(
+				"$this->dataDir/$this->versionsRootOfUser1/sub/test.txt.v$t0" . MetaStorage::VERSION_FILE_EXT,
 				'A noncurrent version metadata-file must be created for the file before restoration'
 			);
 
-			$this->assertTrue(
-				\file_exists("$this->dataDir/$m1"),
+			$this->assertFileExists(
+				"$this->dataDir/$m1",
 				'Untouched metadata-file is still there'
 			);
 
-			$this->assertTrue(
-				\file_exists("$this->dataDir/$m2"),
+			$this->assertFileExists(
+				"$this->dataDir/$m2",
 				'Version metadata file from which restore has been done must be present in files_version folder'
 			);
 		}
@@ -1291,12 +1290,12 @@ class VersioningTest extends TestCase {
 	 *
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testStoreVersionAsOwner(bool $metaDataEnabled) {
+	public function testStoreVersionAsOwner(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		$this->createAndCheckVersions(
-			\OC\Files\Filesystem::getView(),
+			Filesystem::getView(),
 			'test.txt'
 		);
 	}
@@ -1305,27 +1304,27 @@ class VersioningTest extends TestCase {
 	 * Test whether versions are created when overwriting as share recipient
 	 * @dataProvider metaDataEnabledProvider
 	 */
-	public function testStoreVersionAsRecipient(bool $metaDataEnabled) {
+	public function testStoreVersionAsRecipient(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
-		\OC\Files\Filesystem::mkdir('folder');
-		\OC\Files\Filesystem::file_put_contents('folder/test.txt', 'test file');
+		Filesystem::mkdir('folder');
+		Filesystem::file_put_contents('folder/test.txt', 'test file');
 
 		$node = \OC::$server->getUserFolder($this->user1)->get('folder');
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setNode($node)
-			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setShareType(Share::SHARE_TYPE_USER)
 			->setSharedBy($this->user1)
 			->setSharedWith($this->user2)
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
 		$share = \OC::$server->getShareManager()->createShare($share);
 
-		$this->loginAsUser($this->user2);
+		self::loginAsUser($this->user2);
 
 		$this->createAndCheckVersions(
-			\OC\Files\Filesystem::getView(),
+			Filesystem::getView(),
 			'folder/test.txt'
 		);
 
@@ -1341,37 +1340,33 @@ class VersioningTest extends TestCase {
 	 *
 	 *  @dataProvider metaDataEnabledProvider
 	 */
-	public function testStoreVersionAsAnonymous(bool $metaDataEnabled) {
+	public function testStoreVersionAsAnonymous(bool $metaDataEnabled): void {
 		$this->overwriteConfig($metaDataEnabled);
 
-		$this->logout();
+		self::logout();
 
 		// note: public link upload does this,
 		// needed to make the hooks fire
 		\OC_Util::setupFS($this->user1);
 
-		$userView = new \OC\Files\View('/' . $this->user1 . '/files');
+		$userView = new View('/' . $this->user1 . '/files');
 		$this->createAndCheckVersions(
 			$userView,
 			'test.txt'
 		);
 	}
 
-	/**
-	 * @param \OC\Files\View $view
-	 * @param string $path
-	 */
-	private function createAndCheckVersions(\OC\Files\View $view, $path) {
+	private function createAndCheckVersions(View $view, string $path): array {
 		$this->markTestSkippedIfStorageHasOwnVersioning();
 
 		$view->file_put_contents($path, 'test file');
 		$view->file_put_contents($path, 'version 1');
 		$view->file_put_contents($path, 'version 2');
 
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		// need to scan for the versions
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user1 . '/files_versions');
+		[$rootStorage,] = $this->rootView->resolvePath($this->user1 . '/files_versions');
 		$rootStorage->getScanner()->scan('files_versions');
 
 		$versions = \OCA\Files_Versions\Storage::getVersions(
@@ -1390,7 +1385,7 @@ class VersioningTest extends TestCase {
 	 * @param string $user
 	 * @param bool $create
 	 */
-	public static function loginHelper($user, $create = false) {
+	public static function loginHelper($user, $create = false): void {
 		if ($create) {
 			\OC::$server->getUserManager()->createUser($user, $user);
 		}
@@ -1403,15 +1398,15 @@ class VersioningTest extends TestCase {
 
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
-		\OC\Files\Filesystem::tearDown();
+		Filesystem::tearDown();
 		\OC_User::setUserId($user);
 		\OC_Util::setupFS($user);
 		\OC::$server->getUserFolder($user);
 	}
 
-	private function markTestSkippedIfStorageHasOwnVersioning() {
+	private function markTestSkippedIfStorageHasOwnVersioning(): void {
 		/** @var Storage $storage */
-		list($storage, $internalPath) = $this->rootView->resolvePath(self::USERS_VERSIONS_ROOT);
+		[$storage, $internalPath] = $this->rootView->resolvePath(self::USERS_VERSIONS_ROOT);
 		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
 			$this->markTestSkipped();
 		}
@@ -1421,18 +1416,18 @@ class VersioningTest extends TestCase {
 // extend the original class to make it possible to test protected methods
 class VersionStorageToTest extends \OCA\Files_Versions\Storage {
 	/*
-	 * FIXME: this is workaround as it is imposible without refactor to mock config for Storage::getExpiration
+	 * FIXME: this is workaround as it is impossible without refactor to mock config for Storage::getExpiration
 	 * and test expiry methods as these are static
 	 */
-	public static function callProtectedGetExpireList($time, $versions) {
+	public static function callProtectedGetExpireList($time, $versions): array {
 		return self::getExpireList($time, $versions);
 	}
 	
 	/*
-	 * FIXME: this is workaround as it is imposible without refactor to mock config for Storage::getExpiration
+	 * FIXME: this is workaround as it is impossible without refactor to mock config for Storage::getExpiration
 	 * and test expiry methods as these are static
 	 */
-	public static function callProtectedIsPublishedVersion($view, $path) {
+	public static function callProtectedIsPublishedVersion($view, $path): bool {
 		return self::isPublishedVersion($view, $path);
 	}
 }

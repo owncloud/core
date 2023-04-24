@@ -23,75 +23,58 @@
 namespace OC\Files\Meta;
 
 use OC\Files\Node\AbstractFolder;
+use OCP\Files\IProvidesProperties;
 use OCP\Files\IRootFolder;
 use OCP\Files\IProvidesVersionAuthor;
 use OCP\Files\IProvidesVersionTag;
+use OCP\Files\Node;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Files\NotFoundException;
 use OCP\Files\Storage;
 
 /**
- * Collection root (current file node) of noncurrent versions (directory children nodes). This
+ * Collection root (current file node) of non-current versions (directory children nodes). This
  * class represents the versions sub folder of a file
  *
  * @package OC\Files\Meta
  */
-class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAuthor, IProvidesVersionTag {
-	/** @var IRootFolder */
-	private $root;
-	/** @var \OCP\Files\Node */
-	private $node;
-	/** @var array */
-	private $versionInfo;
+class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAuthor, IProvidesVersionTag, IProvidesProperties {
+	private IRootFolder $root;
+	private Node $node;
+	private ?array $versionInfo = null;
 
 	/**
 	 * MetaVersionCollection constructor.
 	 *
 	 * @param IRootFolder $root
-	 * @param \OCP\Files\Node $node
+	 * @param Node $node
 	 */
-	public function __construct(IRootFolder $root, \OCP\Files\Node $node) {
+	public function __construct(IRootFolder $root, Node $node) {
 		$this->root = $root;
 		$this->node = $node;
 	}
 
-	public function getName() {
+	public function getName(): string {
 		return "v";
 	}
 
-	public function getPath() {
+	public function getPath(): string {
 		return "/meta/{$this->getId()}/v";
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function getEditedBy() : string {
-		if (!$this->versionInfo) {
-			$storage = $this->node->getStorage();
-			$internalPath = $this->node->getInternalPath();
-	
-			if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
-				return '';
-			}
-
-			/** @var IVersionedStorage | Storage $storage */
-			'@phan-var IVersionedStorage | Storage $storage';
-			$version = $storage->getCurrentVersion($internalPath);
-			$this->versionInfo = $version;
-		}
-
-		return $this->versionInfo['edited_by'] ?? '';
+		return $this->getProperty('edited_by');
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function getVersionTag() : string {
+		return $this->getProperty('version_tag');
+	}
+
+	public function getProperty(string $name): string {
 		if (!$this->versionInfo) {
 			$storage = $this->node->getStorage();
 			$internalPath = $this->node->getInternalPath();
-	
+
 			if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
 				return '';
 			}
@@ -102,24 +85,34 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 			$this->versionInfo = $version;
 		}
 
-		return $this->versionInfo['version_tag'] ?? '';
+		return $this->versionInfo[$name] ?? '';
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function isEncrypted() {
+	public function setProperty(string $name, string $value): void {
+		$storage = $this->node->getStorage();
+		$internalPath = $this->node->getInternalPath();
+
+		if (!$storage->instanceOfStorage(IVersionedStorage::class)) {
+			# TODO: throw exception?
+			return;
+		}
+
+		/** @var IVersionedStorage | Storage $storage */
+		'@phan-var IVersionedStorage | Storage $storage';
+		$storage->setMetaData($internalPath, null, [$name => $value]);
+		$version = $storage->getCurrentVersion($internalPath);
+		$this->versionInfo = $version;
+	}
+
+	public function isEncrypted(): bool {
 		return false;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function isShared() {
+	public function isShared(): bool {
 		return $this->node->isShared();
 	}
 
-	public function getDirectoryListing() {
+	public function getDirectoryListing(): array {
 		$node = $this->node;
 		$storage = $node->getStorage();
 		$internalPath = $node->getInternalPath();
@@ -170,7 +163,7 @@ class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAu
 	/**
 	 * @inheritdoc
 	 */
-	public function getId() {
+	public function getId(): int {
 		return $this->node->getId();
 	}
 }

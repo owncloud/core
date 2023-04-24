@@ -111,14 +111,10 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	public function filesize($path) {
 		if ($this->is_dir($path)) {
 			return 0; //by definition
-		} else {
-			$stat = $this->stat($path);
-			if (isset($stat['size'])) {
-				return $stat['size'];
-			} else {
-				return 0;
-			}
 		}
+
+		$stat = $this->stat($path);
+		return $stat['size'] ?? 0;
 	}
 
 	public function isReadable($path) {
@@ -183,11 +179,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 
 	public function filemtime($path) {
 		$stat = $this->stat($path);
-		if (isset($stat['mtime'])) {
-			return $stat['mtime'];
-		} else {
-			return 0;
-		}
+		return $stat['mtime'] ?? 0;
 	}
 
 	public function file_get_contents($path) {
@@ -554,7 +546,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	 * @return mixed
 	 */
 	public function getMountOption($name, $default = null) {
-		return isset($this->mountOptions[$name]) ? $this->mountOptions[$name] : $default;
+		return $this->mountOptions[$name] ?? $default;
 	}
 
 	/**
@@ -776,6 +768,16 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	public function saveVersion($internalPath) {
 		// returning false here will trigger the fallback implementation
 		return false;
+	}
+
+	public function setMetaData(string $internalPath, ?string $versionId, array $data): void {
+		if ($versionId === null) {
+			[$uid, $filename] = $this->convertInternalPathToGlobalPath($internalPath);
+			\OCA\Files_Versions\Storage::setMetaDataCurrent($uid, $filename, $data);
+		} else {
+			$v = $this->getVersion($internalPath, $versionId);
+			\OCA\Files_Versions\Storage::setMetaData($v['owner'], $v['storage_location'], $data);
+		}
 	}
 
 	public function lockNodePersistent($internalPath, array $lockInfo) {

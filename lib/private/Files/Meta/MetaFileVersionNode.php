@@ -28,32 +28,30 @@ use OCP\Files\ForbiddenException;
 use OCP\Files\IProvidesAdditionalHeaders;
 use OC\Preview;
 use OCA\Files_Sharing\SharedStorage;
+use OCP\Files\IProvidesProperties;
 use OCP\Files\IProvidesVersionAuthor;
 use OCP\Files\IProvidesVersionTag;
 use OCP\Files\IRootFolder;
 use OCP\Files\IPreviewNode;
+use OCP\Files\Storage;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Files\Storage\IStorage;
 use OCP\IImage;
 
 /**
- * Noncurrent version of the file node. This class represents a version of a file in the meta endpoint
+ * Non-current version of the file node. This class represents a version of a file in the meta endpoint
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor, IProvidesVersionTag {
+class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor, IProvidesVersionTag, IProvidesProperties {
 	/** @var string */
 	private $versionId;
-	/** @var MetaVersionCollection */
-	private $parent;
+	private MetaVersionCollection $parent;
 	/** @var IStorage|IVersionedStorage|SharedStorage */
 	private $storage;
-	/** @var string */
-	private $internalPath;
-	/** @var IRootFolder */
-	private $root;
-	/** @var array */
-	private $versionInfo;
+	private string $internalPath;
+	private IRootFolder $root;
+	private array $versionInfo;
 
 	/**
 	 * MetaFileVersionNode constructor.
@@ -69,7 +67,7 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 		IRootFolder $root,
 		array $version,
 		IStorage $storage,
-		$internalPath
+		string $internalPath
 	) {
 		$this->parent = $parent;
 		$this->versionId = $version['version'];
@@ -104,11 +102,26 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 		return $this->versionInfo['version_tag'] ?? '';
 	}
 
+	public function getProperty(string $name): string {
+		return $this->versionInfo[$name] ?? '';
+	}
+
+	public function setProperty(string $name, string $value): void {
+		if (!$this->storage->instanceOfStorage(IVersionedStorage::class)) {
+			# TODO: throw exception?
+			return;
+		}
+
+		$this->storage->setMetaData($this->internalPath, null, [$name => $value]);
+		$version = $this->storage->getCurrentVersion($this->internalPath);
+		$this->versionInfo = $version;
+	}
+
 	/**
 	 * @inheritdoc
 	 */
 	public function getSize() {
-		return isset($this->versionInfo['size']) ? $this->versionInfo['size'] : null;
+		return $this->versionInfo['size'] ?? null;
 	}
 
 	/**
@@ -134,20 +147,20 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 			return $this->storage->restoreVersion($this->internalPath, $this->versionId);
 		}
 
-		// for now we only allow restoring of a version
+		// for now, we only allow restoring of a version
 		return false;
 	}
 
 	public function getMTime() {
-		return isset($this->versionInfo['timestamp']) ? $this->versionInfo['timestamp'] : null;
+		return $this->versionInfo['timestamp'] ?? null;
 	}
 
 	public function getMimetype() {
-		return isset($this->versionInfo['mimetype']) ? $this->versionInfo['mimetype'] : 'application/octet-stream';
+		return $this->versionInfo['mimetype'] ?? 'application/octet-stream';
 	}
 
 	public function getEtag() {
-		return isset($this->versionInfo['etag']) ? $this->versionInfo['etag'] : null;
+		return $this->versionInfo['etag'] ?? null;
 	}
 
 	public function fopen($mode) {
