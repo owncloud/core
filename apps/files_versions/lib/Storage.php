@@ -549,11 +549,10 @@ class Storage {
 			$users_view->touch("/files$filename");
 
 			if (self::metaEnabled()) {
-				$versionFileInfo = $users_view->getFileInfo('files_versions'.$filename.'.v'.$revision);
-				self::$metaData->restore($filename, $versionFileInfo, $uid);
+				self::$metaData->restore($filename, $uid);
 			}
 
-			Storage::scheduleExpire($uid, $filename);
+			self::scheduleExpire($uid, $filename);
 
 			\OC_Hook::emit('\OCP\Versions', 'rollback', [
 				'path' => $filename,
@@ -562,7 +561,9 @@ class Storage {
 			]);
 
 			return true;
-		} elseif ($versionCreated) {
+		}
+
+		if ($versionCreated) {
 			self::deleteVersion($users_view, $version);
 		}
 		return true;
@@ -608,21 +609,21 @@ class Storage {
 	 * @param string $filename file to get versioning data for, relative to the user files dir
 	 */
 	public static function getCurrentVersion($uid, $filename) {
-		$version = [];
 		if ($filename === null || $filename === '') {
-			return $version;
+			return [];
+		}
+
+		if (!self::metaEnabled()) {
+			return [];
 		}
 
 		// add author information if the feature is enabled
-		if (self::metaEnabled()) {
-			// handle only allowed metadata values
-			$versionMetadata = self::$metaData->getCurrentMetadata($filename, $uid);
+		$versionMetadata = self::$metaData->getCurrentMetadata($filename, $uid);
 
-			$version['edited_by'] = $versionMetadata['edited_by'] ?? '';
-			$version['version_tag'] = $versionMetadata['version_tag'] ?? '';
-		}
+		$versionMetadata['edited_by'] = $versionMetadata['edited_by'] ?? '';
+		$versionMetadata['version_tag'] = $versionMetadata['version_tag'] ?? '';
 
-		return $version;
+		return $versionMetadata;
 	}
 
 	/**
@@ -704,8 +705,9 @@ class Storage {
 							if ($versionFileInfo) {
 								$versionMetadata = self::$metaData->getVersionMetadata($versionFileInfo);
 
-								$versions[$key]['edited_by'] = $versionMetadata['edited_by'] ?? '';
-								$versions[$key]['version_tag'] = $versionMetadata['version_tag'] ?? '';
+								$versionMetadata['edited_by'] = $versionMetadata['edited_by'] ?? '';
+								$versionMetadata['version_tag'] = $versionMetadata['version_tag'] ?? '';
+								$versions[$key] = array_merge($versions[$key], $versionMetadata);
 							}
 						}
 					}
@@ -1072,5 +1074,13 @@ class Storage {
 	public static function getContentOfVersion($uid, $storage_location) {
 		$users_view = new View('/'.$uid);
 		return $users_view->fopen($storage_location, 'r');
+	}
+
+	public static function setMetaData(string $owner, string $currentFileName, ?string $versionId, array $data): void {
+		if (!self::metaEnabled()) {
+			return;
+		}
+
+		self::$metaData->setMetaData($owner, $currentFileName, $versionId, $data);
 	}
 }

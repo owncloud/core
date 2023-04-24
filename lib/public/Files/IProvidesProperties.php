@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2019, ownCloud GmbH
+ * @copyright Copyright (c) 2023, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -19,17 +19,30 @@
  *
  */
 
-namespace OCA\DAV\Tests\Unit\Meta;
+namespace OCP\Files;
 
-use OCA\DAV\Meta\MetaFile;
-use OCP\Files\File;
-use Test\TestCase;
+/**
+ * Interface IProvidesVersionTag
+ * This interface provides version author retrieval for file version
+ *
+ * @package OCP\Files
+ * @since 10.13.0
+ */
+interface IProvidesProperties {
+	/**
+	 * Returns the property value.
+	 *
+	 * @return string value of the property
+	 * @since 10.13.0
+	 */
+	public function getProperty(string $name) : string;
 
-class MetaFileTest extends TestCase {
-	public function testETag(): void {
-		$file = $this->createMock(File::class);
-		$file->method('getETag')->willReturn('123456');
-		$metaFile = new MetaFile($file);
-		$this->assertEquals('"123456"', $metaFile->getETag());
-	}
+	/**
+	 * Returns the property value.
+	 *
+	 * @param string $name
+	 * @param string $value
+	 * @since 10.13.0
+	 */
+	public function setProperty(string $name, string $value) : void;
 }

@@ -20,7 +20,7 @@
  */
 namespace OCA\Files_Versions;
 
-use OC\Files\Filesystem;
+use Exception;
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\View;
 use OCP\Files\FileInfo;
@@ -32,7 +32,7 @@ use OCP\Files\FileInfo;
  * The metadata files are named like the version file but suffixed with .json. They
  * contain the uid of the editor/author of the version.
  *
- * Additionally a metadata file for the current version is maintained (.current.json).
+ * Additionally, a metadata file for the current version is maintained (.current.json).
  *
  * The methods are called in tandem by the operations in OCA\Files_Versions\Storage.php
  * but abstract away the required path transformations and filesystem layout. Pass in normal file and
@@ -58,14 +58,11 @@ class MetaStorage {
 	/** @var string File-extension of the metadata file for a specific version */
 	public const VERSION_FILE_EXT = ".json";
 
-	/** @var string  */
-	private $dataDir;
+	private string $dataDir;
 
-	/** @var FileHelper  */
-	private $fileHelper;
+	private FileHelper $fileHelper;
 
-	/** @var boolean */
-	private $objectStoreEnabled;
+	private bool $objectStoreEnabled;
 
 	/**
 	 * @param string $dataDir Absolute path to the data-directory
@@ -88,17 +85,17 @@ class MetaStorage {
 	 * @param string $uid
 	 * @param bool $minor if true increases minor version, otherwise major
 	 * @return bool
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function createForCurrent(string $currentFileName, string $uid, bool $minor) : bool {
 		// if the file gets streamed we need to remove the .part extension
 		// to get the right target
 		$ext = \pathinfo($currentFileName, PATHINFO_EXTENSION);
 		if ($ext === 'part') {
-			$currentFileName = \substr($currentFileName, 0, \strlen($currentFileName) - 5);
+			$currentFileName = \substr($currentFileName, 0, -5);
 		}
 
-		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
+		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_PREFIX . self::VERSION_FILE_EXT);
 		$userView = $this->fileHelper->getUserView($uid);
 		$this->fileHelper->createMissingDirectories($userView, $currentFileName);
 
@@ -109,29 +106,25 @@ class MetaStorage {
 		$newVersionEditedBy = \OC_User::getUser();
 
 		// generate Version Tag property
-		$oldVersionTag = $oldMetadata['version_tag'] ?? '';
-		$newVersionTag = $this->incrementVersionTag($oldVersionTag, $minor);
+		$newVersionTag = $this->incrementVersionTag($oldMetadata['version_tag'] ?? '', $minor);
+		# TODO: dispatch event to allow apps to operate on meta data
 
-		$metadata = [
-			'edited_by' => $newVersionEditedBy,
-			'version_tag' => $newVersionTag
-		];
-		return $this->writeMetaFile($metadata, $absPathOnDisk) !== false;
+		$oldMetadata['edited_by'] = $newVersionEditedBy;
+		$oldMetadata['version_tag'] = $newVersionTag;
+
+		return $this->writeMetaFile($oldMetadata, $absPathOnDisk) !== false;
 	}
 
 	/**
-	 * Get a metadata file for a non-conncurent version of file.
+	 * Get a metadata file for a non-concurrent version of file.
 	 *
 	 * @param FileInfo $versionFile
 	 * @return array metadata
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getVersionMetadata(FileInfo $versionFile) : array {
-		$absPathOnDisk = $this->dataDir . '/' . $versionFile->getPath() . MetaStorage::VERSION_FILE_EXT;
-		if (\file_exists($absPathOnDisk)) {
-			return $this->readMetaFile($absPathOnDisk);
-		}
-		return [];
+		$absPathOnDisk = $this->dataDir . '/' . $versionFile->getPath() . self::VERSION_FILE_EXT;
+		return $this->readMetaFile($absPathOnDisk);
 	}
 
 	/**
@@ -140,10 +133,10 @@ class MetaStorage {
 	 * @param string $currentFileName Path relative to the current user's home
 	 * @param string $uid
 	 * @return array metadata
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getCurrentMetadata(string $currentFileName, string $uid) : array {
-		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
+		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_PREFIX . self::VERSION_FILE_EXT);
 
 		return $this->readMetaFile($absPathOnDisk);
 	}
@@ -158,8 +151,8 @@ class MetaStorage {
 	 * @param FileInfo $versionFile
 	 * @param string $uid
 	 */
-	public function copyCurrentToVersion(string $currentFileName, FileInfo $versionFile, string $uid) {
-		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
+	public function copyCurrentToVersion(string $currentFileName, FileInfo $versionFile, string $uid): void {
+		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_PREFIX . self::VERSION_FILE_EXT);
 		$targetMetaFile = $this->dataDir . $versionFile->getPath() . self::VERSION_FILE_EXT;
 
 		if (\file_exists($currentMetaFile)) {
@@ -170,7 +163,7 @@ class MetaStorage {
 	/**
 	 * Deletes metadata for a specific version file.
 	 */
-	public function deleteForVersion(View $versionsView, string $versionPath) {
+	public function deleteForVersion(View $versionsView, string $versionPath): void {
 		$uid = $versionsView->getOwner("/");
 		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$versionPath" . self::VERSION_FILE_EXT);
 		if (\file_exists($toDelete)) {
@@ -183,9 +176,9 @@ class MetaStorage {
 	 *
 	 * @param string $filename Path to the file relative to files/ for which the current revision should be deleted
 	 */
-	public function deleteForCurrent(View $versionsView, string $filename) {
+	public function deleteForCurrent(View $versionsView, string $filename): void {
 		$uid = $versionsView->getOwner("/");
-		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$filename" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
+		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$filename" . self::CURRENT_FILE_PREFIX . self::VERSION_FILE_EXT);
 
 		if (\file_exists($toDelete)) {
 			\unlink($toDelete);
@@ -197,14 +190,13 @@ class MetaStorage {
 	 * and becomes the current metadata of the file.
 	 *
 	 * @param string $currentFileName
-	 * @param FileInfo $restoreVersionFile
 	 * @param string $uid
 	 */
-	public function restore(string $currentFileName, FileInfo $restoreVersionFile, string $uid) {
+	public function restore(string $currentFileName, string $uid): void {
 		// NOTE: restoring a version just copies the contents to new current version, it does not affect past version
 
 		// get current metafile
-		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT);
+		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_PREFIX . self::VERSION_FILE_EXT);
 
 		// fetch metadata
 		$currentMetaData = $this->readMetaFile($currentMetaFile);
@@ -215,13 +207,13 @@ class MetaStorage {
 		// increment version tag for current meta
 		$oldCurrentVersionTag = $currentMetaData['version_tag'] ?? '';
 		$newCurrentVersionTag = $this->incrementVersionTag($oldCurrentVersionTag, true);
-			
+		# TODO: dispatch event to allow apps to operate on meta data
+
 		// create new currentMetaFile
-		$metadata = [
-			'edited_by' => $newVersionEditedBy,
-			'version_tag' => $newCurrentVersionTag,
-		];
-		$this->writeMetaFile($metadata, $currentMetaFile);
+		$oldMetadata['edited_by'] = $newVersionEditedBy;
+		$oldMetadata['version_tag'] = $newCurrentVersionTag;
+
+		$this->writeMetaFile($oldMetadata, $currentMetaFile);
 	}
 
 	/**
@@ -231,63 +223,26 @@ class MetaStorage {
 	 * @param string $dst
 	 * @param string $dstOwnerUid
 	 */
-	public function renameOrCopy(string $op, string $src, string $srcOwnerUid, string $dst, string $dstOwnerUid) {
+	public function renameOrCopy(string $op, string $src, string $srcOwnerUid, string $dst, string $dstOwnerUid): void {
 		if ($op !== 'copy' && $op !== 'rename') {
 			throw new \InvalidArgumentException('Only move/rename and copy are supported');
 		}
 
-		$src = self::pathToAbsDiskPath($srcOwnerUid, $src);
-		$dst = self::pathToAbsDiskPath($dstOwnerUid, $dst);
+		$src = $this->pathToAbsDiskPath($srcOwnerUid, $src);
+		$dst = $this->pathToAbsDiskPath($dstOwnerUid, $dst);
 
 		if (\file_exists($src)) {
 			$op($src, $dst);
 		}
 	}
 
-	/**
-	 * Copy all meta data files from a given folder to a destination folder
-	 * recursively. This method presumes that the folder structure in the
-	 * destination folder has already been created.
-	 *
-	 * @param string $src
-	 * @param string $srcOwnerUid
-	 * @param string $dst
-	 * @param string $dstOwnerUid
-	 */
-	public function copyRecursiveMetaDataFiles(string $src, string $srcOwnerUid, string $dst, string $dstOwnerUid) {
-		$absSrc = self::pathToAbsDiskPath($srcOwnerUid, $src);
-		$absDst = self::pathToAbsDiskPath($dstOwnerUid, $dst);
-
-		if (!\is_dir($absSrc)) {
-			return;
-		}
-
-		foreach (\scandir($absSrc) as $filePath) {
-			if ($filePath === '.' || $filePath === '..') {
-				continue;
-			}
-
-			if (\pathinfo($filePath, PATHINFO_EXTENSION) === 'json') {
-				\copy("$absSrc/$filePath", "$absDst/$filePath");
-				continue;
-			}
-
-			if (\is_dir($filePath)) {
-				$this->copyRecursiveMetaDataFiles("$srcOwnerUid/$filePath", $srcOwnerUid, "$dstOwnerUid/$filePath", $dstOwnerUid);
-			}
-		}
-	}
-
-	/**
-	 * @return bool
-	 */
 	public function isObjectStoreEnabled(): bool {
 		return $this->objectStoreEnabled;
 	}
 
 	/**
 	 * Get the incremented version tag for a new version, which is
-	 * latest version +0.1 or new major version.
+	 * the latest version +0.1 or new major version.
 	 *
 	 * @param string $oldVersionTag
 	 * @param bool $minor if true increases minor version, otherwise major
@@ -304,10 +259,10 @@ class MetaStorage {
 		$minorVersionPart = $versionParts[1];
 		if ($minor) {
 			// by default increase minor version
-			$newVersionTag = $majorVersionPart . '.' . \strval(((int)$minorVersionPart) + 1);
+			$newVersionTag = "$majorVersionPart." . (((int)$minorVersionPart) + 1);
 		} elseif ($minorVersionPart !== '0') {
 			// increase major only when not already increased
-			$newVersionTag = \strval(((int)$majorVersionPart) + 1) . '.0';
+			$newVersionTag = (((int)$majorVersionPart) + 1) . '.0';
 		} else {
 			// just keep old tag
 			$newVersionTag = $oldVersionTag;
@@ -340,33 +295,38 @@ class MetaStorage {
 	 * @param string $diskPath
 	 * @return array metadata
 	 */
-	private function readMetaFile(string $diskPath) {
+	private function readMetaFile(string $diskPath): array {
 		if (!\file_exists($diskPath)) {
 			return [];
 		}
 
 		$json = \file_get_contents($diskPath);
 		if ($decoded = \json_decode($json, true)) {
-			$metadata = [];
-
-			// handling for edited_by
-			if (isset($decoded['edited_by'])) {
-				$metadata['edited_by'] = $decoded['edited_by'];
-			}
-
 			// LEGACY: property wrongly taken from DAV interface
-			// backwards compatibilitiy handling for edited_by which in the past had DAV property name
+			// backwards compatibility handling for edited_by which in the past had DAV property name
 			if (isset($decoded['{http://owncloud.org/ns}meta-version-edited-by'])) {
-				$metadata['edited_by'] = $decoded['{http://owncloud.org/ns}meta-version-edited-by'];
+				$decoded['edited_by'] = $decoded['{http://owncloud.org/ns}meta-version-edited-by'];
+				unset($decoded['{http://owncloud.org/ns}meta-version-edited-by']);
 			}
 
-			// handling for version tags
-			if (isset($decoded['version_tag'])) {
-				$metadata['version_tag'] = $decoded['version_tag'];
-			}
-			return $metadata;
+			return $decoded;
 		}
 
 		return [];
+	}
+
+	public function setMetaData(string $uid, string $fileName, ?string $versionId, array $new_data): void {
+		if ($versionId) {
+			$fileName .= '.v' . $versionId;
+		} else {
+			$fileName .= self::CURRENT_FILE_PREFIX;
+		}
+
+		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$fileName" . self::VERSION_FILE_EXT);
+
+		$data = $this->readMetaFile($absPathOnDisk);
+		$data = array_merge($data, $new_data);
+
+		$this->writeMetaFile($data, $absPathOnDisk);
 	}
 }

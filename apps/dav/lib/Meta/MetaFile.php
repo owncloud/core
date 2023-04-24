@@ -25,6 +25,7 @@ use OC\Files\Meta\MetaFileVersionNode;
 use OCA\DAV\Files\ICopySource;
 use OCA\DAV\Files\IProvidesAdditionalHeaders;
 use OCA\DAV\Files\IFileNode;
+use OCP\Files\IProvidesProperties;
 use OCP\Files\IProvidesVersionAuthor;
 use OCP\Files\IProvidesVersionTag;
 use OCP\Files\Node;
@@ -37,8 +38,7 @@ use Sabre\DAV\File;
  * @package OCA\DAV\Meta
  */
 class MetaFile extends File implements ICopySource, IFileNode, IProvidesAdditionalHeaders {
-	/** @var \OCP\Files\File */
-	private $file;
+	private \OCP\Files\File $file;
 
 	/**
 	 * MetaFolder constructor.
@@ -52,7 +52,7 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	/**
 	 * @inheritdoc
 	 */
-	public function getName() {
+	public function getName(): string {
 		return $this->file->getName();
 	}
 
@@ -73,21 +73,21 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	/**
 	 * @inheritdoc
 	 */
-	public function getContentType() {
+	public function getContentType(): ?string {
 		return $this->file->getMimeType();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function getLastModified() {
+	public function getLastModified(): ?int {
 		return $this->file->getMTime();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function getETag() {
+	public function getETag(): ?string {
 		return '"' . $this->file->getEtag() . '"';
 	}
 
@@ -101,20 +101,14 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 		return false;
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getHeaders() {
+	public function getHeaders(): array {
 		if ($this->file instanceof \OCP\Files\IProvidesAdditionalHeaders) {
 			return $this->file->getHeaders();
 		}
 		return [];
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getContentDispositionFileName() {
+	public function getContentDispositionFileName(): string {
 		if ($this->file instanceof \OCP\Files\IProvidesAdditionalHeaders) {
 			return $this->file->getContentDispositionFileName();
 		}
@@ -128,9 +122,6 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 		return $this->file;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function getVersionEditedBy() : string {
 		if ($this->file instanceof IProvidesVersionAuthor) {
 			return $this->file->getEditedBy();
@@ -138,12 +129,16 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 		return '';
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function getVersionTag() : string {
 		if ($this->file instanceof IProvidesVersionTag) {
 			return $this->file->getVersionTag();
+		}
+		return '';
+	}
+
+	public function getProperty(string $name) : string {
+		if ($this->file instanceof IProvidesProperties) {
+			return $this->file->getProperty($name);
 		}
 		return '';
 	}
