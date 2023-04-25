@@ -35,16 +35,8 @@ require_once 'bootstrap.php';
  * Acceptance test steps related to testing tags features
  */
 class TagsContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 * @var array
-	 */
-	private $createdTags = [];
+	private FeatureContext $featureContext;
+	private array $createdTags = [];
 
 	/**
 	 * @param string $user
@@ -220,7 +212,7 @@ class TagsContext implements Context {
 		if ($stringsOrNumbers === "true-false-strings") {
 			$useTrueFalseStrings = true;
 		} else {
-			$useTrueFalseStrings = true;
+			$useTrueFalseStrings = false;
 		}
 
 		$this->createTagWithNameAsAdmin(
@@ -782,7 +774,7 @@ class TagsContext implements Context {
 		Assert::assertEquals(
 			$groupsOfTag[0],
 			$groups,
-			"Tag has groups '{$groupsOfTag[0]}' instead of the expected '$groups'"
+			"Tag has groups '$groupsOfTag[0]' instead of the expected '$groups'"
 		);
 	}
 
@@ -797,7 +789,7 @@ class TagsContext implements Context {
 	 */
 	public function tagsShouldExistForUser(int $count, string $user):void {
 		Assert::assertEquals(
-			(int) $count,
+			$count,
 			\count($this->requestTagsforUser($user)),
 			__METHOD__
 			. " Expected $count tags, got "
@@ -824,14 +816,14 @@ class TagsContext implements Context {
 	 * @param string $propertyName
 	 * @param string $propertyValue
 	 *
-	 * @return ResponseInterface
+	 * @return void
 	 */
 	private function sendProppatchToSystemtags(
 		string $user,
 		string $tagDisplayName,
 		string $propertyName,
 		string $propertyValue
-	):ResponseInterface {
+	):void {
 		$renamedUser = $this->featureContext->getActualUsername($user);
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		$response = WebDavHelper::proppatch(
@@ -847,7 +839,6 @@ class TagsContext implements Context {
 			"systemtags"
 		);
 		$this->featureContext->setResponse($response);
-		return $response;
 	}
 
 	/**

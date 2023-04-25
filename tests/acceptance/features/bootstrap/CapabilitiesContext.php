@@ -24,7 +24,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
@@ -33,11 +32,7 @@ require_once 'bootstrap.php';
  * Capabilities context.
  */
 class CapabilitiesContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @Then the major-minor-micro version data in the response should match the version string
@@ -106,7 +101,7 @@ class CapabilitiesContext implements Context {
 		Assert::assertEquals(
 			$value === "EMPTY" ? '' : $value,
 			$actualValue,
-			"Expected {$pathToElement} capability of files sharing app to be {$value}, but got {$actualValue}"
+			"Expected $pathToElement capability of files sharing app to be $value, but got $actualValue"
 		);
 	}
 

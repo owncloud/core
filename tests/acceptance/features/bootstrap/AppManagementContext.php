@@ -29,23 +29,16 @@ use TestHelpers\SetupHelper;
  * Context for steps that test apps_paths.
  */
 class AppManagementContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	private $oldAppsPaths;
 
 	/**
-	 * @var string stdout of last command
+	 * stdout of last command
 	 */
-	private $cmdOutput;
+	private string $cmdOutput;
 
-	/**
-	 * @var array[]
-	 */
-	private $createdApps = [];
+	private array $createdApps = [];
 
 	/**
 	 *
@@ -283,9 +276,9 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function appWithVersionAndPathShouldHaveBeenListedInTheEnabledAppsSection(
-		$appId,
-		$appVersion,
-		$appPath
+		string $appId,
+		string $appVersion,
+		string $appPath
 	):void {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$expectedStartOfOutput = "Enabled:";
@@ -438,7 +431,7 @@ class AppManagementContext implements Context {
 		Assert::assertEquals(
 			$this->featureContext->getServerRoot() . "/$dir/$appId",
 			\trim($this->cmdOutput),
-			"Expected: the path to ${appId} should be ${dir} but got "
+			"Expected: the path to $appId should be $dir but got "
 			. \trim($this->cmdOutput)
 		);
 	}
@@ -460,7 +453,7 @@ class AppManagementContext implements Context {
 		Assert::assertEquals(
 			$version,
 			\trim($cmdOutput),
-			"Expected: the installed version of ${appId} should be ${version} but got " . \trim($cmdOutput)
+			"Expected: the installed version of $appId should be $version but got " . \trim($cmdOutput)
 		);
 	}
 

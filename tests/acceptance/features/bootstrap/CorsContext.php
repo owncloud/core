@@ -30,13 +30,9 @@ require_once 'bootstrap.php';
  * Steps that relate to CORS tests
  */
 class CorsContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
-	private $originalAdminCorsDomains = null;
+	private ?string $originalAdminCorsDomains = null;
 
 	/**
 	 * @Given user :user has added :domain to the list of personal CORS domains

@@ -32,18 +32,8 @@ require_once 'bootstrap.php';
  * context file for steps that execute actions as "the public".
  */
 class PublicWebDavContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var OccContext
-	 */
-	private $occContext;
-
+	private FeatureContext $featureContext;
+	private OccContext $occContext;
 	/**
 	 * @When /^the public downloads the last public link shared file with range "([^"]*)" using the (old|new) public WebDAV API$/
 	 *
@@ -389,13 +379,7 @@ class PublicWebDavContext implements Context {
 			"COPY",
 			null,
 			null,
-			$headers,
-			null,
-			null,
-			null,
-			false,
-			0,
-			null
+			$headers
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -528,7 +512,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @Given the public has uploaded file :filename" with password :password and content :body
+	 * @Given the public has uploaded file :filename with password :password and content :body
 	 *
 	 * @param string $filename target file name
 	 * @param string|null $password
@@ -1144,7 +1128,7 @@ class PublicWebDavContext implements Context {
 	 * @Then /^the public upload to the last publicly shared folder using the (old|new) public WebDAV API should fail with HTTP status code "([^"]*)"$/
 	 *
 	 * @param string $publicWebDAVAPIVersion
-	 * @param string $expectedHttpCode
+	 * @param string|null $expectedHttpCode
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1326,8 +1310,7 @@ class PublicWebDavContext implements Context {
 
 			$this->downloadPublicFileWithRange(
 				"",
-				$publicWebDAVAPIVersion,
-				""
+				$publicWebDAVAPIVersion
 			);
 
 			$this->featureContext->checkDownloadedContentMatches(
@@ -1622,10 +1605,10 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @param string $method
 	 * @param string $publicWebDAVAPIVersion
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
-	 * @throws GuzzleException
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
 	public function publicSendsRequestToLastPublicShare(string $method, string $publicWebDAVAPIVersion, ?string $password = ''):void {
 		if ($method === "PROPFIND") {
@@ -1640,6 +1623,8 @@ class PublicWebDavContext implements Context {
 					<oc:public-link-share-owner/>
 				</d:prop>
 			</d:propfind>';
+		} else {
+			$body = null;
 		}
 		$token = $this->featureContext->getLastPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(

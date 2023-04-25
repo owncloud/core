@@ -33,15 +33,12 @@ require_once 'bootstrap.php';
  * Context to make the Logging steps available
  */
 class LoggingContext implements Context {
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
-	private $oldLogLevel = null;
-	private $logLevel = null;
-	private $oldLogBackend = null;
-	private $oldLogTimezone = null;
+	private ?string $oldLogLevel = null;
+	private ?string $logLevel = null;
+	private ?string $oldLogBackend = null;
+	private ?string $oldLogTimezone = null;
 
 	/**
 	 * checks for specific rows in the log file.
@@ -68,7 +65,7 @@ class LoggingContext implements Context {
 		if ($this->logLevel === "info") {
 			$ignoredLines = 1;
 		}
-		$ignoredLines = (int) $ignoredLines;
+		$ignoredLines = $ignoredLines;
 		//-1 because getRows gives also the header
 		$linesToRead = \count($expectedLogEntries->getRows()) - 1 + $ignoredLines;
 		$logLines = LoggingHelper::getLogFileContent(
@@ -82,7 +79,7 @@ class LoggingContext implements Context {
 		foreach ($expectedLogEntries as $expectedLogEntry) {
 			$logEntry = \json_decode($logLines[$lineNo], true);
 			if ($logEntry === null) {
-				throw new Exception("the log line :\n{$logLines[$lineNo]} is not valid JSON");
+				throw new Exception("the log line :\n$logLines[$lineNo] is not valid JSON");
 			}
 
 			foreach (\array_keys($expectedLogEntry) as $attribute) {
@@ -104,9 +101,9 @@ class LoggingContext implements Context {
 					Assert::assertArrayHasKey(
 						$attribute,
 						$logEntry,
-						"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
+						"could not find attribute: '$attribute' in log entry: '$logLines[$lineNo]'"
 					);
-					$message = "log entry:\n{$logLines[$lineNo]}\n";
+					$message = "log entry:\n$logLines[$lineNo]\n";
 					if (!\is_string($logEntry[$attribute])) {
 						$logEntry[$attribute] = \json_encode(
 							$logEntry[$attribute],
@@ -287,7 +284,7 @@ class LoggingContext implements Context {
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
 			if ($logEntry === null) {
-				throw new Exception("the log line :\n{$logLine} is not valid JSON");
+				throw new Exception("the log line :\n$logLine is not valid JSON");
 			}
 			//reindex the array, we might have deleted entries
 			$expectedLogEntries = \array_values($expectedLogEntries);
@@ -335,7 +332,7 @@ class LoggingContext implements Context {
 						$foundLine = false;
 						break;
 					}
-					if ($matchAttribute and !$shouldOrNot) {
+					if (!$shouldOrNot) {
 						$count += 1;
 						Assert::assertNotEquals(
 							$count,
@@ -359,9 +356,9 @@ class LoggingContext implements Context {
 	}
 
 	/**
-	 * fails if there is at least one line in the log file that matches all
-	 * given attributes
-	 * attributes in the table that are empty will match any value in the
+	 * Fails if there is at least one line in the log file that matches all
+	 * given attributes.
+	 * Attributes in the table that are empty will match any value in the
 	 * corresponding attribute in the log file
 	 *
 	 * @Then /^the log file should not contain any log-entries (with|containing) these attributes:$/
@@ -377,7 +374,7 @@ class LoggingContext implements Context {
 	 * @throws Exception
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
-		$withOrContaining,
+		string $withOrContaining,
 		TableNode $logEntriesExpectedNotToExist
 	):void {
 		$logLines = LoggingHelper::getLogFileContent(
@@ -413,11 +410,11 @@ class LoggingContext implements Context {
 						break;
 					}
 				}
+				Assert::assertFalse(
+					$match,
+					"found a log entry that should not be there\n$logLine\n"
+				);
 			}
-			Assert::assertFalse(
-				$match,
-				"found a log entry that should not be there\n$logLine\n"
-			);
 		}
 	}
 
@@ -458,7 +455,7 @@ class LoggingContext implements Context {
 		Assert::assertEquals(
 			$logLevelExpected,
 			$logLevelActual,
-			"The expected log level is {$logLevelExpected} but the log level has been set to {$logLevelActual}"
+			"The expected log level is $logLevelExpected but the log level has been set to $logLevelActual"
 		);
 	}
 
@@ -493,7 +490,7 @@ class LoggingContext implements Context {
 		Assert::assertEquals(
 			$expectedBackend,
 			$currentBackend,
-			"The owncloud log backend was expected to be set to {$expectedBackend} but got {$currentBackend}"
+			"The owncloud log backend was expected to be set to $expectedBackend but got $currentBackend"
 		);
 	}
 
@@ -528,7 +525,7 @@ class LoggingContext implements Context {
 		Assert::assertEquals(
 			$expectedTimezone,
 			$currentTimezone,
-			"The owncloud log timezone was expected to be set to {$expectedTimezone}, but got {$currentTimezone}"
+			"The owncloud log timezone was expected to be set to $expectedTimezone, but got $currentTimezone"
 		);
 	}
 

@@ -29,19 +29,10 @@ require_once 'bootstrap.php';
  * Steps that relate to transferring ownership
  */
 class TransferOwnershipContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
+	private OccContext $occContext;
 
-	/**
-	 *
-	 * @var OccContext
-	 */
-	private $occContext;
-
-	private $lastTransferPath;
+	private ?string $lastTransferPath;
 
 	/**
 	 * @return string
@@ -229,7 +220,7 @@ class TransferOwnershipContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		//the entry in the folder should not exist
 		//but the last received transfer folder itself should exist
-		//that would help against snakeoil tests if testing a nonexistent folder
+		//that would help against snake-oil tests if testing a nonexistent folder
 		$this->featureContext->asFileOrFolderShouldExist(
 			$user,
 			$entry,

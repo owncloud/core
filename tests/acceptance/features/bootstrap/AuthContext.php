@@ -29,35 +29,16 @@ use TestHelpers\SetupHelper;
  * Authentication functions
  */
 class AuthContext implements Context {
-	/**
-	 * @var string
-	 */
-	private $clientToken;
+	private string $clientToken;
+	private string $appToken;
+	private array $appTokens;
+	private bool $tokenAuthHasBeenSet = false;
+	private FeatureContext $featureContext;
 
 	/**
-	 * @var string
+	 * 'true' or 'false' or ''
 	 */
-	private $appToken;
-
-	/**
-	 * @var array
-	 */
-	private $appTokens;
-
-	/**
-	 * @var boolean
-	 */
-	private $tokenAuthHasBeenSet = false;
-
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 * @var string 'true' or 'false' or ''
-	 */
-	private $tokenAuthHasBeenSetTo = '';
+	private string $tokenAuthHasBeenSetTo = '';
 
 	/**
 	 * @return string
@@ -176,12 +157,12 @@ class AuthContext implements Context {
 		if ($ocsCode !== null) {
 			$this->featureContext->ocsContext->theOCSStatusCodeShouldBe(
 				$ocsCode,
-				$message = "Got unexpected OCS code while sending request to endpoint " . $endPoint
+				"Got unexpected OCS code while sending request to endpoint " . $endPoint
 			);
 		}
 		$this->featureContext->theHTTPStatusCodeShouldBe(
 			$httpCode,
-			$message = "Got unexpected HTTP code while sending request to endpoint " . $endPoint
+			"Got unexpected HTTP code while sending request to endpoint " . $endPoint
 		);
 	}
 
@@ -1146,9 +1127,7 @@ class AuthContext implements Context {
 				'token_auth_enforced',
 				$this->featureContext->getStepLineRef(),
 				null,
-				$appTokenForOccCommand,
-				null,
-				null
+				$appTokenForOccCommand
 			);
 			$this->tokenAuthHasBeenSet = false;
 			$this->tokenAuthHasBeenSetTo = '';

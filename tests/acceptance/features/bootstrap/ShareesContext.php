@@ -34,17 +34,8 @@ require_once 'bootstrap.php';
  * Sharees context.
  */
 class ShareesContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var OCSContext
-	 */
-	private $ocsContext;
+	private FeatureContext $featureContext;
+	private OCSContext $ocsContext;
 
 	/**
 	 * @When /^the user gets the sharees using the sharing API with parameters$/
@@ -73,21 +64,18 @@ class ShareesContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		$url = '/apps/files_sharing/api/v1/sharees';
 		$this->featureContext->verifyTableNodeColumnsCount($body, 2);
-		if ($body instanceof TableNode) {
-			$parameters = [];
-			foreach ($body->getRowsHash() as $key => $value) {
-				$parameters[] = "$key=$value";
-			}
-			if (!empty($parameters)) {
-				$url .= '?' . \implode('&', $parameters);
-			}
+		$parameters = [];
+		foreach ($body->getRowsHash() as $key => $value) {
+			$parameters[] = "$key=$value";
+		}
+		if (!empty($parameters)) {
+			$url .= '?' . \implode('&', $parameters);
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
-			$url,
-			null
+			$url
 		);
 	}
 
