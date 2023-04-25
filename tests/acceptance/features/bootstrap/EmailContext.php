@@ -32,13 +32,8 @@ require_once 'bootstrap.php';
  * context file for email related steps.
  */
 class EmailContext implements Context {
-	private $localInbucketUrl = null;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private ?string $localInbucketUrl = null;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @return string
@@ -66,8 +61,7 @@ class EmailContext implements Context {
 		Assert::assertStringContainsString(
 			$expectedContent,
 			$emailBody,
-			"The email address {$address} should have received an email with the body containing {$expectedContent}
-			but the received email is {$emailBody}"
+			"The email address $address should have received an email with the body containing $expectedContent but the received email is $emailBody"
 		);
 	}
 
@@ -134,7 +128,7 @@ class EmailContext implements Context {
 		Assert::assertStringContainsString(
 			$senderAddress,
 			$actualSenderAddress,
-			"The sender address is expected to be {$senderAddress} but the actual sender is {$actualSenderAddress}"
+			"The sender address is expected to be $senderAddress but the actual sender is $actualSenderAddress"
 		);
 	}
 
@@ -153,7 +147,7 @@ class EmailContext implements Context {
 				$address,
 				$this->featureContext->getStepLineRef(),
 			),
-			"Email exists with email address: {$address} but was not expected to be."
+			"Email exists with email address: $address but was not expected to be."
 		);
 	}
 
@@ -182,11 +176,11 @@ class EmailContext implements Context {
 	public function clearInbucketMessages():void {
 		try {
 			if (!empty($this->featureContext->emailRecipients)) {
-				foreach ($this->featureContext->emailRecipients as $emailRecipent) {
+				foreach ($this->featureContext->emailRecipients as $emailRecipient) {
 					EmailHelper::deleteAllEmailsForAMailbox(
 						$this->getLocalInbucketUrl(),
 						$this->featureContext->getStepLineRef(),
-						$emailRecipent
+						$emailRecipient
 					);
 				}
 			}

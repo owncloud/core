@@ -19,6 +19,7 @@
  *
  */
 
+use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
@@ -27,16 +28,9 @@ use TestHelpers\HttpRequestHelper;
 /**
  * CardDav functions
  */
-class CardDavContext implements \Behat\Behat\Context\Context {
-	/**
-	 * @var ResponseInterface
-	 */
-	private $response;
-
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+class CardDavContext implements Context {
+	private ResponseInterface $response;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @BeforeScenario @carddav
@@ -208,9 +202,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	public function theCardDavHttpStatusCodeShouldBe(int $code):void {
 		$actualStatusCode = $this->response->getStatusCode();
 		Assert::assertEquals(
-			(int) $code,
+			$code,
 			$actualStatusCode,
-			"Expected: HTTP status code to be {$code} but got {$actualStatusCode}"
+			"Expected: HTTP status code to be $code but got $actualStatusCode"
 		);
 	}
 }

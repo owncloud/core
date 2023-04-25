@@ -33,26 +33,10 @@ require_once 'bootstrap.php';
  * Defines application features from the specific context.
  */
 class NotificationsCoreContext implements Context {
-	/**
-	 * @var array[]
-	 */
-	protected $notificationIds;
-
-	/**
-	 * @var int
-	 */
-	protected $deletedNotification;
-
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var OCSContext
-	 */
-	private $ocsContext;
+	protected array $notificationIds;
+	protected int $deletedNotification;
+	private FeatureContext $featureContext;
+	private OCSContext $ocsContext;
 
 	/**
 	 * @return array[]
@@ -96,10 +80,10 @@ class NotificationsCoreContext implements Context {
 			$this->featureContext->getResponse()
 		);
 		Assert::assertCount(
-			(int) $numNotifications,
+			$numNotifications,
 			$notifications,
 			"Expected notifications count to have '"
-			. (int) $numNotifications
+			. $numNotifications
 			. "' entries but got '"
 			. \count($notifications)
 			. "' entries"
@@ -142,7 +126,7 @@ class NotificationsCoreContext implements Context {
 		if ($missingLast) {
 			Assert::assertNotEmpty(
 				$this->getNotificationIds(),
-				"The notifications is empty, but was not expected to be empty when step is used '{$missingLast}'"
+				"The notifications is empty, but was not expected to be empty when step is used '$missingLast'"
 			);
 			$previousNotificationIds = $this->getLastNotificationIds();
 		}
@@ -160,7 +144,7 @@ class NotificationsCoreContext implements Context {
 			Assert::assertEquals(
 				$previousNotificationIds,
 				$now,
-				"The actual notifications, {$missingLast}, are not what was expected. {$numNotifications} were expected.See the differences below."
+				"The actual notifications, $missingLast, are not what was expected. $numNotifications were expected.See the differences below."
 			);
 		}
 	}
@@ -278,7 +262,7 @@ class NotificationsCoreContext implements Context {
 				Assert::assertEquals(
 					$value,
 					$response['ocs']['data'][$notification['key']],
-					"Expected {$value} but got {$response['ocs']['data'][$notification['key']]}"
+					"Expected $value but got {$response['ocs']['data'][$notification['key']]}"
 				);
 			}
 		}

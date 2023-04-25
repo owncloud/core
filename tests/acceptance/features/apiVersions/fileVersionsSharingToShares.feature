@@ -267,7 +267,7 @@ Feature: dav-versions
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
     Then the HTTP status code should be "207"
-    And the number of noncurrent versions should be "3"
+    And the number of non-current versions should be "3"
 
 
   Scenario: Receiver tries get file versions of shared file before receiving it

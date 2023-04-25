@@ -381,7 +381,7 @@ Feature: dav-versions
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
     Then the HTTP status code should be "207"
-    And the number of noncurrent versions should be "3"
+    And the number of non-current versions should be "3"
 
 
   Scenario: User cannot access meta folder of a file which does not exist
@@ -420,14 +420,14 @@ Feature: dav-versions
     When user "Alice" moves file "textfile0.txt" to "/testFolder/textfile0.txt" using the WebDAV API
     And user "Alice" gets the number of versions of file "/testFolder/textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of noncurrent versions should be "3"
+    And the number of non-current versions should be "3"
 
 
   Scenario: Original file has version number 0
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the HTTP status code should be "207"
-    And the number of noncurrent versions should be "0"
+    And the number of non-current versions should be "0"
 
 
   Scenario: the number of etag elements in response changes according to version of the file
@@ -437,7 +437,7 @@ Feature: dav-versions
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the HTTP status code should be "207"
     And the number of etag elements in the response should be "2"
-    And the number of noncurrent versions should be "2"
+    And the number of non-current versions should be "2"
 
 
   Scenario: download old versions of a file

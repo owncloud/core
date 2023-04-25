@@ -33,20 +33,9 @@ require_once 'bootstrap.php';
  * Comments functions
  */
 class CommentsContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 * @var int
-	 */
-	private $lastCommentId;
-	/**
-	 * @var int
-	 */
-	private $lastFileId;
+	private FeatureContext $featureContext;
+	private int $lastCommentId;
+	private int $lastFileId;
 
 	/**
 	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (?:file|folder) "([^"]*)" using the WebDAV API$/
@@ -60,7 +49,7 @@ class CommentsContext implements Context {
 	public function userCommentsWithContentOnEntry(string $user, string $content, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
-		$this->lastFileId = $fileId;
+		$this->lastFileId = (int) $fileId;
 		$commentsPath = "/comments/files/$fileId/";
 		$response = $this->featureContext->makeDavRequest(
 			$user,
@@ -76,7 +65,7 @@ class CommentsContext implements Context {
 		$responseHeaders = $response->getHeaders();
 		if (isset($responseHeaders['Content-Location'][0])) {
 			$commentUrl = $responseHeaders['Content-Location'][0];
-			$this->lastCommentId = \substr(
+			$this->lastCommentId = (int) \substr(
 				$commentUrl,
 				\strrpos($commentUrl, '/') + 1
 			);
@@ -215,7 +204,7 @@ class CommentsContext implements Context {
 		Assert::assertCount(
 			(int) $numberOfComments,
 			$messages,
-			"Expected: {$user} should have {$numberOfComments} on {$path} but got "
+			"Expected: $user should have $numberOfComments on $path but got "
 			. \count($messages)
 		);
 	}
@@ -308,7 +297,7 @@ class CommentsContext implements Context {
 		}
 		Assert::assertTrue(
 			$found,
-			"The response does not contain a property {$key} with value {$value}"
+			"The response does not contain a property $key with value $value"
 		);
 	}
 
@@ -323,9 +312,9 @@ class CommentsContext implements Context {
 	public function theResponseShouldContainOnlyComments(int $number):void {
 		$response = $this->featureContext->getResponse();
 		Assert::assertEquals(
-			(int) $number,
+			$number,
 			\count($response),
-			"Expected: the response should contain {$number} comments but got "
+			"Expected: the response should contain $number comments but got "
 			. \count($response)
 		);
 	}

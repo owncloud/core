@@ -32,17 +32,8 @@ require_once 'bootstrap.php';
  * context containing favorites related API steps
  */
 class FavoritesContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var WebDavPropertiesContext
-	 */
-	private $webDavPropertiesContext;
+	private FeatureContext $featureContext;
+	private WebDavPropertiesContext $webDavPropertiesContext;
 
 	/**
 	 * @param string$user
@@ -117,8 +108,8 @@ class FavoritesContext implements Context {
 	}
 
 	/**
-	 * @param $user
-	 * @param $path
+	 * @param string $user
+	 * @param string $path
 	 *
 	 * @return void
 	 */
@@ -171,7 +162,7 @@ class FavoritesContext implements Context {
 		TableNode $expectedElements
 	):void {
 		$user = $this->featureContext->getActualUsername($user);
-		$this->userListsFavorites($user, null);
+		$this->userListsFavorites($user);
 		$this->featureContext->propfindResultShouldContainEntries(
 			$shouldOrNot,
 			$expectedElements,

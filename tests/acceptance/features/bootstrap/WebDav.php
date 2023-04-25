@@ -38,89 +38,58 @@ use TestHelpers\Asserts\WebDav as WebDavAssert;
  * WebDav functions
  */
 trait WebDav {
-	/**
-	 * @var string
-	 */
-	private $davPath = "remote.php/webdav";
-
-	/**
-	 * @var boolean
-	 */
-	private $usingOldDavPath = true;
-
-	/**
-	 * @var boolean
-	 */
-	private $usingSpacesDavPath = false;
+	private string $davPath = "remote.php/webdav";
+	private bool $usingOldDavPath = true;
+	private bool $usingSpacesDavPath = false;
 
 	/**
 	 * @var ResponseInterface[]
 	 */
-	private $uploadResponses;
-
-	/**
-	 * @var integer
-	 */
-	private $storedFileID = null;
-
-	/**
-	 * @var int
-	 */
-	private $lastUploadDeleteTime = null;
+	private array $uploadResponses;
+	private ?string $storedFileID = null;
+	private ?int $lastUploadDeleteTime = null;
 
 	/**
 	 * a variable that contains the DAV path without "remote.php/(web)dav"
 	 * when setting $this->davPath directly by usingDavPath()
-	 *
-	 * @var string
 	 */
-	private $customDavPath = null;
+	private ?string $customDavPath = null;
 
-	private $previousAsyncSetting = null;
+	private ?string $previousAsyncSetting = null;
 
-	private $previousDavSlowdownSetting = null;
+	private ?string
+		$previousDavSlowdownSetting = null;
 
-	/**
-	 * @var int
-	 */
-	private $currentDavSlowdownSettingSeconds = 0;
+	private int $currentDavSlowdownSettingSeconds = 0;
 
 	/**
 	 * response content parsed from XML to an array
-	 *
-	 * @var array
 	 */
-	private $responseXml = [];
+	private array $responseXml = [];
 
 	/**
 	 * add resource created by admin in an array
 	 * This array is used while cleaning up the resource created by admin during test run
 	 * As of now it tracks only for (files|folder) creation
 	 * This can be expanded and modified to track other actions like (upload, deleted ..)
-	 *
-	 * @var array
 	 */
-	private $adminResources = [];
+	private array $adminResources = [];
 
 	/**
 	 * response content parsed into a SimpleXMLElement
-	 *
-	 * @var SimpleXMLElement
 	 */
-	private $responseXmlObject;
+	private ?SimpleXMLElement $responseXmlObject;
 
-	private $httpRequestTimeout = 0;
+	private int $httpRequestTimeout = 0;
 
-	private $chunkingToUse = null;
+	private ?int $chunkingToUse = null;
 
 	/**
 	 * The ability to do requests with depth infinity is disabled by default.
 	 * This remembers when the setting dav.propfind.depth_infinity has been
 	 * enabled, so that test code can make use of it as appropriate.
-	 *
-	 * @var bool
 	 */
-	private $davPropfindDepthInfinityEnabled = false;
+	private bool $davPropfindDepthInfinityEnabled = false;
 
 	/**
 	 * @return void
@@ -511,14 +480,14 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the number of noncurrent versions should be :arg1
+	 * @Then the number of non-current versions should be :arg1
 	 *
 	 * @param int $number
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theNumberOfNoncurrentVersionsShouldBe(int $number):void {
+	public function theNumberOfNonCurrentVersionsShouldBe(int $number):void {
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml(
@@ -603,7 +572,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function setHttpTimeout(int $timeout):void {
-		$this->httpRequestTimeout = (int) $timeout;
+		$this->httpRequestTimeout = $timeout;
 	}
 
 	/**
@@ -732,11 +701,7 @@ trait WebDav {
 		foreach ($table->getHash() as $row) {
 			// Allow the "filename" column to be optionally be called "foldername"
 			// to help readability of scenarios that test moving folders
-			if (isset($row['foldername'])) {
-				$targetName = $row['foldername'];
-			} else {
-				$targetName = $row['filename'];
-			}
+			$targetName = $row['foldername'] ?? $row['filename'];
 			$this->userMovesFileUsingTheAPI(
 				$user,
 				$fileSource,
@@ -1205,7 +1170,7 @@ trait WebDav {
 	 * @return void
 	 *
 	 */
-	public function theDownloadedContentForMultipartByterangeShouldBe(int $statusCode, PyStringNode $content):void {
+	public function theDownloadedContentForMultipartByteRangeShouldBe(int $statusCode, PyStringNode $content):void {
 		$actualStatusCode = $this->response->getStatusCode();
 		if ($actualStatusCode === $statusCode) {
 			$actualContent = (string) $this->response->getBody();
@@ -1605,14 +1570,11 @@ trait WebDav {
 	public function publicGetsSizeOfLastSharedPublicLinkUsingTheWebdavApi():void {
 		$tokenArray = $this->getLastPublicShareData()->data->token;
 		$token = (string)$tokenArray[0];
-		$url = $this->getBaseUrl() . "/remote.php/dav/public-files/{$token}";
+		$url = $this->getBaseUrl() . "/remote.php/dav/public-files/$token";
 		$this->response = HttpRequestHelper::sendRequest(
 			$url,
 			$this->getStepLineRef(),
-			"PROPFIND",
-			null,
-			null,
-			null
+			"PROPFIND"
 		);
 	}
 
@@ -2397,7 +2359,7 @@ trait WebDav {
 	}
 
 	/**
-	 * sets the chunking version from human readable format
+	 * sets the chunking version from human-readable format
 	 *
 	 * @param string $version (no|v1|v2|new|old)
 	 *
@@ -3126,7 +3088,7 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
-	 * @param string $mtime Time in human readable format is taken as input which is converted into milliseconds that is used by API
+	 * @param string $mtime Time in human-readable format is taken as input which is converted into milliseconds that is used by API
 	 *
 	 * @return void
 	 * @throws Exception
@@ -3490,7 +3452,7 @@ trait WebDav {
 		$this->userDeletesFile($user, $entry);
 		// If the file or folder was there and got deleted then we get a 204
 		// That is good and the expected status
-		// If the file or folder was already not there then then we get a 404
+		// If the file or folder was already not there then we get a 404
 		// That is not expected. Scenarios that use "Given user has deleted..."
 		// should only be using such steps when it is a file that exists and needs
 		// to be deleted.
@@ -3633,7 +3595,7 @@ trait WebDav {
 	public function userOnHasDeletedFile(string $user, string $server, string $deletedOrUnshared, string $fileOrFolder, string $entry):void {
 		$this->userOnDeletesFile($user, $server, $entry);
 		// If the file was there and got deleted then we get a 204
-		// If the file was already not there then then get a 404
+		// If the file was already not there then we get a 404
 		// Either way, the outcome of the "given" step is OK
 		if ($deletedOrUnshared === "deleted") {
 			$deleteText = "delete";
@@ -4529,11 +4491,7 @@ trait WebDav {
 			$headerName = $header['header'];
 			$headerValue = $this->response->getHeader($headerName);
 			//Note: getHeader returns an empty array if the named header does not exist
-			if (isset($headerValue[0])) {
-				$headerValue0 = $headerValue[0];
-			} else {
-				$headerValue0 = '';
-			}
+			$headerValue0 = $headerValue[0] ?? '';
 			Assert::assertEmpty(
 				$headerValue,
 				"header $headerName should not exist " .
@@ -4865,7 +4823,7 @@ trait WebDav {
 			$currentFileID,
 			$this->storedFileID,
 			__METHOD__
-			. " User '$user' $fileOrFolder '$path' does not have the previously stored id '{$this->storedFileID}', but has '$currentFileID'."
+			. " User '$user' $fileOrFolder '$path' does not have the previously stored id '$this->storedFileID', but has '$currentFileID'."
 		);
 	}
 
@@ -5025,11 +4983,11 @@ trait WebDav {
 			$multistatusResults = [];
 		}
 		Assert::assertEquals(
-			(int) $numFiles,
+			$numFiles,
 			\count($multistatusResults),
 			__METHOD__
 			. " Expected result to contain '"
-			. (int) $numFiles
+			. $numFiles
 			. "' files/entries, but got '"
 			. \count($multistatusResults)
 			. "' files/entries."
@@ -5249,7 +5207,7 @@ trait WebDav {
 	 *
 	 * @return array
 	 */
-	public function getMultistatusResultFromPropfindResult(
+	public function getMultiStatusResultFromPropfindResult(
 		?string $user = null
 	):array {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
@@ -5342,17 +5300,15 @@ trait WebDav {
 		}
 		$multistatusResults = $this->getMultistatusResultFromPropfindResult($user);
 		$results = [];
-		if ($multistatusResults !== null) {
-			foreach ($multistatusResults as $multistatusResult) {
-				$entryPath = $multistatusResult['value'][0]['value'];
-				$entryName = \str_replace($topWebDavPath, "", $entryPath);
-				$entryName = \rawurldecode($entryName);
-				$entryName = \trim($entryName, "/");
-				if ($trimmedEntryNameToSearch === $entryName) {
-					return $multistatusResult;
-				}
-				\array_push($results, $entryName);
+		foreach ($multistatusResults as $multistatusResult) {
+			$entryPath = $multistatusResult['value'][0]['value'];
+			$entryName = \str_replace($topWebDavPath, "", $entryPath);
+			$entryName = \rawurldecode($entryName);
+			$entryName = \trim($entryName, "/");
+			if ($trimmedEntryNameToSearch === $entryName) {
+				return $multistatusResult;
 			}
+			\array_push($results, $entryName);
 		}
 		if ($entryNameToSearch === null) {
 			return $results;
@@ -5459,7 +5415,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the author of the noncurrent version with index :index should be :expectedUsername
+	 * @Then the author of the non-current version with index :index should be :expectedUsername
 	 *
 	 * @param string $index
 	 * @param string $expectedUsername
@@ -5467,7 +5423,7 @@ trait WebDav {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAuthorOfNoncurrentVersionFile(string $index, string $expectedUsername): void {
+	public function theAuthorOfNonCurrentVersionFile(string $index, string $expectedUsername): void {
 		$expectedUserDisplayName = $this->getUserDisplayName($expectedUsername);
 		$resXml = $this->getResponseXmlObject();
 		if ($resXml === null) {
@@ -5482,7 +5438,7 @@ trait WebDav {
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by");
 		$authors = [];
 		foreach ($xmlPart as $idx => $author) {
-			// The first element is the root path element (current version) which is not a noncurrent version
+			// The first element is the root path element (current version) which is not a non-current version
 			// So skipping it
 			if ($idx !== 0) {
 				$authors[] = $author->__toString();
@@ -5506,7 +5462,7 @@ trait WebDav {
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by-name");
 		$displaynames = [];
 		foreach ($xmlPart as $idx => $displayname) {
-			// The first element is the root path element (current version) which is not a noncurrent version
+			// The first element is the root path element (current version) which is not a non-current version
 			// So skipping it
 			if ($idx !== 0) {
 				$displaynames[] = $displayname->__toString();
