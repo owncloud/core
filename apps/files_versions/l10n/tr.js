@@ -2,8 +2,13 @@ OC.L10N.register(
     "files_versions",
     {
     "Versions" : "Sürümler",
+    "File {file} has been reverted and marked as new current version" : "{file} dosyası geri alındı ve yeni geçerli sürüm olarak işaretlendi",
     "Failed to revert {file} to revision {timestamp}." : "{file} dosyası {timestamp} gözden geçirmesine geri alınamadı.",
+    "Failed to publish version" : "Sürüm yayınlanamadı",
     "_%n byte_::_%n bytes_" : ["%n bayt","%n bayt"],
-    "Restore" : "Geri yükle"
+    "Restore" : "Geri yükle",
+    "persistent" : "kalıcı",
+    "Publish version" : "Yayın sürümü",
+    "current" : "geçerli"
 },
 "nplurals=2; plural=(n > 1);");
