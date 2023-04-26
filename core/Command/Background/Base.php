@@ -61,7 +61,7 @@ abstract class Base extends Command {
 
 	/**
 	* Executing this command will set the background job mode for owncloud.
-	* The mode to set is specified by the concrete sub class by implementing the
+	* The mode to set is specified by the concrete subclass by implementing the
 	* getMode() function.
 	*
 	* @param InputInterface $input

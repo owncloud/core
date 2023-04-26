@@ -163,7 +163,7 @@ class LoginController extends Controller {
 		$parameters['messages'] = $messages;
 		if ($user !== null && $user !== '') {
 			// if the user exists, replace the userid with the username, e.g. for LDAP accounts
-			// that have the owncloud internal username set to a uuid.
+			// that have the owncloud internal username set to a UUID.
 			$u = $this->userManager->get($user);
 			if ($u !== null) {
 				$parameters['loginName'] = $u->getUserName();

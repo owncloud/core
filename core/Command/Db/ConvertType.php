@@ -274,7 +274,7 @@ class ConvertType extends Command {
 
 		$apps = $this->getExistingApps($input->getOption('all-apps'));
 		foreach ($apps as $app) {
-			// Some apps has a cheat initial migration that creates schema from database.xml
+			// Some apps have a cheat initial migration that creates schema from database.xml
 			// So the app can have database.xml and use migrations in the same time
 			if ($this->appHasMigrations($app)) {
 				$this->replayMigrations($fromDB, $toDB, $app);
@@ -394,7 +394,7 @@ class ConvertType extends Command {
 			// Primary key is faster
 			$orderColumns = $table->getPrimaryKeyColumns();
 		} catch (DBALException $e) {
-			// But the table can have no primary key in this case we fallback to the column order
+			// But the table can have no primary key in this case we fall back to the column order
 			$orderColumns = [];
 			foreach ($table->getColumns() as $column) {
 				$orderColumns[] = $column->getName();
