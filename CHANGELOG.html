@@ -8,6 +8,7 @@
     <ul class="summary">
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Improve X-Robots-Tag header values check: <a href="https://github.com/owncloud/core/pull/40715">#40715</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -24,6 +25,14 @@
             <p>A federated share with a too long name results in inaccessible data.
             </p>
             <p>https://github.com/owncloud/core/pull/40726<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Improve X-Robots-Tag header values check: <a href="https://github.com/owncloud/core/pull/40715">#40715</a></p>
+            <p>Setup checks now allows other values other than "none" for X-Robots-Tag header. If "none" or
+   "noindex" and "nofollow" are missing, a security warning is raised. Previously a header value
+   with "noindex" and "nofollow" wasn't allowed even though it was valid.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40715<br></p>
         </li>
     </ul>
     <h2 id="10.12.1" class="version"> Changelog for ownCloud Core [10.12.1] (2023-04-03)</h2>
