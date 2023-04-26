@@ -10,6 +10,7 @@ Summary
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
+* Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 
 Details
 -------
@@ -32,6 +33,14 @@ Details
    A federated share with a too long name results in inaccessible data.
 
    https://github.com/owncloud/core/pull/40726
+
+* Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
+
+   Setup checks now allows other values other than "none" for X-Robots-Tag header. If "none" or
+   "noindex" and "nofollow" are missing, a security warning is raised. Previously a header value
+   with "noindex" and "nofollow" wasn't allowed even though it was valid.
+
+   https://github.com/owncloud/core/pull/40715
 
 Changelog for ownCloud Core [10.12.1] (2023-04-03)
 =======================================
