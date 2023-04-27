@@ -103,7 +103,7 @@ config = {
             "coverage": False,
             "databases": [
                 "sqlite",
-                "mariadb:10.9",
+                "mariadb:10.10",
             ],
         },
         "external-samba": {
@@ -1032,7 +1032,7 @@ def litmus():
 
         for phpVersion in params["phpVersions"]:
             name = "litmus-php%s" % phpVersion
-            db = "mariadb:10.9"
+            db = "mariadb:10.10"
             environment = {
                 "LITMUS_PASSWORD": "admin",
                 "LITMUS_USERNAME": "admin",
@@ -1211,7 +1211,7 @@ def dav():
         for phpVersion in params["phpVersions"]:
             for davType in ["caldav-new", "caldav-old", "carddav-new", "carddav-old"]:
                 name = "%s-php%s" % (davType, phpVersion)
-                db = "mariadb:10.9"
+                db = "mariadb:10.10"
 
                 if (davType == "caldav-new"):
                     scriptPath = "apps/dav/tests/ci/caldav"
@@ -1662,7 +1662,7 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": [DEFAULT_PHP_VERSION],
-        "databases": ["mariadb:10.9"],
+        "databases": ["mariadb:10.10"],
         "federatedPhpVersion": DEFAULT_PHP_VERSION,
         "federatedServerNeeded": False,
         "federatedDb": "",
@@ -1770,7 +1770,7 @@ def acceptance(ctx):
                                 if federatedDbName not in ["mariadb", "mysql"]:
                                     # Do not try to run 2 sets of Oracle, Postgres etc databases
                                     # When testing with these, let the federated server use mariadb
-                                    federatedDb = "mariadb:10.9"
+                                    federatedDb = "mariadb:10.10"
 
                                 if isWebUI or isAPI or isCLI:
                                     browserString = "" if browser == "" else "-" + browser
