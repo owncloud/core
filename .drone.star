@@ -104,7 +104,7 @@ config = {
             "databases": [
                 "sqlite",
                 "mariadb:10.11",
-            ]
+            ],
         },
         "external-samba": {
             "phpVersions": [
