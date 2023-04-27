@@ -30,14 +30,17 @@
 
 namespace OC\Settings\Controller;
 
+use Exception;
 use OC\AppFramework\Http;
+use OC\Group\Manager;
 use OC\Helper\UserTypeHelper;
+use OC\HintException;
+use OC\ServerNotAvailableException;
 use OC\User\Session;
 use OC\User\User;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -53,7 +56,9 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\IAvatarManager;
+use OCP\PreConditionNotMetException;
 use OCP\Security\ISecureRandom;
+use OCP\User\NotPermittedActionException;
 use OCP\UserTokenException;
 use OCP\UserTokenExpiredException;
 use OCP\UserTokenMismatchException;
@@ -64,40 +69,24 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OC\Settings\Controller
  */
 class UsersController extends Controller {
-	/** @var IL10N */
-	private $l10n;
-	/** @var Session */
-	private $userSession;
-	/** @var bool */
-	private $isAdmin;
-	/** @var IUserManager */
-	private $userManager;
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $log;
-	/** @var \OC_Defaults */
-	private $defaults;
-	/** @var IMailer */
-	private $mailer;
-	/** @var string */
-	private $fromMailAddress;
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private IL10N $l10n;
+	private Session $userSession;
+	private bool $isAdmin;
+	private IUserManager $userManager;
+	private Manager $groupManager;
+	private IConfig $config;
+	private ILogger $logger;
+	private \OC_Defaults $defaults;
+	private IMailer $mailer;
+	private string $fromMailAddress;
+	private IURLGenerator $urlGenerator;
 	/** @var bool contains the state of the admin recovery setting */
-	private $isRestoreEnabled = false;
-	/** @var IAvatarManager */
-	private $avatarManager;
-	/** @var ISecureRandom */
-	protected $secureRandom;
-	/** @var ITimeFactory */
-	protected $timeFactory;
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
-	/** @var UserTypeHelper */
-	private $userTypeHelper;
+	private bool $isRestoreEnabled = false;
+	private IAvatarManager $avatarManager;
+	protected ISecureRandom $secureRandom;
+	protected ITimeFactory $timeFactory;
+	private EventDispatcherInterface $eventDispatcher;
+	private UserTypeHelper $userTypeHelper;
 
 	/**
 	 * @param string $appName
@@ -140,6 +129,9 @@ class UsersController extends Controller {
 		EventDispatcherInterface $eventDispatcher
 	) {
 		parent::__construct($appName, $request);
+		if (!$groupManager instanceof Manager) {
+			throw new \RuntimeException();
+		}
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
@@ -147,7 +139,7 @@ class UsersController extends Controller {
 		$this->isAdmin = $isAdmin;
 		$this->l10n = $l10n;
 		$this->secureRandom = $secureRandom;
-		$this->log = $log;
+		$this->logger = $log;
 		$this->defaults = $defaults;
 		$this->mailer = $mailer;
 		$this->timeFactory = $timeFactory;
@@ -170,7 +162,7 @@ class UsersController extends Controller {
 	 * @param IGroup[]|null $userGroups
 	 * @return array
 	 */
-	private function formatUserForIndex(IUser $user, array $userGroups = null) {
+	private function formatUserForIndex(IUser $user, array $userGroups = null): array {
 		// TODO: eliminate this encryption specific code below and somehow
 		// hook in additional user info from other apps
 
@@ -212,12 +204,12 @@ class UsersController extends Controller {
 		if ($this->config->getSystemValue('enable_avatars', true) === true) {
 			try {
 				$avatarAvailable = $this->avatarManager->getAvatar($user->getUID())->exists();
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				//No avatar yet
 			}
 		}
 
-		$groups = ($userGroups === null) ? $this->groupManager->getUserGroups($user, 'management') : $userGroups;
+		$groups = $userGroups ?? $this->groupManager->getUserGroups($user, 'management');
 		$groupsKV = [];
 		foreach ($groups as $group) {
 			$groupsKV[$group->getGID()] = [
@@ -248,7 +240,7 @@ class UsersController extends Controller {
 	 * @param array $userIDs Array with schema [$uid => $displayName]
 	 * @return IUser[]
 	 */
-	private function getUsersForUID(array $userIDs) {
+	private function getUsersForUID(array $userIDs): array {
 		$users = [];
 		foreach ($userIDs as $uid => $displayName) {
 			$users[$uid] = $this->userManager->get($uid);
@@ -259,29 +251,29 @@ class UsersController extends Controller {
 	/**
 	 * @param string $token
 	 * @param string $userId
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	private function checkEmailChangeToken($token, $userId) {
+	private function checkEmailChangeToken(string $token, string $userId): void {
 		$user = $this->userManager->get($userId);
 
 		if ($user === null) {
-			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the user does not exist'));
+			throw new Exception($this->l10n->t('Couldn\'t change the email address because the user does not exist'));
 		}
 
 		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
 		if (\count($splittedToken) !== 3) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
-			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
+			throw new Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 
 		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
-			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
+			throw new Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 
 		if (!\hash_equals($splittedToken[1], $token)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
-			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
+			throw new Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 	}
 
@@ -297,7 +289,7 @@ class UsersController extends Controller {
 	 *
 	 * TODO: Tidy up and write unit tests - code is mainly static method calls
 	 */
-	public function index($offset = 0, $limit = 10, $gid = '', $pattern = '', $backend = '') {
+	public function index($offset = 0, $limit = 10, $gid = '', $pattern = '', $backend = ''): DataResponse {
 		// FIXME: The JS sends the group '_everyone' instead of no GID for the "all users" group.
 		if ($gid === '_everyone') {
 			$gid = '';
@@ -376,10 +368,9 @@ class UsersController extends Controller {
 	}
 
 	/**
-	 * @param string $userId
-	 * @param string $email
+	 * @throws PreConditionNotMetException
 	 */
-	private function generateTokenAndSendMail($userId, $email) {
+	private function generateTokenAndSendMail(string $userId, string $email): void {
 		$token = $this->secureRandom->generate(
 			21,
 			ISecureRandom::CHAR_DIGITS,
@@ -424,17 +415,19 @@ class UsersController extends Controller {
 	 * @param array $groups
 	 * @param string $email
 	 * @return DataResponse
+	 * @throws NotPermittedActionException
 	 */
-	public function create($username, $password, array $groups= [], $email='') {
-		if ($email !== '' && !$this->mailer->validateMailAddress($email)) {
-			return new DataResponse(
-				[
-					'message' => (string)$this->l10n->t('Invalid mail address')
-				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
-			);
+	public function create($username, $password, array $groups= [], $email=''): DataResponse {
+		$resp = $this->validateString($username, 255);
+		if ($resp) {
+			return $resp;
+		}
+		$resp = $this->validateEMail($email, true);
+		if ($resp) {
+			return $resp;
 		}
 
+		/** @var IUser $currentUser */
 		$currentUser = $this->userSession->getUser();
 
 		if (!$this->isAdmin) {
@@ -486,7 +479,7 @@ class UsersController extends Controller {
 				}
 			}
 			$user = $this->userManager->createUser($username, $password);
-		} catch (\Exception $exception) {
+		} catch (Exception $exception) {
 			$message = $exception->getMessage();
 			if (!$message) {
 				$message = $this->l10n->t('Unable to create user.');
@@ -504,7 +497,7 @@ class UsersController extends Controller {
 				foreach ($groups as $groupName) {
 					$group = $this->groupManager->get($groupName);
 
-					if (empty($group)) {
+					if ($group === null) {
 						$group = $this->groupManager->createGroup($groupName);
 					}
 					$group->addUser($user);
@@ -517,10 +510,9 @@ class UsersController extends Controller {
 				$user->setEMailAddress($email);
 
 				try {
-					'@phan-var \OC\Settings\Controller\UsersController $this';
 					$this->generateTokenAndSendMail($username, $email);
-				} catch (\Exception $e) {
-					$this->log->error("Can't send new user mail to $email: " . $e->getMessage(), ['app' => 'settings']);
+				} catch (Exception $e) {
+					$this->logger->error("Can't send new user mail to $email: " . $e->getMessage(), ['app' => 'settings']);
 				}
 			}
 			// fetch users groups
@@ -552,7 +544,7 @@ class UsersController extends Controller {
 	 * @param string $userId
 	 * @return TemplateResponse
 	 */
-	public function setPasswordForm($token, $userId) {
+	public function setPasswordForm($token, $userId): TemplateResponse {
 		try {
 			$this->checkPasswordSetToken($token, $userId);
 		} catch (UserTokenException $e) {
@@ -566,7 +558,7 @@ class UsersController extends Controller {
 					'guest'
 				);
 			}
-			$this->log->logException($e, ['app' => 'settings']);
+			$this->logger->logException($e, ['app' => 'settings']);
 			return new TemplateResponse(
 				'core',
 				'error',
@@ -595,7 +587,7 @@ class UsersController extends Controller {
 	 * @throws UserTokenExpiredException
 	 * @throws UserTokenMismatchException
 	 */
-	private function checkPasswordSetToken($token, $userId) {
+	private function checkPasswordSetToken($token, $userId): void {
 		$user = $this->userManager->get($userId);
 
 		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
@@ -625,11 +617,11 @@ class UsersController extends Controller {
 	 * @param $userId
 	 * @return TemplateResponse
 	 */
-	public function resendToken($userId) {
+	public function resendToken($userId): TemplateResponse {
 		$user = $this->userManager->get($userId);
 
 		if ($user === null) {
-			$this->log->error('User: ' . $userId . ' does not exist', ['app' => 'settings']);
+			$this->logger->error('User: ' . $userId . ' does not exist', ['app' => 'settings']);
 			return new TemplateResponse(
 				'core',
 				'error',
@@ -641,7 +633,7 @@ class UsersController extends Controller {
 		}
 
 		if ($user->getEMailAddress() === null) {
-			$this->log->error('Email address not set for: ' . $userId, ['app' => 'settings']);
+			$this->logger->error('Email address not set for: ' . $userId, ['app' => 'settings']);
 			return new TemplateResponse(
 				'core',
 				'error',
@@ -654,8 +646,8 @@ class UsersController extends Controller {
 
 		try {
 			$this->generateTokenAndSendMail($user->getUID(), $user->getEMailAddress());
-		} catch (\Exception $e) {
-			$this->log->error("Can't send new user mail to " . $user->getEMailAddress() . ": " . $e->getMessage(), ['app' => 'settings']);
+		} catch (Exception $e) {
+			$this->logger->error("Can't send new user mail to " . $user->getEMailAddress() . ": " . $e->getMessage(), ['app' => 'settings']);
 			return new TemplateResponse(
 				'core',
 				'error',
@@ -679,15 +671,15 @@ class UsersController extends Controller {
 	 * @NoAdminRequired
 	 *
 	 * @param $userId
-	 * @return JSONResponse
+	 * @return DataResponse
 	 */
-	public function resendInvitation($userId) {
+	public function resendInvitation($userId): DataResponse {
 		$user = $this->userManager->get($userId);
 		$currentUser = $this->userSession->getUser();
 
 		if ($user === null || $this->userTypeHelper->isGuestUser($userId) === true) {
-			$this->log->error('User: ' . $userId . ' does not exist', ['app' => 'settings']);
-			return new JSONResponse(
+			$this->logger->error('User: ' . $userId . ' does not exist', ['app' => 'settings']);
+			return new DataResponse(
 				[
 					"error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.')
 				],
@@ -697,8 +689,8 @@ class UsersController extends Controller {
 
 		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		if (!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user)) {
-			$this->log->error($currentUser->getUID() . " cannot resend invitation for $userId", ['app' => 'settings']);
-			return new JSONResponse(
+			$this->logger->error($currentUser->getUID() . " cannot resend invitation for $userId", ['app' => 'settings']);
+			return new DataResponse(
 				[
 					"error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.')
 				],
@@ -707,8 +699,8 @@ class UsersController extends Controller {
 		}
 
 		if ($user->getLastLogin() > 0) {
-			$this->log->error('User: ' . $userId . ' already logged in', ['app' => 'settings']);
-			return new JSONResponse(
+			$this->logger->error('User: ' . $userId . ' already logged in', ['app' => 'settings']);
+			return new DataResponse(
 				[
 					"error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.')
 				],
@@ -717,8 +709,8 @@ class UsersController extends Controller {
 		}
 
 		if ($user->getEMailAddress() === null) {
-			$this->log->error('Email address not set for: ' . $userId, ['app' => 'settings']);
-			return new JSONResponse(
+			$this->logger->error('Email address not set for: ' . $userId, ['app' => 'settings']);
+			return new DataResponse(
 				[
 					["error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.', [$userId])],
 				],
@@ -728,15 +720,15 @@ class UsersController extends Controller {
 
 		try {
 			$this->generateTokenAndSendMail($user->getUID(), $user->getEMailAddress());
-		} catch (\Exception $e) {
-			$this->log->error("Can't send new user mail to " . $user->getEMailAddress() . ": " . $e->getMessage(), ['app' => 'settings']);
-			return new JSONResponse(
+		} catch (Exception $e) {
+			$this->logger->error("Can't send new user mail to " . $user->getEMailAddress() . ": " . $e->getMessage(), ['app' => 'settings']);
+			return new DataResponse(
 				["error" => $this->l10n->t('Can\'t send email to the user. Contact your administrator.')],
 				HTTP::STATUS_INTERNAL_SERVER_ERROR
 			);
 		}
 
-		return new JSONResponse();
+		return new DataResponse();
 	}
 
 	/**
@@ -748,14 +740,16 @@ class UsersController extends Controller {
 	 * @param $token
 	 * @param $userId
 	 * @param $password
-	 * @return JSONResponse
+	 * @return DataResponse
+	 * @throws HintException
+	 * @throws ServerNotAvailableException
 	 */
-	public function setPassword($token, $userId, $password) {
+	public function setPassword($token, $userId, $password): DataResponse {
 		$user = $this->userManager->get($userId);
 
 		if ($user === null) {
-			$this->log->error('User: ' . $userId . ' does not exist.', ['app' => 'settings']);
-			return new JSONResponse(
+			$this->logger->error('User: ' . $userId . ' does not exist.', ['app' => 'settings']);
+			return new DataResponse(
 				[
 					'status' => 'error',
 					'message' => $this->l10n->t('Failed to set password. Please contact the administrator.', [$userId]),
@@ -770,8 +764,8 @@ class UsersController extends Controller {
 
 			try {
 				if (!$user->setPassword($password)) {
-					$this->log->error('The password can not be set for user: '. $userId);
-					return new JSONResponse(
+					$this->logger->error('The password can not be set for user: '. $userId);
+					return new DataResponse(
 						[
 							'status' => 'error',
 							'message' => $this->l10n->t('Failed to set password. Please contact your administrator.', [$userId]),
@@ -780,9 +774,9 @@ class UsersController extends Controller {
 						Http::STATUS_FORBIDDEN
 					);
 				}
-			} catch (\Exception $e) {
-				$this->log->error('The password can not be set for user: '. $userId);
-				return new JSONResponse(
+			} catch (Exception $e) {
+				$this->logger->error('The password can not be set for user: '. $userId);
+				return new DataResponse(
 					[
 						'status' => 'error',
 						'message' => $e->getMessage(),
@@ -796,8 +790,8 @@ class UsersController extends Controller {
 			//\OC_User::unsetMagicInCookie();
 			$this->userSession->unsetMagicInCookie();
 		} catch (UserTokenException $e) {
-			$this->log->logException($e, ['app' => 'settings']);
-			return new JSONResponse(
+			$this->logger->logException($e, ['app' => 'settings']);
+			return new DataResponse(
 				[
 					'status' => 'error',
 					'message' => $e->getMessage(),
@@ -808,10 +802,10 @@ class UsersController extends Controller {
 		}
 
 		try {
-			$this->sendNotificationMail($userId);
-		} catch (\Exception $e) {
-			$this->log->logException($e, ['app' => 'settings']);
-			return new JSONResponse(
+			$this->sendNotificationMail($user);
+		} catch (Exception $e) {
+			$this->logger->logException($e, ['app' => 'settings']);
+			return new DataResponse(
 				[
 					'status' => 'error',
 					'message' => $this->l10n->t('Failed to send email. Please contact your administrator.'),
@@ -821,15 +815,13 @@ class UsersController extends Controller {
 			);
 		}
 
-		return new JSONResponse(['status' => 'success']);
+		return new DataResponse(['status' => 'success']);
 	}
 
 	/**
-	 * @param $userId
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	protected function sendNotificationMail($userId) {
-		$user = $this->userManager->get($userId);
+	protected function sendNotificationMail(IUser $user): void {
 		$email = $user->getEMailAddress();
 
 		if ($email !== '') {
@@ -839,7 +831,7 @@ class UsersController extends Controller {
 			$msgAlt = $tmplAlt->fetchPage();
 
 			$message = $this->mailer->createMessage();
-			$message->setTo([$email => $userId]);
+			$message->setTo([$email => $user->getUID()]);
 			$message->setSubject($this->l10n->t('%s password changed successfully', [$this->defaults->getName()]));
 			$message->setPlainBody($msgAlt);
 			$message->setHtmlBody($msg);
@@ -854,7 +846,7 @@ class UsersController extends Controller {
 	 * @param string $id
 	 * @return DataResponse
 	 */
-	public function destroy($id) {
+	public function destroy($id): DataResponse {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
 
@@ -917,8 +909,9 @@ class UsersController extends Controller {
 	 * @param string $id
 	 * @param string $mailAddress
 	 * @return DataResponse
+	 * @throws NotPermittedActionException
 	 */
-	public function setMailAddress($id, $mailAddress) {
+	public function setMailAddress($id, $mailAddress): DataResponse {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
 
@@ -939,18 +932,6 @@ class UsersController extends Controller {
 			}
 		}
 
-		if ($mailAddress !== '' && !$this->mailer->validateMailAddress($mailAddress)) {
-			return new DataResponse(
-				[
-					'status' => 'error',
-					'data' => [
-						'message' => (string)$this->l10n->t('Invalid mail address')
-					]
-				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
-			);
-		}
-
 		if (!$user) {
 			return new DataResponse(
 				[
@@ -963,8 +944,13 @@ class UsersController extends Controller {
 			);
 		}
 
+		$resp = $this->validateEMail($mailAddress);
+		if ($resp) {
+			return $resp;
+		}
+
 		// this is the only permission a backend provides and is also used
-		// for the permission of setting a email address
+		// for the permission of setting an email address
 		if (!$user->canChangeMailAddress()) {
 			return new DataResponse(
 				[
@@ -1004,25 +990,25 @@ class UsersController extends Controller {
 					],
 					Http::STATUS_OK
 				);
-			} else {
-				return new DataResponse(
-					[
-						'status' => 'error',
-						'data' => [
-							'username' => $id,
-							'mailAddress' => $mailAddress,
-							'message' => (string) $this->l10n->t('No email was sent because you already sent one recently. Please try again later.')
-						]
-					],
-					Http::STATUS_OK
-				);
 			}
-		} catch (\Exception $e) {
+
 			return new DataResponse(
 				[
 					'status' => 'error',
 					'data' => [
-						'message' => (string)$e->getMessage()
+						'username' => $id,
+						'mailAddress' => $mailAddress,
+						'message' => (string) $this->l10n->t('No email was sent because you already sent one recently. Please try again later.')
+					]
+				],
+				Http::STATUS_OK
+			);
+		} catch (Exception $e) {
+			return new DataResponse(
+				[
+					'status' => 'error',
+					'data' => [
+						'message' => $e->getMessage()
 					]
 				]
 			);
@@ -1036,7 +1022,7 @@ class UsersController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function stats() {
+	public function stats(): DataResponse {
 		$userCount = 0;
 		if ($this->isAdmin) {
 			$countByBackend = $this->userManager->countUsers();
@@ -1076,8 +1062,9 @@ class UsersController extends Controller {
 	 * @param string $username
 	 * @param string $displayName
 	 * @return DataResponse
+	 * @throws NotPermittedActionException
 	 */
-	public function setDisplayName($username, $displayName) {
+	public function setDisplayName($username, $displayName): DataResponse {
 		$currentUser = $this->userSession->getUser();
 
 		if ($username === null) {
@@ -1085,7 +1072,6 @@ class UsersController extends Controller {
 		}
 
 		$user = $this->userManager->get($username);
-		'@phan-var \OC\Group\Manager $this->groupManager';
 
 		if ($user === null ||
 			!$user->canChangeDisplayName() ||
@@ -1102,6 +1088,10 @@ class UsersController extends Controller {
 				],
 			]);
 		}
+		$resp = $this->validateString($displayName, 255);
+		if ($resp) {
+			return $resp;
+		}
 
 		if ($user->setDisplayName($displayName)) {
 			return new DataResponse([
@@ -1112,29 +1102,26 @@ class UsersController extends Controller {
 					'displayName' => $displayName,
 				],
 			]);
-		} else {
-			return new DataResponse([
-				'status' => 'error',
-				'data' => [
-					'message' => $this->l10n->t('Unable to change full name'),
-					'displayName' => $user->getDisplayName(),
-				],
-			]);
 		}
+
+		return new DataResponse([
+			'status' => 'error',
+			'data' => [
+				'message' => $this->l10n->t('Unable to change full name'),
+				'displayName' => $user->getDisplayName(),
+			],
+		]);
 	}
 
 	/**
-	 * @param string $userId
-	 * @param string $mailAddress
-	 * @throws \Exception
-	 * @return boolean
+	 * @throws Exception
 	 */
-	public function sendEmail($userId, $mailAddress) {
+	private function sendEmail(string $userId, string $mailAddress): bool {
 		$token = $this->config->getUserValue($userId, 'owncloud', 'changeMail');
 		if ($token !== '') {
 			$splittedToken = \explode(':', $token);
 			if ((\count($splittedToken)) === 3 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
-				$this->log->alert('The email is not sent because an email change confirmation mail was sent recently.');
+				$this->logger->alert('The email is not sent because an email change confirmation mail was sent recently.');
 				return false;
 			}
 		}
@@ -1160,8 +1147,8 @@ class UsersController extends Controller {
 			$message->setPlainBody($msg);
 			$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
 			$this->mailer->send($message);
-		} catch (\Exception $e) {
-			throw new \Exception($this->l10n->t(
+		} catch (Exception $e) {
+			throw new Exception($this->l10n->t(
 				'Couldn\'t send email address change confirmation mail. Please contact your administrator.'
 			));
 		}
@@ -1173,9 +1160,14 @@ class UsersController extends Controller {
 	 *
 	 * @param string $id
 	 * @param string $mailAddress
-	 * @return JSONResponse
+	 * @return DataResponse
+	 * @throws NotPermittedActionException
 	 */
-	public function setEmailAddress($id, $mailAddress) {
+	public function setEmailAddress($id, $mailAddress): DataResponse {
+		$resp = $this->validateEMail($mailAddress);
+		if ($resp) {
+			return $resp;
+		}
 		$user = $this->userManager->get($id);
 		'@phan-var \OC\Group\Manager $this->groupManager';
 		if ($this->isAdmin ||
@@ -1186,13 +1178,13 @@ class UsersController extends Controller {
 			if ($this->config->getUserValue($id, 'owncloud', 'changeMail') !== '') {
 				$this->config->deleteUserValue($id, 'owncloud', 'changeMail');
 			}
-			return new JSONResponse();
-		} else {
-			return new JSONResponse([
-				'error' => 'cannotSetEmailAddress',
-				'message' => 'Cannot set email address for user'
-			], HTTP::STATUS_NOT_FOUND);
+			return new DataResponse();
 		}
+
+		return new DataResponse([
+			'error' => 'cannotSetEmailAddress',
+			'message' => 'Cannot set email address for user'
+		], HTTP::STATUS_NOT_FOUND);
 	}
 
 	/**
@@ -1203,21 +1195,21 @@ class UsersController extends Controller {
 	 * @param $token
 	 * @param $userId
 	 * @return RedirectResponse
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function changeMail($token, $userId) {
+	public function changeMail($token, $userId): RedirectResponse {
 		$user = $this->userManager->get($userId);
 		$sessionUser = $this->userSession->getUser();
 
 		if ($user->getUID() !== $sessionUser->getUID()) {
-			$this->log->error("The logged in user is different than expected.", ['app' => 'settings']);
+			$this->logger->error("The logged in user is different than expected.", ['app' => 'settings']);
 			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
 		}
 
 		try {
 			$this->checkEmailChangeToken($token, $userId);
-		} catch (\Exception $e) {
-			$this->log->error($e->getMessage(), ['app' => 'settings']);
+		} catch (Exception $e) {
+			$this->logger->error($e->getMessage(), ['app' => 'settings']);
 			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
 		}
 
@@ -1240,8 +1232,8 @@ class UsersController extends Controller {
 				$message->setPlainBody($msg);
 				$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
 				$this->mailer->send($message);
-			} catch (\Exception $e) {
-				throw new \Exception($this->l10n->t(
+			} catch (Exception $e) {
+				throw new Exception($this->l10n->t(
 					'Couldn\'t send email address change notification mail. Please contact your administrator.'
 				));
 			}
@@ -1253,9 +1245,11 @@ class UsersController extends Controller {
 	 * @NoAdminRequired
 	 *
 	 * @param string $id
+	 * @param $enabled
 	 * @return DataResponse
+	 * @throws NotPermittedActionException
 	 */
-	public function setEnabled($id, $enabled) {
+	public function setEnabled($id, $enabled): DataResponse {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
 		'@phan-var \OC\Group\Manager $this->groupManager';
@@ -1310,6 +1304,31 @@ class UsersController extends Controller {
 				]
 			],
 			Http::STATUS_OK
+		);
+	}
+
+	private function validateString(string $string, int $max) {
+		if (\strlen($string) > $max) {
+			return $this->buildUnprocessableEntityResponse((string)$this->l10n->t('Data too long'));
+		}
+	}
+
+	private function validateEMail(string $email, bool $allowEmpty = false): ?DataResponse {
+		if ($allowEmpty && $email === '') {
+			return null;
+		}
+		if ($email !== '' && !$this->mailer->validateMailAddress($email)) {
+			return $this->buildUnprocessableEntityResponse((string)$this->l10n->t('Invalid mail address'));
+		}
+		return null;
+	}
+
+	private function buildUnprocessableEntityResponse(string $message): DataResponse {
+		return new DataResponse(
+			[
+				'message' => $message
+			],
+			Http::STATUS_UNPROCESSABLE_ENTITY
 		);
 	}
 }
