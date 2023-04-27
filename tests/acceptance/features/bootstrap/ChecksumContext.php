@@ -30,11 +30,7 @@ require_once 'bootstrap.php';
  * Checksum functions
  */
 class ChecksumContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @When user :user uploads file :source to :destination with checksum :checksum using the WebDAV API
@@ -60,8 +56,7 @@ class ChecksumContext implements Context {
 			'PUT',
 			$destination,
 			['OC-Checksum' => $checksum],
-			$file,
-			"files"
+			$file
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -113,8 +108,7 @@ class ChecksumContext implements Context {
 			'PUT',
 			$destination,
 			['OC-Checksum' => $checksum],
-			$content,
-			"files"
+			$content
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -267,7 +261,7 @@ class ChecksumContext implements Context {
 		Assert::assertEquals(
 			$expectedChecksum,
 			$actualChecksum,
-			"Expected: webDav checksum should be {$expectedChecksum} but got {$actualChecksum}"
+			"Expected: webDav checksum should be $expectedChecksum but got $actualChecksum"
 		);
 	}
 
@@ -321,7 +315,7 @@ class ChecksumContext implements Context {
 		Assert::assertEquals(
 			$expectedChecksum,
 			$headerChecksum,
-			"Expected: header checksum should match {$expectedChecksum} but got {$headerChecksum}"
+			"Expected: header checksum should match $expectedChecksum but got $headerChecksum"
 		);
 	}
 
@@ -361,7 +355,7 @@ class ChecksumContext implements Context {
 		Assert::assertEquals(
 			$expectedStatus,
 			$status,
-			"Expected status to be {$expectedStatus} but got {$status}"
+			"Expected status to be $expectedStatus but got $status"
 		);
 	}
 
@@ -408,8 +402,7 @@ class ChecksumContext implements Context {
 			'PUT',
 			$file,
 			['OC-Checksum' => $expectedChecksum, 'OC-Chunked' => '1'],
-			$data,
-			"files"
+			$data
 		);
 		$this->featureContext->setResponse($response);
 	}

@@ -34,10 +34,7 @@ use Behat\Behat\Context\Context;
  * AppConfiguration trait
  */
 class AppConfigurationContext implements Context {
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to ((?:'[^']*')|(?:"[^"]*"))$/
@@ -169,7 +166,7 @@ class AppConfigurationContext implements Context {
 	 * @throws Exception
 	 */
 	public function userGetsCapabilitiesCheckResponse(string $username):void {
-		$this->userGetsCapabilities($username, false);
+		$this->userGetsCapabilities($username);
 		$statusCode = $this->featureContext->getResponse()->getStatusCode();
 		if ($statusCode !== 200) {
 			throw new \Exception(

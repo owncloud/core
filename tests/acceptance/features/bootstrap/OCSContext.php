@@ -35,11 +35,7 @@ require_once 'bootstrap.php';
  * steps needed to send requests to the OCS API
  */
 class OCSContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
@@ -50,7 +46,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theUserSendsToOcsApiEndpoint(string $verb, string $url):void {
-		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
+		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url);
 	}
 
 	/**
@@ -62,7 +58,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theUserHasSentToOcsApiEndpoint(string $verb, string $url):void {
-		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
+		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
 
@@ -129,8 +125,6 @@ class OCSContext implements Context {
 		/**
 		 * array of the data to be sent in the body.
 		 * contains $body data converted to an array
-		 *
-		 * @var array $bodyArray
 		 */
 		$bodyArray = [];
 		if ($body instanceof TableNode) {
@@ -233,7 +227,7 @@ class OCSContext implements Context {
 	 * @param string $verb
 	 * @param string $url
 	 * @param TableNode|null $body
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
@@ -793,7 +787,7 @@ class OCSContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theOCSStatusCodeShouldBe(string $statusCode, $message = ""):void {
+	public function theOCSStatusCodeShouldBe(string $statusCode, string $message = ""):void {
 		$statusCodes = explode(",", $statusCode);
 		$responseStatusCode = $this->getOCSResponseStatusCode(
 			$this->featureContext->getResponse()
@@ -936,7 +930,7 @@ class OCSContext implements Context {
 		if (\is_object($jsonResponse) && $jsonResponse->ocs->meta->statuscode) {
 			return (string) $jsonResponse->ocs->meta->statuscode;
 		}
-		// go to xml response when json response is null (it means not formated and get status code)
+		// go to xml response when json response is null (it means not formatted and get status code)
 		$responseXml = $this->featureContext->getResponseXml($response, __METHOD__);
 		if (isset($responseXml->meta[0], $responseXml->meta[0]->statuscode)) {
 			return (string) $responseXml->meta[0]->statuscode;

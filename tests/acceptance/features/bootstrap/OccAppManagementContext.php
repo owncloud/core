@@ -31,17 +31,8 @@ require_once 'bootstrap.php';
  * Occ context for test steps that test occ commands
  */
 class OccAppManagementContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var OccContext
-	 */
-	private $occContext;
+	private FeatureContext $featureContext;
+	private OccContext $occContext;
 
 	/**
 	 * @When the administrator disables app :appName using the occ command
@@ -124,7 +115,7 @@ class OccAppManagementContext implements Context {
 		Assert::assertEquals(
 			$appName,
 			\key($lastOutputArray['apps']),
-			"The app name expected to be returned by the occ command is {$appName} but got "
+			"The app name expected to be returned by the occ command is $appName but got "
 			. \key($lastOutputArray['apps'])
 		);
 	}
@@ -145,7 +136,7 @@ class OccAppManagementContext implements Context {
 		$configOutputArray = \json_decode($lastOutput, true);
 
 		// Default apps location is '${INSTALLED_LOCATION}/apps/${appName}
-		if (\substr_compare($appPath, '/apps/${appName}', 0)) {
+		if (\substr_compare($appPath, "/apps/$appName", 0)) {
 			return;
 		}
 
@@ -179,7 +170,7 @@ class OccAppManagementContext implements Context {
 		Assert::assertEquals(
 			$appStatus,
 			$actualAppEnabledStatus,
-			"The app enabled status of app {$appName} was expected to be {$appStatus}, but the actual status is {$actualAppEnabledStatus}"
+			"The app enabled status of app $appName was expected to be $appStatus, but the actual status is $actualAppEnabledStatus"
 		);
 	}
 

@@ -34,17 +34,13 @@ require_once 'bootstrap.php';
  * Steps that relate to managing file/folder properties via WebDav
  */
 class WebDavPropertiesContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @var array map with user as key and another map as value,
 	 *            which has path as key and etag as value
 	 */
-	private $storedETAG = null;
+	private array $storedETAG = [];
 
 	/**
 	 * @When /^user "([^"]*)" gets the properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
@@ -815,7 +811,7 @@ class WebDavPropertiesContext implements Context {
 			// expected href should be like: "remote.php/webdav/strängé folder/file.txt"
 			$explodeDecoded = \explode('/', $decodedValue);
 			// get the first item of the expected href.
-			// i.e remote.php from "remote.php/webdav/strängé folder/file.txt"
+			// i.e. remote.php from "remote.php/webdav/strängé folder/file.txt"
 			// or dav from "dav/spaces/%spaceid%/C++ file.cpp"
 			$explodeExpected = \explode('/', $expectedHref);
 			$remotePhpIndex = \array_search($explodeExpected[0], $explodeDecoded);

@@ -5,10 +5,10 @@
  * @author Artur Neumann <info@jankaritech.com>
  * @copyright Copyright (c) 2018 Artur Neumann info@jankaritech.com
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License,
+ * as published by the Free Software Foundation;
+ * either version 3 of the License, or any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,15 +32,8 @@ require_once 'bootstrap.php';
  * Context for encryption specific steps
  */
 class EncryptionContext implements Context {
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 * @var OccContext
-	 */
-	private $occContext;
+	private FeatureContext $featureContext;
+	private OccContext $occContext;
 
 	/**
 	 * @return void
@@ -162,7 +155,7 @@ class EncryptionContext implements Context {
 		Assert::assertEquals(
 			$fileContentServer,
 			$fileContent,
-			"The content of file {$fileName} is {$fileContent}, but was supposed to be non-encrypted: {$fileContentServer}"
+			"The content of file $fileName is $fileContent, but was supposed to be non-encrypted: $fileContentServer"
 		);
 	}
 
@@ -180,7 +173,6 @@ class EncryptionContext implements Context {
 		$filePath = "data/$username/files/$fileName";
 		$this->featureContext->readFileInServerRootForCore($filePath);
 
-		$response = $this->featureContext->getResponse();
 		$parsedResponse = HttpRequestHelper::getResponseXml(
 			$this->featureContext->getResponse(),
 			__METHOD__
@@ -192,7 +184,7 @@ class EncryptionContext implements Context {
 		Assert::assertStringStartsWith(
 			$expectedContentStart,
 			$fileContent,
-			"FileContent: {$fileContent} of file {$fileName} is expected to start with encrypted string {$expectedContentStart}, but does not"
+			"FileContent: $fileContent of file $fileName is expected to start with encrypted string $expectedContentStart, but does not"
 		);
 	}
 

@@ -34,11 +34,7 @@ require_once 'bootstrap.php';
  * Occ context for test steps that test occ commands
  */
 class OccContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 *
@@ -52,30 +48,17 @@ class OccContext implements Context {
 	 */
 	private $removedCertificates = [];
 
-	/**
-	 * @var string lastDeletedJobId
-	 */
-	private $lastDeletedJobId;
+	private string $lastDeletedJobId;
 
 	/**
 	 * The code to manage dav.enable.tech_preview was used in 10.4/10.3
 	 * The use of the steps to enable/disable it has been removed from the
 	 * feature files. But the infrastructure has been left here, as a similar
 	 * thing might likely happen in the future.
-	 *
-	 * @var boolean
 	 */
-	private $doTechPreview = false;
-
-	/**
-	 * @var boolean techPreviewEnabled
-	 */
-	private $techPreviewEnabled = false;
-
-	/**
-	 * @var string initialTechPreviewStatus
-	 */
-	private $initialTechPreviewStatus;
+	private bool $doTechPreview = false;
+	private bool $techPreviewEnabled = false;
+	private string $initialTechPreviewStatus;
 
 	/**
 	 * @return boolean
@@ -342,7 +325,7 @@ class OccContext implements Context {
 	 */
 	public function addConfigKeyWithValueInAppUsingTheOccCommand(string $key, string $value, string $app):void {
 		$this->invokingTheCommand(
-			"config:app:set --value ${value} ${app} ${key}"
+			"config:app:set --value $value $app $key"
 		);
 	}
 
@@ -355,7 +338,7 @@ class OccContext implements Context {
 	 */
 	public function deleteConfigKeyOfAppUsingTheOccCommand(string $key, string $app):void {
 		$this->invokingTheCommand(
-			"config:app:delete ${app} ${key}"
+			"config:app:delete $app $key"
 		);
 	}
 
@@ -373,7 +356,7 @@ class OccContext implements Context {
 		string $type = "string"
 	):void {
 		$this->invokingTheCommand(
-			"config:system:set --value '${value}' --type ${type} ${key}"
+			"config:system:set --value '$value' --type $type $key"
 		);
 	}
 
@@ -385,7 +368,7 @@ class OccContext implements Context {
 	 */
 	public function deleteSystemConfigKeyUsingTheOccCommand(string $key):void {
 		$this->invokingTheCommand(
-			"config:system:delete ${key}"
+			"config:system:delete $key"
 		);
 	}
 
@@ -848,9 +831,9 @@ class OccContext implements Context {
 	public function theCommandFailedWithExitCode(int $exitCode):void {
 		$exitStatusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
 		Assert::assertEquals(
-			(int) $exitCode,
+			$exitCode,
 			$exitStatusCode,
-			"The command was expected to fail with exit code $exitCode but got {$exitStatusCode}"
+			"The command was expected to fail with exit code $exitCode but got $exitStatusCode"
 		);
 	}
 
@@ -2581,7 +2564,7 @@ class OccContext implements Context {
 		Assert::assertEquals(
 			$mode,
 			\trim($lastOutput),
-			"The background jobs mode was expected to be {$mode} but got '"
+			"The background jobs mode was expected to be $mode but got '"
 			. \trim($lastOutput)
 			. "'"
 		);
@@ -3120,7 +3103,7 @@ class OccContext implements Context {
 		);
 		$systemConfig = $configList['system'];
 
-		// convert the value to it's respective type based on type given in the type column
+		// convert the value to its respective type based on type given in the type column
 		if ($type === 'boolean') {
 			$value = $value === 'true' ? true : false;
 		} elseif ($type === 'integer') {
@@ -3665,13 +3648,13 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theFollowingMigrationStatusShouldHaveBeenListed(TableNode $table): void {
-		$actualOuput = $this->getMigrationStatusInfo();
+		$actualOutput = $this->getMigrationStatusInfo();
 		$expectedOutput = $table->getRowsHash();
 		foreach ($expectedOutput as $key => $value) {
 			try {
-				$actualValue = $actualOuput[$key];
+				$actualValue = $actualOutput[$key];
 			} catch (Exception $e) {
-				Assert:: fail("Expected '$key' but not found!\nActual Migration status: " . \print_r($actualOuput, true));
+				Assert:: fail("Expected '$key' but not found!\nActual Migration status: " . \print_r($actualOutput, true));
 			}
 			if ($this->isRegex($value)) {
 				$match = preg_match($value, $actualValue);
@@ -3698,29 +3681,28 @@ class OccContext implements Context {
 	 *
 	 * @return int
 	 */
-	public function isRegex($value) {
+	public function isRegex(string $value) {
 		$regex = "/^\/[\s\S]+\/$/";
 		return preg_match($regex, $value);
 	}
 
 	/**
-	 * @return void
+	 * @return array
 	 */
-	public function getMigrationStatusInfo() {
+	public function getMigrationStatusInfo():array {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$migrationStatus = [];
-		if (!empty($commandOutput)) {
-			$infoArr = explode("\n", $commandOutput);
-			foreach ($infoArr as $info) {
-				if (!empty($info)) {
-					$row = \trim(\str_replace('>>', '', $info));
-					$rowCol = explode(":", $row);
-					$migrationStatus[\trim($rowCol[0])] = \trim($rowCol[1]);
-				}
-			}
-			return $migrationStatus;
-		} else {
+		if (empty($commandOutput)) {
 			throwException("Migration status information is empty!");
 		}
+		$infoArr = explode("\n", $commandOutput);
+		foreach ($infoArr as $info) {
+			if (!empty($info)) {
+				$row = \trim(\str_replace('>>', '', $info));
+				$rowCol = explode(":", $row);
+				$migrationStatus[\trim($rowCol[0])] = \trim($rowCol[1]);
+			}
+		}
+		return $migrationStatus;
 	}
 }

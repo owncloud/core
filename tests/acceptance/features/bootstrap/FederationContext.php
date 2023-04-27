@@ -33,17 +33,8 @@ require_once 'bootstrap.php';
  * Federation context.
  */
 class FederationContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var OCSContext
-	 */
-	private $ocsContext;
+	private FeatureContext $featureContext;
+	private OCSContext $ocsContext;
 
 	/**
 	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the sharing API$/
@@ -254,8 +245,7 @@ class FederationContext implements Context {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'POST',
-			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
-			null
+			"/apps/files_sharing/api/v1/remote_shares/pending/$share_id"
 		);
 		$this->featureContext->pushToLastStatusCodesArrays();
 		$this->featureContext->usingServer($previous);
@@ -296,8 +286,7 @@ class FederationContext implements Context {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
-			"/apps/files_sharing/api/v1/remote_shares/{$share_id}",
-			null
+			"/apps/files_sharing/api/v1/remote_shares/$share_id"
 		);
 	}
 
@@ -337,8 +326,7 @@ class FederationContext implements Context {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
-			"/apps/files_sharing/api/v1/remote_shares/{$share_id}",
-			null
+			"/apps/files_sharing/api/v1/remote_shares/$share_id"
 		);
 	}
 
@@ -356,8 +344,7 @@ class FederationContext implements Context {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
-			$url,
-			null
+			$url
 		);
 	}
 
@@ -428,8 +415,7 @@ class FederationContext implements Context {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'POST',
-			$url,
-			null
+			$url
 		);
 	}
 

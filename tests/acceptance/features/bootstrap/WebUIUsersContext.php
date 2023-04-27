@@ -183,7 +183,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			$password,
 			$username,
 			$email,
-			null,
 			$shouldExist
 		);
 		if (\is_array($groups)) {
