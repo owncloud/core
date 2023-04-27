@@ -72,6 +72,7 @@ config = {
                 "mariadb:10.6",
                 "mariadb:10.7",
                 "mariadb:10.8",
+                "mariadb:10.11",
                 "mysql:5.5",
                 "mysql:5.7",
                 "mysql:8.0",
@@ -1377,6 +1378,7 @@ def phpTests(ctx, testType, withCoverage):
             "mariadb:10.6",
             "mariadb:10.7",
             "mariadb:10.8",
+            "mariadb:10.11",
             "mysql:5.5",
             "mysql:5.7",
             "mysql:8.0",
@@ -1409,6 +1411,9 @@ def phpTests(ctx, testType, withCoverage):
             "mariadb:10.6",
             "mariadb:10.7",
             "mariadb:10.8",
+            "mariadb:10.9",
+            "mariadb:10.10",
+            "mariadb:10.11",
             "mysql:5.5",
             "mysql:5.7",
             "mysql:8.0",
@@ -2377,7 +2382,7 @@ def owncloudService(phpVersion, name, pathOfServerUnderTest, ssl):
     }]
 
 def getShortDbNameAndVersion(db):
-    return "%s%s" % (getDbType(db), getDbVersion(db))
+    return "%s%s" % (getDbShortName(db), getDbVersion(db))
 
 def getDbName(db):
     return db.partition(":")[0]
@@ -2422,6 +2427,19 @@ def getDbType(db):
 
     if dbName == "oracle":
         return "oci"
+
+    return dbName
+
+def getDbShortName(db):
+    dbName = getDbName(db)
+    if dbName == "postgres":
+        return "pgsql"
+
+    if dbName == "oracle":
+        return "oci"
+
+    if dbName == "mariadb":
+        return "maria"
 
     return dbName
 
