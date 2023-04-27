@@ -2380,7 +2380,7 @@ def owncloudService(phpVersion, name, pathOfServerUnderTest, ssl):
     }]
 
 def getShortDbNameAndVersion(db):
-    return "%s%s" % (getDbType(db), getDbVersion(db))
+    return "%s%s" % (getDbShortName(db), getDbVersion(db))
 
 def getDbName(db):
     return db.partition(":")[0]
@@ -2425,6 +2425,19 @@ def getDbType(db):
 
     if dbName == "oracle":
         return "oci"
+
+    return dbName
+
+def getDbShortName(db):
+    dbName = getDbName(db)
+    if dbName == "postgres":
+        return "pgsql"
+
+    if dbName == "oracle":
+        return "oci"
+
+    if dbName == "mariadb":
+        return "maria"
 
     return dbName
 
