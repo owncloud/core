@@ -92,8 +92,9 @@ class TempManager implements ITempManager {
 			// temporary file
 			if ($postFix !== '') {
 				$fileNameWithPostfix = $this->buildFileNameWithSuffix($file, $postFix);
+				$old_umask = \umask(0077);
 				\touch($fileNameWithPostfix);
-				\chmod($fileNameWithPostfix, 0600);
+				\umask($old_umask);
 				$this->current[] = $fileNameWithPostfix;
 				return $fileNameWithPostfix;
 			}
