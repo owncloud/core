@@ -514,40 +514,8 @@ var UserList = {
 				);
 			};
 		}
-		var addGroup = function (select, group) {
-			group = escapeHTML(group).trim();
-			if (GroupList.isGroupNameValid(group) !== true) {
-				return false;
-			}
 
-			var groupAlreadyInList = false;
-
-			select.parent().find('li').each(function (index, entry) {
-				if ($(entry).find('label').attr('title') === group) {
-					groupAlreadyInList = true;
-					return false;
-				}
-			});
-
-			if (groupAlreadyInList) {
-				OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {
-					message: t('settings', 'Group already exists')
-				}));
-				return false;
-			}
-
-			GroupList.addGroup(group);
-		};
-		var label;
-		if (oc_isadmin) {
-			label = t('settings', 'add group');
-		}
-		else {
-			label = null;
-		}
 		$element.multiSelect({
-			createCallback: addGroup,
-			createText: label,
 			selectedFirst: true,
 			checked: checked,
 			oncheck: checkHandler,
@@ -1091,7 +1059,7 @@ $(document).ready(function () {
 			OC.AppConfig.setValue('core', 'umgmt_show_storage_location', 'false');
 		}
 	});
-     
+
         if ($('#CheckboxCreationTime').is(':checked')) {
                 $("#userlist .creationTime").show();
         }
