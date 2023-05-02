@@ -1009,7 +1009,7 @@ $(document).ready(function () {
 			function (result) {
 				if (result.groups) {
 					for (var i in result.groups) {
-						var gid = result.groups[i];
+						var gid = result.groups[i]['id'];
 						if (UserList.availableGroups.indexOf(gid) === -1) {
 							UserList.availableGroups.push(gid);
 						}

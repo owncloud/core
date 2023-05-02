@@ -18,12 +18,12 @@ script('core', [
 style('settings', 'settings');
 
 $userlistParams = [];
-$allGroups= [];
+$allGroups = [];
 foreach ($_["adminGroup"] as $group) {
-	$allGroups[] = $group['name'];
+	$allGroups[] = $group['id'];
 }
 foreach ($_["groups"] as $group) {
-	$allGroups[] = $group['name'];
+	$allGroups[] = $group['id'];
 }
 $userlistParams['subadmingroups'] = $allGroups;
 $userlistParams['allGroups'] = \json_encode($allGroups);
