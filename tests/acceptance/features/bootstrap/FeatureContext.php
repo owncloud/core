@@ -169,7 +169,7 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * return code of last command
 	 */
-	private ?int $occLastCode;
+	private ?int $occLastCode = null;
 	/**
 	 * stdout of last command
 	 */
@@ -355,7 +355,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @var string
 	 */
 	private $ldapGroupSchema;
-	private bool $skipImportLdif;
+	private bool $skipImportLdif = false;
 	private array $toDeleteDNs = [];
 	private array $ldapCreatedUsers = [];
 	private array $ldapCreatedGroups = [];
