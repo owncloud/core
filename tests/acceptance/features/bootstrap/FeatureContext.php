@@ -169,7 +169,7 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * return code of last command
 	 */
-	private ?int $occLastCode;
+	private ?int $occLastCode = null;
 	/**
 	 * stdout of last command
 	 */
