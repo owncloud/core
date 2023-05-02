@@ -1388,7 +1388,7 @@ trait Provisioning {
 		$bodyTable = new TableNode(
 			[['userid', $user], ['password', $password], ['groups[]', $group]]
 		);
-		
+
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
@@ -2108,7 +2108,7 @@ trait Provisioning {
 			$displayName
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
-		
+
 		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 	/**
@@ -2759,7 +2759,7 @@ trait Provisioning {
 	 * @param string|null $password
 	 * @param string|null $displayName
 	 * @param string|null $email
-	 * @param bool $shouldExist
+	 * @param bool|null $shouldExist
 	 *
 	 * @return void
 	 * @throws JsonException
@@ -2769,7 +2769,7 @@ trait Provisioning {
 		?string $password,
 		?string $displayName = null,
 		?string $email = null,
-		bool $shouldExist = true
+		?bool $shouldExist = true
 	):void {
 		$user = $this->getActualUsername($user);
 		$normalizedUsername = $this->normalizeUsername($user);
