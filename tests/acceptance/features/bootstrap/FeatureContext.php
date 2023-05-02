@@ -355,7 +355,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @var string
 	 */
 	private $ldapGroupSchema;
-	private bool $skipImportLdif;
+	private bool $skipImportLdif = false;
 	private array $toDeleteDNs = [];
 	private array $ldapCreatedUsers = [];
 	private array $ldapCreatedGroups = [];
