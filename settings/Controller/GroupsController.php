@@ -184,11 +184,17 @@ class GroupsController extends Controller {
 				foreach ($groups as $group) {
 					if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
 						$groupObject = $this->groupManager->get($group);
-						$assignableGroups[$groupObject->getGID()] = $groupObject->getDisplayName();
+						$assignableGroups[$groupObject->getGID()] = [
+							'id' => $groupObject->getGID(),
+							'name' => $groupObject->getDisplayName(),
+						];
 					}
 					if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
 						$groupObject = $this->groupManager->get($group);
-						$removableGroups[$groupObject->getGID()] = $groupObject->getDisplayName();
+						$removableGroups[$groupObject->getGID()] = [
+							'id' => $groupObject->getGID(),
+							'name' => $groupObject->getDisplayName(),
+						];
 					}
 				}
 			}
@@ -197,10 +203,16 @@ class GroupsController extends Controller {
 			foreach ($subAdminGroups as $subAdminGroup) {
 				$backend = $subAdminGroup->getBackend();
 				if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
-					$assignableGroups[$subAdminGroup->getGID()] = $subAdminGroup->getDisplayName();
+					$assignableGroups[$subAdminGroup->getGID()] = [
+						'id' => $subAdminGroup->getGID(),
+						'name' => $subAdminGroup->getDisplayName(),
+					];
 				}
 				if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
-					$removableGroups[$subAdminGroup->getGID()] = $subAdminGroup->getDisplayName();
+					$removableGroups[$subAdminGroup->getGID()] = [
+						'id' => $subAdminGroup->getGID(),
+						'name' => $subAdminGroup->getDisplayName()
+					];
 				}
 			}
 		}

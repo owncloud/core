@@ -499,7 +499,10 @@ var UserList = {
 							if (UserList.availableGroups[groupId] === undefined &&
 								response.data.action === 'add'
 							) {
-								UserList.availableGroups[groupId] = groupName;
+								UserList.availableGroups[groupId] = {
+									'id': groupId,
+									'name': groupName
+								};
 							}
 
 							if (response.data.action === 'add') {
@@ -675,7 +678,7 @@ var UserList = {
 			$groupsSelect = $('<select multiple="multiple" class="subadminsselect multiselect button" title="' + placeholder + '"></select>')
 		}
 
-		function createItem(id, groupname) {
+		function createItem(id, group) {
 			if (isSubadminSelect) {
 				// this is solely for the dropdown menu "Group Admin for"
 				if (id === 'admin') {
@@ -683,7 +686,7 @@ var UserList = {
 					return;
 				}
 
-				$groupsSelect.append($('<option value="' + escapeHTML(id) + '">' + escapeHTML(groupname) + '</option>'));
+				$groupsSelect.append($('<option value="' + escapeHTML(id) + '">' + escapeHTML(group['name']) + '</option>'));
 				// return as we need to bypass the following group restrictions here
 				return;
 			}
@@ -692,14 +695,14 @@ var UserList = {
 			var groupIsAssignable = assignableGroups.has(id);
 			var groupIsRemovable = removableGroups.has(id);
 			if (!groupIsChecked && !groupIsAssignable) {
-				$groupsSelect.append($('<option value="' + escapeHTML(id) + '" disabled="disabled">' + escapeHTML(groupname) + '</option>'));
+				$groupsSelect.append($('<option value="' + escapeHTML(id) + '" disabled="disabled">' + escapeHTML(group['name']) + '</option>'));
 				return;
 			}
 			if (groupIsChecked && !groupIsRemovable) {
-				$groupsSelect.append($('<option value="' + escapeHTML(id) + '" disabled="disabled">' + escapeHTML(groupname) + '</option>'));
+				$groupsSelect.append($('<option value="' + escapeHTML(id) + '" disabled="disabled">' + escapeHTML(group['name']) + '</option>'));
 				return;
 			}
-			$groupsSelect.append($('<option value="' + escapeHTML(id) + '">' + escapeHTML(groupname) + '</option>'));
+			$groupsSelect.append($('<option value="' + escapeHTML(id) + '">' + escapeHTML(group['name']) + '</option>'));
 		}
 
 		$.ajax({
@@ -712,7 +715,10 @@ var UserList = {
 				this.availableGroups = {};
 				$.each(result.data.assignableGroups, function(id, group) {
 					assignableGroups.add(id);
-					that.availableGroups[id] = group;
+					that.availableGroups[id] = {
+						'id': id,
+						'name': group['name']
+					};
 				});
 				$.each(result.data.removableGroups, function(id, group) {
 					removableGroups.add(id);
@@ -752,7 +758,7 @@ var UserList = {
 					var gid = e.checked[i];
 					groups[gid] = {
 						'id': gid,
-						'name': that.availableGroups[gid]
+						'name': that.availableGroups[gid]['name']
 					};
 				}
 				UserList._updateGroupListLabel($td, groups);
@@ -1021,7 +1027,10 @@ $(document).ready(function () {
 						var gid = result.groups[i]['id'];
 						var displayname = result.groups[i]['name'];
 						if (UserList.availableGroups[gid] === undefined) {
-							UserList.availableGroups[gid] = displayname;
+							UserList.availableGroups[gid] = {
+								'id': gid,
+								'name': displayname
+							};
 						}
 						$li = GroupList.getGroupLI(gid);
 						userCount = GroupList.getUserCount($li);
