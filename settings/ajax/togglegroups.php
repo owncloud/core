@@ -81,9 +81,27 @@ if (\OC::$server->getGroupManager()->inGroup($username, $group)) {
 }
 
 if ($action === "add" && \OC::$server->getGroupManager()->isInGroup($username, $group)) {
-	OC_JSON::success(["data" => ["username" => $username, "action" => $action, "groupname" => $group]]);
+	OC_JSON::success([
+		"data" => [
+			"username" => $username,
+			"action" => $action,
+			"group" => [
+				"id" => $targetGroupObject->getGid(),
+				"name" => $targetGroupObject->getDisplayName(),
+			],
+		]
+	]);
 } elseif ($action === "remove" && !\OC::$server->getGroupManager()->isInGroup($username, $group)) {
-	OC_JSON::success(["data" => ["username" => $username, "action" => $action, "groupname" => $group]]);
+	OC_JSON::success([
+		"data" => [
+			"username" => $username,
+			"action" => $action,
+			"group" => [
+				"id" => $targetGroupObject->getGid(),
+				"name" => $targetGroupObject->getDisplayName(),
+			],
+		]
+	]);
 } else {
 	OC_JSON::error();
 }

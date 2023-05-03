@@ -24,11 +24,11 @@ var GroupList;
 			this.$sortGroupBy = $el;
 		},
 
-		addGroup: function (gid, usercount) {
+		addGroup: function (gid, name, usercount) {
 			var $li = $(
 				'<li class="isgroup" data-gid="' + gid + '" data-usercount="0">' +
 				'	<a href="#" class="dorename">' +
-				'		<span class="groupname">' + gid + '</span>' +
+				'		<span class="groupname">' + name + '</span>' +
 				'		<span class="usercount tag"></span>' +
 				'	</a>' +
 				'	<span class="utils">' +
@@ -149,10 +149,11 @@ var GroupList;
 					id: groupname
 				},
 				function (result) {
-					if (result.groupname) {
-						var addedGroup = result.groupname;
-						UserList.availableGroups = $.unique($.merge(UserList.availableGroups, [addedGroup]));
-						GroupList.addGroup(result.groupname);
+					if (result.id) {
+						var newGroups = {};
+						newGroups[result.id] = result.name;
+						UserList.availableGroups = $.extend(UserList.availableGroups, newGroups);
+						GroupList.addGroup(result.id, result.name);
 					}
 					GroupList.toggleAddGroup();
 				}).fail(function(result) {
@@ -184,7 +185,7 @@ var GroupList;
 									GroupList.setUserCount(GroupList.getGroupLI(group.name).first(), group.usercount);
 								}
 								else {
-									var $li = GroupList.addGroup(group.name, group.usercount);
+									var $li = GroupList.addGroup(group.id, group.name, group.usercount);
 
 									$li.addClass('appear transparent');
 									lis.push($li);
