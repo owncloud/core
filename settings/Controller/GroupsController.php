@@ -182,15 +182,14 @@ class GroupsController extends Controller {
 
 				$groups = $backend->getGroups();
 				foreach ($groups as $group) {
+					$groupObject = $this->groupManager->get($group);
 					if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
-						$groupObject = $this->groupManager->get($group);
 						$assignableGroups[$groupObject->getGID()] = [
 							'id' => $groupObject->getGID(),
 							'name' => $groupObject->getDisplayName(),
 						];
 					}
 					if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
-						$groupObject = $this->groupManager->get($group);
 						$removableGroups[$groupObject->getGID()] = [
 							'id' => $groupObject->getGID(),
 							'name' => $groupObject->getDisplayName(),

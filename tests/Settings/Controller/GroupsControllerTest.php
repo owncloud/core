@@ -428,6 +428,119 @@ class GroupsControllerTest extends \Test\TestCase {
 		$this->assertEquals($expectedResponse, $response);
 	}
 
+	public function testGetAssignableAndRemovableGroups2() {
+		$userid = 'MyAdminUser';
+
+		$user = $this->createMock(User::class);
+		$user->method('getUID')
+			->will($this->returnValue($userid));
+		$this->container['UserSession']
+			->method('getUser')
+			->willReturn($user);
+
+		$aGroup = $this->createMock(IGroup::class);
+		$aGroup->method('getGID')->willReturn('assignableGroup');
+		$aGroup->method('getDisplayName')->willReturn('assignable Group KO');
+
+		$subadmin = $this->createMock(SubAdmin::class);
+		$subadmin->method('isSubAdmin')
+			->with($this->equalTo($user))
+			->willReturn(false);
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('getSubAdmin')
+			->willReturn($subadmin);
+
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('isAdmin')
+			->with($userid)
+			->willReturn(true);
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('get')
+			->with('assignableGroup')
+			->willReturn($aGroup);
+		$assignableGroups = ['assignableGroup'];
+		$backend = $this->createMock('\OCP\GroupInterface');
+		$backend
+			->expects($this->once())
+			->method('getGroups')
+			->willReturn($assignableGroups);
+		$backend->expects($this->exactly(3))
+			->method('implementsActions')
+			->willReturn(true, true, true);  // first add_to_group check will skip the second check
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('getBackends')
+			->will($this->returnValue([$backend]));
+
+		$expectedResponse = new DataResponse(
+			[
+				'data' => [
+					'assignableGroups' => [
+						'assignableGroup' => ['id' => 'assignableGroup', 'name' => 'assignable Group KO'],
+					],
+					'removableGroups' => [
+						'assignableGroup' => ['id' => 'assignableGroup', 'name' => 'assignable Group KO'],
+					],
+				],
+				\OC\AppFramework\Http::STATUS_OK
+			]
+		);
+		$response = $this->groupsController->getAssignableAndRemovableGroups();
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testGetAssignableAndRemovableGroupsBackendNoActions() {
+		$userid = 'MyAdminUser';
+
+		$user = $this->createMock(User::class);
+		$user->method('getUID')
+			->will($this->returnValue($userid));
+		$this->container['UserSession']
+			->method('getUser')
+			->willReturn($user);
+
+		$aGroup = $this->createMock(IGroup::class);
+		$aGroup->method('getGID')->willReturn('assignableGroup');
+		$aGroup->method('getDisplayName')->willReturn('assignable Group KO');
+
+		$subadmin = $this->createMock(SubAdmin::class);
+		$subadmin->method('isSubAdmin')
+			->with($this->equalTo($user))
+			->willReturn(false);
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('getSubAdmin')
+			->willReturn($subadmin);
+
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('isAdmin')
+			->with($userid)
+			->willReturn(true);
+		$backend = $this->createMock('\OCP\GroupInterface');
+		$backend->method('implementsActions')
+			->willReturn(false);
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('getBackends')
+			->will($this->returnValue([$backend]));
+
+		$expectedResponse = new DataResponse(
+			[
+				'data' => [
+					'assignableGroups' => [],
+					'removableGroups' => [],
+				],
+				\OC\AppFramework\Http::STATUS_OK
+			]
+		);
+		$response = $this->groupsController->getAssignableAndRemovableGroups();
+		$this->assertEquals($expectedResponse, $response);
+	}
+
 	public function testGetAssignableAndRemovableGroupsSubadmin() {
 		$userid = 'MySubAdminUser';
 
