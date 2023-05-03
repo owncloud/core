@@ -28,29 +28,30 @@
 
 namespace OC;
 
+use Exception;
+use OC_Helper;
 use OCP\ILogger;
 use OCP\IConfig;
 use OCP\ITempManager;
+use UnexpectedValueException;
 
 class TempManager implements ITempManager {
 	/** @var string[] Current temporary files and folders, used for cleanup */
-	protected $current = [];
-	/** @var string i.e. /tmp on linux systems */
-	protected $tmpBaseDir;
-	/** @var ILogger */
-	protected $log;
-	/** @var IConfig */
-	protected $config;
+	protected array $current = [];
+	/** @var ?string i.e. /tmp on linux systems */
+	protected ?string $tmpBaseDir = null;
+	protected ILogger $logger;
+	protected IConfig $config;
 
 	/** Prefix */
 	public const TMP_PREFIX = 'oc_tmp_';
 
 	/**
-	 * @param \OCP\ILogger $logger
-	 * @param \OCP\IConfig $config
+	 * @param ILogger $logger
+	 * @param IConfig $config
 	 */
 	public function __construct(ILogger $logger, IConfig $config) {
-		$this->log = $logger;
+		$this->logger = $logger;
 		$this->config = $config;
 		$this->tmpBaseDir = $this->getTempBaseDir();
 	}
@@ -63,7 +64,7 @@ class TempManager implements ITempManager {
 	 * @param string $postFix Postfix appended to the temporary file name, may be user controlled
 	 * @return string
 	 */
-	private function buildFileNameWithSuffix($absolutePath, $postFix = '') {
+	private function buildFileNameWithSuffix(string $absolutePath, string $postFix = ''): string {
 		if ($postFix !== '') {
 			$postFix = '.' . \ltrim($postFix, '.');
 			$postFix = \str_replace(['\\', '/'], '', $postFix);
@@ -81,7 +82,7 @@ class TempManager implements ITempManager {
 	 */
 	public function getTemporaryFile($postFix = '') {
 		if (\is_writable($this->tmpBaseDir)) {
-			// To create an unique file and prevent the risk of race conditions
+			// To create a unique file and prevent the risk of race conditions
 			// or duplicated temporary files by other means such as collisions
 			// we need to create the file using `tempnam` and append a possible
 			// postfix to it later
@@ -92,22 +93,23 @@ class TempManager implements ITempManager {
 			// temporary file
 			if ($postFix !== '') {
 				$fileNameWithPostfix = $this->buildFileNameWithSuffix($file, $postFix);
+				$old_umask = \umask(0077);
 				\touch($fileNameWithPostfix);
-				\chmod($fileNameWithPostfix, 0600);
+				\umask($old_umask);
 				$this->current[] = $fileNameWithPostfix;
 				return $fileNameWithPostfix;
 			}
 
 			return $file;
-		} else {
-			$this->log->warning(
-				'Can not create a temporary file in directory {dir}. Check it exists and has correct permissions',
-				[
-					'dir' => $this->tmpBaseDir,
-				]
-			);
-			return false;
 		}
+
+		$this->logger->warning(
+			'Can not create a temporary file in directory {dir}. Check it exists and has correct permissions',
+			[
+				'dir' => $this->tmpBaseDir,
+			]
+		);
+		return false;
 	}
 
 	/**
@@ -118,7 +120,7 @@ class TempManager implements ITempManager {
 	 */
 	public function getTemporaryFolder($postFix = '') {
 		if (\is_writable($this->tmpBaseDir)) {
-			// To create an unique directory and prevent the risk of race conditions
+			// To create a unique directory and prevent the risk of race conditions
 			// or duplicated temporary files by other means such as collisions
 			// we need to create the file using `tempnam` and append a possible
 			// postfix to it later
@@ -131,15 +133,15 @@ class TempManager implements ITempManager {
 			$this->current[] = $path;
 
 			return $path . '/';
-		} else {
-			$this->log->warning(
-				'Can not create a temporary folder in directory {dir}. Check it exists and has correct permissions',
-				[
-					'dir' => $this->tmpBaseDir,
-				]
-			);
-			return false;
 		}
+
+		$this->logger->warning(
+			'Can not create a temporary folder in directory {dir}. Check it exists and has correct permissions',
+			[
+				'dir' => $this->tmpBaseDir,
+			]
+		);
+		return false;
 	}
 
 	/**
@@ -152,13 +154,13 @@ class TempManager implements ITempManager {
 	/**
 	 * @param string[] $files
 	 */
-	protected function cleanFiles($files) {
+	protected function cleanFiles(array $files): void {
 		foreach ($files as $file) {
 			if (\file_exists($file)) {
 				try {
-					\OC_Helper::rmdirr($file);
-				} catch (\UnexpectedValueException $ex) {
-					$this->log->warning(
+					OC_Helper::rmdirr($file);
+				} catch (UnexpectedValueException $ex) {
+					$this->logger->warning(
 						"Error deleting temporary file/folder: {file} - Reason: {error}",
 						[
 							'file' => $file,
@@ -182,13 +184,13 @@ class TempManager implements ITempManager {
 	 *
 	 * @return string[]
 	 */
-	protected function getOldFiles() {
+	protected function getOldFiles(): array {
 		$cutOfTime = \time() - 3600;
 		$files = [];
 		$dh = \opendir($this->tmpBaseDir);
 		if ($dh) {
 			while (($file = \readdir($dh)) !== false) {
-				if (\substr($file, 0, 7) === self::TMP_PREFIX) {
+				if (\strpos($file, self::TMP_PREFIX) === 0) {
 					$path = $this->tmpBaseDir . '/' . $file;
 					$mtime = \filemtime($path);
 					if ($mtime < $cutOfTime) {
@@ -204,9 +206,9 @@ class TempManager implements ITempManager {
 	 * Get the temporary base directory configured on the server
 	 *
 	 * @return string Path to the temporary directory or null
-	 * @throws \UnexpectedValueException
+	 * @throws UnexpectedValueException
 	 */
-	public function getTempBaseDir() {
+	public function getTempBaseDir(): string {
 		if ($this->tmpBaseDir) {
 			return $this->tmpBaseDir;
 		}
@@ -237,12 +239,12 @@ class TempManager implements ITempManager {
 			}
 		}
 
-		$temp = \tempnam(\dirname(__FILE__), '');
+		$temp = \tempnam(__DIR__, '');
 		if (\file_exists($temp)) {
 			\unlink($temp);
 			return \dirname($temp);
 		}
-		throw new \UnexpectedValueException('Unable to detect system temporary directory');
+		throw new UnexpectedValueException('Unable to detect system temporary directory');
 	}
 
 	/**
@@ -251,16 +253,16 @@ class TempManager implements ITempManager {
 	 * @param mixed $directory
 	 * @return bool
 	 */
-	private function checkTemporaryDirectory($directory) {
+	private function checkTemporaryDirectory($directory): bool {
 		// suppress any possible errors caused by is_writable
 		// checks missing or invalid path or characters, wrong permissions etc
 		try {
-			if (\is_writeable($directory)) {
+			if (\is_writable($directory)) {
 				return true;
 			}
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 		}
-		$this->log->warning(
+		$this->logger->warning(
 			'Temporary directory {dir} is not present or writable',
 			['dir' => $directory]
 		);
@@ -272,7 +274,7 @@ class TempManager implements ITempManager {
 	 *
 	 * @param string $directory
 	 */
-	public function overrideTempBaseDir($directory) {
+	public function overrideTempBaseDir(string $directory): void {
 		$this->tmpBaseDir = $directory;
 	}
 }

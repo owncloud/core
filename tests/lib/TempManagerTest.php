@@ -10,6 +10,7 @@
 namespace Test;
 
 use OC\Log;
+use OCP\IConfig;
 
 class NullLogger extends Log {
 	public function __construct($logger = null) {
@@ -21,13 +22,13 @@ class NullLogger extends Log {
 	}
 }
 
-class TempManagerTest extends \Test\TestCase {
-	protected $baseDir = null;
+class TempManagerTest extends TestCase {
+	protected $baseDir;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->baseDir = $this->getManager()->getTempBaseDir() . $this->getUniqueID('/oc_tmp_test');
+		$this->baseDir = $this->getManager()->getTempBaseDir() . self::getUniqueID('/oc_tmp_test');
 		if (!\is_dir($this->baseDir)) {
 			\mkdir($this->baseDir);
 		}
@@ -39,17 +40,12 @@ class TempManagerTest extends \Test\TestCase {
 		parent::tearDown();
 	}
 
-	/**
-	 * @param  \OCP\ILogger $logger
-	 * @param  \OCP\IConfig $config
-	 * @return \OC\TempManager
-	 */
-	protected function getManager($logger = null, $config = null) {
+	protected function getManager(\OCP\ILogger $logger = null, IConfig $config = null): \OC\TempManager {
 		if (!$logger) {
 			$logger = new NullLogger();
 		}
 		if (!$config) {
-			$config = $this->createMock('\OCP\IConfig');
+			$config = $this->createMock(IConfig::class);
 			$config->method('getSystemValue')
 				->with('tempdirectory', null)
 				->willReturn('/tmp');
@@ -61,7 +57,7 @@ class TempManagerTest extends \Test\TestCase {
 		return $manager;
 	}
 
-	public function testGetFile() {
+	public function testGetFile(): void {
 		$manager = $this->getManager();
 		$file = $manager->getTemporaryFile('txt');
 		$this->assertStringEndsWith('.txt', $file);
@@ -72,18 +68,18 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertStringEqualsFile($file, 'bar');
 	}
 
-	public function testGetFolder() {
+	public function testGetFolder(): void {
 		$manager = $this->getManager();
 		$folder = $manager->getTemporaryFolder();
 		$this->assertStringEndsWith('/', $folder);
-		$this->assertTrue(\is_dir($folder));
+		$this->assertDirectoryExists($folder);
 		$this->assertTrue(\is_writable($folder));
 
 		\file_put_contents($folder . 'foo.txt', 'bar');
 		$this->assertStringEqualsFile($folder . 'foo.txt', 'bar');
 	}
 
-	public function testCleanFiles() {
+	public function testCleanFiles(): void {
 		$manager = $this->getManager();
 		$file1 = $manager->getTemporaryFile('txt');
 		$file2 = $manager->getTemporaryFile('txt');
@@ -96,7 +92,7 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertFileDoesNotExist($file2);
 	}
 
-	public function testCleanFolder() {
+	public function testCleanFolder(): void {
 		$manager = $this->getManager();
 		$folder1 = $manager->getTemporaryFolder();
 		$folder2 = $manager->getTemporaryFolder();
@@ -115,7 +111,7 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertFileDoesNotExist($folder1 . 'bar.txt');
 	}
 
-	public function testCleanOld() {
+	public function testCleanOld(): void {
 		$manager = $this->getManager();
 		$oldFile = $manager->getTemporaryFile('txt');
 		$newFile = $manager->getTemporaryFile('txt');
@@ -136,11 +132,11 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertFileExists($newFile);
 	}
 
-	public function testLogCantCreateFile() {
+	public function testLogCantCreateFile(): void {
 		if ($this->getCurrentUser() === 'root') {
 			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
 		}
-		$logger = $this->createMock('\Test\NullLogger');
+		$logger = $this->createMock(NullLogger::class);
 		$manager = $this->getManager($logger);
 		\chmod($this->baseDir, 0500);
 		$logger->expects($this->once())
@@ -149,11 +145,11 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertFalse($manager->getTemporaryFile('txt'));
 	}
 
-	public function testLogCantCreateFolder() {
+	public function testLogCantCreateFolder(): void {
 		if ($this->getCurrentUser() === 'root') {
 			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
 		}
-		$logger = $this->createMock('\Test\NullLogger');
+		$logger = $this->createMock(NullLogger::class);
 		$manager = $this->getManager($logger);
 		\chmod($this->baseDir, 0500);
 		$logger->expects($this->once())
@@ -162,8 +158,8 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertFalse($manager->getTemporaryFolder());
 	}
 
-	public function testBuildFileNameWithPostfix() {
-		$logger = $this->createMock('\Test\NullLogger');
+	public function testBuildFileNameWithPostfix(): void {
+		$logger = $this->createMock(NullLogger::class);
 		$tmpManager = self::invokePrivate(
 			$this->getManager($logger),
 			'buildFileNameWithSuffix',
@@ -173,8 +169,8 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertEquals('/tmp/myTemporaryFile-.postfix', $tmpManager);
 	}
 
-	public function testBuildFileNameWithoutPostfix() {
-		$logger = $this->createMock('\Test\NullLogger');
+	public function testBuildFileNameWithoutPostfix(): void {
+		$logger = $this->createMock(NullLogger::class);
 		$tmpManager = self::invokePrivate(
 			$this->getManager($logger),
 			'buildFileNameWithSuffix',
@@ -184,8 +180,8 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertEquals('/tmp/myTemporaryFile', $tmpManager);
 	}
 
-	public function testBuildFileNameWithSuffixPathTraversal() {
-		$logger = $this->createMock('\Test\NullLogger');
+	public function testBuildFileNameWithSuffixPathTraversal(): void {
+		$logger = $this->createMock(NullLogger::class);
 		$tmpManager = self::invokePrivate(
 			$this->getManager($logger),
 			'buildFileNameWithSuffix',
@@ -196,10 +192,10 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertStringEndsWith('.Traversal..FileName', $tmpManager);
 	}
 
-	public function testGetTempBaseDirFromConfig() {
+	public function testGetTempBaseDirFromConfig(): void {
 		$dir = $this->getManager()->getTemporaryFolder();
 
-		$config = $this->createMock('\OCP\IConfig');
+		$config = $this->createMock(IConfig::class);
 		$config->expects($this->once())
 			->method('getSystemValue')
 			->with('tempdirectory', null)
