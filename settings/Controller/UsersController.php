@@ -426,13 +426,13 @@ class UsersController extends Controller {
 	 * @return DataResponse
 	 */
 	public function create($username, $password, array $groups= [], $email='') {
-		if ($email !== '' && !$this->mailer->validateMailAddress($email)) {
-			return new DataResponse(
-				[
-					'message' => (string)$this->l10n->t('Invalid mail address')
-				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
-			);
+		$resp = $this->validateString($username, 255);
+		if ($resp) {
+			return $resp;
+		}
+		$resp = $this->validateEMail($email, true);
+		if ($resp) {
+			return $resp;
 		}
 
 		$currentUser = $this->userSession->getUser();
@@ -939,16 +939,9 @@ class UsersController extends Controller {
 			}
 		}
 
-		if ($mailAddress !== '' && !$this->mailer->validateMailAddress($mailAddress)) {
-			return new DataResponse(
-				[
-					'status' => 'error',
-					'data' => [
-						'message' => (string)$this->l10n->t('Invalid mail address')
-					]
-				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
-			);
+		$resp = $this->validateEMail($mailAddress);
+		if ($resp) {
+			return $resp;
 		}
 
 		if (!$user) {
@@ -1176,6 +1169,10 @@ class UsersController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function setEmailAddress($id, $mailAddress) {
+		$resp = $this->validateEMail($mailAddress);
+		if ($resp) {
+			return $resp;
+		}
 		$user = $this->userManager->get($id);
 		'@phan-var \OC\Group\Manager $this->groupManager';
 		if ($this->isAdmin ||
@@ -1310,6 +1307,31 @@ class UsersController extends Controller {
 				]
 			],
 			Http::STATUS_OK
+		);
+	}
+
+	private function validateString(string $string, int $max) {
+		if (\strlen($string) > $max) {
+			return $this->buildUnprocessableEntityResponse((string)$this->l10n->t('Data too long'));
+		}
+	}
+
+	private function validateEMail(string $email, bool $allowEmpty = false): ?DataResponse {
+		if ($allowEmpty && $email === '') {
+			return null;
+		}
+		if ($email !== '' && !$this->mailer->validateMailAddress($email)) {
+			return $this->buildUnprocessableEntityResponse((string)$this->l10n->t('Invalid mail address'));
+		}
+		return null;
+	}
+
+	private function buildUnprocessableEntityResponse(string $message): DataResponse {
+		return new DataResponse(
+			[
+				'message' => $message
+			],
+			Http::STATUS_UNPROCESSABLE_ENTITY
 		);
 	}
 }
