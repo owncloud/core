@@ -33,9 +33,7 @@ foreach ($_["groups"] as $group) {
 }
 $userlistParams['subadmingroups'] = $allGroups;
 $userlistParams['allGroups'] = \json_encode($allGroups);
-$items = \array_flip($userlistParams['subadmingroups']);
-unset($items['admin']);
-$userlistParams['subadmingroups'] = \array_flip($items);
+unset($userlistParams['subadmingroups']['admin']);
 
 translation('settings');
 ?>

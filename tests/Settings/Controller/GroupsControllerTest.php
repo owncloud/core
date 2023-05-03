@@ -262,6 +262,10 @@ class GroupsControllerTest extends \Test\TestCase {
 	}
 
 	public function testCreateSuccessful() {
+		$group = $this->createMock(IGroup::class);
+		$group->method('getGID')->willReturn('NewGroup');
+		$group->method('getDisplayName')->willReturn('A New Group');
+
 		$this->container['GroupManager']
 			->expects($this->once())
 			->method('groupExists')
@@ -271,11 +275,12 @@ class GroupsControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('createGroup')
 			->with('NewGroup')
-			->will($this->returnValue(true));
+			->willReturn($group);
 
 		$expectedResponse = new DataResponse(
 			[
-				'groupname' => 'NewGroup'
+				'id' => 'NewGroup',
+				'name' => 'A New Group',
 			],
 			Http::STATUS_CREATED
 		);
@@ -371,6 +376,10 @@ class GroupsControllerTest extends \Test\TestCase {
 			->method('getUser')
 			->willReturn($user);
 
+		$aGroup = $this->createMock(IGroup::class);
+		$aGroup->method('getGID')->willReturn('assignableGroup');
+		$aGroup->method('getDisplayName')->willReturn('assignable Group KO');
+
 		$subadmin = $this->createMock(SubAdmin::class);
 		$subadmin->method('isSubAdmin')
 			->with($this->equalTo($user))
@@ -385,15 +394,20 @@ class GroupsControllerTest extends \Test\TestCase {
 			->method('isAdmin')
 			->with($userid)
 			->willReturn(true);
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('get')
+			->with('assignableGroup')
+			->willReturn($aGroup);
 		$assignableGroups = ['assignableGroup'];
 		$backend = $this->createMock('\OCP\GroupInterface');
 		$backend
 			->expects($this->once())
 			->method('getGroups')
 			->willReturn($assignableGroups);
-		$backend->expects($this->exactly(2))
+		$backend->expects($this->exactly(3))
 			->method('implementsActions')
-			->willReturn(true, false);
+			->willReturn(true, true, false);  // first add_to_group check will skip the second check
 		$this->container['GroupManager']
 			->expects($this->once())
 			->method('getBackends')
@@ -402,7 +416,9 @@ class GroupsControllerTest extends \Test\TestCase {
 		$expectedResponse = new DataResponse(
 			[
 				'data' => [
-					'assignableGroups' => $assignableGroups,
+					'assignableGroups' => [
+						'assignableGroup' => ['id' => 'assignableGroup', 'name' => 'assignable Group KO'],
+					],
 					'removableGroups' => [],
 				],
 				\OC\AppFramework\Http::STATUS_OK
@@ -432,15 +448,14 @@ class GroupsControllerTest extends \Test\TestCase {
 			->willReturn(true);
 
 		$group1 = $this->createMock(IGroup::class);
-		$group1->method('getBackend')
-			->willReturn($backend);
-		$group1->method('getGID')
-			->willReturn('MyGroup1');
+		$group1->method('getBackend')->willReturn($backend);
+		$group1->method('getGID')->willReturn('MyGroup1');
+		$group1->method('getDisplayName')->willReturn('My Group 1');
+
 		$group2 = $this->createMock(IGroup::class);
-		$group2->method('getBackend')
-			->willReturn($backend);
-		$group2->method('getGID')
-			->willReturn('group2');
+		$group2->method('getBackend')->willReturn($backend);
+		$group2->method('getGID')->willReturn('group2');
+		$group2->method('getDisplayName')->willReturn('G2');
 
 		$subadmin = $this->createMock(SubAdmin::class);
 		$subadmin->method('isSubAdmin')
@@ -458,8 +473,14 @@ class GroupsControllerTest extends \Test\TestCase {
 		$expectedResponse = new DataResponse(
 			[
 				'data' => [
-					'assignableGroups' => ['MyGroup1', 'group2'],
-					'removableGroups' => ['MyGroup1', 'group2'],
+					'assignableGroups' => [
+						'MyGroup1' => ['id' => 'MyGroup1', 'name' => 'My Group 1'],
+						'group2' => ['id' => 'group2', 'name' => 'G2'],
+					],
+					'removableGroups' => [
+						'MyGroup1' => ['id' => 'MyGroup1', 'name' => 'My Group 1'],
+						'group2' => ['id' => 'group2', 'name' => 'G2'],
+					],
 				],
 				\OC\AppFramework\Http::STATUS_OK
 			]
