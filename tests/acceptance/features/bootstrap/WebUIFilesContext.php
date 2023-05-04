@@ -256,8 +256,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user browses to the files page
-	 * @Given the user has browsed to the files page
+	 * @When the user/administrator browses to the files page
+	 * @Given the user/administrator has browsed to the files page
 	 *
 	 * @return void
 	 * @throws Exception
