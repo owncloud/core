@@ -1108,6 +1108,8 @@ $(document).ready(function () {
 
 	if ($('#CheckboxLastLogin').is(':checked')) {
 		$("#userlist .lastLogin").show();
+	} else {
+		$("#userlist .lastLogin").hide();
 	}
 	// Option to display/hide the "Last Login" column
 	$('#CheckboxLastLogin').click(function() {
