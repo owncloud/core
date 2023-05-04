@@ -49,6 +49,24 @@ Feature: add users
       | Alice    | seconds ago |
       | Brian    | never       |
 
+
+  Scenario: administrator should not be able to see last login of a user when the UI setting is disabled
+    When the administrator disables the setting "Show last log in" in the User Management page using the webUI
+    Then the administrator should not be able to see the last login of these users in the User Management page:
+      | username |
+      | Alice    |
+      | Brian    |
+
+
+  Scenario: administrator should not be able to see last login of a user when the UI setting is disabled
+    When the administrator disables the setting "Show last log in" in the User Management page using the webUI
+    And the user browses to the files page
+    And the administrator browses to the users page
+    Then the administrator should not be able to see the last login of these users in the User Management page:
+      | username |
+      | Alice    |
+      | Brian    |
+
   @skipOnOcV10.10 @skipOnOcV10.11
   Scenario: administrator should be able to see creation time of a user
     When the administrator enables the setting "Show creation time" in the User Management page using the webUI

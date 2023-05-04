@@ -609,8 +609,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
 			$visible = $this->usersPage->isQuotaColumnOfUserVisible($user);
-			Assert::assertEquals(
-				true,
+			Assert::assertTrue(
 				$visible,
 				__METHOD__
 				. " The quota of user '"
@@ -633,8 +632,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
 			$visible = $this->usersPage->isQuotaColumnOfUserVisible($user);
-			Assert::assertEquals(
-				false,
+			Assert::assertFalse(
 				$visible,
 				__METHOD__
 				. " The quota of user '"
@@ -657,8 +655,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($user);
-			Assert::assertEquals(
-				true,
+			Assert::assertTrue(
 				$visible,
 				__METHOD__
 				. " The password of user '"
@@ -681,8 +678,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
 			$visible = $this->usersPage->isPasswordColumnOfUserVisible($user);
-			Assert::assertEquals(
-				false,
+			Assert::assertFalse(
 				$visible,
 				__METHOD__
 				. " The password of user '"
@@ -753,6 +749,32 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 				. "' is not contained in the last login of '"
 				. $user
 				. "'."
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the administrator should not be able to see the last login of these users in the User Management page:$/
+	 *
+	 * @param TableNode $table table of usernames and last logins with a heading | username | and | last logins |
+	 *
+	 * @return void
+	 * @throws ElementNotVisible
+	 * @throws Exception
+	 */
+	public function theAdministratorShouldNotBeAbleToSeeLastLoginOfTheseUsers(
+		TableNode $table
+	):void {
+		$this->featureContext->verifyTableNodeColumns($table, ['username']);
+		foreach ($table as $row) {
+			$user = $this->featureContext->getActualUsername($row['username']);
+
+			Assert::assertFalse(
+				$this->usersPage->isLastLoginColumnOfUserVisible($user),
+				__METHOD__
+				. " The last login of user '"
+				. $user
+				. "' was expected not to be visible to the administrator in the User Management page, but is visible."
 			);
 		}
 	}

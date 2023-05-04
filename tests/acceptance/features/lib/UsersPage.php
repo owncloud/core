@@ -271,6 +271,31 @@ class UsersPage extends OwncloudPage {
 	/**
 	 * @param string $username
 	 *
+	 * @return bool
+	 * @throws ElementNotFoundException
+	 * @throws Exception
+	 */
+	public function isLastLoginColumnOfUserVisible(string $username): bool {
+		$userTr = $this->findUserInTable($username);
+		$userLastLogin = $userTr->find('xpath', $this->lastLoginXpath);
+
+		if ($userLastLogin === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->lastLoginXpath " .
+				"last login column of user " . $username . " not found"
+			);
+		}
+
+		if (!$userLastLogin->isVisible()) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param string $username
+	 *
 	 * @return string storage location of user
 	 * @throws ElementNotFoundException|ElementNotVisible|Exception
 	 */
