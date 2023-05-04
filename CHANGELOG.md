@@ -10,6 +10,7 @@ Summary
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
+* Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 
 Details
@@ -33,6 +34,13 @@ Details
    A federated share with a too long name results in inaccessible data.
 
    https://github.com/owncloud/core/pull/40726
+
+* Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
+
+   The Last Login column on the Users page is now correctly hidden if the setting is initially
+   unchecked.
+
+   https://github.com/owncloud/core/pull/40771
 
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 
