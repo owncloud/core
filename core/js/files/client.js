@@ -21,6 +21,7 @@
 	 * @param {String} [options.root] root path
 	 * @param {String} [options.userName] user name
 	 * @param {String} [options.password] password
+	 * @param {String[]} [options.defaultHeaders] defaultHeaders
 	 *
 	 * @since 8.2
 	 */
@@ -198,35 +199,6 @@
 			}
 			path = sections.join('/');
 			return path;
-		},
-
-		/**
-		 * Parse headers string into a map
-		 *
-		 * @param {string} headersString headers list as string
-		 *
-		 * @return {Object.<String,Array>} map of header name to header contents
-		 */
-		_parseHeaders: function(headersString) {
-			var headerRows = headersString.split('\n');
-			var headers = {};
-			for (var i = 0; i < headerRows.length; i++) {
-				var sepPos = headerRows[i].indexOf(':');
-				if (sepPos < 0) {
-					continue;
-				}
-
-				var headerName = headerRows[i].substr(0, sepPos);
-				var headerValue = headerRows[i].substr(sepPos + 2);
-
-				if (!headers[headerName]) {
-					// make it an array
-					headers[headerName] = [];
-				}
-
-				headers[headerName].push(headerValue);
-			}
-			return headers;
 		},
 
 		/**
@@ -577,6 +549,7 @@
 		 * Returns the file info of a given path.
 		 *
 		 * @param {String} path path
+		 * @param options
 		 * @param {Array} [options.properties] list of Webdav properties to retrieve
 		 *
 		 * @return {Promise} promise
@@ -653,6 +626,7 @@
 		 * @param {Object} [options]
 		 * @param {String} [options.contentType='text/plain'] content type
 		 * @param {bool} [options.overwrite=true] whether to overwrite an existing file
+		 * @param {String} [options.lockToken=opaquelocktoken:123-456] sends a lock token if the resource was locked before
 		 *
 		 * @return {Promise}
 		 */
@@ -675,6 +649,9 @@
 			if (_.isUndefined(options.overwrite) || options.overwrite) {
 				// will trigger 412 precondition failed if a file already exists
 				headers['If-None-Match'] = '*';
+			}
+			if (options.lockToken) {
+				headers['If'] = '(<' + options.lockToken + '>)';
 			}
 
 			this._client.request(
@@ -800,6 +777,40 @@
 			return promise;
 		},
 
+		unlock: function(path, token, options) {
+			if (!path) {
+				throw 'Missing argument "path"';
+			}
+			if (!token) {
+				throw 'Missing argument "token"';
+			}
+			var self = this;
+			var deferred = $.Deferred();
+			var promise = deferred.promise();
+
+			options = _.extend({
+				'pathIsUrl' : false
+			}, options);
+
+			this._client.request(
+				'UNLOCK',
+				options.pathIsUrl ? path : this._buildUrl(path),
+				{
+					'Lock-Token': token
+				}
+			).then(
+				function(result) {
+					if (self._isSuccessStatus(result.status)) {
+						deferred.resolve(result.status, result);
+					} else {
+						result = _.extend(result, self._getSabreException(result));
+						deferred.reject(result.status, result);
+					}
+				}
+			);
+			return promise;
+		},
+
 		/**
 		 * Creates a directory
 		 *
@@ -831,6 +842,7 @@
 		 * false otherwise
 		 * @param {Object} [headers=null] additional headers
 		 *
+		 * @param options
 		 * @return {Promise} promise
 		 */
 		move: function(path, destinationPath, allowOverwrite, headers, options) {
@@ -846,6 +858,7 @@
 		 * false otherwise
 		 * @param {Object} [headers=null] additional headers
 		 *
+		 * @param options
 		 * @return {Promise} promise
 		 * @since 10.0.5
 		 */
@@ -856,7 +869,7 @@
 		/**
 		 * Add a file info parser function
 		 *
-		 * @param {OC.Files.Client~parseFileInfo>}
+		 * @param {OC.Files.Client~parseFileInfo} parserFunction
 		 */
 		addFileInfoParser: function(parserFunction) {
 			this._fileInfoParsers.push(parserFunction);
