@@ -22,14 +22,17 @@
 namespace TestHelpers;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
+use SimpleXMLElement;
 
 /**
  * Helper to set various configurations through the testing app
  *
  * @author Artur Neumann <artur@jankaritech.com>
  */
-class AppConfigHelper extends \PHPUnit\Framework\Assert {
+class AppConfigHelper extends Assert {
 	/**
 	 * @param string|null $baseUrl
 	 * @param string|null $user
@@ -41,12 +44,12 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $testingParameter the parameter name as understood by
 	 *                                      "testing"
 	 * @param boolean $testingState the on|off state the parameter must be set to for the test
-	 * @param string|null $savedCapabilitiesXml the original capabilities in XML format
+	 * @param SimpleXMLElement $savedCapabilitiesXml the original capabilities in XML format
 	 * @param string|null $xRequestId
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return array of the original state of the capability set
-	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public static function setCapability(
 		?string $baseUrl,
@@ -56,10 +59,10 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		?string $capabilitiesParameter,
 		?string $testingApp,
 		?string $testingParameter,
-		?bool $testingState,
-		$savedCapabilitiesXml,
+		?bool   $testingState,
+		SimpleXMLElement $savedCapabilitiesXml,
 		?string $xRequestId = '',
-		?int $ocsApiVersion = 1
+		?int    $ocsApiVersion = 1
 	):array {
 		$originalState = self::wasCapabilitySet(
 			$capabilitiesApp,
@@ -153,8 +156,8 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return string
 	 */
 	public static function getParameterValueFromXml(
-		$xml,
-		$capabilitiesApp,
+		?SimpleXMLElement $xml,
+		?string $capabilitiesApp,
 		?string $capabilitiesPath
 	):string {
 		$pathToElement = \explode('@@@', $capabilitiesPath);
@@ -178,7 +181,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	public static function wasCapabilitySet(
 		?string $capabilitiesApp,
 		?string $capabilitiesParameter,
-		$savedCapabilitiesXml
+		?SimpleXMLElement $savedCapabilitiesXml
 	):bool {
 		return (bool) self::getParameterValueFromXml(
 			$savedCapabilitiesXml,
@@ -209,6 +212,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $xRequestId
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function getCapabilities(
 		?string $baseUrl,
@@ -258,7 +262,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function modifyAppConfig(
 		?string $baseUrl,
@@ -276,7 +280,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$user,
 			$password,
 			'post',
-			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			"/apps/testing/api/v1/app/$app/$parameter",
 			$xRequestId,
 			$body,
 			$ocsApiVersion
@@ -310,7 +314,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function modifyAppConfigs(
 		?string $baseUrl,
@@ -323,7 +327,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		if (\is_array($appParameterValues)) {
 			foreach ($appParameterValues as $key => $value) {
 				if (isset($value['value']) && \is_array($value['value'])) {
-					$appParameterValues[$key]['value'] = \implode("", $appParameterValues[$key]['value']);
+					$appParameterValues[$key]['value'] = \implode("", $value['value']);
 				}
 			}
 		}
@@ -368,7 +372,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function deleteAppConfig(
 		?string $baseUrl,
@@ -385,7 +389,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$user,
 			$password,
 			'delete',
-			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			"/apps/testing/api/v1/app/$app/$parameter",
 			$xRequestId,
 			$body,
 			$ocsApiVersion
@@ -419,7 +423,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function deleteAppConfigs(
 		?string $baseUrl,
@@ -469,7 +473,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return array with 'configkey', 'value' and 'appid'
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getAppConfigs(
 		?string $baseUrl,
@@ -484,7 +488,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$user,
 			$password,
 			'get',
-			"/apps/testing/api/v1/app/{$app}",
+			"/apps/testing/api/v1/app/$app",
 			$xRequestId,
 			null,
 			$ocsApiVersion
@@ -509,8 +513,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		}
 
 		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data[0];
-		$response = \json_decode(\json_encode($responseXml), true)['element'];
-		return $response;
+		return \json_decode(\json_encode($responseXml), true)['element'];
 	}
 
 	/**
@@ -523,7 +526,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return array with 'configkey', 'value' and 'appid'
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getAppConfig(
 		?string $baseUrl,
@@ -539,7 +542,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$user,
 			$password,
 			'get',
-			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			"/apps/testing/api/v1/app/$app/$parameter",
 			$xRequestId,
 			null,
 			$ocsApiVersion
@@ -564,7 +567,6 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		}
 
 		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data[0];
-		$response = \json_decode(\json_encode($responseXml), true)['element'];
-		return $response;
+		return \json_decode(\json_encode($responseXml), true)['element'];
 	}
 }

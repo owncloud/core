@@ -22,6 +22,7 @@
 namespace TestHelpers\Asserts;
 
 use Exception;
+use PHPUnit\Framework\Assert;
 use SimpleXMLElement;
 use TestHelpers\DownloadHelper;
 use TestHelpers\SetupHelper;
@@ -29,7 +30,7 @@ use TestHelpers\SetupHelper;
 /**
  * WebDAV related asserts
  */
-class WebDav extends \PHPUnit\Framework\Assert {
+class WebDav extends Assert {
 	/**
 	 *
 	 * @param string|null $element exception|message|reason
@@ -59,6 +60,8 @@ class WebDav extends \PHPUnit\Framework\Assert {
 			$result = $responseXml['value'][1]['value'];
 		} elseif ($element === "reason") {
 			$result = $responseXml['value'][3]['value'];
+		} else {
+			self::fail(__METHOD__ . " element must be one of exception, response or reason. But '$element' was passed in.");
 		}
 
 		self::assertEquals(
@@ -155,7 +158,7 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 *                           otherwise check that the file contents are different
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|\GuzzleHttp\Exception\GuzzleException
 	 */
 	public static function assertContentOfDAVFileAndSkeletonFileOnSUT(
 		?string $baseUrl,

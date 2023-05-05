@@ -21,6 +21,7 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -33,7 +34,7 @@ class MoveCopyHelper {
 	/**
 	 *
 	 * @param string|null $baseUrl URL of owncloud
-	 *                        	   e.g. http://localhost:8080
+	 *                             e.g. http://localhost:8080
 	 *                             should include the subfolder
 	 *                             if owncloud runs in a subfolder
 	 *                             e.g. http://localhost:8080/owncloud-core
@@ -47,6 +48,7 @@ class MoveCopyHelper {
 	 * @param string|null $sourceIpAddress
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function copy(
 		?string $baseUrl,
@@ -90,6 +92,7 @@ class MoveCopyHelper {
 	 * @param string|null $sourceIpAddress
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function move(
 		?string $baseUrl,
@@ -134,6 +137,7 @@ class MoveCopyHelper {
 	 * @param string|null $sourceIpAddress
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	private static function copyOrMove(
 		?string $baseUrl,
