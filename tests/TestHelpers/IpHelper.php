@@ -25,14 +25,13 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * Helper to to get run-time IP addresses and make IP calculations
+ * Helper to get run-time IP addresses and make IP calculations
  *
  * @author Phillip Davis <phil@jankaritech.com>
  *
  */
 class IpHelper {
 	public const IPV6_LOOPBACK_ADDRESS = '::1';
-	public const IPV6_LOOPBACK_ADDRESS_SUBNET = '::0';
 	public const IPV4_LOOPBACK_ADDRESS_TOP = '127.';
 	public const IPV6_LINK_LOCAL_ADDRESS_TOP = 'fe80';
 	// The docker bridged device does not work as a routable IP address
@@ -217,7 +216,7 @@ class IpHelper {
 	/**
 	 * get a loopback address for the given IP address family
 	 *
-	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case-sensitive)
 	 *
 	 * @return string IP loopback address
 	 * @throws Exception
@@ -239,7 +238,7 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the loopback address of the given IP address family
 	 *
-	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case-sensitive)
 	 *
 	 * @return string IP of loopback subnet base address
 	 * @throws Exception
@@ -302,7 +301,7 @@ class IpHelper {
 	 * get a non-loopback address on the local system for the given IP address family
 	 * i.e. a "real" routable IP address on some network interface
 	 *
-	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case-sensitive)
 	 *
 	 * @return string IP address
 	 * @throws Exception
@@ -350,7 +349,7 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the first routable IP address of the given IP address family
 	 *
-	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case-sensitive)
 	 * @param int|null $cidr the CIDR "mask" size for the subnet
 	 *
 	 * @return string IP of local subnet base address
@@ -375,7 +374,7 @@ class IpHelper {
 	 *
 	 * @param string|null $networkScope which type of address to return,
 	 *                                  "routable" or "loopback"
-	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case-sensitive)
 	 *
 	 * @return string IP address
 	 * @throws Exception
@@ -384,16 +383,13 @@ class IpHelper {
 		switch (\strtolower($networkScope)) {
 			case 'routable':
 				return self::routableIpAddress($ipAddressFamily);
-				break;
 			case 'loopback':
 				return self::loopbackIpAddress($ipAddressFamily);
-				break;
 			default:
 				throw new \InvalidArgumentException(
 					"ipAddress: Invalid networkScope passed. " .
 					"(Must be routable or loopback)"
 				);
-				break;
 		}
 	}
 
@@ -403,7 +399,7 @@ class IpHelper {
 	 *
 	 * @param string|null $networkScope which type of address to return,
 	 *                                  "routable" or "loopback"
-	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case-sensitive)
 	 * @param int|null $cidr the CIDR "mask" size for the subnet
 	 *
 	 * @return string IP of base address
@@ -413,16 +409,13 @@ class IpHelper {
 		switch (\strtolower($networkScope)) {
 			case 'routable':
 				return self::routableIpAddressSubnet($ipAddressFamily, $cidr);
-				break;
 			case 'loopback':
 				return self::loopbackIpAddressSubnet($ipAddressFamily);
-				break;
 			default:
 				throw new \InvalidArgumentException(
 					"ipAddressSubnet: Invalid networkScope passed. " .
 					"(Must be routable or loopback)"
 				);
-				break;
 		}
 	}
 }

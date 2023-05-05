@@ -1466,7 +1466,7 @@ class PublicWebDavContext implements Context {
 
 		Assert::assertEquals(
 			$mtime,
-			WebDavHelper::getMtimeOfFileinPublicLinkShare(
+			WebDavHelper::getMtimeOfFileInPublicLinkShare(
 				$baseUrl,
 				$fileName,
 				$token,
@@ -1492,7 +1492,7 @@ class PublicWebDavContext implements Context {
 		$baseUrl = $this->featureContext->getBaseUrl();
 		Assert::assertNotEquals(
 			$mtime,
-			WebDavHelper::getMtimeOfFileinPublicLinkShare(
+			WebDavHelper::getMtimeOfFileInPublicLinkShare(
 				$baseUrl,
 				$fileName,
 				$token,

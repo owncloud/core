@@ -25,32 +25,21 @@ use Behat\Testwork\Hook\Scope\HookScope;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ServerException;
 use Exception;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
 
 /**
- * Helper to setup UI / Integration tests
+ * Helper to set up UI / Integration tests
  *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class SetupHelper extends \PHPUnit\Framework\Assert {
-	/**
-	 * @var string
-	 */
-	private static $ocPath = null;
-	/**
-	 * @var string
-	 */
-	private static $baseUrl = null;
-	/**
-	 * @var string
-	 */
-	private static $adminUsername = null;
-	/**
-	 * @var string
-	 */
-	private static $adminPassword = null;
+class SetupHelper extends Assert {
+	private static ?string $ocPath = null;
+	private static ?string $baseUrl = null;
+	private static ?string $adminUsername = null;
+	private static ?string $adminPassword = null;
 
 	/**
 	 * creates a user
@@ -61,8 +50,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $displayName
 	 * @param string|null $email
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
+	 * @throws Exception|GuzzleException
 	 */
 	public static function createUser(
 		?string $userName,
@@ -91,8 +80,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $userName
 	 * @param string|null $xRequestId
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
+	 * @throws Exception|GuzzleException
 	 */
 	public static function deleteUser(
 		?string $userName,
@@ -113,7 +102,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $xRequestId
 	 *
 	 * @return string[]
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function changeUserSetting(
 		?string $userName,
@@ -134,8 +123,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $groupName
 	 * @param string|null $xRequestId
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
+	 * @throws Exception|GuzzleException
 	 */
 	public static function createGroup(
 		?string $groupName,
@@ -154,8 +143,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $userName
 	 * @param string|null $xRequestId
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
+	 * @throws Exception|GuzzleException
 	 */
 	public static function addUserToGroup(
 		?string $groupName,
@@ -175,8 +164,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $userName
 	 * @param string|null $xRequestId
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
+	 * @throws Exception|GuzzleException
 	 */
 	public static function removeUserFromGroup(
 		?string $groupName,
@@ -195,8 +184,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $groupName
 	 * @param string|null $xRequestId
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
+	 * @throws Exception|GuzzleException
 	 */
 	public static function deleteGroup(
 		?string $groupName,
@@ -213,7 +202,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $xRequestId
 	 *
 	 * @return string[]
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getGroups(
 		?string $xRequestId = ''
@@ -301,6 +290,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 *
 	 * @return SimpleXMLElement
 	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function getSysInfo(
 		?string $baseUrl,
@@ -503,6 +493,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 *
 	 * @return void
 	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function createFileOnServer(
 		?string $filePathFromServerRoot,
@@ -609,13 +600,13 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			$adminUsername,
 			$adminPassword,
 			'GET',
-			"/apps/testing/api/v1/file?file={$fileInCore}",
+			"/apps/testing/api/v1/file?file=$fileInCore",
 			$xRequestId
 		);
 		self::assertSame(
 			200,
 			$response->getStatusCode(),
-			"Failed to read the file {$fileInCore}"
+			"Failed to read the file $fileInCore"
 		);
 		$localContent = HttpRequestHelper::getResponseXml($response, __METHOD__);
 		$localContent = (string)$localContent->data->element->contentUrlEncoded;
@@ -673,18 +664,17 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			$adminUsername,
 			$adminPassword,
 			'GET',
-			"/apps/testing/api/v1/file?file={$fileInSkeletonFolder}&absolute=true",
+			"/apps/testing/api/v1/file?file=$fileInSkeletonFolder&absolute=true",
 			$xRequestId
 		);
 		self::assertSame(
 			200,
 			$response->getStatusCode(),
-			"Failed to read the file {$fileInSkeletonFolder}"
+			"Failed to read the file $fileInSkeletonFolder"
 		);
 		$localContent = HttpRequestHelper::getResponseXml($response, __METHOD__);
 		$localContent = (string)$localContent->data->element->contentUrlEncoded;
-		$localContent = \urldecode($localContent);
-		return $localContent;
+		return \urldecode($localContent);
 	}
 
 	/**
@@ -693,8 +683,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $appName
 	 * @param string|null $xRequestId
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
+	 * @throws Exception|GuzzleException
 	 */
 	public static function enableApp(
 		?string $appName,
@@ -712,8 +702,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $appName
 	 * @param string|null $xRequestId
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
+	 * @throws Exception|GuzzleException
 	 */
 	public static function disableApp(
 		?string $appName,
@@ -732,7 +722,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $xRequestId
 	 *
 	 * @return bool true if enabled, false if disabled or nonexistent
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function isAppEnabled(
 		?string $appName,
@@ -752,7 +742,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $xRequestId
 	 *
 	 * @return bool true if the app needed to be enabled, false otherwise
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function enableAppIfNotEnabled(
 		?string $appName,
@@ -812,7 +802,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			if (isset($occ['envVariables'])) {
 				$body['env_variables'] = $occ['envVariables'];
 			}
-			\array_push($bodies, $body);
+			$bodies[] = $body;
 		}
 		try {
 			$result = OcsApiHelper::sendRequest(
@@ -840,7 +830,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * invokes an OCC command
 	 *
 	 * @param array|null $args anything behind "occ".
-	 *                    	   For example: "files:transfer-ownership"
+	 *                    	   For example, "files:transfer-ownership"
 	 * @param string|null $xRequestId
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
@@ -848,7 +838,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $ocPath
 	 * @param array|null $envVariables
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
 	 * @throws GuzzleException
 	 * @throws Exception
 	 */
@@ -984,10 +974,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $xRequestId
 	 *
 	 * @return ResponseInterface|null
 	 * @throws GuzzleException
@@ -1020,7 +1010,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $mount (name of local storage mount)
 	 * @param string|null $xRequestId
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr", "storageId"
+	 * @return string[] an associative array with "code", "stdOut", "stdErr", "storageId"
 	 * @throws GuzzleException
 	 */
 	public static function createLocalStorageMount(
@@ -1055,7 +1045,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		if (\array_key_exists(4, $storageIdWords)) {
 			$result['storageId'] = (int)$storageIdWords[4];
 		} else {
-			// presumably something went wrong with the files_external:create command
+			// Presumably something went wrong with the files_external:create command
 			// so return "unknown" to the caller. The result array has the command exit
 			// code and stdErr output etc., so the caller can process what it likes
 			// of that information to work out what went wrong.
@@ -1076,7 +1066,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $baseUrl
 	 * @param string|null $ocPath
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
 	 * @throws GuzzleException
 	 */
 	public static function getSystemConfig(
@@ -1122,7 +1112,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $baseUrl
 	 * @param string|null $ocPath
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
 	 * @throws GuzzleException
 	 */
 	public static function setSystemConfig(
@@ -1231,7 +1221,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $baseUrl
 	 * @param string|null $ocPath
 	 *
-	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @return string[] an associative array with "code", "stdOut", "stdErr"
 	 * @throws GuzzleException if parameters have not been provided yet or the testing app is not enabled
 	 */
 	public static function deleteSystemConfig(

@@ -24,7 +24,7 @@ namespace TestHelpers;
 /**
  * Class TranslationHelper
  *
- * Helper functions that are needed to run tests on different languages
+ * Helper functions that are needed to run tests in different languages
  *
  * @package TestHelpers
  */
