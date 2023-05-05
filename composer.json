@@ -47,7 +47,7 @@
         "pimple/pimple": "^3.5",
         "nikic/php-parser": "^4.15",
         "icewind/streams": "0.7.7",
-        "swiftmailer/swiftmailer": "^6.3",
+        "symfony/mailer": "^4.4",
         "guzzlehttp/guzzle": "^7.5",
         "league/flysystem": "^1.1",
         "pear/pear-core-minimal": "^v1.10",
