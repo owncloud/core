@@ -49,7 +49,7 @@ Feature: add users
       | Alice    | seconds ago |
       | Brian    | never       |
 
-
+  @skipOnOcV10.10 @skipOnOcV10.11 @skipOnOcV10.12
   Scenario: administrator should not be able to see last login of a user when the UI setting is disabled
     When the administrator disables the setting "Show last log in" in the User Management page using the webUI
     Then the administrator should not be able to see the last login of these users in the User Management page:
@@ -57,7 +57,7 @@ Feature: add users
       | Alice    |
       | Brian    |
 
-
+  @skipOnOcV10.10 @skipOnOcV10.11 @skipOnOcV10.12
   Scenario: administrator should not be able to see last login of a user when the UI setting is disabled
     When the administrator disables the setting "Show last log in" in the User Management page using the webUI
     And the user browses to the files page
