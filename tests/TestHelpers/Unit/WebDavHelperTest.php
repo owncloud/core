@@ -32,11 +32,8 @@ use GuzzleHttp\Psr7\Request;
  * Test for WebDavHelper
  */
 class WebDavHelperTest extends PHPUnit\Framework\TestCase {
-	private $container = [];
-	/**
-	 * @var Client
-	 */
-	private $client;
+	private array $container = [];
+	private Client $client;
 
 	/**
 	 * Setup mock response, client and listen for all requests
@@ -62,9 +59,10 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * for newer Dav path
 	 *
 	 * @return void
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
 	public function testUrlIsSanitizedByMakeDavRequestForNewerDav():void {
-		$response = WebDavHelper::makeDavRequest(
+		WebDavHelper::makeDavRequest(
 			'http://own.cloud///core',
 			'user1',
 			'pass',
@@ -99,9 +97,10 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * for older Dav path
 	 *
 	 * @return void
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
 	public function testUrlIsSanitizedByMakeDavRequestForOlderDavPath():void {
-		$response = WebDavHelper::makeDavRequest(
+		WebDavHelper::makeDavRequest(
 			'http://own.cloud///core',
 			'user1',
 			'pass',
@@ -136,9 +135,10 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * Guzzle doesn't do that, we replace manually there.
 	 *
 	 * @return void
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
 	public function testMakeDavRequestReplacesAsteriskAndHashesOnUrls():void {
-		$response = WebDavHelper::makeDavRequest(
+		WebDavHelper::makeDavRequest(
 			'http://own.cloud///core',
 			'user1',
 			'pass',
@@ -178,9 +178,10 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * bearer password when authType is set to "bearer"
 	 *
 	 * @return void
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
 	public function testMakeDavRequestOnBearerAuthorization():void {
-		$response = WebDavHelper::makeDavRequest(
+		WebDavHelper::makeDavRequest(
 			'http://own.cloud/core',
 			'user1',
 			'pass',
@@ -204,7 +205,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 		$lastRequest = $this->container[0]['request'];
 
 		// no way to know that $user and $password is set to null, except confirming that
-		// the Authorization is `Bearer`. If it would have gotten username and password,
+		// the Authorization is `Bearer`. If it had gotten username and password,
 		// it would have been `Basic`.
 		$this->assertEquals(['Bearer pass'], $lastRequest->getHeaders()["Authorization"]);
 	}
@@ -236,7 +237,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 * @return void
 	 */
 	public function testSanitizationWhenTrailingSlashIsSetToFalse(?string $unsanitizedUrl, ?string $expectedUrl):void {
-		$sanitizedUrl = WebDavHelper::sanitizeUrl($unsanitizedUrl, false);
+		$sanitizedUrl = WebDavHelper::sanitizeUrl($unsanitizedUrl);
 		$this->assertEquals($expectedUrl, $sanitizedUrl);
 	}
 
@@ -245,8 +246,8 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @dataProvider withTrailingSlashUrlsProvider
 	 *
-	 * @param string $unsanitizedUrl
-	 * @param string $expectedUrl
+	 * @param string|null $unsanitizedUrl
+	 * @param string|null $expectedUrl
 	 *
 	 * @return void
 	 */
@@ -262,15 +263,15 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 */
 	public function testGetDavPathForOlderDavVersion():void {
 		$davPath = WebDavHelper::getDavPath('user1', 1);
-		$this->assertEquals($davPath, 'remote.php/webdav/');
+		$this->assertEquals('remote.php/webdav/', $davPath);
 
 		// we don't need `user` to generate url for older dav path
 		$davPath = WebDavHelper::getDavPath(null, 1);
-		$this->assertEquals($davPath, 'remote.php/webdav/');
+		$this->assertEquals('remote.php/webdav/', $davPath);
 
 		// version 1 should be default
 		$davPath = WebDavHelper::getDavPath(null);
-		$this->assertEquals($davPath, 'remote.php/webdav/');
+		$this->assertEquals('remote.php/webdav/', $davPath);
 	}
 
 	/**
@@ -282,10 +283,10 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 		// `type` should be `files` by default.
 		// check that both returns same thing.
 		$davPath = WebDavHelper::getDavPath('user1', 2);
-		$this->assertEquals($davPath, 'remote.php/dav/files/user1/');
+		$this->assertEquals('remote.php/dav/files/user1/', $davPath);
 
-		$davPath = WebDavHelper::getDavPath('user1', 2, 'files');
-		$this->assertEquals($davPath, 'remote.php/dav/files/user1/');
+		$davPath = WebDavHelper::getDavPath('user1', 2);
+		$this->assertEquals('remote.php/dav/files/user1/', $davPath);
 	}
 
 	/**
@@ -296,10 +297,10 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 */
 	public function testGetDavPathForNewerDavPathButNotForFiles():void {
 		$davPath = WebDavHelper::getDavPath('user1', 2, null);
-		$this->assertEquals($davPath, 'remote.php/dav');
+		$this->assertEquals('remote.php/dav', $davPath);
 
 		$davPath = WebDavHelper::getDavPath('user1', 2, 'not_files');
-		$this->assertEquals($davPath, 'remote.php/dav');
+		$this->assertEquals('remote.php/dav', $davPath);
 	}
 
 	/**
@@ -312,7 +313,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage("DAV path version 3 is unknown");
 
-		$davPath = WebDavHelper::getDavPath(null, 3);
+		WebDavHelper::getDavPath(null, 3);
 	}
 
 	/**

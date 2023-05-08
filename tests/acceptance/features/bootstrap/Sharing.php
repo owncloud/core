@@ -1836,8 +1836,7 @@ trait Sharing {
 			true
 		);
 
-		Assert::assertEquals(
-			true,
+		Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($group, "group", $permissions),
 			__METHOD__
 			. " Could not assert that user '$user' has shared '$filepath' with group '$group' with permissions '$permissions'"

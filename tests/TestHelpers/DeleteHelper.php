@@ -21,6 +21,7 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -34,9 +35,9 @@ class DeleteHelper {
 	 *
 	 * @param string|null $baseUrl URL of owncloud
 	 *                             e.g. http://localhost:8080
-	 *                        	   should include the subfolder
-	 *                       	   if owncloud runs in a subfolder
-	 *                       	   e.g. http://localhost:8080/owncloud-core
+	 *                             should include the subfolder
+	 *                             if owncloud runs in a subfolder
+	 *                             e.g. http://localhost:8080/owncloud-core
 	 * @param string|null $user
 	 * @param string|null $password
 	 * @param string|null $fileName
@@ -47,6 +48,7 @@ class DeleteHelper {
 	 * @param Client|null $client
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function delete(
 		?string $baseUrl,

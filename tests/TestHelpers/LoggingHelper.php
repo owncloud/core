@@ -22,6 +22,7 @@
 namespace TestHelpers;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
 
 /**
@@ -48,7 +49,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getLogFilePath(
 		?string $xRequestId = ''
@@ -86,7 +87,7 @@ class LoggingHelper {
 	 * @param int|null $noOfLinesToRead
 	 *
 	 * @return array
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getLogFileContent(
 		?string $baseUrl,
@@ -112,7 +113,7 @@ class LoggingHelper {
 
 		$result = [];
 		foreach ($response->data->element as $line) {
-			array_push($result, (string)$line);
+			$result[] = (string) $line;
 		}
 		return $result;
 	}
@@ -123,7 +124,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getLogLevel(
 		?string $xRequestId = ''
@@ -150,7 +151,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function setLogLevel(
 		?string $logLevel,
@@ -177,7 +178,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getLogBackend(
 		?string $xRequestId = ''
@@ -209,7 +210,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function setLogBackend(
 		?string  $backend,
@@ -236,7 +237,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getLogTimezone(
 		?string  $xRequestId = ''
@@ -268,7 +269,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function setLogTimezone(
 		?string $timezone,
@@ -294,7 +295,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function clearLogFile(
 		?string $baseUrl,
@@ -323,7 +324,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function restoreLoggingStatus(
 		?string $logLevel,
@@ -341,13 +342,13 @@ class LoggingHelper {
 		$commands = ["log:manage"];
 
 		if ($timezone) {
-			\array_push($commands, "--timezone=$timezone");
+			$commands[] = "--timezone=$timezone";
 		}
 		if ($logLevel) {
-			\array_push($commands, "--backend=$backend");
+			$commands[] = "--backend=$backend";
 		}
 		if ($backend) {
-			\array_push($commands, "--level=$logLevel");
+			$commands[] = "--level=$logLevel";
 		}
 
 		if (\count($commands) > 1) {
@@ -370,7 +371,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return array|string[]
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getLogInfo(
 		?string $xRequestId = ''

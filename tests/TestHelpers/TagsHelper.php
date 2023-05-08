@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Exception\GuzzleException;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use Exception;
 use SimpleXMLElement;
@@ -31,7 +33,7 @@ use SimpleXMLElement;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class TagsHelper extends \PHPUnit\Framework\Assert {
+class TagsHelper extends Assert {
 	/**
 	 * tags a file
 	 *
@@ -48,7 +50,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $adminPassword
 	 *
 	 * @return ResponseInterface
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function tag(
 		?string $baseUrl,
@@ -162,7 +164,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			'oc:can-assign'
 		];
 		if ($withGroups) {
-			\array_push($properties, 'oc:groups');
+			$properties[] = 'oc:groups';
 		}
 		$response = WebDavHelper::propfind(
 			$baseUrl,
@@ -230,6 +232,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param int|null $davPathVersionToUse (1|2)
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 * @link self::makeDavRequest()
 	 */
 	public static function createTag(
@@ -280,6 +283,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param int|null $davPathVersionToUse (1|2)
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function deleteTag(
 		?string $baseUrl,

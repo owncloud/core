@@ -61,7 +61,7 @@ class OcsApiHelper {
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
-		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;
+		$fullUrl .= "ocs/v$ocsApiVersion.php" . $path;
 		$headers['OCS-APIREQUEST'] = true;
 		return HttpRequestHelper::sendRequest($fullUrl, $xRequestId, $method, $user, $password, $headers, $body);
 	}
@@ -91,7 +91,7 @@ class OcsApiHelper {
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
-		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;
+		$fullUrl .= "ocs/v$ocsApiVersion.php" . $path;
 		return HttpRequestHelper::createRequest(
 			$fullUrl,
 			$xRequestId,

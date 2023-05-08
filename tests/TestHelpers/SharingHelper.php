@@ -22,6 +22,7 @@
 namespace TestHelpers;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
@@ -52,7 +53,7 @@ class SharingHelper {
 			'accepted' => 0,
 			'pending' => 1,
 			'rejected' => 2,
-			'declined' => 2, // declined is a synonym for rejected
+			'declined' => 2, // declined is a synonym for rejected.
 	];
 
 	/**
@@ -88,7 +89,7 @@ class SharingHelper {
 	 * @param string $sharingApp
 	 *
 	 * @return ResponseInterface
-	 * @throws InvalidArgumentException
+	 * @throws InvalidArgumentException|GuzzleException
 	 */
 	public static function createShare(
 		string $baseUrl,
@@ -136,7 +137,7 @@ class SharingHelper {
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
-		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/{$sharingApp}/api/v{$sharingApiVersion}/shares";
+		$fullUrl .= "ocs/v$ocsApiVersion.php/apps/$sharingApp/api/v$sharingApiVersion/shares";
 
 		$fd['path'] = $path;
 		$fd['shareType'] = self::getShareType($shareType);
@@ -145,7 +146,7 @@ class SharingHelper {
 			$fd['shareWith'] = $shareWith;
 		}
 		if ($publicUpload !== null) {
-			$fd['publicUpload'] = (bool) $publicUpload;
+			$fd['publicUpload'] = $publicUpload;
 		}
 		if ($sharePassword !== null) {
 			$fd['password'] = $sharePassword;
@@ -169,8 +170,8 @@ class SharingHelper {
 	}
 
 	/**
-	 * calculates the permission sum (int) from given permissions
-	 * permissions can be passed in as int, string or array of int or string
+	 * Calculates the permission sum (int) from the given permissions.
+	 * Permissions can be passed in as int, string or array of int or string
 	 * 'read' => 1
 	 * 'update' => 2
 	 * 'create' => 4
@@ -197,7 +198,7 @@ class SharingHelper {
 			if (\array_key_exists($permission, self::PERMISSION_TYPES)) {
 				$permissionSum += self::PERMISSION_TYPES[$permission];
 			} elseif (\in_array($permission, self::PERMISSION_TYPES, true)) {
-				$permissionSum += (int) $permission;
+				$permissionSum += $permission;
 			} else {
 				throw new InvalidArgumentException(
 					"invalid permission type ($permission)"
