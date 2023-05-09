@@ -26,6 +26,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Page\DisabledUserPage;
 use Page\GeneralErrorPage;
 use Page\LoginPage;
 use Page\UsersPage;
@@ -40,39 +41,13 @@ require_once 'bootstrap.php';
  * WebUI Users context.
  */
 class WebUIUsersContext extends RawMinkContext implements Context {
-	private $usersPage;
-
-	/**
-	 *
-	 * @var LoginPage
-	 */
-	private $loginPage;
-
-	/**
-	 *
-	 * @var OwncloudPage
-	 */
-	private $owncloudPage;
-
-	/**
-	 *
-	 * @var GeneralErrorPage
-	 */
-	private $generalErrorPage;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	private $appParameterValues = null;
+	private UsersPage $usersPage;
+	private LoginPage $loginPage;
+	private OwncloudPage $owncloudPage;
+	private GeneralErrorPage $generalErrorPage;
+	private WebUIGeneralContext $webUIGeneralContext;
+	private FeatureContext $featureContext;
+	private ?array $appParameterValues = null;
 
 	/**
 	 * WebUIUsersContext constructor.
@@ -365,7 +340,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the administrator deletes these groups and and cancels the deletion using the webUI:
+	 * @When the administrator deletes these groups and cancels the deletion using the webUI:
 	 * expects a table of groups with the heading "groupname"
 	 *
 	 * @param TableNode $table
@@ -373,7 +348,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdminDeletesDoesNotTheseGroupsUsingTheWebUI(TableNode $table):void {
+	public function theAdminDeletesTheseGroupsAndCancelsUsingTheWebUI(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			$this->theAdminDeletesDoesNotDeleteGroupUsingWebUI($row['groupname']);
@@ -545,7 +520,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function enableOrDisableSettings(string $action, string $setting):void {
-		$value = ($action === 'enables' || $action === 'enabled') ? true : false;
+		$value = $action === 'enables' || $action === 'enabled';
 		$this->usersPage->setSetting($setting, $value);
 	}
 
@@ -645,7 +620,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	/**
 	 * @Then /^the administrator should be able to see the password of these users in the User Management page:$/
 	 *
-	 * @param TableNode $table table of usernames column with a heading | username |
+	 * @param TableNode $table table of usernames with a heading | username |
 	 *
 	 * @return void
 	 * @throws Exception
@@ -668,7 +643,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	/**
 	 * @Then /^the administrator should not be able to see the password of these users in the User Management page:$/
 	 *
-	 * @param TableNode $table table of usernames column with a heading | username |
+	 * @param TableNode $table table of usernames with a heading | username |
 	 *
 	 * @return void
 	 * @throws Exception
@@ -759,7 +734,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames and last logins with a heading | username | and | last logins |
 	 *
 	 * @return void
-	 * @throws ElementNotVisible
 	 * @throws Exception
 	 */
 	public function theAdministratorShouldNotBeAbleToSeeLastLoginOfTheseUsers(
@@ -1001,7 +975,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserCountOfGroupShouldDisplayUsersOnTheWebUI(string $group, int $count):void {
-		$expectedCount = (int) $count;
+		$expectedCount = $count;
 		$actualCount = $this->usersPage->getUserCountOfGroup($group);
 		Assert::assertEquals(
 			$expectedCount,

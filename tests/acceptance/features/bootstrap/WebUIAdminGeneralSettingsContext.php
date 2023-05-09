@@ -36,22 +36,12 @@ require_once 'bootstrap.php';
  * WebUI AdminGeneralSettings context.
  */
 class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context {
-	private $adminGeneralSettingsPage;
+	private AdminGeneralSettingsPage $adminGeneralSettingsPage;
+	private WebUIGeneralContext $webUIGeneralContext;
+	private FeatureContext $featureContext;
 
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	private $appParameterValues = null;
-	private $logLevelValue = null;
+	private ?array $appParameterValues = null;
+	private ?string $logLevelValue = null;
 
 	/**
 	 * WebUIAdminAdminSettingsContext constructor.

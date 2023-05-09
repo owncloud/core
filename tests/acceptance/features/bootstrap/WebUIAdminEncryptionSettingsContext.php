@@ -23,7 +23,6 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\OwncloudPage;
 use Page\AdminEncryptionSettingsPage;
 
 require_once 'bootstrap.php';
@@ -32,40 +31,17 @@ require_once 'bootstrap.php';
  * Context for admin encryption settings specific webUI steps
  */
 class WebUIAdminEncryptionSettingsContext extends RawMinkContext implements Context {
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 *
-	 * @var OwncloudPage
-	 */
-	private $owncloudPage;
-
-	/**
-	 *
-	 * @var AdminEncryptionSettingsPage
-	 */
-	private $adminEncryptionSettingsPage;
+	private WebUIGeneralContext $webUIGeneralContext;
+	private AdminEncryptionSettingsPage $adminEncryptionSettingsPage;
 
 	/**
 	 * WebUIAdminEncryptionSettingsContext constructor.
 	 *
-	 * @param OwncloudPage $owncloudPage
 	 * @param AdminEncryptionSettingsPage $adminEncryptionSettingsPage
 	 */
 	public function __construct(
-		OwncloudPage $owncloudPage,
 		AdminEncryptionSettingsPage $adminEncryptionSettingsPage
 	) {
-		$this->owncloudPage = $owncloudPage;
 		$this->adminEncryptionSettingsPage = $adminEncryptionSettingsPage;
 	}
 
@@ -104,7 +80,6 @@ class WebUIAdminEncryptionSettingsContext extends RawMinkContext implements Cont
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 }

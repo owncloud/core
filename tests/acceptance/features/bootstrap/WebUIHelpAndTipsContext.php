@@ -34,19 +34,9 @@ require_once 'bootstrap.php';
  * WebUI HelpAndTips context.
  */
 class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
-	private $helpAndTipsPage;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private HelpAndTipsPage $helpAndTipsPage;
+	private WebUIGeneralContext $webUIGeneralContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * WebUIHelpAndTips constructor.
@@ -60,7 +50,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * return actual link from help and tips page
+	 * return the actual link from the help and tips page
 	 *
 	 * @param string $to
 	 *
@@ -73,7 +63,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 			$this->featureContext->getStepLineRef()
 		);
 		$version = \explode(".", $version);
-		$version = (string) $version[0] . "." . (string) $version[1];
+		$version = $version[0] . "." . $version[1];
 		return "https://doc.owncloud.com/server/$version/go.php?to=$to";
 	}
 
@@ -159,7 +149,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 		$link = $this->helpAndTipsPage->getLinkByTitle($linkTitle);
 		$link->click();
 
-		// switch to next tab as the link opens in new tab
+		// switch to the next tab as the link opens in the new tab
 		$windowNames = $this->getSession()->getWindowNames();
 		if (\count($windowNames) > 1) {
 			$this->getSession()->switchToWindow($windowNames[1]);

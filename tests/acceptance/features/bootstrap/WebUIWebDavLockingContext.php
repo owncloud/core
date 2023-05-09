@@ -23,8 +23,6 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\FilesPage;
-use Page\SharedWithYouPage;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
@@ -34,38 +32,15 @@ require_once 'bootstrap.php';
  * context containing webUI steps needed for the locking mechanism of webdav
  */
 class WebUIWebDavLockingContext extends RawMinkContext implements Context {
-	/**
-	 *
-	 * @var FilesPage
-	 */
-	private $filesPage;
-
-	/**
-	 *
-	 * @var SharedWithYouPage
-	 */
-	private $sharedWithYouPage;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
+	private WebUIGeneralContext $webUIGeneralContext;
 
 	/**
 	 * WebUIFilesContext constructor.
 	 *
-	 * @param FilesPage $filesPage
-	 * @param SharedWithYouPage $sharedWithYouPage
-	 *
 	 * @return void
 	 */
 	public function __construct(
-		FilesPage $filesPage,
-		SharedWithYouPage $sharedWithYouPage
 	) {
-		$this->filesPage = $filesPage;
-		$this->sharedWithYouPage = $sharedWithYouPage;
 	}
 
 	/**
@@ -195,7 +170,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 		try {
 			$pageObject->closeDetailsDialog();
 		} catch (Exception $e) {
-			//ignore if dialog cannot be closed
+			//ignore if dialog cannot be closed,
 			//most likely there is no dialog open
 		}
 	}

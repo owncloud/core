@@ -101,7 +101,7 @@ Feature: Versions of a file
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
+    Then the authors of the current and non-current versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Alice  |
       | 2     | Alice  |
@@ -120,7 +120,7 @@ Feature: Versions of a file
     And user "Carol" has logged in using the webUI
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
+    Then the authors of the current and non-current versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Brian  |
       | 2     | Brian  |
@@ -141,14 +141,14 @@ Feature: Versions of a file
     And user "Carol" has logged in using the webUI
     And the user has browsed to the files page
     When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
-    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
+    Then the authors of the current and non-current versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Carol  |
       | 2     | Alice  |
       | 3     | Brian  |
       | 4     | Alice  |
     When the user restores the file to last version using the webUI
-    Then the authors of the current and noncurrent versions of file "randomfile.txt" should be:
+    Then the authors of the current and non-current versions of file "randomfile.txt" should be:
       | index | author |
       | 1     | Carol  |
       | 2     | Carol  |

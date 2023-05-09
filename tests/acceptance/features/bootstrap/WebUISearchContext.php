@@ -32,28 +32,10 @@ require_once 'bootstrap.php';
  * WebUI Search context.
  */
 class WebUISearchContext extends RawMinkContext implements Context {
-	/**
-	 *
-	 * @var SearchResultInOtherFoldersPage
-	 */
-	private $searchResultInOtherFoldersPage;
-	/**
-	 *
-	 * @var FilesPage
-	 */
-	private $filesPage;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 *
-	 * @var WebUIFilesContext
-	 */
-	private $webUIFilesContext;
+	private SearchResultInOtherFoldersPage $searchResultInOtherFoldersPage;
+	private FilesPage $filesPage;
+	private WebUIGeneralContext $webUIGeneralContext;
+	private WebUIFilesContext $webUIFilesContext;
 
 	/**
 	 * WebUILoginContext constructor.
