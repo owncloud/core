@@ -39,7 +39,6 @@ use Page\TagsPage;
 use Page\TrashbinPage;
 use Page\FilesPageElement\ConflictDialog;
 use Page\FilesPageElement\FileActionsMenu;
-use Page\GeneralExceptionPage;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
@@ -52,123 +51,52 @@ require_once 'bootstrap.php';
  * WebUI Files context.
  */
 class WebUIFilesContext extends RawMinkContext implements Context {
-	/**
-	 *
-	 * @var FilesPage
-	 */
-	private $filesPage;
-
-	/**
-	 *
-	 * @var TrashbinPage
-	 */
-	private $trashbinPage;
-
-	/**
-	 *
-	 * @var FavoritesPage
-	 */
-	private $favoritesPage;
-
-	/**
-	 *
-	 * @var SharedWithYouPage
-	 */
-	private $sharedWithYouPage;
-
-	/**
-	 *
-	 * @var SharedByLinkPage
-	 */
-	private $sharedByLinkPage;
-
-	/**
-	 * @var SharedWithOthersPage
-	 */
-	private $sharedWithOthersPage;
-
-	/**
-	 *
-	 * @var TagsPage
-	 */
-	private $tagsPage;
-
-	/**
-	 *
-	 * @var ConflictDialog
-	 */
-	private $conflictDialog;
-
-	/**
-	 *
-	 * @var FileActionsMenu
-	 */
-	private $openedFileActionMenu;
-
-	/**
-	 *
-	 * @var ExternalStoragePage
-	 */
-	private $externalStoragePage;
+	private FilesPage $filesPage;
+	private TrashbinPage $trashbinPage;
+	private FavoritesPage $favoritesPage;
+	private SharedWithYouPage $sharedWithYouPage;
+	private SharedByLinkPage $sharedByLinkPage;
+	private SharedWithOthersPage $sharedWithOthersPage;
+	private TagsPage $tagsPage;
+	private ConflictDialog $conflictDialog;
+	private FileActionsMenu $openedFileActionMenu;
+	private ExternalStoragePage $externalStoragePage;
 
 	/**
 	 * Table of all files and folders that should have been deleted, stored so
 	 * that other steps can use the list to check if the deletion happened correctly
 	 * table headings: must be: |name|
-	 *
-	 * @var TableNode
 	 */
-	private $deletedElementsTable = null;
+	private ?TableNode $deletedElementsTable = null;
 
 	/**
 	 * Table of all files and folders that should have been moved, stored so
 	 * that other steps can use the list to check if the moving happened correctly
 	 * table headings: must be: |name|
-	 *
-	 * @var TableNode
 	 */
-	private $movedElementsTable = null;
+	private ?TableNode $movedElementsTable = null;
 
 	/**
 	 * variable to remember in which folder we are currently working
-	 *
-	 * @var string
 	 */
-	private $currentFolder = "";
+	private string $currentFolder = "";
 
 	/**
 	 * variable to remember with which file we are currently working
-	 *
-	 * @var string
 	 */
-	private $currentFile = "";
+	private string $currentFile = "";
 
 	/**
 	 * variable to remember the path of a received share that has been moved
-	 *
-	 * @var string
 	 */
-	private $pathOfMovedReceivedShare = "";
+	private string $pathOfMovedReceivedShare = "";
 
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
+	private WebUIGeneralContext $webUIGeneralContext;
 
-	private $uploadConflictDialogTitle = "file conflict";
-
-	/**
-	 *
-	 * @var GeneralExceptionPage
-	 */
-	private $generalExceptionPage;
+	private string $uploadConflictDialogTitle = "file conflict";
+	private FileRow $selectedFileRow;
 
 	/**
 	 * WebUIFilesContext constructor.
@@ -181,7 +109,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param TagsPage $tagsPage
 	 * @param SharedByLinkPage $sharedByLinkPage
 	 * @param SharedWithOthersPage $sharedWithOthersPage
-	 * @param GeneralExceptionPage $generalExceptionPage
 	 * @param ExternalStoragePage $externalStoragePage
 	 *
 	 * @return void
@@ -195,7 +122,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		TagsPage $tagsPage,
 		SharedByLinkPage $sharedByLinkPage,
 		SharedWithOthersPage $sharedWithOthersPage,
-		GeneralExceptionPage $generalExceptionPage,
 		ExternalStoragePage $externalStoragePage
 	) {
 		$this->trashbinPage = $trashbinPage;
@@ -206,7 +132,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->tagsPage = $tagsPage;
 		$this->sharedByLinkPage = $sharedByLinkPage;
 		$this->sharedWithOthersPage = $sharedWithOthersPage;
-		$this->generalExceptionPage = $generalExceptionPage;
 		$this->externalStoragePage = $externalStoragePage;
 	}
 
@@ -816,7 +741,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * for a folder or individual file that is shared, the receiver of the share
+	 * For a folder or individual file that is shared, the receiver of the share
 	 * has an "Unshare" entry in the file actions menu. Clicking it works just
 	 * like delete.
 	 *
@@ -832,7 +757,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * for a folder or individual file that is shared as federated share, the receiver of the share
+	 * For a folder or individual file that is shared as federated share, the receiver of the share
 	 * has an "Unshare" entry in the file actions menu of the share in the
 	 * sharedwithme page. Clicking it works just like delete.
 	 *
@@ -1075,7 +1000,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ["uploaded-elements"]);
 		$expectedElements = [];
 		foreach ($table as $row) {
-			\array_push($expectedElements, $row["uploaded-elements"]);
+			$expectedElements[] = $row["uploaded-elements"];
 		}
 		$pageObject = $this->getCurrentPageObject();
 		$currentUploadedElements = $pageObject->getCompletelyUploadedElements();
@@ -1467,7 +1392,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			}
 			if (\count($breadCrumbs)) {
 				$this->currentFolder .= "/" . \implode('/', $breadCrumbs);
-			};
+			}
 		}
 	}
 
@@ -1546,7 +1471,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
 	 * @param string $path if set, name and path (shown on the webUI) of the file to match
-	 * @param FilesPageBasic $pageObject if not null use this pageObject and ignore $typeOfFilesPage
+	 * @param FilesPageBasic|null $pageObject if not null use this pageObject and ignore $typeOfFilesPage
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1560,7 +1485,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		FilesPageBasic $pageObject = null
 	) {
 		$should = ($shouldOrNot !== "not");
-		$exceptionMessage = null;
 		switch ($typeOfFilesPage) {
 			case "files page":
 				$this->theUserBrowsesToThePage($this->filesPage);
@@ -1742,8 +1666,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
-	 * @param TableNode $namePartsTable table of parts of the file name
-	 *                                  table headings: must be: |name-parts |
+	 * @param TableNode|null $namePartsTable table of parts of the file name
+	 *                                       table headings: must be: |name-parts |
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1866,7 +1790,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function itShouldBePossibleToDeleteFileFolderUsingTheWebUI(string $name):void {
-		$this->deleteTheFileUsingTheWebUI($name, true);
+		$this->deleteTheFileUsingTheWebUI($name);
 	}
 
 	/**
@@ -2361,15 +2285,15 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
 		$url = $this->openedFileActionMenu->getDownloadUrlForFile();
 		$baseUrl = $this->featureContext->getBaseUrlWithoutPath();
-		$this->response = HttpRequestHelper::get(
+		$response = HttpRequestHelper::get(
 			$baseUrl . $url,
 			$this->featureContext->getStepLineRef()
 		);
 		Assert::assertEquals(
 			200,
-			$this->response->getStatusCode()
+			$response->getStatusCode()
 		);
-		$this->featureContext->setResponse($this->response);
+		$this->featureContext->setResponse($response);
 	}
 
 	/**
@@ -2466,7 +2390,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUserUnzipsTheFolder(string $file):void {
+	public function theUserUnzipsTheFile(string $file):void {
 		$zip = new ZipArchive;
 		$directory = getenv("DOWNLOADS_DIRECTORY");
 		if (!$directory) {
@@ -2477,7 +2401,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		if ($res === true) {
 			$zip->extractTo($directory);
 			$zip->close();
-			$files = array_diff(scandir($directory), ['.', '..']); // get all file names and remove '.', '..'
 		} else {
 			throw new Exception("Couldn't open the file $zipFile");
 		}
@@ -2649,7 +2572,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the author(s) of the current and noncurrent version(s) of file/folder :resource should be:
+	 * @Then the author(s) of the current and non-current version(s) of file/folder :resource should be:
 	 *
 	 * @param string $resource
 	 * @param TableNode $versionTable
@@ -2657,7 +2580,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAuthorsOfCurrentAndNoncurrentVersionsOfFileShouldBe(string $resource, TableNode $versionTable):void {
+	public function theAuthorsOfCurrentAndNonCurrentVersionsOfFileShouldBe(string $resource, TableNode $versionTable):void {
 		$this->featureContext->verifyTableNodeColumns(
 			$versionTable,
 			['index', 'author']
@@ -2782,9 +2705,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			RecursiveIteratorIterator::CHILD_FIRST
 		);
 
-		foreach ($files as $fileinfo) {
-			$todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-			$todo($fileinfo->getRealPath());
+		foreach ($files as $fileInfo) {
+			$todo = ($fileInfo->isDir() ? 'rmdir' : 'unlink');
+			$todo($fileInfo->getRealPath());
 		}
 	}
 }

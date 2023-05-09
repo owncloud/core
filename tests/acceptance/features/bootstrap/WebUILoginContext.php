@@ -25,8 +25,10 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use GuzzleHttp\Exception\GuzzleException;
 use Page\LoginPage;
 use PHPUnit\Framework\Assert;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 require_once 'bootstrap.php';
 
@@ -34,21 +36,10 @@ require_once 'bootstrap.php';
  * WebUI Login context.
  */
 class WebUILoginContext extends RawMinkContext implements Context {
-	private $loginPage;
-	private $filesPage;
-	private $expectedPage;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
+	private LoginPage $loginPage;
+	private Page $filesPage;
+	private FeatureContext $featureContext;
+	private WebUIGeneralContext $webUIGeneralContext;
 
 	/**
 	 * WebUILoginContext constructor.
@@ -68,7 +59,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * after a successful login we always end up on the Files Page
+	 * after a successful login, we always end up on the Files Page
 	 *
 	 * @return void
 	 */
@@ -458,7 +449,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		string $password,
 		string $page
 	):void {
-		$this->expectedPage = $this->webUIGeneralContext->loginAs(
+		$this->webUIGeneralContext->loginAs(
 			$username,
 			$password,
 			\str_replace(' ', '', \ucwords($page)) . 'Page'
@@ -688,7 +679,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user follows the password reset link from email address of the user :user but supplying invalid user name :username
+	 * @When the user follows the password reset link from email address of the user :user but supplying invalid username :username
 	 *
 	 * @param string $user
 	 * @param string $username
@@ -712,7 +703,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		// pop off the last part and replace it with the invalid username
 		$linkParts = \explode('/', $link);
 		\array_pop($linkParts);
-		\array_push($linkParts, $username);
+		$linkParts[] = $username;
 		$adjustedLink = \implode('/', $linkParts);
 		$this->visitPath($adjustedLink);
 	}
@@ -743,7 +734,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		// reverse the token string, an easy way to make the token invalid
 		$invalidToken = \strrev($goodToken);
 		\array_push($linkParts, $invalidToken);
-		\array_push($linkParts, $username);
+		$linkParts[] = $username;
 		$adjustedLink = \implode('/', $linkParts);
 		$this->visitPath($adjustedLink);
 	}
@@ -814,7 +805,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 * @throws Exception
-	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 * @throws GuzzleException
 	 */
 	public function theUserFollowsThePasswordSetLinkReceivedByEmail(string $emailAddress, int $numEmails = 1):void {
 		$this->featureContext->pushEmailRecipientAsMailBox($emailAddress);

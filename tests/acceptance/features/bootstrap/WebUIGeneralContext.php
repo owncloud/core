@@ -43,66 +43,33 @@ require_once 'bootstrap.php';
  * WebUI General context.
  */
 class WebUIGeneralContext extends RawMinkContext implements Context {
-	private $owncloudPage;
+	private OwncloudPage $owncloudPage;
+	private GeneralErrorPage $generalErrorPage;
+	private GeneralExceptionPage $generalExceptionPage;
+	private LoginPage $loginPage;
+
+	private ?string $oldCSRFSetting = null;
+	private array $oldPreviewSetting = [];
+	private ?FeatureContext $featureContext = null;
+	private ?WebUIFilesContext $webUIFilesContext = null;
+	private ?OwncloudPage $currentPageObject = null;
+	private ?string $currentServer = null;
 
 	/**
-	 *
-	 * @var GeneralErrorPage
+	 * the original capabilities in XML format
 	 */
-	private $generalErrorPage;
+	private array $savedCapabilitiesXml;
 
 	/**
-	 *
-	 * @var GeneralExceptionPage
+	 * the changes made to capabilities for the test scenario
 	 */
-	private $generalExceptionPage;
+	private array $savedCapabilitiesChanges = [];
 
 	/**
-	 *
-	 * @var LoginPage
-	 */
-	private $loginPage;
-
-	private $oldCSRFSetting = null;
-	private $oldPreviewSetting = [];
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext = null;
-
-	/**
-	 *
-	 * @var WebUIFilesContext
-	 */
-	private $webUIFilesContext = null;
-
-	/**
-	 *
-	 * @var OwncloudPage
-	 */
-	private $currentPageObject = null;
-
-	private $currentServer = null;
-
-	/**
-	 * @var array the original capabilities in XML format
-	 */
-	private $savedCapabilitiesXml;
-
-	/**
-	 * @var array the changes made to capabilities for the test scenario
-	 */
-	private $savedCapabilitiesChanges = [];
-
-	/**
-	 * table of capabilities to map the human readable terms from the settings page
+	 * table of capabilities to map the human-readable terms from the settings page
 	 * to terms in the capabilities XML and testing app
-	 *
-	 * @var array
 	 */
-	private $capabilities = [
+	private array $capabilities = [
 		'sharing' => [
 			'Allow apps to use the Share API' => [
 				'capabilitiesApp' => 'files_sharing',
@@ -364,6 +331,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		foreach ($expectedNotifications as $expectedNotification) {
 			$expectedNotificationText = $expectedNotification[0];
 			$matchingSucceeded = false;
+			$latestActualNotificationText = "unknown";
 			foreach ($actualNotifications as $key => $actualNotificationText) {
 				$latestActualNotificationText = $actualNotificationText;
 				if ((($matching !== "matching") && ($expectedNotificationText === $actualNotificationText))
@@ -826,7 +794,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * enable the previews on all tests tagged with '@enablePreviews'
+	 * Enable the previews on all tests tagged with '@enablePreviews'
 	 *
 	 * Sometimes when testing locally, or if the `enable_previews` is turned off,
 	 * the tests such as the one testing thumbnails may fail. This enables the preview
@@ -863,8 +831,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function getSessionId():string {
 		$url = $this->getSession()->getDriver()->getWebDriverSession()->getUrl();
 		$parts = \explode('/', $url);
-		$sessionId = \array_pop($parts);
-		return $sessionId;
+		return \array_pop($parts);
 	}
 
 	/**

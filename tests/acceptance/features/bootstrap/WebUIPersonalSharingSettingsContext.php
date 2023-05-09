@@ -31,7 +31,7 @@ use PHPUnit\Framework\Assert;
  * steps for personal sharing settings
  */
 class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Context {
-	private $personalSharingSettingsPage;
+	private PersonalSharingSettingsPage $personalSharingSettingsPage;
 
 	/**
 	 *

@@ -33,19 +33,9 @@ require_once 'bootstrap.php';
  * WebUI PersonalGeneralSettings context.
  */
 class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Context {
-	private $personalGeneralSettingsPage;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
+	private PersonalGeneralSettingsPage $personalGeneralSettingsPage;
+	private FeatureContext $featureContext;
+	private WebUIGeneralContext $webUIGeneralContext;
 
 	/**
 	 * WebUIPersonalGeneralSettingsContext constructor.

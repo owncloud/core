@@ -53,7 +53,7 @@ Feature: reset the password
   @skipOnEncryption
   Scenario: using the password reset token plus invalid username does not work
     When the user requests the password reset link using the webUI
-    And the user follows the password reset link from email address of the user "Alice" but supplying invalid user name "qwerty"
+    And the user follows the password reset link from email address of the user "Alice" but supplying invalid username "qwerty"
     Then the user should be redirected to a webUI page with the title "%productname%"
     And a lost password reset error message with this text should be displayed on the webUI:
       """
