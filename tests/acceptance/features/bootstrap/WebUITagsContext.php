@@ -25,7 +25,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Page\FilesPage;
-use Page\TagsPage;
 use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
@@ -34,44 +33,21 @@ require_once 'bootstrap.php';
  * WebUI Tags context.
  */
 class WebUITagsContext extends RawMinkContext implements Context {
-	/**
-	 *
-	 * @var FilesPage
-	 */
-	private $filesPage;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var TagsPage
-	 */
-	private $tagsPage;
-
-	/**
-	 *
-	 * @var TagsContext
-	 */
-	private $tagsContext;
+	private FilesPage $filesPage;
+	private FeatureContext $featureContext;
+	private TagsContext $tagsContext;
 
 	/**
 	 * WebUITagsContext constructor.
 	 *
 	 * @param FilesPage $filesPage
-	 * @param TagsPage $tagsPage
 	 *
 	 * @return void
 	 */
 	public function __construct(
-		FilesPage $filesPage,
-		TagsPage $tagsPage
+		FilesPage $filesPage
 	) {
 		$this->filesPage = $filesPage;
-		$this->tagsPage = $tagsPage;
 	}
 
 	/**
@@ -86,14 +62,14 @@ class WebUITagsContext extends RawMinkContext implements Context {
 		$displayedTags = [];
 		foreach ($results as $tagResult) {
 			$tag = $tagResult->getText();
-			\array_push($displayedTags, $tag);
-		};
+			$displayedTags[] = $tag;
+		}
 		foreach ($ExpectedTags as $tag) {
 			$tagName = $tag['name'];
 			Assert::assertContains(
 				$tagName,
 				$displayedTags,
-				"Tagname $tagName was not displayed in the tag list"
+				"Tag name $tagName was not displayed in the tag list"
 			);
 		}
 	}

@@ -26,6 +26,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Page\Notification;
 use Page\NotificationsEnabledOwncloudPage;
 use PHPUnit\Framework\Assert;
 
@@ -34,17 +35,8 @@ use PHPUnit\Framework\Assert;
  *
  */
 class WebUINotificationsContext extends RawMinkContext implements Context {
-	/**
-	 *
-	 * @var NotificationsEnabledOwncloudPage
-	 */
-	private $owncloudPage;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private NotificationsEnabledOwncloudPage $owncloudPage;
+	private FeatureContext $featureContext;
 
 	/**
 	 *

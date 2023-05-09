@@ -172,7 +172,7 @@ Feature: manage groups
       | do-not-delete2 |
       | a\slash        |
     And the administrator has browsed to the users page
-    When the administrator deletes these groups and and cancels the deletion using the webUI:
+    When the administrator deletes these groups and cancels the deletion using the webUI:
       | groupname   |
       | grp1        |
       | space group |

@@ -35,19 +35,9 @@ require_once 'bootstrap.php';
  * WebUI AdminSharingSettings context.
  */
 class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context {
-	private $adminSharingSettingsPage;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private AdminSharingSettingsPage $adminSharingSettingsPage;
+	private WebUIGeneralContext $webUIGeneralContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * WebUIAdminSharingSettingsContext constructor.

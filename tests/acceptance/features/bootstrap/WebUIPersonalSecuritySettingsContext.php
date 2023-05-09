@@ -33,14 +33,13 @@ require_once 'bootstrap.php';
  * WebUI PersonalSecuritySettings context.
  */
 class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Context {
-	private $personalSecuritySettingsPage;
+	private PersonalSecuritySettingsPage $personalSecuritySettingsPage;
 	private $appName;
-	private $strForAppName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	private $webUILoginContext;
-	private $featureContext;
-	private $webUIGeneralContext;
-	private $newAppPassword = null;
-	private $loginPage;
+	private string $strForAppName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	private WebUILoginContext $webUILoginContext;
+	private WebUIGeneralContext $webUIGeneralContext;
+	private ?string $newAppPassword = null;
+	private LoginPage $loginPage;
 
 	/**
 	 * WebUIPersonalSecuritySettingsContext constructor.
@@ -167,7 +166,6 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUILoginContext = $environment->getContext('WebUILoginContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}

@@ -23,7 +23,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\FilesPage;
 use Page\FilesPageElement\NewFileMenu;
 use PHPUnit\Framework\Assert;
 
@@ -33,31 +32,17 @@ require_once 'bootstrap.php';
  * Context for new file menu
  */
 class WebUINewFileMenuContext extends RawMinkContext implements Context {
-	/**
-	 *
-	 * @var FilesPage
-	 */
-	private $filesPage;
-
-	/**
-	 *
-	 * @var NewFileMenu
-	 */
-	private $newFileMenu;
+	private NewFileMenu $newFileMenu;
 
 	/**
 	 * WebUINewFileMenuContext constructor.
 	 *
-	 * @param FilesPage $filesPage
 	 * @param NewFileMenu $newFileMenu
 	 *
-	 * @return void
 	 */
 	public function __construct(
-		FilesPage $filesPage,
 		NewFileMenu $newFileMenu
 	) {
-		$this->filesPage = $filesPage;
 		$this->newFileMenu = $newFileMenu;
 	}
 
@@ -66,7 +51,7 @@ class WebUINewFileMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserOpensTheNewfilemenuUsingTheWebUI():void {
+	public function theUserOpensTheNewFileMenuUsingTheWebUI():void {
 		$this->newFileMenu->openNewFileMenu();
 	}
 
@@ -75,7 +60,7 @@ class WebUINewFileMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theNewFilemenuShouldBeDisplayedOnTheWebUI():void {
+	public function theNewFileMenuShouldBeDisplayedOnTheWebUI():void {
 		Assert::assertNotNull(
 			$this->newFileMenu->getNewFileMenu(),
 			'New file menu is expected to be visible but is not'

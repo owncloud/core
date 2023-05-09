@@ -21,10 +21,8 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalEncryptionSettingsPage;
-use Page\OwncloudPage;
 
 require_once 'bootstrap.php';
 
@@ -32,40 +30,16 @@ require_once 'bootstrap.php';
  * Context for personal encryption settings specific webUI steps
  */
 class WebUIPersonalEncryptionSettingsContext extends RawMinkContext implements Context {
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 *
-	 * @var OwncloudPage
-	 */
-	private $owncloudPage;
-
-	/**
-	 *
-	 * @var PersonalEncryptionSettingsPage
-	 */
-	private $personalEncryptionSettingsPage;
+	private PersonalEncryptionSettingsPage $personalEncryptionSettingsPage;
 
 	/**
 	 * WebUIPersonalEncryptionSettingsContext constructor.
 	 *
-	 * @param OwncloudPage $owncloudPage
 	 * @param PersonalEncryptionSettingsPage $personalEncryptionSettingsPage
 	 */
 	public function __construct(
-		OwncloudPage $owncloudPage,
 		PersonalEncryptionSettingsPage $personalEncryptionSettingsPage
 	) {
-		$this->owncloudPage = $owncloudPage;
 		$this->personalEncryptionSettingsPage = $personalEncryptionSettingsPage;
 	}
 
@@ -88,20 +62,5 @@ class WebUIPersonalEncryptionSettingsContext extends RawMinkContext implements C
 	public function theUserHasEnabledPasswordRecovery():void {
 		$this->personalEncryptionSettingsPage->enablePasswordRecovery();
 		$this->personalEncryptionSettingsPage->waitForAjaxCallsToStartAndFinish($this->getSession());
-	}
-
-	/**
-	 * @BeforeScenario
-	 *
-	 * @param BeforeScenarioScope $scope
-	 *
-	 * @return void
-	 */
-	public function setUpScenario(BeforeScenarioScope $scope):void {
-		// Get the environment
-		$environment = $scope->getEnvironment();
-		// Get all the contexts you need in this context
-		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 }
