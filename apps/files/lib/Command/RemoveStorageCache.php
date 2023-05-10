@@ -47,22 +47,22 @@ class RemoveStorageCache extends Command {
 	protected function configure() {
 		$this
 			->setName('files:remove-storage')
-			->setDescription('Remove a storage from the storages table and the related files from the filecache table')
+			->setDescription('Remove a storage from the storages table and related files from the filecache table.')
 			->addArgument(
 				'storage-id',
 				InputArgument::OPTIONAL,
-				'The numeric id of the storage'
+				'The numeric ID of the storage'
 			)->addOption(
 				'chunk-size',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'The number of rows that will be deleted at the same time',
+				'The number of rows that will be deleted at the same time.',
 				self::DEFAULT_CHUNK_SIZE
 			)->addOption(
 				'show-candidates',
 				null,
 				InputOption::VALUE_NONE,
-				'Show possible candidates for obsolete storages. It might be slow'
+				'Show possible candidates for obsolete storages. This query can take a while.'
 			);
 	}
 
@@ -74,7 +74,7 @@ class RemoveStorageCache extends Command {
 
 		$storage_id = \intval($input->getArgument('storage-id'));
 		if ($storage_id <= 0) {
-			$output->writeln('<error>A valid storage id is required</error>');
+			$output->writeln('<error>A valid storage ID is required</error>');
 			return 1;
 		}
 
