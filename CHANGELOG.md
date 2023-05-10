@@ -10,6 +10,7 @@ Summary
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
+* Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
 * Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 
@@ -34,6 +35,12 @@ Details
    A federated share with a too long name results in inaccessible data.
 
    https://github.com/owncloud/core/pull/40726
+
+* Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
+
+   User input is validated now in UserController
+
+   https://github.com/owncloud/core/pull/40769
 
 * Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
 
