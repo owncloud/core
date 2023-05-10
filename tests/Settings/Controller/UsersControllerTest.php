@@ -42,6 +42,7 @@ use OCP\IUser;
 use OC\Group\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Test\TestCase;
+use Test\Traits\UserTrait;
 use function vsprintf;
 use OCP\IAvatar;
 use OC\Group\Group;
@@ -52,6 +53,8 @@ use OC\Group\Group;
  * @package Tests\Settings\Controller
  */
 class UsersControllerTest extends TestCase {
+	use UserTrait;
+
 	/** @var IAppContainer */
 	private $container;
 
@@ -1995,7 +1998,7 @@ class UsersControllerTest extends TestCase {
 	 * @throws Exception
 	 */
 	public function testSetSelfEmailAddress($userName, $userPassword, $loginUser, $setUser, $emailAddress): void {
-		OC::$server->getUserManager()->createUser($userName, $userPassword);
+		$this->createUser($userName, $userPassword);
 
 		$appName = "settings";
 		$irequest = $this->createMock(IRequest::class);
@@ -2034,6 +2037,8 @@ class UsersControllerTest extends TestCase {
 			$iAvatarManager,
 			$eventDispatcher
 		);
+
+		$iMailer->method('validateMailAddress')->willReturn(true);
 
 		self::loginAsUser($loginUser);
 

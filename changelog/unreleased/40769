@@ -1,0 +1,5 @@
+Change: validate email and string user input in UserController
+
+User input is validated now in UserController
+
+https://github.com/owncloud/core/pull/40769
