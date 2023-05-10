@@ -174,18 +174,18 @@ class RemoveStorageCache extends Command {
 
 	private function showCandidates(OutputInterface $output) {
 		$qb = $this->connection->getQueryBuilder();
-		$result = $qb->select(['s.numeric_id', 's.id', $qb->createFunction('count(f.storage) as `count`')])
+		$result = $qb->select(['f.storage', 's.id', $qb->createFunction('count(f.storage) as `count`')])
 			->from('storages', 's')
 			->leftJoin('s', 'mounts', 'm', $qb->expr()->eq('s.numeric_id', 'm.storage_id'))
-			->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.numeric_id', 'f.storage'))
-			->groupBy('s.numeric_id', 'm.mount_point', 'f.storage')
+			->rightJoin('s', 'filecache', 'f', $qb->expr()->eq('s.numeric_id', 'f.storage'))
+			->groupBy('f.storage', 'm.mount_point')
 			->having($qb->expr()->isNull('m.mount_point'))
 			->execute();
 
 		$table = new Table($output);
-		$table->setHeaders(['numeric_id', 'id', 'file_count']);
+		$table->setHeaders(['storage', 'id', 'file_count']);
 		while (($row = $result->fetch()) !== false) {
-			$table->addRow([$row['numeric_id'], $row['id'], $row['count']]);
+			$table->addRow([$row['storage'], $row['id'] ?? 'NULL', $row['count']]);
 		}
 		$table->render();
 		$result->closeCursor();
