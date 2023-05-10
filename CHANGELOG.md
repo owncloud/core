@@ -7751,7 +7751,7 @@ Details
 #### External storage
 
 - "Local" storage type can now be disabled by sysadmin in config.php [#26653](https://github.com/owncloud/core/issues/26653)
-- External storage backends must use [core external storage API](https://doc.owncloud.org/server/10.0/developer_manual/app/extstorage.html) to work without "files_external" [#18160](https://github.com/owncloud/core/issues/18160)
+- External storage backends must use [core external storage API](https://doc.owncloud.com/server/10.0/developer_manual/app/extstorage.html) to work without "files_external" [#18160](https://github.com/owncloud/core/issues/18160)
 - FTP external storage moved to a separate app [files_external_ftp](https://github.com/owncloud/files_external_ftp)
 
 #### Dav App
