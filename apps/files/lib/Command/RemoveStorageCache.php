@@ -21,6 +21,7 @@ namespace OCA\Files\Command;
 
 use OCP\IDBConnection;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -49,7 +50,7 @@ class RemoveStorageCache extends Command {
 			->setDescription('Remove a storage from the storages table and the related files from the filecache table')
 			->addArgument(
 				'storage-id',
-				InputArgument::REQUIRED,
+				InputArgument::OPTIONAL,
 				'The numeric id of the storage'
 			)->addOption(
 				'chunk-size',
@@ -57,13 +58,23 @@ class RemoveStorageCache extends Command {
 				InputOption::VALUE_REQUIRED,
 				'The number of rows that will be deleted at the same time',
 				self::DEFAULT_CHUNK_SIZE
+			)->addOption(
+				'show-candidates',
+				null,
+				InputOption::VALUE_NONE,
+				'Show possible candidates for obsolete storages. It might be slow'
 			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		if ($input->getOption('show-candidates')) {
+			$this->showCandidates($output);
+			return 0;
+		}
+
 		$storage_id = \intval($input->getArgument('storage-id'));
 		if ($storage_id <= 0) {
-			$output->writeln('<error>The storage id provided isn\'t valid</error>');
+			$output->writeln('<error>A valid storage id is required</error>');
 			return 1;
 		}
 
@@ -159,5 +170,24 @@ class RemoveStorageCache extends Command {
 			->execute();
 
 		return (int)$result;
+	}
+
+	private function showCandidates(OutputInterface $output) {
+		$qb = $this->connection->getQueryBuilder();
+		$result = $qb->select(['s.numeric_id', 's.id', $qb->createFunction('count(f.storage) as `count`')])
+			->from('storages', 's')
+			->leftJoin('s', 'mounts', 'm', $qb->expr()->eq('s.numeric_id', 'm.storage_id'))
+			->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.numeric_id', 'f.storage'))
+			->groupBy('s.numeric_id', 'm.mount_point', 'f.storage')
+			->having($qb->expr()->isNull('m.mount_point'))
+			->execute();
+
+		$table = new Table($output);
+		$table->setHeaders(['numeric_id', 'id', 'file_count']);
+		while (($row = $result->fetch()) !== false) {
+			$table->addRow([$row['numeric_id'], $row['id'], $row['count']]);
+		}
+		$table->render();
+		$result->closeCursor();
 	}
 }
