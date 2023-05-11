@@ -196,5 +196,9 @@ class MetaFilesTest extends TestCase {
 		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}/v/$versionId");
 		$this->assertInstanceOf(MetaFileVersionNode::class, $metaNodeOfFile);
 		self::assertEquals('bar', $metaNodeOfFile->getProperty('foo'));
+
+		# set property on a version
+		$metaNodeOfFile->setProperty('lorem', 'ipsum');
+		self::assertEquals('ipsum', $metaNodeOfFile->getProperty('lorem'));
 	}
 }

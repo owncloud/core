@@ -315,17 +315,14 @@ class MetaStorage {
 		return [];
 	}
 
-	public function setMetaDataCurrent(string $currentFileName, string $uid, array $new_data): void {
-		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_PREFIX . self::VERSION_FILE_EXT);
+	public function setMetaData(string $uid, string $fileName, ?string $versionId, array $new_data): void {
+		if ($versionId) {
+			$fileName .= '.v' . $versionId;
+		} else {
+			$fileName .= self::CURRENT_FILE_PREFIX;
+		}
 
-		$data = $this->readMetaFile($absPathOnDisk);
-		$data = array_merge($data, $new_data);
-
-		$this->writeMetaFile($data, $absPathOnDisk);
-	}
-
-	public function setMetaData(string $file_name, string $uid, array $new_data): void {
-		$absPathOnDisk = $this->pathToAbsDiskPath($uid, $file_name . self::VERSION_FILE_EXT);
+		$absPathOnDisk = $this->pathToAbsDiskPath($uid, "/files_versions/$fileName" . self::VERSION_FILE_EXT);
 
 		$data = $this->readMetaFile($absPathOnDisk);
 		$data = array_merge($data, $new_data);

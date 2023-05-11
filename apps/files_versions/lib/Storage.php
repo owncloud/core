@@ -1076,19 +1076,11 @@ class Storage {
 		return $users_view->fopen($storage_location, 'r');
 	}
 
-	public static function setMetaDataCurrent(string $owner, string $currentFileName, array $data): void {
+	public static function setMetaData(string $owner, string $currentFileName, ?string $versionId, array $data): void {
 		if (!self::metaEnabled()) {
 			return;
 		}
 
-		self::$metaData->setMetaDataCurrent($currentFileName, $owner, $data);
-	}
-
-	public static function setMetaData(string $owner, string $storage_location, array $data): void {
-		if (!self::metaEnabled()) {
-			return;
-		}
-
-		self::$metaData->setMetaData($storage_location, $owner, $data);
+		self::$metaData->setMetaData($owner, $currentFileName, $versionId, $data);
 	}
 }

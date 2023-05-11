@@ -37,6 +37,7 @@ use OCP\Files\Storage;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Files\Storage\IStorage;
 use OCP\IImage;
+use function Sodium\version_string;
 
 /**
  * Non-current version of the file node. This class represents a version of a file in the meta endpoint
@@ -112,8 +113,8 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 			return;
 		}
 
-		$this->storage->setMetaData($this->internalPath, null, [$name => $value]);
-		$version = $this->storage->getCurrentVersion($this->internalPath);
+		$this->storage->setMetaData($this->internalPath, $this->versionId, [$name => $value]);
+		$version = $this->storage->getVersion($this->internalPath, $this->versionId);
 		$this->versionInfo = $version;
 	}
 
