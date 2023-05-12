@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 * Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
@@ -16,6 +17,17 @@ Summary
 
 Details
 -------
+
+* Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
+
+   Core 10.12.1 brought an update of the google/apiclient from version 2.12.6 to 2.13.1.
+   However, in version 2.13.0 the accounts.google.com authorization URI has been updated. This
+   change breaks old code that uses the "setApprovalPrompt('force')" instead of the newer
+   "setPrompt('consent')" method, as this endpoint does not support the legacy approval prompt
+   parameter. This has been now fixed.
+
+   https://github.com/owncloud/core/issues/40777
+   https://github.com/owncloud/core/pull/40783
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 
