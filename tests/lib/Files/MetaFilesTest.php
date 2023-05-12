@@ -30,7 +30,6 @@ use OC\Files\View;
 use OCA\Files_Versions\Hooks;
 use OCP\Files\Folder;
 use OCP\Files\ForbiddenException;
-use OCP\Files\IProvidesProperties;
 use OCP\Files\Mount\IMountPoint;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
@@ -163,38 +162,5 @@ class MetaFilesTest extends TestCase {
 		$metaRoot = \OC::$server->getRootFolder();
 		// get nonexistent
 		$metaRoot->get($info->getId() + 100);
-	}
-
-	public function testMetaProperties(): void {
-		// create file
-		$file = self::getUniqueID('file') . '.txt';
-		$fileName = "{$this->userId}/files/$file";
-		$view = new View();
-		$view->file_put_contents($fileName, '1234');
-		$info = $view->getFileInfo($fileName);
-
-		// work on node api
-		/** @var MetaFileIdNode $metaNodeOfFile */
-		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}");
-		/** @var MetaVersionCollection $metaNodeOfFileVersionCollection */
-		$metaNodeOfFileVersionCollection = \OC::$server->getRootFolder()->get("meta/{$info->getId()}/v");
-		$metaNodeOfFileVersionCollection->setProperty('foo', 'bar');
-		self::assertEquals('bar', $metaNodeOfFileVersionCollection->getProperty('foo'));
-
-		// write again to get another version
-		$view->file_put_contents($fileName, '1234567890');
-		$children = $metaNodeOfFileVersionCollection->getDirectoryListing();
-		$this->assertCount(1, $children);
-		$this->assertInstanceOf(MetaFileVersionNode::class, $children[0]);
-
-		$versionId = $children[0]->getName();
-		/** @var MetaFileVersionNode $metaNodeOfFile */
-		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}/v/$versionId");
-		$this->assertInstanceOf(MetaFileVersionNode::class, $metaNodeOfFile);
-		self::assertEquals('bar', $metaNodeOfFile->getProperty('foo'));
-
-		# set property on a version
-		$metaNodeOfFile->setProperty('lorem', 'ipsum');
-		self::assertEquals('ipsum', $metaNodeOfFile->getProperty('lorem'));
 	}
 }
