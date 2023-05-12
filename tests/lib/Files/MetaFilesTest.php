@@ -84,8 +84,6 @@ class MetaFilesTest extends TestCase {
 	 * @throws NotPermittedException
 	 */
 	public function testMetaInNodeAPI(): void {
-		$userId = $this->userId;
-
 		// create file
 		$file = self::getUniqueID('file') . '.txt';
 		$fileName = "{$this->userId}/files/$file";
@@ -168,8 +166,6 @@ class MetaFilesTest extends TestCase {
 	}
 
 	public function testMetaProperties(): void {
-		$userId = $this->userId;
-
 		// create file
 		$file = self::getUniqueID('file') . '.txt';
 		$fileName = "{$this->userId}/files/$file";

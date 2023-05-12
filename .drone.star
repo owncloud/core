@@ -1570,6 +1570,7 @@ def phpTests(ctx, testType, withCoverage):
                                          ],
                                      },
                                  ],
+                                 owncloudLog("server", pathOfServerUnderTest) +
                         "services": databaseService(db) +
                                     cephService(params["cephS3"]) +
                                     scalityService(needScality) +
@@ -1883,6 +1884,7 @@ def acceptance(ctx):
                                                  installAndConfigureFederated(ctx, federatedServerVersion, params["federatedPhpVersion"], params["logLevel"], protocol, federatedDb, federationDbSuffix) +
                                                  owncloudLog("federated", "federated") if params["federatedServerNeeded"] else []
                                              ) +
+                                             owncloudLog("server", pathOfServerUnderTest) +
                                              installExtraApps(phpVersion, extraAppsDict, pathOfServerUnderTest) +
                                              setupCeph(phpVersion, params["cephS3"]) +
                                              setupScality(phpVersion, params["scalityS3"]) +
@@ -1891,7 +1893,6 @@ def acceptance(ctx):
                                              waitForEmailService(params["emailNeeded"]) +
                                              waitForBrowserService(browser) +
                                              fixPermissions(phpVersion, params["federatedServerNeeded"], params["selUserNeeded"], pathOfServerUnderTest) +
-                                             owncloudLog("server", pathOfServerUnderTest) +
                                              [
                                                  ({
                                                      "name": "acceptance-tests",
