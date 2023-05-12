@@ -288,6 +288,7 @@ class MetaStorage {
 	 */
 	private function writeMetaFile(array $metadata, string $diskPath) {
 		$metaJson = \json_encode($metadata);
+		\OC::$server->getLogger()->error("Writing meta data to: $diskPath: $metaJson");
 		return \file_put_contents($diskPath, $metaJson);
 	}
 
@@ -309,6 +310,7 @@ class MetaStorage {
 				unset($decoded['{http://owncloud.org/ns}meta-version-edited-by']);
 			}
 
+			\OC::$server->getLogger()->error("Reading meta data from: $diskPath: $json");
 			return $decoded;
 		}
 
