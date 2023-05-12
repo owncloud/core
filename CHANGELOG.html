@@ -6,6 +6,7 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Align to new accounts.google.com authorization URI: <a href="https://github.com/owncloud/core/pull/40783">#40783</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
         <li class="type-change changelog-item">Change - Validate email and string user input in UserController: <a href="https://github.com/owncloud/core/pull/40769">#40769</a></li>
@@ -14,6 +15,18 @@
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Align to new accounts.google.com authorization URI: <a href="https://github.com/owncloud/core/pull/40783">#40783</a></p>
+            <p>Core 10.12.1 brought an update of the google/apiclient from version 2.12.6 to 2.13.1.
+   However, in version 2.13.0 the accounts.google.com authorization URI has been updated. This
+   change breaks old code that uses the "setApprovalPrompt('force')" instead of the newer
+   "setPrompt('consent')" method, as this endpoint does not support the legacy approval prompt
+   parameter. This has been now fixed.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40777<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40783<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></p>
             <p>The following have been updated: - guzzlehttp/guzzle (7.5.0 to 7.5.1) -
