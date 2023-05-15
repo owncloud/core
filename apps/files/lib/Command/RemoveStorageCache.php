@@ -178,7 +178,7 @@ class RemoveStorageCache extends Command {
 			->from('storages', 's')
 			->leftJoin('s', 'mounts', 'm', $qb->expr()->eq('s.numeric_id', 'm.storage_id'))
 			->rightJoin('s', 'filecache', 'f', $qb->expr()->eq('s.numeric_id', 'f.storage'))
-			->groupBy('f.storage', 'm.mount_point')
+			->groupBy('f.storage', 's.id', 'm.mount_point')
 			->having($qb->expr()->isNull('m.mount_point'))
 			->execute();
 
