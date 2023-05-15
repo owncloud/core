@@ -870,3 +870,19 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
+
+
+  Scenario Outline: Copying a folder with a file onto another folder
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER1"
+    And user "Alice" has created folder "/FOLDER2"
+    And user "Alice" has uploaded file with content "Folder 1 text" to "/FOLDER1/textfile1.txt"
+    And user "Alice" has uploaded file with content "Folder 2 text" to "/FOLDER2/textfile2.txt"
+    When user "Alice" copies folder "/FOLDER1" to "/FOLDER2" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" file "/FOLDER2/textfile1.txt" should exist
+    And as "Alice" file "/FOLDER2/textfile2.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
