@@ -1,0 +1,10 @@
+Enhancement: Added occ command to remove obsolete storages
+
+Metadata coming from storages are stored in the DB. When a storage has been
+removed from ownCloud, that metadata remains in the DB.
+
+The new occ command allows you to remove that metadata stored, reducing
+the amount of space used by the DB as well as slightly improving the
+performance since there will be less entries.
+
+https://github.com/owncloud/core/pull/40779
