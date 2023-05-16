@@ -81,7 +81,7 @@ class Log implements ILogger {
 		'validateUserPass',
 		'loginWithPassword',
 		'createSessionToken',
-                'loginInOwnCloud',
+		'loginInOwnCloud',
 
 		// TokenProvider
 		'getToken',
