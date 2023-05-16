@@ -52,6 +52,7 @@ OC.L10N.register(
     "%s email address changed successfully" : "%s e-posta adresi başarıyla değiştirildi",
     "Couldn't send email address change notification mail. Please contact your administrator." : "E-posta adresi değişikliği bildirim e-postası gönderilemedi. Lütfen yöneticinize başvurun.",
     "Unable to enable/disable user." : "Kullanıcıyı etkinleştirme/devre dışı bırakma başarısız.",
+    "Data too long" : "Veri çok uzun",
     "Invalid mail address" : "Geçersiz posta adresi",
     "Owner language" : "Sahip dili",
     "Create" : "Oluştur",
