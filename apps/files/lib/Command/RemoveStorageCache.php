@@ -174,7 +174,7 @@ class RemoveStorageCache extends Command {
 
 	private function showCandidates(OutputInterface $output) {
 		$qb = $this->connection->getQueryBuilder();
-		$result = $qb->select(['f.storage', 's.id', $qb->createFunction('count(f.storage) as `count`')])
+		$result = $qb->select(['f.storage', 's.id', $qb->createFunction('count(f.`storage`) as `count`')])
 			->from('storages', 's')
 			->leftJoin('s', 'mounts', 'm', $qb->expr()->eq('s.numeric_id', 'm.storage_id'))
 			->rightJoin('s', 'filecache', 'f', $qb->expr()->eq('s.numeric_id', 'f.storage'))
@@ -183,7 +183,7 @@ class RemoveStorageCache extends Command {
 			->execute();
 
 		$table = new Table($output);
-		$table->setHeaders(['storage', 'id', 'file_count']);
+		$table->setHeaders(['storage-id', 'name', 'file_count']);
 		while (($row = $result->fetch()) !== false) {
 			$table->addRow([$row['storage'], $row['id'] ?? 'NULL', $row['count']]);
 		}
