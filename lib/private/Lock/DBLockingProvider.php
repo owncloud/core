@@ -107,7 +107,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 	}
 
 	/**
-	 * Insert a file locking row if it does not exists.
+	 * Insert a file locking row if it does not exist.
 	 *
 	 * @param string $path
 	 * @param int $lock
