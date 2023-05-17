@@ -31,7 +31,7 @@ class UpdateHtaccess extends Command {
 			->setDescription('Updates the .htaccess file.');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		\OC\Setup::updateHtaccess();
 		$output->writeln('.htaccess has been updated');
 		return 0;

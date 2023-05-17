@@ -64,7 +64,7 @@ class CheckCache extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$uid = $input->getArgument('uid');
 		$userFolder = $this->rootFolder->getUserFolder($uid);  // might throw a NoUserException
 

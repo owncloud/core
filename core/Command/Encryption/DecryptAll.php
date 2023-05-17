@@ -132,7 +132,7 @@ class DecryptAll extends Command {
 		);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$confirmed = $input->getOption('continue');
 		if (($confirmed !== 'yes') && ($confirmed !== 'no')) {
 			$output->writeln('Continue can accept either yes or no');

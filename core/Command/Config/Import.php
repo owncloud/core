@@ -53,7 +53,7 @@ class Import extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$importFile = $input->getArgument('file');
 		if ($importFile !== null) {
 			$content = $this->getArrayFromFile($importFile);

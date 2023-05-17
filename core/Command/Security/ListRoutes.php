@@ -50,7 +50,7 @@ class ListRoutes extends Base {
 		parent::configure();
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$outputType = $input->getOption('output');
 
 		\OC_App::loadApps();

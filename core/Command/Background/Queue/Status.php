@@ -53,9 +53,9 @@ class Status extends Command {
 	/**
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
-	 * @return void
+	 * @return int
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$t = new Table($output);
 		$t->setHeaders(['Job ID', 'Job', 'Job Arguments', 'Last Run', 'Last Checked', 'Reserved At', 'Execution Duration (s)']);
 		$this->jobList->listJobs(function (IJob $job) use ($t) {
@@ -70,5 +70,6 @@ class Status extends Command {
 			]);
 		});
 		$t->render();
+		return 0;
 	}
 }

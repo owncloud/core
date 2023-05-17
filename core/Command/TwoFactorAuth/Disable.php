@@ -49,7 +49,7 @@ class Disable extends Base {
 		$this->addArgument('uid', InputArgument::REQUIRED);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$uid = $input->getArgument('uid');
 		$user = $this->userManager->get($uid);
 		if ($user === null) {

@@ -54,7 +54,7 @@ class DataFingerprint extends Command {
 			->setDescription('Update the systems data-fingerprint after a backup is restored.');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$io = new SymfonyStyle($input, $output);
 		$warning = <<<EOD
 Setting the data fingerprint will notify desktop and mobile clients that a server backup has been restored. 

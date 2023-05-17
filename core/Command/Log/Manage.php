@@ -68,7 +68,7 @@ class Manage extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		// collate config setting to the end, to avoid partial configuration
 		$toBeSet = [];
 

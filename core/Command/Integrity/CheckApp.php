@@ -59,7 +59,7 @@ class CheckApp extends Base {
 	/**
 	 * {@inheritdoc }
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$appid = $input->getArgument('appid');
 		$path = \strval($input->getOption('path'));
 		$result = $this->checker->verifyAppSignature($appid, $path);

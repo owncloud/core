@@ -49,7 +49,7 @@ class DeleteOrphanedFiles extends Command {
 			->setDescription('Deletes orphaned file cache entries.');
 	}
 
-	public function execute(InputInterface $input, OutputInterface $output) {
+	public function execute(InputInterface $input, OutputInterface $output): int {
 		$deletedEntries = 0;
 
 		$query = $this->connection->getQueryBuilder();

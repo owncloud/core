@@ -62,7 +62,7 @@ class OwnCloud extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$toBeSet = [];
 
 		if ($input->getOption('enable')) {

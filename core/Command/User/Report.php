@@ -57,7 +57,7 @@ class Report extends Command {
 			->setDescription('shows how many users have access');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if (Filesystem::isPrimaryObjectStorageEnabled() === true) {
 			$output->writeln('<info>We detected that the instance is running on a S3 primary object storage, user directories count might not be accurate</info>');
 		}
