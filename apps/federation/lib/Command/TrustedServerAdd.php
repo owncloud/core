@@ -25,6 +25,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TrustedServerAdd extends Command {
+	public const ERROR_ALREADY_TRUSTED = 1;
+	public const ERROR_NO_OWNCLOUD_FOUND = 2;
+
 	/** @var TrustedServers */
 	private $trustedServers;
 
@@ -56,12 +59,12 @@ class TrustedServerAdd extends Command {
 		$url = $input->getArgument('url');
 		if ($this->trustedServers->isTrustedServer($url)) {
 			$output->writeln('<error>The server is already in the list of trusted servers.</error>');
-			return 1;
+			return self::ERROR_ALREADY_TRUSTED;
 		}
 
 		if (!$this->trustedServers->isOwnCloudServer($url)) {
 			$output->writeln('<error>No ownCloud server found</error>');
-			return 2;
+			return self::ERROR_NO_OWNCLOUD_FOUND;
 		}
 
 		$id = $this->trustedServers->addServer($url);
