@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
+* Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 * Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
@@ -28,6 +29,10 @@ Details
 
    https://github.com/owncloud/core/issues/40777
    https://github.com/owncloud/core/pull/40783
+
+* Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
+
+   https://github.com/owncloud/core/pull/40792
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 
