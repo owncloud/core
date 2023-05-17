@@ -1,0 +1,7 @@
+Bugfix: Always return an int for the Symfony Command execute method
+
+Some occ commands could return an invalid exit status when executed.
+This has been corrected. occ commands will now always return an integer
+exit status. Zero (0) is success, any other value indicates a problem.
+
+https://github.com/owncloud/core/pull/40793
