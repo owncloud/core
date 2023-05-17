@@ -50,7 +50,7 @@ class Disable extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select($qb->expr()->literal('1'))
 			->from('filecache', 'fc')

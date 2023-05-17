@@ -67,7 +67,7 @@ class ExpireTrash extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$retentionEnabled = $this->trashExpiryManager->retentionEnabled();
 		if (!$retentionEnabled) {
 			$output->writeln("Auto expiration is configured - expiration will be handled automatically.");

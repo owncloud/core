@@ -64,7 +64,7 @@ class SyncBirthdayCalendar extends Command {
 	 *
 	 * @return int 0 if everything went fine, or an exit code
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$user = $input->getArgument('user');
 		if ($user !== null) {
 			if (!$this->userManager->userExists($user)) {

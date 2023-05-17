@@ -47,7 +47,7 @@ class ImportCertificate extends Base {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$path = $input->getArgument('path');
 
 		if (!\file_exists($path)) {

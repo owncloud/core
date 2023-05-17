@@ -47,7 +47,7 @@ class CreateJs extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$app = $input->getArgument('app');
 		$lang = $input->getArgument('lang');
 

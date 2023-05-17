@@ -93,7 +93,7 @@ class ListUsers extends Base {
 		}
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$userNameSubString = $input->getArgument('search-pattern');
 		$attributes = \array_map('mb_strtolower', $input->getOption('attributes'));
 		$showAllAttributes = $input->getOption('show-all-attributes');

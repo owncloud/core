@@ -53,7 +53,7 @@ class SetDefaultModule extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$moduleId = $input->getArgument('module');
 
 		if ($moduleId === $this->encryptionManager->getDefaultEncryptionModuleId()) {

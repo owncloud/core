@@ -53,7 +53,7 @@ class MoveHome extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$user = $this->getUser($input);
 		$userId = $user->getUID();
 		$oldHome = $user->getHome();

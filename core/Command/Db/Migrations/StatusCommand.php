@@ -48,7 +48,7 @@ class StatusCommand extends Command {
 			->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on');
 	}
 
-	public function execute(InputInterface $input, OutputInterface $output) {
+	public function execute(InputInterface $input, OutputInterface $output): int {
 		$appName = $input->getArgument('app');
 		$ms = new MigrationService($appName, $this->connection, new ConsoleOutput($output));
 

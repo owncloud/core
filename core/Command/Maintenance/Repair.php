@@ -95,7 +95,7 @@ class Repair extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$appSteps = $this->getAppsRepairSteps($output);
 		// Handle listing repair steps
 		$steps = \array_merge(

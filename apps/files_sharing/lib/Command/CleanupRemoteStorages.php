@@ -56,7 +56,7 @@ class CleanupRemoteStorages extends Command {
 			);
 	}
 
-	public function execute(InputInterface $input, OutputInterface $output) {
+	public function execute(InputInterface $input, OutputInterface $output): int {
 		$remoteStorages = $this->getRemoteStorages();
 
 		$output->writeln(\count($remoteStorages) . " remote storage(s) need(s) to be checked");

@@ -56,7 +56,7 @@ class CheckCore extends Base {
 	/**
 	 * {@inheritdoc }
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->checker->runInstanceVerification();
 		$result = $this->checker->getResults();
 		$this->writeArrayInOutputFormat($input, $output, $result);

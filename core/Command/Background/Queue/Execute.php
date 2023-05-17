@@ -64,7 +64,7 @@ class Execute extends Command {
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if (!$input->getOption('accept-warning')) {
 			$helper = new QuestionHelper();
 			$q = <<<EOS

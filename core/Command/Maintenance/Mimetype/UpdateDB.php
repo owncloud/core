@@ -60,7 +60,7 @@ class UpdateDB extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		'@phan-var \OC\Files\MimetypeDetector $this->mimetypeDetector';
 		$mappings = $this->mimetypeDetector->getAllMappings();
 

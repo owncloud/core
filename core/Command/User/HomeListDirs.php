@@ -47,7 +47,7 @@ class HomeListDirs extends Base {
 			->setDescription('List all available root directories for user homes that are currently in use');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if (Filesystem::isPrimaryObjectStorageEnabled() === true) {
 			$output->writeln('<info>We detected that the instance is running on a S3 primary object storage, home directories might not be accurate</info>');
 		}
