@@ -167,7 +167,7 @@ class Checksum extends Wrapper {
 	/**
 	 * check if the file metadata should not be fetched
 	 * NOTE: files with a '.part' extension are ignored as well!
-	 *       prevents unfinished put requests to fetch metadata which does not exists
+	 *       prevents unfinished put requests to fetch metadata which does not exist
 	 *
 	 * @param string $file
 	 * @return boolean

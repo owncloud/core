@@ -48,7 +48,7 @@ class Helper {
 		$view = new \OC\Files\View('/' . $user . '/files_trashbin/files');
 
 		if (\ltrim($dir, '/') !== '' && !$view->is_dir($dir)) {
-			throw new \Exception('Directory does not exists');
+			throw new \Exception('Directory does not exist');
 		}
 
 		$mount = $view->getMount($dir);

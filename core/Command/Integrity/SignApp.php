@@ -89,12 +89,12 @@ class SignApp extends Command {
 		$keyBundle = $this->fileAccessHelper->file_get_contents($keyBundlePath);
 
 		if ($privateKey === false) {
-			$output->writeln(\sprintf('Private key "%s" does not exists.', $privateKeyPath));
+			$output->writeln(\sprintf('Private key "%s" does not exist.', $privateKeyPath));
 			return 1;
 		}
 
 		if ($keyBundle === false) {
-			$output->writeln(\sprintf('Certificate "%s" does not exists.', $keyBundlePath));
+			$output->writeln(\sprintf('Certificate "%s" does not exist.', $keyBundlePath));
 			return 1;
 		}
 

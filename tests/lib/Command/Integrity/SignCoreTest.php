@@ -123,7 +123,7 @@ class SignCoreTest extends TestCase {
 		$outputInterface
 			->expects($this->once())
 			->method('writeln')
-			->with('Private key "privateKey" does not exists.');
+			->with('Private key "privateKey" does not exist.');
 
 		$this->invokePrivate($this->signCore, 'execute', [$inputInterface, $outputInterface]);
 	}
@@ -160,7 +160,7 @@ class SignCoreTest extends TestCase {
 		$outputInterface
 			->expects($this->once())
 			->method('writeln')
-			->with('Certificate "certificate" does not exists.');
+			->with('Certificate "certificate" does not exist.');
 
 		$this->invokePrivate($this->signCore, 'execute', [$inputInterface, $outputInterface]);
 	}

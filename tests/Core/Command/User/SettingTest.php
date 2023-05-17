@@ -86,7 +86,7 @@ class SettingTest extends TestCase {
 				[['ignore-missing-user', false]],
 				[],
 				null,
-				'The user "username" does not exists.',
+				'The user "username" does not exist.',
 			],
 
 			[

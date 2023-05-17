@@ -925,7 +925,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$result->closeCursor();
 
 		if (!isset($uri['uri'])) {
-			throw new \InvalidArgumentException('Card does not exists: ' . $id);
+			throw new \InvalidArgumentException('Card does not exist: ' . $id);
 		}
 
 		return $uri['uri'];
@@ -1062,7 +1062,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$result->closeCursor();
 
 		if (!isset($cardIds['id'])) {
-			throw new \InvalidArgumentException('Card does not exists: ' . $uri);
+			throw new \InvalidArgumentException('Card does not exist: ' . $uri);
 		}
 
 		return (int)$cardIds['id'];
