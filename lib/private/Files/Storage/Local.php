@@ -256,7 +256,7 @@ class Local extends Common {
 		}
 
 		if (!$this->file_exists($path1)) {
-			\OCP\Util::writeLog('core', 'unable to rename, file does not exists : ' . $path1, \OCP\Util::ERROR);
+			\OCP\Util::writeLog('core', 'unable to rename, file does not exist : ' . $path1, \OCP\Util::ERROR);
 			return false;
 		}
 

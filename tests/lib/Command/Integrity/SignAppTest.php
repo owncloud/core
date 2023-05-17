@@ -164,7 +164,7 @@ class SignAppTest extends TestCase {
 		$outputInterface
 			->expects($this->once())
 			->method('writeln')
-			->with('Private key "privateKey" does not exists.');
+			->with('Private key "privateKey" does not exist.');
 
 		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
@@ -201,7 +201,7 @@ class SignAppTest extends TestCase {
 		$outputInterface
 			->expects($this->once())
 			->method('writeln')
-			->with('Certificate "certificate" does not exists.');
+			->with('Certificate "certificate" does not exist.');
 
 		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
