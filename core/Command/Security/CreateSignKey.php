@@ -62,7 +62,7 @@ class CreateSignKey extends Base {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$uid = $input->getArgument('user');
 		$user = $this->userManager->get($uid);
 		if ($user === null) {

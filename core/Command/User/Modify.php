@@ -93,7 +93,7 @@ class Modify extends Base {
 		}
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$uid = $input->getArgument('uid');
 		$key = $input->getArgument('key');
 		$value = $input->getArgument('value');

@@ -279,7 +279,7 @@ class Scan extends Base {
 		}
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$inputPath = $input->getOption('path');
 		$groups = $input->getOption('groups') ? \explode(',', $input->getOption('groups')) : [];
 		$groups = \array_unique(\array_merge($groups, $input->getOption('group')));

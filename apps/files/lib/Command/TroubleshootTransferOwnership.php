@@ -80,7 +80,7 @@ class TroubleshootTransferOwnership extends Command {
 			);
 	}
 
-	public function execute(InputInterface $input, OutputInterface $output) {
+	public function execute(InputInterface $input, OutputInterface $output): int {
 		$type = $input->getArgument('type');
 		$fix = $input->getOption('fix');
 		$scopeUid = $input->getOption('uid');

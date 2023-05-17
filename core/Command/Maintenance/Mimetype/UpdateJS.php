@@ -142,7 +142,7 @@ class UpdateJS extends Command {
 	 * @param OutputInterface $output
 	 * @return int
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$fileName = \OC::$SERVERROOT.'/core/js/mimetypelist.js';
 
 		$success = \file_put_contents(

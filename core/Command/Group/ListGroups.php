@@ -54,7 +54,7 @@ class ListGroups extends Base {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$groupNameSubString = $input->getArgument('search-pattern');
 		$groups = $this->groupManager->search($groupNameSubString, null, null, 'management', true);
 		$groups = \array_map(function ($group) {

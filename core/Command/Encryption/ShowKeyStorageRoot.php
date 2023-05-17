@@ -45,7 +45,7 @@ class ShowKeyStorageRoot extends Command {
 			->setDescription('Show current key storage root.');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$currentRoot = $this->util->getKeyStorageRoot();
 
 		$rootDescription = $currentRoot !== '' ? $currentRoot : 'default storage location (data/)';

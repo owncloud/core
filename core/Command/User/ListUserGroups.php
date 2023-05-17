@@ -59,7 +59,7 @@ class ListUserGroups extends Base {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$uid = $input->getArgument('uid');
 		if (!$this->userManager->userExists($uid)) {
 			$output->writeln("<error>User $uid does not exist.</error>");
