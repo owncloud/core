@@ -9,6 +9,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Align to new accounts.google.com authorization URI: <a href="https://github.com/owncloud/core/pull/40783">#40783</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: <a href="https://github.com/owncloud/core/pull/40792">#40792</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Always return an int for the Symfony Command execute method: <a href="https://github.com/owncloud/core/pull/40793">#40793</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Exit with success when signing-key has been set: <a href="https://github.com/owncloud/core/pull/40794">#40794</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
         <li class="type-change changelog-item">Change - Validate email and string user input in UserController: <a href="https://github.com/owncloud/core/pull/40769">#40769</a></li>
@@ -40,6 +41,14 @@
    indicates a problem.
             </p>
             <p>https://github.com/owncloud/core/pull/40793<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Exit with success when signing-key has been set: <a href="https://github.com/owncloud/core/pull/40794">#40794</a></p>
+            <p>The "occ security:sign-key:create" command exited with status 1 even when the signing key was
+   successfully created. This has been corrected. The command now exits with status zero (0) when
+   the command succeeded.For all occ commands, zero (0) is success, any other value indicates a problem.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40794<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></p>
