@@ -26,6 +26,7 @@ use OC\Encryption\Util;
 use OC\Files\View;
 use OCP\IConfig;
 use OCP\IUserManager;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -71,7 +72,9 @@ class ChangeKeyStorageRootTest extends TestCase {
 		$this->outputInterface = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 		$this->userInterface = $this->createMock('\OCP\UserInterface');
 
-		$outputFormatterInterface = $this->createMock('Symfony\Component\Console\Formatter\OutputFormatterInterface');
+		$outputFormatterInterface = $this->createMock(OutputFormatterInterface::class);
+		$outputFormatterInterface->expects($this->any())->method('isDecorated')
+			->willReturn(false);
 		$this->outputInterface->expects($this->any())->method('getFormatter')
 			->willReturn($outputFormatterInterface);
 
