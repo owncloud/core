@@ -102,8 +102,11 @@ class DecryptAllTest extends TestCase {
 		$this->userInterface = $this->getMockBuilder(UserInterface::class)
 			->disableOriginalConstructor()->getMock();
 
+		$outputFormatterInterface = $this->createMock(OutputFormatterInterface::class);
+		$outputFormatterInterface->expects($this->any())->method('isDecorated')
+			->willReturn(false);
 		$this->outputInterface->expects($this->any())->method('getFormatter')
-			->willReturn($this->createMock(OutputFormatterInterface::class));
+			->willReturn($outputFormatterInterface);
 
 		$this->instance = new DecryptAll($this->encryptionManager, $this->userManager, $this->view, $this->logger);
 
