@@ -39,7 +39,7 @@ class TrustedServerRemove extends Command {
 	protected function configure() {
 		$this
 			->setName('federation:trusted-servers:remove')
-			->setDescription('List the trusted servers')
+			->setDescription('Remove a trusted server')
 			->addArgument(
 				'id',
 				InputArgument::REQUIRED,
@@ -54,7 +54,12 @@ class TrustedServerRemove extends Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$id = (int)$input->getArgument('id');
-		$this->trustedServers->removeServer($id);
+		try {
+			$this->trustedServers->removeServer($id);
+		} catch (\Exception $e) {
+			$output->writeln("<error>{$e->getMessage()}</error>");
+			return 1;
+		}
 		return 0;
 	}
 }
