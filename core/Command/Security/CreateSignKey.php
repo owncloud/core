@@ -58,7 +58,7 @@ class CreateSignKey extends Base {
 			->addArgument(
 				'user',
 				InputArgument::REQUIRED,
-				'The is of the user'
+				'The id of the user'
 			);
 	}
 
@@ -82,6 +82,6 @@ class CreateSignKey extends Base {
 		}
 		$newSigningKey = $this->secureRandom->generate(64);
 		$this->config->setUserValue($uid, 'core', 'signing-key', $newSigningKey, $signingKey);
-		return 1;
+		return 0;
 	}
 }
