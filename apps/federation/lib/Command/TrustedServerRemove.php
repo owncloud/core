@@ -56,6 +56,7 @@ class TrustedServerRemove extends Command {
 		$id = (int)$input->getArgument('id');
 		try {
 			$this->trustedServers->removeServer($id);
+			$output->writeln("Removed server with id {$id}");
 		} catch (\Exception $e) {
 			$output->writeln("<error>{$e->getMessage()}</error>");
 			return 1;
