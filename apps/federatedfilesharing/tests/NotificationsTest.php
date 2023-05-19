@@ -341,14 +341,14 @@ class NotificationsTest extends \Test\TestCase {
 	public function testDeclineEvent() {
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$event = $dispatcher->dispatch(
-			DeclineShare::class,
 			new DeclineShare(
 				[
 					'remote_id' => '4354353',
 					'remote' => 'http://localhost',
 					'share_token' => 'ohno'
 				]
-			)
+			),
+			DeclineShare::class
 		);
 		$this->assertInstanceOf(DeclineShare::class, $event);
 	}

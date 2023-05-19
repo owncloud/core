@@ -147,7 +147,7 @@ class HooksTest extends \Test\TestCase {
 			'resolvedWebLink' => null,
 			'resolvedDavLink' => null,
 		]);
-		$this->eventDispatcher->dispatch('files.resolvePrivateLink', $event);
+		$this->eventDispatcher->dispatch($event, 'files.resolvePrivateLink');
 
 		$this->assertEquals('/owncloud/index.php/apps/files/?view=sharingin&scrollto=123', $event->getArgument('resolvedWebLink'));
 		$this->assertNull($event->getArgument('resolvedDavLink'));
@@ -168,7 +168,7 @@ class HooksTest extends \Test\TestCase {
 			'resolvedWebLink' => null,
 			'resolvedDavLink' => null,
 		]);
-		$this->eventDispatcher->dispatch('files.resolvePrivateLink', $event);
+		$this->eventDispatcher->dispatch($event, 'files.resolvePrivateLink');
 
 		$this->assertNull($event->getArgument('resolvedWebLink'));
 		$this->assertNull($event->getArgument('resolvedDavLink'));
@@ -182,7 +182,7 @@ class HooksTest extends \Test\TestCase {
 		$this->sharingAllowlist->expects($this->once())->method('setPublicShareSharersGroupsAllowlist')->with([]);
 
 		$event = new GenericEvent($group);
-		$this->eventDispatcher->dispatch('group.postDelete', $event);
+		$this->eventDispatcher->dispatch($event, 'group.postDelete');
 	}
 
 	public function testPublishShareNotification() {
@@ -196,7 +196,7 @@ class HooksTest extends \Test\TestCase {
 			'share' => ['id' => '123'],
 			'shareObject' => $share,
 		]);
-		$this->eventDispatcher->dispatch('share.afterCreate', $event);
+		$this->eventDispatcher->dispatch($event, 'share.afterCreate');
 	}
 
 	public function testDiscardShareNotification() {
@@ -210,7 +210,7 @@ class HooksTest extends \Test\TestCase {
 			'share' => ['id' => '123'],
 			'shareObject' => $share,
 		]);
-		$this->eventDispatcher->dispatch('share.afterDelete', $event);
+		$this->eventDispatcher->dispatch($event, 'share.afterDelete');
 	}
 
 	public function providesDataForCanGet() {
@@ -271,7 +271,7 @@ class HooksTest extends \Test\TestCase {
 
 		// Simulate direct download of file
 		$event = new GenericEvent(null, [ 'path' => $path ]);
-		$this->eventDispatcher->dispatch('file.beforeGetDirect', $event);
+		$this->eventDispatcher->dispatch($event, 'file.beforeGetDirect');
 
 		$this->assertEquals($run, !$event->hasArgument('errorMessage'));
 	}
@@ -349,7 +349,7 @@ class HooksTest extends \Test\TestCase {
 
 		// Simulate zip download of folder folder
 		$event = new GenericEvent(null, ['dir' => $dir, 'files' => $files, 'run' => true]);
-		$this->eventDispatcher->dispatch('file.beforeCreateZip', $event);
+		$this->eventDispatcher->dispatch($event, 'file.beforeCreateZip');
 
 		$this->assertEquals($run, $event->getArgument('run'));
 		$this->assertEquals($run, !$event->hasArgument('errorMessage'));
@@ -360,7 +360,7 @@ class HooksTest extends \Test\TestCase {
 
 		// Simulate zip download of folder folder
 		$event = new GenericEvent(null, ['dir' => '/test', 'files' => ['test.txt'], 'run' => true]);
-		$this->eventDispatcher->dispatch('file.beforeCreateZip', $event);
+		$this->eventDispatcher->dispatch($event, 'file.beforeCreateZip');
 
 		// It should run as this would restrict e.g. share links otherwise
 		$this->assertTrue($event->getArgument('run'));
@@ -394,7 +394,7 @@ class HooksTest extends \Test\TestCase {
 			'shareRecipient' => 'recipient_user',
 			'shareOwner' => 'owner_user',
 		]);
-		$this->eventDispatcher->dispatch('fromself.unshare', $event);
+		$this->eventDispatcher->dispatch($event, 'fromself.unshare');
 	}
 
 	public function testExtendJsConfig() {

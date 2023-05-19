@@ -74,6 +74,12 @@ class TrustedServersTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')
 			->disableOriginalConstructor()->getMock();
+		$this->dispatcher->expects($this->any())->method('dispatch')
+			->will(
+				$this->returnCallback(function ($object) {
+					return $object;
+				})
+			);
 		$this->httpClientService = $this->createMock('OCP\Http\Client\IClientService');
 		$this->httpClient = $this->createMock('OCP\Http\Client\IClient');
 		$this->response = $this->createMock('OCP\Http\Client\IResponse');

@@ -75,6 +75,12 @@ class ViewControllerTest extends TestCase {
 		$this->l10n = $this->createMock('\OCP\IL10N');
 		$this->config = $this->createMock('\OCP\IConfig');
 		$this->eventDispatcher = $this->createMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+		$this->eventDispatcher->expects($this->any())->method('dispatch')
+			->will(
+				$this->returnCallback(function ($object) {
+					return $object;
+				})
+			);
 		$this->userSession = $this->createMock('\OCP\IUserSession');
 		$this->appManager = $this->createMock('\OCP\App\IAppManager');
 		$this->user = $this->createMock('\OCP\IUser');
