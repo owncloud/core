@@ -565,7 +565,7 @@ class TrashbinTest extends TestCase {
 			'resolvedWebLink' => null,
 			'resolvedDavLink' => null,
 		]);
-		\OC::$server->getEventDispatcher()->dispatch('files.resolvePrivateLink', $event);
+		\OC::$server->getEventDispatcher()->dispatch($event, 'files.resolvePrivateLink');
 
 		$this->assertEquals('/owncloud/index.php/apps/files/?view=trashbin&dir=/test.d1462861890/sub&scrollto=somefile.txt', $event->getArgument('resolvedWebLink'));
 		$this->assertNull($event->getArgument('resolvedDavLink'));
