@@ -47,6 +47,7 @@ class RolesControllerTest extends TestCase {
 				'id' => 'test.tester',
 				'displayName' => 'A tester which tests ....'
 			]);
+			return $event;
 		});
 
 		$result = $controller->getRoles();
