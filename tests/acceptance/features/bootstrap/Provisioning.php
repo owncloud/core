@@ -865,6 +865,12 @@ trait Provisioning {
 				['ldap:delete-config', $configId],
 				$this->getStepLineRef()
 			);
+			// The LDAP config has been deleted, so any settings that were
+			// changed in that config do not need to be reverted.
+			// Remove the memory of those settings.
+			if (isset($this->oldLdapConfig[$configId])) {
+				unset($this->oldLdapConfig[$configId]);
+			}
 		}
 		foreach ($this->oldLdapConfig as $configId => $settings) {
 			foreach ($settings as $configKey => $configValue) {
