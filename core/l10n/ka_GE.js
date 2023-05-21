@@ -1,6 +1,9 @@
 OC.L10N.register(
     "core",
     {
+    "Turned on maintenance mode" : "შენახვის რეჟიმი ჩართულია",
+    "Turned off maintenance mode" : "შენახვის რეჟიმი გამორთულია ",
+    "Updated database" : " მონაცემთა ბაზა განახლებულია",
     "Sunday" : "კვირა",
     "Monday" : "ორშაბათი",
     "Tuesday" : "სამშაბათი",
