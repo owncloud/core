@@ -12,6 +12,7 @@ Summary
 * Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
 * Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
 * Bugfix - Exit with success when signing-key has been set: [#40794](https://github.com/owncloud/core/pull/40794)
+* Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 * Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
@@ -53,6 +54,17 @@ Details
    For all occ commands, zero (0) is success, any other value indicates a problem.
 
    https://github.com/owncloud/core/pull/40794
+
+* Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
+
+   The Symfony PHP framework has been updated from major version 4 to 5.
+
+   The following Symfony component versions are provided: - symfony/console (v5.4.23) -
+   symfony/event-dispatcher (v5.4.22) - symfony/process (v5.4.23) - symfony/routing
+   (v5.4.22) - symfony/string (v5.4.22) - symfony/translation (v5.4.22)
+
+   https://github.com/owncloud/core/issues/39630
+   https://github.com/owncloud/core/pull/40518
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 
