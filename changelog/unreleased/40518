@@ -1,0 +1,14 @@
+Change: upgrade to Symfony 5
+
+The Symfony PHP framework has been updated from major version 4 to 5.
+
+The following Symfony component versions are provided:
+- symfony/console (v5.4.23)
+- symfony/event-dispatcher (v5.4.22)
+- symfony/process (v5.4.23)
+- symfony/routing (v5.4.22)
+- symfony/string (v5.4.22)
+- symfony/translation (v5.4.22)
+
+https://github.com/owncloud/core/issues/39630
+https://github.com/owncloud/core/pull/40518
