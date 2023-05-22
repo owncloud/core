@@ -148,16 +148,7 @@ class Application extends App {
 		$container->registerService(
 			'NotificationManager',
 			function ($c) {
-				return new NotificationManager(
-					$c->query('Permissions')
-				);
-			}
-		);
-
-		$container->registerService(
-			'Permissions',
-			function ($c) {
-				return new Permissions();
+				return new NotificationManager();
 			}
 		);
 
@@ -208,9 +199,7 @@ class Application extends App {
 			\OC::$server->getMemCacheFactory(),
 			\OC::$server->getHTTPClientService()
 		);
-		$notificationManager = new NotificationManager(
-			new Permissions()
-		);
+		$notificationManager = new NotificationManager();
 		$notifications = new Notifications(
 			$addressHandler,
 			\OC::$server->getHTTPClientService(),
