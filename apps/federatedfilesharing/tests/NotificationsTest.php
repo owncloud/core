@@ -65,9 +65,7 @@ class NotificationsTest extends \Test\TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->discoveryManager = $this->getMockBuilder(DiscoveryManager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->notificationManager = new NotificationManager(
-			$this->createMock(Permissions::class)
-		);
+		$this->notificationManager = new NotificationManager();
 		$this->httpClientService = $this->createMock(IClientService::class);
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();

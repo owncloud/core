@@ -1,0 +1,3 @@
+Bugfix: Disallow permission tobe upgraded via federated sharing
+
+https://github.com/owncloud/core/pull/40803

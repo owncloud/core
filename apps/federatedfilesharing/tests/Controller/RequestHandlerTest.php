@@ -447,6 +447,7 @@ class RequestHandlerTest extends TestCase {
 		$this->ocmMiddleware->expects($this->once())
 			->method('getValidShare')
 			->willReturn($share);
+		$this->ocmMiddleware->method('normalizePermissions')->willReturnArgument(0);
 		$this->fedShareManager->expects($this->once())
 			->method('isFederatedReShare')
 			->willReturn(true);
