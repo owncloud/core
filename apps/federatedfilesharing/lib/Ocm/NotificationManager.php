@@ -30,20 +30,6 @@ use OCA\FederatedFileSharing\Ocm\Notification\FileNotification;
  */
 class NotificationManager {
 	/**
-	 * @var Permissions
-	 */
-	protected $permissions;
-
-	/**
-	 * NotificationManager constructor.
-	 *
-	 * @param Permissions $permissions
-	 */
-	public function __construct(Permissions $permissions) {
-		$this->permissions = $permissions;
-	}
-
-	/**
 	 * @param string $type
 	 *
 	 * @return FileNotification
@@ -87,7 +73,7 @@ class NotificationManager {
 		$notification->addNotificationData('message', $messages[$action]);
 
 		if ($action === 'permissions') {
-			$ocmPermissions = $this->permissions->toOcmPermissions($data['permissions']);
+			$ocmPermissions = Permissions::toOcmPermissions($data['permissions']);
 			$notification->addNotificationData('permission', $ocmPermissions);
 		}
 

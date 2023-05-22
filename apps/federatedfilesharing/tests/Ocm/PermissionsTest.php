@@ -33,23 +33,13 @@ use OCP\Constants;
  */
 class PermissionsTest extends TestCase {
 	/**
-	 * @var Permissions
-	 */
-	private $permissions;
-
-	protected function setUp(): void {
-		parent::setUp();
-		$this->permissions = new Permissions();
-	}
-
-	/**
 	 * @dataProvider dataTestToOcPermissions
 	 *
 	 * @param string[] $ocmPermissions
 	 * @param int $expectedOcPermissions
 	 */
-	public function testToOcPermissions($ocmPermissions, $expectedOcPermissions) {
-		$ocPermissions = $this->permissions->toOcPermissions($ocmPermissions);
+	public function testToOcPermissions(array $ocmPermissions, int $expectedOcPermissions): void {
+		$ocPermissions = Permissions::toOcPermissions($ocmPermissions);
 		$this->assertEquals($expectedOcPermissions, $ocPermissions);
 	}
 
@@ -91,8 +81,8 @@ class PermissionsTest extends TestCase {
 	 * @param int $ocPermissions
 	 * @param string[] $expectedOcmPermissions
 	 */
-	public function testToOcmPermissions($ocPermissions, $expectedOcmPermissions) {
-		$ocmPermissions = $this->permissions->toOcmPermissions($ocPermissions);
+	public function testToOcmPermissions(int $ocPermissions, array $expectedOcmPermissions): void {
+		$ocmPermissions = Permissions::toOcmPermissions($ocPermissions);
 		$this->assertEquals($expectedOcmPermissions, $ocmPermissions);
 	}
 

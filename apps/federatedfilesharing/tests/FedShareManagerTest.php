@@ -64,9 +64,6 @@ class FedShareManagerTest extends TestCase {
 	/** @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject */
 	private $addressHandler;
 
-	/** @var Permissions | \PHPUnit\Framework\MockObject\MockObject */
-	private $permissions;
-
 	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	private $eventDispatcher;
 
@@ -87,8 +84,6 @@ class FedShareManagerTest extends TestCase {
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
 
-		$this->permissions = $this->createMock(Permissions::class);
-
 		$this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
 			->getMock();
 
@@ -101,7 +96,6 @@ class FedShareManagerTest extends TestCase {
 					$this->activityManager,
 					$this->notificationManager,
 					$this->addressHandler,
-					$this->permissions,
 					$this->eventDispatcher
 				]
 			)
@@ -297,5 +291,32 @@ class FedShareManagerTest extends TestCase {
 			true,
 			$isFederatedShared
 		);
+	}
+
+	public function providesPermissions(): \Generator {
+		$read = Permissions::toOcPermissions(['read']);
+		$readWrite = Permissions::toOcPermissions(['read', 'write']);
+		$readShare = Permissions::toOcPermissions(['read', 'share']);
+		$readWriteShare = Permissions::toOcPermissions(['read', 'write', 'share']);
+
+		yield 'read -> write is not allowed' => [$read, $readWrite, false];
+		yield 'write -> read is allowed' => [$readWrite, $read, true];
+		yield 'read+share -> write is not allowed' => [$readShare, $readWrite, false];
+		yield 'write+share -> read is allowed' => [$readWriteShare, $read, true];
+	}
+
+	/**
+	 * @dataProvider providesPermissions
+	 */
+	public function testGrantingHigherPermission(int $currentPermissions, int $newPermissions, bool $allowed): void {
+		$share = $this->getMockBuilder(IShare::class)
+			->disableOriginalConstructor()->getMock();
+		$share->method('getPermissions')->willReturn($currentPermissions);
+
+		$this->federatedShareProvider->expects($allowed ? $this->once() : $this->never())
+			->method('update')
+			->with($share);
+
+		$this->fedShareManager->updatePermissions($share, $newPermissions);
 	}
 }
