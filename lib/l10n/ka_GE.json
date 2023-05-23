@@ -1,4 +1,6 @@
 { "translations": {
+    "Unknown filetype" : "უცნობი ფაილის ტიპი",
+    "Invalid image" : "არასწორი სურათი",
     "today" : "დღეს",
     "yesterday" : "გუშინ",
     "last month" : "გასულ თვეში",

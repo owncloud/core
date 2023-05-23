@@ -1,6 +1,8 @@
 OC.L10N.register(
     "core",
     {
+    "Unknown filetype" : "უცნობი ფაილის ტიპი",
+    "Invalid image" : "არასწორი სურათი",
     "Turned on maintenance mode" : "შენახვის რეჟიმი ჩართულია",
     "Turned off maintenance mode" : "შენახვის რეჟიმი გამორთულია ",
     "Updated database" : " მონაცემთა ბაზა განახლებულია",
@@ -98,6 +100,7 @@ OC.L10N.register(
     "Finish setup" : "კონფიგურაციის დასრულება",
     "Log out" : "გამოსვლა",
     "Search" : "ძებნა",
+    "Please contact your administrator." : "გთხოვთ, დაუკავშირდეთ თქვენს ადმინისტრატორს.",
     "Login" : "ლოგინი",
     "Alternative Logins" : "ალტერნატიული Login–ი",
     "Use the following link to reset your password: {link}" : "გამოიყენე შემდეგი ლინკი პაროლის შესაცვლელად: {link}",
