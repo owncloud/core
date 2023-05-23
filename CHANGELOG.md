@@ -68,7 +68,7 @@ Details
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 
-   The following have been updated: - guzzlehttp/guzzle (7.5.0 to 7.6.1) -
+   The following have been updated: - guzzlehttp/guzzle (7.5.0 to 7.7.0) -
    pear/pear-core-minimal (1.10.11 to 1.10.13) - punic/punic (3.8.0 to 3.8.1)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
@@ -79,6 +79,7 @@ Details
    https://github.com/owncloud/core/pull/40742
    https://github.com/owncloud/core/pull/40753
    https://github.com/owncloud/core/pull/40789
+   https://github.com/owncloud/core/pull/40806
 
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
