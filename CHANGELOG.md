@@ -17,6 +17,7 @@ Summary
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 * Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
 * Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
+* Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 
 Details
@@ -83,7 +84,7 @@ Details
 
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
-   A federated share with a too long name results in inaccessible data.
+   A federated share with a too long name results in potentially inaccessible data.
 
    https://github.com/owncloud/core/pull/40726
 
@@ -99,6 +100,12 @@ Details
    unchecked.
 
    https://github.com/owncloud/core/pull/40771
+
+* Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
+
+   A system tag with a too long name results in potentially inaccessible data.
+
+   https://github.com/owncloud/core/pull/40804
 
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 
