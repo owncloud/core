@@ -1,0 +1,5 @@
+Change: fix name length check on system tag creation
+
+A system tag with a too long name results in potentially inaccessible data.
+
+https://github.com/owncloud/core/pull/40804
