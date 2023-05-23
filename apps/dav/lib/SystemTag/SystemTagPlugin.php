@@ -161,7 +161,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @throws Conflict if a tag with the same properties already exists
 	 * @throws UnsupportedMediaType if the content type is not supported
 	 */
-	private function createTag($data, $contentType = 'application/json') {
+	private function createTag($data, $contentType = 'application/json'): ISystemTag {
 		if (\explode(';', $contentType)[0] === 'application/json') {
 			$data = \json_decode($data, true);
 		} else {
@@ -170,6 +170,9 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 
 		if (!isset($data['name'])) {
 			throw new BadRequest('Missing "name" attribute');
+		}
+		if (\strlen($data['name']) > 64) {
+			throw new BadRequest('Tag name too long');
 		}
 
 		$tagName = $data['name'];
