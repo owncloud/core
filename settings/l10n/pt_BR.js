@@ -52,6 +52,7 @@ OC.L10N.register(
     "%s email address changed successfully" : "O endereço de e-mail %s foi alterado com êxito",
     "Couldn't send email address change notification mail. Please contact your administrator." : "Não foi possível enviar email de notificação de alteração de endereço. Entre em contato com o administrador.",
     "Unable to enable/disable user." : "Não foi possível habilitar/desabilitar usuário",
+    "Data too long" : "Dados muito longos",
     "Invalid mail address" : "Endereço de e-mail inválido",
     "Owner language" : "Idioma do proprietário",
     "Create" : "Criar",
