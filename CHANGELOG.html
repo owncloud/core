@@ -10,6 +10,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: <a href="https://github.com/owncloud/core/pull/40792">#40792</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Always return an int for the Symfony Command execute method: <a href="https://github.com/owncloud/core/pull/40793">#40793</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Exit with success when signing-key has been set: <a href="https://github.com/owncloud/core/pull/40794">#40794</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Always use json for federation post and get to exchange tokens: <a href="https://github.com/owncloud/core/pull/40815">#40815</a></li>
         <li class="type-change changelog-item">Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
@@ -51,6 +52,19 @@
    the command succeeded.For all occ commands, zero (0) is success, any other value indicates a problem.
             </p>
             <p>https://github.com/owncloud/core/pull/40794<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Always use json for federation post and get to exchange tokens: <a href="https://github.com/owncloud/core/pull/40815">#40815</a></p>
+            <p>After update of guzzle, it was no longer possible to request format of response to be json when
+   adding in query parameter. One of OCSAuthAPIController fed instances was receiving requests
+   without a hint that JSON needs to be used, and returned XML. On the other hand,
+   OCSAuthAPIController expects only JSON for exchange, and thus failed to parse the message.
+   Now the exchange is correctly done.WARNING: the patch/fix needs to be applied on all federated severs that are not yet "paired" and
+   have the issue with guzzle library. Otherwise pairing will not work.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5676<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40815<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></p>

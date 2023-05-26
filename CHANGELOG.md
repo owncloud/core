@@ -12,6 +12,7 @@ Summary
 * Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
 * Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
 * Bugfix - Exit with success when signing-key has been set: [#40794](https://github.com/owncloud/core/pull/40794)
+* Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
@@ -55,6 +56,20 @@ Details
    For all occ commands, zero (0) is success, any other value indicates a problem.
 
    https://github.com/owncloud/core/pull/40794
+
+* Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
+
+   After update of guzzle, it was no longer possible to request format of response to be json when
+   adding in query parameter. One of OCSAuthAPIController fed instances was receiving requests
+   without a hint that JSON needs to be used, and returned XML. On the other hand,
+   OCSAuthAPIController expects only JSON for exchange, and thus failed to parse the message.
+   Now the exchange is correctly done.
+
+   WARNING: the patch/fix needs to be applied on all federated severs that are not yet "paired" and
+   have the issue with guzzle library. Otherwise pairing will not work.
+
+   https://github.com/owncloud/enterprise/issues/5676
+   https://github.com/owncloud/core/pull/40815
 
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 
