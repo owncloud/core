@@ -137,12 +137,13 @@ class RequestSharedSecretTest extends TestCase {
 			->willReturn($source);
 		$this->httpClient->expects($this->once())->method('post')
 			->with(
-				$target . '/ocs/v2.php/apps/federation/api/v1/request-shared-secret?format=json',
+				$target . '/ocs/v2.php/apps/federation/api/v1/request-shared-secret',
 				[
 					'form_params' =>
 						[
 							'url' => $source,
-							'token' => $token
+							'token' => $token,
+							'format' => 'json'
 						],
 					'timeout' => 3,
 					'connect_timeout' => 3,

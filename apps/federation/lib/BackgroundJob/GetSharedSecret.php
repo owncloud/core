@@ -64,7 +64,7 @@ class GetSharedSecret extends Job {
 	/** @var bool */
 	protected $retainJob = false;
 
-	private $endPoint = '/ocs/v2.php/apps/federation/api/v1/shared-secret?format=json';
+	private $endPoint = '/ocs/v2.php/apps/federation/api/v1/shared-secret';
 
 	/**
 	 * RequestSharedSecret constructor.
@@ -143,11 +143,11 @@ class GetSharedSecret extends Job {
 			$result = $this->httpClient->get(
 				$target . $this->endPoint,
 				[
-					'query' =>
-						[
-							'url' => $source,
-							'token' => $token
-						],
+					'query' => [
+						'url' => $source,
+						'token' => $token,
+						'format' => 'json'
+					],
 					'timeout' => 3,
 					'connect_timeout' => 3,
 				]
