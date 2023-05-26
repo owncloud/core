@@ -142,15 +142,15 @@ class GetSharedSecret extends Job {
 		try {
 			$result = $this->httpClient->get(
 				$target . $this->endPoint,
-				array(
-					'query' => array(
+				[
+					'query' => [
 						'url' => $source,
 						'token' => $token,
 						'format' => 'json'
-					),
+					],
 					'timeout' => 3,
 					'connect_timeout' => 3,
-				)
+				]
 			);
 
 			$status = $result->getStatusCode();

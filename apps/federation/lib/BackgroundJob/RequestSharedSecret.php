@@ -139,15 +139,15 @@ class RequestSharedSecret extends Job {
 		try {
 			$result = $this->httpClient->post(
 				$target . $this->endPoint,
-				array(
-					'form_params' => array(
+				[
+					'form_params' => [
 						'url' => $source,
 						'token' => $token,
 						'format' => 'json'
-					),
+					],
 					'timeout' => 3,
 					'connect_timeout' => 3,
-				)
+				]
 			);
 
 			$status = $result->getStatusCode();
