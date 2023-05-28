@@ -12,6 +12,7 @@ OC.L10N.register(
     "Password" : "პაროლი",
     "Name" : "სახელი",
     "Expiration date" : "ვადის გასვლის დრო",
-    "Download" : "ჩამოტვირთვა"
+    "Download" : "ჩამოტვირთვა",
+    "Direct link" : "პირდაპირი ბმული"
 },
 "nplurals=2; plural=(n!=1);");

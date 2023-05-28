@@ -10,6 +10,7 @@
     "Password" : "პაროლი",
     "Name" : "სახელი",
     "Expiration date" : "ვადის გასვლის დრო",
-    "Download" : "ჩამოტვირთვა"
+    "Download" : "ჩამოტვირთვა",
+    "Direct link" : "პირდაპირი ბმული"
 },"pluralForm" :"nplurals=2; plural=(n!=1);"
 }
