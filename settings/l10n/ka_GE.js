@@ -28,6 +28,7 @@ OC.L10N.register(
     "disabled" : "გათიშულია",
     "A valid username must be provided" : "უნდა მიუთითოთ არსებული მომხმარებლის სახელი",
     "A valid password must be provided" : "უნდა მიუთითოთ არსებული პაროლი",
+    "Cheers!" : "გამარჯვებები!",
     "Language" : "ენა",
     "Cron" : "Cron–ი",
     "Execute one task with each page loaded" : "გაუშვი თითო მოქმედება ყველა ჩატვირთულ გვერდზე",
