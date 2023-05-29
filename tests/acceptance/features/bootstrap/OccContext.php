@@ -397,6 +397,18 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator cleans up previews using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorCleansUpPreviewsUsingTheOccCommand():void {
+		$this->invokingTheCommand(
+			"previews:cleanup"
+		);
+	}
+
+	/**
 	 * Create a calendar for given user with given calendar name
 	 *
 	 * @param string $user
