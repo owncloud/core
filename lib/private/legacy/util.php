@@ -784,16 +784,24 @@ class OC_Util {
 					];
 				}
 			} elseif (!\is_writable($CONFIG_DATADIRECTORY) or !\is_readable($CONFIG_DATADIRECTORY)) {
-				//common hint for all file permissions error messages
-				$permissionsHint = $l->t(
-					'Permissions can usually be fixed by '
-					. '%sgiving the webserver write access to the root directory%s.',
-					['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']
-				);
-				$errors[] = [
-					'error' => 'Your Data directory is not writable by ownCloud',
-					'hint' => $permissionsHint
-				];
+				// is_writable doesn't work for NFS mounts, so try to write a file and check if it exists
+				// see https://github.com/nextcloud/server/pull/13237
+				$testFile = sprintf('%s/%s.tmp', $CONFIG_DATADIRECTORY, uniqid('data_dir_writability_test_'));
+				$handle = fopen($testFile, 'w');
+				if (!$handle || fwrite($handle, 'Test write operation') === false) {
+					$permissionsHint = $l->t(
+						'Permissions can usually be fixed by '
+						. '%sgiving the webserver write access to the root directory%s.',
+						['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']
+					);
+					$errors[] = [
+						'error' => 'Your Data directory is not writable by ownCloud',
+						'hint' => $permissionsHint
+					];
+				} else {
+					fclose($handle);
+					unlink($testFile);
+				}
 			} else {
 				$errors = \array_merge($errors, self::checkDataDirectoryPermissions($CONFIG_DATADIRECTORY));
 			}
