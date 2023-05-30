@@ -75,17 +75,19 @@ Details
 
    The Symfony PHP framework has been updated from major version 4 to 5.
 
-   The following Symfony component versions are provided: - symfony/console (v5.4.23) -
-   symfony/event-dispatcher (v5.4.22) - symfony/process (v5.4.23) - symfony/routing
-   (v5.4.22) - symfony/string (v5.4.22) - symfony/translation (v5.4.22)
+   The following Symfony component versions are provided: - symfony/console (v5.4.24) -
+   symfony/event-dispatcher (v5.4.22) - symfony/process (v5.4.24) - symfony/routing
+   (v5.4.22) - symfony/string (v5.4.22) - symfony/translation (v5.4.24)
 
    https://github.com/owncloud/core/issues/39630
    https://github.com/owncloud/core/pull/40518
+   https://github.com/owncloud/core/pull/40819
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 
-   The following have been updated: - guzzlehttp/guzzle (7.5.0 to 7.7.0) -
-   pear/pear-core-minimal (1.10.11 to 1.10.13) - punic/punic (3.8.0 to 3.8.1)
+   The following have been updated: - doctrine/deprecations (1.0.0 to 1.10) -
+   guzzlehttp/guzzle (7.5.0 to 7.7.0) - pear/pear-core-minimal (1.10.11 to 1.10.13) -
+   punic/punic (3.8.0 to 3.8.1)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
    (2.13.1 to 2.13.2)
@@ -96,6 +98,7 @@ Details
    https://github.com/owncloud/core/pull/40753
    https://github.com/owncloud/core/pull/40789
    https://github.com/owncloud/core/pull/40806
+   https://github.com/owncloud/core/pull/40819
 
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
