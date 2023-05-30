@@ -147,19 +147,41 @@ class UtilCheckServerTest extends TestCase {
 			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
 		}
 
-		\chmod($this->datadir, 0300);
+		// Set read+execute access to the data directory
+		\chmod($this->datadir, 0500);
 		$result = \OC_Util::checkServer($this->getConfig([
 			'installed' => true,
 			'version' => \implode('.', \OCP\Util::getVersion())
 		]));
+		\chmod($this->datadir, 0700); //needed for cleanup
 		$this->assertCount(1, $result);
+	}
+
+	/**
+	 * Tests an error is given when the datadir is not writable
+	 */
+	public function testDataDirReadOnly() {
+		if ($this->getCurrentUser() === 'root') {
+			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
+		}
+
+		// set read-only access to the data directory (not even execute access)
+		// In this case, the process cannot even list the data dir contents
+		// So it cannot see the file '.ocdata' that is in the directory
+		\chmod($this->datadir, 0400);
+		$result = \OC_Util::checkServer($this->getConfig([
+			'installed' => true,
+			'version' => \implode('.', \OCP\Util::getVersion())
+		]));
+		\chmod($this->datadir, 0700); //needed for cleanup
+		$this->assertCount(2, $result);
 	}
 
 	/**
 	 * Tests no error is given when the datadir is not writable during setup
 	 */
 	public function testDataDirNotWritableSetup() {
-		\chmod($this->datadir, 0300);
+		\chmod($this->datadir, 0500);
 		$result = \OC_Util::checkServer($this->getConfig([
 			'installed' => false,
 			'version' => \implode('.', \OCP\Util::getVersion())

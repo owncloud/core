@@ -787,7 +787,7 @@ class OC_Util {
 				// is_writable doesn't work for NFS mounts, so try to write a file and check if it exists
 				// see https://github.com/nextcloud/server/pull/13237
 				$testFile = sprintf('%s/%s.tmp', $CONFIG_DATADIRECTORY, uniqid('data_dir_writability_test_'));
-				$handle = fopen($testFile, 'w');
+				$handle = @fopen($testFile, 'w');
 				if (!$handle || fwrite($handle, 'Test write operation') === false) {
 					$permissionsHint = $l->t(
 						'Permissions can usually be fixed by '
