@@ -1,8 +1,9 @@
-Bugfix: Fix behavior for foobar (in present tense, max length 80 chars)
+Bugfix: Fix is_writable check when file is on an NFS mount
 
-The is_writable function seems to function improperly when operating on NFS mounts. Although the mount is writable by the executing user, Php falsely states that it is not writable.
+The is_writable function seems to function improperly when operating on NFS mounts.
+Although the mount is writable by the executing user, PHP falsely states that it is not writable.
 This change introduces a workaround which will attempt to write a temporary file to the data directory
-and detecting the write permission by testing for the file's existence.
+and detect the write permission by testing for the file's existence.
 
 https://github.com/owncloud/core/issues/40810
 https://github.com/owncloud/core/pull/40817
