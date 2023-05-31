@@ -474,6 +474,8 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 		if ($file) {
 			$newFile = $this->getDriveFile($path2);
 			$toUpdate = new DriveFile();
+			$addedParent = '';
+			$removedParent = '';
 			if (\dirname($path1) === \dirname($path2)) {
 				if ($newFile) {
 					// rename to the name of the target file, could be an office file without extension
