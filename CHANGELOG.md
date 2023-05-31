@@ -13,6 +13,7 @@ Summary
 * Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
 * Bugfix - Exit with success when signing-key has been set: [#40794](https://github.com/owncloud/core/pull/40794)
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
+* Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
@@ -71,6 +72,15 @@ Details
 
    https://github.com/owncloud/enterprise/issues/5676
    https://github.com/owncloud/core/pull/40815
+
+* Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
+
+   There can be the rare case that deleting a file from a Google Drive mount can throw an undefined
+   variable error. Though the process completes without further issues, no errors should be
+   thrown. This fix initializes the variables for these cases properly making the error go away.
+
+   https://github.com/owncloud/core/issues/40802
+   https://github.com/owncloud/core/pull/40822
 
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 
