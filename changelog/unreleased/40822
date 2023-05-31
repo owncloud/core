@@ -1,0 +1,6 @@
+Bugfix: Deleting a file in a Google Drive mount can throw an undefined variable error
+
+There can be the rare case that deleting a file from a Google Drive mount can throw an undefined variable error. Though the process completes without further issues, no errors should be thrown. This fix initializes the variables for these cases properly making the error go away.
+
+https://github.com/owncloud/core/pull/40822
+https://github.com/owncloud/core/issues/40802
