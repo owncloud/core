@@ -11,6 +11,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Always return an int for the Symfony Command execute method: <a href="https://github.com/owncloud/core/pull/40793">#40793</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Exit with success when signing-key has been set: <a href="https://github.com/owncloud/core/pull/40794">#40794</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Always use json for federation post and get to exchange tokens: <a href="https://github.com/owncloud/core/pull/40815">#40815</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Rare undefined variable error when using a Google Drive mount: <a href="https://github.com/owncloud/core/pull/40822">#40822</a></li>
         <li class="type-change changelog-item">Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
@@ -66,6 +67,16 @@
             <p>https://github.com/owncloud/enterprise/issues/5676<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40815<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Rare undefined variable error when using a Google Drive mount: <a href="https://github.com/owncloud/core/pull/40822">#40822</a></p>
+            <p>There can be the rare case that deleting a file from a Google Drive mount can throw an undefined
+   variable error. Though the process completes without further issues, no errors should be
+   thrown. This fix initializes the variables for these cases properly making the error go away.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40802<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40822<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></p>
