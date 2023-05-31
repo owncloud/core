@@ -18,6 +18,7 @@
         <li class="type-change changelog-item">Change - Fix hiding Last Login column on Users page: <a href="https://github.com/owncloud/core/pull/40771">#40771</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on system tag creation: <a href="https://github.com/owncloud/core/pull/40804">#40804</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve X-Robots-Tag header values check: <a href="https://github.com/owncloud/core/pull/40715">#40715</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Added occ command to remove obsolete storages: <a href="https://github.com/owncloud/core/pull/40779">#40779</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -117,6 +118,14 @@
    with "noindex" and "nofollow" wasn't allowed even though it was valid.
             </p>
             <p>https://github.com/owncloud/core/pull/40715<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Added occ command to remove obsolete storages: <a href="https://github.com/owncloud/core/pull/40779">#40779</a></p>
+            <p>Metadata coming from storages are stored in the DB. When a storage has been removed from
+   ownCloud, that metadata remains in the DB.The new occ command allows you to remove that metadata stored, reducing the amount of space used
+   by the DB as well as slightly improving the performance since there will be less entries.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40779<br></p>
         </li>
     </ul>
     <h2 id="10.12.1" class="version"> Changelog for ownCloud Core [10.12.1] (2023-04-03)</h2>

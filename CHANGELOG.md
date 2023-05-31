@@ -20,6 +20,7 @@ Summary
 * Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
 * Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
+* Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
 
 Details
 -------
@@ -132,6 +133,16 @@ Details
    with "noindex" and "nofollow" wasn't allowed even though it was valid.
 
    https://github.com/owncloud/core/pull/40715
+
+* Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
+
+   Metadata coming from storages are stored in the DB. When a storage has been removed from
+   ownCloud, that metadata remains in the DB.
+
+   The new occ command allows you to remove that metadata stored, reducing the amount of space used
+   by the DB as well as slightly improving the performance since there will be less entries.
+
+   https://github.com/owncloud/core/pull/40779
 
 Changelog for ownCloud Core [10.12.1] (2023-04-03)
 =======================================
