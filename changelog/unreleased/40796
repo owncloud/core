@@ -1,0 +1,7 @@
+Enhancement: Add commands to handle the trusted servers from command line
+
+New occ commands have been added to handle the trusted servers for federation
+from command line. These commands will allow the admin to add list and remove
+trusted servers
+
+https://github.com/owncloud/core/pull/40796
