@@ -586,7 +586,10 @@ class TrashbinContext implements Context {
 		$numItemsDeleted = 0;
 
 		foreach ($listing as $entry) {
-			if ($entry['original-location'] === $originalPath) {
+			// The entry for the trashbin root can have original-location null.
+			// That is reasonable, because the trashbin root is not something that can be restored.
+			$originalLocation = $entry['original-location'] ?? '';
+			if (\trim($originalLocation, '/') === $originalPath) {
 				$trashItemHRef = $this->convertTrashbinHref($entry['href']);
 				$response = $this->featureContext->makeDavRequest(
 					$asUser,
