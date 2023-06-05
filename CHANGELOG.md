@@ -22,6 +22,7 @@ Summary
 * Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 * Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
+* Enhancement - Add commands to handle the trusted servers from command line: [#40796](https://github.com/owncloud/core/pull/40796)
 
 Details
 -------
@@ -153,6 +154,13 @@ Details
    by the DB as well as slightly improving the performance since there will be less entries.
 
    https://github.com/owncloud/core/pull/40779
+
+* Enhancement - Add commands to handle the trusted servers from command line: [#40796](https://github.com/owncloud/core/pull/40796)
+
+   New occ commands have been added to handle the trusted servers for federation from command
+   line. These commands will allow the admin to add list and remove trusted servers
+
+   https://github.com/owncloud/core/pull/40796
 
 Changelog for ownCloud Core [10.12.1] (2023-04-03)
 =======================================
