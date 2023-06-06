@@ -1,7 +1,8 @@
 Change: Update PHP dependencies
 
 The following have been updated:
-- doctrine/deprecations (1.0.0 to 1.10)
+- doctrine/deprecations (1.0.0 to 1.1.1)
+- egulias/email-validator (3.2.5 to 3.2.6)
 - guzzlehttp/guzzle (7.5.0 to 7.7.0)
 - pear/pear-core-minimal (1.10.11 to 1.10.13)
 - punic/punic (3.8.0 to 3.8.1)
@@ -16,3 +17,4 @@ https://github.com/owncloud/core/pull/40753
 https://github.com/owncloud/core/pull/40789
 https://github.com/owncloud/core/pull/40806
 https://github.com/owncloud/core/pull/40819
+https://github.com/owncloud/core/pull/40825
