@@ -79,6 +79,6 @@ class Permissions {
 	}
 
 	public static function isNewPermissionHigher(int $existingPermission, int $newPermission): bool {
-		return ($existingPermission | $newPermission) === $existingPermission;
+		return ($existingPermission | $newPermission) !== $existingPermission;
 	}
 }
