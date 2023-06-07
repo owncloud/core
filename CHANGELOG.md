@@ -3,16 +3,14 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.12.1...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.12.2...master
 
 Summary
 -------
 
 * Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
-* Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
 * Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
 * Bugfix - Exit with success when signing-key has been set: [#40794](https://github.com/owncloud/core/pull/40794)
-* Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 * Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
@@ -39,10 +37,6 @@ Details
    https://github.com/owncloud/core/issues/40777
    https://github.com/owncloud/core/pull/40783
 
-* Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
-
-   https://github.com/owncloud/core/pull/40792
-
 * Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
 
    Some occ commands could return an invalid exit status when executed. This has been corrected.
@@ -60,10 +54,6 @@ Details
    For all occ commands, zero (0) is success, any other value indicates a problem.
 
    https://github.com/owncloud/core/pull/40794
-
-* Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
-
-   https://github.com/owncloud/core/pull/40803
 
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 
@@ -167,6 +157,30 @@ Details
    line. These commands will allow the admin to add list and remove trusted servers
 
    https://github.com/owncloud/core/pull/40796
+
+Changelog for ownCloud Core [10.12.2] (2023-05-31)
+=======================================
+The following sections list the changes in ownCloud core 10.12.2 relevant to
+ownCloud admins and users.
+
+[10.12.2]: https://github.com/owncloud/core/compare/v10.12.1...v10.12.2
+
+Summary
+-------
+
+* Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
+* Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
+
+Details
+-------
+
+* Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
+
+   https://github.com/owncloud/core/pull/40792
+
+* Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
+
+   https://github.com/owncloud/core/pull/40803
 
 Changelog for ownCloud Core [10.12.1] (2023-04-03)
 =======================================
