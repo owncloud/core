@@ -12,6 +12,7 @@ Summary
 * Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
 * Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
 * Bugfix - Exit with success when signing-key has been set: [#40794](https://github.com/owncloud/core/pull/40794)
+* Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 * Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
@@ -59,6 +60,10 @@ Details
    For all occ commands, zero (0) is success, any other value indicates a problem.
 
    https://github.com/owncloud/core/pull/40794
+
+* Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
+
+   https://github.com/owncloud/core/pull/40803
 
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 
