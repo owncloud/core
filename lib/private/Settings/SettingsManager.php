@@ -49,6 +49,7 @@ use OC\Settings\Panels\Personal\Version;
 use OC\Settings\Panels\Personal\Tokens;
 use OC\Settings\Panels\Personal\Cors;
 use OC\Settings\Panels\Personal\Quota;
+use OC\Settings\Panels\Admin\Enforce2fa;
 use OC\Settings\Panels\Admin\BackgroundJobs;
 use OC\Settings\Panels\Admin\Certificates;
 use OC\Settings\Panels\Admin\Encryption;
@@ -236,6 +237,7 @@ class SettingsManager implements ISettingsManager {
 	private function getBuiltInPanels($type) {
 		if ($type === 'admin') {
 			return [
+				Enforce2fa::class,
 				LegacyAdmin::class,
 				BackgroundJobs::class,
 				Logging::class,
