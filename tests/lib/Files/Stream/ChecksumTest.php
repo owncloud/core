@@ -53,7 +53,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename, 'rb');
 
 		$contentRead = stream_get_contents($fp);
 		\fclose($fp);
@@ -74,7 +74,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename, 'rb');
 
 		\fseek($fp, 10, SEEK_SET);
 		$contentRead = stream_get_contents($fp);
@@ -97,7 +97,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename, 'rb');
 
 		$contentRead = \fread($fp, 10);
 		\fclose($fp);
@@ -121,7 +121,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename, 'rb');
 
 		$contentRead = \fread($fp, 10);
 		\fclose($fp);
@@ -144,7 +144,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb'), $filename, 'rb');
 
 		$contentRead = \fread($fp, 10);
 		\fseek($fp, 3, SEEK_CUR);
@@ -164,7 +164,7 @@ class ChecksumTest extends \Test\TestCase {
 		$filename = 'test001.txt';
 
 		$file = $this->getVfsFile($filename);
-		$fp = Checksum::wrap(\fopen($file->url(), 'wb'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'wb'), $filename, 'wb');
 
 		$contentWritten = \fwrite($fp, $content);
 		\fclose($fp);
@@ -187,7 +187,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'ab'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'ab'), $filename, 'ab');
 
 		$contentWritten = \fwrite($fp, "{$content}zzz");
 		\fclose($fp);
@@ -205,7 +205,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'rb+'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb+'), $filename, 'rb+');
 
 		$contentWritten = \fwrite($fp, 'zzz');
 		$contentRead = \fread($fp, 1000);
@@ -228,7 +228,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'rb+'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'rb+'), $filename, 'rb+');
 
 		$contentWritten = \fwrite($fp, 'zzz');
 		\fclose($fp);
@@ -247,7 +247,7 @@ class ChecksumTest extends \Test\TestCase {
 
 		$file = $this->getVfsFile($filename);
 		$file->setContent($content);
-		$fp = Checksum::wrap(\fopen($file->url(), 'cb+'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'cb+'), $filename, 'cb+');
 
 		$contentWritten = \fwrite($fp, 'zzz');
 		\fclose($fp);
@@ -266,7 +266,7 @@ class ChecksumTest extends \Test\TestCase {
 		$filename = 'test001.txt';
 
 		$file = $this->getVfsFile($filename);
-		$fp = Checksum::wrap(\fopen($file->url(), 'wb'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'wb'), $filename, 'wb');
 
 		$contentWritten = \fwrite($fp, $content);
 		\fseek($fp, 7, SEEK_SET);
@@ -290,7 +290,7 @@ class ChecksumTest extends \Test\TestCase {
 		$filename = 'test001.txt';
 
 		$file = $this->getVfsFile($filename);
-		$fp = Checksum::wrap(\fopen($file->url(), 'wb'), $filename);
+		$fp = Checksum::wrap(\fopen($file->url(), 'wb'), $filename, 'wb');
 
 		$contentWritten = \fwrite($fp, $content);
 		\fseek($fp, 0, SEEK_SET);
