@@ -1,0 +1,9 @@
+Enhancement: Enforce 2-factor authentication
+
+2-factor authentication can be enforced now. The feature requires at least
+an app implementing the 2-factor, otherwise no enforcement will be done.
+If the 2-factor authentication is enforced, all users will be required to
+use a 2-factor authentication app. Some specific groups selected by the admin
+can be excluded to let those users bypass the 2-factor authentication.
+
+https://github.com/owncloud/core/pull/40830
