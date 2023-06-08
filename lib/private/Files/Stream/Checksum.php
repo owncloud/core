@@ -70,7 +70,7 @@ class Checksum extends Wrapper {
 	 * @param $path
 	 * @return resource
 	 */
-	public static function wrap($source, $path) {
+	public static function wrap($source, $path, $mode) {
 		$context = \stream_context_create([
 			'occhecksum' => [
 				'source' => $source,
@@ -81,8 +81,6 @@ class Checksum extends Wrapper {
 		// need to check the underlying stream's mode
 		// The `wrapSource` will use 'r+' by default, so the
 		// `stream_open` function might use that mode wrongly.
-		$meta = \stream_get_meta_data($source);
-		$mode = $meta['mode'] ?? 'r+';
 		return Wrapper::wrapSource(
 			$source,
 			$context,
