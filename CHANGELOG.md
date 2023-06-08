@@ -11,6 +11,7 @@ Summary
 * Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
 * Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
 * Bugfix - Exit with success when signing-key has been set: [#40794](https://github.com/owncloud/core/pull/40794)
+* Bugfix - Fix query used to delete thumbnails: [#40800](https://github.com/owncloud/core/issues/40800)
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 * Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
@@ -54,6 +55,14 @@ Details
    For all occ commands, zero (0) is success, any other value indicates a problem.
 
    https://github.com/owncloud/core/pull/40794
+
+* Bugfix - Fix query used to delete thumbnails: [#40800](https://github.com/owncloud/core/issues/40800)
+
+   Fixed query that detects unused thumbnails to prevent unnecessary deletes and potential
+   recreations.
+
+   https://github.com/owncloud/core/issues/40800
+   https://github.com/owncloud/core/pull/40801
 
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 
