@@ -1,4 +1,4 @@
-@cli @files_trashbin-app-required @preview-extension-required
+@cli @files_trashbin-app-required @preview-extension-required @skipOnOcV10.11 @skipOnOcV10.12
 Feature: orphaned previews can be deleted
   As an admin
   I want to delete previews whose original file no longer exists
