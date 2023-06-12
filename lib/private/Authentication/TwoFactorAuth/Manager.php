@@ -160,6 +160,10 @@ class Manager {
 			}
 		}
 
+		// if 2-factor is enforced, we must not filter out providers that
+		// might not be enabled or configured. The providers are expected
+		// to handle this problem on their own, usually by allowing
+		// configuration (at least partially) in the challenge page.
 		if ($this->isTwoFactorEnforcedForUser($user)) {
 			return $providers;
 		}

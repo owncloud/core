@@ -32,7 +32,7 @@ class Enforce2fa implements ISettings {
 	}
 
 	public function getPriority() {
-		return 0;
+		return 50;
 	}
 
 	public function getPanel() {
