@@ -44,7 +44,7 @@ class Enforce2faTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertSame(0, $this->panel->getPriority());
+		$this->assertSame(50, $this->panel->getPriority());
 	}
 
 	public function testGetPanel() {
