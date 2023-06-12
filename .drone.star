@@ -23,7 +23,7 @@ PLUGINS_S3 = "plugins/s3"
 PLUGINS_S3_CACHE = "plugins/s3-cache:1"
 PLUGINS_SLACK = "plugins/slack:1"
 POTTAVA_PROXY = "pottava/proxy"
-SELENIUM_STANDALONE_CHROME_DEBUG = "selenium/standalone-chrome-debug:3.141.59-oxygen"
+SELENIUM_STANDALONE_CHROME = "selenium/standalone-chrome:latest"
 SELENIUM_STANDALONE_FIREFOX_DEBUG = "selenium/standalone-firefox-debug:3.8.1"
 SONARSOURCE_SONAR_SCANNER_CLI = "sonarsource/sonar-scanner-cli"
 THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
@@ -2184,7 +2184,7 @@ def browserService(browser):
     if browser == "chrome":
         return [{
             "name": "selenium",
-            "image": SELENIUM_STANDALONE_CHROME_DEBUG,
+            "image": SELENIUM_STANDALONE_CHROME,
             "environment": {
                 "JAVA_OPTS": "-Dselenium.LOGGER.level=WARNING",
             },
