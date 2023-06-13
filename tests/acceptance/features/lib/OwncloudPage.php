@@ -884,7 +884,9 @@ class OwncloudPage extends Page {
 	 */
 	public function open(array $urlParameters = []): Page {
 		try {
-			parent::open($urlParameters);
+			$url = $this->getUrl($urlParameters);
+			$this->getSession()->visit($url);
+			$this->verify($urlParameters);
 		} catch (UnexpectedPageException $e) {
 			$expected = \parse_url($this->getUrl($urlParameters));
 			$actual = \parse_url($this->getDriver()->getCurrentUrl());
