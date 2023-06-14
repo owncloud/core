@@ -3,7 +3,7 @@
         'name' => 'files_external/3rdparty',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '44f75de85efe39512ea88955621ebfca9b7963c9',
+        'reference' => 'b963992e7b4866eac52efcc536a9d4111c67cdaa',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,16 +13,16 @@
         'files_external/3rdparty' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '44f75de85efe39512ea88955621ebfca9b7963c9',
+            'reference' => 'b963992e7b4866eac52efcc536a9d4111c67cdaa',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
-            'pretty_version' => 'v6.4.0',
-            'version' => '6.4.0.0',
-            'reference' => '4dd1e007f22a927ac77da5a3fbb067b42d3bc224',
+            'pretty_version' => 'v6.6.0',
+            'version' => '6.6.0.0',
+            'reference' => '5a9cf79b4a2eb347230384648cc7b0d68cd97faa',
             'type' => 'library',
             'install_path' => __DIR__ . '/../firebase/php-jwt',
             'aliases' => array(),
@@ -58,13 +58,13 @@
         'guzzlehttp/guzzle' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '^7.5',
+                0 => '^7.7',
             ),
         ),
         'guzzlehttp/psr7' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '^2.4',
+                0 => '^2.5',
             ),
         ),
         'icewind/smb' => array(
@@ -97,7 +97,7 @@
         'phpseclib/phpseclib' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '>=3.0.17',
+                0 => '>=3.0.20',
             ),
         ),
         'psr/cache' => array(
@@ -136,7 +136,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => '599b9d6746e56b67b187afed175dd02fb1a288fa',
+            'reference' => '601b276d21df95e49f1802c7432b788cfaac15a8',
             'type' => 'metapackage',
             'install_path' => NULL,
             'aliases' => array(
