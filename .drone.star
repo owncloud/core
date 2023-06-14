@@ -1928,10 +1928,16 @@ def acceptance(ctx):
                                             "refs/tags/**",
                                         ],
                                     },
-                                    "volumes": [{
-                                        "name": "downloads",
-                                        "temp": {},
-                                    }],
+                                    "volumes": [
+                                        {
+                                            "name": "downloads",
+                                            "temp": {},
+                                        },
+                                        {
+                                            "name": "shm",
+                                            "path": "/dev/shm",
+                                        },
+                                    ],
                                 }
 
                                 pipelines.append(result)
@@ -2188,10 +2194,16 @@ def browserService(browser):
             "environment": {
                 "JAVA_OPTS": "-Dselenium.LOGGER.level=WARNING",
             },
-            "volumes": [{
-                "name": "downloads",
-                "path": "%s" % dir["browserService"],
-            }],
+            "volumes": [
+                {
+                    "name": "downloads",
+                    "path": "%s" % dir["browserService"],
+                },
+                {
+                    "name": "shm",
+                    "path": "/dev/shm",
+                },
+            ],
         }]
 
     if browser == "firefox":
