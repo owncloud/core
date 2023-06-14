@@ -167,7 +167,7 @@ class AccountMapper extends Mapper {
 			->addSelect(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'creation_time', 'backend', 'state', 'quota', 'home'])
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
-			->orderBy('display_name')
+			->orderBy('user_id')
 			->where($qb->expr()->like('lower_user_id', $qb->createPositionalParameter($loweredParameter)))
 			->orWhere($qb->expr()->iLike('display_name', $qb->createPositionalParameter($parameter)))
 			->orWhere($qb->expr()->iLike('email', $qb->createPositionalParameter($parameter)))
