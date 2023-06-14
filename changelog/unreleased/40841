@@ -1,3 +1,5 @@
-Bugfix: Online updater is not recommended for Enterprise installations and is now automatically disabled in such cases
+Bugfix: Automatically disable online updater for enterprise 
+
+Online updater is not recommended for Enterprise installations and is now automatically disabled in such cases.
 
 https://github.com/owncloud/core/pull/40841
