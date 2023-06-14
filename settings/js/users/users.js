@@ -53,10 +53,9 @@ var UserList = {
 	 *				'email':			'username@example.org'
 	 *				'isRestoreDisabled':false
 	 * 			}
-	 * @param sort
 	 * @returns table row created for this user
 	 */
-	add: function (user, sort) {
+	add: function (user) {
 		if (this.currentGid && this.currentGid !== '_everyone' && user.groups[this.currentGid] === undefined) {
 			return;
 		}
@@ -211,13 +210,6 @@ var UserList = {
 			UserList.checkUsersToLoad();
 		}
 
-		/**
-		 * sort list
-		 */
-		if (sort) {
-			UserList.doSort();
-		}
-
 		$quotaSelect.on('change', UserList.onQuotaSelect);
 
 		// defer init so the user first sees the list appear more quickly
@@ -281,39 +273,6 @@ var UserList = {
 		} else {
 			return 1;
 		}
-	},
-	doSort: function() {
-		// some browsers like Chrome lose the scrolling information
-		// when messing with the list elements
-		var lastScrollTop = this.scrollArea.scrollTop();
-		var lastScrollLeft = this.scrollArea.scrollLeft();
-		var rows = $userListBody.find('tr').get();
-
-		rows.sort(function(a, b) {
-			// FIXME: inefficient way of getting the names,
-			// better use a data attribute
-			a = $(a).find('.name').text();
-			b = $(b).find('.name').text();
-			var firstSort = UserList.preSortSearchString(a, b);
-			if(typeof firstSort !== 'undefined') {
-				return firstSort;
-			}
-			return OC.Util.naturalSortCompare(a, b);
-		});
-
-		var items = [];
-		$.each(rows, function(index, row) {
-			items.push(row);
-			if(items.length === 100) {
-				$userListBody.append(items);
-				items = [];
-			}
-		});
-		if(items.length > 0) {
-			$userListBody.append(items);
-		}
-		this.scrollArea.scrollTop(lastScrollTop);
-		this.scrollArea.scrollLeft(lastScrollLeft);
 	},
 	checkUsersToLoad: function() {
 		if(UserList.isEmpty === false) {
@@ -454,11 +413,10 @@ var UserList = {
 					if(UserList.has(user.name)) {
 						return true;
 					}
-					var $tr = UserList.add(user, false);
+					var $tr = UserList.add(user);
 					trs.push($tr);
 				});
 				if (result.length > 0) {
-					UserList.doSort();
 					$userList.siblings('.loading').css('visibility', 'hidden');
 					// reset state on load
 					UserList.noMoreEntries = false;
@@ -807,7 +765,6 @@ $(document).ready(function () {
 
 	UserList.scrollArea = $('#app-content');
 
-	UserList.doSort();
 	UserList.availableGroups = $userList.data('groups');
 
 	UserList.scrollArea.scroll(function(e) {UserList._onScroll(e);});
@@ -1051,7 +1008,7 @@ $(document).ready(function () {
 					}
 				}
 				if (!UserList.has(username)) {
-					UserList.add(result, true);
+					UserList.add(result);
 				}
 				$('#newusername').focus();
 				GroupList.incEveryoneCount();
@@ -1091,7 +1048,7 @@ $(document).ready(function () {
 			OC.AppConfig.setValue('core', 'umgmt_show_storage_location', 'false');
 		}
 	});
-     
+
         if ($('#CheckboxCreationTime').is(':checked')) {
                 $("#userlist .creationTime").show();
         }
