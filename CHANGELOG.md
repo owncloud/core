@@ -23,6 +23,7 @@ Summary
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 * Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
 * Enhancement - Add commands to handle the trusted servers from command line: [#40796](https://github.com/owncloud/core/pull/40796)
+* Enhancement - Enforce 2-factor authentication: [#40830](https://github.com/owncloud/core/pull/40830)
 
 Details
 -------
@@ -168,6 +169,16 @@ Details
    line. These commands will allow the admin to add list and remove trusted servers
 
    https://github.com/owncloud/core/pull/40796
+
+* Enhancement - Enforce 2-factor authentication: [#40830](https://github.com/owncloud/core/pull/40830)
+
+   2-factor authentication can be enforced now. The feature requires at least an app
+   implementing the 2-factor, otherwise no enforcement will be done. If the 2-factor
+   authentication is enforced, all users will be required to use a 2-factor authentication app.
+   Some specific groups selected by the admin can be excluded to let those users bypass the
+   2-factor authentication.
+
+   https://github.com/owncloud/core/pull/40830
 
 Changelog for ownCloud Core [10.12.2] (2023-05-31)
 =======================================
