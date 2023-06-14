@@ -14,6 +14,7 @@ Summary
 * Bugfix - Fix query used to delete thumbnails: [#40800](https://github.com/owncloud/core/issues/40800)
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 * Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
+* Bugfix - Explicitly set open mode in the checksum wrapper: [#40832](https://github.com/owncloud/core/pull/40832)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
@@ -87,6 +88,18 @@ Details
 
    https://github.com/owncloud/core/issues/40802
    https://github.com/owncloud/core/pull/40822
+
+* Bugfix - Explicitly set open mode in the checksum wrapper: [#40832](https://github.com/owncloud/core/pull/40832)
+
+   Uploading files to some external storages through the desktop client was causing issues due to
+   the checksum wrapper. We're using additional wrappers and the mode wasn't being detected
+   correctly in some cases. Using the right mode in the checksum wrapper was required in order to
+   decide whether we should discard the final checksum or not; in this case, the checksum was being
+   discarded, so it was causing a checksum mismatch.
+
+   Now the open mode in the checksum wrapper is set explicitly.
+
+   https://github.com/owncloud/core/pull/40832
 
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 

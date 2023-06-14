@@ -12,6 +12,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix query used to delete thumbnails: <a href="https://github.com/owncloud/core/issues/40800">#40800</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Always use json for federation post and get to exchange tokens: <a href="https://github.com/owncloud/core/pull/40815">#40815</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Rare undefined variable error when using a Google Drive mount: <a href="https://github.com/owncloud/core/pull/40822">#40822</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Explicitly set open mode in the checksum wrapper: <a href="https://github.com/owncloud/core/pull/40832">#40832</a></li>
         <li class="type-change changelog-item">Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
@@ -84,6 +85,16 @@
             <p>https://github.com/owncloud/core/issues/40802<br>
             </p>
             <p>https://github.com/owncloud/core/pull/40822<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Explicitly set open mode in the checksum wrapper: <a href="https://github.com/owncloud/core/pull/40832">#40832</a></p>
+            <p>Uploading files to some external storages through the desktop client was causing issues due to
+   the checksum wrapper. We're using additional wrappers and the mode wasn't being detected
+   correctly in some cases. Using the right mode in the checksum wrapper was required in order to
+   decide whether we should discard the final checksum or not; in this case, the checksum was being
+   discarded, so it was causing a checksum mismatch.Now the open mode in the checksum wrapper is set explicitly.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40832<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></p>
