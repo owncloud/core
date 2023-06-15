@@ -519,7 +519,7 @@ def main(ctx):
     before = beforePipelines(ctx)
     dependsOn(initial, before)
     webui = acceptance(ctx)
-    dependsOn(before, acceptance(ctx))
+    dependsOn(before, webui)
     return initial + before + webui
 
     coverageTests = coveragePipelines(ctx)
