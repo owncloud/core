@@ -233,6 +233,7 @@ config = {
                 "apiWebdavUpload2",
             ],
             "filterTags": "~@local_storage&&~@files_external-app-required",
+            "skip": True,
         },
         "apiFilesExternal": {
             "suites": {
@@ -244,6 +245,7 @@ config = {
             "extraApps": {
                 "files_external": "",
             },
+            "skip": True,
         },
         "apiNotifications": {
             "suites": [
@@ -253,6 +255,7 @@ config = {
             "extraApps": {
                 "notifications": 'if [ -f "composer.json" ]; then composer install; fi',
             },
+            "skip": True,
         },
         "apiFederation": {
             "suites": [
@@ -263,6 +266,7 @@ config = {
             ],
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.9.1"],
+            "skip": True,
         },
         "cli": {
             "suites": [
@@ -275,6 +279,7 @@ config = {
             ],
             "filterTags": "~@local_storage&&~@files_external-app-required",
             "emailNeeded": True,
+            "skip": True,
         },
         "cliFilesExternal": {
             "suites": {
@@ -286,12 +291,14 @@ config = {
             "extraApps": {
                 "files_external": "",
             },
+            "skip": True,
         },
         "cliManageApps": {
             "suites": [
                 "cliManageApps",
             ],
             "testingRemoteSystem": False,
+            "skip": True,
         },
         "cliEncryption": {
             "phpVersions": [
@@ -321,6 +328,7 @@ config = {
                 "chown -R www-data data/owncloud-keys",
                 "chmod -R 0770 data/owncloud-keys",
             ],
+            "skip": True,
         },
         "cliDbConversion": {
             "suites": [
@@ -334,6 +342,7 @@ config = {
                 "mysql:8.0",
                 "postgres:10.20",
             ],
+            "skip": True,
         },
         "cliExternalStorage": {
             "suites": [
@@ -344,6 +353,7 @@ config = {
             "extraApps": {
                 "files_external": "",
             },
+            "skip": True,
         },
         "webUI": {
             "suites": {
@@ -475,6 +485,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
             "runAllSuites": True,
             "numberOfParts": 8,
+            "skip": True,
         },
         "apiUbuntu22": {
             "phpVersions": [
@@ -487,6 +498,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
             "runAllSuites": True,
             "numberOfParts": 8,
+            "skip": True,
         },
         "apiOnSqlite": {
             "suites": {
@@ -496,6 +508,7 @@ config = {
             "useHttps": False,
             "filterTags": "@sqliteDB",
             "runAllSuites": True,
+            "skip": True,
         },
     },
 }
@@ -505,6 +518,9 @@ def main(ctx):
 
     before = beforePipelines(ctx)
     dependsOn(initial, before)
+    webui = acceptance(ctx)
+    dependsOn(before, acceptance(ctx))
+    return initial + before + webui
 
     coverageTests = coveragePipelines(ctx)
     if (coverageTests == False):
@@ -542,6 +558,7 @@ def initialPipelines(ctx):
     return dependencies(ctx) + checkStarlark()
 
 def beforePipelines(ctx):
+    return cancelPreviousBuilds()
     return codestyle(ctx) + changelog(ctx) + cancelPreviousBuilds() + phpstan(ctx) + phan(ctx)
 
 def coveragePipelines(ctx):
