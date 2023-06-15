@@ -11,9 +11,9 @@
 		}
 	},
 	"replace": {
-		"guzzlehttp/guzzle": "^7.5",
-		"guzzlehttp/psr7": "^2.4",
-		"phpseclib/phpseclib": ">=3.0.17"
+		"guzzlehttp/guzzle": "^7.7",
+		"guzzlehttp/psr7": "^2.5",
+		"phpseclib/phpseclib": ">=3.0.20"
 	},
 	"require": {
 		"php": ">=7.4",
