@@ -2187,6 +2187,7 @@ def browserService(browser):
             "image": SELENIUM_STANDALONE_CHROME_DEBUG,
             "environment": {
                 "JAVA_OPTS": "-Dselenium.LOGGER.level=WARNING",
+                "SHM_SIZE": "2g",
             },
             "volumes": [{
                 "name": "downloads",
