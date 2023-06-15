@@ -121,7 +121,7 @@ Details
    punic/punic (3.8.0 to 3.8.1) - sabre/url (2.3.2 to 2.3.3)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
-   (2.13.1 to 2.13.2)
+   (2.13.1 to 2.13.2) - firebase/php-jwt (v6.4.0 to v6.6.0)
 
    https://github.com/owncloud/core/pull/40724
    https://github.com/owncloud/core/pull/40731
@@ -133,6 +133,7 @@ Details
    https://github.com/owncloud/core/pull/40825
    https://github.com/owncloud/core/pull/40833
    https://github.com/owncloud/core/pull/40838
+   https://github.com/owncloud/core/pull/40839
 
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
