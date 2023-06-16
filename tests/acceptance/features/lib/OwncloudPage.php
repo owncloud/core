@@ -24,6 +24,8 @@
 namespace Page;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\DriverException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Session;
 use Exception;
 use InvalidArgumentException;
@@ -487,6 +489,21 @@ class OwncloudPage extends Page {
 	public function scrollToPosition(string $jQuerySelector, $position, Session $session): void {
 		$session->executeScript(
 			'jQuery("' . $jQuerySelector . '").scrollTop(' . $position . ');'
+		);
+	}
+
+	/**
+	 * scrolls to a position in a specified element
+	 *
+	 * @param string $jQuerySelector e.g. "#app-content"
+	 *
+	 * @return void
+	 * @throws DriverException
+	 * @throws UnsupportedDriverActionException
+	 */
+	public function scrollInToView(string $jQuerySelector): void {
+		$this->getDriver()->executeScript(
+			'jQuery("' . $jQuerySelector . '").get(0).scrollIntoView();'
 		);
 	}
 
