@@ -322,7 +322,7 @@ class FedShareManager {
 	 */
 	public function updatePermissions(IShare $share, int $permissions): void {
 		# permissions can only be reduced but not upgraded
-		if (Permissions::isNewPermissionHigher($share->getPermissions(), $permissions)) {
+		if (!Permissions::isNewPermissionHigher($share->getPermissions(), $permissions)) {
 			$share->setPermissions($permissions);
 			$this->federatedShareProvider->update($share);
 		}
