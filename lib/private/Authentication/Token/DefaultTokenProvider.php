@@ -112,10 +112,6 @@ class DefaultTokenProvider implements IProvider {
 		if (!($token instanceof DefaultToken)) {
 			throw new InvalidTokenException();
 		}
-		$this->logger->debug(
-			'updating token {tokenId}, last check is now {now}',
-			['app' => __METHOD__, 'tokenId' => $token->getId(), 'now' => $token->getLastCheck()]
-		);
 		$this->mapper->update($token);
 	}
 
@@ -166,10 +162,6 @@ class DefaultTokenProvider implements IProvider {
 		try {
 			return $this->mapper->getToken($this->hashToken($tokenId));
 		} catch (DoesNotExistException $ex) {
-			$this->logger->debug(
-				'token {token} does not exist',
-				['app'=>__METHOD__, 'token' => $this->hashToken($tokenId) ]
-			);
 			throw new InvalidTokenException();
 		}
 	}
