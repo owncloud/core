@@ -510,6 +510,22 @@ class OccContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
+	public function executeLastBackgroundJobUsingTheOccCommand(string $job):void {
+		$match = $this->getLastJobIdForJob($job);
+		if ($match === false) {
+			throw new Exception("Couldn't find jobId for given job: $job");
+		}
+		$this->invokingTheCommand(
+			"background:queue:execute --accept-warning --force -vvv $match"
+		);
+	}
+
+	/**
+	 * @param string $job
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
 	public function deleteLastBackgroundJobUsingTheOccCommand(string $job):void {
 		$match = $this->getLastJobIdForJob($job);
 		if ($match === false) {
@@ -2889,6 +2905,18 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorGetsAllTheJobsInTheBackgroundQueueUsingTheOccCommand():void {
 		$this->getAllJobsInBackgroundQueueUsingOccCommand();
+	}
+
+	/**
+	 * @When the administrator executes the last background job :job using the occ command
+	 *
+	 * @param string $job
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorExecutesLastBackgroundJobUsingTheOccCommand(string $job):void {
+		$this->executeLastBackgroundJobUsingTheOccCommand($job);
 	}
 
 	/**
