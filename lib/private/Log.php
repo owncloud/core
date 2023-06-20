@@ -400,6 +400,8 @@ class Log implements ILogger {
 				\call_user_func([$logger, 'write'], $app, $formattedMessage, $level, $logConditionFile);
 			} elseif (\is_callable([$logger, 'log'])) {
 				\call_user_func([$logger, 'log'], $level, $formattedMessage, $context);
+			} else {
+				throw new \Exception("No logger method available. Trying to log message '$formattedMessage'.");
 			}
 		}
 
