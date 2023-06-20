@@ -15,6 +15,7 @@ Summary
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 * Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
 * Bugfix - Explicitly set open mode in the checksum wrapper: [#40832](https://github.com/owncloud/core/pull/40832)
+* Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
@@ -100,6 +101,12 @@ Details
    Now the open mode in the checksum wrapper is set explicitly.
 
    https://github.com/owncloud/core/pull/40832
+
+* Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
+
+   Verbose command output of the background:queue:execute is now displayed.
+
+   https://github.com/owncloud/core/pull/40844
 
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 
