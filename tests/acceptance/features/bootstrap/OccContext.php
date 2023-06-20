@@ -918,6 +918,34 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Then /^the command output should contain the text "([^"]*)" for path "([^"]*)"$/
+	 *
+	 * @param string $text
+	 * @param string $path
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theCommandOutputContainsTheTextWithPath(string $text, string $path):void {
+		$fullPath = getcwd() . '/tests/acceptance/features/bootstrap/../../data/' . $path;
+
+		$expectedOutput = str_replace("%path%",$fullPath,$text);
+
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$lines = SetupHelper::findLines(
+			$commandOutput,
+			$expectedOutput
+		);
+		Assert::assertGreaterThanOrEqual(
+			1,
+			\count($lines),
+			"The command output did not contain the expected text on stdout '$expectedOutput'\n" .
+			"The command output on stdout was:\n" .
+			$commandOutput
+		);
+	}
+
+	/**
 	 * @Then /^the command output should contain the text ((?:'[^']*')|(?:"[^"]*")) about user "([^"]*)"$/
 	 *
 	 * @param string $text
