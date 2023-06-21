@@ -129,6 +129,22 @@ class JobListTest extends TestCase {
 	 * @dataProvider argumentProvider
 	 * @param $argument
 	 */
+	public function testJobIdExists($argument) {
+		$this->timeFactory->method('getTime')->willReturn(164419800);
+		$job = new TestJob();
+		$this->instance->add($job, $argument);
+		$jobs = $this->getAllSorted();
+		$addedJob = $jobs[\count($jobs) - 1];
+		$addedJobId = $addedJob->getId();
+		$this->assertTrue($this->instance->jobIdExists($addedJobId));
+		$this->instance->remove($job, $argument);
+		$this->assertFalse($this->instance->jobIdExists($addedJobId));
+	}
+
+	/**
+	 * @dataProvider argumentProvider
+	 * @param $argument
+	 */
 	public function testHas($argument) {
 		$this->timeFactory->method('getTime')->willReturn(164419800);
 		$job = new TestJob();
