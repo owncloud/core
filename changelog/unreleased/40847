@@ -1,0 +1,6 @@
+Bugfix: Versions expire job does not error with federated shares
+
+Versions expire job does not error with federated shares when versioning meta-
+data is enabled.
+
+https://github.com/owncloud/core/pull/40847
