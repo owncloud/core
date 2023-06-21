@@ -120,4 +120,32 @@ EOS;
 
 		$this->assertStringContainsString($expected, $output);
 	}
+
+	public function testListingInvalidJob() {
+		$this->jobList->expects($this->any())->method('listInvalidJobs')
+			->willReturn([
+				[
+					'id' => '42',
+					'class' => 'OC\BackgroundJob\Legacy\RegularJob',
+					'argument' => '{"k":"v"}',
+					'last_run' => '2023-01-01T00:00:10+00:00',
+					'last_checked' => '2023-06-01T00:00:40+00:00',
+					'reserved_at' => '2023-06-02T00:00:40+00:00',
+					'execution_duration' => 7,
+				]
+			]);
+		$this->commandTester->execute(
+			['--display-invalid-jobs' => null]
+		);
+		$output = $this->commandTester->getDisplay();
+		$expected = <<<EOS
++--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
+| Job ID | Job                                | Job Arguments | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) |
++--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
+| 42     | OC\BackgroundJob\Legacy\RegularJob | {"k":"v"}     | 2023-01-01T00:00:10+00:00 | 2023-06-01T00:00:40+00:00 | 2023-06-02T00:00:40+00:00 | 7                      |
++--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
+EOS;
+
+		$this->assertStringContainsString($expected, $output);
+	}
 }
