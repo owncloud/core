@@ -85,6 +85,13 @@ interface IJobList {
 	public function getById($id);
 
 	/**
+	 * @param int $id
+	 * @return bool
+	 * @since 10.13.0
+	 */
+	public function jobIdExists($id);
+
+	/**
 	 * set the job that was last ran to the current time
 	 *
 	 * @param \OCP\BackgroundJob\IJob $job
@@ -129,12 +136,20 @@ interface IJobList {
 	public function setExecutionTime($job, $timeTaken);
 
 	/**
-	 * iterate over all jobs in the queue
+	 * iterate over all valid jobs in the queue
 	 *
 	 * @return void
 	 * @since 10.2.0
 	 */
 	public function listJobs(\Closure $callback);
+
+	/**
+	 * get the details of all invalid jobs in the queue
+	 *
+	 * @return array
+	 * @since 10.13.0
+	 */
+	public function listInvalidJobs();
 
 	/**
 	 * remove a specific job by id

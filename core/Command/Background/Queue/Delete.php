@@ -51,8 +51,7 @@ class Delete extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$id = $input->getArgument('Job ID');
 
-		$job = $this->jobList->getById($id);
-		if ($job === null) {
+		if (!$this->jobList->jobIdExists($id)) {
 			$output->writeln("Job with ID <$id> is not known.");
 			return 1;
 		}
