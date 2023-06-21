@@ -469,7 +469,7 @@ class Storage {
 
 			if (self::metaEnabled()) {
 				// NOTE: we need to move current file first as in case of interuption lack of this file could cause issues
-				
+
 				// Also move/copy the current version
 				$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
 				$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
@@ -635,7 +635,7 @@ class Storage {
 			if (Filesystem::is_dir($filename) || !Filesystem::file_exists($filename)) {
 				return false;
 			}
-			
+
 			list($uid, $currentFileName) = self::getUidAndFilename($filename);
 
 			// overwrite current file metadata with minor=false to create new major version
@@ -671,7 +671,7 @@ class Storage {
 		if ($dirContent === false) {
 			return $versions;
 		}
-		
+
 		// add historical versions
 		if (\is_resource($dirContent)) {
 			while (($entryName = \readdir($dirContent)) !== false) {
@@ -682,7 +682,7 @@ class Storage {
 						$pathparts = \pathinfo($entryName);
 						$timestamp = \substr($pathparts['extension'], 1);
 						$filename = $pathparts['filename'];
-						
+
 						// ordering key
 						$key = $timestamp . '#' . $filename;
 
@@ -971,15 +971,17 @@ class Storage {
 			// if still not enough free space we rearrange the versions from all files
 			if ($availableSpace <= 0) {
 				$result = self::getFileHelper()->getAllVersions($uid);
-				$allVersions = $result['all'];
+				if ($result) {
+					$allVersions = $result['all'];
 
-				foreach ($result['by_file'] as $versions) {
-					list($toDeleteNew, $size) = self::getExpireList($time, $versions, $availableSpace <= 0);
-					$toDelete = \array_merge($toDelete, $toDeleteNew);
-					$sizeOfDeletedVersions += $size;
+					foreach ($result['by_file'] as $versions) {
+						list($toDeleteNew, $size) = self::getExpireList($time, $versions, $availableSpace <= 0);
+						$toDelete = \array_merge($toDelete, $toDeleteNew);
+						$sizeOfDeletedVersions += $size;
+					}
+					$availableSpace = $availableSpace + $sizeOfDeletedVersions;
+					$versionsSize = $versionsSize - $sizeOfDeletedVersions;
 				}
-				$availableSpace = $availableSpace + $sizeOfDeletedVersions;
-				$versionsSize = $versionsSize - $sizeOfDeletedVersions;
 			}
 
 			// we need to check if we have to remove any empty folder based on the
