@@ -241,6 +241,26 @@ class JobList implements IJobList {
 	}
 
 	/**
+	 * @param int $id
+	 * @return bool
+	 */
+	public function jobIdExists($id) {
+		$query = $this->connection->getQueryBuilder();
+		$query->select('*')
+			->from('jobs')
+			->where($query->expr()->eq('id', $query->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
+		$result = $query->execute();
+		$row = $result->fetch();
+		$result->closeCursor();
+
+		if ($row) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * get the job object from a row in the db
 	 *
 	 * @param array $row
@@ -349,5 +369,27 @@ class JobList implements IJobList {
 			}
 		}
 		$result->closeCursor();
+	}
+
+	public function listInvalidJobs(): array {
+		$query = $this->connection->getQueryBuilder();
+		$query->select('*')
+			->from('jobs');
+		$result = $query->execute();
+		$jobData = [];
+
+		while ($row = $result->fetch()) {
+			try {
+				// Try to load the job as a service
+				\OC::$server->query($row['class']);
+			} catch (QueryException $e) {
+				if (!\class_exists($row['class'])) {
+					// job is from a disabled app or old version of an app
+					// so return the data about it
+					$jobData[] = $row;
+				}
+			}
+		}
+		return $jobData;
 	}
 }
