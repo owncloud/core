@@ -1,0 +1,13 @@
+Change: display and delete invalid background jobs
+
+Background jobs can be no longer valid because they are from an old version of
+an app, or from an app that has been disabled. These jobs can now be listed
+with the command:
+
+occ background:queue:status --display-invalid-jobs
+
+And can be deleted with the command:
+
+occ background:queue:delete <Job ID>
+
+https://github.com/owncloud/core/pull/40846
