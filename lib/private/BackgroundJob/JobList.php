@@ -24,6 +24,7 @@
 
 namespace OC\BackgroundJob;
 
+use OC\Command\CommandJob;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\IJob;
@@ -264,10 +265,13 @@ class JobList implements IJobList {
 	 * get the job object from a row in the db
 	 *
 	 * @param array $row
+	 * @param bool $includeInvalidJobs
+	 * @param bool $onlyInvalidJobs
 	 * @return IJob|null
 	 */
-	private function buildJob($row) {
+	private function buildJob($row, $includeInvalidJobs = false, $onlyInvalidJobs = false) {
 		try {
+			$jobIsValid = true;
 			try {
 				// Try to load the job as a service
 				/** @var IJob $job */
@@ -278,9 +282,19 @@ class JobList implements IJobList {
 					$class = $row['class'];
 					$job = new $class();
 				} else {
-					// job from disabled app or old version of an app, no need to do anything
-					return null;
+					// job is from disabled app or old version of an app
+					$jobIsValid = false;
+					if ($includeInvalidJobs) {
+						// Use CommandJob as a "template" for this job that has an unknown class
+						$job = new CommandJob();
+					} else {
+						return null;
+					}
 				}
+			}
+
+			if ($jobIsValid && $onlyInvalidJobs) {
+				return null;
 			}
 
 			$job->setId($row['id']);
@@ -352,44 +366,24 @@ class JobList implements IJobList {
 	}
 
 	/**
+	 * @param \Closure $callback
+	 * @param bool $onlyInvalidJobs
 	 * @inheritdoc
 	 */
-	public function listJobs(\Closure $callback) {
+	public function listJobs(\Closure $callback, bool $onlyInvalidJobs = false) {
 		$query = $this->connection->getQueryBuilder();
 		$query->select('*')
 			->from('jobs');
 		$result = $query->execute();
 
 		while ($row = $result->fetch()) {
-			$job = $this->buildJob($row);
+			$job = $this->buildJob($row, true, $onlyInvalidJobs);
 			if ($job) {
-				if ($callback($job) === false) {
+				if ($callback($job, $row['class']) === false) {
 					break;
 				}
 			}
 		}
 		$result->closeCursor();
-	}
-
-	public function listInvalidJobs(): array {
-		$query = $this->connection->getQueryBuilder();
-		$query->select('*')
-			->from('jobs');
-		$result = $query->execute();
-		$jobData = [];
-
-		while ($row = $result->fetch()) {
-			try {
-				// Try to load the job as a service
-				\OC::$server->query($row['class']);
-			} catch (QueryException $e) {
-				if (!\class_exists($row['class'])) {
-					// job is from a disabled app or old version of an app
-					// so return the data about it
-					$jobData[] = $row;
-				}
-			}
-		}
-		return $jobData;
 	}
 }

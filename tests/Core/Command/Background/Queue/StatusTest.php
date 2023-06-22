@@ -49,14 +49,15 @@ class StatusTest extends TestCase {
 	}
 
 	public function testCommandInput() {
-		$this->jobList->expects($this->any())->method('listJobs')
+		$this->jobList->expects($this->once())->method('listJobs')
+			->with($this->isType('callable'), false)
 			->willReturnCallback(function (\Closure $callBack) {
 				$job = new RegularJob();
 				$job->setId(666);
 				$job->setLastChecked(10);
 				$job->setReservedAt(0);
 				$job->setExecutionDuration(-1);
-				$callBack($job);
+				$callBack($job, \get_class($job));
 			});
 
 		$this->commandTester->execute([]);
@@ -73,7 +74,8 @@ EOS;
 	}
 
 	public function testJobWithArray() {
-		$this->jobList->expects($this->any())->method('listJobs')
+		$this->jobList->expects($this->once())->method('listJobs')
+			->with($this->isType('callable'), false)
 			->willReturnCallback(function (\Closure $callBack) {
 				$job = new RegularJob();
 				$job->setId(666);
@@ -81,7 +83,7 @@ EOS;
 				$job->setLastChecked(10);
 				$job->setReservedAt(0);
 				$job->setExecutionDuration(-1);
-				$callBack($job);
+				$callBack($job, \get_class($job));
 			});
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
@@ -97,7 +99,8 @@ EOS;
 	}
 
 	public function testJobWithSchedulingInfo() {
-		$this->jobList->expects($this->any())->method('listJobs')
+		$this->jobList->expects($this->once())->method('listJobs')
+			->with($this->isType('callable'), false)
 			->willReturnCallback(function (\Closure $callBack) {
 				$job = new RegularJob();
 				$job->setId(666);
@@ -106,7 +109,7 @@ EOS;
 				$job->setLastChecked(10);
 				$job->setReservedAt(10);
 				$job->setExecutionDuration(1);
-				$callBack($job);
+				$callBack($job, \get_class($job));
 			});
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
@@ -122,27 +125,27 @@ EOS;
 	}
 
 	public function testListingInvalidJob() {
-		$this->jobList->expects($this->any())->method('listInvalidJobs')
-			->willReturn([
-				[
-					'id' => '42',
-					'class' => 'OC\BackgroundJob\Legacy\RegularJob',
-					'argument' => '{"k":"v"}',
-					'last_run' => '2023-01-01T00:00:10+00:00',
-					'last_checked' => '2023-06-01T00:00:40+00:00',
-					'reserved_at' => '2023-06-02T00:00:40+00:00',
-					'execution_duration' => 7,
-				]
-			]);
+		$this->jobList->expects($this->once())->method('listJobs')
+			->with($this->isType('callable'), true)
+			->willReturnCallback(function (\Closure $callBack) {
+				$job = new RegularJob();
+				$job->setId(42);
+				$job->setArgument(['k'=> 'v']);
+				$job->setLastRun(20);
+				$job->setLastChecked(40);
+				$job->setReservedAt(15);
+				$job->setExecutionDuration(7);
+				$callBack($job, \get_class($job));
+			});
 		$this->commandTester->execute(
-			['--display-invalid-jobs' => null]
+			['--display-only-invalid-jobs' => true]
 		);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
 +--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
 | Job ID | Job                                | Job Arguments | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) |
 +--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
-| 42     | OC\BackgroundJob\Legacy\RegularJob | {"k":"v"}     | 2023-01-01T00:00:10+00:00 | 2023-06-01T00:00:40+00:00 | 2023-06-02T00:00:40+00:00 | 7                      |
+| 42     | OC\BackgroundJob\Legacy\RegularJob | {"k":"v"}     | 1970-01-01T00:00:20+00:00 | 1970-01-01T00:00:40+00:00 | 1970-01-01T00:00:15+00:00 | 7                      |
 +--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
 EOS;
 

@@ -136,20 +136,12 @@ interface IJobList {
 	public function setExecutionTime($job, $timeTaken);
 
 	/**
-	 * iterate over all valid jobs in the queue
+	 * iterate over jobs in the queue
 	 *
 	 * @return void
 	 * @since 10.2.0
 	 */
-	public function listJobs(\Closure $callback);
-
-	/**
-	 * get the details of all invalid jobs in the queue
-	 *
-	 * @return array
-	 * @since 10.13.0
-	 */
-	public function listInvalidJobs();
+	public function listJobs(\Closure $callback, bool $onlyInvalidJobs = false);
 
 	/**
 	 * remove a specific job by id

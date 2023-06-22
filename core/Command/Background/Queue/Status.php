@@ -42,7 +42,7 @@ class Status extends Command {
 		$this
 			->setName('background:queue:status')
 			->setDescription('List queue status')
-			->addOption('display-invalid-jobs', null, InputOption::VALUE_NONE, 'Display jobs that are no longer valid');
+			->addOption('display-only-invalid-jobs', null, InputOption::VALUE_NONE, 'Only display jobs that are no longer valid');
 	}
 
 	private function getJobArgumentAsString($argument) {
@@ -60,32 +60,20 @@ class Status extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$t = new Table($output);
 		$t->setHeaders(['Job ID', 'Job', 'Job Arguments', 'Last Run', 'Last Checked', 'Reserved At', 'Execution Duration (s)']);
-		if ($input->getOption('display-invalid-jobs')) {
-			$invalidJobs = $this->jobList->listInvalidJobs();
-			foreach ($invalidJobs as $invalidJob) {
-				$t->addRow([
-					$invalidJob['id'],
-					$invalidJob['class'],
-					$invalidJob['argument'],
-					$invalidJob['last_run'],
-					$invalidJob['last_checked'],
-					$invalidJob['reserved_at'],
-					$invalidJob['execution_duration'],
-				]);
-			}
-		} else {
-			$this->jobList->listJobs(function (IJob $job) use ($t) {
+		$this->jobList->listJobs(
+			function (IJob $job, string $classAsString) use ($t) {
 				$t->addRow([
 					$job->getId(),
-					\get_class($job),
+					$classAsString,
 					$this->getJobArgumentAsString($job->getArgument()),
 					$job->getLastRun() == 0 ? 'N/A' : \date('c', $job->getLastRun()),
 					\date('c', $job->getLastChecked()),
 					$job->getReservedAt() == 0 ? 'N/A' : \date('c', $job->getReservedAt()),
 					$job->getExecutionDuration() == -1 ? 'N/A' : $job->getExecutionDuration(),
 				]);
-			});
-		}
+			},
+			$input->getOption('display-only-invalid-jobs')
+		);
 		$t->render();
 		return 0;
 	}
