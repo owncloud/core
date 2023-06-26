@@ -6,10 +6,11 @@ The following Symfony component versions are provided:
 - symfony/console (v5.4.24)
 - symfony/event-dispatcher (v5.4.22)
 - symfony/process (v5.4.24)
-- symfony/routing (v5.4.22)
+- symfony/routing (v5.4.25)
 - symfony/string (v5.4.22)
 - symfony/translation (v5.4.24)
 
 https://github.com/owncloud/core/issues/39630
 https://github.com/owncloud/core/pull/40518
 https://github.com/owncloud/core/pull/40819
+https://github.com/owncloud/core/pull/40849
