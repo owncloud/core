@@ -21,6 +21,7 @@
 
 namespace Core\Controller;
 
+use Generator;
 use OC\Core\Controller\AppRegistryController;
 use OC\Files\Node\File;
 use OCP\App\IAppManager;
@@ -74,7 +75,7 @@ class AppRegistryControllerTest extends TestCase {
 			return [];
 		});
 		$generator->method('linkToRouteAbsolute')->willReturn('https://example.cloud/index.php/apps/drawio/editor/123');
-		$request->method('getHeader')->willReturn('ownCloud iOS');
+		$request->method('getHeader')->willReturn('ownCloudApp/12.0.2');
 		$config->method('getSystemValue')->willReturnCallback(function ($key, $default) {
 			return $default;
 		});
