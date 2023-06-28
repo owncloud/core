@@ -221,7 +221,7 @@ class Scan extends Base {
 			$scanner->listen('\OC\Files\Utils\Scanner', 'StorageNotAvailable', function (StorageNotAvailableException $e) use ($output) {
 				$output->writeln("Error while scanning, storage not available (" . $e->getMessage() . ")");
 			});
-		# count only
+			# count only
 		} else {
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () {
 				$this->filesCounter += 1;
