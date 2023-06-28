@@ -220,7 +220,6 @@ class AppRegistryController extends Controller {
 			], 400);
 		}
 
-
 		$parent_container_id = $this->extractFileId($parent_container_id);
 		$nodes = $this->rootFolder->getById($parent_container_id, true);
 		if (\count($nodes) !== 1) {
@@ -291,7 +290,7 @@ class AppRegistryController extends Controller {
 		}
 
 		$userAgent = $this->request->getHeader('User-Agent') ?? '-';
-		$clientRules = $this->config->getSystemValue('client.detection' , [
+		$clientRules = $this->config->getSystemValue('client.detection', [
 			'ios' => 'ownCloudApp/'
 		]);
 		$schema = $this->config->getSystemValue('app-registry.uri-schema', [
@@ -309,7 +308,8 @@ class AppRegistryController extends Controller {
 	private function getDefaultApp(string $mimeType): ?string {
 		# get mime from file and see which of the enabled apps matches
 		foreach (self::$apps as $app_name => $app_info) {
-			if ($this->appManager->isEnabledForUser($app_name)) {
+			$oc_app_name = $app_info['oc_app_name'];
+			if ($this->appManager->isEnabledForUser($oc_app_name)) {
 				if (\in_array($mimeType, $app_info['mime-types'], true)) {
 					return $app_name;
 				}
