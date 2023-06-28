@@ -26,7 +26,6 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
-use OCP\Files\Node;
 use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -142,6 +141,8 @@ class AppRegistryController extends Controller {
 						"name" => $app_name,
 						"icon" => $app_info['icon']
 					];
+					# add default_application
+					$mimeTypes[$mimetype]['default_application'] = $this->getDefaultApp($mimetype);
 				}
 			}
 		}
@@ -169,7 +170,7 @@ class AppRegistryController extends Controller {
 		}
 
 		if ($app_name === null) {
-			$app_name = $this->getDefaultApp($nodes[0]);
+			$app_name = $this->getDefaultApp($nodes[0]->getMimetype());
 			if ($app_name === null) {
 				return new DataResponse([
 					"code" => "INVALID_PARAMETER",
@@ -305,11 +306,11 @@ class AppRegistryController extends Controller {
 		return $uri;
 	}
 
-	private function getDefaultApp(Node $node): ?string {
+	private function getDefaultApp(string $mimeType): ?string {
 		# get mime from file and see which of the enabled apps matches
 		foreach (self::$apps as $app_name => $app_info) {
 			if ($this->appManager->isEnabledForUser($app_name)) {
-				if (\in_array($node->getMimetype(), $app_info['mime-types'], true)) {
+				if (\in_array($mimeType, $app_info['mime-types'], true)) {
 					return $app_name;
 				}
 			}
