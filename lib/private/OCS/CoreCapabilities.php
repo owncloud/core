@@ -60,7 +60,7 @@ class CoreCapabilities implements ICapability {
 					"apps_url" => $this->generator->linkToRoute("core.AppRegistry.list"),
 					# "open_url" => $this->generator->linkToRoute("core.AppRegistry.open"),
 					"open_web_url" => $this->generator->linkToRoute("core.AppRegistry.openWithWeb"),
-					# "new_url" => $this->generator->linkToRoute("core.AppRegistry.new")
+					"new_url" => $this->generator->linkToRoute("core.AppRegistry.new")
 				]]
 			]
 		];

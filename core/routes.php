@@ -59,6 +59,7 @@ $application->registerRoutes($this, [
 		// OCIS app registry - https://owncloud.dev/services/app-registry/apps/
 		['root' => '', 'name' => 'AppRegistry#list', 'url' => '/app/list', 'verb' => 'GET'],
 		['root' => '', 'name' => 'AppRegistry#openWithWeb', 'url' => '/app/open-with-web', 'verb' => 'POST'],
+		['root' => '', 'name' => 'AppRegistry#new', 'url' => '/app/new', 'verb' => 'POST'],
 	],
 	'ocs' => [
 		['root' => '/cloud', 'name' => 'Cloud#getCapabilities', 'url' => '/capabilities', 'verb' => 'GET'],

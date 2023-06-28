@@ -24,6 +24,7 @@ namespace Core\Controller;
 use OC\Core\Controller\AppRegistryController;
 use OC\Files\Node\File;
 use OCP\App\IAppManager;
+use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -84,5 +85,40 @@ class AppRegistryControllerTest extends TestCase {
 		$data = $result->getData();
 		self::assertCount(1, $data);
 		self::assertEquals('https://example.cloud/index.php/apps/drawio/editor/123', $data['uri']);
+	}
+
+	public function testNew(): void {
+		$request = $this->createMock(IRequest::class);
+		$appManager = $this->createMock(IAppManager::class);
+		$rootFolder = $this->createMock(IRootFolder::class);
+		$generator = $this->createMock(IURLGenerator::class);
+		$config = $this->createMock(IConfig::class);
+		$logger = $this->createMock(ILogger::class);
+
+		$parent_folder = $this->createMock(Folder::class);
+		$newFile = $this->createMock(File::class);
+		$parent_folder->method('newFile')->willReturn($newFile);
+		$newFile->method('getId')->willReturn(9999999);
+
+		$appManager->method('isEnabledForUser')->willReturn(true);
+		$rootFolder->method('getById')->willReturnCallback(function ($file_id) use ($parent_folder) {
+			if ($file_id === 123) {
+				return [$parent_folder];
+			}
+
+			return [];
+		});
+		$generator->method('linkToRouteAbsolute')->willReturn('https://example.cloud/index.php/apps/drawio/editor/123');
+		$request->method('getHeader')->willReturn('ownCloud iOS');
+		$config->method('getSystemValue')->willReturnCallback(function ($key, $default) {
+			return $default;
+		});
+
+		$controller = new AppRegistryController('core', $request, $appManager, $rootFolder, $generator, $config, $logger);
+
+		$result = $controller->new(123, 'hello.txt');
+		$data = $result->getData();
+		self::assertCount(1, $data);
+		self::assertSame('9999999', $data['file_id']);
 	}
 }

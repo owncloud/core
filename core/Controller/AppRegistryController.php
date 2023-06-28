@@ -24,8 +24,10 @@ namespace OC\Core\Controller;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
+use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -195,8 +197,67 @@ class AppRegistryController extends Controller {
 			'uri' => $uri]);
 	}
 
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function new(?string $parent_container_id, ?string $filename): DataResponse {
+		$userAgent = $this->request->getHeader('User-Agent') ?? '-';
+		$this->logger->info("new($parent_container_id, $filename) - $userAgent");
+
+		if ($parent_container_id === null) {
+			return new DataResponse([
+				"code" => "INVALID_PARAMETER",
+				"message" => "missing parent container ID"
+			], 400);
+		}
+		if ($filename === null) {
+			return new DataResponse([
+				"code" => "INVALID_PARAMETER",
+				"message" => "missing filename"
+			], 400);
+		}
+
+
+		$parent_container_id = $this->extractFileId($parent_container_id);
+		$nodes = $this->rootFolder->getById($parent_container_id, true);
+		if (\count($nodes) !== 1) {
+			return new DataResponse([
+				"code" => "RESOURCE_NOT_FOUND",
+				"message" => "missing parent container ID"
+			], 404);
+		}
+		$node = $nodes[0];
+		if (!$node instanceof Folder) {
+			return new DataResponse([
+				"code" => "INVALID_PARAMETER",
+				"message" => "the parent container id does not point to a container"
+			], 400);
+		}
+		if ($node->nodeExists($filename)) {
+			return new DataResponse([
+				"code" => "INVALID_PARAMETER",
+				"message" => "the file already exists"
+			], 403);
+		}
+
+		# finally create the file
+		try {
+			$newFile = $node->newFile($filename);
+		} catch (NotPermittedException $e) {
+			return new DataResponse([
+				"code" => "INVALID_PARAMETER",
+				"message" => $e->getMessage()
+			], 400);
+		}
+
+		return new DataResponse([
+			'file_id' => (string)$newFile->getId()]);
+	}
+
 	private function buildWebUri(array $app_info, string $fileId): ?string {
-		# TODO: alternative idea: use a string in $app_info de
+		# TODO: alternative idea: use a string in $app_info
 		$uri = null;
 		$app_name = $app_info['oc_app_name'];
 		# https://github.com/ONLYOFFICE/onlyoffice-owncloud/blob/2afca075249f24d857f0b3097d565f5129e88d17/appinfo/routes.php#LL27C47-L27C53
