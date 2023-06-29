@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6dc7ea03b54e9856ca4874fd93d39039",
+    "content-hash": "2ad9c3c64ac9fe99c4067fdbd461e151",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1860,27 +1860,33 @@
         },
         {
             "name": "owncloud/tarstreamer",
-            "version": "2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/owncloud/TarStreamer.git",
-                "reference": "ad48505d1ab54a8e94e6b1cc5297bbed72e956de"
+                "reference": "163052d7a076fd3dd54d4f50e1ff2705b72604db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/ad48505d1ab54a8e94e6b1cc5297bbed72e956de",
-                "reference": "ad48505d1ab54a8e94e6b1cc5297bbed72e956de",
+                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/163052d7a076fd3dd54d4f50e1ff2705b72604db",
+                "reference": "163052d7a076fd3dd54d4f50e1ff2705b72604db",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
             "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.5",
                 "pear/archive_tar": "~1.4",
-                "pear/pear-core-minimal": "v1.10.10",
-                "phpunit/phpunit": "^7.5"
+                "pear/pear-core-minimal": "v1.10.13",
+                "phpunit/phpunit": "^7.5|^8.5|^9.6"
             },
             "type": "library",
+            "extra": {
+                "bamarni-bin": {
+                    "bin-links": false
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "ownCloud\\TarStreamer\\": "src/"
@@ -1900,9 +1906,9 @@
             ],
             "support": {
                 "issues": "https://github.com/owncloud/TarStreamer/issues",
-                "source": "https://github.com/owncloud/TarStreamer/tree/master"
+                "source": "https://github.com/owncloud/TarStreamer/tree/v2.1.0"
             },
-            "time": "2020-01-08T09:55:35+00:00"
+            "time": "2023-06-16T08:01:55+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -5726,12 +5732,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "3b77f2101068074f1c98977cc34ef939bbce3d19"
+                "reference": "9920192eab87b9ae105696b0b86326c8fac91677"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3b77f2101068074f1c98977cc34ef939bbce3d19",
-                "reference": "3b77f2101068074f1c98977cc34ef939bbce3d19",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9920192eab87b9ae105696b0b86326c8fac91677",
+                "reference": "9920192eab87b9ae105696b0b86326c8fac91677",
                 "shasum": ""
             },
             "conflict": {
@@ -6107,7 +6113,7 @@
                 "shopware/core": "<=6.4.20",
                 "shopware/platform": "<=6.4.20",
                 "shopware/production": "<=6.3.5.2",
-                "shopware/shopware": "<=5.7.14",
+                "shopware/shopware": "<=5.7.17",
                 "shopware/storefront": "<=6.4.8.1",
                 "shopxo/shopxo": "<2.2.6",
                 "showdoc/showdoc": "<2.10.4",
@@ -6334,7 +6340,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-28T00:17:41+00:00"
+            "time": "2023-06-28T23:04:41+00:00"
         },
         {
             "name": "sebastian/cli-parser",
