@@ -52,7 +52,7 @@
         "league/flysystem": "^1.1",
         "pear/pear-core-minimal": "^v1.10",
         "interfasys/lognormalizer": "^v1.0",
-        "owncloud/tarstreamer": "v2.0.0",
+        "owncloud/tarstreamer": "v2.1.0",
         "christophwurst/id3parser": "^0.1.4",
         "sabre/dav": "^4.4",
         "sabre/http": "^5.1",
