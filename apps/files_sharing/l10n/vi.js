@@ -14,6 +14,7 @@ OC.L10N.register(
     "Cancel" : "Hủy",
     "Add" : "Thêm",
     "Share" : "Chia sẻ",
+    "Create public link" : "Tạo liên kết công khai",
     "Declined" : "Từ chối",
     "Pending" : "Đang chờ",
     "Shared by" : "Chia sẻ bởi",
