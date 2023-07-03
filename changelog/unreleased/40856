@@ -1,0 +1,6 @@
+Bugfix: Request header can hold an empty string if not set
+
+Due to Apache rewrite rules originally not existing headers can hold an empty
+string.
+
+https://github.com/owncloud/core/pull/40856

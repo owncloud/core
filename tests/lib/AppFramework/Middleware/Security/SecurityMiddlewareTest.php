@@ -40,6 +40,7 @@ use OCP\AppFramework\OCSController;
 use OCP\ISession;
 use OCP\AppFramework\Controller;
 use OCP\IUserSession;
+use ReflectionException;
 use Test\TestCase;
 use OCP\AppFramework\Http\Response;
 use OCP\IConfig;
@@ -135,7 +136,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @PublicPage
 	 * @NoCSRFRequired
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testSetNavigationEntry() {
 		$this->navigationManager->expects($this->once())
@@ -150,7 +151,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @param string $method
 	 * @param string $test
 	 * @param $status
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	private function ajaxExceptionStatus($method, $test, $status) {
 		$isLoggedIn = false;
@@ -178,7 +179,7 @@ class SecurityMiddlewareTest extends TestCase {
 	}
 
 	/**
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testAjaxStatusLoggedInCheck() {
 		$this->ajaxExceptionStatus(
@@ -190,7 +191,7 @@ class SecurityMiddlewareTest extends TestCase {
 
 	/**
 	 * @NoCSRFRequired
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testAjaxNotAdminCheck() {
 		$this->ajaxExceptionStatus(
@@ -202,7 +203,7 @@ class SecurityMiddlewareTest extends TestCase {
 
 	/**
 	 * @PublicPage
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testAjaxStatusCSRFCheck() {
 		$this->ajaxExceptionStatus(
@@ -215,10 +216,7 @@ class SecurityMiddlewareTest extends TestCase {
 	/**
 	 * @PublicPage
 	 * @NoCSRFRequired
-	 * @throws \ReflectionException
-	 * @throws \ReflectionException
-	 * @throws \ReflectionException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testAjaxStatusAllGood() {
 		$this->ajaxExceptionStatus(
@@ -247,7 +245,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @PublicPage
 	 * @NoCSRFRequired
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testNoChecks() {
 		$this->request->expects($this->never())
@@ -265,7 +263,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @param string $expects
 	 * @param bool $shouldFail
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	private function securityCheck($method, $expects, $shouldFail=false) {
 		// admin check requires login
@@ -292,10 +290,10 @@ class SecurityMiddlewareTest extends TestCase {
 	/**
 	 * @PublicPage
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testCsrfCheck() {
-		$this->expectException(\OC\AppFramework\Middleware\Security\Exceptions\CrossSiteRequestForgeryException::class);
+		$this->expectException(CrossSiteRequestForgeryException::class);
 
 		$this->request->expects($this->once())
 			->method('passesCSRFCheck')
@@ -309,7 +307,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @PublicPage
 	 * @NoCSRFRequired
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testNoCsrfCheck() {
 		$this->request->expects($this->never())
@@ -323,7 +321,7 @@ class SecurityMiddlewareTest extends TestCase {
 	/**
 	 * @PublicPage
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testFailCsrfCheck() {
 		$this->request->expects($this->once())
@@ -335,10 +333,28 @@ class SecurityMiddlewareTest extends TestCase {
 	}
 
 	/**
+	 * @PublicPage
+	 * @throws SecurityException
+	 * @throws ReflectionException
+	 */
+	public function testFailCsrfCheckWithoutAuthHeader(): void {
+		$this->expectException(CrossSiteRequestForgeryException::class);
+		$this->request->expects($this->once())
+			->method('passesCSRFCheck')
+			->willReturn(false);
+		$this->request
+			->method('getHeader')
+			->willReturn('');
+
+		$this->reader->reflect(__CLASS__, __FUNCTION__);
+		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
+	}
+
+	/**
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testLoggedInCheck() {
 		$this->securityCheck(__FUNCTION__, 'isLoggedIn');
@@ -348,7 +364,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testFailLoggedInCheck() {
 		$this->securityCheck(__FUNCTION__, 'isLoggedIn', true);
@@ -357,7 +373,7 @@ class SecurityMiddlewareTest extends TestCase {
 	/**
 	 * @NoCSRFRequired
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testIsAdminCheck() {
 		$this->securityCheck(__FUNCTION__, 'isAdminUser');
@@ -366,7 +382,7 @@ class SecurityMiddlewareTest extends TestCase {
 	/**
 	 * @NoCSRFRequired
 	 * @throws SecurityException
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function testFailIsAdminCheck() {
 		$this->securityCheck(__FUNCTION__, 'isAdminUser', true);
