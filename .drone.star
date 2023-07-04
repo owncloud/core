@@ -1,5 +1,4 @@
 ATMOZ_SFTP = "atmoz/sftp"
-DRONE_CLI_ALPINE = "drone/cli:alpine"
 INBUCKET_INBUCKET = "inbucket/inbucket"
 MINIO_MC_RELEASE_2020_VERSION = "minio/mc:RELEASE.2020-12-10T01-26-17Z"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
@@ -1881,7 +1880,7 @@ def acceptance(ctx):
                                                          "path": "%s/downloads" % dir["server"],
                                                      }],
                                                  }),
-                                             ] + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
+                                             ] + githubComment(params["earlyFail"]),
                                     "services": dbServices +
                                                 browserService(browser) +
                                                 emailService(params["emailNeeded"]) +
@@ -2057,33 +2056,6 @@ def notify():
         result["trigger"]["ref"].append("refs/heads/%s" % branch)
 
     return result
-
-def stopBuild(earlyFail):
-    if (earlyFail):
-        return [{
-            "name": "stop-build",
-            "image": DRONE_CLI_ALPINE,
-            "environment": {
-                "DRONE_SERVER": "https://drone.owncloud.com",
-                "DRONE_TOKEN": {
-                    "from_secret": "drone_token",
-                },
-            },
-            "commands": [
-                "drone build stop owncloud/core ${DRONE_BUILD_NUMBER}",
-            ],
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
-
-    else:
-        return []
 
 def githubComment(earlyFail):
     if (earlyFail):
