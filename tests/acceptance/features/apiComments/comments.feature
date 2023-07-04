@@ -17,7 +17,7 @@ Feature: Comments
       | oc:comments-href   |
       | oc:comments-count  |
       | oc:comments-unread |
-    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "299"
     And the single response should contain a property "oc:comments-count" with value "1"
     And the single response should contain a property "oc:comments-unread" with value "0"
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
