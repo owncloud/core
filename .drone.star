@@ -1981,7 +1981,7 @@ def sonarAnalysis(ctx, phpVersion = DEFAULT_PHP_VERSION):
                          "commands": [
                              "mkdir -p results",
                              "mc alias set cache $MC_HOST $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY",
-                             "mc mirror cache/cache/%s/%s/coverage results/" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
+                             "mc mirror cache/$CACHE_BUCKET/%s/%s/coverage results/" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
                          ],
                      },
                      {
@@ -2011,7 +2011,7 @@ def sonarAnalysis(ctx, phpVersion = DEFAULT_PHP_VERSION):
                          "environment": MINIO_MC_ENV,
                          "commands": [
                              "mc alias set cache $MC_HOST $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY",
-                             "mc rm --recursive --force cache/cache/%s/%s" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
+                             "mc rm --recursive --force cache/$CACHE_BUCKET/%s/%s" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
                          ],
                      },
                  ],
