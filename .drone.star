@@ -31,6 +31,22 @@ WEBHIPPIE_REDIS = "webhippie/redis:latest"
 DEFAULT_PHP_VERSION = "7.4"
 DEFAULT_NODEJS_VERSION = "14"
 
+# minio mc environment variables
+MINIO_MC_ENV = {
+    "CACHE_BUCKET": {
+        "from_secret": "cache_s3_bucket",
+    },
+    "MC_HOST": {
+        "from_secret": "cache_s3_server",
+    },
+    "AWS_ACCESS_KEY_ID": {
+        "from_secret": "cache_s3_access_key",
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+        "from_secret": "cache_s3_secret_key",
+    },
+}
+
 dir = {
     "base": "/drone",
     "server": "/drone/src",
@@ -42,7 +58,7 @@ dir = {
 config = {
     "rocketchat": {
         "channel": "server",
-        "from_secret": "public_rocketchat",
+        "from_secret": "rocketchat_talk_webhook",
     },
     "branches": [
         "master",
@@ -1308,7 +1324,7 @@ def javascript(ctx, withCoverage):
                 "image": PLUGINS_S3,
                 "settings": {
                     "endpoint": {
-                        "from_secret": "cache_s3_endpoint",
+                        "from_secret": "cache_s3_server",
                     },
                     "bucket": "cache",
                     "source": "tests/output/coverage/lcov.info",
@@ -1574,7 +1590,7 @@ def phpTests(ctx, testType, withCoverage):
                             "image": PLUGINS_S3,
                             "settings": {
                                 "endpoint": {
-                                    "from_secret": "cache_s3_endpoint",
+                                    "from_secret": "cache_s3_server",
                                 },
                                 "bucket": "cache",
                                 "source": "tests/output/coverage/clover-%s.xml" % (name),
@@ -1595,7 +1611,7 @@ def phpTests(ctx, testType, withCoverage):
                                 "image": PLUGINS_S3,
                                 "settings": {
                                     "endpoint": {
-                                        "from_secret": "cache_s3_endpoint",
+                                        "from_secret": "cache_s3_server",
                                     },
                                     "bucket": "cache",
                                     "source": "tests/output/coverage/clover-%s-%s.xml" % (name, externalType),
@@ -1961,13 +1977,10 @@ def sonarAnalysis(ctx, phpVersion = DEFAULT_PHP_VERSION):
                      {
                          "name": "sync-from-cache",
                          "image": MINIO_MC_RELEASE_2020_VERSION,
-                         "environment": {
-                             "MC_HOST_cache": {
-                                 "from_secret": "cache_s3_connection_url",
-                             },
-                         },
+                         "environment": MINIO_MC_ENV,
                          "commands": [
                              "mkdir -p results",
+                             "mc alias set cache $MC_HOST $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY",
                              "mc mirror cache/cache/%s/%s/coverage results/" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
                          ],
                      },
@@ -1995,12 +2008,9 @@ def sonarAnalysis(ctx, phpVersion = DEFAULT_PHP_VERSION):
                      {
                          "name": "purge-cache",
                          "image": MINIO_MC_RELEASE_2020_VERSION,
-                         "environment": {
-                             "MC_HOST_cache": {
-                                 "from_secret": "cache_s3_connection_url",
-                             },
-                         },
+                         "environment": MINIO_MC_ENV,
                          "commands": [
+                             "mc alias set cache $MC_HOST $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY",
                              "mc rm --recursive --force cache/cache/%s/%s" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
                          ],
                      },
@@ -2398,7 +2408,7 @@ def cacheRestore():
                 "from_secret": "cache_s3_access_key",
             },
             "endpoint": {
-                "from_secret": "cache_s3_endpoint",
+                "from_secret": "cache_s3_server",
             },
             "restore": True,
             "secret_key": {
@@ -2441,7 +2451,7 @@ def cacheRebuildOnEventPush():
                 "from_secret": "cache_s3_access_key",
             },
             "endpoint": {
-                "from_secret": "cache_s3_endpoint",
+                "from_secret": "cache_s3_server",
             },
             "mount": [
                 ".cache",
@@ -2471,7 +2481,7 @@ def cacheFlushOnEventPush():
                 "from_secret": "cache_s3_access_key",
             },
             "endpoint": {
-                "from_secret": "cache_s3_endpoint",
+                "from_secret": "cache_s3_server",
             },
             "flush": True,
             "flush_age": "14",
