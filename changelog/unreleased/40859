@@ -1,0 +1,6 @@
+Enhancement: Improve the performance of the occ files:remove-storage command
+
+The "--show-candidates" option of the "occ files:remove-storage" command
+will take less time
+
+https://github.com/owncloud/core/pull/40859
