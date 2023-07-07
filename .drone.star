@@ -2078,7 +2078,7 @@ def githubComment(earlyFail):
                 "key": "pr-${DRONE_PULL_REQUEST}",
                 "update": "true",
                 "api_key": {
-                    "from_secret": "github_token",
+                    "from_secret": "github_token_comments",
                 },
             },
             "when": {
