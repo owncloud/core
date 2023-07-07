@@ -1134,6 +1134,13 @@ class Share20OcsController extends OCSController {
 		) {
 			return true;
 		}
+
+		$currentUser = $this->userSession->getUser()->getUID();
+		$shareId = $share->getId();
+		$shareOwner = $share->getShareOwner();
+		$sharedBy = $share->getSharedBy();
+
+		\OC::$server->getLogger()->debug("core | ShareID: $shareId ShareOwner: $shareOwner SharedBy: $sharedBy CurrentUser: $currentUser: canChangeShare: false");
 		return false;
 	}
 
