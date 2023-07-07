@@ -1,0 +1,14 @@
+{"type":"folder","path":"\/","eTag":"64994aebcf465","permissions":31,"mtime":1687767787}
+{"type":"folder","path":"\/FOLDER","eTag":"64994ae7e09b3","permissions":31,"mtime":1687767783}
+{"type":"file","path":"\/FOLDER\/.gitkeep","eTag":"55ddc56e8b587c0dfbc013d306333723","permissions":27,"mtime":1687767783}
+{"type":"folder","path":"\/PARENT","eTag":"64994ae83a72b","permissions":31,"mtime":1687767784}
+{"type":"folder","path":"\/PARENT\/CHILD","eTag":"64994ae83a72b","permissions":31,"mtime":1687767784}
+{"type":"file","path":"\/PARENT\/CHILD\/child.txt","eTag":"413ceecefa2e034477e5ee51e28d6df2","permissions":27,"mtime":1687767784}
+{"type":"file","path":"\/PARENT\/parent.txt","eTag":"e8ae7406f9d46292a3363ec8d9e3be38","permissions":27,"mtime":1687767784}
+{"type":"file","path":"\/testfile2.txt","eTag":"efb418b997811c44f3c837eb6104b530","permissions":27,"mtime":1687767786}
+{"type":"file","path":"\/textfile0.txt","eTag":"8cffabe0f18922ff923ddf850d5c3490","permissions":27,"mtime":1687767784}
+{"type":"file","path":"\/textfile1.txt","eTag":"78ecd01e6e5fc54df17c5dbed184486d","permissions":27,"mtime":1687767784}
+{"type":"file","path":"\/textfile2.txt","eTag":"ec977784a24500cc9a99648138337abc","permissions":27,"mtime":1687767784}
+{"type":"file","path":"\/textfile3.txt","eTag":"755d77c49db880c8f570dd71be7393d5","permissions":27,"mtime":1687767784}
+{"type":"file","path":"\/textfile4.txt","eTag":"55821d2b94bd45dd9185f89b2998ea9f","permissions":27,"mtime":1687767784}
+{"type":"file","path":"\/welcome.txt","eTag":"c0cff8629b6379f5079957740624b1d6","permissions":27,"mtime":1687767784}

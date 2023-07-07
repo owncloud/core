@@ -1,0 +1,4 @@
+{"type":"folder","path":"\/","eTag":"6491504be57f7","permissions":31,"mtime":1687244875}
+{"type":"folder","path":"\/AFolder","eTag":"6491504bda78c","permissions":31,"mtime":1687244875}
+{"type":"file","path":"\/AFolder\/fileInFolder.txt","eTag":"ca26fc56d1456c8903a56e2ed73a6bc1","permissions":27,"mtime":1687244875}
+{"type":"file","path":"\/welcome.txt","eTag":"b09332043a4156db494ae52fa2692ce9","permissions":27,"mtime":1687244875}
