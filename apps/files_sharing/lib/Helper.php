@@ -288,7 +288,7 @@ class Helper {
 		$isGuestUser = $userTypeHelper->isGuestUser($user);
 		if ($isGuestUser) {
 			$shareFolder = '/';
-			return "/";
+			return '/';
 		}
 		$shareFolder = \OC::$server->getConfig()->getSystemValue('share_folder', '/');
 		$shareFolder = Filesystem::normalizePath($shareFolder);
