@@ -110,6 +110,7 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * test: curl http://login:passwd@oc/core/ocs/v1.php/privatedata/getattribute
 	 *
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 *
 	 * @return Result
 	 */
