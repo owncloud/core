@@ -493,6 +493,8 @@ $CONFIG = [
  *
  * Possible keys: `wnd.connector.opts.timeout` INTEGER
  *
+ * Possible keys: `wnd2.cachewrapper.normalize` BOOL
+ *
  * *Note* With WND 2.1.0, key `wnd.storage.testForHiddenMount` is obsolete and has been removed completely.
  */
 
@@ -612,6 +614,21 @@ $CONFIG = [
  * encryption is selected and smbclient is overwhelming the server with requests.
  */
 'wnd.connector.opts.timeout' => 20000,  // 20 seconds
+
+/**
+ * Manage UTF-8 Glyph Normalization on macOS
+ * A glyph is a character like `&#xF1;` as used in the spanish word `se&#xF1;orita` which can be composed by two different byte sequences.
+ * With https://www.utf8-chartable.de/unicode-utf8-table.pl?number=1024&unicodeinhtml=hex[UTF-8], glyphs can have two valid representations of these sequences in filesystems.
+ * https://unicode.org/reports/tr15/#Norm_Forms[Normalization] makes it possible to determine whether any two Unicode strings are equivalent.
+ * The most used normalization forms are NFC and NFD. By default, ownCloud usually normalizes names to NFC.
+ * With macOS and HFS+ as filesystem, NFD is required.
+ * When using WND collaborative mount points connecting to macOS with HFS+, or any other filesystem using NFD, probing both forms can be enforced by setting the config variable `wnd2.cachewrapper.normalize` to true.
+ * This is necessary because if a file accessed via collaborative WND contains NFD characters, WND will not find the file and the WND app will assume user doesn't have access to it.
+ * As a result, the file will not be shown.
+ *
+ * As a mandatory prerequisite, the mount point setting `Compatibility with Mac NFD encoding` must be checked.
+ */
+'wnd2.cachewrapper.normalize' => false,
 
 /**
  * App: Workflow / Tagging
