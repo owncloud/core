@@ -155,7 +155,7 @@ OCA.External.StatusManager = {
 				},
 				error: function (jqxhr, state, error) {
 					self.mountPointList = [];
-					OC.Notification.show(t('files_external', 'Couldn\'t get the list of external mount points: {type}', 
+					OC.Notification.show(t('files_external', 'Couldn\'t get the list of external mount points: {type}',
 						{type: error}), {type: 'error'}
 					);
 				},
@@ -270,7 +270,7 @@ OCA.External.StatusManager = {
 			// check if we have a list first
 			if (list === undefined && !self.emptyWarningShown) {
 				self.emptyWarningShown = true;
-				OC.Notification.show(t('files_external', 'Couldn\'t get the list of Windows network drive mount points: empty response from the server'), 
+				OC.Notification.show(t('files_external', 'Couldn\'t get the list of Windows network drive mount points: empty response from the server'),
 					{type: 'error'}
 				);
 				return;
@@ -302,7 +302,7 @@ OCA.External.StatusManager = {
 							}
 						});
 						if (showNotification) {
-							OC.Notification.show(t('files_external', 'Some of the configured external mount points are not connected. Please click on the red row(s) for more information'), 
+							OC.Notification.show(t('files_external', 'Some of the configured external mount points are not connected. Please click on the red row(s) for more information'),
 								{type: 'error'}
 							);
 						}
@@ -423,10 +423,12 @@ OCA.External.StatusManager = {
 					}
 				},
 				success: function (data) {
-					OC.Notification.show(t('files_external', 'Credentials saved'), {type: 'error'});
 					dialog.ocdialog('close');
-					/* Trigger status check again */
-					OCA.External.StatusManager.recheckConnectivityForMount([OC.basename(data.mountPoint)], true);
+					if (data.status === 0) {
+						OC.Notification.show(t('files_external', 'Credentials saved'), {type: 'error'});
+						/* Trigger status check again */
+						OCA.External.StatusManager.recheckConnectivityForMount([OC.basename(data.mountPoint)], true);
+					}
 				},
 				error: function () {
 					$('.oc-dialog-close').show();
