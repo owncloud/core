@@ -1512,6 +1512,7 @@ $CONFIG = [
 
 /**
  * Define a default folder for shared files and folders other than root
+ * Please note that this setting is skipped for guests and the root folder will be used for such users.
  */
 'share_folder' => '/',
 

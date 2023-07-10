@@ -1,0 +1,5 @@
+Bugfix: Skip share_folder for guest users
+
+In https://github.com/owncloud/core/pull/40378 we've fixed the case of (not) moving the share target when the backend storage becomes temporary unavailable but we had the collateral effect that guests did not see anymore their received shares as we were forcing the creation of the target which failed for them as their storage is read-only. We now skip the share_folder config.php option for guests and default to root.
+
+https://github.com/owncloud/core/pull/40864
