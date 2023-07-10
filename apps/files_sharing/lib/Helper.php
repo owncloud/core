@@ -34,6 +34,7 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\Files\NotFoundException;
 use OCP\User;
+use OC\Helper\UserTypeHelper;
 
 class Helper {
 	public static function registerHooks() {
@@ -283,7 +284,14 @@ class Helper {
 		}
 		$shareFolder = \OC::$server->getConfig()->getSystemValue('share_folder', '/');
 		$shareFolder = Filesystem::normalizePath($shareFolder);
-
+		// for guests we default to root as their home storage is read-only
+		$user = User::getUser();
+		$userTypeHelper = new UserTypeHelper();
+		$isGuestUser = $userTypeHelper->isGuestUser($user);
+		if ($isGuestUser) {
+			$shareFolder = '/';
+			return;
+		}
 		if (!$view->file_exists($shareFolder)) {
 			// if the share folder doesn't exists, create the folder in order
 			// to place the shares inside it. All the parent folders need to
