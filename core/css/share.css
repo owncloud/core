@@ -234,10 +234,10 @@ a.toggleShareDetails:hover {
 }
 
 .ui-autocomplete {
-	/* limit dropdown height to 4 1/2 entries */
-	max-height: 103px;
+	/* No limit for dropdown selection, 15px margin at the bottom because the left side already has 15px margin */
 	overflow-y: auto;
 	overflow-x: hidden;
+	margin-bottom: 15px;
 }
 
 .notCreatable {
