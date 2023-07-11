@@ -105,12 +105,12 @@ class AdminController extends Controller implements ISettings {
 		return $this->displayPanel();
 	}
 
-		/**
-		 * @return TemplateResponse
-		 */
-		public function displayEnterprisePanel() {
-			return new TemplateResponse($this->appName, 'enterprise', [], '');
-		}
+	/**
+	 * @return TemplateResponse
+	 */
+	public function displayEnterprisePanel() {
+		return new TemplateResponse($this->appName, 'enterprise', [], '');
+	}
 
 	/**
 	 * @return TemplateResponse
