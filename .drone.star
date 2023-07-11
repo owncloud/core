@@ -1681,7 +1681,6 @@ def acceptance(ctx):
         "skipExceptParts": [],
         "testAgainstCoreTarball": False,
         "coreTarball": "daily-master-qa",
-        "earlyFail": True,
         "selUserNeeded": False,
         "dbServices": [],
     }
@@ -1721,9 +1720,6 @@ def acceptance(ctx):
 
             if params["skip"]:
                 continue
-
-            if ("full-ci" in ctx.build.title.lower()):
-                params["earlyFail"] = False
 
             if isAPI or isCLI:
                 params["browsers"] = [""]
@@ -1896,7 +1892,7 @@ def acceptance(ctx):
                                                          "path": "%s/downloads" % dir["server"],
                                                      }],
                                                  }),
-                                             ] + githubComment(params["earlyFail"]),
+                                             ],
                                     "services": dbServices +
                                                 browserService(browser) +
                                                 emailService(params["emailNeeded"]) +
@@ -2066,33 +2062,6 @@ def notify():
         result["trigger"]["ref"].append("refs/heads/%s" % branch)
 
     return result
-
-def githubComment(earlyFail):
-    if (earlyFail):
-        return [{
-            "name": "github-comment",
-            "image": THEGEEKLAB_DRONE_GITHUB_COMMENT,
-            "pull": "if-not-exists",
-            "settings": {
-                "message": ":boom: Acceptance tests pipeline <strong>${DRONE_STAGE_NAME}</strong> failed. The build has been cancelled.\\n\\n${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}",
-                "key": "pr-${DRONE_PULL_REQUEST}",
-                "update": "true",
-                "api_key": {
-                    "from_secret": "github_token",
-                },
-            },
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
-
-    else:
-        return []
 
 def databaseService(db):
     dbName = getDbName(db)
