@@ -6,7 +6,7 @@ The following have been updated:
 - guzzlehttp/guzzle (7.5.0 to 7.7.0)
 - owncloud/tarstreamer (2.0.0 to 2.1.0)
 - pear/pear-core-minimal (1.10.11 to 1.10.13)
-- phpseclib/phpseclib (3.0.19 to 3.0.20)
+- phpseclib/phpseclib (3.0.19 to 3.0.21)
 - punic/punic (3.8.0 to 3.8.1)
 - sabre/http (5.1.6 to 5.1.7)
 - sabre/uri (2.3.2 to 2.3.3)
@@ -30,3 +30,4 @@ https://github.com/owncloud/core/pull/40839
 https://github.com/owncloud/core/pull/40849
 https://github.com/owncloud/core/pull/40853
 https://github.com/owncloud/core/pull/40854
+https://github.com/owncloud/core/pull/40867
