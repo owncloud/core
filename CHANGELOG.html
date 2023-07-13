@@ -13,8 +13,10 @@
         <li class="type-bugfix changelog-item">Bugfix - Always use json for federation post and get to exchange tokens: <a href="https://github.com/owncloud/core/pull/40815">#40815</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Rare undefined variable error when using a Google Drive mount: <a href="https://github.com/owncloud/core/pull/40822">#40822</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Explicitly set open mode in the checksum wrapper: <a href="https://github.com/owncloud/core/pull/40832">#40832</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Automatically disable online updater for enterprise: <a href="https://github.com/owncloud/core/pull/40841">#40841</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Verbose command output: <a href="https://github.com/owncloud/core/pull/40844">#40844</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Versions expire job does not error with federated shares: <a href="https://github.com/owncloud/core/pull/40847">#40847</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Skip share_folder for guest users: <a href="https://github.com/owncloud/core/pull/40864">#40864</a></li>
         <li class="type-change changelog-item">Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
@@ -25,6 +27,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Added occ command to remove obsolete storages: <a href="https://github.com/owncloud/core/pull/40779">#40779</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add commands to handle the trusted servers from command line: <a href="https://github.com/owncloud/core/pull/40796">#40796</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Enforce 2-factor authentication: <a href="https://github.com/owncloud/core/pull/40830">#40830</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Improve the performance of the occ files:remove-storage command: <a href="https://github.com/owncloud/core/pull/40859">#40859</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -99,6 +102,13 @@
             <p>https://github.com/owncloud/core/pull/40832<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Automatically disable online updater for enterprise: <a href="https://github.com/owncloud/core/pull/40841">#40841</a></p>
+            <p>Online updater is not recommended for Enterprise installations and is now automatically
+   disabled in such cases.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40841<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - Verbose command output: <a href="https://github.com/owncloud/core/pull/40844">#40844</a></p>
             <p>Verbose command output of the background:queue:execute is now displayed.
             </p>
@@ -110,6 +120,16 @@
    enabled.
             </p>
             <p>https://github.com/owncloud/core/pull/40847<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Skip share_folder for guest users: <a href="https://github.com/owncloud/core/pull/40864">#40864</a></p>
+            <p>In https://github.com/owncloud/core/pull/40378 we've fixed the case of (not) moving the
+   share target when the backend storage becomes temporary unavailable but we had the collateral
+   effect that guests did not see anymore their received shares as we were forcing the creation of
+   the target which failed for them as their storage is read-only. We now skip the share_folder
+   config.php option for guests and default to root.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40864<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></p>
@@ -126,11 +146,11 @@
             <p>The following have been updated: - doctrine/deprecations (1.0.0 to 1.1.1) -
    egulias/email-validator (3.2.5 to 3.2.6) - guzzlehttp/guzzle (7.5.0 to 7.7.0) -
    owncloud/tarstreamer (2.0.0 to 2.1.0) - pear/pear-core-minimal (1.10.11 to 1.10.13) -
-   phpseclib/phpseclib (3.0.19 to 3.0.20) - punic/punic (3.8.0 to 3.8.1) - sabre/http (5.1.6 to
+   phpseclib/phpseclib (3.0.19 to 3.0.21) - punic/punic (3.8.0 to 3.8.1) - sabre/http (5.1.6 to
    5.1.7) - sabre/uri (2.3.2 to 2.3.3) - sabre/xml (2.2.5 to 2.2.6)The following have been updated in apps/files_external/3rdparty: - google/apiclient
    (2.13.1 to 2.13.2) - firebase/php-jwt (v6.4.0 to v6.6.0)
             </p>
-            <p>https://github.com/owncloud/core/pull/40724<br>https://github.com/owncloud/core/pull/40731<br>https://github.com/owncloud/core/pull/40742<br>https://github.com/owncloud/core/pull/40753<br>https://github.com/owncloud/core/pull/40789<br>https://github.com/owncloud/core/pull/40806<br>https://github.com/owncloud/core/pull/40819<br>https://github.com/owncloud/core/pull/40825<br>https://github.com/owncloud/core/pull/40833<br>https://github.com/owncloud/core/pull/40838<br>https://github.com/owncloud/core/pull/40839<br>https://github.com/owncloud/core/pull/40849<br>https://github.com/owncloud/core/pull/40853<br>https://github.com/owncloud/core/pull/40854<br></p>
+            <p>https://github.com/owncloud/core/pull/40724<br>https://github.com/owncloud/core/pull/40731<br>https://github.com/owncloud/core/pull/40742<br>https://github.com/owncloud/core/pull/40753<br>https://github.com/owncloud/core/pull/40789<br>https://github.com/owncloud/core/pull/40806<br>https://github.com/owncloud/core/pull/40819<br>https://github.com/owncloud/core/pull/40825<br>https://github.com/owncloud/core/pull/40833<br>https://github.com/owncloud/core/pull/40838<br>https://github.com/owncloud/core/pull/40839<br>https://github.com/owncloud/core/pull/40849<br>https://github.com/owncloud/core/pull/40853<br>https://github.com/owncloud/core/pull/40854<br>https://github.com/owncloud/core/pull/40867<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></p>
@@ -189,6 +209,13 @@
    2-factor authentication.
             </p>
             <p>https://github.com/owncloud/core/pull/40830<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Improve the performance of the occ files:remove-storage command: <a href="https://github.com/owncloud/core/pull/40859">#40859</a></p>
+            <p>The "--show-candidates" option of the "occ files:remove-storage" command will take less
+   time
+            </p>
+            <p>https://github.com/owncloud/core/pull/40859<br></p>
         </li>
     </ul>
     <h2 id="10.12.2" class="version"> Changelog for ownCloud Core [10.12.2] (2023-05-31)</h2>

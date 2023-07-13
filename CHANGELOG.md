@@ -15,8 +15,10 @@ Summary
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 * Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
 * Bugfix - Explicitly set open mode in the checksum wrapper: [#40832](https://github.com/owncloud/core/pull/40832)
+* Bugfix - Automatically disable online updater for enterprise: [#40841](https://github.com/owncloud/core/pull/40841)
 * Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
 * Bugfix - Versions expire job does not error with federated shares: [#40847](https://github.com/owncloud/core/pull/40847)
+* Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
@@ -27,6 +29,7 @@ Summary
 * Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
 * Enhancement - Add commands to handle the trusted servers from command line: [#40796](https://github.com/owncloud/core/pull/40796)
 * Enhancement - Enforce 2-factor authentication: [#40830](https://github.com/owncloud/core/pull/40830)
+* Enhancement - Improve the performance of the occ files:remove-storage command: [#40859](https://github.com/owncloud/core/pull/40859)
 
 Details
 -------
@@ -103,6 +106,13 @@ Details
 
    https://github.com/owncloud/core/pull/40832
 
+* Bugfix - Automatically disable online updater for enterprise: [#40841](https://github.com/owncloud/core/pull/40841)
+
+   Online updater is not recommended for Enterprise installations and is now automatically
+   disabled in such cases.
+
+   https://github.com/owncloud/core/pull/40841
+
 * Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
 
    Verbose command output of the background:queue:execute is now displayed.
@@ -115,6 +125,16 @@ Details
    enabled.
 
    https://github.com/owncloud/core/pull/40847
+
+* Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
+
+   In https://github.com/owncloud/core/pull/40378 we've fixed the case of (not) moving the
+   share target when the backend storage becomes temporary unavailable but we had the collateral
+   effect that guests did not see anymore their received shares as we were forcing the creation of
+   the target which failed for them as their storage is read-only. We now skip the share_folder
+   config.php option for guests and default to root.
+
+   https://github.com/owncloud/core/pull/40864
 
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 
@@ -134,7 +154,7 @@ Details
    The following have been updated: - doctrine/deprecations (1.0.0 to 1.1.1) -
    egulias/email-validator (3.2.5 to 3.2.6) - guzzlehttp/guzzle (7.5.0 to 7.7.0) -
    owncloud/tarstreamer (2.0.0 to 2.1.0) - pear/pear-core-minimal (1.10.11 to 1.10.13) -
-   phpseclib/phpseclib (3.0.19 to 3.0.20) - punic/punic (3.8.0 to 3.8.1) - sabre/http (5.1.6 to
+   phpseclib/phpseclib (3.0.19 to 3.0.21) - punic/punic (3.8.0 to 3.8.1) - sabre/http (5.1.6 to
    5.1.7) - sabre/uri (2.3.2 to 2.3.3) - sabre/xml (2.2.5 to 2.2.6)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
@@ -154,6 +174,7 @@ Details
    https://github.com/owncloud/core/pull/40849
    https://github.com/owncloud/core/pull/40853
    https://github.com/owncloud/core/pull/40854
+   https://github.com/owncloud/core/pull/40867
 
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
@@ -214,6 +235,13 @@ Details
    2-factor authentication.
 
    https://github.com/owncloud/core/pull/40830
+
+* Enhancement - Improve the performance of the occ files:remove-storage command: [#40859](https://github.com/owncloud/core/pull/40859)
+
+   The "--show-candidates" option of the "occ files:remove-storage" command will take less
+   time
+
+   https://github.com/owncloud/core/pull/40859
 
 Changelog for ownCloud Core [10.12.2] (2023-05-31)
 =======================================
