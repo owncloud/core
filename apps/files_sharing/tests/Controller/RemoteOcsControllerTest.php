@@ -25,6 +25,7 @@ use OC\Files\FileInfo;
 use OCA\Files_Sharing\Controller\RemoteOcsController;
 use OCA\Files_Sharing\External\Manager;
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IRequest;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
@@ -42,6 +43,9 @@ class RemoteOcsControllerTest extends TestCase {
 	/** @var IConfig */
 	protected $config;
 
+	/** @var ILogger */
+	protected $logger;
+
 	/** @var RemoteOcsController | MockObject */
 	protected $controller;
 
@@ -49,12 +53,14 @@ class RemoteOcsControllerTest extends TestCase {
 		$this->request = $this->createMock(IRequest::class);
 		$this->externalManager = $this->createMock(Manager::class);
 		$this->config = $this->createMock(IConfig::class);
-		
+		$this->logger = $this->createMock(ILogger::class);
+
 		$this->controller = new RemoteOcsController(
 			$this->appName,
 			$this->request,
 			$this->externalManager,
 			$this->config,
+			$this->logger,
 			'user'
 		);
 	}
