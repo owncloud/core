@@ -54,6 +54,7 @@ class ExternalSharesController extends Controller {
 	/** @var IConfig $config */
 	private $config;
 
+	const group_share_type = "group";
 	/**
 	 * ExternalSharesController constructor.
 	 *
@@ -77,11 +78,6 @@ class ExternalSharesController extends Controller {
 		$this->clientService = $clientService;
 		$this->dispatcher = $eventDispatcher;
 		$this->config = $config;
-		// Allow other apps to add an external manager for user-to-group shares
-		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
-		if ($managerClass !== '') {
-			$this->groupExternalManager = \OC::$server->query($managerClass);
-		}
 	}
 
 	/**
@@ -92,8 +88,9 @@ class ExternalSharesController extends Controller {
 	 */
 	public function index() {
 		$federatedGroupResult = [];
-		if ($this->groupExternalManager !== null) {
-			$federatedGroupResult = $this->groupExternalManager->getOpenShares();
+		$groupExternalManager = $this->initGroupManager(); 
+		if ($groupExternalManager !== null) {
+			$federatedGroupResult = $groupExternalManager->getOpenShares();
 		}
 		$result = array_merge($federatedGroupResult, $this->externalManager->getOpenShares());
 		return new JSONResponse($result);
@@ -108,11 +105,8 @@ class ExternalSharesController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function create($id, $share_type) {
-		if ($share_type === "group" && $this->groupExternalManager !== null) {
-			$manager = $this->groupExternalManager;
-		} else {
-			$manager = $this->externalManager;
-		}
+		
+		$manager = $this->getManagerForShareType($share_type);
 		$shareInfo = $manager->getShare($id);
 		
 		if ($shareInfo !== false) {
@@ -163,9 +157,18 @@ class ExternalSharesController extends Controller {
 		return new JSONResponse();
 	}
 
+	private function initGroupManager(){
+		// Allow other apps to add an external manager for user-to-group shares
+		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
+		if ($managerClass !== '') {
+			return \OC::$server->query($managerClass);
+		}
+		return null;
+	}
 	private function getManagerForShareType($share_type) {
-		if ($share_type === "group" && $this->groupExternalManager !== null) {
-			$manager = $this->groupExternalManager;
+		$groupExternalManager = $this->initGroupManager();
+		if ($share_type === self::group_share_type && $groupExternalManager !== null) {
+			$manager = $groupExternalManager;
 		} else {
 			$manager = $this->externalManager;
 		}
