@@ -30,6 +30,7 @@ use OCP\Share;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Files\StorageInvalidException;
 use OCP\IConfig;
+use OCP\ILogger;
 
 class RemoteOcsController extends OCSController {
 	/** @var IRequest */
@@ -47,12 +48,18 @@ class RemoteOcsController extends OCSController {
 	protected $config;
 
 	/**
+	 * @var ILogger
+	 */
+	protected $logger;
+
+	/**
 	 * RemoteOcsController constructor.
 	 *
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param Manager $externalManager
 	 * @param IConfig config
+	 * @param ILogger $loggar
 	 * @param string $uid
 	 */
 	public function __construct(
@@ -60,12 +67,14 @@ class RemoteOcsController extends OCSController {
 		IRequest $request,
 		Manager $externalManager,
 		IConfig $config,
+		ILogger $logger,
 		$uid
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
 		$this->externalManager = $externalManager;
 		$this->config = $config;
+		$this->logger = $logger;
 		$this->uid = $uid;
 	}
 
@@ -156,9 +165,9 @@ class RemoteOcsController extends OCSController {
 				try {
 					$shares[] = $this->extendShareInfo($shareInfo);
 				} catch (StorageNotAvailableException $e) {
-					//TODO: Log the exception here? There are several logs already below the stack
+					$this->logger->logException($e, ['app' => 'files_sharing']);
 				} catch (StorageInvalidException $e) {
-					//TODO: Log the exception here? There are several logs already below the stack
+					$this->logger->logException($e, ['app' => 'files_sharing']);
 				}
 			}
 		}
@@ -181,7 +190,7 @@ class RemoteOcsController extends OCSController {
 				},
 				\array_merge(
 					$this->externalManager->getOpenShares(),
-					$groupExternalManager == null ? [] : $groupExternalManager->getOpenShares()
+					$groupExternalManager === null ? [] : $groupExternalManager->getOpenShares()
 				)
 			);
 			$shares = \array_merge($shares, $openShares);

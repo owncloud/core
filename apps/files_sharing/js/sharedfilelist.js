@@ -346,7 +346,6 @@
 			files = _.chain(files)
 				// convert share data to file data
 				.map(function(share) {
-					const {} = share
 					var file = {
 						shareOwner: share.owner + '@' + share.remote.replace(/.*?:\/\//g, ""),
 						shareState: !!parseInt(share.accepted, 10) ? OC.Share.STATE_ACCEPTED : OC.Share.STATE_PENDING,

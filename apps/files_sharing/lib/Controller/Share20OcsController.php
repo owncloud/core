@@ -1215,6 +1215,7 @@ class Share20OcsController extends OCSController {
 
 				continue;
 			} catch (ProviderException $e) {
+				// We should iterate all provider to find proper provider for given share
 				continue;
 			}
 		}
@@ -1300,11 +1301,12 @@ class Share20OcsController extends OCSController {
 		$shareTypes = [];
 
 		foreach ($providersCapabilities as $capabilities) {
-			$shareTypes = array_merge($shareTypes, array_keys($capabilities));
+			foreach ($capabilities as $key => $value) {
+				$shareTypes[] = $key;
+			}
 		}
-
-		$shareTypes = array_keys(array_intersect(Share::CONVERT_SHARE_TYPE_TO_STRING, $shareTypes));
-
+		
+		$shareTypes = \array_unique($shareTypes);
 		return $shareTypes;
 	}
 }
