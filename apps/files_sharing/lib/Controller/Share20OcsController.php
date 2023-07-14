@@ -287,6 +287,7 @@ class Share20OcsController extends OCSController {
 	 * Get a specific share by id
 	 *
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 *
 	 * @param string $id
 	 * @return Result
@@ -684,6 +685,7 @@ class Share20OcsController extends OCSController {
 	 * the function will return an empty list.
 	 *
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 *
 	 * - Get shares by the current user
 	 * - Get shares by the current user and reshares (?reshares=true)
