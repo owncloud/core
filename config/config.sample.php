@@ -1543,7 +1543,7 @@ $CONFIG = [
  *
  * NOTE: Lowering this value may lead to unexpected behaviour, and can include data loss.
  */
-'minimum.supported.desktop.version' => '2.3.3',
+'minimum.supported.desktop.version' => '3.2.1',
 
 /**
  * Define the suggested poll interval for clients
