@@ -1538,19 +1538,24 @@ class Manager implements IManager {
 					"shared file not found by token: $token for federated user share, try to check federated group share.",
 					['app' => __CLASS__]
 				);
-			}
-		}
-
-		if ($share === null) {
-			try {
-				$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_REMOTE_GROUP);
-				if ($provider !== null) {
-					$share = $provider->getShareByToken($token);
+				try {
+					$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_REMOTE_GROUP);
+					if ($provider !== null) {
+						$share = $provider->getShareByToken($token);
+					}
+				} catch (ShareNotFound $ex) {
+					$this->logger->error(
+						"shared file not found by token: $token for federated group share",
+						['app' => __CLASS__]
+					);	
+				} catch (ProviderException $ex) {
+					$this->logger->logException(
+						$ex,
+						['app' => __CLASS__]
+					);
 				}
-			} catch (ProviderException $ex) {
 			}
 		}
-
 		if (self::shareHasExpired($share)) {
 			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 			try {

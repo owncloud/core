@@ -214,16 +214,13 @@ OCA.Sharing.App = {
 		if (state === OC.Share.STATE_REJECTED) {
 			method = 'DELETE';
 		}
-
 		var endPoint = isRemote === true ? 'remote_shares/pending/' : 'shares/pending/';
 		var xhr = $.ajax({
 			url: OC.linkToOCS('apps/files_sharing/api/v1') + endPoint + encodeURIComponent(fileId) + '?format=json',
 			contentType: 'application/json',
 			dataType: 'json',
 			type: method,
-			data: JSON.stringify({
-				...(!!shareType && { shareType }),
-			}),
+			data: JSON.stringify((Boolean(shareType) ? { shareType: shareType } : {})),
 		});
 		xhr.fail(function(response) {
 			var message = '';
@@ -239,7 +236,7 @@ OCA.Sharing.App = {
 	_shareStateActionHandler: function(context, newState) {
 		var targetFileData = context.fileList.elementToFile(context.$file);
 		var isRemote = targetFileData.shareLocationType === 'remote';
-		const { shareType } = targetFileData;
+		const shareType = targetFileData.shareType;
 		function responseCallback(response, status) {
 			if (status === 'success') {
 				var meta = response.ocs.meta;
