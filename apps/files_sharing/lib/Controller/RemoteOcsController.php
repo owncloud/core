@@ -69,6 +69,7 @@ class RemoteOcsController extends OCSController {
 		IConfig $config,
 		ILogger $logger,
 		$uid
+		
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;

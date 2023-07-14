@@ -169,7 +169,6 @@ class ExternalSharesController extends Controller {
 		}
 		return null;
 	}
-
 	private function getManagerForShareType($share_type) {
 		$groupExternalManager = $this->initGroupManager();
 		if ($share_type === self::group_share_type && $groupExternalManager !== null) {
