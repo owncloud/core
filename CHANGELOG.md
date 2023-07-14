@@ -18,6 +18,7 @@ Summary
 * Bugfix - Automatically disable online updater for enterprise: [#40841](https://github.com/owncloud/core/pull/40841)
 * Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
 * Bugfix - Versions expire job does not error with federated shares: [#40847](https://github.com/owncloud/core/pull/40847)
+* Bugfix - Request header can hold an empty string if not set: [#40856](https://github.com/owncloud/core/pull/40856)
 * Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
@@ -125,6 +126,12 @@ Details
    enabled.
 
    https://github.com/owncloud/core/pull/40847
+
+* Bugfix - Request header can hold an empty string if not set: [#40856](https://github.com/owncloud/core/pull/40856)
+
+   Due to Apache rewrite rules originally not existing headers can hold an empty string.
+
+   https://github.com/owncloud/core/pull/40856
 
 * Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
 
