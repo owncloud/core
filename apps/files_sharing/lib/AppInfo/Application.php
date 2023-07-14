@@ -121,6 +121,7 @@ class Application extends App {
 					$uid
 				),
 				$server->getConfig(),
+				$server->getLogger(),
 				$uid
 			);
 		});
