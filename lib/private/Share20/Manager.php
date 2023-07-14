@@ -1547,7 +1547,7 @@ class Manager implements IManager {
 					$this->logger->error(
 						"shared file not found by token: $token for federated group share",
 						['app' => __CLASS__]
-					);	
+					);
 				} catch (ProviderException $ex) {
 					$this->logger->logException(
 						$ex,
