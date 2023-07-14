@@ -310,17 +310,17 @@ class Encryption extends Wrapper {
 			if ($renameOk) {
 				$sourceKeyDeleteOk = $this->keyStorage->deleteAllFileKeys($source);
 				if (!$sourceKeyDeleteOk) {
-					$this->logger->error("Renaming {$path1} to {$path2} succeeded, but key {$target} wasn't deleted from the original location in {$source}");
+					$this->logger->error("Renaming {$path1} to {$path2} succeeded, but key for file {$target} wasn't removed from its original location");
 				}
 			} else {
 				$this->logger->error("Renaming {$path1} to {$path2} failed");
 				$targetKeyDeleteOk = $this->keyStorage->deleteAllFileKeys($target);
 				if (!$targetKeyDeleteOk) {
-					$this->logger->error("Copied key {$source} wasn't removed from the target location in {$target}");
+					$this->logger->error("Copied key for file {$source} wasn't removed from its target location");
 				}
 			}
 		} else {
-			$this->logger->error("Failed to copied keys from {$source} to {$target} while renaming {$path1} to {$path2}");
+			$this->logger->error("Failed to copy keys while renaming {$path1} to {$path2}");
 		}
 
 		return $renameOk && $copyKeysOk;
