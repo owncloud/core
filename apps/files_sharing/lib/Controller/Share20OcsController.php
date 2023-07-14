@@ -1302,11 +1302,11 @@ class Share20OcsController extends OCSController {
 
 		foreach ($providersCapabilities as $capabilities) {
 			foreach ($capabilities as $key => $value) {
-			  $shareTypes[] = $key;
+				$shareTypes[] = $key;
 			}
-		  }
-		  $shareTypes = \array_unique($shareTypes);
-
+		}
+		
+		$shareTypes = \array_unique($shareTypes);
 		return $shareTypes;
 	}
 }
