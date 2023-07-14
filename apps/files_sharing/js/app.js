@@ -220,7 +220,7 @@ OCA.Sharing.App = {
 			contentType: 'application/json',
 			dataType: 'json',
 			type: method,
-			data: JSON.stringify((Boolean(shareType) ? { shareType: shareType } : {})),
+			data: JSON.stringify((shareType !== undefined ? { shareType: shareType } : {})),
 		});
 		xhr.fail(function(response) {
 			var message = '';
