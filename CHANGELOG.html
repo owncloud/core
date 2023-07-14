@@ -16,6 +16,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Automatically disable online updater for enterprise: <a href="https://github.com/owncloud/core/pull/40841">#40841</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Verbose command output: <a href="https://github.com/owncloud/core/pull/40844">#40844</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Versions expire job does not error with federated shares: <a href="https://github.com/owncloud/core/pull/40847">#40847</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Request header can hold an empty string if not set: <a href="https://github.com/owncloud/core/pull/40856">#40856</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Skip share_folder for guest users: <a href="https://github.com/owncloud/core/pull/40864">#40864</a></li>
         <li class="type-change changelog-item">Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
@@ -120,6 +121,12 @@
    enabled.
             </p>
             <p>https://github.com/owncloud/core/pull/40847<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Request header can hold an empty string if not set: <a href="https://github.com/owncloud/core/pull/40856">#40856</a></p>
+            <p>Due to Apache rewrite rules originally not existing headers can hold an empty string.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40856<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Skip share_folder for guest users: <a href="https://github.com/owncloud/core/pull/40864">#40864</a></p>
