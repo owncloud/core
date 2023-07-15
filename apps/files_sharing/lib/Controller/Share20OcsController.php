@@ -1305,8 +1305,9 @@ class Share20OcsController extends OCSController {
 				$shareTypes[] = $key;
 			}
 		}
-		
 		$shareTypes = \array_unique($shareTypes);
+		$shareTypes = array_keys(array_intersect(Share::CONVERT_SHARE_TYPE_TO_STRING, $shareTypes));
+
 		return $shareTypes;
 	}
 }
