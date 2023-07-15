@@ -66,7 +66,7 @@ class BlockLegacyClientPlugin extends ServerPlugin {
 			return;
 		}
 
-		$minimumSupportedDesktopVersion = $this->config->getSystemValue('minimum.supported.desktop.version', '2.3.3');
+		$minimumSupportedDesktopVersion = $this->config->getSystemValue('minimum.supported.desktop.version', '3.2.1');
 
 		// Match on the mirall version which is in scheme "Mozilla/5.0 (%1) mirall/%2" or
 		// "mirall/%1" for older releases
