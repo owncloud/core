@@ -184,6 +184,7 @@ class RemoteOcsControllerTest extends TestCase {
 					$this->request,
 					$this->externalManager,
 					$this->config,
+					$this->logger,
 					'user'
 				])
 				->setMethods(['getFileInfo'])
