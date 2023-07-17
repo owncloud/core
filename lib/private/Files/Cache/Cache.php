@@ -303,6 +303,8 @@ class Cache implements ICache {
 			return \trim($item, "`");
 		}, $queryParts);
 		$values = \array_combine($queryParts, $params);
+		$this->logSizeZero($values['size'], $file);
+
 		// Update or insert this to the filecache
 		\OC::$server->getDatabaseConnection()->upsert(
 			'*PREFIX*filecache',
@@ -384,6 +386,8 @@ class Cache implements ICache {
 				\implode(' IS NULL OR ', $queryParts) . ' IS NULL' .
 				') AND `fileid` = ? ';
 		}
+
+		$this->logSizeZero($data['size'], $id);
 
 		$this->connection->executeQuery($sql, $params);
 	}
@@ -948,8 +952,8 @@ class Cache implements ICache {
 	 * instead does a global search in the cache table
 	 *
 	 * @param int $id
-	 * @deprecated use getPathById() instead
 	 * @return array first element holding the storage id, second the path
+	 * @deprecated use getPathById() instead
 	 */
 	public static function getById($id) {
 		$connection = \OC::$server->getDatabaseConnection();
@@ -977,5 +981,19 @@ class Cache implements ICache {
 	 */
 	public function normalize($path) {
 		return \trim(\OC_Util::normalizeUnicode($path), '/');
+	}
+
+	/**
+	 * @param $size1
+	 * @param int|string $idOrName
+	 * @return void
+	 */
+	private function logSizeZero($size1, $idOrName): void {
+		$size = $size1 ?? null;
+		if ($size === 0) {
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			\OC::$server->getLogger()->error("FileSize-0: $idOrName: $trace");
+		}
 	}
 }
