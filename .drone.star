@@ -91,6 +91,7 @@ config = {
                 "mysql:8.0",
                 "postgres:9.4",
                 "postgres:10.21",
+                "postgres:15.3",
             ],
         },
         "slowDatabases": {
@@ -345,7 +346,7 @@ config = {
             "dbServices": [
                 "sqlite",
                 "mysql:8.0",
-                "postgres:10.21",
+                "postgres:15.3",
             ],
         },
         "cliExternalStorage": {
@@ -1372,6 +1373,7 @@ def phpTests(ctx, testType, withCoverage):
             "mysql:8.0",
             "postgres:9.4",
             "postgres:10.21",
+            "postgres:15.3",
         ],
         "coverage": True,
         "includeKeyInMatrixName": False,
@@ -1407,6 +1409,7 @@ def phpTests(ctx, testType, withCoverage):
             "mysql:8.0",
             "postgres:9.4",
             "postgres:10.21",
+            "postgres:15.3",
             "oracle",
         ],
         "coverage": True,
@@ -1652,7 +1655,7 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": [DEFAULT_PHP_VERSION],
-        "databases": ["mariadb:10.2"],
+        "databases": ["postgres:15.3"],
         "federatedPhpVersion": DEFAULT_PHP_VERSION,
         "federatedServerNeeded": False,
         "federatedDb": "",
