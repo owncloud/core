@@ -20,6 +20,7 @@ Summary
 * Bugfix - Versions expire job does not error with federated shares: [#40847](https://github.com/owncloud/core/pull/40847)
 * Bugfix - Request header can hold an empty string if not set: [#40856](https://github.com/owncloud/core/pull/40856)
 * Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
+* Bugfix - Bump files app version: [#40878](https://github.com/owncloud/core/pull/40878)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
@@ -142,6 +143,16 @@ Details
    config.php option for guests and default to root.
 
    https://github.com/owncloud/core/pull/40864
+
+* Bugfix - Bump files app version: [#40878](https://github.com/owncloud/core/pull/40878)
+
+   Files app version was not properly increased when the
+   "OCA\Files\BackgroundJob\CleanupPersistentFileLock" and
+   "OCA\Files\BackgroundJob\PreviewCleanupJob" background jobs were originally added. As a
+   result, those two jobs were not correctly inserted into the "oc_jobs" table upon a core
+   upgrade. First time installations are not affected as there jobs are correctly added.
+
+   https://github.com/owncloud/core/pull/40878
 
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 
