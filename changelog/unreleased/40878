@@ -1,0 +1,5 @@
+Bugfix: Bump files app version
+
+Files app version was not properly increased when the "OCA\Files\BackgroundJob\CleanupPersistentFileLock" and "OCA\Files\BackgroundJob\PreviewCleanupJob" background jobs were originally added. As a result, those two jobs were not correctly inserted into the "oc_jobs" table upon a core upgrade. First time installations are not affected as there jobs are correctly added.
+
+https://github.com/owncloud/core/pull/40878
