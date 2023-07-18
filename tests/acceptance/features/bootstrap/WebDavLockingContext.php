@@ -52,6 +52,7 @@ class WebDavLockingContext implements Context {
 	 * @param TableNode $properties table with no heading with | property | value |
 	 * @param boolean $public if the file is in a public share or not
 	 * @param boolean $expectToSucceed
+	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 */
