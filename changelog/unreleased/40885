@@ -1,0 +1,8 @@
+Bugfix: Apply same restrictions for all the shares
+
+Remote shares will have the same restrictions as user and group shares.
+This means that the in order for a remote user to show up as sharee,
+the search term length must be greater than the minimum configured,
+otherwise only exact matches will be shown.
+
+https://github.com/owncloud/core/pull/40885
