@@ -52,6 +52,7 @@ class WebDavLockingContext implements Context {
 	 * @param TableNode $properties table with no heading with | property | value |
 	 * @param boolean $public if the file is in a public share or not
 	 * @param boolean $expectToSucceed
+	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 */
@@ -60,12 +61,13 @@ class WebDavLockingContext implements Context {
 		string $file,
 		TableNode $properties,
 		bool $public = false,
-		bool $expectToSucceed = true
+		bool $expectToSucceed = true,
+		string $publicWebDAVAPIVersion = "old"
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		if ($public === true) {
-			$type = "public-files";
+			$type = "public-files-$publicWebDAVAPIVersion";
 			$password = null;
 		} else {
 			$type = "files";
@@ -211,7 +213,8 @@ class WebDavLockingContext implements Context {
 			$file,
 			$properties,
 			true,
-			false
+			false,
+			$publicWebDAVAPIVersion
 		);
 	}
 
