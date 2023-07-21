@@ -21,6 +21,7 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -33,10 +34,10 @@ class DownloadHelper {
 	/**
 	 *
 	 * @param string|null $baseUrl URL of owncloud
-	 *                        	   e.g. http://localhost:8080
-	 *                       	   should include the subfolder
-	 *                       	   if owncloud runs in a subfolder
-	 *                        	   e.g. http://localhost:8080/owncloud-core
+	 *                             e.g. http://localhost:8080
+	 *                             should include the subfolder
+	 *                             if owncloud runs in a subfolder
+	 *                             e.g. http://localhost:8080/owncloud-core
 	 * @param string|null $user
 	 * @param string|null $password
 	 * @param string|null $fileName
@@ -46,6 +47,7 @@ class DownloadHelper {
 	 * @param string|null $sourceIpAddress
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function download(
 		?string $baseUrl,

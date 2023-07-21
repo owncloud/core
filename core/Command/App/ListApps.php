@@ -81,7 +81,7 @@ class ListApps extends Base {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$appNameSubString = $input->getArgument('search-pattern');
 		$minimalView = $input->getOption('minimal');
 

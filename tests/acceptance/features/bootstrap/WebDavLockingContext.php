@@ -36,23 +36,14 @@ require_once 'bootstrap.php';
  * context containing API steps needed for the locking mechanism of webdav
  */
 class WebDavLockingContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var PublicWebDavContext
-	 */
-	private $publicWebDavContext;
+	private FeatureContext $featureContext;
+	private PublicWebDavContext $publicWebDavContext;
 
 	/**
 	 *
 	 * @var string[][]
 	 */
-	private $tokenOfLastLock = [];
+	private array $tokenOfLastLock = [];
 
 	/**
 	 *
@@ -61,20 +52,22 @@ class WebDavLockingContext implements Context {
 	 * @param TableNode $properties table with no heading with | property | value |
 	 * @param boolean $public if the file is in a public share or not
 	 * @param boolean $expectToSucceed
+	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 */
 	private function lockFile(
-		$user,
-		$file,
+		string $user,
+		string $file,
 		TableNode $properties,
-		$public = false,
-		$expectToSucceed = true
+		bool $public = false,
+		bool $expectToSucceed = true,
+		string $publicWebDAVAPIVersion = "old"
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		if ($public === true) {
-			$type = "public-files";
+			$type = "public-files-$publicWebDAVAPIVersion";
 			$password = null;
 		} else {
 			$type = "files";
@@ -131,7 +124,7 @@ class WebDavLockingContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function lockFileUsingWebDavAPI($user, $file, TableNode $properties) {
+	public function lockFileUsingWebDavAPI(string $user, string $file, TableNode $properties) {
 		$this->lockFile($user, $file, $properties, false, false);
 	}
 
@@ -144,8 +137,8 @@ class WebDavLockingContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasLockedFile($user, $file, TableNode $properties) {
-		$this->lockFile($user, $file, $properties, false, true);
+	public function userHasLockedFile(string $user, string $file, TableNode $properties) {
+		$this->lockFile($user, $file, $properties);
 	}
 
 	/**
@@ -190,7 +183,7 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function publicHasLockedFileLastSharedFolder(
-		$file,
+		string $file,
 		TableNode $properties
 	) {
 		$this->lockFile(
@@ -211,8 +204,8 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function publicLocksFileLastSharedFolder(
-		$file,
-		$publicWebDAVAPIVersion,
+		string $file,
+		string $publicWebDAVAPIVersion,
 		TableNode $properties
 	) {
 		$this->lockFile(
@@ -220,7 +213,8 @@ class WebDavLockingContext implements Context {
 			$file,
 			$properties,
 			true,
-			false
+			false,
+			$publicWebDAVAPIVersion
 		);
 	}
 
@@ -232,7 +226,7 @@ class WebDavLockingContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function unlockLastLockUsingWebDavAPI($user, $file) {
+	public function unlockLastLockUsingWebDavAPI(string $user, string $file) {
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user,
 			$file,
@@ -251,9 +245,9 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function unlockItemWithLastLockOfOtherItemUsingWebDavAPI(
-		$user,
-		$itemToUnlock,
-		$itemToUseLockOf
+		string $user,
+		string $itemToUnlock,
+		string $itemToUseLockOf
 	) {
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user,
@@ -273,9 +267,9 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function unlockItemWithLastPublicLockOfOtherItemUsingWebDavAPI(
-		$user,
-		$itemToUnlock,
-		$itemToUseLockOf
+		string $user,
+		string $itemToUnlock,
+		string $itemToUseLockOf
 	) {
 		$lockOwner = $this->featureContext->getLastPublicShareToken();
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
@@ -291,14 +285,14 @@ class WebDavLockingContext implements Context {
 	 * @param string $user
 	 * @param string $itemToUnlock
 	 *
-	 * @return int|void
+	 * @return int
 	 *
 	 * @throws Exception|GuzzleException
 	 */
 	private function countLockOfResources(
 		string $user,
 		string $itemToUnlock
-	) {
+	): int {
 		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$password = $this->featureContext->getPasswordForUser($user);
@@ -340,11 +334,11 @@ class WebDavLockingContext implements Context {
 	 * @throws Exception|GuzzleException
 	 */
 	public function hasUnlockItemWithTheLastCreatedLock(
-		$user,
-		$itemToUnlock,
-		$lockOwner,
-		$itemToUseLockOf,
-		$public = false
+		string $user,
+		string $itemToUnlock,
+		string $lockOwner,
+		string $itemToUseLockOf,
+		bool $public = false
 	) {
 		$lockCount = $this->countLockOfResources($user, $itemToUnlock);
 
@@ -424,9 +418,9 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function unlockItemAsPublicWithLastLockOfUserAndItemUsingWebDavAPI(
-		$itemToUnlock,
-		$lockOwner,
-		$itemToUseLockOf
+		string $itemToUnlock,
+		string $lockOwner,
+		string $itemToUseLockOf
 	) {
 		$user = $this->featureContext->getLastPublicShareToken();
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
@@ -445,7 +439,7 @@ class WebDavLockingContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function unlockItemAsPublicUsingWebDavAPI($itemToUnlock) {
+	public function unlockItemAsPublicUsingWebDavAPI(string $itemToUnlock) {
 		$user = $this->featureContext->getLastPublicShareToken();
 		$this->unlockItemWithLastLockOfUserAndItemUsingWebDavAPI(
 			$user,
@@ -467,10 +461,10 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function moveItemSendingLockToken(
-		$user,
-		$fileSource,
-		$fileDestination,
-		$itemToUseLockOf
+		string $user,
+		string $fileSource,
+		string $fileDestination,
+		string $itemToUseLockOf
 	) {
 		$this->moveItemSendingLockTokenOfUser(
 			$user,
@@ -493,11 +487,11 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function moveItemSendingLockTokenOfUser(
-		$user,
-		$fileSource,
-		$fileDestination,
-		$itemToUseLockOf,
-		$lockOwner
+		string $user,
+		string $fileSource,
+		string $fileDestination,
+		string $itemToUseLockOf,
+		string $lockOwner
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$lockOwner = $this->featureContext->getActualUsername($lockOwner);
@@ -533,10 +527,10 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsAFileWithContentTo(
-		$user,
-		$content,
-		$destination,
-		$itemToUseLockOf
+		string $user,
+		string $content,
+		string $destination,
+		string $itemToUseLockOf
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$token = $this->tokenOfLastLock[$user][$itemToUseLockOf];
@@ -565,11 +559,11 @@ class WebDavLockingContext implements Context {
 	 *
 	 */
 	public function publicUploadFileSendingLockTokenOfUser(
-		$filename,
-		$content,
-		$itemToUseLockOf,
-		$lockOwner,
-		$publicWebDAVAPIVersion
+		string $filename,
+		string $content,
+		string $itemToUseLockOf,
+		string $lockOwner,
+		string $publicWebDAVAPIVersion
 	) {
 		$lockOwner = $this->featureContext->getActualUsername($lockOwner);
 		$headers = [
@@ -596,10 +590,10 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 */
 	public function publicUploadFileSendingLockTokenOfPublic(
-		$filename,
-		$content,
-		$itemToUseLockOf,
-		$publicWebDAVAPIVersion
+		string $filename,
+		string $content,
+		string $itemToUseLockOf,
+		string $publicWebDAVAPIVersion
 	) {
 		$lockOwner = $this->featureContext->getLastPublicShareToken();
 		$this->publicUploadFileSendingLockTokenOfUser(
@@ -621,7 +615,7 @@ class WebDavLockingContext implements Context {
 	 * @return void
 	 * @throws GuzzleException
 	 */
-	public function numberOfLockShouldBeReported($count, $file, $user) {
+	public function numberOfLockShouldBeReported(int $count, string $file, string $user) {
 		$lockCount = $this->countLockOfResources($user, $file);
 		Assert::assertEquals(
 			$count,
@@ -639,7 +633,7 @@ class WebDavLockingContext implements Context {
 	 *
 	 * @throws Exception
 	 */
-	public function groupShouldExistAsLockBreakerGroups($expectedGroup) {
+	public function groupShouldExistAsLockBreakerGroups(string $expectedGroup) {
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$admin = $this->featureContext->getAdminUsername();
 		$password = $this->featureContext->getAdminPassword();

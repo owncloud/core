@@ -65,7 +65,7 @@ class CleanupChunks extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$checkUploadExistsLocal = $input->getOption('local') === true;
 		$d = $input->getArgument('minimum-age-in-days');
 		$d = \max(2, \min($d, 100));

@@ -36,13 +36,9 @@ require_once 'bootstrap.php';
  * TUS related test steps
  */
 class TUSContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
-	private $resourceLocation = null;
+	private ?string $resourceLocation = null;
 
 	/**
 	 * @When user :user creates a new TUS resource on the WebDAV API with these headers:
@@ -281,7 +277,7 @@ class TUSContext implements Context {
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
-	 * @param string $mtime Time in human readable format is taken as input which is converted into milliseconds that is used by API
+	 * @param string $mtime Time in human-readable format is taken as input which is converted into milliseconds that is used by API
 	 *
 	 * @return void
 	 * @throws Exception
@@ -456,7 +452,7 @@ class TUSContext implements Context {
 	 */
 	public function userHasUploadedChunkFileWithChecksum(string $user, string $offset, string $data, string $checksum):void {
 		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $data, $checksum);
-		$this->featureContext->theHTTPStatusCodeShouldBe(204, "");
+		$this->featureContext->theHTTPStatusCodeShouldBe(204);
 	}
 
 	/**

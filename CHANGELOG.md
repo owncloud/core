@@ -3,34 +3,287 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.12.1...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.12.2...master
 
 Summary
 -------
 
+* Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
+* Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
+* Bugfix - Exit with success when signing-key has been set: [#40794](https://github.com/owncloud/core/pull/40794)
+* Bugfix - Fix query used to delete thumbnails: [#40800](https://github.com/owncloud/core/issues/40800)
+* Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
+* Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
+* Bugfix - Explicitly set open mode in the checksum wrapper: [#40832](https://github.com/owncloud/core/pull/40832)
+* Bugfix - Automatically disable online updater for enterprise: [#40841](https://github.com/owncloud/core/pull/40841)
+* Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
+* Bugfix - Versions expire job does not error with federated shares: [#40847](https://github.com/owncloud/core/pull/40847)
+* Bugfix - Request header can hold an empty string if not set: [#40856](https://github.com/owncloud/core/pull/40856)
+* Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
+* Bugfix - Bump files app version: [#40878](https://github.com/owncloud/core/pull/40878)
+* Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
+* Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
+* Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
+* Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
+* Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
+* Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
+* Enhancement - Add commands to handle the trusted servers from command line: [#40796](https://github.com/owncloud/core/pull/40796)
+* Enhancement - Enforce 2-factor authentication: [#40830](https://github.com/owncloud/core/pull/40830)
+* Enhancement - Improve the performance of the occ files:remove-storage command: [#40859](https://github.com/owncloud/core/pull/40859)
 
 Details
 -------
 
+* Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
+
+   Core 10.12.1 brought an update of the google/apiclient from version 2.12.6 to 2.13.1.
+   However, in version 2.13.0 the accounts.google.com authorization URI has been updated. This
+   change breaks old code that uses the "setApprovalPrompt('force')" instead of the newer
+   "setPrompt('consent')" method, as this endpoint does not support the legacy approval prompt
+   parameter. This has been now fixed.
+
+   https://github.com/owncloud/core/issues/40777
+   https://github.com/owncloud/core/pull/40783
+
+* Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
+
+   Some occ commands could return an invalid exit status when executed. This has been corrected.
+   occ commands will now always return an integer exit status. Zero (0) is success, any other value
+   indicates a problem.
+
+   https://github.com/owncloud/core/pull/40793
+
+* Bugfix - Exit with success when signing-key has been set: [#40794](https://github.com/owncloud/core/pull/40794)
+
+   The "occ security:sign-key:create" command exited with status 1 even when the signing key was
+   successfully created. This has been corrected. The command now exits with status zero (0) when
+   the command succeeded.
+
+   For all occ commands, zero (0) is success, any other value indicates a problem.
+
+   https://github.com/owncloud/core/pull/40794
+
+* Bugfix - Fix query used to delete thumbnails: [#40800](https://github.com/owncloud/core/issues/40800)
+
+   Fixed query that detects unused thumbnails to prevent unnecessary deletes and potential
+   recreations.
+
+   https://github.com/owncloud/core/issues/40800
+   https://github.com/owncloud/core/pull/40801
+
+* Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
+
+   After update of guzzle, it was no longer possible to request format of response to be json when
+   adding in query parameter. One of OCSAuthAPIController fed instances was receiving requests
+   without a hint that JSON needs to be used, and returned XML. On the other hand,
+   OCSAuthAPIController expects only JSON for exchange, and thus failed to parse the message.
+   Now the exchange is correctly done.
+
+   WARNING: the patch/fix needs to be applied on all federated severs that are not yet "paired" and
+   have the issue with guzzle library. Otherwise pairing will not work.
+
+   https://github.com/owncloud/enterprise/issues/5676
+   https://github.com/owncloud/core/pull/40815
+
+* Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
+
+   There can be the rare case that deleting a file from a Google Drive mount can throw an undefined
+   variable error. Though the process completes without further issues, no errors should be
+   thrown. This fix initializes the variables for these cases properly making the error go away.
+
+   https://github.com/owncloud/core/issues/40802
+   https://github.com/owncloud/core/pull/40822
+
+* Bugfix - Explicitly set open mode in the checksum wrapper: [#40832](https://github.com/owncloud/core/pull/40832)
+
+   Uploading files to some external storages through the desktop client was causing issues due to
+   the checksum wrapper. We're using additional wrappers and the mode wasn't being detected
+   correctly in some cases. Using the right mode in the checksum wrapper was required in order to
+   decide whether we should discard the final checksum or not; in this case, the checksum was being
+   discarded, so it was causing a checksum mismatch.
+
+   Now the open mode in the checksum wrapper is set explicitly.
+
+   https://github.com/owncloud/core/pull/40832
+
+* Bugfix - Automatically disable online updater for enterprise: [#40841](https://github.com/owncloud/core/pull/40841)
+
+   Online updater is not recommended for Enterprise installations and is now automatically
+   disabled in such cases.
+
+   https://github.com/owncloud/core/pull/40841
+
+* Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
+
+   Verbose command output of the background:queue:execute is now displayed.
+
+   https://github.com/owncloud/core/pull/40844
+
+* Bugfix - Versions expire job does not error with federated shares: [#40847](https://github.com/owncloud/core/pull/40847)
+
+   Versions expire job does not error with federated shares when versioning meta- data is
+   enabled.
+
+   https://github.com/owncloud/core/pull/40847
+
+* Bugfix - Request header can hold an empty string if not set: [#40856](https://github.com/owncloud/core/pull/40856)
+
+   Due to Apache rewrite rules originally not existing headers can hold an empty string.
+
+   https://github.com/owncloud/core/pull/40856
+
+* Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
+
+   In https://github.com/owncloud/core/pull/40378 we've fixed the case of (not) moving the
+   share target when the backend storage becomes temporary unavailable but we had the collateral
+   effect that guests did not see anymore their received shares as we were forcing the creation of
+   the target which failed for them as their storage is read-only. We now skip the share_folder
+   config.php option for guests and default to root.
+
+   https://github.com/owncloud/core/pull/40864
+
+* Bugfix - Bump files app version: [#40878](https://github.com/owncloud/core/pull/40878)
+
+   Files app version was not properly increased when the
+   "OCA\Files\BackgroundJob\CleanupPersistentFileLock" and
+   "OCA\Files\BackgroundJob\PreviewCleanupJob" background jobs were originally added. As a
+   result, those two jobs were not correctly inserted into the "oc_jobs" table upon a core
+   upgrade. First time installations are not affected as there jobs are correctly added.
+
+   https://github.com/owncloud/core/pull/40878
+
+* Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
+
+   The Symfony PHP framework has been updated from major version 4 to 5.
+
+   The following Symfony component versions are provided: - symfony/console (v5.4.24) -
+   symfony/event-dispatcher (v5.4.22) - symfony/process (v5.4.24) - symfony/routing
+   (v5.4.25) - symfony/string (v5.4.22) - symfony/translation (v5.4.24)
+
+   https://github.com/owncloud/core/issues/39630
+   https://github.com/owncloud/core/pull/40518
+   https://github.com/owncloud/core/pull/40819
+   https://github.com/owncloud/core/pull/40849
+
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 
-   The following have been updated: - guzzlehttp/guzzle (7.5.0 to 7.5.1) - punic/punic (3.8.0 to
-   3.8.1)
+   The following have been updated: - doctrine/deprecations (1.0.0 to 1.1.1) -
+   egulias/email-validator (3.2.5 to 3.2.6) - guzzlehttp/guzzle (7.5.0 to 7.7.0) -
+   owncloud/tarstreamer (2.0.0 to 2.1.0) - pear/pear-core-minimal (1.10.11 to 1.10.13) -
+   phpseclib/phpseclib (3.0.19 to 3.0.21) - punic/punic (3.8.0 to 3.8.1) - sabre/http (5.1.6 to
+   5.1.7) - sabre/uri (2.3.2 to 2.3.3) - sabre/xml (2.2.5 to 2.2.6)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
-   (2.13.1 to 2.13.2)
+   (2.13.1 to 2.13.2) - firebase/php-jwt (v6.4.0 to v6.6.0)
 
    https://github.com/owncloud/core/pull/40724
    https://github.com/owncloud/core/pull/40731
    https://github.com/owncloud/core/pull/40742
+   https://github.com/owncloud/core/pull/40753
+   https://github.com/owncloud/core/pull/40789
+   https://github.com/owncloud/core/pull/40806
+   https://github.com/owncloud/core/pull/40819
+   https://github.com/owncloud/core/pull/40825
+   https://github.com/owncloud/core/pull/40833
+   https://github.com/owncloud/core/pull/40838
+   https://github.com/owncloud/core/pull/40839
+   https://github.com/owncloud/core/pull/40849
+   https://github.com/owncloud/core/pull/40853
+   https://github.com/owncloud/core/pull/40854
+   https://github.com/owncloud/core/pull/40867
 
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
-   A federated share with a too long name results in inaccessible data.
+   A federated share with a too long name results in potentially inaccessible data.
 
    https://github.com/owncloud/core/pull/40726
+
+* Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
+
+   User input is validated now in UserController
+
+   https://github.com/owncloud/core/pull/40769
+
+* Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
+
+   The Last Login column on the Users page is now correctly hidden if the setting is initially
+   unchecked.
+
+   https://github.com/owncloud/core/pull/40771
+
+* Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
+
+   A system tag with a too long name results in potentially inaccessible data.
+
+   https://github.com/owncloud/core/pull/40804
+
+* Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
+
+   Setup checks now allows other values other than "none" for X-Robots-Tag header. If "none" or
+   "noindex" and "nofollow" are missing, a security warning is raised. Previously a header value
+   with "noindex" and "nofollow" wasn't allowed even though it was valid.
+
+   https://github.com/owncloud/core/pull/40715
+
+* Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
+
+   Metadata coming from storages are stored in the DB. When a storage has been removed from
+   ownCloud, that metadata remains in the DB.
+
+   The new occ command allows you to remove that metadata stored, reducing the amount of space used
+   by the DB as well as slightly improving the performance since there will be less entries.
+
+   https://github.com/owncloud/core/pull/40779
+
+* Enhancement - Add commands to handle the trusted servers from command line: [#40796](https://github.com/owncloud/core/pull/40796)
+
+   New occ commands have been added to handle the trusted servers for federation from command
+   line. These commands will allow the admin to add list and remove trusted servers
+
+   https://github.com/owncloud/core/pull/40796
+
+* Enhancement - Enforce 2-factor authentication: [#40830](https://github.com/owncloud/core/pull/40830)
+
+   2-factor authentication can be enforced now. The feature requires at least an app
+   implementing the 2-factor, otherwise no enforcement will be done. If the 2-factor
+   authentication is enforced, all users will be required to use a 2-factor authentication app.
+   Some specific groups selected by the admin can be excluded to let those users bypass the
+   2-factor authentication.
+
+   https://github.com/owncloud/core/pull/40830
+
+* Enhancement - Improve the performance of the occ files:remove-storage command: [#40859](https://github.com/owncloud/core/pull/40859)
+
+   The "--show-candidates" option of the "occ files:remove-storage" command will take less
+   time
+
+   https://github.com/owncloud/core/pull/40859
+
+Changelog for ownCloud Core [10.12.2] (2023-05-31)
+=======================================
+The following sections list the changes in ownCloud core 10.12.2 relevant to
+ownCloud admins and users.
+
+[10.12.2]: https://github.com/owncloud/core/compare/v10.12.1...v10.12.2
+
+Summary
+-------
+
+* Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
+* Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
+
+Details
+-------
+
+* Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
+
+   https://github.com/owncloud/core/pull/40792
+
+* Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
+
+   https://github.com/owncloud/core/pull/40803
 
 Changelog for ownCloud Core [10.12.1] (2023-04-03)
 =======================================
@@ -7733,7 +7986,7 @@ Details
 #### External storage
 
 - "Local" storage type can now be disabled by sysadmin in config.php [#26653](https://github.com/owncloud/core/issues/26653)
-- External storage backends must use [core external storage API](https://doc.owncloud.org/server/10.0/developer_manual/app/extstorage.html) to work without "files_external" [#18160](https://github.com/owncloud/core/issues/18160)
+- External storage backends must use [core external storage API](https://doc.owncloud.com/server/next/developer_manual/app/advanced/extstorage.html) to work without "files_external" [#18160](https://github.com/owncloud/core/issues/18160)
 - FTP external storage moved to a separate app [files_external_ftp](https://github.com/owncloud/files_external_ftp)
 
 #### Dav App

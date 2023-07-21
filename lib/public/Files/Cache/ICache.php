@@ -248,7 +248,7 @@ interface ICache {
 	 * get the path of a file on this storage by it's file id
 	 *
 	 * @param int $id the file id of the file or folder to search
-	 * @return string|null the path of the file (relative to the storage) or null if a file with the given id does not exists within this cache
+	 * @return string|null the path of the file (relative to the storage) or null if a file with the given id does not exist within this cache
 	 * @since 9.0.0
 	 */
 	public function getPathById($id);

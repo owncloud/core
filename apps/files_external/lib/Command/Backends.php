@@ -59,7 +59,7 @@ class Backends extends Base {
 		parent::configure();
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$authBackends = $this->backendService->getAuthMechanisms();
 		$storageBackends = $this->backendService->getBackends();
 

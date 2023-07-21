@@ -58,7 +58,7 @@ class RequestSharedSecret extends Job {
 	/** @var TrustedServers */
 	private $trustedServers;
 
-	private $endPoint = '/ocs/v2.php/apps/federation/api/v1/request-shared-secret?format=json';
+	private $endPoint = '/ocs/v2.php/apps/federation/api/v1/request-shared-secret';
 
 	/** @var ILogger */
 	private $logger;
@@ -143,6 +143,7 @@ class RequestSharedSecret extends Job {
 					'form_params' => [
 						'url' => $source,
 						'token' => $token,
+						'format' => 'json'
 					],
 					'timeout' => 3,
 					'connect_timeout' => 3,

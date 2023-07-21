@@ -130,7 +130,7 @@ class PostgreSQL extends AbstractDatabase {
 			\OCP\Util::writeLog('setup.pg', $entry, \OCP\Util::WARN);
 		}
 		if (! \pg_fetch_row($result)) {
-			//The database does not exists... let's create it
+			//The database does not exist... let's create it
 			$query = "CREATE DATABASE \"$e_name\" OWNER \"$e_user\"";
 			$result = \pg_query($connection, $query);
 			if (!$result) {

@@ -97,6 +97,18 @@ class PreviewCleanupTest extends TestCase {
 		# create preview
 		$thumbnailFolderUser2 = $this->createPreview($sharedTextFile, $rootFolder, $sharedTextFileId);
 
+		# assert thumbnail exists after createPreview
+		self::assertTrue($thumbnailFolderUser1->nodeExists($textFileId));
+		self::assertTrue($thumbnailFolderUser2->nodeExists($sharedTextFileId));
+
+		# run cleanup command
+		$cmd = new PreviewCleanup(\OC::$server->getDatabaseConnection());
+		$cmd->process();
+
+		# assert thumbnail still exists after cleanup run without deleting
+		self::assertTrue($thumbnailFolderUser1->nodeExists($textFileId));
+		self::assertTrue($thumbnailFolderUser2->nodeExists($sharedTextFileId));
+
 		# delete file
 		$textFile->delete();
 

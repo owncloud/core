@@ -6,7 +6,7 @@
 	<licence>AGPL</licence>
 	<author>Robin Appelman, Vincent Petry</author>
 	<default_enable/>
-	<version>1.5.2</version>
+	<version>1.6.0</version>
 	<types>
 		<filesystem/>
 	</types>
@@ -29,6 +29,7 @@
 		<command>OCA\Files\Command\CheckCache</command>
 		<command>OCA\Files\Command\Scan</command>
 		<command>OCA\Files\Command\DeleteOrphanedFiles</command>
+		<command>OCA\Files\Command\RemoveStorageCache</command>
 		<command>OCA\Files\Command\TransferOwnership</command>
 		<command>OCA\Files\Command\TroubleshootTransferOwnership</command>
 		<command>OCA\Files\Command\VerifyChecksums</command>

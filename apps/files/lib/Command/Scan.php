@@ -221,7 +221,7 @@ class Scan extends Base {
 			$scanner->listen('\OC\Files\Utils\Scanner', 'StorageNotAvailable', function (StorageNotAvailableException $e) use ($output) {
 				$output->writeln("Error while scanning, storage not available (" . $e->getMessage() . ")");
 			});
-		# count only
+			# count only
 		} else {
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () {
 				$this->filesCounter += 1;
@@ -279,7 +279,7 @@ class Scan extends Base {
 		}
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$inputPath = $input->getOption('path');
 		$groups = $input->getOption('groups') ? \explode(',', $input->getOption('groups')) : [];
 		$groups = \array_unique(\array_merge($groups, $input->getOption('group')));

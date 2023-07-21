@@ -36,10 +36,7 @@ use TestHelpers\TranslationHelper;
  * Sharing trait
  */
 trait Sharing {
-	/**
-	 * @var int
-	 */
-	private $sharingApiVersion = 1;
+	private int $sharingApiVersion = 1;
 
 	/**
 	 * Contains the API response to the last share that was created by each user
@@ -47,7 +44,7 @@ trait Sharing {
 	 *
 	 * @var SimpleXMLElement[]
 	 */
-	private $lastShareDataByUser = [];
+	private array $lastShareDataByUser = [];
 
 	/**
 	 * Contains the share id of the last share that was created by each user,
@@ -55,51 +52,32 @@ trait Sharing {
 	 *
 	 * @var string[]
 	 */
-	private $lastShareIdByUser = [];
+	private array $lastShareIdByUser = [];
 
-	/**
-	 * @var string
-	 */
-	private $userWhoCreatedLastShare = null;
-
-	/**
-	 * @var string
-	 */
-	private $userWhoCreatedLastPublicShare = null;
+	private ?string $userWhoCreatedLastShare = null;
+	private ?string $userWhoCreatedLastPublicShare = null;
 
 	/**
 	 * Contains the API response to the last public link share that was created
 	 * by the test-runner using the Sharing API.
 	 * Shares created on the webUI do not have an entry.
-	 *
-	 * @var SimpleXMLElement
 	 */
-	private $lastPublicShareData = null;
+	private ?SimpleXMLElement $lastPublicShareData = null;
 
 	/**
 	 * Contains the share id of the last public link share that was created by
 	 * the test-runner, either using the Sharing API or on the web UI.
-	 *
-	 * @var string
 	 */
-	private $lastPublicShareId = null;
+	private ?string $lastPublicShareId = null;
 
-	/**
-	 * @var int
-	 */
-	private $savedShareId = null;
+	private ?int $savedShareId = null;
 
-	/**
-	 * @var int
-	 */
-	private $localLastShareTime = null;
+	private ?float $localLastShareTime = null;
 
 	/**
 	 * Defines the fields that can be provided in a share request.
-	 *
-	 * @var array
 	 */
-	private $shareFields = [
+	private array $shareFields = [
 		'path', 'name', 'publicUpload', 'password', 'expireDate',
 		'expireDateAsString', 'permissions', 'shareWith', 'shareType'
 	];
@@ -110,10 +88,8 @@ trait Sharing {
 	 * file_parent is not provided by OCIS/reva.
 	 * There are no known clients that use file_parent.
 	 * The acceptance tests do not test for file_parent.
-	 *
-	 * @var array fields that are possible in a share response
 	 */
-	private $shareResponseFields = [
+	private array $shareResponseFields = [
 		'id', 'share_type', 'uid_owner', 'displayname_owner', 'stime', 'parent',
 		'expiration', 'token', 'uid_file_owner', 'displayname_file_owner', 'path',
 		'item_type', 'mimetype', 'storage_id', 'storage', 'item_source',
@@ -125,7 +101,7 @@ trait Sharing {
 	 * Contains information about the public links that have been created with the webUI.
 	 * Each entry in the array has a "name", "url" and "path".
 	 */
-	private $createdPublicLinks = [];
+	private array $createdPublicLinks = [];
 
 	/**
 	 * @return array
@@ -243,9 +219,9 @@ trait Sharing {
 	}
 
 	/**
-	 * @return int
+	 * @return float|null
 	 */
-	public function getLocalLastShareTime():int {
+	public function getLocalLastShareTime(): ?float {
 		return $this->localLastShareTime;
 	}
 
@@ -262,7 +238,7 @@ trait Sharing {
 	 * @return string
 	 */
 	public function getSharesEndpointPath(?string $postfix = ''):string {
-		return "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares$postfix";
+		return "/apps/files_sharing/api/v$this->sharingApiVersion/shares$postfix";
 	}
 
 	/**
@@ -307,7 +283,7 @@ trait Sharing {
 	 */
 	public function getServerShareTimeFromLastResponse():int {
 		$stime = $this->getResponseXml(null, __METHOD__)->xpath("//stime");
-		if ((bool) $stime) {
+		if ($stime) {
 			return (int) $stime[0];
 		}
 		throw new Exception("Last share time (i.e. 'stime') could not be found in the response.");
@@ -330,7 +306,7 @@ trait Sharing {
 	/**
 	 * @param string $user
 	 * @param TableNode|null $body
-	 *    TableNode $body should not have any heading and can have following rows    |
+	 *    TableNode $body should not have any heading and can have the following rows   |
 	 *       | path               | The folder or file path to be shared                |
 	 *       | name               | A (human-readable) name for the share,              |
 	 *       |                    | which can be up to 64 characters in length.         |
@@ -354,7 +330,7 @@ trait Sharing {
 	 *       |                    |     (default: 31, for public shares: 1)             |
 	 *       |                    |     Pass either the (total) number,                 |
 	 *       |                    |     or the keyword,                                 |
-	 *       |                    |     or an comma separated list of keywords          |
+	 *       |                    |     or a comma separated list of keywords           |
 	 *       | shareWith          | The user or group id with which the file should     |
 	 *       |                    | be shared.                                          |
 	 *       | shareType          | The type of the share. This can be one of:          |
@@ -874,58 +850,6 @@ trait Sharing {
 	 */
 	public function getMimeTypeOfLastSharedFile():string {
 		return \json_decode(\json_encode($this->getLastShareData()->data->mimetype), true)[0];
-	}
-
-	/**
-	 * @param string $url
-	 * @param string|null $user
-	 * @param string|null $password
-	 * @param string|null $mimeType
-	 *
-	 * @return void
-	 */
-	private function checkDownload(
-		string $url,
-		?string $user = null,
-		?string $password = null,
-		?string $mimeType = null
-	) {
-		$password = $this->getActualPassword($password);
-		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
-		$this->response = HttpRequestHelper::get(
-			$url,
-			$this->getStepLineRef(),
-			$user,
-			$password,
-			$headers
-		);
-		Assert::assertEquals(
-			200,
-			$this->response->getStatusCode(),
-			__METHOD__
-			. " Expected status code is '200' but got '"
-			. $this->response->getStatusCode()
-			. "'"
-		);
-
-		$buf = '';
-		$body = $this->response->getBody();
-		while (!$body->eof()) {
-			// read everything
-			$buf .= $body->read(8192);
-		}
-		$body->close();
-
-		if ($mimeType !== null) {
-			$finfo = new finfo;
-			Assert::assertEquals(
-				$mimeType,
-				$finfo->buffer($buf, FILEINFO_MIME_TYPE),
-				__METHOD__
-				. " Expected mimeType '$mimeType' but got '"
-				. $finfo->buffer($buf, FILEINFO_MIME_TYPE)
-			);
-		}
 	}
 
 	/**
@@ -1912,8 +1836,7 @@ trait Sharing {
 			true
 		);
 
-		Assert::assertEquals(
-			true,
+		Assert::assertTrue(
 			$this->isUserOrGroupInSharedData($group, "group", $permissions),
 			__METHOD__
 			. " Could not assert that user '$user' has shared '$filepath' with group '$group' with permissions '$permissions'"
@@ -2070,8 +1993,7 @@ trait Sharing {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			"DELETE",
-			$url,
-			null
+			$url
 		);
 	}
 
@@ -2197,7 +2119,7 @@ trait Sharing {
 	/**
 	 * @Then /^as "([^"]*)" the info about the last share by user "([^"]*)" with user "([^"]*)" should include$/
 	 *
-	 * @param string $requestor
+	 * @param string $requester
 	 * @param string $sharer
 	 * @param string $sharee
 	 * @param TableNode $table
@@ -2206,12 +2128,12 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function asLastShareInfoAboutUserSharingWithUserShouldInclude(
-		string $requestor,
-		string $sharer,
-		string $sharee,
+		string    $requester,
+		string    $sharer,
+		string    $sharee,
 		TableNode $table
 	) {
-		$this->userGetsInfoOfLastShareUsingTheSharingApi($requestor);
+		$this->userGetsInfoOfLastShareUsingTheSharingApi($requester);
 		$this->ocsContext->assertOCSResponseIndicatesSuccess();
 		$this->checkFieldsOfLastResponseToUser($sharer, $sharee, $table);
 	}
@@ -2302,7 +2224,7 @@ trait Sharing {
 	 * @return string|null
 	 */
 	public function getLastShareIdForUser(string $user):?string {
-		if ($user === null) {
+		if ($user === "") {
 			throw new Exception(
 				__METHOD__ . " user not specified. Probably no user or group shares have been created yet in the test scenario."
 			);
@@ -2375,8 +2297,7 @@ trait Sharing {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
-			$url,
-			null
+			$url
 		);
 	}
 
@@ -2409,8 +2330,7 @@ trait Sharing {
 			'GET',
 			$this->getSharesEndpointPath(
 				"?shared_with_me=true" . $pendingClause . "&share_types=" . $rawShareTypes
-			),
-			null
+			)
 		);
 	}
 
@@ -2425,12 +2345,11 @@ trait Sharing {
 	public function userGetsAllSharesSharedWithHimFromFileOrFolderUsingTheProvisioningApi(string $user, string $path):void {
 		$user = $this->getActualUsername($user);
 		$url = "/apps/files_sharing/api/"
-			. "v{$this->sharingApiVersion}/shares?shared_with_me=true&path=$path";
+			. "v$this->sharingApiVersion/shares?shared_with_me=true&path=$path";
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
-			$url,
-			null
+			$url
 		);
 	}
 
@@ -2992,17 +2911,13 @@ trait Sharing {
 		$user = $this->getActualUsername($user);
 		$this->downloadFileAsUserUsingPassword($user, $fileName);
 		$receivedErrorMessage = $this->getResponseXml(null, __METHOD__)->xpath('//s:message');
-		if ((bool) $errorMessage) {
-			Assert::assertEquals(
-				$errorMessage,
-				(string) $receivedErrorMessage[0],
-				"Expected error message was '$errorMessage' but got '"
-				. (string) $receivedErrorMessage[0]
-				. "'"
-			);
-			return;
-		}
-		throw new Exception("No 's:message' element found on the response.");
+		Assert::assertEquals(
+			$errorMessage,
+			(string) $receivedErrorMessage[0],
+			"Expected error message was '$errorMessage' but got '"
+			. $receivedErrorMessage[0]
+			. "'"
+		);
 	}
 
 	/**
@@ -3060,7 +2975,7 @@ trait Sharing {
 					$user,
 					$this->getPasswordForUser($user),
 					"DELETE",
-					$this->getSharesEndpointPath("/{$id}"),
+					$this->getSharesEndpointPath("/$id"),
 					$this->getStepLineRef(),
 					[],
 					$this->ocsApiVersion
@@ -3121,7 +3036,7 @@ trait Sharing {
 	 * Returns shares of a file or folder as a SimpleXMLElement
 	 *
 	 * Note: the "single" SimpleXMLElement may contain one or more actual
-	 * shares (to users, groups or public links etc). If you access an item directly,
+	 * shares (to users, groups or public links etc.). If you access an item directly,
 	 * for example, getShares()->id, then the value of "id" for the first element
 	 * will be returned. To access all the elements, you can loop through the
 	 * returned SimpleXMLElement with "foreach" - it will act like a PHP array
@@ -3173,7 +3088,7 @@ trait Sharing {
 							(string) $elementResponded->path[0],
 							__METHOD__
 							. " Expected '${expectedElementsArray['path']}' but got '"
-							. (string) $elementResponded->path[0]
+							. $elementResponded->path[0]
 							. "'"
 						);
 						Assert::assertEquals(
@@ -3181,7 +3096,7 @@ trait Sharing {
 							(string) $elementResponded->permissions[0],
 							__METHOD__
 							. " Expected '${expectedElementsArray['permissions']}' but got '"
-							. (string) $elementResponded->permissions[0]
+							. $elementResponded->permissions[0]
 							. "'"
 						);
 						$nameFound = true;
@@ -3256,8 +3171,7 @@ trait Sharing {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			"DELETE",
-			$url,
-			null
+			$url
 		);
 	}
 
@@ -3363,19 +3277,19 @@ trait Sharing {
 			$shareId,
 			__METHOD__ . " could not find share $share, offered by $offeredBy to $user"
 		);
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
+		$url = "/apps/files_sharing/api/v$this->sharingApiVersion" .
 			"/shares/pending/$shareId";
 		if (\substr($action, 0, 7) === "decline") {
 			$httpRequestMethod = "DELETE";
-		} elseif (\substr($action, 0, 6) === "accept") {
+		} else {
+			// do a POST to accept the share
 			$httpRequestMethod = "POST";
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$httpRequestMethod,
-			$url,
-			null
+			$url
 		);
 		$this->pushToLastStatusCodesArrays();
 	}
@@ -3421,19 +3335,19 @@ trait Sharing {
 
 		$shareId = $this->substituteInLineCodes($share_id, $user);
 
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
+		$url = "/apps/files_sharing/api/v$this->sharingApiVersion" .
 			"/shares/pending/$shareId";
 		if (\substr($action, 0, 7) === "decline") {
 			$httpRequestMethod = "DELETE";
-		} elseif (\substr($action, 0, 6) === "accept") {
+		} else {
+			// do a POST to accept the share
 			$httpRequestMethod = "POST";
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$httpRequestMethod,
-			$url,
-			null
+			$url
 		);
 	}
 
@@ -3452,8 +3366,7 @@ trait Sharing {
 		$this->userReactsToShareOfferedBy($user, $action, $share, $offeredBy);
 		if ($action === 'declined') {
 			$actionText = 'decline';
-		}
-		if ($action === 'accepted') {
+		} else {
 			$actionText = 'accept';
 		}
 		$this->theHTTPStatusCodeShouldBe(
@@ -3711,15 +3624,13 @@ trait Sharing {
 				throw new InvalidArgumentException(
 					__METHOD__ . ' invalid "state" given'
 				);
-				break;
 		}
 
 		$url = $this->getSharesEndpointPath("?format=json&shared_with_me=true&state=$stateCode");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			"GET",
-			$url,
-			null
+			$url
 		);
 		if ($this->response->getStatusCode() !== 200) {
 			throw new Exception(
@@ -4044,7 +3955,7 @@ trait Sharing {
 			$adminUser,
 			$this->getAdminPassword(),
 			'POST',
-			"/apps/testing/api/v1/expire-share/{$shareId}",
+			"/apps/testing/api/v1/expire-share/$shareId",
 			$this->getStepLineRef(),
 			[],
 			$this->getOcsApiVersion()

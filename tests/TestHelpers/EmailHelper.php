@@ -154,7 +154,7 @@ class EmailHelper {
 	 * @param int|null $waitTimeSec Time to wait for the email if the email has been delivered
 	 *
 	 * @return boolean
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function isEmailReceived(
 		string $emailAddress,

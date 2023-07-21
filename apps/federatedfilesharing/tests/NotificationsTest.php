@@ -65,9 +65,7 @@ class NotificationsTest extends \Test\TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->discoveryManager = $this->getMockBuilder(DiscoveryManager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->notificationManager = new NotificationManager(
-			$this->createMock(Permissions::class)
-		);
+		$this->notificationManager = new NotificationManager();
 		$this->httpClientService = $this->createMock(IClientService::class);
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
@@ -341,14 +339,14 @@ class NotificationsTest extends \Test\TestCase {
 	public function testDeclineEvent() {
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$event = $dispatcher->dispatch(
-			DeclineShare::class,
 			new DeclineShare(
 				[
 					'remote_id' => '4354353',
 					'remote' => 'http://localhost',
 					'share_token' => 'ohno'
 				]
-			)
+			),
+			DeclineShare::class
 		);
 		$this->assertInstanceOf(DeclineShare::class, $event);
 	}

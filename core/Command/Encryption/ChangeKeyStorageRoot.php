@@ -79,7 +79,7 @@ class ChangeKeyStorageRoot extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$oldRoot = $this->util->getKeyStorageRoot();
 		$newRoot = $input->getArgument('newRoot');
 

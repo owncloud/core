@@ -40,11 +40,11 @@ class Permissions {
 	 *
 	 * @return array
 	 */
-	public function toOcmPermissions($ocPermissions) {
+	public static function toOcmPermissions(int $ocPermissions): array {
 		$ocPermissions = (int) $ocPermissions;
 		$ocmPermissions = [];
 		if ($ocPermissions & Constants::PERMISSION_READ) {
-			$ocmPermissions[] = self::OCM_PERMISSION_READ . '';
+			$ocmPermissions[] = self::OCM_PERMISSION_READ;
 		}
 		if (($ocPermissions & Constants::PERMISSION_CREATE)
 			|| ($ocPermissions & Constants::PERMISSION_UPDATE)
@@ -62,7 +62,7 @@ class Permissions {
 	 *
 	 * @return int
 	 */
-	public function toOcPermissions($ocmPermissions) {
+	public static function toOcPermissions(array $ocmPermissions): int {
 		$permissionMap = [
 			self::OCM_PERMISSION_READ => Constants::PERMISSION_READ,
 			self::OCM_PERMISSION_WRITE => Constants::PERMISSION_CREATE + Constants::PERMISSION_UPDATE,
@@ -76,5 +76,9 @@ class Permissions {
 		}
 
 		return $ocPermissions;
+	}
+
+	public static function isNewPermissionHigher(int $existingPermission, int $newPermission): bool {
+		return ($existingPermission | $newPermission) !== $existingPermission;
 	}
 }

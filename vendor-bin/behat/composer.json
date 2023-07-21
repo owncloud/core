@@ -1,6 +1,6 @@
 {
     "require": {
-        "behat/behat": "^3.11",
+        "behat/behat": "^3.13",
         "behat/gherkin": "^4.9",
         "behat/mink": "1.7.1",
         "behat/mink-extension": "^2.3",
@@ -8,10 +8,10 @@
         "ciaranmcnulty/behat-stepthroughextension" : "dev-master",
         "rdx/behat-variables": "^1.2",
         "sensiolabs/behat-page-object-extension": "^2.3",
-        "symfony/translation": "^4.4",
+        "symfony/translation": "^5.4",
         "sabre/xml": "^2.2",
-        "guzzlehttp/guzzle": "^7.5",
-        "phpunit/phpunit": "^9.5",
+        "guzzlehttp/guzzle": "^7.7",
+        "phpunit/phpunit": "^9.6",
         "laminas/laminas-ldap": "^2.15",
         "ankitpokhrel/tus-php": "^2.3",
         "helmich/phpunit-json-assert": "^3.4"

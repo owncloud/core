@@ -92,8 +92,10 @@ class Upgrade extends Command {
 	 *
 	 * @param InputInterface $input input interface
 	 * @param OutputInterface $output output interface
+	 *
+	 * @return int
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if ($output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL
 			&& !$input->hasParameterOption('--verbose=0', true)) {
 			// set to more verbose on upgrade if no explicit verbosity was set

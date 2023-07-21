@@ -15,6 +15,7 @@ OC.L10N.register(
     "Update channel:" : "Güncelleme kanalı:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Her zaman yeni / deneysel bir sürüme güncelleyebilirsiniz, ancak daha düşük bir kararlı sürüme düşüremezsiniz.",
     "Notify members of the following groups about available updates:" : "Aşağıdaki grupların üyelerini mevcut güncellemelerden haberdar edin:",
-    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "ownCloud için seçilen güncelleme kanalı uyarılara izin vermediğinden sadece uygulama güncelleme uyarıları kullanılabilir."
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "ownCloud için seçilen güncelleme kanalı uyarılara izin vermediğinden sadece uygulama güncelleme uyarıları kullanılabilir.",
+    "Online updater has been automatically disabled as you are currently running an ownCloud Enterprise edition. Please update your ownCloud instance manually." : "Şu anda ownCloud Enterprise sürümünü çalıştırdığınız için çevrimiçi güncelleyici otomatik olarak devre dışı bırakıldı. Lütfen ownCloud örneğinizi manuel olarak güncelleyin."
 },
 "nplurals=2; plural=(n > 1);");

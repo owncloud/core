@@ -60,14 +60,15 @@ abstract class Base extends Command {
 	}
 
 	/**
-	* Executing this command will set the background job mode for owncloud.
-	* The mode to set is specified by the concrete sub class by implementing the
-	* getMode() function.
-	*
-	* @param InputInterface $input
-	* @param OutputInterface $output
-	*/
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	 * Executing this command will set the background job mode for owncloud.
+	 * The mode to set is specified by the concrete subclass by implementing the
+	 * getMode() function.
+	 *
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @return int
+	 */
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$mode = $this->getMode();
 		$this->config->setAppValue('core', 'backgroundjobs_mode', $mode);
 		$output->writeln("Set mode for background jobs to '$mode'");

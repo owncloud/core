@@ -26,15 +26,14 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Psr\Http\Message\ResponseInterface;
 use Page\FilesPage;
-use Page\FilesPageElement\SharingDialog;
 use Page\FilesPageElement\SharingDialogElement\EditPublicLinkPopup;
 use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\GeneralErrorPage;
 use Page\PublicLinkFilesPage;
-use Page\SharedWithOthersPage;
 use Page\SharedWithYouPage;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use TestHelpers\EmailHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\SetupHelper;
@@ -45,73 +44,19 @@ require_once 'bootstrap.php';
  * WebUI SharingContext context.
  */
 class WebUISharingContext extends RawMinkContext implements Context {
-	/**
-	 *
-	 * @var FilesPage
-	 */
-	private $filesPage;
-
-	/**
-	 *
-	 * @var PublicLinkFilesPage
-	 */
-	private $publicLinkFilesPage;
-
-	/**
-	 *
-	 * @var SharedWithYouPage
-	 */
-	private $sharedWithYouPage;
-
-	/**
-	 * @var SharedWithOthersPage
-	 */
-	private $sharedWithOthersPage;
-
-	/**
-	 *
-	 * @var GeneralErrorPage
-	 */
-	private $generalErrorPage;
-
-	/**
-	 *
-	 * @var SharingDialog
-	 */
-	private $sharingDialog;
-
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var WebUIGeneralContext
-	 */
-	private $webUIGeneralContext;
-
-	/**
-	 *
-	 * @var WebUIFilesContext
-	 */
-	private $webUIFilesContext;
-
-	private $oldMinCharactersForAutocomplete = null;
-	private $oldFedSharingFallbackSetting = null;
-
-	/**
-	 * @var PublicLinkTab
-	 */
-	private $publicShareTab;
-
-	/**
-	 *
-	 * @var EditPublicLinkPopup
-	 */
-	private $publicSharingPopup;
-	private $linkName;
+	private FilesPage $filesPage;
+	private PublicLinkFilesPage $publicLinkFilesPage;
+	private SharedWithYouPage $sharedWithYouPage;
+	private GeneralErrorPage $generalErrorPage;
+	private ?Page $sharingDialog = null;
+	private FeatureContext $featureContext;
+	private WebUIGeneralContext $webUIGeneralContext;
+	private WebUIFilesContext $webUIFilesContext;
+	private ?string $oldMinCharactersForAutocomplete = null;
+	private ?string $oldFedSharingFallbackSetting = null;
+	private PublicLinkTab $publicShareTab;
+	private EditPublicLinkPopup $publicSharingPopup;
+	private string $linkName;
 
 	/**
 	 * WebUISharingContext constructor.
@@ -120,20 +65,17 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param PublicLinkFilesPage $publicLinkFilesPage
 	 * @param SharedWithYouPage $sharedWithYouPage
 	 * @param GeneralErrorPage $generalErrorPage
-	 * @param SharedWithOthersPage $sharedWithOthersPage
 	 */
 	public function __construct(
 		FilesPage $filesPage,
 		PublicLinkFilesPage $publicLinkFilesPage,
 		SharedWithYouPage $sharedWithYouPage,
-		GeneralErrorPage $generalErrorPage,
-		SharedWithOthersPage $sharedWithOthersPage
+		GeneralErrorPage $generalErrorPage
 	) {
 		$this->filesPage = $filesPage;
 		$this->publicLinkFilesPage = $publicLinkFilesPage;
 		$this->sharedWithYouPage = $sharedWithYouPage;
 		$this->generalErrorPage = $generalErrorPage;
-		$this->sharedWithOthersPage = $sharedWithOthersPage;
 	}
 
 	/**
@@ -434,6 +376,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// open each of the folders until the last resource should be displayed.
 		$resourceParts = \explode("/", $resource);
 		$numberOfResourceParts = \count($resourceParts);
+		$finalResource = '';
 		foreach ($resourceParts as $key => $resourcePart) {
 			// open each folder in the path, so that the last item should be listed
 			if ($key === ($numberOfResourceParts - 1)) {
@@ -511,9 +454,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$sharePath = (string) $shareItem->path;
 				$slashSharePath = "/" . \trim($sharePath, "/");
 				// The user might have navigated down multiple folders /a/b/c and shared "d".
-				// Normally the share path will be /a/b/c/d
+				// Normally, the share path will be /a/b/c/d
 				// But the user might have received "a" as a share, but also "b" as a separate share.
-				// (maybe the two shares were to two different groups and the user is a member of both)
+				// (Maybe the two shares were to two different groups and the user is a member of both)
 				// Then the user will also have a path to "d" that is b/c/d only.
 				// And the share response actually provides that path.
 				// So match any share path like /b/c/d or /c/d if it appears at the end of the expected path,
@@ -629,7 +572,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$should = ($shouldOrNot !== "not");
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
-		$groupName = \trim($groupName, '""');
+		$groupName = \trim($groupName, '"');
 		$presence = $this->sharingDialog->isGroupPresentInShareWithList($groupName);
 		if ($should) {
 			PHPUnit\Framework\Assert::assertTrue(
@@ -666,7 +609,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserDeleteShareWithUser(string $userOrGroup, string $name):void {
-		$name = \trim($name, '""');
+		$name = \trim($name, '"');
 		if ($userOrGroup === "user") {
 			$name = $this->featureContext->getDisplayNameForUser($name);
 		}
@@ -915,7 +858,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *                                 possible settings: name, permission,
 	 *                                 password, expiration, email, emailToSelf, personalMessage
 	 *                                 the permissions values has to be written exactly
-	 *                                 the way its written in the UI
+	 *                                 the way it's written in the UI
 	 *                                 Setting emailToSelf will send a copy of email to the link creator
 	 *
 	 * @return void
@@ -927,6 +870,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	):void {
 		$nameParts = \explode("/", $name);
 		$numberOfNameParts = \count($nameParts);
+		$finalName = '';
 		foreach ($nameParts as $key => $namePart) {
 			// open each folder in the path, so that the last item should be listed
 			if ($key === ($numberOfNameParts - 1)) {
@@ -977,8 +921,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param TableNode|null $settings table with the settings and no header
 	 *                            	   possible settings: name, permission,
 	 *                                 password, expiration, email
-	 *                                 the permissions values has to be written exactly
-	 *                                 the way its written in the UI
+	 *                                 the permission values have to be written exactly
+	 *                                 the way they are written in the UI
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1097,7 +1041,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
-		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
+		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '"'));
 		$userAdditionalInfoFromAppConfig = \TestHelpers\AppConfigHelper::getAppConfig(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -1113,7 +1057,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$userName = $userName . " (" . $userNameActual . ")";
 			}
 		}
-		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
+		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '"'));
 		$this->sharingDialog->setSharingPermissions(
 			$userOrGroup,
 			$userName,
@@ -1146,11 +1090,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	):void {
 		$this->featureContext->verifyTableNodeRows($permissionsTable, [], ['share', 'edit', 'create', 'change', 'delete']);
 
-		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
+		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '"'));
 		if ($userOrGroup === "user") {
 			$userName = $this->featureContext->getDisplayNameForUser($userName);
 		}
-		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
+		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '"'));
 		$this->sharingDialog->checkSharingPermissions(
 			$userOrGroup,
 			$userName,
@@ -1891,7 +1835,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$sharingBtn = $row->findSharingButton();
 		$mobileResolution = getenv("MOBILE_RESOLUTION");
 		// checking if MOBILE_RESOLUTION is set and skip this step if true as
-		// in mobile resolution sharer name is not displayed in file row
+		// in mobile resolution sharer name is not displayed in the file row
 		if (empty($mobileResolution)) {
 			Assert::assertSame(
 				$sharerName,
@@ -2160,7 +2104,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param TableNode|null $settings table with the settings and no header
 	 *                                 possible settings: name, permission,
 	 *                                 password, expiration, email, personalMessage
-	 *                                 the permissions values have to be written
+	 *                                 the permission values have to be written
 	 *                                 exactly the way they are written in the UI
 	 *
 	 * @return string

@@ -56,7 +56,7 @@ class AppsListTest extends TestCase {
 
 	public function providesAppIds() {
 		return [
-			[[], "- files:\n    - Version: 1.5"],
+			[[], "- files:\n    - Version: 1.6"],
 			[[], "- dav:\n    - Version: 0.7.0\n    - Path: ".\realpath(__DIR__ . '/../../../../apps/dav')],
 			[['--shipped' => 'true'],  "- dav:\n    - Version: 0.7.0"],
 			[['--shipped' => 'false'], '- comments:'],

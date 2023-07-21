@@ -39,48 +39,20 @@ trait Provisioning {
 	/**
 	 * list of users that were created on the local server during test runs
 	 * key is the lowercase username, value is an array of user attributes
-	 *
-	 * @var array
 	 */
-	private $createdUsers = [];
+	private array $createdUsers = [];
 
 	/**
 	 * list of users that were created on the remote server during test runs
 	 * key is the lowercase username, value is an array of user attributes
-	 *
-	 * @var array
 	 */
-	private $createdRemoteUsers = [];
-
-	/**
-	 * @var array
-	 */
-	private $enabledApps = [];
-
-	/**
-	 * @var array
-	 */
-	private $disabledApps = [];
-
-	/**
-	 * @var array
-	 */
-	private $startingGroups = [];
-
-	/**
-	 * @var array
-	 */
-	private $createdRemoteGroups = [];
-
-	/**
-	 * @var array
-	 */
-	private $createdGroups = [];
-
-	/**
-	 * @var array
-	 */
-	private $userResponseFields = [
+	private array $createdRemoteUsers = [];
+	private array $enabledApps = [];
+	private array $disabledApps = [];
+	private array $startingGroups = [];
+	private array $createdRemoteGroups = [];
+	private array $createdGroups = [];
+	private array $userResponseFields = [
 		"enabled", "quota", "email", "displayname", "home", "two_factor_auth_enabled",
 		"quota definition", "quota free", "quota user", "quota total", "quota relative"
 	];
@@ -453,15 +425,13 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $skeletonType
-	 * @param boolean $skeleton
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws JsonException
 	 */
 	public function userHasBeenCreatedWithDefaultAttributes(
 		string $user,
-		string $skeletonType = "",
-		bool $skeleton = true
+		string $skeletonType = ""
 	):void {
 		if ($skeletonType === "") {
 			$skeletonType = $this->getSmallestSkeletonDirName();
@@ -471,14 +441,7 @@ trait Provisioning {
 
 		try {
 			$this->createUser(
-				$user,
-				null,
-				null,
-				null,
-				true,
-				null,
-				true,
-				$skeleton
+				$user
 			);
 			$this->userShouldExist($user);
 		} finally {
@@ -512,7 +475,7 @@ trait Provisioning {
 	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table):void {
 		$originalSkeletonPath = $this->setSkeletonDirByType($this->getSmallestSkeletonDirName());
 		try {
-			$this->createTheseUsers(true, true, true, $table);
+			$this->createTheseUsers(true, true, $table);
 		} finally {
 			// restore skeleton directory even if user creation failed
 			$this->setSkeletonDir($originalSkeletonPath);
@@ -596,7 +559,6 @@ trait Provisioning {
 	 * @throws \LdapException
 	 */
 	public function connectToLdap(array $suiteParameters):void {
-		$useSsl = false;
 		$occResult = SetupHelper::runOcc(
 			['ldap:show-config', 'LDAPTestId', '--output=json'],
 			$this->getStepLineRef()
@@ -635,14 +597,14 @@ trait Provisioning {
 			'port' => $this->ldapPort,
 			'password' => $this->ldapAdminPassword,
 			'bindRequiresDn' => true,
-			'useSsl' => $useSsl,
+			'useSsl' => false,
 			'baseDn' => $this->ldapBaseDN,
 			'username' => $this->ldapAdminUser
 		];
 		$this->ldap = new Ldap($options);
 		$this->ldap->bind();
 
-		$ldifFile = __DIR__ . (string)$suiteParameters['ldapInitialUserFilePath'];
+		$ldifFile = __DIR__ . $suiteParameters['ldapInitialUserFilePath'];
 		if (!$this->skipImportLdif) {
 			$this->importLdifFile($ldifFile);
 		}
@@ -745,7 +707,7 @@ trait Provisioning {
 		$userId = \str_replace('+', '\+', $setting["userid"]);
 		$newDN = 'uid=' . $userId . ',ou=' . $ou . ',' . $this->ldapBaseDN;
 
-		//pick a high number as uidnumber to make sure there are no conflicts with existing uidnumbers
+		//pick a high uid number to make sure there are no conflicts with existing uid numbers
 		$uidNumber = \count($this->ldapCreatedUsers) + 30000;
 		$entry = [];
 		$entry['cn'] = $userId;
@@ -903,6 +865,12 @@ trait Provisioning {
 				['ldap:delete-config', $configId],
 				$this->getStepLineRef()
 			);
+			// The LDAP config has been deleted, so any settings that were
+			// changed in that config do not need to be reverted.
+			// Remove the memory of those settings.
+			if (isset($this->oldLdapConfig[$configId])) {
+				unset($this->oldLdapConfig[$configId]);
+			}
 		}
 		foreach ($this->oldLdapConfig as $configId => $settings) {
 			foreach ($settings as $configKey => $configValue) {
@@ -921,7 +889,6 @@ trait Provisioning {
 	 * @param boolean $initialize
 	 * @param array|null $usersAttributes
 	 * @param string|null $method create the user with "ldap" or "api"
-	 * @param boolean $skeleton
 	 *
 	 * @return void
 	 * @throws Exception
@@ -930,8 +897,7 @@ trait Provisioning {
 	public function usersHaveBeenCreated(
 		bool $initialize,
 		?array $usersAttributes,
-		?string $method = null,
-		?bool $skeleton = true
+		?string $method = null
 	) {
 		$requests = [];
 		$client = HttpRequestHelper::createClient(
@@ -940,46 +906,27 @@ trait Provisioning {
 		);
 
 		$useLdap = false;
-		$useGraph = false;
 		if ($method === null) {
 			$useLdap = $this->isTestingWithLdap();
 		} elseif ($method === "ldap") {
 			$useLdap = true;
-		} elseif ($method === "graph") {
-			$useGraph = true;
 		}
 
-		foreach ($usersAttributes as $i => $userAttributes) {
+		foreach ($usersAttributes as $userAttributes) {
 			if ($useLdap) {
 				$this->createLdapUser($userAttributes);
 			} else {
 				$attributesToCreateUser['userid'] = $userAttributes['userid'];
 				$attributesToCreateUser['password'] = $userAttributes['password'];
 				$attributesToCreateUser['displayname'] = $userAttributes['displayName'];
-				if ($useGraph) {
-					$body = \TestHelpers\GraphHelper::prepareCreateUserPayload(
-						$attributesToCreateUser['userid'],
-						$attributesToCreateUser['password'],
-						$attributesToCreateUser['email'],
-						$attributesToCreateUser['displayname']
-					);
-					$request = \TestHelpers\GraphHelper::createRequest(
-						$this->getBaseUrl(),
-						$this->getStepLineRef(),
-						"POST",
-						'users',
-						$body,
-					);
-				} else {
-					// Create a OCS request for creating the user. The request is not sent to the server yet.
-					$request = OcsApiHelper::createOcsRequest(
-						$this->getBaseUrl(),
-						'POST',
-						"/cloud/users",
-						$this->stepLineRef,
-						$attributesToCreateUser
-					);
-				}
+				// Create an OCS request for creating the user. The request is not sent to the server yet.
+				$request = OcsApiHelper::createOcsRequest(
+					$this->getBaseUrl(),
+					'POST',
+					"/cloud/users",
+					$this->stepLineRef,
+					$attributesToCreateUser
+				);
 				// Add the request to the $requests array so that they can be sent in parallel.
 				$requests[] = $request;
 			}
@@ -991,32 +938,17 @@ trait Provisioning {
 			// Check all requests to inspect failures.
 			foreach ($results as $key => $e) {
 				if ($e instanceof ClientException) {
-					if ($useGraph) {
-						$responseBody = $this->getJsonDecodedResponse($e->getResponse());
-						$httpStatusCode = $e->getResponse()->getStatusCode();
-						$graphStatusCode = $responseBody['error']['code'];
-						$messageText = $responseBody['error']['message'];
-						$exceptionToThrow = new Exception(
-							__METHOD__ .
-							" Unexpected failure when creating the user '" .
-							$usersAttributes[$key]['userid'] . "'" .
-							"\nHTTP status $httpStatusCode " .
-							"\nGraph status $graphStatusCode " .
-							"\nError message $messageText"
-						);
-					} else {
-						$responseXml = $this->getResponseXml($e->getResponse(), __METHOD__);
-						$messageText = (string) $responseXml->xpath("/ocs/meta/message")[0];
-						$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
-						$httpStatusCode = $e->getResponse()->getStatusCode();
-						$reasonPhrase = $e->getResponse()->getReasonPhrase();
-						$exceptionToThrow = new Exception(
-							__METHOD__ . " Unexpected failure when creating the user '" .
-							$usersAttributes[$key]['userid'] . "': HTTP status $httpStatusCode " .
-							"HTTP reason $reasonPhrase OCS status $ocsStatusCode " .
-							"OCS message $messageText"
-						);
-					}
+					$responseXml = $this->getResponseXml($e->getResponse(), __METHOD__);
+					$messageText = (string) $responseXml->xpath("/ocs/meta/message")[0];
+					$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
+					$httpStatusCode = $e->getResponse()->getStatusCode();
+					$reasonPhrase = $e->getResponse()->getReasonPhrase();
+					$exceptionToThrow = new Exception(
+						__METHOD__ . " Unexpected failure when creating the user '" .
+						$usersAttributes[$key]['userid'] . "': HTTP status $httpStatusCode " .
+						"HTTP reason $reasonPhrase OCS status $ocsStatusCode " .
+						"OCS message $messageText"
+					);
 				}
 			}
 		}
@@ -1027,20 +959,11 @@ trait Provisioning {
 		$editData = [];
 		foreach ($usersAttributes as $userAttributes) {
 			$users[] = $userAttributes['userid'];
-			if ($useGraph) {
-				// for graph api, we need to save the user id to be able to add it in some group
-				// can be fetched with the "onPremisesSamAccountName" i.e. userid
-				$this->graphContext->adminHasRetrievedUserUsingTheGraphApi($userAttributes['userid']);
-				$userAttributes['id'] = $this->getJsonDecodedResponse()['id'];
-			} else {
-				$userAttributes['id'] = null;
-			}
 			$this->addUserToCreatedUsersList(
 				$userAttributes['userid'],
 				$userAttributes['password'],
 				$userAttributes['displayName'],
-				$userAttributes['email'],
-				$userAttributes['id']
+				$userAttributes['email']
 			);
 
 			if (isset($userAttributes['displayName'])) {
@@ -1110,22 +1033,19 @@ trait Provisioning {
 	 *
 	 * @param boolean $setDefaultAttributes
 	 * @param boolean $initialize
-	 * @param boolean $skeleton
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 * @throws GuzzleException
 	 */
-	public function createTheseUsers(bool $setDefaultAttributes, bool $initialize, bool $skeleton, TableNode $table):void {
+	public function createTheseUsers(bool $setDefaultAttributes, bool $initialize, TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ['username'], ['displayname', 'email', 'password']);
 		$table = $table->getColumnsHash();
 		$usersAttributes = $this->buildUsersAttributesArray($setDefaultAttributes, $table);
 		$this->usersHaveBeenCreated(
 			$initialize,
-			$usersAttributes,
-			null,
-			$skeleton
+			$usersAttributes
 		);
 		foreach ($usersAttributes as $expectedUser) {
 			$this->userShouldExist($expectedUser["userid"]);
@@ -1161,7 +1081,7 @@ trait Provisioning {
 		$setDefaultAttributes = $defaultAttributesText !== "";
 		$initialize = $doNotInitialize === "";
 		try {
-			$this->createTheseUsers($setDefaultAttributes, $initialize, true, $table);
+			$this->createTheseUsers($setDefaultAttributes, $initialize, $table);
 		} finally {
 			// The effective skeleton directory is the one when the user is initialized
 			// If we did not initialize the user on creation, then we need to leave
@@ -1231,7 +1151,7 @@ trait Provisioning {
 	 */
 	public function userEnablesOrDisablesApp(string $user, string $action, string $app):void {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps/$app";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/apps/$app";
 		if ($action === 'enables') {
 			$this->response = HttpRequestHelper::post(
 				$fullUrl,
@@ -1368,7 +1288,6 @@ trait Provisioning {
 			$password,
 			$displayname,
 			$email,
-			null,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
 	}
@@ -1403,7 +1322,6 @@ trait Provisioning {
 			$password,
 			null,
 			$email,
-			null,
 			$success
 		);
 	}
@@ -1451,7 +1369,6 @@ trait Provisioning {
 			$password,
 			null,
 			$email,
-			null,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
 	}
@@ -1477,7 +1394,7 @@ trait Provisioning {
 		$bodyTable = new TableNode(
 			[['userid', $user], ['password', $password], ['groups[]', $group]]
 		);
-		
+
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
@@ -1489,7 +1406,6 @@ trait Provisioning {
 			$password,
 			null,
 			$email,
-			null,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
 	}
@@ -1529,7 +1445,6 @@ trait Provisioning {
 			$password,
 			null,
 			$email,
-			null,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
 	}
@@ -1568,7 +1483,6 @@ trait Provisioning {
 			$password,
 			null,
 			$email,
-			null,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
 	}
@@ -1606,7 +1520,7 @@ trait Provisioning {
 	 * @Given the administrator has reset the password of user :username to :password
 	 *
 	 * @param string $username of the user whose password is reset
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
@@ -2200,7 +2114,7 @@ trait Provisioning {
 			$displayName
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
-		
+
 		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 	/**
@@ -2681,7 +2595,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userGetsAllTheMembersOfGroupUsingTheProvisioningApi(string $user, string $group):void {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group";
+		$fullUrl = $this->getBaseUrl() . "/ocs/v$this->ocsApiVersion.php/cloud/groups/$group";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -2696,7 +2610,7 @@ trait Provisioning {
 	 * @return ResponseInterface
 	 */
 	public function getAllGroups():ResponseInterface {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
+		$fullUrl = $this->getBaseUrl() . "/ocs/v$this->ocsApiVersion.php/cloud/groups";
 		return HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -2724,7 +2638,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function userTriesToGetAllTheGroupsUsingTheProvisioningApi(string $user):void {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
+		$fullUrl = $this->getBaseUrl() . "/ocs/v$this->ocsApiVersion.php/cloud/groups";
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
@@ -2758,7 +2672,7 @@ trait Provisioning {
 	 */
 	public function userGetsAllTheGroupsOfUser(string $user, string $otherUser):void {
 		$actualOtherUser = $this->getActualUsername($otherUser);
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/groups";
+		$fullUrl = $this->getBaseUrl() . "/ocs/v$this->ocsApiVersion.php/cloud/users/$actualOtherUser/groups";
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
@@ -2787,7 +2701,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function userGetsTheListOfAllUsersUsingTheProvisioningApi(string $user):void {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users";
+		$fullUrl = $this->getBaseUrl() . "/ocs/v$this->ocsApiVersion.php/cloud/users";
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
@@ -2809,14 +2723,13 @@ trait Provisioning {
 	 */
 	public function initializeUser(string $user, string $password):void {
 		$url = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$user";
 		HttpRequestHelper::get(
 			$url,
 			$this->getStepLineRef(),
 			$user,
 			$password
 		);
-		$this->lastUploadTime = \time();
 	}
 
 	/**
@@ -2852,8 +2765,7 @@ trait Provisioning {
 	 * @param string|null $password
 	 * @param string|null $displayName
 	 * @param string|null $email
-	 * @param string|null $userId only set for the users created using the Graph API
-	 * @param bool $shouldExist
+	 * @param bool|null $shouldExist
 	 *
 	 * @return void
 	 * @throws JsonException
@@ -2863,8 +2775,7 @@ trait Provisioning {
 		?string $password,
 		?string $displayName = null,
 		?string $email = null,
-		?string $userId = null,
-		bool $shouldExist = true
+		?bool $shouldExist = true
 	):void {
 		$user = $this->getActualUsername($user);
 		$normalizedUsername = $this->normalizeUsername($user);
@@ -2873,8 +2784,7 @@ trait Provisioning {
 			"displayname" => $displayName,
 			"email" => $email,
 			"shouldExist" => $shouldExist,
-			"actualUsername" => $user,
-			"id" => $userId
+			"actualUsername" => $user
 		];
 
 		if ($this->currentServer === 'LOCAL') {
@@ -2947,10 +2857,10 @@ trait Provisioning {
 	 * @param bool $initialize initialize the user skeleton files etc
 	 * @param string|null $method how to create the user api|occ, default api
 	 * @param bool $setDefault sets the missing values to some default
-	 * @param bool $skeleton
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws GuzzleException
+	 * @throws JsonException
 	 */
 	public function createUser(
 		?string $user,
@@ -2959,10 +2869,8 @@ trait Provisioning {
 		?string $email = null,
 		bool $initialize = true,
 		?string $method = null,
-		bool $setDefault = true,
-		bool $skeleton = true
+		bool $setDefault = true
 	):void {
-		$userId = null;
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
 		}
@@ -3020,24 +2928,13 @@ trait Provisioning {
 					$this->usersHaveBeenCreated(
 						$initialize,
 						$settings,
-						$method,
-						$skeleton
+						$method
 					);
 				} catch (LdapException $exception) {
 					throw new Exception(
-						__METHOD__ . " cannot create a LDAP user with provided data. Error: {$exception}"
+						__METHOD__ . " cannot create a LDAP user with provided data. Error: $exception"
 					);
 				}
-				break;
-			case "graph":
-				$this->graphContext->theAdminHasCreatedUser(
-					$user,
-					$password,
-					$email,
-					$displayName,
-				);
-				$newUser = $this->getJsonDecodedResponse();
-				$userId = $newUser['id'];
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -3045,7 +2942,7 @@ trait Provisioning {
 				);
 		}
 
-		$this->addUserToCreatedUsersList($user, $password, $displayName, $email, $userId);
+		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
 		if ($initialize) {
 			$this->initializeUser($user, $password);
 		}
@@ -3133,7 +3030,6 @@ trait Provisioning {
 	 */
 	public function userShouldBelongToGroup(string $user, string $group):void {
 		$user = $this->getActualUsername($user);
-		$respondedArray = [];
 		$this->theAdministratorGetsAllTheGroupsOfUser($user);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		\sort($respondedArray);
@@ -3464,15 +3360,9 @@ trait Provisioning {
 					);
 				} catch (LdapException $exception) {
 					throw new Exception(
-						"User " . $user . " cannot be added to " . $group . " . Error: {$exception}"
+						"User $user cannot be added to $group Error: $exception"
 					);
 				};
-				break;
-			case "graph":
-				$this->graphContext->adminHasAddedUserToGroupUsingTheGraphApi(
-					$user,
-					$group
-				);
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -3498,23 +3388,18 @@ trait Provisioning {
 	 * @param string $group
 	 * @param bool $shouldExist - true if the group should exist
 	 * @param bool $possibleToDelete - true if it is possible to delete the group
-	 * @param string|null $id - id of the group, only required for the groups created using the Graph API
 	 *
 	 * @return void
 	 */
 	public function addGroupToCreatedGroupsList(
 		string $group,
 		bool $shouldExist = true,
-		bool $possibleToDelete = true,
-		?string $id = null
+		bool $possibleToDelete = true
 	):void {
 		$groupData = [
 			"shouldExist" => $shouldExist,
 			"possibleToDelete" => $possibleToDelete
 		];
-		if ($id !== null) {
-			$groupData["id"] = $id;
-		}
 
 		if ($this->currentServer === 'LOCAL') {
 			$this->createdGroups[$group] = $groupData;
@@ -3684,7 +3569,6 @@ trait Provisioning {
 		$group = \trim($group);
 		$method = \trim(\strtolower($method));
 		$groupCanBeDeleted = false;
-		$groupId = null;
 		switch ($method) {
 			case "api":
 				$result = UserHelper::createGroup(
@@ -3721,14 +3605,9 @@ trait Provisioning {
 					$this->createLdapGroup($group);
 				} catch (LdapException $e) {
 					throw new Exception(
-						"could not create group '$group'. Error: {$e}"
+						"could not create group '$group'. Error: $e"
 					);
 				}
-				break;
-			case "graph":
-				$newGroup = $this->graphContext->adminHasCreatedGroupUsingTheGraphApi($group);
-				$groupCanBeDeleted = true;
-				$groupId = $newGroup["id"];
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -3736,7 +3615,7 @@ trait Provisioning {
 				);
 		}
 
-		$this->addGroupToCreatedGroupsList($group, true, $groupCanBeDeleted, $groupId);
+		$this->addGroupToCreatedGroupsList($group, true, $groupCanBeDeleted);
 	}
 
 	/**
@@ -4369,7 +4248,7 @@ trait Provisioning {
 		$actualSubadminUsername = $this->getActualUsername($otherUser);
 
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualSubadminUsername/subadmins";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$actualSubadminUsername/subadmins";
 		$body = ['groupid' => $group];
 		$this->response = HttpRequestHelper::post(
 			$fullUrl,
@@ -4390,7 +4269,7 @@ trait Provisioning {
 	 */
 	public function theAdministratorGetsAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi(string $user):void {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$user/subadmins";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -4412,7 +4291,7 @@ trait Provisioning {
 	public function userTriesToGetAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi(string $user, string $otherUser):void {
 		$actualOtherUser = $this->getActualUsername($otherUser);
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/subadmins";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$actualOtherUser/subadmins";
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
@@ -4471,7 +4350,7 @@ trait Provisioning {
 	 */
 	public function userGetsAllTheSubadminsOfGroupUsingTheProvisioningApi(string $user, string $group):void {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group/subadmins";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/groups/$group/subadmins";
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
@@ -4518,7 +4397,7 @@ trait Provisioning {
 	):void {
 		$actualOtherUser = $this->getActualUsername($otherUser);
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/subadmins";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$actualOtherUser/subadmins";
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::delete(
@@ -5023,9 +4902,7 @@ trait Provisioning {
 	public function getArrayOfUsersResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->users[0]->element;
-		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), true);
-		return $extractedElementsArray;
+		return \json_decode(\json_encode($listCheckedElements), true);
 	}
 
 	/**
@@ -5039,9 +4916,7 @@ trait Provisioning {
 	public function getArrayOfGroupsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->groups[0]->element;
-		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), true);
-		return $extractedElementsArray;
+		return \json_decode(\json_encode($listCheckedElements), true);
 	}
 
 	/**
@@ -5055,9 +4930,7 @@ trait Provisioning {
 	public function getArrayOfAppsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->apps[0]->element;
-		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), true);
-		return $extractedElementsArray;
+		return \json_decode(\json_encode($listCheckedElements), true);
 	}
 
 	/**
@@ -5071,9 +4944,7 @@ trait Provisioning {
 	public function getArrayOfSubadminsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->element;
-		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), true);
-		return $extractedElementsArray;
+		return \json_decode(\json_encode($listCheckedElements), true);
 	}
 
 	/**
@@ -5087,9 +4958,7 @@ trait Provisioning {
 	public function getArrayOfAppInfoResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0];
-		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), true);
-		return $extractedElementsArray;
+		return \json_decode(\json_encode($listCheckedElements), true);
 	}
 
 	/**
@@ -5185,7 +5054,7 @@ trait Provisioning {
 	public function userShouldBeDisabled(string $user):void {
 		$user = $this->getActualUsername($user);
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$user";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -5225,7 +5094,7 @@ trait Provisioning {
 	public function userShouldBeEnabled(string $user):void {
 		$user = $this->getActualUsername($user);
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$user";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -5277,8 +5146,7 @@ trait Provisioning {
 			"PUT",
 			"/cloud/users/$user",
 			$this->getStepLineRef(),
-			$body,
-			2
+			$body
 		);
 	}
 
@@ -5327,7 +5195,7 @@ trait Provisioning {
 	 */
 	public function getUserHome(string $user):string {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$user";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -5377,8 +5245,7 @@ trait Provisioning {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"GET",
-			"/cloud/users/$user",
-			null
+			"/cloud/users/$user"
 		);
 		$this->checkUserAttributes($body);
 	}
@@ -5472,11 +5339,11 @@ trait Provisioning {
 		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
-		foreach ($this->createdUsers as $user => $userData) {
+		foreach ($this->createdUsers as $userData) {
 			$this->deleteUser($userData['actualUsername']);
 		}
 		$this->usingServer('REMOTE');
-		foreach ($this->createdRemoteUsers as $remoteUser => $userData) {
+		foreach ($this->createdRemoteUsers as $userData) {
 			$this->deleteUser($userData['actualUsername']);
 		}
 		$this->usingServer($previousServer);
@@ -5573,7 +5440,7 @@ trait Provisioning {
 		$actualOtherUser = $this->getActualUsername($otherUser);
 
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/$action";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/users/$actualOtherUser/$action";
 		$this->response = HttpRequestHelper::put(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -5591,7 +5458,7 @@ trait Provisioning {
 	 */
 	public function getAllApps():array {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/apps";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -5609,7 +5476,7 @@ trait Provisioning {
 	 */
 	public function getEnabledApps():array {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=enabled";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/apps?filter=enabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -5627,7 +5494,7 @@ trait Provisioning {
 	 */
 	public function getDisabledApps():array {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=disabled";
+			. "/ocs/v$this->ocsApiVersion.php/cloud/apps?filter=disabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -5686,17 +5553,6 @@ trait Provisioning {
 	 */
 	private function getSmallestSkeletonDirName(): string {
 		return "empty";
-	}
-
-	/**
-	 * @return bool
-	 */
-	private function isEmptySkeleton(): bool {
-		$skeletonDir = \getenv("SKELETON_DIR");
-		if (($skeletonDir !== false) && (\basename($skeletonDir) === $this->getSmallestSkeletonDirName() . "Skeleton")) {
-			return true;
-		}
-		return false;
 	}
 
 	/**

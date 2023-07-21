@@ -33,11 +33,7 @@ require_once 'bootstrap.php';
  * Steps that relate to files_versions app
  */
 class FilesVersionsContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @param string $fileId
@@ -243,13 +239,13 @@ class FilesVersionsContext implements Context {
 		Assert::assertEquals(
 			$length,
 			(int) $xmlPart[$index],
-			"The content length of file {$path} with version {$index} for user {$user} was 
-			expected to be {$length} but the actual content length is {$xmlPart[$index]}"
+			"The content length of file $path with version $index for user $user was 
+			expected to be $length but the actual content length is $xmlPart[$index]"
 		);
 	}
 
 	/**
-	 * @Then /^as (?:users|user) "([^"]*)" the authors of the noncurrent versions of file "([^"]*)" should be:$/
+	 * @Then /^as (?:users|user) "([^"]*)" the authors of the non-current versions of file "([^"]*)" should be:$/
 	 *
 	 * @param string $users comma-separated list of usernames
 	 * @param string $filename
@@ -258,7 +254,7 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function asUsersAuthorsOfNoncurrentVersionsOfFileShouldBe(
+	public function asUsersAuthorsOfNonCurrentVersionsOfFileShouldBe(
 		string $users,
 		string $filename,
 		TableNode $table
@@ -317,7 +313,7 @@ class FilesVersionsContext implements Context {
 	}
 
 	/**
-	 * @Then /^the content of noncurrent version index "([^"]*)" of file "([^"]*)" for user "([^"]*)" should be "([^"]*)"$/
+	 * @Then /^the content of non-current version index "([^"]*)" of file "([^"]*)" for user "([^"]*)" should be "([^"]*)"$/
 	 *
 	 * @param string $index
 	 * @param string $path
@@ -327,7 +323,7 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theContentOfNoncurrentVersionIndexOfFileForUserShouldBe(
+	public function theContentOfNonCurrentVersionIndexOfFileForUserShouldBe(
 		string $index,
 		string $path,
 		string $user,
@@ -388,7 +384,7 @@ class FilesVersionsContext implements Context {
 
 	/**
 	 * returns the result parsed into an SimpleXMLElement
-	 * with an registered namespace with 'd' as prefix and 'DAV:' as namespace
+	 * with a registered namespace with 'd' as prefix and 'DAV:' as namespace
 	 *
 	 * @param string $user
 	 * @param string $fileId

@@ -70,11 +70,6 @@ class FedShareManager {
 	private $addressHandler;
 
 	/**
-	 * @var Permissions
-	 */
-	private $permissions;
-
-	/**
 	 * @var EventDispatcherInterface
 	 */
 	private $eventDispatcher;
@@ -88,7 +83,6 @@ class FedShareManager {
 	 * @param ActivityManager $activityManager
 	 * @param NotificationManager $notificationManager
 	 * @param AddressHandler $addressHandler
-	 * @param Permissions $permissions
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	public function __construct(
@@ -98,7 +92,6 @@ class FedShareManager {
 		ActivityManager $activityManager,
 		NotificationManager $notificationManager,
 		AddressHandler $addressHandler,
-		Permissions $permissions,
 		EventDispatcherInterface $eventDispatcher
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
@@ -107,7 +100,6 @@ class FedShareManager {
 		$this->activityManager = $activityManager;
 		$this->notificationManager = $notificationManager;
 		$this->addressHandler = $addressHandler;
-		$this->permissions = $permissions;
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
@@ -316,7 +308,7 @@ class FedShareManager {
 	 * @return void
 	 */
 	public function updateOcmPermissions(IShare $share, $ocmPermissions) {
-		$permissions = $this->permissions->toOcPermissions($ocmPermissions);
+		$permissions = Permissions::toOcPermissions($ocmPermissions);
 		$this->updatePermissions($share, $permissions);
 	}
 
@@ -328,8 +320,9 @@ class FedShareManager {
 	 *
 	 * @return void
 	 */
-	public function updatePermissions(IShare $share, $permissions) {
-		if ($share->getPermissions() !== $permissions) {
+	public function updatePermissions(IShare $share, int $permissions): void {
+		# permissions can only be reduced but not upgraded
+		if (!Permissions::isNewPermissionHigher($share->getPermissions(), $permissions)) {
 			$share->setPermissions($permissions);
 			$this->federatedShareProvider->update($share);
 		}

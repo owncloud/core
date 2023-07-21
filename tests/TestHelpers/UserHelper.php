@@ -23,6 +23,7 @@ namespace TestHelpers;
 
 use Exception;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -44,6 +45,7 @@ class UserHelper {
 	 * @param int|null $ocsApiVersion
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function editUser(
 		?string $baseUrl,
@@ -99,15 +101,12 @@ class UserHelper {
 			$path = "/cloud/users/" . $data['user'];
 			$body = ["key" => $data['key'], 'value' => $data["value"]];
 			// Create the OCS API requests and push them to an array.
-			\array_push(
-				$requests,
-				OcsApiHelper::createOcsRequest(
-					$baseUrl,
-					'PUT',
-					$path,
-					$xRequestId,
-					$body
-				)
+			$requests[] = OcsApiHelper::createOcsRequest(
+				$baseUrl,
+				'PUT',
+				$path,
+				$xRequestId,
+				$body
 			);
 		}
 		// Send the array of requests at once in parallel.
@@ -135,6 +134,7 @@ class UserHelper {
 	 * @param int|null $ocsApiVersion
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function getUser(
 		?string $baseUrl,
@@ -166,6 +166,7 @@ class UserHelper {
 	 * @param int|null $ocsApiVersion
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function deleteUser(
 		?string $baseUrl,
@@ -196,6 +197,7 @@ class UserHelper {
 	 * @param string|null $xRequestId
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function createGroup(
 		?string $baseUrl,
@@ -225,6 +227,7 @@ class UserHelper {
 	 * @param int|null $ocsApiVersion
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function deleteGroup(
 		?string $baseUrl,
@@ -258,6 +261,7 @@ class UserHelper {
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function addUserToGroup(
 		?string $baseUrl,
@@ -291,6 +295,7 @@ class UserHelper {
 	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function removeUserFromGroup(
 		?string $baseUrl,
@@ -322,6 +327,7 @@ class UserHelper {
 	 * @param string|null $search
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function getGroups(
 		?string $baseUrl,
@@ -349,7 +355,7 @@ class UserHelper {
 	 * @param string|null $search
 	 *
 	 * @return string[]
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getGroupsAsArray(
 		?string $baseUrl,

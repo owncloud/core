@@ -1,0 +1,9 @@
+Bugfix: Exit with success when signing-key has been set
+
+The "occ security:sign-key:create" command exited with status 1 even when the
+signing key was successfully created. This has been corrected. The command
+now exits with status zero (0) when the command succeeded.
+
+For all occ commands, zero (0) is success, any other value indicates a problem.
+
+https://github.com/owncloud/core/pull/40794

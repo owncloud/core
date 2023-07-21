@@ -23,11 +23,9 @@
 namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Report;
-use OC\Files\View;
 use OC\Helper\UserTypeHelper;
 use OCP\IUserManager;
-use OCP\User\Constants;
-use Symfony\Component\Console\Application;
+use OCP\IUser;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
@@ -43,101 +41,158 @@ class ReportTest extends TestCase {
 	/** @var IUserManager */
 	private $userManager;
 
+	/** @var UserTypeHelper */
+	private $userTypeHelper;
+
+	private $isObjectStorage = false;
+
 	protected function setUp(): void {
 		parent::setUp();
-		$userTypeHelper = new UserTypeHelper();
+		$this->userManager = $this->createMock(IUserManager::class);
+		$this->userTypeHelper = $this->createMock(UserTypeHelper::class);
 
-		$userManager = \OC::$server->getUserManager();
-		$this->userManager = $userManager;
-
-		$command = new Report($userManager, $userTypeHelper);
-		$command->setApplication(new Application());
+		$command = new Report($this->userManager, $this->userTypeHelper);
 		$this->commandTester = new CommandTester($command);
-
-		$view = new View('');
-		list($storage) = $view->resolvePath('');
-		/** @var $storage Storage */
-
-		/**
-		 * Create some folders in the 'datadirectory'
-		 * which should not be counted as user directories
-		 */
-		foreach (Constants::DIRECTORIES_THAT_ARE_NOT_USERS as $nonUserFolder) {
-			$storage->mkdir($nonUserFolder);
-		}
-
-		// Login to create user directory
-		$this->loginAsUser('admin');
 	}
 
 	protected function tearDown(): void {
 		parent::tearDown();
-		$this->restoreService('AllConfig');
-		$this->restoreService('AppManager');
-	}
-
-	public function objectStorageProvider() {
-		return [
-			[true],
-			[false],
-		];
-	}
-
-	/**
-	 * @param bool $objectStorageUsed
-	 * @dataProvider objectStorageProvider
-	 * @return void
-	 */
-	public function testCommandInput($objectStorageUsed) {
-		if ($objectStorageUsed) {
-			$this->overwriteConfigWithObjectStorage();
-			$this->overwriteAppManagerWithObjectStorage();
+		if ($this->isObjectStorage) {
+			$this->restoreService('AllConfig');
+			$this->restoreService('AppManager');
+			$this->isObjectStorage = false;
 		}
+	}
+
+	private function getAllUsers() {
+		$uids = [
+			'user001' => ['home' => '/tmp'],
+			'user002' => ['home' => '/tmp'],
+			'user003' => ['home' => '/tmp'],
+			'user004' => ['home' => '/tmp'],
+			'user005' => ['home' => '/tmp'],
+			'user006' => ['home' => '/tmp'],
+		];
+
+		$users = [];
+		foreach ($uids as $uid => $data) {
+			$user = $this->createMock(IUser::class);
+			$user->method('getUID')->willReturn($uid);
+			if ($this->isObjectStorage) {
+				$user->method('getHome')->willReturn('/some/missing/home/dir');
+			} else {
+				// there is a "is_dir" check, so the directory must exists in the FS
+				// we'll use the "/tmp" directory
+				$user->method('getHome')->willReturn($data['home']);
+			}
+			$users[] = $user;
+		}
+		return $users;
+	}
+
+	public function testCommandInputObjectStorage() {
+		$this->prepareForObjectStorage();
+
+		$this->userTypeHelper->method('isGuestUser')
+			->will($this->returnValueMap([
+				['user001', false],
+				['user002', false],
+				['user003', false],
+				['user004', false],
+				['user005', true],
+				['user006', true],
+			]));
+
+		$this->userManager->method('countUsers')->willReturn([
+			'OC\User\Database' => 2,
+			'Custom\Class' => 4,
+		]);
+		$this->userManager->method('callForSeenUsers')
+			->will($this->returnCallback(function ($seenUserCallbck) {
+				$allUsers = $this->getAllUsers();
+				foreach ($allUsers as $user) {
+					$seenUserCallbck($user);
+				}
+			}));
+		$this->userManager->method('callForAllUsers')
+			->will($this->returnCallback(function ($allUserCallback) {
+				$allUsers = $this->getAllUsers();
+				foreach ($allUsers as $user) {
+					$allUserCallback($user);
+				}
+			}));
 
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 
-		$view = new View('');
-		$storage = $view->getMount('/')->getStorage();
-		$isLocalStorage = $storage->isLocal();
-
-		if ($isLocalStorage) {
-			$expectedOutput = <<<EOS
+		$expectedOutput = <<<EOS
 +------------------+---+
 | User Report      |   |
 +------------------+---+
-| OC\User\Database | 1 |
+| OC\User\Database | 2 |
+| Custom\Class     | 4 |
 |                  |   |
-| guest users      | 0 |
+| guest users      | 2 |
 |                  |   |
-| total users      | 1 |
-|                  |   |
-| user directories | 1 |
-+------------------+---+
-
-EOS;
-		} else {
-			$expectedOutput = <<<EOS
-+------------------+---+
-| User Report      |   |
-+------------------+---+
-| OC\User\Database | 1 |
-|                  |   |
-| guest users      | 0 |
-|                  |   |
-| total users      | 1 |
+| total users      | 6 |
 |                  |   |
 | user directories | 0 |
 +------------------+---+
 
 EOS;
-		}
-
+		$this->assertStringContainsString('We detected that the instance is running on a S3 primary object storage, user directories count might not be accurate', $output);
 		$this->assertStringContainsString($expectedOutput, $output);
+	}
 
-		if ($objectStorageUsed) {
-			$this->assertStringContainsString('We detected that the instance is running on a S3 primary object storage, user directories count might not be accurate', $output);
-		}
+	public function testCommandInput() {
+		$this->userTypeHelper->method('isGuestUser')
+			->will($this->returnValueMap([
+				['user001', false],
+				['user002', false],
+				['user003', false],
+				['user004', false],
+				['user005', true],
+				['user006', true],
+			]));
+
+		$this->userManager->method('countUsers')->willReturn([
+			'OC\User\Database' => 2,
+			'Custom\Class' => 4,
+		]);
+		$this->userManager->method('callForSeenUsers')
+			->will($this->returnCallback(function ($seenUserCallbck) {
+				$allUsers = $this->getAllUsers();
+				foreach ($allUsers as $user) {
+					$seenUserCallbck($user);
+				}
+			}));
+		$this->userManager->method('callForAllUsers')
+			->will($this->returnCallback(function ($allUserCallback) {
+				$allUsers = $this->getAllUsers();
+				foreach ($allUsers as $user) {
+					$allUserCallback($user);
+				}
+			}));
+
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+
+		$expectedOutput = <<<EOS
++------------------+---+
+| User Report      |   |
++------------------+---+
+| OC\User\Database | 2 |
+| Custom\Class     | 4 |
+|                  |   |
+| guest users      | 2 |
+|                  |   |
+| total users      | 6 |
+|                  |   |
+| user directories | 6 |
++------------------+---+
+
+EOS;
+		$this->assertStringContainsString($expectedOutput, $output);
 	}
 
 	private function overwriteConfigWithObjectStorage() {
@@ -156,5 +211,11 @@ EOS;
 			->willReturn(true);
 
 		$this->overwriteService('AppManager', $config);
+	}
+
+	private function prepareForObjectStorage() {
+		$this->overwriteConfigWithObjectStorage();
+		$this->overwriteAppManagerWithObjectStorage();
+		$this->isObjectStorage = true;
 	}
 }

@@ -49,7 +49,7 @@ class Cleanup extends Base {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$all = $input->hasOption('all');
 		$chunk_size = $input->getArgument('chunk_size');
 		$chunk_size_valid = false;

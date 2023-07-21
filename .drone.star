@@ -1,12 +1,10 @@
 ATMOZ_SFTP = "atmoz/sftp"
-DRONE_CLI_ALPINE = "drone/cli:alpine"
 INBUCKET_INBUCKET = "inbucket/inbucket"
 MINIO_MC_RELEASE_2020_VERSION = "minio/mc:RELEASE.2020-12-10T01-26-17Z"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
 OC_CI_CEPH = "owncloudci/ceph:tag-build-master-jewel-ubuntu-16.04"
 OC_CI_CORE_NODEJS = "owncloudci/core:nodejs14"
-OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS = "owncloudci/drone-cancel-previous-builds"
 OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
 OC_CI_NODEJS = "owncloudci/nodejs:%s"
 OC_CI_ORACLE_XE = "owncloudci/oracle-xe:latest"
@@ -26,12 +24,27 @@ POTTAVA_PROXY = "pottava/proxy"
 SELENIUM_STANDALONE_CHROME_DEBUG = "selenium/standalone-chrome-debug:3.141.59-oxygen"
 SELENIUM_STANDALONE_FIREFOX_DEBUG = "selenium/standalone-firefox-debug:3.8.1"
 SONARSOURCE_SONAR_SCANNER_CLI = "sonarsource/sonar-scanner-cli"
-THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 WEBHIPPIE_REDIS = "webhippie/redis:latest"
 
 DEFAULT_PHP_VERSION = "7.4"
 DEFAULT_NODEJS_VERSION = "14"
+
+# minio mc environment variables
+MINIO_MC_ENV = {
+    "CACHE_BUCKET": {
+        "from_secret": "cache_s3_bucket",
+    },
+    "MC_HOST": {
+        "from_secret": "cache_s3_server",
+    },
+    "AWS_ACCESS_KEY_ID": {
+        "from_secret": "cache_s3_access_key",
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+        "from_secret": "cache_s3_secret_key",
+    },
+}
 
 dir = {
     "base": "/drone",
@@ -44,7 +57,7 @@ dir = {
 config = {
     "rocketchat": {
         "channel": "server",
-        "from_secret": "public_rocketchat",
+        "from_secret": "rocketchat_talk_webhook",
     },
     "branches": [
         "master",
@@ -72,11 +85,12 @@ config = {
                 "mariadb:10.6",
                 "mariadb:10.7",
                 "mariadb:10.8",
+                "mariadb:10.11",
                 "mysql:5.5",
                 "mysql:5.7",
                 "mysql:8.0",
                 "postgres:9.4",
-                "postgres:10.20",
+                "postgres:10.21",
             ],
         },
         "slowDatabases": {
@@ -89,6 +103,18 @@ config = {
             "coverage": False,
             "databases": [
                 "oracle",
+            ],
+        },
+        "ubuntu22": {
+            "phpVersions": [
+                "7.4-ubuntu22.04",
+            ],
+            # These pipelines are run just to help avoid any obscure regression
+            # on Ubuntu 22.04. We do not need coverage for this.
+            "coverage": False,
+            "databases": [
+                "sqlite",
+                "mariadb:10.6",
             ],
         },
         "external-samba": {
@@ -281,6 +307,10 @@ config = {
             "testingRemoteSystem": False,
         },
         "cliEncryption": {
+            "phpVersions": [
+                DEFAULT_PHP_VERSION,
+                "7.4-ubuntu22.04",
+            ],
             "suites": [
                 "cliEncryption",
             ],
@@ -315,7 +345,7 @@ config = {
             "dbServices": [
                 "sqlite",
                 "mysql:8.0",
-                "postgres:10.20",
+                "postgres:10.21",
             ],
         },
         "cliExternalStorage": {
@@ -459,6 +489,18 @@ config = {
             "runAllSuites": True,
             "numberOfParts": 8,
         },
+        "apiUbuntu22": {
+            "phpVersions": [
+                "7.4-ubuntu22.04",
+            ],
+            "suites": {
+                "apiUbuntu22": "apiUbuntu22",
+            },
+            "useHttps": False,
+            "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
+            "runAllSuites": True,
+            "numberOfParts": 8,
+        },
         "apiOnSqlite": {
             "suites": {
                 "apiOnSqlite": "apiOnSqlite",
@@ -513,7 +555,7 @@ def initialPipelines(ctx):
     return dependencies(ctx) + checkStarlark()
 
 def beforePipelines(ctx):
-    return codestyle(ctx) + changelog(ctx) + cancelPreviousBuilds() + phpstan(ctx) + phan(ctx)
+    return codestyle(ctx) + changelog(ctx) + phpstan(ctx) + phan(ctx)
 
 def coveragePipelines(ctx):
     # All unit test pipelines that have coverage or other test analysis reported
@@ -794,31 +836,6 @@ def changelog(ctx):
     pipelines.append(result)
 
     return pipelines
-
-def cancelPreviousBuilds():
-    return [{
-        "kind": "pipeline",
-        "type": "docker",
-        "name": "cancel-previous-builds",
-        "clone": {
-            "disable": True,
-        },
-        "steps": [{
-            "name": "cancel-previous-builds",
-            "image": OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS,
-            "settings": {
-                "DRONE_TOKEN": {
-                    "from_secret": "drone_token",
-                },
-            },
-        }],
-        "depends_on": [],
-        "trigger": {
-            "ref": [
-                "refs/pull/**",
-            ],
-        },
-    }]
 
 def phpstan(ctx):
     pipelines = []
@@ -1306,7 +1323,7 @@ def javascript(ctx, withCoverage):
                 "image": PLUGINS_S3,
                 "settings": {
                     "endpoint": {
-                        "from_secret": "cache_s3_endpoint",
+                        "from_secret": "cache_s3_server",
                     },
                     "bucket": "cache",
                     "source": "tests/output/coverage/lcov.info",
@@ -1349,11 +1366,12 @@ def phpTests(ctx, testType, withCoverage):
             "mariadb:10.6",
             "mariadb:10.7",
             "mariadb:10.8",
+            "mariadb:10.11",
             "mysql:5.5",
             "mysql:5.7",
             "mysql:8.0",
             "postgres:9.4",
-            "postgres:10.20",
+            "postgres:10.21",
         ],
         "coverage": True,
         "includeKeyInMatrixName": False,
@@ -1381,11 +1399,14 @@ def phpTests(ctx, testType, withCoverage):
             "mariadb:10.6",
             "mariadb:10.7",
             "mariadb:10.8",
+            "mariadb:10.9",
+            "mariadb:10.10",
+            "mariadb:10.11",
             "mysql:5.5",
             "mysql:5.7",
             "mysql:8.0",
             "postgres:9.4",
-            "postgres:10.20",
+            "postgres:10.21",
             "oracle",
         ],
         "coverage": True,
@@ -1446,18 +1467,15 @@ def phpTests(ctx, testType, withCoverage):
             else:
                 command = "unknown tbd"
 
-            # Get the first 3 characters of the PHP version (7.4 or 8.0 etc)
-            # And use that for constructing the pipeline name
-            # That helps shorten pipeline names when using owncloud-ci images
-            # that have longer names like 7.4-ubuntu20.04
-            phpMinorVersion = phpVersion[0:3]
+            # Shorten PHP docker tags that have longer names like 7.4-ubuntu22.04
+            phpVersionString = phpVersion.replace("-ubuntu", "-u")
 
             for db in params["databases"]:
                 for externalType in params["externalTypes"]:
                     keyString = "-" + category if params["includeKeyInMatrixName"] else ""
                     filesExternalType = externalType if externalType != "none" else ""
                     externalNameString = "-" + externalType if externalType != "none" else ""
-                    name = "%s%s-php%s-%s%s" % (testType, keyString, phpMinorVersion, getShortDbNameAndVersion(db), externalNameString)
+                    name = "%s%s-php%s-%s%s" % (testType, keyString, phpVersionString, getShortDbNameAndVersion(db), externalNameString)
                     maxLength = 50
                     nameLength = len(name)
                     if nameLength > maxLength:
@@ -1571,7 +1589,7 @@ def phpTests(ctx, testType, withCoverage):
                             "image": PLUGINS_S3,
                             "settings": {
                                 "endpoint": {
-                                    "from_secret": "cache_s3_endpoint",
+                                    "from_secret": "cache_s3_server",
                                 },
                                 "bucket": "cache",
                                 "source": "tests/output/coverage/clover-%s.xml" % (name),
@@ -1592,7 +1610,7 @@ def phpTests(ctx, testType, withCoverage):
                                 "image": PLUGINS_S3,
                                 "settings": {
                                     "endpoint": {
-                                        "from_secret": "cache_s3_endpoint",
+                                        "from_secret": "cache_s3_server",
                                     },
                                     "bucket": "cache",
                                     "source": "tests/output/coverage/clover-%s-%s.xml" % (name, externalType),
@@ -1662,7 +1680,6 @@ def acceptance(ctx):
         "skipExceptParts": [],
         "testAgainstCoreTarball": False,
         "coreTarball": "daily-master-qa",
-        "earlyFail": True,
         "selUserNeeded": False,
         "dbServices": [],
     }
@@ -1703,9 +1720,6 @@ def acceptance(ctx):
             if params["skip"]:
                 continue
 
-            if ("full-ci" in ctx.build.title.lower()):
-                params["earlyFail"] = False
-
             if isAPI or isCLI:
                 params["browsers"] = [""]
 
@@ -1726,11 +1740,8 @@ def acceptance(ctx):
             for federatedServerVersion in params["federatedServerVersions"]:
                 for browser in params["browsers"]:
                     for phpVersion in params["phpVersions"]:
-                        # Get the first 3 characters of the PHP version (7.4 or 8.0 etc)
-                        # And use that for constructing the pipeline name
-                        # That helps shorten pipeline names when using owncloud-ci images
-                        # that have longer names like 7.4-ubuntu20.04
-                        phpMinorVersion = phpVersion[0:3]
+                        # Shorten PHP docker tags that have longer names like 7.4-ubuntu22.04
+                        phpVersionString = phpVersion.replace("-ubuntu", "-u")
                         for db in params["databases"]:
                             for runPart in range(1, params["numberOfParts"] + 1):
                                 debugPartsEnabled = (len(params["skipExceptParts"]) != 0)
@@ -1752,7 +1763,7 @@ def acceptance(ctx):
                                     keyString = "-" + category if params["includeKeyInMatrixName"] else ""
                                     partString = "" if params["numberOfParts"] == 1 else "-%d-%d" % (params["numberOfParts"], runPart)
                                     federatedServerVersionString = "-" + federatedServerVersion.replace("daily-", "").replace("-qa", "") if (federatedServerVersion != "") else ""
-                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpMinorVersion)
+                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersionString)
                                     maxLength = 50
                                     nameLength = len(name)
                                     if nameLength > maxLength:
@@ -1880,7 +1891,7 @@ def acceptance(ctx):
                                                          "path": "%s/downloads" % dir["server"],
                                                      }],
                                                  }),
-                                             ] + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
+                                             ],
                                     "services": dbServices +
                                                 browserService(browser) +
                                                 emailService(params["emailNeeded"]) +
@@ -1961,14 +1972,11 @@ def sonarAnalysis(ctx, phpVersion = DEFAULT_PHP_VERSION):
                      {
                          "name": "sync-from-cache",
                          "image": MINIO_MC_RELEASE_2020_VERSION,
-                         "environment": {
-                             "MC_HOST_cache": {
-                                 "from_secret": "cache_s3_connection_url",
-                             },
-                         },
+                         "environment": MINIO_MC_ENV,
                          "commands": [
                              "mkdir -p results",
-                             "mc mirror cache/cache/%s/%s/coverage results/" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
+                             "mc alias set cache $MC_HOST $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY",
+                             "mc mirror cache/$CACHE_BUCKET/%s/%s/coverage results/" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
                          ],
                      },
                      {
@@ -1995,13 +2003,10 @@ def sonarAnalysis(ctx, phpVersion = DEFAULT_PHP_VERSION):
                      {
                          "name": "purge-cache",
                          "image": MINIO_MC_RELEASE_2020_VERSION,
-                         "environment": {
-                             "MC_HOST_cache": {
-                                 "from_secret": "cache_s3_connection_url",
-                             },
-                         },
+                         "environment": MINIO_MC_ENV,
                          "commands": [
-                             "mc rm --recursive --force cache/cache/%s/%s" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
+                             "mc alias set cache $MC_HOST $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY",
+                             "mc rm --recursive --force cache/$CACHE_BUCKET/%s/%s" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
                          ],
                      },
                  ],
@@ -2056,60 +2061,6 @@ def notify():
         result["trigger"]["ref"].append("refs/heads/%s" % branch)
 
     return result
-
-def stopBuild(earlyFail):
-    if (earlyFail):
-        return [{
-            "name": "stop-build",
-            "image": DRONE_CLI_ALPINE,
-            "environment": {
-                "DRONE_SERVER": "https://drone.owncloud.com",
-                "DRONE_TOKEN": {
-                    "from_secret": "drone_token",
-                },
-            },
-            "commands": [
-                "drone build stop owncloud/core ${DRONE_BUILD_NUMBER}",
-            ],
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
-
-    else:
-        return []
-
-def githubComment(earlyFail):
-    if (earlyFail):
-        return [{
-            "name": "github-comment",
-            "image": THEGEEKLAB_DRONE_GITHUB_COMMENT,
-            "pull": "if-not-exists",
-            "settings": {
-                "message": ":boom: Acceptance tests pipeline <strong>${DRONE_STAGE_NAME}</strong> failed. The build has been cancelled.\\n\\n${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}",
-                "key": "pr-${DRONE_PULL_REQUEST}",
-                "update": "true",
-                "api_key": {
-                    "from_secret": "github_token",
-                },
-            },
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
-
-    else:
-        return []
 
 def databaseService(db):
     dbName = getDbName(db)
@@ -2355,7 +2306,7 @@ def owncloudService(phpVersion, name, pathOfServerUnderTest, ssl):
     }]
 
 def getShortDbNameAndVersion(db):
-    return "%s%s" % (getDbType(db), getDbVersion(db))
+    return "%s%s" % (getDbShortName(db), getDbVersion(db))
 
 def getDbName(db):
     return db.partition(":")[0]
@@ -2403,6 +2354,19 @@ def getDbType(db):
 
     return dbName
 
+def getDbShortName(db):
+    dbName = getDbName(db)
+    if dbName == "postgres":
+        return "pgsql"
+
+    if dbName == "oracle":
+        return "oci"
+
+    if dbName == "mariadb":
+        return "maria"
+
+    return dbName
+
 def cacheRestore():
     return [{
         "name": "cache-restore",
@@ -2412,7 +2376,7 @@ def cacheRestore():
                 "from_secret": "cache_s3_access_key",
             },
             "endpoint": {
-                "from_secret": "cache_s3_endpoint",
+                "from_secret": "cache_s3_server",
             },
             "restore": True,
             "secret_key": {
@@ -2455,7 +2419,7 @@ def cacheRebuildOnEventPush():
                 "from_secret": "cache_s3_access_key",
             },
             "endpoint": {
-                "from_secret": "cache_s3_endpoint",
+                "from_secret": "cache_s3_server",
             },
             "mount": [
                 ".cache",
@@ -2485,7 +2449,7 @@ def cacheFlushOnEventPush():
                 "from_secret": "cache_s3_access_key",
             },
             "endpoint": {
-                "from_secret": "cache_s3_endpoint",
+                "from_secret": "cache_s3_server",
             },
             "flush": True,
             "flush_age": "14",

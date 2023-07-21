@@ -21,6 +21,9 @@
 	</background-jobs>
 	<commands>
 		<command>OCA\Federation\Command\SyncFederationAddressBooks</command>
+		<command>OCA\Federation\Command\TrustedServerAdd</command>
+		<command>OCA\Federation\Command\TrustedServerList</command>
+		<command>OCA\Federation\Command\TrustedServerRemove</command>
 	</commands>
 	<settings>
 		<admin>OCA\Federation\Panels\Admin</admin>

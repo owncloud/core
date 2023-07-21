@@ -32,11 +32,7 @@ require_once 'bootstrap.php';
  * Context for steps associated with the user logged in to the WebUI
  */
 class WebUIUserContext extends RawMinkContext implements Context {
-	/**
-	 *
-	 * @var OwncloudPage
-	 */
-	private $owncloudPage;
+	private OwncloudPage $owncloudPage;
 
 	/**
 	 * WebUIUserContext constructor.

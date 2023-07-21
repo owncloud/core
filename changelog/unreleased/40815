@@ -1,0 +1,9 @@
+Bugfix: Always use json for federation post and get to exchange tokens
+
+After update of guzzle, it was no longer possible to request format of response to be json when adding in query parameter. One of OCSAuthAPIController fed instances was receiving requests without a hint that JSON needs to be used, and returned XML. On the other hand, OCSAuthAPIController expects only JSON for exchange, and thus failed to parse the message.
+Now the exchange is correctly done. 
+
+WARNING: the patch/fix needs to be applied on all federated severs that are not yet "paired" and have the issue with guzzle library. Otherwise pairing will not work.
+
+https://github.com/owncloud/core/pull/40815
+https://github.com/owncloud/enterprise/issues/5676

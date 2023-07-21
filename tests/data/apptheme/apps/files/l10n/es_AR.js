@@ -57,6 +57,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s eliminó %1$s",
     "Upload (max. %s)" : "Subir (máx. %s)",
     "Settings" : "Configuración",
+    "Show hidden files" : "Mostrar archivos ocultos",
     "WebDAV" : "WebDAV",
     "No entries found in this folder" : "No se encontraron entradas en esta carpeta",
     "Select all" : "Seleccionar todos",

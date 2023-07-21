@@ -53,7 +53,7 @@ class Inactive extends Base {
 		parent::configure();
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$days = $input->getArgument('days');
 		if ((!\is_int($days) && !\ctype_digit($days)) || $days < 1) {
 			throw new InvalidArgumentException('Days must be integer and above zero');

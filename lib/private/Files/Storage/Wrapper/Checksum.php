@@ -64,7 +64,7 @@ class Checksum extends Wrapper {
 		$requirement = $this->getChecksumRequirement($path, $mode);
 
 		if ($requirement === self::PATH_NEW_OR_UPDATED) {
-			return \OC\Files\Stream\Checksum::wrap($stream, $path);
+			return \OC\Files\Stream\Checksum::wrap($stream, $path, $mode);
 		}
 
 		// If file is without checksum we save the path and create
@@ -73,7 +73,7 @@ class Checksum extends Wrapper {
 		// the checksum is then saved to oc_filecache for subsequent
 		// retrieval (see onClose())
 		if ($requirement == self::PATH_IN_CACHE_WITHOUT_CHECKSUM) {
-			$checksumStream = \OC\Files\Stream\Checksum::wrap($stream, $path);
+			$checksumStream = \OC\Files\Stream\Checksum::wrap($stream, $path, $mode);
 			return CallbackWrapper::wrap(
 				$checksumStream,
 				null,
@@ -167,7 +167,7 @@ class Checksum extends Wrapper {
 	/**
 	 * check if the file metadata should not be fetched
 	 * NOTE: files with a '.part' extension are ignored as well!
-	 *       prevents unfinished put requests to fetch metadata which does not exists
+	 *       prevents unfinished put requests to fetch metadata which does not exist
 	 *
 	 * @param string $file
 	 * @return boolean
@@ -187,7 +187,7 @@ class Checksum extends Wrapper {
 	 */
 	public function file_put_contents($path, $data) {
 		$memoryStream = \fopen('php://memory', 'r+');
-		$checksumStream = \OC\Files\Stream\Checksum::wrap($memoryStream, $path);
+		$checksumStream = \OC\Files\Stream\Checksum::wrap($memoryStream, $path, "wb");
 
 		\fwrite($checksumStream, $data);
 		\fclose($checksumStream);

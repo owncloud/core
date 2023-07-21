@@ -1,0 +1,7 @@
+Bugfix: Fix query used to delete thumbnails
+
+Fixed query that detects unused thumbnails to prevent unnecessary
+deletes and potential recreations.
+
+https://github.com/owncloud/core/issues/40800
+https://github.com/owncloud/core/pull/40801

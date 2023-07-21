@@ -79,9 +79,9 @@ class PollIncomingShares extends Command {
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 *
-	 * @return int|null|void
+	 * @return int
 	 */
-	public function execute(InputInterface $input, OutputInterface $output) {
+	public function execute(InputInterface $input, OutputInterface $output): int {
 		$output->writeln("WARNING: incoming-shares:poll has been deprecated and replaced by periodic external shares cronjob. Please check Federated Cloud Sharing settings and documentation.");
 		if ($this->externalMountProvider === null) {
 			$output->writeln("Polling is not possible when files_sharing app is disabled. Please enable it with 'occ app:enable files_sharing'");
@@ -134,6 +134,7 @@ class PollIncomingShares extends Command {
 			}
 		}
 		$cursor->closeCursor();
+		return 0;
 	}
 
 	/**

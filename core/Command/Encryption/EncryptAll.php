@@ -107,7 +107,7 @@ class EncryptAll extends Command {
 		);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if ($this->encryptionManager->isEnabled() === false) {
 			throw new \Exception('Server side encryption is not enabled');
 		}

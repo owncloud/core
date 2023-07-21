@@ -69,11 +69,16 @@ class JWT
      * Decodes a JWT string into a PHP object.
      *
      * @param string                 $jwt            The JWT
-     * @param Key|array<string,Key> $keyOrKeyArray  The Key or associative array of key IDs (kid) to Key objects.
-     *                                               If the algorithm used is asymmetric, this is the public key
-     *                                               Each Key object contains an algorithm and matching key.
-     *                                               Supported algorithms are 'ES384','ES256', 'HS256', 'HS384',
-     *                                               'HS512', 'RS256', 'RS384', and 'RS512'
+     * @param Key|ArrayAccess<string,Key>|array<string,Key> $keyOrKeyArray  The Key or associative array of key IDs
+     *                                                                      (kid) to Key objects.
+     *                                                                      If the algorithm used is asymmetric, this is
+     *                                                                      the public key.
+     *                                                                      Each Key object contains an algorithm and
+     *                                                                      matching key.
+     *                                                                      Supported algorithms are 'ES384','ES256',
+     *                                                                      'HS256', 'HS384', 'HS512', 'RS256', 'RS384'
+     *                                                                      and 'RS512'.
+     * @param stdClass               $headers                               Optional. Populates stdClass with headers.
      *
      * @return stdClass The JWT's payload as a PHP object
      *
@@ -90,7 +95,8 @@ class JWT
      */
     public static function decode(
         string $jwt,
-        $keyOrKeyArray
+        $keyOrKeyArray,
+        stdClass &$headers = null
     ): stdClass {
         // Validate JWT
         $timestamp = \is_null(static::$timestamp) ? \time() : static::$timestamp;
@@ -106,6 +112,9 @@ class JWT
         $headerRaw = static::urlsafeB64Decode($headb64);
         if (null === ($header = static::jsonDecode($headerRaw))) {
             throw new UnexpectedValueException('Invalid header encoding');
+        }
+        if ($headers !== null) {
+            $headers = $header;
         }
         $payloadRaw = static::urlsafeB64Decode($bodyb64);
         if (null === ($payload = static::jsonDecode($payloadRaw))) {
@@ -152,7 +161,7 @@ class JWT
         // Check that this token has been created before 'now'. This prevents
         // using tokens that have been created for later use (and haven't
         // correctly used the nbf claim).
-        if (isset($payload->iat) && $payload->iat > ($timestamp + static::$leeway)) {
+        if (!isset($payload->nbf) && isset($payload->iat) && $payload->iat > ($timestamp + static::$leeway)) {
             throw new BeforeValidException(
                 'Cannot handle token prior to ' . \date(DateTime::ISO8601, $payload->iat)
             );
@@ -376,7 +385,7 @@ class JWT
         }
         if ($errno = \json_last_error()) {
             self::handleJsonError($errno);
-        } elseif ($json === 'null' && $input !== null) {
+        } elseif ($json === 'null') {
             throw new DomainException('Null result with non-null input');
         }
         if ($json === false) {
@@ -435,7 +444,7 @@ class JWT
             return $keyOrKeyArray;
         }
 
-        if (empty($kid)) {
+        if (empty($kid) && $kid !== '0') {
             throw new UnexpectedValueException('"kid" empty, unable to lookup correct key');
         }
 

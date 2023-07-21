@@ -33,17 +33,8 @@ require_once 'bootstrap.php';
  * Trashbin context
  */
 class TrashbinContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var OccContext
-	 */
-	private $occContext;
+	private FeatureContext $featureContext;
+	private OccContext $occContext;
 
 	/**
 	 * @When user :user empties the trashbin using the trashbin API
@@ -448,11 +439,6 @@ class TrashbinContext implements Context {
 	 */
 	public function theLastWebdavResponseShouldContainFollowingElements(TableNode $elements):void {
 		$files = $this->getTrashbinContentFromResponseXml($this->featureContext->getResponseXmlObject());
-		if (!($elements instanceof TableNode)) {
-			throw new InvalidArgumentException(
-				'$expectedElements has to be an instance of TableNode'
-			);
-		}
 		$elementRows = $elements->getHash();
 		foreach ($elementRows as $expectedElement) {
 			$found = false;
@@ -508,7 +494,7 @@ class TrashbinContext implements Context {
 	 * @throws Exception
 	 */
 	public function userTriesToDeleteFromTrashbinOfUser(string $asUser, string $path, string $user):void {
-		$numItemsDeleted = $this->tryToDeleteFileFromTrashbin($user, $path, $asUser);
+		$this->tryToDeleteFileFromTrashbin($user, $path, $asUser);
 	}
 
 	/**
@@ -600,7 +586,10 @@ class TrashbinContext implements Context {
 		$numItemsDeleted = 0;
 
 		foreach ($listing as $entry) {
-			if ($entry['original-location'] === $originalPath) {
+			// The entry for the trashbin root can have original-location null.
+			// That is reasonable, because the trashbin root is not something that can be restored.
+			$originalLocation = $entry['original-location'] ?? '';
+			if (\trim($originalLocation, '/') === $originalPath) {
 				$trashItemHRef = $this->convertTrashbinHref($entry['href']);
 				$response = $this->featureContext->makeDavRequest(
 					$asUser,
@@ -690,6 +679,8 @@ class TrashbinContext implements Context {
 		if (\count($sections) !== 1) {
 			// TODO: handle deeper structures
 			$listing = $this->listTrashbinFolderCollection($user, \basename(\rtrim($firstEntry['href'], '/')));
+		} else {
+			$listing = [];
 		}
 
 		if ($techPreviewHadToBeEnabled) {
@@ -790,10 +781,10 @@ class TrashbinContext implements Context {
 	 * @param string|null $asUser - To send request as another user
 	 * @param string|null $password
 	 *
-	 * @return ResponseInterface|null
+	 * @return void
 	 * @throws Exception
 	 */
-	private function restoreElement(string $user, string $originalPath, ?string $destinationPath = null, bool $throwExceptionIfNotFound = true, ?string $asUser = null, ?string $password = null):?ResponseInterface {
+	private function restoreElement(string $user, string $originalPath, ?string $destinationPath = null, bool $throwExceptionIfNotFound = true, ?string $asUser = null, ?string $password = null):void {
 		$asUser = $asUser ?? $user;
 		$listing = $this->listTrashbinFolder($user);
 		$originalPath = \trim($originalPath, '/');
@@ -802,13 +793,14 @@ class TrashbinContext implements Context {
 		}
 		foreach ($listing as $entry) {
 			if ($entry['original-location'] === $originalPath) {
-				return $this->sendUndeleteRequest(
+				$this->sendUndeleteRequest(
 					$user,
 					$entry['href'],
 					$destinationPath,
 					$asUser,
 					$password
 				);
+				return;
 			}
 		}
 		// The requested element to restore was not even in the trashbin.
@@ -820,7 +812,6 @@ class TrashbinContext implements Context {
 				. " cannot restore from trashbin because no element was found for user $user at original path $originalPath"
 			);
 		}
-		return null;
 	}
 
 	/**
@@ -1038,7 +1029,7 @@ class TrashbinContext implements Context {
 		TableNode $table
 	):void {
 		$this->featureContext->verifyTableNodeColumns($table, ["path"]);
-		$paths = $table->getHash($table);
+		$paths = $table->getHash();
 
 		foreach ($paths as $originalPath) {
 			$this->elementIsNotInTrashCheckingOriginalPath($user, $originalPath["path"]);
@@ -1059,7 +1050,7 @@ class TrashbinContext implements Context {
 		TableNode $table
 	):void {
 		$this->featureContext->verifyTableNodeColumns($table, ["path"]);
-		$paths = $table->getHash($table);
+		$paths = $table->getHash();
 
 		foreach ($paths as $originalPath) {
 			$this->elementIsInTrashCheckingOriginalPath($user, $originalPath["path"]);
@@ -1122,7 +1113,7 @@ class TrashbinContext implements Context {
 		$responseMtime = '';
 
 		foreach ($files as $file) {
-			if (\ltrim((string)$resource, "/") === \ltrim((string)$file['original-location'], "/")) {
+			if (\ltrim($resource, "/") === \ltrim((string)$file['original-location'], "/")) {
 				$responseMtime = $file['mtime'];
 				$mtime_difference = \abs((int)\trim((string)$expectedMtime) - (int)\trim($responseMtime));
 
@@ -1176,7 +1167,7 @@ class TrashbinContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasSetTrashbinSkipSizethreshold(string $threshold) {
+	public function theAdministratorHasSetTrashbinSkipSizeThreshold(string $threshold) {
 		$this->featureContext->runOcc(['config:system:set', 'trashbin_skip_size_threshold', '--value=' . $threshold]);
 	}
 }

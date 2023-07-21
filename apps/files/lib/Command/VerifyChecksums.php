@@ -88,7 +88,7 @@ class VerifyChecksums extends Command {
 	 * @throws \OCP\Files\InvalidPathException
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
-	public function execute(InputInterface $input, OutputInterface $output) {
+	public function execute(InputInterface $input, OutputInterface $output): int {
 		$pathOption = $input->getOption('path');
 		$userName = $input->getOption('user');
 

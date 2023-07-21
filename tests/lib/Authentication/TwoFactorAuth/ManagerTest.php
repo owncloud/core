@@ -23,6 +23,7 @@
 namespace Test\Authentication\TwoFactorAuth;
 
 use OC\Authentication\TwoFactorAuth\Manager;
+use OCP\IGroupManager;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
@@ -34,6 +35,9 @@ class ManagerTest extends TestCase {
 
 	/** @var \OCP\ISession|\PHPUnit\Framework\MockObject\MockObject */
 	private $session;
+
+	/** @var IGroupManager */
+	private $groupManager;
 
 	/** @var Manager */
 	private $manager;
@@ -58,12 +62,13 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$this->session = $this->createMock('\OCP\ISession');
+		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->config = $this->createMock('\OCP\IConfig');
 		$this->request = $this->createMock('\OCP\IRequest');
 		$this->logger = $this->createMock('\OCP\ILogger');
 
 		$this->manager = $this->getMockBuilder('\OC\Authentication\TwoFactorAuth\Manager')
-			->setConstructorArgs([$this->appManager, $this->session, $this->config, $this->request, $this->logger])
+			->setConstructorArgs([$this->appManager, $this->session, $this->groupManager, $this->config, $this->request, $this->logger])
 			->setMethods(['loadTwoFactorApp']) // Do not actually load the apps
 			->getMock();
 
@@ -137,6 +142,100 @@ class ManagerTest extends TestCase {
 			->will($this->returnValue(0));
 
 		$this->assertTrue($this->manager->isTwoFactorAuthenticated($this->user));
+	}
+
+	public function testIsTwoFactorAuthenticatedEnforcedNotExcluded() {
+		$this->prepareProviders();
+
+		$this->user->expects($this->never())
+			->method('getUID')
+			->will($this->returnValue('user123'));
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'enforce_2fa', 'no', 'yes'],
+				['core', 'enforce_2fa_excluded_groups', '[]', '[]'],
+			]));
+		$this->config->expects($this->never())
+			->method('getUserValue');
+
+		$this->assertTrue($this->manager->isTwoFactorAuthenticated($this->user));
+	}
+
+	public function testIsTwoFactorAuthenticatedEnforcedButExcludedAndDisabled() {
+		$this->user->method('getUID')
+			->will($this->returnValue('user123'));
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'enforce_2fa', 'no', 'yes'],
+				['core', 'enforce_2fa_excluded_groups', '[]', '["not2faGroup"]'],
+			]));
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('user123', 'core', 'two_factor_auth_disabled', 0)
+			->will($this->returnValue(1));
+		$this->groupManager->method('isInGroup')
+			->with('user123', 'not2faGroup')
+			->willReturn(true);
+
+		$this->assertFalse($this->manager->isTwoFactorAuthenticated($this->user));
+	}
+
+	public function testIsTwoFactorAuthenticatedEnforcedButExcludedAndNotDisabled() {
+		$this->prepareProviders();
+
+		$this->user->method('getUID')
+			->will($this->returnValue('user123'));
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'enforce_2fa', 'no', 'yes'],
+				['core', 'enforce_2fa_excluded_groups', '[]', '["not2faGroup"]'],
+			]));
+		$this->config->expects($this->once())
+			->method('getUserValue')
+			->with('user123', 'core', 'two_factor_auth_disabled', 0)
+			->will($this->returnValue(0));
+		$this->groupManager->method('isInGroup')
+			->with('user123', 'not2faGroup')
+			->willReturn(true);
+
+		$this->assertTrue($this->manager->isTwoFactorAuthenticated($this->user));
+	}
+
+	public function testIsTwoFactorEnforcedForUser() {
+		$this->user->method('getUID')
+			->will($this->returnValue('user123'));
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'enforce_2fa', 'no', 'yes'],
+				['core', 'enforce_2fa_excluded_groups', '[]', '[]'],
+			]));
+
+		$this->assertTrue($this->manager->isTwoFactorEnforcedForUser($this->user));
+	}
+
+	public function testIsTwoFactorEnforcedForUserInExcludedGroup() {
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'enforce_2fa', 'no', 'no'],
+				['core', 'enforce_2fa_excluded_groups', '[]', '["not2faGroup"]'],
+			]));
+
+		$this->assertFalse($this->manager->isTwoFactorEnforcedForUser($this->user));
+	}
+
+	public function testIsTwoFactorEnforcedForUserNotEnforced() {
+		$this->user->method('getUID')
+			->will($this->returnValue('user123'));
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'enforce_2fa', 'no', 'yes'],
+				['core', 'enforce_2fa_excluded_groups', '[]', '["not2faGroup"]'],
+			]));
+		$this->groupManager->method('isInGroup')
+			->with('user123', 'not2faGroup')
+			->willReturn(true);
+
+		$this->assertFalse($this->manager->isTwoFactorEnforcedForUser($this->user));
 	}
 
 	public function testGetProvider() {

@@ -19,6 +19,7 @@
  *
  */
 
+use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
@@ -27,16 +28,9 @@ use TestHelpers\HttpRequestHelper;
 /**
  * CalDav functions
  */
-class CalDavContext implements \Behat\Behat\Context\Context {
-	/**
-	 * @var ResponseInterface
-	 */
-	private $response;
-
-	/**
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+class CalDavContext implements Context {
+	private ResponseInterface $response;
+	private FeatureContext $featureContext;
 
 	/**
 	 * @BeforeScenario @caldav

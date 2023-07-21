@@ -77,12 +77,13 @@ class PreviewCleanup {
 	private function queryPreviewsToDelete(int $startFileId = 0, int $chunkSize = 1000): array {
 		$isOracle = ($this->connection->getDatabasePlatform() instanceof OraclePlatform);
 
-		$sql = "select `fileid`, `name`, `user_id` from `*PREFIX*filecache` `fc`
-join `*PREFIX*mounts` on `storage` = `storage_id`
-where `parent` in (select `fileid` from `*PREFIX*filecache` where `storage` in (select `numeric_id` from `oc_storages` where `id` like 'home::%' or `id` like 'object::user:%') and `path` = 'thumbnails')
-  and `fc`.`fileid` not in (select `fileid` from `*PREFIX*filecache` where `fc`.`name` = CAST(`*PREFIX*filecache`.`fileid` as CHAR(24)))
-  and `fc`.`fileid` > ?
-  order by `user_id`, `fileid`";
+		$sql = "select `thumb`.`fileid`, `thumb`.`name`, `user_id`
+ from `*PREFIX*mounts`, `*PREFIX*filecache` `thumb` left join `*PREFIX*filecache` `file`  on `thumb`.`name` = trim(cast(`file`.`fileid` as CHAR(24)))
+where `thumb`.`parent` in (select `fileid` from `*PREFIX*filecache` where `storage` in (select `numeric_id` from `*PREFIX*storages` where `id` like 'home::%' or `id` like 'object::user:%') and `path` = 'thumbnails')
+  and `*PREFIX*mounts`.`storage_id` = `thumb`.`storage`
+  and `file`.`fileid` is null
+  and `thumb`.`fileid` > ?
+  order by `user_id`, `thumb`.`fileid`";
 
 		if ($isOracle) {
 			$sql = "select * from ($sql) where ROWNUM <= $chunkSize";

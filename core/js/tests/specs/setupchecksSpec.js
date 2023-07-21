@@ -422,9 +422,8 @@ describe('OC.SetupChecks tests', function() {
 					msg: 'The "X-Content-Type-Options" HTTP header is not configured to equal to "nosniff". This is a potential security or privacy risk and we recommend adjusting this setting.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 				}, {
-					msg: 'The "X-Robots-Tag" HTTP header is not configured to equal to "none". This is a potential security or privacy risk and we recommend adjusting this setting.',
+					msg: 'The "X-Robots-Tag" HTTP header is misconfigured. Expected values are "none" or "noindex, nofollow". This is a potential security or privacy risk and we recommend adjusting this setting.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
-
 				}, {
 					msg: 'The "X-Frame-Options" HTTP header is not configured to equal to "SAMEORIGIN". This is a potential security or privacy risk and we recommend adjusting this setting.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING

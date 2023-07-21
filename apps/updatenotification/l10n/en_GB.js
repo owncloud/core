@@ -15,6 +15,7 @@ OC.L10N.register(
     "Update channel:" : "Update channel:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel.",
     "Notify members of the following groups about available updates:" : "Notify members of the following groups about available updates:",
-    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications."
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications.",
+    "Online updater has been automatically disabled as you are currently running an ownCloud Enterprise edition. Please update your ownCloud instance manually." : "Online updater has been automatically disabled as you are currently running an ownCloud Enterprise edition. Please update your ownCloud instance manually."
 },
 "nplurals=2; plural=(n != 1);");

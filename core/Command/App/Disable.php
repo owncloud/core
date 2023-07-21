@@ -53,7 +53,7 @@ class Disable extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$appId = $input->getArgument('app-id');
 		if ($this->manager->isInstalled($appId)) {
 			try {

@@ -81,6 +81,7 @@ class Log implements ILogger {
 		'validateUserPass',
 		'loginWithPassword',
 		'createSessionToken',
+		'loginInOwnCloud',
 
 		// TokenProvider
 		'getToken',
@@ -392,11 +393,15 @@ class Log implements ILogger {
 
 		if ($level >= $minLevel) {
 			$logger = $this->logger;
-			// check if logger supports extra fields
+			// check if logger supports extra fields, and which method is available
 			if (!empty($extraFields) && \is_callable([$logger, 'writeExtra'])) {
 				\call_user_func([$logger, 'writeExtra'], $app, $formattedMessage, $level, $logConditionFile, $extraFields);
-			} else {
+			} elseif (\is_callable([$logger, 'write'])) {
 				\call_user_func([$logger, 'write'], $app, $formattedMessage, $level, $logConditionFile);
+			} elseif (\is_callable([$logger, 'log'])) {
+				\call_user_func([$logger, 'log'], $level, $formattedMessage, $context);
+			} else {
+				throw new \Exception("No logger method available. Trying to log message '$formattedMessage'.");
 			}
 		}
 

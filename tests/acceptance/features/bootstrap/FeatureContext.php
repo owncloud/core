@@ -51,34 +51,14 @@ class FeatureContext extends BehatVariablesContext {
 	use WebDav;
 
 	/**
-	 * @var int Unix timestamp seconds
+	 * Unix timestamp seconds
 	 */
-	private $scenarioStartTime;
-
-	/**
-	 * @var string
-	 */
-	private $adminUsername = '';
-
-	/**
-	 * @var string
-	 */
-	private $adminPassword = '';
-
-	/**
-	 * @var string
-	 */
-	private $adminDisplayName = '';
-
-	/**
-	 * @var string
-	 */
-	private $adminEmailAddress = '';
-
-	/**
-	 * @var string
-	 */
-	private $originalAdminPassword = '';
+	private int $scenarioStartTime;
+	private string $adminUsername = '';
+	private string $adminPassword = '';
+	private string $adminDisplayName = '';
+	private string $adminEmailAddress = '';
+	private string $originalAdminPassword = '';
 
 	/**
 	 * An array of values of replacement values of user attributes.
@@ -86,258 +66,131 @@ class FeatureContext extends BehatVariablesContext {
 	 * run-time values are maintained and referenced in the $createdUsers array.
 	 *
 	 * Key is the username, value is an array of user attributes
-	 *
-	 * @var array|null
 	 */
-	private $userReplacements = null;
-
-	/**
-	 * @var string
-	 */
-	private $regularUserPassword = '';
-
-	/**
-	 * @var string
-	 */
-	private $alt1UserPassword = '';
-
-	/**
-	 * @var string
-	 */
-	private $alt2UserPassword = '';
-
-	/**
-	 * @var string
-	 */
-	private $alt3UserPassword = '';
-
-	/**
-	 * @var string
-	 */
-	private $alt4UserPassword = '';
+	private ?array $userReplacements = null;
+	private string $regularUserPassword = '';
+	private string $alt1UserPassword = '';
+	private string $alt2UserPassword = '';
+	private string $alt3UserPassword = '';
+	private string $alt4UserPassword = '';
 
 	/**
 	 * The password to use in tests that create a sub-admin user
-	 *
-	 * @var string
 	 */
-	private $subAdminPassword = '';
+	private string $subAdminPassword = '';
 
 	/**
 	 * The password to use in tests that create another admin user
-	 *
-	 * @var string
 	 */
-	private $alternateAdminPassword = '';
+	private string $alternateAdminPassword = '';
 
 	/**
 	 * The password to use in tests that create public link shares
-	 *
-	 * @var string
 	 */
-	private $publicLinkSharePassword = '';
+	private string $publicLinkSharePassword = '';
+	private string $ocPath = '';
 
 	/**
-	 * @var string
+	 * Location of the root folder of ownCloud on the local server under test
 	 */
-	private $ocPath = '';
-
-	/**
-	 * @var string location of the root folder of ownCloud on the local server under test
-	 */
-	private $localServerRoot = null;
-
-	/**
-	 * @var string
-	 */
-	private $currentUser = '';
-
-	/**
-	 * @var string
-	 */
-	private $currentServer = '';
+	private ?string $localServerRoot = null;
+	private string $currentUser = '';
+	private string $currentServer = '';
 
 	/**
 	 * The base URL of the current server under test,
 	 * without any terminating slash
 	 * e.g. http://localhost:8080
-	 *
-	 * @var string
 	 */
-	private $baseUrl = '';
+	private string $baseUrl = '';
 
 	/**
 	 * The base URL of the local server under test,
 	 * without any terminating slash
 	 * e.g. http://localhost:8080
-	 *
-	 * @var string
 	 */
-	private $localBaseUrl = '';
+	private string $localBaseUrl = '';
 
 	/**
 	 * The base URL of the remote (federated) server under test,
 	 * without any terminating slash
 	 * e.g. http://localhost:8180
-	 *
-	 * @var string
 	 */
-	private $remoteBaseUrl = '';
+	private string $remoteBaseUrl = '';
 
 	/**
 	 * The suite name, feature name and scenario line number.
 	 * Example: apiComments/createComments.feature:24
-	 *
-	 * @var string
 	 */
-	private $scenarioString = '';
+	private string $scenarioString = '';
 
 	/**
 	 * A full unique reference to the step that is currently executing.
 	 * Example: apiComments/createComments.feature:24-28
 	 * That is line 28, in the scenario at line 24, in the createComments feature
 	 * in the apiComments suite.
-	 *
-	 * @var string
 	 */
-	private $stepLineRef = '';
+	private string $stepLineRef = '';
+	private bool $sendStepLineRef = false;
+	private bool $sendStepLineRefHasBeenChecked = false;
 
 	/**
-	 * @var bool|null
-	 */
-	private $sendStepLineRef = null;
-
-	/**
-	 *
-	 *
 	 * @var boolean true if TEST_SERVER_FED_URL is defined
 	 */
-	private $federatedServerExists = false;
-
-	/**
-	 * @var int
-	 */
-	private $ocsApiVersion = 1;
-
-	/**
-	 * @var ResponseInterface
-	 */
-	private $response = null;
-
-	/**
-	 * @var string
-	 */
-	private $responseUser = "";
-
-	/**
-	 * @var string
-	 */
-	private $responseBodyContent = null;
-
-	/**
-	 * @var array
-	 */
-	private $userResponseBodyContents = [];
-
-	/**
-	 * @var array
-	 */
-	public $emailRecipients = [];
-
-	/**
-	 * @var CookieJar
-	 */
-	private $cookieJar;
-
-	/**
-	 * @var string
-	 */
-	private $requestToken;
-
-	/**
-	 * @var array
-	 */
-	private $storageIds = [];
-
-	/**
-	 * @var array
-	 */
-	private $createdFiles = [];
+	private bool $federatedServerExists;
+	private int $ocsApiVersion = 1;
+	private ?ResponseInterface $response = null;
+	private string $responseUser = '';
+	private ?string $responseBodyContent = null;
+	private array $userResponseBodyContents = [];
+	public array $emailRecipients = [];
+	private CookieJar $cookieJar;
+	private string $requestToken;
+	private array $storageIds = [];
+	private array $createdFiles = [];
 
 	/**
 	 * The local source IP address from which to initiate API actions.
 	 * Defaults to system-selected address matching IP address family and scope.
-	 *
-	 * @var string|null
 	 */
-	private $sourceIpAddress = null;
-
-	private $guzzleClientHeaders = [];
-
-	/**
-	 *
-	 * @var OCSContext
-	 */
-	public $ocsContext;
+	private ?string $sourceIpAddress = null;
+	private array $guzzleClientHeaders = [];
+	public OCSContext $ocsContext;
+	public AuthContext $authContext;
+	public AppConfigurationContext $appConfigurationContext;
 
 	/**
-	 *
-	 * @var AuthContext
+	 * Saved configuration of the system before test runs as reported
+	 * by occ config:list
 	 */
-	public $authContext;
+	private array $savedConfigList = [];
+	private array $initialTrustedServer;
 
 	/**
-	 *
-	 * @var GraphContext
+	 * return code of last command
 	 */
-	public $graphContext;
-
+	private ?int $occLastCode = null;
 	/**
-	 *
-	 * @var AppConfigurationContext
+	 * stdout of last command
 	 */
-	public $appConfigurationContext;
-
+	private string $lastStdOut;
 	/**
-	 * @var array saved configuration of the system before test runs as reported
-	 *            by occ config:list
+	 * stderr of last command
 	 */
-	private $savedConfigList = [];
-
-	/**
-	 * @var array
-	 */
-	private $initialTrustedServer;
-
-	/**
-	 * @var int return code of last command
-	 */
-	private $occLastCode;
-	/**
-	 * @var string stdout of last command
-	 */
-	private $lastStdOut;
-	/**
-	 * @var string stderr of last command
-	 */
-	private $lastStdErr;
+	private string $lastStdErr;
 	/**
 	 * The codes are stored as strings, even though they are numbers
-	 *
-	 * @var array last http status codes
 	 */
-	private $lastHttpStatusCodesArray = [];
+	private array $lastHttpStatusCodesArray = [];
 	/**
-	 * @var array last ocs status codes
+	 * last ocs status codes
 	 */
-	private $lastOCSStatusCodesArray = [];
+	private array $lastOCSStatusCodesArray = [];
 
 	/**
-	 * @var bool
-	 *
 	 * this is set true for db conversion tests
 	 */
-	private $dbConversion = false;
+	private bool $dbConversion = false;
 
 	/**
 	 * @param bool $value
@@ -355,10 +208,7 @@ class FeatureContext extends BehatVariablesContext {
 		return $this->dbConversion;
 	}
 
-	/**
-	 * @var string
-	 */
-	private $oCSelector;
+	private string $oCSelector;
 
 	/**
 	 * @param string $selector
@@ -384,7 +234,7 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @param int $statusCode
+	 * @param int|null $statusCode
 	 *
 	 * @return void
 	 */
@@ -505,18 +355,12 @@ class FeatureContext extends BehatVariablesContext {
 	 * @var string
 	 */
 	private $ldapGroupSchema;
-	/**
-	 * @var bool
-	 */
-	private $skipImportLdif;
-	/**
-	 * @var array
-	 */
-	private $toDeleteDNs = [];
-	private $ldapCreatedUsers = [];
-	private $ldapCreatedGroups = [];
-	private $toDeleteLdapConfigs = [];
-	private $oldLdapConfig = [];
+	private bool $skipImportLdif = false;
+	private array $toDeleteDNs = [];
+	private array $ldapCreatedUsers = [];
+	private array $ldapCreatedGroups = [];
+	private array $toDeleteLdapConfigs = [];
+	private array $oldLdapConfig = [];
 
 	/**
 	 * @return Ldap
@@ -621,8 +465,9 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return bool
 	 */
 	public function sendScenarioLineReferencesInXRequestId():?bool {
-		if ($this->sendStepLineRef === null) {
+		if ($this->sendStepLineRefHasBeenChecked === false) {
 			$this->sendStepLineRef = (\getenv("SEND_SCENARIO_LINE_REFERENCES") === "true");
+			$this->sendStepLineRefHasBeenChecked = true;
 		}
 		return $this->sendStepLineRef;
 	}
@@ -3050,7 +2895,7 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * returns a string that can be used to check a url of comments with
+	 * returns a string that can be used to check a URL of comments with
 	 * regular expression (without delimiter)
 	 *
 	 * @return string
@@ -4134,8 +3979,7 @@ class FeatureContext extends BehatVariablesContext {
 		);
 		$this->lastStdOut = $return['stdOut'];
 		$this->lastStdErr = $return['stdErr'];
-		$occStatusCode = (int) $return['code'];
-		return $occStatusCode;
+		return (int) $return['code'];
 	}
 
 	/**

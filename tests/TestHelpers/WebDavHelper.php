@@ -29,7 +29,6 @@ use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use DateTime;
-use TestHelpers\SpaceNotFoundException;
 
 /**
  * Helper to make WebDav Requests
@@ -45,7 +44,7 @@ class WebDavHelper {
 	/**
 	 * @var array of users with their different spaces ids
 	 */
-	public static $spacesIdRef = [];
+	public static array $spacesIdRef = [];
 
 	/**
 	 * clear space id reference for user
@@ -74,7 +73,7 @@ class WebDavHelper {
 	 * @param int|null $davPathVersionToUse
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getFileIdForPath(
 		?string $baseUrl,
@@ -173,7 +172,7 @@ class WebDavHelper {
 	 * @param string[] $properties
 	 *        string can contain namespace prefix,
 	 *        if no prefix is given 'd:' is used as prefix
-	 *        if associated array is used then the key will be used as namespace
+	 *        if an associative array is used then the key will be used as namespace
 	 * @param string|null $xRequestId
 	 * @param string|null $folderDepth
 	 * @param string|null $type
@@ -181,6 +180,7 @@ class WebDavHelper {
 	 * @param string|null $doDavRequestAsUser
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function propfind(
 		?string $baseUrl,
@@ -236,6 +236,7 @@ class WebDavHelper {
 	 * @param string|null $type
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function proppatch(
 		?string $baseUrl,
@@ -386,6 +387,7 @@ class WebDavHelper {
 	 * @param int|null $davPathVersionToUse
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function listFolder(
 		?string $baseUrl,
@@ -428,7 +430,7 @@ class WebDavHelper {
 		$data = random_bytes(16);
 		\assert(\strlen($data) == 16);
 
-		$data[6] = \chr(\ord($data[6]) & 0x0f | 0x40); // set version to 0100
+		$data[6] = \chr(\ord($data[6]) & 0x0f | 0x40); // set the version to 0100
 		$data[8] = \chr(\ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
 
 		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
@@ -543,7 +545,7 @@ class WebDavHelper {
 	}
 
 	/**
-	 * First checks if a user exist to return its space ID
+	 * First checks if a user exists to return its space ID
 	 * In case of any exception, it returns a fake space ID
 	 *
 	 * @param string $baseUrl
@@ -552,7 +554,7 @@ class WebDavHelper {
 	 * @param string $xRequestId
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getPersonalSpaceIdForUserOrFakeIfNotFound(string $baseUrl, string $user, string $password, string $xRequestId):string {
 		try {
@@ -594,8 +596,8 @@ class WebDavHelper {
 	 *                     than download it all up-front.
 	 * @param int|null $timeout
 	 * @param Client|null $client
-	 * @param array|null $urlParameter to concatenate with path
-	 * @param string|null $doDavRequestAsUser run the DAV as this user, if null its same as $user
+	 * @param array|null $urlParameter to concatenate with the path
+	 * @param string|null $doDavRequestAsUser run the DAV as this user, if null it is the same as $user
 	 *
 	 * @return ResponseInterface
 	 * @throws GuzzleException
@@ -622,7 +624,7 @@ class WebDavHelper {
 	):ResponseInterface {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 
-		// We need to manipulate and use path as a string.
+		// We need to manipulate and use the path as a string.
 		// So ensure that it is a string to avoid any type-conversion errors.
 		if ($path === null) {
 			$path = "";
@@ -729,7 +731,7 @@ class WebDavHelper {
 		} else {
 			if ($davPathVersionToUse === self::DAV_VERSION_OLD) {
 				if ($type === "trash-bin") {
-					// Since there is no trash bin endpoint for old dav version, new dav version's endpoint is used here.
+					// Since there is no trash bin endpoint for an old dav version, new dav version's endpoint is used here.
 					return $newTrashbinDavPath;
 				}
 				return "remote.php/webdav/";
@@ -751,7 +753,7 @@ class WebDavHelper {
 	}
 
 	/**
-	 * make sure there are no double slash in the URL
+	 * make sure there are no double slashes in the URL
 	 *
 	 * @param string|null $url
 	 * @param bool|null $trailingSlash forces a trailing slash
@@ -764,30 +766,29 @@ class WebDavHelper {
 		} else {
 			$url = \rtrim($url, "/");
 		}
-		$url = \preg_replace("/([^:]\/)\/+/", '$1', $url);
-		return $url;
+		return \preg_replace("/([^:]\/)\/+/", '$1', $url);
 	}
 
 	/**
-	 * decides if the proposed dav version and chunking version are
+	 * Decides if the proposed dav version and chunking version are
 	 * a valid combination.
 	 * If no chunkingVersion is specified, then any dav version is valid.
 	 * If a chunkingVersion is specified, then it has to match the dav version.
-	 * Note: in future the dav and chunking versions might or might not
+	 * Note: in the future, the dav and chunking versions might or might not
 	 * move together and/or be supported together. So a more complex
 	 * matrix could be needed here.
 	 *
 	 * @param string|int $davPathVersion
 	 * @param string|int|null $chunkingVersion
 	 *
-	 * @return boolean is this a valid combination
+	 * @return boolean if this a valid combination
 	 */
 	public static function isValidDavChunkingCombination(
 		$davPathVersion,
 		$chunkingVersion
 	): bool {
 		if ($davPathVersion === self::DAV_VERSION_SPACES) {
-			// allow only old chunking version when using the spaces dav
+			// allow only an old chunking version when using the spaces dav
 			return $chunkingVersion === 1;
 		}
 		return (
@@ -806,9 +807,9 @@ class WebDavHelper {
 	 * @param int|null $davVersionToUse
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
-	public static function getMtimeOfFileinPublicLinkShare(
+	public static function getMtimeOfFileInPublicLinkShare(
 		?string $baseUrl,
 		?string $fileName,
 		?string $token,
@@ -819,7 +820,7 @@ class WebDavHelper {
 			$baseUrl,
 			null,
 			null,
-			"/public-files/{$token}/{$fileName}",
+			"/public-files/$token/$fileName",
 			['d:getlastmodified'],
 			$xRequestId,
 			'1',
@@ -846,7 +847,7 @@ class WebDavHelper {
 	 * @param int|null $davPathVersionToUse
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception|GuzzleException
 	 */
 	public static function getMtimeOfResource(
 		?string $user,
@@ -875,7 +876,7 @@ class WebDavHelper {
 		Assert::assertArrayHasKey(
 			0,
 			$xmlpart,
-			__METHOD__ . " XML part does not have key 0. Expected a value at index 0 of 'xmlPart' but, found: " . (string) json_encode($xmlpart)
+			__METHOD__ . " XML part does not have key 0. Expected a value at index 0 of 'xmlPart' but, found: " . json_encode($xmlpart)
 		);
 		$mtime = new DateTime($xmlpart[0]->__toString());
 		return $mtime->format('U');

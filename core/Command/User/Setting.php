@@ -122,7 +122,7 @@ class Setting extends Base {
 	protected function checkInput(InputInterface $input) {
 		$uid = $input->getArgument('uid');
 		if (!$input->getOption('ignore-missing-user') && !$this->userManager->userExists($uid)) {
-			throw new \InvalidArgumentException('The user "' . $uid . '" does not exists.');
+			throw new \InvalidArgumentException('The user "' . $uid . '" does not exist.');
 		}
 
 		if ($input->getArgument('key') === '' && $input->hasParameterOption('--default-value')) {
@@ -153,7 +153,7 @@ class Setting extends Base {
 		}
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		try {
 			$this->checkInput($input);
 		} catch (\InvalidArgumentException $e) {

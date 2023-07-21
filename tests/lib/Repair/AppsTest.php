@@ -49,6 +49,12 @@ class AppsTest extends TestCase {
 		$this->appManager = $this->createMock(IAppManager::class);
 		$this->defaults = $this->createMock(\OC_Defaults::class);
 		$this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+		$this->eventDispatcher->expects($this->any())->method('dispatch')
+			->will(
+				$this->returnCallback(function ($object) {
+					return $object;
+				})
+			);
 		$this->config = $this->createMock(IConfig::class);
 		$this->repair = new Apps(
 			$this->appManager,

@@ -54,7 +54,7 @@ class ExecuteCommand extends Command {
 		parent::configure();
 	}
 
-	public function execute(InputInterface $input, OutputInterface $output) {
+	public function execute(InputInterface $input, OutputInterface $output): int {
 		$appName = $input->getArgument('app');
 		$ms = new MigrationService($appName, $this->connection, new ConsoleOutput($output));
 		$version = $input->getArgument('version');

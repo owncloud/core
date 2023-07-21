@@ -1512,6 +1512,7 @@ $CONFIG = [
 
 /**
  * Define a default folder for shared files and folders other than root
+ * Please note that this setting is skipped for guests and the root folder will be used for such users.
  */
 'share_folder' => '/',
 
@@ -1542,7 +1543,7 @@ $CONFIG = [
  *
  * NOTE: Lowering this value may lead to unexpected behaviour, and can include data loss.
  */
-'minimum.supported.desktop.version' => '2.3.3',
+'minimum.supported.desktop.version' => '3.2.1',
 
 /**
  * Define the suggested poll interval for clients

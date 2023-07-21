@@ -51,7 +51,7 @@ class RestoreDefaultRowFormat extends Command {
 			->setDescription('Restore default row format of MySQL/MariaDB tables.');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if (!$this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
 			$output->writeln("<error>This command is only valid for MySQL/MariaDB databases.</error>");
 			return 1;

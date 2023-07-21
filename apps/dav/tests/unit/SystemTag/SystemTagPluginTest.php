@@ -31,6 +31,10 @@ use OCP\IUser;
 use OCP\IUserSession;
 use OCP\SystemTag\ISystemTag;
 use OCP\SystemTag\TagAlreadyExistsException;
+use Sabre\DAV\Exception\BadRequest;
+use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
+use OCA\DAV\SystemTag\SystemTagsByIdCollection;
 
 class SystemTagPluginTest extends \Test\TestCase {
 	public const ID_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::ID_PROPERTYNAME;
@@ -383,7 +387,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 	 * @dataProvider createTagInsufficientPermissionsProvider
 	 */
 	public function testCreateNotAssignableTagAsRegularUser($userVisible, $userAssignable, $userEditable, $groups) {
-		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
+		$this->expectException(BadRequest::class);
 		$this->expectExceptionMessage('Not sufficient permissions');
 
 		$this->user->expects($this->once())
@@ -438,6 +442,54 @@ class SystemTagPluginTest extends \Test\TestCase {
 			->method('getHeader')
 			->with('Content-Type')
 			->will($this->returnValue('application/json'));
+
+		$this->plugin->httpPost($request, $response);
+	}
+
+	public function testPostTooLongTagName(): void {
+		$this->expectException(BadRequest::class);
+		$this->expectExceptionMessage('Tag name too long');
+
+		$requestData = [
+			'name' => 'ThisTagNameIsByFarTooLong.ThisTagNameIsByFarTooLong.ThisTagNameIsByFarTooLong',
+			'userVisible' => true,
+			'userAssignable' => true,
+			'userEditable' => true
+		];
+		$requestData = \json_encode($requestData);
+
+		$node = $this->getMockBuilder(SystemTagsByIdCollection::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->tagManager->expects($this->never())
+			->method('createTag');
+		$this->tagManager->expects($this->never())
+			->method('setTagGroups');
+
+		$this->tree
+			->method('getNodeForPath')
+			->with('/systemtags')
+			->willReturn($node);
+
+		$request = $this->getMockBuilder(RequestInterface::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$response = $this->getMockBuilder(ResponseInterface::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$request->expects($this->once())
+			->method('getPath')
+			->willReturn('/systemtags');
+
+		$request->expects($this->once())
+			->method('getBodyAsString')
+			->willReturn($requestData);
+
+		$request->expects($this->once())
+			->method('getHeader')
+			->with('Content-Type')
+			->willReturn('application/json');
 
 		$this->plugin->httpPost($request, $response);
 	}

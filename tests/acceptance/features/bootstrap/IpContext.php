@@ -28,32 +28,24 @@ use TestHelpers\IpHelper;
  * Ip trait
  */
 class IpContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
+	private FeatureContext $featureContext;
 
 	/**
 	 * The local source IP address from which to initiate API actions.
 	 * Defaults to system-selected address matching IP address family and scope.
-	 *
-	 * @var string|null
 	 */
-	private $sourceIpAddress = null;
+	private ?string $sourceIpAddress = null;
 
 	/**
 	 * The base URL parameter to use with the source IP address.
 	 * Accesses the server on IPv4 or IPv6 matching the source IP.
-	 *
-	 * @var string
 	 */
-	private $baseUrlForSourceIp = null;
+	private ?string $baseUrlForSourceIp = null;
 
-	private $ipv4Url;
-	private $ipv6Url;
+	private string $ipv4Url;
+	private string $ipv6Url;
 
-	private $guzzleClientHeaders = [];
+	private array $guzzleClientHeaders = [];
 
 	/**
 	 * @return string|null
@@ -69,7 +61,7 @@ class IpContext implements Context {
 	 * @return string
 	 */
 	public function getBaseUrlForSourceIp():string {
-		// Lazy init so we know that featureContext has been setup
+		// Lazy init so we know that featureContext has been set up
 		// by the time we need it here.
 		if ($this->baseUrlForSourceIp === null) {
 			$this->baseUrlForSourceIp = $this->featureContext->getBaseUrl();

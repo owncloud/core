@@ -211,10 +211,10 @@ class ConvertType extends Command {
 	/**
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
-	 * @return int|null|void
+	 * @return int
 	 * @throws \Exception
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$output->writeln('<info>This feature is currently experimental.</info>');
 		$this->targetType = $this->connectionFactory->normalizeType($input->getArgument('type'));
 		$this->targetHostname = $input->getArgument('hostname');
@@ -252,11 +252,12 @@ class ConvertType extends Command {
 			'@phan-var \Symfony\Component\Console\Helper\QuestionHelper $dialog';
 			$continue = $dialog->ask($input, $output, new Question('<question>Continue with the conversion (y/n)? [n] </question>', false));
 			if ($continue !== 'y') {
-				return;
+				return 0;
 			}
 		}
 		$intersectingTables = \array_intersect($toTables, $fromTables);
 		$this->convertDB($fromDB, $toDB, $intersectingTables, $input, $output);
+		return 0;
 	}
 
 	/**

@@ -50,7 +50,7 @@ class Delete extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$groupName = $input->getArgument('group');
 		$group = $this->groupManager->get($groupName);
 		if ($group === null) {

@@ -48,7 +48,7 @@ class Delete extends Command {
 	 * @param OutputInterface $output
 	 * @return int
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$id = $input->getArgument('Job ID');
 
 		$job = $this->jobList->getById($id);

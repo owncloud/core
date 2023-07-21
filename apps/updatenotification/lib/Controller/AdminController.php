@@ -97,8 +97,19 @@ class AdminController extends Controller implements ISettings {
 		if ($this->config->getSystemValue('upgrade.disable-web', false) === true) {
 			return false;
 		}
+	   
+		if (\OC_Util::getEditionString() === 'Enterprise') {
+			return $this->displayEnterprisePanel();
+		}
 
 		return $this->displayPanel();
+	}
+
+	/**
+	 * @return TemplateResponse
+	 */
+	public function displayEnterprisePanel() {
+		return new TemplateResponse($this->appName, 'enterprise', [], '');
 	}
 
 	/**

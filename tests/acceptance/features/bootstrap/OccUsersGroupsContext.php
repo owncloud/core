@@ -31,17 +31,8 @@ require_once 'bootstrap.php';
  * Context for test steps that test occ commands that manage users and groups
  */
 class OccUsersGroupsContext implements Context {
-	/**
-	 *
-	 * @var FeatureContext
-	 */
-	private $featureContext;
-
-	/**
-	 *
-	 * @var OccContext
-	 */
-	private $occContext;
+	private FeatureContext $featureContext;
+	private OccContext $occContext;
 
 	/**
 	 * @param TableNode $table
@@ -61,31 +52,19 @@ class OccUsersGroupsContext implements Context {
 			$username = $row['username'];
 			$user = $this->featureContext->getActualUsername($username);
 			$cmd = "user:add $user  --password-from-env";
-			if (isset($row['displayname'])) {
-				$displayName = $row['displayname'];
-			} else {
-				$displayName = $this->featureContext->getDisplayNameForUser($username);
-			}
+			$displayName = $row['displayname'] ?? $this->featureContext->getDisplayNameForUser($username);
 
 			if ($displayName !== null) {
 				$cmd = "$cmd --display-name='$displayName'";
 			}
 
-			if (isset($row['email'])) {
-				$email = $row['email'];
-			} else {
-				$email = $this->featureContext->getEmailAddressForUser($username);
-			}
+			$email = $row['email'] ?? $this->featureContext->getEmailAddressForUser($username);
 
 			if ($email !== null) {
 				$cmd = "$cmd --email='$email'";
 			}
 
-			if (isset($row['password'])) {
-				$password = $row['password'];
-			} else {
-				$password = $this->featureContext->getPasswordForUser($row ['username']);
-			}
+			$password = $row['password'] ?? $this->featureContext->getPasswordForUser($row ['username']);
 
 			$this->featureContext->setOccLastCode(
 				$this->occContext->invokingTheCommandWithEnvVariable(
@@ -105,7 +84,6 @@ class OccUsersGroupsContext implements Context {
 				$password,
 				$displayName,
 				$email,
-				null,
 				$this->occContext->theOccCommandExitStatusWasSuccess()
 			);
 		}
@@ -188,7 +166,6 @@ class OccUsersGroupsContext implements Context {
 		$this->featureContext->addUserToCreatedUsersList(
 			$user,
 			$actualPassword,
-			null,
 			null,
 			null,
 			$this->occContext->theOccCommandExitStatusWasSuccess()
@@ -737,6 +714,8 @@ class OccUsersGroupsContext implements Context {
 			case "third":
 				$index = 2;
 				break;
+			default:
+				$index = 0;
 		}
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUser = \json_decode($lastOutput, true);
