@@ -21,7 +21,6 @@
 
 namespace Core\Controller;
 
-use Generator;
 use OC\Core\Controller\AppRegistryController;
 use OC\Files\Node\File;
 use OCP\App\IAppManager;
@@ -48,12 +47,15 @@ class AppRegistryControllerTest extends TestCase {
 
 		$result = $controller->list();
 		$data = $result['mime-types'];
-		self::assertCount(5, $data);
+		self::assertCount(8, $data);
 		self::assertEquals('application/pdf', $data[0]['mime_type']);
 		self::assertEquals('application/vnd.oasis.opendocument.text', $data[1]['mime_type']);
-		self::assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $data[2]['mime_type']);
-		self::assertEquals('application/vnd.openxmlformats-officedocument.wordprocessingml.document', $data[3]['mime_type']);
-		self::assertEquals('application/x-drawio', $data[4]['mime_type']);
+		self::assertEquals('application/vnd.oasis.opendocument.presentation', $data[2]['mime_type']);
+		self::assertEquals('application/vnd.oasis.opendocument.spreadsheet', $data[3]['mime_type']);
+		self::assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $data[4]['mime_type']);
+		self::assertEquals('application/vnd.openxmlformats-officedocument.wordprocessingml.document', $data[5]['mime_type']);
+		self::assertEquals('application/vnd.openxmlformats-officedocument.presentationml.presentation', $data[6]['mime_type']);
+		self::assertEquals('application/x-drawio', $data[7]['mime_type']);
 	}
 
 	public function testOpenWithWeb(): void {

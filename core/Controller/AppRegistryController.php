@@ -35,8 +35,11 @@ use OCP\IURLGenerator;
 class AppRegistryController extends Controller {
 	private const MIME_PDF = "application/pdf";
 	private const MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-	private const MIME_ODT = "application/vnd.oasis.opendocument.text";
 	private const MIME_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	private const MIME_PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+	private const MIME_ODP = "application/vnd.oasis.opendocument.presentation";
+	private const MIME_ODS = "application/vnd.oasis.opendocument.spreadsheet";
+	private const MIME_ODT = "application/vnd.oasis.opendocument.text";
 	private const MIME_DRAWIO = 'application/x-drawio';
 
 	private IAppManager $appManager;
@@ -66,17 +69,17 @@ class AppRegistryController extends Controller {
 		'Collabora' => [
 			"oc_app_name" => 'richdocuments',
 			"icon" => "https://www.collaboraoffice.com/wp-content/uploads/2019/01/CP-icon.png",
-			"mime-types" => [self::MIME_PDF, self::MIME_ODT]
+			"mime-types" => [self::MIME_PDF, self::MIME_ODT, self::MIME_ODP, self::MIME_ODS]
 		],
 		'OnlyOffice' => [
 			"oc_app_name" => 'onlyoffice',
 			"icon" => "https://www.pikpng.com/pngl/m/343-3435764_onlyoffice-desktop-editors-onlyoffice-logo-clipart.png",
-			"mime-types" => [self::MIME_PDF, self::MIME_ODT, self::MIME_XLSX]
+			"mime-types" => [self::MIME_PDF, self::MIME_ODT, self::MIME_ODP, self::MIME_ODS, self::MIME_XLSX, self::MIME_DOCX, self::MIME_PPTX]
 		],
 		'MS Office' => [
 			"oc_app_name" => 'wopi',
 			"icon" => "https://www.pikpng.com/pngl/m/343-3435764_onlyoffice-desktop-editors-onlyoffice-logo-clipart.png",
-			"mime-types" => [self::MIME_ODT, self::MIME_XLSX, self::MIME_DOCX]
+			"mime-types" => [self::MIME_XLSX, self::MIME_DOCX, self::MIME_PPTX]
 		],
 		'draw.io' => [
 			"oc_app_name" => 'drawio',
@@ -94,6 +97,16 @@ class AppRegistryController extends Controller {
 			"ext" => "drawio",
 			"name" => "draw.io (diagrams.net)",
 		],
+		self::MIME_ODP => [
+			"ext" => "odp",
+			"name" => "OpenDocument",
+			"description" => "OpenDocument presentation",
+		],
+		self::MIME_ODS => [
+			"ext" => "ods",
+			"name" => "OpenDocument",
+			"description" => "OpenDocument spreadsheet",
+		],
 		self::MIME_ODT => [
 			"ext" => "odt",
 			"name" => "OpenDocument",
@@ -101,6 +114,10 @@ class AppRegistryController extends Controller {
 		],
 		self::MIME_XLSX => [
 			"ext" => "xlsx",
+			"name" => "Microsoft Excel",
+		],
+		self::MIME_PPTX => [
+			"ext" => "pptx",
 			"name" => "Microsoft Excel",
 		],
 		self::MIME_DOCX => [
@@ -220,8 +237,8 @@ class AppRegistryController extends Controller {
 			], 400);
 		}
 
-		$parent_container_id = $this->extractFileId($parent_container_id);
-		$nodes = $this->rootFolder->getById($parent_container_id, true);
+		$extracted_parent_container_id = $this->extractFileId($parent_container_id);
+		$nodes = $this->rootFolder->getById($extracted_parent_container_id, true);
 		if (\count($nodes) !== 1) {
 			return new DataResponse([
 				"code" => "RESOURCE_NOT_FOUND",
@@ -257,7 +274,6 @@ class AppRegistryController extends Controller {
 	}
 
 	private function buildWebUri(array $app_info, string $fileId): ?string {
-		# TODO: alternative idea: use a string in $app_info
 		$uri = null;
 		$app_name = $app_info['oc_app_name'];
 		# https://github.com/ONLYOFFICE/onlyoffice-owncloud/blob/2afca075249f24d857f0b3097d565f5129e88d17/appinfo/routes.php#LL27C47-L27C53
@@ -268,20 +284,20 @@ class AppRegistryController extends Controller {
 		}
 		# https://github.com/owncloud/richdocuments/blob/5adc1dd3a0ab39918b2c3f7a3c62f3231f216cb6/appinfo/routes.php#L26
 		if ($app_name === 'richdocuments') {
-			$uri =  $this->generator->linkToRouteAbsolute('richdocuments.document.index', [
+			$uri = $this->generator->linkToRouteAbsolute('richdocuments.document.index', [
 				'fileId' => $fileId
 			]);
 		}
 		# https://github.com/owncloud/wopi/blob/f24b081d8bc1ac89b73ae211636cb4194d0cf0a8/appinfo/routes.php#LL22C15-L22C26
 		if ($app_name === 'wopi') {
-			$uri =  $this->generator->linkToRouteAbsolute('wopi.page.Office', [
+			$uri = $this->generator->linkToRouteAbsolute('wopi.page.Office', [
 				'_action' => 'edit',
 				'fileId' => $fileId
 			]);
 		}
 		# https://github.com/owncloud/drawio/blob/b460be2e6606c4222db415aa1c750ae10ea8e74c/appinfo/routes.php#L31
 		if ($app_name === 'drawio') {
-			$uri =  $this->generator->linkToRouteAbsolute('drawio.page.editor', [
+			$uri = $this->generator->linkToRouteAbsolute('drawio.page.editor', [
 				'fileid' => $fileId
 			]);
 		}
@@ -323,10 +339,7 @@ class AppRegistryController extends Controller {
 		if ($file_id === null) {
 			return null;
 		}
-
-		# TODO: remove instanceid?
-		# 		$instance_id = \OC::$server->getConfig()->getSystemValue('instanceid');
-
+		# a simple case to int will cut off the instance id which is used by Android
 		return (int)$file_id;
 	}
 }
