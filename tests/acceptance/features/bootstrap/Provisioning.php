@@ -58,6 +58,13 @@ trait Provisioning {
 	];
 
 	/**
+	 * Path to the skeleton directory before a test changed it.
+	 *
+	 * @var string
+	 */
+	private ?string $originalSkeletonPath = null;
+
+	/**
 	 * Check if this is the admin group. That group is always a local group in
 	 * ownCloud10, even if other groups come from LDAP.
 	 *
@@ -496,6 +503,18 @@ trait Provisioning {
 	 */
 	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table, string $doNotInitialize):void {
 		$this->theseUsersHaveBeenCreated("", "", $doNotInitialize, $table);
+	}
+
+	/**
+	 * @Given /^the administrator has set the system skeleton to (tiny|small|large)\s?skeleton files$/
+	 *
+	 * @param string $skeletonType
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasSetTheSkeletonTo(string $skeletonType):void {
+		$this->originalSkeletonPath = $this->setSkeletonDirByType($skeletonType);
 	}
 
 	/**
@@ -5308,6 +5327,9 @@ trait Provisioning {
 		}
 		$this->cleanupDatabaseUsers();
 		$this->cleanupDatabaseGroups();
+		if ($this->originalSkeletonPath !== null) {
+			$this->setSkeletonDir($this->originalSkeletonPath);
+		}
 	}
 
 	/**
