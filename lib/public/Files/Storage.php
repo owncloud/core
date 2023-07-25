@@ -238,7 +238,7 @@ interface Storage extends IStorage {
 	 * @return bool
 	 * @since 6.0.0
 	 */
-	public function unlink($path);
+	public function unlink($path, array $options = []);
 
 	/**
 	 * see http://php.net/manual/en/function.rename.php

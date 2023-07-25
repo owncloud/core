@@ -187,9 +187,7 @@ class File extends Node implements IFile, IFileNode {
 			try {
 				$this->changeLock(ILockingProvider::LOCK_EXCLUSIVE);
 			} catch (LockedException $e) {
-				if ($usePartFile) {
-					$partStorage->unlink($internalPartPath);
-				}
+				$this->cleanFailedUpload($partStorage, $internalPartPath);
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
 
@@ -234,9 +232,7 @@ class File extends Node implements IFile, IFileNode {
 				}
 			}
 		} catch (\Exception $e) {
-			if ($usePartFile) {
-				$partStorage->unlink($internalPartPath);
-			}
+			$this->cleanFailedUpload($partStorage, $internalPartPath);
 			$this->convertToSabreException($e);
 		}
 
@@ -255,9 +251,7 @@ class File extends Node implements IFile, IFileNode {
 			try {
 				$this->changeLock(ILockingProvider::LOCK_EXCLUSIVE);
 			} catch (LockedException $e) {
-				if ($usePartFile) {
-					$partStorage->unlink($internalPartPath);
-				}
+				$this->cleanFailedUpload($partStorage, $internalPartPath);
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
 
@@ -633,9 +627,7 @@ class File extends Node implements IFile, IFileNode {
 				}
 				return $etag;
 			} catch (\Exception $e) {
-				if ($partFile !== null) {
-					$targetStorage->unlink($targetInternalPath);
-				}
+				$this->cleanFailedUpload($partFile !== null, $targetStorage, $targetInternalPath);
 				$this->convertToSabreException($e);
 			}
 		}
@@ -766,5 +758,13 @@ class File extends Node implements IFile, IFileNode {
 	 */
 	public function getNode() {
 		return \OC::$server->getRootFolder()->get($this->getFileInfo()->getPath());
+	}
+
+	private function cleanFailedUpload(Storage $partStorage, $internalPartPath): void {
+		if ($partStorage->file_exists($internalPartPath)) {
+			$partStorage->unlink($internalPartPath, [
+				'bypass-trashBin' => true,
+			]);
+		}
 	}
 }

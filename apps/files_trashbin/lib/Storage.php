@@ -120,8 +120,9 @@ class Storage extends Wrapper {
 	 *
 	 * @return bool true if the operation succeeded, false otherwise
 	 */
-	public function unlink($path) {
-		return $this->doDelete($path, 'unlink');
+	public function unlink($path, array $options = []) {
+		$bypassTrashBin = $options['bypass-trashBin'] ?? false;
+		return $this->doDelete($path, 'unlink', $bypassTrashBin);
 	}
 
 	/**
@@ -164,8 +165,9 @@ class Storage extends Wrapper {
 	 *
 	 * @return bool true if the operation succeeded, false otherwise
 	 */
-	private function doDelete($path, $method) {
+	private function doDelete($path, $method, bool $bypassTrashBin = false) {
 		if (self::$disableTrash
+			|| $bypassTrashBin
 			|| !\OC_App::isEnabled('files_trashbin')
 			|| (\pathinfo($path, PATHINFO_EXTENSION) === 'part')
 			|| $this->shouldMoveToTrash($path) === false
