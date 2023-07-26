@@ -1291,8 +1291,9 @@ OC.Uploader.prototype = _.extend({
 						var message = '';
 						if (upload) {
 							var response = upload.getResponse();
-							message = response.message;
+							message = t('files', 'Failed to upload the file "{fileName}": {error}', {fileName: upload.getFileName(), error: response.message});
 						}
+
 						OC.Notification.show(message || data.errorThrown, {type: 'error'});
 					}
 
