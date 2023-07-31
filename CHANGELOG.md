@@ -158,14 +158,15 @@ Details
 
    The Symfony PHP framework has been updated from major version 4 to 5.
 
-   The following Symfony component versions are provided: - symfony/console (v5.4.24) -
-   symfony/event-dispatcher (v5.4.22) - symfony/process (v5.4.24) - symfony/routing
-   (v5.4.25) - symfony/string (v5.4.22) - symfony/translation (v5.4.24)
+   The following Symfony component versions are provided: - symfony/console (v5.4.26) -
+   symfony/event-dispatcher (v5.4.26) - symfony/process (v5.4.26) - symfony/routing
+   (v5.4.26) - symfony/string (v5.4.26) - symfony/translation (v5.4.24)
 
    https://github.com/owncloud/core/issues/39630
    https://github.com/owncloud/core/pull/40518
    https://github.com/owncloud/core/pull/40819
    https://github.com/owncloud/core/pull/40849
+   https://github.com/owncloud/core/pull/40895
 
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 
