@@ -21,6 +21,7 @@ Summary
 * Bugfix - Request header can hold an empty string if not set: [#40856](https://github.com/owncloud/core/pull/40856)
 * Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
 * Bugfix - Bump files app version: [#40878](https://github.com/owncloud/core/pull/40878)
+* Bugfix - Apply same restrictions for all the shares: [#40885](https://github.com/owncloud/core/pull/40885)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
@@ -153,6 +154,14 @@ Details
    upgrade. First time installations are not affected as there jobs are correctly added.
 
    https://github.com/owncloud/core/pull/40878
+
+* Bugfix - Apply same restrictions for all the shares: [#40885](https://github.com/owncloud/core/pull/40885)
+
+   Remote shares will have the same restrictions as user and group shares. This means that the in
+   order for a remote user to show up as sharee, the search term length must be greater than the
+   minimum configured, otherwise only exact matches will be shown.
+
+   https://github.com/owncloud/core/pull/40885
 
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 

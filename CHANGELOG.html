@@ -19,6 +19,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Request header can hold an empty string if not set: <a href="https://github.com/owncloud/core/pull/40856">#40856</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Skip share_folder for guest users: <a href="https://github.com/owncloud/core/pull/40864">#40864</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump files app version: <a href="https://github.com/owncloud/core/pull/40878">#40878</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Apply same restrictions for all the shares: <a href="https://github.com/owncloud/core/pull/40885">#40885</a></li>
         <li class="type-change changelog-item">Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
@@ -148,6 +149,14 @@
    upgrade. First time installations are not affected as there jobs are correctly added.
             </p>
             <p>https://github.com/owncloud/core/pull/40878<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Apply same restrictions for all the shares: <a href="https://github.com/owncloud/core/pull/40885">#40885</a></p>
+            <p>Remote shares will have the same restrictions as user and group shares. This means that the in
+   order for a remote user to show up as sharee, the search term length must be greater than the
+   minimum configured, otherwise only exact matches will be shown.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40885<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></p>
