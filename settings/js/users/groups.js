@@ -149,11 +149,11 @@ var GroupList;
 					id: groupname
 				},
 				function (result) {
-					if (result.id) {
+					if (result.gid) {
 						var newGroups = {};
-						newGroups[result.id] = result.name;
+						newGroups[result.gid] = result.name;
 						UserList.availableGroups = $.extend(UserList.availableGroups, newGroups);
-						GroupList.addGroup(result.id, result.name);
+						GroupList.addGroup(result.gid, result.name);
 					}
 					GroupList.toggleAddGroup();
 				}).fail(function(result) {
@@ -185,7 +185,7 @@ var GroupList;
 									GroupList.setUserCount(GroupList.getGroupLI(group.name).first(), group.usercount);
 								}
 								else {
-									var $li = GroupList.addGroup(group.id, group.name, group.usercount);
+									var $li = GroupList.addGroup(group.gid, group.name, group.usercount);
 
 									$li.addClass('appear transparent');
 									lis.push($li);

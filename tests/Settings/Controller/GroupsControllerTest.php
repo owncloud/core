@@ -279,7 +279,7 @@ class GroupsControllerTest extends \Test\TestCase {
 
 		$expectedResponse = new DataResponse(
 			[
-				'id' => 'NewGroup',
+				'gid' => 'NewGroup',
 				'name' => 'A New Group',
 			],
 			Http::STATUS_CREATED
@@ -417,7 +417,7 @@ class GroupsControllerTest extends \Test\TestCase {
 			[
 				'data' => [
 					'assignableGroups' => [
-						'assignableGroup' => ['id' => 'assignableGroup', 'name' => 'assignable Group KO'],
+						'assignableGroup' => ['gid' => 'assignableGroup', 'name' => 'assignable Group KO'],
 					],
 					'removableGroups' => [],
 				],
@@ -479,10 +479,10 @@ class GroupsControllerTest extends \Test\TestCase {
 			[
 				'data' => [
 					'assignableGroups' => [
-						'assignableGroup' => ['id' => 'assignableGroup', 'name' => 'assignable Group KO'],
+						'assignableGroup' => ['gid' => 'assignableGroup', 'name' => 'assignable Group KO'],
 					],
 					'removableGroups' => [
-						'assignableGroup' => ['id' => 'assignableGroup', 'name' => 'assignable Group KO'],
+						'assignableGroup' => ['gid' => 'assignableGroup', 'name' => 'assignable Group KO'],
 					],
 				],
 				\OC\AppFramework\Http::STATUS_OK
@@ -587,12 +587,12 @@ class GroupsControllerTest extends \Test\TestCase {
 			[
 				'data' => [
 					'assignableGroups' => [
-						'MyGroup1' => ['id' => 'MyGroup1', 'name' => 'My Group 1'],
-						'group2' => ['id' => 'group2', 'name' => 'G2'],
+						'MyGroup1' => ['gid' => 'MyGroup1', 'name' => 'My Group 1'],
+						'group2' => ['gid' => 'group2', 'name' => 'G2'],
 					],
 					'removableGroups' => [
-						'MyGroup1' => ['id' => 'MyGroup1', 'name' => 'My Group 1'],
-						'group2' => ['id' => 'group2', 'name' => 'G2'],
+						'MyGroup1' => ['gid' => 'MyGroup1', 'name' => 'My Group 1'],
+						'group2' => ['gid' => 'group2', 'name' => 'G2'],
 					],
 				],
 				\OC\AppFramework\Http::STATUS_OK

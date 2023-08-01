@@ -344,7 +344,7 @@ var UserList = {
 		var $tr = UserList.getRow(uid);
 		var groups = $tr.find('.groups').data('groups');
 		for(var i in groups) {
-			var gid = groups[i]['id'];
+			var gid = groups[i]['gid'];
 			var $li = GroupList.getGroupLI(gid);
 			var userCount = GroupList.getUserCount($li);
 			GroupList.setUserCount($li, userCount - 1);
@@ -359,7 +359,7 @@ var UserList = {
 		var $tr = UserList.getRow(uid);
 		var groups = $tr.find('.groups').data('groups');
 		for(var i in groups) {
-			var gid = groups[i]['id'];
+			var gid = groups[i]['gid'];
 			var $li = GroupList.getGroupLI(gid);
 			var userCount = GroupList.getUserCount($li);
 			GroupList.setUserCount($li, userCount + 1);
@@ -494,21 +494,21 @@ var UserList = {
 					function (response) {
 						if (response.status === 'success') {
 							GroupList.update();
-							var groupId = response.data.group.id;
+							var groupGID = response.data.group.gid;
 							var groupName = response.data.group.name;
-							if (UserList.availableGroups[groupId] === undefined &&
+							if (UserList.availableGroups[groupGID] === undefined &&
 								response.data.action === 'add'
 							) {
-								UserList.availableGroups[groupId] = {
-									'id': groupId,
+								UserList.availableGroups[groupGID] = {
+									'gid': groupGID,
 									'name': groupName
 								};
 							}
 
 							if (response.data.action === 'add') {
-								GroupList.incGroupCount(groupId);
+								GroupList.incGroupCount(groupGID);
 							} else {
-								GroupList.decGroupCount(groupId);
+								GroupList.decGroupCount(groupGID);
 							}
 						}
 						if (response.data.message) {
@@ -664,8 +664,8 @@ var UserList = {
 		var assignableGroups = new Set();
 		var removableGroups = new Set();
 		var checkedSet = new Set();
-		$.each(checked, function(id, group) {
-			checkedSet.add(id);
+		$.each(checked, function(pos, groupGID) {
+			checkedSet.add(groupGID);
 		});
 
 		$td.find('.multiselectoptions').remove();
@@ -678,31 +678,31 @@ var UserList = {
 			$groupsSelect = $('<select multiple="multiple" class="subadminsselect multiselect button" title="' + placeholder + '"></select>')
 		}
 
-		function createItem(id, group) {
+		function createGroupItem(gid, group) {
 			if (isSubadminSelect) {
 				// this is solely for the dropdown menu "Group Admin for"
-				if (id === 'admin') {
+				if (gid === 'admin') {
 					// can't become subadmin of "admin" group
 					return;
 				}
 
-				$groupsSelect.append($('<option value="' + escapeHTML(id) + '">' + escapeHTML(group['name']) + '</option>'));
+				$groupsSelect.append($('<option value="' + escapeHTML(gid) + '">' + escapeHTML(group['name']) + '</option>'));
 				// return as we need to bypass the following group restrictions here
 				return;
 			}
 
-			var groupIsChecked = checkedSet.has(id);
-			var groupIsAssignable = assignableGroups.has(id);
-			var groupIsRemovable = removableGroups.has(id);
+			var groupIsChecked = checkedSet.has(gid);
+			var groupIsAssignable = assignableGroups.has(gid);
+			var groupIsRemovable = removableGroups.has(gid);
 			if (!groupIsChecked && !groupIsAssignable) {
-				$groupsSelect.append($('<option value="' + escapeHTML(id) + '" disabled="disabled">' + escapeHTML(group['name']) + '</option>'));
+				$groupsSelect.append($('<option value="' + escapeHTML(gid) + '" disabled="disabled">' + escapeHTML(group['name']) + '</option>'));
 				return;
 			}
 			if (groupIsChecked && !groupIsRemovable) {
-				$groupsSelect.append($('<option value="' + escapeHTML(id) + '" disabled="disabled">' + escapeHTML(group['name']) + '</option>'));
+				$groupsSelect.append($('<option value="' + escapeHTML(gid) + '" disabled="disabled">' + escapeHTML(group['name']) + '</option>'));
 				return;
 			}
-			$groupsSelect.append($('<option value="' + escapeHTML(id) + '">' + escapeHTML(group['name']) + '</option>'));
+			$groupsSelect.append($('<option value="' + escapeHTML(gid) + '">' + escapeHTML(group['name']) + '</option>'));
 		}
 
 		$.ajax({
@@ -713,29 +713,29 @@ var UserList = {
 
 			if (result.data) {
 				this.availableGroups = {};
-				$.each(result.data.assignableGroups, function(id, group) {
-					assignableGroups.add(id);
-					that.availableGroups[id] = {
-						'id': id,
+				$.each(result.data.assignableGroups, function(gid, group) {
+					assignableGroups.add(gid);
+					that.availableGroups[gid] = {
+						'gid': gid,
 						'name': group['name']
 					};
 				});
-				$.each(result.data.removableGroups, function(id, group) {
-					removableGroups.add(id);
+				$.each(result.data.removableGroups, function(gid, group) {
+					removableGroups.add(gid);
 				});
 			}
 
-			$.each(this.availableGroups, function (id, group) {
+			$.each(this.availableGroups, function (gid, group) {
 				// some new groups might be selected but not in the available groups list yet
-				var extraIndex = extraGroups.indexOf(id);
+				var extraIndex = extraGroups.indexOf(gid);
 				if (extraIndex >= 0) {
 					// remove extra group as it was found
 					extraGroups.splice(extraIndex, 1);
 				}
-				createItem(id, group);
+				createGroupItem(gid, group);
 			});
-			$.each(extraGroups, function (id, group) {
-				createItem(id, group);
+			$.each(extraGroups, function (pos, groupGID) {
+				createGroupItem(groupGID, $td.data('groups')[groupGID]);
 			});
 
 			$td.append($groupsSelect);
@@ -756,9 +756,10 @@ var UserList = {
 				var groups = {};
 				for (var i in e.checked) {
 					var gid = e.checked[i];
+					var groupInfo = $td.data('groups')[gid] ?? that.availableGroups[gid];
 					groups[gid] = {
-						'id': gid,
-						'name': that.availableGroups[gid]['name']
+						'gid': gid,
+						'name': groupInfo['name']
 					};
 				}
 				UserList._updateGroupListLabel($td, groups);
@@ -1024,11 +1025,11 @@ $(document).ready(function () {
 			function (result) {
 				if (result.groups) {
 					for (var i in result.groups) {
-						var gid = result.groups[i]['id'];
+						var gid = result.groups[i]['gid'];
 						var displayname = result.groups[i]['name'];
 						if (UserList.availableGroups[gid] === undefined) {
 							UserList.availableGroups[gid] = {
-								'id': gid,
+								'gid': gid,
 								'name': displayname
 							};
 						}

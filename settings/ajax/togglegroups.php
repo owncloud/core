@@ -86,7 +86,7 @@ if ($action === "add" && \OC::$server->getGroupManager()->isInGroup($username, $
 			"username" => $username,
 			"action" => $action,
 			"group" => [
-				"id" => $targetGroupObject->getGid(),
+				"gid" => $targetGroupObject->getGID(),
 				"name" => $targetGroupObject->getDisplayName(),
 			],
 		]
@@ -97,7 +97,7 @@ if ($action === "add" && \OC::$server->getGroupManager()->isInGroup($username, $
 			"username" => $username,
 			"action" => $action,
 			"group" => [
-				"id" => $targetGroupObject->getGid(),
+				"gid" => $targetGroupObject->getGID(),
 				"name" => $targetGroupObject->getDisplayName(),
 			],
 		]

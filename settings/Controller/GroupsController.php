@@ -113,7 +113,7 @@ class GroupsController extends Controller {
 		if ($groupObj = $this->groupManager->createGroup($id)) {
 			return new DataResponse(
 				[
-					'id' => $groupObj->getGID(),
+					'gid' => $groupObj->getGID(),
 					'name' => $groupObj->getDisplayName(),
 				],
 				Http::STATUS_CREATED
@@ -185,13 +185,13 @@ class GroupsController extends Controller {
 					$groupObject = $this->groupManager->get($group);
 					if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
 						$assignableGroups[$groupObject->getGID()] = [
-							'id' => $groupObject->getGID(),
+							'gid' => $groupObject->getGID(),
 							'name' => $groupObject->getDisplayName(),
 						];
 					}
 					if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
 						$removableGroups[$groupObject->getGID()] = [
-							'id' => $groupObject->getGID(),
+							'gid' => $groupObject->getGID(),
 							'name' => $groupObject->getDisplayName(),
 						];
 					}
@@ -203,13 +203,13 @@ class GroupsController extends Controller {
 				$backend = $subAdminGroup->getBackend();
 				if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
 					$assignableGroups[$subAdminGroup->getGID()] = [
-						'id' => $subAdminGroup->getGID(),
+						'gid' => $subAdminGroup->getGID(),
 						'name' => $subAdminGroup->getDisplayName(),
 					];
 				}
 				if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
 					$removableGroups[$subAdminGroup->getGID()] = [
-						'id' => $subAdminGroup->getGID(),
+						'gid' => $subAdminGroup->getGID(),
 						'name' => $subAdminGroup->getDisplayName()
 					];
 				}
