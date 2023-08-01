@@ -13,6 +13,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Always use json for federation post and get to exchange tokens: <a href="https://github.com/owncloud/core/pull/40815">#40815</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Rare undefined variable error when using a Google Drive mount: <a href="https://github.com/owncloud/core/pull/40822">#40822</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Explicitly set open mode in the checksum wrapper: <a href="https://github.com/owncloud/core/pull/40832">#40832</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Rely on the server to sort the user list: <a href="https://github.com/owncloud/core/pull/40840">#40840</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Automatically disable online updater for enterprise: <a href="https://github.com/owncloud/core/pull/40841">#40841</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Verbose command output: <a href="https://github.com/owncloud/core/pull/40844">#40844</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Versions expire job does not error with federated shares: <a href="https://github.com/owncloud/core/pull/40847">#40847</a></li>
@@ -103,6 +104,15 @@
    discarded, so it was causing a checksum mismatch.Now the open mode in the checksum wrapper is set explicitly.
             </p>
             <p>https://github.com/owncloud/core/pull/40832<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Rely on the server to sort the user list: <a href="https://github.com/owncloud/core/pull/40840">#40840</a></p>
+            <p>Previously, the user list was sorted in the browser. This was causing confusion because the
+   sorting happened with just the items being shown without taking into account all the items, so
+   there were some weird effects.There is no sorting in the browser now. The server is expected to return the list of users already
+   sorted, so the browser just needs to show the list.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40840<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Automatically disable online updater for enterprise: <a href="https://github.com/owncloud/core/pull/40841">#40841</a></p>

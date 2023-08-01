@@ -15,6 +15,7 @@ Summary
 * Bugfix - Always use json for federation post and get to exchange tokens: [#40815](https://github.com/owncloud/core/pull/40815)
 * Bugfix - Rare undefined variable error when using a Google Drive mount: [#40822](https://github.com/owncloud/core/pull/40822)
 * Bugfix - Explicitly set open mode in the checksum wrapper: [#40832](https://github.com/owncloud/core/pull/40832)
+* Bugfix - Rely on the server to sort the user list: [#40840](https://github.com/owncloud/core/pull/40840)
 * Bugfix - Automatically disable online updater for enterprise: [#40841](https://github.com/owncloud/core/pull/40841)
 * Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
 * Bugfix - Versions expire job does not error with federated shares: [#40847](https://github.com/owncloud/core/pull/40847)
@@ -108,6 +109,17 @@ Details
    Now the open mode in the checksum wrapper is set explicitly.
 
    https://github.com/owncloud/core/pull/40832
+
+* Bugfix - Rely on the server to sort the user list: [#40840](https://github.com/owncloud/core/pull/40840)
+
+   Previously, the user list was sorted in the browser. This was causing confusion because the
+   sorting happened with just the items being shown without taking into account all the items, so
+   there were some weird effects.
+
+   There is no sorting in the browser now. The server is expected to return the list of users already
+   sorted, so the browser just needs to show the list.
+
+   https://github.com/owncloud/core/pull/40840
 
 * Bugfix - Automatically disable online updater for enterprise: [#40841](https://github.com/owncloud/core/pull/40841)
 
