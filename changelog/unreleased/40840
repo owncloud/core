@@ -1,0 +1,10 @@
+Bugfix: Rely on the server to sort the user list
+
+Previously, the user list was sorted in the browser. This was causing
+confusion because the sorting happened with just the items being shown
+without taking into account all the items, so there were some weird effects.
+
+There is no sorting in the browser now. The server is expected to return
+the list of users already sorted, so the browser just needs to show the list.
+
+https://github.com/owncloud/core/pull/40840
