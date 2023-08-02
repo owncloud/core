@@ -18,18 +18,22 @@ script('core', [
 style('settings', 'settings');
 
 $userlistParams = [];
-$allGroups= [];
+$allGroups = [];
 foreach ($_["adminGroup"] as $group) {
-	$allGroups[] = $group['name'];
+	$allGroups[$group['gid']] = [
+		'gid' => $group['id'],
+		'name' => $group['name'],
+	];
 }
 foreach ($_["groups"] as $group) {
-	$allGroups[] = $group['name'];
+	$allGroups[$group['gid']] = [
+		'gid' => $group['id'],
+		'name' => $group['name'],
+	];
 }
 $userlistParams['subadmingroups'] = $allGroups;
 $userlistParams['allGroups'] = \json_encode($allGroups);
-$items = \array_flip($userlistParams['subadmingroups']);
-unset($items['admin']);
-$userlistParams['subadmingroups'] = \array_flip($items);
+unset($userlistParams['subadmingroups']['admin']);
 
 translation('settings');
 ?>

@@ -1,0 +1,8 @@
+Change: Remove the "add group" button from the dropdowns in the users page
+
+The "add group" button has been removed from the dropdowns because the
+behavior was confusing. You can still create new groups in the users
+page by using the "add group" button in the top left corner of the users page.
+The dropdowns will only select existing groups, but they won't add new groups.
+
+https://github.com/owncloud/core/pull/40770

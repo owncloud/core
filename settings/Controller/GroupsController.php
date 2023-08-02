@@ -110,10 +110,11 @@ class GroupsController extends Controller {
 				Http::STATUS_CONFLICT
 			);
 		}
-		if ($this->groupManager->createGroup($id)) {
+		if ($groupObj = $this->groupManager->createGroup($id)) {
 			return new DataResponse(
 				[
-					'groupname' => $id
+					'gid' => $groupObj->getGID(),
+					'name' => $groupObj->getDisplayName(),
 				],
 				Http::STATUS_CREATED
 			);
@@ -175,12 +176,25 @@ class GroupsController extends Controller {
 
 		if ($this->groupManager->isAdmin($currentUser->getUID())) {
 			foreach ($this->groupManager->getBackends() as $backend) {
-				$groups = $backend->getGroups();
-				if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
-					\array_push($assignableGroups, ...$groups);
+				if (!$backend->implementsActions($backend::ADD_TO_GROUP) && !$backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
+					continue;
 				}
-				if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
-					\array_push($removableGroups, ...$groups);
+
+				$groups = $backend->getGroups();
+				foreach ($groups as $group) {
+					$groupObject = $this->groupManager->get($group);
+					if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
+						$assignableGroups[$groupObject->getGID()] = [
+							'gid' => $groupObject->getGID(),
+							'name' => $groupObject->getDisplayName(),
+						];
+					}
+					if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
+						$removableGroups[$groupObject->getGID()] = [
+							'gid' => $groupObject->getGID(),
+							'name' => $groupObject->getDisplayName(),
+						];
+					}
 				}
 			}
 		} elseif ($subAdmin->isSubAdmin($currentUser)) {
@@ -188,10 +202,16 @@ class GroupsController extends Controller {
 			foreach ($subAdminGroups as $subAdminGroup) {
 				$backend = $subAdminGroup->getBackend();
 				if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
-					$assignableGroups[] = $subAdminGroup->getGID();
+					$assignableGroups[$subAdminGroup->getGID()] = [
+						'gid' => $subAdminGroup->getGID(),
+						'name' => $subAdminGroup->getDisplayName(),
+					];
 				}
 				if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
-					$removableGroups[] = $subAdminGroup->getGID();
+					$removableGroups[$subAdminGroup->getGID()] = [
+						'gid' => $subAdminGroup->getGID(),
+						'name' => $subAdminGroup->getDisplayName()
+					];
 				}
 			}
 		}
