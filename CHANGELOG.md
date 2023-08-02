@@ -27,6 +27,7 @@ Summary
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 * Change - Validate email and string user input in UserController: [#40769](https://github.com/owncloud/core/pull/40769)
+* Change - Remove the "add group" button from the dropdowns in the users page: [#40770](https://github.com/owncloud/core/pull/40770)
 * Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
 * Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
@@ -227,6 +228,15 @@ Details
    User input is validated now in UserController
 
    https://github.com/owncloud/core/pull/40769
+
+* Change - Remove the "add group" button from the dropdowns in the users page: [#40770](https://github.com/owncloud/core/pull/40770)
+
+   The "add group" button has been removed from the dropdowns because the behavior was confusing.
+   You can still create new groups in the users page by using the "add group" button in the top left
+   corner of the users page. The dropdowns will only select existing groups, but they won't add new
+   groups.
+
+   https://github.com/owncloud/core/pull/40770
 
 * Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
 
