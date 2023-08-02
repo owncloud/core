@@ -756,7 +756,7 @@ var UserList = {
 				var groups = {};
 				for (var i in e.checked) {
 					var gid = e.checked[i];
-					var groupInfo = $td.data('groups')[gid] ?? that.availableGroups[gid];
+					var groupInfo = $td.data('groups')[gid] ? $td.data('groups')[gid] : that.availableGroups[gid];
 					groups[gid] = {
 						'gid': gid,
 						'name': groupInfo['name']
