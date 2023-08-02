@@ -738,7 +738,11 @@ class File extends Node implements IFile, IFileNode {
 				if (class_exists(\OCA\Files_Trashbin\Storage::class)) {
 					\OCA\Files_Trashbin\Storage::$disableTrash = true;
 				}
+				# delete file from storage
 				$partStorage->unlink($internalPartPath);
+				# delete file from cache
+				$partStorage->getCache()->remove($internalPartPath);
+
 			} finally {
 				if (class_exists(\OCA\Files_Trashbin\Storage::class)) {
 					\OCA\Files_Trashbin\Storage::$disableTrash = false;
