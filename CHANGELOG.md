@@ -30,6 +30,7 @@ Summary
 * Change - Remove the "add group" button from the dropdowns in the users page: [#40770](https://github.com/owncloud/core/pull/40770)
 * Change - Fix hiding Last Login column on Users page: [#40771](https://github.com/owncloud/core/pull/40771)
 * Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
+* Change - Require firebase/php-jwt in core: [#40901](https://github.com/owncloud/core/pull/40901)
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 * Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
 * Enhancement - Add commands to handle the trusted servers from command line: [#40796](https://github.com/owncloud/core/pull/40796)
@@ -252,6 +253,14 @@ Details
    A system tag with a too long name results in potentially inaccessible data.
 
    https://github.com/owncloud/core/pull/40804
+
+* Change - Require firebase/php-jwt in core: [#40901](https://github.com/owncloud/core/pull/40901)
+
+   Firebase/php-jwt version 6 is now part of core and all apps can rely on it
+
+   https://github.com/owncloud/core/pull/40901
+   https://github.com/owncloud/files_texteditor/pull/401
+   https://github.com/owncloud/wopi/pull/254
 
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 
