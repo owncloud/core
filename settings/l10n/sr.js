@@ -77,8 +77,6 @@ OC.L10N.register(
     "never" : "никада",
     "unknown" : "непознато",
     "deleted {userName}" : "обрисан {userName}",
-    "Group already exists" : "Група већ постоји",
-    "add group" : "додај групу",
     "enabled" : "укључено",
     "disabled" : "искључено",
     "no group" : "нема групе",

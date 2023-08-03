@@ -74,8 +74,6 @@ OC.L10N.register(
     "never" : "nikdy",
     "unknown" : "neznámy",
     "deleted {userName}" : "vymazané {userName}",
-    "Group already exists" : "Skupina už existuje",
-    "add group" : "pridať skupinu",
     "enabled" : "zapnuté",
     "disabled" : "vypnuté",
     "no group" : "nie je v skupine",

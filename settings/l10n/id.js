@@ -106,8 +106,6 @@ OC.L10N.register(
     "deleted {userName}" : "menghapus {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Anda akan menghapus pengguna. Tindakan ini tidak dapat diulangi dan permanen. Semua data, file, dan hal yang dibagikan pengguna ini akan dihapus. Anda yakin tetap ingin menghapus {userName}?",
     "Delete user" : "Hapus pengguna",
-    "Group already exists" : "Grup sudah ada",
-    "add group" : "tambah grup",
     "Invalid quota value \"{val}\"" : "Quota tidak sesuai \"{val}\"",
     "enabled" : "diaktifkan",
     "disabled" : "dinonaktifkan",

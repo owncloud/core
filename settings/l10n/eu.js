@@ -91,8 +91,6 @@ OC.L10N.register(
     "deleted {userName}" : "{userName} ezabatuta",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Erabiltzaile bat ezabatzear zaude. Ekintza hau iraunkorra da eta ezin daiteke desegin. Erabiltzailearen datu, fitxategi eta partekatzeak ezabatuko dira. Ziur zaude {userName} betirako ezabatu nahi duzula?",
     "Delete user" : "Erabiltzailea ezabatu",
-    "Group already exists" : "Taldea dagoeneko existitzenda",
-    "add group" : "gehitu taldea",
     "Invalid quota value \"{val}\"" : "Quota balio baliogabea \"{val}\"",
     "enabled" : "gaituta",
     "disabled" : "desgaituta",

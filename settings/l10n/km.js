@@ -32,8 +32,6 @@ OC.L10N.register(
     "Groups" : "ក្រុ",
     "undo" : "មិន​ធ្វើ​វិញ",
     "never" : "មិនដែរ",
-    "Group already exists" : "មាន​ក្រុម​នេះ​រួច​ហើយ",
-    "add group" : "បន្ថែម​ក្រុម",
     "A valid username must be provided" : "ត្រូវ​ផ្ដល់​ឈ្មោះ​អ្នក​ប្រើ​ឲ្យ​បាន​ត្រឹម​ត្រូវ",
     "A valid password must be provided" : "ត្រូវ​ផ្ដល់​ពាក្យ​សម្ងាត់​ឲ្យ​បាន​ត្រឹម​ត្រូវ",
     "Language" : "ភាសា",

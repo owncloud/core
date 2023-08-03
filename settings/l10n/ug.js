@@ -20,8 +20,6 @@ OC.L10N.register(
     "undo" : "يېنىۋال",
     "Delete group" : "گۇرۇپپا ئۆچۈر",
     "never" : "ھەرگىز",
-    "Group already exists" : "گۇرۇپپا مەۋجۇت",
-    "add group" : "گۇرۇپپا قوش",
     "enabled" : "قوزغىتىلغان",
     "disabled" : "چەكلەنگەن",
     "A valid username must be provided" : "چوقۇم ئىناۋەتلىك ئىشلەتكۈچى ئىسمىدىن بىرنى تەمىنلەش كېرەك",

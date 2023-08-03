@@ -29,7 +29,6 @@ OC.L10N.register(
     "Groups" : "গোষ্ঠীসমূহ",
     "undo" : "ক্রিয়া প্রত্যাহার",
     "never" : "কখনোই নয়",
-    "Group already exists" : "গোষ্ঠীটি পূর্ব থেকেই বিদ্যমান",
     "enabled" : "সক্রিয় করা",
     "disabled" : "নিষ্ক্রিয় করা",
     "Cheers!" : "শুভেচ্ছা!",

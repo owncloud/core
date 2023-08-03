@@ -131,8 +131,6 @@ OC.L10N.register(
     "Delete user" : "ลบผู้ใช้",
     "The invitation email for this user has been resent" : "ส่งคำเชิญไปยังอีเมลของผู้ใช้รายนี้แล้ว",
     "The invitation email for this user could not be resent" : "ไม่สามารถส่งคำเชิญไปยังอีเมลของผู้ใช้รายนี้",
-    "Group already exists" : "มีกลุ่มดังกล่าวอยู่ในระบบอยู่แล้ว",
-    "add group" : "เพิ่มกลุ่ม",
     "Invalid quota value \"{val}\"" : "ค่าอัญประกาศไม่ถูกต้อง \"{val}\"",
     "enabled" : "เปิดใช้งาน",
     "disabled" : "ปิดใช้งาน",

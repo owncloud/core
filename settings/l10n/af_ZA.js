@@ -75,7 +75,6 @@ OC.L10N.register(
     "undo" : "ontdoen",
     "never" : "nooit",
     "deleted {userName}" : "{userName} geskrap",
-    "add group" : "voeg groep toe",
     "Invalid quota value \"{val}\"" : "Ongeldige kwotawaarde “{val}”",
     "enabled" : "geaktiveer",
     "disabled" : "gedeaktiveer",

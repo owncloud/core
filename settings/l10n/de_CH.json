@@ -124,8 +124,6 @@
     "deleted {userName}" : "{userName} gelöscht",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Du bist dabei einen Benutzer zu löschen. Dieser Schritt kann nicht rückgängig gemacht werden und ist dauerhaft. Alle Benutzerdaten, Dateien und geteilte Daten werden gelöscht. Bist Du sicher, dass Du {userName} dauerhaft löschen möchtest?",
     "Delete user" : "Benutzer löschen",
-    "Group already exists" : "Die Gruppe existiert bereits",
-    "add group" : "Gruppe hinzufügen",
     "Invalid quota value \"{val}\"" : "Ungültiger Wert \"{val}\" für das Kontigent",
     "enabled" : "aktiviert",
     "disabled" : "deaktiviert",

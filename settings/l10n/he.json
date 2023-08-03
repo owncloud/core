@@ -125,8 +125,6 @@
     "deleted {userName}" : "נמחק {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "מדובר במחיקת משתמש. לא ניתן לבטל פעולה זו. כל נתוני המשתמש, הקבצים והשיתופים שלו יימחקו. האם האם באמת למחוק לצמיתות את {userName}?",
     "Delete user" : "מחיקת משתמש",
-    "Group already exists" : "הקבוצה כבר קיימת",
-    "add group" : "הוספת קבוצה",
     "Invalid quota value \"{val}\"" : "ערך מכסה לא חוקי \"{val}\"",
     "enabled" : "מופעל",
     "disabled" : "מנוטרל",

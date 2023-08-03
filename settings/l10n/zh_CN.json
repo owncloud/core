@@ -129,8 +129,6 @@
     "Delete user" : "删除用户",
     "The invitation email for this user has been resent" : "此用户的邀请电子邮件已重新发送",
     "The invitation email for this user could not be resent" : "无法重新发送此用户的邀请电子邮件",
-    "Group already exists" : "已存在该组",
-    "add group" : "增加组",
     "Invalid quota value \"{val}\"" : "无效值 \"{val}\"",
     "enabled" : "已启用",
     "disabled" : "已禁用",

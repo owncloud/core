@@ -129,8 +129,6 @@
     "Delete user" : "刪除使用者",
     "The invitation email for this user has been resent" : "此使用者的邀請電子郵件已重新發送",
     "The invitation email for this user could not be resent" : "無法重新發送此使用者的邀請電子郵件",
-    "Group already exists" : "群組已存在",
-    "add group" : "新增群組",
     "Invalid quota value \"{val}\"" : "無效的配額數值\"{val}\"",
     "enabled" : "啟動的",
     "disabled" : "無效的",

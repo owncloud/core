@@ -132,8 +132,6 @@ OC.L10N.register(
     "Delete user" : "Kullanıcıyı sil",
     "The invitation email for this user has been resent" : "Bu kullanıcı için davet e-postası tekrar gönderildi",
     "The invitation email for this user could not be resent" : "Bu kullanıcı için davet e-postası tekrar gönderilemedi",
-    "Group already exists" : "Grup zaten mevcut",
-    "add group" : "grup ekle",
     "Invalid quota value \"{val}\"" : "Geçersiz kalan alan değeri \"{val}\"",
     "enabled" : "etkin",
     "disabled" : "devre dışı",

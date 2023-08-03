@@ -128,8 +128,6 @@ OC.L10N.register(
     "deleted {userName}" : "{userName} supprimé",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Vous êtes sur le point de supprimer un utilisateur. Cette action ne peut pas être annulée et est permanente. Toutes les données utilisateur, fichiers et partages seront supprimés. Êtes-vous sûr de vouloir supprimer définitivement {userName}?",
     "Delete user" : "Supprimer l'utilisateur",
-    "Group already exists" : "Ce groupe existe déjà",
-    "add group" : "ajouter un groupe",
     "Invalid quota value \"{val}\"" : "Valeur de quota invalide \"{val}\"",
     "enabled" : "activé",
     "disabled" : "désactivé",

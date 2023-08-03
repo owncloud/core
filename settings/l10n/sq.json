@@ -130,8 +130,6 @@
     "Delete user" : "Fshije përdoruesin",
     "The invitation email for this user has been resent" : "Email-i ftesë për këtë përdorues u ridërgua",
     "The invitation email for this user could not be resent" : "Email-i ftesë për këtë përdorues s’u ridërgua dot",
-    "Group already exists" : "Grupi ekziston",
-    "add group" : "shto grup",
     "Invalid quota value \"{val}\"" : "Vlerë kuotash e pavlefshme \"{val}\"",
     "enabled" : "e aktivizuar",
     "disabled" : "e çaktivizuar",

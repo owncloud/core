@@ -68,8 +68,6 @@ OC.L10N.register(
     "Delete group" : "Eliminar grupo",
     "never" : "nunca",
     "unknown" : "desconocido",
-    "Group already exists" : "El grupo ya existe",
-    "add group" : "añadir Grupo",
     "enabled" : "activado",
     "disabled" : "desactivado",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Cambiar la contraseña resultará en la pérdida de datos, porque la recuperación de datos no está disponible para este usuario",

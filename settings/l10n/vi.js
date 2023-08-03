@@ -48,7 +48,6 @@ OC.L10N.register(
     "Delete group" : "Xóa nhóm",
     "never" : "không bao gi",
     "unknown" : " Chưa biết",
-    "Group already exists" : "Nhóm đã tồn tại",
     "Cheers!" : "Chúc mừng!",
     "Language" : "Ngôn ngữ",
     "Apps Management" : "Quản lý ứng dụng",

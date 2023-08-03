@@ -129,8 +129,6 @@
     "Delete user" : "사용자 삭제",
     "The invitation email for this user has been resent" : "이 사용자에게 초대 이메일이 재발송됨",
     "The invitation email for this user could not be resent" : "이 사용자에게 초대 이메일을 재발송할 수 없음",
-    "Group already exists" : "그룹이 이미 존재함",
-    "add group" : "그룹 추가",
     "Invalid quota value \"{val}\"" : "잘못된 할당량 값 \"{val}\"",
     "enabled" : "활성화됨",
     "disabled" : "비활성화됨",

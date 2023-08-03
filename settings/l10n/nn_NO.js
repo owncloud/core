@@ -36,8 +36,6 @@ OC.L10N.register(
     "Delete group" : "Slett gruppe",
     "never" : "aldri",
     "unknown" : "ukjend",
-    "Group already exists" : "Gruppa finst allereie",
-    "add group" : "legg til gruppe",
     "A valid username must be provided" : "Du må oppgje eit gyldig brukarnamn",
     "A valid password must be provided" : "Du må oppgje eit gyldig passord",
     "Cheers!" : "Skål!",

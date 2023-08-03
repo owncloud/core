@@ -107,8 +107,6 @@ OC.L10N.register(
     "deleted {userName}" : "избришан {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Ќе го избришете корисникот. Ова дејство не може да се врати и е трајно. Сите податоци на корисникот, датотеки и споделувања ќе бидат избришани. Дали сте сигурни дека сакате трајно да го избришете {userName}?",
     "Delete user" : "Избриши корисник",
-    "Group already exists" : "Групата веќе постои",
-    "add group" : "додади група",
     "Invalid quota value \"{val}\"" : "Невалидна вредност за квота \"{val}\"",
     "enabled" : "овозможен",
     "disabled" : "оневозможен",

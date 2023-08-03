@@ -122,8 +122,6 @@ OC.L10N.register(
     "unknown" : "不明",
     "deleted {userName}" : "{userName} を削除しました",
     "Delete user" : "ユーザーを削除",
-    "Group already exists" : "グループはすでに存在します",
-    "add group" : "グループを追加",
     "Invalid quota value \"{val}\"" : "クオータ \"{val}\" は不正な値です。",
     "enabled" : "有効",
     "disabled" : "無効",

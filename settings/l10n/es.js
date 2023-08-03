@@ -131,8 +131,6 @@ OC.L10N.register(
     "Delete user" : "Eliminar usuario",
     "The invitation email for this user has been resent" : "Se ha reenviado la invitación de correo electrónico para este usuario.",
     "The invitation email for this user could not be resent" : "No se pudo reenviar la invitación de correo electrónico para este usuario",
-    "Group already exists" : "El grupo ya existe",
-    "add group" : "añadir grupo",
     "Invalid quota value \"{val}\"" : "Valor de cupo «{val}» no válido",
     "enabled" : "activado",
     "disabled" : "desactivado",

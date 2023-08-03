@@ -123,8 +123,6 @@
     "deleted {userName}" : "slettet {userName}",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Du er i ferd med å slette en bruker. Denne handlingen kan ikke gjøres om og er permanent. Alle brukerdata, filer og delt innhold vil bli slettet. Er du sikker på at du vil permanent slette {userName}?",
     "Delete user" : "Slett bruker",
-    "Group already exists" : "Gruppen finnes allerede",
-    "add group" : "legg til gruppe",
     "Invalid quota value \"{val}\"" : "Ugyldig kvoteverdi \"{val}\"",
     "enabled" : "aktivert",
     "disabled" : "deaktivert",

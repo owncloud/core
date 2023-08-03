@@ -22,8 +22,6 @@ OC.L10N.register(
     "undo" : "დაბრუნება",
     "Delete group" : "ჯგუფის წაშლა",
     "never" : "არასდროს",
-    "Group already exists" : "ჯგუფი უკვე არსებობს",
-    "add group" : "ჯგუფის დამატება",
     "enabled" : "ჩართულია",
     "disabled" : "გათიშულია",
     "A valid username must be provided" : "უნდა მიუთითოთ არსებული მომხმარებლის სახელი",

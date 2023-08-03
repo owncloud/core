@@ -123,8 +123,6 @@
     "deleted {userName}" : "{userName} eliminado",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Estás a punto de eliminar un usuario. Esta acción no puede deshacerse y es permanente. Toda la información de usuario, archivos y compartidos serán eliminados. ¿Estás seguro que quieres eliminar permanentemente {Nombre de usuario}?",
     "Delete user" : "Eliminar usuario",
-    "Group already exists" : "El grupo ya existe",
-    "add group" : "agregar grupo",
     "Invalid quota value \"{val}\"" : "Valor de cuita inválido \"{val}\"",
     "enabled" : "activado",
     "disabled" : "desactivado",

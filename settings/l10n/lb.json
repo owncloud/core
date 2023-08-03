@@ -83,8 +83,6 @@
     "never" : "Ni",
     "unknown" : "Onbekannt",
     "deleted {userName}" : "Geläscht  {Benotzernumm}",
-    "Group already exists" : "Group existeiert schon.",
-    "add group" : "Grupp bäisetzen",
     "no group" : "Keng Grupp",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "D'Passwuert ännere wäert e Verloscht vun den Daten provozéiere, well Daten zeréck gewannen ass net disponibel fir dëse Benotzer",
     "A valid username must be provided" : "Et muss e gültegen Benotzernumm ugi ginn",

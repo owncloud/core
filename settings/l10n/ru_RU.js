@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Couldn't send reset email. Please contact your administrator." : "Ошибка при отправке письма-сброса. Пожалуйста, сообщите администратору.",
     "Invalid mail address" : "ошибочный почтовый адрес",
-    "Group already exists" : "Группа уже существует",
     "Email" : "Email",
     "Set password" : "назначить новый пароль"
 },

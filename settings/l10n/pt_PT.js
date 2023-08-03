@@ -107,8 +107,6 @@ OC.L10N.register(
     "never" : "nunca",
     "unknown" : "desconhecido",
     "deleted {userName}" : "{userName} eliminado",
-    "Group already exists" : "O grupo já existe",
-    "add group" : "adicionar grupo",
     "Invalid quota value \"{val}\"" : "Valor de quota inválido \"{val}\"",
     "enabled" : "ativado",
     "disabled" : "desativado",

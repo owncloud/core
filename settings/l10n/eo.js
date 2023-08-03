@@ -43,8 +43,6 @@ OC.L10N.register(
     "never" : "neniam",
     "unknown" : "nekonata",
     "deleted {userName}" : "{userName} foriĝis",
-    "Group already exists" : "La grupo jam ekzistas",
-    "add group" : "aldoni grupon",
     "enabled" : "kapabligita",
     "disabled" : "malkapabligita",
     "A valid username must be provided" : "Valida uzantonomo devas proviziĝi",

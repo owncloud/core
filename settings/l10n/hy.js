@@ -36,7 +36,6 @@ OC.L10N.register(
     "never" : "երբեք",
     "unknown" : "անհայտ",
     "deleted {userName}" : "ջնջված {userName}",
-    "add group" : "խումբ ավելացնել",
     "enabled" : "միացված",
     "Cheers!" : "Չը՛խկ",
     "Language" : "Լեզու",

@@ -58,7 +58,6 @@ OC.L10N.register(
     "undo" : "poništi",
     "never" : "nikad",
     "deleted {userName}" : "izbrisan {userName}",
-    "add group" : "dodaj grupu",
     "no group" : "nema grupe",
     "A valid username must be provided" : "Nužno je navesti valjano korisničko ime",
     "A valid password must be provided" : "Nužno je navesti valjanu lozinku",

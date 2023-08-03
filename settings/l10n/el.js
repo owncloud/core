@@ -131,8 +131,6 @@ OC.L10N.register(
     "Delete user" : "Διαγραφή χρήστη",
     "The invitation email for this user has been resent" : "Η πρόσκληση για αυτόν τον χρήστη εστάλη εκ νέου",
     "The invitation email for this user could not be resent" : "Η πρόσκληση για αυτόν τον χρήστη δεν μπορεί να σταλεί εκ νέου",
-    "Group already exists" : "Η ομάδα υπάρχει ήδη",
-    "add group" : "προσθήκη ομάδας",
     "Invalid quota value \"{val}\"" : "Μη έγκυρη τιμή ορίου \"{val}\"",
     "enabled" : "ενεργοποιημένο",
     "disabled" : "απενεργοποιημένο",
