@@ -1,0 +1,7 @@
+Change: require firebase/php-jwt in core
+
+firebase/php-jwt version 6 is now part of core and all apps can rely on it
+
+https://github.com/owncloud/core/pull/40901
+https://github.com/owncloud/files_texteditor/pull/401
+https://github.com/owncloud/wopi/pull/254

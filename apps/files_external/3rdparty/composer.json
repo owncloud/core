@@ -11,6 +11,7 @@
 		}
 	},
 	"replace": {
+		"firebase/php-jwt": "^6.8",
 		"guzzlehttp/guzzle": "^7.7",
 		"guzzlehttp/psr7": "^2.5",
 		"phpseclib/phpseclib": ">=3.0.20"
