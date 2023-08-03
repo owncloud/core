@@ -64,7 +64,8 @@
         "composer/semver": "^3.3",
         "ext-json": "*",
         "sabre/vobject": "^4.5",
-        "dg/composer-cleaner": "^2.2"
+        "dg/composer-cleaner": "^2.2",
+        "firebase/php-jwt": "^6.8"
     },
     "extra": {
         "bamarni-bin": {
