@@ -23,7 +23,7 @@
  * This node module is run by the karma executable to specify its configuration.
  *
  * The list of files from all needed JavaScript files including the ones from the
- * apps to test, and the test specs will be passed as configuration object.
+ * apps to test, and the test specs will be passed as a configuration object.
  *
  * Note that it is possible to test a single app by setting the KARMA_TESTSUITE
  * environment variable to the apps name, for example "core" or "files_encryption".
