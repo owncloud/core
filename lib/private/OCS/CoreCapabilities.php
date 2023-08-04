@@ -24,6 +24,7 @@ namespace OC\OCS;
 
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
+use OCP\IURLGenerator;
 use OCP\Util;
 
 /**
@@ -32,22 +33,18 @@ use OCP\Util;
  * @package OC\OCS
  */
 class CoreCapabilities implements ICapability {
-	/** @var IConfig */
-	private $config;
+	private IConfig $config;
+	private IURLGenerator $generator;
 
-	/**
-	 * @param IConfig $config
-	 */
-	public function __construct(IConfig $config) {
+	public function __construct(IConfig $config, IURLGenerator $generator) {
 		$this->config = $config;
+		$this->generator = $generator;
 	}
 
 	/**
 	 * Return this classes capabilities
-	 *
-	 * @return array
 	 */
-	public function getCapabilities() {
+	public function getCapabilities(): array {
 		return [
 			'core' => [
 				// pollinterval is an integer number of milliseconds
@@ -55,6 +52,16 @@ class CoreCapabilities implements ICapability {
 				'webdav-root' => $this->config->getSystemValue('webdav-root', 'remote.php/webdav'),
 				'status' => Util::getStatusInfo(true),
 				'support-url-signing' => true,
+			],
+			'files' => [
+				"app_providers" => [[
+					"enabled" => true,
+					"version" => "1.1.0",
+					"apps_url" => $this->generator->linkToRoute("core.AppRegistry.list"),
+					# "open_url" => $this->generator->linkToRoute("core.AppRegistry.open"),
+					"open_web_url" => $this->generator->linkToRoute("core.AppRegistry.openWithWeb"),
+					"new_url" => $this->generator->linkToRoute("core.AppRegistry.new")
+				]]
 			]
 		];
 	}

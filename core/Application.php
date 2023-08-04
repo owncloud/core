@@ -30,6 +30,7 @@ namespace OC\Core;
 
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
+use OC\Core\Controller\AppRegistryController;
 use OC\Core\Controller\AvatarController;
 use OC\Core\Controller\CloudController;
 use OC\Core\Controller\CronController;
@@ -64,10 +65,23 @@ class Application extends App {
 		parent::__construct('core', $urlParams);
 
 		$container = $this->getContainer();
+		$server = $container->getServer();
 
 		/**
 		 * Controllers
 		 */
+		$container->registerService('AppRegistryController', static function (SimpleContainer $c) use ($server) {
+			return new AppRegistryController(
+				$c->query('AppName'),
+				$server->getRequest(),
+				$server->getAppManager(),
+				$server->query('LazyRootFolder'),
+				$server->getURLGenerator(),
+				$server->getConfig(),
+				$server->getLogger()
+			);
+		});
+
 		$container->registerService('LostController', static function (SimpleContainer $c) {
 			return new LostController(
 				$c->query('AppName'),
