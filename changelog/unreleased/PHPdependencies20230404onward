@@ -4,6 +4,8 @@ The following have been updated:
 - doctrine/deprecations (1.0.0 to 1.1.1)
 - egulias/email-validator (3.2.5 to 3.2.6)
 - guzzlehttp/guzzle (7.5.0 to 7.7.0)
+- guzzlehttp/promises (2.0.0 to 2.0.1)
+- guzzlehttp/psr7 (2.5.0 to 2.6.0)
 - league/mime-type-detection (1.11.0 to 1.12.0)
 - owncloud/tarstreamer (2.0.0 to 2.1.0)
 - pear/pear-core-minimal (1.10.11 to 1.10.13)
@@ -33,3 +35,4 @@ https://github.com/owncloud/core/pull/40853
 https://github.com/owncloud/core/pull/40854
 https://github.com/owncloud/core/pull/40867
 https://github.com/owncloud/core/pull/40900
+https://github.com/owncloud/core/pull/40907
