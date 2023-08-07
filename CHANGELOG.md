@@ -195,7 +195,8 @@ Details
 
    The following have been updated: - doctrine/deprecations (1.0.0 to 1.1.1) -
    egulias/email-validator (3.2.5 to 3.2.6) - guzzlehttp/guzzle (7.5.0 to 7.7.0) -
-   league/mime-type-detection (1.11.0 to 1.12.0) - owncloud/tarstreamer (2.0.0 to 2.1.0) -
+   guzzlehttp/promises (2.0.0 to 2.0.1) - guzzlehttp/psr7 (2.5.0 to 2.6.0) -
+   league/mime-type-detection (1.11.0 to 1.13.0) - owncloud/tarstreamer (2.0.0 to 2.1.0) -
    pear/pear-core-minimal (1.10.11 to 1.10.13) - phpseclib/phpseclib (3.0.19 to 3.0.21) -
    punic/punic (3.8.0 to 3.8.1) - sabre/http (5.1.6 to 5.1.7) - sabre/uri (2.3.2 to 2.3.3) -
    sabre/xml (2.2.5 to 2.2.6)
@@ -219,6 +220,7 @@ Details
    https://github.com/owncloud/core/pull/40854
    https://github.com/owncloud/core/pull/40867
    https://github.com/owncloud/core/pull/40900
+   https://github.com/owncloud/core/pull/40907
 
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
 
