@@ -341,7 +341,8 @@ class ViewController extends Controller {
 				'error',
 				[
 					"errors" => [$param],
-					"continue" => $this->l10n->t("Continue")
+					"base_url" => \OC::$server->getURLGenerator()->getAbsoluteURL("/"),
+					"continue_text" => $this->l10n->t("Continue")
 				],
 				'guest'
 			);
