@@ -371,25 +371,32 @@ class JobList implements IJobList {
 		$result->closeCursor();
 	}
 
-	public function listInvalidJobs(): array {
+	/**
+	 * @inheritdoc
+	 */
+	public function listJobsIncludingInvalid(
+		\Closure $validJobCallback,
+		\Closure $invalidJobCallback
+	): void {
 		$query = $this->connection->getQueryBuilder();
 		$query->select('*')
 			->from('jobs');
 		$result = $query->execute();
-		$jobData = [];
 
 		while ($row = $result->fetch()) {
-			try {
-				// Try to load the job as a service
-				\OC::$server->query($row['class']);
-			} catch (QueryException $e) {
-				if (!\class_exists($row['class'])) {
-					// job is from a disabled app or old version of an app
-					// so return the data about it
-					$jobData[] = $row;
+			$job = $this->buildJob($row);
+			if ($job) {
+				if ($validJobCallback($job) === false) {
+					break;
+				}
+			} else {
+				// The class of the job probably cannot be found anymore.
+				// Use the invalid job callback to generate the row of output.
+				if ($invalidJobCallback($row) === false) {
+					break;
 				}
 			}
 		}
-		return $jobData;
+		$result->closeCursor();
 	}
 }

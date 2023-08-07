@@ -42,7 +42,7 @@ class Status extends Command {
 		$this
 			->setName('background:queue:status')
 			->setDescription('List queue status')
-			->addOption('display-invalid-jobs', null, InputOption::VALUE_NONE, 'Display jobs that are no longer valid');
+			->addOption('display-invalid-jobs', null, InputOption::VALUE_NONE, 'Also display jobs that are no longer valid');
 	}
 
 	private function getJobArgumentAsString($argument) {
@@ -59,32 +59,43 @@ class Status extends Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$t = new Table($output);
-		$t->setHeaders(['Job ID', 'Job', 'Job Arguments', 'Last Run', 'Last Checked', 'Reserved At', 'Execution Duration (s)']);
-		if ($input->getOption('display-invalid-jobs')) {
-			$invalidJobs = $this->jobList->listInvalidJobs();
-			foreach ($invalidJobs as $invalidJob) {
-				$t->addRow([
-					$invalidJob['id'],
-					$invalidJob['class'],
-					$invalidJob['argument'],
-					$invalidJob['last_run'],
-					$invalidJob['last_checked'],
-					$invalidJob['reserved_at'],
-					$invalidJob['execution_duration'],
-				]);
-			}
+		$displayInvalidJobs = $input->getOption('display-invalid-jobs');
+		$headers = ['Job ID', 'Job', 'Job Arguments', 'Last Run', 'Last Checked', 'Reserved At', 'Execution Duration (s)'];
+		if ($displayInvalidJobs) {
+			$headers[] = "Status";
+		}
+		$t->setHeaders($headers);
+		$validJobCallback = function (IJob $job) use ($t) {
+			$t->addRow([
+				$job->getId(),
+				\get_class($job),
+				$this->getJobArgumentAsString($job->getArgument()),
+				$job->getLastRun() == 0 ? 'N/A' : \date('c', $job->getLastRun()),
+				\date('c', $job->getLastChecked()),
+				$job->getReservedAt() == 0 ? 'N/A' : \date('c', $job->getReservedAt()),
+				$job->getExecutionDuration() == -1 ? 'N/A' : $job->getExecutionDuration(),
+			]);
+			return true;
+		};
+		if ($displayInvalidJobs) {
+			$this->jobList->listJobsIncludingInvalid(
+				$validJobCallback,
+				function (array $job) use ($t) {
+					$t->addRow([
+						$job['id'],
+						$job['class'],
+						$job['argument'],
+						$job['last_run'],
+						$job['last_checked'],
+						$job['reserved_at'],
+						$job['execution_duration'],
+						'invalid'
+					]);
+					return true;
+				}
+			);
 		} else {
-			$this->jobList->listJobs(function (IJob $job) use ($t) {
-				$t->addRow([
-					$job->getId(),
-					\get_class($job),
-					$this->getJobArgumentAsString($job->getArgument()),
-					$job->getLastRun() == 0 ? 'N/A' : \date('c', $job->getLastRun()),
-					\date('c', $job->getLastChecked()),
-					$job->getReservedAt() == 0 ? 'N/A' : \date('c', $job->getReservedAt()),
-					$job->getExecutionDuration() == -1 ? 'N/A' : $job->getExecutionDuration(),
-				]);
-			});
+			$this->jobList->listJobs($validJobCallback);
 		}
 		$t->render();
 		return 0;

@@ -138,18 +138,47 @@ interface IJobList {
 	/**
 	 * iterate over all valid jobs in the queue
 	 *
+	 * The callback will be called for each job.
+	 * An IJob object will be passed to the callback.
+	 * The callback should do whatever the caller wants with the IJob.
+	 * For example, generate some output about the job.
+	 *
+	 * The callback should return a boolean.
+	 * If true, then the iteration will continue to the next job.
+	 * If false, then the iteration stops early.
+	 *
+	 * @param \Closure $callback callback(IJob $job):boolean
 	 * @return void
 	 * @since 10.2.0
 	 */
 	public function listJobs(\Closure $callback);
 
 	/**
-	 * get the details of all invalid jobs in the queue
+	 * iterate over all jobs in the queue, including invalid jobs
 	 *
-	 * @return array
+	 * The validJobCallback will be called for each job that has a valid class.
+	 * An IJob object will be passed to the callback.
+	 * The callback should do whatever the caller wants with the IJob.
+	 * For example, generate some output about the job.
+	 *
+	 * The invalidJobCallback will be called for each job that does not have a valid class.
+	 * In this case, it is not possible to construct an IJob object, so an array
+	 * of data about the job will be passed to the callback.
+	 * The array has keys for 'id', 'class', 'argument', 'last_run', 'last_checked',
+	 * 'reserved_at' and 'execution_duration'.
+	 * The callback should do whatever the caller wants with the data about the job.
+	 * For example, generate some output about the job.
+	 *
+	 * Each callback should return a boolean.
+	 * If true, then the iteration will continue to the next job.
+	 * If false, then the iteration stops early.
+	 *
+	 * @param \Closure $validJobCallback callback(IJob $job):boolean
+	 * @param \Closure $invalidJobCallback callback(array $row):boolean
+	 * @return void
 	 * @since 10.13.0
 	 */
-	public function listInvalidJobs();
+	public function listJobsIncludingInvalid(\Closure $validJobCallback, \Closure $invalidJobCallback): void;
 
 	/**
 	 * remove a specific job by id

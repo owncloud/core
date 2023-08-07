@@ -122,28 +122,39 @@ EOS;
 	}
 
 	public function testListingInvalidJob() {
-		$this->jobList->expects($this->any())->method('listInvalidJobs')
-			->willReturn([
-				[
-					'id' => '42',
-					'class' => 'OC\BackgroundJob\Legacy\RegularJob',
-					'argument' => '{"k":"v"}',
-					'last_run' => '2023-01-01T00:00:10+00:00',
-					'last_checked' => '2023-06-01T00:00:40+00:00',
-					'reserved_at' => '2023-06-02T00:00:40+00:00',
-					'execution_duration' => 7,
-				]
-			]);
+		$this->jobList->expects($this->any())->method('listJobsIncludingInvalid')
+			->willReturnCallback(
+				function (\Closure $validJobCallback, \Closure $invalidJobCallback) {
+					$job = new RegularJob();
+					$job->setId(42);
+					$job->setArgument(['k'=> 'v']);
+					$job->setLastRun(10);
+					$job->setLastChecked(10);
+					$job->setReservedAt(10);
+					$job->setExecutionDuration(7);
+					$validJobCallback($job);
+					$row = [
+						'id' => 98,
+						'class' => 'SomeUnknownClass',
+						'argument' => '',
+						'last_run' => '2020-01-01T00:00:20+00:00',
+						'last_checked' => '2020-01-01T00:00:30+00:00',
+						'reserved_at' => '2020-01-01T00:00:40+00:00',
+						'execution_duration' => 14];
+					$invalidJobCallback($row);
+				}
+			);
 		$this->commandTester->execute(
 			['--display-invalid-jobs' => null]
 		);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
-+--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
-| Job ID | Job                                | Job Arguments | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) |
-+--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
-| 42     | OC\BackgroundJob\Legacy\RegularJob | {"k":"v"}     | 2023-01-01T00:00:10+00:00 | 2023-06-01T00:00:40+00:00 | 2023-06-02T00:00:40+00:00 | 7                      |
-+--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+
++--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
+| Job ID | Job                                | Job Arguments | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) | Status  |
++--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
+| 42     | OC\BackgroundJob\Legacy\RegularJob | {"k":"v"}     | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 7                      |         |
+| 98     | SomeUnknownClass                   |               | 2020-01-01T00:00:20+00:00 | 2020-01-01T00:00:30+00:00 | 2020-01-01T00:00:40+00:00 | 14                     | invalid |
++--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
 EOS;
 
 		$this->assertStringContainsString($expected, $output);
