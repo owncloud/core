@@ -1,0 +1,5 @@
+Bugfix: Cleanup storage and database after failed files uploads
+
+Storage and database is cleaned up of any remaining items in case a files upload fails.
+
+https://github.com/owncloud/core/pull/40892

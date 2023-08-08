@@ -39,9 +39,12 @@ class Storage extends Wrapper {
 	/**
 	 * Disable trash logic
 	 *
+	 * NOTE: this public for a very specific purpose to handle broken uploads.
+	 * Don't touch this property unless you know what this is doing! :dancers:
+	 *
 	 * @var bool
 	 */
-	private static $disableTrash = false;
+	public static $disableTrash = false;
 
 	/** @var  IUserManager */
 	private $userManager;
