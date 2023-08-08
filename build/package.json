@@ -41,13 +41,17 @@
     "jasmine-core": "^2.99.1",
     "jasmine-sinon": "^0.4.0",
     "jsdoc": "~3.6.10",
-    "karma": "^6.4.1",
+    "karma": "^6.4.2",
     "karma-coverage": "*",
     "karma-firefox-launcher": "^2.1.2",
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
     "sinon": "^12.0.1"
+  },
+  "resolutions": {
+    "socket.io-parser": "4.2.3",
+    "qs": "6.7.3"
   },
   "engines": {
     "node": ">= 14.17.0",
