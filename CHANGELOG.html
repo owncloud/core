@@ -21,6 +21,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Skip share_folder for guest users: <a href="https://github.com/owncloud/core/pull/40864">#40864</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump files app version: <a href="https://github.com/owncloud/core/pull/40878">#40878</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Apply same restrictions for all the shares: <a href="https://github.com/owncloud/core/pull/40885">#40885</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Cleanup storage and database after failed files uploads: <a href="https://github.com/owncloud/core/pull/40892">#40892</a></li>
         <li class="type-change changelog-item">Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40724">#40724</a></li>
         <li class="type-change changelog-item">Change - Fix name length check on federated shares: <a href="https://github.com/owncloud/core/pull/40726">#40726</a></li>
@@ -169,6 +170,12 @@
    minimum configured, otherwise only exact matches will be shown.
             </p>
             <p>https://github.com/owncloud/core/pull/40885<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Cleanup storage and database after failed files uploads: <a href="https://github.com/owncloud/core/pull/40892">#40892</a></p>
+            <p>Storage and database is cleaned up of any remaining items in case a files upload fails.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40892<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Upgrade to Symfony 5: <a href="https://github.com/owncloud/core/issues/39630">#39630</a></p>

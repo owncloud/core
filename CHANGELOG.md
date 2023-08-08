@@ -23,6 +23,7 @@ Summary
 * Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
 * Bugfix - Bump files app version: [#40878](https://github.com/owncloud/core/pull/40878)
 * Bugfix - Apply same restrictions for all the shares: [#40885](https://github.com/owncloud/core/pull/40885)
+* Bugfix - Cleanup storage and database after failed files uploads: [#40892](https://github.com/owncloud/core/pull/40892)
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 * Change - Update PHP dependencies: [#40724](https://github.com/owncloud/core/pull/40724)
 * Change - Fix name length check on federated shares: [#40726](https://github.com/owncloud/core/pull/40726)
@@ -176,6 +177,12 @@ Details
    minimum configured, otherwise only exact matches will be shown.
 
    https://github.com/owncloud/core/pull/40885
+
+* Bugfix - Cleanup storage and database after failed files uploads: [#40892](https://github.com/owncloud/core/pull/40892)
+
+   Storage and database is cleaned up of any remaining items in case a files upload fails.
+
+   https://github.com/owncloud/core/pull/40892
 
 * Change - Upgrade to Symfony 5: [#39630](https://github.com/owncloud/core/issues/39630)
 
