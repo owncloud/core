@@ -269,6 +269,16 @@ class OAuth2 implements FetchAuthTokenInterface
     private $additionalClaims;
 
     /**
+     * The code verifier for PKCE for OAuth 2.0. When set, the authorization
+     * URI will contain the Code Challenge and Code Challenge Method querystring
+     * parameters, and the token URI will contain the Code Verifier parameter.
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc7636
+     * @var ?string
+     */
+    private $codeVerifier;
+
+    /**
      * Create a new OAuthCredentials.
      *
      * The configuration array accepts various options
@@ -357,6 +367,7 @@ class OAuth2 implements FetchAuthTokenInterface
             'signingAlgorithm' => null,
             'scope' => null,
             'additionalClaims' => [],
+            'codeVerifier' => null,
         ], $config);
 
         $this->setAuthorizationUri($opts['authorizationUri']);
@@ -377,6 +388,7 @@ class OAuth2 implements FetchAuthTokenInterface
         $this->setScope($opts['scope']);
         $this->setExtensionParams($opts['extensionParams']);
         $this->setAdditionalClaims($opts['additionalClaims']);
+        $this->setCodeVerifier($opts['codeVerifier']);
         $this->updateToken($opts);
     }
 
@@ -496,6 +508,9 @@ class OAuth2 implements FetchAuthTokenInterface
             case 'authorization_code':
                 $params['code'] = $this->getCode();
                 $params['redirect_uri'] = $this->getRedirectUri();
+                if ($this->codeVerifier) {
+                    $params['code_verifier'] = $this->codeVerifier;
+                }
                 $this->addClientCredentials($params);
                 break;
             case 'password':
@@ -675,7 +690,7 @@ class OAuth2 implements FetchAuthTokenInterface
     /**
      * Builds the authorization Uri that the user should be redirected to.
      *
-     * @param array<mixed> $config configuration options that customize the return url
+     * @param array<mixed> $config configuration options that customize the return url.
      * @return UriInterface the authorization Url.
      * @throws InvalidArgumentException
      */
@@ -710,6 +725,10 @@ class OAuth2 implements FetchAuthTokenInterface
                 'prompt and approval_prompt are mutually exclusive'
             );
         }
+        if ($this->codeVerifier) {
+            $params['code_challenge'] = $this->getCodeChallenge($this->codeVerifier);
+            $params['code_challenge_method'] = $this->getCodeChallengeMethod();
+        }
 
         // Construct the uri object; return it if it is valid.
         $result = clone $this->authorizationUri;
@@ -726,6 +745,68 @@ class OAuth2 implements FetchAuthTokenInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCodeVerifier(): ?string
+    {
+        return $this->codeVerifier;
+    }
+
+    /**
+     * A cryptographically random string that is used to correlate the
+     * authorization request to the token request.
+     *
+     * The code verifier for PKCE for OAuth 2.0. When set, the authorization
+     * URI will contain the Code Challenge and Code Challenge Method querystring
+     * parameters, and the token URI will contain the Code Verifier parameter.
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc7636
+     *
+     * @param string|null $codeVerifier
+     */
+    public function setCodeVerifier(?string $codeVerifier): void
+    {
+        $this->codeVerifier = $codeVerifier;
+    }
+
+    /**
+     * Generates a random 128-character string for the "code_verifier" parameter
+     * in PKCE for OAuth 2.0. This is a cryptographically random string that is
+     * determined using random_int, hashed using "hash" and sha256, and base64
+     * encoded.
+     *
+     * When this method is called, the code verifier is set on the object.
+     *
+     * @return string
+     */
+    public function generateCodeVerifier(): string
+    {
+        return $this->codeVerifier = $this->generateRandomString(128);
+    }
+
+    private function getCodeChallenge(string $randomString): string
+    {
+        return rtrim(strtr(base64_encode(hash('sha256', $randomString, true)), '+/', '-_'), '=');
+    }
+
+    private function getCodeChallengeMethod(): string
+    {
+        return 'S256';
+    }
+
+    private function generateRandomString(int $length): string
+    {
+        $validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~';
+        $validCharsLen = strlen($validChars);
+        $str = '';
+        $i = 0;
+        while ($i++ < $length) {
+            $str .= $validChars[random_int(0, $validCharsLen - 1)];
+        }
+        return $str;
     }
 
     /**
@@ -1348,7 +1429,8 @@ class OAuth2 implements FetchAuthTokenInterface
     }
 
     /**
-     * Get the granted scopes (if they exist) for the last fetched token.
+     * Get the granted space-separated scopes (if they exist) for the last
+     * fetched token.
      *
      * @return string|null
      */
