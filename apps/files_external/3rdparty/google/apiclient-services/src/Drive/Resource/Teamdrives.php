@@ -31,13 +31,13 @@ use Google\Service\Drive\TeamDriveList;
 class Teamdrives extends \Google\Service\Resource
 {
   /**
-   * Deprecated use drives.create instead. (teamdrives.create)
+   * Deprecated: Use `drives.create` instead. (teamdrives.create)
    *
-   * @param string $requestId An ID, such as a random UUID, which uniquely
-   * identifies this user's request for idempotent creation of a Team Drive. A
-   * repeated request by the same user and with the same request ID will avoid
-   * creating duplicates by attempting to create the same Team Drive. If the Team
-   * Drive already exists a 409 error will be returned.
+   * @param string $requestId Required. An ID, such as a random UUID, which
+   * uniquely identifies this user's request for idempotent creation of a Team
+   * Drive. A repeated request by the same user and with the same request ID will
+   * avoid creating duplicates by attempting to create the same Team Drive. If the
+   * Team Drive already exists a 409 error will be returned.
    * @param TeamDrive $postBody
    * @param array $optParams Optional parameters.
    * @return TeamDrive
@@ -49,7 +49,7 @@ class Teamdrives extends \Google\Service\Resource
     return $this->call('create', [$params], TeamDrive::class);
   }
   /**
-   * Deprecated use drives.delete instead. (teamdrives.delete)
+   * Deprecated: Use `drives.delete` instead. (teamdrives.delete)
    *
    * @param string $teamDriveId The ID of the Team Drive
    * @param array $optParams Optional parameters.
@@ -61,7 +61,7 @@ class Teamdrives extends \Google\Service\Resource
     return $this->call('delete', [$params]);
   }
   /**
-   * Deprecated use drives.get instead. (teamdrives.get)
+   * Deprecated: Use `drives.get` instead. (teamdrives.get)
    *
    * @param string $teamDriveId The ID of the Team Drive
    * @param array $optParams Optional parameters.
@@ -78,7 +78,7 @@ class Teamdrives extends \Google\Service\Resource
     return $this->call('get', [$params], TeamDrive::class);
   }
   /**
-   * Deprecated use drives.list instead. (teamdrives.listTeamdrives)
+   * Deprecated: Use `drives.list` instead. (teamdrives.listTeamdrives)
    *
    * @param array $optParams Optional parameters.
    *
@@ -97,7 +97,7 @@ class Teamdrives extends \Google\Service\Resource
     return $this->call('list', [$params], TeamDriveList::class);
   }
   /**
-   * Deprecated use drives.update instead (teamdrives.update)
+   * Deprecated: Use `drives.update` instead. (teamdrives.update)
    *
    * @param string $teamDriveId The ID of the Team Drive
    * @param TeamDrive $postBody

@@ -23,8 +23,7 @@ use Google\Client;
  * Service definition for Drive (v3).
  *
  * <p>
- * Manages files in Drive including uploading, downloading, searching, detecting
- * changes, and updating sharing permissions.</p>
+ * The Google Drive API allows clients to access resources from Google Drive.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -587,6 +586,10 @@ class Drive extends \Google\Service
               'path' => 'files/trash',
               'httpMethod' => 'DELETE',
               'parameters' => [
+                'driveId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'enforceSingleParent' => [
                   'location' => 'query',
                   'type' => 'boolean',

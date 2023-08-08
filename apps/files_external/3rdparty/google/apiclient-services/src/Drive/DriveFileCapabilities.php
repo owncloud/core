@@ -86,7 +86,15 @@ class DriveFileCapabilities extends \Google\Model
   /**
    * @var bool
    */
+  public $canModifyEditorContentRestriction;
+  /**
+   * @var bool
+   */
   public $canModifyLabels;
+  /**
+   * @var bool
+   */
+  public $canModifyOwnerContentRestriction;
   /**
    * @var bool
    */
@@ -147,6 +155,10 @@ class DriveFileCapabilities extends \Google\Model
    * @var bool
    */
   public $canRemoveChildren;
+  /**
+   * @var bool
+   */
+  public $canRemoveContentRestriction;
   /**
    * @var bool
    */
@@ -399,6 +411,20 @@ class DriveFileCapabilities extends \Google\Model
   /**
    * @param bool
    */
+  public function setCanModifyEditorContentRestriction($canModifyEditorContentRestriction)
+  {
+    $this->canModifyEditorContentRestriction = $canModifyEditorContentRestriction;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanModifyEditorContentRestriction()
+  {
+    return $this->canModifyEditorContentRestriction;
+  }
+  /**
+   * @param bool
+   */
   public function setCanModifyLabels($canModifyLabels)
   {
     $this->canModifyLabels = $canModifyLabels;
@@ -409,6 +435,20 @@ class DriveFileCapabilities extends \Google\Model
   public function getCanModifyLabels()
   {
     return $this->canModifyLabels;
+  }
+  /**
+   * @param bool
+   */
+  public function setCanModifyOwnerContentRestriction($canModifyOwnerContentRestriction)
+  {
+    $this->canModifyOwnerContentRestriction = $canModifyOwnerContentRestriction;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanModifyOwnerContentRestriction()
+  {
+    return $this->canModifyOwnerContentRestriction;
   }
   /**
    * @param bool
@@ -619,6 +659,20 @@ class DriveFileCapabilities extends \Google\Model
   public function getCanRemoveChildren()
   {
     return $this->canRemoveChildren;
+  }
+  /**
+   * @param bool
+   */
+  public function setCanRemoveContentRestriction($canRemoveContentRestriction)
+  {
+    $this->canRemoveContentRestriction = $canRemoveContentRestriction;
+  }
+  /**
+   * @return bool
+   */
+  public function getCanRemoveContentRestriction()
+  {
+    return $this->canRemoveContentRestriction;
   }
   /**
    * @param bool

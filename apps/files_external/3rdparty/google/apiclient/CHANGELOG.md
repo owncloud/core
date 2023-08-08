@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.15.0](https://github.com/googleapis/google-api-php-client/compare/v2.14.0...v2.15.0) (2023-05-18)
+
+
+### Features
+
+* Add pkce support and upgrade examples ([#2438](https://github.com/googleapis/google-api-php-client/issues/2438)) ([bded223](https://github.com/googleapis/google-api-php-client/commit/bded223ece445a6130cde82417b20180b1d6698a))
+* Drop support for 7.3 and below ([#2431](https://github.com/googleapis/google-api-php-client/issues/2431)) ([c765b37](https://github.com/googleapis/google-api-php-client/commit/c765b379e95ab272b6a87aa802d9f5507eaeb2e7))
+
+## [2.14.0](https://github.com/googleapis/google-api-php-client/compare/v2.13.2...v2.14.0) (2023-05-11)
+
+
+### Features
+
+* User-supplied query params for auth url ([#2432](https://github.com/googleapis/google-api-php-client/issues/2432)) ([74a7d7b](https://github.com/googleapis/google-api-php-client/commit/74a7d7b838acb08afc02b449f338fbe6577cb03c))
+
 ## [2.13.2](https://github.com/googleapis/google-api-php-client/compare/v2.13.1...v2.13.2) (2023-03-23)
 
 

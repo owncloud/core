@@ -34,6 +34,7 @@ abstract class CredentialsLoader implements
 {
     const TOKEN_CREDENTIAL_URI = 'https://oauth2.googleapis.com/token';
     const ENV_VAR = 'GOOGLE_APPLICATION_CREDENTIALS';
+    const QUOTA_PROJECT_ENV_VAR = 'GOOGLE_CLOUD_QUOTA_PROJECT';
     const WELL_KNOWN_PATH = 'gcloud/application_default_credentials.json';
     const NON_WINDOWS_WELL_KNOWN_PATH_BASE = '.config';
     const MTLS_WELL_KNOWN_PATH = '.secureConnect/context_aware_metadata.json';
@@ -225,6 +226,18 @@ abstract class CredentialsLoader implements
             $metadata_copy[self::AUTH_METADATA_KEY] = ['Bearer ' . $result['id_token']];
         }
         return $metadata_copy;
+    }
+
+    /**
+     * Fetch a quota project from the environment variable
+     * GOOGLE_CLOUD_QUOTA_PROJECT. Return null if
+     * GOOGLE_CLOUD_QUOTA_PROJECT is not specified.
+     *
+     * @return string|null
+     */
+    public static function quotaProjectFromEnv()
+    {
+        return getenv(self::QUOTA_PROJECT_ENV_VAR) ?: null;
     }
 
     /**

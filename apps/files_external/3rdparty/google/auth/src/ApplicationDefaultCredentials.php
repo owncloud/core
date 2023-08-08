@@ -170,6 +170,11 @@ class ApplicationDefaultCredentials
             $httpHandler = HttpHandlerFactory::build($client);
         }
 
+        if (is_null($quotaProject)) {
+            // if a quota project isn't specified, try to get one from the env var
+            $quotaProject = CredentialsLoader::quotaProjectFromEnv();
+        }
+
         if (!is_null($jsonKey)) {
             if ($quotaProject) {
                 $jsonKey['quota_project_id'] = $quotaProject;
