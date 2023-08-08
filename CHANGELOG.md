@@ -20,6 +20,7 @@ Summary
 * Bugfix - Verbose command output: [#40844](https://github.com/owncloud/core/pull/40844)
 * Bugfix - Versions expire job does not error with federated shares: [#40847](https://github.com/owncloud/core/pull/40847)
 * Bugfix - Request header can hold an empty string if not set: [#40856](https://github.com/owncloud/core/pull/40856)
+* Bugfix - DAV storage should return false on stat() if connection fails: [#40861](https://github.com/owncloud/core/pull/40861)
 * Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
 * Bugfix - Bump files app version: [#40878](https://github.com/owncloud/core/pull/40878)
 * Bugfix - Apply same restrictions for all the shares: [#40885](https://github.com/owncloud/core/pull/40885)
@@ -149,6 +150,14 @@ Details
    Due to Apache rewrite rules originally not existing headers can hold an empty string.
 
    https://github.com/owncloud/core/pull/40856
+
+* Bugfix - DAV storage should return false on stat() if connection fails: [#40861](https://github.com/owncloud/core/pull/40861)
+
+   Trying to connect an external WebDAV storage to a non-WebDAV server will now fail when trying to
+   initiate the first connection. This prevents connecting to an invalid server, and thus
+   prevents problems for users.
+
+   https://github.com/owncloud/core/pull/40861
 
 * Bugfix - Skip share_folder for guest users: [#40864](https://github.com/owncloud/core/pull/40864)
 

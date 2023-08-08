@@ -18,6 +18,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Verbose command output: <a href="https://github.com/owncloud/core/pull/40844">#40844</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Versions expire job does not error with federated shares: <a href="https://github.com/owncloud/core/pull/40847">#40847</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Request header can hold an empty string if not set: <a href="https://github.com/owncloud/core/pull/40856">#40856</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - DAV storage should return false on stat() if connection fails: <a href="https://github.com/owncloud/core/pull/40861">#40861</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Skip share_folder for guest users: <a href="https://github.com/owncloud/core/pull/40864">#40864</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Bump files app version: <a href="https://github.com/owncloud/core/pull/40878">#40878</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Apply same restrictions for all the shares: <a href="https://github.com/owncloud/core/pull/40885">#40885</a></li>
@@ -142,6 +143,14 @@
             <p>Due to Apache rewrite rules originally not existing headers can hold an empty string.
             </p>
             <p>https://github.com/owncloud/core/pull/40856<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - DAV storage should return false on stat() if connection fails: <a href="https://github.com/owncloud/core/pull/40861">#40861</a></p>
+            <p>Trying to connect an external WebDAV storage to a non-WebDAV server will now fail when trying to
+   initiate the first connection. This prevents connecting to an invalid server, and thus
+   prevents problems for users.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40861<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Skip share_folder for guest users: <a href="https://github.com/owncloud/core/pull/40864">#40864</a></p>
