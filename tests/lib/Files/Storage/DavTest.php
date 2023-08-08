@@ -23,6 +23,7 @@ namespace Test\Files\Storage;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Psr7\Stream;
 use OC\Files\Cache\Cache;
 use OC\Files\Storage\DAV;
 use OCP\AppFramework\Http;
@@ -525,7 +526,7 @@ class DavTest extends TestCase {
 	public function testFopenRead() {
 		$response = $this->createMock(\Psr\Http\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_OK);
-		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
+		$response->method('getBody')->willReturn(new Stream(\fopen('data://text/plain,response body', 'r')));
 
 		$this->httpClient->expects($this->once())
 			->method('get')
@@ -539,8 +540,8 @@ class DavTest extends TestCase {
 			->willReturn($response);
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'r');
-		$contents = \stream_get_contents($fh);
-		\fclose($fh);
+		$contents = $fh->getContents();
+		$fh->close();
 
 		$this->assertEquals('response body', $contents);
 	}
@@ -586,7 +587,7 @@ class DavTest extends TestCase {
 
 		$response = $this->createMock(\Psr\Http\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_LOCKED);
-		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
+		$response->method('getBody')->willReturn(new Stream(\fopen('data://text/plain,response body', 'r')));
 
 		$this->httpClient->expects($this->once())
 			->method('get')

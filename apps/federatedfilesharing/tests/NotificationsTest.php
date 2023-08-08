@@ -24,13 +24,13 @@
 namespace OCA\FederatedFileSharing\Tests;
 
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Stream;
 use Psr\Http\Message\ResponseInterface;
 use OC\AppFramework\Http;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\Ocm\NotificationManager;
-use OCA\FederatedFileSharing\Ocm\Permissions;
 use OCP\BackgroundJob\IJobList;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
@@ -257,7 +257,7 @@ class NotificationsTest extends \Test\TestCase {
 	public function dataTryHttpPostToShareEndpointInException() {
 		$responseMock = $this->createMock(ResponseInterface::class);
 		$responseMock->method('getBody')
-			->willReturn('User does not exist');
+			->willReturn(new Stream(fopen('data://text/plain,' . 'User does not exist', 'r')));
 
 		$discExceptionMock = $this->createMock(ClientException::class);
 		$discExceptionMock->method('getResponse')->willReturn($responseMock);
