@@ -1,0 +1,7 @@
+Bugfix: DAV storage should return false on stat() if connection fails
+
+Trying to connect an external WebDAV storage to a non-WebDAV server will now
+fail when trying to initiate the first connection. This prevents connecting
+to an invalid server, and thus prevents problems for users.
+
+https://github.com/owncloud/core/pull/40861

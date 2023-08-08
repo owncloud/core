@@ -45,6 +45,7 @@ use OCP\Files\FileInfo;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
+use Sabre\DAV\Exception as SabreException;
 use Sabre\DAV\Xml\Property\ResourceType;
 use Sabre\HTTP\Client;
 use Sabre\HTTP\ClientHttpException;
@@ -69,8 +70,6 @@ class DAV extends Common {
 	protected $secure;
 	/** @var string */
 	protected $root;
-	/** @var string */
-	protected $certPath;
 	/** @var bool */
 	protected $ready;
 	/** @var Client */
@@ -158,7 +157,6 @@ class DAV extends Common {
 		return 'webdav::' . $this->user . '@' . $this->host . '/' . $this->root;
 	}
 
-	/** {@inheritdoc} */
 	public function createBaseUri() {
 		$baseUri = 'http';
 		if ($this->secure) {
@@ -243,10 +241,12 @@ class DAV extends Common {
 	 * If not, request it from the server then store to cache.
 	 *
 	 * @param string $path path to propfind
-	 *
+	 * @param bool $strictNotFoundCheck
 	 * @return array|boolean propfind response or false if the entry was not found
 	 *
-	 * @throws ClientHttpException
+	 * @throws StorageInvalidException
+	 * @throws StorageNotAvailableException
+	 * @throws SabreException
 	 */
 	protected function propfind($path, $strictNotFoundCheck=false) {
 		$path = $this->cleanPath($path);
@@ -291,10 +291,10 @@ class DAV extends Common {
 					$this->convertException($e, $path);
 				}
 			}
-		} else {
-			$response = $cachedResponse;
+			return $response;
 		}
-		return $response;
+
+		return $cachedResponse;
 	}
 
 	/** {@inheritdoc} */
@@ -421,6 +421,9 @@ class DAV extends Common {
 
 	/**
 	 * @param string $tmpFile
+	 * @throws StorageInvalidException
+	 * @throws StorageNotAvailableException
+	 * @throws SabreException
 	 */
 	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
@@ -512,6 +515,9 @@ class DAV extends Common {
 	/**
 	 * @param string $path
 	 * @param string $target
+	 * @throws StorageInvalidException
+	 * @throws StorageNotAvailableException
+	 * @throws SabreException
 	 */
 	protected function uploadFile($path, $target) {
 		$this->init();
@@ -519,7 +525,7 @@ class DAV extends Common {
 		// invalidate
 		$target = $this->cleanPath($target);
 		$this->statCache->remove($target);
-		$source = \fopen($path, 'r');
+		$source = \fopen($path, 'rb');
 
 		$this->removeCachedFile($target);
 		try {
@@ -599,12 +605,16 @@ class DAV extends Common {
 		return false;
 	}
 
-	/** {@inheritdoc} */
+	/**
+	 * @throws StorageInvalidException
+	 * @throws StorageNotAvailableException
+	 * @throws SabreException
+	 */
 	public function stat($path) {
 		try {
 			$response = $this->propfind($path);
 			if ($response === false) {
-				return [];
+				return false;
 			}
 			return [
 				'mtime' => \strtotime($response['{DAV:}getlastmodified']),
@@ -612,8 +622,8 @@ class DAV extends Common {
 			];
 		} catch (\Exception $e) {
 			$this->convertException($e, $path);
+			return false;
 		}
-		return [];
 	}
 
 	/** {@inheritdoc} */
@@ -674,6 +684,7 @@ class DAV extends Common {
 	 * @return bool
 	 * @throws StorageInvalidException
 	 * @throws StorageNotAvailableException
+	 * @throws SabreException
 	 */
 	private function simpleResponse($method, $path, $body, $expected) {
 		$path = $this->cleanPath($path);
@@ -786,8 +797,10 @@ class DAV extends Common {
 	 *
 	 * @param string $path
 	 * @param int $time
-	 * @throws \OCP\Files\StorageNotAvailableException
 	 * @return bool
+	 * @throws StorageInvalidException
+	 * @throws \OCP\Files\StorageNotAvailableException
+	 * @throws SabreException
 	 */
 	public function hasUpdated($path, $time) {
 		$this->init();
@@ -851,6 +864,7 @@ class DAV extends Common {
 	 * @throws StorageInvalidException if the storage is invalid, for example
 	 * when the authentication expired or is invalid
 	 * @throws StorageNotAvailableException if the storage is not available,
+	 * @throws SabreException
 	 * which might be temporary
 	 */
 	private function convertException(Exception $e, $path = '') {
@@ -871,7 +885,7 @@ class DAV extends Common {
 		} elseif (($e instanceof StorageNotAvailableException)
 			|| ($e instanceof StorageInvalidException)
 			|| (
-				$e instanceof \Sabre\DAV\Exception
+				$e instanceof SabreException
 			)) {
 			// rethrow
 			throw $e;

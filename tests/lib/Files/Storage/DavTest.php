@@ -972,6 +972,17 @@ class DavTest extends TestCase {
 		$this->instance->stat('/some%dir/file%type');
 	}
 
+	/**
+	 */
+	public function testStatPropfindFalse() {
+		$this->davClient->expects($this->once())
+			->method('propfind')
+			->willReturn(false);
+
+		$returnValue = $this->instance->stat('/some%dir/file%type');
+		$this->assertFalse($returnValue);
+	}
+
 	public function mimeTypeDataProvider() {
 		return [
 			[
