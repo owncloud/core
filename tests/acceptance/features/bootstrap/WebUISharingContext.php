@@ -441,7 +441,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			// And remember the share id so that later steps can know the latest share.
 			$currentUser = $this->featureContext->getCurrentUser();
 			$shareData = $this->featureContext->getShares($currentUser, $resource);
-			$shareId = null;
+			$shareItem = null;
 			// The share might have been moved somewhere else in an earlier test step
 			// If so, then getPathOfMovedReceivedShare will know the expected path.
 			$expectedPathOfShare = $this->webUIFilesContext->getPathOfMovedReceivedShare();
@@ -450,8 +450,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$expectedPathOfShare = $resource;
 			}
 			$slashExpectedPathOfShare = "/" . \trim($expectedPathOfShare, "/");
-			foreach ($shareData as $shareItem) {
-				$sharePath = (string) $shareItem->path;
+			foreach ($shareData as $data) {
+				$sharePath = (string) $data->path;
 				$slashSharePath = "/" . \trim($sharePath, "/");
 				// The user might have navigated down multiple folders /a/b/c and shared "d".
 				// Normally, the share path will be /a/b/c/d
@@ -463,11 +463,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				// even though it is not the whole of the expected path.
 				// Note: if (str_ends_with($expectedPathOfShare, $slashSharePath)) - will work from PHP8
 				if (substr($slashExpectedPathOfShare, -\strlen($slashSharePath)) === $slashSharePath) {
-					$shareId = (string) $shareItem->id;
+					$shareItem = $data;
 					break;
 				}
 			}
-			if ($shareId === null) {
+			if ((string)$shareItem->id === null) {
 				// Fail early here. We know that there was some trouble with the share.
 				// It will be confusing if we continue to later steps that try to use
 				// a non-existent share id.
@@ -475,7 +475,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 					__METHOD__ . " share with path '$resource' for user '$currentUser' could not be found."
 				);
 			}
-			$this->featureContext->setLastShareIdOf($currentUser, $shareId);
+			$this->featureContext->addToCreatedUserGroupShares(
+				$currentUser,
+				$shareItem
+			);
 		}
 	}
 
@@ -1355,7 +1358,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function thePublicAccessesPublicLinkWithPasswordUsingTheWebui(string $password):void {
-		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
+		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
 		$this->publicLinkFilesPage->enterPublicLinkPassword($password);
@@ -1371,7 +1374,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePublicTriesToAccessPublicLinkWithWrongPasswordUsingTheWebui(string $wrongPassword):void {
-		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
+		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
 		$this->publicLinkFilesPage->enterPublicLinkPassword($wrongPassword);
@@ -1496,8 +1499,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			__METHOD__
 			. " The expected warning message was 'The password is wrong. Try again.', but got '$warningMessage'."
 		);
-		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
-		$lastCreatedLink = \end($createdPublicLinks);
+		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
+		$lastCreatedLink = $createdPublicLinks;
 		$lastSharePath = $lastCreatedLink['url'] . '/authenticate';
 		$currentPath = $this->getSession()->getCurrentUrl();
 		Assert::assertEquals(
@@ -2079,8 +2082,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePublicShouldSeeAnErrorMessageWhileAccessingLastCreatedPublicLinkUsingTheWebui(string $errorMsg):void {
-		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
-		$lastCreatedLink = \end($createdPublicLinks);
+		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
+		$lastCreatedLink = $createdPublicLinks;
 		$path = \str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
@@ -2275,8 +2278,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$address,
 			$this->featureContext->getStepLineRef()
 		);
-		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
-		$lastCreatedPublicLink = \end($createdPublicLinks);
+		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
+		$lastCreatedPublicLink = $createdPublicLinks;
 		Assert::assertStringContainsString(
 			$lastCreatedPublicLink["url"],
 			$content,

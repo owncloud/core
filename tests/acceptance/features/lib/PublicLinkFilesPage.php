@@ -369,7 +369,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function openPublicShareAuthenticateUrl(array $createdPublicLinks, string $baseUrl): void {
-		$lastCreatedLink = \end($createdPublicLinks);
+		$lastCreatedLink = $createdPublicLinks;
 		$path = \str_replace(
 			$baseUrl,
 			"",
