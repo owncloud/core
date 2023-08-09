@@ -41,9 +41,9 @@ class DeleteTest extends TestCase {
 		parent::setUp();
 
 		$this->jobList = $this->createMock(IJobList::class);
-		$this->jobList->expects($this->any())->method('getById')
+		$this->jobList->expects($this->any())->method('jobIdExists')
 			->willReturnCallback(function ($id) {
-				return ($id !== '666') ? true : null;
+				return ($id !== '666') ? true : false;
 			});
 
 		$command = new Delete($this->jobList);

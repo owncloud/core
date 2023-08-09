@@ -26,6 +26,7 @@ use OCP\BackgroundJob\IJobList;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Status extends Command {
@@ -40,7 +41,8 @@ class Status extends Command {
 	protected function configure() {
 		$this
 			->setName('background:queue:status')
-			->setDescription('List queue status');
+			->setDescription('List queue status')
+			->addOption('display-invalid-jobs', null, InputOption::VALUE_NONE, 'Also display jobs that are no longer valid');
 	}
 
 	private function getJobArgumentAsString($argument) {
@@ -57,8 +59,13 @@ class Status extends Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$t = new Table($output);
-		$t->setHeaders(['Job ID', 'Job', 'Job Arguments', 'Last Run', 'Last Checked', 'Reserved At', 'Execution Duration (s)']);
-		$this->jobList->listJobs(function (IJob $job) use ($t) {
+		$displayInvalidJobs = $input->getOption('display-invalid-jobs');
+		$headers = ['Job ID', 'Job', 'Job Arguments', 'Last Run', 'Last Checked', 'Reserved At', 'Execution Duration (s)'];
+		if ($displayInvalidJobs) {
+			$headers[] = "Status";
+		}
+		$t->setHeaders($headers);
+		$validJobCallback = function (IJob $job) use ($t) {
 			$t->addRow([
 				$job->getId(),
 				\get_class($job),
@@ -68,7 +75,28 @@ class Status extends Command {
 				$job->getReservedAt() == 0 ? 'N/A' : \date('c', $job->getReservedAt()),
 				$job->getExecutionDuration() == -1 ? 'N/A' : $job->getExecutionDuration(),
 			]);
-		});
+			return true;
+		};
+		if ($displayInvalidJobs) {
+			$this->jobList->listJobsIncludingInvalid(
+				$validJobCallback,
+				function (array $job) use ($t) {
+					$t->addRow([
+						$job['id'],
+						$job['class'],
+						$job['argument'],
+						$job['last_run'],
+						$job['last_checked'],
+						$job['reserved_at'],
+						$job['execution_duration'],
+						'invalid'
+					]);
+					return true;
+				}
+			);
+		} else {
+			$this->jobList->listJobs($validJobCallback);
+		}
 		$t->render();
 		return 0;
 	}

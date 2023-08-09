@@ -241,6 +241,26 @@ class JobList implements IJobList {
 	}
 
 	/**
+	 * @param int $id
+	 * @return bool
+	 */
+	public function jobIdExists($id) {
+		$query = $this->connection->getQueryBuilder();
+		$query->select('*')
+			->from('jobs')
+			->where($query->expr()->eq('id', $query->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
+		$result = $query->execute();
+		$row = $result->fetch();
+		$result->closeCursor();
+
+		if ($row) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * get the job object from a row in the db
 	 *
 	 * @param array $row
@@ -344,6 +364,35 @@ class JobList implements IJobList {
 			$job = $this->buildJob($row);
 			if ($job) {
 				if ($callback($job) === false) {
+					break;
+				}
+			}
+		}
+		$result->closeCursor();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function listJobsIncludingInvalid(
+		\Closure $validJobCallback,
+		\Closure $invalidJobCallback
+	): void {
+		$query = $this->connection->getQueryBuilder();
+		$query->select('*')
+			->from('jobs');
+		$result = $query->execute();
+
+		while ($row = $result->fetch()) {
+			$job = $this->buildJob($row);
+			if ($job) {
+				if ($validJobCallback($job) === false) {
+					break;
+				}
+			} else {
+				// The class of the job probably cannot be found anymore.
+				// Use the invalid job callback to generate the row of output.
+				if ($invalidJobCallback($row) === false) {
 					break;
 				}
 			}
