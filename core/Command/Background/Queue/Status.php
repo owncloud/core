@@ -85,9 +85,9 @@ class Status extends Command {
 						$job['id'],
 						$job['class'],
 						$job['argument'],
-						$job['last_run'],
-						$job['last_checked'],
-						$job['reserved_at'],
+						$job['last_run'] === 0 ? 'N/A' : \date('c', $job['last_run']),
+						$job['last_checked'] === 0 ? 'N/A' : \date('c', $job['last_checked']),
+						$job['reserved_at'] === 0 ? 'N/A' : \date('c', $job['reserved_at']),
 						$job['execution_duration'],
 						'invalid'
 					]);
