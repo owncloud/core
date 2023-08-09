@@ -346,7 +346,6 @@ config = {
             "dbServices": [
                 "sqlite",
                 "mysql:8.0",
-                "postgres:10.21",
                 "postgres:11.15",
             ],
         },
