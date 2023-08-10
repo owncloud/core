@@ -88,7 +88,7 @@ class ExternalSharesController extends Controller {
 	 */
 	public function index() {
 		$federatedGroupResult = [];
-		$groupExternalManager = $this->initGroupManager();
+		$groupExternalManager = $this->initGroupExternalManager();
 		if ($groupExternalManager !== null) {
 			$federatedGroupResult = $groupExternalManager->getOpenShares();
 		}
@@ -156,7 +156,7 @@ class ExternalSharesController extends Controller {
 		return new JSONResponse();
 	}
 
-	private function initGroupManager() {
+	private function initGroupExternalManager() {
 		// Allow other apps to add an external manager for user-to-group shares
 		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
 		if ($managerClass !== '') {
@@ -166,7 +166,7 @@ class ExternalSharesController extends Controller {
 	}
 
 	private function getManagerForShareType($share_type) {
-		$groupExternalManager = $this->initGroupManager();
+		$groupExternalManager = $this->initGroupExternalManager();
 		if ($share_type === self::group_share_type && $groupExternalManager !== null) {
 			$manager = $groupExternalManager;
 		} else {
