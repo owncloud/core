@@ -285,6 +285,7 @@ Details
    Occ background:queue:delete <Job ID>
 
    https://github.com/owncloud/core/pull/40846
+   https://github.com/owncloud/core/pull/40917
 
 * Change - Require firebase/php-jwt in core: [#40901](https://github.com/owncloud/core/pull/40901)
 
