@@ -50,7 +50,7 @@ class PublicWebDavContext implements Context {
 			// accessing it as a public link using the "new" public webDAV API
 			// the client needs to provide the public link share token followed
 			// by just the name of the file - not the full path.
-			$fullPath = $this->featureContext->getLastPublicSharePath();
+			$fullPath = (string) $this->featureContext->getLastCreatedPublicShare()->path;
 			$fullPathParts = \explode("/", $fullPath);
 			$path = \end($fullPathParts);
 		} else {
@@ -75,7 +75,7 @@ class PublicWebDavContext implements Context {
 	 */
 	public function downloadPublicFileWithRangeAndPassword(string $range, string $password, string $publicWebDAVAPIVersion):void {
 		if ($publicWebDAVAPIVersion === "new") {
-			$path = $this->featureContext->getLastPublicShareData()->data->file_target;
+			$path = (string) $this->featureContext->getLastCreatedPublicShare()->file_target;
 		} else {
 			$path = "";
 		}
@@ -120,7 +120,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function deleteFileFromPublicShare(string $fileName, string $publicWebDAVAPIVersion, string $password = ""):void {
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -171,7 +171,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function renameFileFromPublicShare(string $fileName, string $toFileName, string $publicWebDAVAPIVersion, ?string $password = ""):void {
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -289,7 +289,7 @@ class PublicWebDavContext implements Context {
 	):void {
 		$path = \ltrim($path, "/");
 		$password = $this->featureContext->getActualPassword($password);
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -394,7 +394,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function thePublicCopiesFileUsingTheWebDAVApi(string $source, string $destination, string $publicWebDAVAPIVersion):void {
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -1101,7 +1101,7 @@ class PublicWebDavContext implements Context {
 	):void {
 		$filename = "";
 		if ($publicWebDAVAPIVersion === "new") {
-			$filename = (string)$this->featureContext->getLastPublicShareData()->data[0]->file_target;
+			$filename = (string)$this->featureContext->getLastCreatedPublicShare()->file_target;
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;
@@ -1286,7 +1286,7 @@ class PublicWebDavContext implements Context {
 		$should = ($shouldOrNot !== "not");
 		if ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
-			$path = $this->featureContext->getLastPublicSharePath();
+			$path = (string) $this->featureContext->getLastCreatedPublicShare()->path;
 		} else {
 			$techPreviewHadToBeEnabled = false;
 			$path = "";
@@ -1369,7 +1369,7 @@ class PublicWebDavContext implements Context {
 		string $destination,
 		string $password
 	):void {
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -1461,7 +1461,7 @@ class PublicWebDavContext implements Context {
 		string $fileName,
 		string $mtime
 	):void {
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$baseUrl = $this->featureContext->getBaseUrl();
 
 		Assert::assertEquals(
@@ -1488,7 +1488,7 @@ class PublicWebDavContext implements Context {
 		string $fileName,
 		string $mtime
 	):void {
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		Assert::assertNotEquals(
 			$mtime,
@@ -1522,7 +1522,7 @@ class PublicWebDavContext implements Context {
 		string $publicWebDAVAPIVersion = "old"
 	):void {
 		$password = $this->featureContext->getActualPassword($password);
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -1626,7 +1626,7 @@ class PublicWebDavContext implements Context {
 		} else {
 			$body = null;
 		}
-		$token = $this->featureContext->getLastPublicShareToken();
+		$token = $this->featureContext->getLastCreatedPublicShareToken();
 		$davPath = WebDavHelper::getDavPath(
 			null,
 			null,

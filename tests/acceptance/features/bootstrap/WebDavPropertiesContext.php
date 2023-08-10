@@ -293,7 +293,7 @@ class WebDavPropertiesContext implements Context {
 	 * @throws Exception
 	 */
 	public function publicGetsThePropertiesOfFolder(string $path, TableNode $propertiesTable):void {
-		$user = $this->featureContext->getLastPublicShareToken();
+		$user = $this->featureContext->getLastCreatedPublicShareToken();
 		$properties = null;
 		if ($propertiesTable instanceof TableNode) {
 			foreach ($propertiesTable->getRows() as $row) {
@@ -866,7 +866,7 @@ class WebDavPropertiesContext implements Context {
 				[
 					"code" => "%public_token%",
 					"function" =>
-					[$this->featureContext, "getLastPublicShareToken"],
+					[$this->featureContext, "getLastCreatedPublicShareToken"],
 					"parameter" => []
 				],
 			]

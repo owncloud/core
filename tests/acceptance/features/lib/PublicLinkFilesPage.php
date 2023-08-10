@@ -369,11 +369,10 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function openPublicShareAuthenticateUrl(array $createdPublicLinks, string $baseUrl): void {
-		$lastCreatedLink = $createdPublicLinks;
 		$path = \str_replace(
 			$baseUrl,
 			"",
-			$lastCreatedLink['url']
+			$createdPublicLinks['url']
 		);
 		$this->setPagePath($path . '/authenticate');
 		$this->open();
