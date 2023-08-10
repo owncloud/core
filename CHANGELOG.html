@@ -32,6 +32,7 @@
         <li class="type-change changelog-item">Change - Fix name length check on system tag creation: <a href="https://github.com/owncloud/core/pull/40804">#40804</a></li>
         <li class="type-change changelog-item">Change - Display and delete invalid background jobs: <a href="https://github.com/owncloud/core/pull/40846">#40846</a></li>
         <li class="type-change changelog-item">Change - Require firebase/php-jwt in core: <a href="https://github.com/owncloud/core/pull/40901">#40901</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add support for OCM via ScienceMesh: <a href="https://github.com/owncloud/core/issues/40577">#40577</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve X-Robots-Tag header values check: <a href="https://github.com/owncloud/core/pull/40715">#40715</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Added occ command to remove obsolete storages: <a href="https://github.com/owncloud/core/pull/40779">#40779</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add commands to handle the trusted servers from command line: <a href="https://github.com/owncloud/core/pull/40796">#40796</a></li>
@@ -256,6 +257,16 @@
             <p>Firebase/php-jwt version 6 is now part of core and all apps can rely on it
             </p>
             <p>https://github.com/owncloud/core/pull/40901<br>https://github.com/owncloud/files_texteditor/pull/401<br>https://github.com/owncloud/wopi/pull/254<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add support for OCM via ScienceMesh: <a href="https://github.com/owncloud/core/issues/40577">#40577</a></p>
+            <p>We've added an if-statement in the files_sharing ShareesController code that searches for
+   remote sharees. When the 'sciencemesh' app is installed, use it instead of the
+   federatedfilesharing app to find sharee matches for OCM sharing.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40577<br>
+            </p>
+            <p>https://github.com/pondersource/oc-sciencemesh/pull/39<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Improve X-Robots-Tag header values check: <a href="https://github.com/owncloud/core/pull/40715">#40715</a></p>

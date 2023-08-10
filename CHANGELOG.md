@@ -34,6 +34,7 @@ Summary
 * Change - Fix name length check on system tag creation: [#40804](https://github.com/owncloud/core/pull/40804)
 * Change - Display and delete invalid background jobs: [#40846](https://github.com/owncloud/core/pull/40846)
 * Change - Require firebase/php-jwt in core: [#40901](https://github.com/owncloud/core/pull/40901)
+* Enhancement - Add support for OCM via ScienceMesh: [#40577](https://github.com/owncloud/core/issues/40577)
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 * Enhancement - Added occ command to remove obsolete storages: [#40779](https://github.com/owncloud/core/pull/40779)
 * Enhancement - Add commands to handle the trusted servers from command line: [#40796](https://github.com/owncloud/core/pull/40796)
@@ -294,6 +295,15 @@ Details
    https://github.com/owncloud/core/pull/40901
    https://github.com/owncloud/files_texteditor/pull/401
    https://github.com/owncloud/wopi/pull/254
+
+* Enhancement - Add support for OCM via ScienceMesh: [#40577](https://github.com/owncloud/core/issues/40577)
+
+   We've added an if-statement in the files_sharing ShareesController code that searches for
+   remote sharees. When the 'sciencemesh' app is installed, use it instead of the
+   federatedfilesharing app to find sharee matches for OCM sharing.
+
+   https://github.com/owncloud/core/issues/40577
+   https://github.com/pondersource/oc-sciencemesh/pull/39
 
 * Enhancement - Improve X-Robots-Tag header values check: [#40715](https://github.com/owncloud/core/pull/40715)
 
