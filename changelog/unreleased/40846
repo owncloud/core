@@ -11,3 +11,4 @@ And can be deleted with the command:
 occ background:queue:delete <Job ID>
 
 https://github.com/owncloud/core/pull/40846
+https://github.com/owncloud/core/pull/40917
