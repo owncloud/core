@@ -2648,6 +2648,7 @@ def installServer(phpVersion, db, logLevel = "2", ssl = False, federatedServerNe
             "DB_NAME": getDbDatabase(db),
         },
         "commands": [
+            "apt-get install --no-install-recommends --assume-yes postgresql-client",
             "bash tests/drone/install-server.sh",
             "php occ a:l",
             "php occ config:system:set trusted_domains 1 --value=server",

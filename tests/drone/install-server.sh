@@ -90,6 +90,8 @@ case "${DB_TYPE}" in
   postgres)
     wait-for-it -t 600 postgres:5432
     DB=pgsql
+    psql -h postgres -U postgres -c "CREATE ROLE owncloud LOGIN;"
+    psql -h postgres -U postgres -c "GRANT ALL ON SCHEMA public TO owncloud;"
     ;;
   oracle)
     wait-for-it -t 600 oracle:1521
