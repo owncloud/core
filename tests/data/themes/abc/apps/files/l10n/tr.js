@@ -21,6 +21,7 @@ OC.L10N.register(
     "Target folder does not exist any more" : "Hedef klasör artık mevcut değil",
     "The file {file} is currently locked, please try again later" : "{file} dosyası şu anda kilitli, lütfen daha sonra tekrar deneyin",
     "Not enough free space" : "Yeterli boş alan yok",
+    "Failed to upload the file \"{fileName}\": {error}" : "\"{fileName}\" dosyası yüklenemedi: {error}",
     "Uploading..." : "Yükleniyor...",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} / {totalSize} ({bitrate})",
