@@ -777,6 +777,16 @@
 			return promise;
 		},
 
+		/**
+		 * Unlocks a previously locked path
+		 *
+		 * @param {String} path the locked path that needs to be unlocked
+		 * @param {String} token the opaque token needed to unlock the path
+		 * @param {Object} [options]
+		 * @param {bool} [options.pathIsUrl=false] whether the path is already an url or we need to build an url from it
+		 *
+		 * @return {Promise} the promise of the unlock request
+		 */
 		unlock: function(path, token, options) {
 			if (!path) {
 				throw 'Missing argument "path"';
