@@ -14,6 +14,10 @@ if (!isset($_)) {//also provide standalone error page
 		<?php p($l->t('Access forbidden')); ?><br/>
 		<p class='hint'><?php if (isset($_['file'])) {
 			p($_['file']);
-		}?></p>
+		}?><br/>
+			<?php // TODO: IL10N is not working ?>
+			<a href="<?php p($_['base_url']); ?>">
+				<?php if (isset($_['continue_text'])) p($_['continue_text']); else p('Continue'); ?></a>
+		</p>
 	</li>
 </ul>
