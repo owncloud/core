@@ -21,6 +21,7 @@ OC.L10N.register(
     "Target folder does not exist any more" : "Pasta de destino não existe mais",
     "The file {file} is currently locked, please try again later" : "O arquivo {file} está bloqueado, por favor tente novamente mais tarde",
     "Not enough free space" : "Não há espaço livre suficiente",
+    "Failed to upload the file \"{fileName}\": {error}" : "Falha ao carregar o arquivo \"{fileName}\": {error}",
     "Uploading..." : "Enviando...",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} de {totalSize} ({bitrate})",
