@@ -226,6 +226,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Bir hata oluştu. Lütfen yeniden deneyin",
     "User" : "Kullanıcı",
     "Group" : "Grup",
+    "Federated Group" : "Birleştirilmiş Grup",
     "Guest" : "Misafir",
     "At {server}" : "{server} sunucusunda",
     "Federated" : "Birleşmiş",
