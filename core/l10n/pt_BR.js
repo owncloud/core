@@ -226,6 +226,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Ocorreu um erro. Por favor tente novamente",
     "User" : "Usuário",
     "Group" : "Grupo",
+    "Federated Group" : "Grupo Federado",
     "Guest" : "Convidado",
     "At {server}" : "Em {server}",
     "Federated" : "Federado",
