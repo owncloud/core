@@ -92,6 +92,7 @@ case "${DB_TYPE}" in
     DB=pgsql
     # PGPASSWORD="owncloud" psql -h postgres -U postgres -c "CREATE ROLE owncloud LOGIN;"
     PGPASSWORD="owncloud" psql -h postgres -U owncloud -c "GRANT ALL ON SCHEMA public TO owncloud;"
+    PGPASSWORD="owncloud" psql -h postgres -U owncloud -c "ALTER ROLE owncloud WITH NOCREATEROLE;"
     PGPASSWORD="owncloud" psql -h postgres -U owncloud -c "\\du"
     ;;
   oracle)
