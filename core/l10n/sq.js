@@ -226,6 +226,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Ndodhi një gabim. Ju lutemi, riprovoni",
     "User" : "Përdorues",
     "Group" : "Grup",
+    "Federated Group" : "Grup i Federuar",
     "Guest" : "Vizitor",
     "At {server}" : "Te {server}",
     "Federated" : "I federuar",
