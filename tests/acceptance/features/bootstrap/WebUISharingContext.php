@@ -635,7 +635,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($newName);
-		$shareData = new SimpleXMLElement("<empty></empty>");
+		$shareData = new SimpleXMLElement("<element />");
 		$shareData->addChild('url', $linkUrl);
 		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
@@ -688,8 +688,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->editLink($session, $name, null, null, $newPassword);
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
-		$shareData = $this->featureContext->getListOfShares($this->featureContext->getCurrentUser());
-		$this->featureContext->addToCreatedPublicShares($this->featureContext->getResponseXml($shareData, __METHOD__)->data[0]->element);
+		$linkUrl = $this->publicShareTab->getLinkUrl($name);
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -706,8 +708,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->editLink($session, $name, null, $newPermission);
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
-		$shareData = $this->featureContext->getListOfShares($this->featureContext->getCurrentUser());
-		$this->featureContext->addToCreatedPublicShares($this->featureContext->getResponseXml($shareData, __METHOD__)->data[0]->element);
+		$linkUrl = $this->publicShareTab->getLinkUrl($name);
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -809,11 +813,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function createsThePublicLinkUsingTheWebUI():void {
+		$linkName = $this->publicSharingPopup->getLinkName();
 		$this->publicSharingPopup->save();
 		$this->publicSharingPopup->waitForAjaxCallsToStartAndFinish($this->getSession());
 
-		$shareData = $this->featureContext->getListOfShares($this->featureContext->getCurrentUser());
-		$this->featureContext->addToCreatedPublicShares($this->featureContext->getResponseXml($shareData, __METHOD__)->data[0]->element);
+		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -840,9 +847,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserCreatesAReadOnlyPublicLinkForFolderUsingTheQuickActionButton(string $name):void {
 		$this->createReadOnlyPublicShareLinkUsingQuickAction($name);
 		$this->theUserOpensTheShareDialogForFileFolder($name);
-		$this->sharingDialog->openPublicShareTab($this->getSession());
-		$currentUser = $this->featureContext->getCurrentUser();
-		$shareData = $this->featureContext->getShares($currentUser, $name);
+		$linkTab = $this->sharingDialog->openPublicShareTab($this->getSession());
+		$linkName = $linkTab->getNameOfFirstPublicLink($this->getSession());
+		$linkUrl = $linkTab->getLinkUrl($linkName);
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$shareData->addChild('name', $linkName);
 		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 

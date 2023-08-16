@@ -43,24 +43,6 @@ trait Sharing {
 	 */
 	private array $createdUserGroupShares = [];
 
-	private ?string $userWhoCreatedLastShare = null;
-	private ?int $savedShareId = null;
-
-	private ?string $userWhoCreatedLastPublicShare = null;
-
-	/**
-	 * Contains the API response to the last public link share that was created
-	 * by the test-runner using the Sharing API.
-	 * Shares created on the webUI do not have an entry.
-	 */
-	private ?SimpleXMLElement $lastPublicShareData = null;
-
-	/**
-	 * Contains the share id of the last public link share that was created by
-	 * the test-runner, either using the Sharing API or on the web UI.
-	 */
-	private ?string $lastPublicShareId = null;
-
 	private ?float $localLastShareTime = null;
 
 	/**
@@ -90,20 +72,6 @@ trait Sharing {
 	 * @var array
 	 */
 	private array $createdPublicShares = [];
-	/*
-	 * Contains information about the public links that have been created with the webUI.
-	 * Each entry in the array has a "name", "url" and "path".
-	 */
-	private array $createdPublicLinks = [];
-
-	/**
-	 * The end (last) entry will itself be an array with keys "name", "url" and "path"
-	 *
-	 * @return array
-	 */
-	public function getLastCreatedPublicLink():array {
-		return \end($this->createdPublicLinks);
-	}
 
 	/**
 	 * @return string
@@ -147,17 +115,6 @@ trait Sharing {
 
 	/**
 	 * @return SimpleXMLElement
-	 * @throws Exception
-	 */
-	public function getLastShareData():SimpleXMLElement {
-		return $this->getLastShareDataForUser($this->userWhoCreatedLastShare);
-	}
-
-	/**
-	 * @param string|null $user
-	 *
-	 * @return SimpleXMLElement
-	 * @throws Exception
 	 */
 	public function getLastCreatedUserGroupShare(): SimpleXMLElement {
 		return \end($this->createdUserGroupShares);
@@ -2104,86 +2061,6 @@ trait Sharing {
 		TableNode $table
 	):void {
 		$this->asLastShareInfoAboutUserSharingWithUserShouldInclude($sharer, $sharer, $sharee, $table);
-	}
-
-	/**
-	 * Sets the id of the last shared file
-	 *
-	 * @param string $user
-	 * @param string $shareId
-	 *
-	 * @return void
-	 */
-	public function setLastShareIdOf(string $user, string $shareId):void {
-		$this->lastShareIdByUser[$user] = $shareId;
-		$this->userWhoCreatedLastShare = $user;
-	}
-
-	/**
-	 * Retrieves the id of the last shared file
-	 *
-	 * @return string|null
-	 */
-	public function getLastShareId():?string {
-		return $this->getLastShareIdForUser($this->userWhoCreatedLastShare);
-	}
-
-	/**
-	 * @param string $user
-	 *
-	 * @return string|null
-	 */
-	public function getLastShareIdForUser(string $user):?string {
-		if ($user === "") {
-			throw new Exception(
-				__METHOD__ . " user not specified. Probably no user or group shares have been created yet in the test scenario."
-			);
-		}
-		if (isset($this->lastShareIdByUser[$user])) {
-			return $this->lastShareIdByUser[$user];
-		} else {
-			throw new Exception(__METHOD__ . " last share id for user '$user' was not found");
-		}
-	}
-
-	/**
-	 * Sets the id of the last public link shared file
-	 *
-	 * @param string $shareId
-	 *
-	 * @return void
-	 */
-	public function setLastPublicLinkShareId(string $shareId):void {
-		$this->lastPublicShareId = $shareId;
-	}
-
-	/**
-	 * Retrieves the id of the last public link shared file
-	 *
-	 * @return string|null
-	 */
-	public function getLastPublicLinkShareId():?string {
-		return $this->lastPublicShareId;
-	}
-
-	/**
-	 * Sets the user who created the last public link share
-	 *
-	 * @param string $user
-	 *
-	 * @return void
-	 */
-	public function setUserWhoCreatedLastPublicShare(string $user):void {
-		$this->userWhoCreatedLastPublicShare = $user;
-	}
-
-	/**
-	 * Gets the user who created the last public link share
-	 *
-	 * @return string|null
-	 */
-	public function getUserWhoCreatedLastPublicShare():?string {
-		return $this->userWhoCreatedLastPublicShare;
 	}
 
 	/**
