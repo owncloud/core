@@ -27,7 +27,7 @@ script('files_sharing', 'settings');
 		<p><?php p($l->t('Exclude groups from receiving shares')); ?></p>
 		<input name="blacklisted_receiver_groups" class="noautosave" value="<?php p($_['blacklistedReceivers']) ?>" style="width: 400px"/>
 		<br />
-		<em><?php p($l->t('These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual.')); ?></em>
+		<em><?php p($l->t('These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares from other groups they are members of as usual.')); ?></em>
 	</div>
 
 	<p>
