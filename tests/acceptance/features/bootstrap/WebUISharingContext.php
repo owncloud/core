@@ -635,7 +635,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($newName);
-		$this->featureContext->addToListOfCreatedPublicLinks($newName, $linkUrl);
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -687,7 +689,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);
-		$this->featureContext->addToListOfCreatedPublicLinks($name, $linkUrl);
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -705,7 +709,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->publicShareTab->waitForAjaxCallsToStartAndFinish($session);
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($name);
-		$this->featureContext->addToListOfCreatedPublicLinks($name, $linkUrl);
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -808,14 +814,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function createsThePublicLinkUsingTheWebUI():void {
 		$linkName = $this->publicSharingPopup->getLinkName();
-
 		$this->publicSharingPopup->save();
 		$this->publicSharingPopup->waitForAjaxCallsToStartAndFinish($this->getSession());
 
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
-		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
-
-		$this->featureContext->resetLastPublicShareData();
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -845,7 +850,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$linkTab = $this->sharingDialog->openPublicShareTab($this->getSession());
 		$linkName = $linkTab->getNameOfFirstPublicLink($this->getSession());
 		$linkUrl = $linkTab->getLinkUrl($linkName);
-		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl, $name);
+		$shareData = new SimpleXMLElement("<element />");
+		$shareData->addChild('url', $linkUrl);
+		$shareData->addChild('name', $linkName);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -912,8 +920,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				__METHOD__ . " share with token '$shareToken' for user '$currentUser' could not be found."
 			);
 		}
-		$this->featureContext->setLastPublicLinkShareId($shareId);
-		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl, $name);
+		$this->featureContext->addToCreatedPublicShares($shareData);
 	}
 
 	/**
@@ -1207,7 +1214,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function thePublicAccessesTheLastCreatedPublicLinkUsingTheWebUI():void {
-		$lastCreatedLinkUrl = $this->featureContext->getLastCreatedPublicLinkUrl();
+		$lastCreatedLinkUrl = $this->featureContext->getLastCreatedPublicShare()->url;
 		$path = \str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
@@ -1358,7 +1365,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function thePublicAccessesPublicLinkWithPasswordUsingTheWebui(string $password):void {
-		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
+		$createdPublicLinks = (array)$this->featureContext->getLastCreatedPublicShare();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
 		$this->publicLinkFilesPage->enterPublicLinkPassword($password);
@@ -1374,7 +1381,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePublicTriesToAccessPublicLinkWithWrongPasswordUsingTheWebui(string $wrongPassword):void {
-		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
+		$createdPublicLinks = (array)$this->featureContext->getLastCreatedPublicShare();
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$this->publicLinkFilesPage->openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl);
 		$this->publicLinkFilesPage->enterPublicLinkPassword($wrongPassword);
@@ -1499,9 +1506,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			__METHOD__
 			. " The expected warning message was 'The password is wrong. Try again.', but got '$warningMessage'."
 		);
-		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
-		$lastCreatedLink = $createdPublicLinks;
-		$lastSharePath = $lastCreatedLink['url'] . '/authenticate';
+		$createdPublicLinks = (array)$this->featureContext->getLastCreatedPublicShare();
+		$lastSharePath = $createdPublicLinks['url'] . '/authenticate';
 		$currentPath = $this->getSession()->getCurrentUrl();
 		Assert::assertEquals(
 			$lastSharePath,
@@ -2082,12 +2088,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thePublicShouldSeeAnErrorMessageWhileAccessingLastCreatedPublicLinkUsingTheWebui(string $errorMsg):void {
-		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
-		$lastCreatedLink = $createdPublicLinks;
+		$createdPublicLinks = (array)$this->featureContext->getLastCreatedPublicShare();
 		$path = \str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
-			$lastCreatedLink['url']
+			$createdPublicLinks["url"]
 		);
 		$this->generalErrorPage->setPagePath($path);
 		$this->generalErrorPage->open();
@@ -2278,14 +2283,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$address,
 			$this->featureContext->getStepLineRef()
 		);
-		$createdPublicLinks = $this->featureContext->getLastCreatedPublicLink();
-		$lastCreatedPublicLink = $createdPublicLinks;
+		$createdPublicLinks = (string) $this->featureContext->getLastCreatedPublicShare()->url;
 		Assert::assertStringContainsString(
-			$lastCreatedPublicLink["url"],
+			$createdPublicLinks,
 			$content,
 			__METHOD__
 			. " The email content '$content' does not contain '"
-			. $lastCreatedPublicLink["url"]
+			. $createdPublicLinks
 			. "'"
 		);
 	}

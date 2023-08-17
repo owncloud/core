@@ -3073,7 +3073,7 @@ class FeatureContext extends BehatVariablesContext {
 				"code" => "%last_public_share_token%",
 				"function" => [
 					$this,
-					"getLastPublicShareToken"
+					"getLastCreatedPublicShareToken"
 				],
 				"parameter" => []
 			]
