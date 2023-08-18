@@ -151,7 +151,6 @@ OC.L10N.register(
     "Nothing to configure." : "ไม่มีการกำหนดค่า",
     "Group Sharing Blacklist" : "บัญชีดำกลุ่มแชร์",
     "Exclude groups from receiving shares" : "กลุ่มที่ไม่สามารถสร้างแชร์",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "กลุ่มเหล่านี้จะไม่สามารถแชร์กับสมาชิกของกลุ่มที่ถูกจำกัดไว้ แต่สามารถแชร์กับกลุ่มอื่น ๆ ที่เป็นสมาชิกได้ตามปกติ",
     "Only certain groups are allowed to create public links" : "เฉพาะบางกลุ่มเท่านั้นที่ได้รับอนุญาตให้สร้างลิงก์สาธารณะ"
 },
 "nplurals=1; plural=0;");

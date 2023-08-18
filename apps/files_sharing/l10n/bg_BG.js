@@ -151,7 +151,6 @@ OC.L10N.register(
     "Nothing to configure." : "Няма нищо за конфигуриране.",
     "Group Sharing Blacklist" : "Черен списък на групи за споделяне",
     "Exclude groups from receiving shares" : "Групи изключени от получаването на споделяния",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Тези групи няма да бъдат достъпни за споделяне. Членовете на групата не са ограничени в инициирането на споделяне и могат да получават споделяния от други групи, на които са членове, както обикновено.",
     "Only certain groups are allowed to create public links" : "Само на определени групи е разрешено да създават публични връзки"
 },
 "nplurals=2; plural=(n != 1);");

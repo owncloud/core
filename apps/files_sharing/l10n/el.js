@@ -149,7 +149,6 @@ OC.L10N.register(
     "Nothing to configure." : "Τίποτα να ρυθμιστεί.",
     "Group Sharing Blacklist" : "Μαύρη λίστα διαμοιρασμού ομάδας",
     "Exclude groups from receiving shares" : "Εξαίρεση ομάδων από τη λήψη κοινόχρηστων",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Αυτές οι ομάδες δεν θα είναι διαθέσιμες για διαμοιρασμό. Τα μέλη της ομάδας δεν περιορίζονται στην εκκίνηση κοινόχρηστων στοιχείων και μπορούν να λάβουν κοινόχρηστα στοιχεία από άλλες ομάδες στις οποίες συμμετέχουν ως συνήθως.",
     "Only certain groups are allowed to create public links" : "Μόνο ορισμένες ομάδες επιτρέπεται να δημιουργούν δημόσιους συνδέσμους"
 },
 "nplurals=2; plural=(n != 1);");

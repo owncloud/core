@@ -120,7 +120,6 @@
     "Direct link" : "Директна врска",
     "Nothing to configure." : "Нема подесувања.",
     "Group Sharing Blacklist" : "Црна листа за групно споделување",
-    "Exclude groups from receiving shares" : "Исклучи ги групите за примање на споделувања",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Овие групи не се достапни за да се споделува. Членовите на групата не се ограничени за примање на споделувања со други групи на кој тие се членови."
+    "Exclude groups from receiving shares" : "Исклучи ги групите за примање на споделувања"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }
