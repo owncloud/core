@@ -21,6 +21,7 @@ OC.L10N.register(
     "Target folder does not exist any more" : "Dosja e synuar nuk ekziston më",
     "The file {file} is currently locked, please try again later" : "Kartela {file} hëpërhë është e kyçur, ju lutemi, riprovoni më vonë",
     "Not enough free space" : "Pa hapësirë të lirë të mjaftueshme",
+    "Failed to upload the file \"{fileName}\": {error}" : "S’u arrit të ngarkohej kartela “{fileName}”: {error}",
     "Uploading..." : "Po ngarkohet…",
     "..." : "…",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} nga {totalSize} ({bitrate})",

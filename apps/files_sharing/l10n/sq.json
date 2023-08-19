@@ -149,6 +149,7 @@
     "Nothing to configure." : "S’ka gjë për formësim.",
     "Group Sharing Blacklist" : "Listë Bllokimesh Grupesh Ndarjesh",
     "Exclude groups from receiving shares" : "Përjashto grupe nga marrje pjesësh",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares addressed to other groups they are members of as usual." : "Për këto grupe s’do të jetë e mundur të ndajnë me të tjerët. Anëtarët e grupit s’janë të kufizuar të nisin pjesë dhe të marrin pjesë/ftesa personale. Për më tepër, ata mund të marrin pjesë të adresuara për grupe të tjera te të cilët janë anëtarë, si zakonisht.",
     "Only certain groups are allowed to create public links" : "Vetëm disa grupeve u lejohet të krijojnë lidhje publike"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
