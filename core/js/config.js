@@ -17,6 +17,10 @@ OC.AppConfig={
 					callback(result.data);
 				}
 			}
+		}).fail(function(){
+			if(callback){
+				callback(data.defaultValue);
+			}
 		});
 	},
 	postCall:function(action,data,callback){
