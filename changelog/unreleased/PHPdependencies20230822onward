@@ -1,0 +1,8 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- sabre/http (5.1.7 to 5.1.10)
+
+The following have been updated in apps/files_external/3rdparty:
+
+https://github.com/owncloud/core/pull/40939
