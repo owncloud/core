@@ -1,3 +1,26 @@
+Changelog for ownCloud Core [unreleased] (UNRELEASED)
+=======================================
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v10.13.0...master
+
+Summary
+-------
+
+* Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
+
+Details
+-------
+
+* Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
+
+   The following have been updated: - sabre/http (5.1.7 to 5.1.10)
+
+   The following have been updated in apps/files_external/3rdparty:
+
+   https://github.com/owncloud/core/pull/40939
+
 Changelog for ownCloud Core [10.13.0] (2023-08-22)
 =======================================
 The following sections list the changes in ownCloud core 10.13.0 relevant to
