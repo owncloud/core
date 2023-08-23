@@ -357,8 +357,8 @@
 
 		autocompleteRenderItem: function(ul, item) {
 			var text = item.label;
-			let showIcon = false;
-			let iconClass = ""
+			var showIcon = false;
+			var iconClass = "";
 			var typeInfo = t('core', 'User');
 
 			if (item.batch) {
@@ -392,8 +392,8 @@
 			var $el = $(template({
 				showAvatar: this.configModel.areAvatarsEnabled(),
 				displayName: text,
-				showIcon,
-				iconClass,
+				showIcon: showIcon,
+				iconClass: iconClass,
 				typeInfo: typeInfo,
 				additionalInfo: item.value.shareWithAdditionalInfo,
 				shareTypeClass: (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) ? 'group' : 'user'
