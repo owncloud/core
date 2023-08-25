@@ -418,7 +418,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		$params = [];
 
 		// 'application/json' must be decoded manually.
-		if (\strpos($this->getHeader('Content-Type'), 'application/json') !== false) {
+		if (\strpos($this->getHeader('Content-Type') ?? '', 'application/json') !== false) {
 			$params = \json_decode(\file_get_contents($this->inputStream), true);
 			if (\is_array($params) && \count($params) > 0) {
 				$this->items['params'] = $params;

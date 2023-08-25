@@ -1,0 +1,6 @@
+Bugfix: make sure that parameters are a string when string is expected
+
+The code now checks for when variables are null are passed to functions that
+expect a string, and handles that correctly.
+
+https://github.com/owncloud/core/pull/40944
