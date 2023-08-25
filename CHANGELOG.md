@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Fix namespace map setting: [#40943](https://github.com/owncloud/core/pull/40943)
+* Bugfix - Make sure that parameters are a string when string is expected: [#40944](https://github.com/owncloud/core/pull/40944)
 * Bugfix - Users page generates error logs in owncloud.log: [#40947](https://github.com/owncloud/core/pull/40947)
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 
@@ -20,6 +21,13 @@ Details
    The namespace map setting has been corrected for shares and tags.
 
    https://github.com/owncloud/core/pull/40943
+
+* Bugfix - Make sure that parameters are a string when string is expected: [#40944](https://github.com/owncloud/core/pull/40944)
+
+   The code now checks for when variables are null are passed to functions that expect a string, and
+   handles that correctly.
+
+   https://github.com/owncloud/core/pull/40944
 
 * Bugfix - Users page generates error logs in owncloud.log: [#40947](https://github.com/owncloud/core/pull/40947)
 
