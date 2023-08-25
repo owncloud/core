@@ -1,0 +1,6 @@
+Bugfix: fix usort callback functions to return integers
+
+Calls to the PHP usort function have been refactored so that the callback
+function used always correctly returns an integer.
+
+https://github.com/owncloud/core/pull/40945
