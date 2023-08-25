@@ -20,13 +20,13 @@ style('settings', 'settings');
 $userlistParams = [];
 $allGroups = [];
 foreach ($_["adminGroup"] as $group) {
-	$allGroups[$group['gid']] = [
+	$allGroups[$group['id']] = [
 		'gid' => $group['id'],
 		'name' => $group['name'],
 	];
 }
 foreach ($_["groups"] as $group) {
-	$allGroups[$group['gid']] = [
+	$allGroups[$group['id']] = [
 		'gid' => $group['id'],
 		'name' => $group['name'],
 	];
