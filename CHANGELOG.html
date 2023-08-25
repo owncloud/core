@@ -6,10 +6,28 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Fix namespace map setting: <a href="https://github.com/owncloud/core/pull/40943">#40943</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Users page generates error logs in owncloud.log: <a href="https://github.com/owncloud/core/pull/40947">#40947</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40939">#40939</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix namespace map setting: <a href="https://github.com/owncloud/core/pull/40943">#40943</a></p>
+            <p>The namespace map setting has been corrected for shares and tags.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40943<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Users page generates error logs in owncloud.log: <a href="https://github.com/owncloud/core/pull/40947">#40947</a></p>
+            <p>Error logs were being generated in owncloud.log when the admin logged in and browsed to the
+   users page. The code that processes the available groups has been corrected so that entries are
+   no longer generated.
+            </p>
+            <p>https://github.com/owncloud/core/issues/40946<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/40947<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40939">#40939</a></p>
             <p>The following have been updated: - sabre/http (5.1.7 to 5.1.10)The following have been updated in apps/files_external/3rdparty:
