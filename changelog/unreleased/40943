@@ -1,0 +1,5 @@
+Bugfix: fix namespace map setting
+
+The namespace map setting has been corrected for shares and tags.
+
+https://github.com/owncloud/core/pull/40943
