@@ -1072,7 +1072,11 @@ class Session implements IUserSession, Emitter {
 	public function clearRememberMeTokensForLoggedInUser($targetToken) {
 		$user = $this->getUser();
 		$uid = $user->getUID();
-		$hashedToken = \hash('snefru', $targetToken);
+		if ($targetToken !== null) {
+			$hashedToken = \hash('snefru', $targetToken);
+		} else {
+			$hashedToken = "";
+		}
 
 		$keys = $this->config->getUserKeys($uid, 'login_token');
 		foreach ($keys as $key) {

@@ -122,7 +122,7 @@ class Crypto implements ICrypto {
 			$password = $this->config->getSystemValue('secret');
 		}
 
-		$parts = \explode('|', $authenticatedCiphertext);
+		$parts = \explode('|', $authenticatedCiphertext ?? '');
 
 		// v2 uses stronger binary random iv
 		if (\sizeof($parts) === 4 && $parts[0] === 'v2') {

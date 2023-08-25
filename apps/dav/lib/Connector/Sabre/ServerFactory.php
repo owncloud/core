@@ -138,7 +138,7 @@ class ServerFactory {
 		$config = $this->config;
 
 		$server->on('beforeMethod:PROPFIND', function (Request $request) use ($config) {
-			$depthHeader = strtolower($request->getHeader('depth'));
+			$depthHeader = strtolower($request->getHeader('depth') ?? '');
 
 			if ($depthHeader === 'infinity' && !$config->getSystemValue('dav.propfind.depth_infinity', false)) {
 				throw new PreconditionFailed('Depth infinity not supported');

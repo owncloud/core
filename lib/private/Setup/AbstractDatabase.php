@@ -78,7 +78,7 @@ abstract class AbstractDatabase {
 		$dbUser = $config['dbuser'];
 		$dbPass = $config['dbpass'];
 		$dbName = $config['dbname'];
-		$dbConnectionString = $config['dbconnectionstring'];
+		$dbConnectionString = $config['dbconnectionstring'] ?? '';
 		$dbHost = !empty($config['dbhost']) ? $config['dbhost'] : 'localhost';
 		$dbTablePrefix = isset($config['dbtableprefix']) ? $config['dbtableprefix'] : 'oc_';
 
