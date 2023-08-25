@@ -1,0 +1,8 @@
+Bugfix: users page generates error logs in owncloud.log
+
+Error logs were being generated in owncloud.log when the admin logged in and
+browsed to the users page. The code that processes the available groups has
+been corrected so that entries are no longer generated.
+
+https://github.com/owncloud/core/pull/40947
+https://github.com/owncloud/core/issues/40946
