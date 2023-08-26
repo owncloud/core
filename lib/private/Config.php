@@ -153,7 +153,25 @@ class Config {
 		return true;
 	}
 
-	/**
+    /**
+     * This function removes leading and preceding whitespace from string
+     *
+     * @param mixed $arr data
+     * @return string | array Remove whitespace from data
+     */
+    protected function stripWhitespace($arr) {
+        if(is_array($arr)) {
+            foreach($arr as $key => $element) {
+                $arr[$key] = $this->stripWhitespace($element);
+            }
+        } else {
+            $arr = trim($arr);
+        }
+        return $arr;
+    }
+
+
+    /**
 	 * This function sets the value
 	 *
 	 * @param string $key key
@@ -168,7 +186,7 @@ class Config {
 					$afterArray['oldvalue'] = $this->cache[$key];
 				}
 				// Add change
-				$this->cache[$key] = $value;
+				$this->cache[$key] = $this->stripWhitespace($value);
 				return true;
 			}
 

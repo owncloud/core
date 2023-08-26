@@ -17,10 +17,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package Test
  */
 class ConfigTest extends TestCase {
-	public const TESTCONTENT = '<?php $CONFIG=array("foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
+	public const TESTCONTENT = '<?php $CONFIG=array("no"=>"whitespace", "foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
 
 	/** @var array */
-	private $initialConfig = ['foo' => 'bar', 'beers' => ['Appenzeller', 'Guinness', 'Kölsch'], 'alcohol_free' => false];
+	private $initialConfig = ['no' => 'whitespace', 'foo' => 'bar', 'beers' => ['Appenzeller', 'Guinness', 'Kölsch'], 'alcohol_free' => false];
 	/** @var string */
 	private $configFile;
 	/** @var \OC\Config */
@@ -43,7 +43,7 @@ class ConfigTest extends TestCase {
 	}
 
 	public function testGetKeys() {
-		$expectedConfig = ['foo', 'beers', 'alcohol_free'];
+		$expectedConfig = ['no', 'foo', 'beers', 'alcohol_free'];
 		$this->assertSame($expectedConfig, $this->config->getKeys());
 	}
 
@@ -69,11 +69,13 @@ class ConfigTest extends TestCase {
 
 	public function testSetValue() {
 		$this->config->setValue('foo', 'moo');
+		$this->config->setValue('no', ' whitespace ');
 		$expectedConfig = $this->initialConfig;
 		$expectedConfig['foo'] = 'moo';
+		$expectedConfig['no'] = 'whitespace';
 		$this->checkConfigMatchesExpected($expectedConfig);
 
-		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
 
@@ -110,7 +112,7 @@ class ConfigTest extends TestCase {
 		$this->assertArrayHasKey('update', $calledAfterSetValue[1]);
 		$this->assertArrayHasKey('oldvalue', $calledAfterSetValue[1]);
 
-		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n  'bar' => 'red',\n  'apps' => \n " .
 			" array (\n    0 => 'files',\n    1 => 'gallery',\n  ),\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
@@ -170,7 +172,7 @@ class ConfigTest extends TestCase {
 		$this->assertArrayHasKey('oldvalue', $calledAfterUpdate[1]);
 		$this->assertEquals('bar', $calledAfterUpdate[1]->getArgument('oldvalue'));
 
-		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
 
@@ -237,7 +239,7 @@ class ConfigTest extends TestCase {
 		$this->assertArrayHasKey('key', $calledBeforeDeleteValue[1]);
 		$this->assertArrayHasKey('key', $calledAfterDeleteValue[1]);
 
-		$expected = "<?php\n\$CONFIG = array (\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
 	}
@@ -257,7 +259,7 @@ class ConfigTest extends TestCase {
 
 		// Write a new value to the config
 		$this->config->setValue('CoolWebsites', ['demo.owncloud.com', 'owncloud.com', 'owncloud.com']);
-		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'bar',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'foo' => 'bar',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n  'php53' => 'totallyOutdated',\n  'CoolWebsites' => \n  array (\n  " .
 			"  0 => 'demo.owncloud.com',\n    1 => 'owncloud.com',\n    2 => 'owncloud.com',\n  ),\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
