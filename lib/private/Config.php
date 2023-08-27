@@ -42,7 +42,6 @@ use OCP\Events\EventEmitterTrait;
  * configuration file of ownCloud.
  */
 class Config {
-
 	use EventEmitterTrait;
 	public const ENV_PREFIX = 'OC_';
 
