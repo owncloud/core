@@ -40,11 +40,14 @@ Details
 
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 
-   The following have been updated: - sabre/http (5.1.7 to 5.1.10)
+   The following have been updated: - guzzlehttp/guzzle (7.7.0 to 7.8.0) - guzzlehttp/psr7
+   (2.6.0 to 2.6.1) - sabre/http (5.1.7 to 5.1.10) - symfony/console (5.4.26 to 5.4.28) -
+   symfony/process (5.4.26 to 5.4.28)
 
    The following have been updated in apps/files_external/3rdparty:
 
    https://github.com/owncloud/core/pull/40939
+   https://github.com/owncloud/core/pull/40952
 
 Changelog for ownCloud Core [10.13.0] (2023-08-22)
 =======================================
