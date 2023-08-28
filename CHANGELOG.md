@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Fix namespace map setting: [#40943](https://github.com/owncloud/core/pull/40943)
 * Bugfix - Make sure that parameters are a string when string is expected: [#40944](https://github.com/owncloud/core/pull/40944)
+* Bugfix - Fix usort callback functions to return integers: [#40945](https://github.com/owncloud/core/pull/40945)
 * Bugfix - Users page generates error logs in owncloud.log: [#40947](https://github.com/owncloud/core/pull/40947)
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 
@@ -28,6 +29,13 @@ Details
    handles that correctly.
 
    https://github.com/owncloud/core/pull/40944
+
+* Bugfix - Fix usort callback functions to return integers: [#40945](https://github.com/owncloud/core/pull/40945)
+
+   Calls to the PHP usort function have been refactored so that the callback function used always
+   correctly returns an integer.
+
+   https://github.com/owncloud/core/pull/40945
 
 * Bugfix - Users page generates error logs in owncloud.log: [#40947](https://github.com/owncloud/core/pull/40947)
 
