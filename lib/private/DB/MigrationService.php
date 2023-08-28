@@ -195,7 +195,7 @@ class MigrationService {
 
 		$files = \array_keys(\iterator_to_array($iterator));
 		\uasort($files, function ($a, $b) {
-			return (\basename($a) < \basename($b)) ? -1 : 1;
+			return \strcmp(\basename($a), \basename($b));
 		});
 
 		$migrations = [];

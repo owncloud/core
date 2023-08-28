@@ -146,7 +146,7 @@ class TXT implements IProvider2 {
 			if ($a === $b) {
 				return 0;
 			}
-			return ($a < $b) ? 1 : -1;
+			return ($b - $a);
 		});
 		// Information is ordered by counted chars, from highest number of counted chars to lowest.
 		foreach ($countInfo as $key => $value) {
