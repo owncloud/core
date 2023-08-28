@@ -1,0 +1,7 @@
+Bugfix: no external icons in app registry
+
+App icons for the app registry are hosted in ownCloud server.
+
+https://github.com/owncloud/core/pull/40955
+https://github.com/owncloud/core/issues/40953
+
