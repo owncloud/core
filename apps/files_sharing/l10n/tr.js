@@ -151,6 +151,7 @@ OC.L10N.register(
     "Nothing to configure." : "Yapılandırılacak birşey yok.",
     "Group Sharing Blacklist" : "Grup Paylaşımı Kara Liste",
     "Exclude groups from receiving shares" : "Grupları paylaşma eyleminden hariç tut",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares addressed to other groups they are members of as usual." : "Bu gruplar ile paylaşım yapılamaz. Grup üyelerinin paylaşım başlatma ve kişisel paylaşım/davet alma konusunda herhangi bir kısıtlaması yoktur. Ayrıca her zamanki gibi üyesi oldukları diğer gruplara yönelik paylaşımlar alabilmektedir.",
     "Only certain groups are allowed to create public links" : "Yalnızca belirli grupların herkese açık bağlantılar oluşturmasına izin verilir"
 },
 "nplurals=2; plural=(n > 1);");
