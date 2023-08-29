@@ -84,7 +84,7 @@ class AppRegistryControllerTest extends TestCase {
 
 		$controller = new AppRegistryController('core', $request, $appManager, $rootFolder, $generator, $config, $logger);
 
-		$result = $controller->openWithWeb(123, 'draw.io');
+		$result = $controller->openWithWeb('123ocxxxxx', 'draw.io');
 		$data = $result->getData();
 		self::assertCount(1, $data);
 		self::assertEquals('https://example.cloud/index.php/apps/drawio/editor/123', $data['uri']);
