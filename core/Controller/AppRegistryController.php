@@ -68,22 +68,18 @@ class AppRegistryController extends Controller {
 	private static array $apps = [
 		'Collabora' => [
 			"oc_app_name" => 'richdocuments',
-			"icon" => "https://www.collaboraoffice.com/wp-content/uploads/2019/01/CP-icon.png",
 			"mime-types" => [self::MIME_PDF, self::MIME_ODT, self::MIME_ODP, self::MIME_ODS]
 		],
 		'OnlyOffice' => [
 			"oc_app_name" => 'onlyoffice',
-			"icon" => "https://www.pikpng.com/pngl/m/343-3435764_onlyoffice-desktop-editors-onlyoffice-logo-clipart.png",
 			"mime-types" => [self::MIME_PDF, self::MIME_ODT, self::MIME_ODP, self::MIME_ODS, self::MIME_XLSX, self::MIME_DOCX, self::MIME_PPTX]
 		],
 		'MS Office' => [
 			"oc_app_name" => 'wopi',
-			"icon" => "https://www.pikpng.com/pngl/m/343-3435764_onlyoffice-desktop-editors-onlyoffice-logo-clipart.png",
 			"mime-types" => [self::MIME_XLSX, self::MIME_DOCX, self::MIME_PPTX]
 		],
 		'draw.io' => [
 			"oc_app_name" => 'drawio',
-			"icon" => "https://avatars.githubusercontent.com/u/1769238?s=200&v=4",
 			"mime-types" => [self::MIME_DRAWIO]
 		],
 	];
@@ -156,7 +152,7 @@ class AppRegistryController extends Controller {
 					# add app to mime
 					$mimeTypes[$mimetype]['app_providers'][] = [
 						"name" => $app_name,
-						"icon" => $app_info['icon']
+						"icon" => $this->buildAppIconURL($app_info['oc_app_name']),
 					];
 					# add default_application
 					$mimeTypes[$mimetype]['default_application'] = $this->getDefaultApp($mimetype);
@@ -271,6 +267,11 @@ class AppRegistryController extends Controller {
 
 		return new DataResponse([
 			'file_id' => (string)$newFile->getId()]);
+	}
+
+	private function buildAppIconURL(string $app_name): string {
+		$path = $this->generator->imagePath('core', "app-registry/$app_name.png");
+		return $this->generator->getAbsoluteURL($path);
 	}
 
 	private function buildWebUri(array $app_info, string $fileId): ?string {

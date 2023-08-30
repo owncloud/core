@@ -23,6 +23,7 @@ namespace Core\Controller;
 
 use OC\Core\Controller\AppRegistryController;
 use OC\Files\Node\File;
+use OC\URLGenerator;
 use OCP\App\IAppManager;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -34,12 +35,16 @@ use Test\TestCase;
 
 class AppRegistryControllerTest extends TestCase {
 	public function testList(): void {
+		# necessary to create proper URLs
+		\OC::$WEBROOT = '';
+
+		# mock it ....
 		$request = $this->createMock(IRequest::class);
 		$appManager = $this->createMock(IAppManager::class);
 		$rootFolder = $this->createMock(IRootFolder::class);
-		$generator = $this->createMock(IURLGenerator::class);
 		$logger = $this->createMock(ILogger::class);
 		$config = $this->createMock(IConfig::class);
+		$generator = \OC::$server->getURLGenerator();
 
 		$appManager->method('isEnabledForUser')->willReturn(true);
 
@@ -48,6 +53,7 @@ class AppRegistryControllerTest extends TestCase {
 		$result = $controller->list();
 		$data = $result['mime-types'];
 		self::assertCount(8, $data);
+		# assert mime
 		self::assertEquals('application/pdf', $data[0]['mime_type']);
 		self::assertEquals('application/vnd.oasis.opendocument.text', $data[1]['mime_type']);
 		self::assertEquals('application/vnd.oasis.opendocument.presentation', $data[2]['mime_type']);
@@ -56,6 +62,15 @@ class AppRegistryControllerTest extends TestCase {
 		self::assertEquals('application/vnd.openxmlformats-officedocument.wordprocessingml.document', $data[5]['mime_type']);
 		self::assertEquals('application/vnd.openxmlformats-officedocument.presentationml.presentation', $data[6]['mime_type']);
 		self::assertEquals('application/x-drawio', $data[7]['mime_type']);
+		# assert icon path
+		self::assertEquals('http://localhost/core/img/app-registry/richdocuments.png', $data[0]['app_providers'][0]['icon']);
+		self::assertEquals('http://localhost/core/img/app-registry/richdocuments.png', $data[1]['app_providers'][0]['icon']);
+		self::assertEquals('http://localhost/core/img/app-registry/richdocuments.png', $data[2]['app_providers'][0]['icon']);
+		self::assertEquals('http://localhost/core/img/app-registry/richdocuments.png', $data[3]['app_providers'][0]['icon']);
+		self::assertEquals('http://localhost/core/img/app-registry/onlyoffice.png', $data[4]['app_providers'][0]['icon']);
+		self::assertEquals('http://localhost/core/img/app-registry/onlyoffice.png', $data[5]['app_providers'][0]['icon']);
+		self::assertEquals('http://localhost/core/img/app-registry/onlyoffice.png', $data[6]['app_providers'][0]['icon']);
+		self::assertEquals('http://localhost/core/img/app-registry/drawio.png', $data[7]['app_providers'][0]['icon']);
 	}
 
 	public function testOpenWithWeb(): void {
