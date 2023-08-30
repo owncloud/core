@@ -12,6 +12,7 @@ Summary
 * Bugfix - Make sure that parameters are a string when string is expected: [#40944](https://github.com/owncloud/core/pull/40944)
 * Bugfix - Fix usort callback functions to return integers: [#40945](https://github.com/owncloud/core/pull/40945)
 * Bugfix - Users page generates error logs in owncloud.log: [#40947](https://github.com/owncloud/core/pull/40947)
+* Bugfix - Remove instance id postfix from file id: [#40958](https://github.com/owncloud/core/pull/40958)
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 
 Details
@@ -45,6 +46,12 @@ Details
 
    https://github.com/owncloud/core/issues/40946
    https://github.com/owncloud/core/pull/40947
+
+* Bugfix - Remove instance id postfix from file id: [#40958](https://github.com/owncloud/core/pull/40958)
+
+   On the App Registry endpoints file ids can hold the instance id which needs to be removed.
+
+   https://github.com/owncloud/core/pull/40958
 
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 
