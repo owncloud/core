@@ -203,7 +203,7 @@ class AppRegistryController extends Controller {
 			], 404);
 		}
 
-		$uri = $this->buildWebUri($app_info, $file_id);
+		$uri = $this->buildWebUri($app_info, $fileId);
 		if ($uri === null) {
 			return new DataResponse([
 				"code" => "RESOURCE_NOT_FOUND",

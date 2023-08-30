@@ -1,0 +1,6 @@
+Bugfix: Remove instance id postfix from file id
+
+On the App Registry endpoints file ids can hold the instance id which needs to
+be removed.
+
+https://github.com/owncloud/core/pull/40958
