@@ -18,7 +18,7 @@
 	},
 	"require": {
 		"php": ">=7.4",
-		"icewind/smb": "3.5.4",
+		"icewind/smb": "3.6.0",
 		"icewind/streams": "0.7.7",
 		"google/apiclient": "2.15.0"
 	},
