@@ -1,5 +1,7 @@
 <?php
 
+use Icewind\SMB\KerberosTicket;
+
 require('vendor/autoload.php');
 
 if (php_sapi_name() == "cli") {
@@ -10,7 +12,8 @@ if (php_sapi_name() == "cli") {
 $host = 'krb.domain.test';
 $share = 'netlogon';
 
-$auth = new \Icewind\SMB\KerberosApacheAuth();
+$auth = new \Icewind\SMB\KerberosAuth();
+$auth->setTicket(KerberosTicket::fromEnv());
 $serverFactory = new \Icewind\SMB\ServerFactory();
 
 $server = $serverFactory->createServer($host, $auth);
