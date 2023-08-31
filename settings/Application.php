@@ -35,6 +35,7 @@ use OC\Server;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Settings\Controller\CorsController;
 use OC\Settings\Controller\SettingsPageController;
+use OC\Settings\Controller\AppConfigController;
 use OC\Settings\Controller\AppSettingsController;
 use OC\Settings\Controller\AuthSettingsController;
 use OC\Settings\Controller\CertificateController;
@@ -185,6 +186,13 @@ class Application extends App {
 				$c->query('URLGenerator'),
 				$c->query('Config'),
 				$c->query('L10N')
+			);
+		});
+		$container->registerService('AppConfigController', function (IContainer $c) {
+			return new AppConfigController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getAppConfig()
 			);
 		});
 

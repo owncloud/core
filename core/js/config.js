@@ -8,51 +8,62 @@
  * @namespace
  */
 OC.AppConfig={
-	url:OC.filePath('core','ajax','appconfig.php'),
-	getCall:function(action,data,callback){
-		data.action=action;
-		$.getJSON(OC.AppConfig.url,data,function(result){
-			if(result.status==='success'){
-				if(callback){
-					callback(result.data);
-				}
+	url:OC.generateUrl('/settings/appconfig'),
+	getValue:function(app,key,defaultValue,callback){
+		if (defaultValue === undefined || defaultValue === null) {
+			$.ajax({
+				url: `${OC.AppConfig.url}/${app}/${key}`,
+				success: callback
+			});
+		} else {
+			$.ajax({
+				url: `${OC.AppConfig.url}/${app}/${key}?default=${defaultValue}`,
+				success: callback
+			});
+		}
+	},
+	setValue:function(app,key,value){
+		return $.ajax({
+			url: OC.AppConfig.url,
+			type: 'PUT',
+			data: {
+				app: app,
+				key: key,
+				value: value
 			}
 		});
 	},
-	postCall:function(action,data,callback){
-		data.action=action;
-		return $.post(OC.AppConfig.url,data,function(result){
-			if(result.status==='success'){
-				if(callback){
-					callback(result.data);
-				}
-			}
-		},'json');
-	},
-	getValue:function(app,key,defaultValue,callback){
-		if(typeof defaultValue=='function'){
-			callback=defaultValue;
-			defaultValue=null;
-		}
-		OC.AppConfig.getCall('getValue',{app:app,key:key,defaultValue:defaultValue},callback);
-	},
-	setValue:function(app,key,value){
-		return OC.AppConfig.postCall('setValue',{app:app,key:key,value:value});
-	},
 	getApps:function(callback){
-		OC.AppConfig.getCall('getApps',{},callback);
+		$.ajax({
+			url: OC.AppConfig.url,
+			success: callback
+		});
 	},
 	getKeys:function(app,callback){
-		OC.AppConfig.getCall('getKeys',{app:app},callback);
+		$.ajax({
+			url: `${OC.AppConfig.url}/${app}`,
+			success: callback
+		});
 	},
 	hasKey:function(app,key,callback){
-		OC.AppConfig.getCall('hasKey',{app:app,key:key},callback);
+		$.ajax({
+			url: `${OC.AppConfig.url}/${app}/${key}`,
+			success: function(data) {
+				callback(data !== null);
+			}
+		});
 	},
 	deleteKey:function(app,key){
-		OC.AppConfig.postCall('deleteKey',{app:app,key:key});
+		$.ajax({
+			url: `${OC.AppConfig.url}/${app}/${key}`,
+			type: 'DELETE'
+		});
 	},
 	deleteApp:function(app){
-		OC.AppConfig.postCall('deleteApp',{app:app});
+		$.ajax({
+			url: `${OC.AppConfig.url}/${app}`,
+			type: 'DELETE'
+		});
 	}
 };
 //TODO OC.Preferences
