@@ -65,7 +65,13 @@ Details
 
    The following have been updated: - guzzlehttp/guzzle (7.7.0 to 7.8.0) - guzzlehttp/psr7
    (2.6.0 to 2.6.1) - sabre/http (5.1.7 to 5.1.10) - symfony/console (5.4.26 to 5.4.28) -
-   symfony/process (5.4.26 to 5.4.28)
+   symfony/process (5.4.26 to 5.4.28) - symfony/polyfill-ctype (v1.27.0 to v1.28.0) -
+   symfony/polyfill-iconv (v1.27.0 to v1.28.0) - symfony/polyfill-intl-grapheme (v1.27.0
+   to v1.28.0) - symfony/polyfill-intl-idn (v1.27.0 to v1.28.0) -
+   symfony/polyfill-intl-normalizer (v1.27.0 to v1.28.0) - symfony/polyfill-mbstring
+   (v1.27.0 to v1.28.0) - symfony/polyfill-php72 (v1.27.0 to v1.28.0) -
+   symfony/polyfill-php73 (v1.27.0 to v1.28.0) - symfony/polyfill-php80 (v1.27.0 to
+   v1.28.0)
 
    The following have been updated in apps/files_external/3rdparty: - icewind/smb (3.5.4 to
    3.6.0)
@@ -73,6 +79,7 @@ Details
    https://github.com/owncloud/core/pull/40939
    https://github.com/owncloud/core/pull/40952
    https://github.com/owncloud/core/pull/40923
+   https://github.com/owncloud/core/pull/40960
 
 Changelog for ownCloud Core [10.13.0] (2023-08-22)
 =======================================
