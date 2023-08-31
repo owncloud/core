@@ -1,0 +1,5 @@
+Bugfix: Disallow pre-signed URL access when the signing key is not initialized
+
+Disallow pre-signed URL access when the signing key is not initialized.
+
+https://github.com/owncloud/core/pull/40962
