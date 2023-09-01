@@ -1,0 +1,5 @@
+Bugfix: Validate comment verb length
+
+User input validation of comment verb
+
+https://github.com/owncloud/core/pull/40965
