@@ -127,5 +127,5 @@ Feature: add users
     And the administrator has logged out of the webUI
     And user "Alice" has logged in using the webUI
     When the user browses to the users page
-    Then the subadmin should be able to see password field in new user form on the webUI
-    But the subadmin should not be able to see email field in new user form on the webUI
+    Then the subadmin should be able to see the password field in the new user form on the webUI
+    But the subadmin should not be able to see the email field in the new user form on the webUI
