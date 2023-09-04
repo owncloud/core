@@ -118,7 +118,7 @@ Feature: add users
       | Brian    |
 
   @issue-34652
-  Scenario: subadmin should be able to see password and email field
+  Scenario: subadmin should be able to see the password field but not the email field
     Given group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
@@ -127,5 +127,5 @@ Feature: add users
     And the administrator has logged out of the webUI
     And user "Alice" has logged in using the webUI
     When the user browses to the users page
-    Then the subadmin should be able to see email field in new user form on the webUI
-    And the subadmin should be able to see password field in new user form on the webUI
+    Then the subadmin should be able to see password field in new user form on the webUI
+    But the subadmin should not be able to see email field in new user form on the webUI
