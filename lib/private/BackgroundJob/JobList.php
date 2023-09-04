@@ -207,6 +207,14 @@ class JobList implements IJobList {
 				// Background job already executed elsewhere, try again.
 				return $this->getNext();
 			}
+
+			// skip jobs marked as disabled
+			$jobs_disabled = \explode(',', $this->config->getAppValue('backgroundjob', 'jobs_disabled', ''));
+			if (\in_array($row['id'], $jobs_disabled, true)) {
+				$this->logger->warning("Background job configuration has the job {$row['id']} as disabled. Skipping it");
+				return $this->getNext();
+			}
+
 			$job = $this->buildJob($row);
 
 			if ($job === null) {
