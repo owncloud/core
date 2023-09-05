@@ -147,7 +147,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And user "Alice" should be able to accept pending share "/zzzfolder" offered by user "Carol"
-    Then as "Alice" the info about the last share by user "Carol" with user "Alice" should include
+    And as "Alice" the info about the last share by user "Carol" with user "Alice" should include
       | uid_owner   | %username%      |
       | share_with  | %username%      |
       | file_target | <file_target_2> |

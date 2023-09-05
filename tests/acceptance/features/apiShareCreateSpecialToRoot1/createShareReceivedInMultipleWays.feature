@@ -141,7 +141,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | file_target | /zzzfolder  |
       | item_type   | folder      |
       | permissions | read,delete |
-    When user "Carol" shares folder "zzzfolder" with user "Alice" with permissions "read,share" using the sharing API
+    And user "Carol" shares folder "zzzfolder" with user "Alice" with permissions "read,share" using the sharing API
     And as "Alice" the info about the last share by user "Carol" with user "Alice" should include
       | uid_owner   | %username%     |
       | share_with  | %username%     |

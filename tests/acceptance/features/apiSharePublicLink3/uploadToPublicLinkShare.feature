@@ -116,7 +116,7 @@ Feature: upload to a public link share
       | path        | FOLDER |
       | permissions | change |
     And the quota of user "Alice" has been set to "0"
-    When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
+    And the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "507"
 
     Examples:
@@ -130,7 +130,7 @@ Feature: upload to a public link share
       | path        | FOLDER |
       | permissions | create |
     And the quota of user "Alice" has been set to "0"
-    When the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
+    And the public uploads file "test.txt" with content "test-file" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "507"
 
     Examples:

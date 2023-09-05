@@ -424,7 +424,7 @@ Feature: federated
     Then as "Alice" file "/RandomFolder/file-to-share" should exist
     When user "Alice" uploads file with content "thisIsTheContentOfNewFile" to "/RandomFolder/newFile" using the WebDAV API
     And user "Alice" uploads file with content "theContentIsChanged" to "/RandomFolder/file-to-share" using the WebDAV API
-    When using server "LOCAL"
+    And using server "LOCAL"
     Then the HTTP status code of responses on each endpoint should be "201, 204" respectively
     And as "Brian" file "/CHILD/newRandomFolder/RandomFolder/newFile" should exist
     And the content of file "/CHILD/newRandomFolder/RandomFolder/file-to-share" for user "Brian" should be "theContentIsChanged"
@@ -444,7 +444,7 @@ Feature: federated
     And using server "REMOTE"
     Then the OCS status code of responses on all endpoints should be "<ocs-status-code>"
     And the HTTP status code of responses on all endpoints should be "200"
-    Then as "Alice" file "/file-to-share" should exist
+    And as "Alice" file "/file-to-share" should exist
     And the content of file "/file-to-share" for user "Alice" should be "thisContentIsVisible"
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
@@ -550,7 +550,7 @@ Feature: federated
     And the HTTP status code of responses on each endpoint should be "201, 200" respectively
     And using server "LOCAL"
     And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
-    Then as "Brian" file "/newFile" should exist
+    And as "Brian" file "/newFile" should exist
     Examples:
       | ocs-api-version | ocs-status-code | http-status-code |
       | 1               | 100             | 201, 200         |

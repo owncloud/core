@@ -129,7 +129,7 @@ Feature: upload file using old chunking
   @skipOnOcV10 @issue-36115
   Scenario Outline: Upload chunked file with old chunking with lengthy filenames
     Given using <dav_version> DAV path
-    Given the owncloud log level has been set to debug
+    And the owncloud log level has been set to debug
     And the owncloud log has been cleared
     When user "Alice" uploads the following chunks to "नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-12345678910.txt" with old chunking and using the WebDAV API
       | number | content                   |

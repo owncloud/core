@@ -132,5 +132,5 @@ Feature: Sharing files and folders with internal users where admin disables diff
     # Go back to the home page so that the "user shares file" step can navigate its own way
     # into simple-folder and will "know where it is"
     When the user browses to the home page
-    When the user shares file "simple-folder/lorem.txt" with user "Carol" using the webUI
+    And the user shares file "simple-folder/lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist

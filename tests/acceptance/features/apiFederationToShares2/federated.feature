@@ -88,7 +88,7 @@ Feature: federated
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "100"
-    Then as "Brian" file "Shares/textfile1.txt" should exist
+    And as "Brian" file "Shares/textfile1.txt" should exist
 
 
   Scenario: disable "Add server automatically" once a federated share was created successfully
@@ -456,7 +456,7 @@ Feature: federated
     And the OCS status code of responses on each endpoint should be "<ocs-status-code>" respectively
     And using server "LOCAL"
     And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
-    Then as "Brian" file "/Shares/newFile" should exist
+    And as "Brian" file "/Shares/newFile" should exist
     And the content of file "/Shares/newFile" for user "Brian" should be "thisFileIsShared"
     Examples:
       | ocs-api-version | ocs-status-code |
