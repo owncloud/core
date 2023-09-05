@@ -283,7 +283,6 @@ class Trashbin {
 	 * isn't any trashbin available
 	 */
 	public static function move2trash($file_path) {
-
 		// get the user for which the filesystem is setup
 		$root = Filesystem::getRoot();
 		list(, $user) = \explode('/', $root);

@@ -96,8 +96,8 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 			foreach ($providerMounts as $mount) {
 				$mountpoint = $mount->getMountPoint();
 				$mpInLocalFiles = $mountpoint;
-				if (substr_compare($mountpoint, $root, 0, strlen($root)) === 0) {
-					$mpInLocalFiles = substr($mountpoint, strlen($root));
+				if (substr_compare($mountpoint, $root, 0, \strlen($root)) === 0) {
+					$mpInLocalFiles = substr($mountpoint, \strlen($root));
 				}
 				$mountPointTaken = \in_array($mountpoint, $takenMountPoints, true);
 				$mountPointTaken = $mountPointTaken || $view->file_exists($mpInLocalFiles);
@@ -201,7 +201,7 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 		$dir = $pathinfo['dirname'];
 
 		$i = 2;
-		while (\in_array($path, $mountpoints, true) || $view->file_exists(substr($path, strlen($dir)))) {
+		while (\in_array($path, $mountpoints, true) || $view->file_exists(substr($path, \strlen($dir)))) {
 			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
 			$i++;
 		}
