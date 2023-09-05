@@ -14,6 +14,7 @@ Summary
 * Bugfix - Users page generates error logs in owncloud.log: [#40947](https://github.com/owncloud/core/pull/40947)
 * Bugfix - No external icons in app registry: [#40955](https://github.com/owncloud/core/pull/40955)
 * Bugfix - Remove instance id postfix from file id: [#40958](https://github.com/owncloud/core/pull/40958)
+* Bugfix - Disallow pre-signed URL access when the signing key is not initialized: [#40962](https://github.com/owncloud/core/pull/40962)
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 
 Details
@@ -60,6 +61,12 @@ Details
    On the App Registry endpoints file ids can hold the instance id which needs to be removed.
 
    https://github.com/owncloud/core/pull/40958
+
+* Bugfix - Disallow pre-signed URL access when the signing key is not initialized: [#40962](https://github.com/owncloud/core/pull/40962)
+
+   Disallow pre-signed URL access when the signing key is not initialized.
+
+   https://github.com/owncloud/core/pull/40962
 
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 
