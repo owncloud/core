@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67dd2ebd23ff7d899ec5447213bac42d",
+    "content-hash": "59d00d012c8c83ea72974b3af8de584a",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -268,16 +268,16 @@
         },
         {
             "name": "dg/composer-cleaner",
-            "version": "v2.2",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dg/composer-cleaner.git",
-                "reference": "f1e72fb72a37014e421451185550750205993185"
+                "reference": "b0fc3d177a9da6c61b5176e57025654391de600c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dg/composer-cleaner/zipball/f1e72fb72a37014e421451185550750205993185",
-                "reference": "f1e72fb72a37014e421451185550750205993185",
+                "url": "https://api.github.com/repos/dg/composer-cleaner/zipball/b0fc3d177a9da6c61b5176e57025654391de600c",
+                "reference": "b0fc3d177a9da6c61b5176e57025654391de600c",
                 "shasum": ""
             },
             "require": {
@@ -314,9 +314,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dg/composer-cleaner/issues",
-                "source": "https://github.com/dg/composer-cleaner/tree/v2.2"
+                "source": "https://github.com/dg/composer-cleaner/tree/v2.2.1"
             },
-            "time": "2020-10-27T13:01:26+00:00"
+            "time": "2022-04-02T16:11:52+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -7177,5 +7177,5 @@
     "platform-overrides": {
         "php": "7.3"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
