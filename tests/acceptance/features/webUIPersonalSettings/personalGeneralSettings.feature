@@ -48,7 +48,7 @@ Feature: personal general settings
     And the administrator has added config key "legal.imprint_url" with value "https://example.com/imprint" in app "core"
     And the user has reloaded the current page of the webUI
     Then the legal privacy policy link "https://example.com/privacy" should be displayed on the personal general settings page on the webUI
-    Then the legal imprint conditions link "https://example.com/imprint" should be displayed on the personal general settings page on the webUI
+    And the legal imprint conditions link "https://example.com/imprint" should be displayed on the personal general settings page on the webUI
 
 
   Scenario: User sets profile picture from their existing cloud file

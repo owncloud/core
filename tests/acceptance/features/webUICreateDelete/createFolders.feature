@@ -35,9 +35,9 @@ Feature: create folders
     When the user opens the newFileMenu using the webUI
     Then the newFileMenu should be displayed on the webUI
     And the user clicks folder in the newFileMenu using the webUI
-    Then the newFileMenu filename form should be displayed on the webUI
+    And the newFileMenu filename form should be displayed on the webUI
     And the user clicks cancel in newFileMenu filename form using the webUI
-    Then the newFileMenu filename form should not be displayed on the webUI
+    And the newFileMenu filename form should not be displayed on the webUI
 
   @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: Create a folder inside another folder
