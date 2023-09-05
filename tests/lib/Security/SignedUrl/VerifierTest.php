@@ -27,6 +27,21 @@ use Sabre\HTTP\Request;
 use Test\TestCase;
 
 class VerifierTest extends TestCase {
+	public function testNoSigningKey(): void {
+		$url = 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b6';
+		$r = new Request('GET', $url);
+		$r->setAbsoluteUrl($url);
+		$config = $this->createMock(IConfig::class);
+		# signing key for the user was never initialized
+		$config->method('getUserValue')->willReturn('');
+		$now = new \DateTime('2019-05-14T11:01:58.135Z', null);
+		$v = new Verifier($r, $config, $now);
+
+		self::assertTrue($v->isSignedRequest());
+		self::assertEquals('alice', $v->getUrlCredential());
+		self::assertFalse($v->signedRequestIsValid());
+	}
+
 	/**
 	 * @dataProvider provider
 	 * @param bool $isSignedUrl

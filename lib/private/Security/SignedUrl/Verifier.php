@@ -138,6 +138,11 @@ class Verifier {
 	private function verifySignature(array $params, $urlCredential, $algo, $urlSignature): bool {
 		$trustedList = $this->config->getSystemValue('trusted_domains', []);
 		$signingKey = $this->config->getUserValue($urlCredential, 'core', 'signing-key');
+		// in case the signing key is not initialized, no signature can ever be verified
+		if ($signingKey === '') {
+			\OC::$server->getLogger()->error("No signing key available for the user $urlCredential. Access via pre-signed URL denied.", ['app' => 'signed-url']);
+			return false;
+		}
 		$qp = \preg_replace('/%5B\d+%5D/', '%5B%5D', \http_build_query($params));
 
 		foreach ($trustedList as $trustedDomain) {
