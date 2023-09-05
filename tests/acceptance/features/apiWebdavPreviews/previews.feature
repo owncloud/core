@@ -268,11 +268,11 @@ Feature: previews of files downloaded through the webdav API
   Scenario: JPEG preview quality can be determined by config
     Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testavatar_low.jpg"
     And the administrator has updated system config key "previewJPEGImageDisplayQuality" with value "1"
-    And user "Alice" downloads the preview of "/testavatar_low.jpg" with width "32" and height "32" using the WebDAV API
+    When user "Alice" downloads the preview of "/testavatar_low.jpg" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
     And the requested JPEG image should have a quality value of "1"
-    And user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testavatar_high.jpg"
-    And the administrator has updated system config key "previewJPEGImageDisplayQuality" with value "100"
-    And user "Alice" downloads the preview of "/testavatar_high.jpg" with width "32" and height "32" using the WebDAV API
-    And the HTTP status code should be "200"
+    And user "Alice" uploads file "filesForUpload/testavatar.jpg" to "/testavatar_high.jpg" using the WebDAV API
+    And the administrator updates system config key "previewJPEGImageDisplayQuality" with value "100" using the occ command
+    When user "Alice" downloads the preview of "/testavatar_high.jpg" with width "32" and height "32" using the WebDAV API
+    Then the HTTP status code should be "200"
     And the requested JPEG image should have a quality value of "100"
