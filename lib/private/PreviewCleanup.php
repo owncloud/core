@@ -23,6 +23,7 @@ namespace OC;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\Folder;
 use OCP\IDBConnection;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 
 class PreviewCleanup {
 	/**
@@ -38,14 +39,36 @@ class PreviewCleanup {
 		$root = \OC::$server->getLazyRootFolder();
 		$count = 0;
 
+		$qb = $this->connection->getQueryBuilder();
+		// the query will be reused, so the parameter will be set just before
+		// executing the query
+		$query = $qb->select('storage_id', 'user_id')
+			->from('mounts')
+			->where('storage_id = :sid');
+		$lastStorageInfo = [];
+
 		$lastFileId = 0;
 		while (true) {
 			$rows = $this->queryPreviewsToDelete($lastFileId, $chunkSize);
 			foreach ($rows as $row) {
+				$storageId = $row['storage'];
 				$name = $row['name'];
-				$userId = $row['user_id'];
 				$lastFileId = $row['fileid'];
 
+				if (!isset($lastStorageInfo[$storageId])) {
+					$query->setParameter(':sid', $storageId, IQueryBuilder::PARAM_INT);
+					$result = $query->execute();
+					$resultData = $result->fetchAll(); // only 1 result expected
+					if (empty($resultData)) {
+						continue; // we can't do anything without the user_id
+					} else {
+						// we only expect one result from the query, and we want to remove
+						// the previous cached storage info.
+						$lastStorageInfo = [$storageId => $resultData[0]['user_id']];
+					}
+				}
+
+				$userId = $lastStorageInfo[$storageId];
 				$userFiles = $root->getUserFolder($userId);
 				if ($userFiles->getParent()->nodeExists('thumbnails')) {
 					/** @var Folder $thumbnailsFolder */
@@ -77,13 +100,24 @@ class PreviewCleanup {
 	private function queryPreviewsToDelete(int $startFileId = 0, int $chunkSize = 1000): array {
 		$isOracle = ($this->connection->getDatabasePlatform() instanceof OraclePlatform);
 
-		$sql = "select `thumb`.`fileid`, `thumb`.`name`, `user_id`
- from `*PREFIX*mounts`, `*PREFIX*filecache` `thumb` left join `*PREFIX*filecache` `file`  on `thumb`.`name` = trim(cast(`file`.`fileid` as CHAR(24)))
-where `thumb`.`parent` in (select `fileid` from `*PREFIX*filecache` where `storage` in (select `numeric_id` from `*PREFIX*storages` where `id` like 'home::%' or `id` like 'object::user:%') and `path` = 'thumbnails')
-  and `*PREFIX*mounts`.`storage_id` = `thumb`.`storage`
-  and `file`.`fileid` is null
-  and `thumb`.`fileid` > ?
-  order by `user_id`, `thumb`.`fileid`";
+		$sql = "SELECT `fileid`, `name`, `storage`
+FROM `*PREFIX*filecache` `thumb`
+WHERE `parent` IN (
+  SELECT `fileid`
+  FROM `*PREFIX*filecache`
+  WHERE `storage` IN (
+    SELECT `numeric_id`
+    FROM `*PREFIX*storages`
+    WHERE `id` LIKE 'home::%' OR `id` LIKE 'object::user:%'
+  )
+  AND `path_hash` = MD5('thumbnails')
+)
+AND NOT EXISTS (
+  SELECT 1
+  FROM `*PREFIX*filecache`
+  WHERE `fileid` = CAST(`thumb`.`name` AS int)
+)
+ORDER BY storage";
 
 		if ($isOracle) {
 			$sql = "select * from ($sql) where ROWNUM <= $chunkSize";
