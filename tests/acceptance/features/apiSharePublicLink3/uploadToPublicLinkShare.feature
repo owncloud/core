@@ -112,7 +112,7 @@ Feature: upload to a public link share
 
 
   Scenario Outline: Uploading file to a public shared folder with read/write permission when the sharer has insufficient quota does not work with public API
-    When user "Alice" creates a public link share using the sharing API with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | change |
     And the quota of user "Alice" has been set to "0"
@@ -126,7 +126,7 @@ Feature: upload to a public link share
 
 
   Scenario Outline: Uploading file to a public shared folder with upload-only permission when the sharer has insufficient quota does not work with public API
-    When user "Alice" creates a public link share using the sharing API with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     And the quota of user "Alice" has been set to "0"

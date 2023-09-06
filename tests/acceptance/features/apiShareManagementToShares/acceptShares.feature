@@ -388,7 +388,7 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" has created folder "FOLDER"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
-    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/FOLDER" offered by user "Alice" using the sharing API
@@ -427,7 +427,7 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile1.txt" with group "grp1" using the sharing API
-    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
@@ -481,7 +481,7 @@ Feature: accept/decline shares coming from internal users
     But user "Carol" should not see the following elements
       | /Shares/textfile0.txt |
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    When user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    And user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code of responses on all endpoints should be "100"
     And the HTTP status code of responses on all endpoints should be "200"
     And user "Brian" should see the following elements

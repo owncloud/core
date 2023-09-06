@@ -14,7 +14,9 @@ Summary
 * Bugfix - Users page generates error logs in owncloud.log: [#40947](https://github.com/owncloud/core/pull/40947)
 * Bugfix - No external icons in app registry: [#40955](https://github.com/owncloud/core/pull/40955)
 * Bugfix - Remove instance id postfix from file id: [#40958](https://github.com/owncloud/core/pull/40958)
+* Bugfix - Disallow pre-signed URL access when the signing key is not initialized: [#40962](https://github.com/owncloud/core/pull/40962)
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
+* Enhancement - Allow disabling background jobs: [#40969](https://github.com/owncloud/core/pull/40969)
 
 Details
 -------
@@ -61,6 +63,12 @@ Details
 
    https://github.com/owncloud/core/pull/40958
 
+* Bugfix - Disallow pre-signed URL access when the signing key is not initialized: [#40962](https://github.com/owncloud/core/pull/40962)
+
+   Disallow pre-signed URL access when the signing key is not initialized.
+
+   https://github.com/owncloud/core/pull/40962
+
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 
    The following have been updated: - guzzlehttp/guzzle (7.7.0 to 7.8.0) - guzzlehttp/psr7
@@ -80,6 +88,13 @@ Details
    https://github.com/owncloud/core/pull/40952
    https://github.com/owncloud/core/pull/40923
    https://github.com/owncloud/core/pull/40960
+
+* Enhancement - Allow disabling background jobs: [#40969](https://github.com/owncloud/core/pull/40969)
+
+   Background jobs can now be disabled so they won't run automatically. Those jobs can still be
+   executed manually if needed even if disabled.
+
+   https://github.com/owncloud/core/pull/40969
 
 Changelog for ownCloud Core [10.13.0] (2023-08-22)
 =======================================
