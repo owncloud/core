@@ -1,0 +1,6 @@
+Enhancement: Allow disabling background jobs
+
+Background jobs can now be disabled so they won't run automatically.
+Those jobs can still be executed manually if needed even if disabled.
+
+https://github.com/owncloud/core/pull/40969
