@@ -45,7 +45,7 @@ class PreviewCleanup {
 		// executing the query
 		$query = $qb->select('storage_id', 'user_id')
 			->from('mounts')
-			->where('storage_id = :sid');
+			->where($qb->expr()->eq('storage_id', $qb->createParameter('sid')));
 		$lastStorageInfo = [];
 
 		$lastFileId = 0;
