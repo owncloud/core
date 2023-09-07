@@ -100,6 +100,9 @@ class PreviewCleanup {
 	private function queryPreviewsToDelete(int $startFileId = 0, int $chunkSize = 1000): array {
 		$isOracle = ($this->connection->getDatabasePlatform() instanceof OraclePlatform);
 
+		// for the path_hash -> 3b8779ba05b8f0aed49650f3ff8beb4b = MD5('thumbnails')
+		// sqlite doesn't have md5 function and oracle needs special function,
+		// so we'll hardcode the value
 		$sql = "SELECT `fileid`, `name`, `storage`
 FROM `*PREFIX*filecache` `thumb`
 WHERE `parent` IN (
@@ -110,13 +113,14 @@ WHERE `parent` IN (
     FROM `*PREFIX*storages`
     WHERE `id` LIKE 'home::%' OR `id` LIKE 'object::user:%'
   )
-  AND `path_hash` = MD5('thumbnails')
+  AND `path_hash` = '3b8779ba05b8f0aed49650f3ff8beb4b'
 )
 AND NOT EXISTS (
   SELECT 1
   FROM `*PREFIX*filecache`
   WHERE `fileid` = CAST(`thumb`.`name` AS int)
 )
+AND `fileid` > ?
 ORDER BY storage";
 
 		if ($isOracle) {
