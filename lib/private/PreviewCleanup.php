@@ -21,6 +21,7 @@
 namespace OC;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use OCP\Files\Folder;
 use OCP\IDBConnection;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -98,7 +99,16 @@ class PreviewCleanup {
 	}
 
 	private function queryPreviewsToDelete(int $startFileId = 0, int $chunkSize = 1000): array {
-		$isOracle = ($this->connection->getDatabasePlatform() instanceof OraclePlatform);
+		$dbPlatform = $this->connection->getDatabasePlatform();
+		$isOracle = ($dbPlatform instanceof OraclePlatform);
+
+		$castTo = 'BIGINT';
+		if ($dbPlatform instanceof MySqlPlatform) {
+			// for MySQL we need to cast to "signed" instead
+			$castTo = 'SIGNED';
+		} elseif ($isOracle) {
+			$castTo = 'NUMBER';
+		}
 
 		// for the path_hash -> 3b8779ba05b8f0aed49650f3ff8beb4b = MD5('thumbnails')
 		// sqlite doesn't have md5 function and oracle needs special function,
@@ -118,10 +128,10 @@ WHERE `parent` IN (
 AND NOT EXISTS (
   SELECT 1
   FROM `*PREFIX*filecache`
-  WHERE `fileid` = CAST(`thumb`.`name` AS int)
+  WHERE `fileid` = CAST(`thumb`.`name` AS ${castTo})
 )
 AND `fileid` > ?
-ORDER BY storage";
+ORDER BY `storage`";
 
 		if ($isOracle) {
 			$sql = "select * from ($sql) where ROWNUM <= $chunkSize";
