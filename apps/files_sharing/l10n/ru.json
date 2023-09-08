@@ -149,6 +149,7 @@
     "Nothing to configure." : "Здесь настраивать нечего.",
     "Group Sharing Blacklist" : "Чёрный список групп для общего доступа",
     "Exclude groups from receiving shares" : "Не давать группам получать общий доступ",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares addressed to other groups they are members of as usual." : "Эти группы не будут доступны для совместного использования. Члены группы не ограничены в инициировании акций и получении личных акций/приглашений. Кроме того, они могут получать акции, адресованные другим группам, членами которых они являются, как обычно.",
     "Only certain groups are allowed to create public links" : "Только отдельным группам разрешено создавать общедоступные ссылки"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }
