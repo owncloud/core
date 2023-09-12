@@ -89,6 +89,4 @@ Feature: orphaned previews can be deleted
     Then the command should have been successful
     # The two files have been deleted from both trashbins, so now there are four
     # previews to delete (2 stored for Brian, 2 stored for Alice)
-    # The command also reports 'Brian: cache cleared' twice.
-    # And so it says that it deleted 6 orphaned previews.
-    And the command output should contain the text '6 orphaned previews deleted'
+    And the command output should contain the text '4 orphaned previews deleted'
