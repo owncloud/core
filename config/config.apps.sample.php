@@ -175,6 +175,8 @@ $CONFIG = [
  *
  * Possible keys: `wopi.token.key` STRING
  *
+ * Possible keys: `wopi.proxy.key` STRING
+ *
  * Possible keys: `wopi.office-online.server` URL
  *
  * Possible keys: `wopi_group` STRING
@@ -185,13 +187,16 @@ $CONFIG = [
  */
 
 /**
- * Random key created by the ownCloud admin
- * This is a random key created by the ownCloud admin. This key is used by ownCloud
- * to create encrypted JWT tokens for the communication with your Microsoft Office Online instance.
+ * Random Keys Created by the ownCloud Admin
+ * Both, `wopi.token.key` and `wopi.proxy.key` are random keys created by the ownCloud admin.
+ * The keys are used by ownCloud to create encrypted JWT tokens for the communication with your
+ * Microsoft Office Online instance. The keys must be distinct.
+ * Note that `wopi.token.key` must be at least 32 bytes long.
+ *
  * You can use the following example command to generate a random key:
- * `echo $(tr -dc 'a-z0-9' < /dev/urandom | head -c 20)`
+ * `echo $(tr -dc 'a-z0-9' < /dev/urandom | head -c 32)`
  */
-'wopi.token.key' => 'replace-with-your-own-random-string',
+'wopi.token.key' => 'replace-with-your-own-very-long-random-string',
 
 /**
  * Microsoft Office Online instance URL
