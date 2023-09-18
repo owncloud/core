@@ -357,7 +357,7 @@ OC.L10N.register(
     "You are using %s of %s (%s %%)" : "Sie benutzen %s von %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Entwickelt von der {communityopen}ownCloud-Community{linkclose}, der {githubopen}Quellcode{linkclose} ist unter den Bedingungen der {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} lizenziert.",
     "Sessions" : "Sitzungen",
-    "These are the web, desktop and mobile clients currently logged in to your %s." : "Diese Web-, Desktop- und Mobil-Clients sind aktuell an 1%s angemeldet",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Diese Web-, Desktop- und Mobil-Clients sind aktuell an %s angemeldet.",
     "Browser" : "Browser",
     "Most recent activity" : "Neueste Aktivität",
     "App passwords / tokens" : "App-Passwörter / Token",
