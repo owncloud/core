@@ -27,7 +27,7 @@ SONARSOURCE_SONAR_SCANNER_CLI = "sonarsource/sonar-scanner-cli"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 WEBHIPPIE_REDIS = "webhippie/redis:latest"
 
-DEFAULT_PHP_VERSION = "7.4"
+DEFAULT_PHP_VERSION = "8.2"
 DEFAULT_NODEJS_VERSION = "14"
 
 # minio mc environment variables
@@ -72,7 +72,7 @@ config = {
     "phpunit": {
         "mostDatabases": {
             "phpVersions": [
-                DEFAULT_PHP_VERSION,
+                DEFAULT_PHP_VERSION
             ],
             # Gather coverage for all databases except Oracle
             "coverage": True,

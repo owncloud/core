@@ -168,7 +168,7 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 * Countable method
 	 * @return int
 	 */
-	public function count() {
+	public function count(): int {
 		return \count(\array_keys($this->items['parameters']));
 	}
 
@@ -192,28 +192,28 @@ class Request implements ArrayAccess, Countable, IRequest {
 	* @param string $offset The key to lookup
 	* @return boolean
 	*/
-	public function offsetExists($offset) {
+	public function offsetExists($offset): bool {
 		return isset($this->items['parameters'][$offset]);
 	}
 
 	/**
 	* @see offsetExists
 	*/
-	public function offsetGet($offset) {
+	public function offsetGet($offset): mixed {
 		return $this->items['parameters'][$offset] ?? null;
 	}
 
 	/**
 	* @see offsetExists
 	*/
-	public function offsetSet($offset, $value) {
+	public function offsetSet($offset, $value): void {
 		throw new \RuntimeException('You cannot change the contents of the request object');
 	}
 
 	/**
 	* @see offsetExists
 	*/
-	public function offsetUnset($offset) {
+	public function offsetUnset($offset): void {
 		throw new \RuntimeException('You cannot change the contents of the request object');
 	}
 
