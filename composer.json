@@ -7,12 +7,13 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "7.4"
+            "php": "8.2"
         },
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true,
             "dg/composer-cleaner": true
-        }
+        },
+        "sort-packages": true
     },
     "autoload" : {
         "psr-4": {
@@ -44,7 +45,7 @@
         "roave/security-advisories": "dev-latest"
     },
     "require": {
-        "php": ">=7.4",
+       "php": ">=8.2",
         "ext-apcu": "*",
         "ext-ctype": "*",
         "ext-curl": "*",

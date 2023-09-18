@@ -37,7 +37,7 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
  * @package OC\Session
  */
 class Memory extends Session {
-	protected $data;
+	protected array $data;
 
 	public function __construct() {
 		//no need to use $name since all data is already scoped to this instance
