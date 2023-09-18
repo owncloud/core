@@ -42,8 +42,7 @@ use OC\Image\BmpToResource;
  * Class for basic image manipulation
  */
 class OC_Image implements \OCP\IImage {
-	/** @var false|resource */
-	protected $resource = false; // tmp resource.
+	protected ?\GdImage $resource = null; // tmp resource.
 	/** @var int */
 	protected $imageType = IMAGETYPE_PNG; // Default to png if file type isn't evident.
 	/** @var string */
@@ -511,21 +510,26 @@ class OC_Image implements \OCP\IImage {
 	 * Loads an image from a local file, a base64 encoded string or a resource created by an imagecreate* function.
 	 *
 	 * @param resource|string $imageRef The path to a local file, a base64 encoded string or a resource created by an imagecreate* function or a file resource (file handle    ).
-	 * @return resource|false An image resource or false on error
+	 * @return GdImage|false An image resource or false on error
 	 */
-	public function load($imageRef) {
-		if (\is_resource($imageRef)) {
-			if (\get_resource_type($imageRef) == 'gd') {
-				$this->resource = $imageRef;
-				return $this->resource;
-			} elseif (\in_array(\get_resource_type($imageRef), ['file', 'stream'])) {
-				return $this->loadFromFileHandle($imageRef);
-			}
-		} elseif ($this->loadFromBase64($imageRef) !== false) {
+	public function load(\GdImage|string $imageRef) {
+		if ($imageRef instanceof \GdImage) {
+			$this->resource = $imageRef;
 			return $this->resource;
-		} elseif ($this->loadFromFile($imageRef) !== false) {
+		}
+		if (is_resource($imageRef)) {
+			return $this->loadFromFileHandle($imageRef);
+		}
+
+		if ($this->loadFromBase64($imageRef) !== false) {
 			return $this->resource;
-		} elseif ($this->loadFromData($imageRef) !== false) {
+		}
+
+		if ($this->loadFromFile($imageRef) !== false) {
+			return $this->resource;
+		}
+
+		if ($this->loadFromData($imageRef) !== false) {
 			return $this->resource;
 		}
 		$this->logger->debug(__METHOD__ . '(): could not load anything. Giving up!', ['app' => 'core']);
