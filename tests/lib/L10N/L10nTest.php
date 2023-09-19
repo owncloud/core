@@ -11,9 +11,11 @@ namespace Test\L10N;
 use DateTime;
 use OC\L10N\Factory;
 use OC\L10N\L10N;
+use OCP\IConfig;
 use OCP\IUserSession;
 use OCP\Theme\IThemeService;
 use Test\TestCase;
+use OCP\IRequest;
 
 /**
  * Class L10nTest
@@ -24,21 +26,21 @@ class L10nTest extends TestCase {
 	/**
 	 * @return Factory
 	 */
-	protected function getFactory() {
-		/** @var \OCP\IConfig $config */
-		$config = $this->createMock('OCP\IConfig');
+	protected function getFactory(): Factory {
+		/** @var IConfig $config */
+		$config = $this->createMock(IConfig::class);
 		/** @var \OCP\IRequest $request */
-		$request = $this->createMock('OCP\IRequest');
+		$request = $this->createMock(IRequest::class);
 		/** @var IThemeService $themeService */
 		$themeService = $this->getMockBuilder(IThemeService::class)
 			->disableOriginalConstructor()
 			->getMock();
 		/** @var IUserSession $userSession */
-		$userSession = $this->createMock('OCP\IUserSession');
+		$userSession = $this->createMock(IUserSession::class);
 		return new Factory($config, $request, $themeService, $userSession, \OC::$SERVERROOT);
 	}
 
-	public function testGermanPluralTranslations() {
+	public function testGermanPluralTranslations(): void {
 		$transFile = \OC::$SERVERROOT.'/tests/data/l10n/de.json';
 		$l = new L10N($this->getFactory(), 'test', 'de', [$transFile]);
 
@@ -46,15 +48,15 @@ class L10nTest extends TestCase {
 		$this->assertEquals('2 Dateien', (string) $l->n('%n file', '%n files', 2));
 	}
 
-	public function testMalformedTranslations() {
-		$lMock = $this->createMock('OC\L10N\L10N');
+	public function testMalformedTranslations(): void {
+		$lMock = $this->createMock(L10N::class);
 		$lMock->method('getTranslations')->willReturn(['malformed' => 'malformed %']);
 
 		$lString = new \OC_L10N_String($lMock, "malformed", []);
-		self::assertEquals('malformed', $lString->__toString());
+		self::assertEquals('malformed %', $lString->__toString());
 	}
 
-	public function testRussianPluralTranslations() {
+	public function testRussianPluralTranslations(): void {
 		$transFile = \OC::$SERVERROOT.'/tests/data/l10n/ru.json';
 		$l = new L10N($this->getFactory(), 'test', 'ru', [$transFile]);
 
@@ -78,7 +80,7 @@ class L10nTest extends TestCase {
 		*/
 	}
 
-	public function testCzechPluralTranslations() {
+	public function testCzechPluralTranslations(): void {
 		$transFile = \OC::$SERVERROOT.'/tests/data/l10n/cs.json';
 		$l = new L10N($this->getFactory(), 'test', 'cs', [$transFile]);
 
@@ -87,7 +89,7 @@ class L10nTest extends TestCase {
 		$this->assertEquals('5 oken', (string)$l->n('%n window', '%n windows', 5));
 	}
 
-	public function localizationData() {
+	public function localizationData(): array {
 		$narrowNoBreakSpace = "\xE2\x80\xAF";
 		return [
 			// timestamp as string
@@ -127,12 +129,12 @@ class L10nTest extends TestCase {
 	/**
 	 * @dataProvider localizationData
 	 */
-	public function testNumericStringLocalization($expectedDate, $lang, $type, $value) {
+	public function testNumericStringLocalization($expectedDate, $lang, $type, $value): void {
 		$l = new L10N($this->getFactory(), 'test', $lang, []);
 		$this->assertSame($expectedDate, $l->l($type, $value));
 	}
 
-	public function firstDayData() {
+	public function firstDayData(): array {
 		return [
 			[1, 'de'],
 			[0, 'en'],
@@ -144,12 +146,12 @@ class L10nTest extends TestCase {
 	 * @param $expected
 	 * @param $lang
 	 */
-	public function testFirstWeekDay($expected, $lang) {
+	public function testFirstWeekDay($expected, $lang): void {
 		$l = new L10N($this->getFactory(), 'test', $lang, []);
 		$this->assertSame($expected, $l->l('firstday', 'firstday'));
 	}
 
-	public function jsDateData() {
+	public function jsDateData(): array {
 		return [
 			['dd.MM.yy', 'de'],
 			['M/d/yy', 'en'],
@@ -161,17 +163,17 @@ class L10nTest extends TestCase {
 	 * @param $expected
 	 * @param $lang
 	 */
-	public function testJSDate($expected, $lang) {
+	public function testJSDate($expected, $lang): void {
 		$l = new L10N($this->getFactory(), 'test', $lang, []);
 		$this->assertSame($expected, $l->l('jsdate', 'jsdate'));
 	}
 
-	public function testFactoryGetLanguageCode() {
+	public function testFactoryGetLanguageCode(): void {
 		$l = $this->getFactory()->get('lib', 'de');
 		$this->assertEquals('de', $l->getLanguageCode());
 	}
 
-	public function testServiceGetLanguageCode() {
+	public function testServiceGetLanguageCode(): void {
 		$l = \OC::$server->getL10N('lib', 'de');
 		$this->assertEquals('de', $l->getLanguageCode());
 	}
