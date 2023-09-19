@@ -78,9 +78,7 @@ class VersionCheck {
 		$tmp = [];
 		$xml = $this->getUrlContent($url);
 		if ($xml) {
-			$loadEntities = \libxml_disable_entity_loader(true);
 			$data = @\simplexml_load_string($xml);
-			\libxml_disable_entity_loader($loadEntities);
 			if ($data !== false) {
 				$tmp['version'] = (string)$data->version;
 				$tmp['versionstring'] = (string)$data->versionstring;

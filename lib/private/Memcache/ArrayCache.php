@@ -28,14 +28,14 @@ use OCP\IMemcache;
 
 class ArrayCache extends Cache implements IMemcache {
 	/** @var array Array with the cached data */
-	protected $cachedData = [];
+	protected array $cachedData = [];
 
 	use CADTrait;
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get($key) {
+	public function get($key): mixed {
 		if ($this->hasKey($key)) {
 			return $this->cachedData[$key];
 		}
@@ -45,7 +45,7 @@ class ArrayCache extends Cache implements IMemcache {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set($key, $value, $ttl = 0) {
+	public function set($key, $value, $ttl = 0): mixed {
 		$this->cachedData[$key] = $value;
 		return true;
 	}
@@ -150,10 +150,7 @@ class ArrayCache extends Cache implements IMemcache {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public static function isAvailable() {
+	public static function isAvailable(): true {
 		return true;
 	}
 }
