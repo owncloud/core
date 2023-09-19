@@ -70,6 +70,7 @@ class L10N implements IL10N {
 
 	/**
 	 * Translating
+	 *
 	 * @param string $text The text we need a translation for
 	 * @param array $parameters default:array() Parameters for sprintf
 	 * @return string Translation or the same text
@@ -77,7 +78,7 @@ class L10N implements IL10N {
 	 * Returns the translation. If no translation is found, $text will be
 	 * returned.
 	 */
-	public function t($text, $parameters = []) {
+	public function t(string $text, $parameters = []) {
 		return (string) new \OC_L10N_String($this, $text, $parameters);
 	}
 

@@ -391,10 +391,8 @@ class StorageConfig implements IStorageConfig {
 
 	/**
 	 * Serialize config to JSON
-	 *
-	 * @return array
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		$result = [];
 		if ($this->id !== null) {
 			$result['id'] = $this->id;
