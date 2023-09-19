@@ -464,7 +464,8 @@ class Checker {
 			return \json_decode($cachedResults, true);
 		}
 
-		return \json_decode($this->getAppValue(self::CACHE_KEY, '{}'), true);
+		$v = $this->getAppValue(self::CACHE_KEY, '{}') ?? '{}';
+		return \json_decode($v, true);
 	}
 
 	/**

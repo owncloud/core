@@ -48,6 +48,8 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		$this->query = $this->createMock('\PDOStatement');
 		$this->iterators = [];
 		$this->fetchAt = 0;
+
+		$this->query->method('execute')->willReturn(true);
 	}
 
 	/**
