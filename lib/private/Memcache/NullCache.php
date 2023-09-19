@@ -25,12 +25,14 @@
 
 namespace OC\Memcache;
 
-class NullCache extends Cache implements \OCP\IMemcache {
-	public function get($key) {
+use OCP\IMemcache;
+
+class NullCache extends Cache implements IMemcache {
+	public function get($key): mixed {
 		return null;
 	}
 
-	public function set($key, $value, $ttl = 0) {
+	public function set($key, $value, $ttl = 0): mixed {
 		return true;
 	}
 
