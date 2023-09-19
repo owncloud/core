@@ -85,6 +85,7 @@ class ViewTest extends TestCase {
 
 	/** @var \OC\AllConfig */
 	private $config;
+	private bool $shallThrow;
 
 	protected function setUp(): void {
 		parent::setUp();
