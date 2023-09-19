@@ -33,8 +33,8 @@ class Version20170116170538 implements ISchemaMigration {
 	 * @param Schema $schema
 	 * @param string $prefix
 	 */
-	private function createPropertiesTable(Schema $schema, $prefix) {
-		$table = $schema->createTable("${prefix}properties");
+	private function createPropertiesTable(Schema $schema, string $prefix): void {
+		$table = $schema->createTable("{$prefix}properties");
 		$table->addColumn('id', 'integer', [
 			'autoincrement' => true,
 			'notnull' => true,
@@ -62,16 +62,16 @@ class Version20170116170538 implements ISchemaMigration {
 	 * @param Schema $schema
 	 * @param array $options
 	 */
-	public function changeSchema(Schema $schema, array $options) {
+	public function changeSchema(Schema $schema, array $options): void {
 		$prefix = $options['tablePrefix'];
 
-		if (!$schema->hasTable("${prefix}properties")) {
+		if (!$schema->hasTable("{$prefix}properties")) {
 			// install
 			$this->createPropertiesTable($schema, $prefix);
 		} else {
 			// We allow fileid column to be nullable on update
 			// otherwise migration will fail for some DB engines
-			$table = $schema->getTable("${prefix}properties");
+			$table = $schema->getTable("{$prefix}properties");
 			if (!$table->hasColumn('fileid')) {
 				$table->addColumn('fileid', 'integer', [
 					'notnull' => false,

@@ -633,7 +633,7 @@ class TagsContext implements Context {
 			$tagData = $this->requestTagByDisplayName($user, $row['name']);
 			if ($tagData === null) {
 				Assert::fail(
-					"tag ${row['name']} is not in propfind answer"
+					"tag {$row['name']} is not in propfind answer"
 				);
 			} else {
 				$this->assertTypeOfTag($tagData, $row['type']);
@@ -1609,7 +1609,7 @@ class TagsContext implements Context {
 			}
 			if ($found === false) {
 				Assert::fail(
-					"tag ${row['name']} is not in propfind answer"
+					"tag {$row['name']} is not in propfind answer"
 				);
 			}
 		}

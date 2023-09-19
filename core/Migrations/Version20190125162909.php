@@ -31,8 +31,8 @@ class Version20190125162909 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if ($schema->hasTable("${prefix}authtoken")) {
-			$authTokenTable = $schema->getTable("${prefix}authtoken");
+		if ($schema->hasTable("{$prefix}authtoken")) {
+			$authTokenTable = $schema->getTable("{$prefix}authtoken");
 
 			$loginNameColumn = $authTokenTable->getColumn('login_name');
 			$loginNameColumn->setLength(255);

@@ -35,8 +35,8 @@ class Version20171215103657 implements ISchemaMigration {
 
 		$prefix = $options['tablePrefix'];
 
-		if ($schema->hasTable("${prefix}share")) {
-			$table = $schema->getTable("${prefix}share");
+		if ($schema->hasTable("{$prefix}share")) {
+			$table = $schema->getTable("{$prefix}share");
 			if (!$table->hasIndex($indexName)) {
 				$table->addIndex($columns, $indexName);
 			}

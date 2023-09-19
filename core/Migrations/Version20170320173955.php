@@ -29,7 +29,7 @@ use OCP\Migration\ISchemaMigration;
 class Version20170320173955 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-		$table = $schema->getTable("${prefix}share");
+		$table = $schema->getTable("{$prefix}share");
 
 		// Arbitrary name for the share
 		$table->addColumn('share_name', 'string', [

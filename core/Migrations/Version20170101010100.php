@@ -31,8 +31,8 @@ class Version20170101010100 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if (!$schema->hasTable("${prefix}addressbookchanges")) {
-			$addressBookChangesTable = $schema->createTable("${prefix}addressbookchanges");
+		if (!$schema->hasTable("{$prefix}addressbookchanges")) {
+			$addressBookChangesTable = $schema->createTable("{$prefix}addressbookchanges");
 
 			$addressBookChangesTable->addColumn(
 				'id',
@@ -83,8 +83,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$addressBookChangesTable->addIndex(['addressbookid', 'synctoken'], 'addressbookid_synctoken');
 		}
 
-		if (!$schema->hasTable("${prefix}addressbooks")) {
-			$addressBooksTable = $schema->createTable("${prefix}addressbooks");
+		if (!$schema->hasTable("{$prefix}addressbooks")) {
+			$addressBooksTable = $schema->createTable("{$prefix}addressbooks");
 
 			$addressBooksTable->addColumn(
 				'id',
@@ -149,8 +149,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$addressBooksTable->addUniqueIndex(['principaluri', 'uri'], 'addressbook_index');
 		}
 
-		if (!$schema->hasTable("${prefix}calendarchanges")) {
-			$calendarChangesTable = $schema->createTable("${prefix}calendarchanges");
+		if (!$schema->hasTable("{$prefix}calendarchanges")) {
+			$calendarChangesTable = $schema->createTable("{$prefix}calendarchanges");
 
 			$calendarChangesTable->addColumn(
 				'id',
@@ -195,8 +195,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$calendarChangesTable->addIndex(['calendarid', 'synctoken'], 'calendarid_synctoken');
 		}
 
-		if (!$schema->hasTable("${prefix}calendarobjects")) {
-			$calendarObjectsTable = $schema->createTable("${prefix}calendarobjects");
+		if (!$schema->hasTable("{$prefix}calendarobjects")) {
+			$calendarObjectsTable = $schema->createTable("{$prefix}calendarobjects");
 
 			$calendarObjectsTable->addColumn(
 				'id',
@@ -307,8 +307,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$calendarObjectsTable->addUniqueIndex(['calendarid', 'uri'], 'calobjects_index');
 		}
 
-		if (!$schema->hasTable("${prefix}calendars")) {
-			$calendarsTable = $schema->createTable("${prefix}calendars");
+		if (!$schema->hasTable("{$prefix}calendars")) {
+			$calendarsTable = $schema->createTable("{$prefix}calendars");
 
 			$calendarsTable->addColumn(
 				'id',
@@ -419,8 +419,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$calendarsTable->addUniqueIndex(['principaluri', 'uri'], 'calendars_index');
 		}
 
-		if (!$schema->hasTable("${prefix}calendarsubscriptions")) {
-			$calendarSubscriptionsTable = $schema->createTable("${prefix}calendarsubscriptions");
+		if (!$schema->hasTable("{$prefix}calendarsubscriptions")) {
+			$calendarSubscriptionsTable = $schema->createTable("{$prefix}calendarsubscriptions");
 
 			$calendarSubscriptionsTable->addColumn(
 				'id',
@@ -542,8 +542,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$calendarSubscriptionsTable->addUniqueIndex(['principaluri', 'uri'], 'calsub_index');
 		}
 
-		if (!$schema->hasTable("${prefix}cards")) {
-			$cardsTable = $schema->createTable("${prefix}cards");
+		if (!$schema->hasTable("{$prefix}cards")) {
+			$cardsTable = $schema->createTable("{$prefix}cards");
 
 			$cardsTable->addColumn(
 				'id',
@@ -613,8 +613,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$cardsTable->setPrimaryKey(['id']);
 		}
 
-		if (!$schema->hasTable("${prefix}cards_properties")) {
-			$cardsPropertiesTable = $schema->createTable("${prefix}cards_properties");
+		if (!$schema->hasTable("{$prefix}cards_properties")) {
+			$cardsPropertiesTable = $schema->createTable("{$prefix}cards_properties");
 
 			$cardsPropertiesTable->addColumn(
 				'id',
@@ -677,8 +677,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$cardsPropertiesTable->addIndex(['cardid'], 'card_contactid_index');
 		}
 
-		if (!$schema->hasTable("${prefix}comments")) {
-			$commentsTable = $schema->createTable("${prefix}comments");
+		if (!$schema->hasTable("{$prefix}comments")) {
+			$commentsTable = $schema->createTable("{$prefix}comments");
 
 			$commentsTable->addColumn(
 				'id',
@@ -797,8 +797,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$commentsTable->addIndex(['parent_id'], 'comments_parent_id_index');
 		}
 
-		if (!$schema->hasTable("${prefix}comments_read_markers")) {
-			$commentsReadMarkersTable = $schema->createTable("${prefix}comments_read_markers");
+		if (!$schema->hasTable("{$prefix}comments_read_markers")) {
+			$commentsReadMarkersTable = $schema->createTable("{$prefix}comments_read_markers");
 
 			$commentsReadMarkersTable->addColumn(
 				'user_id',
@@ -840,8 +840,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$commentsReadMarkersTable->addIndex(['object_type', 'object_id'], 'comments_marker_object_index');
 		}
 
-		if (!$schema->hasTable("${prefix}credentials")) {
-			$credentialsTable = $schema->createTable("${prefix}credentials");
+		if (!$schema->hasTable("{$prefix}credentials")) {
+			$credentialsTable = $schema->createTable("{$prefix}credentials");
 
 			$credentialsTable->addColumn(
 				'user',
@@ -872,8 +872,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$credentialsTable->addIndex(['user'], 'credentials_user');
 		}
 
-		if (!$schema->hasTable("${prefix}dav_shares")) {
-			$davSharesTable = $schema->createTable("${prefix}dav_shares");
+		if (!$schema->hasTable("{$prefix}dav_shares")) {
+			$davSharesTable = $schema->createTable("{$prefix}dav_shares");
 
 			$davSharesTable->addColumn(
 				'id',
@@ -926,8 +926,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$davSharesTable->addUniqueIndex(['principaluri', 'resourceid', 'type'], 'dav_shares_index');
 		}
 
-		if (!$schema->hasTable("${prefix}mounts")) {
-			$mountsTable = $schema->createTable("${prefix}mounts");
+		if (!$schema->hasTable("{$prefix}mounts")) {
+			$mountsTable = $schema->createTable("{$prefix}mounts");
 
 			$mountsTable->addColumn(
 				'id',
@@ -971,8 +971,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$mountsTable->addIndex(['user_id'], 'mounts_user_index');
 		}
 
-		if (!$schema->hasTable("${prefix}schedulingobjects")) {
-			$schedulingObjectsTable = $schema->createTable("${prefix}schedulingobjects");
+		if (!$schema->hasTable("{$prefix}schedulingobjects")) {
+			$schedulingObjectsTable = $schema->createTable("{$prefix}schedulingobjects");
 
 			$schedulingObjectsTable->addColumn(
 				'id',
@@ -1044,8 +1044,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$schedulingObjectsTable->setPrimaryKey(['id']);
 		}
 
-		if (!$schema->hasTable("${prefix}systemtag")) {
-			$systemTagTable = $schema->createTable("${prefix}systemtag");
+		if (!$schema->hasTable("{$prefix}systemtag")) {
+			$systemTagTable = $schema->createTable("{$prefix}systemtag");
 
 			$systemTagTable->addColumn(
 				'id',
@@ -1086,8 +1086,8 @@ class Version20170101010100 implements ISchemaMigration {
 			$systemTagTable->addUniqueIndex(['name', 'visibility', 'editable'], 'tag_ident');
 		}
 
-		if (!$schema->hasTable("${prefix}systemtag_object_mapping")) {
-			$systemTagObjectMappingTable = $schema->createTable("${prefix}systemtag_object_mapping");
+		if (!$schema->hasTable("{$prefix}systemtag_object_mapping")) {
+			$systemTagObjectMappingTable = $schema->createTable("{$prefix}systemtag_object_mapping");
 
 			$systemTagObjectMappingTable->addColumn(
 				'objectid',
@@ -1120,12 +1120,12 @@ class Version20170101010100 implements ISchemaMigration {
 			$systemTagObjectMappingTable->addUniqueIndex(['objecttype', 'objectid', 'systemtagid'], 'mapping');
 		}
 
-		if ($schema->hasTable("${prefix}file_map")) {
-			$schema->dropTable("${prefix}file_map");
+		if ($schema->hasTable("{$prefix}file_map")) {
+			$schema->dropTable("{$prefix}file_map");
 		}
 
-		if ($schema->hasTable("${prefix}filecache")) {
-			$fileCacheTable = $schema->getTable("${prefix}filecache");
+		if ($schema->hasTable("{$prefix}filecache")) {
+			$fileCacheTable = $schema->getTable("{$prefix}filecache");
 
 			if (!$fileCacheTable->hasColumn('checksum')) {
 				$fileCacheTable->addColumn(
@@ -1140,8 +1140,8 @@ class Version20170101010100 implements ISchemaMigration {
 			}
 		}
 
-		if ($schema->hasTable("${prefix}share")) {
-			$shareTable = $schema->getTable("${prefix}share");
+		if ($schema->hasTable("{$prefix}share")) {
+			$shareTable = $schema->getTable("{$prefix}share");
 
 			if (!$shareTable->hasColumn('uid_initiator')) {
 				$shareTable->addColumn(

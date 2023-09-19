@@ -29,7 +29,7 @@ use OCP\Migration\ISchemaMigration;
 class Version20200114181454 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-		$table = $schema->getTable("${prefix}cards_properties");
+		$table = $schema->getTable("{$prefix}cards_properties");
 		// Check for existing index spanning these columns
 		foreach ($table->getIndexes() as $index) {
 			// Check if we have a matching index already

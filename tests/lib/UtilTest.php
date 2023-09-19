@@ -109,12 +109,12 @@ class UtilTest extends \Test\TestCase {
 	public function formatDateWithTZFromSessionData() {
 		$narrowNoBreakSpace = self::narrowNoBreakSpace;
 		return [
-			[3, "October 13, 2012, 2:53:25${narrowNoBreakSpace}PM GMT+3", 'Etc/GMT-3'],
-			[15, "October 13, 2012, 11:53:25${narrowNoBreakSpace}AM UTC", 'UTC'],
-			[-13, "October 13, 2012, 11:53:25${narrowNoBreakSpace}AM UTC", 'UTC'],
-			[9.5, "October 13, 2012, 9:23:25${narrowNoBreakSpace}PM GMT+9:30", 'Australia/Darwin'],
-			[-4.5, "October 13, 2012, 7:23:25${narrowNoBreakSpace}AM GMT-4:30", 'America/Caracas'],
-			[15.5, "October 13, 2012, 11:53:25${narrowNoBreakSpace}AM UTC", 'UTC'],
+			[3, "October 13, 2012, 2:53:25{$narrowNoBreakSpace}PM GMT+3", 'Etc/GMT-3'],
+			[15, "October 13, 2012, 11:53:25{$narrowNoBreakSpace}AM UTC", 'UTC'],
+			[-13, "October 13, 2012, 11:53:25{$narrowNoBreakSpace}AM UTC", 'UTC'],
+			[9.5, "October 13, 2012, 9:23:25{$narrowNoBreakSpace}PM GMT+9:30", 'Australia/Darwin'],
+			[-4.5, "October 13, 2012, 7:23:25{$narrowNoBreakSpace}AM GMT-4:30", 'America/Caracas'],
+			[15.5, "October 13, 2012, 11:53:25{$narrowNoBreakSpace}AM UTC", 'UTC'],
 		];
 	}
 

@@ -30,8 +30,8 @@ use OCP\Migration\ISchemaMigration;
 class Version20170111103310 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-		if (!$schema->hasTable("${prefix}external_mounts")) {
-			$table = $schema->createTable("${prefix}external_mounts");
+		if (!$schema->hasTable("{$prefix}external_mounts")) {
+			$table = $schema->createTable("{$prefix}external_mounts");
 			$table->addColumn('mount_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -62,8 +62,8 @@ class Version20170111103310 implements ISchemaMigration {
 			$table->setPrimaryKey(['mount_id']);
 		}
 
-		if (!$schema->hasTable("${prefix}external_applicable")) {
-			$table = $schema->createTable("${prefix}external_applicable");
+		if (!$schema->hasTable("{$prefix}external_applicable")) {
+			$table = $schema->createTable("{$prefix}external_applicable");
 			$table->addColumn('applicable_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -89,8 +89,8 @@ class Version20170111103310 implements ISchemaMigration {
 			$table->addUniqueIndex(['type', 'value', 'mount_id'], 'applicable_type_value_mount');
 		}
 
-		if (!$schema->hasTable("${prefix}external_config")) {
-			$table = $schema->createTable("${prefix}external_config");
+		if (!$schema->hasTable("{$prefix}external_config")) {
+			$table = $schema->createTable("{$prefix}external_config");
 			$table->addColumn('config_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -114,8 +114,8 @@ class Version20170111103310 implements ISchemaMigration {
 			$table->addUniqueIndex(['mount_id', 'key'], 'config_mount_key');
 		}
 
-		if (!$schema->hasTable("${prefix}external_options")) {
-			$table = $schema->createTable("${prefix}external_options");
+		if (!$schema->hasTable("{$prefix}external_options")) {
+			$table = $schema->createTable("{$prefix}external_options");
 			$table->addColumn('option_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,

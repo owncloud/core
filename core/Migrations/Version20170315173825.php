@@ -29,8 +29,8 @@ use OCP\Migration\ISchemaMigration;
 class Version20170315173825 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-		if (!$schema->hasTable("${prefix}share")) {
-			$table = $schema->createTable("${prefix}share");
+		if (!$schema->hasTable("{$prefix}share")) {
+			$table = $schema->createTable("{$prefix}share");
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'notnull' => true,

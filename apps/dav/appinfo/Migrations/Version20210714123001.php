@@ -30,8 +30,8 @@ class Version20210714123001 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if ($schema->hasTable("${prefix}cards_properties")) {
-			$cardsPropertiesTable = $schema->getTable("${prefix}cards_properties");
+		if ($schema->hasTable("{$prefix}cards_properties")) {
+			$cardsPropertiesTable = $schema->getTable("{$prefix}cards_properties");
 
 			$columnNames = ['addressbookid', 'name'];
 			if (!$cardsPropertiesTable->columnsAreIndexed($columnNames)) {

@@ -12,10 +12,10 @@ use OCP\Migration\ISchemaMigration;
 class Version20170804201253 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-		$this->updateToBigint($schema, "${prefix}mounts", "root_id");
-		$this->updateToBigint($schema, "${prefix}filecache", "fileid");
-		$this->updateToBigint($schema, "${prefix}filecache", "parent");
-		$this->updateToBigint($schema, "${prefix}vcategory_to_object", "objid");
+		$this->updateToBigint($schema, "{$prefix}mounts", "root_id");
+		$this->updateToBigint($schema, "{$prefix}filecache", "fileid");
+		$this->updateToBigint($schema, "{$prefix}filecache", "parent");
+		$this->updateToBigint($schema, "{$prefix}vcategory_to_object", "objid");
 	}
 
 	/**

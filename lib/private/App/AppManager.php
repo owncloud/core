@@ -414,7 +414,7 @@ class AppManager implements IAppManager {
 		$stat = \stat($path);
 		if ($stat) {
 			// ok, file still exists
-			return "${stat['mtime']}|${stat['ino']}|${stat['dev']}|${stat['size']}";
+			return "{$stat['mtime']}|{$stat['ino']}|{$stat['dev']}|{$stat['size']}";
 		}
 		return null;
 	}

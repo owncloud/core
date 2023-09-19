@@ -2914,7 +2914,7 @@ trait Sharing {
 							$expectedElementsArray['path'],
 							(string) $elementResponded->path[0],
 							__METHOD__
-							. " Expected '${expectedElementsArray['path']}' but got '"
+							. " Expected '{$expectedElementsArray['path']}' but got '"
 							. $elementResponded->path[0]
 							. "'"
 						);
@@ -2922,7 +2922,7 @@ trait Sharing {
 							$expectedElementsArray['permissions'],
 							(string) $elementResponded->permissions[0],
 							__METHOD__
-							. " Expected '${expectedElementsArray['permissions']}' but got '"
+							. " Expected '{$expectedElementsArray['permissions']}' but got '"
 							. $elementResponded->permissions[0]
 							. "'"
 						);

@@ -393,8 +393,8 @@ class Apps implements IRepairStep {
 	 */
 	private function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-		if ($schema->hasTable("${prefix}jobs")) {
-			$jobsTable = $schema->getTable("${prefix}jobs");
+		if ($schema->hasTable("{$prefix}jobs")) {
+			$jobsTable = $schema->getTable("{$prefix}jobs");
 
 			if (!$jobsTable->hasColumn('last_checked')) {
 				$jobsTable->addColumn(

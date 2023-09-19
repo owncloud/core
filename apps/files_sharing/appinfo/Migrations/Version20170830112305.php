@@ -29,8 +29,8 @@ class Version20170830112305 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if ($schema->hasTable("${prefix}share")) {
-			$table = $schema->getTable("${prefix}share");
+		if ($schema->hasTable("{$prefix}share")) {
+			$table = $schema->getTable("{$prefix}share");
 			if (!$table->hasIndex('share_with_index')) {
 				$table->addIndex(['share_with'], 'share_with_index');
 			}

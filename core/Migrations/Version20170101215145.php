@@ -13,8 +13,8 @@ class Version20170101215145 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if (!$schema->hasTable("${prefix}authtoken")) {
-			$authTokenTable = $schema->createTable("${prefix}authtoken");
+		if (!$schema->hasTable("{$prefix}authtoken")) {
+			$authTokenTable = $schema->createTable("{$prefix}authtoken");
 
 			$authTokenTable->addColumn(
 				'id',
@@ -111,8 +111,8 @@ class Version20170101215145 implements ISchemaMigration {
 			$authTokenTable->addUniqueIndex(['token'], 'authtoken_token_index');
 		}
 
-		if (!$schema->hasTable("${prefix}systemtag_group")) {
-			$systemTagGroupTable = $schema->createTable("${prefix}systemtag_group");
+		if (!$schema->hasTable("{$prefix}systemtag_group")) {
+			$systemTagGroupTable = $schema->createTable("{$prefix}systemtag_group");
 
 			$systemTagGroupTable->addColumn(
 				'gid',
@@ -136,8 +136,8 @@ class Version20170101215145 implements ISchemaMigration {
 			$systemTagGroupTable->setPrimaryKey(['gid', 'systemtagid']);
 		}
 
-		if ($schema->hasTable("${prefix}jobs")) {
-			$jobsTable = $schema->getTable("${prefix}jobs");
+		if ($schema->hasTable("{$prefix}jobs")) {
+			$jobsTable = $schema->getTable("{$prefix}jobs");
 
 			if (!$jobsTable->hasColumn('last_checked')) {
 				$jobsTable->addColumn(
@@ -162,8 +162,8 @@ class Version20170101215145 implements ISchemaMigration {
 			}
 		}
 
-		if ($schema->hasTable("${prefix}calendarobjects")) {
-			$calendarObjectsTable = $schema->getTable("${prefix}calendarobjects");
+		if ($schema->hasTable("{$prefix}calendarobjects")) {
+			$calendarObjectsTable = $schema->getTable("{$prefix}calendarobjects");
 
 			if (!$calendarObjectsTable->hasColumn('classification')) {
 				$calendarObjectsTable->addColumn(
@@ -193,8 +193,8 @@ class Version20170101215145 implements ISchemaMigration {
 			}
 		}
 
-		if ($schema->hasTable("${prefix}calendars")) {
-			$calendarsTable = $schema->getTable("${prefix}calendars");
+		if ($schema->hasTable("{$prefix}calendars")) {
+			$calendarsTable = $schema->getTable("{$prefix}calendars");
 
 			if ($calendarsTable->hasColumn('components')) {
 				$components = $calendarsTable->getColumn('components');
@@ -202,8 +202,8 @@ class Version20170101215145 implements ISchemaMigration {
 			}
 		}
 
-		if ($schema->hasTable("${prefix}calendarsubscriptions")) {
-			$calendarSubscriptionsTable = $schema->getTable("${prefix}calendarsubscriptions");
+		if ($schema->hasTable("{$prefix}calendarsubscriptions")) {
+			$calendarSubscriptionsTable = $schema->getTable("{$prefix}calendarsubscriptions");
 
 			if ($calendarSubscriptionsTable->hasColumn('lastmodified')) {
 				$lastModified = $calendarSubscriptionsTable->getColumn('lastmodified');

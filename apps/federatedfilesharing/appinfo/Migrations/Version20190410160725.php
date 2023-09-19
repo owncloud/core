@@ -30,7 +30,7 @@ class Version20190410160725 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if ($schema->hasTable("${prefix}federated_reshares")) {
+		if ($schema->hasTable("{$prefix}federated_reshares")) {
 			$table = $schema->getTable("{$prefix}federated_reshares");
 			$remoteIdColumn = $table->getColumn('remote_id');
 			if ($remoteIdColumn && $remoteIdColumn->getType()->getName() !== Type::STRING) {
