@@ -107,6 +107,7 @@ class RSAStore {
 		$privateKey = $this->credentialsManager->retrieve($keyData['userId'], $keyData['rsaId']);
 		$password = $this->config->getSystemValue('secret', '');
 
+		/** @phan-suppress-next-line PhanUndeclaredMethod */
 		return RSA::load($privateKey, $password)->withHash('sha1');
 	}
 }
