@@ -64,7 +64,7 @@ config = {
     "phpunit": {
         "mostDatabases": {
             "phpVersions": [
-                DEFAULT_PHP_VERSION
+                DEFAULT_PHP_VERSION,
             ],
             # Gather coverage for all databases except Oracle
             "coverage": True,
