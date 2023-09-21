@@ -336,8 +336,10 @@ class PreviewManager implements IPreview {
 				'AI'	=> ['mimetype' => '/application\/illustrator/', 'class' => '\OC\Preview\Illustrator'],
 				'PSD'	=> ['mimetype' => '/application\/x-photoshop/', 'class' => '\OC\Preview\Photoshop'],
 				'EPS'	=> ['mimetype' => '/application\/postscript/', 'class' => '\OC\Preview\Postscript'],
-				'TTF'	=> ['mimetype' => '/application\/(?:font-sfnt|x-font$)/', 'class' => '\OC\Preview\Font'],
-				'HEIC'	=> ['mimetype' => '/image\/hei(f|c)/', 'class' => '\OC\Preview\Heic'],
+				'TTFS'	=> ['mimetype' => '/application\/font-sfnt/', 'class' => '\OC\Preview\Font'],
+				'TTF'	=> ['mimetype' => '/application\/x-font/', 'class' => '\OC\Preview\Font'],
+				'HEIF'	=> ['mimetype' => '/image\/heif/', 'class' => '\OC\Preview\Heic'],
+				'HEIC'	=> ['mimetype' => '/image\/heic/', 'class' => '\OC\Preview\Heic'],
 				'SGI'	=> ['mimetype' => '/image\/sgi/', 'class' => '\OC\Preview\SGI'],
 			];
 
