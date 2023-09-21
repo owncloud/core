@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73e5ea59c2f4dc43e8d67c956fa1f45d",
+    "content-hash": "24f79e8457d783d4d0ad957f93d6bc40",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -2932,16 +2932,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.4.0",
+            "version": "dev-feat/explicit-range-get",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "b65362abc926520eda2c57e219f022a6c288069d"
+                "reference": "b14ac4d033b05c1d3373f91251a4d1494a9b6bb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/b65362abc926520eda2c57e219f022a6c288069d",
-                "reference": "b65362abc926520eda2c57e219f022a6c288069d",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/b14ac4d033b05c1d3373f91251a4d1494a9b6bb9",
+                "reference": "b14ac4d033b05c1d3373f91251a4d1494a9b6bb9",
                 "shasum": ""
             },
             "require": {
@@ -2964,11 +2964,10 @@
                 "sabre/xml": "^2.0.1"
             },
             "require-dev": {
-                "evert/phpdoc-md": "~0.1.0",
-                "friendsofphp/php-cs-fixer": "^2.17.1",
-                "monolog/monolog": "^1.18",
+                "friendsofphp/php-cs-fixer": "^2.19",
+                "monolog/monolog": "^1.27",
                 "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0"
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6"
             },
             "suggest": {
                 "ext-curl": "*",
@@ -3014,7 +3013,7 @@
                 "issues": "https://github.com/sabre-io/dav/issues",
                 "source": "https://github.com/fruux/sabre-dav"
             },
-            "time": "2022-06-27T09:07:55+00:00"
+            "time": "2023-09-21T07:24:00+00:00"
         },
         {
             "name": "sabre/event",
@@ -7473,6 +7472,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "sabre/dav": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,

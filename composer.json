@@ -54,7 +54,7 @@
         "interfasys/lognormalizer": "^v1.0",
         "owncloud/tarstreamer": "v2.1.0",
         "christophwurst/id3parser": "^0.1.4",
-        "sabre/dav": "^4.4",
+        "sabre/dav": "dev-feat/explicit-range-get",
         "sabre/http": "^5.1",
         "deepdiver/zipstreamer": "^2.0",
         "symfony/translation": "^5.4",

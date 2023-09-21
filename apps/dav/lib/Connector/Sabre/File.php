@@ -55,6 +55,7 @@ use OCP\Files\NotPermittedException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
+use Sabre\DAV\CorePlugin;
 use Sabre\DAV\Exception;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception\Forbidden;
@@ -405,6 +406,23 @@ class File extends Node implements IFile, IFileNode {
 		\OC_Hook::emit(\OC\Files\Filesystem::CLASSNAME, \OC\Files\Filesystem::signal_post_write, [
 			\OC\Files\Filesystem::signal_param_path => $hookPath
 		]);
+	}
+
+	public function getRange(int $start, int $end) {
+		// TODO: it would e by far better if all fopen declarations would allow to set a context
+		$event = new GenericEvent(null, [
+			'range_start' => $start,
+			'range_end' => $end,
+			'file_id' => $this->info->getId()
+		]);
+		\OC::$server->getEventDispatcher()->dispatch($event, 'file.:beforeRangeRequest');
+		# default implementation
+		if ($event->getArgument('storage.support.range') === true) {
+			return $this->get();
+		}
+
+# default implementation
+		return CorePlugin::defaultGetRangeImplementation($this, $start);
 	}
 
 	/**
