@@ -1,3 +1,27 @@
+Changelog for ownCloud Core [unreleased] (UNRELEASED)
+=======================================
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v10.13.1...master
+
+Summary
+-------
+
+* Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
+
+Details
+-------
+
+* Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
+
+   In some rare scenarios it could have happened that the migration responsible for adding the
+   creation time in the oc_accounts table was not correctly inserted into oc_migrations with the
+   consequence that it was reattempted i.e. when upgrading apps, even if the column was already
+   present. This has been now fixed.
+
+   https://github.com/owncloud/core/pull/40991
+
 Changelog for ownCloud Core [10.13.1] (2023-09-04)
 =======================================
 The following sections list the changes in ownCloud core 10.13.1 relevant to
