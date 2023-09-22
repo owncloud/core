@@ -1135,6 +1135,17 @@ $CONFIG = [
 'maintenance' => false,
 
 /**
+ * Enable a theme while maintenance mode is active.
+ * Typically, no apps will be loaded while maintenance mode is active.
+ * This also applies to themes since they are essentially apps.
+ * You can specify the name of the theme to enable it,
+ * or use an empty string ('') to disable it.
+ * Additionally, you have the option to specify a different theme than
+ * the one you have currently enabled.
+ */
+'maintenance.theme' => '',
+
+/**
  * Enable or disable `single user mode`
  * When set to `true`, the ownCloud instance will be unavailable for all users
  * who are not in the `admin` group.
