@@ -33,7 +33,7 @@ class Version20230120101715 implements ISchemaMigration {
 		$prefix = $options['tablePrefix'];
 		$accountsTable = $schema->getTable("${prefix}accounts");
 			  
-		if (!$table->hasColumn('creation_time')) {
+		if (!$accountsTable->hasColumn('creation_time')) {
 			$accountsTable->addColumn('creation_time', Type::INTEGER, [
 					'notnull' => true,
 					'length' => 32,
