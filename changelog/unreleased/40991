@@ -1,0 +1,5 @@
+Bugfix: Check if account creation time exists for migrations
+
+In some rare scenarios it could happen that the migration responsible for adding the creation time in the oc_accounts table was not correctly inserted into oc_migrations with the consequence that it was reattempted i.e. when upgrading apps, even if the column was already present. This has been now fixed.
+
+https://github.com/owncloud/core/pull/40991
