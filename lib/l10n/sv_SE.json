@@ -1,0 +1,8 @@
+{ "translations": {
+    "Username" : "Användarnamn",
+    "Password" : "Lösenord",
+    "General" : "Allmänt",
+    "Security" : "Säkerhet",
+    "Settings" : "Inställningar"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

@@ -1,0 +1,7 @@
+{ "translations": {
+    "Personal" : "Personligt",
+    "Username" : "Användarnamn",
+    "Password" : "Lösenord",
+    "Name" : "Namn"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

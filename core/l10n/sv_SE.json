@@ -1,0 +1,11 @@
+{ "translations": {
+    "Settings" : "Inställningar",
+    "No" : "Nej",
+    "Yes" : "Ja",
+    "Name" : "Namn",
+    "Password" : "Lösenord",
+    "Personal" : "Personligt",
+    "Help" : "Hjälp",
+    "Username" : "Användarnamn"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
