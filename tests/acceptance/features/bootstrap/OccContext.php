@@ -1918,7 +1918,7 @@ class OccContext implements Context {
 				$createdLocalStorage,
 				"'"
 				. \implode(', ', $createdLocalStorage)
-				. "' does not contain '${expectedStorageEntry['localStorage']}' "
+				. "' does not contain '{$expectedStorageEntry['localStorage']}' "
 				. __METHOD__
 			);
 		}
@@ -1976,7 +1976,7 @@ class OccContext implements Context {
 				$backendTypesEntry['backend-type'],
 				$keys,
 				__METHOD__
-				. " ${backendTypesEntry['backend-type']} is not contained in '"
+				. " {$backendTypesEntry['backend-type']} is not contained in '"
 				. \implode(', ', $keys)
 				. "' but was expected to be."
 			);
@@ -2010,7 +2010,7 @@ class OccContext implements Context {
 				$backendsEntry['backends'],
 				$keys,
 				__METHOD__
-				. " ${backendsEntry['backends']} is not contained in '"
+				. " {$backendsEntry['backends']} is not contained in '"
 				. \implode(', ', $keys)
 				. "' but was expected to be."
 			);
@@ -2044,7 +2044,7 @@ class OccContext implements Context {
 				$backendKeysEntry['backend-keys'],
 				$keys,
 				__METHOD__
-				. " ${backendKeysEntry['backend-keys']} is not contained in '"
+				. " {$backendKeysEntry['backend-keys']} is not contained in '"
 				. \implode(', ', $keys)
 				. "' but was expected to be."
 			);

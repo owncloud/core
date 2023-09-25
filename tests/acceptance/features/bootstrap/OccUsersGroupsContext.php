@@ -604,13 +604,13 @@ class OccUsersGroupsContext implements Context {
 				$row['uid'],
 				$result,
 				__METHOD__
-				. " Failed asserting that key '${row['uid']}' exists"
+				. " Failed asserting that key '{$row['uid']}' exists"
 			);
 			Assert::assertContains(
 				$row['display name'],
 				$result,
 				__METHOD__
-				. " Failed asserting that ${row['display name']} exists"
+				. " Failed asserting that {$row['display name']} exists"
 			);
 		}
 	}
@@ -682,7 +682,7 @@ class OccUsersGroupsContext implements Context {
 				$row['group'],
 				$lastOutputGroups,
 				__METHOD__
-				. " Failed asserting that '${row['group']}' exists in '"
+				. " Failed asserting that '{$row['group']}' exists in '"
 				. \implode(', ', $lastOutputGroups)
 				. "'"
 			);
@@ -778,7 +778,7 @@ class OccUsersGroupsContext implements Context {
 			$noOfUsers,
 			$actualUsers[1],
 			__METHOD__
-			. " Expected number of users to be '$noOfUsers' but got '${actualUsers[1]}'"
+			. " Expected number of users to be '$noOfUsers' but got '{$actualUsers[1]}'"
 		);
 	}
 

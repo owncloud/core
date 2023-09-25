@@ -97,16 +97,16 @@ class L10N implements IL10N {
 	 *
 	 */
 	public function n($text_singular, $text_plural, $count, $parameters = []) {
-		$identifier = "_${text_singular}_::_${text_plural}_";
+		$identifier = "_{$text_singular}_::_{$text_plural}_";
 		if (isset($this->translations[$identifier])) {
 			return (string) new \OC_L10N_String($this, $identifier, $parameters, $count);
-		} else {
-			if ($count === 1) {
-				return (string) new \OC_L10N_String($this, $text_singular, $parameters, $count);
-			} else {
-				return (string) new \OC_L10N_String($this, $text_plural, $parameters, $count);
-			}
 		}
+
+		if ($count === 1) {
+			return (string) new \OC_L10N_String($this, $text_singular, $parameters, $count);
+		}
+
+		return (string) new \OC_L10N_String($this, $text_plural, $parameters, $count);
 	}
 
 	/**

@@ -1020,7 +1020,7 @@ class OC {
 			$crashDir = self::$config->getValue('crashdirectory', $dataDir);
 		}
 
-		$filename = "${crashDir}/crash-" . \date('Y-m-d') . '.log';
+		$filename = "{$crashDir}/crash-" . \date('Y-m-d') . '.log';
 
 		$date = \date('c');
 		$currentEntryId = \uniqid(\md5($date), true);

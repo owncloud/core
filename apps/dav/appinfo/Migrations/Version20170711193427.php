@@ -12,7 +12,7 @@ class Version20170711193427 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if ($schema->hasTable("${prefix}properties")) {
+		if ($schema->hasTable("{$prefix}properties")) {
 			$table = $schema->getTable("{$prefix}properties");
 
 			$idColumn = $table->getColumn('id');

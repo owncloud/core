@@ -8,10 +8,10 @@ use OCP\Migration\ISchemaMigration;
 class Version20180622095921 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-		if ($schema->hasTable("${prefix}dav_job_status")) {
+		if ($schema->hasTable("{$prefix}dav_job_status")) {
 			return;
 		}
-		$table = $schema->createTable("${prefix}dav_job_status");
+		$table = $schema->createTable("{$prefix}dav_job_status");
 		$table->addColumn('id', Type::BIGINT, [
 			'autoincrement' => true,
 			'notnull' => true,

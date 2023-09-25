@@ -245,7 +245,7 @@ class NotificationsCoreContext implements Context {
 			Assert::assertArrayHasKey(
 				$notification['key'],
 				$response['ocs']['data'],
-				"Could not find notification with key '${notification['key']}' matching '${notification['regex']}', in " . __METHOD__
+				"Could not find notification with key '{$notification['key']}' matching '{$notification['regex']}', in " . __METHOD__
 			);
 			if ($regex) {
 				$value = $this->featureContext->substituteInLineCodes(

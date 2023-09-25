@@ -40,7 +40,7 @@ class Version20190823065724 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		$table = $schema->getTable("${prefix}properties");
+		$table = $schema->getTable("{$prefix}properties");
 		$column = $table->getColumn('fileid');
 		/**
 		 * If the fileid column's notnull is set to false then

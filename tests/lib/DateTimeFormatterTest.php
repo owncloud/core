@@ -155,8 +155,8 @@ class DateTimeFormatterTest extends TestCase {
 	public function formatDateTimeData() {
 		$narrowNoBreakSpace = "\xE2\x80\xAF";
 		return [
-			[1350129205, null, "October 13, 2012, 11:53:25${narrowNoBreakSpace}AM UTC"],
-			[1350129205, new \DateTimeZone('Europe/Berlin'), "October 13, 2012, 1:53:25${narrowNoBreakSpace}PM GMT+2"],
+			[1350129205, null, "October 13, 2012, 11:53:25{$narrowNoBreakSpace}AM UTC"],
+			[1350129205, new \DateTimeZone('Europe/Berlin'), "October 13, 2012, 1:53:25{$narrowNoBreakSpace}PM GMT+2"],
 		];
 	}
 

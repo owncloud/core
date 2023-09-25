@@ -11,7 +11,7 @@ class Version20170804201253 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if ($schema->hasTable("${prefix}share_external")) {
+		if ($schema->hasTable("{$prefix}share_external")) {
 			$table = $schema->getTable("{$prefix}share_external");
 
 			$idColumn = $table->getColumn('id');

@@ -38,7 +38,7 @@ class Version20170202220512 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		$table = $schema->getTable("${prefix}properties");
+		$table = $schema->getTable("{$prefix}properties");
 		if ($table->hasIndex('property_index')) {
 			$table->dropIndex('property_index');
 		}

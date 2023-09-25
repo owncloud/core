@@ -12,7 +12,7 @@ class Version20170711191432 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if ($schema->hasTable("${prefix}share")) {
+		if ($schema->hasTable("{$prefix}share")) {
 			$table = $schema->getTable("{$prefix}share");
 
 			$fileSourceColumn = $table->getColumn('file_source');

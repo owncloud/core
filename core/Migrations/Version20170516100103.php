@@ -32,8 +32,8 @@ use OCP\Migration\ISchemaMigration;
 class Version20170516100103 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-		if (!$schema->hasTable("${prefix}account_terms")) {
-			$table = $schema->createTable("${prefix}account_terms");
+		if (!$schema->hasTable("{$prefix}account_terms")) {
+			$table = $schema->createTable("{$prefix}account_terms");
 
 			$table->addColumn('id', Type::BIGINT, [
 				'autoincrement' => true,
@@ -57,8 +57,8 @@ class Version20170516100103 implements ISchemaMigration {
 			$table->addIndex(['term'], 'term_index');
 		}
 
-		if ($schema->hasTable("${prefix}accounts")) {
-			$table = $schema->getTable("${prefix}accounts");
+		if ($schema->hasTable("{$prefix}accounts")) {
+			$table = $schema->getTable("{$prefix}accounts");
 			if (!$table->hasIndex('lower_user_id_index')) {
 				$table->addUniqueIndex(['lower_user_id'], 'lower_user_id_index');
 			}

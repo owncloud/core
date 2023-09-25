@@ -75,7 +75,7 @@ class Verifier {
 			return false;
 		}
 		$date = new \DateTime($urlDate);
-		$date->add(new \DateInterval("PT${urlExpires}S"));
+		$date->add(new \DateInterval("PT{$urlExpires}S"));
 		if (!($date < $this->now)) {
 			return true;
 		}
