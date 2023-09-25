@@ -94,9 +94,9 @@ class ArrayCache extends Cache implements IMemcache {
 		// since this cache is not shared race conditions aren't an issue
 		if ($this->hasKey($key)) {
 			return false;
-		} else {
-			return $this->set($key, $value, $ttl);
 		}
+
+		return $this->set($key, $value, $ttl);
 	}
 
 	/**
@@ -111,10 +111,10 @@ class ArrayCache extends Cache implements IMemcache {
 		if (\is_int($oldValue)) {
 			$this->set($key, $oldValue + $step);
 			return $oldValue + $step;
-		} else {
-			$success = $this->add($key, $step);
-			return ($success) ? $step : false;
 		}
+
+		$success = $this->add($key, $step);
+		return ($success) ? $step : false;
 	}
 
 	/**
@@ -129,9 +129,9 @@ class ArrayCache extends Cache implements IMemcache {
 		if (\is_int($oldValue)) {
 			$this->set($key, $oldValue - $step);
 			return $oldValue - $step;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -145,12 +145,12 @@ class ArrayCache extends Cache implements IMemcache {
 	public function cas($key, $old, $new) {
 		if ($this->get($key) === $old) {
 			return $this->set($key, $new);
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
-	public static function isAvailable(): true {
+	public static function isAvailable(): bool {
 		return true;
 	}
 }
