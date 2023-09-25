@@ -12,6 +12,7 @@ use OCP\Files\External\IStorageConfig;
 use OCP\ILogger;
 use OCP\IConfig;
 use phpseclib3\Crypt\RSA as RSACrypt;
+use phpseclib3\Crypt\RSA\PrivateKey;
 
 class Version20220329110116 implements ISimpleMigration {
 	/** @var IGlobalStoragesService */

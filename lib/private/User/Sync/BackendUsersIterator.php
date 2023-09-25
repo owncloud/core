@@ -23,33 +23,30 @@ namespace OC\User\Sync;
 use OCP\UserInterface;
 
 class BackendUsersIterator extends UsersIterator {
-	/**
-	 * @var UserInterface
-	 */
-	private $backend;
+	private UserInterface $backend;
 	/**
 	 * @var int the current data position,
 	 *      we need to track it independently of parent::$position to handle data sets larger thin LIMIT properly
 	 */
-	private $dataPos = 0;
+	private int $dataPos = 0;
 
 	/**
 	 * @var int to cache the count($this->data) calculations
 	 */
-	private $endPos = 0;
+	private int $endPos = 0;
 
 	/** @var bool false if the backend returned less than LIMIT results */
-	private $hasMoreData = false;
+	private bool $hasMoreData = false;
 
 	/** @var string search for the uid string in backend */
-	private $search;
+	private string $search;
 
-	public function __construct(UserInterface $backend, $filterUID = '') {
+	public function __construct(UserInterface $backend, string $filterUID = '') {
 		$this->backend = $backend;
 		$this->search = $filterUID;
 	}
 
-	public function rewind() {
+	public function rewind(): void {
 		parent::rewind();
 		$this->data = $this->backend->getUsers($this->search, self::LIMIT, 0);
 		$this->dataPos = 0;
@@ -57,7 +54,7 @@ class BackendUsersIterator extends UsersIterator {
 		$this->hasMoreData = $this->endPos >= self::LIMIT;
 	}
 
-	public function next() {
+	public function next(): void {
 		$this->position++;
 		$this->dataPos++;
 		if ($this->hasMoreData && $this->dataPos >= $this->endPos) {
@@ -70,7 +67,7 @@ class BackendUsersIterator extends UsersIterator {
 		}
 	}
 
-	protected function currentDataPos() {
+	protected function currentDataPos(): int {
 		return $this->dataPos;
 	}
 }

@@ -68,10 +68,9 @@ class BmpToResource {
 	}
 
 	/**
-	 * @return resource
 	 * @throws \Exception
 	 */
-	public function toResource() {
+	public function toResource(): \GdImage {
 		try {
 			$this->header = $this->readBitmapHeader();
 			$this->header += $this->readDibHeader();
