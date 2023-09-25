@@ -38,10 +38,7 @@ class MySqlToolsTest extends TestCase {
 	 * @var IDBConnection
 	 */
 	private $db;
-
-	/**
-	 * @var MySqlTools
-	 */
+	private MySqlTools $tools;
 
 	public function setUp(): void {
 		parent::setUp();

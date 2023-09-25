@@ -68,7 +68,7 @@ class CompositeExpression implements ICompositeExpression, \Countable {
 	 *
 	 * @return integer
 	 */
-	public function count() {
+	public function count(): int {
 		return $this->compositeExpression->count();
 	}
 
