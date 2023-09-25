@@ -43,7 +43,6 @@ use OC\Repair\RepairSubShares;
 use OC\Repair\SharePropagation;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
-use OC\Repair\FillETags;
 use OC\Repair\InnoDB;
 use OC\Repair\RepairMimeTypes;
 use OC\Repair\SearchLuceneTables;
@@ -134,7 +133,6 @@ class Repair implements IOutput {
 				\OC::$server->getLogger(),
 				\OC::$server->getConfig()
 			),
-			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager()),
 			new DropOldTables(\OC::$server->getDatabaseConnection()),
 			new DropOldJobs(\OC::$server->getJobList()),
