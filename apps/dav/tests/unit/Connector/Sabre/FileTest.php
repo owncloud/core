@@ -262,13 +262,12 @@ class FileTest extends TestCase {
 			->getMock();
 		$view->expects($this->atLeastOnce())
 			->method('resolvePath')
-			->will(
-				$this->returnCallback(
-					function ($path) use ($storage) {
-						return [$storage, $path];
-					}
-				)
+			->willReturnCallback(
+				function ($path) use ($storage) {
+					return [$storage, $path];
+				}
 			);
+		$view->method('getRelativePath')->willReturn('test.txt');
 
 		$storage->expects($this->once())
 			->method('fopen')

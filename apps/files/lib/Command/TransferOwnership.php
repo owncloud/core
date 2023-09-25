@@ -153,7 +153,7 @@ class TransferOwnership extends Command {
 
 		$this->sourceUser = $sourceUserObject->getUID();
 		$this->destinationUser = $destinationUserObject->getUID();
-		$this->inputPath = $input->getOption('path');
+		$this->inputPath = $input->getOption('path') ?? '';
 		$this->inputPath = \ltrim($this->inputPath, '/');
 
 		// target user has to be ready
