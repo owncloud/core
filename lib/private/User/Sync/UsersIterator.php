@@ -21,32 +21,32 @@
 namespace OC\User\Sync;
 
 abstract class UsersIterator implements \Iterator {
-	protected $position = 0;
+	protected int $position = 0;
 	protected $page;
 	protected $data;
 
 	public const LIMIT = 500;
 
-	public function rewind() {
+	public function rewind(): void {
 		$this->position = 0;
 		$this->page = 0;
 	}
 
-	public function current() {
+	public function current(): mixed {
 		return $this->data[$this->currentDataPos()];
 	}
 
-	public function key() {
+	public function key(): mixed {
 		return $this->position;
 	}
 
-	abstract public function next();
+	abstract public function next(): void;
 
-	public function valid() {
+	public function valid(): bool {
 		return isset($this->data[$this->currentDataPos()]);
 	}
 
-	protected function currentDataPos() {
+	protected function currentDataPos(): int {
 		return $this->position % self::LIMIT;
 	}
 }
