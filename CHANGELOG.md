@@ -8,10 +8,19 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
 
 Details
 -------
+
+* Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
+
+   Previously, subadmins couldn't read app config values. This caused problems in the users page
+   for subadmins because some of the functionalities of the page were depending on the config
+   values that the subadmins couldn't read. Those problems are now solved.
+
+   https://github.com/owncloud/core/pull/40961
 
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
 
