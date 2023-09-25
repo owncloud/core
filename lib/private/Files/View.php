@@ -1972,7 +1972,7 @@ class View {
 	 * @return string[]
 	 */
 	private function getParents($path) {
-		$path = \trim($path, '/');
+		$path = \trim($path ?? '', '/');
 		if (!$path) {
 			return [];
 		}

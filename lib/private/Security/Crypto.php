@@ -112,12 +112,13 @@ class Crypto implements ICrypto {
 
 	/**
 	 * Decrypts a value and verifies the HMAC (Encrypt-Then-Mac)
+	 *
 	 * @param string $authenticatedCiphertext
 	 * @param string $password Password to encrypt, if not specified the secret from config.php will be taken
 	 * @return string plaintext
 	 * @throws \Exception If the HMAC does not match
 	 */
-	public function decrypt($authenticatedCiphertext, $password = '') {
+	public function decrypt(string $authenticatedCiphertext, string $password = ''): string {
 		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}

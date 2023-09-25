@@ -1412,12 +1412,6 @@ class VersioningTest extends TestCase {
 			OC::$server->getUserManager()->createUser($user, $user);
 		}
 
-		$storage = new ReflectionClass('\OCA\Files_Sharing\SharedStorage');
-		$isInitialized = $storage->getProperty('initialized');
-		$isInitialized->setAccessible(true);
-		$isInitialized->setValue($storage, false);
-		$isInitialized->setAccessible(false);
-
 		OC_Util::tearDownFS();
 		OC_User::setUserId('');
 		Filesystem::tearDown();

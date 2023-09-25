@@ -612,6 +612,10 @@ class FilesPluginTest extends TestCase {
 			->expects($this->once())
 			->method('getName')
 			->willReturn('somefile.xml');
+		$node
+			->expects($this->once())
+			->method('getContentDispositionFileName')
+			->willReturn('somefile.xml');
 
 		$this->tree
 			->expects($this->once())

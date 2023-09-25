@@ -199,7 +199,7 @@ class Encryption extends Wrapper {
 	protected static function wrapSource($source, $context = [], $protocol = null, $class = null, $mode = 'r+') {
 		try {
 			\stream_wrapper_register($protocol, $class);
-			\rewinddir($source);
+			\rewind($source);
 			$wrapped = \fopen($protocol . '://', $mode, false, $context);
 		} catch (\BadMethodCallException $e) {
 			\stream_wrapper_unregister($protocol);

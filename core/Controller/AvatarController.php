@@ -213,7 +213,7 @@ class AvatarController extends Controller {
 
 		try {
 			$image = new \OC_Image();
-			$image->load($handle);
+			$image->loadFromFileHandle($handle);
 			$image->fixOrientation();
 			// don't accept images with too big dimensions
 			// 4k - 4096×2160
