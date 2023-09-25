@@ -28,6 +28,7 @@ namespace OC\Files\Stream;
  * stream wrapper that provides a callback on stream close
  */
 class Close {
+	public $context;
 	private static $callBacks = [];
 	private $path = '';
 	private $source;

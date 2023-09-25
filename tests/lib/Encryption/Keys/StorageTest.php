@@ -53,6 +53,10 @@ class StorageTest extends TestCase {
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
+	/**
+	 * @var array|string[]
+	 */
+	private array $mkdirStack;
 
 	public function setUp(): void {
 		parent::setUp();

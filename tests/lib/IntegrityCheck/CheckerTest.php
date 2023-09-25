@@ -72,7 +72,7 @@ class CheckerTest extends TestCase {
 			->expects($this->any())
 			->method('create')
 			->with('oc.integritycheck.checker')
-			->will($this->returnValue(new NullCache()));
+			->willReturn(new NullCache());
 
 		$this->checker = new Checker(
 			$this->environmentHelper,
@@ -154,7 +154,7 @@ class CheckerTest extends TestCase {
 		$this->environmentHelper
 			->expects($this->once())
 			->method('getChannel')
-			->will($this->returnValue('stable'));
+			->willReturn('stable');
 		$configMap = [
 			['integrity.check.disabled', false, false],
 			['integrity.ignore.missing.app.signature', [], ['SomeApp']]
@@ -162,7 +162,7 @@ class CheckerTest extends TestCase {
 		$this->config
 			->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValueMap($configMap));
+			->willReturnMap($configMap);
 
 		$expected = [];
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
@@ -172,7 +172,7 @@ class CheckerTest extends TestCase {
 		$this->environmentHelper
 				->expects($this->once())
 				->method('getChannel')
-				->will($this->returnValue('stable'));
+				->willReturn('stable');
 		$configMap = [
 			['integrity.check.disabled', false, false],
 			['integrity.ignore.missing.app.signature', [], []]
@@ -180,7 +180,7 @@ class CheckerTest extends TestCase {
 		$this->config
 			->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValueMap($configMap));
+			->willReturnMap($configMap);
 
 		$expected = [
 			'EXCEPTION' => [
@@ -199,16 +199,16 @@ class CheckerTest extends TestCase {
 		$this->environmentHelper
 				->expects($this->once())
 				->method('getChannel')
-				->will($this->returnValue('stable'));
+				->willReturn('stable');
 		$this->config
 			->method('getSystemValue')
-			->will($this->returnValueMap($map));
+			->willReturnMap($map);
 
 		$this->appLocator
 				->expects($this->once())
 				->method('getAppPath')
 				->with('SomeApp')
-				->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/app/'));
+				->willReturn(\OC::$SERVERROOT . '/tests/data/integritycheck/app/');
 		$signatureDataFile = '{
     "hashes": {
         "AnotherFile.txt": "1570ca9420e37629de4328f48c51da29840ddeaa03ae733da4bf1d854b8364f594aac560601270f9e1797ed4cd57c1aea87bf44cf4245295c94f2e935a2f0112",
@@ -235,18 +235,18 @@ class CheckerTest extends TestCase {
 		$this->environmentHelper
 				->expects($this->once())
 				->method('getChannel')
-				->will($this->returnValue('stable'));
+				->willReturn('stable');
 		$this->config
 				->expects($this->any())
 				->method('getSystemValue')
 				->with('integrity.check.disabled', false)
-				->will($this->returnValue(false));
+				->willReturn(false);
 
 		$this->appLocator
 				->expects($this->once())
 				->method('getAppPath')
 				->with('SomeApp')
-				->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/app/'));
+				->willReturn(\OC::$SERVERROOT . '/tests/data/integritycheck/app/');
 		$signatureDataFile = '{
     "hashes": {
         "AnotherFile.txt": "tampered",
@@ -283,7 +283,7 @@ class CheckerTest extends TestCase {
 		$this->environmentHelper
 				->expects($this->once())
 				->method('getChannel')
-				->will($this->returnValue('stable'));
+				->willReturn('stable');
 		$this->config
 			->method('getSystemValue')
 			->will($this->returnValueMap($map));
@@ -292,7 +292,7 @@ class CheckerTest extends TestCase {
 				->expects($this->once())
 				->method('getAppPath')
 				->with('SomeApp')
-				->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData/'));
+				->willReturn(\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData/');
 		$signatureDataFile = '{
     "hashes": {
         "AnotherFile.txt": "1570ca9420e37629de4328f48c51da29840ddeaa03ae733da4bf1d854b8364f594aac560601270f9e1797ed4cd57c1aea87bf44cf4245295c94f2e935a2f0112",
