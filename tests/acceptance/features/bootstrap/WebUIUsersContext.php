@@ -237,7 +237,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:subadmin|administrator) should (not|)\s?be able\s? to see password field in new user form on the webUI$/
+	 * @Then /^the (?:subadmin|administrator) should (not|)\s?be able\s? to see the password field in the new user form on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 *
@@ -262,7 +262,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:subadmin|administrator) should (not|)\s?be able\s? to see email field in new user form on the webUI$/
+	 * @Then /^the (?:subadmin|administrator) should (not|)\s?be able\s? to see the email field in the new user form on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 *

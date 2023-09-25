@@ -1,0 +1,8 @@
+Bugfix: Allow subadmins to read app config values
+
+Previously, subadmins couldn't read app config values. This caused problems
+in the users page for subadmins because some of the functionalities of the
+page were depending on the config values that the subadmins couldn't read.
+Those problems are now solved.
+
+https://github.com/owncloud/core/pull/40961

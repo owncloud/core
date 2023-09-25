@@ -73,6 +73,12 @@ $application->registerRoutes($this, [
 		['name' => 'Users#resendInvitation', 'url' => '/resend/invitation/{userId}', 'verb' => 'POST'],
 		['name' => 'Users#setPassword', 'url' => '/setpassword/{token}/{userId}', 'verb' => 'POST'],
 		['name' => 'Groups#getAssignableAndRemovableGroups', 'url' => '/settings/groups/available', 'verb' => 'GET'],
+		['name' => 'AppConfig#getApps', 'url' => '/settings/appconfig', 'verb' => 'GET'],
+		['name' => 'AppConfig#getKeys', 'url' => '/settings/appconfig/{app}', 'verb' => 'GET'],
+		['name' => 'AppConfig#getValue', 'url' => '/settings/appconfig/{app}/{key}', 'verb' => 'GET'],
+		['name' => 'AppConfig#setValue', 'url' => '/settings/appconfig/{app?}/{key?}', 'verb' => 'PUT'], // optional params can be sent in the request body
+		['name' => 'AppConfig#deleteKey', 'url' => '/settings/appconfig/{app?}/{key?}', 'verb' => 'DELETE'], // optional params can be sent in the request body
+		['name' => 'AppConfig#deleteApp', 'url' => '/settings/appconfig/{app?}', 'verb' => 'DELETE'], // optional params can be sent in the request body
 	]
 ]);
 
