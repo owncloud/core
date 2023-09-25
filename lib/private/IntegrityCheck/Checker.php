@@ -343,7 +343,11 @@ class Checker {
 			return [];
 		}
 
-		$signatureData = \json_decode($this->fileAccessHelper->file_get_contents($signaturePath), true);
+		$content = $this->fileAccessHelper->file_get_contents($signaturePath);
+		if (!$content) {
+			throw new MissingSignatureException('Signature data not found.');
+		}
+		$signatureData = \json_decode($content, true);
 		if (!\is_array($signatureData)) {
 			throw new MissingSignatureException('Signature data not found.');
 		}
