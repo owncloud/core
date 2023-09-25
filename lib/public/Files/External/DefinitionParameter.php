@@ -156,6 +156,8 @@ class DefinitionParameter implements \JsonSerializable {
 
 	/**
 	 * Serialize into JSON for client-side JS
+	 *
+	 * @since 10.0
 	 */
 	public function jsonSerialize(): array {
 		return [
