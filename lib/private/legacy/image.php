@@ -1067,6 +1067,7 @@ if (!\function_exists('imagebmp')) {
 						$index = \imagecolorat($im, $i, $j);
 						if ($index !== $lastIndex || $sameNum > 255) {
 							if ($sameNum != 0) {
+								/** @phan-suppress-next-line PhanTypeMismatchArgumentInternalReal */
 								$bmpData .= \chr($sameNum) . \chr($lastIndex);
 							}
 							$lastIndex = $index;
