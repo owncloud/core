@@ -68,6 +68,16 @@ class File extends \OCP\Search\Result {
 	public $permissions;
 
 	/**
+	 * @var float
+	 */
+	public $score;
+
+	/**
+	 * @var string[]
+	 */
+	public $highlights;
+
+	/**
 	 * Create a new file search result
 	 * @param FileInfo $data file data given by provider
 	 */
