@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
+* Bugfix - Remove regular expression from Preview Manager list: [#40990](https://github.com/owncloud/core/pull/40990)
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
 
 Details
@@ -21,6 +22,14 @@ Details
    values that the subadmins couldn't read. Those problems are now solved.
 
    https://github.com/owncloud/core/pull/40961
+
+* Bugfix - Remove regular expression from Preview Manager list: [#40990](https://github.com/owncloud/core/pull/40990)
+
+   We removed the regular expression related to HEIC and HEIF files from the Preview Manager list
+   as this was preventing the files_mediaviewer app from correctly interpreting such mime
+   types. The app is now able to open such files.
+
+   https://github.com/owncloud/core/pull/40990
 
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
 
