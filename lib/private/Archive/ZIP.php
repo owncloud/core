@@ -45,7 +45,7 @@ class ZIP extends Archive {
 	public function __construct($source) {
 		$this->path=$source;
 		$this->zip=new ZipArchive();
-		if ($this->zip->open($source, ZipArchive::OVERWRITE)) {
+		if ($this->zip->open($source, ZipArchive::CREATE)) {
 		} else {
 			\OCP\Util::writeLog('files_archive', 'Error while opening archive '.$source, \OCP\Util::WARN);
 		}
