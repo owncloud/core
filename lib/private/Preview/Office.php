@@ -75,7 +75,7 @@ abstract class Office implements IProvider2 {
 		}
 
 		$image = new \OC_Image();
-		$image->loadFromData($pdf);
+		$image->loadFromData((string)$pdf);
 
 		\unlink($pdfPreview);
 

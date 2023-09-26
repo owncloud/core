@@ -54,7 +54,7 @@ abstract class Bitmap implements IProvider2 {
 
 		//new bitmap image object
 		$image = new \OC_Image();
-		$image->loadFromData($bp);
+		$image->loadFromData((string)$bp);
 		//check if image object is valid
 		return $image->valid() ? $image : false;
 	}

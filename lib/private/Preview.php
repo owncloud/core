@@ -1099,7 +1099,7 @@ class Preview {
 		$previewProviders = \OC::$server->getPreviewManager()
 			->getProviders();
 		foreach ($previewProviders as $supportedMimeType => $providers) {
-			if (!\preg_match($supportedMimeType, $this->mimeType)) {
+			if (!\preg_match($supportedMimeType, $this->mimeType ?? '')) {
 				continue;
 			}
 
