@@ -80,11 +80,11 @@ interface IRequest {
 	 *                     1. URL parameters
 	 *                     2. POST parameters
 	 *                     3. GET parameters
-	 * @param mixed $default If the key is not found, this value will be returned
+	 * @param mixed|null $default If the key is not found, this value will be returned
 	 * @return mixed the content of the array
 	 * @since 6.0.0
 	 */
-	public function getParam($key, $default = null);
+	public function getParam(string $key, mixed $default = null): mixed;
 
 	/**
 	 * Returns all params that were received, be it from the request
@@ -94,7 +94,7 @@ interface IRequest {
 	 * @return array the array with all parameters
 	 * @since 6.0.0
 	 */
-	public function getParams();
+	public function getParams(): array;
 
 	/**
 	 * Returns the method of the request
@@ -102,7 +102,7 @@ interface IRequest {
 	 * @return string the method of the request (POST, GET, etc)
 	 * @since 6.0.0
 	 */
-	public function getMethod();
+	public function getMethod(): string;
 
 	/**
 	 * Shortcut for accessing an uploaded file through the $_FILES array

@@ -324,10 +324,10 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 *                     1. URL parameters
 	 *                     2. POST parameters
 	 *                     3. GET parameters
-	 * @param mixed $default If the key is not found, this value will be returned
+	 * @param mixed|null $default If the key is not found, this value will be returned
 	 * @return mixed the content of the array
 	 */
-	public function getParam($key, $default = null) {
+	public function getParam(string $key, mixed $default = null): mixed {
 		return $this->parameters[$key] ?? $default;
 	}
 
@@ -336,7 +336,7 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 * (as GET or POST) or through the URL by the route
 	 * @return array the array with all parameters
 	 */
-	public function getParams() {
+	public function getParams(): array {
 		return $this->parameters;
 	}
 
@@ -344,7 +344,7 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 * Returns the method of the request
 	 * @return string the method of the request (POST, GET, etc)
 	 */
-	public function getMethod() {
+	public function getMethod(): string {
 		return $this->method;
 	}
 
@@ -391,8 +391,8 @@ class Request implements ArrayAccess, Countable, IRequest {
 		if ($this->method === 'PUT'
 			&& $this->getHeader('Content-Length') !== 0
 			&& $this->getHeader('Content-Length') !== null
-			&& \strpos($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded') === false
-			&& \strpos($this->getHeader('Content-Type') ?? '', 'application/json') === false
+			&& !str_contains($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded')
+			&& !str_contains($this->getHeader('Content-Type') ?? '', 'application/json')
 		) {
 			if ($this->content === false) {
 				throw new \LogicException(
@@ -431,7 +431,7 @@ class Request implements ArrayAccess, Countable, IRequest {
 			// or post correctly
 		} elseif ($this->method !== 'GET'
 				&& $this->method !== 'POST'
-				&& \strpos($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded') !== false) {
+				&& str_contains($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded')) {
 			\parse_str(\file_get_contents($this->inputStream), $params);
 			if (\is_array($params)) {
 				$this->items['params'] = $params;
@@ -709,7 +709,7 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 */
 	public function getScriptName() {
 		$name = $this->server['SCRIPT_NAME'];
-		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot');
+		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot') ?? '';
 		if ($overwriteWebRoot !== '' && $this->isOverwriteCondition()) {
 			// FIXME: This code is untestable due to __DIR__, also that hardcoded path is really dangerous
 			$serverRoot = \str_replace('\\', '/', \substr(__DIR__, 0, -\strlen('lib/private/appframework/http/')));

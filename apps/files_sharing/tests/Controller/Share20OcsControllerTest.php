@@ -3843,6 +3843,7 @@ class Share20OcsControllerTest extends TestCase {
 				['attributes', null, $attributes],
 				['shareType', $this->any(), Share::SHARE_TYPE_USER],
 				['shareWith', null, 'validUser'],
+				['expireDate', '', '']
 			]);
 
 		$userFolder = $this->createMock('\OCP\Files\Folder');
