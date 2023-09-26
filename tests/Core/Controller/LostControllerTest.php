@@ -21,8 +21,10 @@
 
 namespace Tests\Core\Controller;
 
+use Exception;
 use OC\Core\Controller\LostController;
 use OC\User\Session;
+use OC_Defaults;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
@@ -34,7 +36,9 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use function vsprintf;
 
 /**
  * Class LostControllerTest
@@ -46,25 +50,25 @@ class LostControllerTest extends TestCase {
 	private $lostController;
 	/** @var IUser */
 	private $existingUser;
-	/** @var IURLGenerator | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IURLGenerator | MockObject */
 	private $urlGenerator;
 	/** @var IL10N */
 	private $l10n;
-	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserManager | MockObject */
 	private $userManager;
-	/** @var \OC_Defaults */
+	/** @var OC_Defaults */
 	private $defaults;
-	/** @var IConfig | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IConfig | MockObject */
 	private $config;
-	/** @var IMailer | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IMailer | MockObject */
 	private $mailer;
-	/** @var ISecureRandom | PHPUnit\Framework\MockObject\MockObject */
+	/** @var ISecureRandom | MockObject */
 	private $secureRandom;
-	/** @var ITimeFactory | PHPUnit\Framework\MockObject\MockObject */
+	/** @var ITimeFactory | MockObject */
 	private $timeFactory;
-	/** @var IRequest | PHPUnit\Framework\MockObject\MockObject */
+	/** @var IRequest | MockObject */
 	private $request;
-	/** @var ILogger | PHPUnit\Framework\MockObject\MockObject*/
+	/** @var ILogger | MockObject */
 	private $logger;
 	/** @var Session */
 	private $userSession;
@@ -96,7 +100,7 @@ class LostControllerTest extends TestCase {
 			->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 		$this->defaults = $this->getMockBuilder('\OC_Defaults')
 			->disableOriginalConstructor()->getMock();
@@ -337,7 +341,7 @@ class LostControllerTest extends TestCase {
 			->expects($this->once())
 			->method('get')
 			->with($user)
-			->willThrowException(new \Exception("User not found"));
+			->willThrowException(new Exception("User not found"));
 		$expectedResponse = [
 			'status' => 'success'
 		];
@@ -580,15 +584,16 @@ class LostControllerTest extends TestCase {
 		$this->mailer
 			->expects($this->once())
 			->method('createMessage')
-			->will($this->returnValue($message));
+			->willReturn($message);
 		$this->mailer
 			->expects($this->once())
 			->method('send')
 			->with($message)
-			->will($this->throwException(new \Exception()));
+			->will($this->throwException(new Exception()));
 
 		$response = $this->lostController->email('ExistingUser');
-		$expectedResponse = ['status' => 'error', 'msg' => 'Couldn\'t send reset email. Please contact your administrator.'];
+		# TODO: double check behavior change in frontends
+		$expectedResponse = ['status' => 'error', 'msg' => 'Couldn&#039;t send reset email. Please contact your administrator.'];
 		$this->assertSame($expectedResponse, $response);
 	}
 

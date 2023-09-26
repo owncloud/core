@@ -44,7 +44,7 @@ abstract class Image implements IProvider2 {
 
 		$image = new \OC_Image();
 		$handle = $file->fopen('r');
-		$image->load($handle);
+		$image->loadFromFileHandle($handle);
 		$image->fixOrientation();
 		if (!$this->validateImageDimensions($image)) {
 			return false;

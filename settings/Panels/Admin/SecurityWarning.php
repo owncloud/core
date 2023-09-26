@@ -95,7 +95,7 @@ class SecurityWarning implements ISettings {
 		}
 		$template->assign('OutdatedCacheWarning', $outdatedCaches);
 		$template->assign('has_fileinfo', $this->helper->fileInfoLoaded());
-		$databaseOverload = (\strpos($this->config->getSystemValue('dbtype'), 'sqlite') !== false);
+		$databaseOverload = (\strpos($this->config->getSystemValue('dbtype') ?? '', 'sqlite') !== false);
 		$template->assign('databaseOverload', $databaseOverload);
 		if ($this->lockingProvider instanceof NoopLockingProvider) {
 			$template->assign('fileLockingType', 'none');

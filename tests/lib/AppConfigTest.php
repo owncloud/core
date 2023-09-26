@@ -154,10 +154,10 @@ class AppConfigTest extends TestCase {
 			$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
 
 			$this->assertEquals([
+			'123456',
 				'anotherapp',
 				'someapp',
 				'testapp',
-				'123456',
 			], $config->getApps());
 		});
 	}

@@ -81,7 +81,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 
 		$this->server->expects($this->any())
 			->method('getBaseUri')
-			->will($this->returnValue('http://example.com/owncloud/remote.php/dav'));
+			->willReturn('http://example.com/owncloud/remote.php/dav');
 
 		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')
 			->disableOriginalConstructor()
@@ -99,15 +99,15 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$privateTagManager->expects($this->any())
 			->method('load')
 			->with('files')
-			->will($this->returnValue($this->privateTags));
+			->willReturn($this->privateTags);
 
 		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('testuser'));
+			->willReturn('testuser');
 		$this->userSession->expects($this->any())
 			->method('getUser')
-			->will($this->returnValue($user));
+			->willReturn($user);
 
 		// add FilesPlugin to test more properties
 		$this->server->addPlugin(
@@ -179,7 +179,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 
 		$this->groupManager->expects($this->any())
 			->method('isAdmin')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$this->tagMapper
 			->expects($this->exactly(2))
@@ -194,6 +194,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			);
 
 		$reportTargetNode = $this->createMock(\OCA\DAV\Connector\Sabre\Directory::class);
+		$reportTargetNode->method('getPath')->willReturn('');
 		$response = $this->createMock(\Sabre\HTTP\ResponseInterface::class);
 		$response->expects($this->once())
 			->method('setHeader')
@@ -209,7 +210,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/' . $path)
-			->will($this->returnValue($reportTargetNode));
+			->willReturn($reportTargetNode);
 
 		$filesNode1 = $this->createMock(\OCP\Files\Folder::class);
 		$filesNode1->method('getId')->willReturn(111);
@@ -236,17 +237,17 @@ class FilesReportPluginTest extends \Test\TestCase {
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
-			->will($this->returnValue($path));
+			->willReturn($path);
 		$this->server->httpResponse = $response;
 		$this->plugin->initialize($this->server);
 
 		$responses = null;
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->will(
-				$this->returnCallback(function ($responsesArg) use (&$responses) {
+			->willReturnCallback(
+				function ($responsesArg) use (&$responses) {
 					$responses = $responsesArg;
-				})
+				}
 			);
 
 		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));

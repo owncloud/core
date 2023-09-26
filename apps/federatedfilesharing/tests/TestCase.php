@@ -25,6 +25,7 @@ namespace OCA\FederatedFileSharing\Tests;
 use OC\Files\Filesystem;
 use OCA\Files\Share;
 use Test\Traits\UserTrait;
+use OCA\Files_Sharing\SharedStorage;
 
 /**
  * Class Test_Files_Sharing_Base
@@ -85,8 +86,6 @@ abstract class TestCase extends \Test\TestCase {
 	 * @param string $user
 	 */
 	protected static function loginHelper($user) {
-		self::resetStorage();
-
 		\OC_Util::tearDownFS();
 		\OC::$server->getUserSession()->setUser(null);
 		\OC\Files\Filesystem::tearDown();
@@ -94,16 +93,5 @@ abstract class TestCase extends \Test\TestCase {
 		\OC::$server->getUserFolder($user);
 
 		\OC_Util::setupFS($user);
-	}
-
-	/**
-	 * reset init status for the share storage
-	 */
-	protected static function resetStorage() {
-		$storage = new \ReflectionClass('\OCA\Files_Sharing\SharedStorage');
-		$isInitialized = $storage->getProperty('initialized');
-		$isInitialized->setAccessible(true);
-		$isInitialized->setValue($storage, false);
-		$isInitialized->setAccessible(false);
 	}
 }

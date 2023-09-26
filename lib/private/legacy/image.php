@@ -509,10 +509,10 @@ class OC_Image implements \OCP\IImage {
 	/**
 	 * Loads an image from a local file, a base64 encoded string or a resource created by an imagecreate* function.
 	 *
-	 * @param resource|string $imageRef The path to a local file, a base64 encoded string or a resource created by an imagecreate* function or a file resource (file handle    ).
+	 * @param GdImage|resource|string $imageRef The path to a local file, a base64 encoded string or a resource created by an imagecreate* function or a file resource (file handle    ).
 	 * @return GdImage|false An image resource or false on error
 	 */
-	public function load(\GdImage|string $imageRef) {
+	public function load($imageRef) {
 		if ($imageRef instanceof \GdImage) {
 			$this->resource = $imageRef;
 			return $this->resource;
