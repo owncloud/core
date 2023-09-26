@@ -99,6 +99,9 @@ class Encryption extends Wrapper {
 	/** @var array */
 	protected $expectedContextProperties;
 
+	/** @var string - keep this for property access in L224*/
+	protected $sourceFileOfRename;
+
 	public function __construct() {
 		$this->expectedContextProperties = [
 			'source',
