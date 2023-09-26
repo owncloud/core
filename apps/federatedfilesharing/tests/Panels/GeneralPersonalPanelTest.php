@@ -49,6 +49,10 @@ class GeneralPersonalPanelTest extends \Test\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 		$this->l = $this->getMockBuilder(IL10N::class)->getMock();
+		$this->l->method('t')->willReturnCallback(function ($text, $parameters = []) {
+			return \vsprintf($text, $parameters);
+		});
+
 		$this->urlGenerator = $this->getMockBuilder(IURLGenerator::class)->getMock();
 		$this->userSession = $this->getMockBuilder(IUserSession::class)->getMock();
 		$this->request = $this->getMockBuilder(IRequest::class)->getMock();
