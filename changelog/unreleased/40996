@@ -1,0 +1,6 @@
+Enhancement: Remove "Fill E-Tags" Repair-Step
+
+This legacy repair-step took very long to run during an upgrade of a large system and
+didn't repair anything anymore.
+
+https://github.com/owncloud/core/pull/40996
