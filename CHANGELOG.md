@@ -11,6 +11,7 @@ Summary
 * Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
 * Bugfix - Remove regular expression from Preview Manager list: [#40990](https://github.com/owncloud/core/pull/40990)
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
+* Enhancement - Remove "Fill E-Tags" Repair-Step: [#40996](https://github.com/owncloud/core/pull/40996)
 
 Details
 -------
@@ -39,6 +40,13 @@ Details
    present. This has been now fixed.
 
    https://github.com/owncloud/core/pull/40991
+
+* Enhancement - Remove "Fill E-Tags" Repair-Step: [#40996](https://github.com/owncloud/core/pull/40996)
+
+   This legacy repair-step took very long to run during an upgrade of a large system and didn't
+   repair anything anymore.
+
+   https://github.com/owncloud/core/pull/40996
 
 Changelog for ownCloud Core [10.13.1] (2023-09-04)
 =======================================
