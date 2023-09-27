@@ -55,7 +55,7 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	public function isLocked($path, $type) {
 		$lockValue = $this->memcache->get($path);
 		if ($type === self::LOCK_SHARED) {
-			return $lockValue > 0;
+			return (int)($lockValue) > 0;
 		}
 
 		if ($type === self::LOCK_EXCLUSIVE) {
