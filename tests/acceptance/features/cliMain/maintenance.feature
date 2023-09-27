@@ -5,7 +5,7 @@ Feature: Maintenance command
   I want to be able to maintain and repair my ownCloud installation
   So that I can run ownCloud smoothly
 
-
+  @skipOnOcV10.12 @skipOnOcV10.13.0 @skipOnOcV10.13.1
   Scenario: Repair steps should be listed correctly
     When the administrator list the repair steps using the occ command
     Then the command should have been successful
