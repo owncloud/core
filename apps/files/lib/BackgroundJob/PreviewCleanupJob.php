@@ -12,7 +12,7 @@ class PreviewCleanupJob extends TimedJob {
 
 	public function run($arguments) {
 		$cmd = new PreviewCleanup(\OC::$server->getDatabaseConnection());
-		$count = $cmd->process(false, 10);
+		$count = $cmd->process(false, 500);
 		$logger = \OC::$server->getLogger();
 		$logger->info("$count orphaned previews deleted");
 	}

@@ -1,0 +1,6 @@
+Enhancement: Improve preview cleanup query
+
+Improve the performance of the query to find the previews we need to cleanup
+in the DB
+
+https://github.com/owncloud/core/pull/40974
