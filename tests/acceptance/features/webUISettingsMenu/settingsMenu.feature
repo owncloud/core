@@ -117,7 +117,7 @@ Feature: add users
       | Alice    |
       | Brian    |
 
-  @issue-34652 @skipOnOcV10.10 @skipOnOcV10.11 @skipOnOcV10.12 @skipOnOcV10.13
+  @issue-34652 @skipOnOcV10.10 @skipOnOcV10.11 @skipOnOcV10.12 @skipOnOcV10.13.0 @skipOnOcV10.13.1
   Scenario: subadmin should be able to see the password field but not the email field
     Given group "grp1" has been created
     And user "Alice" has been added to group "grp1"
