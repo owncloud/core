@@ -66,7 +66,8 @@
         "sabre/vobject": "^4.5",
         "dg/composer-cleaner": "^2.2",
         "firebase/php-jwt": "^6.8",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-apcu": "*"
     },
     "extra": {
         "bamarni-bin": {
