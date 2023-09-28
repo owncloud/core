@@ -94,7 +94,6 @@ class ScanTest extends TestCase {
 	 * @var array
 	 */
 	private $groupsCreated = [];
-	private mixed $dataDir;
 
 	protected function setUp(): void {
 		if ($this->runsWithPrimaryObjectstorage()) {
