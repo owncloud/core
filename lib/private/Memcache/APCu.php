@@ -58,11 +58,7 @@ class APCu extends Cache implements IMemcache {
 	public function clear($prefix = '') {
 		$ns = $this->getPrefix() . $prefix;
 		$ns = \preg_quote($ns, '/');
-		if (\class_exists('\APCIterator')) {
-			$iter = new \APCIterator('user', '/^' . $ns . '/', APC_ITER_KEY);
-		} else {
-			$iter = new \APCuIterator('/^' . $ns . '/', APC_ITER_KEY);
-		}
+		$iter = new \APCuIterator('/^' . $ns . '/', APC_ITER_KEY);
 		return \apcu_delete($iter);
 	}
 
@@ -111,11 +107,11 @@ class APCu extends Cache implements IMemcache {
 	 */
 	public function cas($key, $old, $new) {
 		// apc only does cas for ints
-		if (\is_int($old) and \is_int($new)) {
+		if (\is_int($old) && \is_int($new)) {
 			return \apcu_cas($this->getPrefix() . $key, $old, $new);
-		} else {
-			return $this->casEmulated($key, $old, $new);
 		}
+
+		return $this->casEmulated($key, $old, $new);
 	}
 
 	/**
@@ -124,17 +120,20 @@ class APCu extends Cache implements IMemcache {
 	public static function isAvailable() {
 		if (!\extension_loaded('apcu')) {
 			return false;
-		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enabled')) {
-			return false;
-		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enable_cli') && \OC::$CLI) {
-			return false;
-		} elseif (
-			\version_compare(\phpversion('apc'), '4.0.6') === -1 &&
-			\version_compare(\phpversion('apcu'), '5.1.0') === -1
-		) {
-			return false;
-		} else {
-			return true;
 		}
+
+		if (!\OC::$server->getIniWrapper()->getBool('apc.enabled')) {
+			return false;
+		}
+
+		if (!\OC::$server->getIniWrapper()->getBool('apc.enable_cli') && \OC::$CLI) {
+			return false;
+		}
+
+		if (\version_compare(\phpversion('apcu'), '5.1.0') === -1) {
+			return false;
+		}
+
+		return true;
 	}
 }
