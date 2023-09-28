@@ -29,6 +29,7 @@ use TestHelpers\SetupHelper;
  * Authentication functions
  */
 class AuthContext implements Context {
+	public string $requestToken;
 	private string $clientToken;
 	private string $appToken;
 	private array $appTokens;

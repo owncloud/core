@@ -20,6 +20,8 @@ use Test\TestCase;
  * @package Test\Files\Node
  */
 abstract class NodeTest extends TestCase {
+	public $nodeClass;
+	public $nonExistingNodeClass;
 	protected $viewDeleteMethod = 'unlink';
 	protected $user;
 

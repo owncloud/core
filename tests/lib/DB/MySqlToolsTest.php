@@ -27,11 +27,13 @@ use Doctrine\DBAL\Driver\Statement;
 use OC\DB\MySqlTools;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 use OC\DB\Connection;
+use Test\TestCase;
 
 /**
  * Class MySqlToolsTest
  */
-class MySqlToolsTest extends \Test\TestCase {
+class MySqlToolsTest extends TestCase {
+	public MySqlTools $tools;
 	/**
 	 * @var IDBConnection
 	 */

@@ -20,29 +20,38 @@
  */
 namespace Test\Share20;
 
+use InvalidArgumentException;
+use OC\Share20\Share;
 use OCP\Files\IRootFolder;
+use OCP\IUserManager;
+use OCP\Share\Exceptions\IllegalIDChangeException;
+use OCP\Share\IShare;
+use PHPUnit\Framework\MockObject\MockObject;
+use Test\TestCase;
 
 /**
  * Class ShareTest
  *
  * @package Test\Share20
  */
-class ShareTest extends \Test\TestCase {
-	/** @var IRootFolder|\PHPUnit\Framework\MockObject\MockObject */
+class ShareTest extends TestCase {
+	/** @var (IUserManager & MockObject) */
+	public $userManager;
+	/** @var IRootFolder|MockObject */
 	protected $rootFolder;
-	/** @var \OCP\Share\IShare */
+	/** @var IShare */
 	protected $share;
 
 	public function setUp(): void {
 		$this->rootFolder = $this->createMock('\OCP\Files\IRootFolder');
 		$this->userManager = $this->createMock('OCP\IUserManager');
-		$this->share = new \OC\Share20\Share($this->rootFolder, $this->userManager);
+		$this->share = new Share($this->rootFolder, $this->userManager);
 	}
 
 	/**
 	 */
 	public function testSetIdInvalid() {
-		$this->expectException(\InvalidArgumentException::class);
+		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('String expected.');
 
 		$this->share->setId(1.2);
@@ -61,7 +70,7 @@ class ShareTest extends \Test\TestCase {
 	/**
 	 */
 	public function testSetIdOnce() {
-		$this->expectException(\OCP\Share\Exceptions\IllegalIDChangeException::class);
+		$this->expectException(IllegalIDChangeException::class);
 		$this->expectExceptionMessage('Not allowed to assign a new internal id to a share');
 
 		$this->share->setId('foo');
@@ -71,7 +80,7 @@ class ShareTest extends \Test\TestCase {
 	/**
 	 */
 	public function testSetProviderIdInt() {
-		$this->expectException(\InvalidArgumentException::class);
+		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('String expected.');
 
 		$this->share->setProviderId(42);
@@ -86,7 +95,7 @@ class ShareTest extends \Test\TestCase {
 	/**
 	 */
 	public function testSetProviderIdOnce() {
-		$this->expectException(\OCP\Share\Exceptions\IllegalIDChangeException::class);
+		$this->expectException(IllegalIDChangeException::class);
 		$this->expectExceptionMessage('Not allowed to assign a new provider id to a share');
 
 		$this->share->setProviderId('foo');

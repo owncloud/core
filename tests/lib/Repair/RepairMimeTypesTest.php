@@ -13,6 +13,7 @@ use OCP\Files\IMimeTypeLoader;
 use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
+use Test\TestCase;
 
 /**
  * Tests for the converting of legacy storages to home storages.
@@ -21,7 +22,7 @@ use OCP\Migration\IRepairStep;
  *
  * @see \OC\Repair\RepairMimeTypes
  */
-class RepairMimeTypesTest extends \Test\TestCase {
+class RepairMimeTypesTest extends TestCase {
 	/** @var IRepairStep */
 	private $repair;
 
@@ -34,7 +35,6 @@ class RepairMimeTypesTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->savedMimetypeLoader = \OC::$server->getMimeTypeLoader();
 		$this->mimetypeLoader = \OC::$server->getMimeTypeLoader();
 
 		/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
@@ -44,7 +44,7 @@ class RepairMimeTypesTest extends \Test\TestCase {
 		$config->expects($this->any())
 			->method('getSystemValue')
 			->with('version')
-			->will($this->returnValue('8.0.0.0'));
+			->willReturn('8.0.0.0');
 
 		$this->storage = new \OC\Files\Storage\Temporary([]);
 

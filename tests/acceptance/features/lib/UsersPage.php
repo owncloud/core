@@ -35,11 +35,13 @@ use WebDriver\Exception\StaleElementReference;
  * Users page.
  */
 class UsersPage extends OwncloudPage {
+	public $editDisplayNameBtn;
+	public $editDisplayNameInput;
 	/**
 	 *
 	 * @var string $path
 	 */
-	protected $path = '/index.php/settings/users';
+	public string $path = '/index.php/settings/users';
 
 	protected $userTrXpath = ".//table[@id='userlist']/tbody/tr";
 
