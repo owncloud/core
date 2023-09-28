@@ -49,7 +49,7 @@ class SetConfigTest extends TestCase {
 		$this->command = new SetConfig($config);
 	}
 
-	public function setData() {
+	public function providesData() {
 		return [
 			[
 				'name',
@@ -71,7 +71,7 @@ class SetConfigTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider setData
+	 * @dataProvider providesData
 	 *
 	 * @param string $configName
 	 * @param mixed $newValue
