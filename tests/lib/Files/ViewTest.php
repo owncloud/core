@@ -59,7 +59,6 @@ class TemporaryNoLocal extends Temporary {
  * @package Test\Files
  */
 class ViewTest extends TestCase {
-	public $shallThrow;
 	/**
 	 * @var Storage[] $storages
 	 */
