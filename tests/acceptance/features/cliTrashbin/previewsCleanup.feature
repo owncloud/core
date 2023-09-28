@@ -63,7 +63,7 @@ Feature: orphaned previews can be deleted
     Then the command should have been successful
     And the command output should contain the text '4 orphaned previews deleted'
 
-
+  @skipOnOcV10.12 @skipOnOcV10.13.0 @skipOnOcV10.13.1
   Scenario: the previews from shared files are cleaned up
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has uploaded file with content "text file zero" to "/textfile0.txt"
