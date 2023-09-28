@@ -41,7 +41,6 @@ use WebDriver\Key;
  * Owncloud page.
  */
 class OwncloudPage extends Page {
-	public string $path;
 	protected $userNameDisplayId = "expandDisplayName";
 	protected $notificationId = "notification";
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
@@ -59,6 +58,11 @@ class OwncloudPage extends Page {
 		'Tags' => "systemtagsfilter",
 		'Deleted files' => "trashbin",
 	];
+
+	/**
+	 * @var string
+	 */
+	protected $path = null;
 
 	/**
 	 * used to store the unchanged path string when $path gets changed
