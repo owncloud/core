@@ -33,12 +33,11 @@ use Test\TestCase;
  * Class MySqlToolsTest
  */
 class MySqlToolsTest extends TestCase {
-	public MySqlTools $tools;
+	private MySqlTools $tools;
 	/**
 	 * @var IDBConnection
 	 */
 	private $db;
-	private MySqlTools $tools;
 
 	public function setUp(): void {
 		parent::setUp();
