@@ -22,30 +22,33 @@
 
 namespace Test\User;
 
+use Exception;
+use OC\AppFramework\Http\Request;
 use OC\User\BasicAuthModule;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\ILogger;
-use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
 use OCP\IUserManager;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
+use UnexpectedValueException;
+use function get_class;
+use function time;
 
 class BasicAuthModuleTest extends TestCase {
-	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IConfig | MockObject */
 	private $config;
-	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var ILogger | MockObject */
 	private $logger;
-	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserManager | MockObject */
 	private $manager;
-	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
-	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var ITimeFactory | MockObject */
 	private $timeFactory;
-	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUser | MockObject */
 	private $user;
-	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var ISession | MockObject */
 	private $session;
 
 	public function setUp(): void {
@@ -53,14 +56,13 @@ class BasicAuthModuleTest extends TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->logger = $this->createMock(ILogger::class);
 		$this->manager = $this->createMock(IUserManager::class);
-		$this->request = $this->createMock(IRequest::class);
 		$this->session = $this->createMock(ISession::class);
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
 
 		$this->user = $this->createMock(IUser::class);
-		$this->user->expects($this->any())->method('getUID')->willReturn('user1');
+		$this->user->method('getUID')->willReturn('user1');
 
-		$this->manager->expects($this->any())->method('checkPassword')
+		$this->manager->method('checkPassword')
 			->willReturnMap([
 				['user1', '123456', $this->user],
 				['user@example.com', '123456', $this->user],
@@ -69,7 +71,7 @@ class BasicAuthModuleTest extends TestCase {
 				['unique@example.com', '123456', null],
 			]);
 
-		$this->manager->expects($this->any())->method('getByEmail')
+		$this->manager->method('getByEmail')
 			->willReturnMap([
 				['not-unique@example.com', [$this->user, $this->user]],
 				['unique@example.com', [$this->user]],
@@ -82,47 +84,48 @@ class BasicAuthModuleTest extends TestCase {
 
 	/**
 	 * @dataProvider providesCredentials
-	 * @param mixed $expectedResult
-	 * @param string $userId
 	 */
-	public function testAuth($expectedResult, $userId) {
-		$this->session->method('exists')->will($this->returnValueMap([
+	public function testAuth(mixed $expectedResult, string $userId): void {
+		$this->session->method('exists')->willReturnMap([
 			['app_password', false],
 			['last_check_timeout', true]
-		]));
+		]);
 
 		// check auth
-		$time = \time();
-		$this->session->method('get')->will($this->returnValueMap([
+		$time = time();
+		$this->session->method('get')->willReturnMap([
 			['user_id', $userId],
 			['last_check_timeout', $time - 60 * 5]
-		]));
+		]);
 		$this->timeFactory->method('getTime')->willReturn($time);
 
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
-		$this->request->server = [
-			'PHP_AUTH_USER' => $userId,
-			'PHP_AUTH_PW' => '123456',
-		];
-		if ($expectedResult instanceof \Exception) {
+		$request = new Request([
+			'server' => [
+				'PHP_AUTH_USER' => $userId,
+				'PHP_AUTH_PW' => '123456',
+			]
+		]);
+
+		if ($expectedResult instanceof Exception) {
 			$this->expectException(\get_class($expectedResult));
 			$this->expectExceptionMessage($expectedResult->getMessage());
 		}
-		$this->assertEquals($expectedResult ? $this->user : null, $module->auth($this->request));
+		$this->assertEquals($expectedResult ? $this->user : null, $module->auth($request));
 	}
 
-	public function testAppPassword() {
-		$this->session->method('exists')->will($this->returnValueMap([
+	public function testAppPassword(): void {
+		$this->session->method('exists')->willReturnMap([
 			['app_password', true],
 			['last_check_timeout', true]
-		]));
+		]);
 
 		// check auth
-		$time = \time();
-		$this->session->method('get')->will($this->returnValueMap([
+		$time = time();
+		$this->session->method('get')->willReturnMap([
 			['user_id', 'user'],
 			['last_check_timeout', $time - 60 * 5]
-		]));
+		]);
 		$this->timeFactory->method('getTime')->willReturn($time);
 
 		$this->manager
@@ -130,47 +133,53 @@ class BasicAuthModuleTest extends TestCase {
 			->method('checkPassword');
 
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
-		$this->request->server = [
-			'PHP_AUTH_USER' => 'user',
-			'PHP_AUTH_PW' => 'app-pass-word',
-		];
-		$this->assertEquals(null, $module->auth($this->request));
+		$request = new Request([
+			'server' => [
+				'PHP_AUTH_USER' => 'user',
+				'PHP_AUTH_PW' => 'app-pass-word',
+			]
+		]);
+		$this->assertEquals(null, $module->auth($request));
 	}
 
-	public function testGetUserPassword() {
+	public function testGetUserPassword(): void {
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
-		$this->request->server = [
-			'PHP_AUTH_USER' => 'user1',
-			'PHP_AUTH_PW' => '123456',
-		];
-		$this->assertEquals('123456', $module->getUserPassword($this->request));
+		$request = new Request([
+			'server' => [
+				'PHP_AUTH_USER' => 'user1',
+				'PHP_AUTH_PW' => '123456',
+			]
+		]);
+		$this->assertEquals('123456', $module->getUserPassword($request));
 
-		$this->request->server = [];
-		$this->assertEquals('', $module->getUserPassword($this->request));
+		$request = new Request([
+			'server' => []
+		]);
+		$this->assertEquals('', $module->getUserPassword($request));
 	}
 
-	public function providesCredentials() {
+	public function providesCredentials(): array {
 		return [
 			'no user is' => [false, ''],
 			'user1 can login' => [true, 'user1'],
 			'user1 can login with email' => [true, 'user@example.com'],
 			'unique email can login' => [true, 'unique@example.com'],
-			'not unique email can not login' => [new \Exception('Invalid credentials'), 'not-unique@example.com'],
-			'user2 is not known' => [new \Exception('Invalid credentials'), 'user2'],
+			'not unique email can not login' => [new Exception('Invalid credentials'), 'not-unique@example.com'],
+			'user2 is not known' => [new Exception('Invalid credentials'), 'user2'],
 		];
 	}
 
-	public function testTimeout() {
-		$this->session->method('exists')->will($this->returnValueMap([
+	public function testTimeout(): void {
+		$this->session->method('exists')->willReturnMap([
 			['app_password', false],
 			['last_check_timeout', true]
-		]));
+		]);
 
-		$time = \time();
-		$this->session->method('get')->will($this->returnValueMap([
+		$time = time();
+		$this->session->method('get')->willReturnMap([
 			['last_check_timeout', $time - 60 * 4],
 			['user_id', 'user1']
-		]));
+		]);
 
 		$this->timeFactory->method('getTime')->willReturn($time);
 
@@ -183,15 +192,17 @@ class BasicAuthModuleTest extends TestCase {
 
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
 
-		$this->request->server = [
-			'PHP_AUTH_USER' => 'user1',
-			'PHP_AUTH_PW' => '123456',
-		];
+		$request = new Request([
+			'server' => [
+				'PHP_AUTH_USER' => 'user1',
+				'PHP_AUTH_PW' => '123456',
+			]
+		]);
 
-		$this->assertEquals($this->user, $module->auth($this->request));
+		$this->assertEquals($this->user, $module->auth($request));
 	}
 
-	public function invalidUserIdProvider() {
+	public function invalidUserIdProvider(): array {
 		return [
 			[''], [null],
 		];
@@ -200,19 +211,19 @@ class BasicAuthModuleTest extends TestCase {
 	/**
 	 * @dataProvider invalidUserIdProvider
 	 */
-	public function testInvalidUserId($userId) {
-		$this->expectException(\UnexpectedValueException::class);
+	public function testInvalidUserId($userId): void {
+		$this->expectException(UnexpectedValueException::class);
 
-		$this->session->method('exists')->will($this->returnValueMap([
+		$this->session->method('exists')->willReturnMap([
 			['app_password', false],
 			['last_check_timeout', true]
-		]));
+		]);
 
-		$time = \time();
-		$this->session->method('get')->will($this->returnValueMap([
+		$time = time();
+		$this->session->method('get')->willReturnMap([
 			['last_check_timeout', $time - 60 * 4],
 			['user_id', $userId]
-		]));
+		]);
 
 		$this->timeFactory->method('getTime')->willReturn($time);
 
@@ -226,11 +237,13 @@ class BasicAuthModuleTest extends TestCase {
 
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
 
-		$this->request->server = [
-			'PHP_AUTH_USER' => 'user1',
-			'PHP_AUTH_PW' => '123456',
-		];
+		$request = new Request([
+			'server' => [
+				'PHP_AUTH_USER' => 'user1',
+				'PHP_AUTH_PW' => '123456',
+			]
+		]);
 
-		$module->auth($this->request);
+		$module->auth($request);
 	}
 }
