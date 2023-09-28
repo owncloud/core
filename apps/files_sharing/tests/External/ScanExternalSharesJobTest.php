@@ -125,7 +125,7 @@ class ScanExternalSharesJobTest extends TestCase {
 
 		$this->config->setAppValue('files_sharing', 'cronjob_scan_external_enabled', 'no');
 		$this->config->setAppValue('files_sharing', 'cronjob_scan_external_offset', 10);
-		$this->invokePrivate($scanShares, 'run', [[]]);
+		self::invokePrivate($scanShares, 'run', [[]]);
 	}
 
 	public function providesRunHandlesOffset() {
@@ -159,7 +159,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		$this->config->setAppValue('files_sharing', 'cronjob_scan_external_batch', $scanShareMaxPerSession);
 
 		$this->assertEquals(0, $this->config->getAppValue('files_sharing', 'cronjob_scan_external_offset', -1));
-		$this->invokePrivate($scanShares, 'run', [[]]);
+		self::invokePrivate($scanShares, 'run', [[]]);
 		$this->assertEquals($expectedOffset, $this->config->getAppValue('files_sharing', 'cronjob_scan_external_offset', -1));
 	}
 
@@ -173,7 +173,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		$this->config->setAppValue('files_sharing', 'cronjob_scan_external_offset', 10);
 
 		$this->assertEquals(10, $this->config->getAppValue('files_sharing', 'cronjob_scan_external_offset', -1));
-		$this->invokePrivate($scanShares, 'run', [[]]);
+		self::invokePrivate($scanShares, 'run', [[]]);
 		$this->assertEquals(12, $this->config->getAppValue('files_sharing', 'cronjob_scan_external_offset', -1));
 	}
 
@@ -194,7 +194,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		$res = $qb->execute()->fetchAll();
 		$this->assertNull($res[0]['lastscan']);
 
-		$this->invokePrivate($scanShares, 'run', [[]]);
+		self::invokePrivate($scanShares, 'run', [[]]);
 
 		$res = $qb->execute()->fetchAll();
 		$this->assertNotNull($res[0]['lastscan']);
@@ -218,7 +218,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		];
 		$lastLoginThreshold = '1';
 		$lastScanThreshold = '1';
-		$result = $this->invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
+		$result = self::invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
 
 		$this->assertEquals(false, $result);
 	}
@@ -246,7 +246,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		];
 		$lastLoginThreshold = '10';
 		$lastScanThreshold = '1';
-		$result = $this->invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
+		$result = self::invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
 
 		$this->assertEquals(false, $result);
 	}
@@ -275,7 +275,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		];
 		$lastLoginThreshold = '1';
 		$lastScanThreshold = '20';
-		$result = $this->invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
+		$result = self::invokePrivate($scanShares, 'shouldScan', [$share, $lastLoginThreshold, $lastScanThreshold]);
 
 		$this->assertEquals(false, $result);
 	}
@@ -317,7 +317,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		];
 		$lastLoginThreshold = 1;
 		$lastScanThreshold = 1;
-		$result = $this->invokePrivate($scanShares, 'scan', [$share, $lastLoginThreshold, $lastScanThreshold]);
+		$result = self::invokePrivate($scanShares, 'scan', [$share, $lastLoginThreshold, $lastScanThreshold]);
 
 		$this->assertEquals(false, $result);
 	}
@@ -424,7 +424,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		];
 		$lastLoginThreshold = 1;
 		$lastScanThreshold = 1;
-		$result = $this->invokePrivate($scanShares, 'scan', [$share, $lastLoginThreshold, $lastScanThreshold]);
+		$result = self::invokePrivate($scanShares, 'scan', [$share, $lastLoginThreshold, $lastScanThreshold]);
 
 		$this->assertEquals(true, $result);
 	}

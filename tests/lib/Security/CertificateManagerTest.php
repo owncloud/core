@@ -27,7 +27,7 @@ class CertificateManagerTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->username = $this->getUniqueID('', 20);
+		$this->username = self::getUniqueID('', 20);
 		$this->createUser($this->username);
 
 		$storage = new \OC\Files\Storage\Temporary();

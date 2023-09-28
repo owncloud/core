@@ -50,7 +50,7 @@ class CleanPropertiesTest extends TestCase {
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->logger = \OC::$server->getLogger();
 		$this->cleanProperties = new CleanProperties($this->connection, $this->logger);
-		$this->username = $this->getUniqueID('usercleanprop_');
+		$this->username = self::getUniqueID('usercleanprop_');
 		$this->createUser($this->username);
 		$this->loginAsUser($this->username);
 	}
@@ -79,7 +79,7 @@ class CleanPropertiesTest extends TestCase {
 		$userFolder->get('a.txt')->delete();
 		$userFolder->get('c.txt')->delete();
 
-		$this->invokePrivate($this->cleanProperties, 'run', ['']);
+		self::invokePrivate($this->cleanProperties, 'run', ['']);
 		$qb = $this->connection->getQueryBuilder();
 		$qb->select('fileid')
 			->from('properties');
@@ -131,7 +131,7 @@ class CleanPropertiesTest extends TestCase {
 			unset($fileIds[$i-1]);
 		}
 
-		$this->invokePrivate($this->cleanProperties, 'run', ['']);
+		self::invokePrivate($this->cleanProperties, 'run', ['']);
 		$qb = $this->connection->getQueryBuilder();
 		$qb->select('fileid')
 			->from('properties');

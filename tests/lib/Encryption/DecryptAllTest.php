@@ -110,8 +110,8 @@ class DecryptAllTest extends TestCase {
 
 		$this->instance = new DecryptAll($this->encryptionManager, $this->userManager, $this->view, $this->logger);
 
-		$this->invokePrivate($this->instance, 'input', [$this->inputInterface]);
-		$this->invokePrivate($this->instance, 'output', [$this->outputInterface]);
+		self::invokePrivate($this->instance, 'input', [$this->inputInterface]);
+		self::invokePrivate($this->instance, 'output', [$this->outputInterface]);
 	}
 
 	public function testDecryptAllFailsToDecrypt() {
@@ -132,7 +132,7 @@ class DecryptAllTest extends TestCase {
 			->method('decryptAllUsersFiles')
 			->with('user1');
 
-		$this->invokePrivate($instance, 'failed', [['user1' => [['path' => 'a.txt', 'exception' => new \Exception('Missing file')]]]]);
+		self::invokePrivate($instance, 'failed', [['user1' => [['path' => 'a.txt', 'exception' => new \Exception('Missing file')]]]]);
 		$this->assertTrue($instance->decryptAll($this->inputInterface, $this->outputInterface, 'user1'));
 	}
 
@@ -241,7 +241,7 @@ class DecryptAllTest extends TestCase {
 
 		$this->assertSame(
 			$success,
-			$this->invokePrivate($this->instance, 'prepareEncryptionModules', [$user])
+			self::invokePrivate($this->instance, 'prepareEncryptionModules', [$user])
 		);
 	}
 
@@ -260,8 +260,8 @@ class DecryptAllTest extends TestCase {
 			->setMethods(['decryptUsersFiles'])
 			->getMock();
 
-		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
-		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
+		self::invokePrivate($instance, 'input', [$this->inputInterface]);
+		self::invokePrivate($instance, 'output', [$this->outputInterface]);
 
 		$function = function (IUser $user) {
 			$users[] = $user->getUID();
@@ -271,7 +271,7 @@ class DecryptAllTest extends TestCase {
 			->method('countSeenUsers')
 			->willReturn(0);
 
-		$result = $this->invokePrivate($instance, 'decryptAllUsersFiles', []);
+		$result = self::invokePrivate($instance, 'decryptAllUsersFiles', []);
 		$this->assertEquals(false, $result);
 	}
 
@@ -292,8 +292,8 @@ class DecryptAllTest extends TestCase {
 			->setMethods(['decryptUsersFiles', 'prepareEncryptionModules'])
 			->getMock();
 
-		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
-		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
+		self::invokePrivate($instance, 'input', [$this->inputInterface]);
+		self::invokePrivate($instance, 'output', [$this->outputInterface]);
 
 		if (empty($user)) {
 			$progress = new ProgressBar($this->outputInterface);
@@ -303,8 +303,8 @@ class DecryptAllTest extends TestCase {
 			$this->userManager->expects($this->once())
 				->method('callForSeenUsers')
 				->will($this->returnCallback(function () use ($instance, $progress) {
-					$this->invokePrivate($instance, 'decryptUsersFiles', ['user1', $progress, '']);
-					$this->invokePrivate($instance, 'decryptUsersFiles', ['user2', $progress, '']);
+					self::invokePrivate($instance, 'decryptUsersFiles', ['user1', $progress, '']);
+					self::invokePrivate($instance, 'decryptUsersFiles', ['user2', $progress, '']);
 				}));
 			$instance
 				->expects($this->exactly(2))
@@ -337,7 +337,7 @@ class DecryptAllTest extends TestCase {
 			}
 		}
 
-		$result = $this->invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
+		$result = self::invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
 		if ($user !== 'userfails') {
 			$this->assertEquals(true, $result);
 		} else {
@@ -435,8 +435,8 @@ class DecryptAllTest extends TestCase {
 			->setMethods(['decryptUsersFiles', 'prepareEncryptionModules'])
 			->getMock();
 
-		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
-		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
+		self::invokePrivate($instance, 'input', [$this->inputInterface]);
+		self::invokePrivate($instance, 'output', [$this->outputInterface]);
 
 		\OC::$server->getAppConfig()->setValue('encryption', 'userSpecificKey', '1');
 
@@ -446,7 +446,7 @@ class DecryptAllTest extends TestCase {
 				->willReturn($prepareEncryptionModulesReturn);
 		}
 
-		$result = $this->invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
+		$result = self::invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
 		$this->assertTrue($result);
 	}
 
@@ -537,7 +537,7 @@ class DecryptAllTest extends TestCase {
 				->withConsecutive(['/user1/files/bar'])
 				->willThrowException(new \Exception());
 			if ($decryptBehavior === 'exception2') {
-				$this->invokePrivate($instance, 'failed', [['user1' => [['path' => 'a.txt', 'exception' => new \Exception('Missing file')]]]]);
+				self::invokePrivate($instance, 'failed', [['user1' => [['path' => 'a.txt', 'exception' => new \Exception('Missing file')]]]]);
 			}
 		} elseif ($decryptBehavior === 'skip') {
 			$instance->expects($this->never())
@@ -553,7 +553,7 @@ class DecryptAllTest extends TestCase {
 
 		$progressBar = new ProgressBar(new NullOutput());
 
-		$this->invokePrivate($instance, 'decryptUsersFiles', ['user1', $progressBar, '']);
+		self::invokePrivate($instance, 'decryptUsersFiles', ['user1', $progressBar, '']);
 	}
 
 	public function testDecryptFile() {
@@ -593,7 +593,7 @@ class DecryptAllTest extends TestCase {
 			->willReturn([$storage, 'test.txt']);
 
 		$this->assertTrue(
-			$this->invokePrivate($instance, 'decryptFile', [$path])
+			self::invokePrivate($instance, 'decryptFile', [$path])
 		);
 	}
 
@@ -628,7 +628,7 @@ class DecryptAllTest extends TestCase {
 		$instance->expects($this->any())->method('getTimestamp')->willReturn(42);
 
 		$this->assertTrue(
-			$this->invokePrivate($instance, 'decryptFile', [$path])
+			self::invokePrivate($instance, 'decryptFile', [$path])
 		);
 
 		$view1 = new View('/');
@@ -671,7 +671,7 @@ class DecryptAllTest extends TestCase {
 			->with($path . '.decrypted.42.part');
 
 		$this->assertFalse(
-			$this->invokePrivate($instance, 'decryptFile', [$path])
+			self::invokePrivate($instance, 'decryptFile', [$path])
 		);
 	}
 

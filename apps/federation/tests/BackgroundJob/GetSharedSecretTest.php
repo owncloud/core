@@ -108,7 +108,7 @@ class GetSharedSecretTest extends TestCase {
 					$this->dbHandler
 				]
 			)->setMethods(['parentExecute'])->getMock();
-		$this->invokePrivate($getSharedSecret, 'argument', [['url' => 'url']]);
+		self::invokePrivate($getSharedSecret, 'argument', [['url' => 'url']]);
 
 		$this->trustedServers->expects($this->once())->method('isTrustedServer')
 			->with('url')->willReturn($isTrustedServer);
@@ -117,7 +117,7 @@ class GetSharedSecretTest extends TestCase {
 		} else {
 			$getSharedSecret->expects($this->never())->method('parentExecute');
 		}
-		$this->invokePrivate($getSharedSecret, 'retainJob', [$retainBackgroundJob]);
+		self::invokePrivate($getSharedSecret, 'retainJob', [$retainBackgroundJob]);
 		if ($retainBackgroundJob) {
 			$this->jobList->expects($this->never())->method('remove');
 		} else {
@@ -185,14 +185,14 @@ class GetSharedSecretTest extends TestCase {
 			$this->trustedServers->expects($this->never())->method('addSharedSecret');
 		}
 
-		$this->invokePrivate($this->getSharedSecret, 'run', [$argument]);
+		self::invokePrivate($this->getSharedSecret, 'run', [$argument]);
 		if (
 			$statusCode !== Http::STATUS_OK
 			&& $statusCode !== Http::STATUS_FORBIDDEN
 		) {
-			$this->assertTrue($this->invokePrivate($this->getSharedSecret, 'retainJob'));
+			$this->assertTrue(self::invokePrivate($this->getSharedSecret, 'retainJob'));
 		} else {
-			$this->assertFalse($this->invokePrivate($this->getSharedSecret, 'retainJob'));
+			$this->assertFalse(self::invokePrivate($this->getSharedSecret, 'retainJob'));
 		}
 	}
 

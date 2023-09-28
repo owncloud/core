@@ -671,21 +671,21 @@ class Share20OcsControllerTest extends TestCase {
 	public function testCanAccessShare() {
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareOwner')->willReturn($this->currentUser->getUID());
-		$this->assertTrue($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getSharedBy')->willReturn($this->currentUser->getUID());
-		$this->assertTrue($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_USER);
 		$share->method('getSharedWith')->willReturn($this->currentUser->getUID());
-		$this->assertTrue($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_USER);
 		$share->method('getSharedWith')->willReturn($this->createMock('OCP\IUser'));
-		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_GROUP);
@@ -701,29 +701,29 @@ class Share20OcsControllerTest extends TestCase {
 			['group2', $group2],
 			['groupnull', null],
 		]));
-		$this->assertTrue($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('group2');
-		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		// null group
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('groupnull');
-		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
-		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		// should not happen ever again, but who knows... let's cover it
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_USER);
 		$share->method('getState')->willReturn(Share::STATE_ACCEPTED);
 		$share->method('getPermissions')->willReturn(0);
-		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		// legacy zero permission entries from group sub-shares, let it pass
 		$share = $this->createMock('OCP\Share\IShare');
@@ -731,7 +731,7 @@ class Share20OcsControllerTest extends TestCase {
 		$share->method('getSharedWith')->willReturn('group');
 		$share->method('getState')->willReturn(Share::STATE_REJECTED);
 		$share->method('getPermissions')->willReturn(0);
-		$this->assertTrue($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 	}
 
 	public function testCreateShareNoPath() {
@@ -2766,7 +2766,7 @@ class Share20OcsControllerTest extends TestCase {
 		}
 
 		try {
-			$result = $this->invokePrivate($this->ocs, 'formatShare', [$share]);
+			$result = self::invokePrivate($this->ocs, 'formatShare', [$share]);
 			$this->assertFalse($exception);
 			$this->assertEquals($expects, $result);
 		} catch (NotFoundException $e) {
@@ -2931,7 +2931,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with($share->getNode()->getPath())
 			->will($this->returnArgument(0));
 
-		$result = $this->invokePrivate($ocs, 'formatShare', [$share]);
+		$result = self::invokePrivate($ocs, 'formatShare', [$share]);
 
 		$this->assertEquals($expectedInfo, $result['share_with_additional_info']);
 		$this->assertEquals($expectedOwnerInfo, $result['additional_info_file_owner']);

@@ -66,22 +66,22 @@ class AppsTest extends TestCase {
 
 	public function testMarketEnableVersionCompare10() {
 		$this->config->expects($this->once())->method('getSystemValue')->with('version', '0.0.0')->willReturn('10.0.0');
-		$this->assertTrue($this->invokePrivate($this->repair, 'requiresMarketEnable'));
+		$this->assertTrue(self::invokePrivate($this->repair, 'requiresMarketEnable'));
 	}
 
 	public function testMarketEnableVersionCompare9() {
 		$this->config->expects($this->once())->method('getSystemValue')->with('version', '0.0.0')->willReturn('9.1.5');
-		$this->assertTrue($this->invokePrivate($this->repair, 'requiresMarketEnable'));
+		$this->assertTrue(self::invokePrivate($this->repair, 'requiresMarketEnable'));
 	}
 
 	public function testMarketEnableVersionCompareFuture() {
 		$this->config->expects($this->once())->method('getSystemValue')->with('version', '0.0.0')->willReturn('10.0.2');
-		$this->assertFalse($this->invokePrivate($this->repair, 'requiresMarketEnable'));
+		$this->assertFalse(self::invokePrivate($this->repair, 'requiresMarketEnable'));
 	}
 
 	public function testMarketEnableVersionCompareCurrent() {
 		$this->config->expects($this->once())->method('getSystemValue')->with('version', '0.0.0')->willReturn('10.0.1');
-		$this->assertFalse($this->invokePrivate($this->repair, 'requiresMarketEnable'));
+		$this->assertFalse(self::invokePrivate($this->repair, 'requiresMarketEnable'));
 	}
 
 	public function dataTestHasBlockingIncompatibleApps() {
@@ -106,7 +106,7 @@ class AppsTest extends TestCase {
 		\OCP\Util::setChannel($channel);
 		$this->assertEquals(
 			$expectedResult,
-			$this->invokePrivate($this->repair, 'hasBlockingIncompatibleApps', [$blockingApps])
+			self::invokePrivate($this->repair, 'hasBlockingIncompatibleApps', [$blockingApps])
 		);
 		\OCP\Util::setChannel($oldChannel);
 	}
@@ -145,7 +145,7 @@ class AppsTest extends TestCase {
 					$this->assertEquals(true, $event->getArgument('isMajorUpdate'));
 				}
 			);
-		$this->invokePrivate(
+		self::invokePrivate(
 			$this->repair,
 			'getAppsFromMarket',
 			[

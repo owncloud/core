@@ -24,7 +24,7 @@ class WatcherTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->loginAsUser();
+		self::loginAsUser();
 	}
 
 	protected function tearDown(): void {
@@ -34,7 +34,7 @@ class WatcherTest extends \Test\TestCase {
 			$cache->clear();
 		}
 
-		$this->logout();
+		self::logout();
 		parent::tearDown();
 	}
 

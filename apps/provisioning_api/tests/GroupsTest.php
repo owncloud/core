@@ -265,7 +265,7 @@ class GroupsTest extends \Test\TestCase {
 		$this->asUser();
 
 		$result = $this->api->getGroup([
-			'groupid' => $this->getUniqueID()
+			'groupid' => self::getUniqueID()
 		]);
 
 		$this->assertInstanceOf('OC_OCS_Result', $result);

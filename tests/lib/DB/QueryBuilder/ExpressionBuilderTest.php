@@ -382,7 +382,7 @@ class ExpressionBuilderTest extends TestCase {
 	 * @param int $expected
 	 */
 	public function testClobComparisons($function, $value, $type, $compareKeyToValue, $expected) {
-		$appId = $this->getUniqueID('testing');
+		$appId = self::getUniqueID('testing');
 		$this->createConfig($appId, 1, 4);
 		$this->createConfig($appId, 2, 5);
 		$this->createConfig($appId, 3, 6);

@@ -66,7 +66,7 @@ class ExtensionTest extends TestCase {
 	 */
 	public function testConvertParameterToTag($parameter, $expectedResult) {
 		$l10n = \OC::$server->getL10N('systemtag');
-		$result = $this->invokePrivate($this->extension, 'convertParameterToTag', [$parameter, $l10n]);
+		$result = self::invokePrivate($this->extension, 'convertParameterToTag', [$parameter, $l10n]);
 		$this->assertEquals($result, $expectedResult);
 	}
 }

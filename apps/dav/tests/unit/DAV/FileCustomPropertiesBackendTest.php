@@ -83,7 +83,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$userId = $this->getUniqueID('testcustompropertiesuser');
+		$userId = self::getUniqueID('testcustompropertiesuser');
 
 		$this->user = $this->createMock('\OCP\IUser');
 		$this->user->expects($this->any())

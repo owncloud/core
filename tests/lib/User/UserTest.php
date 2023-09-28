@@ -634,7 +634,7 @@ class UserTest extends TestCase {
 			->with($userExtendedAttributesEvent, UserExtendedAttributesEvent::USER_EXTENDED_ATTRIBUTES);
 
 		$this->user->getExtendedAttributes();
-		$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
+		$value = self::invokePrivate($this->user, 'allowUserAccountUpdate');
 		$this->assertTrue($value);
 	}
 
@@ -652,7 +652,7 @@ class UserTest extends TestCase {
 		try {
 			$this->user->getExtendedAttributes();
 		} catch (NotPermittedActionException $ex) {
-			$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
+			$value = self::invokePrivate($this->user, 'allowUserAccountUpdate');
 			$this->assertTrue($value);
 		}
 	}
@@ -671,7 +671,7 @@ class UserTest extends TestCase {
 		try {
 			$this->user->getExtendedAttributes();
 		} catch (\Exception $ex) {
-			$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
+			$value = self::invokePrivate($this->user, 'allowUserAccountUpdate');
 			$this->assertTrue($value);
 		}
 	}
@@ -692,7 +692,7 @@ class UserTest extends TestCase {
 		try {
 			$this->user->getExtendedAttributes();
 		} catch (NotPermittedActionException $ex) {
-			$value = $this->invokePrivate($this->user, 'allowUserAccountUpdate');
+			$value = self::invokePrivate($this->user, 'allowUserAccountUpdate');
 			$this->assertTrue($value);
 		}
 	}
@@ -703,7 +703,7 @@ class UserTest extends TestCase {
 	public function testSetSearchTermsForException() {
 		$this->expectException(\OCP\User\NotPermittedActionException::class);
 
-		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		self::invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setSearchTerms(['foo']);
 	}
 
@@ -713,7 +713,7 @@ class UserTest extends TestCase {
 	public function testSetQuotaForException() {
 		$this->expectException(\OCP\User\NotPermittedActionException::class);
 
-		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		self::invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setQuota('12M');
 	}
 
@@ -723,7 +723,7 @@ class UserTest extends TestCase {
 	public function testSetEmailAddressForException() {
 		$this->expectException(\OCP\User\NotPermittedActionException::class);
 
-		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		self::invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setEMailAddress('foo@bar.com');
 	}
 
@@ -733,7 +733,7 @@ class UserTest extends TestCase {
 	public function testSetEnabledForException() {
 		$this->expectException(\OCP\User\NotPermittedActionException::class);
 
-		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		self::invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setEnabled(true);
 	}
 
@@ -743,7 +743,7 @@ class UserTest extends TestCase {
 	public function testSetPasswordForException() {
 		$this->expectException(\OCP\User\NotPermittedActionException::class);
 
-		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		self::invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setPassword('foobar');
 	}
 
@@ -753,7 +753,7 @@ class UserTest extends TestCase {
 	public function testSetDisplayNameForException() {
 		$this->expectException(\OCP\User\NotPermittedActionException::class);
 
-		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		self::invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setDisplayName('FooBar');
 	}
 
@@ -763,7 +763,7 @@ class UserTest extends TestCase {
 	public function testSetUserNameForException() {
 		$this->expectException(\OCP\User\NotPermittedActionException::class);
 
-		$this->invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
+		self::invokePrivate($this->user, 'allowUserAccountUpdate', [false]);
 		$this->user->setUserName('Foo');
 	}
 }

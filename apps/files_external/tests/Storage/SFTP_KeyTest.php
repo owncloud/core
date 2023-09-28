@@ -40,7 +40,7 @@ class SFTP_KeyTest extends \Test\Files\Storage\Storage {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$id = $this->getUniqueID();
+		$id = self::getUniqueID();
 		$this->config = include('files_external/tests/config.php');
 		if (! \is_array($this->config) or ! isset($this->config['sftp_key']) or ! $this->config['sftp_key']['run']) {
 			$this->markTestSkipped('SFTP with key backend not configured');

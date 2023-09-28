@@ -83,7 +83,7 @@ class SetConfigTest extends TestCase {
 				['type', 'string'],
 			]));
 
-		$this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
 	public function setUpdateOnlyProvider() {
@@ -120,7 +120,7 @@ class SetConfigTest extends TestCase {
 				['update-only', true],
 			]));
 
-		$this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
 	public function setJsonData() {
@@ -158,7 +158,7 @@ class SetConfigTest extends TestCase {
 				['type', 'json'],
 			]));
 
-		$this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
 	public function castValueProvider() {
@@ -189,7 +189,7 @@ class SetConfigTest extends TestCase {
 	public function testCastValue($value, $type, $expectedValue) {
 		$this->assertSame(
 			$expectedValue,
-			$this->invokePrivate($this->command, 'castValue', [$value, $type])
+			self::invokePrivate($this->command, 'castValue', [$value, $type])
 		);
 	}
 
@@ -213,6 +213,6 @@ class SetConfigTest extends TestCase {
 	public function testCastValueInvalid($value, $type) {
 		$this->expectException(\InvalidArgumentException::class);
 
-		$this->invokePrivate($this->command, 'castValue', [$value, $type]);
+		self::invokePrivate($this->command, 'castValue', [$value, $type]);
 	}
 }

@@ -26,7 +26,7 @@ class MemcachedTest extends Cache {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->instance = new \OC\Memcache\Memcached($this->getUniqueID());
+		$this->instance = new \OC\Memcache\Memcached(self::getUniqueID());
 	}
 
 	public function testClear() {

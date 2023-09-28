@@ -65,7 +65,7 @@ class CleanupChunksTest extends TestCase {
 
 	public function testCommand() {
 		$userId = 'dav-clean-chunks-user';
-		$uploadId = $this->getUniqueID('upload');
+		$uploadId = self::getUniqueID('upload');
 		// create one user for testing
 		$user = $this->createUser($userId);
 		$this->loginAsUser($user->getUID());
@@ -85,7 +85,7 @@ class CleanupChunksTest extends TestCase {
 
 	public function testCommandWithOptionLocal() {
 		$userId = 'dav-clean-chunks-user-2';
-		$uploadId = $this->getUniqueID('upload');
+		$uploadId = self::getUniqueID('upload');
 		// create one user for testing
 		$user = $this->createUser($userId);
 		$this->loginAsUser($user->getUID());

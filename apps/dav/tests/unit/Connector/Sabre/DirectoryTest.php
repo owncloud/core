@@ -501,7 +501,7 @@ class DirectoryTest extends \Test\TestCase {
 		$this->expectException(\OCP\Files\FileContentNotAllowedException::class);
 		$this->expectExceptionMessage('The message already logged');
 
-		//$this->invokePrivate();
+		//self::invokePrivate();
 		$previous = new FileContentNotAllowedException('The message already logged', false);
 		$this->view->expects($this->any())
 			->method('isCreatable')

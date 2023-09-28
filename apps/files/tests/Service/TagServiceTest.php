@@ -60,7 +60,7 @@ class TagServiceTest extends \Test\TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->user = $this->getUniqueID('user');
+		$this->user = self::getUniqueID('user');
 		$user = $this->createUser($this->user, 'test');
 		\OC_User::setUserId($this->user);
 		\OC_Util::setupFS($this->user);

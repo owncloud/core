@@ -147,7 +147,7 @@ class AddressHandlerTest extends \Test\TestCase {
 	public function testFixRemoteUrl($url, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($this->addressHandler, 'fixRemoteURL', [$url])
+			self::invokePrivate($this->addressHandler, 'fixRemoteURL', [$url])
 		);
 	}
 

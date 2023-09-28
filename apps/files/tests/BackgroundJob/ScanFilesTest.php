@@ -73,7 +73,7 @@ class ScanFilesTest extends TestCase {
 				->method('setAppValue')
 				->with('files', 'cronjob_scan_files', 500);
 
-		$this->invokePrivate($this->scanFiles, 'run', [[]]);
+		self::invokePrivate($this->scanFiles, 'run', [[]]);
 	}
 
 	public function testRunWithUsers() {
@@ -99,7 +99,7 @@ class ScanFilesTest extends TestCase {
 				->method('runScanner')
 				->with($fakeUser);
 
-		$this->invokePrivate($this->scanFiles, 'run', [[]]);
+		self::invokePrivate($this->scanFiles, 'run', [[]]);
 	}
 
 	public function testRunWithUsersAndOffsetAtEndOfUserList() {
@@ -124,6 +124,6 @@ class ScanFilesTest extends TestCase {
 				->expects($this->never())
 				->method('runScanner');
 
-		$this->invokePrivate($this->scanFiles, 'run', [[]]);
+		self::invokePrivate($this->scanFiles, 'run', [[]]);
 	}
 }

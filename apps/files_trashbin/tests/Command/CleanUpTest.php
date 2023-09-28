@@ -110,7 +110,7 @@ class CleanUpTest extends TestCase {
 			$this->rootFolder->expects($this->never())->method('get');
 			$this->rootFolder->expects($this->never())->method('delete');
 		}
-		$this->invokePrivate($this->cleanup, 'removeDeletedFiles', [$this->user0]);
+		self::invokePrivate($this->cleanup, 'removeDeletedFiles', [$this->user0]);
 
 		if ($nodeExists) {
 			// if the delete operation was execute only files from user1
@@ -164,7 +164,7 @@ class CleanUpTest extends TestCase {
 			->willReturn($userIds);
 		$outputInterface = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
 			->disableOriginalConstructor()->getMock();
-		$this->invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
 	}
 
 	/**
@@ -197,6 +197,6 @@ class CleanUpTest extends TestCase {
 		$this->userManager->expects($this->once())
 			->method('getBackends')
 			->willReturn([$backend]);
-		$this->invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
 	}
 }

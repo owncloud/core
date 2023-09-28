@@ -334,7 +334,7 @@ class TrustedServersTest extends TestCase {
 	 * @dataProvider dataTestCheckOwnCloudVersion
 	 */
 	public function testCheckOwnCloudVersion($status) {
-		$this->assertTrue($this->invokePrivate($this->trustedServers, 'checkOwnCloudVersion', [$status]));
+		$this->assertTrue(self::invokePrivate($this->trustedServers, 'checkOwnCloudVersion', [$status]));
 	}
 
 	public function dataTestCheckOwnCloudVersion() {
@@ -351,7 +351,7 @@ class TrustedServersTest extends TestCase {
 		$this->expectException(\OC\HintException::class);
 		$this->expectExceptionMessage('Remote server version is too low. ownCloud 9.0 is required.');
 
-		$this->invokePrivate($this->trustedServers, 'checkOwnCloudVersion', [$status]);
+		self::invokePrivate($this->trustedServers, 'checkOwnCloudVersion', [$status]);
 	}
 
 	public function dataTestCheckOwnCloudVersionTooLow() {
@@ -368,7 +368,7 @@ class TrustedServersTest extends TestCase {
 	public function testUpdateProtocol($url, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($this->trustedServers, 'updateProtocol', [$url])
+			self::invokePrivate($this->trustedServers, 'updateProtocol', [$url])
 		);
 	}
 

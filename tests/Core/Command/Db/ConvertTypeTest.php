@@ -110,7 +110,7 @@ class ConvertTypeTest extends TestCase {
 				)
 			);
 
-		$existingApps = \array_values($this->invokePrivate($command, 'getExistingApps', [false]));
+		$existingApps = \array_values(self::invokePrivate($command, 'getExistingApps', [false]));
 		$this->assertEquals(
 			['firstapp', 'anotherapp', 'niceapp', 'lastapp'],
 			$existingApps
@@ -127,6 +127,6 @@ class ConvertTypeTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('setSystemValues');
 
-		$this->invokePrivate($command, 'saveDBInfo', []);
+		self::invokePrivate($command, 'saveDBInfo', []);
 	}
 }

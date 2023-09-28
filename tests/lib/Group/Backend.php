@@ -45,7 +45,7 @@ abstract class Backend extends \Test\TestCase {
 	 */
 	public function getGroupName($name = null) {
 		if ($name === null) {
-			return $this->getUniqueID('test_');
+			return self::getUniqueID('test_');
 		} else {
 			return $name;
 		}
@@ -58,7 +58,7 @@ abstract class Backend extends \Test\TestCase {
 	 * @return string
 	 */
 	public function getUserName() {
-		return $this->getUniqueID('test_');
+		return self::getUniqueID('test_');
 	}
 
 	public function testAddRemove() {

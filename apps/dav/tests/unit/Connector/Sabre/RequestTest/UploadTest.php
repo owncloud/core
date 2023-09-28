@@ -35,7 +35,7 @@ use OCP\Lock\ILockingProvider;
  */
 class UploadTest extends RequestTest {
 	public function testBasicUpload() {
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$this->assertFalse($view->file_exists('foo.txt'));
@@ -51,7 +51,7 @@ class UploadTest extends RequestTest {
 	}
 
 	public function testUploadOverWrite() {
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$view->file_put_contents('foo.txt', 'foobar');
@@ -71,7 +71,7 @@ class UploadTest extends RequestTest {
 	public function testUploadOverWriteReadLocked() {
 		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
 
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$view->file_put_contents('foo.txt', 'bar');
@@ -86,7 +86,7 @@ class UploadTest extends RequestTest {
 	public function testUploadOverWriteWriteLocked() {
 		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
 
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 		$this->loginAsUser($user);
 
@@ -98,7 +98,7 @@ class UploadTest extends RequestTest {
 	}
 
 	public function testChunkedUpload() {
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$this->assertFalse($view->file_exists('foo.txt'));
@@ -120,7 +120,7 @@ class UploadTest extends RequestTest {
 	}
 
 	public function testChunkedUploadOverWrite() {
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$view->file_put_contents('foo.txt', 'bar');
@@ -141,7 +141,7 @@ class UploadTest extends RequestTest {
 	}
 
 	public function testChunkedUploadOutOfOrder() {
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$this->assertFalse($view->file_exists('foo.txt'));
@@ -167,7 +167,7 @@ class UploadTest extends RequestTest {
 	public function testChunkedUploadOutOfOrderReadLocked() {
 		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
 
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$this->assertFalse($view->file_exists('foo.txt'));
@@ -193,7 +193,7 @@ class UploadTest extends RequestTest {
 	public function testChunkedUploadOutOfOrderWriteLocked() {
 		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\FileLocked::class);
 
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$this->assertFalse($view->file_exists('foo.txt'));

@@ -45,7 +45,7 @@ class HookConnectorTest extends TestCase {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->userId = $this->getUniqueID();
+		$this->userId = self::getUniqueID();
 		$this->createUser($this->userId, 'pass');
 		$this->registerMount($this->userId, new Temporary(), '/' . $this->userId . '/files/');
 		\OC_Util::setupFS($this->userId);

@@ -80,7 +80,7 @@ class PublicAuthTest extends \Test\TestCase {
 			->method('getShareByToken')
 			->willThrowException(new ShareNotFound());
 
-		$result = $this->invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
+		$result = self::invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
 
 		$this->assertFalse($result);
 	}
@@ -93,7 +93,7 @@ class PublicAuthTest extends \Test\TestCase {
 			->method('getShareByToken')
 			->willReturn($share);
 
-		$result = $this->invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
+		$result = self::invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
 
 		$this->assertTrue($result);
 	}
@@ -107,7 +107,7 @@ class PublicAuthTest extends \Test\TestCase {
 			->method('getShareByToken')
 			->willReturn($share);
 
-		$result = $this->invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
+		$result = self::invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
 
 		$this->assertFalse($result);
 	}
@@ -121,7 +121,7 @@ class PublicAuthTest extends \Test\TestCase {
 			->method('getShareByToken')
 			->willReturn($share);
 
-		$result = $this->invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
+		$result = self::invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
 
 		$this->assertTrue($result);
 	}
@@ -141,7 +141,7 @@ class PublicAuthTest extends \Test\TestCase {
 				$this->equalTo('password')
 			)->willReturn(true);
 
-		$result = $this->invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
+		$result = self::invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
 
 		$this->assertTrue($result);
 	}
@@ -165,7 +165,7 @@ class PublicAuthTest extends \Test\TestCase {
 		$this->session->method('exists')->with('public_link_authenticated')->willReturn(true);
 		$this->session->method('get')->with('public_link_authenticated')->willReturn('42');
 
-		$result = $this->invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
+		$result = self::invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
 
 		$this->assertTrue($result);
 	}
@@ -189,7 +189,7 @@ class PublicAuthTest extends \Test\TestCase {
 		$this->session->method('exists')->with('public_link_authenticated')->willReturn(true);
 		$this->session->method('get')->with('public_link_authenticated')->willReturn('43');
 
-		$result = $this->invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
+		$result = self::invokePrivate($this->auth, 'validateUserPass', ['username', 'password']);
 
 		$this->assertFalse($result);
 	}

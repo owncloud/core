@@ -44,7 +44,7 @@ abstract class BackendTestCase extends \Test\TestCase {
 	 * @return string
 	 */
 	public function getUser($prefix = 'test_') {
-		return $this->getUniqueID($prefix);
+		return self::getUniqueID($prefix);
 	}
 
 	public function testAddRemove() {

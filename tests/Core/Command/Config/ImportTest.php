@@ -65,7 +65,7 @@ class ImportTest extends TestCase {
 	 * @param mixed $configValue
 	 */
 	public function testValidateAppsArray($configValue) {
-		$this->invokePrivate($this->command, 'validateAppsArray', [['app' => ['name' => $configValue]]]);
+		self::invokePrivate($this->command, 'validateAppsArray', [['app' => ['name' => $configValue]]]);
 		$this->assertTrue(true, 'Asserting that no exception is thrown');
 	}
 
@@ -85,7 +85,7 @@ class ImportTest extends TestCase {
 	 */
 	public function testValidateAppsArrayThrows($configValue) {
 		try {
-			$this->invokePrivate($this->command, 'validateAppsArray', [['app' => ['name' => $configValue]]]);
+			self::invokePrivate($this->command, 'validateAppsArray', [['app' => ['name' => $configValue]]]);
 			$this->fail('Did not throw expected UnexpectedValueException');
 		} catch (\UnexpectedValueException $e) {
 			$this->assertStringStartsWith('Invalid app config value for "app":"name".', $e->getMessage());
@@ -114,7 +114,7 @@ class ImportTest extends TestCase {
 	 * @param mixed $configValue
 	 */
 	public function testCheckTypeRecursively($configValue) {
-		$this->invokePrivate($this->command, 'checkTypeRecursively', [$configValue, 'name']);
+		self::invokePrivate($this->command, 'checkTypeRecursively', [$configValue, 'name']);
 		$this->assertTrue(true, 'Asserting that no exception is thrown');
 	}
 
@@ -134,7 +134,7 @@ class ImportTest extends TestCase {
 	 */
 	public function testCheckTypeRecursivelyThrows($configValue) {
 		try {
-			$this->invokePrivate($this->command, 'checkTypeRecursively', [$configValue, 'name']);
+			self::invokePrivate($this->command, 'checkTypeRecursively', [$configValue, 'name']);
 			$this->fail('Did not throw expected UnexpectedValueException');
 		} catch (\UnexpectedValueException $e) {
 			$this->assertStringStartsWith('Invalid system config value for "name"', $e->getMessage());
@@ -155,7 +155,7 @@ class ImportTest extends TestCase {
 	 * @param array $configArray
 	 */
 	public function testValidateArray($configArray) {
-		$this->invokePrivate($this->command, 'validateArray', [$configArray]);
+		self::invokePrivate($this->command, 'validateArray', [$configArray]);
 		$this->assertTrue(true, 'Asserting that no exception is thrown');
 	}
 
@@ -175,7 +175,7 @@ class ImportTest extends TestCase {
 	 */
 	public function testValidateArrayThrows($configArray, $expectedException) {
 		try {
-			$this->invokePrivate($this->command, 'validateArray', [$configArray]);
+			self::invokePrivate($this->command, 'validateArray', [$configArray]);
 			$this->fail('Did not throw expected UnexpectedValueException');
 		} catch (\UnexpectedValueException $e) {
 			$this->assertStringStartsWith($expectedException, $e->getMessage());

@@ -113,7 +113,7 @@ class DeleteConfigTest extends TestCase {
 			->method('writeln')
 			->with($this->stringContains($expectedMessage));
 
-		$this->assertSame($expectedReturn, $this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertSame($expectedReturn, self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 
 	public function deleteArrayData() {
@@ -212,6 +212,6 @@ class DeleteConfigTest extends TestCase {
 			->method('writeln')
 			->with($this->stringContains($expectedMessage));
 
-		$this->assertSame($expectedReturn, $this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertSame($expectedReturn, self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 }

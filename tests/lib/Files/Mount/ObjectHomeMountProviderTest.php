@@ -41,7 +41,7 @@ class ObjectHomeMountProviderTest extends \Test\TestCase {
 		$this->user->expects($this->never())->method($this->anything());
 		$this->loader->expects($this->never())->method($this->anything());
 
-		$config = $this->invokePrivate($this->provider, 'getSingleBucketObjectStoreConfig', [$this->user, $this->loader]);
+		$config = self::invokePrivate($this->provider, 'getSingleBucketObjectStoreConfig', [$this->user, $this->loader]);
 
 		$this->assertArrayHasKey('class', $config);
 		$this->assertEquals($config['class'], 'Test\Files\Mount\FakeObjectStore');
@@ -83,7 +83,7 @@ class ObjectHomeMountProviderTest extends \Test\TestCase {
 				$this->equalTo(null)
 			);
 
-		$config = $this->invokePrivate($this->provider, 'getMultiBucketObjectStoreConfig', [$this->user, $this->loader]);
+		$config = self::invokePrivate($this->provider, 'getMultiBucketObjectStoreConfig', [$this->user, $this->loader]);
 
 		$this->assertArrayHasKey('class', $config);
 		$this->assertEquals($config['class'], 'Test\Files\Mount\FakeObjectStore');
@@ -130,7 +130,7 @@ class ObjectHomeMountProviderTest extends \Test\TestCase {
 				$this->equalTo(null)
 			);
 
-		$config = $this->invokePrivate($this->provider, 'getMultiBucketObjectStoreConfig', [$this->user, $this->loader]);
+		$config = self::invokePrivate($this->provider, 'getMultiBucketObjectStoreConfig', [$this->user, $this->loader]);
 
 		$this->assertArrayHasKey('class', $config);
 		$this->assertEquals($config['class'], 'Test\Files\Mount\FakeObjectStore');
@@ -170,7 +170,7 @@ class ObjectHomeMountProviderTest extends \Test\TestCase {
 		$this->config->expects($this->never())
 			->method('setUserValue');
 
-		$config = $this->invokePrivate($this->provider, 'getMultiBucketObjectStoreConfig', [$this->user, $this->loader]);
+		$config = self::invokePrivate($this->provider, 'getMultiBucketObjectStoreConfig', [$this->user, $this->loader]);
 
 		$this->assertArrayHasKey('class', $config);
 		$this->assertEquals($config['class'], 'Test\Files\Mount\FakeObjectStore');

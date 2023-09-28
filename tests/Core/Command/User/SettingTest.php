@@ -212,7 +212,7 @@ class SettingTest extends TestCase {
 
 		$command = $this->getCommand();
 		try {
-			$this->invokePrivate($command, 'checkInput', [$this->consoleInput]);
+			self::invokePrivate($command, 'checkInput', [$this->consoleInput]);
 			$this->assertFalse($expectedException);
 		} catch (\InvalidArgumentException $e) {
 			$this->assertEquals($expectedException, $e->getMessage());
@@ -229,7 +229,7 @@ class SettingTest extends TestCase {
 			->method('writeln')
 			->with('<error>test</error>');
 
-		$this->assertEquals(1, $this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertEquals(1, self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 
 	public function dataExecuteDelete() {
@@ -293,7 +293,7 @@ class SettingTest extends TestCase {
 				->method('deleteUserValue');
 		}
 
-		$this->assertEquals($expectedReturn, $this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertEquals($expectedReturn, self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 
 	public function dataExecuteSet() {
@@ -363,7 +363,7 @@ class SettingTest extends TestCase {
 				->method('setUserValue');
 		}
 
-		$this->assertEquals($expectedReturn, $this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertEquals($expectedReturn, self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 
 	public function dataExecuteGet() {
@@ -429,7 +429,7 @@ class SettingTest extends TestCase {
 			->method('writeln')
 			->with($expectedLine);
 
-		$this->assertEquals($expectedReturn, $this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertEquals($expectedReturn, self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 
 	public function testExecuteList() {
@@ -456,6 +456,6 @@ class SettingTest extends TestCase {
 			->method('writeArrayInOutputFormat')
 			->with($this->consoleInput, $this->consoleOutput, ['settings']);
 
-		$this->assertEquals(0, $this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertEquals(0, self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 }

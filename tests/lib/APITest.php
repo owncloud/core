@@ -22,7 +22,7 @@ class APITest extends \Test\TestCase {
 		return [
 			'shipped' => $shipped,
 			'response' => $resp,
-			'app' => $this->getUniqueID('testapp_'),
+			'app' => self::getUniqueID('testapp_'),
 		];
 	}
 
@@ -80,7 +80,7 @@ class APITest extends \Test\TestCase {
 			->method('getScriptName')
 			->will($this->returnValue($scriptName));
 
-		$this->assertEquals($expected, $this->invokePrivate(new \OC_API, 'isV2', [$request]));
+		$this->assertEquals($expected, self::invokePrivate(new \OC_API, 'isV2', [$request]));
 	}
 
 	public function dataProviderTestOneResult() {

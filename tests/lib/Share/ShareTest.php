@@ -52,13 +52,13 @@ class ShareTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->user1 = $this->getUniqueID('user1_');
-		$this->user2 = $this->getUniqueID('user2_');
-		$this->user3 = $this->getUniqueID('user3_');
-		$this->user4 = $this->getUniqueID('user4_');
-		$this->user5 = $this->getUniqueID('user5_');
-		$this->user6 = $this->getUniqueID('user6_');
-		$this->groupAndUser = $this->getUniqueID('groupAndUser_');
+		$this->user1 = self::getUniqueID('user1_');
+		$this->user2 = self::getUniqueID('user2_');
+		$this->user3 = self::getUniqueID('user3_');
+		$this->user4 = self::getUniqueID('user4_');
+		$this->user5 = self::getUniqueID('user5_');
+		$this->user6 = self::getUniqueID('user6_');
+		$this->groupAndUser = self::getUniqueID('groupAndUser_');
 		$u1 = $this->createUser($this->user1, 'pass');
 		$u2 = $this->createUser($this->user2, 'pass');
 		$u3 = $this->createUser($this->user3, 'pass');
@@ -69,8 +69,8 @@ class ShareTest extends \Test\TestCase {
 		\OC_User::setUserId($this->user1);
 		\OC::$server->getGroupManager()->clearBackends();
 		\OC::$server->getGroupManager()->addBackend(new \Test\Util\Group\Dummy());
-		$this->group1 = $this->getUniqueID('group1_');
-		$this->group2 = $this->getUniqueID('group2_');
+		$this->group1 = self::getUniqueID('group1_');
+		$this->group2 = self::getUniqueID('group2_');
 		$g1 = \OC::$server->getGroupManager()->createGroup($this->group1);
 		$g2 = \OC::$server->getGroupManager()->createGroup($this->group2);
 		$gAU = \OC::$server->getGroupManager()->createGroup($this->groupAndUser);
@@ -143,7 +143,7 @@ class ShareTest extends \Test\TestCase {
 			$g->delete();
 		}
 
-		$this->logout();
+		self::logout();
 		parent::tearDown();
 	}
 

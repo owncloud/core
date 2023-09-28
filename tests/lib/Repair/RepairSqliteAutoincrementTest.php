@@ -45,7 +45,7 @@ class RepairSqliteAutoincrementTest extends \Test\TestCase {
 		}
 
 		$dbPrefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
-		$this->tableName = $this->getUniqueID($dbPrefix . 'autoinc_test');
+		$this->tableName = self::getUniqueID($dbPrefix . 'autoinc_test');
 		$this->connection->exec('CREATE TABLE ' . $this->tableName . '("someid" INTEGER NOT NULL, "text" VARCHAR(16), PRIMARY KEY("someid"))');
 
 		$this->repair = new \OC\Repair\SqliteAutoincrement($this->connection);

@@ -1353,7 +1353,7 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willThrowException($exception);
 
-		$response = $this->invokePrivate($this->instance, 'propfind', ['']);
+		$response = self::invokePrivate($this->instance, 'propfind', ['']);
 		$this->assertEquals(false, $response);
 	}
 
@@ -1365,6 +1365,6 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willThrowException($exception);
 
-		$this->invokePrivate($this->instance, 'propfind', ['', true]);
+		self::invokePrivate($this->instance, 'propfind', ['', true]);
 	}
 }

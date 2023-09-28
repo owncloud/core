@@ -65,7 +65,7 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$userId = $this->getUniqueID('testcustompropertiesuser');
+		$userId = self::getUniqueID('testcustompropertiesuser');
 
 		$this->user = $this->createMock(IUser::class);
 		$this->user->expects($this->any())

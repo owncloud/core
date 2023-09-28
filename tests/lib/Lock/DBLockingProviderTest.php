@@ -111,7 +111,7 @@ class DBLockingProviderTest extends LockingProvider {
 
 		$dbLockProv = new DBLockingProvider($conn, $logger, $this->timeFactory, 3600);
 		
-		$this->invokePrivate($dbLockProv, 'initLockField', ['/test', 0]);
+		self::invokePrivate($dbLockProv, 'initLockField', ['/test', 0]);
 		$this->assertTrue(true);
 	}
 

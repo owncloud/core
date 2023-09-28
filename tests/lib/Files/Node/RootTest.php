@@ -118,19 +118,19 @@ class RootTest extends TestCase {
 	public function testGetUserFolder() {
 		$this->expectException(\OC\User\NoUserException::class);
 
-		$this->logout();
+		self::logout();
 		$manager = new Manager();
 		/**
 		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
 		$view = new \OC\Files\View();
 
-		$user1 = $this->getUniqueID('user1_');
-		$user2 = $this->getUniqueID('user2_');
+		$user1 = self::getUniqueID('user1_');
+		$user2 = self::getUniqueID('user2_');
 		$this->createUser($user1);
 		$this->createUser($user2);
 
-		$this->loginAsUser($user1);
+		self::loginAsUser($user1);
 		$root = new \OC\Files\Node\Root($manager, $view, null);
 
 		$folder = $root->getUserFolder($user1);
@@ -143,6 +143,6 @@ class RootTest extends TestCase {
 		$folder = $root->getUserFolder(\strtoupper($user2));
 		$this->assertEquals('/' . $user2 . '/files', $folder->getPath());
 
-		$root->getUserFolder($this->getUniqueID('unexist'));
+		$root->getUserFolder(self::getUniqueID('unexist'));
 	}
 }

@@ -89,8 +89,8 @@ class ExpireSharesJobTest extends \Test\TestCase {
 			$this->activityManager
 		);
 
-		$this->user1 = $this->getUniqueID('user1_');
-		$this->user2 = $this->getUniqueID('user2_');
+		$this->user1 = self::getUniqueID('user1_');
+		$this->user2 = self::getUniqueID('user2_');
 
 		$userManager = \OC::$server->getUserManager();
 		$userManager->createUser($this->user1, 'pass');

@@ -96,7 +96,7 @@ class ResetPasswordTest extends TestCase {
 			->method('get')
 			->willReturn($user);
 
-		$this->assertEquals(0, $this->invokePrivate($this->resetPassword, 'execute', [$input, $output]));
+		$this->assertEquals(0, self::invokePrivate($this->resetPassword, 'execute', [$input, $output]));
 	}
 
 	public function testDisplayLink() {
@@ -132,7 +132,7 @@ class ResetPasswordTest extends TestCase {
 			->method('writeln')
 			->with('The password reset link is: http://localhost/foo/bar/123AbcFooBar/foo');
 
-		$this->invokePrivate($this->resetPassword, 'execute', [$input, $output]);
+		self::invokePrivate($this->resetPassword, 'execute', [$input, $output]);
 	}
 
 	public function testEmailLink() {
@@ -175,7 +175,7 @@ class ResetPasswordTest extends TestCase {
 			->method('writeln')
 			->with('The password reset link is: http://localhost/foo/bar/123AbcFooBar/foo');
 
-		$this->assertEquals(0, $this->invokePrivate($this->resetPassword, 'execute', [$input, $output]));
+		$this->assertEquals(0, self::invokePrivate($this->resetPassword, 'execute', [$input, $output]));
 	}
 
 	public function emailLinkFailureDataProvider() {
@@ -238,7 +238,7 @@ class ResetPasswordTest extends TestCase {
 		$output->expects($this->once())
 			->method('writeln')
 			->with('<error>Email address is not set for the user foo</error>');
-		$this->invokePrivate($this->resetPassword, 'execute', [$input, $output]);
+		self::invokePrivate($this->resetPassword, 'execute', [$input, $output]);
 	}
 
 	public function providesStatusOfPasswordFromEnvWithEmailConfirmation() {
@@ -309,7 +309,7 @@ class ResetPasswordTest extends TestCase {
 				->with("<error>Email address is not set for the user foo</error>");
 		}
 
-		$result = $this->invokePrivate($this->resetPassword, 'execute', [$input, $output]);
+		$result = self::invokePrivate($this->resetPassword, 'execute', [$input, $output]);
 		if ($expectedResult === true) {
 			$this->assertEquals(0, $result);
 		} else {

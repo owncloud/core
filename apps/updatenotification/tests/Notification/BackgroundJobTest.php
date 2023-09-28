@@ -93,7 +93,7 @@ class BackgroundJobTest extends TestCase {
 		$job->expects($this->once())
 			->method('checkCoreUpdate');
 
-		$this->invokePrivate($job, 'run', [null]);
+		self::invokePrivate($job, 'run', [null]);
 	}
 
 	public function dataCheckCoreUpdate() {
@@ -166,7 +166,7 @@ class BackgroundJobTest extends TestCase {
 				->willReturn('core', $notification, 'admin-url#updater');
 		}
 
-		$this->invokePrivate($job, 'checkCoreUpdate');
+		self::invokePrivate($job, 'checkCoreUpdate');
 	}
 
 	public function dataCreateNotifications() {
@@ -265,7 +265,7 @@ class BackgroundJobTest extends TestCase {
 				->method('createNotification');
 		}
 
-		$this->invokePrivate($job, 'createNotifications', [$app, $version, $url]);
+		self::invokePrivate($job, 'createNotifications', [$app, $version, $url]);
 	}
 
 	public function dataGetUsersToNotify() {
@@ -305,11 +305,11 @@ class BackgroundJobTest extends TestCase {
 			->method('get')
 			->willReturnMap($groupMap);
 
-		$result = $this->invokePrivate($job, 'getUsersToNotify');
+		$result = self::invokePrivate($job, 'getUsersToNotify');
 		$this->assertEquals($expected, $result);
 
 		// Test caching
-		$result = $this->invokePrivate($job, 'getUsersToNotify');
+		$result = self::invokePrivate($job, 'getUsersToNotify');
 		$this->assertEquals($expected, $result);
 	}
 
@@ -344,7 +344,7 @@ class BackgroundJobTest extends TestCase {
 			->with($notification);
 
 		$job = $this->getJob();
-		$this->invokePrivate($job, 'deleteOutdatedNotifications', [$app, $version]);
+		self::invokePrivate($job, 'deleteOutdatedNotifications', [$app, $version]);
 	}
 
 	/**

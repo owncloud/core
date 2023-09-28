@@ -29,7 +29,7 @@ class SqliteMigrationTest extends \Test\TestCase {
 		}
 
 		$dbPrefix = \OC::$server->getConfig()->getSystemValue("dbtableprefix");
-		$this->tableName = $this->getUniqueID($dbPrefix . '_enum_bit_test');
+		$this->tableName = self::getUniqueID($dbPrefix . '_enum_bit_test');
 		$this->connection->exec("CREATE TABLE $this->tableName(t0 tinyint unsigned, t1 tinyint)");
 	}
 

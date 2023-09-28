@@ -50,6 +50,6 @@ class DefaultTokenCleanupJobTest extends TestCase {
 		$this->tokenProvider->expects($this->once())
 			->method('invalidateOldTokens')
 			->with();
-		$this->invokePrivate($this->job, 'run', [null]);
+		self::invokePrivate($this->job, 'run', [null]);
 	}
 }

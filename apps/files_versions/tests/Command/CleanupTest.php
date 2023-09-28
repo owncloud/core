@@ -79,7 +79,7 @@ class CleanupTest extends TestCase {
 				->method('delete');
 		}
 
-		$this->invokePrivate($this->cleanup, 'deleteVersions', ['testUser']);
+		self::invokePrivate($this->cleanup, 'deleteVersions', ['testUser']);
 	}
 
 	public function dataTestDeleteVersions() {
@@ -117,7 +117,7 @@ class CleanupTest extends TestCase {
 		$outputInterface = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
 			->disableOriginalConstructor()->getMock();
 
-		$this->invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
 	}
 
 	/**
@@ -157,6 +157,6 @@ class CleanupTest extends TestCase {
 				->method('getBackends')
 				->willReturn([$backend]);
 
-		$this->invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
 	}
 }

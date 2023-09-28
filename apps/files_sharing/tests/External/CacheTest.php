@@ -51,7 +51,7 @@ class CacheTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->remoteUser = $this->getUniqueID('remoteuser');
+		$this->remoteUser = self::getUniqueID('remoteuser');
 
 		$this->storage = $this->getMockBuilder('\OCA\Files_Sharing\External\Storage')
 			->disableOriginalConstructor()

@@ -84,8 +84,8 @@ class EncryptAllTest extends TestCase {
 			->willReturnOnConsecutiveCalls(false);
 
 		$instance = new EncryptAll($this->encryptionManager, $this->appManager, $this->config, $this->questionHelper);
-		$this->invokePrivate($instance, 'forceSingleUserAndTrashbin');
-		$this->invokePrivate($instance, 'resetSingleUserAndTrashbin');
+		self::invokePrivate($instance, 'forceSingleUserAndTrashbin');
+		self::invokePrivate($instance, 'resetSingleUserAndTrashbin');
 	}
 
 	/**
@@ -115,7 +115,7 @@ class EncryptAllTest extends TestCase {
 			$this->encryptionModule->expects($this->never())->method('encryptAll');
 		}
 
-		$this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
 	public function dataTestExecute() {
@@ -133,7 +133,7 @@ class EncryptAllTest extends TestCase {
 		$this->encryptionManager->expects($this->once())->method('isEnabled')->willReturn(false);
 		$this->encryptionManager->expects($this->never())->method('getEncryptionModule');
 		$this->encryptionModule->expects($this->never())->method('encryptAll');
-		$this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
 	/**
@@ -149,6 +149,6 @@ class EncryptAllTest extends TestCase {
 				['encryption', 'useMasterKey', '', ''],
 				['encryption', 'userSpecificKey', '', '']
 			]);
-		$this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 }

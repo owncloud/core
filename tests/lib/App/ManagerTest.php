@@ -659,6 +659,6 @@ class ManagerTest extends TestCase {
 		$user = $this->createMock(IUser::class);
 		$user->method('getExtendedAttributes')
 			->willReturn(['whitelistedAppsForGuests' => ['foo', 'bar']]);
-		$this->assertFalse($this->invokePrivate($this->manager, 'checkAppForUser', [true, 'foobar', $user]));
+		$this->assertFalse(self::invokePrivate($this->manager, 'checkAppForUser', [true, 'foobar', $user]));
 	}
 }

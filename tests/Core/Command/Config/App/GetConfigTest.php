@@ -153,7 +153,7 @@ class GetConfigTest extends TestCase {
 				});
 		}
 
-		$this->assertSame($expectedReturn, $this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertSame($expectedReturn, self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]));
 
 		if ($expectedMessage !== null) {
 			global $output;
