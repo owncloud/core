@@ -24,6 +24,7 @@ use OCP\IRequest;
 use OCP\IAppConfig;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
 /**
@@ -32,6 +33,8 @@ use Test\TestCase;
  * @package Tests\Settings\Controller
  */
 class AppConfigControllerTest extends TestCase {
+	/** @var (IRequest & MockObject) */
+	public $request;
 	/** @var IAppConfig */
 	private $appConfig;
 	/** @var AppConfigController */

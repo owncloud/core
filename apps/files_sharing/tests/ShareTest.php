@@ -32,9 +32,8 @@ namespace OCA\Files_Sharing\Tests;
  * @group DB
  */
 class ShareTest extends TestCase {
+	public string $subsubfolder;
 	public const TEST_FOLDER_NAME = '/folder_share_api_test';
-
-	private static $tempStorage;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -58,8 +57,6 @@ class ShareTest extends TestCase {
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 		$this->view->unlink($this->filename);
 		$this->view->deleteAll($this->folder);
-
-		self::$tempStorage = null;
 
 		// clear database table
 		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*share`');

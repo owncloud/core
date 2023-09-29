@@ -40,6 +40,7 @@ use OC\SubAdmin;
 use OC\Mail\Message;
 use OCP\IUser;
 use OC\Group\Manager;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Test\TestCase;
 use Test\Traits\UserTrait;
@@ -53,6 +54,8 @@ use OC\Group\Group;
  * @package Tests\Settings\Controller
  */
 class UsersControllerTest extends TestCase {
+	/** @var (IUser & MockObject) */
+	public $existingUser;
 	use UserTrait;
 
 	/** @var IAppContainer */

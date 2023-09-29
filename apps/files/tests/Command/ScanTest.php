@@ -42,6 +42,7 @@ use OCP\ILogger;
  * @package OCA\Files\Tests\Command
  */
 class ScanTest extends TestCase {
+	public $dataDir;
 	use UserTrait;
 
 	/**

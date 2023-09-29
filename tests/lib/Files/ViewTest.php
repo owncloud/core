@@ -13,6 +13,7 @@ use OC\Files\Cache\Watcher;
 use OC\Files\Filesystem;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\Common;
+use OC\Files\Storage\Storage;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OCP\Files\FileInfo;
@@ -58,8 +59,9 @@ class TemporaryNoLocal extends Temporary {
  * @package Test\Files
  */
 class ViewTest extends TestCase {
+	public $shallThrow;
 	/**
-	 * @var \OC\Files\Storage\Storage[] $storages
+	 * @var Storage[] $storages
 	 */
 	private $storages = [];
 
@@ -78,7 +80,7 @@ class ViewTest extends TestCase {
 	 */
 	private $groupObject;
 
-	/** @var \OC\Files\Storage\Storage */
+	/** @var Storage */
 	private $tempStorage;
 
 	/** @var \OC\AllConfig */
@@ -694,11 +696,11 @@ class ViewTest extends TestCase {
 	/**
 	 * @param bool $scan
 	 * @param string $class
-	 * @return \OC\Files\Storage\Storage
+	 * @return Storage
 	 */
 	private function getTestStorage($scan = true, $class = Temporary::class) {
 		/**
-		 * @var \OC\Files\Storage\Storage $storage
+		 * @var Storage $storage
 		 */
 		$storage = new $class([]);
 		$textData = "dummy file data\n";

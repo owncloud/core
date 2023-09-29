@@ -60,6 +60,11 @@ class OwncloudPage extends Page {
 	];
 
 	/**
+	 * @var string
+	 */
+	protected $path = null;
+
+	/**
 	 * used to store the unchanged path string when $path gets changed
 	 *
 	 * @var string

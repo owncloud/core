@@ -32,6 +32,7 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
 use Test\TestCase;
 
 class AuthSettingsControllerTest extends TestCase {
+	public $user;
 	/** @var AuthSettingsController */
 	private $controller;
 	private $request;

@@ -801,7 +801,7 @@ class UsersPage extends OwncloudPage {
 		if ($editDisplayNameBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->editDisplayNameBtn " .
+				" xpath $this->editUserDisplayNameBtnXpath " .
 				"could not find edit button for user $username"
 			);
 		}
@@ -812,7 +812,7 @@ class UsersPage extends OwncloudPage {
 		if ($editDisplayNameInput === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->editDisplayNameInput " .
+				" xpath $this->editUserDisplayNameFieldXpath " .
 				"could not find display name field for user $username"
 			);
 		}

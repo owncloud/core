@@ -26,6 +26,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
+use OCP\IEventSource;
+use OCP\IL10N;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 \set_time_limit(0);
@@ -40,6 +43,8 @@ $eventSource = \OC::$server->createEventSource();
 $eventSource->send('success', (string)$l->t('Preparing update'));
 
 class FeedBackHandler {
+	public IEventSource $eventSource;
+	public IL10N $l10n;
 	/** @var integer */
 	private $progressStateMax = 100;
 	/** @var integer */
@@ -47,7 +52,7 @@ class FeedBackHandler {
 	/** @var string */
 	private $currentStep;
 
-	public function __construct(\OCP\IEventSource $eventSource, \OCP\IL10N $l10n) {
+	public function __construct(IEventSource $eventSource, IL10N $l10n) {
 		$this->eventSource = $eventSource;
 		$this->l10n = $l10n;
 	}

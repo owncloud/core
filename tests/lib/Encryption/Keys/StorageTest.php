@@ -39,6 +39,7 @@ use Test\Traits\UserTrait;
  * @package Test\Encryption\Keys
  */
 class StorageTest extends TestCase {
+	public $mkdirStack;
 	use UserTrait;
 
 	/** @var Storage */
