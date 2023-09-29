@@ -28,6 +28,7 @@
 namespace OC\DB;
 
 use \Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use \Doctrine\DBAL\Schema\Index;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
@@ -191,26 +192,18 @@ class Migrator {
 
 		$schemaDiff = $this->getDiff($targetSchema, $connection);
 
-		$connection->beginTransaction();
+		if (!$connection->getDatabasePlatform() instanceof MySqlPlatform) {
+			$connection->beginTransaction();
+		}
 		$sqls = $schemaDiff->toSql($connection->getDatabasePlatform());
 		$step = 0;
 		foreach ($sqls as $sql) {
 			$this->emit($sql, $step++, \count($sqls));
-			$connection->query($sql);
+			$connection->executeQuery($sql);
 		}
-		$connection->commit();
-	}
-
-	/**
-	 * @param string $sourceName
-	 * @param string $targetName
-	 */
-	protected function copyTable($sourceName, $targetName) {
-		$quotedSource = $this->connection->quoteIdentifier($sourceName);
-		$quotedTarget = $this->connection->quoteIdentifier($targetName);
-
-		$this->connection->exec('CREATE TABLE ' . $quotedTarget . ' (LIKE ' . $quotedSource . ')');
-		$this->connection->exec('INSERT INTO ' . $quotedTarget . ' SELECT * FROM ' . $quotedSource);
+		if (!$connection->getDatabasePlatform() instanceof MySQLPlatform) {
+			$connection->commit();
+		}
 	}
 
 	/**
