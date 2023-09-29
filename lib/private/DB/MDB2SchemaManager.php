@@ -156,11 +156,15 @@ class MDB2SchemaManager {
 	 * @return bool
 	 */
 	private function executeSchemaChange($schema) {
-		$this->conn->beginTransaction();
-		foreach ($schema->toSql($this->conn->getDatabasePlatform()) as $sql) {
-			$this->conn->query($sql);
+		if (!$this->conn->getDatabasePlatform() instanceof MySqlPlatform) {
+			$this->conn->beginTransaction();
 		}
-		$this->conn->commit();
+		foreach ($schema->toSql($this->conn->getDatabasePlatform()) as $sql) {
+			$this->conn->executeQuery($sql);
+		}
+		if (!$this->conn->getDatabasePlatform() instanceof MySQLPlatform) {
+			$this->conn->commit();
+		}
 
 		if ($this->conn->getDatabasePlatform() instanceof SqlitePlatform) {
 			$this->conn->close();

@@ -57,7 +57,7 @@ class Memory extends Session {
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function get($key) {
+	public function get(string $key): mixed {
 		if (!$this->exists($key)) {
 			return null;
 		}
