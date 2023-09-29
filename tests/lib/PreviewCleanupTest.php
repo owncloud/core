@@ -45,7 +45,7 @@ class PreviewCleanupTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		# disable trashbin
+		# edit comment to test CI
 		$this->trashWasEnabled = \OC::$server->getAppManager()->isEnabledForUser('files_trashbin');
 		if ($this->trashWasEnabled) {
 			\OC::$server->getAppManager()->disableApp('files_trashbin');
