@@ -93,11 +93,8 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 
 	/**
 	 * Get a value from the session
-	 *
-	 * @param string $key
-	 * @return string|null Either the value or null
 	 */
-	public function get($key): ?string {
+	public function get(string $key): mixed {
 		return $this->sessionValues[$key] ?? null;
 	}
 
