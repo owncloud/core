@@ -55,7 +55,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 
 		$this->globalStoragesService = new GlobalStoragesService($this->backendService, $this->dbConfig, $this->mountCache, $this->crypto);
 
-		$this->userId = $this->getUniqueID('user_');
+		$this->userId = self::getUniqueID('user_');
 		$this->user = $this->createUser($this->userId, $this->userId);
 
 		/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject $userSession */

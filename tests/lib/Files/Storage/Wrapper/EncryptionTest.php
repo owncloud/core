@@ -262,7 +262,7 @@ class EncryptionTest extends Storage {
 			->getMock();
 
 		if ($unencryptedSizeSet) {
-			$this->invokePrivate($this->instance, 'unencryptedSize', [[$path => $storedUnencryptedSize]]);
+			self::invokePrivate($this->instance, 'unencryptedSize', [[$path => $storedUnencryptedSize]]);
 		}
 
 		$fileEntry = $this->getMockBuilder(Cache::class)
@@ -383,7 +383,7 @@ class EncryptionTest extends Storage {
 
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($this->instance, 'verifyUnencryptedSize', ['/test.txt', $unencryptedSize])
+			self::invokePrivate($this->instance, 'verifyUnencryptedSize', ['/test.txt', $unencryptedSize])
 		);
 	}
 
@@ -707,7 +707,7 @@ class EncryptionTest extends Storage {
 			->method('file_exists')
 			->with($strippedPath)
 			->willReturn($strippedPathExists);
-		$this->invokePrivate($instance, 'getHeader', [$path]);
+		self::invokePrivate($instance, 'getHeader', [$path]);
 	}
 
 	public function dataTestGetHeader() {
@@ -772,7 +772,7 @@ class EncryptionTest extends Storage {
 			->method('getCache')
 			->willReturn($cache);
 
-		$result = $this->invokePrivate($instance, 'getHeader', ['test.txt']);
+		$result = self::invokePrivate($instance, 'getHeader', ['test.txt']);
 		$this->assertSameSize($expected, $result);
 		foreach ($result as $key => $value) {
 			$this->assertArrayHasKey($key, $expected);
@@ -811,7 +811,7 @@ class EncryptionTest extends Storage {
 			$this->arrayCache
 		);
 
-		$result = $this->invokePrivate($instance, 'parseRawHeader', [$rawHeader]);
+		$result = self::invokePrivate($instance, 'parseRawHeader', [$rawHeader]);
 		$this->assertSameSize($expected, $result);
 		foreach ($result as $key => $value) {
 			$this->assertArrayHasKey($key, $expected);
@@ -880,7 +880,7 @@ class EncryptionTest extends Storage {
 			->method('put')
 			->with($sourceInternalPath, $expectedCachePut);
 
-		$this->invokePrivate($this->instance, 'copyBetweenStorage', [$storage2, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename]);
+		self::invokePrivate($this->instance, 'copyBetweenStorage', [$storage2, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename]);
 
 		$this->assertFalse(false);
 	}
@@ -941,7 +941,7 @@ class EncryptionTest extends Storage {
 			->method('put')
 			->with($sourceInternalPath, $expectedCachePut);
 
-		$this->invokePrivate($this->instance, 'copyBetweenStorage', [$storage2, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename]);
+		self::invokePrivate($this->instance, 'copyBetweenStorage', [$storage2, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename]);
 
 		$this->assertFalse(false);
 	}
@@ -1016,7 +1016,7 @@ class EncryptionTest extends Storage {
 			$instance->expects($this->never())->method('updateUnencryptedSize');
 		}
 
-		$result = $this->invokePrivate(
+		$result = self::invokePrivate(
 			$instance,
 			'copyBetweenStorage',
 			[
@@ -1053,7 +1053,7 @@ class EncryptionTest extends Storage {
 	public function testIsVersion($path, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($this->instance, 'isVersion', [$path])
+			self::invokePrivate($this->instance, 'isVersion', [$path])
 		);
 	}
 

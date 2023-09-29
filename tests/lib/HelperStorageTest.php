@@ -29,7 +29,7 @@ class HelperStorageTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->user = $this->getUniqueID('user_');
+		$this->user = self::getUniqueID('user_');
 		$this->userObj = \OC::$server->getUserManager()->createUser($this->user, $this->user);
 
 		$this->storage = Filesystem::getStorage('/');

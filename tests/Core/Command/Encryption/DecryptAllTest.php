@@ -99,16 +99,16 @@ class DecryptAllTest extends TestCase {
 			$this->decryptAll,
 			$this->questionHelper
 		);
-		$this->invokePrivate($instance, 'forceSingleUserAndTrashbin');
+		self::invokePrivate($instance, 'forceSingleUserAndTrashbin');
 
 		$this->assertTrue(
-			$this->invokePrivate($instance, 'wasTrashbinEnabled')
+			self::invokePrivate($instance, 'wasTrashbinEnabled')
 		);
 
 		$this->assertFalse(
-			$this->invokePrivate($instance, 'wasSingleUserModeEnabled')
+			self::invokePrivate($instance, 'wasSingleUserModeEnabled')
 		);
-		$this->invokePrivate($instance, 'resetSingleUserAndTrashbin');
+		self::invokePrivate($instance, 'resetSingleUserAndTrashbin');
 	}
 
 	/**
@@ -164,7 +164,7 @@ class DecryptAllTest extends TestCase {
 			$this->questionHelper->expects($this->never())->method('ask');
 		}
 
-		$this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
 	public function dataTestExecute() {
@@ -222,7 +222,7 @@ class DecryptAllTest extends TestCase {
 				throw new \Exception();
 			});
 
-		$this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
 	public function providesConfirmVal() {
@@ -258,7 +258,7 @@ class DecryptAllTest extends TestCase {
 
 		$this->assertEquals(
 			$expectedExitCode,
-			$this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput])
+			self::invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput])
 		);
 	}
 }

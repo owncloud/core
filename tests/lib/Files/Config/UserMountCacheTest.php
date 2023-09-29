@@ -139,7 +139,7 @@ class UserMountCacheTest extends TestCase {
 	}
 
 	private function clearCache() {
-		$this->invokePrivate($this->cache, 'mountsForUsers', [[]]);
+		self::invokePrivate($this->cache, 'mountsForUsers', [[]]);
 	}
 
 	public function testNewMounts() {
@@ -465,7 +465,7 @@ class UserMountCacheTest extends TestCase {
 		$logger = $this->createMock(ILogger::class);
 
 		$cache = new UserMountCache($conn, $userManager, $logger);
-		$cacheInfo = $this->invokePrivate($cache, 'getCacheInfoFromFileId', [55]);
+		$cacheInfo = self::invokePrivate($cache, 'getCacheInfoFromFileId', [55]);
 		$this->assertEquals([55, ''], $cacheInfo);
 	}
 
@@ -489,7 +489,7 @@ class UserMountCacheTest extends TestCase {
 
 		$cache = new UserMountCache($conn, $userManager, $logger);
 		
-		$this->invokePrivate($cache, 'addToCache', [$mountInfo]);
+		self::invokePrivate($cache, 'addToCache', [$mountInfo]);
 		$this->assertTrue(true);
 	}
 }

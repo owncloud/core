@@ -312,7 +312,7 @@ class UtilTest extends \Test\TestCase {
 		Dummy_OC_Util::$appManager = $appManager;
 
 		// need to set a user id to make sure enabled apps are read from cache
-		\OC_User::setUserId($this->getUniqueID());
+		\OC_User::setUserId(self::getUniqueID());
 		\OC::$server->getConfig()->setSystemValue('defaultapp', $defaultAppConfig);
 		$this->assertEquals('http://localhost/' . $expectedPath, Dummy_OC_Util::getDefaultPageUrl());
 
@@ -372,7 +372,7 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function testGetDefaultPageUrlWithUserConfig() {
-		$uid = $this->getUniqueID();
+		$uid = self::getUniqueID();
 		$userDefaultApp = 'user_default_app';
 		\OC_User::setUserId($uid);
 		\OC::$server->getConfig()->setUserValue($uid, 'core', 'defaultapp', $userDefaultApp);

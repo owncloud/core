@@ -316,7 +316,7 @@ class ListConfigsTest extends TestCase {
 				return $output;
 			});
 
-		$this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 
 		$this->assertEquals($expected, \trim($output, "\n"));
 	}

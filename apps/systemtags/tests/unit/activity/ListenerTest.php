@@ -212,7 +212,7 @@ class ActivityListenerTest extends \Test\TestCase {
 	 * @dataProvider prepareTagAsParameterProvider
 	 */
 	public function testPrepareTagAsParameter(SystemTag $tag, $expectedResult) {
-		$result = $this->invokePrivate($this->listener, 'prepareTagAsParameter', [$tag]);
+		$result = self::invokePrivate($this->listener, 'prepareTagAsParameter', [$tag]);
 		$this->assertEquals($expectedResult, $result);
 	}
 }

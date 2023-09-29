@@ -171,14 +171,14 @@ class CleanTagsTest extends \Test\TestCase {
 		$qb = $this->connection->getQueryBuilder();
 
 		// We create a new file entry and delete it after the test again
-		$fileName = $this->getUniqueID('TestRepairCleanTags', 12);
+		$fileName = self::getUniqueID('TestRepairCleanTags', 12);
 		$qb->insert('filecache')
 			->values([
 				'path'			=> $qb->createNamedParameter($fileName),
 				'path_hash'		=> $qb->createNamedParameter(\md5($fileName)),
 			])
 			->execute();
-		$fileName = $this->getUniqueID('TestRepairCleanTags', 12);
+		$fileName = self::getUniqueID('TestRepairCleanTags', 12);
 		$qb->insert('filecache')
 			->values([
 				'path'			=> $qb->createNamedParameter($fileName),

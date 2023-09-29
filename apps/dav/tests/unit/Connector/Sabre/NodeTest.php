@@ -145,7 +145,7 @@ class NodeTest extends \Test\TestCase {
 		$view = $this->createMock('\OC\Files\View');
 
 		$node = new  \OCA\DAV\Connector\Sabre\File($view, $info);
-		$this->invokePrivate($node, 'shareManager', [$shareManager]);
+		self::invokePrivate($node, 'shareManager', [$shareManager]);
 		$this->assertEquals($expected, $node->getSharePermissions($user));
 	}
 }

@@ -635,6 +635,6 @@ class NotificationTest extends TestCase {
 			->method('getObjectId')
 			->willReturn($objectId);
 
-		$this->assertEquals($expected, $this->invokePrivate($notification, 'isValidCommon'));
+		$this->assertEquals($expected, self::invokePrivate($notification, 'isValidCommon'));
 	}
 }

@@ -75,7 +75,7 @@ class SignAppTest extends TestCase {
 				['This command requires the --path, --privateKey and --certificate.']
 			);
 
-		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
 
 	public function testExecuteWithMissingPrivateKey() {
@@ -102,7 +102,7 @@ class SignAppTest extends TestCase {
 				['This command requires the --path, --privateKey and --certificate.']
 			);
 
-		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
 
 	public function testExecuteWithMissingCertificate() {
@@ -129,7 +129,7 @@ class SignAppTest extends TestCase {
 				['This command requires the --path, --privateKey and --certificate.']
 			);
 
-		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
 
 	public function testExecuteWithNotExistingPrivateKey() {
@@ -166,7 +166,7 @@ class SignAppTest extends TestCase {
 			->method('writeln')
 			->with('Private key "privateKey" does not exist.');
 
-		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
 
 	public function testExecuteWithNotExistingCertificate() {
@@ -203,7 +203,7 @@ class SignAppTest extends TestCase {
 			->method('writeln')
 			->with('Certificate "certificate" does not exist.');
 
-		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
 
 	public function testExecute() {
@@ -244,6 +244,6 @@ class SignAppTest extends TestCase {
 			->method('writeln')
 			->with('Successfully signed "AppId"');
 
-		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
+		self::invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
 }

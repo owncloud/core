@@ -49,6 +49,6 @@ class Version20170202213905Test extends TestCase {
 		$queryBuilder->expects($this->once())->method('where')->with("'nobody'");
 
 		$step = $this->createMock(Version20170202213905::class);
-		$this->invokePrivate($step, 'getRepairQuery', [$queryBuilder, 42, 'nobody', 'muchacha']);
+		self::invokePrivate($step, 'getRepairQuery', [$queryBuilder, 42, 'nobody', 'muchacha']);
 	}
 }

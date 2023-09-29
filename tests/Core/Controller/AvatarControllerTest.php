@@ -77,7 +77,7 @@ class AvatarControllerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->createUser('userid', 'pass');
-		$this->loginAsUser('userid');
+		self::loginAsUser('userid');
 
 		$this->avatarManager = $this->createMock(IAvatarManager::class);
 		$this->cache = $this->getMockBuilder(\OC\Cache\File::class)->disableOriginalConstructor()->getMock();
@@ -126,7 +126,7 @@ class AvatarControllerTest extends TestCase {
 	}
 
 	public function tearDown(): void {
-		$this->logout();
+		self::logout();
 		parent::tearDown();
 	}
 

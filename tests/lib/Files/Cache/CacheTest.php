@@ -331,9 +331,9 @@ class CacheTest extends TestCase {
 	}
 
 	public function testSearchByTag() {
-		$userId = $this->getUniqueId('user');
+		$userId = self::getUniqueID('user');
 		\OC::$server->getUserManager()->createUser($userId, $userId);
-		$this->loginAsUser($userId);
+		self::loginAsUser($userId);
 
 		$file1 = 'folder';
 		$file2 = 'folder/foobar';
@@ -392,7 +392,7 @@ class CacheTest extends TestCase {
 		$tagManager->delete('tag1');
 		$tagManager->delete('tag2');
 
-		$this->logout();
+		self::logout();
 		$user = \OC::$server->getUserManager()->get($userId);
 		if ($user !== null) {
 			$user->delete();

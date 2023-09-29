@@ -190,7 +190,7 @@ class BirthdayServiceTest extends TestCase {
 					'uri' => 'principals/users/user03',
 				],
 			]);
-		$users = $this->invokePrivate($this->service, 'getAllAffectedPrincipals', [6666]);
+		$users = self::invokePrivate($this->service, 'getAllAffectedPrincipals', [6666]);
 		$this->assertEquals([
 			'principals/users/user01',
 			'principals/users/user02',

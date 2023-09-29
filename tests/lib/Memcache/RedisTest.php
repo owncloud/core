@@ -27,6 +27,6 @@ class RedisTest extends Cache {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->instance = new \OC\Memcache\Redis($this->getUniqueID());
+		$this->instance = new \OC\Memcache\Redis(self::getUniqueID());
 	}
 }

@@ -54,9 +54,9 @@ abstract class Provider extends \Test\TestCase {
 		$userManager = \OC::$server->getUserManager();
 		$userManager->clearBackends();
 
-		$userId = $this->getUniqueID();
+		$userId = self::getUniqueID();
 		$this->createUser($userId, $userId);
-		$this->loginAsUser($userId);
+		self::loginAsUser($userId);
 
 		$this->rootView = new \OC\Files\View('');
 
@@ -64,7 +64,7 @@ abstract class Provider extends \Test\TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->logout();
+		self::logout();
 
 		parent::tearDown();
 	}

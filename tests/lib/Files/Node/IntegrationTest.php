@@ -47,8 +47,8 @@ class IntegrationTest extends TestCase {
 
 		\OC_Hook::clear('OC_Filesystem');
 
-		$user = $this->createUser($this->getUniqueID('user'));
-		$this->loginAsUser($user->getUID());
+		$user = $this->createUser(self::getUniqueID('user'));
+		self::loginAsUser($user->getUID());
 
 		$this->view = new View();
 		$this->root = new Root($manager, $this->view, $user);
@@ -66,7 +66,7 @@ class IntegrationTest extends TestCase {
 			$storage->getCache()->clear();
 		}
 
-		$this->logout();
+		self::logout();
 	}
 
 	public function testBasicFile() {

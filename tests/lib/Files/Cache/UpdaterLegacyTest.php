@@ -53,11 +53,11 @@ class UpdaterLegacyTest extends \Test\TestCase {
 		$this->cache = $this->storage->getCache();
 
 		if (!self::$user) {
-			self::$user = $this->getUniqueID();
+			self::$user = self::getUniqueID();
 		}
 
 		\OC::$server->getUserManager()->createUser(self::$user, 'password');
-		$this->loginAsUser(self::$user);
+		self::loginAsUser(self::$user);
 
 		Filesystem::init(self::$user, '/' . self::$user . '/files');
 
@@ -79,7 +79,7 @@ class UpdaterLegacyTest extends \Test\TestCase {
 		}
 		$this->assertTrue($result);
 
-		$this->logout();
+		self::logout();
 		parent::tearDown();
 	}
 

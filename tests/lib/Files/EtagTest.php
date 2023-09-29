@@ -44,15 +44,15 @@ class EtagTest extends \Test\TestCase {
 	protected function tearDown(): void {
 		\OC::$server->getConfig()->setSystemValue('datadirectory', $this->datadir);
 
-		$this->logout();
+		self::logout();
 		parent::tearDown();
 	}
 
 	public function testNewUser() {
-		$user1 = $this->getUniqueID('user_');
+		$user1 = self::getUniqueID('user_');
 		$this->createUser($user1, $user1);
 
-		$this->loginAsUser($user1);
+		self::loginAsUser($user1);
 		Filesystem::mkdir('/folder');
 		Filesystem::mkdir('/folder/subfolder');
 		Filesystem::file_put_contents('/foo.txt', 'asd');

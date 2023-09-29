@@ -163,7 +163,7 @@ class SyncServiceTest extends TestCase {
 
 		// Run the sync
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$this->invokePrivate($s, 'syncHome', [$a, $backend]);
+		self::invokePrivate($s, 'syncHome', [$a, $backend]);
 	}
 
 	/**

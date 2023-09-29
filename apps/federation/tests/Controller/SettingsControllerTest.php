@@ -120,7 +120,7 @@ class SettingsControllerTest extends TestCase {
 			->willReturn(true);
 
 		$this->assertTrue(
-			$this->invokePrivate($this->controller, 'checkServer', ['url'])
+			self::invokePrivate($this->controller, 'checkServer', ['url'])
 		);
 	}
 
@@ -145,7 +145,7 @@ class SettingsControllerTest extends TestCase {
 			->willReturn($isOwnCloud);
 
 		$this->assertTrue(
-			$this->invokePrivate($this->controller, 'checkServer', ['url'])
+			self::invokePrivate($this->controller, 'checkServer', ['url'])
 		);
 	}
 

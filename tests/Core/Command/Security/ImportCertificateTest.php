@@ -44,7 +44,7 @@ class ImportCertificateTest extends TestCase {
 		parent::setUp();
 
 		$this->certificateManager = new CertificateManager(
-			$this->getUniqueID('', 20),
+			self::getUniqueID('', 20),
 			new View(),
 			$this->createMock('OCP\IConfig')
 		);

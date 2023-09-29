@@ -50,7 +50,7 @@ class SubAdminTest extends TestCase {
 
 		// Create 3 users and 3 groups
 		for ($i = 0; $i < 3; $i++) {
-			$this->users[] = $this->userManager->createUser($this->getUniqueID('user'), 'user');
+			$this->users[] = $this->userManager->createUser(self::getUniqueID('user'), 'user');
 			$this->groups[] = $this->groupManager->createGroup('group'.$i);
 		}
 

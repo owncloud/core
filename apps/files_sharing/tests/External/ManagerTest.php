@@ -65,7 +65,7 @@ class ManagerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->uid = $this->getUniqueID('user');
+		$this->uid = self::getUniqueID('user');
 		$this->createUser($this->uid);
 		$this->user = \OC::$server->getUserManager()->get($this->uid);
 		$this->mountManager = new \OC\Files\Mount\Manager();

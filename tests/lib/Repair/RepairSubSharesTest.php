@@ -126,7 +126,7 @@ class RepairSubSharesTest extends TestCase {
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->run($outputMock);
 
-		$qb = $this->invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
+		$qb = self::invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
 		$results = $qb->execute()->fetchAll();
 		$this->assertCount(0, $results);
 
@@ -211,7 +211,7 @@ class RepairSubSharesTest extends TestCase {
 			}
 		}
 
-		$qb = $this->invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
+		$qb = self::invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
 		$idsNotPresent = $qb->execute()->fetchAll();
 
 		$outputMock = $this->createMock(IOutput::class);
@@ -282,7 +282,7 @@ class RepairSubSharesTest extends TestCase {
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->run($outputMock);
 
-		$qb = $this->invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
+		$qb = self::invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
 
 		$results = $qb->execute()->fetchAll();
 		$this->assertCount(0, $results);

@@ -42,7 +42,7 @@ class UpdaterTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->loginAsUser();
+		self::loginAsUser();
 
 		$this->storage = new Temporary([]);
 		$this->updater = $this->storage->getUpdater();
@@ -52,7 +52,7 @@ class UpdaterTest extends \Test\TestCase {
 	protected function tearDown(): void {
 		Filesystem::clearMounts();
 
-		$this->logout();
+		self::logout();
 		parent::tearDown();
 	}
 

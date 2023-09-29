@@ -54,7 +54,7 @@ class SchemaDiffTest extends TestCase {
 		$this->config = \OC::$server->getConfig();
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->manager = new MDB2SchemaManager($this->connection);
-		$this->testPrefix= \strtolower($this->getUniqueID($this->config->getSystemValue('dbtableprefix', 'oc_'), 3));
+		$this->testPrefix= \strtolower(self::getUniqueID($this->config->getSystemValue('dbtableprefix', 'oc_'), 3));
 	}
 
 	protected function tearDown(): void {
@@ -81,7 +81,7 @@ class SchemaDiffTest extends TestCase {
 		// get the diff
 		/** @var SchemaDiff $diff */
 		$migrator = $this->manager->getMigrator();
-		$diff = $this->invokePrivate($migrator, 'getDiff', [$endSchema, $this->connection]);
+		$diff = self::invokePrivate($migrator, 'getDiff', [$endSchema, $this->connection]);
 
 		// no sql statement is expected
 		$sqls = $diff->toSql($this->connection->getDatabasePlatform());

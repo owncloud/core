@@ -56,7 +56,7 @@ class DeleteOrphanedFilesTest extends TestCase {
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 
-		$this->user1 = $this->getUniqueID('user1_');
+		$this->user1 = self::getUniqueID('user1_');
 
 		$userManager = \OC::$server->getUserManager();
 		$userManager->createUser($this->user1, 'pass');

@@ -64,8 +64,8 @@ class ChunkLocationProviderTest extends TestCase {
 		$mount = $mounts[0];
 
 		$this->assertInstanceOf(MountPoint::class, $mount);
-		$this->assertEquals(Local::class, $this->invokePrivate($mount, 'class'));
-		$this->assertEquals('/user/uploads/', $this->invokePrivate($mount, 'mountPoint'));
+		$this->assertEquals(Local::class, self::invokePrivate($mount, 'class'));
+		$this->assertEquals('/user/uploads/', self::invokePrivate($mount, 'mountPoint'));
 	}
 
 	public function testProviderIfConfigured() {
@@ -84,7 +84,7 @@ class ChunkLocationProviderTest extends TestCase {
 		$this->assertCount(1, $mounts);
 		$mount = $mounts[0];
 		$this->assertInstanceOf(MountPoint::class, $mount);
-		$this->assertEquals(Local::class, $this->invokePrivate($mount, 'class'));
-		$this->assertEquals('/user/uploads/', $this->invokePrivate($mount, 'mountPoint'));
+		$this->assertEquals(Local::class, self::invokePrivate($mount, 'class'));
+		$this->assertEquals('/user/uploads/', self::invokePrivate($mount, 'mountPoint'));
 	}
 }

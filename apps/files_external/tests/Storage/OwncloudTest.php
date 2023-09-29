@@ -40,7 +40,7 @@ class OwncloudTest extends \Test\Files\Storage\Storage {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$id = $this->getUniqueID();
+		$id = self::getUniqueID();
 		$this->config = include('files_external/tests/config.owncloud.php');
 		if (! \is_array($this->config) or ! isset($this->config['owncloud']) or ! $this->config['owncloud']['run']) {
 			$this->markTestSkipped('ownCloud backend not configured');

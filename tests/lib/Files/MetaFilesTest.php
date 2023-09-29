@@ -54,9 +54,9 @@ class MetaFilesTest extends TestCase {
 		// workaround: re-setup versions hooks
 		Hooks::connectHooks();
 
-		$this->userId = $this->getUniqueID('meta-data-user-');
+		$this->userId = self::getUniqueID('meta-data-user-');
 		$this->createUser($this->userId);
-		$this->loginAsUser($this->userId);
+		self::loginAsUser($this->userId);
 	}
 
 	protected function tearDown(): void {
@@ -66,7 +66,7 @@ class MetaFilesTest extends TestCase {
 
 	private function createFile() {
 		// create file
-		$file = $this->getUniqueID('file') . '.txt';
+		$file = self::getUniqueID('file') . '.txt';
 		$fileName = "{$this->userId}/files/$file";
 		$view = new View();
 		$view->file_put_contents($fileName, '1234');
@@ -83,7 +83,7 @@ class MetaFilesTest extends TestCase {
 		$userId = $this->userId;
 
 		// create file
-		$file = $this->getUniqueID('file') . '.txt';
+		$file = self::getUniqueID('file') . '.txt';
 		$fileName = "{$this->userId}/files/$file";
 		$view = new View();
 		$view->file_put_contents($fileName, '1234');

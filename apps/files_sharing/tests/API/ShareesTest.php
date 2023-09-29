@@ -652,11 +652,11 @@ class ShareesTest extends TestCase {
 			$this->sharingBlacklist,
 			$this->userSearch
 		);
-		$this->invokePrivate($this->sharees, 'limit', [2]);
-		$this->invokePrivate($this->sharees, 'offset', [0]);
-		$this->invokePrivate($this->sharees, 'shareWithGroupOnly', [$shareWithGroupOnly]);
-		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
-		$this->invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [$shareeEnumerationGroupMembers]);
+		self::invokePrivate($this->sharees, 'limit', [2]);
+		self::invokePrivate($this->sharees, 'offset', [0]);
+		self::invokePrivate($this->sharees, 'shareWithGroupOnly', [$shareWithGroupOnly]);
+		self::invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
+		self::invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [$shareeEnumerationGroupMembers]);
 
 		$user = $this->getUserMock('admin', 'Administrator');
 		$this->session->expects($this->any())
@@ -667,7 +667,7 @@ class ShareesTest extends TestCase {
 			if (!$shareWithGroupOnly && !$shareeEnumerationGroupMembers) {
 				$this->userManager->expects($this->once())
 					->method('find')
-					->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
+					->with($searchTerm, self::invokePrivate($this->sharees, 'limit'), self::invokePrivate($this->sharees, 'offset'))
 					->willReturn($userResponse);
 			} else {
 				if ($singleUser !== false && !$shareeEnumerationGroupMembers) {
@@ -690,7 +690,7 @@ class ShareesTest extends TestCase {
 
 				$this->groupManager->expects($this->exactly(\sizeof($groupResponse)))
 					->method('findUsersInGroup')
-					->with($this->anything(), $searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
+					->with($this->anything(), $searchTerm, self::invokePrivate($this->sharees, 'limit'), self::invokePrivate($this->sharees, 'offset'))
 					->willReturnMap($userResponse);
 			}
 
@@ -706,12 +706,12 @@ class ShareesTest extends TestCase {
 			$exactExpected = [];
 		}
 
-		$this->invokePrivate($this->sharees, 'getUsers', [$searchTerm]);
-		$result = $this->invokePrivate($this->sharees, 'result');
+		self::invokePrivate($this->sharees, 'getUsers', [$searchTerm]);
+		$result = self::invokePrivate($this->sharees, 'result');
 
 		$this->assertEquals($exactExpected, $result['exact']['users']);
 		$this->assertEquals($expected, $result['users']);
-		$this->assertCount((int) $reachedEnd, $this->invokePrivate($this->sharees, 'reachedEndFor'));
+		$this->assertCount((int) $reachedEnd, self::invokePrivate($this->sharees, 'reachedEndFor'));
 	}
 
 	public function dataGetGroups() {
@@ -1116,16 +1116,16 @@ class ShareesTest extends TestCase {
 	) {
 		$this->userSearch->method('getSearchMinLength')
 			->willReturn($searchMinLength);
-		$this->invokePrivate($this->sharees, 'limit', [2]);
-		$this->invokePrivate($this->sharees, 'offset', [0]);
-		$this->invokePrivate($this->sharees, 'shareWithMembershipGroupOnly', [$shareWithMembershipGroupOnly]);
-		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
-		$this->invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [$shareeEnumerationGroupMembers]);
+		self::invokePrivate($this->sharees, 'limit', [2]);
+		self::invokePrivate($this->sharees, 'offset', [0]);
+		self::invokePrivate($this->sharees, 'shareWithMembershipGroupOnly', [$shareWithMembershipGroupOnly]);
+		self::invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
+		self::invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [$shareeEnumerationGroupMembers]);
 
 		if ($searchTerm !== '' || $searchMinLength === 0) {
 			$this->groupManager->expects($this->once())
 				->method('search')
-				->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
+				->with($searchTerm, self::invokePrivate($this->sharees, 'limit'), self::invokePrivate($this->sharees, 'offset'))
 				->willReturn($groupResponse);
 
 			$getGroupValueMap = \array_map(function ($group) {
@@ -1156,12 +1156,12 @@ class ShareesTest extends TestCase {
 				}));
 		}
 
-		$this->invokePrivate($this->sharees, 'getGroups', [$searchTerm]);
-		$result = $this->invokePrivate($this->sharees, 'result');
+		self::invokePrivate($this->sharees, 'getGroups', [$searchTerm]);
+		$result = self::invokePrivate($this->sharees, 'result');
 
 		$this->assertEquals($exactExpected, $result['exact']['groups']);
 		$this->assertEquals($expected, $result['groups']);
-		$this->assertCount((int) $reachedEnd, $this->invokePrivate($this->sharees, 'reachedEndFor'));
+		$this->assertCount((int) $reachedEnd, self::invokePrivate($this->sharees, 'reachedEndFor'));
 	}
 
 	public function dataGetRemote() {
@@ -1523,8 +1523,8 @@ class ShareesTest extends TestCase {
 	 */
 	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd, $previousExact = [], $isSearchable = true) {
 		// Set the limit and offset for remote user searching
-		$this->invokePrivate($this->sharees, 'limit', [2]);
-		$this->invokePrivate($this->sharees, 'offset', [0]);
+		self::invokePrivate($this->sharees, 'limit', [2]);
+		self::invokePrivate($this->sharees, 'offset', [0]);
 
 		$configMap = [
 			['trusted_domains', [], ['trusted.domain.tld', 'trusted2.domain.tld']],
@@ -1540,9 +1540,9 @@ class ShareesTest extends TestCase {
 			->willReturn($isSearchable);
 		// inject previous results if needed
 		if (!empty($previousExact)) {
-			$result = $this->invokePrivate($this->sharees, 'result');
+			$result = self::invokePrivate($this->sharees, 'result');
 			$result['exact'] = \array_merge($result['exact'], $previousExact);
-			$this->invokePrivate($this->sharees, 'result', [$result]);
+			self::invokePrivate($this->sharees, 'result', [$result]);
 		}
 
 		$this->config->expects($this->once())
@@ -1550,18 +1550,18 @@ class ShareesTest extends TestCase {
 			->with('dav', 'remote_search_properties')
 			->willReturn('EMAIL,CLOUD,FN');
 
-		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
+		self::invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
 		$this->contactsManager->expects($this->any())
 			->method('search')
 			->with($searchTerm, ['EMAIL', 'CLOUD', 'FN'], ['matchMode' => 'ANY'], 2, 0)
 			->willReturn($contacts);
 
-		$this->invokePrivate($this->sharees, 'getRemote', [$searchTerm]);
-		$result = $this->invokePrivate($this->sharees, 'result');
+		self::invokePrivate($this->sharees, 'getRemote', [$searchTerm]);
+		$result = self::invokePrivate($this->sharees, 'result');
 
 		$this->assertEquals($exactExpected, $result['exact']['remotes']);
 		$this->assertEquals($expected, $result['remotes']);
-		$this->assertCount((int) $reachedEnd, $this->invokePrivate($this->sharees, 'reachedEndFor'));
+		$this->assertCount((int) $reachedEnd, self::invokePrivate($this->sharees, 'reachedEndFor'));
 	}
 
 	public function testGetRemoteCustom() {
@@ -1589,8 +1589,8 @@ class ShareesTest extends TestCase {
 			['label' => 'u2 label', 'value' => ['shareType' => 8, 'shareWith' => 'u2', 'server' => 'https://custom.server']],
 		];
 
-		$this->invokePrivate($this->sharees, 'getRemote', ['abcd1234']);
-		$result = $this->invokePrivate($this->sharees, 'result');
+		self::invokePrivate($this->sharees, 'getRemote', ['abcd1234']);
+		$result = self::invokePrivate($this->sharees, 'result');
 
 		$this->assertEquals($exactExpected, $result['exact']['remotes']);
 	}
@@ -1754,7 +1754,7 @@ class ShareesTest extends TestCase {
 	 * @param bool $expected
 	 */
 	public function testIsRemoteSharingAllowed($itemType, $expected) {
-		$this->assertSame($expected, $this->invokePrivate($this->sharees, 'isRemoteSharingAllowed', [$itemType]));
+		$this->assertSame($expected, self::invokePrivate($this->sharees, 'isRemoteSharingAllowed', [$itemType]));
 	}
 
 	public function dataSearchSharees() {
@@ -1895,28 +1895,28 @@ class ShareesTest extends TestCase {
 			->method('getUsers')
 			->with($searchTerm)
 			->willReturnCallback(function () use ($sharees, $mockedUserResult) {
-				$result = $this->invokePrivate($sharees, 'result');
+				$result = self::invokePrivate($sharees, 'result');
 				$result['users'] = $mockedUserResult;
-				$this->invokePrivate($sharees, 'result', [$result]);
+				self::invokePrivate($sharees, 'result', [$result]);
 			});
 		$sharees->expects(($mockedGroupsResult === null) ? $this->never() : $this->once())
 			->method('getGroups')
 			->with($searchTerm)
 			->willReturnCallback(function () use ($sharees, $mockedGroupsResult) {
-				$result = $this->invokePrivate($sharees, 'result');
+				$result = self::invokePrivate($sharees, 'result');
 				$result['groups'] = $mockedGroupsResult;
-				$this->invokePrivate($sharees, 'result', [$result]);
+				self::invokePrivate($sharees, 'result', [$result]);
 			});
 		$sharees->expects(($mockedRemotesResult === null) ? $this->never() : $this->once())
 			->method('getRemote')
 			->with($searchTerm)
 			->willReturnCallback(function () use ($sharees, $mockedRemotesResult) {
-				$result = $this->invokePrivate($sharees, 'result');
+				$result = self::invokePrivate($sharees, 'result');
 				$result['remotes'] = $mockedRemotesResult;
-				$this->invokePrivate($sharees, 'result', [$result]);
+				self::invokePrivate($sharees, 'result', [$result]);
 			});
 
-		$ocs = $this->invokePrivate($sharees, 'searchSharees', [$searchTerm, $itemType, $shareTypes, $page, $perPage, $shareWithGroupOnly]);
+		$ocs = self::invokePrivate($sharees, 'searchSharees', [$searchTerm, $itemType, $shareTypes, $page, $perPage, $shareWithGroupOnly]);
 		$this->assertEquals($expected, $ocs->getData()['data']);
 
 		// Check if next link is set
@@ -1929,7 +1929,7 @@ class ShareesTest extends TestCase {
 	}
 
 	public function testSearchShareesNoItemType() {
-		$ocs = $this->invokePrivate($this->sharees, 'searchSharees', ['', null, [], [], 0, 0, false]);
+		$ocs = self::invokePrivate($this->sharees, 'searchSharees', ['', null, [], [], 0, 0, false]);
 		$this->assertOCSError($ocs, 'Missing itemType');
 	}
 
@@ -1953,7 +1953,7 @@ class ShareesTest extends TestCase {
 			->method('getScriptName')
 			->willReturn($scriptName);
 
-		$this->assertEquals($expected, $this->invokePrivate($this->sharees, 'getPaginationLink', [$page, $params]));
+		$this->assertEquals($expected, self::invokePrivate($this->sharees, 'getPaginationLink', [$page, $params]));
 	}
 
 	public function dataIsV2() {
@@ -1974,7 +1974,7 @@ class ShareesTest extends TestCase {
 			->method('getScriptName')
 			->willReturn($scriptName);
 
-		$this->assertEquals($expected, $this->invokePrivate($this->sharees, 'isV2'));
+		$this->assertEquals($expected, self::invokePrivate($this->sharees, 'isV2'));
 	}
 
 	/**
@@ -2071,7 +2071,7 @@ class ShareesTest extends TestCase {
 	public function testFixRemoteUrl($url, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($this->sharees, 'fixRemoteURL', [$url])
+			self::invokePrivate($this->sharees, 'fixRemoteURL', [$url])
 		);
 	}
 
@@ -2085,11 +2085,11 @@ class ShareesTest extends TestCase {
 	}
 
 	public function testGetUserWithSearchAttributes() {
-		$this->invokePrivate($this->sharees, 'limit', [2]);
-		$this->invokePrivate($this->sharees, 'offset', [0]);
-		$this->invokePrivate($this->sharees, 'shareWithGroupOnly', [false]);
-		$this->invokePrivate($this->sharees, 'shareeEnumeration', [false]);
-		$this->invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [false]);
+		self::invokePrivate($this->sharees, 'limit', [2]);
+		self::invokePrivate($this->sharees, 'offset', [0]);
+		self::invokePrivate($this->sharees, 'shareWithGroupOnly', [false]);
+		self::invokePrivate($this->sharees, 'shareeEnumeration', [false]);
+		self::invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [false]);
 
 		// User with more search term
 		$user = $this->getUserMock('testBob', 'Bob', 'bob@example.com', ['alt@example.com']);
@@ -2104,19 +2104,19 @@ class ShareesTest extends TestCase {
 			->method('find')
 			->with(
 				$searchTerm,
-				$this->invokePrivate($this->sharees, 'limit'),
-				$this->invokePrivate($this->sharees, 'offset')
+				self::invokePrivate($this->sharees, 'limit'),
+				self::invokePrivate($this->sharees, 'offset')
 			)
 			->willReturn([$user]);
 
 		$exactExpected = [['label' => 'Bob', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'testBob', 'userType' => User::USER_TYPE_USER]]];
 		$expected = [];
 
-		$this->invokePrivate($this->sharees, 'getUsers', [$searchTerm]);
-		$result = $this->invokePrivate($this->sharees, 'result');
+		self::invokePrivate($this->sharees, 'getUsers', [$searchTerm]);
+		$result = self::invokePrivate($this->sharees, 'result');
 		$this->assertEquals($exactExpected, $result['exact']['users']);
 		$this->assertEquals($expected, $result['users']);
-		$this->assertCount((int) 1, $this->invokePrivate($this->sharees, 'reachedEndFor'));
+		$this->assertCount((int) 1, self::invokePrivate($this->sharees, 'reachedEndFor'));
 	}
 
 	/**

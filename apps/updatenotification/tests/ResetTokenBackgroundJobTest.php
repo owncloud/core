@@ -56,7 +56,7 @@ class ResetTokenBackgroundJobTest extends TestCase {
 			->method('deleteSystemValue')
 			->with('updater.secret');
 
-		$this->invokePrivate($this->resetTokenBackgroundJob, 'run', ['']);
+		self::invokePrivate($this->resetTokenBackgroundJob, 'run', ['']);
 	}
 
 	public function testRunWithExpiredToken() {
@@ -77,6 +77,6 @@ class ResetTokenBackgroundJobTest extends TestCase {
 			->method('deleteSystemValue')
 			->with('updater.secret');
 
-		$this->invokePrivate($this->resetTokenBackgroundJob, 'run', ['']);
+		self::invokePrivate($this->resetTokenBackgroundJob, 'run', ['']);
 	}
 }

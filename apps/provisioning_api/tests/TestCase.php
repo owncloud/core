@@ -54,7 +54,7 @@ abstract class TestCase extends \Test\TestCase {
 	protected function generateUsers($num = 1) {
 		$users = [];
 		for ($i = 0; $i < $num; $i++) {
-			$user = $this->userManager->createUser($this->getUniqueID(), 'password');
+			$user = $this->userManager->createUser(self::getUniqueID(), 'password');
 			$this->users[] = $user;
 			$users[] = $user;
 		}

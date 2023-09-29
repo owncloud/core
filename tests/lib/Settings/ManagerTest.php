@@ -80,7 +80,7 @@ class SettingsManagerTest extends TestCase {
 	}
 
 	public function testGetBuiltInSections() {
-		$sections = $this->invokePrivate($this->settingsManager, 'getBuiltInSections', ['admin']);
+		$sections = self::invokePrivate($this->settingsManager, 'getBuiltInSections', ['admin']);
 		$this->assertNotEmpty($sections);
 	}
 
@@ -109,7 +109,7 @@ class SettingsManagerTest extends TestCase {
 				['admin' => 'OCA\Encryption\TestPanel']
 		];
 		$this->appManager->expects($this->exactly(2))->method('getAppInfo')->with('encryption')->willReturn($settingsInfo);
-		$panels = $this->invokePrivate($this->settingsManager, 'findRegisteredPanels', ['admin']);
+		$panels = self::invokePrivate($this->settingsManager, 'findRegisteredPanels', ['admin']);
 		$this->assertCount(1, $panels);
 	}
 
@@ -124,7 +124,7 @@ class SettingsManagerTest extends TestCase {
 				['personal' => 'OCA\Encryption\TestPanel']
 		];
 		$this->appManager->expects($this->exactly(2))->method('getAppInfo')->with('encryption')->willReturn($settingsInfo);
-		$panels = $this->invokePrivate($this->settingsManager, 'findRegisteredPanels', ['personal']);
+		$panels = self::invokePrivate($this->settingsManager, 'findRegisteredPanels', ['personal']);
 		$this->assertCount(1, $panels);
 		$this->assertEquals('OCA\Encryption\TestPanel', \array_shift($panels));
 	}
@@ -140,7 +140,7 @@ class SettingsManagerTest extends TestCase {
 				['personal' => ['OCA\Encryption\TestPanel', 'OCA\Encryption\TestPanel2']]
 		];
 		$this->appManager->expects($this->exactly(2))->method('getAppInfo')->with('encryption')->willReturn($settingsInfo);
-		$panels = $this->invokePrivate($this->settingsManager, 'findRegisteredPanels', ['personal']);
+		$panels = self::invokePrivate($this->settingsManager, 'findRegisteredPanels', ['personal']);
 		$this->assertCount(2, $panels);
 	}
 

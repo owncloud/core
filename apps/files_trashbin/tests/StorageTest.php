@@ -71,7 +71,7 @@ class StorageTest extends TestCase {
 		// we need to register it here so that the tested behavior is closer to reality
 		\OC::$server->getEncryptionManager()->setupStorage();
 
-		$this->user = $this->getUniqueId('user');
+		$this->user = self::getUniqueID('user');
 		$this->createUser($this->user, $this->user);
 
 		// this will setup the FS
@@ -202,7 +202,7 @@ class StorageTest extends TestCase {
 
 		$originalFileId = $this->userView->getFileInfo('share/folder/test.txt')->getId();
 
-		$recipientUser = $this->getUniqueId('recipient_');
+		$recipientUser = self::getUniqueID('recipient_');
 		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
@@ -257,7 +257,7 @@ class StorageTest extends TestCase {
 
 		$originalFileId = $this->userView->getFileInfo('share/folder/test.txt')->getId();
 
-		$recipientUser = $this->getUniqueId('recipient_');
+		$recipientUser = self::getUniqueID('recipient_');
 		$recipientUserObject = \OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 		$roGroupObject = \OC::$server->getGroupManager()->createGroup('rogroup');
 		$roGroupObject->addUser($recipientUserObject);
@@ -440,7 +440,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/');
 		$this->assertCount(1, $results);
 
-		$recipientUser = $this->getUniqueId('recipient_');
+		$recipientUser = self::getUniqueID('recipient_');
 		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
@@ -494,7 +494,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/folder/');
 		$this->assertCount(1, $results);
 
-		$recipientUser = $this->getUniqueId('recipient_');
+		$recipientUser = self::getUniqueID('recipient_');
 		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
@@ -739,7 +739,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/sub');
 		$this->assertCount(1, $results);
 
-		$recipientUser = $this->getUniqueId('recipient_');
+		$recipientUser = self::getUniqueID('recipient_');
 		$user2 = \OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
@@ -880,7 +880,7 @@ class StorageTest extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($storage, 'shouldMoveToTrash', [$path])
+			self::invokePrivate($storage, 'shouldMoveToTrash', [$path])
 		);
 	}
 

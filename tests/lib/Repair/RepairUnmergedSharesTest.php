@@ -615,6 +615,6 @@ class RepairUnmergedSharesTest extends TestCase {
 	 * @dataProvider duplicateNamesProvider
 	 */
 	public function testIsPotentialDuplicateName($name, $expectedResult) {
-		$this->assertEquals($expectedResult, $this->invokePrivate($this->repair, 'isPotentialDuplicateName', [$name]));
+		$this->assertEquals($expectedResult, self::invokePrivate($this->repair, 'isPotentialDuplicateName', [$name]));
 	}
 }

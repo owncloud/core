@@ -31,7 +31,7 @@ class HomeStorageQuotaTest extends \Test\TestCase {
 	 * Tests that the home storage is not wrapped when no quota exists.
 	 */
 	public function testHomeStorageWrapperWithoutQuota() {
-		$user1 = $this->getUniqueID();
+		$user1 = self::getUniqueID();
 		\OC::$server->getUserManager()->createUser($user1, 'test');
 		\OC::$server->getConfig()->setUserValue($user1, 'files', 'quota', 'none');
 		\OC_User::setUserId($user1);
@@ -56,7 +56,7 @@ class HomeStorageQuotaTest extends \Test\TestCase {
 	 * Tests that the home storage is not wrapped when no quota exists.
 	 */
 	public function testHomeStorageWrapperWithQuota() {
-		$user1 = $this->getUniqueID();
+		$user1 = self::getUniqueID();
 		$userObj = \OC::$server->getUserManager()->createUser($user1, 'test');
 		$userObj->setQuota('1024');
 		\OC_User::setUserId($user1);

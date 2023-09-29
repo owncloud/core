@@ -48,7 +48,7 @@ class TagsTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$userId = $this->getUniqueID('user_');
+		$userId = self::getUniqueID('user_');
 		$this->user = $this->createUser($userId, 'pass');
 		\OC_User::setUserId($userId);
 		$this->userSession = $this->createMock('\OCP\IUserSession');
@@ -57,7 +57,7 @@ class TagsTest extends TestCase {
 			->method('getUser')
 			->will($this->returnValue($this->user));
 
-		$this->objectType = $this->getUniqueID('type_');
+		$this->objectType = self::getUniqueID('type_');
 		$this->tagMapper = new TagMapper(\OC::$server->getDatabaseConnection());
 		$this->tagMgr = new TagManager($this->tagMapper, $this->userSession);
 	}
@@ -292,7 +292,7 @@ class TagsTest extends TestCase {
 		$tagger = $this->tagMgr->load('test');
 		$tagger->tagAs(1, $testTag);
 
-		$otherUserId = $this->getUniqueID('user2_');
+		$otherUserId = self::getUniqueID('user2_');
 		$otherUser = $this->createUser($otherUserId, 'pass');
 		\OC_User::setUserId($otherUserId);
 		/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $otherUserSession */

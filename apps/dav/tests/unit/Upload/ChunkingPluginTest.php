@@ -208,6 +208,6 @@ class ChunkingPluginTest extends TestCase {
 		} else {
 			$this->assertTrue(true);
 		}
-		$this->invokePrivate($this->plugin, 'verifySize', []);
+		self::invokePrivate($this->plugin, 'verifySize', []);
 	}
 }

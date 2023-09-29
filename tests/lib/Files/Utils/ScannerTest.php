@@ -49,11 +49,11 @@ class ScannerTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->loginAsUser();
+		self::loginAsUser();
 	}
 
 	protected function tearDown(): void {
-		$this->logout();
+		self::logout();
 		parent::tearDown();
 	}
 
@@ -102,7 +102,7 @@ class ScannerTest extends \Test\TestCase {
 	}
 
 	public function testScanSubMount() {
-		$uid = $this->getUniqueID();
+		$uid = self::getUniqueID();
 		$this->createUser($uid);
 
 		$mountProvider = $this->createMock('\OCP\Files\Config\IMountProvider');

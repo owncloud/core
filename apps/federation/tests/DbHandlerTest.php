@@ -255,7 +255,7 @@ class DbHandlerTest extends TestCase {
 	public function testHash($url, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($this->dbHandler, 'hash', [$url])
+			self::invokePrivate($this->dbHandler, 'hash', [$url])
 		);
 	}
 
@@ -277,7 +277,7 @@ class DbHandlerTest extends TestCase {
 	public function testNormalizeUrl($url, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($this->dbHandler, 'normalizeUrl', [$url])
+			self::invokePrivate($this->dbHandler, 'normalizeUrl', [$url])
 		);
 	}
 

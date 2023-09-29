@@ -75,16 +75,16 @@ class ManagerTest extends TestCase {
 			return $app;
 		};
 
-		$this->assertEquals([], $this->invokePrivate($this->manager, 'getApps'));
+		$this->assertEquals([], self::invokePrivate($this->manager, 'getApps'));
 
 		$this->manager->registerApp($closure);
 
-		$this->assertEquals([$app], $this->invokePrivate($this->manager, 'getApps'));
-		$this->assertEquals([$app], $this->invokePrivate($this->manager, 'getApps'));
+		$this->assertEquals([$app], self::invokePrivate($this->manager, 'getApps'));
+		$this->assertEquals([$app], self::invokePrivate($this->manager, 'getApps'));
 
 		$this->manager->registerApp($closure);
 
-		$this->assertEquals([$app, $app], $this->invokePrivate($this->manager, 'getApps'));
+		$this->assertEquals([$app, $app], self::invokePrivate($this->manager, 'getApps'));
 	}
 
 	/**
@@ -102,7 +102,7 @@ class ManagerTest extends TestCase {
 
 		$this->manager->registerApp($closure);
 
-		$this->invokePrivate($this->manager, 'getApps');
+		self::invokePrivate($this->manager, 'getApps');
 	}
 
 	public function testRegisterAppNew() {
@@ -119,13 +119,13 @@ class ManagerTest extends TestCase {
 			}
 		);
 
-		$apps = $this->invokePrivate($this->manager, 'getApps');
+		$apps = self::invokePrivate($this->manager, 'getApps');
 		$this->assertEquals([$app], $apps);
 		$this->assertSame($app, $apps[0]);
 		$this->assertEquals(1, $callbackCalledCount);
 
 		// second call returns the same info and doesn't trigger the event again
-		$apps = $this->invokePrivate($this->manager, 'getApps');
+		$apps = self::invokePrivate($this->manager, 'getApps');
 		$this->assertEquals([$app], $apps);
 		$this->assertSame($app, $apps[0]);
 		$this->assertEquals(1, $callbackCalledCount);
@@ -140,24 +140,24 @@ class ManagerTest extends TestCase {
 			return $notifier;
 		};
 
-		$this->assertEquals([], $this->invokePrivate($this->manager, 'getNotifiers'));
-		$this->assertEquals([], $this->invokePrivate($this->manager, 'listNotifiers'));
+		$this->assertEquals([], self::invokePrivate($this->manager, 'getNotifiers'));
+		$this->assertEquals([], self::invokePrivate($this->manager, 'listNotifiers'));
 
 		$this->manager->registerNotifier($closure, function () {
 			return ['id' => 'test1', 'name' => 'Test One'];
 		});
 
-		$this->assertEquals([$notifier], $this->invokePrivate($this->manager, 'getNotifiers'));
-		$this->assertEquals(['test1' => 'Test One'], $this->invokePrivate($this->manager, 'listNotifiers'));
-		$this->assertEquals([$notifier], $this->invokePrivate($this->manager, 'getNotifiers'));
-		$this->assertEquals(['test1' => 'Test One'], $this->invokePrivate($this->manager, 'listNotifiers'));
+		$this->assertEquals([$notifier], self::invokePrivate($this->manager, 'getNotifiers'));
+		$this->assertEquals(['test1' => 'Test One'], self::invokePrivate($this->manager, 'listNotifiers'));
+		$this->assertEquals([$notifier], self::invokePrivate($this->manager, 'getNotifiers'));
+		$this->assertEquals(['test1' => 'Test One'], self::invokePrivate($this->manager, 'listNotifiers'));
 
 		$this->manager->registerNotifier($closure, function () {
 			return ['id' => 'test2', 'name' => 'Test Two'];
 		});
 
-		$this->assertEquals([$notifier, $notifier], $this->invokePrivate($this->manager, 'getNotifiers'));
-		$this->assertEquals(['test1' => 'Test One', 'test2' => 'Test Two'], $this->invokePrivate($this->manager, 'listNotifiers'));
+		$this->assertEquals([$notifier, $notifier], self::invokePrivate($this->manager, 'getNotifiers'));
+		$this->assertEquals(['test1' => 'Test One', 'test2' => 'Test Two'], self::invokePrivate($this->manager, 'listNotifiers'));
 	}
 
 	/**
@@ -177,7 +177,7 @@ class ManagerTest extends TestCase {
 			return ['id' => 'test1', 'name' => 'Test One'];
 		});
 
-		$this->invokePrivate($this->manager, 'getNotifiers');
+		self::invokePrivate($this->manager, 'getNotifiers');
 	}
 
 	public function dataRegisterNotifierInfoInvalid() {
@@ -251,13 +251,13 @@ class ManagerTest extends TestCase {
 			}
 		);
 
-		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$notifiers = self::invokePrivate($this->manager, 'getNotifiers');
 		$this->assertEquals([$notifier], $notifiers);
 		$this->assertSame($notifier, $notifiers[0]);
 		$this->assertEquals(1, $callbackCalledCount);
 
 		// second call returns the same info and doesn't trigger the event again
-		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$notifiers = self::invokePrivate($this->manager, 'getNotifiers');
 		$this->assertEquals([$notifier], $notifiers);
 		$this->assertSame($notifier, $notifiers[0]);
 		$this->assertEquals(1, $callbackCalledCount);
@@ -301,7 +301,7 @@ class ManagerTest extends TestCase {
 			}
 		);
 
-		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$notifiers = self::invokePrivate($this->manager, 'getNotifiers');
 		$this->assertEquals([$notifier], $notifiers);
 		$this->assertSame($notifier, $notifiers[0]);
 		$this->assertEquals(1, $callbackCalledCount);
@@ -310,7 +310,7 @@ class ManagerTest extends TestCase {
 		$this->assertEquals(['testid1' => 'test app name'], $notifiersInfo);
 		$this->assertEquals(2, $callbackCalledCount);  // expected to trigger another event
 
-		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$notifiers = self::invokePrivate($this->manager, 'getNotifiers');
 		$this->assertEquals([$notifier], $notifiers);
 		$this->assertSame($notifier, $notifiers[0]);
 		$this->assertEquals(2, $callbackCalledCount);  // this second call should remain the same
@@ -348,7 +348,7 @@ class ManagerTest extends TestCase {
 			}
 		);
 
-		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$notifiers = self::invokePrivate($this->manager, 'getNotifiers');
 		$this->assertEquals(1, $callbackCalledCount);
 		$this->assertEquals(1, $callbackCalledCount2);
 	}
@@ -383,7 +383,7 @@ class ManagerTest extends TestCase {
 			return ['id' => 'testid1', 'name' => 'test app name'];
 		});
 
-		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$notifiers = self::invokePrivate($this->manager, 'getNotifiers');
 		$this->assertEquals(1, $callbackCalledCount);
 	}
 
@@ -420,7 +420,7 @@ class ManagerTest extends TestCase {
 			}
 		);
 
-		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$notifiers = self::invokePrivate($this->manager, 'getNotifiers');
 		$this->assertEquals(1, $callbackCalledCount);
 		$this->assertEquals(1, $callbackCalledCount2);
 		$this->assertTrue($swallowedException);

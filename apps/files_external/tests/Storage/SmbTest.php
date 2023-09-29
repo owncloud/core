@@ -39,7 +39,7 @@ use OCA\Files_External\Lib\Storage\SMB;
 class SmbTest extends \Test\Files\Storage\Storage {
 	protected function setUp(): void {
 		parent::setUp();
-		$id = $this->getUniqueID();
+		$id = self::getUniqueID();
 		$config = include 'files_external/tests/config.smb.php';
 		if (!\is_array($config) or !$config['run']) {
 			$this->markTestSkipped('Samba backend not configured');

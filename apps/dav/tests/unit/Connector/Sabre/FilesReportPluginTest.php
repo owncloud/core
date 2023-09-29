@@ -465,7 +465,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals(['111', '222'], $this->invokePrivate($this->plugin, 'processFilterRules', [$rules]));
+		$this->assertEquals(['111', '222'], self::invokePrivate($this->plugin, 'processFilterRules', [$rules]));
 	}
 
 	public function testProcessFilterRulesAndCondition() {
@@ -489,7 +489,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals(['222'], \array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals(['222'], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFilterRulesAndConditionWithOneEmptyResult() {
@@ -513,7 +513,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals([], \array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals([], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFilterRulesAndConditionWithFirstEmptyResult() {
@@ -537,7 +537,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals([], \array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals([], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFilterRulesAndConditionWithEmptyMidResult() {
@@ -563,7 +563,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals([], \array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals([], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFilterRulesInvisibleTagAsAdmin() {
@@ -608,7 +608,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals(['222'], \array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals(['222'], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	/**
@@ -646,7 +646,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			'favorite' => null
 		];
 
-		$this->invokePrivate($this->plugin, 'processFilterRules', [$rules]);
+		self::invokePrivate($this->plugin, 'processFilterRules', [$rules]);
 	}
 
 	public function testProcessFilterRulesVisibleTagAsUser() {
@@ -692,7 +692,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			'favorite' => null
 		];
 
-		$this->assertEquals(['222'], \array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals(['222'], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function testProcessFavoriteFilter() {
@@ -705,7 +705,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('getFavorites')
 			->will($this->returnValue(['456', '789']));
 
-		$this->assertEquals(['456', '789'], \array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+		$this->assertEquals(['456', '789'], \array_values(self::invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 
 	public function filesBaseUriProvider() {
@@ -722,6 +722,6 @@ class FilesReportPluginTest extends \Test\TestCase {
 	 * @dataProvider filesBaseUriProvider
 	 */
 	public function testFilesBaseUri($uri, $reportPath, $expectedUri) {
-		$this->assertEquals($expectedUri, $this->invokePrivate($this->plugin, 'getFilesBaseUri', [$uri, $reportPath]));
+		$this->assertEquals($expectedUri, self::invokePrivate($this->plugin, 'getFilesBaseUri', [$uri, $reportPath]));
 	}
 }

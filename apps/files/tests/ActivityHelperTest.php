@@ -57,7 +57,7 @@ class ActivityHelperTest extends \Test\TestCase {
 
 		$this->tags = $this->createMock(ITags::class);
 
-		$this->user = $this->getUniqueID('files_activityhelpertest_user_');
+		$this->user = self::getUniqueID('files_activityhelpertest_user_');
 
 		// because \OC::$server->getUserFolder()
 		$this->createUser($this->user);

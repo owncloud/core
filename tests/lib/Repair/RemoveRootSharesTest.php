@@ -95,7 +95,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 			]);
 		$qb->execute();
 
-		$res = $this->invokePrivate($this->repair, 'rootSharesExist', []);
+		$res = self::invokePrivate($this->repair, 'rootSharesExist', []);
 		$this->assertTrue($res);
 
 		$user->delete();
@@ -104,7 +104,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 	public function testRootSharesDontExist() {
 		//Add test user
 		$user = $this->createUser('test', 'test');
-		$this->loginAsUser('test');
+		self::loginAsUser('test');
 		$userFolder = $this->rootFolder->getUserFolder('test');
 		$fileId = $userFolder->getId();
 		$user->updateLastLoginTimestamp();
@@ -125,7 +125,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 			]);
 		$qb->execute();
 
-		$res = $this->invokePrivate($this->repair, 'rootSharesExist', []);
+		$res = self::invokePrivate($this->repair, 'rootSharesExist', []);
 		$this->assertFalse($res);
 
 		$user->delete();

@@ -94,7 +94,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 		$this->assertCount(2, $mapping);
 
 		$job = new DeleteOrphanedItems();
-		$this->invokePrivate($job, 'cleanSystemTags');
+		self::invokePrivate($job, 'cleanSystemTags');
 
 		$mapping = $this->getMappings('systemtag_object_mapping');
 		$this->assertCount(1, $mapping);
@@ -143,7 +143,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 		$this->assertCount(2, $mapping);
 
 		$job = new DeleteOrphanedItems();
-		$this->invokePrivate($job, 'cleanUserTags');
+		self::invokePrivate($job, 'cleanUserTags');
 
 		$mapping = $this->getMappings('vcategory_to_object');
 		$this->assertCount(1, $mapping);
@@ -194,7 +194,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 		$this->assertCount(2, $mapping);
 
 		$job = new DeleteOrphanedItems();
-		$this->invokePrivate($job, 'cleanComments');
+		self::invokePrivate($job, 'cleanComments');
 
 		$mapping = $this->getMappings('comments');
 		$this->assertCount(1, $mapping);
@@ -243,7 +243,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 		$this->assertCount(2, $mapping);
 
 		$job = new DeleteOrphanedItems();
-		$this->invokePrivate($job, 'cleanCommentMarkers');
+		self::invokePrivate($job, 'cleanCommentMarkers');
 
 		$mapping = $this->getMappings('comments_read_markers');
 		$this->assertCount(1, $mapping);

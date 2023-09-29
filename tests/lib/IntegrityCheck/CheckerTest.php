@@ -1191,7 +1191,7 @@ class CheckerTest extends TestCase {
 				->with('integrity.check.disabled', false)
 				->will($this->returnValue(true));
 
-		$result = $this->invokePrivate($this->checker, 'isCodeCheckEnforced');
+		$result = self::invokePrivate($this->checker, 'isCodeCheckEnforced');
 		$this->assertFalse($result);
 	}
 

@@ -32,7 +32,7 @@ use OCP\AppFramework\Http;
  */
 class DeleteTest extends RequestTest {
 	public function testBasicUpload() {
-		$user = $this->getUniqueID();
+		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$view->file_put_contents('foo.txt', 'asd');

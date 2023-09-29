@@ -126,7 +126,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 			$this->questionHelper->expects($this->never())->method('ask');
 		}
 
-		$this->invokePrivate(
+		self::invokePrivate(
 			$changeKeyStorageRoot,
 			'execute',
 			[$this->inputInterface, $this->outputInterface]
@@ -160,7 +160,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 		$changeKeyStorageRoot->expects($this->once())->method('moveSystemKeys')->with('oldRoot', 'newRoot');
 		$changeKeyStorageRoot->expects($this->once())->method('moveUserKeys')->with('oldRoot', 'newRoot', $this->outputInterface);
 
-		$this->invokePrivate($changeKeyStorageRoot, 'moveAllKeys', ['oldRoot', 'newRoot', $this->outputInterface]);
+		self::invokePrivate($changeKeyStorageRoot, 'moveAllKeys', ['oldRoot', 'newRoot', $this->outputInterface]);
 	}
 
 	public function testPrepareNewRoot() {
@@ -173,7 +173,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 				'ownCloud will detect this folder as key storage root only if this file exists'
 			);
 
-		$this->invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['newRoot']);
+		self::invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['newRoot']);
 	}
 
 	/**
@@ -189,7 +189,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 			->willReturn($dirExists);
 		$this->view->expects($this->any())->method('file_put_contents')->willReturn($couldCreateFile);
 
-		$this->invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['newRoot']);
+		self::invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['newRoot']);
 	}
 
 	public function dataTestPrepareNewRootException() {
@@ -215,7 +215,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 
 		$this->view->expects($this->once())->method('is_dir')->with('../../newRoot')
 			->willReturn($dirExists);
-		$this->invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['../../newRoot']);
+		self::invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['../../newRoot']);
 	}
 
 	/**
@@ -249,7 +249,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 			$this->view->expects($this->never())->method('rename');
 		}
 
-		$this->invokePrivate($changeKeyStorageRoot, 'moveSystemKeys', ['oldRoot', 'newRoot']);
+		self::invokePrivate($changeKeyStorageRoot, 'moveSystemKeys', ['oldRoot', 'newRoot']);
 	}
 
 	public function dataTestMoveSystemKeys() {
@@ -280,7 +280,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 		$changeKeyStorageRoot->expects($this->exactly(2))->method('setupUserFS');
 		$changeKeyStorageRoot->expects($this->exactly(2))->method('moveUserEncryptionFolder');
 
-		$this->invokePrivate($changeKeyStorageRoot, 'moveUserKeys', ['oldRoot', 'newRoot', $this->outputInterface]);
+		self::invokePrivate($changeKeyStorageRoot, 'moveUserKeys', ['oldRoot', 'newRoot', $this->outputInterface]);
 	}
 
 	/**
@@ -320,7 +320,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 			$this->view->expects($this->never())->method('rename');
 		}
 
-		$this->invokePrivate($changeKeyStorageRoot, 'moveUserEncryptionFolder', ['user1', 'oldRoot', 'newRoot']);
+		self::invokePrivate($changeKeyStorageRoot, 'moveUserEncryptionFolder', ['user1', 'oldRoot', 'newRoot']);
 	}
 
 	public function dataTestMoveUserEncryptionFolder() {
@@ -356,7 +356,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 			$this->view->expects($this->never())->method('mkdir');
 		}
 
-		$this->invokePrivate(
+		self::invokePrivate(
 			$this->changeKeyStorageRoot,
 			'prepareParentFolder',
 			[$path]
@@ -375,7 +375,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 			->willReturn(false);
 
 		$this->assertFalse(
-			$this->invokePrivate($this->changeKeyStorageRoot, 'targetExists', ['path'])
+			self::invokePrivate($this->changeKeyStorageRoot, 'targetExists', ['path'])
 		);
 	}
 
@@ -387,6 +387,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 		$this->view->expects($this->once())->method('file_exists')->with('path')
 			->willReturn(true);
 
-		$this->invokePrivate($this->changeKeyStorageRoot, 'targetExists', ['path']);
+		self::invokePrivate($this->changeKeyStorageRoot, 'targetExists', ['path']);
 	}
 }

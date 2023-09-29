@@ -95,7 +95,7 @@ class NotifierTest extends TestCase {
 		}
 
 		try {
-			$this->invokePrivate($notifier, 'updateAlreadyInstalledCheck', [$notification, $versionInstalled]);
+			self::invokePrivate($notifier, 'updateAlreadyInstalledCheck', [$notification, $versionInstalled]);
 			$this->assertFalse($exception);
 		} catch (\Exception $e) {
 			$this->assertTrue($exception);

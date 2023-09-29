@@ -519,7 +519,7 @@ class StorageTest extends TestCase {
 	 * @param string $expected
 	 */
 	public function testGetPathToKeys($path, $systemWideMountPoint, $storageRoot, $expected) {
-		$this->invokePrivate($this->storage, 'root_dir', [$storageRoot]);
+		self::invokePrivate($this->storage, 'root_dir', [$storageRoot]);
 
 		$this->util->expects($this->any())
 			->method('getUidAndFilename')
@@ -581,7 +581,7 @@ class StorageTest extends TestCase {
 		$owner = 'user1';
 		$relativePath = '/foo/bar.txt';
 
-		$this->invokePrivate($this->storage, 'root_dir', [$storageRoot]);
+		self::invokePrivate($this->storage, 'root_dir', [$storageRoot]);
 
 		$this->util->expects($this->once())->method('isSystemWideMountPoint')
 			->willReturn($isSystemWideMountPoint);
@@ -590,7 +590,7 @@ class StorageTest extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->invokePrivate($this->storage, 'getFileKeyDir', ['OC_DEFAULT_MODULE', $path])
+			self::invokePrivate($this->storage, 'getFileKeyDir', ['OC_DEFAULT_MODULE', $path])
 		);
 	}
 

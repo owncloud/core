@@ -71,7 +71,7 @@ class HomeTest extends Storage {
 		parent::setUp();
 
 		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
-		$this->userId = $this->getUniqueID('user_');
+		$this->userId = self::getUniqueID('user_');
 		$this->user = new DummyUser($this->userId, $this->tmpDir);
 		$this->instance = new \OC\Files\Storage\Home(['user' => $this->user]);
 	}

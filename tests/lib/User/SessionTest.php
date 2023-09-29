@@ -1663,7 +1663,7 @@ class SessionTest extends TestCase {
 			->method('dispatch')
 			->with($this->equalTo($failedLogin), $this->equalTo('user.loginfailed'));
 
-		$this->invokePrivate($userSession, 'loginWithPassword', ['foo', 'foo']);
+		self::invokePrivate($userSession, 'loginWithPassword', ['foo', 'foo']);
 	}
 
 	public function testLoginWithPassword() {
@@ -1714,7 +1714,7 @@ class SessionTest extends TestCase {
 				[$this->equalTo($afterEvent), $this->equalTo('user.afterlogin')]
 			);
 
-		$result = $this->invokePrivate($userSession, 'loginWithPassword', ['foo', 'foopass']);
+		$result = self::invokePrivate($userSession, 'loginWithPassword', ['foo', 'foopass']);
 
 		$this->assertTrue($result);
 	}
@@ -1761,7 +1761,7 @@ class SessionTest extends TestCase {
 			->method('dispatch')
 			->with($this->equalTo($failedEvent), $this->equalTo('user.loginfailed'));
 
-		$this->invokePrivate($userSession, 'loginWithToken', ['token']);
+		self::invokePrivate($userSession, 'loginWithToken', ['token']);
 	}
 
 	public function testLoginWithToken() {
@@ -1829,7 +1829,7 @@ class SessionTest extends TestCase {
 				[$this->equalTo($afterEvent), $this->equalTo('user.afterlogin')]
 			);
 
-		$result = $this->invokePrivate($userSession, 'loginWithToken', ['token']);
+		$result = self::invokePrivate($userSession, 'loginWithToken', ['token']);
 		$this->assertTrue($result);
 	}
 
@@ -1972,7 +1972,7 @@ class SessionTest extends TestCase {
 				[$this->equalTo($failedEvent), $this->equalTo('user.loginfailed')]
 			);
 
-		$this->invokePrivate($userSession, 'loginUser', [null, 'foo']);
+		self::invokePrivate($userSession, 'loginUser', [null, 'foo']);
 	}
 
 	public function testLoginUser() {
@@ -2006,7 +2006,7 @@ class SessionTest extends TestCase {
 
 		// loginPolicyManager shouldn't have any policy active here, so it won't do anything
 
-		$result = $this->invokePrivate($userSession, 'loginUser', [$iUser, 'foo', 'authModuleClassname']);
+		$result = self::invokePrivate($userSession, 'loginUser', [$iUser, 'foo', 'authModuleClassname']);
 		$this->assertTrue($result);
 	}
 
@@ -2057,6 +2057,6 @@ class SessionTest extends TestCase {
 			->method('dispatch')
 			->with($this->equalTo($beforeEvent), $this->equalTo('user.beforelogin'));
 
-		$this->invokePrivate($userSession, 'loginUser', [$iUser, 'bar', 'authModuleClassname']);
+		self::invokePrivate($userSession, 'loginUser', [$iUser, 'bar', 'authModuleClassname']);
 	}
 }

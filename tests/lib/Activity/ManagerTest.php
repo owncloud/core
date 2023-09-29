@@ -45,8 +45,8 @@ class ManagerTest extends TestCase {
 			$this->config
 		);
 
-		$this->assertSame([], $this->invokePrivate($this->activityManager, 'getConsumers'));
-		$this->assertSame([], $this->invokePrivate($this->activityManager, 'getExtensions'));
+		$this->assertSame([], self::invokePrivate($this->activityManager, 'getConsumers'));
+		$this->assertSame([], self::invokePrivate($this->activityManager, 'getExtensions'));
 
 		$this->activityManager->registerConsumer(function () {
 			return new NoOpConsumer();
@@ -58,14 +58,14 @@ class ManagerTest extends TestCase {
 			return new SimpleExtension();
 		});
 
-		$this->assertNotEmpty($this->invokePrivate($this->activityManager, 'getConsumers'));
-		$this->assertNotEmpty($this->invokePrivate($this->activityManager, 'getConsumers'));
-		$this->assertNotEmpty($this->invokePrivate($this->activityManager, 'getExtensions'));
-		$this->assertNotEmpty($this->invokePrivate($this->activityManager, 'getExtensions'));
+		$this->assertNotEmpty(self::invokePrivate($this->activityManager, 'getConsumers'));
+		$this->assertNotEmpty(self::invokePrivate($this->activityManager, 'getConsumers'));
+		$this->assertNotEmpty(self::invokePrivate($this->activityManager, 'getExtensions'));
+		$this->assertNotEmpty(self::invokePrivate($this->activityManager, 'getExtensions'));
 	}
 
 	public function testGetConsumers() {
-		$consumers = $this->invokePrivate($this->activityManager, 'getConsumers');
+		$consumers = self::invokePrivate($this->activityManager, 'getConsumers');
 
 		$this->assertNotEmpty($consumers);
 	}
@@ -79,11 +79,11 @@ class ManagerTest extends TestCase {
 			return new \stdClass();
 		});
 
-		$this->invokePrivate($this->activityManager, 'getConsumers');
+		self::invokePrivate($this->activityManager, 'getConsumers');
 	}
 
 	public function testGetExtensions() {
-		$extensions = $this->invokePrivate($this->activityManager, 'getExtensions');
+		$extensions = self::invokePrivate($this->activityManager, 'getExtensions');
 
 		$this->assertNotEmpty($extensions);
 	}
@@ -97,7 +97,7 @@ class ManagerTest extends TestCase {
 			return new \stdClass();
 		});
 
-		$this->invokePrivate($this->activityManager, 'getExtensions');
+		self::invokePrivate($this->activityManager, 'getExtensions');
 	}
 
 	public function testNotificationTypes() {

@@ -80,8 +80,8 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		// clear occasional leftover shares from other tests
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*share`');
 
-		$this->user1 = $this->getUniqueID('user1_');
-		$this->user2 = $this->getUniqueID('user2_');
+		$this->user1 = self::getUniqueID('user1_');
+		$this->user2 = self::getUniqueID('user2_');
 
 		$userManager = \OC::$server->getUserManager();
 		$userManager->createUser($this->user1, 'pass');

@@ -86,7 +86,7 @@ class FilesystemTest extends TestCase {
 		parent::setUp();
 		$this->createUser(self::TEST_FILESYSTEM_USER1, self::TEST_FILESYSTEM_USER1);
 		$this->createUser(self::TEST_FILESYSTEM_USER2, self::TEST_FILESYSTEM_USER2);
-		$this->loginAsUser();
+		self::loginAsUser();
 	}
 
 	protected function tearDown(): void {
@@ -94,8 +94,8 @@ class FilesystemTest extends TestCase {
 			\OC_Helper::rmdirr($dir);
 		}
 
-		$this->logout();
-		$this->invokePrivate('\OC\Files\Filesystem', 'normalizedPathCache', [null]);
+		self::logout();
+		self::invokePrivate('\OC\Files\Filesystem', 'normalizedPathCache', [null]);
 		\OC_User::clearBackends();
 		parent::tearDown();
 	}
@@ -392,7 +392,7 @@ class FilesystemTest extends TestCase {
 	public function testLocalMountWhenUserDoesNotExist() {
 		$this->expectException(\OC\User\NoUserException::class);
 
-		$userId = $this->getUniqueID('user_');
+		$userId = self::getUniqueID('user_');
 
 		Filesystem::initMountPoints($userId);
 	}
@@ -425,7 +425,7 @@ class FilesystemTest extends TestCase {
 	 */
 	public function testLocalMountWhenUserDoesNotExistTwice() {
 		$thrown = 0;
-		$userId = $this->getUniqueID('user_');
+		$userId = self::getUniqueID('user_');
 
 		try {
 			Filesystem::initMountPoints($userId);
@@ -443,8 +443,8 @@ class FilesystemTest extends TestCase {
 	}
 
 	public function testUserNameCasing() {
-		$this->logout();
-		$userId = $this->getUniqueID('user_');
+		self::logout();
+		$userId = self::getUniqueID('user_');
 		$this->createUser($userId);
 
 		$view = new View();
@@ -466,7 +466,7 @@ class FilesystemTest extends TestCase {
 	 * Tests that the home storage is used for the user's mount point
 	 */
 	public function testHomeMount() {
-		$userId = $this->getUniqueID('user_');
+		$userId = self::getUniqueID('user_');
 
 		\OC::$server->getUserManager()->createUser($userId, $userId);
 
@@ -498,7 +498,7 @@ class FilesystemTest extends TestCase {
 	 * Test that the default cache dir is part of the user's home
 	 */
 	public function testMountDefaultCacheDir() {
-		$userId = $this->getUniqueID('user_');
+		$userId = self::getUniqueID('user_');
 		$config = \OC::$server->getConfig();
 		$oldCachePath = $config->getSystemValue('cache_path', '');
 		// no cache path configured
@@ -527,7 +527,7 @@ class FilesystemTest extends TestCase {
 	 * the user's home
 	 */
 	public function testMountExternalCacheDir() {
-		$userId = $this->getUniqueID('user_');
+		$userId = self::getUniqueID('user_');
 
 		$config = \OC::$server->getConfig();
 		$oldCachePath = $config->getSystemValue('cache_path', '');

@@ -195,7 +195,7 @@ class NotificationsTest extends \Test\TestCase {
 			)
 			->willReturn($responseMock);
 		$this->httpClientService->method('newClient')->willReturn($clientMock);
-		$this->invokePrivate(
+		self::invokePrivate(
 			$notifications,
 			'tryHttpPostToShareEndpoint',
 			[
@@ -238,7 +238,7 @@ class NotificationsTest extends \Test\TestCase {
 			->willReturn($allowHttpFallback);
 
 		try {
-			$result = $this->invokePrivate(
+			$result = self::invokePrivate(
 				$notifications,
 				'tryHttpPostToShareEndpoint',
 				[

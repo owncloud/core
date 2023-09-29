@@ -38,7 +38,7 @@ class FedAuthTest extends TestCase {
 		$db = $this->getMockBuilder('OCA\Federation\DbHandler')->disableOriginalConstructor()->getMock();
 		$db->method('auth')->willReturn(true);
 		$auth = new FedAuth($db);
-		$result = $this->invokePrivate($auth, 'validateUserPass', [$user, $password]);
+		$result = self::invokePrivate($auth, 'validateUserPass', [$user, $password]);
 		$this->assertEquals($expected, $result);
 	}
 

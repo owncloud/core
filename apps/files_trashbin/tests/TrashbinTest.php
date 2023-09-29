@@ -582,6 +582,6 @@ class TrashbinTest extends TestCase {
 		$sourceStorage->expects($this->once())
 			->method('deleteAllFileKeys')
 			->with('//files/file1.txt');
-		$this->invokePrivate(Trashbin::class, 'retainVersions', ['file1.txt', 'test-trashbin-user1', 'file1.txt', 1529567106, $sourceStorage]);
+		self::invokePrivate(Trashbin::class, 'retainVersions', ['file1.txt', 'test-trashbin-user1', 'file1.txt', 1529567106, $sourceStorage]);
 	}
 }

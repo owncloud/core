@@ -251,7 +251,7 @@ class AddressBookImplTest extends TestCase {
 		$vCard->add(new Text($vCard, 'UID', 'uid'));
 		$vCardSerialized = $vCard->serialize();
 
-		$result = $this->invokePrivate($this->addressBookImpl, 'readCard', [$vCardSerialized]);
+		$result = self::invokePrivate($this->addressBookImpl, 'readCard', [$vCardSerialized]);
 		$resultSerialized = $result->serialize();
 
 		$this->assertSame($vCardSerialized, $resultSerialized);
@@ -289,7 +289,7 @@ class AddressBookImplTest extends TestCase {
 
 		$this->assertSame(
 			'uid1',
-			$this->invokePrivate($addressBookImpl, 'createUid', [])
+			self::invokePrivate($addressBookImpl, 'createUid', [])
 		);
 	}
 
@@ -299,7 +299,7 @@ class AddressBookImplTest extends TestCase {
 		$expectedVCard->UID = $uid;
 		$expectedVCardSerialized = $expectedVCard->serialize();
 
-		$result = $this->invokePrivate($this->addressBookImpl, 'createEmptyVCard', [$uid]);
+		$result = self::invokePrivate($this->addressBookImpl, 'createEmptyVCard', [$uid]);
 		$resultSerialized = $result->serialize();
 
 		$this->assertSame($expectedVCardSerialized, $resultSerialized);

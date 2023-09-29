@@ -149,6 +149,6 @@ class MetaDataTest extends \Test\TestCase {
 			->will($this->returnValue(['DummyValue']));
 
 		$expected = ['DummyValue'];
-		$this->assertSame($expected, $this->invokePrivate($this->groupMetadata, 'getGroups', ['Foo']));
+		$this->assertSame($expected, self::invokePrivate($this->groupMetadata, 'getGroups', ['Foo']));
 	}
 }
