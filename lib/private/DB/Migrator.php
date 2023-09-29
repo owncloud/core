@@ -28,8 +28,7 @@
 namespace OC\DB;
 
 use Doctrine\DBAL\Schema\AbstractAsset;
-use \Doctrine\DBAL\Schema\Index;
-use \Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use \Doctrine\DBAL\Schema\Schema;
 use \Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Types\StringType;
@@ -175,14 +174,18 @@ class Migrator {
 
 		$schemaDiff = $this->getDiff($targetSchema, $connection);
 
-		$connection->beginTransaction();
+		if (!$connection->getDatabasePlatform() instanceof MySqlPlatform) {
+			$connection->beginTransaction();
+		}
 		$sqls = $schemaDiff->toSql($connection->getDatabasePlatform());
 		$step = 0;
 		foreach ($sqls as $sql) {
 			$this->emit($sql, $step++, \count($sqls));
-			$connection->query($sql);
+			$connection->executeQuery($sql);
 		}
-		$connection->commit();
+		if (!$connection->getDatabasePlatform() instanceof MySQLPlatform) {
+			$connection->commit();
+		}
 	}
 
 	/**

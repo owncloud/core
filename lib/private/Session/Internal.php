@@ -70,7 +70,7 @@ class Internal extends Session {
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function get($key) {
+	public function get(string $key): mixed {
 		if (!$this->exists($key)) {
 			return null;
 		}
@@ -102,7 +102,7 @@ class Internal extends Session {
 		$_SESSION = [];
 	}
 
-	public function close() {
+	public function close(): void {
 		\session_write_close();
 		parent::close();
 	}
