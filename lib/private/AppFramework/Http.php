@@ -30,15 +30,15 @@ namespace OC\AppFramework;
 use OCP\AppFramework\Http as BaseHttp;
 
 class Http extends BaseHttp {
-	private $server;
-	private $protocolVersion;
-	protected $headers;
+	private array $server;
+	private string $protocolVersion;
+	protected array $headers;
 
 	/**
 	 * @param array $server $_SERVER
 	 * @param string $protocolVersion the http version to use defaults to HTTP/1.1
 	 */
-	public function __construct($server, $protocolVersion='HTTP/1.1') {
+	public function __construct(array $server, string $protocolVersion='HTTP/1.1') {
 		$this->server = $server;
 		$this->protocolVersion = $protocolVersion;
 
@@ -107,16 +107,17 @@ class Http extends BaseHttp {
 
 	/**
 	 * Gets the correct header
+	 *
 	 * @param Http::CONSTANT $status the constant from the Http class
-	 * @param \DateTime $lastModified formatted last modified date
-	 * @param string $ETag the etag
+	 * @param \DateTime|null $lastModified formatted last modified date
+	 * @param null $ETag the etag
 	 * @return string
 	 */
 	public function getStatusHeader(
 		$status,
 		\DateTime $lastModified=null,
 		$ETag=null
-	) {
+	): string {
 		if ($lastModified !== null) {
 			$lastModified = $lastModified->format(\DateTime::RFC2822);
 		}
@@ -135,7 +136,7 @@ class Http extends BaseHttp {
 
 		// we have one change currently for the http 1.0 header that differs
 		// from 1.1: STATUS_TEMPORARY_REDIRECT should be STATUS_FOUND
-		// if this differs any more, we want to create childclasses for this
+		// if this differs anymore, we want to create child-classes for this
 		if ($status === self::STATUS_TEMPORARY_REDIRECT
 			&& $this->protocolVersion === 'HTTP/1.0') {
 			$status = self::STATUS_FOUND;
