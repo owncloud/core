@@ -67,7 +67,7 @@ interface IRequest {
 	 * @return string|null
 	 * @since 6.0.0
 	 */
-	public function getHeader($name);
+	public function getHeader(string $name): ?string;
 
 	/**
 	 * Lets you access post and get parameters by the index

@@ -153,7 +153,7 @@ class Dispatcher {
 				(
 					$this->request->method === 'GET' ||
 					\strpos(
-						$this->request->getHeader('Content-Type'),
+						$this->request->getHeader('Content-Type') ?? '',
 						'application/x-www-form-urlencoded'
 					) !== false
 				)
@@ -175,7 +175,7 @@ class Dispatcher {
 
 			// if none is given try the first Accept header
 			if ($format === null) {
-				$headers = $this->request->getHeader('Accept');
+				$headers = $this->request->getHeader('Accept') ?? '';
 				$format = $controller->getResponderByHTTPHeader($headers);
 			}
 

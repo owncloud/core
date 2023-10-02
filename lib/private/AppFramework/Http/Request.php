@@ -292,7 +292,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @param string $name
 	 * @return string|null
 	 */
-	public function getHeader($name) {
+	public function getHeader(string $name): ?string {
 		$name = \strtoupper(\str_replace(['-'], ['_'], $name));
 		if (isset($this->server['HTTP_' . $name])) {
 			return $this->server['HTTP_' . $name];
@@ -391,8 +391,8 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		if ($this->method === 'PUT'
 			&& $this->getHeader('Content-Length') !== 0
 			&& $this->getHeader('Content-Length') !== null
-			&& \strpos($this->getHeader('Content-Type'), 'application/x-www-form-urlencoded') === false
-			&& \strpos($this->getHeader('Content-Type'), 'application/json') === false
+			&& \strpos($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded') === false
+			&& \strpos($this->getHeader('Content-Type') ?? '', 'application/json') === false
 		) {
 			if ($this->content === false) {
 				throw new \LogicException(
@@ -431,7 +431,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			// or post correctly
 		} elseif ($this->method !== 'GET'
 				&& $this->method !== 'POST'
-				&& \strpos($this->getHeader('Content-Type'), 'application/x-www-form-urlencoded') !== false) {
+				&& \strpos($this->getHeader('Content-Type') ?? '', 'application/x-www-form-urlencoded') !== false) {
 			\parse_str(\file_get_contents($this->inputStream), $params);
 			if (\is_array($params)) {
 				$this->items['params'] = $params;
