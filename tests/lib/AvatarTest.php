@@ -11,18 +11,22 @@
 
 namespace Test;
 
+use OC;
 use OC\Avatar;
 use OC\User\User;
+use OC_Image;
+use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IStorage;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IL10N;
 use OCP\ILogger;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class AvatarTest extends \Test\TestCase {
-	/** @var IStorage | \PHPUnit\Framework\MockObject\MockObject */
+class AvatarTest extends TestCase {
+	/** @var IStorage | MockObject */
 	private $storage;
 
-	/** @var \OC\User\User | \PHPUnit\Framework\MockObject\MockObject $user */
+	/** @var User | MockObject $user */
 	private $user;
 
 	public function setUp(): void {
@@ -54,6 +58,7 @@ class AvatarTest extends \Test\TestCase {
 	}
 
 	public function testGetNoAvatar(): void {
+		$this->user->method('getUID')->willReturn('user1');
 		$avatar = $this->mockAvatar();
 		$this->assertFalse($avatar->get());
 	}
@@ -65,10 +70,11 @@ class AvatarTest extends \Test\TestCase {
 				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.128.jpg', true],
 			]);
 
-		$expected = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
+		$expected = new OC_Image(OC::$SERVERROOT . '/tests/data/testavatar.png');
 
 		$this->storage->method('file_get_contents')->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.128.jpg')->willReturn($expected->data());
 
+		$this->user->method('getUID')->willReturn('');
 		$avatar = $this->mockAvatar();
 		$this->assertEquals($expected->data(), $avatar->get(128)->data());
 	}
@@ -79,10 +85,11 @@ class AvatarTest extends \Test\TestCase {
 				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],
 			]);
 
-		$expected = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
+		$expected = new OC_Image(OC::$SERVERROOT . '/tests/data/testavatar.png');
 
 		$this->storage->method('file_get_contents')->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg')->willReturn($expected->data());
 
+		$this->user->method('getUID')->willReturn('');
 		$avatar = $this->mockAvatar();
 		$this->assertEquals($expected->data(), $avatar->get(-1)->data());
 	}
@@ -94,8 +101,8 @@ class AvatarTest extends \Test\TestCase {
 				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png', false],
 			]);
 
-		$expected = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
-		$expected2 = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
+		$expected = new OC_Image(OC::$SERVERROOT . '/tests/data/testavatar.png');
+		$expected2 = new OC_Image(OC::$SERVERROOT . '/tests/data/testavatar.png');
 		$expected2->resize(32);
 
 		$this->storage->method('file_get_contents')
@@ -106,18 +113,20 @@ class AvatarTest extends \Test\TestCase {
 				if ($path === 'avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png') {
 					return $expected2->data();
 				}
-				throw new \OCP\Files\NotFoundException();
+				throw new NotFoundException();
 			});
 
 		$this->storage->expects($this->once())
 			->method('file_put_contents')
 			->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.32.png', $expected2->data());
 
+		$this->user->method('getUID')->willReturn('');
 		$avatar = $this->mockAvatar();
 		$this->assertEquals($expected2->data(), $avatar->get(32)->data());
 	}
 
 	public function testExistsNo(): void {
+		$this->user->method('getUID')->willReturn('');
 		$avatar = $this->mockAvatar();
 		$this->assertFalse($avatar->exists());
 	}
@@ -128,6 +137,7 @@ class AvatarTest extends \Test\TestCase {
 				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],
 				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', false],
 			]);
+		$this->user->method('getUID')->willReturn('');
 		$avatar = $this->mockAvatar();
 		$this->assertTrue($avatar->exists());
 	}
@@ -138,6 +148,7 @@ class AvatarTest extends \Test\TestCase {
 				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', false],
 				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', true],
 			]);
+		$this->user->method('getUID')->willReturn('');
 		$avatar = $this->mockAvatar();
 		$this->assertTrue($avatar->exists());
 	}
@@ -145,6 +156,7 @@ class AvatarTest extends \Test\TestCase {
 	public function testExistsStorageNotAvailable(): void {
 		$this->storage->method('file_exists')
 			->willThrowException(new StorageNotAvailableException());
+		$this->user->method('getUID')->willReturn('');
 		$avatar = $this->mockAvatar();
 		$this->assertFalse($avatar->exists());
 	}
@@ -153,21 +165,22 @@ class AvatarTest extends \Test\TestCase {
 		$this->storage->expects($this->once())->method('rmdir')
 			->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e');
 
-		$image = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
+		$image = new OC_Image(OC::$SERVERROOT . '/tests/data/testavatar.png');
 		$this->storage->method('file_put_contents')
 			->with('avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.png', $image->data());
 
 		// One on remove and once on setting the new avatar
 		$this->user->expects($this->exactly(2))->method('triggerChange');
 
+		$this->user->method('getUID')->willReturn('');
 		$avatar = $this->mockAvatar();
 		$avatar->set($image->data());
 	}
 
 	private function mockAvatar(): Avatar {
-		/** @var \OCP\IL10N | \PHPUnit\Framework\MockObject\MockObject $l */
+		/** @var IL10N | MockObject $l */
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')->will($this->returnArgument(0));
-		return new \OC\Avatar($this->storage, $l, $this->user, $this->createMock(ILogger::class));
+		return new Avatar($this->storage, $l, $this->user, $this->createMock(ILogger::class));
 	}
 }

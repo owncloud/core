@@ -21,8 +21,11 @@
  */
 namespace Test\Share20;
 
+use DateTime;
+use OC;
 use OC\Authentication\Token\DefaultTokenMapper;
 use OC\Share20\DefaultShareProvider;
+use OC\Share20\Exception\ProviderException;
 use OC\Share20\ShareAttributes;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\File;
@@ -34,8 +37,15 @@ use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share;
+use OCP\Share\Exceptions\ShareNotFound;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 use OCP\Share\IShare;
+use function basename;
+use function count;
+use function md5;
+use function range;
+use function strval;
 
 /**
  * Class DefaultShareProviderTest
@@ -47,20 +57,20 @@ class DefaultShareProviderTest extends TestCase {
 	/** @var IDBConnection */
 	protected $dbConn;
 
-	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserManager | MockObject */
 	protected $userManager;
 
-	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IGroupManager | MockObject */
 	protected $groupManager;
 
-	/** @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IRootFolder | MockObject */
 	protected $rootFolder;
 
 	/** @var DefaultShareProvider */
 	protected $provider;
 
 	public function setUp(): void {
-		$this->dbConn = \OC::$server->getDatabaseConnection();
+		$this->dbConn = OC::$server->getDatabaseConnection();
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->rootFolder = $this->createMock(IRootFolder::class);
@@ -173,8 +183,8 @@ class DefaultShareProviderTest extends TestCase {
 	/**
 	 * @dataProvider getShareByIdNotExistProvider
 	 */
-	public function testGetShareByIdNotExist($shareId) {
-		$this->expectException(\OCP\Share\Exceptions\ShareNotFound::class);
+	public function testGetShareByIdNotExist($shareId): void {
+		$this->expectException(ShareNotFound::class);
 
 		$this->provider->getShareById($shareId);
 	}
@@ -456,7 +466,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals($ownerPath, $share->getNode());
 		$this->assertEquals(13, $share->getPermissions());
 		$this->assertEquals('token', $share->getToken());
-		$this->assertEquals(\DateTime::createFromFormat('Y-m-d H:i:s', '2000-01-02 00:00:00'), $share->getExpirationDate());
+		$this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2000-01-02 00:00:00'), $share->getExpirationDate());
 		$this->assertEquals('myTarget', $share->getTarget());
 		$this->assertEquals('some_name', $share->getName());
 	}
@@ -731,7 +741,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('shareOwner', $share2->getShareOwner());
 		$this->assertSame(1, $share2->getPermissions());
 		$this->assertSame('/target', $share2->getTarget());
-		$this->assertLessThanOrEqual(new \DateTime(), $share2->getShareTime());
+		$this->assertLessThanOrEqual(new DateTime(), $share2->getShareTime());
 		$this->assertSame($path, $share2->getNode());
 		$this->assertSame(
 			[
@@ -794,7 +804,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('shareOwner', $share2->getShareOwner());
 		$this->assertSame(1, $share2->getPermissions());
 		$this->assertSame('/target', $share2->getTarget());
-		$this->assertLessThanOrEqual(new \DateTime(), $share2->getShareTime());
+		$this->assertLessThanOrEqual(new DateTime(), $share2->getShareTime());
 		$this->assertSame($path, $share2->getNode());
 		$this->assertSame(
 			[
@@ -842,7 +852,7 @@ class DefaultShareProviderTest extends TestCase {
 		$share->setPassword('password');
 		$share->setToken('token');
 		$share->setName('some_name');
-		$expireDate = new \DateTime();
+		$expireDate = new DateTime();
 		$share->setExpirationDate($expireDate);
 		$share->setTarget('/target');
 
@@ -855,12 +865,12 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('shareOwner', $share2->getShareOwner());
 		$this->assertSame(1, $share2->getPermissions());
 		$this->assertSame('/target', $share2->getTarget());
-		$this->assertLessThanOrEqual(new \DateTime(), $share2->getShareTime());
+		$this->assertLessThanOrEqual(new DateTime(), $share2->getShareTime());
 		$this->assertSame($path, $share2->getNode());
 		$this->assertSame('password', $share2->getPassword());
 		$this->assertSame('token', $share2->getToken());
 		$this->assertSame('some_name', $share2->getName());
-		$this->assertEquals($expireDate->format(\DateTime::ISO8601), $share2->getExpirationDate()->format(\DateTime::ISO8601));
+		$this->assertEquals($expireDate->format(DateTime::ISO8601), $share2->getExpirationDate()->format(DateTime::ISO8601));
 
 		$share->setName(null);
 		$share2 = $this->provider->create($share);
@@ -904,7 +914,7 @@ class DefaultShareProviderTest extends TestCase {
 	/**
 	 */
 	public function testGetShareByTokenNotFound() {
-		$this->expectException(\OCP\Share\Exceptions\ShareNotFound::class);
+		$this->expectException(ShareNotFound::class);
 
 		$this->provider->getShareByToken('invalidtoken');
 	}
@@ -925,8 +935,8 @@ class DefaultShareProviderTest extends TestCase {
 			->values([
 				'storage' => $qb->expr()->literal($storage),
 				'path' => $qb->expr()->literal($path),
-				'path_hash' => $qb->expr()->literal(\md5($path)),
-				'name' => $qb->expr()->literal(\basename($path)),
+				'path_hash' => $qb->expr()->literal(md5($path)),
+				'name' => $qb->expr()->literal(basename($path)),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		return $qb->getLastInsertId();
@@ -1031,7 +1041,7 @@ class DefaultShareProviderTest extends TestCase {
 		$id = $qb->getLastInsertId();
 
 		$groups = [];
-		foreach (\range(0, 100) as $i) {
+		foreach (range(0, 100) as $i) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups[] = $group;
@@ -1088,7 +1098,7 @@ class DefaultShareProviderTest extends TestCase {
 				'file_source' => $qb->expr()->literal($fileId),
 				'file_target' => $qb->expr()->literal('myTarget'),
 				'permissions' => $qb->expr()->literal(7),
-				'accepted' => $qb->expr()->literal(\OCP\Share::STATE_ACCEPTED),
+				'accepted' => $qb->expr()->literal(Share::STATE_ACCEPTED),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		$id = $qb->getLastInsertId();
@@ -1107,7 +1117,7 @@ class DefaultShareProviderTest extends TestCase {
 				'file_source' => $qb->expr()->literal($fileId),
 				'file_target' => $qb->expr()->literal('wrongTarget'),
 				'permissions' => $qb->expr()->literal(31),
-				'accepted' => $qb->expr()->literal(\OCP\Share::STATE_ACCEPTED),
+				'accepted' => $qb->expr()->literal(Share::STATE_ACCEPTED),
 				'parent' => $qb->expr()->literal($id),
 			]);
 		$this->assertEquals(1, $qb->execute());
@@ -1126,7 +1136,7 @@ class DefaultShareProviderTest extends TestCase {
 				'file_source' => $qb->expr()->literal($fileId),
 				'file_target' => $qb->expr()->literal('userTarget'),
 				'permissions' => $qb->expr()->literal(31),
-				'accepted' => $qb->expr()->literal(\OCP\Share::STATE_REJECTED),
+				'accepted' => $qb->expr()->literal(Share::STATE_REJECTED),
 				'parent' => $qb->expr()->literal($id),
 			]);
 		$this->assertEquals(1, $qb->execute());
@@ -1164,7 +1174,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('sharedBy', $share->getSharedBy());
 		$this->assertSame(Share::SHARE_TYPE_GROUP, $share->getShareType());
 		$this->assertSame(7, $share->getPermissions(), 'resolved group share takes permission of parent');
-		$this->assertSame(\OCP\Share::STATE_REJECTED, $share->getState());
+		$this->assertSame(Share::STATE_REJECTED, $share->getState());
 		$this->assertSame('userTarget', $share->getTarget());
 	}
 
@@ -1725,7 +1735,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->rootFolder->method('getById')->with($deletedFileId)->willReturn([$file]);
 
 		$groups = [];
-		foreach (\range(0, 100) as $i) {
+		foreach (range(0, 100) as $i) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups[] = $group;
@@ -2172,7 +2182,7 @@ class DefaultShareProviderTest extends TestCase {
 	/**
 	 */
 	public function testDeleteFromSelfGroupUserNotInGroup() {
-		$this->expectException(\OC\Share20\Exception\ProviderException::class);
+		$this->expectException(ProviderException::class);
 		$this->expectExceptionMessage('Recipient not in receiving group');
 
 		$qb = $this->dbConn->getQueryBuilder();
@@ -2218,13 +2228,13 @@ class DefaultShareProviderTest extends TestCase {
 	/**
 	 */
 	public function testDeleteFromSelfGroupDoesNotExist() {
-		$this->expectException(\OC\Share20\Exception\ProviderException::class);
+		$this->expectException(ProviderException::class);
 		$this->expectExceptionMessage('Group "group" does not exist');
 
 		$qb = $this->dbConn->getQueryBuilder();
 		$stmt = $qb->insert('share')
 			->values([
-				'share_type'    => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_GROUP),
+				'share_type'    => $qb->expr()->literal(Share::SHARE_TYPE_GROUP),
 				'share_with'    => $qb->expr()->literal('group'),
 				'uid_owner'     => $qb->expr()->literal('user1'),
 				'uid_initiator' => $qb->expr()->literal('user1'),
@@ -2247,7 +2257,7 @@ class DefaultShareProviderTest extends TestCase {
 
 		$this->groupManager->method('get')->with('group')->willReturn(null);
 
-		$file = $this->createMock(\OCP\Files\File::class);
+		$file = $this->createMock(File::class);
 		$file->method('getId')->willReturn(1);
 
 		$this->rootFolder->method('getUserFolder')->with('user1')->will($this->returnSelf());
@@ -2310,7 +2320,7 @@ class DefaultShareProviderTest extends TestCase {
 	/**
 	 */
 	public function testDeleteFromSelfUserNotRecipient() {
-		$this->expectException(\OC\Share20\Exception\ProviderException::class);
+		$this->expectException(ProviderException::class);
 		$this->expectExceptionMessage('Recipient does not match');
 
 		$qb = $this->dbConn->getQueryBuilder();
@@ -2352,7 +2362,7 @@ class DefaultShareProviderTest extends TestCase {
 	/**
 	 */
 	public function testDeleteFromSelfLink() {
-		$this->expectException(\OC\Share20\Exception\ProviderException::class);
+		$this->expectException(ProviderException::class);
 		$this->expectExceptionMessage('Invalid share type 3');
 
 		$qb = $this->dbConn->getQueryBuilder();
@@ -2390,11 +2400,11 @@ class DefaultShareProviderTest extends TestCase {
 	/**
 	 */
 	public function testUpdateForRecipientWrongType() {
-		$this->expectException(\OC\Share20\Exception\ProviderException::class);
+		$this->expectException(ProviderException::class);
 		$this->expectExceptionMessage('Can\'t update share of recipient for share type 3');
 
 		$share = $this->createMock(IShare::class);
-		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
+		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
 
 		$this->provider->updateForRecipient($share, 'recipient1');
 	}
@@ -2674,7 +2684,7 @@ class DefaultShareProviderTest extends TestCase {
 			null,
 			null,
 			null,
-			\OCP\Share::STATE_PENDING
+			Share::STATE_PENDING
 		);
 
 		$id2 = $this->addShareToDB(
@@ -2690,7 +2700,7 @@ class DefaultShareProviderTest extends TestCase {
 			null,
 			$id,
 			null,
-			\OCP\Share::STATE_ACCEPTED
+			Share::STATE_ACCEPTED
 		);
 
 		$id3 = $this->addShareToDB(
@@ -2706,7 +2716,7 @@ class DefaultShareProviderTest extends TestCase {
 			null,
 			$id,
 			null,
-			\OCP\Share::STATE_REJECTED
+			Share::STATE_REJECTED
 		);
 
 		$users = [];
@@ -2780,13 +2790,13 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('user4', $shares[0]['uid_initiator']);
 		$this->assertSame('user5', $shares[0]['uid_owner']);
 		$this->assertSame(1, (int)$shares[0]['permissions']);
-		$this->assertSame(\OCP\Share::STATE_ACCEPTED, (int)$shares[0]['accepted']);
+		$this->assertSame(Share::STATE_ACCEPTED, (int)$shares[0]['accepted']);
 
 		$this->assertSame('user3', $shares[1]['share_with']);
 		$this->assertSame('user4', $shares[1]['uid_initiator']);
 		$this->assertSame('user5', $shares[1]['uid_owner']);
 		$this->assertSame(1, (int)$shares[1]['permissions'], 'permissions adjusted from 0 to updated value from parent');
-		$this->assertSame(\OCP\Share::STATE_REJECTED, (int)$shares[1]['accepted']);
+		$this->assertSame(Share::STATE_REJECTED, (int)$shares[1]['accepted']);
 
 		$stmt->closeCursor();
 	}
@@ -2901,10 +2911,10 @@ class DefaultShareProviderTest extends TestCase {
 
 	public function providesShareStateChanges() {
 		return [
-			[\OCP\Share::STATE_PENDING, \OCP\Share::STATE_ACCEPTED],
-			[\OCP\Share::STATE_PENDING, \OCP\Share::STATE_REJECTED],
-			[\OCP\Share::STATE_ACCEPTED, \OCP\Share::STATE_REJECTED],
-			[\OCP\Share::STATE_REJECTED, \OCP\Share::STATE_ACCEPTED],
+			[Share::STATE_PENDING, Share::STATE_ACCEPTED],
+			[Share::STATE_PENDING, Share::STATE_REJECTED],
+			[Share::STATE_ACCEPTED, Share::STATE_REJECTED],
+			[Share::STATE_REJECTED, Share::STATE_ACCEPTED],
 		];
 	}
 
@@ -2928,7 +2938,7 @@ class DefaultShareProviderTest extends TestCase {
 			null,
 			null,
 			null,
-			\OCP\Share::STATE_PENDING
+			Share::STATE_PENDING
 		);
 
 		$id2 = $this->addShareToDB(
