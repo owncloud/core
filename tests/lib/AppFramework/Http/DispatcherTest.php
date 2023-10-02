@@ -147,13 +147,8 @@ class DispatcherTest extends \Test\TestCase {
 		$this->etag = 'hi';
 	}
 
-	/**
-	 * @param string $out
-	 * @param string $httpHeaders
-	 */
 	private function setMiddlewareExpectations(
 		$out=null,
-		$httpHeaders=null,
 		$responseHeaders= [],
 		$ex=false,
 		$catchEx=true
@@ -221,7 +216,7 @@ class DispatcherTest extends \Test\TestCase {
 				$this->equalTo($this->lastModified),
 				$this->equalTo($this->etag)
 			)
-			->willReturn($httpHeaders);
+			->willReturn('Http');
 
 		$this->middlewareDispatcher->expects($this->once())
 			->method('afterController')
@@ -258,7 +253,7 @@ class DispatcherTest extends \Test\TestCase {
 			$this->controller,
 			$this->controllerMethod
 		);
-		$this->assertNull($response[0]);
+		$this->assertEquals('Http', $response[0]);
 		$this->assertEquals([], $response[1]);
 		$this->assertNull($response[2]);
 	}
@@ -267,7 +262,7 @@ class DispatcherTest extends \Test\TestCase {
 		$out = 'yo';
 		$httpHeaders = 'Http';
 		$responseHeaders = ['hell' => 'yeah'];
-		$this->setMiddlewareExpectations($out, $httpHeaders, $responseHeaders);
+		$this->setMiddlewareExpectations($out, $responseHeaders);
 
 		$response = $this->dispatcher->dispatch(
 			$this->controller,
@@ -283,7 +278,7 @@ class DispatcherTest extends \Test\TestCase {
 		$out = 'yo';
 		$httpHeaders = 'Http';
 		$responseHeaders = ['hell' => 'yeah'];
-		$this->setMiddlewareExpectations($out, $httpHeaders, $responseHeaders, true);
+		$this->setMiddlewareExpectations($out, $responseHeaders, true);
 
 		$response = $this->dispatcher->dispatch(
 			$this->controller,
@@ -297,9 +292,8 @@ class DispatcherTest extends \Test\TestCase {
 
 	public function testExceptionThrowsIfCanNotBeHandledByAfterException(): void {
 		$out = 'yo';
-		$httpHeaders = 'Http';
 		$responseHeaders = ['hell' => 'yeah'];
-		$this->setMiddlewareExpectations($out, $httpHeaders, $responseHeaders, true, false);
+		$this->setMiddlewareExpectations($out, $responseHeaders, true, false);
 
 		$this->expectException('\Exception');
 		$response = $this->dispatcher->dispatch(

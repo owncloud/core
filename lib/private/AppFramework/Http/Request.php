@@ -586,8 +586,8 @@ class Request implements ArrayAccess, Countable, IRequest {
 	 *
 	 * @return string HTTP protocol. HTTP/2, HTTP/1.1 or HTTP/1.0.
 	 */
-	public function getHttpProtocol() {
-		$claimedProtocol = \strtoupper($this->server['SERVER_PROTOCOL']);
+	public function getHttpProtocol(): string {
+		$claimedProtocol = \strtoupper($this->server['SERVER_PROTOCOL'] ?? 'HTTP/1.1');
 
 		$validProtocols = [
 			'HTTP/1.0',
@@ -658,18 +658,18 @@ class Request implements ArrayAccess, Countable, IRequest {
 
 		// strip off the script name's dir and file name
 		// FIXME: Sabre does not really belong here
-		list($path, $name) = \Sabre\Uri\split($scriptName);
+		[$path, $name] = \Sabre\Uri\split($scriptName);
 		if (!empty($path)) {
-			if ($path === $pathInfo || \strpos($pathInfo, $path.'/') === 0) {
+			if ($path === $pathInfo || str_starts_with($pathInfo, $path . '/')) {
 				$pathInfo = \substr($pathInfo, \strlen($path));
 			} else {
 				throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$scriptName')");
 			}
 		}
-		if (\strpos($pathInfo, "/$name") === 0) {
-			$pathInfo = \substr($pathInfo, \strlen($name) + 1);
+		if (str_starts_with($pathInfo, "/$name")) {
+			$pathInfo = \substr($pathInfo, \strlen($name ?? '') + 1);
 		}
-		if (\is_string($name) && \strpos($pathInfo, $name) === 0) {
+		if (\is_string($name) && str_starts_with($pathInfo, $name)) {
 			$pathInfo = \substr($pathInfo, \strlen($name));
 		}
 

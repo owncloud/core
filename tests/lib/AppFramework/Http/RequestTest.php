@@ -1283,7 +1283,7 @@ class RequestTest extends TestCase {
 	 * @param string $expectedGetPathInfo
 	 * @param string $expectedGetRawPathInfo
 	 */
-	public function testGetRawPathInfoWithoutSetEnvGeneric($requestUri, $scriptName, $expectedGetPathInfo, $expectedGetRawPathInfo) {
+	public function testGetRawPathInfoWithoutSetEnvGeneric($requestUri, $scriptName, $expectedGetPathInfo, $expectedGetRawPathInfo): void {
 		if ($expectedGetRawPathInfo === '') {
 			$expected = $expectedGetPathInfo;
 		} else {
@@ -1354,7 +1354,7 @@ class RequestTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	public function genericPathInfoProvider() {
+	public function genericPathInfoProvider(): array {
 		return [
 			['/core/index.php?XDEBUG_SESSION_START=14600', '/core/index.php', '', ''],
 			['/index.php/apps/files/', 'index.php', '/apps/files/', ''],
