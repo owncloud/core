@@ -61,7 +61,7 @@ class CacheJail extends CacheWrapper {
 	 * @param string $path
 	 * @return null|string the jailed path or null if the path is outside the jail
 	 */
-	protected function getJailedPath($path) {
+	protected function getJailedPath(string $path) {
 		if ($this->root === '') {
 			return $path;
 		}
@@ -296,8 +296,11 @@ class CacheJail extends CacheWrapper {
 	 * @param int $id
 	 * @return string|null
 	 */
-	public function getPathById($id) {
+	public function getPathById($id): ?string {
 		$path = $this->cache->getPathById($id);
+		if ($path === null) {
+			return null;
+		}
 		return $this->getJailedPath($path);
 	}
 

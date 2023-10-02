@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <coding@schilljs.com>
