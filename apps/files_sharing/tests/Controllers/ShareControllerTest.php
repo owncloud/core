@@ -108,7 +108,7 @@ class ShareControllerTest extends \Test\TestCase {
 
 		\OC::$server->getUserManager()->createUser($this->user, $this->user);
 		\OC_Util::tearDownFS();
-		$this->loginAsUser($this->user);
+		self::loginAsUser($this->user);
 	}
 
 	protected function tearDown(): void {

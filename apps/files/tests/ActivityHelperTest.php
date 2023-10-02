@@ -61,7 +61,7 @@ class ActivityHelperTest extends \Test\TestCase {
 
 		// because \OC::$server->getUserFolder()
 		$this->createUser($this->user);
-		$this->loginAsUser($this->user);
+		self::loginAsUser($this->user);
 
 		$this->tagManager = $this->createMock(ITagManager::class);
 		$this->tagManager->expects($this->once())

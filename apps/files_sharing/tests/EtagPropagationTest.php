@@ -55,7 +55,7 @@ class EtagPropagationTest extends PropagationTestCase {
 		$shareManager = \OC::$server->getShareManager();
 
 		$this->rootView = new View('');
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$view1 = new View('/' . self::TEST_FILES_SHARING_API_USER1 . '/files');
 		$view1->mkdir('/sub1/sub2/folder/inside');
 		$view1->mkdir('/directReshare');
@@ -114,7 +114,7 @@ class EtagPropagationTest extends PropagationTestCase {
 		/*
 		 * User 2
 		 */
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		$view2 = new View('/' . self::TEST_FILES_SHARING_API_USER2 . '/files');
 		$view2->mkdir('/sub1/sub2');
 		$view2->rename('/folder', '/sub1/sub2/folder');
@@ -151,7 +151,7 @@ class EtagPropagationTest extends PropagationTestCase {
 		/*
 		 * User 3
 		 */
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER3);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER3);
 		$view3 = new View('/' . self::TEST_FILES_SHARING_API_USER3 . '/files');
 		$view3->mkdir('/sub1/sub2');
 		$view3->rename('/folder', '/sub1/sub2/folder');
@@ -162,7 +162,7 @@ class EtagPropagationTest extends PropagationTestCase {
 		/*
 		 * User 4
 		 */
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER4);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER4);
 		$view4 = new View('/' . self::TEST_FILES_SHARING_API_USER4 . '/files');
 		$view4->mkdir('/sub1/sub2');
 		$view4->rename('/inside', '/sub1/sub2/inside');
@@ -171,7 +171,7 @@ class EtagPropagationTest extends PropagationTestCase {
 		$this->fileIds[self::TEST_FILES_SHARING_API_USER4]['sub1/sub2'] = $view4->getFileInfo('sub1/sub2')->getId();
 
 		foreach ($this->fileIds as $user => $ids) {
-			$this->loginAsUser($user);
+			self::loginAsUser($user);
 			foreach ($ids as $id) {
 				$path = $this->rootView->getPath($id);
 				$ls = $this->rootView->getDirectoryContent($path);
@@ -182,7 +182,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerWritesToShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::file_put_contents('/sub1/sub2/folder/asd.txt', 'bar');
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER4]);
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
@@ -192,7 +192,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerWritesToSingleFileShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::file_put_contents('/foo.txt', 'longer_bar');
 		$t = (int)Filesystem::filemtime('/foo.txt') - 1;
 		Filesystem::touch('/foo.txt', $t);
@@ -203,7 +203,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerWritesToShareWithReshare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::file_put_contents('/sub1/sub2/folder/inside/bar.txt', 'bar');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -212,7 +212,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerRenameInShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER4]);
 		Filesystem::rename('/sub1/sub2/folder/file.txt', '/sub1/sub2/folder/renamed.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
@@ -222,7 +222,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerRenameInReShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::rename('/sub1/sub2/folder/inside/file.txt', '/sub1/sub2/folder/inside/renamed.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -231,7 +231,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerRenameIntoReShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::rename('/sub1/sub2/folder/file.txt', '/sub1/sub2/folder/inside/renamed.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -240,7 +240,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerRenameOutOfReShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::rename('/sub1/sub2/folder/inside/file.txt', '/sub1/sub2/folder/renamed.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -249,7 +249,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerDeleteInShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::unlink('/sub1/sub2/folder/file.txt');
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER4]);
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
@@ -259,7 +259,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerDeleteInReShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		Filesystem::unlink('/sub1/sub2/folder/inside/file.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -268,7 +268,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerUnshares() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$folderInfo = $this->rootView->getFileInfo('/' . self::TEST_FILES_SHARING_API_USER1 . '/files/sub1/sub2/folder');
 		$this->assertInstanceOf('\OC\Files\FileInfo', $folderInfo);
 
@@ -291,7 +291,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testOwnerUnsharesFlatReshares() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$folderInfo = $this->rootView->getFileInfo('/' . self::TEST_FILES_SHARING_API_USER1 . '/files/sub1/sub2/folder/inside');
 		$this->assertInstanceOf('\OC\Files\FileInfo', $folderInfo);
 
@@ -312,7 +312,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientUnsharesFromSelf() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		$ls = $this->rootView->getDirectoryContent('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/sub1/sub2/');
 		$this->assertTrue(
 			$this->rootView->unlink('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/sub1/sub2/folder')
@@ -326,7 +326,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientWritesToShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		Filesystem::file_put_contents('/sub1/sub2/folder/asd.txt', 'bar');
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER4]);
 		$this->assertEtagsForFoldersChanged([
@@ -339,7 +339,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientWritesToReshare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		Filesystem::file_put_contents('/sub1/sub2/folder/inside/asd.txt', 'bar');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -348,7 +348,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientWritesToOtherRecipientsReshare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER3);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER3);
 		Filesystem::file_put_contents('/sub1/sub2/folder/inside/asd.txt', 'bar');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -357,7 +357,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientRenameInShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		Filesystem::rename('/sub1/sub2/folder/file.txt', '/sub1/sub2/folder/renamed.txt');
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER4]);
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
@@ -367,7 +367,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientRenameInReShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		Filesystem::rename('/sub1/sub2/folder/inside/file.txt', '/sub1/sub2/folder/inside/renamed.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -376,7 +376,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientRenameResharedFolder() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		Filesystem::rename('/directReshare', '/sub1/directReshare');
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 		$this->assertEtagsChanged([self::TEST_FILES_SHARING_API_USER2]);
@@ -387,7 +387,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientDeleteInShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		Filesystem::unlink('/sub1/sub2/folder/file.txt');
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER4]);
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
@@ -397,7 +397,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientDeleteInReShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		Filesystem::unlink('/sub1/sub2/folder/inside/file.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -406,7 +406,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testReshareRecipientWritesToReshare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER4);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER4);
 		Filesystem::file_put_contents('/sub1/sub2/inside/asd.txt', 'bar');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -415,7 +415,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testReshareRecipientRenameInReShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER4);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER4);
 		Filesystem::rename('/sub1/sub2/inside/file.txt', '/sub1/sub2/inside/renamed.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -424,7 +424,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testReshareRecipientDeleteInReShare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER4);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER4);
 		Filesystem::unlink('/sub1/sub2/inside/file.txt');
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
@@ -433,7 +433,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testRecipientUploadInDirectReshare() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		Filesystem::file_put_contents('/directReshare/test.txt', 'sad');
 		$this->assertEtagsNotChanged([self::TEST_FILES_SHARING_API_USER3]);
 		$this->assertEtagsChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER4]);
@@ -442,7 +442,7 @@ class EtagPropagationTest extends PropagationTestCase {
 	}
 
 	public function testEtagChangeOnPermissionsChange() {
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$userFolder = $this->rootFolder->getUserFolder(self::TEST_FILES_SHARING_API_USER1);
 		$node = $userFolder->get('/sub1/sub2/folder');
 

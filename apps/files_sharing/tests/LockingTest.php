@@ -51,7 +51,7 @@ class LockingTest extends TestCase {
 		$this->createUser($this->ownerUid);
 		$this->createUser($this->recipientUid);
 
-		$this->loginAsUser($this->ownerUid);
+		self::loginAsUser($this->ownerUid);
 		Filesystem::mkdir('/foo');
 		Filesystem::file_put_contents('/foo/bar.txt', 'asd');
 		$fileId = Filesystem::getFileInfo('/foo/bar.txt')->getId();
@@ -64,7 +64,7 @@ class LockingTest extends TestCase {
 			\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE
 		);
 
-		$this->loginAsUser($this->recipientUid);
+		self::loginAsUser($this->recipientUid);
 		$this->assertTrue(Filesystem::file_exists('bar.txt'));
 	}
 
@@ -73,7 +73,7 @@ class LockingTest extends TestCase {
 	public function testLockAsRecipient() {
 		$this->expectException(\OCP\Lock\LockedException::class);
 
-		$this->loginAsUser($this->ownerUid);
+		self::loginAsUser($this->ownerUid);
 
 		Filesystem::initMountPoints($this->recipientUid);
 		$recipientView = new View('/' . $this->recipientUid . '/files');
@@ -83,7 +83,7 @@ class LockingTest extends TestCase {
 	}
 
 	public function testUnLockAsRecipient() {
-		$this->loginAsUser($this->ownerUid);
+		self::loginAsUser($this->ownerUid);
 
 		Filesystem::initMountPoints($this->recipientUid);
 		$recipientView = new View('/' . $this->recipientUid . '/files');

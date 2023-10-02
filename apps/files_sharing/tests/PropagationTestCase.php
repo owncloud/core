@@ -57,14 +57,14 @@ abstract class PropagationTestCase extends TestCase {
 	protected function assertEtagsChanged($users, $subPath = '') {
 		$oldUser = \OC::$server->getUserSession()->getUser();
 		foreach ($users as $user) {
-			$this->loginAsUser($user);
+			self::loginAsUser($user);
 			$id = $this->fileIds[$user][$subPath];
 			$path = $this->rootView->getPath($id);
 			$etag = $this->rootView->getFileInfo($path)->getEtag();
 			$this->assertNotEquals($this->fileEtags[$id], $etag, 'Failed asserting that the etag for "' . $subPath . '" of user ' . $user . ' has changed');
 			$this->fileEtags[$id] = $etag;
 		}
-		$this->loginAsUser($oldUser->getUID());
+		self::loginAsUser($oldUser->getUID());
 	}
 
 	/**
@@ -74,14 +74,14 @@ abstract class PropagationTestCase extends TestCase {
 	protected function assertEtagsNotChanged($users, $subPath = '') {
 		$oldUser = \OC::$server->getUserSession()->getUser();
 		foreach ($users as $user) {
-			$this->loginAsUser($user);
+			self::loginAsUser($user);
 			$id = $this->fileIds[$user][$subPath];
 			$path = $this->rootView->getPath($id);
 			$etag = $this->rootView->getFileInfo($path)->getEtag();
 			$this->assertEquals($this->fileEtags[$id], $etag, 'Failed asserting that the etag for "' . $subPath . '" of user ' . $user . ' has not changed');
 			$this->fileEtags[$id] = $etag;
 		}
-		$this->loginAsUser($oldUser->getUID());
+		self::loginAsUser($oldUser->getUID());
 	}
 
 	/**

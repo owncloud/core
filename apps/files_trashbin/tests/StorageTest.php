@@ -75,7 +75,7 @@ class StorageTest extends TestCase {
 		$this->createUser($this->user, $this->user);
 
 		// this will setup the FS
-		$this->loginAsUser($this->user);
+		self::loginAsUser($this->user);
 
 		\OCA\Files_Trashbin\Storage::setupStorage();
 
@@ -214,7 +214,7 @@ class StorageTest extends TestCase {
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
 		\OC::$server->getShareManager()->createShare($share);
 
-		$this->loginAsUser($recipientUser);
+		self::loginAsUser($recipientUser);
 
 		// delete as recipient
 		$recipientView = new View('/' . $recipientUser . '/files');
@@ -271,7 +271,7 @@ class StorageTest extends TestCase {
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
 		\OC::$server->getShareManager()->createShare($share);
 
-		$this->loginAsUser($recipientUser);
+		self::loginAsUser($recipientUser);
 
 		// delete as recipient
 		$recipientView = new View('/' . $recipientUser . '/files');
@@ -452,7 +452,7 @@ class StorageTest extends TestCase {
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
 		\OC::$server->getShareManager()->createShare($share);
 
-		$this->loginAsUser($recipientUser);
+		self::loginAsUser($recipientUser);
 
 		// delete as recipient
 		$recipientView = new View('/' . $recipientUser . '/files');
@@ -506,7 +506,7 @@ class StorageTest extends TestCase {
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
 		\OC::$server->getShareManager()->createShare($share);
 
-		$this->loginAsUser($recipientUser);
+		self::loginAsUser($recipientUser);
 
 		// delete as recipient
 		$recipientView = new View('/' . $recipientUser . '/files');
@@ -751,7 +751,7 @@ class StorageTest extends TestCase {
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
 		\OC::$server->getShareManager()->createShare($share);
 
-		$this->loginAsUser($recipientUser);
+		self::loginAsUser($recipientUser);
 
 		// delete as recipient
 		$recipientHome = \OC::$server->getUserFolder($recipientUser);

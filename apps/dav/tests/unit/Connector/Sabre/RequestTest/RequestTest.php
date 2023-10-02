@@ -71,7 +71,7 @@ abstract class RequestTest extends TestCase {
 		$this->createUser($name, $password);
 		$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 		$this->registerMount($name, Local::class, '/' . $name, ['datadir' => $tmpFolder]);
-		$this->loginAsUser($name);
+		self::loginAsUser($name);
 		return new View('/' . $name . '/files');
 	}
 

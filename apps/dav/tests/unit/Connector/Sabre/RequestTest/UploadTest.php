@@ -88,7 +88,7 @@ class UploadTest extends RequestTest {
 
 		$user = self::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
-		$this->loginAsUser($user);
+		self::loginAsUser($user);
 
 		$view->file_put_contents('foo.txt', 'bar');
 

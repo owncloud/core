@@ -130,13 +130,13 @@ class TransferOwnershipTest extends TestCase {
 		$this->targetUser = $this->createUser('target-user');
 		$this->unloggedUser = $this->createUser('unlogged-user');
 		$this->shareReceiver = $this->createUser('share-receiver');
-		$this->loginAsUser('share-sender');
+		self::loginAsUser('share-sender');
 		$this->logout();
-		$this->loginAsUser('source-user');
+		self::loginAsUser('source-user');
 		$this->logout();
-		$this->loginAsUser('target-user');
+		self::loginAsUser('target-user');
 		$this->logout();
-		$this->loginAsUser('share-receiver');
+		self::loginAsUser('share-receiver');
 		$this->logout();
 
 		$this->createTestFilesForSourceUser();
@@ -181,7 +181,7 @@ class TransferOwnershipTest extends TestCase {
 	 */
 	private function createTestFilesForSourceUser() {
 		/** Sharer */
-		$this->loginAsUser($this->shareSender->getUID());
+		self::loginAsUser($this->shareSender->getUID());
 		$sharerFolder = \OC::$server->getUserFolder($this->shareSender->getUID());
 
 		$sharerFolder->newFile('/share_file_to_source_user');

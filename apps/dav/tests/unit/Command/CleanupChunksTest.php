@@ -68,7 +68,7 @@ class CleanupChunksTest extends TestCase {
 		$uploadId = self::getUniqueID('upload');
 		// create one user for testing
 		$user = $this->createUser($userId);
-		$this->loginAsUser($user->getUID());
+		self::loginAsUser($user->getUID());
 
 		// generate old chunks
 		$view = new View("/$userId/uploads");
@@ -88,7 +88,7 @@ class CleanupChunksTest extends TestCase {
 		$uploadId = self::getUniqueID('upload');
 		// create one user for testing
 		$user = $this->createUser($userId);
-		$this->loginAsUser($user->getUID());
+		self::loginAsUser($user->getUID());
 		// generate old chunks
 		$view = new View("/$userId/uploads");
 		$view->mkdir($uploadId);

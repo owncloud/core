@@ -362,7 +362,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param string $user user id or empty for a generic FS
 	 */
-	protected static function loginAsUser($user = '') {
+	protected static function loginAsUser(string $user = ''): void {
 		self::logout();
 		\OC\Files\Filesystem::tearDown();
 		\OC_User::setUserId($user);

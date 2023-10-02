@@ -92,7 +92,7 @@ class DeleteOrphanedFilesTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		$view = new View('/' . $this->user1 . '/');
 		$view->mkdir('files/test');

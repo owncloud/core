@@ -402,7 +402,7 @@ class VersioningTest extends TestCase {
 			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.1']));
 		}
 
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
 			$this->assertTrue(VersionStorageToTest::callProtectedIsPublishedVersion($this->rootView, $this->versionsRootOfUser1 . '/folder1/test.txt.v' . $t1));
@@ -1293,7 +1293,7 @@ class VersioningTest extends TestCase {
 	 */
 	public function testStoreVersionAsOwner(bool $metaDataEnabled) {
 		$this->overwriteConfig($metaDataEnabled);
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		$this->createAndCheckVersions(
 			\OC\Files\Filesystem::getView(),
@@ -1308,7 +1308,7 @@ class VersioningTest extends TestCase {
 	public function testStoreVersionAsRecipient(bool $metaDataEnabled) {
 		$this->overwriteConfig($metaDataEnabled);
 
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		\OC\Files\Filesystem::mkdir('folder');
 		\OC\Files\Filesystem::file_put_contents('folder/test.txt', 'test file');
@@ -1322,7 +1322,7 @@ class VersioningTest extends TestCase {
 			->setPermissions(\OCP\Constants::PERMISSION_ALL);
 		$share = \OC::$server->getShareManager()->createShare($share);
 
-		$this->loginAsUser($this->user2);
+		self::loginAsUser($this->user2);
 
 		$this->createAndCheckVersions(
 			\OC\Files\Filesystem::getView(),
@@ -1368,7 +1368,7 @@ class VersioningTest extends TestCase {
 		$view->file_put_contents($path, 'version 1');
 		$view->file_put_contents($path, 'version 2');
 
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		// need to scan for the versions
 		list($rootStorage, ) = $this->rootView->resolvePath($this->user1 . '/files_versions');
