@@ -1,6 +1,6 @@
 <?php
 
-# php 8.2 is required
+# check PHP version
 $eol = '<br>';
 if (\defined('OC_CONSOLE')) {
 	$eol = PHP_EOL;
