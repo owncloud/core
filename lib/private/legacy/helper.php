@@ -556,7 +556,7 @@ class OC_Helper {
 	 * @param string $path
 	 * @return string|null
 	 */
-	public static function getCleanedPath($path = '') {
+	public static function getCleanedPath(string $path = ''): ?string {
 		$pattern = "((\/[\w\d]*)+)";
 
 		if (\preg_match_all($pattern, $path, $matches) > 0) {
