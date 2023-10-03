@@ -43,7 +43,7 @@ class SizePropagationTest extends TestCase {
 		$this->createUser($name);
 		$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 		$this->registerMount($name, '\OC\Files\Storage\Local', '/' . $name, ['datadir' => $tmpFolder]);
-		$this->loginAsUser($name);
+		self::loginAsUser($name);
 		return new View('/' . $name . '/files');
 	}
 
@@ -63,21 +63,21 @@ class SizePropagationTest extends TestCase {
 		);
 		$ownerRootInfo = $ownerView->getFileInfo('', false);
 
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$this->assertTrue($recipientView->file_exists('/sharedfolder/subfolder/foo.txt'));
 		$recipientRootInfo = $recipientView->getFileInfo('', false);
 
 		// when file changed as owner
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		$ownerView->file_put_contents('/sharedfolder/subfolder/foo.txt', 'foobar');
 
 		// size of recipient's root stays the same
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$newRecipientRootInfo = $recipientView->getFileInfo('', false);
 		$this->assertEquals($recipientRootInfo->getSize(), $newRecipientRootInfo->getSize());
 
 		// size of owner's root increases
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		$newOwnerRootInfo = $ownerView->getFileInfo('', false);
 		$this->assertEquals($ownerRootInfo->getSize() + 3, $newOwnerRootInfo->getSize());
 	}
@@ -98,7 +98,7 @@ class SizePropagationTest extends TestCase {
 		);
 		$ownerRootInfo = $ownerView->getFileInfo('', false);
 
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER1);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER1);
 		$this->assertTrue($recipientView->file_exists('/sharedfolder/subfolder/foo.txt'));
 		$recipientRootInfo = $recipientView->getFileInfo('', false);
 		$recipientRootInfoWithMounts = $recipientView->getFileInfo('', true);
@@ -115,7 +115,7 @@ class SizePropagationTest extends TestCase {
 		$this->assertEquals($recipientRootInfoWithMounts->getSize() +3, $newRecipientRootInfo->getSize());
 
 		// size of owner's root increases
-		$this->loginAsUser(self::TEST_FILES_SHARING_API_USER2);
+		self::loginAsUser(self::TEST_FILES_SHARING_API_USER2);
 		$newOwnerRootInfo = $ownerView->getFileInfo('', false);
 		$this->assertEquals($ownerRootInfo->getSize() + 3, $newOwnerRootInfo->getSize());
 	}

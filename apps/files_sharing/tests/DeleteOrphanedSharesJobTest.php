@@ -124,7 +124,7 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 	 * Test clearing orphaned shares
 	 */
 	public function testClearShares() {
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		$folder = \OC::$server->getUserFolder($this->user1);
 		$testFolder = $folder->newFolder('test');
@@ -154,7 +154,7 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 	}
 
 	public function testKeepNonFileShares() {
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		\OCP\Share::registerBackend('test', 'Test\Share\Backend');
 

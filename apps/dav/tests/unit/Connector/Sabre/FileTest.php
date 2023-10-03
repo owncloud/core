@@ -78,7 +78,7 @@ class FileTest extends TestCase {
 		$userManager = \OC::$server->getUserManager();
 		$userManager->createUser($this->user, 'pass');
 
-		$this->loginAsUser($this->user);
+		self::loginAsUser($this->user);
 		
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
 	}

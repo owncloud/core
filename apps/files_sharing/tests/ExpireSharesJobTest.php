@@ -157,7 +157,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 	 * @param bool $shouldExpire Should expiration added shares be expired
 	 */
 	public function testExpireShare($addExpiration, $interval, $addInterval, $shouldExpire) {
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		$userFolder = \OC::$server->getUserFolder($this->user1);
 		$sharedFolder = $userFolder->newFolder('test');
@@ -230,7 +230,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 	}
 
 	public function testShareNotFound() {
-		$this->loginAsUser($this->user1);
+		self::loginAsUser($this->user1);
 
 		$userFolder = \OC::$server->getUserFolder($this->user1);
 		$sharedFolder = $userFolder->newFolder('test');

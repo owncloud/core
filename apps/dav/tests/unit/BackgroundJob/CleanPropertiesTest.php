@@ -52,7 +52,7 @@ class CleanPropertiesTest extends TestCase {
 		$this->cleanProperties = new CleanProperties($this->connection, $this->logger);
 		$this->username = self::getUniqueID('usercleanprop_');
 		$this->createUser($this->username);
-		$this->loginAsUser($this->username);
+		self::loginAsUser($this->username);
 	}
 
 	public function testDeleteOrphanEntries() {

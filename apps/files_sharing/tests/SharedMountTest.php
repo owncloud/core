@@ -408,7 +408,7 @@ class SharedMountTest extends TestCase {
 			\OCP\Constants::PERMISSION_ALL
 		);
 
-		$this->loginAsUser($user2);
+		self::loginAsUser($user2);
 
 		// user2 shares with user3
 		$userFolder2 = \OC::$server->getUserFolder($user2);

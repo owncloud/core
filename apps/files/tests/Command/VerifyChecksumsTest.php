@@ -119,7 +119,7 @@ class VerifyChecksumsTest extends TestCase {
 	private function createRandomUser($number) {
 		$userName = self::getUniqueID("$number-verifychecksums");
 		$user = $this->createUser($userName);
-		$this->loginAsUser($userName);
+		self::loginAsUser($userName);
 
 		return $user->getUID();
 	}
