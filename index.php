@@ -27,28 +27,6 @@
  *
  */
 
-// Show warning if a PHP version below 7.4.0 is used, this has to happen here
-// because base.php will already use 7.4 syntax.
-if (\version_compare(PHP_VERSION, '7.4.0') === -1) {
-	echo 'This version of ownCloud requires at least PHP 7.4.0<br/>';
-	echo 'You are currently running PHP ' . PHP_VERSION . '. Please update your PHP version.';
-	return;
-}
-
-// Show warning if PHP 8.0 or later is used as ownCloud is not compatible with PHP 8.0
-if (\version_compare(PHP_VERSION, '8.0.0') !== -1) {
-	echo 'This version of ownCloud is not compatible with PHP 8.0<br/>';
-	echo 'You are currently running PHP ' . PHP_VERSION . '.';
-	return;
-}
-
-// running oC on Windows is unsupported since 8.1, this has to happen here because
-// is seems that the autoloader on Windows fails later and just throws an exception.
-if (\stripos(PHP_OS, 'WIN') === 0) {
-	echo 'ownCloud Server does not support Microsoft Windows.';
-	return;
-}
-
 try {
 	require_once __DIR__ . '/lib/base.php';
 	OC::handleRequest();
