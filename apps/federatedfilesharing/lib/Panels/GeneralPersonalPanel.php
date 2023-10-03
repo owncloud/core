@@ -64,7 +64,7 @@ class GeneralPersonalPanel implements ISettings {
 
 	public function getPanel() {
 		$isIE8 = false;
-		\preg_match('/MSIE (.*?);/', $this->request->getHeader('User-Agent'), $matches);
+		\preg_match('/MSIE (.*?);/', $this->request->getHeader('User-Agent') ?? '', $matches);
 		if (\count($matches) > 0 && $matches[1] <= 9) {
 			$isIE8 = true;
 		}
