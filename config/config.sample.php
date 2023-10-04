@@ -458,14 +458,6 @@ $CONFIG = [
 'mail_smtpauth' => false,
 
 /**
- * Define the SMTP authentication type
- * Depends on `mail_smtpmode`. If SMTP authentication is required,
- * choose the authentication type as `LOGIN` (default) or `PLAIN`.
- */
-# TODO: drop it - symfony mailer is auto detecting this
-'mail_smtpauthtype' => 'LOGIN',
-
-/**
  * Define the SMTP authentication username
  * Depends on `mail_smtpauth`. Specify the username for authenticating to the SMTP server.
  */

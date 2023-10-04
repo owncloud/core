@@ -43,7 +43,6 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	protected $encryptionTypeId = 'mail_smtpsecure';
 	protected $mailFromAddressFieldId = 'mail_from_address';
 	protected $mailDomainFieldId = 'mail_domain';
-	protected $authMethodTypeId = 'mail_smtpauthtype';
 	protected $authRequiredCheckboxXpath = '//label[@for="mail_smtpauth"]';
 	protected $authRequiredCheckboxId = 'mail_smtpauth';
 	protected $serverAddressFieldId = 'mail_smtphost';
@@ -89,8 +88,6 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 				$this->fillField($this->mailFromAddressFieldId, $row['value']);
 			} elseif ($row['setting'] === 'mail domain') {
 				$this->fillField($this->mailDomainFieldId, $row['value']);
-			} elseif ($row['setting'] === 'authentication method') {
-				$this->selectFieldOption($this->authMethodTypeId, $row['value']);
 			} elseif ($row['setting'] === 'authentication required') {
 				$this->checkRequiredAuthentication($row['value']);
 			} elseif ($row['setting'] === 'server address') {
