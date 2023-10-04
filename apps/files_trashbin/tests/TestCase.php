@@ -21,12 +21,13 @@
 
 namespace OCA\Files_Trashbin\Tests;
 
-use OC\Files\Cache\Watcher;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCA\Files_Sharing\AppInfo\Application;
 use OCA\Files_Trashbin\Expiration;
 use OCA\Files_Trashbin\Trashbin;
+use OCP\Files\Cache\IWatcher;
+use OCP\IConfig;
 
 /**
  * Class TrashbinTestCase
@@ -83,13 +84,9 @@ abstract class TestCase extends \Test\TestCase {
 	public static function tearDownAfterClass(): void {
 		// cleanup test user
 		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER1);
-		if ($user !== null) {
-			$user->delete();
-		}
+		$user?->delete();
 		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER2);
-		if ($user !== null) {
-			$user->delete();
-		}
+		$user?->delete();
 
 		\OC::$server->getConfig()->setSystemValue('trashbin_retention_obligation', self::$rememberRetentionObligation);
 
@@ -109,16 +106,17 @@ abstract class TestCase extends \Test\TestCase {
 
 		\OC::$server->getAppManager()->enableApp('files_trashbin');
 		$config = \OC::$server->getConfig();
-		$mockConfig = $this->createMock('\OCP\IConfig');
-		$mockConfig->expects($this->any())
+		$mockConfig = $this->createMock(IConfig::class);
+		$mockConfig
 			->method('getSystemValue')
-			->will($this->returnCallback(function ($key, $default) use ($config) {
+			->willReturnCallback(function ($key, $default) use ($config) {
 				if ($key === 'filesystem_check_changes') {
-					return Watcher::CHECK_ONCE;
-				} else {
-					return $config->getSystemValue($key, $default);
+					return IWatcher::CHECK_ONCE;
 				}
-			}));
+
+				return $config->getSystemValue($key, $default);
+			});
+		$mockConfig->method('getUserValue')->willReturnArgument(2);
 		$this->overwriteService('AllConfig', $mockConfig);
 
 		$this->trashRoot1 = '/' . self::TEST_TRASHBIN_USER1 . '/files_trashbin';
@@ -138,7 +136,7 @@ abstract class TestCase extends \Test\TestCase {
 
 		// clear trash table
 		$connection = \OC::$server->getDatabaseConnection();
-		$connection->executeUpdate('DELETE FROM `*PREFIX*files_trash`');
+		$connection->executeStatement('DELETE FROM `*PREFIX*files_trash`');
 
 		parent::tearDown();
 	}
@@ -147,7 +145,7 @@ abstract class TestCase extends \Test\TestCase {
 	 * @param string $user
 	 * @param bool $create
 	 */
-	protected static function loginHelper($user, $create = false) {
+	protected static function loginHelper($user, $create = false): void {
 		if ($create) {
 			try {
 				\OC::$server->getUserManager()->createUser($user, $user);
