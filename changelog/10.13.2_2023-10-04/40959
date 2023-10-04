@@ -1,4 +1,4 @@
-Fix: delete all files from object store when user is deleted
+Bugfix: delete all files from object store when user is deleted
 
 As soon as a user is deleted files will also be removed from object storage (s3).
 
