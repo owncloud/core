@@ -49,6 +49,7 @@ use OCA\Files_Versions\FileHelper;
 use OCA\Files_Versions\Hooks;
 use OCA\Files_Versions\MetaStorage;
 use OCP\Constants;
+use OCA\Files_Versions\Expiration;
 use OCP\Files\Cache\IWatcher;
 use OCP\Files\Storage;
 use OCP\IConfig;
@@ -106,7 +107,7 @@ class VersioningTest extends TestCase {
 		$this->dataDir = OC::$server->getConfig()->getSystemValue('datadirectory');
 
 		// Generate random usernames for better isolation
-		$testId = uniqid('', true);
+		$testId = \uniqid('', true);
 		$this->user1 = "test-versions-user1-$testId";
 		$this->user2 = "test-versions-user2-$testId";
 		$this->versionsRootOfUser1 = "/$this->user1/files_versions";
@@ -178,6 +179,8 @@ class VersioningTest extends TestCase {
 
 				return $config->getSystemValue($key, $default);
 			});
+
+		$this->mockConfig->method('getAppValue')->willReturnArgument(2);
 
 		$this->overwriteService('AllConfig', $this->mockConfig);
 
@@ -1407,7 +1410,7 @@ class VersioningTest extends TestCase {
 	 * @param string $user
 	 * @param bool $create
 	 */
-	public static function loginHelper($user, $create = false): void {
+	public static function loginHelper(string $user, bool $create = false): void {
 		if ($create) {
 			OC::$server->getUserManager()->createUser($user, $user);
 		}
