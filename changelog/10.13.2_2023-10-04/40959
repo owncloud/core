@@ -1,5 +1,6 @@
 Bugfix: delete all files from object store when user is deleted
 
 As soon as a user is deleted files will also be removed from object storage (s3).
+In previous versions when a user was deleted, files belonging to this user were not correctly removed from the object storage (s3) and were therefore left as remnants taking unnecessary space. This has been corrected and files are now properly removed.
 
 https://github.com/owncloud/core/pull/40959
