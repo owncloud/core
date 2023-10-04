@@ -96,7 +96,7 @@ class URLGenerator implements IURLGenerator {
 	 *
 	 * Returns an absolute url to the given route.
 	 */
-	public function linkToRouteAbsolute($routeName, $arguments = []) {
+	public function linkToRouteAbsolute($routeName, $arguments = []): string {
 		return $this->getAbsoluteURL($this->linkToRoute($routeName, $arguments));
 	}
 
@@ -237,7 +237,7 @@ class URLGenerator implements IURLGenerator {
 	 * @param string $url the url in the ownCloud host
 	 * @return string the absolute version of the url
 	 */
-	public function getAbsoluteURL($url) {
+	public function getAbsoluteURL($url): string {
 		$webRoot = $this->environmentHelper->getWebRoot();
 		$separator = $url[0] === '/' ? '' : '/';
 
