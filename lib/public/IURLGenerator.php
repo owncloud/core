@@ -53,7 +53,7 @@ interface IURLGenerator {
 	 * @return string the absolute url
 	 * @since 8.0.0
 	 */
-	public function linkToRouteAbsolute($routeName, $arguments = []);
+	public function linkToRouteAbsolute($routeName, $arguments = []): string;
 
 	/**
 	 * Returns an URL for an image or file
