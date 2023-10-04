@@ -11,6 +11,7 @@ Summary
 * Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
 * Bugfix - Remove regular expression from Preview Manager list: [#40990](https://github.com/owncloud/core/pull/40990)
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
+* Change - Update PHP dependencies: [#40986](https://github.com/owncloud/core/pull/40986)
 * Enhancement - Improve preview cleanup query: [#40974](https://github.com/owncloud/core/pull/40974)
 * Enhancement - Remove "Fill E-Tags" Repair-Step: [#40996](https://github.com/owncloud/core/pull/40996)
 
@@ -41,6 +42,12 @@ Details
    present. This has been now fixed.
 
    https://github.com/owncloud/core/pull/40991
+
+* Change - Update PHP dependencies: [#40986](https://github.com/owncloud/core/pull/40986)
+
+   The following have been updated: - phpseclib/phpseclib (3.0.21 to 3.0.23)
+
+   https://github.com/owncloud/core/pull/40986
 
 * Enhancement - Improve preview cleanup query: [#40974](https://github.com/owncloud/core/pull/40974)
 
