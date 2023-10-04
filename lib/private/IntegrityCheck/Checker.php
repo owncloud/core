@@ -388,6 +388,7 @@ class Checker {
 			);
 		}
 
+		/** @phan-suppress-next-line PhanUndeclaredMethod */
 		$rsa = RSA::load($loadedCertificate['tbsCertificate']['subjectPublicKeyInfo']['subjectPublicKey'])
 			->withHash('sha1')
 			->withMGFHash('sha512')

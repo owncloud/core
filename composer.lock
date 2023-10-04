@@ -2325,16 +2325,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.21",
+            "version": "3.0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "4580645d3fc05c189024eb3b834c6c1e4f0f30a1"
+                "reference": "866cc78fbd82462ffd880e3f65692afe928bed50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/4580645d3fc05c189024eb3b834c6c1e4f0f30a1",
-                "reference": "4580645d3fc05c189024eb3b834c6c1e4f0f30a1",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/866cc78fbd82462ffd880e3f65692afe928bed50",
+                "reference": "866cc78fbd82462ffd880e3f65692afe928bed50",
                 "shasum": ""
             },
             "require": {
@@ -2415,7 +2415,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.21"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.23"
             },
             "funding": [
                 {
@@ -2431,7 +2431,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-09T15:24:48+00:00"
+            "time": "2023-09-18T17:22:01+00:00"
         },
         {
             "name": "pimple/pimple",

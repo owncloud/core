@@ -56,6 +56,7 @@ class Version20220329110116 implements ISimpleMigration {
 				}
 
 				try {
+					/** @phan-suppress-next-line PhanUndeclaredMethod */
 					$rsaKey = RSACrypt::load($privKey, $pass)->withHash('sha1');
 				} catch (\phpseclib3\Exception\NoKeyLoadedException $e) {
 					$out->warning("Storage configuration with id = {$configId}: Cannot load private key, skipping");

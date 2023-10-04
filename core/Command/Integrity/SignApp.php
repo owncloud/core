@@ -99,6 +99,7 @@ class SignApp extends Command {
 		}
 
 		/** @var RSA $rsa */
+		/** @phan-suppress-next-line PhanUndeclaredMethod */
 		$rsa = RSA::load($privateKey)->withHash('sha1');
 		$x509 = new X509();
 		$certificate = $x509->loadX509($keyBundle);
