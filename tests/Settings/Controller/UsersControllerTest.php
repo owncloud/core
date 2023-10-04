@@ -2144,6 +2144,11 @@ class UsersControllerTest extends TestCase {
 		$iL10->expects($this->atLeastOnce())
 			->method('t')
 			->willReturn('An email has been sent to this address for confirmation. Until the email is verified this address will not be set.');
+		$iConfig
+			->method('getUserValue')
+			->with($id, 'owncloud', 'changeMail')
+			->willReturn('12000:AVerySecretToken');
+
 		$expectedResponse = new DataResponse(
 			[
 				'status' => 'success',
