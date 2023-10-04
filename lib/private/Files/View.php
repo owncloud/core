@@ -1439,7 +1439,7 @@ class View {
 		if (!Filesystem::isValidPath($path)) {
 			return false;
 		}
-		if (Cache\Scanner::isPartialFile($path)) {
+		if (Cache\Scanner::isPartialFile($path ?? '')) {
 			return $this->getPartFileInfo($path);
 		}
 		$relativePath = $path;
