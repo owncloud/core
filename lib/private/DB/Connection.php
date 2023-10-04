@@ -439,7 +439,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param string $param
 	 * @return string
 	 */
-	public function escapeLikeParameter($param) {
+	public function escapeLikeParameter(string $param): string {
 		return \addcslashes($param, '\\_%');
 	}
 
