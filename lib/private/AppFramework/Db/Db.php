@@ -236,7 +236,7 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
-	public function escapeLikeParameter($param) {
+	public function escapeLikeParameter(string $param): string {
 		return $this->connection->escapeLikeParameter($param);
 	}
 

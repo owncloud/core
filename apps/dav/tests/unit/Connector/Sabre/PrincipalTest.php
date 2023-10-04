@@ -24,67 +24,75 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
+use OCA\DAV\Connector\Sabre\Principal;
 use OCP\IGroupManager;
 use OCP\IUserManager;
+use Sabre\DAV\Exception;
 use Sabre\DAV\PropPatch;
 use Test\TestCase;
+use OC\User\User;
+use OCP\IGroup;
 
 class PrincipalTest extends TestCase {
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
-	/** @var \OCA\DAV\Connector\Sabre\Principal */
+	/** @var Principal */
 	private $connector;
 	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;
 
 	public function setUp(): void {
-		$this->userManager = $this->getMockBuilder('\OCP\IUserManager')
+		$this->userManager = $this->getMockBuilder(IUserManager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
 			->disableOriginalConstructor()->getMock();
 
-		$this->connector = new \OCA\DAV\Connector\Sabre\Principal(
+		$this->connector = new Principal(
 			$this->userManager,
 			$this->groupManager
 		);
 		parent::setUp();
 	}
 
-	public function testGetPrincipalsByPrefixWithoutPrefix() {
+	public function testGetPrincipalsByPrefixWithoutPrefix(): void {
 		$response = $this->connector->getPrincipalsByPrefix('');
 		$this->assertSame([], $response);
 	}
 
-	public function testGetPrincipalsByPrefixWithUsers() {
-		$fooUser = $this->getMockBuilder('\OC\User\User')
+	public function testGetPrincipalsByPrefixWithUsers(): void {
+		$fooUser = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$fooUser
-				->expects($this->exactly(1))
+				->expects($this->once())
 				->method('getUID')
-				->will($this->returnValue('foo'));
+				->willReturn('foo');
 		$fooUser
-				->expects($this->exactly(1))
+				->expects($this->once())
 				->method('getDisplayName')
-				->will($this->returnValue('Dr. Foo-Bar'));
+				->willReturn('Dr. Foo-Bar');
 		$fooUser
-				->expects($this->exactly(1))
+				->expects($this->once())
 				->method('getEMailAddress')
-				->will($this->returnValue(''));
-		$barUser = $this->getMockBuilder('\OC\User\User')
+				->willReturn('');
+		$barUser = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$barUser
-			->expects($this->exactly(1))
+			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('bar'));
+			->willReturn('bar');
 		$barUser
-				->expects($this->exactly(1))
+			->expects($this->once())
+			->method('getDisplayName')
+			->willReturn('bar');
+		$barUser
+				->expects($this->once())
 				->method('getEMailAddress')
-				->will($this->returnValue('bar@owncloud.com'));
+				->willReturn('bar@owncloud.com');
 		$this->userManager
 			->expects($this->once())
 			->method('search')
 			->with('')
-			->will($this->returnValue([$fooUser, $barUser]));
+			->willReturn([$fooUser, $barUser]);
 
 		$expectedResponse = [
 			0 => [
@@ -101,29 +109,33 @@ class PrincipalTest extends TestCase {
 		$this->assertSame($expectedResponse, $response);
 	}
 
-	public function testGetPrincipalsByPrefixEmpty() {
+	public function testGetPrincipalsByPrefixEmpty(): void {
 		$this->userManager
 			->expects($this->once())
 			->method('search')
 			->with('')
-			->will($this->returnValue([]));
+			->willReturn([]);
 
 		$response = $this->connector->getPrincipalsByPrefix('principals/users');
 		$this->assertSame([], $response);
 	}
 
-	public function testGetPrincipalsByPathWithoutMail() {
-		$fooUser = $this->getMockBuilder('\OC\User\User')
+	public function testGetPrincipalsByPathWithoutMail(): void {
+		$fooUser = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$fooUser
-			->expects($this->exactly(1))
+			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('foo'));
+			->willReturn('foo');
+		$fooUser
+			->expects($this->once())
+			->method('getDisplayname')
+			->willReturn('foo');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('foo')
-			->will($this->returnValue($fooUser));
+			->willReturn($fooUser);
 
 		$expectedResponse = [
 			'uri' => 'principals/users/foo',
@@ -133,22 +145,26 @@ class PrincipalTest extends TestCase {
 		$this->assertSame($expectedResponse, $response);
 	}
 
-	public function testGetPrincipalsByPathWithMail() {
-		$fooUser = $this->getMockBuilder('\OC\User\User')
+	public function testGetPrincipalsByPathWithMail(): void {
+		$fooUser = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$fooUser
-				->expects($this->exactly(1))
+				->expects($this->once())
 				->method('getEMailAddress')
-				->will($this->returnValue('foo@owncloud.com'));
+				->willReturn('foo@owncloud.com');
 		$fooUser
-				->expects($this->exactly(1))
-				->method('getUID')
-				->will($this->returnValue('foo'));
+			->expects($this->once())
+			->method('getUID')
+			->willReturn('foo');
+		$fooUser
+			->expects($this->once())
+			->method('getDisplayName')
+			->willReturn('foo');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('foo')
-			->will($this->returnValue($fooUser));
+			->willReturn($fooUser);
 
 		$expectedResponse = [
 			'uri' => 'principals/users/foo',
@@ -159,29 +175,29 @@ class PrincipalTest extends TestCase {
 		$this->assertSame($expectedResponse, $response);
 	}
 
-	public function testGetPrincipalsByPathEmpty() {
+	public function testGetPrincipalsByPathEmpty(): void {
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('foo')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$response = $this->connector->getPrincipalByPath('principals/users/foo');
 		$this->assertNull($response);
 	}
 
-	public function testGetGroupMemberSet() {
-		$fooUser = $this->getMockBuilder('\OC\User\User')
+	public function testGetGroupMemberSet(): void {
+		$fooUser = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$fooUser
-			->expects($this->exactly(1))
+			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('foo'));
+			->willReturn('foo');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('foo')
-			->will($this->returnValue($fooUser));
+			->willReturn($fooUser);
 
 		$response = $this->connector->getGroupMemberSet('principals/users/foo');
 		$this->assertSame(['principals/users/foo'], $response);
@@ -189,23 +205,23 @@ class PrincipalTest extends TestCase {
 
 	/**
 	 */
-	public function testGetGroupMemberSetEmpty() {
-		$this->expectException(\Sabre\DAV\Exception::class);
+	public function testGetGroupMemberSetEmpty(): void {
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Principal not found');
 
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('foo')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$this->connector->getGroupMemberSet('principals/users/foo');
 	}
 
-	public function testGetGroupMembership() {
-		$fooUser = $this->getMockBuilder('\OC\User\User')
+	public function testGetGroupMembership(): void {
+		$fooUser = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
-		$group = $this->getMockBuilder('\OCP\IGroup')
+		$group = $this->getMockBuilder(IGroup::class)
 			->disableOriginalConstructor()->getMock();
 		$group->expects($this->once())
 			->method('getGID')
@@ -229,45 +245,43 @@ class PrincipalTest extends TestCase {
 		$this->assertSame($expectedResponse, $response);
 	}
 
-	/**
-	 */
-	public function testGetGroupMembershipEmpty() {
-		$this->expectException(\Sabre\DAV\Exception::class);
+	public function testGetGroupMembershipEmpty(): void {
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Principal not found');
 
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('foo')
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$this->connector->getGroupMembership('principals/users/foo');
 	}
 
 	/**
 	 */
-	public function testSetGroupMembership() {
-		$this->expectException(\Sabre\DAV\Exception::class);
+	public function testSetGroupMembership(): void {
+		$this->expectException(Exception::class);
 		$this->expectExceptionMessage('Setting members of the group is not supported yet');
 
 		$this->connector->setGroupMemberSet('principals/users/foo', ['foo']);
 	}
 
-	public function testUpdatePrincipal() {
+	public function testUpdatePrincipal(): void {
 		$this->assertSame(0, $this->connector->updatePrincipal('foo', new PropPatch([])));
 	}
 
-	public function testSearchPrincipals() {
+	public function testSearchPrincipals(): void {
 		$this->assertSame([], $this->connector->searchPrincipals('principals/users', []));
 	}
 
-	public function testFindByUri() {
-		$fooUser = $this->getMockBuilder('\OC\User\User')
+	public function testFindByUri(): void {
+		$fooUser = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$fooUser
-			->expects($this->exactly(1))
+			->expects($this->once())
 			->method('getUID')
-			->will($this->returnValue('foo'));
+			->willReturn('foo');
 
 		$this->userManager->expects($this->once())->method('getByEmail')->willReturn([
 			$fooUser
