@@ -299,7 +299,7 @@ interface IDBConnection {
 	 * @return string
 	 * @since 9.0.0
 	 */
-	public function escapeLikeParameter($param);
+	public function escapeLikeParameter(string $param): string;
 
 	/**
 	 * Create the schema of the connected database
