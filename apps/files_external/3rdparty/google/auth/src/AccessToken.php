@@ -18,7 +18,6 @@
 namespace Google\Auth;
 
 use DateTime;
-use Exception;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -409,7 +408,7 @@ class AccessToken
                 $exponent
             ]), 256),
         ]);
-        return $key->toString('PKCS1');
+        return $key->toString('PKCS8');
     }
 
     /**

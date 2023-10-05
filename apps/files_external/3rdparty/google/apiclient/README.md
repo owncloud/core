@@ -44,7 +44,7 @@ composer installed.
 Once composer is installed, execute the following command in your project root to install this library:
 
 ```sh
-composer require google/apiclient:^2.12.1
+composer require google/apiclient:^2.15.0
 ```
 
 Finally, be sure to include the autoloader:
@@ -65,7 +65,7 @@ you want to keep in `composer.json`:
 ```json
 {
     "require": {
-        "google/apiclient": "^2.12.1"
+        "google/apiclient": "^2.15.0"
     },
     "scripts": {
         "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
@@ -245,9 +245,10 @@ The classes used to call the API in [google-api-php-client-services](https://git
 
 A JSON request to the [Datastore API](https://developers.google.com/apis-explorer/#p/datastore/v1beta3/datastore.projects.runQuery) would look like this:
 
-```json
+```
 POST https://datastore.googleapis.com/v1beta3/projects/YOUR_PROJECT_ID:runQuery?key=YOUR_API_KEY
-
+```
+```json
 {
     "query": {
         "kind": [{

@@ -37,13 +37,13 @@ class ImpersonatedServiceAccountCredentials extends CredentialsLoader implements
     protected $sourceCredentials;
 
     /**
-     * Instantiate an instance of ImpersonatedServiceAccountCredentials from a credentials file that has be created with
-     * the --impersonated-service-account flag.
+     * Instantiate an instance of ImpersonatedServiceAccountCredentials from a credentials file that
+     * has be created with the --impersonated-service-account flag.
      *
-     * @param string|string[] $scope the scope of the access request, expressed
-     *   either as an Array or as a space-delimited String.
+     * @param string|string[]     $scope   The scope of the access request, expressed either as an
+     *                                     array or as a space-delimited string.
      * @param string|array<mixed> $jsonKey JSON credential file path or JSON credentials
-     *   as an associative array
+     *                                     as an associative array.
      */
     public function __construct(
         $scope,
@@ -59,24 +59,34 @@ class ImpersonatedServiceAccountCredentials extends CredentialsLoader implements
             }
         }
         if (!array_key_exists('service_account_impersonation_url', $jsonKey)) {
-            throw new \LogicException('json key is missing the service_account_impersonation_url field');
+            throw new \LogicException(
+                'json key is missing the service_account_impersonation_url field'
+            );
         }
         if (!array_key_exists('source_credentials', $jsonKey)) {
             throw new \LogicException('json key is missing the source_credentials field');
         }
 
-        $this->impersonatedServiceAccountName = $this->getImpersonatedServiceAccountNameFromUrl($jsonKey['service_account_impersonation_url']);
+        $this->impersonatedServiceAccountName = $this->getImpersonatedServiceAccountNameFromUrl(
+            $jsonKey['service_account_impersonation_url']
+        );
 
-        $this->sourceCredentials = new UserRefreshCredentials($scope, $jsonKey['source_credentials']);
+        $this->sourceCredentials = new UserRefreshCredentials(
+            $scope,
+            $jsonKey['source_credentials']
+        );
     }
 
     /**
-     * Helper function for extracting the Server Account Name from the URL saved in the account credentials file
-     * @param $serviceAccountImpersonationUrl string URL from the 'service_account_impersonation_url' field
+     * Helper function for extracting the Server Account Name from the URL saved in the account
+     * credentials file.
+     *
+     * @param $serviceAccountImpersonationUrl string URL from "service_account_impersonation_url"
      * @return string Service account email or ID.
      */
-    private function getImpersonatedServiceAccountNameFromUrl(string $serviceAccountImpersonationUrl)
-    {
+    private function getImpersonatedServiceAccountNameFromUrl(
+        string $serviceAccountImpersonationUrl
+    ): string {
         $fields = explode('/', $serviceAccountImpersonationUrl);
         $lastField = end($fields);
         $splitter = explode(':', $lastField);
