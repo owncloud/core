@@ -45,13 +45,15 @@ Details
 
 * Change - Update PHP dependencies: [#40983](https://github.com/owncloud/core/pull/40983)
 
-   The following have been updated: - phpseclib/phpseclib (3.0.21 to 3.0.23)
+   The following have been updated: - phpseclib/phpseclib (3.0.21 to 3.0.23) - symfony/string
+   (5.4.26 to 5.4.29)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
    (2.15.0 to 2.15.1)
 
    https://github.com/owncloud/core/pull/40983
    https://github.com/owncloud/core/pull/40986
+   https://github.com/owncloud/core/pull/41012
 
 * Enhancement - Improve preview cleanup query: [#40974](https://github.com/owncloud/core/pull/40974)
 
