@@ -3,7 +3,7 @@
         'name' => 'files_external/3rdparty',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '5aaed6c29d88b7c2bbe1ea955cb604dc77acdc28',
+        'reference' => '6b039a45eac16aca1b76db50471ed4173d9d8633',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'files_external/3rdparty' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '5aaed6c29d88b7c2bbe1ea955cb604dc77acdc28',
+            'reference' => '6b039a45eac16aca1b76db50471ed4173d9d8633',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -35,9 +35,9 @@
             'dev_requirement' => false,
         ),
         'google/apiclient-services' => array(
-            'pretty_version' => 'v0.316.0',
-            'version' => '0.316.0.0',
-            'reference' => '08e3579d94363716cef2bc79643f3d30fdd914b5',
+            'pretty_version' => 'v0.318.0',
+            'version' => '0.318.0.0',
+            'reference' => '908a866797b9731352e650997112c8c3a0347ac5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../google/apiclient-services',
             'aliases' => array(),
@@ -133,7 +133,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => '601b276d21df95e49f1802c7432b788cfaac15a8',
+            'reference' => 'bfb87b7907dac95bb71d398ff3e225d5362f768e',
             'type' => 'metapackage',
             'install_path' => NULL,
             'aliases' => array(
