@@ -396,7 +396,6 @@ $CONFIG = [
 /**
  * Enable or disable SMTP class debugging
  */
-# TODO: unused / deprecated
 'mail_smtpdebug' => false,
 
 /**
@@ -439,7 +438,7 @@ $CONFIG = [
 
 /**
  * Define the SMTP security style
- * Depends on `mail_smtpmode`. Specify when you are using `ssl` or `tls`.
+ * Depends on `mail_smtpmode`. Specify when you are using `ssl` or not.
  * Leave empty for no encryption.
  */
 'mail_smtpsecure' => '',

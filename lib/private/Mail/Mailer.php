@@ -27,6 +27,7 @@ use OC_Defaults;
 use OCP\IConfig;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
@@ -86,19 +87,31 @@ class Mailer implements IMailer {
 	 * has been supplied.)
 	 */
 	public function send(Message $message): array {
-		# TODO: implement this ????
-		$debugMode = $this->config->getSystemValue('mail_smtpdebug', false);
-
 		if (!\is_array($message->getFrom()) || \count($message->getFrom()) === 0) {
 			$message->setFrom([\OCP\Util::getDefaultEmailAddress($this->defaults->getName())]);
 		}
 
-		$failedRecipients = [];
+		$debugMode = $this->config->getSystemValue('mail_smtpdebug', false);
+		$logger = $debugMode ? new Logger() : null;
 
 		try {
-			$this->getInstance()->send($message->getMessage());
+			$this->getInstance($logger ?? null)->send($message->getMessage());
 		} catch (TransportExceptionInterface $e) {
-			# TODO: handle exception
+			$this->logger->logException($e);
+
+			# in case of exception it is expected that none of the mails has been sent
+			$failedRecipients = [];
+
+			$recipients = array_merge($message->getTo(), $message->getCc(), $message->getBcc());
+			array_walk($recipients, static function ($value, $key) use (&$failedRecipients) {
+				if (is_numeric($key)) {
+					$failedRecipients[] = $value;
+				} else {
+					$failedRecipients[] = $key;
+				}
+			});
+
+			return $failedRecipients;
 		}
 
 		$allRecipients = [];
@@ -118,10 +131,11 @@ class Mailer implements IMailer {
 			'app' => 'core',
 			'from' => \json_encode($message->getFrom()),
 			'recipients' => \json_encode($allRecipients),
-			'subject' => $message->getSubject()
+			'subject' => $message->getSubject(),
+			'mail_log' => ($logger !== null) ? $logger->toJSON() : null,
 		]);
 
-		return $failedRecipients;
+		return [];
 	}
 
 	/**
@@ -157,16 +171,16 @@ class Mailer implements IMailer {
 		return $name.'@'.$domain;
 	}
 
-	protected function getInstance(): TransportInterface {
+	protected function getInstance(?LoggerInterface $logger = null): TransportInterface {
 		if ($this->instance !== null) {
 			return $this->instance;
 		}
 
 		$mailMode = $this->config->getSystemValue('mail_smtpmode', 'php');
 		if ($mailMode === 'smtp') {
-			$transport = $this->getSmtpInstance();
+			$transport = $this->getSmtpInstance($logger ?? null);
 		} else {
-			$transport = $this->getSendMailInstance();
+			$transport = $this->getSendMailInstance($logger ?? null);
 		}
 
 		$this->instance = $transport;
@@ -174,13 +188,13 @@ class Mailer implements IMailer {
 		return $this->instance;
 	}
 
-	protected function getSmtpInstance(): EsmtpTransport {
+	protected function getSmtpInstance(?LoggerInterface $logger): EsmtpTransport {
 		$timeout = $this->config->getSystemValue('mail_smtptimeout', 10);
 		$host = $this->config->getSystemValue('mail_smtphost', '127.0.0.1');
 		$port = $this->config->getSystemValue('mail_smtpport', 25);
 		$smtpSecurity = $this->config->getSystemValue('mail_smtpsecure', '');
 		$tls = $smtpSecurity === 'ssl' ? true : null;
-		$transport = new EsmtpTransport($host, $port, $tls);
+		$transport = new EsmtpTransport($host, $port, $tls, null, $logger);
 		if ($this->config->getSystemValue('mail_smtpauth', false)) {
 			$transport->setUsername($this->config->getSystemValue('mail_smtpname', ''));
 			$transport->setPassword($this->config->getSystemValue('mail_smtppassword', ''));
@@ -193,7 +207,7 @@ class Mailer implements IMailer {
 		return $transport;
 	}
 
-	protected function getSendMailInstance(): SendmailTransport {
+	protected function getSendMailInstance(?LoggerInterface $logger = null): SendmailTransport {
 		$i = $this->config->getSystemValue('mail_smtpmode', 'sendmail');
 		if ($i === 'qmail') {
 			$binaryPath = '/var/qmail/bin/sendmail';
@@ -201,7 +215,6 @@ class Mailer implements IMailer {
 			$binaryPath = '/usr/sbin/sendmail';
 		}
 
-		# TODO: add logger ???
-		return new SendmailTransport($binaryPath . ' -bs');
+		return new SendmailTransport($binaryPath . ' -bs', null, $logger);
 	}
 }

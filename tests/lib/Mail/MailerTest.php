@@ -8,21 +8,25 @@
 
 namespace Test\Mail;
 
+use Exception;
 use OC\Mail\Mailer;
 use OC_Defaults;
 use OCP\IConfig;
 use OCP\ILogger;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mime\Email;
 use Test\TestCase;
 use OC\Mail\Message;
+use function array_merge;
+use function json_encode;
 
 class MailerTest extends TestCase {
-	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var IConfig | MockObject */
 	private $config;
 	/** @var OC_Defaults */
 	private $defaults;
-	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
+	/** @var ILogger | MockObject */
 	private $logger;
 	/** @var Mailer */
 	private $mailer;
@@ -76,9 +80,9 @@ class MailerTest extends TestCase {
 	}
 
 	public function testSendInvalidMailException(): void {
-		$this->expectException(\Exception::class);
+		$this->expectException(Exception::class);
 
-		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
+		/** @var Message | MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message->expects($this->once())
@@ -118,7 +122,7 @@ class MailerTest extends TestCase {
 
 		$this->mailer->method('getInstance')->willReturn($this->createMock(SendmailTransport::class));
 
-		/** @var Message | \PHPUnit\Framework\MockObject\MockObject $message */
+		/** @var Message | MockObject $message */
 		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message->expects($this->once())
@@ -140,9 +144,10 @@ class MailerTest extends TestCase {
 			->method('debug')
 			->with('Sent mail from "{from}" to "{recipients}" with subject "{subject}"', [
 				'app' => 'core',
-				'from' => \json_encode($from),
-				'recipients' => \json_encode(\array_merge($to, $cc, $bcc)),
-				'subject' => 'Email subject'
+				'from' => json_encode($from),
+				'recipients' => json_encode(array_merge($to, $cc, $bcc)),
+				'subject' => 'Email subject',
+				'mail_log' => null
 			]);
 
 		$this->mailer->send($message);

@@ -14,8 +14,7 @@ use Symfony\Component\Mime\Email;
 use Test\TestCase;
 
 class MessageTest extends TestCase {
-	/** @var Email */
-	private $symfonyMail;
+	private Email $symfonyMail;
 	private Message $message;
 
 	public function setUp(): void {
