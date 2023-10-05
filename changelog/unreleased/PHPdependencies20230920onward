@@ -3,4 +3,8 @@ Change: Update PHP dependencies
 The following have been updated:
 - phpseclib/phpseclib (3.0.21 to 3.0.23)
 
+The following have been updated in apps/files_external/3rdparty:
+- google/apiclient (2.15.0 to 2.15.1)
+
+https://github.com/owncloud/core/pull/40983
 https://github.com/owncloud/core/pull/40986
