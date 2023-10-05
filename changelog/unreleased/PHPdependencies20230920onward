@@ -2,5 +2,7 @@ Change: Update PHP dependencies
 
 The following have been updated:
 - phpseclib/phpseclib (3.0.21 to 3.0.23)
+- symfony/string (5.4.26 to 5.4.29)
 
 https://github.com/owncloud/core/pull/40986
+https://github.com/owncloud/core/pull/41012
