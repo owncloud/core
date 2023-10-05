@@ -22,51 +22,41 @@
 
 namespace OC\Mail;
 
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
 /**
- * Class Message provides a wrapper around SwiftMail
+ * Class Message provides a wrapper around Symfony\Component\Mime\Email
  *
  * @package OC\Mail
  */
 class Message {
 	private Email $message;
+	/**
+	 * @var Address[]
+	 */
+	private array $from;
+	private array $replyTo;
+	private array $to;
+	private array $cc;
+	private array $bcc;
 
 	public function __construct(Email $swiftMessage) {
 		$this->message = $swiftMessage;
 	}
 
 	/**
-	 * SwiftMailer does currently not work with IDN domains, this function therefore converts the domains
-	 * FIXME: Remove this once SwiftMailer supports IDN
-	 *
 	 * @param array $addresses Array of mail addresses, key will get converted
-	 * @return array Converted addresses if `idn_to_ascii` exists
+	 * @return Address[] Converted addresses if `idn_to_ascii` exists
 	 */
 	protected function convertAddresses(array $addresses): array {
-		if (!\function_exists('idn_to_ascii')) {
-			return $addresses;
-		}
-
 		$convertedAddresses = [];
 
 		foreach ($addresses as $email => $readableName) {
-			if (!\is_numeric($email)) {
-				[$name, $domain] = \explode('@', $email, 2);
-				if (\defined('INTL_IDNA_VARIANT_UTS46')) {
-					$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
-				} else {
-					$domain = \idn_to_ascii($domain);
-				}
-				$convertedAddresses[$name.'@'.$domain] = $readableName;
+			if (\is_numeric($email)) {
+				$convertedAddresses[] = new Address($readableName);
 			} else {
-				[$name, $domain] = \explode('@', $readableName, 2);
-				if (\defined('INTL_IDNA_VARIANT_UTS46')) {
-					$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
-				} else {
-					$domain = \idn_to_ascii($domain);
-				}
-				$convertedAddresses[$email] = $name.'@'.$domain;
+				$convertedAddresses[] = new Address($email, $readableName ?? '');
 			}
 		}
 
@@ -81,9 +71,9 @@ class Message {
 	 * @param array $addresses Example: array('sender@domain.org', 'other@domain.org' => 'A name')
 	 */
 	public function setFrom(array $addresses): Message {
-		$addresses = $this->convertAddresses($addresses);
+		$this->message->from(...$this->convertAddresses($addresses));
 
-		$this->message->from(...$addresses);
+		$this->from = $addresses;
 		return $this;
 	}
 
@@ -93,16 +83,16 @@ class Message {
 	 * @return array
 	 */
 	public function getFrom(): array {
-		return $this->message->getFrom();
+		return $this->from;
 	}
 
 	/**
 	 * Set the Reply-To address of this message
 	 */
 	public function setReplyTo(array $addresses): Message {
-		$addresses = $this->convertAddresses($addresses);
+		$this->message->replyTo(...$this->convertAddresses($addresses));
 
-		$this->message->replyTo(...$addresses);
+		$this->replyTo = $addresses;
 		return $this;
 	}
 
@@ -110,18 +100,18 @@ class Message {
 	 * Returns the Reply-To address of this message
 	 */
 	public function getReplyTo(): array {
-		return $this->message->getReplyTo();
+		return $this->replyTo;
 	}
 
 	/**
-	 * Set the to addresses of this message.
+	 * Set the to-addresses of this message.
 	 *
 	 * @param array $recipients Example: array('recipient@domain.org', 'other@domain.org' => 'A name')
 	 */
 	public function setTo(array $recipients): Message {
-		$recipients = $this->convertAddresses($recipients);
+		$this->message->to(...$this->convertAddresses($recipients));
 
-		$this->message->to(...$recipients);
+		$this->to = $recipients;
 		return $this;
 	}
 
@@ -131,7 +121,7 @@ class Message {
 	 * @return array
 	 */
 	public function getTo(): array {
-		return $this->message->getTo();
+		return $this->to;
 	}
 
 	/**
@@ -140,9 +130,9 @@ class Message {
 	 * @param array $recipients Example: array('recipient@domain.org', 'other@domain.org' => 'A name')
 	 */
 	public function setCc(array $recipients): Message {
-		$recipients = $this->convertAddresses($recipients);
+		$this->message->cc(...$this->convertAddresses($recipients));
 
-		$this->message->cc(...$recipients);
+		$this->cc = $recipients;
 		return $this;
 	}
 
@@ -150,7 +140,7 @@ class Message {
 	 * Get the cc address of this message.
 	 */
 	public function getCc(): array {
-		return $this->message->getCc();
+		return $this->cc;
 	}
 
 	/**
@@ -159,9 +149,9 @@ class Message {
 	 * @param array $recipients Example: array('recipient@domain.org', 'other@domain.org' => 'A name')
 	 */
 	public function setBcc(array $recipients): Message {
-		$recipients = $this->convertAddresses($recipients);
+		$this->message->bcc(...$this->convertAddresses($recipients));
 
-		$this->message->bcc(...$recipients);
+		$this->bcc = $recipients;
 		return $this;
 	}
 
@@ -169,7 +159,7 @@ class Message {
 	 * Get the Bcc address of this message.
 	 */
 	public function getBcc(): array {
-		return $this->message->getBcc();
+		return $this->bcc;
 	}
 
 	/**
@@ -181,7 +171,7 @@ class Message {
 	}
 
 	/**
-	 * Get the from subject of this message.
+	 * Get the subject of this message.
 	 */
 	public function getSubject(): string {
 		return $this->message->getSubject();
@@ -226,6 +216,11 @@ class Message {
 			$this->message->text($body);
 		}
 
+		return $this;
+	}
+
+	public function attach($body, string $name = null, string $contentType = null): self {
+		$this->message->attach($body, $name, $contentType);
 		return $this;
 	}
 }
