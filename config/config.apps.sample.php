@@ -123,6 +123,56 @@ $CONFIG = [
 	'https://apps.apple.com/app/id1359583808',
 
 /**
+ * App: Kerberos
+ *
+ * Possible keys: `kerberos.keytab` STRING
+ *
+ * Possible keys: `kerberos.suppress.timeout` INTEGER
+ *
+ * Possible keys: `kerberos.domain` STRING
+ *
+ * Possible keys: `kerberos.login.buttonName` STRING
+ *
+ * Possible keys: `kerberos.login.autoRedirect` BOOL
+ */
+
+/**
+ * Kerberos keytab file location
+ * Path to the 'keytab' file to use, defaults to '/etc/krb5.keytab'.
+ */
+
+'kerberos.keytab' => '/etc/apache2/www-data.keytab',
+
+/**
+ * Kerberos SPNEGO timeout
+ * Timeout before re-enabling SPNEGO based authentication after logout, defaults to 60 seconds.
+ */
+
+'kerberos.suppress.timeout' => 60,
+
+/**
+ * Kerberos Domain
+ * The domain name - remove from principals to match the pure user name.
+ * Example: 'alice@corp.dir' will look for the user 'alice' in LDAP if 'kerberos.domain' is set to 'corp.dir'.
+ */
+
+'kerberos.domain' => '',
+
+/**
+ * Login name button
+ * The name of the login button shown on the login page.
+ */
+
+'kerberos.login.buttonName' => 'Windows Domain Login',
+
+/**
+ * Immediate login
+ * If set to true, the login page will immediately try to log in via Kerberos.
+ */
+
+'kerberos.login.autoRedirect' => false,
+
+/**
  * App: LDAP
  *
  * Possible keys: `ldapIgnoreNamingRules` `doSet` or `false`
