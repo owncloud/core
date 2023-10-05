@@ -49,7 +49,7 @@ class Drives extends \Google\Service\Resource
     return $this->call('create', [$params], Drive::class);
   }
   /**
-   * Permanently deletes a shared drive for which the user is an organizer. The
+   * Permanently deletes a shared drive for which the user is an `organizer`. The
    * shared drive cannot contain any untrashed items. (drives.delete)
    *
    * @param string $driveId The ID of the shared drive.

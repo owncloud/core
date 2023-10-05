@@ -127,9 +127,9 @@ class Files extends \Google\Service\Resource
   }
   /**
    * Permanently deletes a file owned by the user without moving it to the trash.
-   * If the file belongs to a shared drive the user must be an organizer on the
-   * parent. If the target is a folder, all descendants owned by the user are also
-   * deleted. (files.delete)
+   * If the file belongs to a shared drive, the user must be an `organizer` on the
+   * parent folder. If the target is a folder, all descendants owned by the user
+   * are also deleted. (files.delete)
    *
    * @param string $fileId The ID of the file.
    * @param array $optParams Optional parameters.
@@ -291,7 +291,7 @@ class Files extends \Google\Service\Resource
   /**
    * Lists the labels on a file. (files.listLabels)
    *
-   * @param string $fileId The ID for the file or shared drive.
+   * @param string $fileId The ID for the file.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int maxResults The maximum number of labels to return per page.

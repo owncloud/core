@@ -101,6 +101,11 @@ class GCECredentials extends CredentialsLoader implements
     const FLAVOR_HEADER = 'Metadata-Flavor';
 
     /**
+     * The Linux file which contains the product name.
+     */
+    private const GKE_PRODUCT_NAME_FILE = '/sys/class/dmi/id/product_name';
+
+    /**
      * Note: the explicit `timeout` and `tries` below is a workaround. The underlying
      * issue is that resolving an unknown host on some networks will take
      * 20-30 seconds; making this timeout short fixes the issue, but
@@ -339,6 +344,22 @@ class GCECredentials extends CredentialsLoader implements
             } catch (RequestException $e) {
             } catch (ConnectException $e) {
             }
+        }
+
+        if (PHP_OS === 'Windows') {
+            // @TODO: implement GCE residency detection on Windows
+            return false;
+        }
+
+        // Detect GCE residency on Linux
+        return self::detectResidencyLinux(self::GKE_PRODUCT_NAME_FILE);
+    }
+
+    private static function detectResidencyLinux(string $productNameFile): bool
+    {
+        if (file_exists($productNameFile)) {
+            $productName = trim((string) file_get_contents($productNameFile));
+            return 0 === strpos($productName, 'Google');
         }
         return false;
     }
