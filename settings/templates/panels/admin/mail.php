@@ -3,7 +3,6 @@ script('settings', 'panels/mail');
 $mail_smtpsecure = [
 	''		=> $l->t('None'),
 	'ssl'	=> $l->t('SSL/TLS'),
-	'tls'	=> $l->t('STARTTLS'),
 ];
 $mail_smtpmode = [
 	'php',

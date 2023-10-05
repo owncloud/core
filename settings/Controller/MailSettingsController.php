@@ -160,36 +160,44 @@ class MailSettingsController extends Controller {
 			$email = $this->userSession->getUser()->getEMailAddress();
 		}
 
-		if (!empty($email)) {
-			try {
-				$message = $this->mailer->createMessage();
-				$message->setTo([$email => $this->userSession->getUser()->getDisplayName()]);
-				$message->setFrom([$this->defaultMailAddress]);
-				$message->setSubject($this->l10n->t('test email settings'));
-				$message->setPlainBody('If you received this email, the settings seem to be correct.');
-				$this->mailer->send($message);
-			} catch (\Exception $e) {
-				return [
-					'data' => [
-						'message' => (string) $this->l10n->t('A problem occurred while sending the email. Please revise your settings. (Error: %s)', [$e->getMessage()]),
-					],
-					'status' => 'error',
-				];
-			}
-
+		if (empty($email)) {
 			return ['data' =>
 				['message' =>
-					(string) $this->l10n->t('Email sent')
+					(string) $this->l10n->t('You need to set your user email before being able to send test emails.'),
 				],
-				'status' => 'success'
+				'status' => 'error'
 			];
 		}
 
-		return ['data' =>
-			['message' =>
-				(string) $this->l10n->t('You need to set your user email before being able to send test emails.'),
-			],
-			'status' => 'error'
-		];
+		try {
+			$message = $this->mailer->createMessage();
+			$message->setTo([$email => $this->userSession->getUser()->getDisplayName()]);
+			$message->setFrom([$this->defaultMailAddress]);
+			$message->setSubject($this->l10n->t('test email settings'));
+			$message->setPlainBody('If you received this email, the settings seem to be correct.');
+			$failed = $this->mailer->send($message);
+			if (empty($failed)) {
+				return ['data' =>
+					['message' =>
+						(string) $this->l10n->t('Email sent')
+					],
+					'status' => 'success'
+				];
+			}
+
+			return [
+				'data' => [
+					'message' => (string) $this->l10n->t('A problem occurred while sending the email. Please revise your settings. (Error: %s)', ['not delivered']),
+				],
+				'status' => 'error',
+			];
+		} catch (\Exception $e) {
+			return [
+				'data' => [
+					'message' => (string) $this->l10n->t('A problem occurred while sending the email. Please revise your settings. (Error: %s)', [$e->getMessage()]),
+				],
+				'status' => 'error',
+			];
+		}
 	}
 }

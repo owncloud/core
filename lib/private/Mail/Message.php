@@ -32,14 +32,11 @@ use Symfony\Component\Mime\Email;
  */
 class Message {
 	private Email $message;
-	/**
-	 * @var Address[]
-	 */
-	private array $from;
-	private array $replyTo;
-	private array $to;
-	private array $cc;
-	private array $bcc;
+	private array $from = [];
+	private array $replyTo = [];
+	private array $to = [];
+	private array $cc = [];
+	private array $bcc = [];
 
 	public function __construct(Email $swiftMessage) {
 		$this->message = $swiftMessage;
