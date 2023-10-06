@@ -97,8 +97,6 @@ class Mailer implements IMailer {
 		try {
 			$this->getInstance($logger ?? null)->send($message->getMessage());
 		} catch (TransportExceptionInterface $e) {
-			$this->logger->logException($e);
-
 			# in case of exception it is expected that none of the mails has been sent
 			$failedRecipients = [];
 
@@ -111,7 +109,10 @@ class Mailer implements IMailer {
 				}
 			});
 
-			return $failedRecipients;
+			$this->logger->logException($e, ['failed-recipients' => $recipients]);
+
+			# list of failed recipients is not added by intention to not accidentally disclose private data
+			throw new \RuntimeException("Failed to deliver email", 0, $e);
 		}
 
 		$allRecipients = [];

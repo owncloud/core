@@ -82,16 +82,6 @@ class IMipPluginTest extends TestCase {
 		$this->assertIMipState($message, '5.0', 'REQUEST', 'Fellowship meeting');
 	}
 
-	public function testFailedDelivery(): void {
-		$this->mailer->method('send')->willReturn(['foo@example.net']);
-		$this->logger->expects(self::once())->method('error')->with('Unable to deliver message to {failed}', ['app' => 'dav', 'failed' => 'foo@example.net']);
-
-		$message = $this->buildIMIPMessage('REQUEST');
-
-		$this->plugin->schedule($message);
-		$this->assertIMipState($message, '5.0', 'REQUEST', 'Fellowship meeting');
-	}
-
 	public function testDeliveryOfCancel(): void {
 		$this->mailer->expects($this->once())->method('send');
 

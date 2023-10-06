@@ -116,12 +116,8 @@ class IMipPlugin extends SabreIMipPlugin {
 			->setSubject($subject)
 			->attach($iTipMessage->message->serialize(), "event.ics", $contentType);
 		try {
-			$failed = $this->mailer->send($message);
+			$this->mailer->send($message);
 			$iTipMessage->scheduleStatus = '1.1; Scheduling message is sent via iMip';
-			if ($failed) {
-				$this->logger->error('Unable to deliver message to {failed}', ['app' => 'dav', 'failed' =>  \implode(', ', $failed)]);
-				$iTipMessage->scheduleStatus = '5.0; EMail delivery failed';
-			}
 		} catch (\Exception $ex) {
 			$this->logger->logException($ex, ['app' => 'dav']);
 			$iTipMessage->scheduleStatus = '5.0; EMail delivery failed';

@@ -175,21 +175,12 @@ class MailSettingsController extends Controller {
 			$message->setFrom([$this->defaultMailAddress]);
 			$message->setSubject($this->l10n->t('test email settings'));
 			$message->setPlainBody('If you received this email, the settings seem to be correct.');
-			$failed = $this->mailer->send($message);
-			if (empty($failed)) {
-				return ['data' =>
-					['message' =>
-						(string) $this->l10n->t('Email sent')
-					],
-					'status' => 'success'
-				];
-			}
-
-			return [
-				'data' => [
-					'message' => (string) $this->l10n->t('A problem occurred while sending the email. Please revise your settings. (Error: %s)', ['not delivered']),
+			$this->mailer->send($message);
+			return ['data' =>
+				['message' =>
+					(string) $this->l10n->t('Email sent')
 				],
-				'status' => 'error',
+				'status' => 'success'
 			];
 		} catch (\Exception $e) {
 			return [
