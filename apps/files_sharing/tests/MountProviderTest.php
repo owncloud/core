@@ -22,6 +22,7 @@
 
 namespace OCA\Files_Sharing\Tests;
 
+use OC\Files\Storage\Storage;
 use OCA\Files_Sharing\MountProvider;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
@@ -167,6 +168,10 @@ class MountProviderTest extends \Test\TestCase {
 				return new \OC\Share20\Share($rootFolder, $userManager);
 			}));
 
+		$storage = $this->createMock(Storage::class);
+		$storage->method('getPermissions')->willReturn(1);
+		$this->loader->method('getInstance')->willReturn($storage);
+
 		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
 
 		$this->assertCount(2, $mounts);
@@ -189,6 +194,40 @@ class MountProviderTest extends \Test\TestCase {
 		$this->assertEquals('/share4', $mountedShare2->getTarget());
 		$this->assertEquals(31, $mountedShare2->getPermissions());
 		$this->assertEquals(true, $mountedShare2->getAttributes()->getAttribute('permission', 'download'));
+	}
+
+	public function testShareFailedStorage() {
+		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
+		$userManager = $this->createMock('\OCP\IUserManager');
+
+		$attr2 = [["scope" => "permission", "key" => "download", "enabled" => true]];
+		$share = $this->makeMockShare(2, 100, 'user2', '/share2', 31, $attr2);
+
+		$this->user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user1'));
+
+		$requiredShareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
+		$this->shareManager->expects($this->once())
+			->method('getAllSharedWith')
+			->with('user1', $requiredShareTypes, null)
+			->will($this->returnValue([$share]));
+		$this->shareManager->expects($this->never())
+			->method('getSharedWith');
+		$this->shareManager->expects($this->any())
+			->method('newShare')
+			->will($this->returnCallback(function () use ($rootFolder, $userManager) {
+				return new \OC\Share20\Share($rootFolder, $userManager);
+			}));
+
+		$storage = $this->createMock(Storage::class);
+		$storage->method('getPermissions')->willReturn(0);
+		$this->loader->method('getInstance')
+			->with($this->anything(), '\OCA\Files_Sharing\SharedStorage', $this->anything())
+			->willReturn($storage);
+
+		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
+		$this->assertSame([], $mounts);
 	}
 
 	public function mergeSharesDataProvider() {
@@ -372,6 +411,10 @@ class MountProviderTest extends \Test\TestCase {
 				->method('moveShare')
 				->will($this->throwException(new \InvalidArgumentException()));
 		}
+
+		$storage = $this->createMock(Storage::class);
+		$storage->method('getPermissions')->willReturn(1);
+		$this->loader->method('getInstance')->willReturn($storage);
 
 		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
 
