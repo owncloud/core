@@ -9,6 +9,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Allow subadmins to read app config values: <a href="https://github.com/owncloud/core/pull/40961">#40961</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Remove regular expression from Preview Manager list: <a href="https://github.com/owncloud/core/pull/40990">#40990</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Check if account creation time exists for migrations: <a href="https://github.com/owncloud/core/pull/40991">#40991</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Do not mount shared storage which are failing: <a href="https://github.com/owncloud/core/pull/41014">#41014</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40983">#40983</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve preview cleanup query: <a href="https://github.com/owncloud/core/pull/40974">#40974</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Remove "Fill E-Tags" Repair-Step: <a href="https://github.com/owncloud/core/pull/40996">#40996</a></li>
@@ -39,6 +40,16 @@
    present. This has been now fixed.
             </p>
             <p>https://github.com/owncloud/core/pull/40991<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Do not mount shared storage which are failing: <a href="https://github.com/owncloud/core/pull/41014">#41014</a></p>
+            <p>Some mounts use a shared storage, which points to a different storage. If the underlying
+   storage is removed, the share mount was still being present as if the underlying storage could
+   still be accessed. This was causing problems with the `occ files:remove-storage
+   --show-candidates` command because the removed storage wasn't shown as possible candidate.Now, that share storage won't be mounted, and the underlying storage will be detected as a
+   candidate to be removed with the command above.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41014<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40983">#40983</a></p>

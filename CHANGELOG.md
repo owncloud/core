@@ -11,6 +11,7 @@ Summary
 * Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
 * Bugfix - Remove regular expression from Preview Manager list: [#40990](https://github.com/owncloud/core/pull/40990)
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
+* Bugfix - Do not mount shared storage which are failing: [#41014](https://github.com/owncloud/core/pull/41014)
 * Change - Update PHP dependencies: [#40983](https://github.com/owncloud/core/pull/40983)
 * Enhancement - Improve preview cleanup query: [#40974](https://github.com/owncloud/core/pull/40974)
 * Enhancement - Remove "Fill E-Tags" Repair-Step: [#40996](https://github.com/owncloud/core/pull/40996)
@@ -42,6 +43,18 @@ Details
    present. This has been now fixed.
 
    https://github.com/owncloud/core/pull/40991
+
+* Bugfix - Do not mount shared storage which are failing: [#41014](https://github.com/owncloud/core/pull/41014)
+
+   Some mounts use a shared storage, which points to a different storage. If the underlying
+   storage is removed, the share mount was still being present as if the underlying storage could
+   still be accessed. This was causing problems with the `occ files:remove-storage
+   --show-candidates` command because the removed storage wasn't shown as possible candidate.
+
+   Now, that share storage won't be mounted, and the underlying storage will be detected as a
+   candidate to be removed with the command above.
+
+   https://github.com/owncloud/core/pull/41014
 
 * Change - Update PHP dependencies: [#40983](https://github.com/owncloud/core/pull/40983)
 
