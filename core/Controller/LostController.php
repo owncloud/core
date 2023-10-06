@@ -294,7 +294,11 @@ class LostController extends Controller {
 				$message->setPlainBody($msgAlt);
 				$message->setHtmlBody($msg);
 				$message->setFrom([$this->from => $this->defaults->getName()]);
-				$this->mailer->send($message);
+				$failedRecipients = $this->mailer->send($message);
+				if (!empty($failedRecipients)) {
+					$firstFailedRecipient = reset($failedRecipients);
+					throw new \Exception("Couldn't send email for $userId at email address $firstFailedRecipient");
+				}
 			} catch (\Exception $e) {
 				throw new \Exception($this->l10n->t(
 					$e->getMessage()
@@ -380,7 +384,11 @@ class LostController extends Controller {
 			$message->setPlainBody($msgAlt);
 			$message->setHtmlBody($msg);
 			$message->setFrom([$this->from => $this->defaults->getName()]);
-			$this->mailer->send($message);
+			$failedRecipients = $this->mailer->send($message);
+			if (!empty($failedRecipients)) {
+				$firstFailedRecipient = reset($failedRecipients);
+				throw new \Exception("Couldn't send reset email for $user at email address $firstFailedRecipient");
+			}
 		} catch (\Exception $e) {
 			throw new \Exception($this->l10n->t(
 				'Couldn\'t send reset email. Please contact your administrator.'
