@@ -1,0 +1,12 @@
+Bugfix: Do not mount shared storage which are failing
+
+Some mounts use a shared storage, which points to a different storage.
+If the underlying storage is removed, the share mount was still being
+present as if the underlying storage could still be accessed. This was
+causing problems with the `occ files:remove-storage --show-candidates`
+command because the removed storage wasn't shown as possible candidate.
+
+Now, that share storage won't be mounted, and the underlying storage
+will be detected as a candidate to be removed with the command above.
+
+https://github.com/owncloud/core/pull/41014
