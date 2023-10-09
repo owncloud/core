@@ -40,7 +40,6 @@
     "handlebars": "^4.7.2",
     "jasmine-core": "^2.99.1",
     "jasmine-sinon": "^0.4.0",
-    "jsdoc": "~3.6.10",
     "karma": "^6.4.2",
     "karma-coverage": "*",
     "karma-firefox-launcher": "^2.1.2",
