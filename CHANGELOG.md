@@ -3,11 +3,39 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.13.1...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.13.2...master
 
 Summary
 -------
 
+* Bugfix - Do not mount shared storage which are failing: [#41014](https://github.com/owncloud/core/pull/41014)
+
+Details
+-------
+
+* Bugfix - Do not mount shared storage which are failing: [#41014](https://github.com/owncloud/core/pull/41014)
+
+   Some mounts use a shared storage, which points to a different storage. If the underlying
+   storage is removed, the share mount was still being present as if the underlying storage could
+   still be accessed. This was causing problems with the `occ files:remove-storage
+   --show-candidates` command because the removed storage wasn't shown as possible candidate.
+
+   Now, that share storage won't be mounted, and the underlying storage will be detected as a
+   candidate to be removed with the command above.
+
+   https://github.com/owncloud/core/pull/41014
+
+Changelog for ownCloud Core [10.13.2] (2023-10-04)
+=======================================
+The following sections list the changes in ownCloud core 10.13.2 relevant to
+ownCloud admins and users.
+
+[10.13.2]: https://github.com/owncloud/core/compare/v10.13.1...v10.13.2
+
+Summary
+-------
+
+* Bugfix - Delete all files from object store when user is deleted: [#40959](https://github.com/owncloud/core/pull/40959)
 * Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
 * Bugfix - Remove regular expression from Preview Manager list: [#40990](https://github.com/owncloud/core/pull/40990)
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
@@ -18,6 +46,15 @@ Summary
 
 Details
 -------
+
+* Bugfix - Delete all files from object store when user is deleted: [#40959](https://github.com/owncloud/core/pull/40959)
+
+   As soon as a user is deleted files will also be removed from object storage (s3). In previous
+   versions when a user was deleted, files belonging to this user were not correctly removed from
+   the object storage (s3) and were therefore left as remnants taking unnecessary space. This has
+   been corrected and files are now properly removed.
+
+   https://github.com/owncloud/core/pull/40959
 
 * Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
 

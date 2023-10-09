@@ -2,10 +2,33 @@
 <h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
     <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.13.1...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.13.2...master">Full list of changes in unreleased </a>
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Do not mount shared storage which are failing: <a href="https://github.com/owncloud/core/pull/41014">#41014</a></li>
+    </ul>
+    <h3 id="unreleased-details">Details</h3>
+    <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Do not mount shared storage which are failing: <a href="https://github.com/owncloud/core/pull/41014">#41014</a></p>
+            <p>Some mounts use a shared storage, which points to a different storage. If the underlying
+   storage is removed, the share mount was still being present as if the underlying storage could
+   still be accessed. This was causing problems with the `occ files:remove-storage
+   --show-candidates` command because the removed storage wasn't shown as possible candidate.Now, that share storage won't be mounted, and the underlying storage will be detected as a
+   candidate to be removed with the command above.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41014<br></p>
+        </li>
+    </ul>
+    <h2 id="10.13.2" class="version"> Changelog for ownCloud Core [10.13.2] (2023-10-04)</h2>
+    <p>The following sections list the changes in ownCloud core 10.13.2 relevant to ownCloud admins and users.</p>
+    <p>
+    <a href="https://github.com/owncloud/core/compare/v10.13.1...v10.13.2">Full list of changes in 10.13.2</a>
+    </p>
+    <h3 id="10.13.2-summary">Summary</h3>
+    <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Delete all files from object store when user is deleted: <a href="https://github.com/owncloud/core/pull/40959">#40959</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow subadmins to read app config values: <a href="https://github.com/owncloud/core/pull/40961">#40961</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Remove regular expression from Preview Manager list: <a href="https://github.com/owncloud/core/pull/40990">#40990</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Check if account creation time exists for migrations: <a href="https://github.com/owncloud/core/pull/40991">#40991</a></li>
@@ -14,8 +37,17 @@
         <li class="type-enhancement changelog-item">Enhancement - Improve preview cleanup query: <a href="https://github.com/owncloud/core/pull/40974">#40974</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Remove "Fill E-Tags" Repair-Step: <a href="https://github.com/owncloud/core/pull/40996">#40996</a></li>
     </ul>
-    <h3 id="unreleased-details">Details</h3>
+    <h3 id="10.13.2-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Delete all files from object store when user is deleted: <a href="https://github.com/owncloud/core/pull/40959">#40959</a></p>
+            <p>As soon as a user is deleted files will also be removed from object storage (s3). In previous
+   versions when a user was deleted, files belonging to this user were not correctly removed from
+   the object storage (s3) and were therefore left as remnants taking unnecessary space. This has
+   been corrected and files are now properly removed.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40959<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Allow subadmins to read app config values: <a href="https://github.com/owncloud/core/pull/40961">#40961</a></p>
             <p>Previously, subadmins couldn't read app config values. This caused problems in the users page
