@@ -66,7 +66,9 @@ class Cleanup extends Base {
 
 		$pc = new PreviewCleanup($this->connection);
 		$count = $pc->process($all, $chunk_size, static function ($userId, $name, $action) use ($output) {
-			$output->writeln("$name - $userId: $action");
+                        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+			        $output->writeln("$name - $userId: $action");
+                        }
 		});
 
 		$output->writeln("$count orphaned previews deleted");
