@@ -39,7 +39,6 @@ SHELL=/bin/bash
 #
 YARN := $(shell command -v yarn 2> /dev/null)
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
-JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER_BIN := $(shell command -v composer 2> /dev/null)
 
@@ -254,17 +253,6 @@ clean-test: clean-test-acceptance clean-test-results
 #
 # Documentation
 #
-.PHONY: docs-js
-docs-js: $(nodejs_deps)
-	$(JSDOC) -d build/jsdocs core/js/*.js core/js/**/*.js apps/*/js/*.js
-
-.PHONY: docs
-docs: docs-js
-
-.PHONY: clean-docs
-clean-docs:
-	rm -Rf build/jsdocs
-
 .PHONY: test-doc-links
 test-doc-links:
 	php tests/docs/DocLinksTest.php $(DOC_LINK_VERSION)
