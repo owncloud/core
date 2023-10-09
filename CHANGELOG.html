@@ -6,19 +6,15 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
-        <li class="type-bugfix changelog-item">Bugfix - Do not mount shared storage which are failing: <a href="https://github.com/owncloud/core/pull/41014">#41014</a></li>
+        <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/41033">#41033</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
-        <li class="type-bugfix changelog-item">
-            <p>Bugfix - Do not mount shared storage which are failing: <a href="https://github.com/owncloud/core/pull/41014">#41014</a></p>
-            <p>Some mounts use a shared storage, which points to a different storage. If the underlying
-   storage is removed, the share mount was still being present as if the underlying storage could
-   still be accessed. This was causing problems with the `occ files:remove-storage
-   --show-candidates` command because the removed storage wasn't shown as possible candidate.Now, that share storage won't be mounted, and the underlying storage will be detected as a
-   candidate to be removed with the command above.
+        <li class="type-change changelog-item">
+            <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/41033">#41033</a></p>
+            <p>The following have been updated: - firebase/php-jwt (6.8.1 to 6.9.0)
             </p>
-            <p>https://github.com/owncloud/core/pull/41014<br></p>
+            <p>https://github.com/owncloud/core/pull/41033<br></p>
         </li>
     </ul>
     <h2 id="10.13.2" class="version"> Changelog for ownCloud Core [10.13.2] (2023-10-04)</h2>
