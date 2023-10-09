@@ -215,6 +215,10 @@ class UserSyncer implements IUserSyncer {
 			throw new SyncBackendUserFailedException("The database returned multiple accounts for this uid: $id");
 		}
 
+		if (!empty($backends) && !\in_array($targetBackend, $backends)) {
+			throw new SyncBackendUserFailedException("User found not belonging to any of the requested backends");
+		}
+
 		foreach ($this->userSyncBackends as $userSyncBackend) {
 			if (!isset($targetBackend) || \get_class($userSyncBackend->getUserInterface()) === $targetBackend) {
 				$syncingUser = $userSyncBackend->getSyncingUser($id);

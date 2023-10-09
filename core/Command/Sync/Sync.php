@@ -125,7 +125,7 @@ class Sync extends Command {
 		$output->writeln('Checking local data');
 		$progress = new ProgressBar($output);
 		$progress->start($syncer->localItemCount($opts));
-		$syncer->check(function ($item, $state) use ($output, $progress, &$itemStateList, &$errorList) {
+		$syncer->check(function ($item, $state) use ($progress, &$itemStateList, &$errorList) {
 			if (\is_array($item) && $state !== ISyncer::CHECK_STATE_NO_CHANGE) {
 				$key = \array_key_first($item);
 				$itemStateList[] = [
@@ -168,7 +168,7 @@ class Sync extends Command {
 		$output->writeln('Syncing remote data');
 		$progress = new ProgressBar($output);
 		$progress->start($syncer->remoteItemCount($opts));
-		$syncer->sync(function ($item) use ($output, $progress, &$errorList) {
+		$syncer->sync(function ($item) use ($progress, &$errorList) {
 			if ($item instanceof \Exception) {
 				$errorList[] = $item;
 			} else {
