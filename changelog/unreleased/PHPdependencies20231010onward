@@ -1,0 +1,6 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- firebase/php-jwt (6.8.1 to 6.9.0)
+
+https://github.com/owncloud/core/pull/41033
