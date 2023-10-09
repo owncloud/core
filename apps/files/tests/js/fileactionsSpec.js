@@ -307,10 +307,9 @@ describe('OCA.Files.FileActions tests', function() {
 		});
 	});
 	describe('action handler', function() {
-		var actionStub, $tr, clock;
+		var actionStub, $tr;
 
 		beforeEach(function() {
-			clock = sinon.useFakeTimers();
 			var fileData = {
 				id: 18,
 				type: 'file',
@@ -333,9 +332,6 @@ describe('OCA.Files.FileActions tests', function() {
 		});
 		afterEach(function() {
 			OC.hideMenus();
-			// jump past animations
-			clock.tick(1000);
-			clock.restore();
 		});
 		it('passes context to action handler', function() {
 			$tr.find('.action-test').click();
@@ -602,13 +598,6 @@ describe('OCA.Files.FileActions tests', function() {
 		});
 	});
 	describe('events', function() {
-		var clock;
-		beforeEach(function() {
-			clock = sinon.useFakeTimers();
-		});
-		afterEach(function() {
-			clock.restore();
-		});
 		it('notifies update event handlers once after multiple changes', function() {
 			var actionStub = sinon.stub();
 			var handler = sinon.stub();
