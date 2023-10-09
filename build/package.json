@@ -46,7 +46,7 @@
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
-    "sinon": "^12.0.1"
+    "sinon": "^16.1.0"
   },
   "resolutions": {
     "socket.io-parser": "4.2.3",
