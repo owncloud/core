@@ -748,7 +748,7 @@ class OC_Image implements \OCP\IImage {
 	 * @param string $str A string base64 encoded string of image data.
 	 * @return bool An image resource or false on error
 	 */
-	private function loadFromBase64($str) {
+	public function loadFromBase64(string $str): bool {
 		if (!\is_string($str)) {
 			return false;
 		}
