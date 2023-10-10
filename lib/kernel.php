@@ -121,8 +121,7 @@ class OC {
 	private static $config = null;
 
 	/**
-	 * @throws \RuntimeException when the 3rdparty directory is missing or
-	 * the app path list is empty or contains an invalid path
+	 * @throws \RuntimeException when the app path list is empty or contains an invalid path
 	 */
 	public static function initPaths() {
 		if (\defined('PHPUNIT_CONFIG_DIR')) {
@@ -507,7 +506,7 @@ class OC {
 		$loaderStart = \microtime(true);
 		self::$CLI = (\in_array(\php_sapi_name(), ['cli', 'phpdbg']));
 
-		// setup 3rdparty autoloader
+		// setup composer autoloader
 		$vendorAutoLoad = OC::$SERVERROOT . '/lib/composer/autoload.php';
 		if (!\file_exists($vendorAutoLoad)) {
 			\printf('Composer autoloader not found, unable to continue. Please run "make".');
