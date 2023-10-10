@@ -1066,9 +1066,9 @@ just-extend@^4.0.2:
   integrity sha512-g3UB796vUFIY90VIv/WX3L2c8CS2MdWUww3CNrYmqza1Fg0DURc2K/O4YrnklBdQarSJ/y8JnJYDGc+1iumQjg==
 
 karma-coverage@*:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/karma-coverage/-/karma-coverage-2.2.0.tgz#64f838b66b71327802e7f6f6c39d569b7024e40c"
-  integrity sha512-gPVdoZBNDZ08UCzdMHHhEImKrw1+PAOQOIiffv1YsvxFhBjqvo/SVXNk4tqn1SYqX0BJZT6S/59zgxiBe+9OuA==
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/karma-coverage/-/karma-coverage-2.2.1.tgz#e1cc074f93ace9dc4fb7e7aeca7135879c2e358c"
+  integrity sha512-yj7hbequkQP2qOSb20GuNSIyE//PgJWHwC2IydLE6XRtsnaflv+/OSGNssPjobYUlhVVagy99TQpqUt3vAUG7A==
   dependencies:
     istanbul-lib-coverage "^3.2.0"
     istanbul-lib-instrument "^5.1.0"
