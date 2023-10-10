@@ -57,19 +57,3 @@ updates:
   - dependency-name: sinon
     versions:
     - 9.2.4
-- package-ecosystem: composer
-  directory: "/apps/files_external/3rdparty"
-  schedule:
-    interval: weekly
-    time: "22:00"
-  open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: phpseclib/phpseclib
-    versions:
-    - 3.0.7
-  - dependency-name: icewind/smb
-    versions:
-    - 3.4.0
-  - dependency-name: icewind/streams
-    versions:
-    - 0.7.4

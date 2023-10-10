@@ -5,7 +5,6 @@
 	<arg value="sp" />
 
 	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>*/3rdparty/*</exclude-pattern>
 
 	<!-- make sure we use tabs for indent and not spaces -->
 	<arg name="tab-width" value="4" />

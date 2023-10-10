@@ -56,7 +56,6 @@ return [
 	//       and `exclude_analysis_directory_list` arrays.
 	'exclude_analysis_directory_list' => [
 		'lib/composer',
-		'apps/files_external/3rdparty',
 		'tests'
 	],
 
