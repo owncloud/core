@@ -21,12 +21,15 @@
             "OC\\Settings\\": "settings/",
             "OCP\\": "lib/public"
         },
-        "classmap": ["lib/private/legacy"]
+        "classmap": ["lib/private/legacy"],
+        "files": [
+            "apps/files_external/lib/config.php"
+        ]
+
     },
     "autoload-dev" : {
         "files": [
-            "tests/lib/TestCase.php",
-            "apps/files_external/lib/config.php"
+            "tests/lib/TestCase.php"
         ]
     },
     "require-dev": {
