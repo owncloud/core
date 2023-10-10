@@ -27,6 +27,7 @@ describe('OCA.Files.FavoritesPlugin tests', function() {
 			'</div>' +
 			'</div>'
 		);
+		OCA.Files.App.initialize();
 		OC.Plugins.attach('OCA.Files.App', Plugin);
 		fileList = Plugin.showFileList($('#app-content-favorites'));
 	});
