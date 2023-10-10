@@ -72,10 +72,13 @@ class UserSyncer implements IUserSyncer {
 	 *
 	 * Using "missingAction" as option won't do anything here. It will be ignored.
 	 *
+	 * This method won't take into account whether the backends (including the
+	 * requested ones) are registered or not.
+	 *
 	 * Custom options:
 	 * - "backends" => "back1,back2,back3"
-	 *   Only those backends will be counted, assuming they're registered. The
-	 *   rest of the backends will be ignored.
+	 *   Only those backends will be counted. The rest of the backends will
+	 *   be ignored.
 	 */
 	public function localItemCount($opts = []): ?int {
 		$backends = $this->extractBackendsFromOpts($opts);
@@ -104,8 +107,9 @@ class UserSyncer implements IUserSyncer {
 	 * - "missingAction" => "remove" or "disable".
 	 *   The action to do if the account is missing in the backend
 	 * - "backends" => "back1,back2,back3"
-	 *   Only those backends will be synced, assuming they're registered. The
-	 *   rest of the backends will be ignored.
+	 *   Only those backends will be checked. The rest of the backends will
+	 *   be ignored. If the backends aren't registered, an error will be
+	 *   send through the callback.
 	 */
 	public function check($callback, $opts = []) {
 		$backends = $this->extractBackendsFromOpts($opts);
@@ -140,7 +144,7 @@ class UserSyncer implements IUserSyncer {
 
 			$targetUserSyncBackend = $backendToUserSync[$targetBackend] ?? null;
 			if ($targetUserSyncBackend === null) {
-				// send and exception to the callback
+				// backend not registered -> send and exception to the callback
 				$callback(new SyncException("{$a->getUserId()}, backend {$targetBackend} is not found"), ISyncer::CHECK_STATE_ERROR);
 				return;
 			}

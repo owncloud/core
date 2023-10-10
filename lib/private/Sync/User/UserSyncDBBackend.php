@@ -36,6 +36,20 @@ class UserSyncDBBackend implements IUserSyncBackend {
 	}
 
 	/**
+	 * This is intended to be used just for unit tests
+	 */
+	public function getPointer(): int {
+		return $this->pointer;
+	}
+
+	/**
+	 * This is intended to be used just for unit tests
+	 */
+	public function getCachedUserData(): array {
+		return $this->cachedUserData;
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function resetPointer() {
@@ -106,7 +120,11 @@ class UserSyncDBBackend implements IUserSyncBackend {
 	 * @inheritDoc
 	 */
 	public function userCount(): ?int {
-		return $this->dbUserBackend->countUsers();
+		$nUsers = $this->dbUserBackend->countUsers();
+		if ($nUsers === false) {
+			return null;
+		}
+		return $nUsers;
 	}
 
 	/**
