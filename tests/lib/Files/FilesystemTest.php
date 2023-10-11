@@ -347,11 +347,7 @@ class FilesystemTest extends TestCase {
 		$this->assertSame($expected, Filesystem::isForbiddenFileOrDir($path, $regex));
 	}
 
-	public function testNormalizePathUTF8() {
-		if (!\class_exists('Patchwork\PHP\Shim\Normalizer')) {
-			$this->markTestSkipped('UTF8 normalizer Patchwork was not found');
-		}
-
+	public function testNormalizePathUTF8(): void {
 		$this->assertEquals("/foo/bar\xC3\xBC", Filesystem::normalizePath("/foo/baru\xCC\x88"));
 		$this->assertEquals("/foo/bar\xC3\xBC", Filesystem::normalizePath("\\foo\\baru\xCC\x88"));
 	}
