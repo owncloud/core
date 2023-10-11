@@ -56,7 +56,7 @@ class MP3 implements IProvider2 {
 		$getID3 = new ID3Parser();
 		$tags = $getID3->analyze($absPath);
 
-		$picture = isset($tags['id3v2']['APIC'][0]['data']) ? $tags['id3v2']['APIC'][0]['data'] : null;
+		$picture = $tags['id3v2']['APIC'][0]['data'] ?? null;
 		if ($picture === null && isset($tags['id3v2']['PIC'][0]['data'])) {
 			$picture = $tags['id3v2']['PIC'][0]['data'];
 		}

@@ -95,9 +95,7 @@ class Search implements ISearch {
 	public function removeProvider($provider) {
 		$this->registeredProviders = \array_filter(
 			$this->registeredProviders,
-			function ($element) use ($provider) {
-				return ($element['class'] != $provider);
-			}
+			fn ($element) => $element['class'] != $provider
 		);
 		// force regeneration of providers on next search
 		$this->providers = [];

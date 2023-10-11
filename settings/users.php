@@ -67,7 +67,7 @@ $groupsInfo = new \OC\Group\MetaData(
 	\OC::$server->getUserSession()
 );
 $groupsInfo->setSorting($sortGroupsBy);
-list($adminGroup, $groups) = $groupsInfo->get();
+[$adminGroup, $groups] = $groupsInfo->get();
 
 $recoveryAdminEnabled = OC_App::isEnabled('encryption') &&
 						$config->getAppValue('encryption', 'recoveryAdminEnabled', null);

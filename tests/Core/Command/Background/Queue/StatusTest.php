@@ -34,10 +34,9 @@ use Test\TestCase;
  * @group DB
  */
 class StatusTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 	/** @var IJobList */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 
 	public function setUp(): void {
 		parent::setUp();

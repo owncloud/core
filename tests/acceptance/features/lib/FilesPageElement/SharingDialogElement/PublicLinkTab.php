@@ -39,13 +39,13 @@ class PublicLinkTab extends OwncloudPage {
 	 * @var NodeElement of this tab
 	 */
 	private $publicLinkTabElement;
-	private $createLinkBtnXpath = ".//button[@class='addLink']";
-	private $popupXpath = ".//div[@class='oc-dialog' and not(contains(@style,'display: none'))]";
-	private $linkEntryByNameXpath = ".//*[@class='link-entry--title' and .=%s]/..";
-	private $linkEntriesNamesXpath = "//div[@id='shareDialogLinkList']//span[@class='link-entry--title']";
-	private $linkUrlInputXpath = ".//input";
-	private $publicLinkWarningMessageXpath = ".//*[@class='error-message-global'][last()]";
-	private $linkEditBtnXpath = "//div[@class='link-entry--icon-button editLink']";
+	private string $createLinkBtnXpath = ".//button[@class='addLink']";
+	private string $popupXpath = ".//div[@class='oc-dialog' and not(contains(@style,'display: none'))]";
+	private string $linkEntryByNameXpath = ".//*[@class='link-entry--title' and .=%s]/..";
+	private string $linkEntriesNamesXpath = "//div[@id='shareDialogLinkList']//span[@class='link-entry--title']";
+	private string $linkUrlInputXpath = ".//input";
+	private string $publicLinkWarningMessageXpath = ".//*[@class='error-message-global'][last()]";
+	private string $linkEditBtnXpath = "//div[@class='link-entry--icon-button editLink']";
 
 	/**
 	 *

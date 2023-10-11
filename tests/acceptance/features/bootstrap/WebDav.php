@@ -1707,7 +1707,7 @@ trait WebDav {
 			$this->getPasswordForUser($user)
 		);
 		$contents = $response->getBody()->getContents();
-		$result = \json_decode($contents, true);
+		$result = \json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
 		PHPUnit\Framework\Assert::assertNotNull($result, "'$contents' is not valid JSON");
 		foreach ($table->getTable() as $row) {
 			$expectedKey = $row[0];
@@ -5037,9 +5037,7 @@ trait WebDav {
 		// into the step. findEntryFromPropfindResponse returns entries without
 		// any leading (or trailing) slash
 		$expectedEntries = \array_map(
-			function ($value) {
-				return \trim($value, "/");
-			},
+			fn ($value) => \trim($value, "/"),
 			$elementRows
 		);
 		$resultEntries = $this->findEntryFromPropfindResponse(null, $user, "REPORT");

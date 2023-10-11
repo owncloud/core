@@ -36,8 +36,7 @@ class CreateCalendar extends Command {
 	/** @var IUserManager */
 	protected $userManager;
 
-	/** @var IGroupManager $groupManager */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
 	/** @var \OCP\IDBConnection */
 	protected $dbConnection;

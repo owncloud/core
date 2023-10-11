@@ -57,7 +57,7 @@ class UsersTest extends OriginalTest {
 	/** @var Users | MockObject */
 	protected $api;
 	/** @var \OC\Authentication\TwoFactorAuth\Manager | MockObject */
-	private $twoFactorAuthManager;
+	private \PHPUnit\Framework\MockObject\MockObject $twoFactorAuthManager;
 
 	protected function tearDown(): void {
 		$_GET = null;

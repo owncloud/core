@@ -36,12 +36,9 @@ class CacheTest extends TestCase {
 	/**
 	 * @var \OC\Files\Storage\Storage
 	 **/
-	private $storage;
+	private \PHPUnit\Framework\MockObject\MockObject $storage;
 
-	/**
-	 * @var \OCA\Files_Sharing\External\Cache
-	 */
-	private $cache;
+	private \OCA\Files_Sharing\External\Cache $cache;
 
 	/**
 	 * @var string
@@ -53,7 +50,7 @@ class CacheTest extends TestCase {
 
 		$this->remoteUser = self::getUniqueID('remoteuser');
 
-		$this->storage = $this->getMockBuilder('\OCA\Files_Sharing\External\Storage')
+		$this->storage = $this->getMockBuilder('\\' . \OCA\Files_Sharing\External\Storage::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->storage

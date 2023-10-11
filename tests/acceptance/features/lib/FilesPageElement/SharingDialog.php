@@ -43,43 +43,40 @@ class SharingDialog extends OwncloudPage {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/';
-	private $shareWithFieldXpath = ".//*[contains(@class,'shareWithField')]";
-	private $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
-	private $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
-	private $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
-	private $suffixToIdentifyGroups = " Group";
-	private $suffixToIdentifyUsers = " User";
-	private $suffixToIdentifyMultipleUsers = " Add multiple users";
-	private $suffixToIdentifyRemoteUsers = " Federated";
-	private $sharerInformationXpath = ".//*[@class='reshare']";
-	private $sharedWithAndByRegEx = "Shared with you(?: and the group (.*))? by (.*)$";
-	private $permissionsFieldByUserNameWithExtraInfo = "//*[@id='shareWithList']//span[contains(text(), '%s')]/parent::li[@data-share-with='%s']";
-	private $permissionsFieldByUserName = "//*[@id='shareWithList']//span[contains(text(), '%s')]/parent::li";
-	private $permissionsFieldByGroupName = "//*[@id='shareWithList']//span[contains(text(), '%s (group)')]/parent::li";
-	private $permissionLabelXpath = ".//label[@for='%s']";
-	private $showCrudsXpath = ".//span[@class='icon icon-settings-dark']";
-	private $shareOptionsXpath = "//div[@class='shareOption']";
-	private $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
-	private $publicLinksTabContentXpath = "//div[@id='shareDialogLinkList']";
-	private $noSharingMessageXpath = "//div[@class='noSharingPlaceholder']";
-	private $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
-	private $publicLinkTitleXpath = "//span[@class='link-entry--title']";
-	private $notifyByEmailBtnXpath = "//input[@name='mailNotification']";
-	private $shareWithExpirationFieldXpath = "//*[@id='shareWithList']//span[@class='has-tooltip username' and .='%s']/..//input[contains(@class, 'expiration')]";
-	private $shareWithClearExpirationFieldXpath = "/following-sibling::button[@class='removeExpiration']"; // in relation to $shareWithExpirationFieldXpath
-	private $shareWithListXpath = "//ul[@id='shareWithList']/li";
-	private $shareWithListDetailsXpath = "//div[@class='shareWithList__details']";
-	private $userOrGroupNameSpanXpath = "//span[contains(@class,'username')]";
-	private $unShareTabXpath = "//a[contains(@class,'unshare')]";
-	private $sharedWithGroupAndSharerName = null;
-	private $publicLinkRemoveDeclineMsg = "No";
-	private $shareTreeItemByNameAndPathXpath = "//li[@class='shareTree-item' and strong/text()='%s' and span/text()='via %s']";
-	private $userAndGroupsShareTabXpath = "//div[@class='dialogContainer']//li[contains(text(), 'User and Groups')]";
+	private string $shareWithFieldXpath = ".//*[contains(@class,'shareWithField')]";
+	private string $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
+	private string $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
+	private string $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
+	private string $suffixToIdentifyGroups = " Group";
+	private string $suffixToIdentifyUsers = " User";
+	private string $suffixToIdentifyMultipleUsers = " Add multiple users";
+	private string $suffixToIdentifyRemoteUsers = " Federated";
+	private string $sharerInformationXpath = ".//*[@class='reshare']";
+	private string $sharedWithAndByRegEx = "Shared with you(?: and the group (.*))? by (.*)$";
+	private string $permissionsFieldByUserNameWithExtraInfo = "//*[@id='shareWithList']//span[contains(text(), '%s')]/parent::li[@data-share-with='%s']";
+	private string $permissionsFieldByUserName = "//*[@id='shareWithList']//span[contains(text(), '%s')]/parent::li";
+	private string $permissionsFieldByGroupName = "//*[@id='shareWithList']//span[contains(text(), '%s (group)')]/parent::li";
+	private string $permissionLabelXpath = ".//label[@for='%s']";
+	private string $showCrudsXpath = ".//span[@class='icon icon-settings-dark']";
+	private string $shareOptionsXpath = "//div[@class='shareOption']";
+	private string $publicLinksShareTabXpath = ".//li[contains(@class,'subtab-publicshare')]";
+	private string $publicLinksTabContentXpath = "//div[@id='shareDialogLinkList']";
+	private string $noSharingMessageXpath = "//div[@class='noSharingPlaceholder']";
+	private string $publicLinkRemoveBtnXpath = "//div[contains(@class, 'removeLink')]";
+	private string $publicLinkTitleXpath = "//span[@class='link-entry--title']";
+	private string $notifyByEmailBtnXpath = "//input[@name='mailNotification']";
+	private string $shareWithExpirationFieldXpath = "//*[@id='shareWithList']//span[@class='has-tooltip username' and .='%s']/..//input[contains(@class, 'expiration')]";
+	private string $shareWithClearExpirationFieldXpath = "/following-sibling::button[@class='removeExpiration']"; // in relation to $shareWithExpirationFieldXpath
+	private string $shareWithListXpath = "//ul[@id='shareWithList']/li";
+	private string $shareWithListDetailsXpath = "//div[@class='shareWithList__details']";
+	private string $userOrGroupNameSpanXpath = "//span[contains(@class,'username')]";
+	private string $unShareTabXpath = "//a[contains(@class,'unshare')]";
+	private ?array $sharedWithGroupAndSharerName = null;
+	private string $publicLinkRemoveDeclineMsg = "No";
+	private string $shareTreeItemByNameAndPathXpath = "//li[@class='shareTree-item' and strong/text()='%s' and span/text()='via %s']";
+	private string $userAndGroupsShareTabXpath = "//div[@class='dialogContainer']//li[contains(text(), 'User and Groups')]";
 
-	/**
-	 * @var string
-	 */
-	private $groupFramework = "%s (group)";
+	private string $groupFramework = "%s (group)";
 
 	/**
 	 *

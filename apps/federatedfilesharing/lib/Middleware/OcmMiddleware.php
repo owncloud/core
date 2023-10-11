@@ -102,9 +102,7 @@ class OcmMiddleware {
 			$nullKeys = \array_keys(
 				\array_filter(
 					$params,
-					function ($b) {
-						return $b === null;
-					}
+					fn ($b) => $b === null
 				)
 			);
 			if (\count($nullKeys) > 0) {

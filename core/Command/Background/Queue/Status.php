@@ -30,8 +30,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Status extends Command {
-	/** @var \OCP\BackgroundJob\IJobList */
-	private $jobList;
+	private \OCP\BackgroundJob\IJobList $jobList;
 
 	public function __construct(IJobList $jobList) {
 		$this->jobList = $jobList;
@@ -47,7 +46,7 @@ class Status extends Command {
 
 	private function getJobArgumentAsString($argument) {
 		if (\is_array($argument)) {
-			$argument = \json_encode($argument);
+			$argument = \json_encode($argument, JSON_THROW_ON_ERROR);
 		}
 		return $argument;
 	}

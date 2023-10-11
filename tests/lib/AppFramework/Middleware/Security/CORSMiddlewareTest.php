@@ -27,14 +27,13 @@ use OC\User\Session;
  * Class CORSMiddlewareTest
  */
 class CORSMiddlewareTest extends \Test\TestCase {
-	/** @var ControllerMethodReflector */
-	private $reflector;
+	private \OC\AppFramework\Utility\ControllerMethodReflector $reflector;
 	/** @var Session */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject*/
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IUserSession */
-	private $fakeSession;
+	private \PHPUnit\Framework\MockObject\MockObject $fakeSession;
 
 	public function providesConfigForPublicPageTest() {
 		return [

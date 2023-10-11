@@ -37,8 +37,7 @@ use Test\Traits\UserTrait;
 class CleanupChunksTest extends TestCase {
 	use UserTrait;
 
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -98,7 +97,7 @@ class CleanupChunksTest extends TestCase {
 		$path = $view->getAbsolutePath('/' . $user->getUID(
 		) . '/uploads/'. $uploadId);
 
-		list($storage) = Filesystem::resolvePath($path);
+		[$storage] = Filesystem::resolvePath($path);
 
 		if (!$storage->isLocal()) {
 			$this->markTestSkipped('Test only relevant on local storage');

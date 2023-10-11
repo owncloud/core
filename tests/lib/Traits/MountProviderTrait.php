@@ -41,14 +41,12 @@ trait MountProviderTrait {
 
 	protected function setUpMountProviderTrait() {
 		$this->storageFactory = new StorageFactory();
-		$this->mountProvider = $this->createMock('\OCP\Files\Config\IMountProvider');
+		$this->mountProvider = $this->createMock('\\' . \OCP\Files\Config\IMountProvider::class);
 		$this->mountProvider->expects($this->any())
 			->method('getMountsForUser')
 			->will($this->returnCallback(function (IUser $user) {
 				if (isset($this->mounts[$user->getUID()])) {
-					return \array_map(function ($config) {
-						return new MountPoint($config['storage'], $config['mountPoint'], $config['arguments'], $this->storageFactory);
-					}, $this->mounts[$user->getUID()]);
+					return \array_map(fn ($config) => new MountPoint($config['storage'], $config['mountPoint'], $config['arguments'], $this->storageFactory), $this->mounts[$user->getUID()]);
 				} else {
 					return [];
 				}

@@ -31,8 +31,7 @@ use OCP\Security\ISecureRandom;
 class TokenHandler {
 	public const TOKEN_LENGTH = 15;
 
-	/** @var ISecureRandom */
-	private $secureRandom;
+	private \OCP\Security\ISecureRandom $secureRandom;
 
 	/**
 	 * TokenHandler constructor.

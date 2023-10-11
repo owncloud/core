@@ -50,7 +50,7 @@ class AppManagementContext implements Context {
 	public function setAppsPaths(array $appsPaths):array {
 		return SetupHelper::setSystemConfig(
 			'apps_paths',
-			\json_encode($appsPaths),
+			\json_encode($appsPaths, JSON_THROW_ON_ERROR),
 			$this->featureContext->getStepLineRef(),
 			'json'
 		);
@@ -71,7 +71,9 @@ class AppManagementContext implements Context {
 				$this->featureContext->getStepLineRef(),
 				"json"
 			)['stdOut'],
-			true
+			true,
+			512,
+			JSON_THROW_ON_ERROR
 		);
 		$this->featureContext->verifyTableNodeColumns($table, ['dir'], ['is_writable']);
 		foreach ($table as $appsPathToAdd) {
@@ -159,7 +161,7 @@ class AppManagementContext implements Context {
 			['app:list', '--output json'],
 			$this->featureContext->getStepLineRef()
 		);
-		$appsDisabled = \json_decode($check['stdOut'], true)['disabled'];
+		$appsDisabled = \json_decode($check['stdOut'], true, 512, JSON_THROW_ON_ERROR)['disabled'];
 		if (!\array_key_exists($appId, $appsDisabled)) {
 			throw new \Exception(
 				__METHOD__
@@ -483,7 +485,7 @@ class AppManagementContext implements Context {
 		if ($value === '') {
 			$this->oldAppsPaths = null;
 		} else {
-			$this->oldAppsPaths = \json_decode($value, true);
+			$this->oldAppsPaths = \json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 		}
 	}
 
@@ -519,7 +521,7 @@ class AppManagementContext implements Context {
 			['config:list'],
 			$this->featureContext->getStepLineRef()
 		)['stdOut'];
-		$configList = \json_decode($configJson, true);
+		$configList = \json_decode($configJson, true, 512, JSON_THROW_ON_ERROR);
 		foreach ($this->createdApps as $app => $paths) {
 			//disable the app
 			$this->featureContext->appHasBeenDisabled($app, 'disables');

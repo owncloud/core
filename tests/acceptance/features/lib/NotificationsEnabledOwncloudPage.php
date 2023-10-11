@@ -32,7 +32,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * plus what the notifications App adds to it
  */
 class NotificationsEnabledOwncloudPage extends OwncloudPage {
-	private $notificationsButtonXpath = "//div[contains(@class,'notifications-button')]";
+	private string $notificationsButtonXpath = "//div[contains(@class,'notifications-button')]";
 
 	/**
 	 *

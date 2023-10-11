@@ -51,15 +51,9 @@ class StorageTest extends TestCase {
 	 */
 	private $user;
 
-	/**
-	 * @var View
-	 */
-	private $rootView;
+	private \OC\Files\View $rootView;
 
-	/**
-	 * @var View
-	 */
-	private $userView;
+	private \OC\Files\View $userView;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -101,7 +95,7 @@ class StorageTest extends TestCase {
 	public function testSingleStorageDeleteFile() {
 		$this->assertTrue($this->userView->file_exists('test.txt'));
 		$this->userView->unlink('test.txt');
-		list($storage, ) = $this->userView->resolvePath('test.txt');
+		[$storage, ] = $this->userView->resolvePath('test.txt');
 		$storage->getScanner()->scan(''); // make sure we check the storage
 		$this->assertFalse($this->userView->getFileInfo('test.txt'));
 
@@ -118,7 +112,7 @@ class StorageTest extends TestCase {
 	public function testSingleStorageDeleteFolder() {
 		$this->assertTrue($this->userView->file_exists('folder/inside.txt'));
 		$this->userView->rmdir('folder');
-		list($storage, ) = $this->userView->resolvePath('folder/inside.txt');
+		[$storage, ] = $this->userView->resolvePath('folder/inside.txt');
 		$storage->getScanner()->scan(''); // make sure we check the storage
 		$this->assertFalse($this->userView->getFileInfo('folder'));
 
@@ -311,7 +305,7 @@ class StorageTest extends TestCase {
 		$this->userView->unlink('test.txt');
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin
@@ -341,7 +335,7 @@ class StorageTest extends TestCase {
 		$this->userView->rmdir('folder');
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin
@@ -377,7 +371,7 @@ class StorageTest extends TestCase {
 		$this->userView->unlink('folder/inside.txt');
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin
@@ -409,7 +403,7 @@ class StorageTest extends TestCase {
 		$this->userView->unlink('folder/inside.txt');
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin
@@ -459,7 +453,7 @@ class StorageTest extends TestCase {
 		$recipientView->unlink('share/test.txt');
 
 		// rescan trash storage for both users
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin for both users
@@ -513,7 +507,7 @@ class StorageTest extends TestCase {
 		$recipientView->rmdir('share/folder');
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin for owner
@@ -571,7 +565,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($this->userView->file_exists('substorage/test.txt'));
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// versions were moved too
@@ -613,7 +607,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($this->userView->file_exists('substorage/folder/inside.txt'));
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// versions were moved too
@@ -651,7 +645,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($this->userView->file_exists('substorage/folder/inside.txt'));
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// versions were moved too
@@ -697,7 +691,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($this->userView->file_exists('substorage/folder/inside.txt'));
 
 		// rescan trash storage
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// versions were moved too
@@ -799,7 +793,7 @@ class StorageTest extends TestCase {
 		/**
 		 * @var \OC\Files\Storage\Temporary | \PHPUnit\Framework\MockObject\MockObject $storage
 		 */
-		$storage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
+		$storage = $this->getMockBuilder('\\' . \OC\Files\Storage\Temporary::class)
 			->setConstructorArgs([[]])
 			->setMethods(['rename', 'unlink', 'moveFromStorage'])
 			->getMock();
@@ -836,7 +830,7 @@ class StorageTest extends TestCase {
 		/**
 		 * @var \OC\Files\Storage\Temporary | \PHPUnit\Framework\MockObject\MockObject $storage
 		 */
-		$storage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
+		$storage = $this->getMockBuilder('\\' . \OC\Files\Storage\Temporary::class)
 			->setConstructorArgs([[]])
 			->setMethods(['rename', 'unlink', 'rmdir'])
 			->getMock();
@@ -867,9 +861,9 @@ class StorageTest extends TestCase {
 	 * @dataProvider dataTestShouldMoveToTrash
 	 */
 	public function testShouldMoveToTrash($mountPoint, $path, $userExists, $expected) {
-		$tmpStorage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
+		$tmpStorage = $this->getMockBuilder('\\' . \OC\Files\Storage\Temporary::class)
 			->disableOriginalConstructor()->getMock();
-		$userManager = $this->getMockBuilder('OCP\IUserManager')
+		$userManager = $this->getMockBuilder(\OCP\IUserManager::class)
 			->disableOriginalConstructor()->getMock();
 		$userManager->expects($this->any())
 			->method('userExists')->willReturn($userExists);
@@ -912,7 +906,7 @@ class StorageTest extends TestCase {
 
 	private function markTestSkippedIfStorageHasOwnVersioning() {
 		/** @var Storage $storage */
-		list($storage, $internalPath) = $this->userView->resolvePath('folder/inside.txt');
+		[$storage, $internalPath] = $this->userView->resolvePath('folder/inside.txt');
 		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
 			$this->markTestSkipped();
 		}

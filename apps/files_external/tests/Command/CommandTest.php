@@ -37,7 +37,7 @@ abstract class CommandTest extends TestCase {
 	 * @return \OCP\Files\External\Service\IGlobalStoragesService|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getGlobalStorageService(array $mounts = []) {
-		$mock = $this->createMock('OCP\Files\External\Service\IGlobalStoragesService');
+		$mock = $this->createMock(\OCP\Files\External\Service\IGlobalStoragesService::class);
 
 		$this->bindMounts($mock, $mounts);
 

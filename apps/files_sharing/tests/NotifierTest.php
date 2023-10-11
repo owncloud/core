@@ -33,25 +33,22 @@ use OCP\IConfig;
 use OCP\IUser;
 
 class NotifierTest extends \Test\TestCase {
-	/**
-	 * @var Notifier
-	 */
-	private $notifier;
+	private \OCA\Files_Sharing\Notifier $notifier;
 
 	/** @var INotificationManager */
-	private $notificationManager;
+	private \PHPUnit\Framework\MockObject\MockObject $notificationManager;
 
 	/** @var IShareManager */
-	private $shareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
 
 	/** @var IGroupManager */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	/** @var IUserManager */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();

@@ -34,25 +34,24 @@ use OCP\Notification\IManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ManagerTest extends TestCase {
-	/** @var Manager */
-	private $manager;
+	private \OCA\Files_Sharing\External\Manager $manager;
 
 	/** @var IDBConnection | \PHPUnit\Framework\MockObject\MockObject */
-	private $connection;
+	private \PHPUnit\Framework\MockObject\MockObject $connection;
 
 	/** @var MountManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $mountManager;
+	private \PHPUnit\Framework\MockObject\MockObject $mountManager;
 
 	/** @var IStorageFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $storageFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $storageFactory;
 
 	/** @var IManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $notificationManager;
+	private \PHPUnit\Framework\MockObject\MockObject $notificationManager;
 
 	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $eventDispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $eventDispatcher;
 
-	private $uid = 'john doe';
+	private string $uid = 'john doe';
 
 	protected function setUp():void {
 		$this->connection = $this->createMock(IDBConnection::class);

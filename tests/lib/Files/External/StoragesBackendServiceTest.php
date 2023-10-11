@@ -28,7 +28,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	protected $config;
 
 	protected function setUp(): void {
-		$this->config = $this->createMock('\OCP\IConfig');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
 	}
 
 	/**
@@ -37,7 +37,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	 * @return \OCP\Files\External\Backend\Backend
 	 */
 	protected function getBackendMock($class) {
-		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+		$backend = $this->getMockBuilder('\\' . \OCP\Files\External\Backend\Backend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$backend->method('getIdentifier')->will($this->returnValue('identifier:'.$class));
@@ -51,7 +51,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 	 * @return \OCP\Files\External\Auth\AuthMechanism
 	 */
 	protected function getAuthMechanismMock($class) {
-		$backend = $this->getMockBuilder('\OCP\Files\External\Auth\AuthMechanism')
+		$backend = $this->getMockBuilder('\\' . \OCP\Files\External\Auth\AuthMechanism::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$backend->method('getIdentifier')->will($this->returnValue('identifier:'.$class));
@@ -64,7 +64,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 
 		$backend = $this->getBackendMock('\Foo\Bar');
 
-		$backendAlias = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+		$backendAlias = $this->getMockBuilder('\\' . \OCP\Files\External\Backend\Backend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$backendAlias->method('getIdentifierAliases')
@@ -92,7 +92,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 		$backend1 = $this->getBackendMock('\Foo\Bar');
 		$backend2 = $this->getBackendMock('\Bar\Foo');
 
-		$providerMock = $this->createMock('\OCP\Files\External\Config\IBackendProvider');
+		$providerMock = $this->createMock('\\' . \OCP\Files\External\Config\IBackendProvider::class);
 		$providerMock->expects($this->once())
 			->method('getBackends')
 			->willReturn([$backend1, $backend2]);
@@ -110,7 +110,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 		$backend1 = $this->getAuthMechanismMock('\Foo\Bar');
 		$backend2 = $this->getAuthMechanismMock('\Bar\Foo');
 
-		$providerMock = $this->createMock('\OCP\Files\External\Config\IAuthMechanismProvider');
+		$providerMock = $this->createMock('\\' . \OCP\Files\External\Config\IAuthMechanismProvider::class);
 		$providerMock->expects($this->once())
 			->method('getAuthMechanisms')
 			->willReturn([$backend1, $backend2]);
@@ -130,12 +130,12 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 
 		$backend2 = $this->getBackendMock('\Dead\Beef');
 
-		$provider1Mock = $this->createMock('\OCP\Files\External\Config\IBackendProvider');
+		$provider1Mock = $this->createMock('\\' . \OCP\Files\External\Config\IBackendProvider::class);
 		$provider1Mock->expects($this->once())
 			->method('getBackends')
 			->willReturn([$backend1a, $backend1b]);
 		$service->registerBackendProvider($provider1Mock);
-		$provider2Mock = $this->createMock('\OCP\Files\External\Config\IBackendProvider');
+		$provider2Mock = $this->createMock('\\' . \OCP\Files\External\Config\IBackendProvider::class);
 		$provider2Mock->expects($this->once())
 			->method('getBackends')
 			->willReturn([$backend2]);
@@ -166,7 +166,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 			->method('removeVisibility')
 			->with(IStoragesBackendService::VISIBILITY_PERSONAL);
 
-		$backendAlias = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+		$backendAlias = $this->getMockBuilder('\\' . \OCP\Files\External\Backend\Backend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$backendAlias->method('getIdentifierAliases')
@@ -190,7 +190,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 		$backendNotAvailable->expects($this->once())
 			->method('checkDependencies')
 			->will($this->returnValue([
-				$this->getMockBuilder('\OC\Files\External\MissingDependency')
+				$this->getMockBuilder('\\' . \OC\Files\External\MissingDependency::class)
 					->disableOriginalConstructor()
 					->getMock()
 			]));

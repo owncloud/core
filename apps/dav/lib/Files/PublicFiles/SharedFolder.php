@@ -39,8 +39,7 @@ use Sabre\DAVACL\IACL;
 class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	use SharedNodeTrait, NodeFactoryTrait;
 
-	/** @var Folder */
-	private $folder;
+	private \OCP\Files\Folder $folder;
 
 	/**
 	 * SharedFolder constructor.
@@ -59,9 +58,7 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	 */
 	public function getChildren() {
 		$nodes = $this->folder->getDirectoryListing();
-		return \array_map(function ($node) {
-			return $this->nodeFactory($node, $this->share);
-		}, $nodes);
+		return \array_map(fn ($node) => $this->nodeFactory($node, $this->share), $nodes);
 	}
 
 	public function createDirectory($name) {
@@ -77,11 +74,7 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 			$file = $this->folder->newFile($name);
 			$file->putContent($data);
 			return '"' . $file->getEtag() . '"';
-		} catch (NotPermittedException $ex) {
-			throw new Forbidden('Permission denied to create file');
-		} catch (InvalidPathException $ex) {
-			throw new Forbidden('Permission denied to create file');
-		} catch (NotFoundException $ex) {
+		} catch (NotPermittedException|InvalidPathException|NotFoundException $ex) {
 			throw new Forbidden('Permission denied to create file');
 		}
 	}

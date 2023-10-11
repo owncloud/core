@@ -65,10 +65,10 @@ class OC_User {
 
 	private static $_usedBackends = [];
 
-	private static $_configuredBackends = [];
+	private static array $_configuredBackends = [];
 
 	// bool, stores if a user want to access a resource anonymously, e.g if they open a public link
-	private static $incognitoMode = false;
+	private static bool $incognitoMode = false;
 
 	/**
 	 * Adds the backend to the list of used backends

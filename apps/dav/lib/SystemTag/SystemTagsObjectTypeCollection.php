@@ -41,25 +41,13 @@ class SystemTagsObjectTypeCollection implements ICollection {
 	 */
 	private $objectType;
 
-	/**
-	 * @var ISystemTagManager
-	 */
-	private $tagManager;
+	private \OCP\SystemTag\ISystemTagManager $tagManager;
 
-	/**
-	 * @var ISystemTagObjectMapper
-	 */
-	private $tagMapper;
+	private \OCP\SystemTag\ISystemTagObjectMapper $tagMapper;
 
-	/**
-	 * @var IGroupManager
-	 */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
 	/**
 	 * @var IRootFolder

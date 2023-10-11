@@ -37,21 +37,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PollIncomingShares extends Command {
-	/** @var IDBConnection */
-	private $dbConnection;
+	private \OCP\IDBConnection $dbConnection;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IStorageFactory */
-	private $loader;
+	private \OCP\Files\Storage\IStorageFactory $loader;
 
-	/** @var Manager */
-	private $externalManager;
+	private ?\OCA\Files_Sharing\External\Manager $externalManager = null;
 
-	/** @var MountProvider | null */
-
-	private $externalMountProvider;
+	private ?\OCA\Files_Sharing\External\MountProvider $externalMountProvider = null;
 
 	/**
 	 * PollIncomingShares constructor.
@@ -103,7 +97,7 @@ class PollIncomingShares extends Command {
 				try {
 					$shareData = $this->getExternalShareData($data['user'], $mount->getMountPoint());
 					if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-						$encodedData = \json_encode($shareData);
+						$encodedData = \json_encode($shareData, JSON_THROW_ON_ERROR);
 						$output->writeln(
 							"User: \"{$data['user']}\", Share data: $encodedData"
 						);

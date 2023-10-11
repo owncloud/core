@@ -43,17 +43,13 @@ use OC\Core\Controller\TwoFactorChallengeController;
  * @package OC\Core\Middleware
  */
 class AccountModuleMiddleware extends Middleware {
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var Manager */
-	private $manager;
+	private \OC\Authentication\AccountModule\Manager $manager;
 
-	/** @var IUserSession */
-	private $session;
+	private \OCP\IUserSession $session;
 
-	/** @var IControllerMethodReflector */
-	private $reflector;
+	private \OCP\AppFramework\Utility\IControllerMethodReflector $reflector;
 
 	/**
 	 * @param ILogger $logger

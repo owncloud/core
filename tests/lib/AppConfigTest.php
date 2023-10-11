@@ -141,9 +141,7 @@ class AppConfigTest extends TestCase {
 	 * @param \OCP\IAppConfig $appConfig
 	 */
 	protected function registerAppConfig($appConfig) {
-		\OC::$server->registerService('AppConfig', function () use ($appConfig) {
-			return $appConfig;
-		});
+		\OC::$server->registerService('AppConfig', fn () => $appConfig);
 	}
 
 	public function testGetApps() {

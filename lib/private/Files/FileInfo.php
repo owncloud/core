@@ -66,7 +66,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	/**
 	 * @var string[]
 	 */
-	private $childEtags = [];
+	private array $childEtags = [];
 
 	/**
 	 * @param string|boolean $path
@@ -176,7 +176,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @return int|float
 	 */
 	public function getSize() {
-		return isset($this->data['size']) ? $this->data['size'] : 0;
+		return $this->data['size'] ?? 0;
 	}
 
 	/**
@@ -324,7 +324,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @param string $entryPath full path of the child entry
 	 */
 	public function addSubEntry($data, $entryPath) {
-		$this->data['size'] += isset($data['size']) ? $data['size'] : 0;
+		$this->data['size'] += $data['size'] ?? 0;
 		if (isset($data['mtime'])) {
 			$this->data['mtime'] = \max($this->data['mtime'], $data['mtime']);
 		}
@@ -332,7 +332,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 			// prefix the etag with the relative path of the subentry to propagate etag on mount moves
 			$relativeEntryPath = \substr($entryPath, \strlen($this->getPath()));
 			// attach the permissions to propagate etag on permission changes of submounts
-			$permissions = isset($data['permissions']) ? $data['permissions'] : 0;
+			$permissions = $data['permissions'] ?? 0;
 			$this->childEtags[] = $relativeEntryPath . '/' . $data['etag'] . $permissions;
 		}
 	}

@@ -37,15 +37,14 @@ use OCA\DAV\Files\ICopySource;
 
 class CopyPluginTest extends TestCase {
 	/** @var Server | \PHPUnit\Framework\MockObject\MockObject */
-	private $server;
-	/** @var CopyPlugin */
-	private $plugin;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
+	private \OCA\DAV\DAV\CopyPlugin $plugin;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $response;
+	private \PHPUnit\Framework\MockObject\MockObject $response;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -136,7 +135,7 @@ class CopyPluginTest extends TestCase {
 		]);
 
 		// make sure the plugin properly emits beforeBind and afterBind
-		$this->server->expects($this->once(2))
+		$this->server->expects($this->once())
 			->method('emit')
 			->with('beforeBind', ['destination.txt'])
 			->willReturn(true);

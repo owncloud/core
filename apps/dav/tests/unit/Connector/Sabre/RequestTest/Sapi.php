@@ -26,15 +26,9 @@ use Sabre\HTTP\Request;
 use Sabre\HTTP\Response;
 
 class Sapi {
-	/**
-	 * @var \Sabre\HTTP\Request
-	 */
-	private $request;
+	private \Sabre\HTTP\Request $request;
 
-	/**
-	 * @var \Sabre\HTTP\Response
-	 */
-	private $response;
+	private ?\Sabre\HTTP\Response $response = null;
 
 	/**
 	 * This static method will create a new Request object, based on the

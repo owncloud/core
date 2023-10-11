@@ -33,7 +33,7 @@ use GuzzleHttp\Psr7\Request;
  */
 class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	public Client $client;
-	private $container = [];
+	private array $container = [];
 
 	/**
 	 * Setup http client, mock requests, and attach history

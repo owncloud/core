@@ -33,11 +33,9 @@ use Sabre\HTTP\ResponseInterface;
  */
 class AutorenamePlugin extends ServerPlugin {
 	/**
-	 * Reference to main server object
-	 *
-	 * @var Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
 	/**
 	 * This initializes the plugin.
@@ -96,7 +94,7 @@ class AutorenamePlugin extends ServerPlugin {
 
 			'@phan-var ObjectTree $this->server->tree';
 			$view = $this->server->tree->getView();
-			list($nodePath, $nodeName) = \Sabre\Uri\split($node->getPath());
+			[$nodePath, $nodeName] = \Sabre\Uri\split($node->getPath());
 			$newName = \OC_Helper::buildNotExistingFileNameForView($nodePath, $nodeName, $view);
 
 			$body = $request->getBodyAsStream();

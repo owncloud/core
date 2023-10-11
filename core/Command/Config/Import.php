@@ -119,7 +119,7 @@ class Import extends Command {
 	 * @throws \UnexpectedValueException when the array is invalid
 	 */
 	protected function validateFileContent($content) {
-		$decodedContent = \json_decode($content, true);
+		$decodedContent = \json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 		if (!\is_array($decodedContent) || empty($decodedContent)) {
 			throw new \UnexpectedValueException('The file must contain a valid json array');
 		}

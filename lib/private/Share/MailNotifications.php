@@ -55,26 +55,16 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OC\Share
  */
 class MailNotifications {
-	/** @var IManager */
-	private $shareManager;
-	/** @var IL10N */
-	private $l;
-	/** @var IMailer */
-	private $mailer;
-	/** @var IConfig */
-	private $config;
-	/** @var Defaults */
-	private $defaults;
-	/** @var ILogger */
-	private $logger;
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var EventDispatcher */
-	private $eventDispatcher;
-	/** @var \OCP\Activity\IManager */
-	private $activityManager;
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Share\IManager $shareManager;
+	private \OCP\IL10N $l;
+	private \OCP\Mail\IMailer $mailer;
+	private \OCP\IConfig $config;
+	private \OCP\Defaults $defaults;
+	private \OCP\ILogger $logger;
+	private \OCP\IURLGenerator $urlGenerator;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
+	private \OCP\Activity\IManager $activityManager;
+	private \OCP\Files\IRootFolder $rootFolder;
 
 	/**
 	 * @param IManager $shareManager
@@ -181,7 +171,7 @@ class MailNotifications {
 				$subject = (string)$this->l->t('%s shared »%s« with you', [$filter->getSenderDisplayName(), $unescapedFilename]);
 			}
 
-			list($htmlBody, $textBody) = $this->createMailBody(
+			[$htmlBody, $textBody] = $this->createMailBody(
 				$unescapedFilename,
 				$link,
 				$expiration,
@@ -258,7 +248,7 @@ class MailNotifications {
 			'senderDisplayName' => $sender->getDisplayName()
 		]);
 		$subject = (string)$l10n->t('%s shared »%s« with you', [$filter->getSenderDisplayName(), $filter->getFile(true)]);
-		list($htmlBody, $textBody) = $this->createMailBody(
+		[$htmlBody, $textBody] = $this->createMailBody(
 			$filter->getFile(),
 			$filter->getLink(),
 			$filter->getExpirationDate(),
@@ -355,7 +345,7 @@ class MailNotifications {
 		$prefix = '',
 		$overrideL10n = null
 	) {
-		$l10n = $overrideL10n === null ? $this->l : $overrideL10n;
+		$l10n = $overrideL10n ?? $this->l;
 		$formattedDate = $expiration ?  $l10n->l('date', $expiration) : null;
 
 		$html = new \OC_Template(

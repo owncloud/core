@@ -81,8 +81,7 @@ class Server {
 
 	/** @var string */
 	private $baseUri;
-	/** @var IRequest */
-	private $request;
+	private \OCP\IRequest $request;
 
 	/**
 	 * Server constructor.

@@ -40,23 +40,21 @@ use Test\TestCase;
 class PublicCalendarRootTest extends TestCase {
 	public const UNIT_TEST_USER = 'principals/users/caldav-unit-test';
 
-	/** @var CalDavBackend */
-	private $backend;
+	private \OCA\DAV\CalDAV\CalDavBackend $backend;
 
-	/** @var PublicCalendarRoot */
-	private $publicCalendarRoot;
+	private \OCA\DAV\CalDAV\PublicCalendarRoot $publicCalendarRoot;
 
 	/** @var IL10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
 	/** var IConfig */
 	protected $config;
 
 	/** @var Principal */
-	private $principal;
+	private \PHPUnit\Framework\MockObject\MockObject $principal;
 
 	/** @var GroupPrincipalBackend */
-	private $groupPrincipal;
+	private \PHPUnit\Framework\MockObject\MockObject $groupPrincipal;
 
 	/** @var ISecureRandom */
 	private $random;
@@ -77,7 +75,7 @@ class PublicCalendarRootTest extends TestCase {
 
 		$this->publicCalendarRoot = new PublicCalendarRoot($this->backend);
 
-		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
+		$this->l10n = $this->getMockBuilder('\\' . \OCP\IL10N::class)
 			->disableOriginalConstructor()->getMock();
 	}
 

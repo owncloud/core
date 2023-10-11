@@ -218,9 +218,7 @@ class ListCommand extends Base {
 				}, $values);
 			}
 
-			$configStrings = \array_map(function ($key, $value) {
-				return $key . ': ' . \json_encode($value);
-			}, $keys, $values);
+			$configStrings = \array_map(fn ($key, $value) => $key . ': ' . \json_encode($value, JSON_THROW_ON_ERROR), $keys, $values);
 			$configString = \implode(', ', $configStrings);
 
 			$mountOptions = $config->getMountOptions();
@@ -236,9 +234,7 @@ class ListCommand extends Base {
 			$keys = \array_keys($mountOptions);
 			$values = \array_values($mountOptions);
 
-			$optionsStrings = \array_map(function ($key, $value) {
-				return $key . ': ' . \json_encode($value);
-			}, $keys, $values);
+			$optionsStrings = \array_map(fn ($key, $value) => $key . ': ' . \json_encode($value, JSON_THROW_ON_ERROR), $keys, $values);
 			$optionsString = \implode(', ', $optionsStrings);
 
 			// output dependent on option shortview
@@ -300,9 +296,7 @@ class ListCommand extends Base {
 		}, $mounts);
 
 		if ($outputIsJson) {
-			$keys = \array_map(function ($header) {
-				return \strtolower(\str_replace(' ', '_', $header));
-			}, $headers);
+			$keys = \array_map(fn ($header) => \strtolower(\str_replace(' ', '_', $header)), $headers);
 
 			$pairs = [];
 			foreach ($rows as $array_1) {
@@ -310,7 +304,7 @@ class ListCommand extends Base {
 			}
 
 			if ($outputType === self::OUTPUT_FORMAT_JSON) {
-				$output->writeln(\json_encode(\array_values($pairs)));
+				$output->writeln(\json_encode(\array_values($pairs), JSON_THROW_ON_ERROR));
 			} else {
 				$output->writeln(\json_encode(\array_values($pairs), JSON_PRETTY_PRINT));
 			}

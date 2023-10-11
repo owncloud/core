@@ -40,20 +40,16 @@ use OCP\IL10N;
  * This class implements methods to access Avatar functionality
  */
 class AvatarManager implements IAvatarManager {
-	/** @var  IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var  IRootFolder */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
 	/** @var IStorage */
 	private $storage;
 
-	/** @var IL10N */
-	private $l;
+	private \OCP\IL10N $l;
 
-	/** @var ILogger  */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * AvatarManager constructor.

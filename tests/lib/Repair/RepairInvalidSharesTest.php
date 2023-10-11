@@ -23,7 +23,7 @@ use Test\TestCase;
  */
 class RepairInvalidSharesTest extends TestCase {
 	/** @var IRepairStep */
-	private $repair;
+	private \OC\Repair\RepairInvalidShares $repair;
 
 	/** @var \OCP\IDBConnection */
 	private $connection;
@@ -31,7 +31,7 @@ class RepairInvalidSharesTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$config = $this->getMockBuilder('OCP\IConfig')
+		$config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$config->expects($this->any())
@@ -99,7 +99,7 @@ class RepairInvalidSharesTest extends TestCase {
 			])->execute();
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,7 +184,7 @@ class RepairInvalidSharesTest extends TestCase {
 		$keepThisShareId2 = $this->getLastShareId();
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -260,7 +260,7 @@ class RepairInvalidSharesTest extends TestCase {
 		$result->closeCursor();
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -323,7 +323,7 @@ class RepairInvalidSharesTest extends TestCase {
 		$shareId = $this->getLastShareId();
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

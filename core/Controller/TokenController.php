@@ -34,17 +34,13 @@ use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 
 class TokenController extends Controller {
-	/** @var UserManager */
-	private $userManager;
+	private \OC\User\Manager $userManager;
 
-	/** @var IProvider */
-	private $tokenProvider;
+	private \OC\Authentication\Token\IProvider $tokenProvider;
 
-	/** @var TwoFactorAuthManager */
-	private $twoFactorAuthManager;
+	private \OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager;
 
-	/** @var ISecureRandom */
-	private $secureRandom;
+	private \OCP\Security\ISecureRandom $secureRandom;
 
 	/**
 	 * @param string $appName

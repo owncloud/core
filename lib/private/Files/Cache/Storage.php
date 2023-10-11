@@ -42,7 +42,7 @@ use OCP\ICache;
  */
 class Storage {
 	private $storageId;
-	private $numericId;
+	private ?int $numericId = null;
 
 	/** @var CappedMemoryCache */
 	protected static $localCache = null;
@@ -50,7 +50,7 @@ class Storage {
 	/** @var ICache  */
 	private static $distributedCache = null;
 
-	private static $distributedCacheTTL = 300; // 5 Min
+	private static int $distributedCacheTTL = 300; // 5 Min
 
 	/**
 	 * @param \OC\Files\Storage\Storage|string $storage

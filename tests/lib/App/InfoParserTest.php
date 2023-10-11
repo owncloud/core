@@ -14,8 +14,7 @@ use OC\App\InfoParser;
 use Test\TestCase;
 
 class InfoParserTest extends TestCase {
-	/** @var InfoParser */
-	private $parser;
+	private \OC\App\InfoParser $parser;
 
 	public function setUp(): void {
 		$this->parser = new InfoParser();
@@ -24,7 +23,9 @@ class InfoParserTest extends TestCase {
 	public function testParsingValidXml() {
 		$expectedData = \json_decode(
 			\file_get_contents(OC::$SERVERROOT . "/tests/data/app/expected-info.json"),
-			true
+			true,
+			512,
+			JSON_THROW_ON_ERROR
 		);
 		$data = $this->parser->parse(OC::$SERVERROOT. "/tests/data/app/valid-info.xml");
 		$this->assertEquals($expectedData, $data);

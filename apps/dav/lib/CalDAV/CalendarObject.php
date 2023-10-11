@@ -32,7 +32,7 @@ class CalendarObject extends \Sabre\CalDAV\CalendarObject {
 	public function get() {
 		$data = parent::get();
 		if ($this->isShared() && $this->objectData['classification'] === CalDavBackend::CLASSIFICATION_CONFIDENTIAL) {
-			return $this->createConfidentialObject($data);
+			return self::createConfidentialObject($data);
 		}
 		return $data;
 	}

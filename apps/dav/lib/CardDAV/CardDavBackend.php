@@ -44,31 +44,25 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CardDavBackend implements BackendInterface, SyncSupport {
-	/** @var Principal */
-	private $principalBackend;
+	private \OCA\DAV\Connector\Sabre\Principal $principalBackend;
 
-	/** @var string */
-	private $dbCardsTable = 'cards';
+	private string $dbCardsTable = 'cards';
 
-	/** @var string */
-	private $dbCardsPropertiesTable = 'cards_properties';
+	private string $dbCardsPropertiesTable = 'cards_properties';
 
-	/** @var IDBConnection */
-	private $db;
+	private \OCP\IDBConnection $db;
 
-	/** @var Backend */
-	private $sharingBackend;
+	private \OCA\DAV\DAV\Sharing\Backend $sharingBackend;
 
 	/** @var CappedMemoryCache Cache of card URI to db row ids */
-	private $idCache;
+	private \OC\Cache\CappedMemoryCache $idCache;
 
 	/** @var array properties to index */
 	public static $indexProperties = [
 			'BDAY', 'UID', 'N', 'FN', 'TITLE', 'ROLE', 'NOTE', 'NICKNAME',
 			'ORG', 'CATEGORIES', 'EMAIL', 'TEL', 'IMPP', 'ADR', 'URL', 'GEO', 'CLOUD'];
 
-	/** @var EventDispatcherInterface */
-	private $dispatcher;
+	private ?\Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher = null;
 	/** @var bool */
 	private $legacyMode;
 
@@ -181,7 +175,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->execute();
 
 		while ($row = $result->fetch()) {
-			list(, $name) = \Sabre\Uri\split($row['principaluri']);
+			[, $name] = \Sabre\Uri\split($row['principaluri']);
 			$uri = $row['uri'] . '_shared_by_' . $name;
 			$displayName = $row['displayname'] . " ($name)";
 			if (!isset($addressBooks[$row['id']])) {
@@ -496,9 +490,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			return $cards;
 		}
 		$chunks = \array_chunk($uris, $chunkSize);
-		$results = \array_map(function ($chunk) use ($addressBookId) {
-			return $this->getMultipleCards($addressBookId, $chunk);
-		}, $chunks);
+		$results = \array_map(fn ($chunk) => $this->getMultipleCards($addressBookId, $chunk), $chunks);
 
 		return \array_merge(...$results);
 	}
@@ -1080,8 +1072,8 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 	private function convertPrincipal($principalUri, $toV2 = null) {
 		if ($this->principalBackend->getPrincipalPrefix() === 'principals') {
-			list(, $name) = \Sabre\Uri\split($principalUri);
-			$toV2 = $toV2 === null ? !$this->legacyMode : $toV2;
+			[, $name] = \Sabre\Uri\split($principalUri);
+			$toV2 ??= !$this->legacyMode;
 			if ($toV2) {
 				return "principals/users/$name";
 			}

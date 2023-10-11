@@ -63,27 +63,20 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class Manager extends PublicEmitter implements IUserManager {
 	use EventEmitterTrait;
 	/** @var UserInterface[] $backends */
-	private $backends = [];
+	private array $backends = [];
 
-	/** @var CappedMemoryCache $cachedUsers */
-	private $cachedUsers;
+	private \OC\Cache\CappedMemoryCache $cachedUsers;
 
-	/** @var IConfig $config */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var ILogger $logger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var AccountMapper */
-	private $accountMapper;
+	private \OC\User\AccountMapper $accountMapper;
 
 	/** @var SyncService */
 	private $syncService;
 
-	/**
-	 * @var UserSearch
-	 */
-	private $userSearch;
+	private \OCP\Util\UserSearch $userSearch;
 
 	/**
 	 * @param IConfig $config
@@ -206,7 +199,7 @@ class Manager extends PublicEmitter implements IUserManager {
 		} catch (MultipleObjectsReturnedException $ex) {
 			$this->logger->error(
 				"More than one user found for $uid, treating as nonexistent.",
-				['app' => __CLASS__]
+				['app' => self::class]
 			);
 			$this->cachedUsers->set($uid, null);
 			return null;
@@ -326,9 +319,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function searchDisplayName($pattern, $limit = null, $offset = null) {
 		if ($this->userSearch->isSearchable($pattern)) {
 			$accounts = $this->accountMapper->search('display_name', $pattern, $limit, $offset);
-			return \array_map(function (Account $account) {
-				return $this->getUserObject($account);
-			}, $accounts);
+			return \array_map(fn (Account $account) => $this->getUserObject($account), $accounts);
 		}
 		return [];
 	}
@@ -368,10 +359,7 @@ class Manager extends PublicEmitter implements IUserManager {
 				throw new \Exception($l->t('The username can not be longer than 64 characters'));
 			}
 
-			$invalidUids = \array_merge(
-				\OCP\User::FILES_THAT_ARE_NOT_USERS,
-				\OCP\User::DIRECTORIES_THAT_ARE_NOT_USERS
-			);
+			$invalidUids = [...\OCP\User::FILES_THAT_ARE_NOT_USERS, ...\OCP\User::DIRECTORIES_THAT_ARE_NOT_USERS];
 
 			if (\in_array(\strtolower($uid), $invalidUids)) {
 				throw new \Exception($l->t("The special username %s is not allowed", $uid));
@@ -402,7 +390,7 @@ class Manager extends PublicEmitter implements IUserManager {
 					/* @phan-suppress-next-line PhanUndeclaredMethod */
 					$backend->createUser($uid, $password);
 					$user = $this->createUserFromBackend($uid, $password, $backend);
-					return $user === null ? false : $user;
+					return $user ?? false;
 				}
 			}
 
@@ -502,15 +490,10 @@ class Manager extends PublicEmitter implements IUserManager {
 			throw new \InvalidArgumentException('$email cannot be empty');
 		}
 		$accounts = $this->accountMapper->getByEmail($email);
-		return \array_map(function (Account $account) {
-			return $this->getUserObject($account);
-		}, $accounts);
+		return \array_map(fn (Account $account) => $this->getUserObject($account), $accounts);
 	}
 
 	public function getBackend($backendClass) {
-		if (isset($this->backends[$backendClass])) {
-			return $this->backends[$backendClass];
-		}
-		return null;
+		return $this->backends[$backendClass] ?? null;
 	}
 }

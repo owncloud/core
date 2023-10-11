@@ -20,12 +20,11 @@ use OCP\L10N\IFactory;
  * @package Tests\Settings\Panels\Admin
  */
 class FileSharingTest extends \Test\TestCase {
-	/** @var FileSharing */
-	private $panel;
+	private \OC\Settings\Panels\Admin\FileSharing $panel;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var Helper */
-	private $helper;
+	private \PHPUnit\Framework\MockObject\MockObject $helper;
 
 	public function setUp(): void {
 		parent::setUp();

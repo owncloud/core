@@ -30,12 +30,10 @@ use phpseclib3\Crypt\RSA\PrivateKey;
  * Store and retrieve phpseclib3 RSA private keys
  */
 class RSAStore {
-	private static $rsaStore = null;
+	private static ?\OCA\Files_External\Lib\RSAStore $rsaStore = null;
 
-	/** @var ICredentialsManager */
-	private $credentialsManager;
-	/** @var IConfig */
-	private $config;
+	private \OCP\Security\ICredentialsManager $credentialsManager;
+	private \OCP\IConfig $config;
 
 	/**
 	 * Get the global instance of the RSAStore. If no one is set yet, a new
@@ -92,7 +90,7 @@ class RSAStore {
 			'rsaId' => $keyId,
 			'userId' => $userId,
 		];
-		return \base64_encode(\json_encode($keyData));
+		return \base64_encode(\json_encode($keyData, JSON_THROW_ON_ERROR));
 	}
 
 	/**
@@ -103,7 +101,7 @@ class RSAStore {
 	 * @return PrivateKey the stored private key
 	 */
 	public function retrieveData(string $token): PrivateKey {
-		$keyData = \json_decode(\base64_decode($token), true);
+		$keyData = \json_decode(\base64_decode($token), true, 512, JSON_THROW_ON_ERROR);
 		$privateKey = $this->credentialsManager->retrieve($keyData['userId'], $keyData['rsaId']);
 		$password = $this->config->getSystemValue('secret', '');
 

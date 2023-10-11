@@ -26,8 +26,7 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class FedAuth extends AbstractBasic {
-	/** @var DbHandler */
-	private $db;
+	private \OCA\Federation\DbHandler $db;
 
 	/**
 	 * FedAuth constructor.

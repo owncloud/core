@@ -38,11 +38,11 @@ class DeleteTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$groupManager = $this->groupManager = $this->getMockBuilder('OCP\IGroupManager')
+		$groupManager = $this->groupManager = $this->getMockBuilder(\OCP\IGroupManager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock(\Symfony\Component\Console\Input\InputInterface::class);
+		$this->consoleOutput = $this->createMock(\Symfony\Component\Console\Output\OutputInterface::class);
 
 		/** @var \OCP\IGroupManager $groupManager */
 		$this->command = new Delete($groupManager);
@@ -62,7 +62,7 @@ class DeleteTest extends TestCase {
 	 * @param string $expectedString
 	 */
 	public function testValidGroup($deleteSuccess, $expectedString) {
-		$group = $this->createMock('OCP\IGroup');
+		$group = $this->createMock(\OCP\IGroup::class);
 		$group->expects($this->once())
 			->method('delete')
 			->willReturn($deleteSuccess);

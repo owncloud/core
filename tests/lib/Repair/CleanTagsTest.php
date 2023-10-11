@@ -31,16 +31,16 @@ class CleanTagsTest extends \Test\TestCase {
 	protected $createdFile;
 
 	/** @var IOutput */
-	private $outputMock;
+	private \PHPUnit\Framework\MockObject\MockObject $outputMock;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$this->outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->userManager = $this->getMockBuilder('\OCP\IUserManager')
+		$this->userManager = $this->getMockBuilder('\\' . \OCP\IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +75,7 @@ class CleanTagsTest extends \Test\TestCase {
 
 		$this->addTagEntry($this->getFileID(), $cat2, 'files'); // Retained
 		$this->addTagEntry($this->getFileID() + 1, $cat1, 'files'); // Deleted: File is NULL
-		$this->addTagEntry(9999999, $cat3, 'contacts'); // Retained
+		$this->addTagEntry(9_999_999, $cat3, 'contacts'); // Retained
 		$this->addTagEntry($this->getFileID(), $cat3 + 1, 'files'); // Deleted: Category is NULL
 
 		$this->assertEntryCount('vcategory_to_object', 4, 'Assert tag entries count before repair step');

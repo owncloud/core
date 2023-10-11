@@ -116,17 +116,17 @@ class Scanner extends PublicEmitter {
 	protected function attachListener($mount) {
 		$scanner = $mount->getStorage()->getScanner();
 		$emitter = $this;
-		$scanner->listen('\OC\Files\Cache\Scanner', 'scanFile', function ($path) use ($mount, $emitter) {
-			$emitter->emit('\OC\Files\Utils\Scanner', 'scanFile', [$mount->getMountPoint() . $path]);
+		$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'scanFile', function ($path) use ($mount, $emitter) {
+			$emitter->emit('\\' . \OC\Files\Utils\Scanner::class, 'scanFile', [$mount->getMountPoint() . $path]);
 		});
-		$scanner->listen('\OC\Files\Cache\Scanner', 'scanFolder', function ($path) use ($mount, $emitter) {
-			$emitter->emit('\OC\Files\Utils\Scanner', 'scanFolder', [$mount->getMountPoint() . $path]);
+		$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'scanFolder', function ($path) use ($mount, $emitter) {
+			$emitter->emit('\\' . \OC\Files\Utils\Scanner::class, 'scanFolder', [$mount->getMountPoint() . $path]);
 		});
-		$scanner->listen('\OC\Files\Cache\Scanner', 'postScanFile', function ($path) use ($mount, $emitter) {
-			$emitter->emit('\OC\Files\Utils\Scanner', 'postScanFile', [$mount->getMountPoint() . $path]);
+		$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'postScanFile', function ($path) use ($mount, $emitter) {
+			$emitter->emit('\\' . \OC\Files\Utils\Scanner::class, 'postScanFile', [$mount->getMountPoint() . $path]);
 		});
-		$scanner->listen('\OC\Files\Cache\Scanner', 'postScanFolder', function ($path) use ($mount, $emitter) {
-			$emitter->emit('\OC\Files\Utils\Scanner', 'postScanFolder', [$mount->getMountPoint() . $path]);
+		$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'postScanFolder', function ($path) use ($mount, $emitter) {
+			$emitter->emit('\\' . \OC\Files\Utils\Scanner::class, 'postScanFolder', [$mount->getMountPoint() . $path]);
 		});
 	}
 
@@ -143,20 +143,20 @@ class Scanner extends PublicEmitter {
 			$storage = $mount->getStorage();
 
 			// don't scan the root storage
-			if ($storage->instanceOfStorage('\OC\Files\Storage\Local') && $mount->getMountPoint() === '/') {
+			if ($storage->instanceOfStorage('\\' . \OC\Files\Storage\Local::class) && $mount->getMountPoint() === '/') {
 				continue;
 			}
 
 			$scanner = $storage->getScanner();
 			$this->attachListener($mount);
 
-			$scanner->listen('\OC\Files\Cache\Scanner', 'removeFromCache', function ($path) use ($storage) {
+			$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'removeFromCache', function ($path) use ($storage) {
 				$this->triggerPropagator($storage, $path);
 			});
-			$scanner->listen('\OC\Files\Cache\Scanner', 'updateCache', function ($path) use ($storage) {
+			$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'updateCache', function ($path) use ($storage) {
 				$this->triggerPropagator($storage, $path);
 			});
-			$scanner->listen('\OC\Files\Cache\Scanner', 'addToCache', function ($path) use ($storage) {
+			$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'addToCache', function ($path) use ($storage) {
 				$this->triggerPropagator($storage, $path);
 			});
 
@@ -180,13 +180,13 @@ class Scanner extends PublicEmitter {
 		}
 
 		// don't bother scanning failed storages (shortcut for same result)
-		if ($storage->instanceOfStorage('OC\Files\Storage\FailedStorage')) {
+		if ($storage->instanceOfStorage(\OC\Files\Storage\FailedStorage::class)) {
 			return false;
 		}
 
 		// if the home storage isn't readable then the scanner is run as the wrong user
 		// (guests will have a read-only home storage)
-		if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
+		if ($storage->instanceOfStorage('\\' . \OC\Files\Storage\Home::class) and
 			(!$storage->isReadable('') or !$storage->isReadable('files'))
 		) {
 			if ($storage->file_exists('') or $storage->getCache()->inCache('')) {
@@ -197,7 +197,7 @@ class Scanner extends PublicEmitter {
 		}
 
 		// don't scan received local shares, these can be scanned when scanning the owner's storage
-		if ($storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
+		if ($storage->instanceOfStorage(\OCA\Files_Sharing\ISharedStorage::class)) {
 			return false;
 		}
 
@@ -220,20 +220,20 @@ class Scanner extends PublicEmitter {
 
 			$storage = $mount->getStorage();
 
-			$this->emit('\OC\Files\Utils\Scanner', 'beforeScanStorage', [$storage]);
+			$this->emit('\\' . \OC\Files\Utils\Scanner::class, 'beforeScanStorage', [$storage]);
 
 			$relativePath = $mount->getInternalPath($dir);
 			$scanner = $storage->getScanner();
 			$scanner->setUseTransactions(false);
 			$this->attachListener($mount);
 
-			$scanner->listen('\OC\Files\Cache\Scanner', 'removeFromCache', function ($path) use ($storage) {
+			$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'removeFromCache', function ($path) use ($storage) {
 				$this->postProcessEntry($storage, $path);
 			});
-			$scanner->listen('\OC\Files\Cache\Scanner', 'updateCache', function ($path) use ($storage) {
+			$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'updateCache', function ($path) use ($storage) {
 				$this->postProcessEntry($storage, $path);
 			});
-			$scanner->listen('\OC\Files\Cache\Scanner', 'addToCache', function ($path) use ($storage) {
+			$scanner->listen('\\' . \OC\Files\Cache\Scanner::class, 'addToCache', function ($path) use ($storage) {
 				$this->postProcessEntry($storage, $path);
 			});
 
@@ -253,12 +253,12 @@ class Scanner extends PublicEmitter {
 			} catch (StorageNotAvailableException $e) {
 				$this->logger->error('Storage ' . $storage->getId() . ' not available');
 				$this->logger->logException($e);
-				$this->emit('\OC\Files\Utils\Scanner', 'StorageNotAvailable', [$e]);
+				$this->emit('\\' . \OC\Files\Utils\Scanner::class, 'StorageNotAvailable', [$e]);
 			}
 			if ($this->useTransaction) {
 				$this->db->commit();
 			}
-			$this->emit('\OC\Files\Utils\Scanner', 'afterScanStorage', [$storage]);
+			$this->emit('\\' . \OC\Files\Utils\Scanner::class, 'afterScanStorage', [$storage]);
 		}
 	}
 

@@ -31,19 +31,18 @@ use Test\TestCase;
 
 class ManagerTest extends TestCase {
 	/** @var IUser|\PHPUnit\Framework\MockObject\MockObject */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	/** @var IConfig|\PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var ILogger|\PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/** @var IServiceLoader|\PHPUnit\Framework\MockObject\MockObject */
-	private $serviceLoader;
+	private \PHPUnit\Framework\MockObject\MockObject $serviceLoader;
 
-	/** @var Manager */
-	private $manager;
+	private \OC\Authentication\AccountModule\Manager $manager;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -62,9 +61,7 @@ class ManagerTest extends TestCase {
 
 	public function testGetAccountModules() {
 		$fakeModule = $this->createMock(IAccountModule::class);
-		\OC::$server->registerService('\OCA\AccountModuleApp\Module', function () use ($fakeModule) {
-			return $fakeModule;
-		});
+		\OC::$server->registerService('\OCA\AccountModuleApp\Module', fn () => $fakeModule);
 
 		$this->config->method('getAppValue')
 		->with('core', 'account-module-order', '[]')

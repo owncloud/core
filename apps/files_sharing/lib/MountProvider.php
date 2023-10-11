@@ -71,11 +71,9 @@ class MountProvider implements IMountProvider {
 		$shares = $this->shareManager->getAllSharedWith($user->getUID(), $requiredShareTypes, null);
 		
 		// filter out excluded shares and group shares that includes self
-		$shares = \array_filter($shares, function (\OCP\Share\IShare $share) use ($user) {
-			return $share->getPermissions() > 0
+		$shares = \array_filter($shares, fn (\OCP\Share\IShare $share) => $share->getPermissions() > 0
 				&& $share->getShareOwner() !== $user->getUID()
-				&& $share->getState() === \OCP\Share::STATE_ACCEPTED;
-		});
+				&& $share->getState() === \OCP\Share::STATE_ACCEPTED);
 
 		$superShares = $this->buildSuperShares($shares, $user);
 
@@ -83,7 +81,7 @@ class MountProvider implements IMountProvider {
 		foreach ($superShares as $share) {
 			try {
 				$shareMount = new SharedMount(
-					'\OCA\Files_Sharing\SharedStorage',
+					'\\' . \OCA\Files_Sharing\SharedStorage::class,
 					$mounts,
 					[
 						'user' => $user->getUID(),

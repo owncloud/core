@@ -37,9 +37,7 @@ class CapabilitiesManagerTest extends TestCase {
 	public function testValidCapability() {
 		$manager = new \OC\CapabilitiesManager();
 
-		$manager->registerCapability(function () {
-			return new SimpleCapability();
-		});
+		$manager->registerCapability(fn () => new SimpleCapability());
 
 		$res = $manager->getCapabilities();
 		$this->assertEquals(['foo' => 1], $res);
@@ -54,9 +52,7 @@ class CapabilitiesManagerTest extends TestCase {
 
 		$manager = new \OC\CapabilitiesManager();
 
-		$manager->registerCapability(function () {
-			return new NoCapability();
-		});
+		$manager->registerCapability(fn () => new NoCapability());
 
 		$res = $manager->getCapabilities();
 		$this->assertEquals([], $res);
@@ -68,15 +64,9 @@ class CapabilitiesManagerTest extends TestCase {
 	public function testMergedCapabilities() {
 		$manager = new \OC\CapabilitiesManager();
 
-		$manager->registerCapability(function () {
-			return new SimpleCapability();
-		});
-		$manager->registerCapability(function () {
-			return new SimpleCapability2();
-		});
-		$manager->registerCapability(function () {
-			return new SimpleCapability3();
-		});
+		$manager->registerCapability(fn () => new SimpleCapability());
+		$manager->registerCapability(fn () => new SimpleCapability2());
+		$manager->registerCapability(fn () => new SimpleCapability3());
 
 		$res = $manager->getCapabilities();
 		$expected = [
@@ -96,12 +86,8 @@ class CapabilitiesManagerTest extends TestCase {
 	public function testDeepIdenticalCapabilities() {
 		$manager = new \OC\CapabilitiesManager();
 
-		$manager->registerCapability(function () {
-			return new DeepCapability();
-		});
-		$manager->registerCapability(function () {
-			return new DeepCapability();
-		});
+		$manager->registerCapability(fn () => new DeepCapability());
+		$manager->registerCapability(fn () => new DeepCapability());
 
 		$res = $manager->getCapabilities();
 		$expected = [

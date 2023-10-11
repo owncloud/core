@@ -27,20 +27,14 @@ use OC\Files\View;
 use OCP\Util;
 
 class HookConnector {
-	/**
-	 * @var Root
-	 */
-	private $root;
+	private \OC\Files\Node\Root $root;
 
-	/**
-	 * @var View
-	 */
-	private $view;
+	private \OC\Files\View $view;
 
 	/**
 	 * @var FileInfo[]
 	 */
-	private $deleteMetaCache = [];
+	private array $deleteMetaCache = [];
 
 	/**
 	 * HookConnector constructor.

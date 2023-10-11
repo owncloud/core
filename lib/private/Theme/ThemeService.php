@@ -36,15 +36,9 @@ class ThemeService implements IThemeService {
 	 */
 	private $theme;
 
-	/**
-	 * @var IAppManager
-	 */
-	private $appManager;
+	private \OCP\App\IAppManager $appManager;
 
-	/**
-	 * @var EnvironmentHelper
-	 */
-	private $environmentHelper;
+	private \OC\Helper\EnvironmentHelper $environmentHelper;
 
 	/**
 	 * ThemeService constructor.

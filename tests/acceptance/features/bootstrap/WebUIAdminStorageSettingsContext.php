@@ -110,8 +110,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 			$dirLocation
 		);
 		$storageIds = $this->featureContext->getStorageIds();
-		\end($storageIds);
-		$lastMountId = \key($storageIds);
+		$lastMountId = array_key_last($storageIds);
 		$this->featureContext->addStorageId($mount, $lastMountId + 1);
 	}
 

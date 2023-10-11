@@ -29,25 +29,19 @@ use Sabre\DAV\ServerPlugin;
 use Test\TestCase;
 
 class CorsPluginTest extends TestCase {
-	/**
-	 * @var Server
-	 */
-	private $server;
+	private \Sabre\DAV\Server $server;
 
-	/**
-	 * @var CorsPlugin
-	 */
-	private $plugin;
+	private \OCA\DAV\Connector\Sabre\CorsPlugin $plugin;
 
 	/**
 	 * @var IUserSession | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	/**
 	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();

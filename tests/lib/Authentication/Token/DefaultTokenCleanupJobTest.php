@@ -26,24 +26,23 @@ use OC\Authentication\Token\DefaultTokenCleanupJob;
 use Test\TestCase;
 
 class DefaultTokenCleanupJobTest extends TestCase {
-	/** @var DefaultTokenCleanupJob */
-	private $job;
-	private $tokenProvider;
+	private \OC\Authentication\Token\DefaultTokenCleanupJob $job;
+	private \PHPUnit\Framework\MockObject\MockObject $tokenProvider;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->tokenProvider = $this->getMockBuilder('\OC\Authentication\Token\DefaultTokenProvider')
+		$this->tokenProvider = $this->getMockBuilder('\\' . \OC\Authentication\Token\DefaultTokenProvider::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->overwriteService('\OC\Authentication\Token\DefaultTokenProvider', $this->tokenProvider);
+		$this->overwriteService('\\' . \OC\Authentication\Token\DefaultTokenProvider::class, $this->tokenProvider);
 		$this->job = new DefaultTokenCleanupJob();
 	}
 
 	protected function tearDown(): void {
 		parent::tearDown();
 
-		$this->restoreService('\OC\Authentication\Token\DefaultTokenProvider');
+		$this->restoreService('\\' . \OC\Authentication\Token\DefaultTokenProvider::class);
 	}
 
 	public function testRun() {

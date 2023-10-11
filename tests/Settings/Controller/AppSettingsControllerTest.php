@@ -34,16 +34,15 @@ use Test\TestCase;
  * @package Tests\Settings\Controller
  */
 class AppSettingsControllerTest extends TestCase {
-	/** @var AppSettingsController */
-	private $appSettingsController;
+	private \OC\Settings\Controller\AppSettingsController $appSettingsController;
 	/** @var IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var IL10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IAppManager */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 
 	public function setUp(): void {
 		parent::setUp();

@@ -29,11 +29,9 @@ use OCP\IServerContainer;
 
 class ManagerFactory implements ICommentsManagerFactory {
 	/**
-	 * Server container
-	 *
-	 * @var IServerContainer
-	 */
-	private $serverContainer;
+  * Server container
+  */
+	private \OCP\IServerContainer $serverContainer;
 
 	/**
 	 * Constructor for the comments manager factory

@@ -35,22 +35,20 @@ use Test\TestCase;
 
 class TwoFactorMiddlewareTest extends TestCase {
 	/** @var Manager|\PHPUnit\Framework\MockObject\MockObject */
-	private $twoFactorManager;
+	private \PHPUnit\Framework\MockObject\MockObject $twoFactorManager;
 
 	/** @var IUserSession|\PHPUnit\Framework\MockObject\MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	/** @var IURLGenerator|\PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/** @var IControllerMethodReflector|\PHPUnit\Framework\MockObject\MockObject */
-	private $reflector;
+	private \PHPUnit\Framework\MockObject\MockObject $reflector;
 
-	/** @var Request */
-	private $request;
+	private \OC\AppFramework\Http\Request $request;
 
-	/** @var TwoFactorMiddleware */
-	private $middleware;
+	private \OC\Core\Middleware\TwoFactorMiddleware $middleware;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -101,7 +99,7 @@ class TwoFactorMiddlewareTest extends TestCase {
 	}
 
 	public function testBeforeControllerNoTwoFactorCheckNeeded() {
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$this->reflector->expects($this->once())
 			->method('hasAnnotation')
@@ -126,7 +124,7 @@ class TwoFactorMiddlewareTest extends TestCase {
 	public function testBeforeControllerTwoFactorAuthRequired() {
 		$this->expectException(\OC\Authentication\Exceptions\TwoFactorAuthRequiredException::class);
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$this->reflector->expects($this->once())
 			->method('hasAnnotation')
@@ -154,7 +152,7 @@ class TwoFactorMiddlewareTest extends TestCase {
 	public function testBeforeControllerUserAlreadyLoggedIn() {
 		$this->expectException(\OC\Authentication\Exceptions\UserAlreadyLoggedInException::class);
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$this->reflector->expects($this->once())
 			->method('hasAnnotation')
@@ -174,7 +172,7 @@ class TwoFactorMiddlewareTest extends TestCase {
 			->method('needsSecondFactor')
 			->will($this->returnValue(false));
 
-		$twoFactorChallengeController = $this->getMockBuilder('\OC\Core\Controller\TwoFactorChallengeController')
+		$twoFactorChallengeController = $this->getMockBuilder('\\' . \OC\Core\Controller\TwoFactorChallengeController::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->middleware->beforeController($twoFactorChallengeController, 'index');

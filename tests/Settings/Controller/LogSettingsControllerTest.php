@@ -26,7 +26,7 @@ class LogSettingsControllerTest extends \Test\TestCase {
 	protected function setUp(): void {
 		$app = new Application();
 		$this->container = $app->getContainer();
-		$this->container['Config'] = $this->getMockBuilder('\OCP\IConfig')
+		$this->container['Config'] = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()->getMock();
 		$this->container['AppName'] = 'settings';
 		$this->logSettingsController = $this->container['LogSettingsController'];
@@ -69,7 +69,7 @@ class LogSettingsControllerTest extends \Test\TestCase {
 	public function testDownload() {
 		$response = $this->logSettingsController->download();
 
-		$this->assertInstanceOf('\OCP\AppFramework\Http\StreamResponse', $response);
+		$this->assertInstanceOf('\\' . \OCP\AppFramework\Http\StreamResponse::class, $response);
 		$headers = $response->getHeaders();
 		$this->assertEquals('application/octet-stream', $headers['Content-Type']);
 		$this->assertEquals('attachment; filename="owncloud.log"', $headers['Content-Disposition']);

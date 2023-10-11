@@ -593,7 +593,9 @@ trait Provisioning {
 
 		$ldapConfig = \json_decode(
 			$occResult['stdOut'],
-			true
+			true,
+			512,
+			JSON_THROW_ON_ERROR
 		);
 		Assert::assertNotNull(
 			$ldapConfig,
@@ -3513,7 +3515,7 @@ trait Provisioning {
 		?string $user = null
 	):void {
 		$bodyTable = new TableNode([['groupid', $group]]);
-		$user = $user === null ? $this->getAdminUsername() : $user;
+		$user ??= $this->getAdminUsername();
 		$this->emptyLastHTTPStatusCodesArray();
 		$this->emptyLastOCSStatusCodesArray();
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -4441,9 +4443,7 @@ trait Provisioning {
 		$this->verifyTableNodeColumnsCount($usersList, 1);
 		$users = $usersList->getRows();
 		$usersSimplified = \array_map(
-			function ($user) {
-				return $this->getActualUsername($user);
-			},
+			fn ($user) => $this->getActualUsername($user),
 			$this->simplifyArray($users)
 		);
 		$respondedArray = $this->getArrayOfUsersResponded($this->response);
@@ -4467,9 +4467,7 @@ trait Provisioning {
 		$this->verifyTableNodeColumnsCount($usersList, 1);
 		$users = $usersList->getRows();
 		$usersSimplified = \array_map(
-			function ($user) {
-				return $this->getActualUsername($user);
-			},
+			fn ($user) => $this->getActualUsername($user),
 			$this->simplifyArray($users)
 		);
 		$respondedArray = $this->getArrayOfUsersResponded($this->response);
@@ -4921,7 +4919,7 @@ trait Provisioning {
 	public function getArrayOfUsersResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->users[0]->element;
-		return \json_decode(\json_encode($listCheckedElements), true);
+		return \json_decode(\json_encode($listCheckedElements, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**
@@ -4935,7 +4933,7 @@ trait Provisioning {
 	public function getArrayOfGroupsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->groups[0]->element;
-		return \json_decode(\json_encode($listCheckedElements), true);
+		return \json_decode(\json_encode($listCheckedElements, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**
@@ -4949,7 +4947,7 @@ trait Provisioning {
 	public function getArrayOfAppsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->apps[0]->element;
-		return \json_decode(\json_encode($listCheckedElements), true);
+		return \json_decode(\json_encode($listCheckedElements, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**
@@ -4963,7 +4961,7 @@ trait Provisioning {
 	public function getArrayOfSubadminsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->element;
-		return \json_decode(\json_encode($listCheckedElements), true);
+		return \json_decode(\json_encode($listCheckedElements, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**
@@ -4977,7 +4975,7 @@ trait Provisioning {
 	public function getArrayOfAppInfoResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0];
-		return \json_decode(\json_encode($listCheckedElements), true);
+		return \json_decode(\json_encode($listCheckedElements, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**
@@ -5404,7 +5402,7 @@ trait Provisioning {
 			$this->getOcPath()
 		);
 		$this->runOcc(['app:list', '--output json']);
-		$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+		$apps = \json_decode($this->getStdOutOfOccCommand(), true, 512, JSON_THROW_ON_ERROR);
 		$this->enabledApps = \array_keys($apps["enabled"]);
 		$this->disabledApps = \array_keys($apps["disabled"]);
 	}
@@ -5429,7 +5427,7 @@ trait Provisioning {
 		if (!$this->isRunningForDbConversion()) {
 			$this->runOcc(['app:list', '--output json']);
 
-			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+			$apps = \json_decode($this->getStdOutOfOccCommand(), true, 512, JSON_THROW_ON_ERROR);
 			$currentlyEnabledApps = \array_keys($apps["enabled"]);
 			$currentlyDisabledApps = \array_keys($apps["disabled"]);
 

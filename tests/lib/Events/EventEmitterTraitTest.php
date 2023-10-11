@@ -48,9 +48,7 @@ class EventEmitterTraitTest extends TestCase {
 			$calledBeforeEvent[] = $event;
 		});
 
-		$this->emittingCall(function () {
-			return true;
-		}, ['before' => $data['before'], 'after' => $data['after']], $className, $eventName);
+		$this->emittingCall(fn () => true, ['before' => $data['before'], 'after' => $data['after']], $className, $eventName);
 
 		if (isset($data['before']) and (\count($data['before']) > 0)) {
 			$this->assertEquals($calledBeforeEvent[0], "$className.before$eventName");

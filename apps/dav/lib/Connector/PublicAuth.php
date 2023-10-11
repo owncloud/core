@@ -42,14 +42,11 @@ class PublicAuth extends AbstractBasic {
 	/** @var \OCP\Share\IShare */
 	private $share;
 
-	/** @var IManager */
-	private $shareManager;
+	private \OCP\Share\IManager $shareManager;
 
-	/** @var ISession */
-	private $session;
+	private \OCP\ISession $session;
 
-	/** @var IRequest */
-	private $request;
+	private \OCP\IRequest $request;
 
 	/**
 	 * @param IRequest $request

@@ -49,7 +49,7 @@ class Quota extends Wrapper {
 	public function __construct($parameters) {
 		parent::__construct($parameters);
 		$this->quota = $parameters['quota'];
-		$this->sizeRoot = isset($parameters['root']) ? $parameters['root'] : '';
+		$this->sizeRoot = $parameters['root'] ?? '';
 		$this->mountPoint = $parameters['mountPoint'] ?? '';
 	}
 

@@ -32,14 +32,11 @@ use OCP\IUserManager;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 
 class TokenAuthModule implements IAuthModule {
-	/** @var ISession */
-	private $session;
+	private \OCP\ISession $session;
 
-	/** @var IProvider */
-	private $tokenProvider;
+	private \OC\Authentication\Token\IProvider $tokenProvider;
 
-	/** @var IUserManager */
-	private $manager;
+	private \OCP\IUserManager $manager;
 
 	/** @var string */
 	private $password = '';

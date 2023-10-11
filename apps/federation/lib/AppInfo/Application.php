@@ -48,20 +48,16 @@ class Application extends \OCP\AppFramework\App {
 	private function registerService() {
 		$container = $this->getContainer();
 
-		$container->registerService('addServerMiddleware', function (IAppContainer $c) {
-			return new AddServerMiddleware(
-				$c->getAppName(),
-				\OC::$server->getL10N($c->getAppName()),
-				\OC::$server->getLogger()
-			);
-		});
+		$container->registerService('addServerMiddleware', fn (IAppContainer $c) => new AddServerMiddleware(
+			$c->getAppName(),
+			\OC::$server->getL10N($c->getAppName()),
+			\OC::$server->getLogger()
+		));
 
-		$container->registerService('DbHandler', function (IAppContainer $c) {
-			return new DbHandler(
-				\OC::$server->getDatabaseConnection(),
-				\OC::$server->getL10N($c->getAppName())
-			);
-		});
+		$container->registerService('DbHandler', fn (IAppContainer $c) => new DbHandler(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getL10N($c->getAppName())
+		));
 
 		$container->registerService('TrustedServers', function (IAppContainer $c) {
 			$server = $c->getServer();
@@ -101,7 +97,7 @@ class Application extends \OCP\AppFramework\App {
 		$hooksManager = new Hooks($container->query('TrustedServers'));
 
 		Util::connectHook(
-			'OCP\Share',
+			\OCP\Share::class,
 			'federated_share_added',
 			$hooksManager,
 			'addServerHook'

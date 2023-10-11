@@ -39,60 +39,48 @@ class Application extends App {
 		/**
 		 * Controllers
 		 */
-		$container->registerService('APIController', function (IContainer $c) use ($server) {
-			return new ApiController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$server->getUserSession(),
-				$c->query('TagService'),
-				$server->getPreviewManager(),
-				$server->getShareManager(),
-				$server->getConfig()
-			);
-		});
+		$container->registerService('APIController', fn (IContainer $c) => new ApiController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$server->getUserSession(),
+			$c->query('TagService'),
+			$server->getPreviewManager(),
+			$server->getShareManager(),
+			$server->getConfig()
+		));
 
-		$container->registerService('ViewController', function (IContainer $c) use ($server) {
-			return new ViewController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$server->getURLGenerator(),
-				$c->query('L10N'),
-				$server->getConfig(),
-				$server->getEventDispatcher(),
-				$server->getUserSession(),
-				$server->getAppManager(),
-				$server->getRootFolder()
-			);
-		});
+		$container->registerService('ViewController', fn (IContainer $c) => new ViewController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$server->getURLGenerator(),
+			$c->query('L10N'),
+			$server->getConfig(),
+			$server->getEventDispatcher(),
+			$server->getUserSession(),
+			$server->getAppManager(),
+			$server->getRootFolder()
+		));
 
 		/**
 		 * Core
 		 */
-		$container->registerService('L10N', function (IContainer $c) {
-			return $c->query('ServerContainer')->getL10N($c->query('AppName'));
-		});
+		$container->registerService('L10N', fn (IContainer $c) => $c->query('ServerContainer')->getL10N($c->query('AppName')));
 
 		/**
 		 * Services
 		 */
-		$container->registerService('TagService', function (IContainer $c) {
-			return new TagService(
-				$c->query('ServerContainer')->getUserSession(),
-				$c->query('ServerContainer')->getTagManager(),
-				$c->query('ServerContainer')->getLazyRootFolder()
-			);
-		});
+		$container->registerService('TagService', fn (IContainer $c) => new TagService(
+			$c->query('ServerContainer')->getUserSession(),
+			$c->query('ServerContainer')->getTagManager(),
+			$c->query('ServerContainer')->getLazyRootFolder()
+		));
 
-		$container->registerService('OCP\Lock\ILockingProvider', function (IContainer $c) {
-			return $c->query('ServerContainer')->getLockingProvider();
-		});
-		$container->registerService('OCP\Files\IMimeTypeLoader', function (IContainer $c) {
-			return $c->query('ServerContainer')->getMimeTypeLoader();
-		});
+		$container->registerService(\OCP\Lock\ILockingProvider::class, fn (IContainer $c) => $c->query('ServerContainer')->getLockingProvider());
+		$container->registerService(\OCP\Files\IMimeTypeLoader::class, fn (IContainer $c) => $c->query('ServerContainer')->getMimeTypeLoader());
 
 		/*
 		 * Register capabilities
 		 */
-		$container->registerCapability('OCA\Files\Capabilities');
+		$container->registerCapability(\OCA\Files\Capabilities::class);
 	}
 }

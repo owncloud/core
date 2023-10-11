@@ -37,10 +37,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @package OCA\Files_Sharing\Tests
  */
 class ExpireSharesJobTest extends \Test\TestCase {
-	/**
-	 * @var ExpireSharesJob
-	 */
-	private $job;
+	private \OCA\Files_Sharing\ExpireSharesJob $job;
 
 	/**
 	 * @var IManager
@@ -55,12 +52,12 @@ class ExpireSharesJobTest extends \Test\TestCase {
 	/**
 	 * @var DefaultShareProvider| MockObject
 	 */
-	private $defaultShareProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $defaultShareProvider;
 
 	/**
 	 * @var \OCP\Activity\IManager | MockObject
 	 */
-	private $activityManager;
+	private \PHPUnit\Framework\MockObject\MockObject $activityManager;
 
 	/**
 	 * @var string

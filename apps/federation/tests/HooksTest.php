@@ -28,15 +28,14 @@ use Test\TestCase;
 
 class HooksTest extends TestCase {
 	/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers */
-	private $trustedServers;
+	private \PHPUnit\Framework\MockObject\MockObject $trustedServers;
 
-	/** @var  Hooks */
-	private $hooks;
+	private \OCA\Federation\Hooks $hooks;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->trustedServers = $this->getMockBuilder('OCA\Federation\TrustedServers')
+		$this->trustedServers = $this->getMockBuilder(\OCA\Federation\TrustedServers::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->hooks = new Hooks($this->trustedServers);

@@ -11,10 +11,7 @@ namespace Test\Files\Storage\Wrapper;
 use OCP\Constants;
 
 class PermissionsMaskTest extends \Test\Files\Storage\Storage {
-	/**
-	 * @var \OC\Files\Storage\Temporary
-	 */
-	private $sourceStorage;
+	private \OC\Files\Storage\Temporary $sourceStorage;
 
 	public function setUp(): void {
 		parent::setUp();

@@ -80,7 +80,7 @@ class DiscoveryManager {
 	private function discover($remote) {
 		// Check if something is in the cache
 		if ($cacheData = $this->cache->get($remote)) {
-			return \json_decode($cacheData, true);
+			return \json_decode($cacheData, true, 512, JSON_THROW_ON_ERROR);
 		}
 
 		// Default response body
@@ -111,7 +111,7 @@ class DiscoveryManager {
 		}
 
 		// Write into cache
-		$this->cache->set($remote, \json_encode($discoveredServices));
+		$this->cache->set($remote, \json_encode($discoveredServices, JSON_THROW_ON_ERROR));
 		return $discoveredServices;
 	}
 
@@ -127,7 +127,7 @@ class DiscoveryManager {
 	private function ocmDiscover($remote) {
 		// Check if something is in the cache
 		if ($cacheData = $this->cache->get('OCM' . $remote)) {
-			return \json_decode($cacheData, true);
+			return \json_decode($cacheData, true, 512, JSON_THROW_ON_ERROR);
 		}
 
 		// Default response body
@@ -156,7 +156,7 @@ class DiscoveryManager {
 			}
 
 			// Write into cache
-			$this->cache->set('OCM' . $remote, \json_encode($discoveredServices));
+			$this->cache->set('OCM' . $remote, \json_encode($discoveredServices, JSON_THROW_ON_ERROR));
 			return $discoveredServices;
 		}
 		return [
@@ -184,14 +184,12 @@ class DiscoveryManager {
 				]
 			);
 			if ($response->getStatusCode() === 200) {
-				$decodedService = \json_decode($response->getBody(), true);
+				$decodedService = \json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
 			}
 			if (\is_array($decodedService) === false) {
 				$decodedService = [];
 			}
-		} catch (ClientException $e) {
-			// Don't throw any exception since exceptions are handled before
-		} catch (ConnectException $e) {
+		} catch (ClientException|ConnectException $e) {
 			// Don't throw any exception since exceptions are handled before
 		}
 		return $decodedService;

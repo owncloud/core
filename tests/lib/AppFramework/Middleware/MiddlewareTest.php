@@ -34,12 +34,12 @@ class MiddlewareTest extends \Test\TestCase {
 	/**
 	 * @var Middleware
 	 */
-	private $middleware;
-	private $controller;
-	private $exception;
-	private $api;
+	private \Test\AppFramework\Middleware\ChildMiddleware $middleware;
+	private \PHPUnit\Framework\MockObject\MockObject $controller;
+	private \Exception $exception;
+	private \PHPUnit\Framework\MockObject\MockObject $api;
 	/** @var Response */
-	private $response;
+	private \PHPUnit\Framework\MockObject\MockObject $response;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -47,25 +47,16 @@ class MiddlewareTest extends \Test\TestCase {
 		$this->middleware = new ChildMiddleware();
 
 		$this->api = $this->getMockBuilder(
-			'OC\AppFramework\DependencyInjection\DIContainer'
+			\OC\AppFramework\DependencyInjection\DIContainer::class
 		)
 				->disableOriginalConstructor()
 				->getMock();
 
 		$this->controller = $this->createMock(
-			'OCP\AppFramework\Controller',
-			[],
-			[
-				$this->api,
-				new Request(
-					[],
-					$this->createMock('\OCP\Security\ISecureRandom'),
-					$this->createMock('\OCP\IConfig')
-				)
-			]
+			\OCP\AppFramework\Controller::class
 		);
 		$this->exception = new \Exception();
-		$this->response = $this->createMock('OCP\AppFramework\Http\Response');
+		$this->response = $this->createMock(\OCP\AppFramework\Http\Response::class);
 	}
 
 	public function testBeforeController() {

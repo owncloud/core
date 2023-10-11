@@ -33,10 +33,8 @@ class FileSharing implements ISettings {
 	protected $config;
 	/** @var Helper */
 	protected $helper;
-	/** @var IFactory */
-	private $lfactory;
-	/** @var LocaleHelper */
-	private $localeHelper;
+	private \OCP\L10N\IFactory $lfactory;
+	private ?\OC\Helper\LocaleHelper $localeHelper = null;
 
 	public function __construct(IConfig $config, Helper $helper, IFactory $lfactory) {
 		$this->config = $config;
@@ -56,7 +54,7 @@ class FileSharing implements ISettings {
 			'owner'
 		);
 		$this->localeHelper = new LocaleHelper();
-		list($userLang, $commonLanguages, $languages) = $this->localeHelper->getNormalizedLanguages(
+		[$userLang, $commonLanguages, $languages] = $this->localeHelper->getNormalizedLanguages(
 			$this->lfactory,
 			$activeLangCode
 		);
@@ -103,7 +101,7 @@ class FileSharing implements ISettings {
 		$excludeGroups = $this->config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes' ? true : false;
 		$template->assign('shareExcludeGroups', $excludeGroups);
 		$excludedGroupsList = $this->config->getAppValue('core', 'shareapi_exclude_groups_list', '');
-		$excludedGroupsList = \json_decode($excludedGroupsList);
+		$excludedGroupsList = \json_decode($excludedGroupsList, null, 512, JSON_THROW_ON_ERROR);
 		$template->assign('shareExcludedGroupsList', $excludedGroupsList !== null ? \implode('|', $excludedGroupsList) : '');
 		$template->assign('shareExpireAfterNDays', $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
 		$template->assign('shareEnforceExpireDate', $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));

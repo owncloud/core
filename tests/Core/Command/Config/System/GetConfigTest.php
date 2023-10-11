@@ -62,17 +62,17 @@ class GetConfigTest extends TestCase {
 			['name', null, false, null, false, 'json', 1, null],
 
 			// Int "0" output as json/plain
-			['name', 0, true, null, false, 'json', 0, \json_encode(0)],
+			['name', 0, true, null, false, 'json', 0, \json_encode(0, JSON_THROW_ON_ERROR)],
 			['name', 0, true, null, false, 'plain', 0, '0'],
 			// Int "1" output as json/plain
-			['name', 1, true, null, false, 'json', 0, \json_encode(1)],
+			['name', 1, true, null, false, 'json', 0, \json_encode(1, JSON_THROW_ON_ERROR)],
 			['name', 1, true, null, false, 'plain', 0, '1'],
 
 			// Bool "true" output as json/plain
-			['name', true, true, null, false, 'json', 0, \json_encode(true)],
+			['name', true, true, null, false, 'json', 0, \json_encode(true, JSON_THROW_ON_ERROR)],
 			['name', true, true, null, false, 'plain', 0, 'true'],
 			// Bool "false" output as json/plain
-			['name', false, true, null, false, 'json', 0, \json_encode(false)],
+			['name', false, true, null, false, 'json', 0, \json_encode(false, JSON_THROW_ON_ERROR)],
 			['name', false, true, null, false, 'plain', 0, 'false'],
 
 			// Null output as json/plain
@@ -90,9 +90,9 @@ class GetConfigTest extends TestCase {
 			['name', ['a' => 1, 'b' => 2], true, null, false, 'plain', 0, "a: 1\nb: 2"],
 
 			// Nested depth
-			[['name', 'a'], ['a' => 1, 'b' => 2], true, null, false, 'json', 0, \json_encode(1)],
+			[['name', 'a'], ['a' => 1, 'b' => 2], true, null, false, 'json', 0, \json_encode(1, JSON_THROW_ON_ERROR)],
 			[['name', 'a'], ['a' => 1, 'b' => 2], true, null, false, 'plain', 0, '1'],
-			[['name', 'c'], ['a' => 1, 'b' => 2], true, true, true, 'json', 0, \json_encode(true)],
+			[['name', 'c'], ['a' => 1, 'b' => 2], true, true, true, 'json', 0, \json_encode(true, JSON_THROW_ON_ERROR)],
 			[['name', 'c'], ['a' => 1, 'b' => 2], true, true, false, 'json', 1, null],
 
 		];

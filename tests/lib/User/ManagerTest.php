@@ -35,9 +35,9 @@ class ManagerTest extends TestCase {
 	/** @var Manager */
 	private $manager;
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $accountMapper;
+	private \PHPUnit\Framework\MockObject\MockObject $accountMapper;
 	/** @var SyncService | \PHPUnit\Framework\MockObject\MockObject */
-	private $syncService;
+	private \PHPUnit\Framework\MockObject\MockObject $syncService;
 
 	/**
 	 * @var \OCP\Util\UserSearch

@@ -45,19 +45,19 @@ use Test\TestCase;
  */
 class CheckerTest extends TestCase {
 	/** @var EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
-	private $environmentHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $environmentHelper;
 	/** @var AppLocator | \PHPUnit\Framework\MockObject\MockObject */
-	private $appLocator;
+	private \PHPUnit\Framework\MockObject\MockObject $appLocator;
 	/** @var Checker */
 	private $checker;
 	/** @var FileAccessHelper | \PHPUnit\Framework\MockObject\MockObject */
-	private $fileAccessHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $fileAccessHelper;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ICacheFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $cacheFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $cacheFactory;
 	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -135,7 +135,7 @@ class CheckerTest extends TestCase {
 				$this->callback(function ($arg) use ($expectedSignatureFileData) {
 					$this->assertEquals(
 						\json_decode($expectedSignatureFileData, true),
-						\json_decode($arg, true)
+						\json_decode($arg, true, 512, JSON_THROW_ON_ERROR)
 					);
 					return true;
 				})
@@ -184,7 +184,7 @@ class CheckerTest extends TestCase {
 
 		$expected = [
 			'EXCEPTION' => [
-					'class' => 'OC\IntegrityCheck\Exceptions\MissingSignatureException',
+					'class' => \OC\IntegrityCheck\Exceptions\MissingSignatureException::class,
 					'message' => 'Signature data not found.',
 			],
 		];
@@ -268,7 +268,7 @@ class CheckerTest extends TestCase {
 
 		$expected = [
 				'EXCEPTION' => [
-						'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',
+						'class' => \OC\IntegrityCheck\Exceptions\InvalidSignatureException::class,
 						'message' => 'Signature could not get verified.',
 				],
 		];
@@ -488,7 +488,7 @@ class CheckerTest extends TestCase {
 
 		$expected = [
 				'EXCEPTION' => [
-						'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',
+						'class' => \OC\IntegrityCheck\Exceptions\InvalidSignatureException::class,
 						'message' => 'Certificate is not valid for required scope. (Requested: SomeApp, current: CN=AnotherScope)',
 					],
 		];
@@ -556,7 +556,7 @@ class CheckerTest extends TestCase {
 					$this->callback(function ($arg) use ($expectedSignatureFileData) {
 						$this->assertEquals(
 							\json_decode($expectedSignatureFileData, true),
-							\json_decode($arg, true)
+							\json_decode($arg, true, 512, JSON_THROW_ON_ERROR)
 						);
 						return true;
 					})
@@ -592,7 +592,7 @@ class CheckerTest extends TestCase {
 					$this->callback(function ($arg) use ($expectedSignatureFileData) {
 						$this->assertEquals(
 							\json_decode($expectedSignatureFileData, true),
-							\json_decode($arg, true)
+							\json_decode($arg, true, 512, JSON_THROW_ON_ERROR)
 						);
 						return true;
 					})
@@ -623,7 +623,7 @@ class CheckerTest extends TestCase {
 					$this->callback(function ($arg) use ($expectedSignatureFileData) {
 						$this->assertEquals(
 							\json_decode($expectedSignatureFileData, true),
-							\json_decode($arg, true)
+							\json_decode($arg, true, 512, JSON_THROW_ON_ERROR)
 						);
 						return true;
 					})
@@ -664,7 +664,7 @@ class CheckerTest extends TestCase {
 				$this->callback(function ($arg) use ($expectedSignatureFileData) {
 					$this->assertEquals(
 						\json_decode($expectedSignatureFileData, true),
-						\json_decode($arg, true)
+						\json_decode($arg, true, 512, JSON_THROW_ON_ERROR)
 					);
 					return true;
 				})
@@ -692,7 +692,7 @@ class CheckerTest extends TestCase {
 
 		$expected = [
 			'EXCEPTION' => [
-				'class' => 'OC\\IntegrityCheck\\Exceptions\\MissingSignatureException',
+				'class' => \OC\IntegrityCheck\Exceptions\MissingSignatureException::class,
 				'message' => 'Signature data not found.',
 			],
 		];
@@ -853,7 +853,7 @@ class CheckerTest extends TestCase {
 
 		$expected = [
 				'EXCEPTION' => [
-						'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',
+						'class' => \OC\IntegrityCheck\Exceptions\InvalidSignatureException::class,
 						'message' => 'Signature could not get verified.',
 				]
 		];
@@ -1010,7 +1010,7 @@ class CheckerTest extends TestCase {
 
 		$expected = [
 				'EXCEPTION' => [
-						'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',
+						'class' => \OC\IntegrityCheck\Exceptions\InvalidSignatureException::class,
 						'message' => 'App Certificate is not valid.',
 				]
 		];
@@ -1053,7 +1053,7 @@ class CheckerTest extends TestCase {
 
 		$expected = [
 				'EXCEPTION' => [
-						'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',
+						'class' => \OC\IntegrityCheck\Exceptions\InvalidSignatureException::class,
 						'message' => 'Certificate is not valid for required scope. (Requested: core, current: CN=SomeApp)',
 				]
 		];
@@ -1061,7 +1061,7 @@ class CheckerTest extends TestCase {
 	}
 
 	public function testRunInstanceVerification() {
-		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
+		$this->checker = $this->getMockBuilder('\\' . \OC\IntegrityCheck\Checker::class)
 			->setConstructorArgs([
 				$this->environmentHelper,
 				$this->fileAccessHelper,
@@ -1233,7 +1233,7 @@ class CheckerTest extends TestCase {
 			);
 		$expected = [
 			'EXCEPTION' => [
-				'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',
+				'class' => \OC\IntegrityCheck\Exceptions\InvalidSignatureException::class,
 				'message' => 'Certificate has been revoked.',
 			]
 		];

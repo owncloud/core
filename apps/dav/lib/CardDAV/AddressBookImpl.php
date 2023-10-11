@@ -31,17 +31,13 @@ use Sabre\VObject\Reader;
 use Sabre\VObject\UUIDUtil;
 
 class AddressBookImpl implements IAddressBook {
-	/** @var CardDavBackend */
-	private $backend;
+	private \OCA\DAV\CardDAV\CardDavBackend $backend;
 
-	/** @var array */
-	private $addressBookInfo;
+	private array $addressBookInfo;
 
-	/** @var AddressBook */
-	private $addressBook;
+	private \OCA\DAV\CardDAV\AddressBook $addressBook;
 
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 
 	/**
 	 * AddressBookImpl constructor.

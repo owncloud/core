@@ -74,27 +74,24 @@ class FilesPluginTest extends TestCase {
 	/**
 	 * @var Server | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $server;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
 
 	/**
 	 * @var Tree | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 
-	/**
-	 * @var FilesPlugin
-	 */
-	private $plugin;
+	private \OCA\DAV\Connector\Sabre\FilesPlugin $plugin;
 
 	/**
 	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/**
 	 * @var IRequest | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	public function setUp(): void {
 		parent::setUp();

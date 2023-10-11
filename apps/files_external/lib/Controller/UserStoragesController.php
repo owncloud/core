@@ -41,10 +41,7 @@ use OCP\IUserSession;
  * User storages controller
  */
 class UserStoragesController extends StoragesController {
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
 	/**
 	 * Creates a new user storages controller.

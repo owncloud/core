@@ -38,55 +38,53 @@ use Test\TestCase;
 
 class TrustedServersTest extends TestCase {
 	/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers */
-	private $trustedServers;
+	private \OCA\Federation\TrustedServers $trustedServers;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | DbHandler */
-	private $dbHandler;
+	private \PHPUnit\Framework\MockObject\MockObject $dbHandler;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IClientService */
-	private $httpClientService;
+	private \PHPUnit\Framework\MockObject\MockObject $httpClientService;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | IClient */
-	private $httpClient;
+	private \PHPUnit\Framework\MockObject\MockObject $httpClient;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | IResponse */
-	private $response;
+	private \PHPUnit\Framework\MockObject\MockObject $response;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | IJobList */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | ISecureRandom */
-	private $secureRandom;
+	private \PHPUnit\Framework\MockObject\MockObject $secureRandom;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | EventDispatcherInterface */
-	private $dispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $dispatcher;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->dbHandler = $this->getMockBuilder('\OCA\Federation\DbHandler')
+		$this->dbHandler = $this->getMockBuilder('\\' . \OCA\Federation\DbHandler::class)
 			->disableOriginalConstructor()->getMock();
-		$this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')
+		$this->dispatcher = $this->getMockBuilder(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class)
 			->disableOriginalConstructor()->getMock();
 		$this->dispatcher->expects($this->any())->method('dispatch')
 			->will(
-				$this->returnCallback(function ($object) {
-					return $object;
-				})
+				$this->returnCallback(fn ($object) => $object)
 			);
-		$this->httpClientService = $this->createMock('OCP\Http\Client\IClientService');
-		$this->httpClient = $this->createMock('OCP\Http\Client\IClient');
-		$this->response = $this->createMock('OCP\Http\Client\IResponse');
-		$this->logger = $this->createMock('OCP\ILogger');
-		$this->jobList = $this->createMock('OCP\BackgroundJob\IJobList');
-		$this->secureRandom = $this->createMock('OCP\Security\ISecureRandom');
-		$this->config = $this->createMock('OCP\IConfig');
+		$this->httpClientService = $this->createMock(\OCP\Http\Client\IClientService::class);
+		$this->httpClient = $this->createMock(\OCP\Http\Client\IClient::class);
+		$this->response = $this->createMock(\OCP\Http\Client\IResponse::class);
+		$this->logger = $this->createMock(\OCP\ILogger::class);
+		$this->jobList = $this->createMock(\OCP\BackgroundJob\IJobList::class);
+		$this->secureRandom = $this->createMock(\OCP\Security\ISecureRandom::class);
+		$this->config = $this->createMock(\OCP\IConfig::class);
 
 		$this->trustedServers = new TrustedServers(
 			$this->dbHandler,
@@ -106,7 +104,7 @@ class TrustedServersTest extends TestCase {
 	 */
 	public function testAddServer($success) {
 		/** @var \PHPUnit\Framework\MockObject\MockObject|TrustedServers $trustedServers */
-		$trustedServers = $this->getMockBuilder('OCA\Federation\TrustedServers')
+		$trustedServers = $this->getMockBuilder(\OCA\Federation\TrustedServers::class)
 			->setConstructorArgs(
 				[
 					$this->dbHandler,
@@ -131,7 +129,7 @@ class TrustedServersTest extends TestCase {
 			$this->dbHandler->expects($this->once())->method('addToken')->with('https://url', 'token');
 			$this->jobList->expects($this->once())->method('add')
 				->with(
-					'OCA\Federation\BackgroundJob\RequestSharedSecret',
+					\OCA\Federation\BackgroundJob\RequestSharedSecret::class,
 					['url' => 'https://url', 'token' => 'token']
 				);
 		} else {
@@ -215,7 +213,7 @@ class TrustedServersTest extends TestCase {
 			->willReturnCallback(
 				function ($event, $eventId) {
 					$this->assertSame($eventId, 'OCP\Federation\TrustedServerEvent::remove');
-					$this->assertInstanceOf('Symfony\Component\EventDispatcher\GenericEvent', $event);
+					$this->assertInstanceOf(\Symfony\Component\EventDispatcher\GenericEvent::class, $event);
 					/** @var \Symfony\Component\EventDispatcher\GenericEvent $event */
 					$this->assertSame('url_hash', $event->getSubject());
 				}
@@ -266,7 +264,7 @@ class TrustedServersTest extends TestCase {
 		$server = 'server1';
 
 		/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers $trustedServers */
-		$trustedServers = $this->getMockBuilder('OCA\Federation\TrustedServers')
+		$trustedServers = $this->getMockBuilder(\OCA\Federation\TrustedServers::class)
 			->setConstructorArgs(
 				[
 					$this->dbHandler,

@@ -29,8 +29,7 @@ use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 
 class RootCollection extends Collection {
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
 	/**
 	 * RootCollection constructor.

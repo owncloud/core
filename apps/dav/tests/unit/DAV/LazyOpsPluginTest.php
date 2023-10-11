@@ -36,18 +36,17 @@ use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
 class LazyOpsPluginTest extends TestCase {
-	/** @var LazyOpsPlugin */
-	private $plugin;
+	private \OCA\DAV\DAV\LazyOpsPlugin $plugin;
 	/** @var ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $jobStatusMapper;
+	private \PHPUnit\Framework\MockObject\MockObject $jobStatusMapper;
 	/** @var IShutdownManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $shutdownManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shutdownManager;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	public function setUp(): void {
 		parent::setUp();

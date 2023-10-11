@@ -35,16 +35,15 @@ use Test\TestCase;
  * @group DB
  */
 class ReportTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	/** @var IUserManager */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var UserTypeHelper */
-	private $userTypeHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $userTypeHelper;
 
-	private $isObjectStorage = false;
+	private bool $isObjectStorage = false;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -104,7 +103,7 @@ class ReportTest extends TestCase {
 			]));
 
 		$this->userManager->method('countUsers')->willReturn([
-			'OC\User\Database' => 2,
+			\OC\User\Database::class => 2,
 			'Custom\Class' => 4,
 		]);
 		$this->userManager->method('callForSeenUsers')
@@ -156,7 +155,7 @@ EOS;
 			]));
 
 		$this->userManager->method('countUsers')->willReturn([
-			'OC\User\Database' => 2,
+			\OC\User\Database::class => 2,
 			'Custom\Class' => 4,
 		]);
 		$this->userManager->method('callForSeenUsers')
@@ -196,7 +195,7 @@ EOS;
 	}
 
 	private function overwriteConfigWithObjectStorage() {
-		$config = $this->createMock('\OCP\IConfig');
+		$config = $this->createMock('\\' . \OCP\IConfig::class);
 		$config->expects($this->any())
 			->method('getSystemValue')
 			->willReturn(['objectstore' => true]);
@@ -205,7 +204,7 @@ EOS;
 	}
 
 	private function overwriteAppManagerWithObjectStorage() {
-		$config = $this->createMock('\OCP\App\IAppManager');
+		$config = $this->createMock('\\' . \OCP\App\IAppManager::class);
 		$config->expects($this->any())
 			->method('isEnabledForUser')
 			->willReturn(true);

@@ -38,20 +38,15 @@ use OCP\IURLGenerator;
 use OCP\IUserSession;
 
 class TwoFactorMiddleware extends Middleware {
-	/** @var Manager */
-	private $twoFactorManager;
+	private \OC\Authentication\TwoFactorAuth\Manager $twoFactorManager;
 
-	/** @var IUserSession */
-	private $session;
+	private \OCP\IUserSession $session;
 
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 
-	/** @var IControllerMethodReflector */
-	private $reflector;
+	private \OCP\AppFramework\Utility\IControllerMethodReflector $reflector;
 
-	/** @var IRequest */
-	private $request;
+	private \OCP\IRequest $request;
 
 	/**
 	 * @param Manager $twoFactorManager

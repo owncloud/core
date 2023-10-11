@@ -75,7 +75,7 @@ class Quota {
 	public function stream_open($path, $mode, $options, &$opened_path) {
 		$id = \substr($path, \strlen('quota://'));
 		if (isset(self::$streams[$id])) {
-			list($this->source, $this->limit) = self::$streams[$id];
+			[$this->source, $this->limit] = self::$streams[$id];
 			return true;
 		} else {
 			return false;

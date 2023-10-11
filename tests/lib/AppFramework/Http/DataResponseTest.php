@@ -28,10 +28,7 @@ use OCP\AppFramework\Http\DataResponse;
 use Test\TestCase;
 
 class DataResponseTest extends TestCase {
-	/**
-	 * @var DataResponse
-	 */
-	private $response;
+	private \OCP\AppFramework\Http\DataResponse $response;
 
 	protected function setUp(): void {
 		parent::setUp();

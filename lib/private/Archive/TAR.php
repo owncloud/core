@@ -42,7 +42,7 @@ class TAR extends Archive {
 	/**
 	 * @var \Archive_Tar tar
 	 */
-	private $tar = null;
+	private ?\Archive_Tar $tar = null;
 	private $path;
 
 	/**
@@ -363,7 +363,7 @@ class TAR extends Archive {
 		}
 	}
 
-	private static $tempFiles = [];
+	private static array $tempFiles = [];
 
 	/**
 	 * write back temporary files

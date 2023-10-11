@@ -114,8 +114,8 @@ $array = [
 	"oc_isadmin" => OC_User::isAdminUser(OC_User::getUser()) ? 'true' : 'false',
 	"oc_dataURL" => \is_string($dataLocation) ? "\"".$dataLocation."\"" : 'false',
 	"oc_webroot" => "\"".OC::$WEBROOT."\"",
-	"oc_appswebroots" =>  \str_replace('\\/', '/', \json_encode($apps_paths)), // Ugly unescape slashes waiting for better solution
-	"datepickerFormatDate" => \json_encode($l->l('jsdate', null)),
+	"oc_appswebroots" =>  \str_replace('\\/', '/', \json_encode($apps_paths, JSON_THROW_ON_ERROR)), // Ugly unescape slashes waiting for better solution
+	"datepickerFormatDate" => \json_encode($l->l('jsdate', null), JSON_THROW_ON_ERROR),
 	"dayNames" =>  \json_encode(
 		[
 			(string)$l->t('Sunday'),
@@ -125,7 +125,8 @@ $array = [
 			(string)$l->t('Thursday'),
 			(string)$l->t('Friday'),
 			(string)$l->t('Saturday')
-		]
+		],
+		JSON_THROW_ON_ERROR
 	),
 	"dayNamesShort" =>  \json_encode(
 		[
@@ -136,7 +137,8 @@ $array = [
 			(string)$l->t('Thu.'),
 			(string)$l->t('Fri.'),
 			(string)$l->t('Sat.')
-		]
+		],
+		JSON_THROW_ON_ERROR
 	),
 	"dayNamesMin" =>  \json_encode(
 		[
@@ -147,7 +149,8 @@ $array = [
 			(string)$l->t('Th'),
 			(string)$l->t('Fr'),
 			(string)$l->t('Sa')
-		]
+		],
+		JSON_THROW_ON_ERROR
 	),
 	"monthNames" => \json_encode(
 		[
@@ -163,7 +166,8 @@ $array = [
 			(string)$l->t('October'),
 			(string)$l->t('November'),
 			(string)$l->t('December')
-		]
+		],
+		JSON_THROW_ON_ERROR
 	),
 	"monthNamesShort" => \json_encode(
 		[
@@ -179,9 +183,10 @@ $array = [
 			(string)$l->t('Oct.'),
 			(string)$l->t('Nov.'),
 			(string)$l->t('Dec.')
-		]
+		],
+		JSON_THROW_ON_ERROR
 	),
-	"firstDay" => \json_encode($l->l('firstday', null)) ,
+	"firstDay" => \json_encode($l->l('firstday', null), JSON_THROW_ON_ERROR) ,
 	"oc_config" => [
 			'session_lifetime'	=> \min(\OC::$server->getConfig()->getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
 			'session_keepalive'	=> \OC::$server->getConfig()->getSystemValue('session_keepalive', true),
@@ -237,7 +242,8 @@ $array = [
 		[
 			'name' => OC_Util::getTheme()->getName(),
 			'directory' => OC_Util::getTheme()->getDirectory()
-		]
+		],
+		JSON_THROW_ON_ERROR
 	)
 ];
 
@@ -250,7 +256,7 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 	$caps = \OC::$server->getCapabilitiesManager()->getCapabilities();
 	// remove status.php info as we already have the version above
 	unset($caps['core']['status']);
-	$array['oc_capabilities'] = \json_encode($caps);
+	$array['oc_capabilities'] = \json_encode($caps, JSON_THROW_ON_ERROR);
 
 	$user = \OC::$server->getUserSession()->getUser();
 	if ($user !== null) {
@@ -261,7 +267,7 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 			'displayName' => $user->getDisplayName(),
 			'email' => $user->getEMailAddress(),
 			'groups' => $groups,
-		]);
+		], JSON_THROW_ON_ERROR);
 	}
 }
 
@@ -269,8 +275,8 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 OC_Hook::emit('\OCP\Config', 'js', ['array' => &$array]);
 
 $array['oc_appconfig'] = \json_encode($array['oc_appconfig']);
-$array['oc_config'] = \json_encode($array['oc_config']);
-$array['oc_defaults'] = \json_encode($array['oc_defaults']);
+$array['oc_config'] = \json_encode($array['oc_config'], JSON_THROW_ON_ERROR);
+$array['oc_defaults'] = \json_encode($array['oc_defaults'], JSON_THROW_ON_ERROR);
 
 // Echo it
 foreach ($array as  $setting => $value) {

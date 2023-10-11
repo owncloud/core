@@ -34,7 +34,7 @@ class Storage extends Wrapper {
 	private $mountPoint;
 	// remember already deleted files to avoid infinite loops if the trash bin
 	// move files across storages
-	private $deletedFiles = [];
+	private array $deletedFiles = [];
 
 	/**
 	 * Disable trash logic
@@ -46,11 +46,9 @@ class Storage extends Wrapper {
 	 */
 	public static $disableTrash = false;
 
-	/** @var  IUserManager */
-	private $userManager;
+	private ?\OCP\IUserManager $userManager = null;
 
-	/** @var  TrashbinSkipChecker */
-	private $trashbinSkipChecker;
+	private ?\OCA\Files_Trashbin\TrashbinSkipChecker $trashbinSkipChecker = null;
 
 	public function __construct($parameters, IUserManager $userManager = null, TrashbinSkipChecker $trashbinSkipChecker = null) {
 		$this->mountPoint = $parameters['mountPoint'];
@@ -79,7 +77,7 @@ class Storage extends Wrapper {
 		$targetStorage = $mount2->getStorage();
 		$sourceInternalPath = $mount1->getInternalPath($absolutePath1);
 		// check whether this is a cross-storage move from a *local* shared storage
-		if ($sourceInternalPath !== '' && $sourceStorage !== $targetStorage && $sourceStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+		if ($sourceInternalPath !== '' && $sourceStorage !== $targetStorage && $sourceStorage->instanceOfStorage(\OCA\Files_Sharing\SharedStorage::class)) {
 			'@phan-var \OCA\Files_Sharing\SharedStorage $sourceStorage';
 			$ownerPath = $sourceStorage->getSourcePath($sourceInternalPath);
 			$owner = $sourceStorage->getOwner($sourceInternalPath);
@@ -240,15 +238,13 @@ class Storage extends Wrapper {
 	 * Setup the storage wrapper callback
 	 */
 	public static function setupStorage() {
-		\OC\Files\Filesystem::addStorageWrapper('oc_trashbin', function ($mountPoint, $storage) {
-			return new \OCA\Files_Trashbin\Storage(
-				['storage' => $storage, 'mountPoint' => $mountPoint],
-				\OC::$server->getUserManager(),
-				new TrashbinSkipChecker(
-					\OC::$server->getLogger(),
-					\OC::$server->getConfig()
-				)
-			);
-		}, 1);
+		\OC\Files\Filesystem::addStorageWrapper('oc_trashbin', fn ($mountPoint, $storage) => new \OCA\Files_Trashbin\Storage(
+			['storage' => $storage, 'mountPoint' => $mountPoint],
+			\OC::$server->getUserManager(),
+			new TrashbinSkipChecker(
+				\OC::$server->getLogger(),
+				\OC::$server->getConfig()
+			)
+		), 1);
 	}
 }

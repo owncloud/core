@@ -18,17 +18,16 @@ use GuzzleHttp\Client as GuzzleClient;
  */
 class ClientTest extends \Test\TestCase {
 	/** @var GuzzleClient */
-	private $guzzleClient;
-	/** @var Client */
-	private $client;
+	private \PHPUnit\Framework\MockObject\MockObject $guzzleClient;
+	private \OC\Http\Client\Client $client;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->config = $this->createMock('\OCP\IConfig');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
 		$this->guzzleClient = $this->createMock(GuzzleClient::class);
-		$certificateManager = $this->createMock('\OCP\ICertificateManager');
+		$certificateManager = $this->createMock('\\' . \OCP\ICertificateManager::class);
 		$this->client = new Client(
 			$this->config,
 			$certificateManager,

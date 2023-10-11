@@ -31,7 +31,7 @@ require_once(\str_replace('/dav/tests/unit/AppInfo/', '/dav/appinfo/', __DIR__) 
 
 class Version20210714123001Test extends TestCase {
 	/** @var ISchemaMigration */
-	private $migration;
+	private \OCA\DAV\Migrations\Version20210714123001 $migration;
 
 	protected function setUp(): void {
 		$this->migration = new Version20210714123001();

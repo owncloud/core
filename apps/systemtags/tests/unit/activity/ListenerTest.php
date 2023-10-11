@@ -51,37 +51,37 @@ class ActivityListenerTest extends \Test\TestCase {
 	/**
 	 * @var IGroupManager
 	 */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	/**
 	 * @var ISystemTagManager
 	 */
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
 	/**
 	 * @var Listener
 	 */
-	private $listener;
+	private \PHPUnit\Framework\MockObject\MockObject $listener;
 
 	/**
 	 * @var IUserMountCache
 	 */
-	private $userMountCache;
+	private \PHPUnit\Framework\MockObject\MockObject $userMountCache;
 
 	/**
 	 * @var IRootFolder
 	 */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 
 	/**
 	 * @var IUserSession
 	 */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	/**
 	 * @var IManager
 	 */
-	private $activityManager;
+	private \PHPUnit\Framework\MockObject\MockObject $activityManager;
 
 	protected function setUp(): void {
 		parent::setUp();

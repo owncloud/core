@@ -33,18 +33,17 @@ use OCP\IUserSession;
  * @package OCA\FederatedFileSharing\Tests
  */
 class GeneralPersonalPanelTest extends \Test\TestCase {
-	/** @var GeneralPersonalPanel */
-	private $panel;
+	private \OCA\FederatedFileSharing\Panels\GeneralPersonalPanel $panel;
 	/** @var IL10N */
-	private $l;
+	private \PHPUnit\Framework\MockObject\MockObject $l;
 	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var IUserSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var FederatedShareProvider */
-	private $shareProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $shareProvider;
 	/** @var IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	public function setUp(): void {
 		parent::setUp();

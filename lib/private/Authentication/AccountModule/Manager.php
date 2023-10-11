@@ -29,14 +29,11 @@ use OCP\ILogger;
 use OCP\IUser;
 
 class Manager {
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var IServiceLoader */
-	private $loader;
+	private \OCP\App\IServiceLoader $loader;
 
 	/**
 	 * @param IConfig $config
@@ -61,7 +58,7 @@ class Manager {
 
 		// load order from appconfig
 		$rawOrder = $this->config->getAppValue('core', 'account-module-order', '[]');
-		$order = \json_decode($rawOrder);
+		$order = \json_decode($rawOrder, null, 512, JSON_THROW_ON_ERROR);
 		if (!\is_array($order)) {
 			$order = [];
 		}

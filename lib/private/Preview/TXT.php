@@ -31,7 +31,7 @@ use OCP\Preview\IProvider2;
 use OC\Utf8Analyzer;
 
 class TXT implements IProvider2 {
-	private $utf8Analyzer;
+	private \OC\Utf8Analyzer $utf8Analyzer;
 
 	public function __construct() {
 		$this->utf8Analyzer = new Utf8Analyzer();

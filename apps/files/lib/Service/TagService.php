@@ -30,20 +30,11 @@ use OCP\Files\IRootFolder;
  * Service class to manage tags on files.
  */
 class TagService {
-	/**
-	 * @var \OCP\IUserSession
-	 */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
-	/**
-	 * @var \OCP\ITagManager
-	 */
-	private $tagManager;
+	private \OCP\ITagManager $tagManager;
 
-	/**
-	 * @var IRootFolder
-	 */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
 	public function __construct(
 		\OCP\IUserSession $userSession,

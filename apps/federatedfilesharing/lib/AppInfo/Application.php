@@ -54,103 +54,87 @@ class Application extends App {
 
 		$container->registerService(
 			'AddressHandler',
-			function ($c) use ($server) {
-				return new AddressHandler(
-					$server->getURLGenerator(),
-					$server->getL10N('federatedfilesharing')
-				);
-			}
+			fn ($c) => new AddressHandler(
+				$server->getURLGenerator(),
+				$server->getL10N('federatedfilesharing')
+			)
 		);
 
 		$container->registerService(
 			'DiscoveryManager',
-			function ($c) use ($server) {
-				return new DiscoveryManager(
-					$server->getMemCacheFactory(),
-					$server->getHTTPClientService()
-				);
-			}
+			fn ($c) => new DiscoveryManager(
+				$server->getMemCacheFactory(),
+				$server->getHTTPClientService()
+			)
 		);
 
 		$container->registerService(
 			'Notifications',
-			function ($c) use ($server) {
-				return new Notifications(
-					$c->query('AddressHandler'),
-					$server->getHTTPClientService(),
-					$c->query('DiscoveryManager'),
-					$c->query('NotificationManager'),
-					$server->getJobList(),
-					$server->getConfig()
-				);
-			}
+			fn ($c) => new Notifications(
+				$c->query('AddressHandler'),
+				$server->getHTTPClientService(),
+				$c->query('DiscoveryManager'),
+				$c->query('NotificationManager'),
+				$server->getJobList(),
+				$server->getConfig()
+			)
 		);
 
 		$container->registerService(
 			'FederatedShareManager',
-			function ($c) use ($server) {
-				return new FedShareManager(
-					$this->getFederatedShareProvider(),
-					$c->query('Notifications'),
-					$server->getUserManager(),
-					$server->getActivityManager(),
-					$server->getNotificationManager(),
-					$c->query('AddressHandler'),
-					$c->query('Permissions'),
-					$server->getEventDispatcher()
-				);
-			}
+			fn ($c) => new FedShareManager(
+				$this->getFederatedShareProvider(),
+				$c->query('Notifications'),
+				$server->getUserManager(),
+				$server->getActivityManager(),
+				$server->getNotificationManager(),
+				$c->query('AddressHandler'),
+				$c->query('Permissions'),
+				$server->getEventDispatcher()
+			)
 		);
 
 		$container->registerService(
 			'OcmMiddleware',
-			function ($c) use ($server) {
-				return new OcmMiddleware(
-					$this->getFederatedShareProvider(),
-					$server->getAppManager(),
-					$server->getUserManager(),
-					$c->query('AddressHandler'),
-					$server->getLogger()
-				);
-			}
+			fn ($c) => new OcmMiddleware(
+				$this->getFederatedShareProvider(),
+				$server->getAppManager(),
+				$server->getUserManager(),
+				$c->query('AddressHandler'),
+				$server->getLogger()
+			)
 		);
 
 		$container->registerService(
 			'RequestHandlerController',
-			function ($c) use ($server) {
-				return new RequestHandlerController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('OcmMiddleware'),
-					$server->getUserManager(),
-					$c->query('AddressHandler'),
-					$c->query('FederatedShareManager')
-				);
-			}
+			fn ($c) => new RequestHandlerController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('OcmMiddleware'),
+				$server->getUserManager(),
+				$c->query('AddressHandler'),
+				$c->query('FederatedShareManager')
+			)
 		);
 
 		$container->registerService(
 			'OcmController',
-			function ($c) use ($server) {
-				return new OcmController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('OcmMiddleware'),
-					$server->getURLGenerator(),
-					$server->getUserManager(),
-					$c->query('AddressHandler'),
-					$c->query('FederatedShareManager'),
-					$server->getLogger(),
-					$server->getConfig()
-				);
-			}
+			fn ($c) => new OcmController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('OcmMiddleware'),
+				$server->getURLGenerator(),
+				$server->getUserManager(),
+				$c->query('AddressHandler'),
+				$c->query('FederatedShareManager'),
+				$server->getLogger(),
+				$server->getConfig()
+			)
 		);
 
 		$container->registerService(
 			'NotificationManager',
-			function ($c) {
-				return new NotificationManager();
-			}
+			fn ($c) => new NotificationManager()
 		);
 
 		$container->registerService(

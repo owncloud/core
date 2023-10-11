@@ -36,7 +36,7 @@ class Enforce2fa implements ISettings {
 	}
 
 	public function getPanel() {
-		$enforce2faExcludedGroups = \json_decode($this->config->getAppValue('core', 'enforce_2fa_excluded_groups', '[]'), true);
+		$enforce2faExcludedGroups = \json_decode($this->config->getAppValue('core', 'enforce_2fa_excluded_groups', '[]'), true, 512, JSON_THROW_ON_ERROR);
 		$tmpl = new Template('settings', 'panels/admin/enforce2fa');
 		$tmpl->assign('enforce2fa', $this->config->getAppValue('core', 'enforce_2fa', 'no') === 'yes');
 		$tmpl->assign('enforce2faExcludedGroups', \implode('|', $enforce2faExcludedGroups));

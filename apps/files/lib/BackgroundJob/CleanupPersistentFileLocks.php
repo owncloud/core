@@ -34,8 +34,7 @@ class CleanupPersistentFileLocks extends TimedJob {
 	 * @var int $defaultIntervalMin
 	 **/
 	protected $defaultIntervalMin = 30;
-	/** @var LockMapper */
-	private $lockMapper;
+	private \OC\Lock\Persistent\LockMapper $lockMapper;
 
 	/**
 	 * CleanupPersistentFileLocks constructor.

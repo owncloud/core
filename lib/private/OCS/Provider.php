@@ -23,8 +23,7 @@
 namespace OC\OCS;
 
 class Provider extends \OCP\AppFramework\Controller {
-	/** @var \OCP\App\IAppManager */
-	private $appManager;
+	private \OCP\App\IAppManager $appManager;
 
 	/**
 	 * @param string $appName

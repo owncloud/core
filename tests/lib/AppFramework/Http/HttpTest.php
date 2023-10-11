@@ -26,12 +26,9 @@ namespace Test\AppFramework\Http;
 use OC\AppFramework\Http;
 
 class HttpTest extends \Test\TestCase {
-	private $server;
+	private array $server;
 
-	/**
-	 * @var Http
-	 */
-	private $http;
+	private \OC\AppFramework\Http $http;
 
 	protected function setUp(): void {
 		parent::setUp();

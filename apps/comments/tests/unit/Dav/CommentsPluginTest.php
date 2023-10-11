@@ -30,33 +30,32 @@ use OCP\Comments\IComment;
 
 class CommentsPluginTest extends \Test\TestCase {
 	/** @var \Sabre\DAV\Server */
-	private $server;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
 
 	/** @var \Sabre\DAV\Tree */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 
 	/** @var \OCP\Comments\ICommentsManager */
-	private $commentsManager;
+	private \PHPUnit\Framework\MockObject\MockObject $commentsManager;
 
 	/** @var  \OCP\IUserSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
-	/** @var CommentsPluginImplementation */
-	private $plugin;
+	private \OCA\Comments\Dav\CommentsPlugin $plugin;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->tree = $this->getMockBuilder('\Sabre\DAV\Tree')
+		$this->tree = $this->getMockBuilder('\\' . \Sabre\DAV\Tree::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->server = $this->getMockBuilder('\Sabre\DAV\Server')
+		$this->server = $this->getMockBuilder('\\' . \Sabre\DAV\Server::class)
 			->setConstructorArgs([$this->tree])
 			->setMethods(['getRequestUri'])
 			->getMock();
 
-		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
-		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->commentsManager = $this->createMock('\\' . \OCP\Comments\ICommentsManager::class);
+		$this->userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 
 		$this->plugin = new CommentsPluginImplementation($this->commentsManager, $this->userSession);
 	}
@@ -80,12 +79,12 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$requestData = \json_encode($commentData);
 
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('alice'));
 
-		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
+		$node = $this->getMockBuilder('\\' . \OCA\Comments\Dav\EntityCollection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -117,11 +116,11 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('/' . $path)
 			->will($this->returnValue($node));
 
-		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+		$request = $this->getMockBuilder(\Sabre\HTTP\RequestInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+		$response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,11 +174,11 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$path = 'comments/files/666';
 
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->expects($this->never())
 			->method('getUID');
 
-		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
+		$node = $this->getMockBuilder('\\' . \OCA\Comments\Dav\EntityCollection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->never())
@@ -202,11 +201,11 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('/' . $path)
 			->will($this->throwException(new \Sabre\DAV\Exception\NotFound()));
 
-		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+		$request = $this->getMockBuilder(\Sabre\HTTP\RequestInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+		$response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -258,11 +257,11 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$requestData = \json_encode($commentData);
 
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->expects($this->never())
 			->method('getUID');
 
-		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
+		$node = $this->getMockBuilder('\\' . \OCA\Comments\Dav\EntityCollection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -287,11 +286,11 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('/' . $path)
 			->will($this->returnValue($node));
 
-		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+		$request = $this->getMockBuilder(\Sabre\HTTP\RequestInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+		$response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -345,11 +344,11 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$requestData = \json_encode($commentData);
 
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->expects($this->never())
 			->method('getUID');
 
-		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
+		$node = $this->getMockBuilder('\\' . \OCA\Comments\Dav\EntityCollection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -374,11 +373,11 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('/' . $path)
 			->will($this->returnValue($node));
 
-		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+		$request = $this->getMockBuilder(\Sabre\HTTP\RequestInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+		$response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -434,12 +433,12 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$requestData = \json_encode($commentData);
 
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('alice'));
 
-		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
+		$node = $this->getMockBuilder('\\' . \OCA\Comments\Dav\EntityCollection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -467,11 +466,11 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('/' . $path)
 			->will($this->returnValue($node));
 
-		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+		$request = $this->getMockBuilder(\Sabre\HTTP\RequestInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+		$response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -525,14 +524,14 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$path = 'comments/files/42';
 
-		$requestData = \json_encode($commentData);
+		$requestData = \json_encode($commentData, JSON_THROW_ON_ERROR);
 
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('alice'));
 
-		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
+		$node = $this->getMockBuilder('\\' . \OCA\Comments\Dav\EntityCollection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -563,11 +562,11 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('/' . $path)
 			->will($this->returnValue($node));
 
-		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+		$request = $this->getMockBuilder(\Sabre\HTTP\RequestInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+		$response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -605,7 +604,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/' . $path)
-			->will($this->returnValue($this->createMock('\Sabre\DAV\INode')));
+			->will($this->returnValue($this->createMock('\\' . \Sabre\DAV\INode::class)));
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
@@ -625,7 +624,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/' . $path)
-			->will($this->returnValue($this->createMock('\Sabre\DAV\INode')));
+			->will($this->returnValue($this->createMock('\\' . \Sabre\DAV\INode::class)));
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
@@ -653,7 +652,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			]
 		];
 
-		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
+		$node = $this->getMockBuilder('\\' . \OCA\Comments\Dav\EntityCollection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -661,7 +660,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with(5, 10, null)
 			->will($this->returnValue([]));
 
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+		$response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -708,7 +707,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			]
 		];
 
-		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
+		$node = $this->getMockBuilder('\\' . \OCA\Comments\Dav\EntityCollection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -716,7 +715,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with(5, 10, new \DateTime($parameters[2]['value']))
 			->will($this->returnValue([]));
 
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+		$response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 

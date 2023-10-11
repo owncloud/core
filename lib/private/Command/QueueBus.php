@@ -28,7 +28,7 @@ class QueueBus implements IBus {
 	/**
 	 * @var (ICommand|callable)[]
 	 */
-	private $queue = [];
+	private array $queue = [];
 
 	/**
 	 * Schedule a command to be fired

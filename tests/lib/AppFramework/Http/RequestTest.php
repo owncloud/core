@@ -39,11 +39,11 @@ class RequestTest extends TestCase {
 		if (\in_array('fakeinput', \stream_get_wrappers())) {
 			\stream_wrapper_unregister('fakeinput');
 		}
-		\stream_wrapper_register('fakeinput', 'Test\AppFramework\Http\RequestStream');
+		\stream_wrapper_register('fakeinput', \Test\AppFramework\Http\RequestStream::class);
 
-		$this->secureRandom = $this->getMockBuilder('\OCP\Security\ISecureRandom')->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
-		$this->csrfTokenManager = $this->getMockBuilder('\OC\Security\CSRF\CsrfTokenManager')
+		$this->secureRandom = $this->getMockBuilder('\\' . \OCP\Security\ISecureRandom::class)->getMock();
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)->getMock();
+		$this->csrfTokenManager = $this->getMockBuilder('\\' . \OC\Security\CSRF\CsrfTokenManager::class)
 			->disableOriginalConstructor()->getMock();
 	}
 
@@ -1449,7 +1449,7 @@ class RequestTest extends TestCase {
 			);
 
 		/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject $request */
-		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')
+		$request = $this->getMockBuilder('\\' . \OC\AppFramework\Http\Request::class)
 			->setMethods(['getScriptName'])
 			->setConstructorArgs([
 				[
@@ -1474,7 +1474,7 @@ class RequestTest extends TestCase {
 
 	public function testPassesCSRFCheckWithGet() {
 		/** @var Request $request */
-		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')
+		$request = $this->getMockBuilder('\\' . \OC\AppFramework\Http\Request::class)
 			->setMethods(['getScriptName'])
 			->setConstructorArgs([
 				[
@@ -1500,7 +1500,7 @@ class RequestTest extends TestCase {
 
 	public function testPassesCSRFCheckWithPost() {
 		/** @var Request $request */
-		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')
+		$request = $this->getMockBuilder('\\' . \OC\AppFramework\Http\Request::class)
 			->setMethods(['getScriptName'])
 			->setConstructorArgs([
 				[
@@ -1526,7 +1526,7 @@ class RequestTest extends TestCase {
 
 	public function testPassesCSRFCheckWithHeader() {
 		/** @var Request $request */
-		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')
+		$request = $this->getMockBuilder('\\' . \OC\AppFramework\Http\Request::class)
 			->setMethods(['getScriptName'])
 			->setConstructorArgs([
 				[
@@ -1568,7 +1568,7 @@ class RequestTest extends TestCase {
 	 */
 	public function testPassesCSRFCheckWithInvalidToken($invalidToken) {
 		/** @var Request $request */
-		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')
+		$request = $this->getMockBuilder('\\' . \OC\AppFramework\Http\Request::class)
 			->setMethods(['getScriptName'])
 			->setConstructorArgs([
 				[
@@ -1595,7 +1595,7 @@ class RequestTest extends TestCase {
 
 	public function testPassesCSRFCheckWithoutTokenFail() {
 		/** @var Request $request */
-		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')
+		$request = $this->getMockBuilder('\\' . \OC\AppFramework\Http\Request::class)
 			->setMethods(['getScriptName'])
 			->setConstructorArgs([
 				[],

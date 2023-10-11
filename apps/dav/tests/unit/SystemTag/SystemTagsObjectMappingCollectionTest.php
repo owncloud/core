@@ -30,25 +30,25 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager
 	 */
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
 	/**
 	 * @var \OCP\SystemTag\ISystemTagObjectMapper
 	 */
-	private $tagMapper;
+	private \PHPUnit\Framework\MockObject\MockObject $tagMapper;
 
 	/**
 	 * @var \OCP\IUser
 	 */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');
-		$this->tagMapper = $this->createMock('\OCP\SystemTag\ISystemTagObjectMapper');
+		$this->tagManager = $this->createMock('\\' . \OCP\SystemTag\ISystemTagManager::class);
+		$this->tagMapper = $this->createMock('\\' . \OCP\SystemTag\ISystemTagObjectMapper::class);
 
-		$this->user = $this->createMock('\OCP\IUser');
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
 	}
 
 	public function getNode() {
@@ -88,9 +88,9 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 	public function permissionsProvider() {
 		return [
 			// invisible, tag does not exist for user
-			[false, true, '\Sabre\DAV\Exception\PreconditionFailed'],
+			[false, true, '\\' . \Sabre\DAV\Exception\PreconditionFailed::class],
 			// visible but static, cannot assign tag
-			[true, false, '\Sabre\DAV\Exception\Forbidden'],
+			[true, false, '\\' . \Sabre\DAV\Exception\Forbidden::class],
 		];
 	}
 
@@ -186,7 +186,7 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 
 		$childNode = $this->getNode()->getChild('555');
 
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagMappingNode', $childNode);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagMappingNode::class, $childNode);
 		$this->assertEquals('555', $childNode->getName());
 	}
 
@@ -270,16 +270,14 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 
 		$this->tagManager->expects($this->exactly(3))
 			->method('canUserSeeTag')
-			->will($this->returnCallback(function ($tag) {
-				return $tag->isUserVisible();
-			}));
+			->will($this->returnCallback(fn ($tag) => $tag->isUserVisible()));
 
 		$children = $this->getNode()->getChildren();
 
 		$this->assertCount(2, $children);
 
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagMappingNode', $children[0]);
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagMappingNode', $children[1]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagMappingNode::class, $children[0]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagMappingNode::class, $children[1]);
 
 		$this->assertEquals(111, $children[0]->getObjectId());
 		$this->assertEquals('files', $children[0]->getObjectType());

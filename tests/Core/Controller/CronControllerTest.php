@@ -36,16 +36,15 @@ use Test\TestCase;
  * @package OC\Core\Controller
  */
 class CronControllerTest extends TestCase {
-	/** @var CronController */
-	private $controller;
+	private \OC\Core\Controller\CronController $controller;
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var IJobList | \PHPUnit_Framework_MockObject_MockObject */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	protected function setUp(): void {
 		$this->request = $this->createMock(IRequest::class);

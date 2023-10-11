@@ -33,8 +33,7 @@ use OCP\Files\IRootFolder;
  * @package OC\Files\Node
  */
 class LazyRoot implements IRootFolder {
-	/** @var \Closure */
-	private $rootFolderClosure;
+	private \Closure $rootFolderClosure;
 
 	/** @var IRootFolder */
 	private $rootFolder;

@@ -52,13 +52,11 @@ class RequestSharedSecret extends Job {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	/** @var DbHandler */
-	private $dbHandler;
+	private \OCA\Federation\DbHandler $dbHandler;
 
-	/** @var TrustedServers */
-	private $trustedServers;
+	private ?\OCA\Federation\TrustedServers $trustedServers = null;
 
-	private $endPoint = '/ocs/v2.php/apps/federation/api/v1/request-shared-secret';
+	private string $endPoint = '/ocs/v2.php/apps/federation/api/v1/request-shared-secret';
 
 	/** @var ILogger */
 	private $logger;
@@ -82,10 +80,10 @@ class RequestSharedSecret extends Job {
 		TrustedServers $trustedServers = null,
 		DbHandler $dbHandler = null
 	) {
-		$this->httpClient = $httpClient ? $httpClient : \OC::$server->getHTTPClientService()->newClient();
-		$this->jobList = $jobList ? $jobList : \OC::$server->getJobList();
-		$this->urlGenerator = $urlGenerator ? $urlGenerator : \OC::$server->getURLGenerator();
-		$this->dbHandler = $dbHandler ? $dbHandler : new DbHandler(\OC::$server->getDatabaseConnection(), \OC::$server->getL10N('federation'));
+		$this->httpClient = $httpClient ?: \OC::$server->getHTTPClientService()->newClient();
+		$this->jobList = $jobList ?: \OC::$server->getJobList();
+		$this->urlGenerator = $urlGenerator ?: \OC::$server->getURLGenerator();
+		$this->dbHandler = $dbHandler ?: new DbHandler(\OC::$server->getDatabaseConnection(), \OC::$server->getL10N('federation'));
 		$this->logger = \OC::$server->getLogger();
 		if ($trustedServers) {
 			$this->trustedServers = $trustedServers;

@@ -25,10 +25,9 @@ use OCP\IL10N;
 
 class SectionTest extends \Test\TestCase {
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject $l */
-	private $l;
+	private \PHPUnit\Framework\MockObject\MockObject $l;
 
-	/** @var Section $section */
-	private $section;
+	private \OCA\Files_Sharing\Panels\Personal\Section $section;
 
 	protected function setUp(): void {
 		$this->l = $this->getMockBuilder(IL10N::class)

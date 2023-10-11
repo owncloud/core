@@ -88,11 +88,11 @@ abstract class StoragesServiceTest extends TestCase {
 			\OC::$SERVERROOT . '/data/'
 		);
 
-		$this->mountCache = $this->createMock('OCP\Files\Config\IUserMountCache');
+		$this->mountCache = $this->createMock(\OCP\Files\Config\IUserMountCache::class);
 
 		// prepare IStoragesBackendService mock
 		$this->backendService =
-			$this->getMockBuilder('\OCP\Files\External\IStoragesBackendService')
+			$this->getMockBuilder('\\' . \OCP\Files\External\IStoragesBackendService::class)
 				->disableOriginalConstructor()
 				->getMock();
 
@@ -102,41 +102,26 @@ abstract class StoragesServiceTest extends TestCase {
 			'identifier:\OC\Files\External\Auth\NullMechanism' => $this->getAuthMechMock(),
 		];
 		$this->backendService->method('getAuthMechanism')
-			->will($this->returnCallback(function ($class) use ($authMechanisms) {
-				if (isset($authMechanisms[$class])) {
-					return $authMechanisms[$class];
-				}
-				return null;
-			}));
+			->will($this->returnCallback(fn ($class) => $authMechanisms[$class] ?? null));
 		$this->backendService->method('getAuthMechanismsByScheme')
-			->will($this->returnCallback(function ($schemes) use ($authMechanisms) {
-				return \array_filter($authMechanisms, function ($authMech) use ($schemes) {
-					return \in_array($authMech->getScheme(), $schemes, true);
-				});
-			}));
+			->will($this->returnCallback(fn ($schemes) => \array_filter($authMechanisms, fn ($authMech) => \in_array($authMech->getScheme(), $schemes, true))));
 		$this->backendService->method('getAuthMechanisms')
 			->will($this->returnValue($authMechanisms));
 
-		$sftpBackend = $this->getBackendMock('\OCA\Files_External\Lib\Backend\SFTP', '\OCA\Files_External\Lib\Storage\SFTP');
-		$dummyBackend = $this->getBackendMock('\Test\Files\External\Backend\DummyBackend', '\Test\Files\External\Backend\DummyStorage');
+		$sftpBackend = $this->getBackendMock('\\' . \OCA\Files_External\Lib\Backend\SFTP::class, '\\' . \OCA\Files_External\Lib\Storage\SFTP::class);
+		$dummyBackend = $this->getBackendMock('\\' . \Test\Files\External\Backend\DummyBackend::class, '\\' . \Test\Files\External\Backend\DummyStorage::class);
 		$this->backends = [
-			'identifier:\OCA\Files_External\Lib\Backend\SMB' => $this->getBackendMock('\OCA\Files_External\Lib\Backend\SMB', '\OCA\Files_External\Lib\Storage\SMB'),
+			'identifier:\OCA\Files_External\Lib\Backend\SMB' => $this->getBackendMock('\\' . \OCA\Files_External\Lib\Backend\SMB::class, '\\' . \OCA\Files_External\Lib\Storage\SMB::class),
 			'identifier:\OCA\Files_External\Lib\Backend\SFTP' => $sftpBackend,
 			'identifier:\Test\Files\External\Backend\DummyBackend' => $dummyBackend,
 			'identifier:sftp_alias' => $sftpBackend,
 		];
 		$this->backendService->method('getBackend')
-			->will($this->returnCallback(function ($backendClass) {
-				if (isset($this->backends[$backendClass])) {
-					return $this->backends[$backendClass];
-				}
-				return null;
-			}));
+			->will($this->returnCallback(fn ($backendClass) => $this->backends[$backendClass] ?? null));
 		$this->backendService->method('getBackends')
-			->will($this->returnCallback(function () {
-				// in case they changed
-				return $this->backends;
-			}));
+			->will($this->returnCallback(fn () =>
+	   // in case they changed
+	   $this->backends));
 
 		\OCP\Util::connectHook(
 			Filesystem::CLASSNAME,
@@ -151,19 +136,17 @@ abstract class StoragesServiceTest extends TestCase {
 			'deleteHookCallback'
 		);
 
-		$containerMock = $this->createMock('\OCP\AppFramework\IAppContainer');
+		$containerMock = $this->createMock('\\' . \OCP\AppFramework\IAppContainer::class);
 		$containerMock->method('query')
 			->will($this->returnCallback(function ($name) {
-				if ($name === 'OCP\Files\External\IStoragesBackendService') {
+				if ($name === \OCP\Files\External\IStoragesBackendService::class) {
 					return $this->backendService;
 				}
 			}));
 
 		$this->crypto = $this->createMock(ICrypto::class);
 		$this->crypto->method('encrypt')
-			->will($this->returnCallback(function ($value) {
-				return "-$value-";
-			}));
+			->will($this->returnCallback(fn ($value) => "-$value-"));
 		$this->crypto->method('decrypt')
 			->will($this->returnCallback(function ($value) {
 				$expectedDecrypt = \trim($value, '-');
@@ -183,8 +166,8 @@ abstract class StoragesServiceTest extends TestCase {
 		parent::tearDown();
 	}
 
-	protected function getBackendMock($class = '\OCA\Files_External\Lib\Backend\SMB', $storageClass = '\OCA\Files_External\Lib\Storage\SMB') {
-		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+	protected function getBackendMock($class = '\\' . \OCA\Files_External\Lib\Backend\SMB::class, $storageClass = '\\' . \OCA\Files_External\Lib\Storage\SMB::class) {
+		$backend = $this->getMockBuilder('\\' . \OCP\Files\External\Backend\Backend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$backend->method('getStorageClass')
@@ -196,8 +179,8 @@ abstract class StoragesServiceTest extends TestCase {
 		return $backend;
 	}
 
-	protected function getAuthMechMock($scheme = 'null', $class = '\OC\Files\External\Auth\NullMechanism') {
-		$authMech = $this->getMockBuilder('\OCP\Files\External\Auth\AuthMechanism')
+	protected function getAuthMechMock($scheme = 'null', $class = '\\' . \OC\Files\External\Auth\NullMechanism::class) {
+		$authMech = $this->getMockBuilder('\\' . \OCP\Files\External\Auth\AuthMechanism::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$authMech->method('getScheme')

@@ -62,11 +62,11 @@ class Storage {
 	public const DELETE_TRIGGER_QUOTA_EXCEEDED = 2;
 
 	// files for which we can remove the versions after the delete operation was successful
-	private static $deletedFiles = [];
+	private static array $deletedFiles = [];
 
-	private static $sourcePathAndUser = [];
+	private static array $sourcePathAndUser = [];
 
-	private static $max_versions_per_interval = [
+	private static array $max_versions_per_interval = [
 		//first 10sec, one version every 2sec
 		1 => ['intervalEndsAfter' => 10,      'step' => 2],
 		//next minute, one version every 10sec
@@ -76,16 +76,14 @@ class Storage {
 		//next 24h, one version every hour
 		4 => ['intervalEndsAfter' => 86400,   'step' => 3600],
 		//next 30days, one version per day
-		5 => ['intervalEndsAfter' => 2592000, 'step' => 86400],
+		5 => ['intervalEndsAfter' => 2_592_000, 'step' => 86400],
 		//until the end one version per week
 		6 => ['intervalEndsAfter' => -1,      'step' => 604800],
 	];
 
-	/** @var \OCA\Files_Versions\AppInfo\Application */
-	private static $application;
+	private static ?\OCA\Files_Versions\AppInfo\Application $application = null;
 
-	/** @var MetaStorage|null */
-	private static $metaData = null;
+	private static ?\OCA\Files_Versions\MetaStorage $metaData = null;
 
 	/**
 	 * Enables the "versioning-metadata"  feature by receiving
@@ -143,7 +141,7 @@ class Storage {
 	 * @param string $source source path
 	 */
 	public static function setSourcePathAndUser($source) {
-		list($uid, $path) = self::getUidAndFilename($source);
+		[$uid, $path] = self::getUidAndFilename($source);
 		self::$sourcePathAndUser[$source] = ['uid' => $uid, 'path' => $path];
 	}
 
@@ -186,12 +184,12 @@ class Storage {
 				return false;
 			}
 
-			list($uid, $filename) = self::getUidAndFilename($filename);
+			[$uid, $filename] = self::getUidAndFilename($filename);
 			// $filename is expected to start with "/" and be a
 			// full path such as "/folder1/folder2/filename"
 			$fullFileName = "/$uid/files$filename";
 			/** @var \OCP\Files\Storage\IStorage $storage */
-			list($storage, $internalPath) = Filesystem::resolvePath($fullFileName);
+			[$storage, $internalPath] = Filesystem::resolvePath($fullFileName);
 			if ($storage->instanceOfStorage(IVersionedStorage::class)) {
 				/** @var IVersionedStorage $storage */
 				if ($storage->saveVersion($internalPath)) {
@@ -250,7 +248,7 @@ class Storage {
 				return false;
 			}
 
-			list($uid, $currentFileName) = self::getUidAndFilename($filename);
+			[$uid, $currentFileName] = self::getUidAndFilename($filename);
 			$versionMetadata = self::$metaData->getCurrentMetadata($currentFileName, $uid);
 			if (!$versionMetadata) {
 				// make sure metadata for current exists
@@ -264,7 +262,7 @@ class Storage {
 	 * @param string $path
 	 */
 	public static function markDeletedFile($path) {
-		list($uid, $filename) = self::getUidAndFilename($path);
+		[$uid, $filename] = self::getUidAndFilename($path);
 		self::$deletedFiles[$path] = [
 			'uid' => $uid,
 			'filename' => $filename];
@@ -379,7 +377,7 @@ class Storage {
 			 * @var \OC\Files\Storage\Storage $storage
 			 * @var string $internalPath
 			 */
-			list($storage, $internalPath) = $view->resolvePath($path);
+			[$storage, $internalPath] = $view->resolvePath($path);
 			$cache = $storage->getCache($internalPath);
 			$cache->remove($internalPath);
 
@@ -434,7 +432,7 @@ class Storage {
 	 * @param string $operation can be 'copy' or 'rename'
 	 */
 	public static function renameOrCopy($sourcePath, $targetPath, $operation) {
-		list($sourceOwner, $sourcePath) = self::getSourcePathAndUser($sourcePath);
+		[$sourceOwner, $sourcePath] = self::getSourcePathAndUser($sourcePath);
 
 		// it was a upload of a existing file if no old path exists
 		// in this case the pre-hook already called the store method and we can
@@ -443,7 +441,7 @@ class Storage {
 			return true;
 		}
 
-		list($targetOwner, $targetPath) = self::getUidAndFilename($targetPath);
+		[$targetOwner, $targetPath] = self::getUidAndFilename($targetPath);
 
 		$sourcePath = \ltrim($sourcePath, '/');
 		$targetPath = \ltrim($targetPath, '/');
@@ -579,17 +577,17 @@ class Storage {
 	 */
 	private static function copyFileContents($view, $path1, $path2) {
 		/** @var \OC\Files\Storage\Storage $storage1 */
-		list($storage1, $internalPath1) = $view->resolvePath($path1);
+		[$storage1, $internalPath1] = $view->resolvePath($path1);
 		/** @var \OC\Files\Storage\Storage $storage2 */
-		list($storage2, $internalPath2) = $view->resolvePath($path2);
+		[$storage2, $internalPath2] = $view->resolvePath($path2);
 
 		$view->lockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
 		$view->lockFile($path2, ILockingProvider::LOCK_EXCLUSIVE);
 
-		if ($storage1->instanceOfStorage('\OC\Files\ObjectStore\ObjectStoreStorage') || $storage2->instanceOfStorage('\OC\Files\ObjectStore\ObjectStoreStorage')) {
+		if ($storage1->instanceOfStorage('\\' . \OC\Files\ObjectStore\ObjectStoreStorage::class) || $storage2->instanceOfStorage('\\' . \OC\Files\ObjectStore\ObjectStoreStorage::class)) {
 			$source = $storage1->fopen($internalPath1, 'r');
 			$target = $storage2->fopen($internalPath2, 'w');
-			list(, $result) = \OC_Helper::streamCopy($source, $target);
+			[, $result] = \OC_Helper::streamCopy($source, $target);
 			\fclose($source);
 			\fclose($target);
 		} else {
@@ -636,7 +634,7 @@ class Storage {
 				return false;
 			}
 
-			list($uid, $currentFileName) = self::getUidAndFilename($filename);
+			[$uid, $currentFileName] = self::getUidAndFilename($filename);
 
 			// overwrite current file metadata with minor=false to create new major version
 			self::$metaData->createForCurrent($currentFileName, $uid, false);
@@ -786,12 +784,12 @@ class Storage {
 			return \round($diff / 3600) . " hours ago";
 		} elseif ($diff < 604800) { //first week
 			return \round($diff / 86400) . " days ago";
-		} elseif ($diff < 2419200) { //first month
+		} elseif ($diff < 2_419_200) { //first month
 			return \round($diff / 604800) . " weeks ago";
-		} elseif ($diff < 29030400) { // first year
-			return \round($diff / 2419200) . " months ago";
+		} elseif ($diff < 29_030_400) { // first year
+			return \round($diff / 2_419_200) . " months ago";
 		} else {
-			return \round($diff / 29030400) . " years ago";
+			return \round($diff / 29_030_400) . " years ago";
 		}
 	}
 
@@ -806,7 +804,7 @@ class Storage {
 		$expiration = self::getExpiration();
 
 		if ($expiration->shouldAutoExpire() && \count($versions) > 0) {
-			list($toDelete, $size) = self::getAutoExpireList($time, $versions);
+			[$toDelete, $size] = self::getAutoExpireList($time, $versions);
 		} else {
 			$size = 0;
 			$toDelete = [];  // versions we want to delete
@@ -913,7 +911,7 @@ class Storage {
 
 			if ($user === null) {
 				$msg = "Backends provided no user object for $uid";
-				\OC::$server->getLogger()->error($msg, ['app' => __CLASS__]);
+				\OC::$server->getLogger()->error($msg, ['app' => self::class]);
 				throw new \OC\User\NoUserException($msg);
 			}
 
@@ -963,7 +961,7 @@ class Storage {
 			$allVersions = Storage::getVersions($uid, $filename);
 
 			$time = \time();
-			list($toDelete, $sizeOfDeletedVersions) = self::getExpireList($time, $allVersions, $availableSpace <= 0);
+			[$toDelete, $sizeOfDeletedVersions] = self::getExpireList($time, $allVersions, $availableSpace <= 0);
 
 			$availableSpace = $availableSpace + $sizeOfDeletedVersions;
 			$versionsSize = $versionsSize - $sizeOfDeletedVersions;
@@ -975,7 +973,7 @@ class Storage {
 					$allVersions = $result['all'];
 
 					foreach ($result['by_file'] as $versions) {
-						list($toDeleteNew, $size) = self::getExpireList($time, $versions, $availableSpace <= 0);
+						[$toDeleteNew, $size] = self::getExpireList($time, $versions, $availableSpace <= 0);
 						$toDelete = \array_merge($toDelete, $toDeleteNew);
 						$sizeOfDeletedVersions += $size;
 					}

@@ -36,11 +36,9 @@ use Sabre\DAV\Exception\NotFound;
  * Sabre plugin for restricting file share receiver download:
  */
 class ViewOnlyPlugin extends ServerPlugin {
-	/** @var Server $server */
-	private $server;
+	private ?\Sabre\DAV\Server $server = null;
 
-	/** @var ILogger $logger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * @param ILogger $logger
@@ -94,7 +92,7 @@ class ViewOnlyPlugin extends ServerPlugin {
 
 			$storage = $node->getStorage();
 			// using string as we have no guarantee that "files_sharing" app is loaded
-			if (!$storage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+			if (!$storage->instanceOfStorage(\OCA\Files_Sharing\SharedStorage::class)) {
 				return true;
 			}
 			// Extract extra permissions

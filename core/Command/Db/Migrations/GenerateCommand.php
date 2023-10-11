@@ -31,7 +31,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateCommand extends Command {
-	private static $_templateSimple =
+	private static string $_templateSimple =
 		'<?php
 namespace <namespace>;
 
@@ -52,7 +52,7 @@ class Version<version> implements ISimpleMigration {
 }
 ';
 
-	private static $_templateSchema =
+	private static string $_templateSchema =
 		'<?php
 namespace <namespace>;
 
@@ -70,7 +70,7 @@ class Version<version> implements ISchemaMigration {
 }
 ';
 
-	private static $_templateSql =
+	private static string $_templateSql =
 		'<?php
 namespace <namespace>;
 
@@ -88,8 +88,7 @@ class Version<version> implements ISqlMigration {
 }
 ';
 
-	/** @var IDBConnection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	/**
 	 * @param IDBConnection $connection

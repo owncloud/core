@@ -42,45 +42,43 @@ use Test\TestCase;
  * @package OCA\Files\Controller
  */
 class ApiControllerTest extends TestCase {
-	/** @var string */
-	private $appName = 'files';
+	private string $appName = 'files';
 	/** @var \OCP\IUser */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 	/** @var IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var TagService */
-	private $tagService;
+	private \PHPUnit\Framework\MockObject\MockObject $tagService;
 	/** @var IPreview */
-	private $preview;
-	/** @var ApiController */
-	private $apiController;
+	private \PHPUnit\Framework\MockObject\MockObject $preview;
+	private \OCA\Files\Controller\ApiController $apiController;
 	/** @var \OCP\Share\IManager */
-	private $shareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
 	/** @var \OCP\IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
-		$this->request = $this->getMockBuilder('\OCP\IRequest')
+		$this->request = $this->getMockBuilder('\\' . \OCP\IRequest::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->user = $this->createMock('\OCP\IUser');
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
 		$this->user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user1'));
-		$userSession = $this->createMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
-		$this->tagService = $this->getMockBuilder('\OCA\Files\Service\TagService')
+		$this->tagService = $this->getMockBuilder('\\' . \OCA\Files\Service\TagService::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->shareManager = $this->getMockBuilder('\OCP\Share\IManager')
+		$this->shareManager = $this->getMockBuilder('\\' . \OCP\Share\IManager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->preview = $this->getMockBuilder('\OCP\IPreview')
+		$this->preview = $this->getMockBuilder('\\' . \OCP\IPreview::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->createMock('\OCP\IConfig');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
 
 		$this->apiController = new ApiController(
 			$this->appName,

@@ -25,9 +25,9 @@
 namespace OC\Files\Stream;
 
 class Dir {
-	private static $dirs = [];
-	private $name;
-	private $index;
+	private static array $dirs = [];
+	private ?string $name = null;
+	private ?int $index = null;
 
 	public function dir_opendir($path, $options) {
 		$this->name = \substr($path, \strlen('fakedir://'));

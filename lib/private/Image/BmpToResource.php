@@ -34,8 +34,7 @@ class BmpToResource {
 	public const COMPRESSION_BI_RGB = 0;
 	public const COMPRESSION_BI_BITFIELDS = 3;
 
-	/** @var \SplFileObject $file */
-	private $file;
+	private ?\SplFileObject $file = null;
 
 	/** @var array $header */
 	private $header = [];
@@ -49,8 +48,7 @@ class BmpToResource {
 	/** @var resource $resource */
 	private $resource;
 
-	/** @var array $bytesPerDepth */
-	private $bytesPerDepth = [
+	private array $bytesPerDepth = [
 		1 => 1,
 		4 => 1,
 		8 => 1,
@@ -137,7 +135,7 @@ class BmpToResource {
 		$dibHeader = @\unpack('Vwidth/Vheight/vplanes/vbits/Vcompression/Vimagesize/Vxres/Vyres/Vcolors/Vimportant', $rawDibHeader);
 
 		// fixup colors
-		$dibHeader['colors'] = $dibHeader['colors'] === 0 ? \pow(2, $dibHeader['bits']) : $dibHeader['colors'];
+		$dibHeader['colors'] = $dibHeader['colors'] === 0 ? 2 ** $dibHeader['bits'] : $dibHeader['colors'];
 
 		// fixup imagesize - it can be zero
 		if ($dibHeader['imagesize'] < 1) {
@@ -257,9 +255,7 @@ class BmpToResource {
 			}
 		} elseif (\in_array($this->header['bits'], [8, 4, 1])) {
 			$colors = \array_map(
-				function ($i) {
-					return $this->palette[ \bindec($i) ];
-				},
+				fn ($i) => $this->palette[ \bindec($i) ],
 				$this->splitByteIntoArray($raw, $this->header['bits'])
 			);
 		}

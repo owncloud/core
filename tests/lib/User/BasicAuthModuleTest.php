@@ -34,19 +34,19 @@ use Test\TestCase;
 
 class BasicAuthModuleTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $manager;
+	private \PHPUnit\Framework\MockObject\MockObject $manager;
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 
 	public function setUp(): void {
 		parent::setUp();

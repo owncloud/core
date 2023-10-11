@@ -34,11 +34,9 @@ use Test\TestCase;
  * @group DB
  */
 class RemoveCertificateTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
-	/** @var CertificateManager */
-	private $certificateManager;
+	private \OC\Security\CertificateManager $certificateManager;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -46,7 +44,7 @@ class RemoveCertificateTest extends TestCase {
 		$this->certificateManager = new CertificateManager(
 			self::getUniqueID('', 20),
 			new View(),
-			$this->createMock('OCP\IConfig')
+			$this->createMock(\OCP\IConfig::class)
 		);
 		$command = new RemoveCertificate(
 			$this->certificateManager

@@ -480,11 +480,10 @@ class SettingsManager implements ISettingsManager {
 	 * @return array
 	 */
 	protected function sortOrder($objects) {
-		\usort($objects, function ($a, $b) {
-			/** @var ISection | ISettings $a */
-			/** @var ISection | ISettings $b */
-			return $b->getPriority() - $a->getPriority();
-		});
+		\usort($objects, fn ($a, $b) =>
+	  /** @var ISection | ISettings $a */
+	  /** @var ISection | ISettings $b */
+	  $b->getPriority() - $a->getPriority());
 		return $objects;
 	}
 }

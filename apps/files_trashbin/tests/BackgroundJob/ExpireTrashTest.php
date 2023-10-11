@@ -40,22 +40,22 @@ class ExpireTrashTest extends TestCase {
 	/**
 	 * @var TrashExpiryManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $trashExpiryManager;
+	private \PHPUnit\Framework\MockObject\MockObject $trashExpiryManager;
 
 	/**
 	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/**
 	 * @var IUserManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/**
 	 * @var ExpireTrash | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $backgroundJob;
+	private \PHPUnit\Framework\MockObject\MockObject $backgroundJob;
 
 	/**
 	 * Setup testcase

@@ -365,9 +365,7 @@ class CacheTest extends TestCase {
 
 		$this->assertCount(2, $results);
 
-		\usort($results, function ($value1, $value2) {
-			return \strcmp($value1['name'], $value2['name']);
-		});
+		\usort($results, fn ($value1, $value2) => \strcmp($value1['name'], $value2['name']));
 
 		$this->assertEquals('folder', $results[0]['name']);
 		$this->assertEquals('foo', $results[1]['name']);
@@ -375,15 +373,11 @@ class CacheTest extends TestCase {
 		// use tag id
 		$tags = $tagManager->getTagsForUser($userId);
 		$this->assertNotEmpty($tags);
-		$tags = \array_filter($tags, function ($tag) {
-			return $tag->getName() === 'tag2';
-		});
+		$tags = \array_filter($tags, fn ($tag) => $tag->getName() === 'tag2');
 		$results = $this->cache->searchByTag(\current($tags)->getId(), $userId);
 		$this->assertCount(3, $results);
 
-		\usort($results, function ($value1, $value2) {
-			return \strcmp($value1['name'], $value2['name']);
-		});
+		\usort($results, fn ($value1, $value2) => \strcmp($value1['name'], $value2['name']));
 
 		$this->assertEquals('folder', $results[0]['name']);
 		$this->assertEquals('foo2', $results[1]['name']);
@@ -529,7 +523,7 @@ class CacheTest extends TestCase {
 		$this->assertEquals($folderWith00F6, $unNormalizedFolderName['name']);
 
 		// put normalized folder
-		$this->assertInstanceOf('\OCP\Files\Cache\ICacheEntry', $this->cache->get('folder/' . $folderWith00F6));
+		$this->assertInstanceOf('\\' . \OCP\Files\Cache\ICacheEntry::class, $this->cache->get('folder/' . $folderWith00F6));
 		$this->assertGreaterThan(0, $this->cache->put('folder/' . $folderWith00F6, $data));
 
 		// at this point we should have only one folder named "Schön"

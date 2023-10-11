@@ -78,7 +78,7 @@ class HasherTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->hasher = new Hasher($this->config);

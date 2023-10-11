@@ -31,11 +31,11 @@ use Test\TestCase;
 class ContactsManagerTest extends TestCase {
 	public function test() {
 		/** @var IManager | \PHPUnit\Framework\MockObject\MockObject $cm */
-		$cm = $this->getMockBuilder('OCP\Contacts\IManager')->disableOriginalConstructor()->getMock();
+		$cm = $this->getMockBuilder(\OCP\Contacts\IManager::class)->disableOriginalConstructor()->getMock();
 		$cm->expects($this->exactly(2))->method('registerAddressBook');
-		$urlGenerator = $this->getMockBuilder('OCP\IUrlGenerator')->disableOriginalConstructor()->getMock();
+		$urlGenerator = $this->getMockBuilder(\OCP\IUrlGenerator::class)->disableOriginalConstructor()->getMock();
 		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $backEnd */
-		$backEnd = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
+		$backEnd = $this->getMockBuilder(\OCA\DAV\CardDAV\CardDavBackend::class)->disableOriginalConstructor()->getMock();
 		$backEnd->method('getAddressBooksForUser')->willReturn([
 				[]
 			]);

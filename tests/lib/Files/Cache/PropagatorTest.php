@@ -18,7 +18,7 @@ use Test\TestCase;
  */
 class PropagatorTest extends TestCase {
 	/** @var  IStorage */
-	private $storage;
+	private \OC\Files\Storage\Temporary $storage;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -33,9 +33,7 @@ class PropagatorTest extends TestCase {
 	 * @return ICacheEntry[]
 	 */
 	private function getFileInfos($paths) {
-		$values = \array_map(function ($path) {
-			return $this->storage->getCache()->get($path);
-		}, $paths);
+		$values = \array_map(fn ($path) => $this->storage->getCache()->get($path), $paths);
 		return \array_combine($paths, $values);
 	}
 

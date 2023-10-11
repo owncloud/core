@@ -110,7 +110,7 @@ abstract class BackendTestCase extends \Test\TestCase {
 		$this->backend->createUser($name3, 'pass3');
 
 		$result = $this->backend->getUsers($prefix);
-		$this->assertCount(2, $result, \json_encode($result));
+		$this->assertCount(2, $result, \json_encode($result, JSON_THROW_ON_ERROR));
 
 		$result = $this->backend->getDisplayNames($prefix);
 		$this->assertCount(2, $result);

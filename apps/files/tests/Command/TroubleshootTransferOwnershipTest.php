@@ -36,10 +36,7 @@ use Test\TestCase;
  * @package OCA\Files\Tests\Command
  */
 class TroubleshootTransferOwnershipTest extends TestCase {
-	/**
-	 * @var CommandTester
-	 */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	protected function setup(): void {
 		parent::setUp();

@@ -29,13 +29,12 @@ use Test\TestCase;
 
 class GroupLoginPolicyTest extends TestCase {
 	/** @var IGroupManager */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IL10N */
-	private $l10n;
-	/** @var GroupLoginPolicy */
-	private $groupLoginPolicy;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
+	private \OC\Authentication\LoginPolicies\GroupLoginPolicy $groupLoginPolicy;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -98,9 +97,7 @@ class GroupLoginPolicyTest extends TestCase {
 			]);
 
 		$this->groupManager->method('isInGroup')
-			->will($this->returnCallback(function ($userid, $groupid) {
-				return $userid === 'myuserid' && $groupid === 'g2';
-			}));
+			->will($this->returnCallback(fn ($userid, $groupid) => $userid === 'myuserid' && $groupid === 'g2'));
 
 		$this->groupLoginPolicy->checkPolicy('customLogin', $user);
 	}
@@ -137,9 +134,7 @@ class GroupLoginPolicyTest extends TestCase {
 			]);
 
 		$this->groupManager->method('isInGroup')
-			->will($this->returnCallback(function ($userid, $groupid) {
-				return $userid === 'myuserid' && $groupid === 'g2';
-			}));
+			->will($this->returnCallback(fn ($userid, $groupid) => $userid === 'myuserid' && $groupid === 'g2'));
 
 		$this->assertTrue($this->groupLoginPolicy->checkPolicy('customLogin', $user));
 	}
@@ -181,9 +176,7 @@ class GroupLoginPolicyTest extends TestCase {
 			]);
 
 		$this->groupManager->method('isInGroup')
-			->will($this->returnCallback(function ($userid, $groupid) {
-				return $userid === 'myuserid' && ($groupid === 'g2' || $groupid === 'g3');
-			}));
+			->will($this->returnCallback(fn ($userid, $groupid) => $userid === 'myuserid' && ($groupid === 'g2' || $groupid === 'g3')));
 
 		$this->groupLoginPolicy->checkPolicy('customLogin', $user);
 	}

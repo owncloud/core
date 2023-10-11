@@ -35,10 +35,7 @@ use OCP\IMemcache;
 class Memcached extends Cache implements IMemcache {
 	use CASTrait;
 
-	/**
-	 * @var \Memcached $cache
-	 */
-	private static $cache = null;
+	private static ?\Memcached $cache = null;
 
 	use CADTrait;
 

@@ -34,14 +34,11 @@ use Sabre\DAV\Exception\ServiceUnavailable;
 use Test\TestCase;
 
 class TrashBinFileTest extends TestCase {
-	/**
-	 * @var TrashBinFile
-	 */
-	private $trashBinFile;
+	private \OCA\DAV\TrashBin\TrashBinFile $trashBinFile;
 	/**
 	 * @var TrashBinManager | MockObject
 	 */
-	private $trashBinManager;
+	private \PHPUnit\Framework\MockObject\MockObject $trashBinManager;
 
 	public function providesExceptions() : array {
 		return [

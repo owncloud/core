@@ -30,7 +30,7 @@ use OCP\ICache;
  */
 class CappedMemoryCache implements ICache, \ArrayAccess {
 	private $capacity;
-	private $cache = [];
+	private array $cache = [];
 
 	public function __construct($capacity = 512) {
 		$this->capacity = $capacity;
@@ -41,7 +41,7 @@ class CappedMemoryCache implements ICache, \ArrayAccess {
 	}
 
 	public function get($key) {
-		return isset($this->cache[$key]) ? $this->cache[$key] : null;
+		return $this->cache[$key] ?? null;
 	}
 
 	public function set($key, $value, $ttl = 0) {
@@ -78,8 +78,7 @@ class CappedMemoryCache implements ICache, \ArrayAccess {
 
 	private function garbageCollect() {
 		while (\count($this->cache) > $this->capacity) {
-			\reset($this->cache);
-			$key = \key($this->cache);
+			$key = array_key_first($this->cache);
 			$this->remove($key);
 		}
 	}

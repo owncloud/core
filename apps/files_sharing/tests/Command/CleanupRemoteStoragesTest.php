@@ -33,17 +33,14 @@ use Test\TestCase;
  * @package OCA\Files_Sharing\Tests\Command
  */
 class CleanupRemoteStoragesTest extends TestCase {
-	/**
-	 * @var CleanupRemoteStorages
-	 */
-	private $command;
+	private \OCA\Files_Sharing\Command\CleanupRemoteStorages $command;
 
 	/**
 	 * @var \OCP\IDBConnection
 	 */
 	private $connection;
 
-	private $storages = [
+	private array $storages = [
 		['id' => 'shared::7b4a322b22f9d0047c38d77d471ce3cf', 'share_token' => 'f2c69dad1dc0649f26976fd210fc62e1', 'remote' => 'https://hostname.tld/owncloud1', 'user' => 'user1'],
 		['id' => 'shared::efe3b456112c3780da6155d3a9b9141c', 'share_token' => 'f2c69dad1dc0649f26976fd210fc62e2', 'remote' => 'https://hostname.tld/owncloud2', 'user' => 'user2'],
 		['notExistingId' => 'shared::33323d9f4ca416a9e3525b435354bc6f', 'share_token' => 'f2c69dad1dc0649f26976fd210fc62e3', 'remote' => 'https://hostname.tld/owncloud3', 'user' => 'user3'],
@@ -158,10 +155,10 @@ class CleanupRemoteStoragesTest extends TestCase {
 	 * Test cleanup of orphaned storages
 	 */
 	public function testCleanup() {
-		$input = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
+		$input = $this->getMockBuilder(\Symfony\Component\Console\Input\InputInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$output = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')
+		$output = $this->getMockBuilder(\Symfony\Component\Console\Output\OutputInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 

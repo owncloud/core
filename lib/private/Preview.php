@@ -58,17 +58,16 @@ class Preview {
 	private $configMaxHeight;
 
 	//fileview object
-	private $userView;
+	private \OC\Files\View $userView;
 
 	//vars
-	/** @var Node | null */
-	private $file;
+	private ?\OCP\Files\Node $file = null;
 	private $maxX;
 	private $maxY;
 	private $scalingUp;
 	private $mimeType;
-	private $keepAspect = false;
-	private $mode = self::MODE_FILL;
+	private bool $keepAspect = false;
+	private string $mode = self::MODE_FILL;
 
 	//used to calculate the size of the preview to generate
 	/** @var int $maxPreviewWidth max width a preview can have */
@@ -398,7 +397,7 @@ class Preview {
 		$previewPath = $this->getPreviewPath();
 		// We currently can't look for a single file due to bugs related to #16478
 		$allThumbnails = $this->userView->getDirectoryContent($previewPath);
-		list($maxPreviewWidth, $maxPreviewHeight) = $this->getMaxPreviewSize($allThumbnails);
+		[$maxPreviewWidth, $maxPreviewHeight] = $this->getMaxPreviewSize($allThumbnails);
 
 		// Only use the cache if we have a max preview
 		if ($maxPreviewWidth !== null && $maxPreviewHeight !== null) {
@@ -408,7 +407,7 @@ class Preview {
 			$this->maxPreviewWidth = $maxPreviewWidth;
 			$this->maxPreviewHeight = $maxPreviewHeight;
 
-			list($previewWidth, $previewHeight) = $this->simulatePreviewDimensions();
+			[$previewWidth, $previewHeight] = $this->simulatePreviewDimensions();
 			if (empty($previewWidth) || empty($previewHeight)) {
 				return false;
 			}
@@ -461,7 +460,7 @@ class Preview {
 		foreach ($allThumbnails as $thumbnail) {
 			$name = $thumbnail['name'];
 			if (\strpos($name, 'max')) {
-				list($maxPreviewX, $maxPreviewY) = $this->getDimensionsFromFilename($name);
+				[$maxPreviewX, $maxPreviewY] = $this->getDimensionsFromFilename($name);
 				break;
 			}
 		}
@@ -496,10 +495,10 @@ class Preview {
 		$askedHeight = $this->getMaxY();
 
 		if ($this->keepAspect) {
-			list($newPreviewWidth, $newPreviewHeight) =
+			[$newPreviewWidth, $newPreviewHeight] =
 				$this->applyAspectRatio($askedWidth, $askedHeight);
 		} else {
-			list($newPreviewWidth, $newPreviewHeight) = $this->fixSize($askedWidth, $askedHeight);
+			[$newPreviewWidth, $newPreviewHeight] = $this->fixSize($askedWidth, $askedHeight);
 		}
 
 		return [(int)$newPreviewWidth, (int)$newPreviewHeight];
@@ -627,7 +626,7 @@ class Preview {
 		$possibleThumbnails = [];
 		foreach ($allThumbnails as $thumbnail) {
 			$name = \rtrim($thumbnail['name'], '.png');
-			list($x, $y, $aspectRatio) = $this->getDimensionsFromFilename($name);
+			[$x, $y, $aspectRatio] = $this->getDimensionsFromFilename($name);
 			if (\abs($aspectRatio - $wantedAspectRatio) >= 0.000001
 				|| $this->unscalable($x, $y)
 			) {
@@ -824,7 +823,7 @@ class Preview {
 		$askedHeight = $this->getMaxY();
 
 		if ($this->mode === self::MODE_COVER) {
-			list($askedWidth, $askedHeight) =
+			[$askedWidth, $askedHeight] =
 				$this->applyCover($askedWidth, $askedHeight, $previewWidth, $previewHeight);
 		}
 
@@ -832,7 +831,7 @@ class Preview {
 		 * Phase 1: If required, adjust boundaries to keep aspect ratio
 		 */
 		if ($this->keepAspect) {
-			list($askedWidth, $askedHeight) =
+			[$askedWidth, $askedHeight] =
 				$this->applyAspectRatio($askedWidth, $askedHeight, $previewWidth, $previewHeight);
 		}
 
@@ -840,7 +839,7 @@ class Preview {
 		 * Phase 2: Resizes preview to try and match requirements.
 		 * Takes the scaling ratio into consideration
 		 */
-		list($newPreviewWidth, $newPreviewHeight) = $this->scale(
+		[$newPreviewWidth, $newPreviewHeight] = $this->scale(
 			$image,
 			$askedWidth,
 			$askedHeight,

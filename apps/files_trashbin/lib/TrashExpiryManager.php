@@ -26,13 +26,13 @@ use OCP\ILogger;
 
 class TrashExpiryManager {
 	/* @var Expiration */
-	private $expiration;
+	private \OCA\Files_Trashbin\Expiration $expiration;
 
 	/* @var Quota */
-	private $quota;
+	private \OCA\Files_Trashbin\Quota $quota;
 
 	/* @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	public function __construct(
 		Expiration $expiration,

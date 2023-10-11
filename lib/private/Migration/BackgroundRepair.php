@@ -38,11 +38,9 @@ class BackgroundRepair extends TimedJob {
 	/** @var IJobList */
 	private $jobList;
 
-	/** @var ILogger */
-	private $logger;
+	private ?\OCP\ILogger $logger = null;
 
-	/** @var EventDispatcher */
-	private $dispatcher;
+	private ?\Symfony\Component\EventDispatcher\EventDispatcher $dispatcher = null;
 
 	public function setDispatcher(EventDispatcher $dispatcher) {
 		$this->dispatcher = $dispatcher;

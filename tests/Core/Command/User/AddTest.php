@@ -36,8 +36,7 @@ use Test\Traits\UserTrait;
 class AddTest extends TestCase {
 	use UserTrait;
 
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	protected function setUp(): void {
 		parent::setUp();

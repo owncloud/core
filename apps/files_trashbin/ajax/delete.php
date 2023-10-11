@@ -28,7 +28,7 @@ OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 \OC::$server->getSession()->close();
 
-$folder = isset($_POST['dir']) ? $_POST['dir'] : '/';
+$folder = $_POST['dir'] ?? '/';
 
 // "empty trash" command
 if (isset($_POST['allfiles']) && (string)$_POST['allfiles'] === 'true') {
@@ -43,7 +43,7 @@ if (isset($_POST['allfiles']) && (string)$_POST['allfiles'] === 'true') {
 } else {
 	$deleteAll = false;
 	$files = (string)$_POST['files'];
-	$list = \json_decode($files);
+	$list = \json_decode($files, null, 512, JSON_THROW_ON_ERROR);
 }
 
 $folder = \rtrim($folder, '/') . '/';

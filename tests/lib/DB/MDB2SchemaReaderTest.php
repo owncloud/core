@@ -57,7 +57,7 @@ class MDB2SchemaReaderTest extends TestCase {
 		$this->assertFalse($table->getColumn('integerfield')->getAutoincrement());
 		$this->assertEquals(0, $table->getColumn('integerfield')->getDefault());
 		$this->assertTrue($table->getColumn('integerfield')->getNotnull());
-		$this->assertInstanceOf('Doctrine\DBAL\Types\IntegerType', $table->getColumn('integerfield')->getType());
+		$this->assertInstanceOf(\Doctrine\DBAL\Types\IntegerType::class, $table->getColumn('integerfield')->getType());
 
 		$this->assertSame(10, $table->getColumn('integerfield_default')->getDefault());
 
@@ -65,18 +65,18 @@ class MDB2SchemaReaderTest extends TestCase {
 		$this->assertFalse($table->getColumn('textfield')->getAutoincrement());
 		$this->assertSame('foo', $table->getColumn('textfield')->getDefault());
 		$this->assertTrue($table->getColumn('textfield')->getNotnull());
-		$this->assertInstanceOf('Doctrine\DBAL\Types\StringType', $table->getColumn('textfield')->getType());
+		$this->assertInstanceOf(\Doctrine\DBAL\Types\StringType::class, $table->getColumn('textfield')->getType());
 
 		$this->assertNull($table->getColumn('clobfield')->getLength());
 		$this->assertFalse($table->getColumn('clobfield')->getAutoincrement());
 		$this->assertNull($table->getColumn('clobfield')->getDefault());
 		$this->assertFalse($table->getColumn('clobfield')->getNotnull());
-		$this->assertInstanceOf('Doctrine\DBAL\Types\TextType', $table->getColumn('clobfield')->getType());
+		$this->assertInstanceOf(\Doctrine\DBAL\Types\TextType::class, $table->getColumn('clobfield')->getType());
 
 		$this->assertNull($table->getColumn('booleanfield')->getLength());
 		$this->assertFalse($table->getColumn('booleanfield')->getAutoincrement());
 		$this->assertNull($table->getColumn('booleanfield')->getDefault());
-		$this->assertInstanceOf('Doctrine\DBAL\Types\BooleanType', $table->getColumn('booleanfield')->getType());
+		$this->assertInstanceOf(\Doctrine\DBAL\Types\BooleanType::class, $table->getColumn('booleanfield')->getType());
 
 		$this->assertTrue($table->getColumn('booleanfield_true')->getDefault());
 		$this->assertFalse($table->getColumn('booleanfield_false')->getDefault());

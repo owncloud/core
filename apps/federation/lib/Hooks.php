@@ -22,8 +22,7 @@
 namespace OCA\Federation;
 
 class Hooks {
-	/** @var TrustedServers */
-	private $trustedServers;
+	private \OCA\Federation\TrustedServers $trustedServers;
 
 	public function __construct(TrustedServers $trustedServers) {
 		$this->trustedServers = $trustedServers;

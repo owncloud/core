@@ -42,8 +42,8 @@ class ShareRequest implements XmlDeserializable {
 
 	public static function xmlDeserialize(Reader $reader) {
 		$elements = $reader->parseInnerTree([
-			'{' . Plugin::NS_OWNCLOUD. '}set'    => 'Sabre\\Xml\\Element\\KeyValue',
-			'{' . Plugin::NS_OWNCLOUD . '}remove' => 'Sabre\\Xml\\Element\\KeyValue',
+			'{' . Plugin::NS_OWNCLOUD. '}set'    => \Sabre\Xml\Element\KeyValue::class,
+			'{' . Plugin::NS_OWNCLOUD . '}remove' => \Sabre\Xml\Element\KeyValue::class,
 		]);
 
 		$set = [];
@@ -59,8 +59,8 @@ class ShareRequest implements XmlDeserializable {
 
 					$set[] = [
 						'href'       => $sharee['{DAV:}href'],
-						'commonName' => isset($sharee[$commonName]) ? $sharee[$commonName] : null,
-						'summary'    => isset($sharee[$sumElem]) ? $sharee[$sumElem] : null,
+						'commonName' => $sharee[$commonName] ?? null,
+						'summary'    => $sharee[$sumElem] ?? null,
 						'readOnly'   => !\array_key_exists('{' . Plugin::NS_OWNCLOUD . '}read-write', $sharee),
 					];
 					break;

@@ -8,10 +8,8 @@ use OCP\Constants;
 use PHPUnit\Framework\TestCase;
 
 class ReadOnlyJailTest extends TestCase {
-	/** @var  ReadOnlyJail */
-	private $sut;
-	/** @var  Temporary */
-	private $sourceStorage;
+	private \OC\Files\Storage\Wrapper\ReadOnlyJail $sut;
+	private \OC\Files\Storage\Temporary $sourceStorage;
 
 	public function setUp(): void {
 		parent::setUp();

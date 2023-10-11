@@ -38,11 +38,11 @@ class CommentsNodeTest extends \Test\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
-		$this->comment = $this->createMock('\OCP\Comments\IComment');
-		$this->userManager = $this->createMock('\OCP\IUserManager');
-		$this->userSession = $this->createMock('\OCP\IUserSession');
-		$this->logger = $this->createMock('\OCP\ILogger');
+		$this->commentsManager = $this->createMock('\\' . \OCP\Comments\ICommentsManager::class);
+		$this->comment = $this->createMock('\\' . \OCP\Comments\IComment::class);
+		$this->userManager = $this->createMock('\\' . \OCP\IUserManager::class);
+		$this->userSession = $this->createMock('\\' . \OCP\IUserSession::class);
+		$this->logger = $this->createMock('\\' . \OCP\ILogger::class);
 
 		$this->node = new CommentNode(
 			$this->commentsManager,
@@ -54,7 +54,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	public function testDelete() {
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -88,7 +88,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	public function testDeleteForbidden() {
 		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -139,7 +139,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	public function testUpdateComment() {
 		$msg = 'Hello Earth';
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -176,7 +176,7 @@ class CommentsNodeTest extends \Test\TestCase {
 
 		$msg = null;
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -214,7 +214,7 @@ class CommentsNodeTest extends \Test\TestCase {
 		$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
 		$this->expectExceptionMessage('Message exceeds allowed character limit of');
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -253,7 +253,7 @@ class CommentsNodeTest extends \Test\TestCase {
 
 		$msg = 'HaXX0r';
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -287,7 +287,7 @@ class CommentsNodeTest extends \Test\TestCase {
 
 		$msg = 'HaXX0r';
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 
 		$user->expects($this->never())
 			->method('getUID');
@@ -334,7 +334,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	public function testPropPatch() {
-		$propPatch = $this->getMockBuilder('Sabre\DAV\PropPatch')
+		$propPatch = $this->getMockBuilder(\Sabre\DAV\PropPatch::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -412,7 +412,7 @@ class CommentsNodeTest extends \Test\TestCase {
 			->method('getObjectId')
 			->will($this->returnValue($expected[$ns . 'objectId']));
 
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$user->expects($this->once())
@@ -463,7 +463,7 @@ class CommentsNodeTest extends \Test\TestCase {
 
 		$this->userSession->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($this->createMock('\OCP\IUser')));
+			->will($this->returnValue($this->createMock('\\' . \OCP\IUser::class)));
 
 		$properties = $this->node->getProperties(null);
 

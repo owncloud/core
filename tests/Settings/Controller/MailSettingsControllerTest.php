@@ -23,16 +23,16 @@ class MailSettingsControllerTest extends \Test\TestCase {
 
 		$app = new Application();
 		$this->container = $app->getContainer();
-		$this->container['Config'] = $this->getMockBuilder('\OCP\IConfig')
+		$this->container['Config'] = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->container['L10N'] = $this->getMockBuilder('\OCP\IL10N')
+		$this->container['L10N'] = $this->getMockBuilder('\\' . \OCP\IL10N::class)
 			->disableOriginalConstructor()->getMock();
 		$this->container['AppName'] = 'settings';
-		$this->container['UserSession'] = $this->getMockBuilder('\OC\User\Session')
+		$this->container['UserSession'] = $this->getMockBuilder('\\' . \OC\User\Session::class)
 			->disableOriginalConstructor()->getMock();
 		$this->container['MailMessage'] = $this->getMockBuilder('\OCP\Mail\IMessage')
 			->disableOriginalConstructor()->getMock();
-		$this->container['Mailer'] = $this->getMockBuilder('\OC\Mail\Mailer')
+		$this->container['Mailer'] = $this->getMockBuilder('\\' . \OC\Mail\Mailer::class)
 			->setMethods(['send', 'validateMailAddress'])
 			->disableOriginalConstructor()->getMock();
 		$this->container['Defaults'] = $this->getMockBuilder('\OC_Defaults')
@@ -201,7 +201,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 	}
 
 	public function testSendTestMail() {
-		$user = $this->getMockBuilder('\OC\User\User')
+		$user = $this->getMockBuilder('\\' . \OC\User\User::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$user->expects($this->any())

@@ -46,7 +46,7 @@ class UploadTest extends RequestTest {
 		$this->assertEquals('asd', $view->file_get_contents('foo.txt'));
 
 		$info = $view->getFileInfo('foo.txt');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $info);
+		$this->assertInstanceOf('\\' . \OC\Files\FileInfo::class, $info);
 		$this->assertEquals(3, $info->getSize());
 	}
 
@@ -62,7 +62,7 @@ class UploadTest extends RequestTest {
 		$this->assertEquals('asd', $view->file_get_contents('foo.txt'));
 
 		$info = $view->getFileInfo('foo.txt');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $info);
+		$this->assertInstanceOf('\\' . \OC\Files\FileInfo::class, $info);
 		$this->assertEquals(3, $info->getSize());
 	}
 
@@ -115,7 +115,7 @@ class UploadTest extends RequestTest {
 		$this->assertEquals('asdbar', $view->file_get_contents('foo.txt'));
 
 		$info = $view->getFileInfo('foo.txt');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $info);
+		$this->assertInstanceOf('\\' . \OC\Files\FileInfo::class, $info);
 		$this->assertEquals(6, $info->getSize());
 	}
 
@@ -136,7 +136,7 @@ class UploadTest extends RequestTest {
 		$this->assertEquals('asdbar', $view->file_get_contents('foo.txt'));
 
 		$info = $view->getFileInfo('foo.txt');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $info);
+		$this->assertInstanceOf('\\' . \OC\Files\FileInfo::class, $info);
 		$this->assertEquals(6, $info->getSize());
 	}
 
@@ -158,7 +158,7 @@ class UploadTest extends RequestTest {
 		$this->assertEquals('asdbar', $view->file_get_contents('foo.txt'));
 
 		$info = $view->getFileInfo('foo.txt');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $info);
+		$this->assertInstanceOf('\\' . \OC\Files\FileInfo::class, $info);
 		$this->assertEquals(6, $info->getSize());
 	}
 

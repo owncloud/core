@@ -38,10 +38,9 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	protected $mask;
 
 	/**
-	 * System internal paths which should not be protected
-	 * @var array
-	 */
-	private $whitelist = [
+  * System internal paths which should not be protected
+  */
+	private array $whitelist = [
 		'uploads',
 		'cache',
 		'files_zsync'
@@ -90,6 +89,6 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	}
 
 	private function startsWith($haystack, $needle) {
-		return (\strpos($haystack, $needle) === 0);
+		return (\strpos($haystack, (string) $needle) === 0);
 	}
 }

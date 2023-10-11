@@ -74,7 +74,7 @@ class ConverterTest extends TestCase {
 		$converter = new Converter();
 		$vCard = $converter->createCardFromUser($user);
 
-		$user1 = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
+		$user1 = $this->getMockBuilder(\OCP\IUser::class)->disableOriginalConstructor()->getMock();
 		$user1->method('getUID')->willReturn('12345');
 		$user1->method('getDisplayName')->willReturn(null);
 		$user1->method('getEMailAddress')->willReturn(null);

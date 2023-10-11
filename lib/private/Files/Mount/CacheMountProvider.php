@@ -30,10 +30,7 @@ use OCP\IUser;
  * Mount provider for custom cache storages
  */
 class CacheMountProvider implements IMountProvider {
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * CacheMountProvider constructor.
@@ -60,7 +57,7 @@ class CacheMountProvider implements IMountProvider {
 			}
 
 			return [
-				new MountPoint('\OC\Files\Storage\Local', '/' . $user->getUID() . '/cache', ['datadir' => $cacheDir], $loader)
+				new MountPoint('\\' . \OC\Files\Storage\Local::class, '/' . $user->getUID() . '/cache', ['datadir' => $cacheDir], $loader)
 			];
 		} else {
 			return [];

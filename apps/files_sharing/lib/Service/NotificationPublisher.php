@@ -26,14 +26,10 @@ use OCP\IGroupManager;
 use OCP\Share\IShare;
 
 class NotificationPublisher {
-	/** @var \OCP\Notification\IManager */
-	private $notificationManager;
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IUserManager */
-	private $userManager;
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\Notification\IManager $notificationManager;
+	private \OCP\IGroupManager $groupManager;
+	private \OCP\IUserManager $userManager;
+	private \OCP\IURLGenerator $urlGenerator;
 
 	public function __construct(
 		\OCP\Notification\IManager $notificationManager,

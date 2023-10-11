@@ -294,9 +294,7 @@ class ConvertType extends Command {
 		// filter apps with missing code
 		$existingApps = \array_filter(
 			$apps,
-			function ($appId) {
-				return $this->appManager->getAppPath($appId) !== false;
-			}
+			fn ($appId) => $this->appManager->getAppPath($appId) !== false
 		);
 
 		return $existingApps;

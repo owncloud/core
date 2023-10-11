@@ -31,24 +31,24 @@ class SystemTagMappingNodeTest extends \Test\TestCase {
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager
 	 */
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
 	/**
 	 * @var \OCP\SystemTag\ISystemTagObjectMapper
 	 */
-	private $tagMapper;
+	private \PHPUnit\Framework\MockObject\MockObject $tagMapper;
 
 	/**
 	 * @var \OCP\IUser
 	 */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');
-		$this->tagMapper = $this->createMock('\OCP\SystemTag\ISystemTagObjectMapper');
-		$this->user = $this->createMock('\OCP\IUser');
+		$this->tagManager = $this->createMock('\\' . \OCP\SystemTag\ISystemTagManager::class);
+		$this->tagMapper = $this->createMock('\\' . \OCP\SystemTag\ISystemTagObjectMapper::class);
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
 	}
 
 	public function getMappingNode($tag = null) {
@@ -100,12 +100,12 @@ class SystemTagMappingNodeTest extends \Test\TestCase {
 			[
 				// cannot unassign invisible tag
 				new SystemTag(1, 'Original', false, true),
-				'Sabre\DAV\Exception\NotFound',
+				\Sabre\DAV\Exception\NotFound::class,
 			],
 			[
 				// cannot unassign non-assignable tag
 				new SystemTag(1, 'Original', true, false),
-				'Sabre\DAV\Exception\Forbidden',
+				\Sabre\DAV\Exception\Forbidden::class,
 			],
 		];
 	}

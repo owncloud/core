@@ -33,14 +33,13 @@ use Test\TestCase;
  */
 class MaintenancePluginTest extends TestCase {
 	/** @var IConfig */
-	private $config;
-	/** @var MaintenancePlugin */
-	private $maintenancePlugin;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
+	private \OCA\DAV\Connector\Sabre\MaintenancePlugin $maintenancePlugin;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->createMock('\OCP\IConfig');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
 		$this->maintenancePlugin = new MaintenancePlugin($this->config);
 	}
 

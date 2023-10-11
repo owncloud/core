@@ -37,7 +37,7 @@ class MapperTest extends \Test\TestCase {
 	 * @param string $expectedBucket
 	 */
 	public function testGetBucket($username, $expectedBucket) {
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->method('getUID')
 			->willReturn($username);
 

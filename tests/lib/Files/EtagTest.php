@@ -32,8 +32,8 @@ class EtagTest extends \Test\TestCase {
 		\OC_Hook::clear('OC_Filesystem', 'setup');
 		$application = new \OCA\Files_Sharing\AppInfo\Application();
 		$application->registerMountProviders();
-		\OCP\Share::registerBackend('file', 'OCA\Files_Sharing\ShareBackend\File');
-		\OCP\Share::registerBackend('folder', 'OCA\Files_Sharing\ShareBackend\Folder', 'file');
+		\OCP\Share::registerBackend('file', \OCA\Files_Sharing\ShareBackend\File::class);
+		\OCP\Share::registerBackend('folder', \OCA\Files_Sharing\ShareBackend\Folder::class, 'file');
 
 		$config = \OC::$server->getConfig();
 		$this->datadir = $config->getSystemValue('datadirectory');

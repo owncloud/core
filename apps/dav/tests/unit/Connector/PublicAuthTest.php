@@ -37,13 +37,12 @@ use OCP\Share\IManager;
  */
 class PublicAuthTest extends \Test\TestCase {
 	/** @var ISession|\PHPUnit\Framework\MockObject\MockObject */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 	/** @var IRequest|\PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var IManager|\PHPUnit\Framework\MockObject\MockObject */
-	private $shareManager;
-	/** @var \OCA\DAV\Connector\PublicAuth */
-	private $auth;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
+	private \OCA\DAV\Connector\PublicAuth $auth;
 
 	/** @var string */
 	private $oldUser;
@@ -51,9 +50,9 @@ class PublicAuthTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->session = $this->createMock('\OCP\ISession');
-		$this->request = $this->createMock('\OCP\IRequest');
-		$this->shareManager = $this->createMock('\OCP\Share\IManager');
+		$this->session = $this->createMock('\\' . \OCP\ISession::class);
+		$this->request = $this->createMock('\\' . \OCP\IRequest::class);
+		$this->shareManager = $this->createMock('\\' . \OCP\Share\IManager::class);
 
 		$this->auth = new \OCA\DAV\Connector\PublicAuth(
 			$this->request,
@@ -86,7 +85,7 @@ class PublicAuthTest extends \Test\TestCase {
 	}
 
 	public function testShareNoPassword() {
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getPassword')->willReturn(null);
 
 		$this->shareManager->expects($this->once())
@@ -99,7 +98,7 @@ class PublicAuthTest extends \Test\TestCase {
 	}
 
 	public function testSharePasswordFancyShareType() {
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getPassword')->willReturn('password');
 		$share->method('getShareType')->willReturn(42);
 
@@ -113,7 +112,7 @@ class PublicAuthTest extends \Test\TestCase {
 	}
 
 	public function testSharePasswordRemote() {
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getPassword')->willReturn('password');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_REMOTE);
 
@@ -127,7 +126,7 @@ class PublicAuthTest extends \Test\TestCase {
 	}
 
 	public function testSharePasswordLinkValidPassword() {
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getPassword')->willReturn('password');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
 
@@ -147,7 +146,7 @@ class PublicAuthTest extends \Test\TestCase {
 	}
 
 	public function testSharePasswordLinkValidSession() {
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getPassword')->willReturn('password');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
 		$share->method('getId')->willReturn('42');
@@ -171,7 +170,7 @@ class PublicAuthTest extends \Test\TestCase {
 	}
 
 	public function testSharePasswordLinkInvalidSession() {
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getPassword')->willReturn('password');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
 		$share->method('getId')->willReturn('42');

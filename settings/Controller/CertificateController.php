@@ -36,14 +36,10 @@ use OCP\IRequest;
  * @package OC\Settings\Controller
  */
 class CertificateController extends Controller {
-	/** @var ICertificateManager */
-	private $userCertificateManager;
-	/** @var ICertificateManager  */
-	private $systemCertificateManager;
-	/** @var IL10N */
-	private $l10n;
-	/** @var IAppManager */
-	private $appManager;
+	private \OCP\ICertificateManager $userCertificateManager;
+	private \OCP\ICertificateManager $systemCertificateManager;
+	private \OCP\IL10N $l10n;
+	private \OCP\App\IAppManager $appManager;
 
 	/**
 	 * @param string $appName

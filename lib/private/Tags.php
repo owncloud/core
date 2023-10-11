@@ -47,11 +47,9 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 
 class Tags implements \OCP\ITags {
 	/**
-	 * Tags
-	 *
-	 * @var array
-	 */
-	private $tags = [];
+  * Tags
+  */
+	private array $tags = [];
 
 	/**
 	 * Used for storing objectid/categoryname pairs while rescanning.
@@ -75,11 +73,9 @@ class Tags implements \OCP\ITags {
 	private $user;
 
 	/**
-	 * Are we including tags for shared items?
-	 *
-	 * @var bool
-	 */
-	private $includeShared = false;
+  * Are we including tags for shared items?
+  */
+	private bool $includeShared = false;
 
 	/**
 	 * The current user, plus any owners of the items shared with the current
@@ -90,11 +86,9 @@ class Tags implements \OCP\ITags {
 	private $owners = [];
 
 	/**
-	 * The Mapper we're using to communicate our Tag objects to the database.
-	 *
-	 * @var TagMapper
-	 */
-	private $mapper;
+  * The Mapper we're using to communicate our Tag objects to the database.
+  */
+	private \OC\Tagging\TagMapper $mapper;
 
 	/**
 	 * The sharing backend for objects of $this->type. Required if
@@ -175,9 +169,7 @@ class Tags implements \OCP\ITags {
 			return [];
 		}
 
-		\usort($this->tags, function ($a, $b) {
-			return \strnatcasecmp($a->getName(), $b->getName());
-		});
+		\usort($this->tags, fn ($a, $b) => \strnatcasecmp($a->getName(), $b->getName()));
 		$tagMap = [];
 
 		foreach ($this->tags as $tag) {
@@ -198,9 +190,7 @@ class Tags implements \OCP\ITags {
 	public function getTagsForUser($user) {
 		return \array_filter(
 			$this->tags,
-			function ($tag) use ($user) {
-				return $tag->getOwner() === $user;
-			}
+			fn ($tag) => $tag->getOwner() === $user
 		);
 	}
 
@@ -799,9 +789,7 @@ class Tags implements \OCP\ITags {
 		return \array_search(
 			\strtolower($needle),
 			\array_map(
-				function ($tag) use ($mem) {
-					return \strtolower(\call_user_func([$tag, $mem]));
-				},
+				fn ($tag) => \strtolower(\call_user_func([$tag, $mem])),
 				$haystack
 			)
 		);

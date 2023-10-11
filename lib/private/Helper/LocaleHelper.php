@@ -27,7 +27,7 @@ class LocaleHelper {
 	/**
 	 * @var string[]
 	 */
-	private $commonLanguages = [
+	private array $commonLanguages = [
 		'en',
 		'es',
 		'fr',
@@ -52,7 +52,7 @@ class LocaleHelper {
 	/**
 	 * @var string[]
 	 */
-	private $languageCodes = [
+	private array $languageCodes = [
 		'el' => 'Ελληνικά',
 		'en' => 'English',
 		'fa' => 'فارسى',
@@ -164,9 +164,7 @@ class LocaleHelper {
 	 * @return string
 	 */
 	public function getLanguageNameByCode($code) {
-		return (isset($this->languageCodes[$code]))
-			? $this->languageCodes[$code]
-			: $code;
+		return $this->languageCodes[$code] ?? $code;
 	}
 
 	/**

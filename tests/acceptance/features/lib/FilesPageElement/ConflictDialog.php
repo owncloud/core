@@ -31,8 +31,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * already exists.
  */
 class ConflictDialog extends OCDialog {
-	private $keepNewFilesCheckXpath = "//label[@for='checkbox-allnewfiles']";
-	private $keepExistingFilesCheckXpath = "//label[@for='checkbox-allexistingfiles']";
+	private string $keepNewFilesCheckXpath = "//label[@for='checkbox-allnewfiles']";
+	private string $keepExistingFilesCheckXpath = "//label[@for='checkbox-allexistingfiles']";
 
 	/**
 	 * takes the xpath and selects the option with that xpath

@@ -29,31 +29,23 @@ class CasTraitTest extends TestCase {
 	 */
 	private function getCache() {
 		$sourceCache = new \OC\Memcache\ArrayCache();
-		$mock = $this->getMockForTrait('\OC\Memcache\CasTrait');
+		$mock = $this->getMockForTrait('\\' . \OC\Memcache\CasTrait::class);
 
 		$mock->expects($this->any())
 			->method('set')
-			->will($this->returnCallback(function ($key, $value, $ttl) use ($sourceCache) {
-				return $sourceCache->set($key, $value, $ttl);
-			}));
+			->will($this->returnCallback(fn ($key, $value, $ttl) => $sourceCache->set($key, $value, $ttl)));
 
 		$mock->expects($this->any())
 			->method('get')
-			->will($this->returnCallback(function ($key) use ($sourceCache) {
-				return $sourceCache->get($key);
-			}));
+			->will($this->returnCallback(fn ($key) => $sourceCache->get($key)));
 
 		$mock->expects($this->any())
 			->method('add')
-			->will($this->returnCallback(function ($key, $value, $ttl) use ($sourceCache) {
-				return $sourceCache->add($key, $value, $ttl);
-			}));
+			->will($this->returnCallback(fn ($key, $value, $ttl) => $sourceCache->add($key, $value, $ttl)));
 
 		$mock->expects($this->any())
 			->method('remove')
-			->will($this->returnCallback(function ($key) use ($sourceCache) {
-				return $sourceCache->remove($key);
-			}));
+			->will($this->returnCallback(fn ($key) => $sourceCache->remove($key)));
 		return $mock;
 	}
 

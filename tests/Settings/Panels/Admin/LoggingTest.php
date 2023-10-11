@@ -19,14 +19,13 @@ use OCP\IURLGenerator;
  * @package Tests\Settings\Panels\Admin
  */
 class LoggingTest extends \Test\TestCase {
-	/** @var Logging */
-	private $panel;
+	private \OC\Settings\Panels\Admin\Logging $panel;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var  IURLGenerator */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var Helper */
-	private $helper;
+	private \PHPUnit\Framework\MockObject\MockObject $helper;
 
 	public function setUp(): void {
 		parent::setUp();

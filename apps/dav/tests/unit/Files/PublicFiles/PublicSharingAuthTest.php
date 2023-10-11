@@ -41,9 +41,7 @@ class PublicSharingAuthTest extends TestCase {
 		$server = $this->createMock(Server::class);
 		$server->tree = $tree;
 		$manager = $this->createMock(IManager::class);
-		$manager->method('checkPassword')->willReturnCallback(static function ($share, $password) {
-			return $share->getPassword() === $password;
-		});
+		$manager->method('checkPassword')->willReturnCallback(static fn ($share, $password) => $share->getPassword() === $password);
 
 		$tree->method('getNodeForPath')->willReturn($shareNode);
 		$auth = new PublicSharingAuth($server, $manager);

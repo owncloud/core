@@ -17,10 +17,7 @@ class LongId extends Temporary {
 }
 
 class ManagerTest extends \Test\TestCase {
-	/**
-	 * @var \OC\Files\Mount\Manager
-	 */
-	private $manager;
+	private \OC\Files\Mount\Manager $manager;
 
 	protected function setUp(): void {
 		parent::setUp();

@@ -33,9 +33,7 @@ class Plugin extends \Sabre\CalDAV\Plugin {
 		parent::propFind($propFind, $node);
 
 		if ($node instanceof Calendar && $node->getName() === BirthdayService::BIRTHDAY_CALENDAR_URI) {
-			$propFind->handle('{DAV:}share-access', function () {
-				return new ShareAccess(DAV\Sharing\Plugin::ACCESS_NOACCESS);
-			});
+			$propFind->handle('{DAV:}share-access', fn () => new ShareAccess(DAV\Sharing\Plugin::ACCESS_NOACCESS));
 		}
 	}
 
@@ -44,7 +42,7 @@ class Plugin extends \Sabre\CalDAV\Plugin {
 	 */
 	public function getCalendarHomeForPrincipal($principalUrl) {
 		if (\strrpos($principalUrl, 'principals/users', -\strlen($principalUrl)) !== false) {
-			list(, $principalId) = \Sabre\Uri\split($principalUrl);
+			[, $principalId] = \Sabre\Uri\split($principalUrl);
 			return self::CALENDAR_ROOT .'/' . $principalId;
 		}
 

@@ -34,22 +34,23 @@ use OCP\IConfig;
  *
  */
 class OC_Defaults {
-	private $theme;
+	/** @var OC_Theme|null */
+	private $theme = null;
 	private $l;
 
-	private $defaultEntity;
-	private $defaultName;
-	private $defaultTitle;
-	private $defaultBaseUrl;
-	private $defaultSyncClientUrl;
-	private $defaultiOSClientUrl;
-	private $defaultiTunesAppId;
-	private $defaultAndroidClientUrl;
-	private $defaultDocBaseUrl;
-	private $defaultDocVersion;
+	private string $defaultEntity;
+	private string $defaultName;
+	private string $defaultTitle;
+	private string $defaultBaseUrl;
+	private string $defaultSyncClientUrl;
+	private string $defaultiOSClientUrl;
+	private string $defaultiTunesAppId;
+	private string $defaultAndroidClientUrl;
+	private string $defaultDocBaseUrl;
+	private string $defaultDocVersion;
 	private $defaultSlogan;
-	private $defaultLogoClaim;
-	private $defaultMailHeaderColor;
+	private string $defaultLogoClaim;
+	private string $defaultMailHeaderColor;
 	/**
 	 * @var IConfig
 	 */

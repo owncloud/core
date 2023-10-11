@@ -37,8 +37,7 @@ use Sabre\DAV\File;
  * @package OCA\DAV\Meta
  */
 class MetaFile extends File implements ICopySource, IFileNode, IProvidesAdditionalHeaders {
-	/** @var \OCP\Files\File */
-	private $file;
+	private \OCP\Files\File $file;
 
 	/**
 	 * MetaFolder constructor.

@@ -50,12 +50,11 @@ class PreviewManagerTest extends TestCase {
 
 	/** @var IUser */
 	private $user;
-	/** @var View */
-	private $rootView;
+	private \OC\Files\View $rootView;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IPreview */
-	private $previewManager;
+	private \OC\PreviewManager $previewManager;
 
 	protected function setUp(): void {
 		parent::setUp();

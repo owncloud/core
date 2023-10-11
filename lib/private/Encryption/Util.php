@@ -227,7 +227,7 @@ class Util {
 	 * @throws \BadMethodCallException
 	 */
 	public function getUidAndFilename($path) {
-		list($storage, $internalPath) = $this->rootView->resolvePath($path);
+		[$storage, $internalPath] = $this->rootView->resolvePath($path);
 
 		$absMountPoint = $this->rootView->getMountPoint($path);
 		$parts = \explode('/', $absMountPoint);
@@ -240,10 +240,10 @@ class Util {
 			$originalPath = "/{$internalPath}";
 		}
 
-		if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
+		if ($storage->instanceOfStorage('\\' . \OCA\Files_Sharing\ISharedStorage::class)) {
 			// TODO: Improve sharedStorage detection.
 			// Note that ISharedStorage doesn't enforce any method
-			if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
+			if ($storage->instanceOfStorage('\\' . \OCA\Files_Sharing\SharedStorage::class)) {
 				// local sharing
 				$share = $storage->getShare();
 				$node = $share->getNode();
@@ -283,9 +283,7 @@ class Util {
 			foreach ($groups as $group) {
 				$g = \OC::$server->getGroupManager()->get($group);
 				if ($g !== null) {
-					$users = \array_values(\array_map(function (IUser $u) {
-						return $u->getUID();
-					}, $g->getUsers()));
+					$users = \array_values(\array_map(fn (IUser $u) => $u->getUID(), $g->getUsers()));
 					$result = \array_merge($result, $users);
 				}
 			}

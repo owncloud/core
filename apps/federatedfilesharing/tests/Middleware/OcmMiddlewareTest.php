@@ -41,35 +41,32 @@ use OCP\Share\IShare;
  * @group DB
  */
 class OcmMiddlewareTest extends TestCase {
-	/**
-	 * @var OcmMiddleware
-	 */
-	private $ocmMiddleware;
+	private \OCA\FederatedFileSharing\Middleware\OcmMiddleware $ocmMiddleware;
 
 	/**
 	 * @var FederatedShareProvider | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $federatedShareProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $federatedShareProvider;
 
 	/**
 	 * @var IAppManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 
 	/**
 	 * @var IUserManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/**
 	 * @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $addressHandler;
+	private \PHPUnit\Framework\MockObject\MockObject $addressHandler;
 
 	/**
 	 * @var ILogger | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	protected function setUp(): void {
 		parent::setUp();

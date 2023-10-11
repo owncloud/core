@@ -43,7 +43,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 	protected $connection;
 
 	/** @var IOutput */
-	private $outputMock;
+	private \PHPUnit\Framework\MockObject\MockObject $outputMock;
 
 	/** @var IUserManager */
 	private $userManager;
@@ -54,7 +54,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$this->outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

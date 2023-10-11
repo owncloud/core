@@ -36,10 +36,9 @@ class MigrationTest extends TestCase {
 	/** @var \OCP\IDBConnection */
 	private $connection;
 
-	/** @var Migration */
-	private $migration;
+	private \OCA\Files_Sharing\Migration $migration;
 
-	private $table = 'share';
+	private string $table = 'share';
 
 	public function setUp(): void {
 		parent::setUp();

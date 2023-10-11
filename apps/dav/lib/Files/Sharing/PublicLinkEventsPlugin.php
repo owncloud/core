@@ -29,10 +29,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class PublicLinkEventsPlugin extends ServerPlugin {
-	/** @var EventDispatcherInterface */
-	private $dispatcher;
-	/** @var Server */
-	private $server;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
+	private ?\Sabre\DAV\Server $server = null;
 
 	public function __construct(EventDispatcherInterface $dispatcher) {
 		$this->dispatcher = $dispatcher;

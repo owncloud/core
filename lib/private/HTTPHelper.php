@@ -35,10 +35,8 @@ use OCP\IConfig;
 class HTTPHelper {
 	public const USER_AGENT = 'ownCloud Server Crawler';
 
-	/** @var \OCP\IConfig */
-	private $config;
-	/** @var IClientService  */
-	private $clientService;
+	private \OCP\IConfig $config;
+	private \OCP\Http\Client\IClientService $clientService;
 
 	/**
 	 * @param IConfig $config

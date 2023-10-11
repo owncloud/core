@@ -267,7 +267,7 @@ class TagsHelper extends Assert {
 			$tagsPath,
 			['Content-Type' => 'application/json',],
 			$xRequestId,
-			\json_encode($body),
+			\json_encode($body, JSON_THROW_ON_ERROR),
 			$davPathVersionToUse,
 			"systemtags"
 		);

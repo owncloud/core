@@ -28,11 +28,9 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class SharingPersonalPanel implements ISettings {
-	/** @var IConfig $config */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var IUserSession $userSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
 	public function __construct(IConfig $config, IUserSession $userSession) {
 		$this->config = $config;

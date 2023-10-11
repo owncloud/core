@@ -226,9 +226,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 			return;
 		}
 
-		$propPatch->handleRemaining(function ($changedProps) use ($path, $node) {
-			return $this->updateProperties($path, $node, $changedProps);
-		});
+		$propPatch->handleRemaining(fn ($changedProps) => $this->updateProperties($path, $node, $changedProps));
 	}
 
 	/**

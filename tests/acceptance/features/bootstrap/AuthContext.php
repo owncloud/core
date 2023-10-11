@@ -662,7 +662,7 @@ class AuthContext implements Context {
 				$this->featureContext->getCookieJar()
 			)
 		);
-		$token = \json_decode($this->featureContext->getResponse()->getBody()->getContents());
+		$token = \json_decode($this->featureContext->getResponse()->getBody()->getContents(), null, 512, JSON_THROW_ON_ERROR);
 		$this->appToken = $token->token;
 		$this->appTokens[$token->deviceToken->name]
 			= ["id" => $token->deviceToken->id, "token" => $token->token];
@@ -735,7 +735,8 @@ class AuthContext implements Context {
 			[
 				'user' => $this->featureContext->getActualUsername($user),
 				'password' => $this->featureContext->getPasswordForUser($user),
-			]
+			],
+			JSON_THROW_ON_ERROR
 		);
 		$headers = ['Content-Type' => 'application/json'];
 		$url = $this->featureContext->getBaseUrl() . '/token/generate';
@@ -751,7 +752,7 @@ class AuthContext implements Context {
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBe("200");
 		$this->clientToken
-			= \json_decode($this->featureContext->getResponse()->getBody()->getContents())->token;
+			= \json_decode($this->featureContext->getResponse()->getBody()->getContents(), null, 512, JSON_THROW_ON_ERROR)->token;
 	}
 
 	/**

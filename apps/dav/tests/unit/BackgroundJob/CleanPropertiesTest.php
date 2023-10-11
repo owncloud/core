@@ -39,8 +39,7 @@ class CleanPropertiesTest extends TestCase {
 	private $connection;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
-	/** @var CleanProperties */
-	private $cleanProperties;
+	private \OCA\DAV\BackgroundJob\CleanProperties $cleanProperties;
 	/** @var string */
 	private $username;
 

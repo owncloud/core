@@ -62,7 +62,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	// Test relative_modified_date with dates only
 	// ---------------------------------------------------------------------------
 	public function testRelativeDateToday() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime;
 		$result = (string)relative_modified_date($elementTime, $currentTime, true);
 
@@ -76,7 +76,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeDateYesterday() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 24 * 3600;
 		$result = (string)relative_modified_date($elementTime, $currentTime, true);
 
@@ -90,7 +90,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeDate2DaysAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 48 * 3600;
 		$result = (string)relative_modified_date($elementTime, $currentTime, true);
 
@@ -104,7 +104,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeDateLastMonth() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 86400 * 31;
 		$result = (string)relative_modified_date($elementTime, $currentTime, true);
 
@@ -117,7 +117,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeDateMonthsAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 86400 * 65;
 		$result = (string)relative_modified_date($elementTime, $currentTime, true);
 
@@ -130,7 +130,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeDateLastYear() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 86400 * 365;
 		$result = (string)relative_modified_date($elementTime, $currentTime, true);
 
@@ -143,7 +143,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeDateYearsAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 86400 * 365.25 * 2;
 		$result = (string)relative_modified_date($elementTime, $currentTime, true);
 
@@ -160,7 +160,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	// ---------------------------------------------------------------------------
 
 	public function testRelativeTimeSecondsAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 5;
 		$result = (string)relative_modified_date($elementTime, $currentTime, false);
 
@@ -168,7 +168,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeTimeMinutesAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 190;
 		$result = (string)relative_modified_date($elementTime, $currentTime, false);
 
@@ -176,7 +176,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeTimeHoursAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 7500;
 		$result = (string)relative_modified_date($elementTime, $currentTime, false);
 
@@ -184,7 +184,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeTime2DaysAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 48 * 3600;
 		$result = (string)relative_modified_date($elementTime, $currentTime, false);
 
@@ -198,7 +198,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeTimeLastMonth() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 86400 * 31;
 		$result = (string)relative_modified_date($elementTime, $currentTime, false);
 
@@ -211,7 +211,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeTimeMonthsAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 86400 * 65;
 		$result = (string)relative_modified_date($elementTime, $currentTime, false);
 
@@ -224,7 +224,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeTimeLastYear() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 86400 * 365;
 		$result = (string)relative_modified_date($elementTime, $currentTime, false);
 
@@ -237,7 +237,7 @@ class TemplateFunctionsTest extends \Test\TestCase {
 	}
 
 	public function testRelativeTimeYearsAgo() {
-		$currentTime = 1380703592;
+		$currentTime = 1_380_703_592;
 		$elementTime = $currentTime - 86400 * 365.25 * 2;
 		$result = (string)relative_modified_date($elementTime, $currentTime, false);
 

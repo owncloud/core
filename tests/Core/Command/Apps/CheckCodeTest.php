@@ -32,8 +32,7 @@ use Test\TestCase;
  * @group DB
  */
 class CheckCodeTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private ?\Symfony\Component\Console\Tester\CommandTester $commandTester = null;
 
 	/**
 	 */

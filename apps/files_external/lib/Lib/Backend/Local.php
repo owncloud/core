@@ -32,8 +32,8 @@ class Local extends ExternalBackend {
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('local')
-			->addIdentifierAlias('\OC\Files\Storage\Local') // legacy compat
-			->setStorageClass('\OC\Files\Storage\Local')
+			->addIdentifierAlias('\\' . \OC\Files\Storage\Local::class) // legacy compat
+			->setStorageClass('\\' . \OC\Files\Storage\Local::class)
 			->setText($l->t('Local'))
 			->addParameters([
 				(new DefinitionParameter('datadir', $l->t('Location'))),

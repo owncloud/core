@@ -36,10 +36,8 @@ use OCP\Route\IRouter;
  * @package OC\AppFramework\routing
  */
 class RouteConfig {
-	/** @var DIContainer */
-	private $container;
-	/** @var IRouter */
-	private $router;
+	private \OC\AppFramework\DependencyInjection\DIContainer $container;
+	private \OCP\Route\IRouter $router;
 	/** @var array */
 	private $routes;
 	/** @var string */
@@ -81,7 +79,7 @@ class RouteConfig {
 	}
 
 	private function processOCS(array $routes) {
-		$ocsRoutes = isset($routes['ocs']) ? $routes['ocs'] : [];
+		$ocsRoutes = $routes['ocs'] ?? [];
 		foreach ($ocsRoutes as $ocsRoute) {
 			$name = $ocsRoute['name'];
 			$postFix = '';
@@ -90,9 +88,7 @@ class RouteConfig {
 				$postFix = $ocsRoute['postfix'];
 			}
 
-			$root = (isset($ocsRoute['root']))
-				? $ocsRoute['root']
-				: '/apps/' . $this->appName;
+			$root = $ocsRoute['root'] ?? '/apps/' . $this->appName;
 			$url = $root . $ocsRoute['url'];
 			$verb = isset($ocsRoute['verb']) ? \strtoupper($ocsRoute['verb']) : 'GET';
 
@@ -133,7 +129,7 @@ class RouteConfig {
 	 * @throws \UnexpectedValueException
 	 */
 	private function processSimpleRoutes($routes) {
-		$simpleRoutes = isset($routes['routes']) ? $routes['routes'] : [];
+		$simpleRoutes = $routes['routes'] ?? [];
 		foreach ($simpleRoutes as $simpleRoute) {
 			$name = $simpleRoute['name'];
 			$postfix = '';
@@ -196,14 +192,14 @@ class RouteConfig {
 			['name' => 'destroy', 'verb' => 'DELETE'],
 		];
 
-		$resources = isset($routes['resources']) ? $routes['resources'] : [];
+		$resources = $routes['resources'] ?? [];
 		foreach ($resources as $resource => $config) {
 			// the url parameter used as id to the resource
 			foreach ($actions as $action) {
 				$url = $config['url'];
 				$method = $action['name'];
 				$verb = isset($action['verb']) ? \strtoupper($action['verb']) : 'GET';
-				$collectionAction = isset($action['on-collection']) ? $action['on-collection'] : false;
+				$collectionAction = $action['on-collection'] ?? false;
 				if (!$collectionAction) {
 					$url = $url . '/{id}';
 				}
@@ -252,9 +248,7 @@ class RouteConfig {
 		$pattern = "/_[a-z]?/";
 		return \preg_replace_callback(
 			$pattern,
-			function ($matches) {
-				return \strtoupper(\ltrim($matches[0], "_"));
-			},
+			fn ($matches) => \strtoupper(\ltrim($matches[0], "_")),
 			$str
 		);
 	}

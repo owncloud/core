@@ -28,20 +28,19 @@ use OCP\IL10N;
 use OCP\IURLGenerator;
 
 class AddressHandlerTest extends \Test\TestCase {
-	/** @var  AddressHandler */
-	private $addressHandler;
+	private \OCA\FederatedFileSharing\AddressHandler $addressHandler;
 
 	/** @var  IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/** @var  IL10N | \PHPUnit\Framework\MockObject\MockObject */
-	private $il10n;
+	private \PHPUnit\Framework\MockObject\MockObject $il10n;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
-		$this->il10n = $this->createMock('OCP\IL10N');
+		$this->urlGenerator = $this->createMock(\OCP\IURLGenerator::class);
+		$this->il10n = $this->createMock(\OCP\IL10N::class);
 
 		$this->addressHandler = new AddressHandler($this->urlGenerator, $this->il10n);
 	}
@@ -85,7 +84,7 @@ class AddressHandlerTest extends \Test\TestCase {
 	 * @param string $expectedUrl
 	 */
 	public function testSplitUserRemote($remote, $expectedUser, $expectedUrl) {
-		list($remoteUser, $remoteUrl) = $this->addressHandler->splitUserRemote($remote);
+		[$remoteUser, $remoteUrl] = $this->addressHandler->splitUserRemote($remote);
 		$this->assertSame($expectedUser, $remoteUser);
 		$this->assertSame($expectedUrl, $remoteUrl);
 	}

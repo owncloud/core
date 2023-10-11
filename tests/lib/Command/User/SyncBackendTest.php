@@ -36,18 +36,17 @@ use Test\TestCase;
 
 class SyncBackendTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $mapper;
+	private \PHPUnit\Framework\MockObject\MockObject $mapper;
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
-	/** @var SyncBackend */
-	private $command;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
+	private \OC\Core\Command\User\SyncBackend $command;
 
 	/** @var UserInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $dummyBackend;
+	private \PHPUnit\Framework\MockObject\MockObject $dummyBackend;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -305,9 +304,7 @@ class SyncBackendTest extends TestCase {
 		$syncService->expects($this
 			->once())->method('run')->with(
 				$this->dummyBackend,
-				$this->callback(function ($subject) {
-					return \count($subject) === 1 && $subject[0] === 'existing-uid';
-				}),
+				$this->callback(fn ($subject) => \count($subject) === 1 && $subject[0] === 'existing-uid'),
 				$this->anything()
 			);
 

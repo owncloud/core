@@ -78,7 +78,7 @@ class FilesHome extends ObjectTree implements ICollection {
 	}
 
 	public function getName() {
-		list(, $name) = \Sabre\Uri\split($this->principalInfo['uri']);
+		[, $name] = \Sabre\Uri\split($this->principalInfo['uri']);
 		return $name;
 	}
 

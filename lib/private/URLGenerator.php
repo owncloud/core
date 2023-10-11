@@ -44,17 +44,13 @@ use RuntimeException;
  * Class to generate URLs
  */
 class URLGenerator implements IURLGenerator {
-	/** @var IConfig */
-	private $config;
-	/** @var ICacheFactory */
-	private $cacheFactory;
-	/** @var IRouter */
-	private $router;
+	private \OCP\IConfig $config;
+	private \OCP\ICacheFactory $cacheFactory;
+	private \OCP\Route\IRouter $router;
 	/** @var ITheme */
 	private $theme;
 
-	/** @var EnvironmentHelper */
-	private $environmentHelper;
+	private \OC\Helper\EnvironmentHelper $environmentHelper;
 
 	/**
 	 * @param IConfig $config

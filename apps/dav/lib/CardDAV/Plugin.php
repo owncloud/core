@@ -40,15 +40,15 @@ class Plugin extends \Sabre\CardDAV\Plugin {
 	 */
 	protected function getAddressbookHomeForPrincipal($principal) {
 		if (\strrpos($principal, 'principals/users', -\strlen($principal)) !== false) {
-			list(, $principalId) = \Sabre\Uri\split($principal);
+			[, $principalId] = \Sabre\Uri\split($principal);
 			return self::ADDRESSBOOK_ROOT . '/users/' . $principalId;
 		}
 		if (\strrpos($principal, 'principals/groups', -\strlen($principal)) !== false) {
-			list(, $principalId) = \Sabre\Uri\split($principal);
+			[, $principalId] = \Sabre\Uri\split($principal);
 			return self::ADDRESSBOOK_ROOT . '/groups/' . $principalId;
 		}
 		if (\strrpos($principal, 'principals/system', -\strlen($principal)) !== false) {
-			list(, $principalId) = \Sabre\Uri\split($principal);
+			[, $principalId] = \Sabre\Uri\split($principal);
 			return self::ADDRESSBOOK_ROOT . '/system/' . $principalId;
 		}
 
@@ -66,9 +66,7 @@ class Plugin extends \Sabre\CardDAV\Plugin {
 		$ns = '{http://owncloud.org/ns}';
 
 		if ($node instanceof AddressBook) {
-			$propFind->handle($ns . 'groups', function () use ($node) {
-				return new Groups($node->getContactsGroups());
-			});
+			$propFind->handle($ns . 'groups', fn () => new Groups($node->getContactsGroups()));
 		}
 	}
 }

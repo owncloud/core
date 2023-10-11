@@ -34,10 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 class Install extends Command {
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
 	public function __construct(IConfig $config) {
 		parent::__construct();

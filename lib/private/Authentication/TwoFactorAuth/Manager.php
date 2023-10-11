@@ -38,23 +38,17 @@ use OCP\IGroupManager;
 class Manager {
 	public const SESSION_UID_KEY = 'two_factor_auth_uid';
 
-	/** @var AppManager */
-	private $appManager;
+	private \OC\App\AppManager $appManager;
 
-	/** @var ISession */
-	private $session;
+	private \OCP\ISession $session;
 
-	/** @var IGroupManager */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var IRequest */
-	private $request;
+	private \OCP\IRequest $request;
 
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * @param AppManager $appManager
@@ -92,7 +86,7 @@ class Manager {
 			return false;
 		}
 
-		$enforce2faExcludedGroups = \json_decode($this->config->getAppValue('core', 'enforce_2fa_excluded_groups', '[]'), true);
+		$enforce2faExcludedGroups = \json_decode($this->config->getAppValue('core', 'enforce_2fa_excluded_groups', '[]'), true, 512, JSON_THROW_ON_ERROR);
 		if (!empty($enforce2faExcludedGroups)) {
 			foreach ($enforce2faExcludedGroups as $group) {
 				if ($this->groupManager->isInGroup($user->getUID(), $group)) {
@@ -130,7 +124,7 @@ class Manager {
 	 */
 	public function getProvider(IUser $user, $challengeProviderId) {
 		$providers = $this->getProviders($user);
-		return isset($providers[$challengeProviderId]) ? $providers[$challengeProviderId] : null;
+		return $providers[$challengeProviderId] ?? null;
 	}
 
 	/**
@@ -168,10 +162,9 @@ class Manager {
 			return $providers;
 		}
 
-		return \array_filter($providers, function ($provider) use ($user) {
-			/* @var $provider IProvider */
-			return $provider->isTwoFactorAuthEnabledForUser($user);
-		});
+		return \array_filter($providers, fn ($provider) =>
+	  /* @var $provider IProvider */
+	  $provider->isTwoFactorAuthEnabledForUser($user));
 	}
 
 	/**

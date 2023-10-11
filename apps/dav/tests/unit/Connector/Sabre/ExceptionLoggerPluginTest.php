@@ -47,14 +47,12 @@ class TestLogger extends Log {
 }
 
 class ExceptionLoggerPluginTest extends TestCase {
-	/** @var Server */
-	private $server;
+	private ?\Sabre\DAV\Server $server = null;
 
-	/** @var PluginToTest */
-	private $plugin;
+	private ?\OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin $plugin = null;
 
 	/** @var TestLogger | PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private ?\OCA\DAV\Tests\unit\Connector\Sabre\TestLogger $logger = null;
 
 	private function init() {
 		$this->server = new Server();

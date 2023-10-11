@@ -10,19 +10,19 @@ namespace Test;
 
 class HTTPHelperTest extends \Test\TestCase {
 	/** @var \OCP\IConfig*/
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var \OC\HTTPHelper */
-	private $httpHelperMock;
+	private \PHPUnit\Framework\MockObject\MockObject $httpHelperMock;
 	/** @var \OCP\Http\Client\IClientService */
-	private $clientService;
+	private \PHPUnit\Framework\MockObject\MockObject $clientService;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->clientService = $this->createMock('\OCP\Http\Client\IClientService');
-		$this->httpHelperMock = $this->getMockBuilder('\OC\HTTPHelper')
+		$this->clientService = $this->createMock('\\' . \OCP\Http\Client\IClientService::class);
+		$this->httpHelperMock = $this->getMockBuilder('\\' . \OC\HTTPHelper::class)
 			->setConstructorArgs([$this->config, $this->clientService])
 			->setMethods(['getHeaders'])
 			->getMock();
@@ -49,13 +49,13 @@ class HTTPHelperTest extends \Test\TestCase {
 	}
 
 	public function testPostSuccess() {
-		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$client = $this->getMockBuilder('\\' . \OCP\Http\Client\IClient::class)
 			->disableOriginalConstructor()->getMock();
 		$this->clientService
 			->expects($this->once())
 			->method('newClient')
 			->will($this->returnValue($client));
-		$response = $this->getMockBuilder('\OCP\Http\Client\IResponse')
+		$response = $this->getMockBuilder('\\' . \OCP\Http\Client\IResponse::class)
 			->disableOriginalConstructor()->getMock();
 		$client
 			->expects($this->once())
@@ -85,7 +85,7 @@ class HTTPHelperTest extends \Test\TestCase {
 	}
 
 	public function testPostException() {
-		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$client = $this->getMockBuilder('\\' . \OCP\Http\Client\IClient::class)
 			->disableOriginalConstructor()->getMock();
 		$this->clientService
 			->expects($this->once())

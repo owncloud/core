@@ -39,15 +39,9 @@ use OCP\AppFramework\Http\DataResponse;
  * @package OC\Settings\Controller
  */
 class LogSettingsController extends Controller {
-	/**
-	 * @var \OCP\IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/**
-	 * @var \OCP\IL10N
-	 */
-	private $l10n;
+	private \OCP\IL10N $l10n;
 
 	/**
 	 * @param string $appName

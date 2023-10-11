@@ -27,8 +27,7 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Lock\Persistent\ILock;
 
 class LockMapper extends Mapper {
-	/** @var ITimeFactory */
-	private $timeFactory;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
 
 	public function __construct(IDBConnection $db, ITimeFactory $timeFactory) {
 		parent::__construct($db, 'persistent_locks', null);

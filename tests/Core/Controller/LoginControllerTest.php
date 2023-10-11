@@ -40,21 +40,21 @@ class LoginControllerTest extends TestCase {
 	/** @var LoginController */
 	private $loginController;
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 	/** @var Session | \PHPUnit\Framework\MockObject\MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var Manager | \PHPUnit\Framework\MockObject\MockObject */
-	private $twoFactorManager;
+	private \PHPUnit\Framework\MockObject\MockObject $twoFactorManager;
 	/** @var ILicenseManager */
-	private $licenseManager;
+	private \PHPUnit\Framework\MockObject\MockObject $licenseManager;
 
 	public function setUp(): void {
 		parent::setUp();

@@ -44,21 +44,11 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 
 		$container = $this->getContainer();
 
-		$container->registerService('OCP\Files\Config\IUserMountCache', function (IAppContainer $c) {
-			return $c->getServer()->query('UserMountCache');
-		});
-		$container->registerService('OCP\Files\External\IStoragesBackendService', function (IAppContainer $c) {
-			return $c->getServer()->query('StoragesBackendService');
-		});
-		$container->registerService('OCP\Files\External\Service\IGlobalStoragesService', function (IAppContainer $c) {
-			return $c->getServer()->query('OCP\Files\External\Service\IGlobalStoragesService');
-		});
-		$container->registerService('OCP\Files\External\Service\IUserGlobalStoragesService', function (IAppContainer $c) {
-			return $c->getServer()->query('OCP\Files\External\Service\IUserGlobalStoragesService');
-		});
-		$container->registerService('OCP\Files\External\Service\IUserStoragesService', function (IAppContainer $c) {
-			return $c->getServer()->query('OCP\Files\External\Service\IUserStoragesService');
-		});
+		$container->registerService(\OCP\Files\Config\IUserMountCache::class, fn (IAppContainer $c) => $c->getServer()->query('UserMountCache'));
+		$container->registerService(\OCP\Files\External\IStoragesBackendService::class, fn (IAppContainer $c) => $c->getServer()->query('StoragesBackendService'));
+		$container->registerService(\OCP\Files\External\Service\IGlobalStoragesService::class, fn (IAppContainer $c) => $c->getServer()->query(\OCP\Files\External\Service\IGlobalStoragesService::class));
+		$container->registerService(\OCP\Files\External\Service\IUserGlobalStoragesService::class, fn (IAppContainer $c) => $c->getServer()->query(\OCP\Files\External\Service\IUserGlobalStoragesService::class));
+		$container->registerService(\OCP\Files\External\Service\IUserStoragesService::class, fn (IAppContainer $c) => $c->getServer()->query(\OCP\Files\External\Service\IUserStoragesService::class));
 
 		$backendService = $container->getServer()->query('StoragesBackendService');
 		$backendService->registerBackendProvider($this);
@@ -72,17 +62,17 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 		$container = $this->getContainer();
 
 		$backends = [
-			$container->query('OCA\Files_External\Lib\Backend\DAV'),
-			$container->query('OCA\Files_External\Lib\Backend\OwnCloud'),
-			$container->query('OCA\Files_External\Lib\Backend\SFTP'),
-			$container->query('OCA\Files_External\Lib\Backend\Google'),
-			$container->query('OCA\Files_External\Lib\Backend\SFTP_Key'),
-			$container->query('OCA\Files_External\Lib\Backend\SMB'),
+			$container->query(\OCA\Files_External\Lib\Backend\DAV::class),
+			$container->query(\OCA\Files_External\Lib\Backend\OwnCloud::class),
+			$container->query(\OCA\Files_External\Lib\Backend\SFTP::class),
+			$container->query(\OCA\Files_External\Lib\Backend\Google::class),
+			$container->query(\OCA\Files_External\Lib\Backend\SFTP_Key::class),
+			$container->query(\OCA\Files_External\Lib\Backend\SMB::class),
 			$container->query(SMB2::class),
-			$container->query('OCA\Files_External\Lib\Backend\SMB_OC'),
+			$container->query(\OCA\Files_External\Lib\Backend\SMB_OC::class),
 		];
 
-		$backends[] = $container->query('OCA\Files_External\Lib\Backend\Local');
+		$backends[] = $container->query(\OCA\Files_External\Lib\Backend\Local::class);
 
 		return $backends;
 	}
@@ -95,17 +85,17 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 
 		return [
 			// AuthMechanism::SCHEME_OAUTH1 mechanisms
-			$container->query('OCA\Files_External\Lib\Auth\OAuth1\OAuth1'),
+			$container->query(\OCA\Files_External\Lib\Auth\OAuth1\OAuth1::class),
 
 			// AuthMechanism::SCHEME_OAUTH2 mechanisms
-			$container->query('OCA\Files_External\Lib\Auth\OAuth2\OAuth2'),
+			$container->query(\OCA\Files_External\Lib\Auth\OAuth2\OAuth2::class),
 
 			// AuthMechanism::SCHEME_PUBLICKEY mechanisms
-			$container->query('OCA\Files_External\Lib\Auth\PublicKey\RSA'),
+			$container->query(\OCA\Files_External\Lib\Auth\PublicKey\RSA::class),
 
 			// AuthMechanism::SCHEME_OPENSTACK mechanisms
-			$container->query('OCA\Files_External\Lib\Auth\OpenStack\OpenStack'),
-			$container->query('OCA\Files_External\Lib\Auth\OpenStack\Rackspace'),
+			$container->query(\OCA\Files_External\Lib\Auth\OpenStack\OpenStack::class),
+			$container->query(\OCA\Files_External\Lib\Auth\OpenStack\Rackspace::class),
 		];
 	}
 }

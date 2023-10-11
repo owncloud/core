@@ -48,11 +48,11 @@ interface IUserInterfaceWithUserNameBackendTest extends UserInterface, IProvides
 
 class SyncServiceTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $mapper;
+	private \PHPUnit\Framework\MockObject\MockObject $mapper;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -115,9 +115,7 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->any())->method('getUpdatedFields')->willReturn([]);
 
 		// Then we should try to setup a new account and insert
-		$this->mapper->expects($this->once())->method('insert')->with($this->callback(function ($arg) use ($backendUids) {
-			return $arg instanceof Account && $arg->getUserId() === $backendUids[0];
-		}));
+		$this->mapper->expects($this->once())->method('insert')->with($this->callback(fn ($arg) => $arg instanceof Account && $arg->getUserId() === $backendUids[0]));
 
 		// Ignore state flag
 
@@ -189,9 +187,7 @@ class SyncServiceTest extends TestCase {
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$this->mapper->expects($this->once())
 			->method('callForUsers')
-			->with($this->callback(function ($param) {
-				return \is_callable($param);
-			}));
+			->with($this->callback(fn ($param) => \is_callable($param)));
 		$backend = $this->createMock(UserInterface::class);
 		$result = $s->analyzeExistingUsers($backend, function () {
 		});

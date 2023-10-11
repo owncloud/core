@@ -81,11 +81,11 @@ class UtilTest extends \Test\TestCase {
 	public function testFormatDate() {
 		\date_default_timezone_set("UTC");
 
-		$result = OC_Util::formatDate(1350129205);
+		$result = OC_Util::formatDate(1_350_129_205);
 		$expected = \sprintf('October 13, 2012, 11:53:25%sAM UTC', self::narrowNoBreakSpace);
 		$this->assertEquals($expected, $result);
 
-		$result = OC_Util::formatDate(1102831200, true);
+		$result = OC_Util::formatDate(1_102_831_200, true);
 		$expected = 'December 12, 2004';
 		$this->assertEquals($expected, $result);
 	}
@@ -93,7 +93,7 @@ class UtilTest extends \Test\TestCase {
 	public function testFormatDateWithTZ() {
 		\date_default_timezone_set("UTC");
 
-		$result = OC_Util::formatDate(1350129205, false, 'Europe/Berlin');
+		$result = OC_Util::formatDate(1_350_129_205, false, 'Europe/Berlin');
 		$expected = \sprintf('October 13, 2012, 1:53:25%sPM GMT+2', self::narrowNoBreakSpace);
 		$this->assertEquals($expected, $result);
 	}
@@ -103,7 +103,7 @@ class UtilTest extends \Test\TestCase {
 	public function testFormatDateWithInvalidTZ() {
 		$this->expectException(\Exception::class);
 
-		OC_Util::formatDate(1350129205, false, 'Mordor/Barad-dûr');
+		OC_Util::formatDate(1_350_129_205, false, 'Mordor/Barad-dûr');
 	}
 
 	public function formatDateWithTZFromSessionData() {
@@ -127,21 +127,19 @@ class UtilTest extends \Test\TestCase {
 		$oldDateTimeFormatter = \OC::$server->query('DateTimeFormatter');
 		\OC::$server->getSession()->set('timezone', $offset);
 
-		$selectedTimeZone = \OC::$server->getDateTimeZone()->getTimeZone(1350129205);
+		$selectedTimeZone = \OC::$server->getDateTimeZone()->getTimeZone(1_350_129_205);
 		$this->assertEquals($expectedTimeZone, $selectedTimeZone->getName());
 		$newDateTimeFormatter = new \OC\DateTimeFormatter($selectedTimeZone, \OC::$server->getL10NFactory()->get('lib', 'en'));
 		$this->setDateFormatter($newDateTimeFormatter);
 
-		$result = OC_Util::formatDate(1350129205, false);
+		$result = OC_Util::formatDate(1_350_129_205, false);
 		$this->assertEquals($expected, $result);
 
 		$this->setDateFormatter($oldDateTimeFormatter);
 	}
 
 	protected function setDateFormatter($formatter) {
-		\OC::$server->registerService('DateTimeFormatter', function ($c) use ($formatter) {
-			return $formatter;
-		});
+		\OC::$server->registerService('DateTimeFormatter', fn ($c) => $formatter);
 	}
 
 	public function testSanitizeHTML() {
@@ -306,9 +304,7 @@ class UtilTest extends \Test\TestCase {
 		$appManager = $this->createMock(IAppManager::class);
 		$appManager->expects($this->any())
 			->method('isEnabledForUser')
-			->will($this->returnCallback(function ($appId) use ($enabledApps) {
-				return \in_array($appId, $enabledApps, true);
-			}));
+			->will($this->returnCallback(fn ($appId) => \in_array($appId, $enabledApps, true)));
 		Dummy_OC_Util::$appManager = $appManager;
 
 		// need to set a user id to make sure enabled apps are read from cache

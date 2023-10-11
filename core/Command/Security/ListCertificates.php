@@ -51,8 +51,7 @@ class ListCertificates extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$outputType = $input->getOption('output');
 		if ($outputType === self::OUTPUT_FORMAT_JSON || $outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
-			$certificates = \array_map(function (ICertificate $certificate) {
-				return [
+			$certificates = \array_map(fn (ICertificate $certificate) => [
 					'name' => $certificate->getName(),
 					'common_name' => $certificate->getCommonName(),
 					'organization' => $certificate->getOrganization(),
@@ -60,10 +59,9 @@ class ListCertificates extends Base {
 					'issuer' => $certificate->getIssuerName(),
 					'issuer_organization' => $certificate->getIssuerOrganization(),
 					'issue_date' => $certificate->getIssueDate()->format(\DateTime::ATOM)
-				];
-			}, $this->certificateManager->listCertificates());
+				], $this->certificateManager->listCertificates());
 			if ($outputType === self::OUTPUT_FORMAT_JSON) {
-				$output->writeln(\json_encode(\array_values($certificates)));
+				$output->writeln(\json_encode(\array_values($certificates), JSON_THROW_ON_ERROR));
 			} else {
 				$output->writeln(\json_encode(\array_values($certificates), JSON_PRETTY_PRINT));
 			}
@@ -77,15 +75,13 @@ class ListCertificates extends Base {
 				'Issued By'
 			]);
 
-			$rows = \array_map(function (ICertificate $certificate) {
-				return [
+			$rows = \array_map(fn (ICertificate $certificate) => [
 					$certificate->getName(),
 					$certificate->getCommonName(),
 					$certificate->getOrganization(),
 					$this->l->l('date', $certificate->getExpireDate()),
 					$certificate->getIssuerName()
-				];
-			}, $this->certificateManager->listCertificates());
+				], $this->certificateManager->listCertificates());
 			$table->setRows($rows);
 			$table->render();
 		}

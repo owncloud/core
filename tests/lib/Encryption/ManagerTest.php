@@ -6,35 +6,29 @@ use OC\Encryption\Manager;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
-	/** @var Manager */
-	private $manager;
+	private \OC\Encryption\Manager $manager;
 
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
-	private $view;
+	private \PHPUnit\Framework\MockObject\MockObject $view;
 
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
-	private $util;
+	private \PHPUnit\Framework\MockObject\MockObject $util;
 	
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OC\Memcache\ArrayCache */
-	private $arrayCache;
+	private \PHPUnit\Framework\MockObject\MockObject $arrayCache;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->config = $this->createMock('\OCP\IConfig');
-		$this->logger = $this->createMock('\OCP\ILogger');
-		$this->l10n = $this->createMock('\OCP\Il10n');
-		$this->view = $this->createMock('\OC\Files\View');
-		$this->util = $this->getMockBuilder('\OC\Encryption\Util')->disableOriginalConstructor()->getMock();
-		$this->arrayCache = $this->createMock('OC\Memcache\ArrayCache');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
+		$this->logger = $this->createMock('\\' . \OCP\ILogger::class);
+		$this->l10n = $this->createMock('\\' . \OCP\Il10n::class);
+		$this->view = $this->createMock('\\' . \OC\Files\View::class);
+		$this->util = $this->getMockBuilder('\\' . \OC\Encryption\Util::class)->disableOriginalConstructor()->getMock();
+		$this->arrayCache = $this->createMock(\OC\Memcache\ArrayCache::class);
 		$this->manager = new Manager($this->config, $this->logger, $this->l10n, $this->view, $this->util, $this->arrayCache);
 	}
 
@@ -49,12 +43,10 @@ class ManagerTest extends TestCase {
 
 	public function testManagerIsDisabledIfDisabledButModules() {
 		$this->config->expects($this->any())->method('getAppValue')->willReturn(false);
-		$em = $this->createMock('\OCP\Encryption\IEncryptionModule');
+		$em = $this->createMock('\\' . \OCP\Encryption\IEncryptionModule::class);
 		$em->expects($this->any())->method('getId')->willReturn('id');
 		$em->expects($this->any())->method('getDisplayName')->willReturn('TestDummyModule0');
-		$this->manager->registerEncryptionModule('id', 'TestDummyModule0', function () use ($em) {
-			return $em;
-		});
+		$this->manager->registerEncryptionModule('id', 'TestDummyModule0', fn () => $em);
 		$this->assertFalse($this->manager->isEnabled());
 	}
 
@@ -246,7 +238,7 @@ class ManagerTest extends TestCase {
 //	}
 
 	protected function addNewEncryptionModule(Manager $manager, $id) {
-		$encryptionModule = $this->createMock('\OCP\Encryption\IEncryptionModule');
+		$encryptionModule = $this->createMock('\\' . \OCP\Encryption\IEncryptionModule::class);
 		$encryptionModule->expects($this->any())
 			->method('getId')
 			->willReturn('ID' . $id);
@@ -254,8 +246,6 @@ class ManagerTest extends TestCase {
 			->method('getDisplayName')
 			->willReturn('TestDummyModule' . $id);
 		/** @var \OCP\Encryption\IEncryptionModule $encryptionModule */
-		$manager->registerEncryptionModule('ID' . $id, 'TestDummyModule' . $id, function () use ($encryptionModule) {
-			return $encryptionModule;
-		});
+		$manager->registerEncryptionModule('ID' . $id, 'TestDummyModule' . $id, fn () => $encryptionModule);
 	}
 }

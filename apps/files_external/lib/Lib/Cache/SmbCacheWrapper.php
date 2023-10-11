@@ -38,10 +38,7 @@ use OCP\Files\Cache\ICacheEntry;
  * @package OCA\Files_External\Lib\Cache
  */
 class SmbCacheWrapper extends CacheWrapper {
-	/**
-	 * @var SMB
-	 */
-	private $smb;
+	private \OCA\Files_External\Lib\Storage\SMB $smb;
 
 	public function __construct(ICache $cache, SMB $smb) {
 		parent::__construct($cache);
@@ -57,16 +54,12 @@ class SmbCacheWrapper extends CacheWrapper {
 
 	public function getFolderContents($folder) {
 		$children = parent::getFolderContents($folder);
-		return \array_filter($children, function (ICacheEntry $c) {
-			return $this->canAccess($c->getPath());
-		});
+		return \array_filter($children, fn (ICacheEntry $c) => $this->canAccess($c->getPath()));
 	}
 
 	public function getFolderContentsById($fileId) {
 		$children = parent::getFolderContentsById($fileId);
-		return \array_filter($children, function (ICacheEntry $c) {
-			return $this->canAccess($c->getPath());
-		});
+		return \array_filter($children, fn (ICacheEntry $c) => $this->canAccess($c->getPath()));
 	}
 
 	private function canAccess($file): bool {

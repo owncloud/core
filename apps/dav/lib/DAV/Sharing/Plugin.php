@@ -35,11 +35,9 @@ use Sabre\HTTP\ResponseInterface;
 class Plugin extends ServerPlugin {
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
-	/** @var Auth */
-	private $auth;
+	private \OCA\DAV\Connector\Sabre\Auth $auth;
 
-	/** @var IRequest */
-	private $request;
+	private \OCP\IRequest $request;
 
 	/**
 	 * Plugin constructor.
@@ -96,8 +94,8 @@ class Plugin extends ServerPlugin {
 	 */
 	public function initialize(Server $server) {
 		$this->server = $server;
-		$this->server->xml->elementMap['{' . Plugin::NS_OWNCLOUD . '}share'] = 'OCA\\DAV\\DAV\\Sharing\\Xml\\ShareRequest';
-		$this->server->xml->elementMap['{' . Plugin::NS_OWNCLOUD . '}invite'] = 'OCA\\DAV\\DAV\\Sharing\\Xml\\Invite';
+		$this->server->xml->elementMap['{' . Plugin::NS_OWNCLOUD . '}share'] = \OCA\DAV\DAV\Sharing\Xml\ShareRequest::class;
+		$this->server->xml->elementMap['{' . Plugin::NS_OWNCLOUD . '}invite'] = \OCA\DAV\DAV\Sharing\Xml\Invite::class;
 
 		$this->server->on('method:POST', [$this, 'httpPost']);
 		$this->server->on('propFind', [$this, 'propFind']);
@@ -185,11 +183,9 @@ class Plugin extends ServerPlugin {
 	 */
 	public function propFind(PropFind $propFind, INode $node) {
 		if ($node instanceof IShareable) {
-			$propFind->handle('{' . Plugin::NS_OWNCLOUD . '}invite', function () use ($node) {
-				return new Invite(
-					$node->getShares()
-				);
-			});
+			$propFind->handle('{' . Plugin::NS_OWNCLOUD . '}invite', fn () => new Invite(
+				$node->getShares()
+			));
 		}
 	}
 }

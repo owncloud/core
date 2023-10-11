@@ -32,8 +32,7 @@ use Test\TestCase;
  * @group DB
  */
 class RepairTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -73,7 +72,7 @@ class RepairTest extends TestCase {
 			[['--list' => true], true, 0, 'Found'],
 			[[], false, 0, 'Turn on maintenance mode to use this command'],
 			[['--single' => '\OC\UnexistingClass'], true, 1, 'Repair step not found'],
-			[['--single' => 'OC\Repair\RepairMimeTypes'], true, 0, 'Repair mime types'],
+			[['--single' => \OC\Repair\RepairMimeTypes::class], true, 0, 'Repair mime types'],
 			[[], true, 0, 'Step:'],
 			[['--include-expensive' => true], true, 0, 'Remove shares of old group memberships']
 		];

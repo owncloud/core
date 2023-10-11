@@ -43,7 +43,7 @@ class EntityCollectionTest extends \Test\TestCase {
 	/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
 	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
-	private $dispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $dispatcher;
 
 	public function setUp(): void {
 		parent::setUp();

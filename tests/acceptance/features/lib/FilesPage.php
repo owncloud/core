@@ -353,7 +353,7 @@ class FilesPage extends FilesPageBasic {
 		try {
 			if (\strpos(
 				$this->getDriver()->getCurrentUrl(),
-				$this->getUrl($urlParameters)
+				(string) $this->getUrl($urlParameters)
 			) === false
 			) {
 				throw new UnexpectedPageException(

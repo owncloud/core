@@ -36,10 +36,7 @@ use OCP\Files\ObjectStore\IVersionedObjectStorage;
 use OCP\IUser;
 
 class ObjectStoreStorage extends \OC\Files\Storage\Common {
-	/**
-	 * @var array
-	 */
-	private static $tmpFiles = [];
+	private static array $tmpFiles = [];
 	/** @var array */
 	private $movingBetweenBuckets = [];
 	/**
@@ -589,7 +586,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				throw new NotFoundException();
 			}
 			$versions = $this->objectStore->getVersions($this->getURN($stat['fileid']));
-			list($uid, $path) = $this->convertInternalPathToGlobalPath($internalPath);
+			[$uid, $path] = $this->convertInternalPathToGlobalPath($internalPath);
 			return \array_map(function (array $version) use ($uid, $path) {
 				$version['path'] = $path;
 				$version['owner'] = $uid;
@@ -606,7 +603,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				throw new NotFoundException();
 			}
 			$version = $this->objectStore->getVersion($this->getURN($stat['fileid']), $versionId);
-			list($uid, $path) = $this->convertInternalPathToGlobalPath($internalPath);
+			[$uid, $path] = $this->convertInternalPathToGlobalPath($internalPath);
 			if (!empty($version)) {
 				$version['path'] = $path;
 				$version['owner'] = $uid;

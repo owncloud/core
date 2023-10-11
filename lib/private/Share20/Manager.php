@@ -62,38 +62,23 @@ use OCP\Activity\IManager as ActivityIManager;
  * This class is the communication hub for all sharing related operations.
  */
 class Manager implements IManager {
-	/** @var IProviderFactory */
-	private $factory;
-	/** @var ILogger */
-	private $logger;
-	/** @var IConfig */
-	private $config;
-	/** @var ISecureRandom */
-	private $secureRandom;
-	/** @var IHasher */
-	private $hasher;
-	/** @var IMountManager */
-	private $mountManager;
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IL10N */
-	private $l;
-	/** @var IUserManager */
-	private $userManager;
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Share\IProviderFactory $factory;
+	private \OCP\ILogger $logger;
+	private \OCP\IConfig $config;
+	private \OCP\Security\ISecureRandom $secureRandom;
+	private \OCP\Security\IHasher $hasher;
+	private \OCP\Files\Mount\IMountManager $mountManager;
+	private \OCP\IGroupManager $groupManager;
+	private \OCP\IL10N $l;
+	private \OCP\IUserManager $userManager;
+	private \OCP\Files\IRootFolder $rootFolder;
 	/** @var CappedMemoryCache */
 	private $sharingDisabledForUsersCache;
-	/** @var EventDispatcher  */
-	private $eventDispatcher;
-	/** @var  View */
-	private $view;
-	/** @var IDBConnection  */
-	private $connection;
-	/** @var IUserSession  */
-	private $userSession;
-	/** @var ActivityIManager */
-	private $activityManager;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
+	private \OC\Files\View $view;
+	private \OCP\IDBConnection $connection;
+	private ?\OCP\IUserSession $userSession = null;
+	private \OCP\Activity\IManager $activityManager;
 
 	/**
 	 * Manager constructor.
@@ -356,8 +341,7 @@ class Manager implements IManager {
 
 		/* By default, there are no required attributes to be set on a file */
 		$requiredAttributes = $this->newShare()->newAttributes();
-		$currentAttributes = $share->getAttributes() !== null ?
-			$share->getAttributes() : $this->newShare()->newAttributes();
+		$currentAttributes = $share->getAttributes() ?? $this->newShare()->newAttributes();
 
 		/*
 		 * Quick fix for #23536
@@ -387,11 +371,11 @@ class Manager implements IManager {
 			$requiredAttributes = $this->newShare()->newAttributes();
 			foreach ($incomingNodes as $incomingNode) {
 				$incomingNodeStorage = $incomingNode->getStorage();
-				if ($incomingNodeStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+				if ($incomingNodeStorage->instanceOfStorage(\OCA\Files_Sharing\External\Storage::class)) {
 					// if $incomingNode is an incoming federated share use share node permission directly,
 					// fed shares are distinct mounted like normal files/folders
 					$maxPermissions |= $shareNode->getPermissions();
-				} elseif ($incomingNodeStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+				} elseif ($incomingNodeStorage->instanceOfStorage(\OCA\Files_Sharing\SharedStorage::class)) {
 					// if $incomingNode is user/group share, use supershare permissions
 					/** @var \OCA\Files_Sharing\SharedStorage $incomingNodeStorage */
 					'@phan-var \OCA\Files_Sharing\SharedStorage $incomingNodeStorage';
@@ -670,7 +654,7 @@ class Manager implements IManager {
 		// No sense in checking if the method is not there.
 		if (\method_exists($share, 'setParent')) {
 			$storage = $share->getNode()->getStorage();
-			if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
+			if ($storage->instanceOfStorage('\\' . \OCA\Files_Sharing\ISharedStorage::class)) {
 				// ISharedStorage does not mention getShareId
 				// getShareId is in SharedStorage
 				// FixMe: need to be sure that we always have a SharedStorage
@@ -691,7 +675,7 @@ class Manager implements IManager {
 		if ($path instanceof \OCP\Files\Folder) {
 			$mounts = $this->mountManager->findIn($path->getPath());
 			foreach ($mounts as $mount) {
-				if ($mount->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
+				if ($mount->getStorage()->instanceOfStorage('\\' . \OCA\Files_Sharing\ISharedStorage::class)) {
 					throw new \InvalidArgumentException('Path contains files shared with you');
 				}
 			}
@@ -738,9 +722,9 @@ class Manager implements IManager {
 		 * Except for mounted federated shares.
 		 */
 		$storage = $share->getNode()->getStorage();
-		if ($storage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+		if ($storage->instanceOfStorage(\OCA\Files_Sharing\External\Storage::class)) {
 			$parent = $share->getNode()->getParent();
-			while ($parent->getStorage()->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+			while ($parent->getStorage()->instanceOfStorage(\OCA\Files_Sharing\External\Storage::class)) {
 				$parent = $parent->getParent();
 			}
 			$share->setShareOwner($parent->getOwner()->getUID());
@@ -819,7 +803,7 @@ class Manager implements IManager {
 			'run' => &$run,
 			'error' => &$error,
 		];
-		\OC_Hook::emit('OCP\Share', 'pre_shared', $preHookData);
+		\OC_Hook::emit(\OCP\Share::class, 'pre_shared', $preHookData);
 
 		$beforeEvent = new GenericEvent(null, ['shareData' => $preHookData, 'shareObject' => $share]);
 		$this->eventDispatcher->dispatch($beforeEvent, 'share.beforeCreate');
@@ -856,7 +840,7 @@ class Manager implements IManager {
 			'passwordEnabled' => ($share->getPassword() !== null and ($share->getPassword() !== '')),
 		];
 
-		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
+		\OC_Hook::emit(\OCP\Share::class, 'post_shared', $postHookData);
 
 		$afterEvent = new GenericEvent(null, ['shareData' => $postHookData, 'shareObject' => $share]);
 		$this->eventDispatcher->dispatch($afterEvent, 'share.afterCreate');
@@ -1051,7 +1035,7 @@ class Manager implements IManager {
 		$shareAfterUpdateEvent->setArgument('shareobject', $share);
 		$update = false;
 		if ($expirationDateUpdated === true) {
-			\OC_Hook::emit('OCP\Share', 'post_set_expiration_date', [
+			\OC_Hook::emit(\OCP\Share::class, 'post_set_expiration_date', [
 				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
 				'itemSource' => $share->getNode()->getId(),
 				'date' => $share->getExpirationDate(),
@@ -1063,7 +1047,7 @@ class Manager implements IManager {
 		}
 
 		if ($share->getPassword() !== $originalShare->getPassword()) {
-			\OC_Hook::emit('OCP\Share', 'post_update_password', [
+			\OC_Hook::emit(\OCP\Share::class, 'post_update_password', [
 				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
 				'itemSource' => $share->getNode()->getId(),
 				'uidOwner' => $share->getSharedBy(),
@@ -1080,7 +1064,7 @@ class Manager implements IManager {
 			} else {
 				$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
 			}
-			\OC_Hook::emit('OCP\Share', 'post_update_permissions', [
+			\OC_Hook::emit(\OCP\Share::class, 'post_update_permissions', [
 				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
 				'itemSource' => $share->getNode()->getId(),
 				'shareType' => $share->getShareType(),
@@ -1184,7 +1168,7 @@ class Manager implements IManager {
 		$hookParams = self::formatUnshareHookParams($share);
 
 		// Emit pre-hook
-		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
+		\OC_Hook::emit(\OCP\Share::class, 'pre_unshare', $hookParams);
 
 		$beforeEvent = new GenericEvent(null, ['shareData' => $hookParams, 'shareObject' => $share]);
 		$this->eventDispatcher->dispatch($beforeEvent, 'share.beforeDelete');
@@ -1204,7 +1188,7 @@ class Manager implements IManager {
 		$hookParams['deletedShares'] = $formattedDeletedShares;
 
 		// Emit post hook
-		\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
+		\OC_Hook::emit(\OCP\Share::class, 'post_unshare', $hookParams);
 		$afterEvent = new GenericEvent(null, ['shareData' => $hookParams['deletedShares'], 'shareObject' => $share]);
 		$this->eventDispatcher->dispatch($afterEvent, 'share.afterDelete');
 	}
@@ -1219,7 +1203,7 @@ class Manager implements IManager {
 	 * @param string $recipientId
 	 */
 	public function deleteFromSelf(\OCP\Share\IShare $share, $recipientId) {
-		list($providerId, ) = $this->splitFullId($share->getFullId());
+		[$providerId, ] = $this->splitFullId($share->getFullId());
 		$provider = $this->factory->getProvider($providerId);
 
 		$provider->deleteFromSelf($share, $recipientId);
@@ -1231,7 +1215,7 @@ class Manager implements IManager {
 		$hookParams = self::formatUnshareHookParams($share);
 		$hookParams['itemTarget'] = $hookParams['fileTarget'];
 		$hookParams['unsharedItems'] = [$hookParams];
-		\OC_Hook::emit('OCP\Share', 'post_unshareFromSelf', $hookParams);
+		\OC_Hook::emit(\OCP\Share::class, 'post_unshareFromSelf', $hookParams);
 		$event = new GenericEvent(null, [
 			'shareRecipient' => $recipientId,
 			'shareOwner' => $share->getSharedBy(),
@@ -1252,7 +1236,7 @@ class Manager implements IManager {
 	 * @inheritdoc
 	 */
 	public function updateShareForRecipient(\OCP\Share\IShare $share, $recipientId) {
-		list($providerId, ) = $this->splitFullId($share->getFullId());
+		[$providerId, ] = $this->splitFullId($share->getFullId());
 		$provider = $this->factory->getProvider($providerId);
 
 		return $provider->updateForRecipient($share, $recipientId);
@@ -1467,7 +1451,7 @@ class Manager implements IManager {
 			throw new ShareNotFound();
 		}
 
-		list($providerId, $id) = $this->splitFullId($id);
+		[$providerId, $id] = $this->splitFullId($id);
 		$provider = $this->factory->getProvider($providerId);
 
 		$share = $provider->getShareById($id, $recipient);
@@ -1536,7 +1520,7 @@ class Manager implements IManager {
 			} catch(ShareNotFound $ex) {
 				$this->logger->error(
 					"shared file not found by token: $token for federated user share, try to check federated group share.",
-					['app' => __CLASS__]
+					['app' => self::class]
 				);
 				try {
 					$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_REMOTE_GROUP);
@@ -1546,13 +1530,13 @@ class Manager implements IManager {
 				} catch (ShareNotFound $ex) {
 					$this->logger->error(
 						"shared file not found by token: $token for federated group share",
-						['app' => __CLASS__]
+						['app' => self::class]
 					);
 					throw new ShareNotFound();
 				} catch (ProviderException $ex) {
 					$this->logger->logException(
 						$ex,
-						['app' => __CLASS__]
+						['app' => self::class]
 					);
 					throw new ShareNotFound();
 				}
@@ -1945,10 +1929,10 @@ class Manager implements IManager {
 
 		if ($this->config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
 			$groupsList = $this->config->getAppValue('core', 'shareapi_exclude_groups_list', '');
-			$excludedGroups = \json_decode($groupsList);
+			$excludedGroups = \json_decode($groupsList, null, 512, JSON_THROW_ON_ERROR);
 			if ($excludedGroups === null) {
 				$excludedGroups = \explode(',', $groupsList);
-				$newValue = \json_encode($excludedGroups);
+				$newValue = \json_encode($excludedGroups, JSON_THROW_ON_ERROR);
 				$this->config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
 			}
 			$user = $this->userManager->get($userId);
@@ -1981,7 +1965,7 @@ class Manager implements IManager {
 			return "";
 		}
 
-		return \md5(\json_encode($perms->toArray()));
+		return \md5(\json_encode($perms->toArray(), JSON_THROW_ON_ERROR));
 	}
 
 	/**

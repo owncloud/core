@@ -26,10 +26,10 @@ namespace OC\Share;
 use OCP\ILogger;
 
 class SearchResultSorter {
-	private $search;
+	private string $search;
 	private $encoding;
 	private $key;
-	private $log;
+	private ?\OCP\ILogger $log = null;
 
 	/**
 	 * @param string $search the search term as was given by the user

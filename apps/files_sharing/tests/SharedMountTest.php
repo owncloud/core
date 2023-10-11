@@ -440,7 +440,7 @@ class SharedMountTest extends TestCase {
 				$caught = $e;
 			}
 
-			$this->assertInstanceOf('\OCP\Files\NotPermittedException', $e);
+			$this->assertInstanceOf('\\' . \OCP\Files\NotPermittedException::class, $e);
 		}
 
 		$this->shareManager->deleteShare($share);

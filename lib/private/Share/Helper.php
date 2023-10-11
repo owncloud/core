@@ -47,10 +47,7 @@ class Helper extends \OC\Share\Constants {
 		// FIXME: $uidOwner and $groupParent seems to be unused
 		$backend = \OC\Share\Share::getBackend($itemType);
 		if ($shareType === self::SHARE_TYPE_LINK || $shareType === self::SHARE_TYPE_REMOTE) {
-			if (isset($suggestedTarget)) {
-				return $suggestedTarget;
-			}
-			return $backend->generateTarget($itemSource, false);
+			return $suggestedTarget ?? $backend->generateTarget($itemSource, false);
 		} else {
 			if ($shareType == self::SHARE_TYPE_USER) {
 				// Share with is a user, so set share type to user and groups

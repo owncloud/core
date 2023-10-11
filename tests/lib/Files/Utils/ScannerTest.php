@@ -22,7 +22,7 @@ class TestScanner extends \OC\Files\Utils\Scanner {
 	/**
 	 * @var \OC\Files\Mount\MountPoint[] $mounts
 	 */
-	private $mounts = [];
+	private array $mounts = [];
 
 	/**
 	 * @param \OC\Files\Mount\MountPoint $mount
@@ -105,7 +105,7 @@ class ScannerTest extends \Test\TestCase {
 		$uid = self::getUniqueID();
 		$this->createUser($uid);
 
-		$mountProvider = $this->createMock('\OCP\Files\Config\IMountProvider');
+		$mountProvider = $this->createMock('\\' . \OCP\Files\Config\IMountProvider::class);
 
 		$storage = new Temporary([]);
 		$mount = new MountPoint($storage, '/' . $uid . '/files/foo');
@@ -188,14 +188,14 @@ class ScannerTest extends \Test\TestCase {
 	}
 
 	public function testSkipLocalShares() {
-		$sharedStorage = $this->createMock('OCA\Files_Sharing\SharedStorage');
+		$sharedStorage = $this->createMock(\OCA\Files_Sharing\SharedStorage::class);
 		$sharedMount = new MountPoint($sharedStorage, '/share');
 		Filesystem::getMountManager()->addMount($sharedMount);
 
 		$sharedStorage->expects($this->any())
 			->method('instanceOfStorage')
 			->will($this->returnValueMap([
-				['OCA\Files_Sharing\ISharedStorage', true],
+				[\OCA\Files_Sharing\ISharedStorage::class, true],
 			]));
 		$sharedStorage->expects($this->never())
 			->method('getScanner');
@@ -229,7 +229,7 @@ class ScannerTest extends \Test\TestCase {
 		$homeStorage->expects($this->any())
 			->method('instanceOfStorage')
 			->will($this->returnValueMap([
-				['\OC\Files\Storage\Home', true],
+				['\\' . \OC\Files\Storage\Home::class, true],
 			]));
 
 		$homeStorage->expects($this->never())

@@ -35,7 +35,7 @@ class DirMask extends PermissionsMask {
 	/**
 	 * @var int remember length
 	 */
-	private $pathLength;
+	private int $pathLength;
 	/**
 	 * @param array $arguments ['storage' => $storage, 'mask' => $mask, 'path' => $path]
 	 *

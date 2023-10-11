@@ -40,17 +40,16 @@ use Test\TestCase;
  */
 class ResetPasswordTest extends TestCase {
 	/** @var  IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 	/** @var  IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var  ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 	/** @var  EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
-	private $environmentHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $environmentHelper;
 	/** @var LostController | \PHPUnit\Framework\MockObject\MockObject */
-	private $lostController;
-	/** @var  ResetPassword */
-	private $resetPassword;
+	private \PHPUnit\Framework\MockObject\MockObject $lostController;
+	private \OC\Core\Command\User\ResetPassword $resetPassword;
 	protected function setUp(): void {
 		parent::setUp();
 

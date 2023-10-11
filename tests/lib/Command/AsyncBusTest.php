@@ -69,12 +69,12 @@ class AsyncBusTest extends TestCase {
 	/**
 	 * @var \OCP\BackgroundJob\IJobList
 	 */
-	private $jobList;
+	private \Test\BackgroundJob\DummyJobList $jobList;
 
 	/**
 	 * @var \OCP\Command\IBus
 	 */
-	private $bus;
+	private \OC\Command\AsyncBus $bus;
 
 	public static function DummyCommand() {
 		self::$lastCommand = 'static';
@@ -101,7 +101,7 @@ class AsyncBusTest extends TestCase {
 	}
 
 	public function testStaticCallable() {
-		$this->bus->push(['\Test\Command\AsyncBusTest', 'DummyCommand']);
+		$this->bus->push(['\\' . \Test\Command\AsyncBusTest::class, 'DummyCommand']);
 		$this->runJobs();
 		$this->assertEquals('static', self::$lastCommand);
 	}
@@ -152,7 +152,7 @@ class AsyncBusTest extends TestCase {
 	}
 
 	public function testFileFileAccessCommandSync() {
-		$this->bus->requireSync('\OC\Command\FileAccess');
+		$this->bus->requireSync('\\' . \OC\Command\FileAccess::class);
 		$this->bus->push(new FilesystemCommand());
 		$this->assertEquals('FileAccess', self::$lastCommand);
 		self::$lastCommand = '';

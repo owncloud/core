@@ -49,7 +49,7 @@ namespace OC {
 					$c['addressbook-key'] = $addressBook->getKey();
 					$contacts[] = $c;
 				}
-				$result = \array_merge($result, $contacts);
+				$result = [...$result, ...$contacts];
 			}
 
 			return $result;

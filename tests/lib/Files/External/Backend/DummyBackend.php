@@ -29,8 +29,8 @@ class DummyBackend extends Backend {
 	public function __construct() {
 		$this
 			->setIdentifier('dummy')
-			->addIdentifierAlias('\Test\Files\External\Backend\DummyBackend') // legacy compat
-			->setStorageClass('\Test\Files\External\Backend\DummyStorage')
+			->addIdentifierAlias('\\' . \Test\Files\External\Backend\DummyBackend::class) // legacy compat
+			->setStorageClass('\\' . \Test\Files\External\Backend\DummyStorage::class)
 			->setText('Dummy')
 			->addParameters([
 				(new DefinitionParameter('param1', 'Param One')),

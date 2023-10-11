@@ -36,15 +36,11 @@ use Test\TestCase;
 class ChildController extends Controller {
 	public function __construct($appName, $request) {
 		parent::__construct($appName, $request);
-		$this->registerResponder('tom', function ($response) {
-			return 'hi';
-		});
+		$this->registerResponder('tom', fn ($response) => 'hi');
 	}
 
 	public function custom($in) {
-		$this->registerResponder('json', function ($response) {
-			return new JSONResponse([\strlen($response)]);
-		});
+		$this->registerResponder('json', fn ($response) => new JSONResponse([\strlen($response)]));
 
 		return $in;
 	}
@@ -61,10 +57,9 @@ class ChildController extends Controller {
 };
 
 class ControllerTest extends TestCase {
-	/** @var ChildController */
-	private $controller;
+	private \Test\AppFramework\Controller\ChildController $controller;
 	/** @var DIContainer */
-	private $app;
+	private \PHPUnit\Framework\MockObject\MockObject $app;
 
 	protected function setUp(): void {
 		parent::setUp();

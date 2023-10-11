@@ -33,30 +33,16 @@ use OCP\Share\IManager;
  * @package OCA\Files_Sharing
  */
 class Capabilities implements ICapability {
-	/** @var IManager */
-	private $shareManager;
-	/** @var IConfig */
-	private $config;
+	private \OCP\Share\IManager $shareManager;
+	private \OCP\IConfig $config;
 
-	/**
-	 * @var UserSearch
-	 */
-	private $userSearch;
+	private \OCP\Util\UserSearch $userSearch;
 
-	/**
-	 * @var IL10N
-	 */
-	private $l10n;
+	private \OCP\IL10N $l10n;
 
-	/**
-	 * @var SharingAllowlist
-	 */
-	private $sharingAllowlist;
+	private \OCA\Files_Sharing\SharingAllowlist $sharingAllowlist;
 
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
 	/**
 	 * Capabilities constructor.

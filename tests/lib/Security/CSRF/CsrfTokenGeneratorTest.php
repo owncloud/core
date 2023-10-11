@@ -23,13 +23,12 @@ namespace Test\Security\CSRF;
 
 class CsrfTokenGeneratorTest extends \Test\TestCase {
 	/** @var \OCP\Security\ISecureRandom */
-	private $random;
-	/** @var \OC\Security\CSRF\CsrfTokenGenerator */
-	private $csrfTokenGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $random;
+	private \OC\Security\CSRF\CsrfTokenGenerator $csrfTokenGenerator;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->random = $this->getMockBuilder('\OCP\Security\ISecureRandom')
+		$this->random = $this->getMockBuilder('\\' . \OCP\Security\ISecureRandom::class)
 			->disableOriginalConstructor()->getMock();
 		$this->csrfTokenGenerator = new \OC\Security\CSRF\CsrfTokenGenerator($this->random);
 	}

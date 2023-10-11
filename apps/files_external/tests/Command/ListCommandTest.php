@@ -38,21 +38,21 @@ class ListCommandTest extends CommandTest {
 	 */
 	private function getInstance() {
 		/** @var \OCP\Files\External\Service\IGlobalStoragesService|\PHPUnit\Framework\MockObject\MockObject $globalService */
-		$globalService = $this->createMock('\OCP\Files\External\Service\IGlobalStoragesService');
+		$globalService = $this->createMock('\\' . \OCP\Files\External\Service\IGlobalStoragesService::class);
 		/** @var \OC\Files\External\Service\IUserStoragesService|\PHPUnit\Framework\MockObject\MockObject $userService */
-		$userService = $this->createMock('\OCP\Files\External\Service\IUserStoragesService');
+		$userService = $this->createMock('\\' . \OCP\Files\External\Service\IUserStoragesService::class);
 		/** @var \OCP\IUserManager|\PHPUnit\Framework\MockObject\MockObject $userManager */
-		$userManager = $this->createMock('\OCP\IUserManager');
+		$userManager = $this->createMock('\\' . \OCP\IUserManager::class);
 		/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject $userSession */
-		$userSession = $this->createMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 
 		return new ListCommand($globalService, $userService, $userSession, $userManager);
 	}
 
 	public function testListAuthIdentifier() {
-		$l10n = $this->createMock('\OCP\IL10N', null, [], '', false);
-		$session = $this->createMock('\OCP\ISession');
-		$crypto = $this->createMock('\OCP\Security\ICrypto');
+		$l10n = $this->createMock('\\' . \OCP\IL10N::class);
+		$session = $this->createMock('\\' . \OCP\ISession::class);
+		$crypto = $this->createMock('\\' . \OCP\Security\ICrypto::class);
 		$instance = $this->getInstance();
 		// FIXME: use mock of IStorageConfig
 		$mount1 = new StorageConfig();
@@ -67,15 +67,15 @@ class ListCommandTest extends CommandTest {
 		$output = new BufferedOutput();
 
 		$instance->listMounts('', [$mount1, $mount2], $input, $output);
-		$output = \json_decode($output->fetch(), true);
+		$output = \json_decode($output->fetch(), true, 512, JSON_THROW_ON_ERROR);
 
 		$this->assertNotEquals($output[0]['authentication_type'], $output[1]['authentication_type']);
 	}
 
 	public function testDisplayWarningForIncomplete() {
-		$l10n = $this->createMock('\OCP\IL10N', null, [], '', false);
-		$session = $this->createMock('\OCP\ISession');
-		$crypto = $this->createMock('\OCP\Security\ICrypto');
+		$l10n = $this->createMock('\\' . \OCP\IL10N::class);
+		$session = $this->createMock('\\' . \OCP\ISession::class);
+		$crypto = $this->createMock('\\' . \OCP\Security\ICrypto::class);
 		$instance = $this->getInstance();
 		// FIXME: use mock of IStorageConfig
 		$mount1 = new StorageConfig();
@@ -133,9 +133,9 @@ EOS
 	 * @param $mountOptions
 	 */
 	public function testShortView($options, $expectedResult, $mountOptions) {
-		$l10n = $this->createMock('\OCP\IL10N', null, [], '', false);
-		$session = $this->createMock('\OCP\ISession');
-		$crypto = $this->createMock('\OCP\Security\ICrypto');
+		$l10n = $this->createMock('\\' . \OCP\IL10N::class);
+		$session = $this->createMock('\\' . \OCP\ISession::class);
+		$crypto = $this->createMock('\\' . \OCP\Security\ICrypto::class);
 		$instance = $this->getInstance();
 		// FIXME: use mock of IStorageConfig
 		$mount1 = new StorageConfig();
@@ -156,7 +156,7 @@ EOS
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
 		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
-			$results = \json_decode($output, true);
+			$results = \json_decode($output, true, 512, JSON_THROW_ON_ERROR);
 			$countResults = \count($results);
 
 			for ($i = 0; $i < $countResults; $i++) {
@@ -210,9 +210,9 @@ EOS
 	 * @param $mountOptions
 	 */
 	public function testLongView($options, $expectedResult, $mountOptions) {
-		$l10n = $this->createMock('\OCP\IL10N', null, [], '', false);
-		$session = $this->createMock('\OCP\ISession');
-		$crypto = $this->createMock('\OCP\Security\ICrypto');
+		$l10n = $this->createMock('\\' . \OCP\IL10N::class);
+		$session = $this->createMock('\\' . \OCP\ISession::class);
+		$crypto = $this->createMock('\\' . \OCP\Security\ICrypto::class);
 		$instance = $this->getInstance();
 		// FIXME: use mock of IStorageConfig
 		$mount1 = new StorageConfig();
@@ -231,7 +231,7 @@ EOS
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
 		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
-			$results = \json_decode($output, true);
+			$results = \json_decode($output, true, 512, JSON_THROW_ON_ERROR);
 			$countResults = \count($results);
 
 			for ($i = 0; $i < $countResults; $i++) {
@@ -283,9 +283,9 @@ EOS
 	 * @param $mountOptions
 	 */
 	public function testImportableFormat($options, $expectedResult, $mountOptions) {
-		$l10n = $this->createMock('\OCP\IL10N', null, [], '', false);
-		$session = $this->createMock('\OCP\ISession');
-		$crypto = $this->createMock('\OCP\Security\ICrypto');
+		$l10n = $this->createMock('\\' . \OCP\IL10N::class);
+		$session = $this->createMock('\\' . \OCP\ISession::class);
+		$crypto = $this->createMock('\\' . \OCP\Security\ICrypto::class);
 		$instance = $this->getInstance();
 		// FIXME: use mock of IStorageConfig
 		$mount1 = new StorageConfig();
@@ -304,7 +304,7 @@ EOS
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
 		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
-			$results = \json_decode($output, true);
+			$results = \json_decode($output, true, 512, JSON_THROW_ON_ERROR);
 			$countResults = \count($results);
 
 			for ($i = 0; $i < $countResults; $i++) {

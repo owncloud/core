@@ -42,8 +42,7 @@ class PermissionsTest extends TestCase {
 	/** @var Storage */
 	private $sharedCacheRestrictedShare;
 
-	/** @var View */
-	private $secondView;
+	private \OC\Files\View $secondView;
 
 	/** @var Storage */
 	private $ownerStorage;
@@ -72,7 +71,7 @@ class PermissionsTest extends TestCase {
 		$this->view->file_put_contents('container/shareddir/textfile.txt', $textData);
 		$this->view->file_put_contents('container/shareddirrestricted/textfile1.txt', $textData);
 
-		list($this->ownerStorage, $internalPath) = $this->view->resolvePath('');
+		[$this->ownerStorage, $internalPath] = $this->view->resolvePath('');
 		$this->ownerCache = $this->ownerStorage->getCache();
 		$this->ownerStorage->getScanner()->scan('');
 
@@ -102,8 +101,8 @@ class PermissionsTest extends TestCase {
 
 		// retrieve the shared storage
 		$this->secondView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2);
-		list($this->sharedStorage, $internalPath) = $this->secondView->resolvePath('files/shareddir');
-		list($this->sharedStorageRestrictedShare, $internalPath) = $this->secondView->resolvePath('files/shareddirrestricted');
+		[$this->sharedStorage, $internalPath] = $this->secondView->resolvePath('files/shareddir');
+		[$this->sharedStorageRestrictedShare, $internalPath] = $this->secondView->resolvePath('files/shareddirrestricted');
 		$this->sharedCache = $this->sharedStorage->getCache();
 		$this->sharedCacheRestrictedShare = $this->sharedStorageRestrictedShare->getCache();
 	}

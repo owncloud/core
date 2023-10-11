@@ -44,16 +44,13 @@ use OCP\IImage;
 class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor, IProvidesVersionTag {
 	/** @var string */
 	private $versionId;
-	/** @var MetaVersionCollection */
-	private $parent;
+	private \OC\Files\Meta\MetaVersionCollection $parent;
 	/** @var IStorage|IVersionedStorage|SharedStorage */
-	private $storage;
+	private \OCP\Files\Storage\IStorage $storage;
 	/** @var string */
 	private $internalPath;
-	/** @var IRootFolder */
-	private $root;
-	/** @var array */
-	private $versionInfo;
+	private \OCP\Files\IRootFolder $root;
+	private array $versionInfo;
 
 	/**
 	 * MetaFileVersionNode constructor.
@@ -108,7 +105,7 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @inheritdoc
 	 */
 	public function getSize() {
-		return isset($this->versionInfo['size']) ? $this->versionInfo['size'] : null;
+		return $this->versionInfo['size'] ?? null;
 	}
 
 	/**
@@ -139,15 +136,15 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	}
 
 	public function getMTime() {
-		return isset($this->versionInfo['timestamp']) ? $this->versionInfo['timestamp'] : null;
+		return $this->versionInfo['timestamp'] ?? null;
 	}
 
 	public function getMimetype() {
-		return isset($this->versionInfo['mimetype']) ? $this->versionInfo['mimetype'] : 'application/octet-stream';
+		return $this->versionInfo['mimetype'] ?? 'application/octet-stream';
 	}
 
 	public function getEtag() {
-		return isset($this->versionInfo['etag']) ? $this->versionInfo['etag'] : null;
+		return $this->versionInfo['etag'] ?? null;
 	}
 
 	public function fopen($mode) {

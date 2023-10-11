@@ -92,11 +92,7 @@ class Config {
 			return $envValue;
 		}
 
-		if (isset($this->cache[$key])) {
-			return $this->cache[$key];
-		}
-
-		return $default;
+		return $this->cache[$key] ?? $default;
 	}
 
 	/**
@@ -231,7 +227,7 @@ class Config {
 		$extra = \glob($this->configDir.'*.'.$this->configFileName);
 		if (\is_array($extra)) {
 			\natsort($extra);
-			$configFiles = \array_merge($configFiles, $extra);
+			$configFiles = [...$configFiles, ...$extra];
 		}
 
 		// Include file and merge config

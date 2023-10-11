@@ -14,8 +14,7 @@ use OCP\Activity\IEvent;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
-	/** @var \OC\Activity\Manager */
-	private $activityManager;
+	private \OC\Activity\Manager $activityManager;
 
 	/** @var \OCP\IRequest|\PHPUnit\Framework\MockObject\MockObject */
 	protected $request;
@@ -29,13 +28,13 @@ class ManagerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->getMockBuilder('OCP\IRequest')
+		$this->request = $this->getMockBuilder(\OCP\IRequest::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->session = $this->getMockBuilder('OCP\IUserSession')
+		$this->session = $this->getMockBuilder(\OCP\IUserSession::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->getMockBuilder('OCP\IConfig')
+		$this->config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,15 +47,9 @@ class ManagerTest extends TestCase {
 		$this->assertSame([], self::invokePrivate($this->activityManager, 'getConsumers'));
 		$this->assertSame([], self::invokePrivate($this->activityManager, 'getExtensions'));
 
-		$this->activityManager->registerConsumer(function () {
-			return new NoOpConsumer();
-		});
-		$this->activityManager->registerExtension(function () {
-			return new NoOpExtension();
-		});
-		$this->activityManager->registerExtension(function () {
-			return new SimpleExtension();
-		});
+		$this->activityManager->registerConsumer(fn () => new NoOpConsumer());
+		$this->activityManager->registerExtension(fn () => new NoOpExtension());
+		$this->activityManager->registerExtension(fn () => new SimpleExtension());
 
 		$this->assertNotEmpty(self::invokePrivate($this->activityManager, 'getConsumers'));
 		$this->assertNotEmpty(self::invokePrivate($this->activityManager, 'getConsumers'));
@@ -75,9 +68,7 @@ class ManagerTest extends TestCase {
 	public function testGetConsumersInvalidConsumer() {
 		$this->expectException(\InvalidArgumentException::class);
 
-		$this->activityManager->registerConsumer(function () {
-			return new \stdClass();
-		});
+		$this->activityManager->registerConsumer(fn () => new \stdClass());
 
 		self::invokePrivate($this->activityManager, 'getConsumers');
 	}
@@ -93,9 +84,7 @@ class ManagerTest extends TestCase {
 	public function testGetExtensionsInvalidExtension() {
 		$this->expectException(\InvalidArgumentException::class);
 
-		$this->activityManager->registerExtension(function () {
-			return new \stdClass();
-		});
+		$this->activityManager->registerExtension(fn () => new \stdClass());
 
 		self::invokePrivate($this->activityManager, 'getExtensions');
 	}
@@ -171,9 +160,7 @@ class ManagerTest extends TestCase {
 
 	public function testQueryForFilter() {
 		// Register twice, to test the created sql part
-		$this->activityManager->registerExtension(function () {
-			return new SimpleExtension();
-		});
+		$this->activityManager->registerExtension(fn () => new SimpleExtension());
 
 		$result = $this->activityManager->getQueryForFilter('fv01');
 		$this->assertEquals(
@@ -251,7 +238,7 @@ class ManagerTest extends TestCase {
 	}
 
 	protected function mockUserSession($user) {
-		$mockUser = $this->getMockBuilder('\OCP\IUser')
+		$mockUser = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockUser->expects($this->any())
@@ -329,7 +316,7 @@ class ManagerTest extends TestCase {
 	 */
 	public function testPublish($author) {
 		if ($author !== null) {
-			$authorObject = $this->getMockBuilder('OCP\IUser')
+			$authorObject = $this->getMockBuilder(\OCP\IUser::class)
 				->disableOriginalConstructor()
 				->getMock();
 			$authorObject->expects($this->once())
@@ -346,7 +333,7 @@ class ManagerTest extends TestCase {
 			->setSubject('test_subject', [])
 			->setAffectedUser('test_affected');
 
-		$consumer = $this->getMockBuilder('OCP\Activity\IConsumer')
+		$consumer = $this->getMockBuilder(\OCP\Activity\IConsumer::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$consumer->expects($this->once())
@@ -357,9 +344,7 @@ class ManagerTest extends TestCase {
 				$this->assertGreaterThanOrEqual(\time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertSame($author, $event->getAuthor(), 'Author name not set correctly');
 			});
-		$this->activityManager->registerConsumer(function () use ($consumer) {
-			return $consumer;
-		});
+		$this->activityManager->registerConsumer(fn () => $consumer);
 
 		$this->activityManager->publish($event);
 	}
@@ -377,7 +362,7 @@ class ManagerTest extends TestCase {
 			->setLink('test_link')
 		;
 
-		$consumer = $this->getMockBuilder('OCP\Activity\IConsumer')
+		$consumer = $this->getMockBuilder(\OCP\Activity\IConsumer::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$consumer->expects($this->once())
@@ -397,9 +382,7 @@ class ManagerTest extends TestCase {
 				$this->assertSame('test_object_name', $event->getObjectName(), 'Object name not set correctly');
 				$this->assertSame('test_link', $event->getLink(), 'Link not set correctly');
 			});
-		$this->activityManager->registerConsumer(function () use ($consumer) {
-			return $consumer;
-		});
+		$this->activityManager->registerConsumer(fn () => $consumer);
 
 		$this->activityManager->publish($event);
 	}
@@ -417,7 +400,7 @@ class ManagerTest extends TestCase {
 			->setLink('test_link')
 		;
 
-		$consumer = $this->getMockBuilder('OCP\Activity\IConsumer')
+		$consumer = $this->getMockBuilder(\OCP\Activity\IConsumer::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$consumer->expects($this->once())
@@ -440,9 +423,7 @@ class ManagerTest extends TestCase {
 				$this->assertSame('', $event->getObjectType(), 'Object type should not be set');
 				$this->assertSame(0, $event->getObjectId(), 'Object ID should not be set');
 			});
-		$this->activityManager->registerConsumer(function () use ($consumer) {
-			return $consumer;
-		});
+		$this->activityManager->registerConsumer(fn () => $consumer);
 
 		$this->activityManager->publishActivity(
 			$event->getApp(),

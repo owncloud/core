@@ -52,7 +52,7 @@ class LockingTests extends TestCase {
 		$this->view->mkdir('foo');
 		$this->view->file_put_contents('foo/bar.txt', 'abcdef');
 		$this->fileId = $this->view->getFileInfo('foo/bar.txt')->getId();
-		list($this->storage, ) = $this->view->resolvePath('foo/bar.txt');
+		[$this->storage, ] = $this->view->resolvePath('foo/bar.txt');
 	}
 
 	protected function tearDown(): void {

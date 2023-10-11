@@ -28,14 +28,8 @@ use OCP\Roles\AddRolesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RolesController extends OCSController {
-	/**
-	 * @var IL10N
-	 */
-	private $l10n;
-	/**
-	 * @var EventDispatcherInterface
-	 */
-	private $dispatcher;
+	private \OCP\IL10N $l10n;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
 
 	public function __construct(
 		$appName,

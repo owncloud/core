@@ -41,14 +41,11 @@ use Sabre\VObject\ITip;
  * @license http://sabre.io/license/ Modified BSD License
  */
 class IMipPlugin extends SabreIMipPlugin {
-	/** @var IMailer */
-	private $mailer;
+	private \OCP\Mail\IMailer $mailer;
 
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var IRequest */
-	private $request;
+	private \OCP\IRequest $request;
 
 	/**
 	 * Creates the email handler.

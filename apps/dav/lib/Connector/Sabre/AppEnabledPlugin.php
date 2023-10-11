@@ -32,21 +32,16 @@ use Sabre\DAV\ServerPlugin;
  */
 class AppEnabledPlugin extends ServerPlugin {
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
 	/**
 	 * @var string
 	 */
 	private $app;
 
-	/**
-	 * @var \OCP\App\IAppManager
-	 */
-	private $appManager;
+	private \OCP\App\IAppManager $appManager;
 
 	/**
 	 * @param string $app

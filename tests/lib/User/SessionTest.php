@@ -46,24 +46,24 @@ use OCP\Files\Folder;
  */
 class SessionTest extends TestCase {
 	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 
 	/** @var DefaultTokenProvider | \PHPUnit\Framework\MockObject\MockObject */
 	protected $tokenProvider;
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var IServiceLoader */
-	private $serviceLoader;
+	private \PHPUnit\Framework\MockObject\MockObject $serviceLoader;
 	/** @var \OC\User\SyncService */
 	protected $userSyncService;
 	/** @var  EventDispatcher */
 	protected $eventDispatcher;
 
-	private $rootNode;
-	private $userNode;
+	private \PHPUnit\Framework\MockObject\MockObject $rootNode;
+	private \PHPUnit\Framework\MockObject\MockObject $userNode;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -857,9 +857,7 @@ class SessionTest extends TestCase {
 
 		$manager->expects($this->any())
 			->method('get')
-			->will($this->returnCallback(function ($uid) use ($users) {
-				return $users[$uid];
-			}));
+			->will($this->returnCallback(fn ($uid) => $users[$uid]));
 
 		$session = new Memory('');
 		$session->set('user_id', 'foo');

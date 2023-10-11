@@ -27,15 +27,9 @@ class ScannerTest extends \Test\TestCase {
 	 */
 	private $storage;
 
-	/**
-	 * @var \OC\Files\Cache\Scanner $scanner
-	 */
-	private $scanner;
+	private \OC\Files\Cache\Scanner $scanner;
 
-	/**
-	 * @var \OC\Files\Cache\Cache $cache
-	 */
-	private $cache;
+	private \OC\Files\Cache\Cache $cache;
 
 	protected function setUp(): void {
 		parent::setUp();

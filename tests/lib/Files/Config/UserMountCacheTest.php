@@ -41,12 +41,9 @@ class UserMountCacheTest extends TestCase {
 	/**
 	 * @var IUserManager
 	 */
-	private $userManager;
+	private \OC\User\Manager $userManager;
 
-	/**
-	 * @var UserMountCache
-	 */
-	private $cache;
+	private \OC\Files\Config\UserMountCache $cache;
 
 	/**
 	 * @var \OCP\Util\UserSearch
@@ -111,21 +108,21 @@ class UserMountCacheTest extends TestCase {
 	}
 
 	private function getStorage($storageId, $rootId) {
-		$storageCache = $this->getMockBuilder('\OC\Files\Cache\Storage')
+		$storageCache = $this->getMockBuilder('\\' . \OC\Files\Cache\Storage::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$storageCache->expects($this->any())
 			->method('getNumericId')
 			->will($this->returnValue($storageId));
 
-		$cache = $this->getMockBuilder('\OC\Files\Cache\Cache')
+		$cache = $this->getMockBuilder('\\' . \OC\Files\Cache\Cache::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$cache->expects($this->any())
 			->method('getId')
 			->will($this->returnValue($rootId));
 
-		$storage = $this->getMockBuilder('\OC\Files\Storage\Storage')
+		$storage = $this->getMockBuilder('\\' . \OC\Files\Storage\Storage::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$storage->expects($this->any())
@@ -316,9 +313,7 @@ class UserMountCacheTest extends TestCase {
 	}
 
 	private function sortMounts(&$mounts) {
-		\usort($mounts, function (ICachedMountInfo $a, ICachedMountInfo $b) {
-			return \strcmp($a->getUser()->getUID(), $b->getUser()->getUID());
-		});
+		\usort($mounts, fn (ICachedMountInfo $a, ICachedMountInfo $b) => \strcmp($a->getUser()->getUID(), $b->getUser()->getUID()));
 	}
 
 	private function createCacheEntry($internalPath, $storageId) {

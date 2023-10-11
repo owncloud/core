@@ -37,17 +37,13 @@ use OCP\DB\QueryBuilder\IParameter;
 use OCP\IDBConnection;
 
 class QueryBuilder implements IQueryBuilder {
-	/** @var \OCP\IDBConnection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
-	/** @var \Doctrine\DBAL\Query\QueryBuilder */
-	private $queryBuilder;
+	private \Doctrine\DBAL\Query\QueryBuilder $queryBuilder;
 
-	/** @var QuoteHelper */
-	private $helper;
+	private \OC\DB\QueryBuilder\QuoteHelper $helper;
 
-	/** @var bool */
-	private $automaticTablePrefix = true;
+	private bool $automaticTablePrefix = true;
 
 	/** @var string */
 	protected $lastInsertedTable;

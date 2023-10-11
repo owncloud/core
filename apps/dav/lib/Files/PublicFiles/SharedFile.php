@@ -36,8 +36,7 @@ use Sabre\DAVACL\IACL;
 class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
 	use SharedNodeTrait;
 
-	/** @var \OCP\Files\File */
-	private $file;
+	private \OCP\Files\File $file;
 
 	/**
 	 * MetaFolder constructor.

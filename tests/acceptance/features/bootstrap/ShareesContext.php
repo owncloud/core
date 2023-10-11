@@ -164,7 +164,7 @@ class ShareesContext implements Context {
 		string $shareeType
 	):array {
 		$elements = $this->featureContext->getResponseXml($response, __METHOD__)->data;
-		$elements = \json_decode(\json_encode($elements), true);
+		$elements = \json_decode(\json_encode($elements, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 		if (\strpos($shareeType, 'exact ') === 0) {
 			$elements = $elements['exact'];
 			$shareeType = \substr($shareeType, 6);

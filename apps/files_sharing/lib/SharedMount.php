@@ -40,10 +40,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 */
 	protected $storage = null;
 
-	/**
-	 * @var \OC\Files\View
-	 */
-	private $recipientView;
+	private \OC\Files\View $recipientView;
 
 	/**
 	 * @var string
@@ -190,7 +187,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		// note: $currentMount has a trailing slash. It doesn't matter for the check below
 		$isRename = \dirname($currentMount) === \dirname($target);
 
-		list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($target);
+		[$targetStorage, $targetInternalPath] = \OC\Files\Filesystem::resolvePath($target);
 		// note: cannot use the view because the target is already locked
 		$fileId = (int)$targetStorage->getCache()->getId($targetInternalPath);
 		if ($isRename) {

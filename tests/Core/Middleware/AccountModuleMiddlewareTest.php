@@ -35,19 +35,18 @@ use OC\Core\Controller\TwoFactorChallengeController;
 
 class AccountModuleMiddlewareTest extends TestCase {
 	/** @var ILogger|\PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/** @var Manager|\PHPUnit\Framework\MockObject\MockObject */
-	private $manager;
+	private \PHPUnit\Framework\MockObject\MockObject $manager;
 
 	/** @var IUserSession|\PHPUnit\Framework\MockObject\MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	/** @var IControllerMethodReflector|\PHPUnit\Framework\MockObject\MockObject */
-	private $reflector;
+	private \PHPUnit\Framework\MockObject\MockObject $reflector;
 
-	/** @var AccountModuleMiddleware */
-	private $middleware;
+	private \OC\Core\Middleware\AccountModuleMiddleware $middleware;
 
 	protected function setUp(): void {
 		parent::setUp();

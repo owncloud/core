@@ -17,10 +17,9 @@ use OC\Settings\Panels\Personal\Legacy;
  * @package Tests\Settings\Panels\Personal
  */
 class LegacyTest extends \Test\TestCase {
-	/** @var Legacy */
-	private $panel;
+	private \OC\Settings\Panels\Personal\Legacy $panel;
 	/** @var Helper */
-	private $helper;
+	private \PHPUnit\Framework\MockObject\MockObject $helper;
 
 	public function setUp(): void {
 		parent::setUp();

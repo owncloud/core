@@ -177,16 +177,12 @@ class NavigationManagerTest extends TestCase {
 		$groupManager = $this->createMock(IGroupManager::class);
 		$systemConfig = $this->createMock(IConfig::class);
 		$l = $this->createMock(IL10N::class);
-		$l->method('t')->willReturnCallback(static function ($text, $parameters = []) {
-			return \vsprintf($text, $parameters);
-		});
+		$l->method('t')->willReturnCallback(static fn ($text, $parameters = []) => \vsprintf($text, $parameters));
 
 		$appManager->expects($this->once())->method('getInstalledApps')->willReturn(['test']);
 		$appManager->expects($this->once())->method('getAppInfo')->with('test')->willReturn($config);
 		$l10nFac->expects($this->exactly(\count($expected)))->method('get')->with('test')->willReturn($l);
-		$urlGenerator->method('imagePath')->willReturnCallback(static function ($appName, $file) {
-			return "/apps/$appName/img/$file";
-		});
+		$urlGenerator->method('imagePath')->willReturnCallback(static fn ($appName, $file) => "/apps/$appName/img/$file");
 		if (isset($config['navigation']['static'])) {
 			$urlGenerator->expects($this->never())->method('linkToRoute')->willReturn('/apps/test/');
 			$urlGenerator->expects($this->once())->method('linkTo')->willReturn('link-to-static');

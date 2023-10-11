@@ -46,53 +46,28 @@ class FilesReportPlugin extends ServerPlugin {
 	public const SYSTEMTAG_PROPERTYNAME = '{http://owncloud.org/ns}systemtag';
 
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
+
+	private \Sabre\DAV\Tree $tree;
+
+	private \OC\Files\View $fileView;
+
+	private \OCP\SystemTag\ISystemTagManager $tagManager;
+
+	private \OCP\SystemTag\ISystemTagObjectMapper $tagMapper;
 
 	/**
-	 * @var Tree
-	 */
-	private $tree;
+  * Manager for private tags
+  */
+	private \OCP\ITagManager $fileTagger;
 
-	/**
-	 * @var View
-	 */
-	private $fileView;
+	private \OCP\IUserSession $userSession;
 
-	/**
-	 * @var ISystemTagManager
-	 */
-	private $tagManager;
+	private \OCP\IGroupManager $groupManager;
 
-	/**
-	 * @var ISystemTagObjectMapper
-	 */
-	private $tagMapper;
-
-	/**
-	 * Manager for private tags
-	 *
-	 * @var ITagManager
-	 */
-	private $fileTagger;
-
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
-
-	/**
-	 * @var IGroupManager
-	 */
-	private $groupManager;
-
-	/**
-	 * @var Folder
-	 */
-	private $userFolder;
+	private \OCP\Files\Folder $userFolder;
 
 	/**
 	 * @param Tree $tree

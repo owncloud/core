@@ -28,14 +28,13 @@ use Test\TestCase;
 
 class UpdateCheckerTest extends TestCase {
 	/** @var Updater */
-	private $updater;
-	/** @var UpdateChecker */
-	private $updateChecker;
+	private \PHPUnit\Framework\MockObject\MockObject $updater;
+	private \OCA\UpdateNotification\UpdateChecker $updateChecker;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->updater = $this->getMockBuilder('\OC\Updater\VersionCheck')
+		$this->updater = $this->getMockBuilder('\\' . \OC\Updater\VersionCheck::class)
 			->disableOriginalConstructor()->getMock();
 		$this->updateChecker = new UpdateChecker($this->updater);
 	}

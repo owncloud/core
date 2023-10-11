@@ -5,10 +5,7 @@ namespace Test\Theme;
 use OC\Theme\Theme;
 
 class ThemeTest extends \PHPUnit\Framework\TestCase {
-	/**
-	 * @var Theme
-	 */
-	private $sut;
+	private \OC\Theme\Theme $sut;
 
 	protected function setUp(): void {
 		$this->sut = new Theme();

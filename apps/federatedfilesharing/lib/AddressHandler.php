@@ -31,11 +31,9 @@ use OCP\IURLGenerator;
  * @package OCA\FederatedFileSharing
  */
 class AddressHandler {
-	/** @var IL10N */
-	private $l;
+	private \OCP\IL10N $l;
 
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 
 	/**
 	 * AddressHandler constructor.

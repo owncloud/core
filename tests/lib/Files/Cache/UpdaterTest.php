@@ -182,7 +182,7 @@ class UpdaterTest extends \Test\TestCase {
 		$this->storage->rename('sub/foo.txt', 'sub2/bar.txt');
 
 		// simulate storage having a different mtime
-		$testmtime = 1433323578;
+		$testmtime = 1_433_323_578;
 
 		// source storage mtime change
 		$this->storage->touch('sub', $testmtime);

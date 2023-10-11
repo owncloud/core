@@ -33,8 +33,7 @@ class TrashBinPlugin extends ServerPlugin {
 	public const TRASHBIN_DELETE_TIMESTAMP = '{http://owncloud.org/ns}trashbin-delete-timestamp';
 	public const TRASHBIN_DELETE_DATETIME = '{http://owncloud.org/ns}trashbin-delete-datetime';
 
-	/** @var Server */
-	private $server;
+	private ?\Sabre\DAV\Server $server = null;
 
 	public function initialize(Server $server) {
 		$this->server = $server;
@@ -47,20 +46,12 @@ class TrashBinPlugin extends ServerPlugin {
 			return;
 		}
 
-		$propFind->handle(self::TRASHBIN_ORIGINAL_FILENAME, static function () use ($node) {
-			return $node->getOriginalFileName();
-		});
+		$propFind->handle(self::TRASHBIN_ORIGINAL_FILENAME, static fn () => $node->getOriginalFileName());
 
-		$propFind->handle(self::TRASHBIN_ORIGINAL_LOCATION, static function () use ($node) {
-			return $node->getOriginalLocation();
-		});
+		$propFind->handle(self::TRASHBIN_ORIGINAL_LOCATION, static fn () => $node->getOriginalLocation());
 
-		$propFind->handle(self::TRASHBIN_DELETE_TIMESTAMP, static function () use ($node) {
-			return $node->getDeleteTimestamp();
-		});
+		$propFind->handle(self::TRASHBIN_DELETE_TIMESTAMP, static fn () => $node->getDeleteTimestamp());
 
-		$propFind->handle(self::TRASHBIN_DELETE_DATETIME, static function () use ($node) {
-			return new GetLastModified($node->getDeleteTimestamp());
-		});
+		$propFind->handle(self::TRASHBIN_DELETE_DATETIME, static fn () => new GetLastModified($node->getDeleteTimestamp()));
 	}
 }

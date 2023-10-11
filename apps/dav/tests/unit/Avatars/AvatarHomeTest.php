@@ -30,11 +30,10 @@ use Sabre\DAV\Exception\NotFound;
 use Test\TestCase;
 
 class AvatarHomeTest extends TestCase {
-	/** @var AvatarHome */
-	private $home;
+	private \OCA\DAV\Avatars\AvatarHome $home;
 
 	/** @var IAvatarManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $avatarManager;
+	private \PHPUnit\Framework\MockObject\MockObject $avatarManager;
 
 	public function setUp(): void {
 		$this->avatarManager = $this->createMock(IAvatarManager::class);

@@ -42,7 +42,7 @@ class InvalidBackend extends Backend {
 	public function __construct($invalidId) {
 		$this->invalidId = $invalidId;
 		$this->setIdentifier($invalidId)
-			->setStorageClass('\OC\Files\External\InvalidStorage')
+			->setStorageClass('\\' . \OC\Files\External\InvalidStorage::class)
 			->setText('Unknown storage backend ' . $invalidId)
 		;
 	}

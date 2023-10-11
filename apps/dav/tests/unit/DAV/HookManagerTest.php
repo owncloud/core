@@ -35,19 +35,17 @@ use Test\TestCase;
 
 class HookManagerTest extends TestCase {
 	/** @var L10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->l10n = $this->getMockBuilder('OC\L10N\L10N')
+		$this->l10n = $this->getMockBuilder(\OC\L10N\L10N::class)
 			->disableOriginalConstructor()->getMock();
 		$this->l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 	}
 
 	public function test() {

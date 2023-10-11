@@ -31,16 +31,15 @@ use OCP\IConfig;
  * @package OCA\Files_External\Tests
  */
 class PersonalTest extends \Test\TestCase {
-	/** @var Personal */
-	private $panel;
+	private \OCA\Files_External\Panels\Personal $panel;
 	/** @var IStoragesBackendService */
-	private $backendService;
+	private \PHPUnit\Framework\MockObject\MockObject $backendService;
 	/** @var IUserStoragesService */
-	private $storagesService;
+	private \PHPUnit\Framework\MockObject\MockObject $storagesService;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var Manager */
-	private $encManager;
+	private \PHPUnit\Framework\MockObject\MockObject $encManager;
 
 	public function setUp(): void {
 		parent::setUp();

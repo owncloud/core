@@ -29,6 +29,7 @@
 
 namespace OCA\Provisioning_API;
 
+use OC\Group\Manager;
 use OC\OCS\Result;
 use OC_Helper;
 use OCP\API;
@@ -43,18 +44,12 @@ use OCP\IUserSession;
 use OCP\Util;
 
 class Users {
-	/** @var IUserManager */
-	private $userManager;
-	/** @var IGroupManager|\OC\Group\Manager */ // FIXME Requires a method that is not on the interface
-	private $groupManager;
-	/** @var IUserSession */
-	private $userSession;
-	/** @var ILogger */
-	private $logger;
-	/** @var IConfig */
-	private $config;
-	/** @var \OC\Authentication\TwoFactorAuth\Manager */
-	private $twoFactorAuthManager;
+	private \OCP\IUserManager $userManager;
+	private Manager $groupManager;
+	private \OCP\IUserSession $userSession;
+	private \OCP\ILogger $logger;
+	private \OCP\IConfig $config;
+	private \OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager;
 
 	/**
 	 * @param IUserManager $userManager
@@ -71,6 +66,9 @@ class Users {
 		IConfig $config,
 		\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager
 	) {
+		if (!$groupManager instanceof Manager) {
+			throw new \RuntimeException('Requires internal implementation of IGroupdManager');
+		}
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
@@ -130,9 +128,9 @@ class Users {
 	 * @return Result
 	 */
 	public function addUser() {
-		$userId = isset($_POST['userid']) ? $_POST['userid'] : null;
-		$password = isset($_POST['password']) ? $_POST['password'] : null;
-		$groups = isset($_POST['groups']) ? $_POST['groups'] : null;
+		$userId = $_POST['userid'] ?? null;
+		$password = $_POST['password'] ?? null;
+		$groups = $_POST['groups'] ?? null;
 		$user = $this->userSession->getUser();
 		$isAdmin = $this->groupManager->isAdmin($user->getUID());
 		$subAdminManager = $this->groupManager->getSubAdmin();
@@ -491,7 +489,7 @@ class Users {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$groupId = isset($_POST['groupid']) ? $_POST['groupid'] : null;
+		$groupId = $_POST['groupid'] ?? null;
 		if (($groupId === '') || ($groupId === null) || ($groupId === false)) {
 			return new Result(null, 101);
 		}
@@ -526,7 +524,7 @@ class Users {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$group = isset($parameters['_delete']['groupid']) ? $parameters['_delete']['groupid'] : null;
+		$group = $parameters['_delete']['groupid'] ?? null;
 		if (($group === '') || ($group === null) || ($group === false)) {
 			return new Result(null, 101);
 		}
@@ -672,7 +670,7 @@ class Users {
 				$groups[$key] = $group->getGID();
 			}
 
-			return new Result($groups ? $groups : []);
+			return new Result($groups ?: []);
 		} else {
 			// No permission to access users groups
 			return new Result(null, API::RESPOND_UNAUTHORISED);

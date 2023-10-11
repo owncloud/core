@@ -34,12 +34,9 @@ use OCP\Migration\IRepairStep;
  * @package OCA\DAV\Repair
  */
 class RemoveInvalidShares implements IRepairStep {
-	/** @var IDBConnection */
-	private $connection;
-	/** @var Principal */
-	private $principalBackend;
-	/** @var GroupPrincipalBackend */
-	private $groupPrincipalBackend;
+	private \OCP\IDBConnection $connection;
+	private \OCA\DAV\Connector\Sabre\Principal $principalBackend;
+	private \OCA\DAV\DAV\GroupPrincipalBackend $groupPrincipalBackend;
 
 	/**
 	 * RemoveInvalidShares constructor.

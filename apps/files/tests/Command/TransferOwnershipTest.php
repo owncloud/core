@@ -73,12 +73,9 @@ class TransferOwnershipTest extends TestCase {
 	/**
 	 * @var Manager | MockObject
 	 */
-	private $encryptionManager;
+	private \PHPUnit\Framework\MockObject\MockObject $encryptionManager;
 
-	/**
-	 * @var ProviderFactory
-	 */
-	private $providerFactory;
+	private \OC\Share20\ProviderFactory $providerFactory;
 
 	/**
 	 * @var IUser
@@ -105,10 +102,7 @@ class TransferOwnershipTest extends TestCase {
 	 */
 	private $shareReceiver;
 
-	/**
-	 * @var CommandTester
-	 */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -161,7 +155,7 @@ class TransferOwnershipTest extends TestCase {
 		\OC_Hook::clear('OC_Filesystem', 'post_write');
 		\OC_Hook::clear('OC_Filesystem', 'post_delete');
 		\OC_Hook::clear('OC_Filesystem', 'post_rename');
-		\OC_Hook::clear('OCP\Share', 'post_update_permissions');
+		\OC_Hook::clear(\OCP\Share::class, 'post_update_permissions');
 		parent::tearDown();
 	}
 

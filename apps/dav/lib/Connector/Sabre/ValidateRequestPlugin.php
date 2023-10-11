@@ -34,11 +34,9 @@ use Sabre\DAV\ServerPlugin;
  */
 class ValidateRequestPlugin extends ServerPlugin {
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
 	/**
 	 * Service type as decided by resolveService($service) in remote.php

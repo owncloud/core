@@ -19,12 +19,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ConfigTest extends TestCase {
 	public const TESTCONTENT = '<?php $CONFIG=array("foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
 
-	/** @var array */
-	private $initialConfig = ['foo' => 'bar', 'beers' => ['Appenzeller', 'Guinness', 'Kölsch'], 'alcohol_free' => false];
-	/** @var string */
-	private $configFile;
-	/** @var \OC\Config */
-	private $config;
+	private array $initialConfig = ['foo' => 'bar', 'beers' => ['Appenzeller', 'Guinness', 'Kölsch'], 'alcohol_free' => false];
+	private string $configFile;
+	private \OC\Config $config;
 	/** @var string */
 	private $randomTmpDir;
 

@@ -27,11 +27,9 @@ use OCP\IConfig;
 use OCP\Util;
 
 class VersionCheck {
-	/** @var IClientService */
-	private $clientService;
+	private \OCP\Http\Client\IClientService $clientService;
 	
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * @param IClientService $clientService
@@ -53,7 +51,7 @@ class VersionCheck {
 	public function check() {
 		// Look up the cache - it is invalidated all 30 minutes
 		if (((int)$this->config->getAppValue('core', 'lastupdatedat') + 1800) > \time()) {
-			return \json_decode($this->config->getAppValue('core', 'lastupdateResult'), true);
+			return \json_decode($this->config->getAppValue('core', 'lastupdateResult'), true, 512, JSON_THROW_ON_ERROR);
 		}
 
 		$updaterUrl = $this->config->getSystemValue('updater.server.url', 'https://updates.owncloud.com/server/');
@@ -94,7 +92,7 @@ class VersionCheck {
 		}
 
 		// Cache the result
-		$this->config->setAppValue('core', 'lastupdateResult', \json_encode($data));
+		$this->config->setAppValue('core', 'lastupdateResult', \json_encode($data, JSON_THROW_ON_ERROR));
 		return $tmp;
 	}
 

@@ -15,10 +15,7 @@ use OCP\Migration\IOutput;
  * @group DB
  */
 class RepairSqliteAutoincrementTest extends \Test\TestCase {
-	/**
-	 * @var \OC\Repair\SqliteAutoincrement
-	 */
-	private $repair;
+	private \OC\Repair\SqliteAutoincrement $repair;
 
 	/**
 	 * @var \Doctrine\DBAL\Connection
@@ -77,7 +74,7 @@ class RepairSqliteAutoincrementTest extends \Test\TestCase {
 		$this->assertFalse($this->checkAutoincrement());
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

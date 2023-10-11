@@ -49,7 +49,7 @@ if (isset($_POST['allfiles']) && (string)$_POST['allfiles'] === 'true') {
 		$list[] = $fileName;
 	}
 } else {
-	$list = \json_decode($files);
+	$list = \json_decode($files, null, 512, JSON_THROW_ON_ERROR);
 }
 
 $error = [];

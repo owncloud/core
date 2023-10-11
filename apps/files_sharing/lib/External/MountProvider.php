@@ -29,10 +29,7 @@ use OCP\IUser;
 class MountProvider implements IMountProvider {
 	public const STORAGE = '\OCA\Files_Sharing\External\Storage';
 
-	/**
-	 * @var \OCP\IDBConnection
-	 */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	/**
 	 * @var callable

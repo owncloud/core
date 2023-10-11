@@ -61,17 +61,15 @@ class Log implements ILogger {
 	private $eventDispatcher;
 
 	/** @var boolean|null cache the result of the log condition check for the request */
-	private $logConditionSatisfied;
+	private ?bool $logConditionSatisfied = null;
 
 	/** @var Normalizer */
 	private $normalizer;
 
 	/**
-	 * Flag whether we are within the event block
-	 *
-	 * @var bool
-	 */
-	private $inEvent = false;
+  * Flag whether we are within the event block
+  */
+	private bool $inEvent = false;
 
 	protected static $methodsWithSensitiveParameters = [
 		// Session/User
@@ -442,8 +440,8 @@ class Log implements ILogger {
 		if (\OC::$server->getUserSession() && \OC::$server->getUserSession()->isLoggedIn()) {
 			$context['userid'] = \OC::$server->getUserSession()->getUser()->getUID();
 		}
-		$msg = isset($context['message']) ? $context['message'] : 'Exception';
-		$msg .= ': ' . \json_encode($exception);
+		$msg = $context['message'] ?? 'Exception';
+		$msg .= ': ' . \json_encode($exception, JSON_THROW_ON_ERROR);
 		$this->log($level, $msg, $context);
 		// also log previous exception
 		if ($context['exception']->getPrevious()) {

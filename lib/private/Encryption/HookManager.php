@@ -26,10 +26,7 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 
 class HookManager {
-	/**
-	 * @var Update
-	 */
-	private static $updater;
+	private static ?\OC\Encryption\Update $updater = null;
 
 	public static function postShared($params) {
 		self::getUpdate()->postShared($params);

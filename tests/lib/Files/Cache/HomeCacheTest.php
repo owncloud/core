@@ -51,10 +51,7 @@ class DummyUser extends \OC\User\User {
  * @package Test\Files\Cache
  */
 class HomeCacheTest extends \Test\TestCase {
-	/**
-	 * @var \OC\Files\Storage\Home $storage
-	 */
-	private $storage;
+	private \OC\Files\Storage\Home $storage;
 
 	/**
 	 * @var \OC\Files\Cache\HomeCache $cache
@@ -64,7 +61,7 @@ class HomeCacheTest extends \Test\TestCase {
 	/**
 	 * @var \OC\User\User $user
 	 */
-	private $user;
+	private \Test\Files\Cache\DummyUser $user;
 
 	protected function setUp(): void {
 		parent::setUp();

@@ -25,7 +25,7 @@ use OCP\IUserManager;
 
 class QuotaTest extends \Test\TestCase {
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject  */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject  */
 	protected $config;

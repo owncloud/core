@@ -39,8 +39,8 @@ class Controller {
 		\OC_JSON::checkLoggedIn();
 
 		$username = \OC_User::getUser();
-		$password = isset($_POST['personal-password']) ? $_POST['personal-password'] : null;
-		$oldPassword = isset($_POST['oldpassword']) ? $_POST['oldpassword'] : '';
+		$password = $_POST['personal-password'] ?? null;
+		$oldPassword = $_POST['oldpassword'] ?? '';
 
 		if (!\OC_User::checkPassword($username, $oldPassword)) {
 			$l = \OC::$server->getL10NFactory()->get('settings');
@@ -80,8 +80,8 @@ class Controller {
 			exit();
 		}
 
-		$password = isset($_POST['password']) ? $_POST['password'] : null;
-		$recoveryPassword = isset($_POST['recoveryPassword']) ? $_POST['recoveryPassword'] : null;
+		$password = $_POST['password'] ?? null;
+		$recoveryPassword = $_POST['recoveryPassword'] ?? null;
 
 		$isUserAccessible = false;
 		$currentUserObject = \OC::$server->getUserSession()->getUser();

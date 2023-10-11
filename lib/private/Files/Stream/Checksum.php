@@ -44,15 +44,15 @@ class Checksum extends Wrapper {
 	 *
 	 * @var  resource[]
 	 */
-	private $hashingContexts;
+	private ?array $hashingContexts = null;
 
 	/**
 	 * Check if the stream has been read or written from the beginning.
 	 * If `fseek` is called, this flag should be false unless the target
 	 * position of the beginning of the stream
 	 */
-	private $fromBeginning = true;
-	private $reading = false;
+	private bool $fromBeginning = true;
+	private bool $reading = false;
 
 	/** @var CappedMemoryCache Key is path, value is array of checksums */
 	private static $checksums;
@@ -271,11 +271,8 @@ class Checksum extends Wrapper {
 		}
 
 		$pathToCheck = "{$pathPieces[0]}/" . \md5("/{$pathPieces[1]}");
-		if (isset(self::$checksums[$pathToCheck])) {
-			return self::$checksums[$pathToCheck];
-		}
 
-		return [];
+		return self::$checksums[$pathToCheck] ?? [];
 	}
 
 	/**

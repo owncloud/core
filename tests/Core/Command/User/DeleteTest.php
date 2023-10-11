@@ -31,14 +31,13 @@ use Test\TestCase;
 
 class DeleteTest extends TestCase {
 	/** @var \PHPUnit\Framework\MockObject\MockObject|IUserManager */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->userManager = $this->getMockBuilder('OCP\IUserManager')
+		$this->userManager = $this->getMockBuilder(\OCP\IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,7 +60,7 @@ class DeleteTest extends TestCase {
 	 * @param string $expectedOutput
 	 */
 	public function testValidUser($deleteSuccess, $expectedOutput) {
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->expects($this->once())
 			->method('delete')
 			->willReturn($deleteSuccess);

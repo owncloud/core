@@ -49,10 +49,10 @@ class HelperTest extends \Test\TestCase {
 	 */
 	private function getTestFileList() {
 		return [
-			self::makeFileInfo('a.txt', 4, 2.3 * \pow(10, 9)),
+			self::makeFileInfo('a.txt', 4, 2.3 * 10 ** 9),
 			self::makeFileInfo('q.txt', 5, 150),
 			self::makeFileInfo('subdir2', 87, 128, true),
-			self::makeFileInfo('b.txt', 2.2 * \pow(10, 9), 800),
+			self::makeFileInfo('b.txt', 2.2 * 10 ** 9, 800),
 			self::makeFileInfo('o.txt', 12, 100),
 			self::makeFileInfo('subdir', 88, 125, true),
 		];

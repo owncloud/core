@@ -59,7 +59,7 @@ abstract class TestCase extends \Test\TestCase {
 		self::$trashBinStatus = $appManager->isEnabledForUser('files_trashbin');
 
 		// clear share hooks
-		\OC_Hook::clear('OCP\\Share');
+		\OC_Hook::clear(\OCP\Share::class);
 		\OC::registerShareHooks();
 		$application = new Application();
 		$application->registerMountProviders();
@@ -109,7 +109,7 @@ abstract class TestCase extends \Test\TestCase {
 
 		\OC::$server->getAppManager()->enableApp('files_trashbin');
 		$config = \OC::$server->getConfig();
-		$mockConfig = $this->createMock('\OCP\IConfig');
+		$mockConfig = $this->createMock('\\' . \OCP\IConfig::class);
 		$mockConfig->expects($this->any())
 			->method('getSystemValue')
 			->will($this->returnCallback(function ($key, $default) use ($config) {

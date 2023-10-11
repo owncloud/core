@@ -26,8 +26,7 @@ use OCP\Util;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CommandLogger implements ILogger {
-	/** @var OutputInterface */
-	private $output;
+	private \Symfony\Component\Console\Output\OutputInterface $output;
 
 	/**
 	 * CommandLogger constructor.
@@ -196,8 +195,8 @@ class CommandLogger implements ILogger {
 			'Line' => $exception->getLine(),
 		];
 		$exception['Trace'] = \preg_replace('!(login|checkPassword|updatePrivateKeyPassword)\(.*\)!', '$1(*** username and password replaced ***)', $exception['Trace']);
-		$msg = isset($context['message']) ? $context['message'] : 'Exception';
-		$msg .= ': ' . \json_encode($exception);
+		$msg = $context['message'] ?? 'Exception';
+		$msg .= ': ' . \json_encode($exception, JSON_THROW_ON_ERROR);
 		$this->error($msg, $context);
 	}
 }

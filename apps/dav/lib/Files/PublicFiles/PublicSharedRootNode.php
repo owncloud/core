@@ -43,12 +43,8 @@ use Sabre\DAVACL\IACL;
 class PublicSharedRootNode extends Collection implements IACL {
 	use NodeFactoryTrait, ACLTrait;
 
-	/** @var IShare */
-	private $share;
-	/**
-	 * @var IRequest
-	 */
-	private $request;
+	private \OCP\Share\IShare $share;
+	private \OCP\IRequest $request;
 
 	/**
 	 * PublicSharedRootNode constructor.
@@ -81,9 +77,7 @@ class PublicSharedRootNode extends Collection implements IACL {
 			} else {
 				$nodes = [$this->share->getNode()];
 			}
-			return \array_map(function (Node $node) {
-				return $this->nodeFactory($node, $this->share);
-			}, $nodes);
+			return \array_map(fn (Node $node) => $this->nodeFactory($node, $this->share), $nodes);
 		} catch (NotFoundException $ex) {
 			throw new NotFound();
 		}
@@ -119,11 +113,7 @@ class PublicSharedRootNode extends Collection implements IACL {
 			// all operations have been successful - no need to cleanup the pending file in finally block
 			$pendingFile = null;
 			return '"' . $etag . '"';
-		} catch (NotPermittedException $ex) {
-			throw new Forbidden('Permission denied to create file');
-		} catch (InvalidPathException $ex) {
-			throw new Forbidden('Permission denied to create file');
-		} catch (NotFoundException $ex) {
+		} catch (NotPermittedException|InvalidPathException|NotFoundException $ex) {
 			throw new Forbidden('Permission denied to create file');
 		} finally {
 			// in case of an exception we need to delete the pending file

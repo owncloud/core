@@ -23,7 +23,7 @@ class DummyLegacyEmitter extends \OC\Hooks\LegacyEmitter {
 
 class LegacyEmitterTest extends BasicEmitterTest {
 	//we can't use exceptions here since OC_Hooks catches all exceptions
-	private static $emitted = false;
+	private static bool $emitted = false;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -44,13 +44,13 @@ class LegacyEmitterTest extends BasicEmitterTest {
 	}
 
 	public function testLegacyHook() {
-		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitterTest', 'staticLegacyCallBack');
+		\OC_Hook::connect('Test', 'test', '\\' . \Test\Hooks\LegacyEmitterTest::class, 'staticLegacyCallBack');
 		$this->emitter->emitEvent('Test', 'test');
 		$this->assertTrue(self::$emitted);
 	}
 
 	public function testLegacyArguments() {
-		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitterTest', 'staticLegacyArgumentsCallBack');
+		\OC_Hook::connect('Test', 'test', '\\' . \Test\Hooks\LegacyEmitterTest::class, 'staticLegacyArgumentsCallBack');
 		$this->emitter->emitEvent('Test', 'test', ['foo' => 'foo', 'bar' => 'bar']);
 		$this->assertTrue(self::$emitted);
 	}

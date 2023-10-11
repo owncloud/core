@@ -32,25 +32,17 @@ use Sabre\HTTP\ResponseInterface;
  */
 class CorsPlugin extends ServerPlugin {
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
 	/**
-	 * Reference to logged in user's session
-	 *
-	 * @var IUserSession
-	 */
-	private $userSession;
+  * Reference to logged in user's session
+  */
+	private \OCP\IUserSession $userSession;
 
-	/** @var array */
-	private $extraHeaders;
-	/**
-	 * @var bool
-	 */
-	private $alreadyExecuted = false;
+	private ?array $extraHeaders = null;
+	private bool $alreadyExecuted = false;
 
 	/**
 	 * @param IUserSession $userSession

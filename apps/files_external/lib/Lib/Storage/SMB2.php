@@ -24,10 +24,7 @@ namespace OCA\Files_External\Lib\Storage;
 use OCA\Files_External\Lib\Cache\SmbCacheWrapper;
 
 class SMB2 extends SMB {
-	/**
-	 * @var SMB
-	 */
-	private $userSpecificSmb;
+	private \OCA\Files_External\Lib\Storage\SMB $userSpecificSmb;
 
 	public function __construct($params) {
 		$this->userSpecificSmb = new SMB($params);

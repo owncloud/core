@@ -34,13 +34,12 @@ use Test\TestCase;
  */
 class DeletedUserTest extends TestCase {
 	/** @var Manager */
-	private $manager;
+	private \PHPUnit\Framework\MockObject\MockObject $manager;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var DeletedUser */
-	private $deletedUser;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
+	private \OC\User\DeletedUser $deletedUser;
 
 	protected function setUp(): void {
 		$this->manager = $this->createMock(Manager::class);

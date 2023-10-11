@@ -25,7 +25,7 @@ use OCA\Files_Trashbin\Expiration;
 class ExpirationTest extends \Test\TestCase {
 	public const SECONDS_PER_DAY = 86400; //60*60*24
 
-	public const FAKE_TIME_NOW = 1000000;
+	public const FAKE_TIME_NOW = 1_000_000;
 
 	public function expirationData() {
 		$today = 100*self::SECONDS_PER_DAY;
@@ -156,7 +156,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @return \OCP\AppFramework\Utility\ITimeFactory
 	 */
 	private function getMockedTimeFactory($time) {
-		$mockedTimeFactory = $this->getMockBuilder('\OCP\AppFramework\Utility\ITimeFactory')
+		$mockedTimeFactory = $this->getMockBuilder('\\' . \OCP\AppFramework\Utility\ITimeFactory::class)
 				->disableOriginalConstructor()
 				->setMethods(['getTime'])
 				->getMock()
@@ -174,7 +174,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @return \OCP\IConfig
 	 */
 	private function getMockedConfig($returnValue) {
-		$mockedConfig = $this->getMockBuilder('\OCP\IConfig')
+		$mockedConfig = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 				->disableOriginalConstructor()
 				->setMethods(
 					[

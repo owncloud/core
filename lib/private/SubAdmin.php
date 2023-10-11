@@ -36,14 +36,11 @@ use OCP\IDBConnection;
 
 class SubAdmin extends PublicEmitter {
 	use EventEmitterTrait;
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IGroupManager */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
-	/** @var IDBConnection */
-	private $dbConn;
+	private \OCP\IDBConnection $dbConn;
 
 	/**
 	 * @param IUserManager $userManager
@@ -86,7 +83,7 @@ class SubAdmin extends PublicEmitter {
 				])
 				->execute();
 
-			$this->emit('\OC\SubAdmin', 'postCreateSubAdmin', [$user, $group]);
+			$this->emit('\\' . \OC\SubAdmin::class, 'postCreateSubAdmin', [$user, $group]);
 			\OC_Hook::emit("OC_SubAdmin", "post_createSubAdmin", ["gid" => $group->getGID()]);
 			return true;
 		}, [
@@ -110,7 +107,7 @@ class SubAdmin extends PublicEmitter {
 				->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())))
 				->execute();
 
-			$this->emit('\OC\SubAdmin', 'postDeleteSubAdmin', [$user, $group]);
+			$this->emit('\\' . \OC\SubAdmin::class, 'postDeleteSubAdmin', [$user, $group]);
 			\OC_Hook::emit("OC_SubAdmin", "post_deleteSubAdmin", ["gid" => $group->getGID()]);
 			return true;
 		}, [

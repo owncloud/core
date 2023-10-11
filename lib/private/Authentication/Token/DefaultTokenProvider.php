@@ -32,20 +32,15 @@ use OCP\IUser;
 use OCP\Security\ICrypto;
 
 class DefaultTokenProvider implements IProvider {
-	/** @var DefaultTokenMapper */
-	private $mapper;
+	private \OC\Authentication\Token\DefaultTokenMapper $mapper;
 
-	/** @var ICrypto */
-	private $crypto;
+	private \OCP\Security\ICrypto $crypto;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var ILogger $logger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var ITimeFactory $time */
-	private $time;
+	private \OCP\AppFramework\Utility\ITimeFactory $time;
 
 	/**
 	 * @param DefaultTokenMapper $mapper

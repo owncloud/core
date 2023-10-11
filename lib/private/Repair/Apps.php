@@ -43,17 +43,13 @@ class Apps implements IRepairStep {
 	public const KEY_INCOMPATIBLE = 'incompatible';
 	public const KEY_MISSING = 'missing';
 
-	/** @var  IAppManager */
-	private $appManager;
+	private \OCP\App\IAppManager $appManager;
 
-	/** @var  EventDispatcherInterface */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var \OC_Defaults */
-	private $defaults;
+	private \OC_Defaults $defaults;
 
 	/** @var bool */
 	private $forceMajorUpgrade;
@@ -247,16 +243,7 @@ class Apps implements IRepairStep {
 					),
 					\sprintf('%s::%s', IRepairStep::class, $event)
 				);
-			} catch (AppAlreadyInstalledException $e) {
-				$output->info($e->getMessage());
-				$failedApps[] = $app;
-			} catch (AppNotInstalledException $e) {
-				$output->info($e->getMessage());
-				$failedApps[] = $app;
-			} catch (AppNotFoundException $e) {
-				$output->info($e->getMessage());
-				$failedApps[] = $app;
-			} catch (AppUpdateNotFoundException $e) {
+			} catch (AppAlreadyInstalledException|AppNotInstalledException|AppNotFoundException|AppUpdateNotFoundException $e) {
 				$output->info($e->getMessage());
 				$failedApps[] = $app;
 			} catch (AppManagerException $e) {
@@ -304,9 +291,7 @@ class Apps implements IRepairStep {
 			return '';
 		}
 		$appList = \array_map(
-			function ($appId) {
-				return "occ app:disable $appId";
-			},
+			fn ($appId) => "occ app:disable $appId",
 			$appList
 		);
 		return "\n" . \implode("\n", $appList);

@@ -32,10 +32,9 @@ use OCP\IGroup;
  * This class won't prevent the sharing action by itself.
  */
 class SharingBlacklist {
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	private $blacklistCache = null;
+	private ?array $blacklistCache = null;
 
 	public function __construct(IConfig $config) {
 		$this->config = $config;
@@ -65,7 +64,7 @@ class SharingBlacklist {
 	 * @param string[] $ids a list with the ids of the groups to be blacklisted
 	 */
 	public function setBlacklistedReceiverGroups(array $ids) {
-		$this->config->setAppValue('files_sharing', 'blacklisted_receiver_groups', \json_encode($ids));
+		$this->config->setAppValue('files_sharing', 'blacklisted_receiver_groups', \json_encode($ids, JSON_THROW_ON_ERROR));
 		$this->blacklistCache = null;  // clear the cache
 	}
 
@@ -96,7 +95,7 @@ class SharingBlacklist {
 	 */
 	private function fetchBlacklistedReceiverGroupIds() {
 		$configuredBlacklist = $this->config->getAppValue('files_sharing', 'blacklisted_receiver_groups', '[]');
-		$decodedGroups = \json_decode($configuredBlacklist, true);
+		$decodedGroups = \json_decode($configuredBlacklist, true, 512, JSON_THROW_ON_ERROR);
 
 		if (!\is_array($decodedGroups)) {
 			$decodedGroups = [];

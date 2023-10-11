@@ -44,22 +44,16 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 	/**
 	 * @var \OCP\Files\Config\IHomeMountProvider[]
 	 */
-	private $homeProviders = [];
+	private array $homeProviders = [];
 
 	/**
 	 * @var \OCP\Files\Config\IMountProvider[]
 	 */
-	private $providers = [];
+	private array $providers = [];
 
-	/**
-	 * @var \OCP\Files\Storage\IStorageFactory
-	 */
-	private $loader;
+	private \OCP\Files\Storage\IStorageFactory $loader;
 
-	/**
-	 * @var \OCP\Files\Config\IUserMountCache
-	 */
-	private $mountCache;
+	private \OCP\Files\Config\IUserMountCache $mountCache;
 
 	/**
 	 * @param \OCP\Files\Storage\IStorageFactory $loader
@@ -78,12 +72,8 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 	 */
 	public function getMountsForUser(IUser $user) {
 		$loader = $this->loader;
-		$mounts = \array_map(function (IMountProvider $provider) use ($user, $loader) {
-			return $provider->getMountsForUser($user, $loader);
-		}, $this->providers);
-		$mounts = \array_filter($mounts, function ($result) {
-			return \is_array($result);
-		});
+		$mounts = \array_map(fn (IMountProvider $provider) => $provider->getMountsForUser($user, $loader), $this->providers);
+		$mounts = \array_filter($mounts, fn ($result) => \is_array($result));
 
 		$mergedMounts = [];
 		$takenMountpoints = [];

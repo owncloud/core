@@ -29,10 +29,10 @@ use Test\TestCase;
  */
 class TrustedServerAddTest extends TestCase {
 	/** @var TrustedServers */
-	private $trustedServers;
+	private \PHPUnit\Framework\MockObject\MockObject $trustedServers;
 
 	/** @var TrustedServerAdd */
-	private $command;
+	private \Symfony\Component\Console\Tester\CommandTester $command;
 
 	protected function setUp(): void {
 		$this->trustedServers = $this->createMock(TrustedServers::class);

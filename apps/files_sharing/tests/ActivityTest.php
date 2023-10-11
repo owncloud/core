@@ -34,21 +34,18 @@ use OCA\Files_Sharing\Activity;
  * @package OCA\Files_Sharing\Tests
  */
 class ActivityTest extends TestCase {
-	/**
-	 * @var Activity
-	 */
-	private $activity;
+	private \OCA\Files_Sharing\Activity $activity;
 
 	protected function setUp(): void {
 		parent::setUp();
 		$this->activity = new Activity(
-			$this->getMockBuilder('OCP\L10N\IFactory')
+			$this->getMockBuilder(\OCP\L10N\IFactory::class)
 				->disableOriginalConstructor()
 				->getMock(),
-			$this->getMockBuilder('OCP\IURLGenerator')
+			$this->getMockBuilder(\OCP\IURLGenerator::class)
 				->disableOriginalConstructor()
 				->getMock(),
-			$this->getMockBuilder('OCP\Activity\IManager')
+			$this->getMockBuilder(\OCP\Activity\IManager::class)
 				->disableOriginalConstructor()
 				->getMock()
 		);

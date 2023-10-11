@@ -45,10 +45,10 @@ use Test\TestCase;
  */
 class ScanExternalSharesJobTest extends TestCase {
 	/** @var Manager */
-	private $externalManager;
+	private \PHPUnit\Framework\MockObject\MockObject $externalManager;
 
 	/** @var IUserManager */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var IDBConnection */
 	private $connection;

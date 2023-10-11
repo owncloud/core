@@ -35,15 +35,14 @@ use Test\TestCase;
  */
 class ConvertTypeTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ConnectionFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $connectionFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $connectionFactory;
 
 	/** @var AppManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 
-	/** @var CommandTester */
-	private $commandTester;
+	private ?\Symfony\Component\Console\Tester\CommandTester $commandTester = null;
 
 	/** @var \Doctrine\DBAL\Connection */
 	private $connection;

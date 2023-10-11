@@ -26,13 +26,13 @@ use OCA\Files_Sharing\Panels\Admin\SettingsPanel;
 
 class SettingsPanelTest extends \Test\TestCase {
 	/** @var SharingBlacklist | \PHPUnit\Framework\MockObject\MockObject */
-	private $sharingBlacklist;
+	private \PHPUnit\Framework\MockObject\MockObject $sharingBlacklist;
 
 	/** @var SharingAllowlist | \PHPUnit\Framework\MockObject\MockObject */
-	private $sharingAllowlist;
+	private \PHPUnit\Framework\MockObject\MockObject $sharingAllowlist;
 
 	/** @var SettingsPanel | \PHPUnit\Framework\MockObject\MockObject */
-	private $settingsPanel;
+	private \OCA\Files_Sharing\Panels\Admin\SettingsPanel $settingsPanel;
 
 	protected function setUp(): void {
 		$this->sharingBlacklist = $this->getMockBuilder(SharingBlacklist::class)

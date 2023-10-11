@@ -38,14 +38,11 @@ use OCP\ILogger;
  * @package OC\Encryption
  */
 class EncryptionWrapper {
-	/** @var ArrayCache  */
-	private $arrayCache;
+	private \OC\Memcache\ArrayCache $arrayCache;
 
-	/** @var  Manager */
-	private $manager;
+	private \OC\Encryption\Manager $manager;
 
-	/** @var  ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * EncryptionWrapper constructor.
@@ -79,8 +76,8 @@ class EncryptionWrapper {
 			'mount' => $mount
 		];
 
-		if (!$storage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')
-			&& !$storage->instanceOfStorage('OCA\Files_Sharing\External\Storage')
+		if (!$storage->instanceOfStorage(\OCA\Files_Sharing\SharedStorage::class)
+			&& !$storage->instanceOfStorage(\OCA\Files_Sharing\External\Storage::class)
 			&& !$storage->instanceOfStorage('OC\Files\Storage\OwnCloud')) {
 			$user = \OC::$server->getUserSession()->getUser();
 			$mountManager = Filesystem::getMountManager();

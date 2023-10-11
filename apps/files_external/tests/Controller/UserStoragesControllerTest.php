@@ -40,18 +40,18 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->service = $this->createMock('\OCP\Files\External\Service\IUserStoragesService');
+		$this->service = $this->createMock('\\' . \OCP\Files\External\Service\IUserStoragesService::class);
 
 		$this->service->method('getVisibilityType')
 			->willReturn(IStoragesBackendService::VISIBILITY_PERSONAL);
 
 		$this->controller = new UserStoragesController(
 			'files_external',
-			$this->createMock('\OCP\IRequest'),
-			$this->createMock('\OCP\IL10N'),
+			$this->createMock('\\' . \OCP\IRequest::class),
+			$this->createMock('\\' . \OCP\IL10N::class),
 			$this->service,
-			$this->createMock('\OCP\IUserSession'),
-			$this->createMock('\OCP\ILogger')
+			$this->createMock('\\' . \OCP\IUserSession::class),
+			$this->createMock('\\' . \OCP\ILogger::class)
 		);
 	}
 
@@ -78,7 +78,7 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 
 		$response = $this->controller->create(
 			'mount',
-			'\OCA\Files_External\Lib\Storage\SMB',
+			'\\' . \OCA\Files_External\Lib\Storage\SMB::class,
 			'\Auth\Mechanism',
 			[],
 			[],
@@ -92,7 +92,7 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 		$response = $this->controller->update(
 			1,
 			'mount',
-			'\OCA\Files_External\Lib\Storage\SMB',
+			'\\' . \OCA\Files_External\Lib\Storage\SMB::class,
 			'\Auth\Mechanism',
 			[],
 			[],

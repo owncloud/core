@@ -33,20 +33,11 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 
 class SystemTagsByIdCollection implements ICollection {
-	/**
-	 * @var ISystemTagManager
-	 */
-	private $tagManager;
+	private \OCP\SystemTag\ISystemTagManager $tagManager;
 
-	/**
-	 * @var IGroupManager
-	 */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
 	/**
 	 * SystemTagsByIdCollection constructor.
@@ -133,9 +124,7 @@ class SystemTagsByIdCollection implements ICollection {
 			return true;
 		});
 
-		return \array_map(function ($tag) {
-			return $this->makeNode($tag);
-		}, $tags);
+		return \array_map(fn ($tag) => $this->makeNode($tag), $tags);
 	}
 
 	/**

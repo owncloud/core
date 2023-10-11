@@ -97,7 +97,7 @@ class FileLocksBackend implements BackendInterface {
 			}
 
 			// get parent storage and check for locks on the target path
-			list($parentPath, $childPath) = \Sabre\Uri\split($uri);
+			[$parentPath, $childPath] = \Sabre\Uri\split($uri);
 
 			try {
 				$node = $this->tree->getNodeForPath($parentPath);

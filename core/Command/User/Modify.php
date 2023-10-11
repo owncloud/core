@@ -29,14 +29,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Modify extends Base {
-	/** @var IUserManager  */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IMailer  */
-	private $mailer;
+	private \OCP\Mail\IMailer $mailer;
 
-	/** @var array  */
-	private $allowedKeys = ['email', 'displayname'];
+	private array $allowedKeys = ['email', 'displayname'];
 
 	/**
 	 * Modify constructor.

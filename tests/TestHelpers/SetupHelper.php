@@ -62,7 +62,7 @@ class SetupHelper extends Assert {
 	):array {
 		$occCommand = ['user:add', '--password-from-env'];
 		if ($displayName !== null) {
-			$occCommand = \array_merge($occCommand, ["--display-name", $displayName]);
+			$occCommand = [...$occCommand, "--display-name", $displayName];
 		}
 		if ($email !== null) {
 			$occCommand = \array_merge($occCommand, ["--email", $email]);
@@ -211,7 +211,10 @@ class SetupHelper extends Assert {
 			self::runOcc(
 				['group:list', '--output=json'],
 				$xRequestId
-			)['stdOut']
+			)['stdOut'],
+			null,
+			512,
+			JSON_THROW_ON_ERROR
 		);
 	}
 	/**
@@ -812,7 +815,7 @@ class SetupHelper extends Assert {
 				"POST",
 				"/apps/testing/api/v1/occ/bulk?format=json",
 				$xRequestId,
-				\json_encode($bodies)
+				\json_encode($bodies, JSON_THROW_ON_ERROR)
 			);
 		} catch (ServerException $e) {
 			throw new Exception(
@@ -821,7 +824,7 @@ class SetupHelper extends Assert {
 				$e->getResponse()->getBody()
 			);
 		}
-		$result = \json_decode($result->getBody()->getContents());
+		$result = \json_decode($result->getBody()->getContents(), null, 512, JSON_THROW_ON_ERROR);
 
 		return $result->ocs->data;
 	}
@@ -1204,7 +1207,7 @@ class SetupHelper extends Assert {
 	public static function findLines(?string $input, ?string $text):array {
 		$results = [];
 		foreach (\explode("\n", $input) as $line) {
-			if (\strpos($line, $text) !== false) {
+			if (\strpos($line, (string) $text) !== false) {
 				$results[] = $line;
 			}
 		}

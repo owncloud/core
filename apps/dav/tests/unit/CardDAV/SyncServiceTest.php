@@ -74,8 +74,8 @@ class SyncServiceTest extends TestCase {
 			->willReturnOnConsecutiveCalls(null, []);
 
 		/** @var IUserManager $userManager */
-		$userManager = $this->getMockBuilder('OCP\IUserManager')->disableOriginalConstructor()->getMock();
-		$logger = $this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock();
+		$userManager = $this->getMockBuilder(\OCP\IUserManager::class)->disableOriginalConstructor()->getMock();
+		$logger = $this->getMockBuilder(\OCP\ILogger::class)->disableOriginalConstructor()->getMock();
 		$ss = new SyncService($backend, $userManager, $logger);
 		$book = $ss->ensureSystemAddressBookExists('principals/users/adam', 'contacts', []);
 	}
@@ -83,7 +83,7 @@ class SyncServiceTest extends TestCase {
 	public function testUpdateAndDeleteUser() {
 		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $backend */
 		$backend = $this->getMockBuilder(CardDavBackend::class)->disableOriginalConstructor()->getMock();
-		$logger = $this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock();
+		$logger = $this->getMockBuilder(\OCP\ILogger::class)->disableOriginalConstructor()->getMock();
 
 		$backend->expects($this->once())->method('createCard');
 		$backend->expects($this->once())->method('updateCard');
@@ -103,10 +103,10 @@ class SyncServiceTest extends TestCase {
 		]);
 
 		/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject $userManager */
-		$userManager = $this->getMockBuilder('OCP\IUserManager')->disableOriginalConstructor()->getMock();
+		$userManager = $this->getMockBuilder(\OCP\IUserManager::class)->disableOriginalConstructor()->getMock();
 
 		/** @var IUser | \PHPUnit\Framework\MockObject\MockObject $user */
-		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
+		$user = $this->getMockBuilder(\OCP\IUser::class)->disableOriginalConstructor()->getMock();
 		$user->method('getBackendClassName')->willReturn('unittest');
 		$user->method('getUID')->willReturn('test-user');
 
@@ -121,8 +121,8 @@ class SyncServiceTest extends TestCase {
 	}
 
 	public function testDeleteUserByUidIfUnique() {
-		$logger = $this->createMock('OCP\ILogger');
-		$userManager = $this->createMock('OCP\IUserManager');
+		$logger = $this->createMock(\OCP\ILogger::class);
+		$userManager = $this->createMock(\OCP\IUserManager::class);
 
 		$backend = $this->createMock(CardDavBackend::class);
 		$backend->method('getAddressBooksByUri')->willReturn([
@@ -149,8 +149,8 @@ class SyncServiceTest extends TestCase {
 	}
 
 	public function testDeleteUserByUidIfUniqueNoData() {
-		$logger = $this->createMock('OCP\ILogger');
-		$userManager = $this->createMock('OCP\IUserManager');
+		$logger = $this->createMock(\OCP\ILogger::class);
+		$userManager = $this->createMock(\OCP\IUserManager::class);
 
 		$backend = $this->createMock(CardDavBackend::class);
 		$backend->method('getAddressBooksByUri')->willReturn([
@@ -171,8 +171,8 @@ class SyncServiceTest extends TestCase {
 	}
 
 	public function testDeleteUserByUidIfUniqueMultiple() {
-		$logger = $this->createMock('OCP\ILogger');
-		$userManager = $this->createMock('OCP\IUserManager');
+		$logger = $this->createMock(\OCP\ILogger::class);
+		$userManager = $this->createMock(\OCP\IUserManager::class);
 
 		$backend = $this->createMock(CardDavBackend::class);
 		$backend->method('getAddressBooksByUri')->willReturn([
@@ -223,8 +223,8 @@ class SyncServiceTest extends TestCase {
 	 * @return SyncService|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function getSyncServiceMock($backend, $response) {
-		$userManager = $this->getMockBuilder('OCP\IUserManager')->disableOriginalConstructor()->getMock();
-		$logger = $this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock();
+		$userManager = $this->getMockBuilder(\OCP\IUserManager::class)->disableOriginalConstructor()->getMock();
+		$logger = $this->getMockBuilder(\OCP\ILogger::class)->disableOriginalConstructor()->getMock();
 		/** @var SyncService | \PHPUnit\Framework\MockObject\MockObject $ss */
 		$ss = $this->getMockBuilder(SyncService::class)
 			->setMethods(['ensureSystemAddressBookExists', 'requestSyncReport', 'download'])

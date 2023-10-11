@@ -34,10 +34,8 @@ use OCP\ILogger;
 class CleanProperties extends TimedJob {
 	public const CHUNK_SIZE = 200;
 
-	/** @var IDBConnection  */
-	private $connection;
-	/** @var ILogger  */
-	private $logger;
+	private \OCP\IDBConnection $connection;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * CleanProperties constructor.
@@ -90,9 +88,7 @@ class CleanProperties extends TimedJob {
 			->setMaxResults(self::CHUNK_SIZE);
 
 		while ($rows = $qb->execute()->fetchAll()) {
-			$fileIds = \array_map(function ($row) {
-				return (int) $row['fileid'];
-			}, $rows);
+			$fileIds = \array_map(fn ($row) => (int) $row['fileid'], $rows);
 
 			if (!empty($fileIds)) {
 				$this->deleteOrphan($fileIds);

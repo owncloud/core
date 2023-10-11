@@ -24,8 +24,7 @@ use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use Test\TestCase;
 
 class FileAccessHelperTest extends TestCase {
-	/** @var FileAccessHelper */
-	private $fileAccessHelper;
+	private \OC\IntegrityCheck\Helpers\FileAccessHelper $fileAccessHelper;
 
 	public function setUp(): void {
 		parent::setUp();

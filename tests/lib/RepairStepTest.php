@@ -32,11 +32,10 @@ class RepairStepTest implements IRepairStep {
 }
 
 class RepairTest extends TestCase {
-	/** @var \OC\Repair */
-	private $repair;
+	private \OC\Repair $repair;
 
 	/** @var string[] */
-	private $outputArray;
+	private ?array $outputArray = null;
 
 	public function setUp(): void {
 		parent::setUp();

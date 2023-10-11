@@ -33,28 +33,28 @@ use Sabre\HTTP\Response;
 
 class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 	protected $nonFatalExceptions = [
-		'Sabre\DAV\Exception\NotAuthenticated' => true,
+		\Sabre\DAV\Exception\NotAuthenticated::class => true,
 		// the sync client uses this to find out whether files exist,
 		// so it is not always an error, log it as debug
-		'Sabre\DAV\Exception\NotFound' => true,
+		\Sabre\DAV\Exception\NotFound::class => true,
 		// this one mostly happens when the same file is uploaded at
 		// exactly the same time from two clients, only one client
 		// wins, the second one gets "Precondition failed"
-		'Sabre\DAV\Exception\PreconditionFailed' => true,
+		\Sabre\DAV\Exception\PreconditionFailed::class => true,
 		// forbidden can be expected when trying to upload to
 		// read-only folders for example
-		'Sabre\DAV\Exception\Forbidden' => true,
+		\Sabre\DAV\Exception\Forbidden::class => true,
 		// Custom exception similar to NotAuthenticated
-		'OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden' => true,
+		\OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden::class => true,
 		// Happens when an external storage or federated share is temporarily
 		// not available
 		'Sabre\DAV\Exception\StorageNotAvailableException' => true,
-		'OCP\Files\StorageNotAvailableException' => true,
+		\OCP\Files\StorageNotAvailableException::class => true,
 		// Locked exceptions could be fine if the file is truly locked
-		'Sabre\DAV\Exception\Locked' => true,
-		'OCA\DAV\Connector\Sabre\Exception\FileLocked' => true,  // thrown by the LockPlugin
+		\Sabre\DAV\Exception\Locked::class => true,
+		\OCA\DAV\Connector\Sabre\Exception\FileLocked::class => true,  // thrown by the LockPlugin
 		//If the exception is InsufficientStorage, then log a debug message
-		'Sabre\DAV\Exception\InsufficientStorage' => true
+		\Sabre\DAV\Exception\InsufficientStorage::class => true
 	];
 
 	/** @var string */

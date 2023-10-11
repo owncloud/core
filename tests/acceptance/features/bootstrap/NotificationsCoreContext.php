@@ -237,7 +237,9 @@ class NotificationsCoreContext implements Context {
 		);
 		$response = \json_decode(
 			$this->featureContext->getResponse()->getBody()->getContents(),
-			true
+			true,
+			512,
+			JSON_THROW_ON_ERROR
 		);
 
 		$this->featureContext->verifyTableNodeColumns($formData, ['key', 'regex']);
@@ -276,7 +278,7 @@ class NotificationsCoreContext implements Context {
 	 * @return array
 	 */
 	public function getArrayOfNotificationsResponded(ResponseInterface $resp):array {
-		$jsonResponse = \json_decode($resp->getBody()->getContents(), true);
+		$jsonResponse = \json_decode($resp->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 		return $jsonResponse['ocs']['data'];
 	}
 

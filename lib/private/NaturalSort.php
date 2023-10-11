@@ -27,9 +27,9 @@
 namespace OC;
 
 class NaturalSort {
-	private static $instance;
+	private static ?\OC\NaturalSort $instance = null;
 	private $collator;
-	private $cache = [];
+	private array $cache = [];
 
 	/**
 	 * Instantiate a new \OC\NaturalSort instance.

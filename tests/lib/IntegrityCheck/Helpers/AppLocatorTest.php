@@ -25,8 +25,7 @@ use OC\IntegrityCheck\Helpers\AppLocator;
 use Test\TestCase;
 
 class AppLocatorTest extends TestCase {
-	/** @var AppLocator */
-	private $locator;
+	private \OC\IntegrityCheck\Helpers\AppLocator $locator;
 
 	public function setUp(): void {
 		parent::setUp();

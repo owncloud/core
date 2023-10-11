@@ -50,17 +50,13 @@ class DefaultShareProvider implements IShareProvider {
 	// Special share type for user modified group shares
 	public const SHARE_TYPE_USERGROUP = 2;
 
-	/** @var IDBConnection */
-	private $dbConn;
+	private \OCP\IDBConnection $dbConn;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IGroupManager */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
 	/**
 	 * DefaultShareProvider constructor.
@@ -717,9 +713,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
 		}
 
-		$groups = \array_map(function (IGroup $group) {
-			return $group->getGID();
-		}, $groups);
+		$groups = \array_map(fn (IGroup $group) => $group->getGID(), $groups);
 
 		$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)))
 			->andWhere($qb->expr()->in('share_with', $qb->createNamedParameter(
@@ -756,9 +750,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
 		}
 
-		$groups = \array_map(function (IGroup $group) {
-			return $group->getGID();
-		}, $groups);
+		$groups = \array_map(fn (IGroup $group) => $group->getGID(), $groups);
 
 		$qb->andWhere($qb->expr()->orX(
 			$qb->expr()->andX(
@@ -1095,7 +1087,7 @@ class DefaultShareProvider implements IShareProvider {
 	private function resolveGroupShares($shares, $userId) {
 		$qb = $this->dbConn->getQueryBuilder();
 
-		list($chunkedShareIds, $shareIdToShareMap) = $this->chunkSharesToMaps($shares);
+		[$chunkedShareIds, $shareIdToShareMap] = $this->chunkSharesToMaps($shares);
 		foreach ($chunkedShareIds as $shareIdsChunk) {
 			$qb->select('*')
 				->from('share')
@@ -1312,7 +1304,7 @@ class DefaultShareProvider implements IShareProvider {
 	private function updateShareAttributes(IShare $share, $data) {
 		if ($data !== null) {
 			$attributes = new ShareAttributes();
-			$compressedAttributes = \json_decode($data, true);
+			$compressedAttributes = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 			foreach ($compressedAttributes as $compressedAttribute) {
 				$attributes->setAttribute(
 					$compressedAttribute[0],
@@ -1345,7 +1337,7 @@ class DefaultShareProvider implements IShareProvider {
 				2 => $attribute['enabled']
 			];
 		}
-		return \json_encode($compressedAttributes);
+		return \json_encode($compressedAttributes, JSON_THROW_ON_ERROR);
 	}
 
 	/**

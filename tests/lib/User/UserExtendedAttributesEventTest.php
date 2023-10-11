@@ -27,10 +27,10 @@ use Test\TestCase;
 
 class UserExtendedAttributesEventTest extends TestCase {
 	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	/** @var UserExtendedAttributesEvent | \PHPUnit\Framework\MockObject\MockObject */
-	private $userExtendedAttributesEvent;
+	private \OCP\User\UserExtendedAttributesEvent $userExtendedAttributesEvent;
 
 	public function setUp(): void {
 		parent::setUp();

@@ -27,14 +27,11 @@ use OCP\Authentication\LoginPolicies\ILoginPolicy;
 use OC\User\LoginException;
 
 class LoginPolicyManager {
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
-	/** @var IL10N */
-	private $l10n;
+	private \OCP\IConfig $config;
+	private \OCP\ILogger $logger;
+	private \OCP\IL10N $l10n;
 	/** @var Array<string, ILoginPolicy> */
-	private $registeredPolicies = [];
+	private array $registeredPolicies = [];
 
 	public function __construct(IConfig $config, ILogger $logger, IL10N $l10n) {
 		$this->config = $config;

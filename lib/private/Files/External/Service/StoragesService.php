@@ -83,19 +83,11 @@ abstract class StoragesService implements IStoragesService {
 	}
 
 	protected function getStorageConfigFromDBMount(array $mount) {
-		$applicableUsers = \array_filter($mount['applicable'], function ($applicable) {
-			return $applicable['type'] === DBConfigService::APPLICABLE_TYPE_USER;
-		});
-		$applicableUsers = \array_map(function ($applicable) {
-			return $applicable['value'];
-		}, $applicableUsers);
+		$applicableUsers = \array_filter($mount['applicable'], fn ($applicable) => $applicable['type'] === DBConfigService::APPLICABLE_TYPE_USER);
+		$applicableUsers = \array_map(fn ($applicable) => $applicable['value'], $applicableUsers);
 
-		$applicableGroups = \array_filter($mount['applicable'], function ($applicable) {
-			return $applicable['type'] === DBConfigService::APPLICABLE_TYPE_GROUP;
-		});
-		$applicableGroups = \array_map(function ($applicable) {
-			return $applicable['value'];
-		}, $applicableGroups);
+		$applicableGroups = \array_filter($mount['applicable'], fn ($applicable) => $applicable['type'] === DBConfigService::APPLICABLE_TYPE_GROUP);
+		$applicableGroups = \array_map(fn ($applicable) => $applicable['value'], $applicableGroups);
 
 		try {
 			$config = $this->createStorage(
@@ -145,13 +137,9 @@ abstract class StoragesService implements IStoragesService {
 	protected function readConfig() {
 		$mounts = $this->readDBConfig();
 		$configs = \array_map([$this, 'getStorageConfigFromDBMount'], $mounts);
-		$configs = \array_filter($configs, function ($config) {
-			return $config instanceof IStorageConfig;
-		});
+		$configs = \array_filter($configs, fn ($config) => $config instanceof IStorageConfig);
 
-		$keys = \array_map(function (IStorageConfig $config) {
-			return $config->getId();
-		}, $configs);
+		$keys = \array_map(fn (IStorageConfig $config) => $config->getId(), $configs);
 
 		return \array_combine($keys, $configs);
 	}

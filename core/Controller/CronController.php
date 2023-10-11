@@ -29,12 +29,9 @@ use OCP\IRequest;
 use OCP\ILogger;
 
 class CronController extends Controller {
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
-	/** @var IJobList */
-	private $jobList;
+	private \OCP\IConfig $config;
+	private \OCP\ILogger $logger;
+	private \OCP\BackgroundJob\IJobList $jobList;
 
 	/**
 	 * CronController constructor.

@@ -46,16 +46,14 @@ use OCP\Share\IManager;
  * @package OCA\Files\Controller
  */
 class ApiController extends Controller {
-	/** @var TagService */
-	private $tagService;
+	private \OCA\Files\Service\TagService $tagService;
 	/** @var IManager **/
-	private $shareManager;
-	/** @var IPreview */
-	private $previewManager;
+	private \OCP\Share\IManager $shareManager;
+	private \OCP\IPreview $previewManager;
 	/** IUserSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 	/** IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * @param string $appName
@@ -126,7 +124,7 @@ class ApiController extends Controller {
 		if ($tags !== null) {
 			try {
 				$this->tagService->updateFileTags($path, $tags);
-			} catch (\OCP\Files\NotFoundException $e) {
+			} catch (\OCP\Files\NotFoundException|\Exception $e) {
 				return new DataResponse([
 					'message' => $e->getMessage()
 				], Http::STATUS_NOT_FOUND);
@@ -134,10 +132,6 @@ class ApiController extends Controller {
 				return new DataResponse([
 					'message' => $e->getMessage()
 				], Http::STATUS_SERVICE_UNAVAILABLE);
-			} catch (\Exception $e) {
-				return new DataResponse([
-					'message' => $e->getMessage()
-				], Http::STATUS_NOT_FOUND);
 			}
 			$result['tags'] = $tags;
 		}

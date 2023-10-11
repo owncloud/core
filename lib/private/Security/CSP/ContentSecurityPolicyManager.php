@@ -27,7 +27,7 @@ use OCP\Security\IContentSecurityPolicyManager;
 
 class ContentSecurityPolicyManager implements IContentSecurityPolicyManager {
 	/** @var ContentSecurityPolicy[] */
-	private $policies = [];
+	private array $policies = [];
 
 	/** {@inheritdoc} */
 	public function addDefaultPolicy(EmptyContentSecurityPolicy $policy) {

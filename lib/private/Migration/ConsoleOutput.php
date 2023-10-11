@@ -34,11 +34,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package OC\Migration
  */
 class ConsoleOutput implements IOutput {
-	/** @var OutputInterface */
-	private $output;
+	private \Symfony\Component\Console\Output\OutputInterface $output;
 
-	/** @var ProgressBar */
-	private $progressBar;
+	private ?\Symfony\Component\Console\Helper\ProgressBar $progressBar = null;
 
 	public function __construct(OutputInterface $output) {
 		$this->output = $output;

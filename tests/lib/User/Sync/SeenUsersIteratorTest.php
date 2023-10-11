@@ -35,11 +35,11 @@ class SeenUsersIteratorTest extends TestCase {
 	/**
 	 * @var AccountMapper|\PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $mapper;
+	private \PHPUnit\Framework\MockObject\MockObject $mapper;
 	/**
 	 * @var \Iterator
 	 */
-	private $iterator;
+	private \OC\User\Sync\SeenUsersIterator $iterator;
 
 	public const TEST_BACKEND = 'TestBackend';
 

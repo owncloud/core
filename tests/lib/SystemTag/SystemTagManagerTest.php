@@ -30,7 +30,7 @@ class SystemTagManagerTest extends TestCase {
 	/**
 	 * @var ISystemTagManager
 	 **/
-	private $tagManager;
+	private \OC\SystemTag\SystemTagManager $tagManager;
 
 	/**
 	 * @var IDBConnection
@@ -40,22 +40,22 @@ class SystemTagManagerTest extends TestCase {
 	/**
 	 * @var IGroupManager
 	 */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	/**
 	 * @var EventDispatcherInterface
 	 */
-	private $dispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $dispatcher;
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 
-		$this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')
+		$this->dispatcher = $this->getMockBuilder(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class)
 			->getMock();
 
-		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')->getMock();
+		$this->groupManager = $this->getMockBuilder('\\' . \OCP\IGroupManager::class)->getMock();
 
 		$this->tagManager = new SystemTagManager(
 			$this->connection,
@@ -451,7 +451,7 @@ class SystemTagManagerTest extends TestCase {
 	 * @dataProvider visibilityCheckProvider
 	 */
 	public function testVisibilityCheck($userVisible, $userAssignable, $isAdmin, $expectedResult) {
-		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)->getMock();
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('test'));
@@ -498,7 +498,7 @@ class SystemTagManagerTest extends TestCase {
 	 * @dataProvider assignabilityCheckProvider
 	 */
 	public function testAssignabilityCheck($userVisible, $userAssignable, $userEditable, $isAdmin, $expectedResult, $userGroupIds = [], $tagGroupIds = []) {
-		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)->getMock();
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('test'));

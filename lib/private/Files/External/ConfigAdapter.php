@@ -40,17 +40,13 @@ use OCP\ISession;
  * Make the old files_external config work with the new public mount config api
  */
 class ConfigAdapter implements IMountProvider {
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var IUserStoragesService */
-	private $userStoragesService;
+	private \OCP\Files\External\Service\IUserStoragesService $userStoragesService;
 
-	/** @var IUserGlobalStoragesService */
-	private $userGlobalStoragesService;
+	private \OCP\Files\External\Service\IUserGlobalStoragesService $userGlobalStoragesService;
 
-	/** @var ISession */
-	private $session;
+	private \OCP\ISession $session;
 
 	/**
 	 * @param IUserStoragesService $userStoragesService
@@ -85,7 +81,7 @@ class ConfigAdapter implements IMountProvider {
 		$objectStore = $storage->getBackendOption('objectstore');
 		if ($objectStore) {
 			$objectClass = $objectStore['class'];
-			if (!\is_subclass_of($objectClass, '\OCP\Files\ObjectStore\IObjectStore')) {
+			if (!\is_subclass_of($objectClass, '\\' . \OCP\Files\ObjectStore\IObjectStore::class)) {
 				throw new \InvalidArgumentException('Invalid object store');
 			}
 			$storage->setBackendOption('objectstore', new $objectClass($objectStore));

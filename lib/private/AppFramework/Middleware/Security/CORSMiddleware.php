@@ -44,25 +44,13 @@ use OCP\IConfig;
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
  */
 class CORSMiddleware extends Middleware {
-	/**
-	 * @var IRequest
-	 */
-	private $request;
+	private \OCP\IRequest $request;
 
-	/**
-	 * @var ControllerMethodReflector
-	 */
-	private $reflector;
+	private \OC\AppFramework\Utility\ControllerMethodReflector $reflector;
 
-	/**
-	 * @var IUserSession
-	 */
-	private $session;
+	private \OCP\IUserSession $session;
 
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * @param IRequest $request

@@ -42,26 +42,19 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class LoginController extends Controller {
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var ISession */
-	private $session;
+	private \OCP\ISession $session;
 
-	/** @var Session */
-	private $userSession;
+	private \OC\User\Session $userSession;
 
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 
-	/** @var Manager */
-	private $twoFactorManager;
+	private \OC\Authentication\TwoFactorAuth\Manager $twoFactorManager;
 
-	/** @var ILicenseManager */
-	private $licenseManager;
+	private \OCP\License\ILicenseManager $licenseManager;
 
 	/**
 	 * @param string $appName
@@ -153,7 +146,7 @@ class LoginController extends Controller {
 		$errors = [];
 		$messages = [];
 		if (\is_array($loginMessages)) {
-			list($errors, $messages) = $loginMessages;
+			[$errors, $messages] = $loginMessages;
 		}
 		$this->session->remove('loginMessages');
 		foreach ($errors as $value) {

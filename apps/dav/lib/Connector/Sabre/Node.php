@@ -130,8 +130,8 @@ abstract class Node implements \Sabre\DAV\INode {
 		// verify path of the source
 		$this->verifyPath();
 
-		list($parentPath, ) = \Sabre\Uri\split($this->path);
-		list(, $newName) = \Sabre\Uri\split($name);
+		[$parentPath, ] = \Sabre\Uri\split($this->path);
+		[, $newName] = \Sabre\Uri\split($name);
 
 		// verify path of target
 		if (\OC\Files\Filesystem::isForbiddenFileOrDir($parentPath . '/' . $newName)) {
@@ -279,7 +279,7 @@ abstract class Node implements \Sabre\DAV\INode {
 
 		$path = $this->info->getInternalPath();
 
-		if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
+		if ($storage->instanceOfStorage('\\' . \OCA\Files_Sharing\SharedStorage::class)) {
 			/** @var \OCA\Files_Sharing\SharedStorage $storage */
 			'@phan-var \OCA\Files_Sharing\SharedStorage $storage';
 			$permissions = (int)$storage->getShare()->getPermissions();

@@ -28,8 +28,7 @@ class TrustedServerAdd extends Command {
 	public const ERROR_ALREADY_TRUSTED = 1;
 	public const ERROR_NO_OWNCLOUD_FOUND = 2;
 
-	/** @var TrustedServers */
-	private $trustedServers;
+	private \OCA\Federation\TrustedServers $trustedServers;
 
 	/**
 	 * @param TrustedServers $trustedServers

@@ -27,19 +27,17 @@ use OCA\FederatedFileSharing\TokenHandler;
 use OCP\Security\ISecureRandom;
 
 class TokenHandlerTest extends \Test\TestCase {
-	/** @var  TokenHandler */
-	private $tokenHandler;
+	private \OCA\FederatedFileSharing\TokenHandler $tokenHandler;
 
 	/** @var  ISecureRandom | \PHPUnit\Framework\MockObject\MockObject */
-	private $secureRandom;
+	private \PHPUnit\Framework\MockObject\MockObject $secureRandom;
 
-	/** @var int */
-	private $expectedTokenLength = 15;
+	private int $expectedTokenLength = 15;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->secureRandom = $this->createMock('OCP\Security\ISecureRandom');
+		$this->secureRandom = $this->createMock(\OCP\Security\ISecureRandom::class);
 
 		$this->tokenHandler = new TokenHandler($this->secureRandom);
 	}

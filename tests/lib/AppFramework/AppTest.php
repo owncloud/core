@@ -40,15 +40,15 @@ function rrmdir($directory) {
 
 class AppTest extends \Test\TestCase {
 	private $container;
-	private $io;
+	private \PHPUnit\Framework\MockObject\MockObject $io;
 	private $api;
-	private $controller;
-	private $dispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $controller;
+	private \PHPUnit\Framework\MockObject\MockObject $dispatcher;
 	private $params;
-	private $headers;
-	private $output;
-	private $controllerName;
-	private $controllerMethod;
+	private array $headers;
+	private string $output;
+	private string $controllerName;
+	private string $controllerMethod;
 	private $appPath;
 
 	protected function setUp(): void {
@@ -56,17 +56,17 @@ class AppTest extends \Test\TestCase {
 
 		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer('test', []);
 		$this->controller = $this->getMockBuilder(
-			'OCP\AppFramework\Controller'
+			\OCP\AppFramework\Controller::class
 		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->dispatcher = $this->getMockBuilder(
-			'OC\AppFramework\Http\Dispatcher'
+			\OC\AppFramework\Http\Dispatcher::class
 		)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->io = $this->getMockBuilder('OCP\\AppFramework\\Http\\IOutput')->getMock();
+		$this->io = $this->getMockBuilder(\OCP\AppFramework\Http\IOutput::class)->getMock();
 
 		$this->headers = ['key' => 'value'];
 		$this->output = 'hi';
@@ -75,7 +75,7 @@ class AppTest extends \Test\TestCase {
 
 		$this->container[$this->controllerName] = $this->controller;
 		$this->container['Dispatcher'] = $this->dispatcher;
-		$this->container['OCP\\AppFramework\\Http\\IOutput'] = $this->io;
+		$this->container[\OCP\AppFramework\Http\IOutput::class] = $this->io;
 		$this->container['urlParams'] = [];
 
 		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
@@ -146,7 +146,7 @@ class AppTest extends \Test\TestCase {
 	}
 
 	public function testCallbackIsCalled() {
-		$mock = $this->getMockBuilder('OCP\AppFramework\Http\ICallbackResponse')
+		$mock = $this->getMockBuilder(\OCP\AppFramework\Http\ICallbackResponse::class)
 			->getMock();
 
 		$return = [null, [], [], $this->output, $mock];

@@ -27,10 +27,10 @@ use OCA\Files_Sharing\SharingBlacklist;
 
 class SharingBlacklistTest extends \Test\TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var SharingBlacklist | \PHPUnit\Framework\MockObject\MockObject */
-	private $sharingBlacklist;
+	private \OCA\Files_Sharing\SharingBlacklist $sharingBlacklist;
 
 	public function setUp(): void {
 		$this->config = $this->getMockBuilder(IConfig::class)
@@ -60,7 +60,7 @@ class SharingBlacklistTest extends \Test\TestCase {
 
 		$this->config->method('getAppValue')
 			->will($this->returnCallback(function ($app, $key, $default) use (&$keyValues) {
-				return (isset($keyValues[$key])) ? $keyValues[$key] : $default;
+				return $keyValues[$key] ?? $default;
 			}));
 
 		$this->sharingBlacklist->setBlacklistedReceiverGroups($ids);

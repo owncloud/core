@@ -244,9 +244,7 @@ class CertificateManager implements ICertificateManager {
 			$sourceBundles[] = $this->view->filemtime($this->getCertificateBundle(null));
 		}
 
-		$sourceMTime = \array_reduce($sourceMTimes, function ($max, $mtime) {
-			return \max($max, $mtime);
-		}, 0);
+		$sourceMTime = \array_reduce($sourceMTimes, fn ($max, $mtime) => \max($max, $mtime), 0);
 		return $sourceMTime > $this->view->filemtime($targetBundle);
 	}
 }

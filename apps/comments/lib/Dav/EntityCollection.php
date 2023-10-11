@@ -67,8 +67,8 @@ class EntityCollection extends RootCollection implements IProperties {
 	) {
 		parent::__construct($commentsManager, $userManager, $userSession, $dispatcher, $logger);
 		foreach (['id', 'name'] as $property) {
-			$$property = \trim($$property);
-			if (empty($$property) || !\is_string($$property)) {
+			${$property} = \trim(${$property});
+			if (empty(${$property}) || !\is_string(${$property})) {
 				throw new \InvalidArgumentException('"' . $property . '" parameter must be non-empty string');
 			}
 		}

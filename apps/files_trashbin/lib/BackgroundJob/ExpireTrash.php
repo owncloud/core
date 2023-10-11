@@ -34,15 +34,9 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class ExpireTrash extends TimedJob {
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private ?\OCP\IConfig $config = null;
 
-	/**
-	 * @var TrashExpiryManager
-	 */
-	private $trashExpiryManager;
+	private ?\OCA\Files_Trashbin\TrashExpiryManager $trashExpiryManager = null;
 	
 	/**
 	 * @var IUserManager

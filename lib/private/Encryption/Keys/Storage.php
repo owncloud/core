@@ -36,25 +36,20 @@ class Storage implements IStorage {
 	// hidden file which indicate that the folder is a valid key storage
 	public const KEY_STORAGE_MARKER = '.oc_key_storage';
 
-	/** @var View */
-	private $view;
+	private \OC\Files\View $view;
 
-	/** @var Util */
-	private $util;
+	private \OC\Encryption\Util $util;
 
 	// base dir where all the file related keys are stored
-	/** @var string */
-	private $keys_base_dir;
+	private string $keys_base_dir;
 
 	// root of the key storage default is empty which means that we use the data folder
 	/** @var string */
 	private $root_dir;
 
-	/** @var string */
-	private $encryption_base_dir;
+	private string $encryption_base_dir;
 
-	/** @var array */
-	private $keyCache = [];
+	private array $keyCache = [];
 
 	/** @var string */
 	private $currentUser = null;
@@ -274,7 +269,7 @@ class Storage implements IStorage {
 	 * @return string
 	 */
 	private function getFileKeyDir($encryptionModuleId, $path) {
-		list($owner, $filename) = $this->util->getUidAndFilename($path);
+		[$owner, $filename] = $this->util->getUidAndFilename($path);
 
 		// in case of system wide mount points the keys are stored directly in the data directory
 		if ($this->util->isSystemWideMountPoint($filename, $owner)) {
@@ -332,7 +327,7 @@ class Storage implements IStorage {
 	 * @return string
 	 */
 	protected function getPathToKeys($path) {
-		list($owner, $relativePath) = $this->util->getUidAndFilename($path);
+		[$owner, $relativePath] = $this->util->getUidAndFilename($path);
 		$systemWideMountPoint = $this->util->isSystemWideMountPoint($relativePath, $owner);
 
 		if ($systemWideMountPoint) {

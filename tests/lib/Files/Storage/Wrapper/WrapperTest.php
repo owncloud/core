@@ -27,7 +27,7 @@ class WrapperTest extends Storage {
 	/**
 	 * @var IStorage $storage
 	 */
-	private $storage;
+	private \OC\Files\Storage\Local $storage;
 
 	protected function setUp(): void {
 		parent::setUp();

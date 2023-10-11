@@ -62,12 +62,10 @@ class MountPoint implements IMountPoint {
 	private $loader;
 
 	/**
-	 * Specified whether the storage is invalid after failing to
-	 * instantiate it.
-	 *
-	 * @var bool
-	 */
-	private $invalidStorage = false;
+  * Specified whether the storage is invalid after failing to
+  * instantiate it.
+  */
+	private bool $invalidStorage = false;
 
 	/**
 	 * @param string|\OC\Files\Storage\Storage $storage
@@ -234,7 +232,7 @@ class MountPoint implements IMountPoint {
 	 * @return mixed
 	 */
 	public function getOption($name, $default) {
-		return isset($this->mountOptions[$name]) ? $this->mountOptions[$name] : $default;
+		return $this->mountOptions[$name] ?? $default;
 	}
 
 	/**

@@ -10,12 +10,12 @@ class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @var IAppManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 
 	/**
 	 * @var EnvironmentHelper |  \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $environmentHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $environmentHelper;
 
 	protected function setUp(): void {
 		parent::setUp();

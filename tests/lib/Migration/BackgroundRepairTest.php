@@ -55,24 +55,24 @@ class TestRepairStep implements IRepairStep {
 
 class BackgroundRepairTest extends TestCase {
 	/** @var \OC\BackgroundJob\JobList | \PHPUnit\Framework\MockObject\MockObject */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 
 	/** @var BackgroundRepair | \PHPUnit\Framework\MockObject\MockObject  */
-	private $job;
+	private \PHPUnit\Framework\MockObject\MockObject $job;
 
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->jobList = $this->getMockBuilder('OC\BackgroundJob\JobList')
+		$this->jobList = $this->getMockBuilder(\OC\BackgroundJob\JobList::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->logger = $this->getMockBuilder('OCP\ILogger')
+		$this->logger = $this->getMockBuilder(\OCP\ILogger::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->job = $this->getMockBuilder('OC\Migration\BackgroundRepair')
+		$this->job = $this->getMockBuilder(\OC\Migration\BackgroundRepair::class)
 			->setMethods(['loadApp'])
 			->getMock();
 	}
@@ -104,7 +104,7 @@ class BackgroundRepairTest extends TestCase {
 
 	public function testWorkingStep() {
 		/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject $dispatcher */
-		$dispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcher');
+		$dispatcher = $this->createMock(\Symfony\Component\EventDispatcher\EventDispatcher::class);
 		$dispatcher->expects($this->once())->method('dispatch')
 			->with(new GenericEvent('\OC\Repair::step', ['A test repair step']), '\OC\Repair::step');
 
@@ -112,7 +112,7 @@ class BackgroundRepairTest extends TestCase {
 		$this->job->setDispatcher($dispatcher);
 		$this->job->setArgument([
 			'app' => 'test',
-			'step' => '\Test\Migration\TestRepairStep'
+			'step' => '\\' . \Test\Migration\TestRepairStep::class
 		]);
 		$this->job->execute($this->jobList, $this->logger);
 	}

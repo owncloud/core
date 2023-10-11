@@ -46,23 +46,22 @@ use Test\TestCase;
  */
 class LockPluginTest extends TestCase {
 	/** @var Server | \PHPUnit\Framework\MockObject\MockObject */
-	private $server;
-	/** @var LockPlugin */
-	private $plugin;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
+	private \OCA\DAV\Connector\Sabre\LockPlugin $plugin;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 	/** @var LockMapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $lockMapper;
+	private \PHPUnit\Framework\MockObject\MockObject $lockMapper;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/**
 	 * @var IConfig|\PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/**
 	 * @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	public function setUp(): void {
 		parent::setUp();

@@ -29,20 +29,20 @@ use Test\TestCase;
 
 class VersionCheckTest extends TestCase {
 	/** @var IConfig| \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var VersionCheck | \PHPUnit\Framework\MockObject\MockObject*/
-	private $updater;
+	private \PHPUnit\Framework\MockObject\MockObject $updater;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$clientService = $this->getMockBuilder('\OCP\Http\Client\IClientService')
+		$clientService = $this->getMockBuilder('\\' . \OCP\Http\Client\IClientService::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->updater = $this->getMockBuilder('\OC\Updater\VersionCheck')
+		$this->updater = $this->getMockBuilder('\\' . \OC\Updater\VersionCheck::class)
 			->setMethods(['getUrlContent'])
 			->setConstructorArgs([$clientService, $this->config])
 			->getMock();

@@ -25,7 +25,7 @@ class GroupTest extends \Test\TestCase {
 		$user2->expects($this->any())->method('getUID')->willReturn('user2');
 		$user3 = $this->createMock(IUser::class);
 		$user3->expects($this->any())->method('getUID')->willReturn('user3');
-		$userManager = $this->createMock('\OC\User\Manager');
+		$userManager = $this->createMock('\\' . \OC\User\Manager::class);
 		$userManager->expects($this->any())
 			->method('get')
 			->will($this->returnValueMap([
@@ -62,7 +62,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testGetUsersSingleBackend() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
@@ -81,8 +81,8 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testGetUsersMultipleBackends() {
-		$backend1 = $this->createMock('OC\Group\Database');
-		$backend2 = $this->createMock('OC\Group\Database');
+		$backend1 = $this->createMock(\OC\Group\Database::class);
+		$backend2 = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
@@ -108,7 +108,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testInGroupSingleBackend() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
@@ -124,8 +124,8 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testInGroupMultipleBackends() {
-		$backend1 = $this->createMock('OC\Group\Database');
-		$backend2 = $this->createMock('OC\Group\Database');
+		$backend1 = $this->createMock(\OC\Group\Database::class);
+		$backend2 = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
@@ -146,7 +146,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testAddUser() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
@@ -169,7 +169,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testAddUserWithDispatcher() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 
 		$eventsCalled = ['group.preAddUser' => [], 'group.postAddUser' => []];
@@ -211,7 +211,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testAddUserAlreadyInGroup() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
@@ -233,7 +233,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testAddUserAlreadyInGroupWithDispatcher() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 
 		$eventsCalled = ['group.preAddUser' => [], 'group.postAddUser' => []];
@@ -270,7 +270,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testRemoveUser() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
@@ -293,7 +293,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testRemoveUserWithDispatcher() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 
 		$eventsCalled = ['group.preRemoveUser' => [], 'group.postRemoveUser' => []];
@@ -335,7 +335,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testRemoveUserNotInGroup() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 
 		$eventsCalled = ['group.preRemoveUser' => [], 'group.postRemoveUser' => []];
@@ -374,8 +374,8 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testRemoveUserMultipleBackends() {
-		$backend1 = $this->createMock('OC\Group\Database');
-		$backend2 = $this->createMock('OC\Group\Database');
+		$backend1 = $this->createMock(\OC\Group\Database::class);
+		$backend2 = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
@@ -410,7 +410,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testSearchUsers() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
@@ -427,8 +427,8 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testSearchUsersMultipleBackends() {
-		$backend1 = $this->createMock('OC\Group\Database');
-		$backend2 = $this->createMock('OC\Group\Database');
+		$backend1 = $this->createMock(\OC\Group\Database::class);
+		$backend2 = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
@@ -449,7 +449,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testSearchUsersLimitAndOffset() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
@@ -466,8 +466,8 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testSearchUsersMultipleBackendsLimitAndOffset() {
-		$backend1 = $this->createMock('OC\Group\Database');
-		$backend2 = $this->createMock('OC\Group\Database');
+		$backend1 = $this->createMock(\OC\Group\Database::class);
+		$backend2 = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
@@ -490,7 +490,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testCountUsers() {
-		$backend1 = $this->createMock('OC\Group\Database');
+		$backend1 = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend1], $userManager, $this->getEventDispatcherMock());
 
@@ -509,8 +509,8 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testCountUsersMultipleBackends() {
-		$backend1 = $this->createMock('OC\Group\Database');
-		$backend2 = $this->createMock('OC\Group\Database');
+		$backend1 = $this->createMock(\OC\Group\Database::class);
+		$backend2 = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
@@ -536,7 +536,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testCountUsersNoMethod() {
-		$backend1 = $this->createMock('OC\Group\Database');
+		$backend1 = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend1], $userManager, $this->getEventDispatcherMock());
 
@@ -552,7 +552,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testDelete() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
@@ -567,7 +567,7 @@ class GroupTest extends \Test\TestCase {
 	}
 
 	public function testDeleteWithDispatcher() {
-		$backend = $this->createMock('OC\Group\Database');
+		$backend = $this->createMock(\OC\Group\Database::class);
 		$userManager = $this->getUserManager();
 
 		$eventsCalled = ['group.preDelete' => [], 'group.postDelete' => []];

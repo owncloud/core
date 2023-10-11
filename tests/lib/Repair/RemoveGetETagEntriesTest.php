@@ -65,7 +65,7 @@ class RemoveGetETagEntriesTest extends TestCase {
 		}
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

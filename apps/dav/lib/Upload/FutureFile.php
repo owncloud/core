@@ -34,8 +34,7 @@ use Sabre\DAV\IFile;
  * @package OCA\DAV\Upload
  */
 class FutureFile implements \Sabre\DAV\IFile {
-	/** @var Directory */
-	private $root;
+	private \OCA\DAV\Connector\Sabre\Directory $root;
 	/** @var string */
 	private $name;
 
@@ -99,10 +98,9 @@ class FutureFile implements \Sabre\DAV\IFile {
 	 */
 	public function getSize() {
 		$children = $this->root->getChildren();
-		$sizes = \array_map(function ($node) {
-			/** @var IFile $node */
-			return $node->getSize();
-		}, $children);
+		$sizes = \array_map(fn ($node) =>
+	  /** @var IFile $node */
+	  $node->getSize(), $children);
 
 		return \array_sum($sizes);
 	}

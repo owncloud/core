@@ -38,12 +38,12 @@ use OC\Helper\UserTypeHelper;
 
 class Helper {
 	public static function registerHooks() {
-		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', '\OCA\Files_Sharing\Updater', 'renameHook');
-		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', '\OCA\Files_Sharing\Hooks', 'unshareChildren');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', '\\' . \OCA\Files_Sharing\Updater::class, 'renameHook');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', '\\' . \OCA\Files_Sharing\Hooks::class, 'unshareChildren');
 
-		\OCP\Util::connectHook('OC_User', 'post_deleteUser', '\OCA\Files_Sharing\Hooks', 'deleteUser');
+		\OCP\Util::connectHook('OC_User', 'post_deleteUser', '\\' . \OCA\Files_Sharing\Hooks::class, 'deleteUser');
 
-		\OCP\Util::connectHook('\OCP\Config', 'js', '\OCA\Files_Sharing\Hooks', 'extendJsConfig');
+		\OCP\Util::connectHook('\OCP\Config', 'js', '\\' . \OCA\Files_Sharing\Hooks::class, 'extendJsConfig');
 	}
 
 	/**

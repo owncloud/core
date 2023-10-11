@@ -29,8 +29,7 @@ use OCP\ISession;
  * @package OC\Security\CSRF\TokenStorage
  */
 class SessionStorage {
-	/** @var ISession */
-	private $session;
+	private ?\OCP\ISession $session = null;
 
 	/**
 	 * @param ISession $session

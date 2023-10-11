@@ -45,8 +45,8 @@ class TagsPage extends FilesPageBasic {
 	 */
 	protected $filesPageCRUDFunctions;
 
-	private $tagsInputXpath = "//div[@id='app-content-systemtagsfilter']//li[@class='select2-search-field']//input";
-	private $tagsSuggestDropDown = "//div[contains(@class, 'select2-drop-active') and contains(@id, 'select2-drop')]";
+	private string $tagsInputXpath = "//div[@id='app-content-systemtagsfilter']//li[@class='select2-search-field']//input";
+	private string $tagsSuggestDropDown = "//div[contains(@class, 'select2-drop-active') and contains(@id, 'select2-drop')]";
 
 	/**
 	 * @return string

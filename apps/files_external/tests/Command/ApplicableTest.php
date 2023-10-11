@@ -27,9 +27,9 @@ use OCA\Files_External\Command\Applicable;
 class ApplicableTest extends CommandTest {
 	private function getInstance($storageService) {
 		/** @var \OCP\IUserManager|\PHPUnit\Framework\MockObject\MockObject $userManager */
-		$userManager = $this->createMock('\OCP\IUserManager');
+		$userManager = $this->createMock('\\' . \OCP\IUserManager::class);
 		/** @var \OCP\IGroupManager|\PHPUnit\Framework\MockObject\MockObject $groupManager */
-		$groupManager = $this->createMock('\OCP\IGroupManager');
+		$groupManager = $this->createMock('\\' . \OCP\IGroupManager::class);
 
 		$userManager->expects($this->any())
 			->method('userExists')
@@ -54,7 +54,7 @@ class ApplicableTest extends CommandTest {
 			'output' => 'json'
 		]);
 
-		$result = \json_decode($this->executeCommand($command, $input), true);
+		$result = \json_decode($this->executeCommand($command, $input), true, 512, JSON_THROW_ON_ERROR);
 
 		$this->assertEquals(['users' => [], 'groups' => []], $result);
 	}
@@ -71,7 +71,7 @@ class ApplicableTest extends CommandTest {
 			'output' => 'json'
 		]);
 
-		$result = \json_decode($this->executeCommand($command, $input), true);
+		$result = \json_decode($this->executeCommand($command, $input), true, 512, JSON_THROW_ON_ERROR);
 
 		$this->assertEquals(['users' => ['test', 'asd'], 'groups' => []], $result);
 	}

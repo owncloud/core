@@ -30,10 +30,8 @@ use OCP\AppFramework\Utility\ITimeFactory;
  * and also per-app licenses (not planned for now)
  */
 class LicenseFetcher {
-	/** @var IConfig */
-	private $config;
-	/** @var ITimeFactory */
-	private $timeFactory;
+	private \OCP\IConfig $config;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
 
 	public function __construct(IConfig $config, ITimeFactory $timeFactory) {
 		$this->config = $config;

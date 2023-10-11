@@ -38,12 +38,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package OC\Core\Command\Integrity
  */
 class SignApp extends Command {
-	/** @var Checker */
-	private $checker;
-	/** @var FileAccessHelper */
-	private $fileAccessHelper;
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OC\IntegrityCheck\Checker $checker;
+	private \OC\IntegrityCheck\Helpers\FileAccessHelper $fileAccessHelper;
+	private \OCP\IURLGenerator $urlGenerator;
 
 	/**
 	 * @param Checker $checker

@@ -48,30 +48,15 @@ class Manager {
 	 */
 	private $uid;
 
-	/**
-	 * @var \OCP\IDBConnection
-	 */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
-	/**
-	 * @var \OC\Files\Mount\Manager
-	 */
-	private $mountManager;
+	private \OC\Files\Mount\Manager $mountManager;
 
-	/**
-	 * @var \OCP\Files\Storage\IStorageFactory
-	 */
-	private $storageLoader;
+	private \OCP\Files\Storage\IStorageFactory $storageLoader;
 
-	/**
-	 * @var IManager
-	 */
-	private $notificationManager;
+	private \OCP\Notification\IManager $notificationManager;
 
-	/**
-	 * @var EventDispatcherInterface
-	 */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
 	/**
 	 * @param \OCP\IDBConnection $connection
@@ -111,7 +96,7 @@ class Manager {
 	 * @return Mount|null
 	 */
 	public function addShare($remote, $token, $password, $name, $owner, $accepted=false, $user = null, $remoteId = -1) {
-		$user = $user ? $user : $this->uid;
+		$user = $user ?: $this->uid;
 		$accepted = $accepted ? 1 : 0;
 		$name = Filesystem::normalizePath('/' . $name);
 
@@ -272,7 +257,7 @@ class Manager {
 				]
 			);
 			$this->eventDispatcher->dispatch($event, 'remoteshare.accepted');
-			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
+			\OC_Hook::emit(\OCP\Share::class, 'federated_share_added', ['server' => $share['remote']]);
 
 			$this->processNotification($id);
 			return true;

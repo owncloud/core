@@ -31,13 +31,13 @@ use Test\TestCase;
 
 class ChunkLocationProviderTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ChunkLocationProvider | \PHPUnit\Framework\MockObject\MockObject */
-	private $provider;
+	private \OCA\DAV\Upload\ChunkLocationProvider $provider;
 	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 	/** @var IStorageFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $factory;
+	private \PHPUnit\Framework\MockObject\MockObject $factory;
 
 	protected function setUp(): void {
 		parent::setUp();

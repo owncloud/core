@@ -36,22 +36,19 @@ use Doctrine\DBAL\Types\Type;
 use OCP\ILogger;
 
 class MigrationService {
-	/** @var boolean */
-	private $migrationTableCreated;
+	private ?bool $migrationTableCreated = null;
 	/** @var array */
 	private $migrations;
 	/** @var IOutput */
 	private $output;
 	/** @var Connection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 	/** @var string */
 	private $appName;
 	/** @var ILogger */
 	private $logger;
-	/** @var string  */
-	private $migrationsPath;
-	/** @var string  */
-	private $migrationsNamespace;
+	private ?string $migrationsPath = null;
+	private ?string $migrationsNamespace = null;
 
 	/**
 	 * MigrationService constructor.
@@ -194,9 +191,7 @@ class MigrationService {
 		);
 
 		$files = \array_keys(\iterator_to_array($iterator));
-		\uasort($files, function ($a, $b) {
-			return \strcmp(\basename($a), \basename($b));
-		});
+		\uasort($files, fn ($a, $b) => \strcmp(\basename($a), \basename($b)));
 
 		$migrations = [];
 

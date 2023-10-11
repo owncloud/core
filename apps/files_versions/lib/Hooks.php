@@ -35,25 +35,25 @@ namespace OCA\Files_Versions;
 class Hooks {
 	public static function connectHooks() {
 		// Listen to write signals
-		\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');
+		\OCP\Util::connectHook('OC_Filesystem', 'write', \OCA\Files_Versions\Hooks::class, 'write_hook');
 
 		$config = \OC::$server->getConfig();
 		$metaEnabled = ($config->getSystemValue('file_storage.save_version_metadata', false) === true);
 
 		if ($metaEnabled) {
-			\OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Versions\Hooks', 'post_write_hook');
+			\OCP\Util::connectHook('OC_Filesystem', 'post_write', \OCA\Files_Versions\Hooks::class, 'post_write_hook');
 		}
 
 		// Listen to delete and rename signals
-		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', 'OCA\Files_Versions\Hooks', 'remove_hook');
-		\OCP\Util::connectHook('OC_Filesystem', 'delete', 'OCA\Files_Versions\Hooks', 'pre_remove_hook');
-		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Files_Versions\Hooks', 'rename_hook');
-		\OCP\Util::connectHook('OC_Filesystem', 'post_copy', 'OCA\Files_Versions\Hooks', 'copy_hook');
-		\OCP\Util::connectHook('OC_Filesystem', 'rename', 'OCA\Files_Versions\Hooks', 'pre_renameOrCopy_hook');
-		\OCP\Util::connectHook('OC_Filesystem', 'copy', 'OCA\Files_Versions\Hooks', 'pre_renameOrCopy_hook');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', \OCA\Files_Versions\Hooks::class, 'remove_hook');
+		\OCP\Util::connectHook('OC_Filesystem', 'delete', \OCA\Files_Versions\Hooks::class, 'pre_remove_hook');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', \OCA\Files_Versions\Hooks::class, 'rename_hook');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_copy', \OCA\Files_Versions\Hooks::class, 'copy_hook');
+		\OCP\Util::connectHook('OC_Filesystem', 'rename', \OCA\Files_Versions\Hooks::class, 'pre_renameOrCopy_hook');
+		\OCP\Util::connectHook('OC_Filesystem', 'copy', \OCA\Files_Versions\Hooks::class, 'pre_renameOrCopy_hook');
 
 		$eventDispatcher = \OC::$server->getEventDispatcher();
-		$eventDispatcher->addListener('OCA\Files::loadAdditionalScripts', ['OCA\Files_Versions\Hooks', 'onLoadFilesAppScripts']);
+		$eventDispatcher->addListener('OCA\Files::loadAdditionalScripts', [\OCA\Files_Versions\Hooks::class, 'onLoadFilesAppScripts']);
 	}
 
 	/**

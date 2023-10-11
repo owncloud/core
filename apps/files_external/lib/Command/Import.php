@@ -37,28 +37,15 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Import extends Base {
-	/**
-	 * @var IGlobalStoragesService
-	 */
-	private $globalService;
+	private \OCP\Files\External\Service\IGlobalStoragesService $globalService;
 
-	/**
-	 * @var IUserStoragesService
-	 */
-	private $userService;
+	private \OCP\Files\External\Service\IUserStoragesService $userService;
 
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IStoragesBackendService */
-	private $backendService;
+	private \OCP\Files\External\IStoragesBackendService $backendService;
 
 	public function __construct(
 		IGlobalStoragesService $globalService,
@@ -115,7 +102,7 @@ class Import extends Base {
 			$output->writeln('<error>Error while reading json</error>');
 			return 1;
 		}
-		$data = \json_decode($json, true);
+		$data = \json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 		if (!\is_array($data)) {
 			$output->writeln('<error>Error while parsing json</error>');
 			return 1;
@@ -131,9 +118,7 @@ class Import extends Base {
 			if (!isset($data[0])) { //normalize to an array of mounts
 				$data = [$data];
 			}
-			$mounts = \array_map(function ($entry) use ($storageService) {
-				return $this->parseData($entry, $storageService);
-			}, $data);
+			$mounts = \array_map(fn ($entry) => $this->parseData($entry, $storageService), $data);
 		}
 
 		if ($user) {
@@ -188,8 +173,8 @@ class Import extends Base {
 		$mount->setAuthMechanism($authBackend);
 		$mount->setBackendOptions($data['configuration']);
 		$mount->setMountOptions($data['options']);
-		$mount->setApplicableUsers(isset($data['applicable_users']) ? $data['applicable_users'] : []);
-		$mount->setApplicableGroups(isset($data['applicable_groups']) ? $data['applicable_groups'] : []);
+		$mount->setApplicableUsers($data['applicable_users'] ?? []);
+		$mount->setApplicableGroups($data['applicable_groups'] ?? []);
 		return $mount;
 	}
 

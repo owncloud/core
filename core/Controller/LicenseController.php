@@ -26,8 +26,7 @@ use OCP\IRequest;
 use OCP\License\ILicenseManager;
 
 class LicenseController extends Controller {
-	/** @var ILicenseManager */
-	private $licenseManager;
+	private \OCP\License\ILicenseManager $licenseManager;
 
 	/**
 	 * @param ILicenseManager $licenseManager

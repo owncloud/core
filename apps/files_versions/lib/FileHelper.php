@@ -58,7 +58,7 @@ class FileHelper {
 	public function getVersionsSize($uid) {
 		$view = $this->getUserView($uid);
 		$fileInfo = $view->getFileInfo(self::VERSIONS_RELATIVE_PATH);
-		return isset($fileInfo['size']) ? $fileInfo['size'] : 0;
+		return $fileInfo['size'] ?? 0;
 	}
 
 	/**

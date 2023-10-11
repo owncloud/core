@@ -35,11 +35,9 @@ use Sabre\DAV\Tree;
  * See the COPYING-README file.
  */
 class CopyEtagHeaderPluginTest extends TestCase {
-	/** @var CopyEtagHeaderPlugin */
-	private $plugin;
+	private \OCA\DAV\Connector\Sabre\CopyEtagHeaderPlugin $plugin;
 
-	/** @var Server */
-	private $server;
+	private \Sabre\DAV\Server $server;
 
 	public function setUp(): void {
 		parent::setUp();

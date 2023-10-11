@@ -54,7 +54,7 @@ class DavAclPlugin extends Plugin {
 			$node = $this->server->tree->getNodeForPath($uri);
 
 			switch (\get_class($node)) {
-				case 'OCA\DAV\CardDAV\AddressBook':
+				case \OCA\DAV\CardDAV\AddressBook::class:
 					$type = 'Addressbook';
 					break;
 				default:

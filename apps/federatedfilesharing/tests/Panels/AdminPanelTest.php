@@ -29,12 +29,11 @@ use OCP\IConfig;
  * @package OCA\FederatedFileSharing\Tests
  */
 class AdminPanelTest extends \Test\TestCase {
-	/** @var AdminPanel */
-	private $panel;
+	private \OCA\FederatedFileSharing\Panels\AdminPanel $panel;
 	/** @var  FederatedShareProvider */
-	private $shareProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $shareProvider;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();

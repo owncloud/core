@@ -30,7 +30,7 @@ use Test\TestCase;
 class AddressBookTest extends TestCase {
 	public function testDelete() {
 		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
-		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
+		$backend = $this->getMockBuilder(\OCA\DAV\CardDAV\CardDavBackend::class)->disableOriginalConstructor()->getMock();
 		$backend->expects($this->once())->method('updateShares');
 		$backend->expects($this->any())->method('getShares')->willReturn([
 			['href' => 'principal:user2']
@@ -50,7 +50,7 @@ class AddressBookTest extends TestCase {
 		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
 
 		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
-		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
+		$backend = $this->getMockBuilder(\OCA\DAV\CardDAV\CardDavBackend::class)->disableOriginalConstructor()->getMock();
 		$backend->expects($this->never())->method('updateShares');
 		$backend->expects($this->any())->method('getShares')->willReturn([
 			['href' => 'principal:group2']
@@ -70,7 +70,7 @@ class AddressBookTest extends TestCase {
 		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
 
 		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
-		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
+		$backend = $this->getMockBuilder(\OCA\DAV\CardDAV\CardDavBackend::class)->disableOriginalConstructor()->getMock();
 		$calendarInfo = [
 			'{http://owncloud.org/ns}owner-principal' => 'user1',
 			'principaluri' => 'user2',
@@ -85,7 +85,7 @@ class AddressBookTest extends TestCase {
 	 */
 	public function testAcl($expectsWrite, $readOnlyValue, $hasOwnerSet) {
 		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
-		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
+		$backend = $this->getMockBuilder(\OCA\DAV\CardDAV\CardDavBackend::class)->disableOriginalConstructor()->getMock();
 		$backend->expects($this->any())->method('applyShareAcl')->willReturnArgument(1);
 		$calendarInfo = [
 			'principaluri' => 'user2',

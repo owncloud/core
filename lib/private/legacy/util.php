@@ -67,8 +67,8 @@ class OC_Util {
 	public static $scripts = [];
 	public static $styles = [];
 	public static $headers = [];
-	private static $rootMounted = false;
-	private static $fsSetup = false;
+	private static bool $rootMounted = false;
+	private static bool $fsSetup = false;
 	private static $version;
 	public const EDITION_COMMUNITY = 'Community';
 	public const EDITION_ENTERPRISE = 'Enterprise';
@@ -83,7 +83,7 @@ class OC_Util {
 		//first set up the local "root" storage
 		\OC\Files\Filesystem::initMountManager();
 		if (!self::$rootMounted) {
-			\OC\Files\Filesystem::mount('\OC\Files\Storage\Local', ['datadir' => $configDataDirectory], '/');
+			\OC\Files\Filesystem::mount('\\' . \OC\Files\Storage\Local::class, ['datadir' => $configDataDirectory], '/');
 			self::$rootMounted = true;
 		}
 	}
@@ -112,7 +112,7 @@ class OC_Util {
 		}
 		$config['arguments']['objectstore'] = new $config['class']($config['arguments']);
 		// mount with plain / root object store implementation
-		$config['class'] = '\OC\Files\ObjectStore\ObjectStoreStorage';
+		$config['class'] = '\\' . \OC\Files\ObjectStore\ObjectStoreStorage::class;
 
 		// mount object storage as root
 		\OC\Files\Filesystem::initMountManager();
@@ -158,7 +158,7 @@ class OC_Util {
 
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(false);
 		\OC\Files\Filesystem::addStorageWrapper('mount_options', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
-			if ($storage->instanceOfStorage('\OC\Files\Storage\Common')) {
+			if ($storage->instanceOfStorage('\\' . \OC\Files\Storage\Common::class)) {
 				/** @var \OC\Files\Storage\Common $storage */
 				'@phan-var \OC\Files\Storage\Common $storage';
 				$storage->setMountOptions($mount->getOptions());
@@ -188,7 +188,7 @@ class OC_Util {
 
 		// install storage availability wrapper, before most other wrappers
 		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
-			if (!$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage') && !$storage->isLocal()) {
+			if (!$storage->instanceOfStorage('\\' . \OCA\Files_Sharing\SharedStorage::class) && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
 			}
 			return $storage;
@@ -196,7 +196,7 @@ class OC_Util {
 
 		// install storage checksum wrapper
 		\OC\Files\Filesystem::addStorageWrapper('oc_checksum', function ($mountPoint, \OCP\Files\Storage\IStorage $storage) {
-			if (!$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
+			if (!$storage->instanceOfStorage('\\' . \OCA\Files_Sharing\SharedStorage::class)) {
 				return new \OC\Files\Storage\Wrapper\Checksum(['storage' => $storage]);
 			}
 
@@ -204,7 +204,7 @@ class OC_Util {
 		}, 1);
 
 		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
-			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage') && !$storage->isLocal()) {
+			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\\' . \OCA\Files_Sharing\SharedStorage::class) && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Encoding(['storage' => $storage]);
 			}
 			return $storage;
@@ -217,8 +217,8 @@ class OC_Util {
 			/**
 			 * @var \OC\Files\Storage\Storage $storage
 			 */
-			if ($storage->instanceOfStorage('\OC\Files\Storage\Home')
-				|| $storage->instanceOfStorage('\OC\Files\ObjectStore\HomeObjectStoreStorage')
+			if ($storage->instanceOfStorage('\\' . \OC\Files\Storage\Home::class)
+				|| $storage->instanceOfStorage('\\' . \OC\Files\ObjectStore\HomeObjectStoreStorage::class)
 			) {
 				/** @var \OC\Files\Storage\Home $storage */
 				if (\is_object($storage->getUser())) {
@@ -255,7 +255,7 @@ class OC_Util {
 				'core',
 				'read_only_groups',
 				'[]'
-			), true);
+			), true, 512, JSON_THROW_ON_ERROR);
 
 			if (!\is_array($readOnlyGroups)) {
 				$readOnlyGroups = [];
@@ -1245,9 +1245,7 @@ class OC_Util {
 	 */
 	public static function sanitizeHTML($value) {
 		if (\is_array($value)) {
-			$value = \array_map(function ($value) {
-				return self::sanitizeHTML($value);
-			}, $value);
+			$value = \array_map(fn ($value) => self::sanitizeHTML($value), $value);
 		} else {
 			// Specify encoding for PHP<5.4
 			$value = \htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');

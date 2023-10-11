@@ -30,8 +30,7 @@ use OCP\Migration\ISchemaMigration;
  * The fileid column should not accept null values in the properties table.
  */
 class Version20190823065724 implements ISchemaMigration {
-	/** @var IDBConnection  */
-	private $dbConnection;
+	private \OCP\IDBConnection $dbConnection;
 
 	public function __construct(IDBConnection $dbConnection) {
 		$this->dbConnection = $dbConnection;

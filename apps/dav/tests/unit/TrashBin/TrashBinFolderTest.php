@@ -29,18 +29,15 @@ use Sabre\DAV\Exception\NotFound;
 use Test\TestCase;
 
 class TrashBinFolderTest extends TestCase {
-	/**
-	 * @var TrashBinFolder
-	 */
-	private $trashBinFolder;
+	private \OCA\DAV\TrashBin\TrashBinFolder $trashBinFolder;
 	/**
 	 * @var TrashBinManager | MockObject
 	 */
-	private $trashBinManager;
+	private \PHPUnit\Framework\MockObject\MockObject $trashBinManager;
 	/**
 	 * @var FileInfo | MockObject
 	 */
-	private $fileInfo;
+	private \PHPUnit\Framework\MockObject\MockObject $fileInfo;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -51,8 +48,8 @@ class TrashBinFolderTest extends TestCase {
 		$this->fileInfo->method('getId')->willReturn(666);
 		$this->fileInfo->method('getMimeType')->willReturn('foo');
 		$this->fileInfo->method('getEtag')->willReturn('abcdefgh');
-		$this->fileInfo->method('getMtime')->willReturn(789123456);
-		$this->fileInfo->method('getSize')->willReturn(12345678);
+		$this->fileInfo->method('getMtime')->willReturn(789_123_456);
+		$this->fileInfo->method('getSize')->willReturn(12_345_678);
 		$this->fileInfo->method('getPath')->willReturn('/alice/files_trashbin/files/folder.d1561467869/foo');
 
 		$this->trashBinManager->method('getLocation')->willReturn('.');
@@ -127,11 +124,11 @@ class TrashBinFolderTest extends TestCase {
 			['666', 'getName'],
 			['foo', 'getContentType'],
 			['"abcdefgh"', 'getEtag'],
-			[789123456, 'getLastModified'],
-			[12345678, 'getSize'],
+			[789_123_456, 'getLastModified'],
+			[12_345_678, 'getSize'],
 			['foo', 'getOriginalFileName'],
 			['folder/foo', 'getOriginalLocation'],
-			[1561467869, 'getDeleteTimestamp'],
+			[1_561_467_869, 'getDeleteTimestamp'],
 		];
 	}
 }

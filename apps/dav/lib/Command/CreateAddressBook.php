@@ -29,11 +29,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateAddressBook extends Command {
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var CardDavBackend */
-	private $cardDavBackend;
+	private \OCA\DAV\CardDAV\CardDavBackend $cardDavBackend;
 
 	/**
 	 * @param IUserManager $userManager

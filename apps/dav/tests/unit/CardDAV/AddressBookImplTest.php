@@ -33,23 +33,22 @@ use Sabre\VObject\Property\Text;
 use Test\TestCase;
 
 class AddressBookImplTest extends TestCase {
-	/** @var AddressBookImpl  */
-	private $addressBookImpl;
+	private \OCA\DAV\CardDAV\AddressBookImpl $addressBookImpl;
 
 	/** @var  array */
 	private $addressBookInfo;
 
 	/** @var  AddressBook | \PHPUnit\Framework\MockObject\MockObject */
-	private $addressBook;
+	private \PHPUnit\Framework\MockObject\MockObject $addressBook;
 
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/** @var  CardDavBackend | \PHPUnit\Framework\MockObject\MockObject */
-	private $backend;
+	private \PHPUnit\Framework\MockObject\MockObject $backend;
 
 	/** @var  VCard | \PHPUnit\Framework\MockObject\MockObject */
-	private $vCard;
+	private \PHPUnit\Framework\MockObject\MockObject $vCard;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -282,9 +281,7 @@ class AddressBookImplTest extends TestCase {
 		// simulate that 'uid0' already exists, so the second uid will be returned
 		$this->backend->expects($this->exactly(2))->method('getContact')
 			->willReturnCallback(
-				function ($id, $uid) {
-					return ($uid === 'uid0.vcf');
-				}
+				fn ($id, $uid) => $uid === 'uid0.vcf'
 			);
 
 		$this->assertSame(

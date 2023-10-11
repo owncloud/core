@@ -30,25 +30,25 @@ use Test\TestCase;
 
 class TokenControllerTest extends TestCase {
 	/** \OC\Core\Controller\TokenController */
-	private $tokenController;
-	private $request;
-	private $userManager;
-	private $tokenProvider;
-	private $twoFactorAuthManager;
-	private $secureRandom;
+	private \OC\Core\Controller\TokenController $tokenController;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tokenProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $twoFactorAuthManager;
+	private \PHPUnit\Framework\MockObject\MockObject $secureRandom;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->createMock('\OCP\IRequest');
-		$this->userManager = $this->getMockBuilder('\OC\User\Manager')
+		$this->request = $this->createMock('\\' . \OCP\IRequest::class);
+		$this->userManager = $this->getMockBuilder('\\' . \OC\User\Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->tokenProvider = $this->createMock('\OC\Authentication\Token\IProvider');
-		$this->twoFactorAuthManager = $this->getMockBuilder('\OC\Authentication\TwoFactorAuth\Manager')
+		$this->tokenProvider = $this->createMock('\\' . \OC\Authentication\Token\IProvider::class);
+		$this->twoFactorAuthManager = $this->getMockBuilder('\\' . \OC\Authentication\TwoFactorAuth\Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->secureRandom = $this->createMock('\OCP\Security\ISecureRandom');
+		$this->secureRandom = $this->createMock('\\' . \OCP\Security\ISecureRandom::class);
 
 		$this->tokenController = new TokenController('core', $this->request, $this->userManager, $this->tokenProvider, $this->twoFactorAuthManager, $this->secureRandom);
 	}
@@ -76,7 +76,7 @@ class TokenControllerTest extends TestCase {
 	}
 
 	public function testWithValidCredentials() {
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$this->userManager->expects($this->once())
 			->method('checkPassword')
 			->with('john', '123456')
@@ -105,7 +105,7 @@ class TokenControllerTest extends TestCase {
 	}
 
 	public function testWithValidCredentialsBut2faEnabled() {
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$this->userManager->expects($this->once())
 			->method('checkPassword')
 			->with('john', '123456')

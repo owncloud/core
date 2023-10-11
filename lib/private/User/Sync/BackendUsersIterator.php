@@ -23,23 +23,20 @@ namespace OC\User\Sync;
 use OCP\UserInterface;
 
 class BackendUsersIterator extends UsersIterator {
-	/**
-	 * @var UserInterface
-	 */
-	private $backend;
+	private \OCP\UserInterface $backend;
 	/**
 	 * @var int the current data position,
 	 *      we need to track it independently of parent::$position to handle data sets larger thin LIMIT properly
 	 */
-	private $dataPos = 0;
+	private int $dataPos = 0;
 
 	/**
 	 * @var int to cache the count($this->data) calculations
 	 */
-	private $endPos = 0;
+	private int $endPos = 0;
 
 	/** @var bool false if the backend returned less than LIMIT results */
-	private $hasMoreData = false;
+	private bool $hasMoreData = false;
 
 	/** @var string search for the uid string in backend */
 	private $search;

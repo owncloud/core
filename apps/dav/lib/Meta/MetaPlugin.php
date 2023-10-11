@@ -39,19 +39,11 @@ class MetaPlugin extends ServerPlugin {
 	public const VERSION_TAG_PROPERTYNAME = '{http://owncloud.org/ns}meta-version-tag';
 
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
-	/**
-	 * @var IRootFolder
-	 */
-	private $rootFolder;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
+	private \OCP\IUserSession $userSession;
+	private \OCP\Files\IRootFolder $rootFolder;
 
 	public function __construct(
 		IUserSession $userSession,
@@ -102,9 +94,7 @@ class MetaPlugin extends ServerPlugin {
 				$file = \current($files);
 				return $baseFolder->getRelativePath($file->getPath());
 			});
-			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionEditedBy();
-			});
+			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, fn () => $node->getVersionEditedBy());
 			$propFind->handle(self::VERSION_EDITED_BY_NAME_PROPERTYNAME, function () use ($node) {
 				$versionEditedBy = $node->getVersionEditedBy();
 				if (!$versionEditedBy) {
@@ -114,13 +104,9 @@ class MetaPlugin extends ServerPlugin {
 				$user = $manager->get($versionEditedBy);
 				return $user !== null ? $user->getDisplayName() : '';
 			});
-			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionTag();
-			});
+			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, fn () => $node->getVersionTag());
 		} elseif ($node instanceof MetaFile) {
-			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionEditedBy();
-			});
+			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, fn () => $node->getVersionEditedBy());
 			$propFind->handle(self::VERSION_EDITED_BY_NAME_PROPERTYNAME, function () use ($node) {
 				$versionEditedBy = $node->getVersionEditedBy();
 				if (!$versionEditedBy) {
@@ -130,9 +116,7 @@ class MetaPlugin extends ServerPlugin {
 				$user = $manager->get($versionEditedBy);
 				return $user !== null ? $user->getDisplayName() : '';
 			});
-			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, function () use ($node) {
-				return $node->getVersionTag();
-			});
+			$propFind->handle(self::VERSION_TAG_PROPERTYNAME, fn () => $node->getVersionTag());
 		}
 	}
 }

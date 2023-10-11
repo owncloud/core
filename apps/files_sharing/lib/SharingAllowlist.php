@@ -35,11 +35,9 @@ use phpDocumentor\Reflection\Types\Boolean;
  * This class won't prevent the sharing action by itself.
  */
 class SharingAllowlist {
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var IGroupManager */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
 	public function __construct(IConfig $config, IGroupManager $groupManager) {
 		$this->config = $config;
@@ -69,7 +67,7 @@ class SharingAllowlist {
 	 * @param string[] $ids a list with the ids of the groups in allowlist
 	 */
 	public function setPublicShareSharersGroupsAllowlist(array $ids) {
-		$this->config->setAppValue('files_sharing', 'public_share_sharers_groups_allowlist', \json_encode($ids));
+		$this->config->setAppValue('files_sharing', 'public_share_sharers_groups_allowlist', \json_encode($ids, JSON_THROW_ON_ERROR));
 	}
 
 	/**
@@ -118,7 +116,7 @@ class SharingAllowlist {
 	 */
 	private function fetchPublicShareSharersGroupsAllowlist() {
 		$configuredAllowlist = $this->config->getAppValue('files_sharing', 'public_share_sharers_groups_allowlist', '[]');
-		$parsedValues = json_decode($configuredAllowlist, true);
-		return $parsedValues === null ? [] : $parsedValues;
+		$parsedValues = json_decode($configuredAllowlist, true, 512, JSON_THROW_ON_ERROR);
+		return $parsedValues ?? [];
 	}
 }

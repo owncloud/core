@@ -42,10 +42,7 @@ class Profile implements ISettings {
 	/** @var IFactory */
 	protected $lfactory;
 
-	/**
-	 * @var LocaleHelper
-	 */
-	private $localeHelper;
+	private \OC\Helper\LocaleHelper $localeHelper;
 
 	/**
 	 * Profile constructor.
@@ -82,7 +79,7 @@ class Profile implements ISettings {
 			$this->lfactory->findLanguage()
 		);
 
-		list($userLang, $commonLanguages, $languages) = $this->localeHelper->getNormalizedLanguages(
+		[$userLang, $commonLanguages, $languages] = $this->localeHelper->getNormalizedLanguages(
 			$this->lfactory,
 			$activeLangCode
 		);

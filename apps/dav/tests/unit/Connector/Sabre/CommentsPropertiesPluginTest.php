@@ -36,12 +36,12 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
-		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->commentsManager = $this->createMock('\\' . \OCP\Comments\ICommentsManager::class);
+		$this->userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 
-		$this->userFolder = $this->createMock('\OCP\Files\Folder');
+		$this->userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
-		$this->server = $this->getMockBuilder('\Sabre\DAV\Server')
+		$this->server = $this->getMockBuilder('\\' . \Sabre\DAV\Server::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +50,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	}
 
 	public function testHandleGetPropertiesUser() {
-		$sabreNode1 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$sabreNode1 = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode1->expects($this->any())
@@ -58,7 +58,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 			->will($this->returnValue(111));
 		$sabreNode1->expects($this->never())
 			->method('getPath');
-		$sabreNode2 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$sabreNode2 = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode2->expects($this->any())
@@ -67,7 +67,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 		$sabreNode2->expects($this->never())
 			->method('getPath');
 
-		$sabreNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+		$sabreNode = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode->expects($this->any())
@@ -108,7 +108,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 		// Now test with user
 		$this->userSession->expects($this->any())
 			->method('getUser')
-			->willReturn($this->createMock('\OCP\IUser'));
+			->willReturn($this->createMock('\\' . \OCP\IUser::class));
 
 		$this->plugin->handleGetProperties(
 			$propFindRoot,
@@ -135,7 +135,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	}
 
 	public function testHandleGetPropertiesUserLoggedOut() {
-		$sabreNode1 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$sabreNode1 = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode1->expects($this->any())
@@ -143,7 +143,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 			->will($this->returnValue(111));
 		$sabreNode1->expects($this->never())
 			->method('getPath');
-		$sabreNode2 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$sabreNode2 = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode2->expects($this->any())
@@ -152,7 +152,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 		$sabreNode2->expects($this->never())
 			->method('getPath');
 
-		$sabreNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+		$sabreNode = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode->expects($this->any())
@@ -202,7 +202,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 
 	public function nodeProvider() {
 		$mocks = [];
-		foreach (['\OCA\DAV\Connector\Sabre\File', '\OCA\DAV\Connector\Sabre\Directory', '\Sabre\DAV\INode'] as $class) {
+		foreach (['\\' . \OCA\DAV\Connector\Sabre\File::class, '\\' . \OCA\DAV\Connector\Sabre\Directory::class, '\\' . \Sabre\DAV\INode::class] as $class) {
 			$mocks[] = 	$this->getMockBuilder($class)
 				->disableOriginalConstructor()
 				->getMock();
@@ -221,7 +221,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	 * @param $expectedSuccessful
 	 */
 	public function testHandleGetPropertiesCorrectNode($node, $expectedSuccessful) {
-		$propFind = $this->getMockBuilder('\Sabre\DAV\PropFind')
+		$propFind = $this->getMockBuilder('\\' . \Sabre\DAV\PropFind::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -251,7 +251,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	 * @param $expectedHref
 	 */
 	public function testGetCommentsLink($baseUri, $fid, $expectedHref) {
-		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$node = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->any())
@@ -268,7 +268,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 
 	public function userProvider() {
 		return [
-			[$this->createMock('\OCP\IUser')],
+			[$this->createMock('\\' . \OCP\IUser::class)],
 			[null]
 		];
 	}
@@ -278,7 +278,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	 * @param $user
 	 */
 	public function testGetUnreadCount($user) {
-		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$node = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->any())
@@ -307,7 +307,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	 * @param $user
 	 */
 	public function testGetUnreadCountWithZeroUnread($user) {
-		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$node = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->any())

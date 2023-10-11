@@ -80,7 +80,7 @@ class FileTest extends TestCase {
 
 		self::loginAsUser($this->user);
 		
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)->getMock();
 	}
 
 	public function tearDown(): void {
@@ -119,53 +119,53 @@ class FileTest extends TestCase {
 			[
 				// return false
 				null,
-				'\Sabre\Dav\Exception',
+				'\\' . \Sabre\Dav\Exception::class,
 				false
 			],
 			[
 				new NotPermittedException(),
-				'Sabre\DAV\Exception\Forbidden'
+				\Sabre\DAV\Exception\Forbidden::class
 			],
 			[
 				new EntityTooLargeException(),
-				'OCA\DAV\Connector\Sabre\Exception\EntityTooLarge'
+				\OCA\DAV\Connector\Sabre\Exception\EntityTooLarge::class
 			],
 			[
 				new InvalidContentException(),
-				'OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType'
+				\OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType::class
 			],
 			[
 				new InvalidPathException(),
-				'Sabre\DAV\Exception\Forbidden'
+				\Sabre\DAV\Exception\Forbidden::class
 			],
 			[
 				new ForbiddenException('', true),
-				'OCA\DAV\Connector\Sabre\Exception\Forbidden'
+				\OCA\DAV\Connector\Sabre\Exception\Forbidden::class
 			],
 			[
 				new LockNotAcquiredException('/test.txt', 1),
-				'OCA\DAV\Connector\Sabre\Exception\FileLocked'
+				\OCA\DAV\Connector\Sabre\Exception\FileLocked::class
 			],
 			[
 				new LockedException('/test.txt'),
-				'OCA\DAV\Connector\Sabre\Exception\FileLocked'
+				\OCA\DAV\Connector\Sabre\Exception\FileLocked::class
 			],
 			[
 				new GenericEncryptionException(),
-				'Sabre\DAV\Exception\ServiceUnavailable'
+				\Sabre\DAV\Exception\ServiceUnavailable::class
 			],
 			[
 				new StorageNotAvailableException(),
-				'Sabre\DAV\Exception\ServiceUnavailable'
+				\Sabre\DAV\Exception\ServiceUnavailable::class
 			],
 			[
 				new Exception('Generic sabre exception'),
-				'Sabre\DAV\Exception',
+				\Sabre\DAV\Exception::class,
 				false
 			],
 			[
 				new \Exception('Generic exception'),
-				'Sabre\DAV\Exception'
+				\Sabre\DAV\Exception::class
 			],
 		];
 	}
@@ -188,9 +188,7 @@ class FileTest extends TestCase {
 		$view->expects($this->atLeastOnce())
 			->method('resolvePath')
 			->will($this->returnCallback(
-				function ($path) use ($storage) {
-					return [$storage, $path];
-				}
+				fn ($path) => [$storage, $path]
 			));
 
 		if ($thrownException !== null) {
@@ -264,9 +262,7 @@ class FileTest extends TestCase {
 			->method('resolvePath')
 			->will(
 				$this->returnCallback(
-					function ($path) use ($storage) {
-						return [$storage, $path];
-					}
+					fn ($path) => [$storage, $path]
 				)
 			);
 
@@ -346,13 +342,11 @@ class FileTest extends TestCase {
 			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
 			->getMock();
 		Filesystem::mount($storage, [], $this->user . '/');
-		$view = $this->createMock(View::class, ['getRelativePath', 'resolvePath'], []);
+		$view = $this->createMock(View::class);
 		$view->expects($this->atLeastOnce())
 			->method('resolvePath')
 			->will($this->returnCallback(
-				function ($path) use ($storage) {
-					return [$storage, $path];
-				}
+				fn ($path) => [$storage, $path]
 			));
 
 		if ($thrownException !== null) {
@@ -882,7 +876,7 @@ class FileTest extends TestCase {
 		Util::connectHook(
 			Filesystem::CLASSNAME,
 			Filesystem::signal_create,
-			'\Test\HookHelper',
+			'\\' . \Test\HookHelper::class,
 			'cancellingCallback'
 		);
 
@@ -1405,7 +1399,7 @@ class FileTest extends TestCase {
 			$userView = Filesystem::getView();
 		}
 		$files = [];
-		list($storage, $internalPath) = $userView->resolvePath($path);
+		[$storage, $internalPath] = $userView->resolvePath($path);
 		if ($storage instanceof Local) {
 			$realPath = $storage->getSourcePath($internalPath);
 			$dh = \opendir($realPath);
@@ -1600,7 +1594,7 @@ class FileTest extends TestCase {
 			->setMethods(['header'])
 			->getMock();
 
-		list($storage) = $view->resolvePath("/$path");
+		[$storage] = $view->resolvePath("/$path");
 		$usePartFile = $storage->usePartFile();
 
 		if ($usePartFile) {

@@ -29,8 +29,7 @@ class SyncFederationAddressBooks {
 	/** @var DbHandler */
 	protected $dbHandler;
 
-	/** @var SyncService */
-	private $syncService;
+	private \OCA\DAV\CardDAV\SyncService $syncService;
 
 	/**
 	 * @param DbHandler $dbHandler

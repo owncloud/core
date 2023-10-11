@@ -55,11 +55,7 @@ class ServerContainer extends SimpleContainer {
 	 * @return DIContainer
 	 */
 	public function getAppContainer($appName) {
-		if (isset($this->appContainers[$appName])) {
-			return $this->appContainers[$appName];
-		}
-
-		return new DIContainer($appName);
+		return $this->appContainers[$appName] ?? new DIContainer($appName);
 	}
 
 	/**

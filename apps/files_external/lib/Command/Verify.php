@@ -108,7 +108,7 @@ class Verify extends Base {
 					$output->writeln('<error>Invalid mount configuration option "' . $configOption . '"</error>');
 					return;
 				}
-				list($key, $value) = \explode('=', $configOption, 2);
+				[$key, $value] = \explode('=', $configOption, 2);
 				$storage->setBackendOption($key, $value);
 			}
 
@@ -123,7 +123,7 @@ class Verify extends Base {
 				)
 			);
 		} catch (InsufficientDataForMeaningfulAnswerException $e) {
-			$status = $e->getCode() ? $e->getCode() : StorageNotAvailableException::STATUS_INDETERMINATE;
+			$status = $e->getCode() ?: StorageNotAvailableException::STATUS_INDETERMINATE;
 			$storage->setStatus(
 				$status,
 				$e->getMessage()

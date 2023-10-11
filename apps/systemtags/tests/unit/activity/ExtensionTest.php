@@ -34,13 +34,12 @@ use Test\TestCase;
  */
 class ExtensionTest extends TestCase {
 	/** @var IFactory */
-	private $languageFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $languageFactory;
 
 	/** @var IManager */
-	private $activityManager;
+	private \PHPUnit\Framework\MockObject\MockObject $activityManager;
 
-	/** @var Extension */
-	private $extension;
+	private \OCA\SystemTags\Activity\Extension $extension;
 
 	public function setUp(): void {
 		parent::setUp();

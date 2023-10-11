@@ -26,9 +26,9 @@ class Backend implements \OCP\Share_Backend {
 	public const FORMAT_TARGET = 1;
 	public const FORMAT_PERMISSIONS = 2;
 
-	private $testItem1 = 'test.txt';
-	private $testItem2 = 'share.txt';
-	private $testId = 1;
+	private string $testItem1 = 'test.txt';
+	private string $testItem2 = 'share.txt';
+	private int $testId = 1;
 
 	public function isValidSource($itemSource, $uidOwner) {
 		if ($itemSource == $this->testItem1 || $itemSource == $this->testItem2 || $itemSource == 1) {

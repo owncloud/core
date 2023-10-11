@@ -68,7 +68,7 @@ abstract class Backend implements \JsonSerializable {
 	private $storageClass;
 
 	/** @var array 'scheme' => true, supported authentication schemes */
-	private $authSchemes = [];
+	private array $authSchemes = [];
 
 	/** @var AuthMechanism|callable authentication mechanism fallback */
 	private $legacyAuthMechanism;

@@ -31,10 +31,7 @@ use OCP\IUser;
  * Mount provider for object store home storages
  */
 class ObjectHomeMountProvider implements IHomeMountProvider {
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * ObjectStoreHomeMountProvider constructor.
@@ -62,7 +59,7 @@ class ObjectHomeMountProvider implements IHomeMountProvider {
 			return null;
 		}
 
-		return new MountPoint('\OC\Files\ObjectStore\HomeObjectStoreStorage', '/' . $user->getUID(), $config['arguments'], $loader);
+		return new MountPoint('\\' . \OC\Files\ObjectStore\HomeObjectStoreStorage::class, '/' . $user->getUID(), $config['arguments'], $loader);
 	}
 
 	/**

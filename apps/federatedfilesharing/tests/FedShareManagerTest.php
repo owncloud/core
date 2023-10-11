@@ -44,28 +44,28 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class FedShareManagerTest extends TestCase {
 	/** @var FederatedShareProvider | \PHPUnit\Framework\MockObject\MockObject */
-	private $federatedShareProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $federatedShareProvider;
 
 	/** @var Notifications | \PHPUnit\Framework\MockObject\MockObject */
-	private $notifications;
+	private \PHPUnit\Framework\MockObject\MockObject $notifications;
 
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var ActivityManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $activityManager;
+	private \PHPUnit\Framework\MockObject\MockObject $activityManager;
 
 	/** @var NotificationManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $notificationManager;
+	private \PHPUnit\Framework\MockObject\MockObject $notificationManager;
 
 	/** @var FedShareManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $fedShareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $fedShareManager;
 
 	/** @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject */
-	private $addressHandler;
+	private \PHPUnit\Framework\MockObject\MockObject $addressHandler;
 
 	/** @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $eventDispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $eventDispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -270,7 +270,7 @@ class FedShareManagerTest extends TestCase {
 			->method('getSharedBy')
 			->willReturn($shareInitiator);
 
-		$nodeMock = $this->getMockBuilder('OCP\Files\Node')
+		$nodeMock = $this->getMockBuilder(\OCP\Files\Node::class)
 			->disableOriginalConstructor()->getMock();
 		$share->expects($this->once())
 			->method('getNode')

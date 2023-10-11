@@ -48,19 +48,19 @@ class GroupsTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->subAdminManager = $this->getMockBuilder('OC\SubAdmin')
+		$this->subAdminManager = $this->getMockBuilder(\OC\SubAdmin::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->groupManager = $this->getMockBuilder('OC\Group\Manager')
+		$this->groupManager = $this->getMockBuilder(\OC\Group\Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->groupManager
 			->method('getSubAdmin')
 			->willReturn($this->subAdminManager);
 
-		$this->userSession = $this->createMock('OCP\IUserSession');
-		$this->request = $this->createMock('OCP\IRequest');
+		$this->userSession = $this->createMock(\OCP\IUserSession::class);
+		$this->request = $this->createMock(\OCP\IRequest::class);
 		$this->api = new Groups(
 			$this->groupManager,
 			$this->userSession,
@@ -73,7 +73,7 @@ class GroupsTest extends \Test\TestCase {
 	 * @return \OCP\IGroup|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function createGroup($gid) {
-		$group = $this->createMock('OCP\IGroup');
+		$group = $this->createMock(\OCP\IGroup::class);
 		$group
 			->method('getGID')
 			->willReturn($gid);
@@ -85,7 +85,7 @@ class GroupsTest extends \Test\TestCase {
 	 * @return \OCP\IUser|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function createUser($uid) {
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user
 			->method('getUID')
 			->willReturn($uid);
@@ -156,7 +156,7 @@ class GroupsTest extends \Test\TestCase {
 
 		$groups = [$this->createGroup('group1'), $this->createGroup('group2')];
 
-		$search = $search === null ? '' : $search;
+		$search ??= '';
 
 		$this->groupManager
 			->expects($this->once())

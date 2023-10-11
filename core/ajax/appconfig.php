@@ -25,7 +25,7 @@
 OC_Util::checkAdminUser();
 OCP\JSON::callCheck();
 
-$action=isset($_POST['action'])?$_POST['action']:$_GET['action'];
+$action=$_POST['action'] ?? $_GET['action'];
 
 if (isset($_POST['app']) || isset($_GET['app'])) {
 	$app=OC_App::cleanAppId(isset($_POST['app'])? (string)$_POST['app']: (string)$_GET['app']);

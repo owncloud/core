@@ -31,8 +31,7 @@ class JobStatus extends File {
 	private $userId;
 	/** @var string */
 	private $data;
-	/** @var JobStatusMapper */
-	private $mapper;
+	private \OCA\DAV\JobStatus\Entity\JobStatusMapper $mapper;
 	/** @var JobStatusEntity */
 	private $entity;
 

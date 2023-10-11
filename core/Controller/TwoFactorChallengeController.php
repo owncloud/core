@@ -38,17 +38,13 @@ use OCP\IURLGenerator;
 use OCP\IUserSession;
 
 class TwoFactorChallengeController extends Controller {
-	/** @var Manager */
-	private $twoFactorManager;
+	private \OC\Authentication\TwoFactorAuth\Manager $twoFactorManager;
 
-	/** @var IUserSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
-	/** @var ISession */
-	private $session;
+	private \OCP\ISession $session;
 
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 
 	/**
 	 * @param string $appName

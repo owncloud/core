@@ -42,16 +42,16 @@ use Icewind\Streams\IteratorDirectory;
 use Icewind\Streams\RetryWrapper;
 
 class Google extends \OCP\Files\Storage\StorageAdapter {
-	private $client;
-	private $id;
+	private ?\Google_Client $client = null;
+	private ?string $id = null;
 	private $root;
-	private $service;
+	private ?\Google\Service\Drive $service = null;
 	private $driveFiles;
 
-	private static $tempFiles = [];
+	private static array $tempFiles = [];
 
-	private $defaultFieldsForFile;
-	private $defaultFieldsForFolderScan;
+	private ?string $defaultFieldsForFile = null;
+	private ?string $defaultFieldsForFolderScan = null;
 
 	// Google Doc mimetypes
 	public const FOLDER = 'application/vnd.google-apps.folder';
@@ -75,13 +75,13 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			$this->client->setClientId($params['client_id']);
 			$this->client->setClientSecret($params['client_secret']);
 			$this->client->setScopes(['https://www.googleapis.com/auth/drive']);
-			$this->client->setAccessToken(\json_decode($params['token'], true));
+			$this->client->setAccessToken(\json_decode($params['token'], true, 512, JSON_THROW_ON_ERROR));
 
 			// note: API connection is lazy
 			$this->service = new Drive($this->client);
-			$token = \json_decode($params['token'], true);
+			$token = \json_decode($params['token'], true, 512, JSON_THROW_ON_ERROR);
 			$this->id = 'google::'.\substr($params['client_id'], 0, 30).$token['created'];
-			$this->root = isset($params['root']) ? $params['root'] : '';
+			$this->root = $params['root'] ?? '';
 		} else {
 			throw new \Exception('Creating Google storage failed');
 		}

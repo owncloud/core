@@ -26,8 +26,7 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class SharePropagation implements IRepairStep {
-	/** @var  IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * SharePropagation constructor.

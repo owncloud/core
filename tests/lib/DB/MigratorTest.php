@@ -28,10 +28,7 @@ class MigratorTest extends \Test\TestCase {
 	 */
 	private $connection;
 
-	/**
-	 * @var \OC\DB\MDB2SchemaManager
-	 */
-	private $manager;
+	private \OC\DB\MDB2SchemaManager $manager;
 
 	/**
 	 * @var IConfig
@@ -121,7 +118,7 @@ class MigratorTest extends \Test\TestCase {
 		if ($this->isOracle()) {
 			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
 		}
-		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
+		[$startSchema, $endSchema] = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
 
@@ -142,7 +139,7 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testUpgrade() {
-		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
+		[$startSchema, $endSchema] = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
 
@@ -160,7 +157,7 @@ class MigratorTest extends \Test\TestCase {
 		$this->config->setSystemValue('dbtableprefix', 'ownc_');
 		$this->tableName = \strtolower(self::getUniqueID($this->config->getSystemValue('dbtableprefix') . 'test_'));
 
-		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
+		[$startSchema, $endSchema] = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
 
@@ -175,7 +172,7 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testInsertAfterUpgrade() {
-		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
+		[$startSchema, $endSchema] = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
 

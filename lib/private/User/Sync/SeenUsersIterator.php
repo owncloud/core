@@ -23,10 +23,7 @@ namespace OC\User\Sync;
 use OC\User\AccountMapper;
 
 class SeenUsersIterator extends UsersIterator {
-	/**
-	 * @var AccountMapper
-	 */
-	private $mapper;
+	private \OC\User\AccountMapper $mapper;
 	/**
 	 * @var string class name
 	 */

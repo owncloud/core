@@ -70,15 +70,15 @@ class TestDoubleFileView extends \OC\Files\View {
  */
 class DirectoryTest extends \Test\TestCase {
 	/** @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject */
-	private $view;
+	private \PHPUnit\Framework\MockObject\MockObject $view;
 	/** @var \OC\Files\FileInfo | \PHPUnit\Framework\MockObject\MockObject */
-	private $info;
+	private \PHPUnit\Framework\MockObject\MockObject $info;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->view = $this->createMock('OC\Files\View', [], [], '', false);
-		$this->info = $this->createMock('OC\Files\FileInfo', [], [], '', false);
+		$this->view = $this->createMock(\OC\Files\View::class);
+		$this->info = $this->createMock(\OC\Files\FileInfo::class);
 		$this->info->expects($this->any())
 			->method('isReadable')
 			->will($this->returnValue(true));
@@ -231,10 +231,10 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	public function testGetChildren() {
-		$info1 = $this->getMockBuilder('OC\Files\FileInfo')
+		$info1 = $this->getMockBuilder(\OC\Files\FileInfo::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$info2 = $this->getMockBuilder('OC\Files\FileInfo')
+		$info2 = $this->getMockBuilder(\OC\Files\FileInfo::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$info1->expects($this->any())
@@ -274,7 +274,7 @@ class DirectoryTest extends \Test\TestCase {
 	public function testGetChildrenNoPermission() {
 		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
 
-		$info = $this->getMockBuilder('OC\Files\FileInfo')
+		$info = $this->getMockBuilder(\OC\Files\FileInfo::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$info->expects($this->any())
@@ -290,7 +290,7 @@ class DirectoryTest extends \Test\TestCase {
 	public function testGetChildNoPermission() {
 		$this->expectException(\Sabre\DAV\Exception\NotFound::class);
 
-		$info = $this->getMockBuilder('OC\Files\FileInfo')
+		$info = $this->getMockBuilder(\OC\Files\FileInfo::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$info->expects($this->any())
@@ -330,15 +330,15 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	public function testGetQuotaInfoUnlimited() {
-		$storage = $this->getMockBuilder('\OC\Files\Storage\Wrapper\Quota')
+		$storage = $this->getMockBuilder('\\' . \OC\Files\Storage\Wrapper\Quota::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		$storage->expects($this->any())
 			->method('instanceOfStorage')
 			->will($this->returnValueMap([
-				'\OCA\Files_Sharing\SharedStorage' => false,
-				'\OC\Files\Storage\Wrapper\Quota' => false,
+				'\\' . \OCA\Files_Sharing\SharedStorage::class => false,
+				'\\' . \OC\Files\Storage\Wrapper\Quota::class => false,
 			]));
 
 		$storage->expects($this->never())
@@ -361,15 +361,15 @@ class DirectoryTest extends \Test\TestCase {
 	}
 
 	public function testGetQuotaInfoSpecific() {
-		$storage = $this->getMockBuilder('\OC\Files\Storage\Wrapper\Quota')
+		$storage = $this->getMockBuilder('\\' . \OC\Files\Storage\Wrapper\Quota::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		$storage->expects($this->any())
 			->method('instanceOfStorage')
 			->will($this->returnValueMap([
-				['\OCA\Files_Sharing\SharedStorage', false],
-				['\OC\Files\Storage\Wrapper\Quota', true],
+				['\\' . \OCA\Files_Sharing\SharedStorage::class, false],
+				['\\' . \OC\Files\Storage\Wrapper\Quota::class, true],
 			]));
 
 		$storage->expects($this->once())

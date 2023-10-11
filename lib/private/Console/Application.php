@@ -40,15 +40,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application {
-	/** @var IConfig */
-	private $config;
-	/** @var EventDispatcherInterface */
-	private $dispatcher;
-	/** @var IRequest */
-	private $request;
+	private \OCP\IConfig $config;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
+	private \OCP\IRequest $request;
 
-	/** @var SymfonyApplication  */
-	private $application;
+	private \Symfony\Component\Console\Application $application;
 
 	/**
 	 * @param IConfig $config
@@ -157,7 +153,7 @@ class Application {
 	 * @throws \Exception
 	 */
 	public function run(InputInterface $input = null, OutputInterface $output = null) {
-		$args = isset($this->request->server['argv']) ? $this->request->server['argv'] : [];
+		$args = $this->request->server['argv'] ?? [];
 		$this->dispatcher->dispatch(
 			new ConsoleEvent(ConsoleEvent::EVENT_RUN, $args),
 			ConsoleEvent::EVENT_RUN

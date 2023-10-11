@@ -93,9 +93,7 @@ class AppRegistryControllerTest extends TestCase {
 		});
 		$generator->method('linkToRouteAbsolute')->willReturn('https://example.cloud/index.php/apps/drawio/editor/123');
 		$request->method('getHeader')->willReturn('ownCloudApp/12.0.2');
-		$config->method('getSystemValue')->willReturnCallback(function ($key, $default) {
-			return $default;
-		});
+		$config->method('getSystemValue')->willReturnCallback(fn ($key, $default) => $default);
 
 		$controller = new AppRegistryController('core', $request, $appManager, $rootFolder, $generator, $config, $logger);
 
@@ -116,7 +114,7 @@ class AppRegistryControllerTest extends TestCase {
 		$parent_folder = $this->createMock(Folder::class);
 		$newFile = $this->createMock(File::class);
 		$parent_folder->method('newFile')->willReturn($newFile);
-		$newFile->method('getId')->willReturn(9999999);
+		$newFile->method('getId')->willReturn(9_999_999);
 
 		$appManager->method('isEnabledForUser')->willReturn(true);
 		$rootFolder->method('getById')->willReturnCallback(function ($file_id) use ($parent_folder) {
@@ -128,9 +126,7 @@ class AppRegistryControllerTest extends TestCase {
 		});
 		$generator->method('linkToRouteAbsolute')->willReturn('https://example.cloud/index.php/apps/drawio/editor/123');
 		$request->method('getHeader')->willReturn('ownCloud iOS');
-		$config->method('getSystemValue')->willReturnCallback(function ($key, $default) {
-			return $default;
-		});
+		$config->method('getSystemValue')->willReturnCallback(fn ($key, $default) => $default);
 
 		$controller = new AppRegistryController('core', $request, $appManager, $rootFolder, $generator, $config, $logger);
 

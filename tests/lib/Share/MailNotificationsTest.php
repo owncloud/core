@@ -51,29 +51,28 @@ use Test\TestCase;
  */
 class MailNotificationsTest extends TestCase {
 	/** @var IManager | MockObject */
-	private $shareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
 	/** @var IL10N | MockObject */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 	/** @var IMailer | MockObject */
-	private $mailer;
+	private \PHPUnit\Framework\MockObject\MockObject $mailer;
 	/** @var ILogger | MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var IConfig | MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var Defaults | MockObject */
-	private $defaults;
+	private \PHPUnit\Framework\MockObject\MockObject $defaults;
 	/** @var IUser | MockObject */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 	/** @var IURLGenerator | MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var EventDispatcherInterface | MockObject */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
 	/** @var \OCP\Activity\IManager | MockObject */
 	private $activityManager;
 	/** @var IRootFolder | MockObject */
-	private $rootFolder;
-	/** @var MailNotifications */
-	private $mailNotifications;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
+	private \OC\Share\MailNotifications $mailNotifications;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -92,9 +91,7 @@ class MailNotificationsTest extends TestCase {
 
 		$this->l10n->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 
 		$this->defaults
 				->expects($this->any())

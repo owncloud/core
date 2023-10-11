@@ -36,16 +36,14 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckCode extends Command {
-	/** @var InfoParser */
-	private $infoParser;
+	private \OC\App\InfoParser $infoParser;
 
-	/** @var IAppManager */
-	private $appManager;
+	private \OCP\App\IAppManager $appManager;
 
 	protected $checkers = [
-		'private' => '\OC\App\CodeChecker\PrivateCheck',
-		'deprecation' => '\OC\App\CodeChecker\DeprecationCheck',
-		'strong-comparison' => '\OC\App\CodeChecker\StrongComparisonCheck',
+		'private' => '\\' . \OC\App\CodeChecker\PrivateCheck::class,
+		'deprecation' => '\\' . \OC\App\CodeChecker\DeprecationCheck::class,
+		'strong-comparison' => '\\' . \OC\App\CodeChecker\StrongComparisonCheck::class,
 	];
 
 	public function __construct(InfoParser $infoParser, IAppManager $appManager) {
@@ -109,9 +107,7 @@ class CheckCode extends Command {
 			if ($count > 0 || OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 				$output->writeln(" {$count} errors");
 			}
-			\usort($errors, function ($a, $b) {
-				return $a['line'] - $b['line'];
-			});
+			\usort($errors, fn ($a, $b) => $a['line'] - $b['line']);
 
 			foreach ($errors as $p) {
 				$line = \sprintf("%' 4d", $p['line']);

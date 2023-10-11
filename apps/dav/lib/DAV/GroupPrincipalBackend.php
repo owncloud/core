@@ -30,8 +30,7 @@ use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 class GroupPrincipalBackend implements BackendInterface {
 	public const PRINCIPAL_PREFIX = 'principals/groups';
 
-	/** @var IGroupManager */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
 	/**
 	 * @param IGroupManager $IGroupManager
@@ -112,9 +111,7 @@ class GroupPrincipalBackend implements BackendInterface {
 			return [];
 		}
 
-		return \array_map(function ($user) {
-			return $this->userToPrincipal($user);
-		}, $group->getUsers());
+		return \array_map(fn ($user) => $this->userToPrincipal($user), $group->getUsers());
 	}
 
 	/**

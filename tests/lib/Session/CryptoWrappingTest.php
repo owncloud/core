@@ -37,22 +37,18 @@ class CryptoWrappingTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->wrappedSession = $this->getMockBuilder('OCP\ISession')
+		$this->wrappedSession = $this->getMockBuilder(\OCP\ISession::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->crypto = $this->getMockBuilder('OCP\Security\ICrypto')
+		$this->crypto = $this->getMockBuilder(\OCP\Security\ICrypto::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->crypto->expects($this->any())
 			->method('encrypt')
-			->willReturnCallback(function ($input) {
-				return $input;
-			});
+			->willReturnCallback(fn ($input) => $input);
 		$this->crypto->expects($this->any())
 			->method('decrypt')
-			->willReturnCallback(function ($input) {
-				return \substr($input, 1, -1);
-			});
+			->willReturnCallback(fn ($input) => \substr($input, 1, -1));
 
 		$this->instance = new CryptoSessionData($this->wrappedSession, $this->crypto, 'PASS');
 	}
@@ -64,9 +60,7 @@ class CryptoWrappingTest extends TestCase {
 		$this->wrappedSession->expects($this->once())
 			->method('get')
 			->with('encrypted_session_data')
-			->willReturnCallback(function () use ($encryptedValue) {
-				return $encryptedValue;
-			});
+			->willReturnCallback(fn () => $encryptedValue);
 
 		$this->assertSame($unencryptedValue, $this->wrappedSession->get('encrypted_session_data'));
 	}

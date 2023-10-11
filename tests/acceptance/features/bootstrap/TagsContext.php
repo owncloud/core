@@ -580,11 +580,8 @@ class TagsContext implements Context {
 		$tagData = $tagList->xpath(
 			"//d:prop//oc:display-name[text() = '$tagDisplayName']/.."
 		);
-		if (isset($tagData[0])) {
-			return $tagData[0];
-		}
 
-		return null;
+		return $tagData[0] ?? null;
 	}
 
 	/**

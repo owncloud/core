@@ -50,15 +50,15 @@ class Redis extends Cache implements IMemcacheTTL {
 		if ($result === false && !self::$cache->exists($this->getNameSpace() . $key)) {
 			return null;
 		} else {
-			return \json_decode($result, true);
+			return \json_decode($result, true, 512, JSON_THROW_ON_ERROR);
 		}
 	}
 
 	public function set($key, $value, $ttl = 0) {
 		if ($ttl > 0) {
-			return self::$cache->setex($this->getNameSpace() . $key, $ttl, \json_encode($value));
+			return self::$cache->setex($this->getNameSpace() . $key, $ttl, \json_encode($value, JSON_THROW_ON_ERROR));
 		} else {
-			return self::$cache->set($this->getNameSpace() . $key, \json_encode($value));
+			return self::$cache->set($this->getNameSpace() . $key, \json_encode($value, JSON_THROW_ON_ERROR));
 		}
 	}
 
@@ -95,7 +95,7 @@ class Redis extends Cache implements IMemcacheTTL {
 	public function add($key, $value, $ttl = 0) {
 		// don't encode ints for inc/dec
 		if (!\is_int($value)) {
-			$value = \json_encode($value);
+			$value = \json_encode($value, JSON_THROW_ON_ERROR);
 		}
 		return self::$cache->setnx($this->getPrefix() . $key, $value);
 	}
@@ -135,7 +135,7 @@ class Redis extends Cache implements IMemcacheTTL {
 	 */
 	public function cas($key, $old, $new) {
 		if (!\is_int($new)) {
-			$new = \json_encode($new);
+			$new = \json_encode($new, JSON_THROW_ON_ERROR);
 		}
 		self::$cache->watch($this->getNameSpace() . $key);
 		if ($this->get($key) === $old) {

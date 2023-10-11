@@ -53,10 +53,9 @@ $authBackend = new \OCA\DAV\Connector\Sabre\Auth(
 );
 $requestUri = \OC::$server->getRequest()->getRequestUri();
 
-$server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function () {
+$server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, fn () =>
 	// use the view for the logged in user
-	return \OC\Files\Filesystem::getView();
-});
+	\OC\Files\Filesystem::getView());
 
 // allow setup of additional auth backends
 $event = new \OCP\SabrePluginEvent($server);

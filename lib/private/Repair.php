@@ -58,8 +58,7 @@ use OC\Repair\MoveAvatarOutsideHome;
 class Repair implements IOutput {
 	/* @var IRepairStep[] */
 	private $repairSteps;
-	/** @var EventDispatcherInterface */
-	private $dispatcher;
+	private ?\Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher = null;
 	/** @var string */
 	private $currentStep;
 
@@ -79,13 +78,13 @@ class Repair implements IOutput {
 	 */
 	public function run() {
 		if (\count($this->repairSteps) === 0) {
-			$this->emit('\OC\Repair', 'info', ['No repair steps available']);
+			$this->emit('\\' . \OC\Repair::class, 'info', ['No repair steps available']);
 			return;
 		}
 		// run each repair step
 		foreach ($this->repairSteps as $step) {
 			$this->currentStep = $step->getName();
-			$this->emit('\OC\Repair', 'step', [$this->currentStep]);
+			$this->emit('\\' . \OC\Repair::class, 'step', [$this->currentStep]);
 			$step->run($this);
 		}
 	}
@@ -230,7 +229,7 @@ class Repair implements IOutput {
 
 	public function info($string) {
 		// for now just emit as we did in the past
-		$this->emit('\OC\Repair', 'info', [$string]);
+		$this->emit('\\' . \OC\Repair::class, 'info', [$string]);
 	}
 
 	/**
@@ -238,7 +237,7 @@ class Repair implements IOutput {
 	 */
 	public function warning($message) {
 		// for now just emit as we did in the past
-		$this->emit('\OC\Repair', 'warning', [$message]);
+		$this->emit('\\' . \OC\Repair::class, 'warning', [$message]);
 	}
 
 	/**
@@ -246,7 +245,7 @@ class Repair implements IOutput {
 	 */
 	public function startProgress($max = 0) {
 		// for now just emit as we did in the past
-		$this->emit('\OC\Repair', 'startProgress', [$max, $this->currentStep]);
+		$this->emit('\\' . \OC\Repair::class, 'startProgress', [$max, $this->currentStep]);
 	}
 
 	/**
@@ -255,7 +254,7 @@ class Repair implements IOutput {
 	 */
 	public function advance($step = 1, $description = '') {
 		// for now just emit as we did in the past
-		$this->emit('\OC\Repair', 'advance', [$step, $description]);
+		$this->emit('\\' . \OC\Repair::class, 'advance', [$step, $description]);
 	}
 
 	/**
@@ -263,6 +262,6 @@ class Repair implements IOutput {
 	 */
 	public function finishProgress() {
 		// for now just emit as we did in the past
-		$this->emit('\OC\Repair', 'finishProgress', []);
+		$this->emit('\\' . \OC\Repair::class, 'finishProgress', []);
 	}
 }

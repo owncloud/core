@@ -32,8 +32,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Backends extends Base {
-	/** @var IStoragesBackendService */
-	private $backendService;
+	private \OCP\Files\External\IStoragesBackendService $backendService;
 
 	public function __construct(
 		IStoragesBackendService $backendService
@@ -101,9 +100,7 @@ class Backends extends Base {
 			$result['storage_class'] = $backend->getStorageClass();
 			$authBackends = $this->backendService->getAuthMechanismsByScheme(\array_keys($backend->getAuthSchemes()));
 			$result['supported_authentication_backends'] = \array_keys($authBackends);
-			$authConfig = \array_map(function (AuthMechanism $auth) {
-				return $this->serializeAuthBackend($auth)['configuration'];
-			}, $authBackends);
+			$authConfig = \array_map(fn (AuthMechanism $auth) => $this->serializeAuthBackend($auth)['configuration'], $authBackends);
 			$result['authentication_configuration'] = \array_combine(\array_keys($authBackends), $authConfig);
 		}
 		return $result;
@@ -114,11 +111,7 @@ class Backends extends Base {
 	 * @return string[]
 	 */
 	private function formatConfiguration(array $parameters) {
-		$configuration = \array_filter($parameters, function (DefinitionParameter $parameter) {
-			return $parameter->getType() !== DefinitionParameter::VALUE_HIDDEN;
-		});
-		return \array_map(function (DefinitionParameter $parameter) {
-			return $parameter->getTypeName();
-		}, $configuration);
+		$configuration = \array_filter($parameters, fn (DefinitionParameter $parameter) => $parameter->getType() !== DefinitionParameter::VALUE_HIDDEN);
+		return \array_map(fn (DefinitionParameter $parameter) => $parameter->getTypeName(), $configuration);
 	}
 }

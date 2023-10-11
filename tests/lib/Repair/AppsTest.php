@@ -42,7 +42,7 @@ class AppsTest extends TestCase {
 	/** @var  IConfig | \PHPUnit\Framework\MockObject\MockObject*/
 	protected $config;
 	/** @var \OC_Defaults | \PHPUnit\Framework\MockObject\MockObject */
-	private $defaults;
+	private \PHPUnit\Framework\MockObject\MockObject $defaults;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -51,9 +51,7 @@ class AppsTest extends TestCase {
 		$this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 		$this->eventDispatcher->expects($this->any())->method('dispatch')
 			->will(
-				$this->returnCallback(function ($object) {
-					return $object;
-				})
+				$this->returnCallback(fn ($object) => $object)
 			);
 		$this->config = $this->createMock(IConfig::class);
 		$this->repair = new Apps(

@@ -30,20 +30,16 @@ class Expiration {
 	public const DEFAULT_RETENTION_OBLIGATION = 30;
 	public const NO_OBLIGATION = -1;
 
-	/** @var ITimeFactory */
-	private $timeFactory;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
 
 	/** @var string */
 	private $retentionObligation;
 
-	/** @var int */
-	private $minAge;
+	private ?int $minAge = null;
 
-	/** @var int */
-	private $maxAge;
+	private ?int $maxAge = null;
 
-	/** @var bool */
-	private $canPurgeToSaveSpace;
+	private ?bool $canPurgeToSaveSpace = null;
 
 	public function __construct(IConfig $config, ITimeFactory $timeFactory) {
 		$this->timeFactory = $timeFactory;

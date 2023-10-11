@@ -440,7 +440,7 @@ class Local extends Common {
 	 * @throws ForbiddenException
 	 */
 	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
-		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
+		if ($sourceStorage->instanceOfStorage(self::class)) {
 			/**
 			 * @var \OC\Files\Storage\Local $sourceStorage
 			 */
@@ -460,7 +460,7 @@ class Local extends Common {
 	 * @throws \InvalidArgumentException
 	 */
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
-		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
+		if ($sourceStorage->instanceOfStorage(self::class)) {
 			/**
 			 * @var \OC\Files\Storage\Local $sourceStorage
 			 */

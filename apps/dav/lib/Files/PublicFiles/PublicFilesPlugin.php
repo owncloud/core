@@ -48,8 +48,7 @@ class PublicFilesPlugin extends ServerPlugin {
 	public const PUBLIC_LINK_SHARE_DATETIME = '{http://owncloud.org/ns}public-link-share-datetime';
 	public const PUBLIC_LINK_SHARE_OWNER = '{http://owncloud.org/ns}public-link-share-owner';
 
-	/** @var Server */
-	private $server;
+	private ?\Sabre\DAV\Server $server = null;
 
 	public function initialize(Server $server) {
 		$this->server = $server;
@@ -65,7 +64,7 @@ class PublicFilesPlugin extends ServerPlugin {
 		if (!$this->server->tree->nodeExists($path)) {
 			return;
 		}
-		list($parentPath, ) = \Sabre\Uri\split($path);
+		[$parentPath, ] = \Sabre\Uri\split($path);
 		$parent = $this->server->tree->getNodeForPath($parentPath);
 
 		// only in share roots of file drop folders auto renaming will be applied
@@ -97,13 +96,9 @@ class PublicFilesPlugin extends ServerPlugin {
 	public function propFind(PropFind $propFind, INode $node) {
 		// properties about the share
 		if ($node instanceof PublicSharedRootNode) {
-			$propFind->handle(self::PUBLIC_LINK_ITEM_TYPE, static function () use ($node) {
-				return $node->getShare()->getNodeType();
-			});
+			$propFind->handle(self::PUBLIC_LINK_ITEM_TYPE, static fn () => $node->getShare()->getNodeType());
 
-			$propFind->handle(self::PUBLIC_LINK_PERMISSION, static function () use ($node) {
-				return $node->getShare()->getPermissions();
-			});
+			$propFind->handle(self::PUBLIC_LINK_PERMISSION, static fn () => $node->getShare()->getPermissions());
 
 			$propFind->handle(self::PUBLIC_LINK_EXPIRATION, static function () use ($node) {
 				$expire = $node->getShare()->getExpirationDate();
@@ -113,28 +108,18 @@ class PublicFilesPlugin extends ServerPlugin {
 				return null;
 			});
 
-			$propFind->handle(self::PUBLIC_LINK_SHARE_DATETIME, static function () use ($node) {
-				return new GetLastModified($node->getShare()->getShareTime());
-			});
+			$propFind->handle(self::PUBLIC_LINK_SHARE_DATETIME, static fn () => new GetLastModified($node->getShare()->getShareTime()));
 
-			$propFind->handle(self::PUBLIC_LINK_SHARE_OWNER, static function () use ($node) {
-				return $node->getShare()->getShareOwner();
-			});
+			$propFind->handle(self::PUBLIC_LINK_SHARE_OWNER, static fn () => $node->getShare()->getShareOwner());
 
-			$propFind->handle(FilesPlugin::PERMISSIONS_PROPERTYNAME, static function () use ($node) {
-				return $node->getPermissions();
-			});
+			$propFind->handle(FilesPlugin::PERMISSIONS_PROPERTYNAME, static fn () => $node->getPermissions());
 		}
 
 		// properties about the resources within the public link
 		if ($node instanceof IPublicSharedNode) {
-			$propFind->handle(FilesPlugin::INTERNAL_FILEID_PROPERTYNAME, static function () use ($node) {
-				return $node->getNode()->getId();
-			});
+			$propFind->handle(FilesPlugin::INTERNAL_FILEID_PROPERTYNAME, static fn () => $node->getNode()->getId());
 
-			$propFind->handle(FilesPlugin::PERMISSIONS_PROPERTYNAME, static function () use ($node) {
-				return $node->getDavPermissions();
-			});
+			$propFind->handle(FilesPlugin::PERMISSIONS_PROPERTYNAME, static fn () => $node->getDavPermissions());
 
 			$propFind->handle(FilesPlugin::OWNER_ID_PROPERTYNAME, static function () use ($node) {
 				$owner = $node->getNode()->getOwner();
@@ -144,9 +129,7 @@ class PublicFilesPlugin extends ServerPlugin {
 				$owner = $node->getNode()->getOwner();
 				return  $owner->getDisplayName();
 			});
-			$propFind->handle(FilesPlugin::SIZE_PROPERTYNAME, static function () use ($node) {
-				return $node->getNode()->getSize();
-			});
+			$propFind->handle(FilesPlugin::SIZE_PROPERTYNAME, static fn () => $node->getNode()->getSize());
 			if ($node->getNode()->getType() === FileInfo::TYPE_FILE) {
 				$server = $this->server;
 				$propFind->handle(FilesPlugin::DOWNLOADURL_PROPERTYNAME, static function () use ($node, $server) {

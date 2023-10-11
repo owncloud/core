@@ -256,9 +256,7 @@ class Cache implements ICache {
 				$file['storage_mtime'] = (int)$file['storage_mtime'];
 				$file['size'] = 0 + $file['size'];
 			}
-			return \array_map(function (array $data) {
-				return new CacheEntry($data);
-			}, $files);
+			return \array_map(fn (array $data) => new CacheEntry($data), $files);
 		} else {
 			return [];
 		}
@@ -312,13 +310,11 @@ class Cache implements ICache {
 		$data['parent'] = $this->getParentId($file);
 		$data['name'] = \OC_Util::basename($file);
 
-		list($queryParts, $params) = $this->buildParts($data);
+		[$queryParts, $params] = $this->buildParts($data);
 		$queryParts[] = '`storage`';
 		$params[] = $this->getNumericStorageId();
 
-		$queryParts = \array_map(function ($item) {
-			return \trim($item, "`");
-		}, $queryParts);
+		$queryParts = \array_map(fn ($item) => \trim($item, "`"), $queryParts);
 		$values = \array_combine($queryParts, $params);
 		// Update or insert this to the filecache
 		\OC::$server->getDatabaseConnection()->upsert(
@@ -362,7 +358,7 @@ class Cache implements ICache {
 			}
 		}
 
-		list($queryParts, $params) = $this->buildParts($data);
+		[$queryParts, $params] = $this->buildParts($data);
 
 		// don't update if the data we try to set is the same as the one in the record
 		// some databases (Postgres) don't like superfluous updates
@@ -382,12 +378,10 @@ class Cache implements ICache {
 			$whereClause = \implode(' OR ', $whereParts);
 
 			// remove null values from the $params
-			$params = \array_values(\array_filter($params, function ($v) {
-				return $v !== null;
-			}));
+			$params = \array_values(\array_filter($params, fn ($v) => $v !== null));
 			// duplicate $params because we need the parts twice in the SQL statement
 			// once for the SET part, once in the WHERE clause
-			$params = \array_merge($params, $params);
+			$params = [...$params, ...$params];
 			$params[] = $id;
 
 			$sql = "UPDATE `*PREFIX*filecache` SET $setClause WHERE ($whereClause) AND `fileid` = ?";
@@ -600,8 +594,8 @@ class Cache implements ICache {
 			$sourceId = $sourceData['fileid'];
 			$newParentId = $this->getParentId($targetPath);
 
-			list($sourceStorageId, $sourcePath) = $sourceCache->getMoveInfo($sourcePath);
-			list($targetStorageId, $targetPath) = $this->getMoveInfo($targetPath);
+			[$sourceStorageId, $sourcePath] = $sourceCache->getMoveInfo($sourcePath);
+			[$targetStorageId, $targetPath] = $this->getMoveInfo($targetPath);
 
 			if ($sourceStorageId === null || $sourceStorageId === false) {
 				throw new \Exception('Invalid source storage id: ' . $sourceStorageId);
@@ -762,9 +756,7 @@ class Cache implements ICache {
 			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
 			$files[] = $row;
 		}
-		return \array_map(function (array $data) {
-			return new CacheEntry($data);
-		}, $files);
+		return \array_map(fn (array $data) => new CacheEntry($data), $files);
 	}
 
 	/**
@@ -790,9 +782,7 @@ class Cache implements ICache {
 			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
 			$files[] = $row;
 		}
-		return \array_map(function (array $data) {
-			return new CacheEntry($data);
-		}, $files);
+		return \array_map(fn (array $data) => new CacheEntry($data), $files);
 	}
 
 	/**
@@ -837,9 +827,7 @@ class Cache implements ICache {
 		while ($row = $result->fetch()) {
 			$files[] = $row;
 		}
-		return \array_map(function (array $data) {
-			return new CacheEntry($data);
-		}, $files);
+		return \array_map(fn (array $data) => new CacheEntry($data), $files);
 	}
 
 	/**
@@ -886,7 +874,7 @@ class Cache implements ICache {
 			$result = $this->connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
 			if ($row = $result->fetch()) {
 				$result->closeCursor();
-				list($sum, $min) = \array_values($row);
+				[$sum, $min] = \array_values($row);
 				if ($min === null && $entry['size'] < 0) {
 					// could happen if the folder hasn't been scanned.
 					// we don't have any data, so return the SIZE_NEEDS_SCAN

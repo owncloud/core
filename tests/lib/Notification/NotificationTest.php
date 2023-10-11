@@ -397,12 +397,12 @@ class NotificationTest extends TestCase {
 
 	public function testCreateAction() {
 		$action = $this->notification->createAction();
-		$this->assertInstanceOf('OCP\Notification\IAction', $action);
+		$this->assertInstanceOf(\OCP\Notification\IAction::class, $action);
 	}
 
 	public function testAddAction() {
 		/** @var \OCP\Notification\IAction|\PHPUnit\Framework\MockObject\MockObject $action */
-		$action = $this->getMockBuilder('OCP\Notification\IAction')
+		$action = $this->getMockBuilder(\OCP\Notification\IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$action->expects($this->once())
@@ -423,7 +423,7 @@ class NotificationTest extends TestCase {
 		$this->expectException(\InvalidArgumentException::class);
 
 		/** @var \OCP\Notification\IAction|\PHPUnit\Framework\MockObject\MockObject $action */
-		$action = $this->getMockBuilder('OCP\Notification\IAction')
+		$action = $this->getMockBuilder(\OCP\Notification\IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$action->expects($this->once())
@@ -437,7 +437,7 @@ class NotificationTest extends TestCase {
 
 	public function testAddActionSecondPrimary() {
 		/** @var \OCP\Notification\IAction|\PHPUnit\Framework\MockObject\MockObject $action */
-		$action = $this->getMockBuilder('OCP\Notification\IAction')
+		$action = $this->getMockBuilder(\OCP\Notification\IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$action->expects($this->exactly(2))
@@ -455,7 +455,7 @@ class NotificationTest extends TestCase {
 
 	public function testAddParsedAction() {
 		/** @var \OCP\Notification\IAction|\PHPUnit\Framework\MockObject\MockObject $action */
-		$action = $this->getMockBuilder('OCP\Notification\IAction')
+		$action = $this->getMockBuilder(\OCP\Notification\IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$action->expects($this->once())
@@ -476,7 +476,7 @@ class NotificationTest extends TestCase {
 		$this->expectException(\InvalidArgumentException::class);
 
 		/** @var \OCP\Notification\IAction|\PHPUnit\Framework\MockObject\MockObject $action */
-		$action = $this->getMockBuilder('OCP\Notification\IAction')
+		$action = $this->getMockBuilder(\OCP\Notification\IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$action->expects($this->once())
@@ -490,7 +490,7 @@ class NotificationTest extends TestCase {
 
 	public function testAddActionSecondParsedPrimary() {
 		/** @var \OCP\Notification\IAction|\PHPUnit\Framework\MockObject\MockObject $action */
-		$action = $this->getMockBuilder('OCP\Notification\IAction')
+		$action = $this->getMockBuilder(\OCP\Notification\IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$action->expects($this->exactly(2))
@@ -524,7 +524,7 @@ class NotificationTest extends TestCase {
 	 */
 	public function testIsValid($isValidCommon, $subject, $expected) {
 		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
-		$notification = $this->getMockBuilder('\OC\Notification\Notification')
+		$notification = $this->getMockBuilder('\\' . \OC\Notification\Notification::class)
 			->setMethods([
 				'isValidCommon',
 				'getSubject',
@@ -556,7 +556,7 @@ class NotificationTest extends TestCase {
 	 */
 	public function testIsParsedValid($isValidCommon, $subject, $expected) {
 		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
-		$notification = $this->getMockBuilder('\OC\Notification\Notification')
+		$notification = $this->getMockBuilder('\\' . \OC\Notification\Notification::class)
 			->setMethods([
 				'isValidCommon',
 				'getParsedSubject',
@@ -602,7 +602,7 @@ class NotificationTest extends TestCase {
 	 */
 	public function testIsValidCommon($app, $user, $timestamp, $objectType, $objectId, $expected) {
 		/** @var \OCP\Notification\INotification|\PHPUnit\Framework\MockObject\MockObject $notification */
-		$notification = $this->getMockBuilder('\OC\Notification\Notification')
+		$notification = $this->getMockBuilder('\\' . \OC\Notification\Notification::class)
 			->setMethods([
 				'getApp',
 				'getUser',

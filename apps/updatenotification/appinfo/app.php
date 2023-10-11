@@ -41,12 +41,10 @@ if (\OC::$server->getConfig()->getSystemValue('updatechecker', true) === true) {
 	}
 
 	$manager = \OC::$server->getNotificationManager();
-	$manager->registerNotifier(function () use ($manager) {
-		return new \OCA\UpdateNotification\Notification\Notifier(
-			$manager,
-			\OC::$server->getL10NFactory()
-		);
-	}, function () {
+	$manager->registerNotifier(fn () => new \OCA\UpdateNotification\Notification\Notifier(
+		$manager,
+		\OC::$server->getL10NFactory()
+	), function () {
 		$l = \OC::$server->getL10N('updatenotification');
 		return [
 			'id' => 'updatenotification',

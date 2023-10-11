@@ -37,24 +37,23 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @package OCA\Federation\Tests
  */
 class PanelTest extends \Test\TestCase {
-	/** @var Admin */
-	private $panel;
+	private \OCA\Federation\Panels\Admin $panel;
 	/** @var IDBConnection */
-	private $connection;
+	private \PHPUnit\Framework\MockObject\MockObject $connection;
 	/** @var IL10N */
-	private $l;
+	private \PHPUnit\Framework\MockObject\MockObject $l;
 	/** @var ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var IJobList */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 	/** @var IClientService */
-	private $clientService;
+	private \PHPUnit\Framework\MockObject\MockObject $clientService;
 	/** @var ISecureRandom */
-	private $secureRandom;
+	private \PHPUnit\Framework\MockObject\MockObject $secureRandom;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $eventDispatcher;
 
 	public function setUp(): void {
 		parent::setUp();

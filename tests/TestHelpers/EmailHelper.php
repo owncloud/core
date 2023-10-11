@@ -61,7 +61,7 @@ class EmailHelper {
 			null,
 			['Content-Type' => 'application/json']
 		);
-		return \json_decode($response->getBody()->getContents());
+		return \json_decode($response->getBody()->getContents(), null, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**
@@ -144,7 +144,7 @@ class EmailHelper {
 			['Content-Type' => 'application/json']
 		);
 
-		return \json_decode($response->getBody()->getContents());
+		return \json_decode($response->getBody()->getContents(), null, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**

@@ -37,8 +37,8 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 	 */
 	protected $path = '/index.php/settings/personal?sectionid=encryption';
 
-	private $userEnableRecoveryCheckboxId = 'userEnableRecoveryCheckbox';
-	private $userEnableRecoveryCheckboxXpath = '//label[@for="userEnableRecoveryCheckbox"]';
+	private string $userEnableRecoveryCheckboxId = 'userEnableRecoveryCheckbox';
+	private string $userEnableRecoveryCheckboxXpath = '//label[@for="userEnableRecoveryCheckbox"]';
 
 	/**
 	 * Enable password recovery

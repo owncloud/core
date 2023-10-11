@@ -29,7 +29,7 @@ use OCP\IDBConnection;
  * Propagate etags and mtimes within the storage
  */
 class Propagator implements IPropagator {
-	private $inBatch = false;
+	private bool $inBatch = false;
 
 	private $batch = [];
 
@@ -38,10 +38,7 @@ class Propagator implements IPropagator {
 	 */
 	protected $storage;
 
-	/**
-	 * @var IDBConnection
-	 */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	/**
 	 * @param \OC\Files\Storage\Storage $storage
@@ -77,9 +74,7 @@ class Propagator implements IPropagator {
 		$etag = \uniqid(); // since we give all folders the same etag we don't ask the storage for the etag
 
 		$builder = $this->connection->getQueryBuilder();
-		$hashParams = \array_map(function ($hash) use ($builder) {
-			return $builder->expr()->literal($hash);
-		}, $parentHashes);
+		$hashParams = \array_map(fn ($hash) => $builder->expr()->literal($hash), $parentHashes);
 
 		$builder->update('filecache')
 			->set('mtime', $builder->createFunction('GREATEST(`mtime`, ' . $builder->createNamedParameter($time, IQueryBuilder::PARAM_INT) . ')'))

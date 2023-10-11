@@ -56,7 +56,7 @@ class CredentialsManager implements ICredentialsManager {
 	 * @param mixed $credentials
 	 */
 	public function store($userId, $identifier, $credentials) {
-		$value = $this->crypto->encrypt(\json_encode($credentials));
+		$value = $this->crypto->encrypt(\json_encode($credentials, JSON_THROW_ON_ERROR));
 
 		$this->dbConnection->setValues(self::DB_TABLE, [
 			'user' => $userId,
@@ -87,7 +87,7 @@ class CredentialsManager implements ICredentialsManager {
 		}
 		$value = $result['credentials'];
 
-		return \json_decode($this->crypto->decrypt($value), true);
+		return \json_decode($this->crypto->decrypt($value), true, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**

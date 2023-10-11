@@ -100,7 +100,7 @@ class BackgroundJob {
 	 */
 	public static function addRegularTask($klass, $method) {
 		if (!\OCP\Util::needUpgrade()) {
-			self::registerJob('OC\BackgroundJob\Legacy\RegularJob', [$klass, $method]);
+			self::registerJob(\OC\BackgroundJob\Legacy\RegularJob::class, [$klass, $method]);
 			return true;
 		}
 	}
@@ -161,7 +161,7 @@ class BackgroundJob {
 	 * @since 4.5.0
 	 */
 	public static function addQueuedTask($app, $class, $method, $parameters) {
-		self::registerJob('OC\BackgroundJob\Legacy\QueuedJob', ['app' => $app, 'klass' => $class, 'method' => $method, 'parameters' => $parameters]);
+		self::registerJob(\OC\BackgroundJob\Legacy\QueuedJob::class, ['app' => $app, 'klass' => $class, 'method' => $method, 'parameters' => $parameters]);
 		return true;
 	}
 

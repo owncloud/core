@@ -32,7 +32,7 @@ class Audio extends File {
 	 * @var string
 	 */
 	public $type = 'audio';
-	
+
 	/**
 	 * @TODO add ID3 information
 	 */

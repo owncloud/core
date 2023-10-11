@@ -56,27 +56,27 @@ class RequestHandlerTest extends TestCase {
 	/**
 	 * @var IRequest | MockObject
 	 */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/**
 	 * @var OcmMiddleware
 	 */
-	private $ocmMiddleware;
+	private \PHPUnit\Framework\MockObject\MockObject $ocmMiddleware;
 
 	/**
 	 * @var IUserManager | MockObject
 	 */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/**
 	 * @var AddressHandler | MockObject
 	 */
-	private $addressHandler;
+	private \PHPUnit\Framework\MockObject\MockObject $addressHandler;
 
 	/**
 	 * @var FedShareManager | MockObject
 	 */
-	private $fedShareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $fedShareManager;
 
 	private RequestHandlerController $requestHandlerController;
 

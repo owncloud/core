@@ -40,8 +40,7 @@ use OCP\IUserSession;
 class AppsTest extends TestCase {
 	/** @var IAppManager */
 	private $appManager;
-	/** @var Apps */
-	private $api;
+	private \OCA\Provisioning_API\Apps $api;
 	/** @var IUserSession */
 	private $userSession;
 

@@ -93,7 +93,7 @@ class Report extends Command {
 		$rows[] = ['user directories', $this->countUserDirectories()];
 
 		$table->setRows($rows);
-		$table->render($output);
+		$table->render();
 		return 0;
 	}
 

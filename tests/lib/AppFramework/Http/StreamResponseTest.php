@@ -29,11 +29,11 @@ use OCP\AppFramework\Http\StreamResponse;
 
 class StreamResponseTest extends \Test\TestCase {
 	/** @var IOutput */
-	private $output;
+	private \PHPUnit\Framework\MockObject\MockObject $output;
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->output = $this->createMock('OCP\\AppFramework\\Http\\IOutput');
+		$this->output = $this->createMock(\OCP\AppFramework\Http\IOutput::class);
 	}
 
 	public function testOutputNotModified() {

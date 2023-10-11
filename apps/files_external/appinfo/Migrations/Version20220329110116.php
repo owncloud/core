@@ -14,12 +14,9 @@ use OCP\IConfig;
 use phpseclib3\Crypt\RSA as RSACrypt;
 
 class Version20220329110116 implements ISimpleMigration {
-	/** @var IGlobalStoragesService */
-	private $storageService;
-	/** @var ILogger */
-	private $logger;
-	/** @var IConfig */
-	private $config;
+	private \OCP\Files\External\Service\IGlobalStoragesService $storageService;
+	private \OCP\ILogger $logger;
+	private \OCP\IConfig $config;
 
 	public function __construct(IGlobalStoragesService $storageService, ILogger $logger, IConfig $config) {
 		$this->storageService = $storageService;

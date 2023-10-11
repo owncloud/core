@@ -26,7 +26,7 @@ class Utf8Analyzer {
 	 * https://en.wikipedia.org/wiki/UTF-8
 	 * Ranges to determine how many bytes we need to read based on the first byte read.
 	 */
-	private $utf8Ranges = [
+	private array $utf8Ranges = [
 		"1b" => [0x00, 0x7f],
 		"2b" => [0xc0, 0xdf],
 		"3b" => [0xe0, 0xef],
@@ -40,7 +40,7 @@ class Utf8Analyzer {
 	 * Keep the list sorted to be able to do a binary search
 	 * NOTE: The list is incomplete and might be inaccurate with some symbols
 	 */
-	private $unicodeRanges = [
+	private array $unicodeRanges = [
 		['range' => [0x0000, 0x0040], 'script' => 'Common'],
 		['range' => [0x0041, 0x005a], 'script' => 'Latin'],
 		['range' => [0x005b, 0x0060], 'script' => 'Common'],

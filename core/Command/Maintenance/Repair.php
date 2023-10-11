@@ -43,14 +43,10 @@ class Repair extends Command {
 	protected $repair;
 	/** @var IConfig $config */
 	protected $config;
-	/** @var EventDispatcherInterface $dispatcher */
-	private $dispatcher;
-	/** @var IAppManager $appManager */
-	private $appManager;
-	/** @var ProgressBar */
-	private $progress;
-	/** @var OutputInterface $output */
-	private $output;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
+	private \OCP\App\IAppManager $appManager;
+	private ?\Symfony\Component\Console\Helper\ProgressBar $progress = null;
+	private ?\Symfony\Component\Console\Output\OutputInterface $output = null;
 
 	/**
 	 * @param \OC\Repair $repair

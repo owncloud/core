@@ -26,11 +26,9 @@ use OCA\FederatedFileSharing\Notifier;
 $app = new \OCA\FederatedFileSharing\AppInfo\Application();
 
 $manager = \OC::$server->getNotificationManager();
-$manager->registerNotifier(function () {
-	return new Notifier(
-		\OC::$server->getL10NFactory()
-	);
-}, function () {
+$manager->registerNotifier(fn () => new Notifier(
+	\OC::$server->getL10NFactory()
+), function () {
 	$l = \OC::$server->getL10N('files_sharing');
 	return [
 		'id' => 'files_sharing',

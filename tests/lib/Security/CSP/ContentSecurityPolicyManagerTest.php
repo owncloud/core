@@ -27,8 +27,7 @@ use OCP\AppFramework\Http\EmptyContentSecurityPolicy;
 use Test\TestCase;
 
 class ContentSecurityPolicyManagerTest extends TestCase {
-	/** @var ContentSecurityPolicyManager */
-	private $contentSecurityPolicyManager;
+	private \OC\Security\CSP\ContentSecurityPolicyManager $contentSecurityPolicyManager;
 
 	public function setUp(): void {
 		parent::setUp();

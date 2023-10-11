@@ -27,8 +27,8 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 
 class MemoryAccountMapper extends AccountMapper {
-	private static $accounts = [];
-	private static $counter = 1000;
+	private static array $accounts = [];
+	private static int $counter = 1000;
 
 	public $testCaseName = '';
 
@@ -49,17 +49,13 @@ class MemoryAccountMapper extends AccountMapper {
 	}
 
 	public function getByEmail($email) {
-		$match = \array_filter(self::$accounts, function (Account $a) use ($email) {
-			return $a->getEmail() === $email;
-		});
+		$match = \array_filter(self::$accounts, fn (Account $a) => $a->getEmail() === $email);
 
 		return $match;
 	}
 
 	public function getByUid($uid) {
-		$match = \array_filter(self::$accounts, function (Account $a) use ($uid) {
-			return \strtolower($a->getUserId()) === \strtolower($uid);
-		});
+		$match = \array_filter(self::$accounts, fn (Account $a) => \strtolower($a->getUserId()) === \strtolower($uid));
 		if (empty($match)) {
 			throw new DoesNotExistException('');
 		}
@@ -75,9 +71,7 @@ class MemoryAccountMapper extends AccountMapper {
 		if ($pattern === '') {
 			return self::$accounts;
 		}
-		$match = \array_filter(self::$accounts, function (Account $a) use ($pattern) {
-			return \stripos($a->getUserId(), (string) $pattern);
-		});
+		$match = \array_filter(self::$accounts, fn (Account $a) => \stripos($a->getUserId(), (string) $pattern));
 
 		return $match;
 	}

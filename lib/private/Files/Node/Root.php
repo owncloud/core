@@ -63,10 +63,7 @@ class Root extends Folder implements IRootFolder {
 	 */
 	private $mountManager;
 
-	/**
-	 * @var \OC\Hooks\PublicEmitter
-	 */
-	private $emitter;
+	private \OC\Hooks\PublicEmitter $emitter;
 
 	/**
 	 * @var \OC\User\User $user
@@ -357,7 +354,7 @@ class Root extends Folder implements IRootFolder {
 
 		if ($userObject === null) {
 			$msg = "Backends provided no user object for $userId";
-			\OC::$server->getLogger()->error($msg, ['app' => __CLASS__]);
+			\OC::$server->getLogger()->error($msg, ['app' => self::class]);
 			throw new NoUserException($msg);
 		}
 

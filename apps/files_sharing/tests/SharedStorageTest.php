@@ -100,7 +100,7 @@ class SharedStorageTest extends TestCase {
 
 		// delete the local folder
 		/** @var \OC\Files\Storage\Storage $storage */
-		list($storage, $internalPath)  = \OC\Files\Filesystem::resolvePath('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/localfolder');
+		[$storage, $internalPath]  = \OC\Files\Filesystem::resolvePath('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/localfolder');
 		$storage->rmdir($internalPath);
 
 		//enforce reload of the mount points
@@ -436,8 +436,8 @@ class SharedStorageTest extends TestCase {
 		/**
 		 * @var \OCP\Files\Storage $sharedStorage
 		 */
-		list($sharedStorage, ) = $view->resolvePath($this->folder);
-		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));
+		[$sharedStorage, ] = $view->resolvePath($this->folder);
+		$this->assertTrue($sharedStorage->instanceOfStorage(\OCA\Files_Sharing\ISharedStorage::class));
 
 		$sourceStorage = new \OC\Files\Storage\Temporary([]);
 		$sourceStorage->file_put_contents('foo.txt', 'asd');
@@ -469,8 +469,8 @@ class SharedStorageTest extends TestCase {
 		/**
 		 * @var \OCP\Files\Storage $sharedStorage
 		 */
-		list($sharedStorage, ) = $view->resolvePath($this->folder);
-		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));
+		[$sharedStorage, ] = $view->resolvePath($this->folder);
+		$this->assertTrue($sharedStorage->instanceOfStorage(\OCA\Files_Sharing\ISharedStorage::class));
 
 		$sourceStorage = new \OC\Files\Storage\Temporary([]);
 		$sourceStorage->file_put_contents('foo.txt', 'asd');
@@ -523,7 +523,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($view2->file_exists('/foo (2)'));
 
 		$mount = $view2->getMount('/foo');
-		$this->assertInstanceOf('\OCA\Files_Sharing\SharedMount', $mount);
+		$this->assertInstanceOf('\\' . \OCA\Files_Sharing\SharedMount::class, $mount);
 		/** @var \OCA\Files_Sharing\SharedStorage $storage */
 		$storage = $mount->getStorage();
 
@@ -555,7 +555,7 @@ class SharedStorageTest extends TestCase {
 		$user2View = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2 . '/files');
 		$this->assertTrue($user2View->file_exists($fn . '/vincent/' . $fn));
 
-		list($sharedStorage, $bla) = $user2View->resolvePath($fn . '/vincent/' . $fn);
+		[$sharedStorage, $bla] = $user2View->resolvePath($fn . '/vincent/' . $fn);
 		$cache = $sharedStorage->getCache();
 		$scanner = $sharedStorage->getScanner();
 		$scanner->scan('');

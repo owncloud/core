@@ -39,26 +39,25 @@ use Test\TestCase;
  * @package Tests\Settings\Controller
  */
 class CorsControllerTest extends TestCase {
-	/** @var CorsController */
-	private $corsController;
+	private \OC\Settings\Controller\CorsController $corsController;
 
 	/** @var IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/** @var ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var IL10N | MockObject */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
 	/** @var IUser */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -103,9 +102,7 @@ class CorsControllerTest extends TestCase {
 			->method("setUserValue");
 
 		$this->l10n->method('t')
-			->willReturnCallback(function ($a) {
-				return $a;
-			});
+			->willReturnCallback(fn ($a) => $a);
 
 		$response = $this->corsController->addDomain("non-valid domain");
 
@@ -127,9 +124,7 @@ class CorsControllerTest extends TestCase {
 			->method("setUserValue");
 
 		$this->l10n->method('t')
-			->willReturnCallback(function ($a) {
-				return $a;
-			});
+			->willReturnCallback(fn ($a) => $a);
 
 		$response = $this->corsController->addDomain("http://non-valid domain");
 
@@ -168,9 +163,7 @@ class CorsControllerTest extends TestCase {
 			->method("setUserValue");
 
 		$this->l10n->method('t')
-			->willReturnCallback(function ($a) {
-				return $a;
-			});
+			->willReturnCallback(fn ($a) => $a);
 
 		$response = $this->corsController->addDomain("http://test.com/path1/path2");
 
@@ -192,9 +185,7 @@ class CorsControllerTest extends TestCase {
 			->method("setUserValue");
 
 		$this->l10n->method('t')
-			->willReturnCallback(function ($a) {
-				return $a;
-			});
+			->willReturnCallback(fn ($a) => $a);
 
 		$response = $this->corsController->addDomain("http://test.com?query=existent");
 
@@ -216,9 +207,7 @@ class CorsControllerTest extends TestCase {
 			->method("setUserValue");
 
 		$this->l10n->method('t')
-			->willReturnCallback(function ($a) {
-				return $a;
-			});
+			->willReturnCallback(fn ($a) => $a);
 
 		$response = $this->corsController->addDomain("ftp://test.com");
 

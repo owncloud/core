@@ -37,10 +37,8 @@ use OCP\Files\Storage;
  * @package OC\Files\Meta
  */
 class MetaVersionCollection extends AbstractFolder implements IProvidesVersionAuthor, IProvidesVersionTag {
-	/** @var IRootFolder */
-	private $root;
-	/** @var \OCP\Files\Node */
-	private $node;
+	private \OCP\Files\IRootFolder $root;
+	private \OCP\Files\Node $node;
 	/** @var array */
 	private $versionInfo;
 

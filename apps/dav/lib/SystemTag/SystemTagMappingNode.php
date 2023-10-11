@@ -62,10 +62,7 @@ class SystemTagMappingNode implements \Sabre\DAV\INode {
 	 */
 	protected $tagManager;
 
-	/**
-	 * @var ISystemTagObjectMapper
-	 */
-	private $tagMapper;
+	private \OCP\SystemTag\ISystemTagObjectMapper $tagMapper;
 
 	/**
 	 * Sets up the node, expects a full path name

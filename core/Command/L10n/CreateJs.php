@@ -86,7 +86,7 @@ class CreateJs extends Command {
 	}
 
 	private function writeFiles($app, $path, $lang, OutputInterface $output) {
-		list($translations, $plurals) = $this->loadTranslations($path, $lang);
+		[$translations, $plurals] = $this->loadTranslations($path, $lang);
 		$this->writeJsFile($app, $path, $lang, $output, $translations, $plurals);
 		$this->writeJsonFile($path, $lang, $output, $translations, $plurals);
 	}
@@ -119,7 +119,7 @@ class CreateJs extends Command {
 			return;
 		}
 		$content = ['translations' => $translations, 'pluralForm' => $plurals];
-		\file_put_contents($jsFile, \json_encode($content));
+		\file_put_contents($jsFile, \json_encode($content, JSON_THROW_ON_ERROR));
 		$output->writeln("Json translation file generated: $jsFile");
 	}
 

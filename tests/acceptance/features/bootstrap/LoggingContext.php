@@ -77,7 +77,7 @@ class LoggingContext implements Context {
 		);
 		$lineNo = 0;
 		foreach ($expectedLogEntries as $expectedLogEntry) {
-			$logEntry = \json_decode($logLines[$lineNo], true);
+			$logEntry = \json_decode($logLines[$lineNo], true, 512, JSON_THROW_ON_ERROR);
 			if ($logEntry === null) {
 				throw new Exception("the log line :\n$logLines[$lineNo] is not valid JSON");
 			}
@@ -282,7 +282,7 @@ class LoggingContext implements Context {
 		);
 		$expectedLogEntries = $expectedLogEntries->getHash();
 		foreach ($logLines as $logLine) {
-			$logEntry = \json_decode($logLine, true);
+			$logEntry = \json_decode($logLine, true, 512, JSON_THROW_ON_ERROR);
 			if ($logEntry === null) {
 				throw new Exception("the log line :\n$logLine is not valid JSON");
 			}
@@ -384,7 +384,7 @@ class LoggingContext implements Context {
 			$this->featureContext->getStepLineRef()
 		);
 		foreach ($logLines as $logLine) {
-			$logEntry = \json_decode($logLine, true);
+			$logEntry = \json_decode($logLine, true, 512, JSON_THROW_ON_ERROR);
 			if ($logEntry === null) {
 				throw new Exception("the log line :\n$logLine is not valid JSON");
 			}
@@ -400,7 +400,7 @@ class LoggingContext implements Context {
 						if ($withOrContaining === 'with') {
 							$match = ($logEntryExpectedNotToExist[$attribute] === $logEntry[$attribute]);
 						} else {
-							$match = (\strpos($logEntry[$attribute], $logEntryExpectedNotToExist[$attribute]) !== false);
+							$match = (\strpos($logEntry[$attribute], (string) $logEntryExpectedNotToExist[$attribute]) !== false);
 						}
 					}
 					if (!isset($logEntry[$attribute])) {

@@ -26,15 +26,15 @@ class L10nTest extends TestCase {
 	 */
 	protected function getFactory() {
 		/** @var \OCP\IConfig $config */
-		$config = $this->createMock('OCP\IConfig');
+		$config = $this->createMock(\OCP\IConfig::class);
 		/** @var \OCP\IRequest $request */
-		$request = $this->createMock('OCP\IRequest');
+		$request = $this->createMock(\OCP\IRequest::class);
 		/** @var IThemeService $themeService */
 		$themeService = $this->getMockBuilder(IThemeService::class)
 			->disableOriginalConstructor()
 			->getMock();
 		/** @var IUserSession $userSession */
-		$userSession = $this->createMock('OCP\IUserSession');
+		$userSession = $this->createMock(\OCP\IUserSession::class);
 		return new Factory($config, $request, $themeService, $userSession, \OC::$SERVERROOT);
 	}
 
@@ -47,7 +47,7 @@ class L10nTest extends TestCase {
 	}
 
 	public function testMalformedTranslations() {
-		$lMock = $this->createMock('OC\L10N\L10N');
+		$lMock = $this->createMock(\OC\L10N\L10N::class);
 		$lMock->method('getTranslations')->willReturn(['malformed' => 'malformed %']);
 
 		$lString = new \OC_L10N_String($lMock, "malformed", []);
@@ -99,12 +99,12 @@ class L10nTest extends TestCase {
 			['23:31:30 UTC', 'de', 'time', '1234567890'],
 
 			// timestamp as int
-			["February 13, 2009, 11:31:30{$narrowNoBreakSpace}PM UTC", 'en', 'datetime', 1234567890],
-			['13. Februar 2009, 23:31:30 UTC', 'de', 'datetime', 1234567890],
-			['February 13, 2009', 'en', 'date', 1234567890],
-			['13. Februar 2009', 'de', 'date', 1234567890],
-			["11:31:30{$narrowNoBreakSpace}PM UTC", 'en', 'time', 1234567890],
-			['23:31:30 UTC', 'de', 'time', 1234567890],
+			["February 13, 2009, 11:31:30{$narrowNoBreakSpace}PM UTC", 'en', 'datetime', 1_234_567_890],
+			['13. Februar 2009, 23:31:30 UTC', 'de', 'datetime', 1_234_567_890],
+			['February 13, 2009', 'en', 'date', 1_234_567_890],
+			['13. Februar 2009', 'de', 'date', 1_234_567_890],
+			["11:31:30{$narrowNoBreakSpace}PM UTC", 'en', 'time', 1_234_567_890],
+			['23:31:30 UTC', 'de', 'time', 1_234_567_890],
 
 			// DateTime object
 			["February 13, 2009, 11:31:30{$narrowNoBreakSpace}PM GMT+0", 'en', 'datetime', new DateTime('@1234567890')],

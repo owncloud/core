@@ -44,7 +44,7 @@ class AppConfig implements IAppConfig {
 
 	private $cache = [];
 
-	private $configLoaded;
+	private bool $configLoaded;
 
 	/**
 	 * @param IDBConnection $conn
@@ -61,11 +61,7 @@ class AppConfig implements IAppConfig {
 	private function getAppValues($app) {
 		$this->loadConfigValues();
 
-		if (isset($this->cache[$app])) {
-			return $this->cache[$app];
-		}
-
-		return [];
+		return $this->cache[$app] ?? [];
 	}
 
 	/**
@@ -287,9 +283,7 @@ class AppConfig implements IAppConfig {
 			return $this->getAppValues($app);
 		} else {
 			$appIds = $this->getApps();
-			$values = \array_map(function ($appId) use ($key) {
-				return isset($this->cache[$appId][$key]) ? $this->cache[$appId][$key] : null;
-			}, $appIds);
+			$values = \array_map(fn ($appId) => $this->cache[$appId][$key] ?? null, $appIds);
 			$result = \array_combine($appIds, $values);
 
 			return \array_filter($result);
@@ -325,7 +319,7 @@ class AppConfig implements IAppConfig {
 			) {
 				$row['configvalue'] = '0.0.1';
 			}
-			$this->cache[$row['appid']][$row['configkey']] = ($row['configvalue'] === null) ? '' : $row['configvalue'];
+			$this->cache[$row['appid']][$row['configkey']] = $row['configvalue'] ?? '';
 		}
 		$result->closeCursor();
 

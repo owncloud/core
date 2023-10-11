@@ -24,8 +24,7 @@ namespace Test;
 use OC\Utf8Analyzer;
 
 class Utf8AnalyzerTest extends \Test\TestCase {
-	/** @var Utf8Analyzer */
-	private $utf8Analyzer;
+	private \OC\Utf8Analyzer $utf8Analyzer;
 
 	private $openedStream;
 

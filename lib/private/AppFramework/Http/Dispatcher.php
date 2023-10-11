@@ -39,10 +39,10 @@ use OCP\IRequest;
  * Class to dispatch the request to the middleware dispatcher
  */
 class Dispatcher {
-	private $middlewareDispatcher;
-	private $protocol;
-	private $reflector;
-	private $request;
+	private \OC\AppFramework\Middleware\MiddlewareDispatcher $middlewareDispatcher;
+	private \OC\AppFramework\Http $protocol;
+	private \OC\AppFramework\Utility\ControllerMethodReflector $reflector;
+	private \OCP\IRequest $request;
 
 	/**
 	 * @param Http $protocol the http protocol with contains all status headers

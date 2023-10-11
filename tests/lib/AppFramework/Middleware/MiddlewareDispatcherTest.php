@@ -100,14 +100,11 @@ class TestMiddleware extends Middleware {
 class MiddlewareDispatcherTest extends \Test\TestCase {
 	public $exception;
 	public $response;
-	private $out;
-	private $method;
+	private string $out;
+	private string $method;
 	private $controller;
 
-	/**
-	 * @var MiddlewareDispatcher
-	 */
-	private $dispatcher;
+	private \OC\AppFramework\Middleware\MiddlewareDispatcher $dispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -122,15 +119,7 @@ class MiddlewareDispatcherTest extends \Test\TestCase {
 
 	private function getControllerMock() {
 		return $this->createMock(
-			'OCP\AppFramework\Controller',
-			['method'],
-			['app',
-				new Request(
-					['method' => 'GET'],
-					$this->createMock('\OCP\Security\ISecureRandom'),
-					$this->createMock('\OCP\IConfig')
-				)
-			]
+			\OCP\AppFramework\Controller::class
 		);
 	}
 
@@ -143,15 +132,13 @@ class MiddlewareDispatcherTest extends \Test\TestCase {
 	public function testAfterExceptionShouldReturnResponseOfMiddleware() {
 		$response = new Response();
 		$m1 = $this->createMock(
-			'\OCP\AppFramework\Middleware',
-			['afterException', 'beforeController']
+			'\\' . \OCP\AppFramework\Middleware::class
 		);
 		$m1->expects($this->never())
 				->method('afterException');
 
 		$m2 = $this->createMock(
-			'OCP\AppFramework\Middleware',
-			['afterException', 'beforeController']
+			\OCP\AppFramework\Middleware::class
 		);
 		$m2->expects($this->once())
 				->method('afterException')
@@ -262,7 +249,7 @@ class MiddlewareDispatcherTest extends \Test\TestCase {
 	public function testExceptionShouldRunAfterExceptionOfOnlyPreviouslyExecutedMiddlewares() {
 		$m1 = $this->getMiddleware();
 		$m2 = $this->getMiddleware(true);
-		$m3 = $this->createMock('\OCP\AppFramework\Middleware');
+		$m3 = $this->createMock('\\' . \OCP\AppFramework\Middleware::class);
 		$m3->expects($this->never())
 				->method('afterException');
 		$m3->expects($this->never())

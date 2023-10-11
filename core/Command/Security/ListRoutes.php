@@ -99,16 +99,14 @@ class ListRoutes extends Base {
 				}
 			}
 		}
-		\usort($rows, function ($a, $b) {
-			return \strcmp($a['path'], $b['path']);
-		});
+		\usort($rows, fn ($a, $b) => \strcmp($a['path'], $b['path']));
 		$rows = \array_map(function ($row) {
 			$row['methods'] = \implode(',', $row['methods']);
 			return $row;
 		}, $rows);
 
 		if ($outputType === self::OUTPUT_FORMAT_JSON) {
-			$output->write(\json_encode($rows));
+			$output->write(\json_encode($rows, JSON_THROW_ON_ERROR));
 		} elseif ($outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
 			$output->writeln(\json_encode($rows, JSON_PRETTY_PRINT));
 		} else {
@@ -183,9 +181,7 @@ class ListRoutes extends Base {
 				yield $appNameSpace . $namespace . \ucfirst(\strtolower($controllerName));
 				yield $appNameSpace . $namespace . $controllerName . 'Controller';
 				yield $appNameSpace . $namespace . \ucfirst(\strtolower($controllerName)) . 'Controller';
-				$controllerName = \implode('', \array_map(function ($word) {
-					return \ucfirst($word);
-				}, \explode('_', $controllerName)));
+				$controllerName = \implode('', \array_map(fn ($word) => \ucfirst($word), \explode('_', $controllerName)));
 				yield $appNameSpace . $namespace . $controllerName;
 				yield $appNameSpace . $namespace . \ucfirst(\strtolower($controllerName));
 				yield $appNameSpace . $namespace . $controllerName . 'Controller';

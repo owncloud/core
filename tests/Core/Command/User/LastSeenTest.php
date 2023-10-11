@@ -38,11 +38,11 @@ class LastSeenTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$userManager = $this->userManager = $this->getMockBuilder('OCP\IUserManager')
+		$userManager = $this->userManager = $this->getMockBuilder(\OCP\IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock(\Symfony\Component\Console\Input\InputInterface::class);
+		$this->consoleOutput = $this->createMock(\Symfony\Component\Console\Output\OutputInterface::class);
 
 		/** @var \OCP\IUserManager $userManager */
 		$this->command = new LastSeen($userManager);
@@ -62,7 +62,7 @@ class LastSeenTest extends TestCase {
 	 * @param string $expectedString
 	 */
 	public function testValidUser($lastSeen, $expectedString) {
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->expects($this->once())
 			->method('getLastLogin')
 			->willReturn($lastSeen);

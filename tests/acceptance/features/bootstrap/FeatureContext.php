@@ -486,7 +486,9 @@ class FeatureContext extends BehatVariablesContext {
 		if (($this->userReplacements === null) && $this->isTestingReplacingUsernames()) {
 			$this->userReplacements = \json_decode(
 				\file_get_contents("./tests/acceptance/usernames.json"),
-				true
+				true,
+				512,
+				JSON_THROW_ON_ERROR
 			);
 			// Loop through the user replacements, and make entries for the lower
 			// and upper case forms. This allows for steps that specifically
@@ -570,61 +572,61 @@ class FeatureContext extends BehatVariablesContext {
 		}
 
 		// get the admin username from the environment (if defined)
-		$adminUsernameFromEnvironment = $this->getAdminUsernameFromEnvironment();
+		$adminUsernameFromEnvironment = self::getAdminUsernameFromEnvironment();
 		if ($adminUsernameFromEnvironment !== false) {
 			$this->adminUsername = $adminUsernameFromEnvironment;
 		}
 
 		// get the admin password from the environment (if defined)
-		$adminPasswordFromEnvironment = $this->getAdminPasswordFromEnvironment();
+		$adminPasswordFromEnvironment = self::getAdminPasswordFromEnvironment();
 		if ($adminPasswordFromEnvironment !== false) {
 			$this->adminPassword = $adminPasswordFromEnvironment;
 		}
 
 		// get the regular user password from the environment (if defined)
-		$regularUserPasswordFromEnvironment = $this->getRegularUserPasswordFromEnvironment();
+		$regularUserPasswordFromEnvironment = self::getRegularUserPasswordFromEnvironment();
 		if ($regularUserPasswordFromEnvironment !== false) {
 			$this->regularUserPassword = $regularUserPasswordFromEnvironment;
 		}
 
 		// get the alternate(1) user password from the environment (if defined)
-		$alt1UserPasswordFromEnvironment = $this->getAlt1UserPasswordFromEnvironment();
+		$alt1UserPasswordFromEnvironment = self::getAlt1UserPasswordFromEnvironment();
 		if ($alt1UserPasswordFromEnvironment !== false) {
 			$this->alt1UserPassword = $alt1UserPasswordFromEnvironment;
 		}
 
 		// get the alternate(2) user password from the environment (if defined)
-		$alt2UserPasswordFromEnvironment = $this->getAlt2UserPasswordFromEnvironment();
+		$alt2UserPasswordFromEnvironment = self::getAlt2UserPasswordFromEnvironment();
 		if ($alt2UserPasswordFromEnvironment !== false) {
 			$this->alt2UserPassword = $alt2UserPasswordFromEnvironment;
 		}
 
 		// get the alternate(3) user password from the environment (if defined)
-		$alt3UserPasswordFromEnvironment = $this->getAlt3UserPasswordFromEnvironment();
+		$alt3UserPasswordFromEnvironment = self::getAlt3UserPasswordFromEnvironment();
 		if ($alt3UserPasswordFromEnvironment !== false) {
 			$this->alt3UserPassword = $alt3UserPasswordFromEnvironment;
 		}
 
 		// get the alternate(4) user password from the environment (if defined)
-		$alt4UserPasswordFromEnvironment = $this->getAlt4UserPasswordFromEnvironment();
+		$alt4UserPasswordFromEnvironment = self::getAlt4UserPasswordFromEnvironment();
 		if ($alt4UserPasswordFromEnvironment !== false) {
 			$this->alt4UserPassword = $alt4UserPasswordFromEnvironment;
 		}
 
 		// get the sub-admin password from the environment (if defined)
-		$subAdminPasswordFromEnvironment = $this->getSubAdminPasswordFromEnvironment();
+		$subAdminPasswordFromEnvironment = self::getSubAdminPasswordFromEnvironment();
 		if ($subAdminPasswordFromEnvironment !== false) {
 			$this->subAdminPassword = $subAdminPasswordFromEnvironment;
 		}
 
 		// get the alternate admin password from the environment (if defined)
-		$alternateAdminPasswordFromEnvironment = $this->getAlternateAdminPasswordFromEnvironment();
+		$alternateAdminPasswordFromEnvironment = self::getAlternateAdminPasswordFromEnvironment();
 		if ($alternateAdminPasswordFromEnvironment !== false) {
 			$this->alternateAdminPassword = $alternateAdminPasswordFromEnvironment;
 		}
 
 		// get the public link share password from the environment (if defined)
-		$publicLinkSharePasswordFromEnvironment = $this->getPublicLinkSharePasswordFromEnvironment();
+		$publicLinkSharePasswordFromEnvironment = self::getPublicLinkSharePasswordFromEnvironment();
 		if ($publicLinkSharePasswordFromEnvironment !== false) {
 			$this->publicLinkSharePassword = $publicLinkSharePasswordFromEnvironment;
 		}
@@ -1300,9 +1302,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function simplifyArray(array $arrayOfArrays):array {
 		$a = \array_map(
-			function ($subArray) {
-				return $subArray[0];
-			},
+			fn ($subArray) => $subArray[0],
 			$arrayOfArrays
 		);
 		return $a;
@@ -1486,7 +1486,7 @@ class FeatureContext extends BehatVariablesContext {
 		$schemaRawString = $schemaString->getRaw();
 		// substitute the inline codes or values
 		$schemaRawString = $this->substituteInLineCodes($schemaRawString);
-		$schema = json_decode($schemaRawString);
+		$schema = json_decode($schemaRawString, null, 512, JSON_THROW_ON_ERROR);
 		Assert::assertNotNull($schema, 'schema is not valid JSON');
 		return $schema;
 	}
@@ -1499,10 +1499,10 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return object
 	 */
 	public function getJsonDecodedResponseBodyContent(ResponseInterface $response = null):?object {
-		$response = $response ?? $this->response;
+		$response ??= $this->response;
 		if ($response !== null) {
 			$response->getBody()->rewind();
-			return json_decode($response->getBody()->getContents());
+			return json_decode($response->getBody()->getContents(), null, 512, JSON_THROW_ON_ERROR);
 		}
 		return null;
 	}
@@ -2553,8 +2553,8 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function jsonRespondedShouldMatch(PyStringNode $jsonExpected):void {
-		$jsonExpectedEncoded = \json_encode($jsonExpected->getRaw());
-		$jsonRespondedEncoded = \json_encode((string) $this->response->getBody());
+		$jsonExpectedEncoded = \json_encode($jsonExpected->getRaw(), JSON_THROW_ON_ERROR);
+		$jsonRespondedEncoded = \json_encode((string) $this->response->getBody(), JSON_THROW_ON_ERROR);
 		Assert::assertEquals(
 			$jsonExpectedEncoded,
 			$jsonRespondedEncoded,
@@ -2571,7 +2571,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected):void {
-		$jsonExpectedDecoded = \json_decode($jsonExpected->getRaw(), true);
+		$jsonExpectedDecoded = \json_decode($jsonExpected->getRaw(), true, 512, JSON_THROW_ON_ERROR);
 		$jsonRespondedDecoded = $this->getJsonDecodedResponse();
 
 		$this->appConfigurationContext->theAdministratorGetsCapabilitiesCheckResponse();
@@ -2836,7 +2836,9 @@ class FeatureContext extends BehatVariablesContext {
 		}
 		return \json_decode(
 			(string) $response->getBody(),
-			true
+			true,
+			512,
+			JSON_THROW_ON_ERROR
 		);
 	}
 
@@ -2855,10 +2857,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getEditionFromStatus():string {
 		$decodedResponse = $this->getJsonDecodedStatusPhp();
-		if (isset($decodedResponse['edition'])) {
-			return $decodedResponse['edition'];
-		}
-		return '';
+		return $decodedResponse['edition'] ?? '';
 	}
 
 	/**
@@ -2866,10 +2865,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getProductNameFromStatus():?string {
 		$decodedResponse = $this->getJsonDecodedStatusPhp();
-		if (isset($decodedResponse['productname'])) {
-			return $decodedResponse['productname'];
-		}
-		return '';
+		return $decodedResponse['productname'] ?? '';
 	}
 
 	/**
@@ -2877,10 +2873,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getVersionFromStatus():?string {
 		$decodedResponse = $this->getJsonDecodedStatusPhp();
-		if (isset($decodedResponse['version'])) {
-			return $decodedResponse['version'];
-		}
-		return '';
+		return $decodedResponse['version'] ?? '';
 	}
 
 	/**
@@ -2888,10 +2881,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getVersionStringFromStatus():?string {
 		$decodedResponse = $this->getJsonDecodedStatusPhp();
-		if (isset($decodedResponse['versionstring'])) {
-			return $decodedResponse['versionstring'];
-		}
-		return '';
+		return $decodedResponse['versionstring'] ?? '';
 	}
 
 	/**
@@ -3129,7 +3119,7 @@ class FeatureContext extends BehatVariablesContext {
 		}
 
 		foreach ($substitutions as $substitution) {
-			if (strpos($value, $substitution['code']) === false) {
+			if (strpos($value, (string) $substitution['code']) === false) {
 				continue;
 			}
 
@@ -3186,7 +3176,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function acceptanceTestsDirLocation():string {
-		return \dirname(__FILE__) . "/../../";
+		return __DIR__ . "/../../";
 	}
 
 	/**
@@ -3251,7 +3241,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return array
 	 */
 	public function parseConfigListFromResponseXml(SimpleXMLElement $responseXml):array {
-		$configkeyData = \json_decode(\json_encode($responseXml->data), true);
+		$configkeyData = \json_decode(\json_encode($responseXml->data, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 		if (isset($configkeyData['element'])) {
 			$configkeyData = $configkeyData['element'];
 		} else {
@@ -3380,8 +3370,8 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function sendUserSyncRequest(string $user, ?string $asUser = null, ?string $password = null):void {
 		$user = $this->getActualUsername($user);
-		$asUser = $asUser ?? $this->getAdminUsername();
-		$password = $password ?? $this->getPasswordForUser($asUser);
+		$asUser ??= $this->getAdminUsername();
+		$password ??= $this->getPasswordForUser($asUser);
 		$response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$asUser,
@@ -3705,9 +3695,9 @@ class FeatureContext extends BehatVariablesContext {
 		$adminUsername = null;
 		$adminPassword = null;
 		foreach ($suiteSettingsContexts as $context) {
-			if (isset($context[__CLASS__])) {
-				$adminUsername = $context[__CLASS__]['adminUsername'];
-				$adminPassword = $context[__CLASS__]['adminPassword'];
+			if (isset($context[self::class])) {
+				$adminUsername = $context[self::class]['adminUsername'];
+				$adminPassword = $context[self::class]['adminPassword'];
 				break;
 			}
 		}
@@ -4055,9 +4045,7 @@ class FeatureContext extends BehatVariablesContext {
 
 		\usort(
 			$foundPaths,
-			function ($a, $b) {
-				return $a['date'] - $b['date'];
-			}
+			fn ($a, $b) => $a['date'] - $b['date']
 		);
 
 		$davPath = \rtrim($this->getFullDavFilesPath($targetUser), '/');
@@ -4136,9 +4124,12 @@ class FeatureContext extends BehatVariablesContext {
 		);
 		$serverData = \json_decode(
 			\json_encode(
-				$responseXml->data
+				$responseXml->data,
+				JSON_THROW_ON_ERROR
 			),
-			true
+			true,
+			512,
+			JSON_THROW_ON_ERROR
 		);
 		if (!\array_key_exists('element', $serverData)) {
 			return [];
@@ -4196,7 +4187,7 @@ class FeatureContext extends BehatVariablesContext {
 					$this->getBaseUrl(),
 					$this->getOcPath()
 				);
-				$this->savedConfigList[$server] = \json_decode($result['stdOut'], true);
+				$this->savedConfigList[$server] = \json_decode($result['stdOut'], true, 512, JSON_THROW_ON_ERROR);
 			}
 		}
 		$this->usingServer($previousServer);
@@ -4241,7 +4232,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getBaseUrl(),
 			$this->getOcPath()
 		);
-		$currentConfigList = \json_decode($result['stdOut'], true);
+		$currentConfigList = \json_decode($result['stdOut'], true, 512, JSON_THROW_ON_ERROR);
 		foreach ($currentConfigList['system'] as $configKey => $configValue) {
 			if (!\array_key_exists(
 				$configKey,
@@ -4255,7 +4246,7 @@ class FeatureContext extends BehatVariablesContext {
 			if (!\array_key_exists($configKey, $currentConfigList["system"])
 				|| $currentConfigList["system"][$configKey] !== $this->savedConfigList[$server]['system'][$configKey]
 			) {
-				\array_push($commands, ["command" => ['config:system:set', "--type=json", "--value=" . \json_encode($configValue), $configKey]]);
+				\array_push($commands, ["command" => ['config:system:set', "--type=json", "--value=" . \json_encode($configValue, JSON_THROW_ON_ERROR), $configKey]]);
 			}
 		}
 		foreach ($currentConfigList['apps'] as $appName => $appSettings) {

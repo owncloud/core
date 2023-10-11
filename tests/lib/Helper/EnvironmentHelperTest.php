@@ -25,7 +25,7 @@ use OC\Helper\EnvironmentHelper;
 use Test\TestCase;
 
 class EnvironmentHelperTest extends TestCase {
-	private $environmentHelper;
+	private \OC\Helper\EnvironmentHelper $environmentHelper;
 
 	public function setUp(): void {
 		$this->environmentHelper = new EnvironmentHelper();

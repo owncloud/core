@@ -39,26 +39,18 @@ use Sabre\HTTP\RequestInterface;
 
 class LockPlugin extends ServerPlugin {
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var IGroupManager
-	 */
-	private $groupManager;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
+	private \OCP\IConfig $config;
+	private \OCP\IGroupManager $groupManager;
 
 	public function __construct(IConfig $config, IGroupManager $groupManager) {
 		$this->config = $config;
 		$this->groupManager = $groupManager;
 	}
 
-	private $missedLocks = [];
+	private array $missedLocks = [];
 
 	/**
 	 * {@inheritdoc}
@@ -155,7 +147,7 @@ class LockPlugin extends ServerPlugin {
 
 	private function userIsALockBreaker(IUser $currentUser): bool {
 		$lockBreakerGroups = $this->config->getAppValue('core', 'lock-breaker-groups', '[]');
-		$lockBreakerGroups = \json_decode($lockBreakerGroups) ?? [];
+		$lockBreakerGroups = \json_decode($lockBreakerGroups, null, 512, JSON_THROW_ON_ERROR) ?? [];
 
 		foreach ($lockBreakerGroups as $lockBreakerGroup) {
 			if ($this->groupManager->isInGroup($currentUser->getUID(), $lockBreakerGroup)) {

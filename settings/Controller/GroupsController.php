@@ -37,12 +37,9 @@ use OCP\IUserSession;
  * @package OC\Settings\Controller
  */
 class GroupsController extends Controller {
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IL10N */
-	private $l10n;
-	/** @var IUserSession */
-	private $userSession;
+	private \OCP\IGroupManager $groupManager;
+	private \OCP\IL10N $l10n;
+	private \OCP\IUserSession $userSession;
 	/** @var bool */
 	private $isAdmin;
 
@@ -87,7 +84,7 @@ class GroupsController extends Controller {
 			$this->userSession
 		);
 		$groupsInfo->setSorting($sortGroups);
-		list($adminGroups, $groups) = $groupsInfo->get($groupPattern, $pattern);
+		[$adminGroups, $groups] = $groupsInfo->get($groupPattern, $pattern);
 
 		return new DataResponse(
 			[

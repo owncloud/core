@@ -37,12 +37,12 @@ class DeprecationCheck extends AbstractCheck implements ICheck {
 			'OC_JSON' => '8.2.0',
 
 			'OCP\Config' => '8.0.0',
-			'OCP\Contacts' => '8.1.0',
-			'OCP\DB' => '8.1.0',
-			'OCP\IHelper' => '8.1.0',
-			'OCP\JSON' => '8.1.0',
-			'OCP\Response' => '8.1.0',
-			'OCP\AppFramework\IApi' => '8.0.0',
+			\OCP\Contacts::class => '8.1.0',
+			\OCP\DB::class => '8.1.0',
+			\OCP\IHelper::class => '8.1.0',
+			\OCP\JSON::class => '8.1.0',
+			\OCP\Response::class => '8.1.0',
+			\OCP\AppFramework\IApi::class => '8.0.0',
 		];
 	}
 

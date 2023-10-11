@@ -42,14 +42,11 @@ class PersonalPanel implements ISettings {
 
 	public const GLOBAL_CONFIG_PREFIX = 'shareapi_';
 
-	/** @var IConfig $config */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var IUserSession $userSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
-	/** @var IL10N */
-	private $l10n;
+	private \OCP\IL10N $l10n;
 
 	public function __construct(IConfig $config, IUserSession $userSession, IL10N $l10n) {
 		$this->config = $config;

@@ -65,7 +65,7 @@ class MapperTest extends MapperTestUtility {
 	/**
 	 * @var Mapper
 	 */
-	private $mapper;
+	private \Test\AppFramework\Db\ExampleMapper $mapper;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -102,7 +102,7 @@ class MapperTest extends MapperTestUtility {
 		$rows = [];
 		$this->setMapperResult($sql, $params, $rows);
 		$this->expectException(
-			'\OCP\AppFramework\Db\DoesNotExistException'
+			'\\' . \OCP\AppFramework\Db\DoesNotExistException::class
 		);
 		$this->mapper->find($sql, $params);
 	}
@@ -113,7 +113,7 @@ class MapperTest extends MapperTestUtility {
 		$rows = [];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
 		$this->expectException(
-			'\OCP\AppFramework\Db\DoesNotExistException'
+			'\\' . \OCP\AppFramework\Db\DoesNotExistException::class
 		);
 		$this->mapper->findOneEntity($sql, $params);
 	}
@@ -126,7 +126,7 @@ class MapperTest extends MapperTestUtility {
 		];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
 		$this->expectException(
-			'\OCP\AppFramework\Db\MultipleObjectsReturnedException'
+			'\\' . \OCP\AppFramework\Db\MultipleObjectsReturnedException::class
 		);
 		$this->mapper->find($sql, $params);
 	}
@@ -139,7 +139,7 @@ class MapperTest extends MapperTestUtility {
 		];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
 		$this->expectException(
-			'\OCP\AppFramework\Db\MultipleObjectsReturnedException'
+			'\\' . \OCP\AppFramework\Db\MultipleObjectsReturnedException::class
 		);
 		$this->mapper->findOneEntity($sql, $params);
 	}

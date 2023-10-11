@@ -65,49 +65,48 @@ use OCP\Share\IManager;
  */
 class Share20OcsControllerTest extends TestCase {
 	/** @var Manager | MockObject */
-	private $shareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
 
 	/** @var IGroupManager | MockObject */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	/** @var IUserManager | MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var IRequest | MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/** @var IRootFolder | MockObject */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 
 	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/** @var IUser */
-	private $currentUser;
+	private \PHPUnit\Framework\MockObject\MockObject $currentUser;
 
 	/** @var IUserSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
-	/** @var Share20OcsController */
-	private $ocs;
+	private \OCA\Files_Sharing\Controller\Share20OcsController $ocs;
 
 	/** @var IL10N */
-	private $l;
+	private \PHPUnit\Framework\MockObject\MockObject $l;
 
 	/** @var NotificationPublisher */
-	private $notificationPublisher;
+	private \PHPUnit\Framework\MockObject\MockObject $notificationPublisher;
 
-	private $eventDispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $eventDispatcher;
 	/** @var SharingBlacklist */
-	private $sharingBlacklist;
+	private \PHPUnit\Framework\MockObject\MockObject $sharingBlacklist;
 	/** @var SharingAllowlist */
-	private $sharingAllowlist;
+	private \PHPUnit\Framework\MockObject\MockObject $sharingAllowlist;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IUser */
-	private $sharee;
+	private \PHPUnit\Framework\MockObject\MockObject $sharee;
 	/** @var UserTypeHelper */
-	private $userTypeHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $userTypeHelper;
 
 	protected function setUp(): void {
 		$this->shareManager = $this->getMockBuilder(IManager::class)
@@ -148,11 +147,9 @@ class Share20OcsControllerTest extends TestCase {
 		$this->sharee = $this->createMock(IUser::class);
 		$this->sharee->method('getUID')->willReturn('validUser');
 
-		$this->l = $this->createMock('\OCP\IL10N');
+		$this->l = $this->createMock('\\' . \OCP\IL10N::class);
 		$this->l->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 
 		$this->config = $this->createMock(IConfig::class);
 		$this->config->method('getAppValue')
@@ -272,7 +269,7 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testDeleteShare() {
-		$node = $this->createMock('\OCP\Files\File');
+		$node = $this->createMock('\\' . \OCP\Files\File::class);
 
 		$share = $this->newShare();
 		$share->setSharedBy($this->currentUser->getUID())
@@ -299,7 +296,7 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testDeleteShareLocked() {
-		$node = $this->createMock('\OCP\Files\File');
+		$node = $this->createMock('\\' . \OCP\Files\File::class);
 
 		$share = $this->newShare();
 		$share->setSharedBy($this->currentUser->getUID())
@@ -391,35 +388,35 @@ class Share20OcsControllerTest extends TestCase {
 	public function dataGetShare() {
 		$data = [];
 
-		$cache = $this->getMockBuilder('OC\Files\Cache\Cache')
+		$cache = $this->getMockBuilder(\OC\Files\Cache\Cache::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$cache->method('getNumericStorageId')->willReturn(101);
 
-		$storage = $this->getMockBuilder('OC\Files\Storage\Storage')
+		$storage = $this->getMockBuilder(\OC\Files\Storage\Storage::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$storage->method('getId')->willReturn('STORAGE');
 		$storage->method('getCache')->willReturn($cache);
 
-		$parentFolder = $this->createMock('OCP\Files\Folder');
+		$parentFolder = $this->createMock(\OCP\Files\Folder::class);
 		$parentFolder->method('getId')->willReturn(3);
 
-		$file = $this->createMock('OCP\Files\File');
+		$file = $this->createMock(\OCP\Files\File::class);
 		$file->method('getId')->willReturn(1);
 		$file->method('getPath')->willReturn('file');
 		$file->method('getStorage')->willReturn($storage);
 		$file->method('getParent')->willReturn($parentFolder);
 		$file->method('getMimeType')->willReturn('myMimeType');
 
-		$folder = $this->createMock('OCP\Files\Folder');
+		$folder = $this->createMock(\OCP\Files\Folder::class);
 		$folder->method('getId')->willReturn(2);
 		$folder->method('getPath')->willReturn('folder');
 		$folder->method('getStorage')->willReturn($storage);
 		$folder->method('getParent')->willReturn($parentFolder);
 		$folder->method('getMimeType')->willReturn('myFolderMimeType');
 
-		list($shareAttributes, $shareAttributesReturnJson) = $this->mockShareAttributes();
+		[$shareAttributes, $shareAttributesReturnJson] = $this->mockShareAttributes();
 
 		// File shared with user
 		$share = $this->createShare(
@@ -607,7 +604,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with($share->getFullId())
 			->willReturn($share);
 
-		$userFolder = $this->createMock('OCP\Files\Folder');
+		$userFolder = $this->createMock(\OCP\Files\Folder::class);
 		$userFolder
 			->method('getRelativePath')
 			->will($this->returnArgument(0));
@@ -624,19 +621,19 @@ class Share20OcsControllerTest extends TestCase {
 			->method('linkToRouteAbsolute')
 			->willReturn('url');
 
-		$initiator = $this->createMock('OCP\IUser');
+		$initiator = $this->createMock(\OCP\IUser::class);
 		$initiator->method('getUID')->willReturn('initiatorId');
 		$initiator->method('getDisplayName')->willReturn('initiatorDisplay');
 
-		$owner = $this->createMock('OCP\IUser');
+		$owner = $this->createMock(\OCP\IUser::class);
 		$owner->method('getUID')->willReturn('ownerId');
 		$owner->method('getDisplayName')->willReturn('ownerDisplay');
 
-		$user = $this->createMock('OCP\IUser');
+		$user = $this->createMock(\OCP\IUser::class);
 		$user->method('getUID')->willReturn('userId');
 		$user->method('getDisplayName')->willReturn('userDisplay');
 
-		$group = $this->createMock('OCP\IGroup');
+		$group = $this->createMock(\OCP\IGroup::class);
 		$group->method('getGID')->willReturn('groupId');
 
 		$this->userManager->method('get')->will($this->returnValueMap([
@@ -669,31 +666,31 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testCanAccessShare() {
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareOwner')->willReturn($this->currentUser->getUID());
 		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getSharedBy')->willReturn($this->currentUser->getUID());
 		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_USER);
 		$share->method('getSharedWith')->willReturn($this->currentUser->getUID());
 		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_USER);
-		$share->method('getSharedWith')->willReturn($this->createMock('OCP\IUser'));
+		$share->method('getSharedWith')->willReturn($this->createMock(\OCP\IUser::class));
 		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('group');
 
-		$group = $this->createMock('OCP\IGroup');
+		$group = $this->createMock(\OCP\IGroup::class);
 		$group->method('inGroup')->with($this->currentUser)->willReturn(true);
-		$group2 = $this->createMock('OCP\IGroup');
+		$group2 = $this->createMock(\OCP\IGroup::class);
 		$group2->method('inGroup')->with($this->currentUser)->willReturn(false);
 
 		$this->groupManager->method('get')->will($this->returnValueMap([
@@ -703,30 +700,30 @@ class Share20OcsControllerTest extends TestCase {
 		]));
 		$this->assertTrue(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('group2');
 		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		// null group
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('groupnull');
 		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
 		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		// should not happen ever again, but who knows... let's cover it
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_USER);
 		$share->method('getState')->willReturn(Share::STATE_ACCEPTED);
 		$share->method('getPermissions')->willReturn(0);
 		$this->assertFalse(self::invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		// legacy zero permission entries from group sub-shares, let it pass
-		$share = $this->createMock('OCP\Share\IShare');
+		$share = $this->createMock(\OCP\Share\IShare::class);
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('group');
 		$share->method('getState')->willReturn(Share::STATE_REJECTED);
@@ -750,7 +747,7 @@ class Share20OcsControllerTest extends TestCase {
 				['path', null, 'invalid-path'],
 			]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
@@ -781,16 +778,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareType', $this->any(), Share::SHARE_TYPE_USER],
 			]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
 			->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\File');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\File::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -837,16 +834,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', $this->any(), $shareWith],
 			]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
 			->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\File');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\File::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -883,16 +880,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', null, 'validUser'],
 			]);
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 				->method('getUserFolder')
 				->with('currentUser')
 				->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\File');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\File::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -910,15 +907,13 @@ class Share20OcsControllerTest extends TestCase {
 			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->shareManager->method('createShare')
-			->with($this->callback(function (\OCP\Share\IShare $share) use ($path) {
-				return $share->getNode() === $path &&
+			->with($this->callback(fn (\OCP\Share\IShare $share) => $share->getNode() === $path &&
 					$share->getPermissions() === (
 						\OCP\Constants::PERMISSION_ALL
 					) &&
 					$share->getShareType() === Share::SHARE_TYPE_USER &&
 					$share->getSharedWith() === 'validUser' &&
-					$share->getSharedBy() === 'currentUser';
-			}))
+					$share->getSharedBy() === 'currentUser'))
 			->will($this->returnArgument(0));
 
 		$expected = new Result();
@@ -946,16 +941,16 @@ class Share20OcsControllerTest extends TestCase {
 						['shareWith', null, $shareWith],
 				]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 				->method('getUserFolder')
 				->with('currentUser')
 				->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\File');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\File::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -991,16 +986,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', null, 'validGroup'],
 			]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
 			->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -1042,16 +1037,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', null, 'validGroup'],
 			]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 				->method('getUserFolder')
 				->with('currentUser')
 				->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -1076,13 +1071,11 @@ class Share20OcsControllerTest extends TestCase {
 			->with(ILockingProvider::LOCK_SHARED);
 
 		$this->shareManager->method('createShare')
-			->with($this->callback(function (\OCP\Share\IShare $share) use ($path) {
-				return $share->getNode() === $path &&
+			->with($this->callback(fn (\OCP\Share\IShare $share) => $share->getNode() === $path &&
 					$share->getPermissions() === \OCP\Constants::PERMISSION_ALL &&
 					$share->getShareType() === Share::SHARE_TYPE_GROUP &&
 					$share->getSharedWith() === 'validGroup' &&
-					$share->getSharedBy() === 'currentUser';
-			}))
+					$share->getSharedBy() === 'currentUser'))
 			->will($this->returnArgument(0));
 
 		$this->sharingBlacklist->method('isGroupBlacklisted')->willReturn(false);
@@ -1107,16 +1100,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', null, 'validGroup'],
 			]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
 			->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -1146,10 +1139,10 @@ class Share20OcsControllerTest extends TestCase {
 				['shareType', '-1', Share::SHARE_TYPE_LINK],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1173,10 +1166,10 @@ class Share20OcsControllerTest extends TestCase {
 				['publicUpload', null, 'true'],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1201,10 +1194,10 @@ class Share20OcsControllerTest extends TestCase {
 				['publicUpload', null, 'true'],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1233,10 +1226,10 @@ class Share20OcsControllerTest extends TestCase {
 				['publicUpload', null, 'true'],
 			]));
 
-		$path = $this->createMock('\OCP\Files\File');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\File::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1266,10 +1259,10 @@ class Share20OcsControllerTest extends TestCase {
 				['password', '', ''],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1280,14 +1273,12 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
 		$this->shareManager->expects($this->once())->method('createShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($path) {
-				return $share->getNode() === $path &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getNode() === $path &&
 					$share->getShareType() === Share::SHARE_TYPE_LINK &&
 					$share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) &&
 					$share->getSharedBy() === 'currentUser' &&
 					$share->getPassword() === null &&
-					$share->getExpirationDate() === null;
-			})
+					$share->getExpirationDate() === null)
 		)->will($this->returnArgument(0));
 
 		$expected = new Result(null);
@@ -1310,10 +1301,10 @@ class Share20OcsControllerTest extends TestCase {
 				['password', '', ''],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1324,14 +1315,12 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
 		$this->shareManager->expects($this->once())->method('createShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($path) {
-				return $share->getNode() === $path &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getNode() === $path &&
 					$share->getShareType() === Share::SHARE_TYPE_LINK &&
 					$share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) &&
 					$share->getSharedBy() === 'currentUser' &&
 					$share->getPassword() === null &&
-					$share->getExpirationDate() === null;
-			})
+					$share->getExpirationDate() === null)
 		)->will($this->returnArgument(0));
 
 		$expected = new Result(null);
@@ -1354,10 +1343,10 @@ class Share20OcsControllerTest extends TestCase {
 				['password', '', ''],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1368,14 +1357,12 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
 		$this->shareManager->expects($this->once())->method('createShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($path) {
-				return $share->getNode() === $path &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getNode() === $path &&
 					$share->getShareType() === Share::SHARE_TYPE_LINK &&
 					$share->getPermissions() === (\OCP\Constants::PERMISSION_CREATE) &&
 					$share->getSharedBy() === 'currentUser' &&
 					$share->getPassword() === null &&
-					$share->getExpirationDate() === null;
-			})
+					$share->getExpirationDate() === null)
 		)->will($this->returnArgument(0));
 
 		$expected = new Result(null);
@@ -1398,10 +1385,10 @@ class Share20OcsControllerTest extends TestCase {
 				['password', '', ''],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1430,10 +1417,10 @@ class Share20OcsControllerTest extends TestCase {
 				['password', '', ''],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1444,14 +1431,12 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(false);
 
 		$this->shareManager->expects($this->once())->method('createShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($path) {
-				return $share->getNode() === $path &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getNode() === $path &&
 					$share->getShareType() === Share::SHARE_TYPE_LINK &&
 					$share->getPermissions() === (\OCP\Constants::PERMISSION_READ) &&
 					$share->getSharedBy() === 'currentUser' &&
 					$share->getPassword() === null &&
-					$share->getExpirationDate() === null;
-			})
+					$share->getExpirationDate() === null)
 		)->will($this->returnArgument(0));
 
 		$expected = new Result(null);
@@ -1474,10 +1459,10 @@ class Share20OcsControllerTest extends TestCase {
 				['password', '', 'password'],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1488,14 +1473,12 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
 		$this->shareManager->expects($this->once())->method('createShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($path) {
-				return $share->getNode() === $path &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getNode() === $path &&
 				$share->getShareType() === Share::SHARE_TYPE_LINK &&
 				$share->getPermissions() === \OCP\Constants::PERMISSION_READ &&
 				$share->getSharedBy() === 'currentUser' &&
 				$share->getPassword() === 'password' &&
-				$share->getExpirationDate() === null;
-			})
+				$share->getExpirationDate() === null)
 		)->will($this->returnArgument(0));
 
 		$expected = new Result(null);
@@ -1523,16 +1506,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', $this->any(), $shareWith]
 			]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
 			->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\File');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\File::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -1564,10 +1547,10 @@ class Share20OcsControllerTest extends TestCase {
 				['password', '', ''],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1611,10 +1594,10 @@ class Share20OcsControllerTest extends TestCase {
 				['password', '', ''],
 			]));
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
@@ -1650,16 +1633,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', null, 'validUser'],
 			]));
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
 			->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\Folder');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(true);
 		$path->method('getStorage')->willReturn($storage);
 		$path->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_READ);
@@ -1673,16 +1656,14 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager
 			->expects($this->once())
 			->method('createShare')
-			->with($this->callback(function (\OCP\Share\IShare $share) {
-				return $share->getPermissions() === \OCP\Constants::PERMISSION_READ;
-			}))
+			->with($this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === \OCP\Constants::PERMISSION_READ))
 			->will($this->returnArgument(0));
 
 		$ocs->createShare();
 	}
 
 	public function testUpdateShareCantChange() {
-		$node = $this->createMock('\OCP\Files\Folder');
+		$node = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$share = $this->newShare();
 		$share->setNode($node);
 
@@ -1700,7 +1681,7 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function testUpdateNoParametersLink() {
-		$node = $this->createMock('\OCP\Files\Folder');
+		$node = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$share = $this->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
 			->setSharedBy($this->currentUser->getUID())
@@ -1723,7 +1704,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testUpdateNoParametersOther() {
 		$ocs = $this->mockFormatShare();
 
-		$node = $this->createMock('\OCP\Files\Folder');
+		$node = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$share = $this->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
 			->setSharedBy($this->currentUser->getUID())
@@ -1733,11 +1714,9 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) {
-				return $share->getPermissions() === \OCP\Constants::PERMISSION_ALL &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === \OCP\Constants::PERMISSION_ALL &&
 				$share->getPassword() === null &&
-				$share->getExpirationDate() === null;
-			})
+				$share->getExpirationDate() === null)
 		)->will($this->returnArgument(0));
 		$this->shareManager->method('getSharedWith')->willReturn([]);
 
@@ -1757,7 +1736,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$ocs = $this->mockFormatShare();
 
-		$node = $this->createMock('\OCP\Files\Folder');
+		$node = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$share = $this->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
 			->setSharedBy($this->currentUser->getUID())
@@ -1786,11 +1765,9 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) {
-				return $share->getPermissions() === \OCP\Constants::PERMISSION_READ &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === \OCP\Constants::PERMISSION_READ &&
 				$share->getPassword() === null &&
-				$share->getExpirationDate() === null;
-			})
+				$share->getExpirationDate() === null)
 		)->will($this->returnArgument(0));
 
 		$expected = new Result(null);
@@ -1809,7 +1786,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$ocs = $this->mockFormatShare();
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -1859,7 +1836,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$ocs = $this->mockFormatShare();
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -1907,7 +1884,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$ocs = $this->mockFormatShare();
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -1959,7 +1936,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testUpdateLinkSharePublicUploadNotAllowed($params) {
 		$ocs = $this->mockFormatShare();
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -1984,7 +1961,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testUpdateLinkSharePublicUploadOnFile() {
 		$ocs = $this->mockFormatShare();
 
-		$file = $this->createMock('\OCP\Files\File');
+		$file = $this->createMock('\\' . \OCP\Files\File::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -2016,7 +1993,7 @@ class Share20OcsControllerTest extends TestCase {
 		$date = new \DateTime('2000-01-01');
 		$date->setTime(0, 0, 0);
 
-		$node = $this->createMock('\OCP\Files\File');
+		$node = $this->createMock('\\' . \OCP\Files\File::class);
 		$share = $this->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
 			->setSharedBy($this->currentUser->getUID())
@@ -2042,11 +2019,9 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($date) {
-				return $share->getPermissions() === \OCP\Constants::PERMISSION_ALL &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === \OCP\Constants::PERMISSION_ALL &&
 				$share->getPassword() === 'newpassword' &&
-				$share->getExpirationDate() === $date;
-			})
+				$share->getExpirationDate() === $date)
 		)->will($this->returnArgument(0));
 
 		$expected = new Result(null);
@@ -2059,7 +2034,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testUpdateLinkShareExpireDateDoesNotChangeOther() {
 		$ocs = $this->mockFormatShare();
 
-		$node = $this->createMock('\OCP\Files\File');
+		$node = $this->createMock('\\' . \OCP\Files\File::class);
 		$share = $this->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
 			->setSharedBy($this->currentUser->getUID())
@@ -2113,7 +2088,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$date = new \DateTime('2000-01-01');
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -2135,11 +2110,9 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($date) {
-				return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) &&
 				$share->getPassword() === 'password' &&
-				$share->getExpirationDate() === $date;
-			})
+				$share->getExpirationDate() === $date)
 		)->will($this->returnArgument(0));
 
 		$expected = new Result(null);
@@ -2160,7 +2133,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$date = new \DateTime('2000-01-01');
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -2181,11 +2154,9 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($date) {
-				return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE) &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE) &&
 				$share->getPassword() === 'password' &&
-				$share->getExpirationDate() === $date;
-			})
+				$share->getExpirationDate() === $date)
 		)->will($this->returnArgument(0));
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
@@ -2206,7 +2177,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$ocs = $this->mockFormatShare();
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -2225,9 +2196,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) {
-				return $share->getPermissions() === \OCP\Constants::PERMISSION_CREATE;
-			})
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === \OCP\Constants::PERMISSION_CREATE)
 		)->will($this->returnArgument(0));
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
@@ -2244,7 +2213,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$date = new \DateTime('2000-01-01');
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -2274,7 +2243,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testUpdateOtherPermissions() {
 		$ocs = $this->mockFormatShare();
 
-		$file = $this->createMock('\OCP\Files\File');
+		$file = $this->createMock('\\' . \OCP\Files\File::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_ALL)
@@ -2292,9 +2261,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) {
-				return $share->getPermissions() === \OCP\Constants::PERMISSION_ALL;
-			})
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === \OCP\Constants::PERMISSION_ALL)
 		)->will($this->returnArgument(0));
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
@@ -2311,7 +2278,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$date = new \DateTime('2000-01-01');
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_READ)
@@ -2329,9 +2296,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($date) {
-				return $share->getName() === 'another';
-			})
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getName() === 'another')
 		)->will($this->returnArgument(0));
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
@@ -2348,7 +2313,7 @@ class Share20OcsControllerTest extends TestCase {
 
 		$date = new \DateTime('2000-01-01');
 
-		$folder = $this->createMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_READ)
@@ -2366,11 +2331,9 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
-			$this->callback(function (\OCP\Share\IShare $share) use ($date) {
-				return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ) &&
+			$this->callback(fn (\OCP\Share\IShare $share) => $share->getPermissions() === (\OCP\Constants::PERMISSION_READ) &&
 				$share->getPassword() === 'test' &&
-				$share->getName() === 'somename';
-			})
+				$share->getName() === 'somename')
 		)->will($this->returnArgument(0));
 
 		$this->shareManager->method('getSharedWith')->willReturn([]);
@@ -2383,9 +2346,9 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	private function getMockFileFolder() {
-		$file = $this->createMock('\OCP\Files\File');
-		$folder = $this->createMock('\OCP\Files\Folder');
-		$parent = $this->createMock('\OCP\Files\Folder');
+		$file = $this->createMock('\\' . \OCP\Files\File::class);
+		$folder = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$parent = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$file->method('getMimeType')->willReturn('myMimeType');
 		$folder->method('getMimeType')->willReturn('myFolderMimeType');
@@ -2400,9 +2363,9 @@ class Share20OcsControllerTest extends TestCase {
 		$file->method('getParent')->willReturn($parent);
 		$folder->method('getParent')->willReturn($parent);
 
-		$cache = $this->createMock('OCP\Files\Cache\ICache');
+		$cache = $this->createMock(\OCP\Files\Cache\ICache::class);
 		$cache->method('getNumericStorageId')->willReturn(100);
-		$storage = $this->createMock('\OCP\Files\Storage');
+		$storage = $this->createMock('\\' . \OCP\Files\Storage::class);
 		$storage->method('getId')->willReturn('storageId');
 		$storage->method('getCache')->willReturn($cache);
 
@@ -2413,14 +2376,14 @@ class Share20OcsControllerTest extends TestCase {
 	}
 
 	public function dataFormatShare() {
-		list($file, $folder) = $this->getMockFileFolder();
-		$owner = $this->createMock('\OCP\IUser');
+		[$file, $folder] = $this->getMockFileFolder();
+		$owner = $this->createMock('\\' . \OCP\IUser::class);
 		$owner->method('getDisplayName')->willReturn('ownerDN');
-		$initiator = $this->createMock('\OCP\IUser');
+		$initiator = $this->createMock('\\' . \OCP\IUser::class);
 		$initiator->method('getDisplayName')->willReturn('initiatorDN');
-		$recipient = $this->createMock('\OCP\IUser');
+		$recipient = $this->createMock('\\' . \OCP\IUser::class);
 		$recipient->method('getDisplayName')->willReturn('recipientDN');
-		list($shareAttributes, $shareAttributesReturnJson) = $this->mockShareAttributes();
+		[$shareAttributes, $shareAttributesReturnJson] = $this->mockShareAttributes();
 
 		$result = [];
 
@@ -2446,7 +2409,7 @@ class Share20OcsControllerTest extends TestCase {
 				'share_with_user_type' => Constants::USER_TYPE_USER,
 				'permissions' => 1,
 				'attributes' => $shareAttributesReturnJson,
-				'stime' => 946684862,
+				'stime' => 946_684_862,
 				'parent' => null,
 				'expiration' => null,
 				'token' => null,
@@ -2478,7 +2441,7 @@ class Share20OcsControllerTest extends TestCase {
 				'additional_info_owner' => null,
 				'permissions' => 1,
 				'attributes' => $shareAttributesReturnJson,
-				'stime' => 946684862,
+				'stime' => 946_684_862,
 				'parent' => null,
 				'expiration' => null,
 				'token' => null,
@@ -2526,7 +2489,7 @@ class Share20OcsControllerTest extends TestCase {
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
 				'attributes' => null,
-				'stime' => 946684862,
+				'stime' => 946_684_862,
 				'parent' => null,
 				'expiration' => null,
 				'token' => null,
@@ -2567,7 +2530,7 @@ class Share20OcsControllerTest extends TestCase {
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
 				'attributes' => null,
-				'stime' => 946684862,
+				'stime' => 946_684_862,
 				'parent' => null,
 				'expiration' => null,
 				'token' => null,
@@ -2607,7 +2570,7 @@ class Share20OcsControllerTest extends TestCase {
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
 				'attributes' => null,
-				'stime' => 946684862,
+				'stime' => 946_684_862,
 				'parent' => null,
 				'expiration' => null,
 				'token' => null,
@@ -2650,7 +2613,7 @@ class Share20OcsControllerTest extends TestCase {
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
 				'attributes' => null,
-				'stime' => 946684862,
+				'stime' => 946_684_862,
 				'parent' => null,
 				'expiration' => '2001-01-02 00:00:00',
 				'token' => 'myToken',
@@ -2692,7 +2655,7 @@ class Share20OcsControllerTest extends TestCase {
 				'displayname_owner' => 'initiator',
 				'permissions' => 1,
 				'attributes' => null,
-				'stime' => 946684862,
+				'stime' => 946_684_862,
 				'parent' => null,
 				'expiration' => null,
 				'token' => null,
@@ -2741,7 +2704,7 @@ class Share20OcsControllerTest extends TestCase {
 	public function testFormatShare(array $expects, \OCP\Share\IShare $share, array $users, $exception) {
 		$this->userManager->method('get')->will($this->returnValueMap($users));
 
-		$recipientGroup = $this->createMock('\OCP\IGroup');
+		$recipientGroup = $this->createMock('\\' . \OCP\IGroup::class);
 		$recipientGroup->method('getDisplayName')->willReturn('recipientGroupDisplayName');
 		$this->groupManager->method('get')->will($this->returnValueMap([
 			 ['recipientGroup', $recipientGroup],
@@ -2778,7 +2741,7 @@ class Share20OcsControllerTest extends TestCase {
 	 * @return Share20OcsController
 	 */
 	public function getOcsDisabledAPI() {
-		$shareManager = $this->getMockBuilder('OCP\Share\IManager')
+		$shareManager = $this->getMockBuilder(\OCP\Share\IManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$shareManager
@@ -2906,7 +2869,7 @@ class Share20OcsControllerTest extends TestCase {
 			$this->userTypeHelper
 		);
 
-		list($file, ) = $this->getMockFileFolder();
+		[$file, ] = $this->getMockFileFolder();
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setShareType(Share::SHARE_TYPE_USER)
@@ -3196,7 +3159,7 @@ class Share20OcsControllerTest extends TestCase {
 		$groupShareNonOwner->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
 		$groupShareNonOwner->setPermissions(\OCP\Constants::PERMISSION_ALL);
 
-		$group = $this->createMock('OCP\IGroup');
+		$group = $this->createMock(\OCP\IGroup::class);
 		$group->method('inGroup')->with($this->currentUser)->willReturn(true);
 
 		$this->groupManager->method('get')->with('group1')->willReturn($group);
@@ -3374,7 +3337,7 @@ class Share20OcsControllerTest extends TestCase {
 			->method('updateShareForRecipient')
 			->with($userShare, 'currentUser');
 
-		$userFolder = $this->createMock('OCP\Files\Folder');
+		$userFolder = $this->createMock(\OCP\Files\Folder::class);
 		if ($method === 'acceptShare') {
 			// deduplicate
 			if ($targetExists) {
@@ -3503,7 +3466,7 @@ class Share20OcsControllerTest extends TestCase {
 			->method('updateShareForRecipient')
 			->withConsecutive([$userShare], [$groupShare]);
 
-		$userFolder = $this->createMock('OCP\Files\Folder');
+		$userFolder = $this->createMock(\OCP\Files\Folder::class);
 		if ($method === 'acceptShare') {
 			// deduplicate
 			if ($targetExists) {
@@ -3568,7 +3531,7 @@ class Share20OcsControllerTest extends TestCase {
 		$ocs = $this->getOcsDisabledAPI();
 
 		$expected = new Result(null, 404, 'Share API is disabled');
-		$result = $ocs->$method(123);
+		$result = $ocs->{$method}();
 
 		$this->assertEquals($expected, $result);
 	}
@@ -3606,7 +3569,7 @@ class Share20OcsControllerTest extends TestCase {
 			->method('updateShareForRecipient');
 
 		$expected = new Result(null, 404, 'Wrong share ID, share doesn\'t exist');
-		$result = $this->ocs->$method(123);
+		$result = $this->ocs->{$method}();
 
 		$this->assertEquals($expected, $result);
 	}
@@ -3627,7 +3590,7 @@ class Share20OcsControllerTest extends TestCase {
 			->method('updateShareForRecipient');
 
 		$expected = new Result(null, 404, 'Wrong share ID, share doesn\'t exist');
-		$result = $this->ocs->$method(123);
+		$result = $this->ocs->{$method}();
 
 		$this->assertEquals($expected, $result);
 	}
@@ -3649,14 +3612,14 @@ class Share20OcsControllerTest extends TestCase {
 		$userShare->setShareOwner('currentUser');
 
 		$expected = new Result(null, 403, 'Only recipient can change accepted state');
-		$result = $this->ocs->$method(123);
+		$result = $this->ocs->{$method}();
 
 		$this->assertEquals($expected, $result);
 
 		$userShare->setShareOwner('anotherUser');
 		$userShare->setSharedBy('currentUser');
 
-		$result = $this->ocs->$method(123);
+		$result = $this->ocs->{$method}();
 
 		$this->assertEquals($expected, $result);
 	}
@@ -3703,7 +3666,7 @@ class Share20OcsControllerTest extends TestCase {
 			->willReturn($userFolder);
 
 		$expected = new Result(null, 400, 'operation error');
-		$result = $this->ocs->$method(123);
+		$result = $this->ocs->{$method}();
 
 		$this->assertEquals($expected, $result);
 	}
@@ -3718,12 +3681,10 @@ class Share20OcsControllerTest extends TestCase {
 		$share->setShareOwner('shareOwner');
 
 		$ocs = $this->mockFormatShare();
-		$ocs->expects(self::once())->method('formatShare')->willReturnCallback(static function (IShare $share) {
-			return [
+		$ocs->expects(self::once())->method('formatShare')->willReturnCallback(static fn (IShare $share) => [
 				'permissions' => $share->getPermissions(),
 				'attributes' => $share->getAttributes()
-			];
-		});
+			]);
 
 		$this->request
 			->method('getParam')
@@ -3735,16 +3696,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', null, 'validUser'],
 			]);
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
 			->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\File');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\File::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())
@@ -3828,12 +3789,10 @@ class Share20OcsControllerTest extends TestCase {
 		$share->setShareOwner('shareOwner');
 
 		$ocs = $this->mockFormatShare();
-		$ocs->expects(self::once())->method('formatShare')->willReturnCallback(static function (IShare $share) {
-			return [
+		$ocs->expects(self::once())->method('formatShare')->willReturnCallback(static fn (IShare $share) => [
 				'permissions' => $share->getPermissions(),
 				'attributes' => $share->getAttributes()
-			];
-		});
+			]);
 
 		$this->request
 			->method('getParam')
@@ -3845,16 +3804,16 @@ class Share20OcsControllerTest extends TestCase {
 				['shareWith', null, 'validUser'],
 			]);
 
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('getUserFolder')
 			->with('currentUser')
 			->willReturn($userFolder);
 
-		$path = $this->createMock('\OCP\Files\File');
-		$storage = $this->createMock('OCP\Files\Storage');
+		$path = $this->createMock('\\' . \OCP\Files\File::class);
+		$storage = $this->createMock(\OCP\Files\Storage::class);
 		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
+			->with(\OCA\Files_Sharing\External\Storage::class)
 			->willReturn(false);
 		$path->method('getStorage')->willReturn($storage);
 		$userFolder->expects($this->once())

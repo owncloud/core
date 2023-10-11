@@ -41,13 +41,13 @@ class CapabilitiesTest extends \Test\TestCase {
 	protected $userSearch;
 
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 	/** @var IManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $shareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var SharingAllowlist | \PHPUnit\Framework\MockObject\MockObject */
-	private $sharingAllowlist;
+	private \PHPUnit\Framework\MockObject\MockObject $sharingAllowlist;
 
 	/**
 	 *
@@ -94,7 +94,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	 * @return string[]
 	 */
 	private function getResults(array $map) {
-		$stub = $this->getMockBuilder('\OCP\IConfig')->disableOriginalConstructor()->getMock();
+		$stub = $this->getMockBuilder('\\' . \OCP\IConfig::class)->disableOriginalConstructor()->getMock();
 		$stub->method('getAppValue')->will($this->returnValueMap($map));
 		$cap = new Capabilities($this->shareManager, $stub, $this->userSearch, $this->l10n, $this->sharingAllowlist, $this->userSession);
 		$result = $this->getFilesSharingPart($cap->getCapabilities());

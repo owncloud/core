@@ -43,38 +43,28 @@ use Sabre\DAV\Xml\Property\Complex;
  * @package OCA\DAV\Tests\unit\DAV
  */
 class FileCustomPropertiesBackendTest extends \Test\TestCase {
-	/**
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+	private \Sabre\DAV\Server $server;
 
 	/**
 	 * @var Tree
 	 */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 
-	/**
-	 * @var FileCustomPropertiesBackend
-	 */
-	private $backend;
+	private \OCA\DAV\DAV\FileCustomPropertiesBackend $backend;
 
-	/**
-	 * @var FileCustomPropertiesPlugin
-	 */
-	private $plugin;
+	private \OCA\DAV\DAV\FileCustomPropertiesPlugin $plugin;
 
 	/**
 	 * @var \OCP\IUser
 	 */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	/**
 	 * @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject Obj$rootFolder
 	 */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 
-	/** @var int */
-	private $maxId;
+	private int $maxId;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -85,7 +75,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 
 		$userId = self::getUniqueID('testcustompropertiesuser');
 
-		$this->user = $this->createMock('\OCP\IUser');
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
 		$this->user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue($userId));
@@ -240,7 +230,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	 * Test setting/getting properties
 	 */
 	public function testSetGetPropertiesForFile() {
-		$node = $this->createTestNode('\OCA\DAV\Connector\Sabre\File');
+		$node = $this->createTestNode('\\' . \OCA\DAV\Connector\Sabre\File::class);
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/dummypath')
@@ -277,9 +267,9 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	 * Test getting properties from directory
 	 */
 	public function testGetPropertiesForDirectory() {
-		$rootNode = $this->createTestNode('\OCA\DAV\Connector\Sabre\Directory');
+		$rootNode = $this->createTestNode('\\' . \OCA\DAV\Connector\Sabre\Directory::class);
 
-		$nodeSub = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$nodeSub = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$nodeSub->expects($this->any())

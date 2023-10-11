@@ -174,15 +174,12 @@ trait Sharing {
 		if (\in_array('uploadwriteonly', $permissions, true)) {
 			// remove 'uploadwriteonly' from $permissions
 			$permissions = \array_diff($permissions, ['uploadwriteonly']);
-			$permissions = \array_merge($permissions, ['create']);
+			$permissions = [...$permissions, 'create'];
 		}
 		if (\in_array('change', $permissions, true)) {
 			// remove 'change' from $permissions
 			$permissions = \array_diff($permissions, ['change']);
-			$permissions = \array_merge(
-				$permissions,
-				['create', 'delete', 'read', 'update']
-			);
+			$permissions = [...$permissions, 'create', 'delete', 'read', 'update'];
 		}
 
 		return \array_unique($permissions);
@@ -1109,7 +1106,7 @@ trait Sharing {
 
 		$dateFieldsArrayToConvert = ['expiration', 'original_date', 'new_date'];
 		//do not try to convert empty date
-		if ((string) \in_array($field, \array_merge($dateFieldsArrayToConvert)) && !empty($contentExpected)) {
+		if ((string) \in_array($field, [...$dateFieldsArrayToConvert]) && !empty($contentExpected)) {
 			$timestamp = \strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
 			// strtotime returns false if it failed to parse, just leave it as it is in that condition
 			if ($timestamp !== false) {
@@ -2792,7 +2789,7 @@ trait Sharing {
 		$this->setResponse($res);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 
-		$json = \json_decode($res->getBody()->getContents(), true);
+		$json = \json_decode($res->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 		$deleted = false;
 		foreach ($json['ocs']['data'] as $data) {
 			if (\stripslashes($data['path']) === $fileName) {
@@ -3364,7 +3361,7 @@ trait Sharing {
 			$occStdOut = "[]";
 		}
 
-		$currentGroups = \json_decode($occStdOut, true);
+		$currentGroups = \json_decode($occStdOut, true, 512, JSON_THROW_ON_ERROR);
 		Assert::assertNotNull(
 			$currentGroups,
 			"could not json decode app setting 'blacklisted_receiver_groups' of 'files_sharing'\n" .
@@ -3377,7 +3374,7 @@ trait Sharing {
 			[
 				'config:app:set',
 				'files_sharing blacklisted_receiver_groups',
-				'--value=' . \json_encode($currentGroups)
+				'--value=' . \json_encode($currentGroups, JSON_THROW_ON_ERROR)
 			]
 		);
 	}
@@ -3465,7 +3462,7 @@ trait Sharing {
 			);
 		}
 		$result = $this->response->getBody()->getContents();
-		$usersShares = \json_decode($result, true);
+		$usersShares = \json_decode($result, true, 512, JSON_THROW_ON_ERROR);
 		if (!\is_array($usersShares)) {
 			throw new Exception(
 				__METHOD__ . " API result about shares is not valid JSON"
@@ -3592,7 +3589,7 @@ trait Sharing {
 	public function userHasAddedPublicShareCreatedByUser(string $user, string $shareServer):void {
 		$this->saveLastSharedPublicLinkShare($user, $shareServer);
 
-		$resBody = json_decode($this->response->getBody()->getContents());
+		$resBody = json_decode($this->response->getBody()->getContents(), null, 512, JSON_THROW_ON_ERROR);
 		$status = '';
 		$message = '';
 		if ($resBody) {

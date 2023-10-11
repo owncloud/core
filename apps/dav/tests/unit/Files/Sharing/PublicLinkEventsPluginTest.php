@@ -30,11 +30,10 @@ use Test\TestCase;
 
 class PublicLinkEventsPluginTest extends TestCase {
 	/** @var EventDispatcherInterface */
-	private $dispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $dispatcher;
 	/** @var Server */
-	private $server;
-	/** @var PublicLinkEventsPlugin */
-	private $publicLinkEventsPlugin;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
+	private \OCA\DAV\Files\Sharing\PublicLinkEventsPlugin $publicLinkEventsPlugin;
 
 	protected function setUp(): void {
 		$this->dispatcher = $this->createMock(EventDispatcherInterface::class);

@@ -50,20 +50,12 @@ use Sabre\HTTP\ResponseInterface;
 class Auth extends AbstractBasic {
 	public const DAV_AUTHENTICATED = 'AUTHENTICATED_TO_DAV_BACKEND';
 
-	/** @var ISession */
-	private $session;
-	/** @var Session */
-	private $userSession;
-	/** @var IRequest */
-	private $request;
-	/** @var Manager */
-	private $twoFactorManager;
-	/** @var AccountModuleManager */
-	private $accountModuleManager;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private \OCP\ISession $session;
+	private \OC\User\Session $userSession;
+	private \OCP\IRequest $request;
+	private \OC\Authentication\TwoFactorAuth\Manager $twoFactorManager;
+	private \OC\Authentication\AccountModule\Manager $accountModuleManager;
+	private \OCP\IConfig $config;
 
 	/**
 	 * @param ISession $session

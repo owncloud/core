@@ -38,10 +38,9 @@ use Test\TestCase;
  */
 class MountProviderTest extends TestCase {
 	/** @var IDBConnection */
-	private $dbConnection;
+	private \PHPUnit\Framework\MockObject\MockObject $dbConnection;
 
-	/** @var MountProvider */
-	private $mountProvider;
+	private \OCA\Files_Sharing\External\MountProvider $mountProvider;
 
 	public function setUp(): void {
 		parent::setUp();

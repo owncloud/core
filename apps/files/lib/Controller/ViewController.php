@@ -224,9 +224,7 @@ class ViewController extends Controller {
 		$navigationManager = \OCA\Files\App::getNavigationManager();
 		'@phan-var \OC\NavigationManager $navigationManager';
 		$navItems = $navigationManager->getAll();
-		\usort($navItems, function ($item1, $item2) {
-			return $item1['order'] - $item2['order'];
-		});
+		\usort($navItems, fn ($item1, $item2) => $item1['order'] - $item2['order']);
 		$nav->assign('navigationItems', $navItems);
 		$nav->assign('webdavUrl', $this->urlGenerator->getAbsoluteUrl($this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . \rawurlencode($user) . '/'));
 

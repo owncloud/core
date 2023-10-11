@@ -37,25 +37,22 @@ use Test\Traits\PasswordTrait;
  */
 class UserTest extends TestCase {
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $accountMapper;
-	/** @var Account */
-	private $account;
-	/** @var User */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $accountMapper;
+	private \OC\User\Account $account;
+	private \OC\User\User $user;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
-	/** @var PublicEmitter */
-	private $emitter;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
+	private \OC\Hooks\PublicEmitter $emitter;
 	/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject */
-	private $eventDispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $eventDispatcher;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var  Manager | \PHPUnit\Framework\MockObject\MockObject */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 	/** @var  SubAdmin | \PHPUnit\Framework\MockObject\MockObject */
-	private $subAdmin;
+	private \PHPUnit\Framework\MockObject\MockObject $subAdmin;
 	/** @var  Session | \PHPUnit\Framework\MockObject\MockObject */
-	private $sessionUser;
+	private \PHPUnit\Framework\MockObject\MockObject $sessionUser;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -65,12 +62,12 @@ class UserTest extends TestCase {
 		$this->account->setUserId('foo');
 		$this->emitter = new PublicEmitter();
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
-		$this->urlGenerator = $this->getMockBuilder('\OC\URLGenerator')
+		$this->urlGenerator = $this->getMockBuilder('\\' . \OC\URLGenerator::class)
 			->setMethods(['getAbsoluteURL'])
 			->disableOriginalConstructor()
 			->getMock();
-		$this->groupManager = $this->createMock('\OC\Group\Manager');
-		$this->subAdmin = $this->createMock('\OC\SubAdmin');
+		$this->groupManager = $this->createMock('\\' . \OC\Group\Manager::class);
+		$this->subAdmin = $this->createMock('\\' . \OC\SubAdmin::class);
 		$this->sessionUser = $this->createMock(Session::class);
 
 		$this->user = new User($this->account, $this->accountMapper, $this->emitter, $this->config, $this->urlGenerator, $this->eventDispatcher);
@@ -298,7 +295,7 @@ class UserTest extends TestCase {
 			->with('allow_user_to_change_display_name')
 			->willReturn(false);
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$user->method('getUID')->willReturn('admin');
 
 		$subAdmin = $this->createMock(SubAdmin::class);
@@ -462,9 +459,7 @@ class UserTest extends TestCase {
 
 		$backend->expects($this->any())
 			->method('implementsActions')
-			->will($this->returnCallback(function ($actions) {
-				return false;
-			}));
+			->will($this->returnCallback(fn ($actions) => false));
 
 		$user = new User($account, $this->accountMapper, null, $this->config);
 		$this->assertFalse($user->setDisplayName('Foo'));

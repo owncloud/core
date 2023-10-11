@@ -31,14 +31,13 @@ use Sabre\VObject\Reader;
 use Test\TestCase;
 
 class BirthdayServiceTest extends TestCase {
-	/** @var BirthdayService */
-	private $service;
+	private \OCA\DAV\CalDAV\BirthdayService $service;
 	/** @var CalDavBackend | \PHPUnit\Framework\MockObject\MockObject */
-	private $calDav;
+	private \PHPUnit\Framework\MockObject\MockObject $calDav;
 	/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject */
-	private $cardDav;
+	private \PHPUnit\Framework\MockObject\MockObject $cardDav;
 	/** @var GroupPrincipalBackend | \PHPUnit\Framework\MockObject\MockObject */
-	private $groupPrincipalBackend;
+	private \PHPUnit\Framework\MockObject\MockObject $groupPrincipalBackend;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -60,7 +59,7 @@ class BirthdayServiceTest extends TestCase {
 		if ($expectedSummary === null) {
 			$this->assertNull($cal);
 		} else {
-			$this->assertInstanceOf('Sabre\VObject\Component\VCalendar', $cal);
+			$this->assertInstanceOf(\Sabre\VObject\Component\VCalendar::class, $cal);
 			$this->assertTrue(isset($cal->VEVENT));
 			$this->assertEquals('FREQ=YEARLY', $cal->VEVENT->RRULE->getValue());
 			$this->assertEquals($expectedSummary, $cal->VEVENT->SUMMARY->getValue());

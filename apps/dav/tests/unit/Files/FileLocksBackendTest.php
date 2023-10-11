@@ -48,15 +48,14 @@ interface IPersistentLockingStorageTest extends IPersistentLockingStorage, IStor
 }
 
 class FileLocksBackendTest extends TestCase {
-	public const CREATION_TIME = 164419200;
-	public const CURRENT_TIME = 164419800;
+	public const CREATION_TIME = 164_419_200;
+	public const CURRENT_TIME = 164_419_800;
 
-	/** @var FileLocksBackend */
-	private $plugin;
+	private \OCA\DAV\Files\FileLocksBackend $plugin;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 	/** @var IPersistentLockingStorage | IStorage | \PHPUnit\Framework\MockObject\MockObject */
-	private $storageOfFileToBeLocked;
+	private \PHPUnit\Framework\MockObject\MockObject $storageOfFileToBeLocked;
 
 	public function setUp(): void {
 		parent::setUp();

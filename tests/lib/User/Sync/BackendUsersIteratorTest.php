@@ -35,11 +35,11 @@ class BackendUsersIteratorTest extends TestCase {
 	/**
 	 * @var UserInterface|\PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $backend;
+	private \PHPUnit\Framework\MockObject\MockObject $backend;
 	/**
 	 * @var \Iterator
 	 */
-	private $iterator;
+	private \OC\User\Sync\BackendUsersIterator $iterator;
 
 	public function setUp(): void {
 		parent::setUp();

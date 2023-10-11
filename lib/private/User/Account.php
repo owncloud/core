@@ -63,8 +63,8 @@ class Account extends Entity {
 	protected $state;
 	protected $home;
 
-	private $terms = [];
-	private $_termsChanged = false;
+	private array $terms = [];
+	private bool $_termsChanged = false;
 
 	public function __construct() {
 		$this->addType('state', 'integer');

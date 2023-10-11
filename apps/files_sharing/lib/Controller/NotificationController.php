@@ -36,18 +36,12 @@ use OCP\Share;
 use OCP\Share\Exceptions\GenericShareException;
 
 class NotificationController extends OCSController {
-	/** @var MailNotifications */
-	private $mailNotifications;
-	/** @var IUserSession */
-	private $userSession;
-	/** @var IUserManager */
-	private $userManager;
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IRootFolder */
-	private $rootFolder;
-	/** @var IL10N */
-	private $l;
+	private \OC\Share\MailNotifications $mailNotifications;
+	private \OCP\IUserSession $userSession;
+	private \OCP\IUserManager $userManager;
+	private \OCP\IGroupManager $groupManager;
+	private \OCP\Files\IRootFolder $rootFolder;
+	private \OCP\IL10N $l;
 	public function __construct(
 		string $appName,
 		IRequest $request,
@@ -127,10 +121,9 @@ class NotificationController extends OCSController {
 			$recipientList = $group->searchUsers('');
 		}
 		// don't send a mail to the user who shared the file
-		$recipientList = \array_filter($recipientList, function ($user) {
-			/** @var IUser $user */
-			return $user->getUID() !== $this->userSession->getUser()->getUID();
-		});
+		$recipientList = \array_filter($recipientList, fn ($user) =>
+	  /** @var IUser $user */
+	  $user->getUID() !== $this->userSession->getUser()->getUID());
 
 		$userFolder = $this->rootFolder->getUserFolder($sender->getUID());
 		$nodes = $userFolder->getById($itemSource, true);

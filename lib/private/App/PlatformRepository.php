@@ -91,9 +91,7 @@ class PlatformRepository {
 					break;
 
 				case 'openssl':
-					$prettyVersion = \preg_replace_callback('{^(?:OpenSSL\s*)?([0-9.]+)([a-z]?).*}', function ($match) {
-						return $match[1] . (empty($match[2]) ? '' : '.' . (\ord($match[2]) - 96));
-					}, OPENSSL_VERSION_TEXT);
+					$prettyVersion = \preg_replace_callback('{^(?:OpenSSL\s*)?([0-9.]+)([a-z]?).*}', fn ($match) => $match[1] . (empty($match[2]) ? '' : '.' . (\ord($match[2]) - 96)), OPENSSL_VERSION_TEXT);
 					break;
 
 				case 'pcre':
@@ -135,13 +133,10 @@ class PlatformRepository {
 	 */
 	public function findLibrary($name) {
 		$extName = $this->buildPackageName($name);
-		if (isset($this->packages[$extName])) {
-			return $this->packages[$extName];
-		}
-		return null;
+		return $this->packages[$extName] ?? null;
 	}
 
-	private static $modifierRegex = '[._-]?(?:(stable|beta|b|RC|alpha|a|patch|pl|p)(?:[.-]?(\d+))?)?([.-]?dev)?';
+	private static string $modifierRegex = '[._-]?(?:(stable|beta|b|RC|alpha|a|patch|pl|p)(?:[.-]?(\d+))?)?([.-]?dev)?';
 
 	/**
 	 * Normalizes a version string to be able to perform comparisons on it

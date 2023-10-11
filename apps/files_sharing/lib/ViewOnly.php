@@ -30,8 +30,7 @@ use OCP\Files\NotFoundException;
  * Handles restricting for download of files
  */
 class ViewOnly {
-	/** @var Folder */
-	private $userFolder;
+	private \OCP\Files\Folder $userFolder;
 
 	public function __construct(Folder $userFolder) {
 		$this->userFolder = $userFolder;

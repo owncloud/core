@@ -39,17 +39,16 @@ use Test\TestCase;
  */
 class LockManagerTest extends TestCase {
 	/** @var LockMapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $lockMapper;
+	private \PHPUnit\Framework\MockObject\MockObject $lockMapper;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
-	private $userSession;
-	/** @var LockManager */
-	private $manager;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
+	private \OC\Lock\Persistent\LockManager $manager;
 	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	public function setUp(): void {
 		parent::setUp();

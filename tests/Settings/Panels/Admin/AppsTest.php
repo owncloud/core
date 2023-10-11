@@ -17,10 +17,9 @@ use OCP\IConfig;
  * @package Tests\Settings\Panels\Admin
  */
 class AppsTest extends \Test\TestCase {
-	/** @var Apps */
-	private $panel;
+	private \OC\Settings\Panels\Admin\Apps $panel;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();

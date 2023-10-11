@@ -37,7 +37,7 @@ class MySqlToolsTest extends TestCase {
 	/**
 	 * @var IDBConnection
 	 */
-	private $db;
+	private \PHPUnit\Framework\MockObject\MockObject $db;
 
 	/**
 	 * @var MySqlTools

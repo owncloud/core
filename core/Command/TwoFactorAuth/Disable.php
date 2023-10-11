@@ -29,11 +29,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Disable extends Base {
-	/** @var Manager */
-	private $manager;
+	private \OC\Authentication\TwoFactorAuth\Manager $manager;
 
-	/** @var UserManager */
-	private $userManager;
+	private \OC\User\Manager $userManager;
 
 	public function __construct(Manager $manager, UserManager $userManager) {
 		parent::__construct('twofactorauth:disable');

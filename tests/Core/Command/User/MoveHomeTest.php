@@ -34,14 +34,8 @@ use Test\TestCase;
  * @package Tests\Core\Command\User
  */
 class MoveHomeTest extends TestCase {
-	/**
-	 * @var CommandTester
-	 */
-	private $commandTester;
-	/**
-	 * @var string
-	 */
-	private $newLocation;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
+	private string $newLocation;
 	/**
 	 * @var bool|IUser
 	 */

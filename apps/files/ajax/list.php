@@ -45,7 +45,7 @@ try {
 
 	$sortAttribute = isset($_GET['sort']) ? (string)$_GET['sort'] : 'name';
 	$sortDirection = isset($_GET['sortdirection']) ? ($_GET['sortdirection'] === 'desc') : false;
-	$mimetypeFilters = isset($_GET['mimetypes']) ? \json_decode($_GET['mimetypes']) : '';
+	$mimetypeFilters = isset($_GET['mimetypes']) ? \json_decode($_GET['mimetypes'], null, 512, JSON_THROW_ON_ERROR) : '';
 
 	$files = [];
 	// Clean up duplicates from array
@@ -80,7 +80,7 @@ try {
 	\OCP\Util::logException('files', $e);
 	OCP\JSON::error([
 		'data' => [
-			'exception' => '\OCP\Files\StorageNotAvailableException',
+			'exception' => '\\' . \OCP\Files\StorageNotAvailableException::class,
 			'message' => $l->t('Storage is temporarily not available')
 		]
 	]);
@@ -88,7 +88,7 @@ try {
 	\OCP\Util::logException('files', $e);
 	OCP\JSON::error([
 		'data' => [
-			'exception' => '\OCP\Files\StorageInvalidException',
+			'exception' => '\\' . \OCP\Files\StorageInvalidException::class,
 			'message' => $l->t('Storage invalid')
 		]
 	]);

@@ -462,7 +462,7 @@ class WebDavHelper {
 			$password
 		);
 		$bodyContents = $response->getBody()->getContents();
-		$json = \json_decode($bodyContents);
+		$json = \json_decode($bodyContents, null, 512, JSON_THROW_ON_ERROR);
 		$personalSpaceId = '';
 		if ($json === null) {
 			// the graph endpoint did not give a useful answer
@@ -876,7 +876,7 @@ class WebDavHelper {
 		Assert::assertArrayHasKey(
 			0,
 			$xmlpart,
-			__METHOD__ . " XML part does not have key 0. Expected a value at index 0 of 'xmlPart' but, found: " . json_encode($xmlpart)
+			__METHOD__ . " XML part does not have key 0. Expected a value at index 0 of 'xmlPart' but, found: " . json_encode($xmlpart, JSON_THROW_ON_ERROR)
 		);
 		$mtime = new DateTime($xmlpart[0]->__toString());
 		return $mtime->format('U');

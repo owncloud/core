@@ -40,7 +40,7 @@ class FutureFileTest extends \Test\TestCase {
 
 	public function testGetLastModified() {
 		$f = $this->mockFutureFile();
-		$this->assertEquals(12121212, $f->getLastModified());
+		$this->assertEquals(12_121_212, $f->getLastModified());
 	}
 
 	public function testGetSize() {
@@ -55,7 +55,7 @@ class FutureFileTest extends \Test\TestCase {
 	}
 
 	public function testDelete() {
-		$d = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Directory')
+		$d = $this->getMockBuilder(\OCA\DAV\Connector\Sabre\Directory::class)
 			->disableOriginalConstructor()
 			->setMethods(['delete'])
 			->getMock();
@@ -89,7 +89,7 @@ class FutureFileTest extends \Test\TestCase {
 	 * @return \OCA\DAV\Upload\FutureFile
 	 */
 	private function mockFutureFile() {
-		$d = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Directory')
+		$d = $this->getMockBuilder(\OCA\DAV\Connector\Sabre\Directory::class)
 			->disableOriginalConstructor()
 			->setMethods(['getETag', 'getLastModified', 'getChildren'])
 			->getMock();
@@ -100,7 +100,7 @@ class FutureFileTest extends \Test\TestCase {
 
 		$d->expects($this->any())
 			->method('getLastModified')
-			->willReturn(12121212);
+			->willReturn(12_121_212);
 
 		$d->expects($this->any())
 			->method('getChildren')

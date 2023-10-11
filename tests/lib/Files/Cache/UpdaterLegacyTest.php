@@ -22,7 +22,7 @@ class UpdaterLegacyTest extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
 	 */
-	private $storage;
+	private \OC\Files\Storage\Temporary $storage;
 
 	/**
 	 * @var \OC\Files\Cache\Scanner $scanner
@@ -289,7 +289,7 @@ class UpdaterLegacyTest extends \Test\TestCase {
 		$this->assertGreaterThanOrEqual($rootCachedData['mtime'], $cachedData['mtime']);
 		$rootCachedData = $cachedData;
 
-		$time = 1371006070;
+		$time = 1_371_006_070;
 		$barCachedData = $this->cache->get('folder/bar.txt');
 		$folderCachedData = $this->cache->get('folder');
 		$this->cache->put('', ['mtime' => $time - 100]);

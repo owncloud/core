@@ -31,8 +31,7 @@ use GuzzleHttp\Psr7\Response as GuzzleResponse;
  * @package OC\Http
  */
 class Response implements IResponse {
-	/** @var GuzzleResponse */
-	private $response;
+	private \GuzzleHttp\Psr7\Response $response;
 
 	/**
 	 * @var bool

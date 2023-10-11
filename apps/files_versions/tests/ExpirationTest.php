@@ -181,7 +181,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @return \OCP\AppFramework\Utility\ITimeFactory
 	 */
 	private function getMockedTimeFactory($time) {
-		$mockedTimeFactory = $this->getMockBuilder('\OCP\AppFramework\Utility\ITimeFactory')
+		$mockedTimeFactory = $this->getMockBuilder('\\' . \OCP\AppFramework\Utility\ITimeFactory::class)
 				->disableOriginalConstructor()
 				->setMethods(['getTime'])
 				->getMock()
@@ -199,7 +199,7 @@ class ExpirationTest extends \Test\TestCase {
 	 * @return \OCP\IConfig
 	 */
 	private function getMockedConfig($returnValue) {
-		$mockedConfig = $this->getMockBuilder('\OCP\IConfig')
+		$mockedConfig = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 				->disableOriginalConstructor()
 				->setMethods(
 					[

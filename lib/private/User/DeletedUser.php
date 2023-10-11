@@ -34,11 +34,9 @@ use OCP\Files\NotFoundException;
  */
 class DeletedUser implements IUser {
 	/** @var Emitter */
-	private $emitter;
-	/** @var IConfig */
-	private $config;
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OC\User\Manager $emitter;
+	private \OCP\IConfig $config;
+	private \OCP\IURLGenerator $urlGenerator;
 	/** @var string */
 	private $uid;
 

@@ -30,10 +30,7 @@ use OCP\IUser;
  * Mount provider for custom preview storages
  */
 class PreviewsMountProvider implements IMountProvider {
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * PreviewsMountProvider constructor.
@@ -60,7 +57,7 @@ class PreviewsMountProvider implements IMountProvider {
 			}
 
 			return [
-				new MountPoint('\OC\Files\Storage\Local', '/' . $user->getUID() . '/thumbnails', ['datadir' => $previewsDir], $loader)
+				new MountPoint('\\' . \OC\Files\Storage\Local::class, '/' . $user->getUID() . '/thumbnails', ['datadir' => $previewsDir], $loader)
 			];
 		} else {
 			return [];

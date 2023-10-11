@@ -98,9 +98,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->tokenHandler = $this->createMock(TokenHandler::class);
 		$this->l = $this->createMock(IL10N::class);
 		$this->l->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 		$this->logger = $this->createMock(ILogger::class);
 		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->config = $this->createMock(IConfig::class);

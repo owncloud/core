@@ -29,12 +29,9 @@ use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IDBConnection;
 
 class Backend {
-	/** @var IDBConnection */
-	private $db;
-	/** @var Principal */
-	private $principalBackend;
-	/** @var GroupPrincipalBackend */
-	private $groupPrincipalBackend;
+	private \OCP\IDBConnection $db;
+	private \OCA\DAV\Connector\Sabre\Principal $principalBackend;
+	private \OCA\DAV\DAV\GroupPrincipalBackend $groupPrincipalBackend;
 	/** @var string */
 	private $resourceType;
 
@@ -186,7 +183,7 @@ class Backend {
 			$p = $this->principalBackend->getPrincipalByPath($row['principaluri']);
 			$shares[]= [
 				'href' => "principal:{$row['principaluri']}",
-				'commonName' => isset($p['{DAV:}displayname']) ? $p['{DAV:}displayname'] : '',
+				'commonName' => $p['{DAV:}displayname'] ?? '',
 				'status' => 1,
 				'readOnly' => $row['access'] == self::ACCESS_READ,
 				'{http://owncloud.org/ns}principal' => $row['principaluri'],

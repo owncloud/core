@@ -39,19 +39,19 @@ use Test\TestCase;
  */
 class OcsControllerTest extends TestCase {
 	/** @var Request | MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/** @var IDBConnection | MockObject */
-	private $dbConn;
+	private \PHPUnit\Framework\MockObject\MockObject $dbConn;
 
 	/** @var IUserSession | MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	/** @var IUserManager | MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var  OcsController | MockObject */
-	private $controller;
+	private \OC\Core\Controller\OcsController $controller;
 
 	protected function setUp(): void {
 		parent::setUp();

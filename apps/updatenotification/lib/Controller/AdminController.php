@@ -38,20 +38,13 @@ use OCP\Security\ISecureRandom;
 use OCP\Settings\ISettings;
 
 class AdminController extends Controller implements ISettings {
-	/** @var IJobList */
-	private $jobList;
-	/** @var ISecureRandom */
-	private $secureRandom;
-	/** @var IConfig */
-	private $config;
-	/** @var ITimeFactory */
-	private $timeFactory;
-	/** @var UpdateChecker */
-	private $updateChecker;
-	/** @var IL10N */
-	private $l10n;
-	/** @var IDateTimeFormatter */
-	private $dateTimeFormatter;
+	private \OCP\BackgroundJob\IJobList $jobList;
+	private \OCP\Security\ISecureRandom $secureRandom;
+	private \OCP\IConfig $config;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
+	private \OCA\UpdateNotification\UpdateChecker $updateChecker;
+	private \OCP\IL10N $l10n;
+	private \OCP\IDateTimeFormatter $dateTimeFormatter;
 
 	/**
 	 * @param string $appName
@@ -134,7 +127,7 @@ class AdminController extends Controller implements ISettings {
 		}
 		$updateState = $this->updateChecker->getUpdateState();
 
-		$notifyGroups = \json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true);
+		$notifyGroups = \json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true, 512, JSON_THROW_ON_ERROR);
 		
 		$isNewVersionAvailable = ($updateState === []) ? false : true;
 		$newVersionString = ($updateState === []) ? '' : $updateState['updateVersion'];
@@ -179,7 +172,7 @@ class AdminController extends Controller implements ISettings {
 	 */
 	public function createCredentials() {
 		// Create a new job and store the creation date
-		$this->jobList->add('OCA\UpdateNotification\ResetTokenBackgroundJob');
+		$this->jobList->add(\OCA\UpdateNotification\ResetTokenBackgroundJob::class);
 		$this->config->setAppValue('core', 'updater.secret.created', $this->timeFactory->getTime());
 
 		// Create a new token

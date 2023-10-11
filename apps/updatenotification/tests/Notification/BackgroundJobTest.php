@@ -49,12 +49,12 @@ class BackgroundJobTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->createMock('OCP\IConfig');
-		$this->notificationManager = $this->createMock('OCP\Notification\IManager');
-		$this->groupManager = $this->createMock('OCP\IGroupManager');
-		$this->appManager = $this->createMock('OCP\App\IAppManager');
-		$this->client = $this->createMock('OCP\Http\Client\IClientService');
-		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
+		$this->config = $this->createMock(\OCP\IConfig::class);
+		$this->notificationManager = $this->createMock(\OCP\Notification\IManager::class);
+		$this->groupManager = $this->createMock(\OCP\IGroupManager::class);
+		$this->appManager = $this->createMock(\OCP\App\IAppManager::class);
+		$this->client = $this->createMock(\OCP\Http\Client\IClientService::class);
+		$this->urlGenerator = $this->createMock(\OCP\IURLGenerator::class);
 	}
 
 	/**
@@ -73,7 +73,7 @@ class BackgroundJobTest extends TestCase {
 			);
 		}
 		{
-			return $this->getMockBuilder('OCA\UpdateNotification\Notification\BackgroundJob')
+			return $this->getMockBuilder(\OCA\UpdateNotification\Notification\BackgroundJob::class)
 				->setConstructorArgs([
 					$this->config,
 					$this->notificationManager,
@@ -137,7 +137,7 @@ class BackgroundJobTest extends TestCase {
 			$job->expects($this->never())
 				->method('createVersionCheck');
 		} else {
-			$check = $this->getMockBuilder('OC\Updater\VersionCheck')
+			$check = $this->getMockBuilder(\OC\Updater\VersionCheck::class)
 				->disableOriginalConstructor()
 				->getMock();
 			$check->expects($this->once())
@@ -225,7 +225,7 @@ class BackgroundJobTest extends TestCase {
 		}
 
 		if ($createNotification) {
-			$notification = $this->createMock('OCP\Notification\INotification');
+			$notification = $this->createMock(\OCP\Notification\INotification::class);
 			$notification->expects($this->once())
 				->method('setApp')
 				->with('updatenotification')
@@ -287,7 +287,7 @@ class BackgroundJobTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('getAppValue')
 			->with('updatenotification', 'notify_groups', '["admin"]')
-			->willReturn(\json_encode($groups));
+			->willReturn(\json_encode($groups, JSON_THROW_ON_ERROR));
 
 		$groupMap = [];
 		foreach ($groupUsers as $gid => $uids) {
@@ -326,7 +326,7 @@ class BackgroundJobTest extends TestCase {
 	 * @param string $version
 	 */
 	public function testDeleteOutdatedNotifications($app, $version) {
-		$notification = $this->createMock('OCP\Notification\INotification');
+		$notification = $this->createMock(\OCP\Notification\INotification::class);
 		$notification->expects($this->once())
 			->method('setApp')
 			->with('updatenotification')
@@ -354,7 +354,7 @@ class BackgroundJobTest extends TestCase {
 	protected function getUsers(array $userIds) {
 		$users = [];
 		foreach ($userIds as $uid) {
-			$user = $this->createMock('OCP\IUser');
+			$user = $this->createMock(\OCP\IUser::class);
 			$user->expects($this->any())
 				->method('getUID')
 				->willReturn($uid);
@@ -368,7 +368,7 @@ class BackgroundJobTest extends TestCase {
 	 * @return \OCP\IGroup|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getGroup($gid) {
-		$group = $this->createMock('OCP\IGroup');
+		$group = $this->createMock(\OCP\IGroup::class);
 		$group->expects($this->any())
 			->method('getGID')
 			->willReturn($gid);

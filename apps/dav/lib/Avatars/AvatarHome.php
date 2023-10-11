@@ -30,8 +30,7 @@ use Sabre\DAV\ICollection;
 class AvatarHome implements ICollection {
 	/** @var array */
 	private $principalInfo;
-	/** @var IAvatarManager */
-	private $avatarManager;
+	private \OCP\IAvatarManager $avatarManager;
 
 	/**
 	 * AvatarHome constructor.
@@ -53,8 +52,8 @@ class AvatarHome implements ICollection {
 
 	public function getChild($name) {
 		$elements = \pathinfo($name);
-		$ext = isset($elements['extension']) ? $elements['extension'] : '';
-		$size = \intval(isset($elements['filename']) ? $elements['filename'] : '64');
+		$ext = $elements['extension'] ?? '';
+		$size = \intval($elements['filename'] ?? '64');
 		if (!\in_array($ext, ['jpeg', 'png'])) {
 			throw new MethodNotAllowed('File format not allowed');
 		}
@@ -82,9 +81,7 @@ class AvatarHome implements ICollection {
 		try {
 			$ret = $this->getChild($name);
 			return $ret !== null;
-		} catch (NotFound $ex) {
-			return false;
-		} catch (MethodNotAllowed $ex) {
+		} catch (NotFound|MethodNotAllowed $ex) {
 			return false;
 		}
 	}
@@ -94,7 +91,7 @@ class AvatarHome implements ICollection {
 	}
 
 	public function getName() {
-		list(, $name) = \Sabre\Uri\split($this->principalInfo['uri']);
+		[, $name] = \Sabre\Uri\split($this->principalInfo['uri']);
 		return $name;
 	}
 

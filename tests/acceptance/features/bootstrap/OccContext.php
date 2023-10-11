@@ -1524,7 +1524,7 @@ class OccContext implements Context {
 				'--output=json'
 			]
 		);
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		return ($userOrGroup === "users") ? $commandOutput->users : $commandOutput->groups;
 	}
 
@@ -1908,7 +1908,7 @@ class OccContext implements Context {
 	public function theFollowingLocalStoragesShouldExist(TableNode $mountPoints):void {
 		$createdLocalStorage = [];
 		$expectedLocalStorages = $mountPoints->getColumnsHash();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		foreach ($commandOutput as $storageEntry) {
 			$createdLocalStorage[$storageEntry->mount_id] = \ltrim($storageEntry->mount_point, '/');
 		}
@@ -1936,7 +1936,7 @@ class OccContext implements Context {
 		$createdLocalStorage = [];
 		$this->listLocalStorageMount();
 		$expectedLocalStorages = $mountPoints->getColumnsHash();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		foreach ($commandOutput as $i) {
 			$createdLocalStorage[$i->mount_id] = \ltrim($i->mount_point, '/');
 		}
@@ -1969,7 +1969,7 @@ class OccContext implements Context {
 				. "' do not have key 'backend-type'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		$keys = \array_keys((array) $commandOutput);
 		foreach ($expectedBackendTypes as $backendTypesEntry) {
 			Assert::assertContains(
@@ -2003,7 +2003,7 @@ class OccContext implements Context {
 				. "' do not have key 'backends'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		$keys = \array_keys((array) $commandOutput);
 		foreach ($expectedBackends as $backendsEntry) {
 			Assert::assertContains(
@@ -2037,7 +2037,7 @@ class OccContext implements Context {
 				. "' do not have key 'backend-keys'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		$keys = \array_keys((array) $commandOutput);
 		foreach ($expectedBackendKeys as $backendKeysEntry) {
 			Assert::assertContains(
@@ -2066,7 +2066,7 @@ class OccContext implements Context {
 			['Storage', 'AuthenticationType', 'Configuration', 'Options', 'Auth', 'Type']
 		);
 		$expectedLocalStorages = $table->getColumnsHash();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		foreach ($expectedLocalStorages as $expectedStorageEntry) {
 			$isStorageEntryListed = false;
 			foreach ($commandOutput as $listedStorageEntry) {
@@ -2246,7 +2246,7 @@ class OccContext implements Context {
 				. "' do not have key 'configuration'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		$isStorageEntryListed = false;
 		foreach ($commandOutput as $listedStorageEntry) {
 			if ($listedStorageEntry->mount_point === $localStorage) {
@@ -2315,7 +2315,7 @@ class OccContext implements Context {
 				. "' do not have key 'option'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		$isStorageEntryListed = false;
 		foreach ($commandOutput as $listedStorageEntry) {
 			if ($listedStorageEntry->mount_point === $localStorage) {
@@ -2361,7 +2361,7 @@ class OccContext implements Context {
 				. "' do not have key 'options'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		$isStorageEntryListed = false;
 		foreach ($commandOutput as $listedStorageEntry) {
 			if ($listedStorageEntry->mount_point === $localStorage) {
@@ -2422,7 +2422,7 @@ class OccContext implements Context {
 		$createdLocalStorage = [];
 		$mount_id = null;
 		$this->listLocalStorageMount();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		foreach ($commandOutput as $i) {
 			$createdLocalStorage[$i->mount_id] = \ltrim($i->mount_point, '/');
 		}
@@ -2501,7 +2501,7 @@ class OccContext implements Context {
 	public function theOutputShouldContainConfigurationForMount(string $mount):void {
 		$actualConfig = null;
 
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		foreach ($commandOutput as $i) {
 			if ($mount === \ltrim($i->mount_point, '/')) {
 				$actualConfig = $i;
@@ -2522,7 +2522,7 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorVerifiesTheMountConfigurationForLocalStorageUsingTheOccCommand(string $localStorage):void {
 		$this->listLocalStorageMount();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		foreach ($commandOutput as $entry) {
 			if (\ltrim($entry->mount_point, '/') == $localStorage) {
 				$mountId = $entry->mount_id;
@@ -3034,7 +3034,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theCommandOutputShouldContainTheAppsConfigs():void {
-		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
+		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true, 512, JSON_THROW_ON_ERROR);
 		Assert::assertArrayHasKey(
 			'apps',
 			$config_list,
@@ -3052,7 +3052,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theCommandOutputShouldContainTheSystemConfigs():void {
-		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
+		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true, 512, JSON_THROW_ON_ERROR);
 		Assert::assertArrayHasKey(
 			'system',
 			$config_list,
@@ -3139,7 +3139,9 @@ class OccContext implements Context {
 	):void {
 		$configList = \json_decode(
 			$this->featureContext->getStdOutOfOccCommand(),
-			true
+			true,
+			512,
+			JSON_THROW_ON_ERROR
 		);
 		$systemConfig = $configList['system'];
 
@@ -3472,7 +3474,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function mountPointShouldNotBeListedAsAnExternalStorage(string $mountPoint):void {
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 		foreach ($commandOutput as $entry) {
 			Assert::assertNotEquals($mountPoint, $entry->mount_point);
 		}

@@ -27,8 +27,7 @@ namespace OC\Log;
 use OCP\ILogger;
 
 class ErrorHandler {
-	/** @var ILogger */
-	private static $logger;
+	private static ?\OCP\ILogger $logger = null;
 
 	/**
 	 * remove password in URLs

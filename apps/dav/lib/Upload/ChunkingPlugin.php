@@ -26,8 +26,7 @@ use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 
 class ChunkingPlugin extends ServerPlugin {
-	/** @var Server */
-	private $server;
+	private ?\Sabre\DAV\Server $server = null;
 	/** @var FutureFile */
 	private $sourceNode;
 

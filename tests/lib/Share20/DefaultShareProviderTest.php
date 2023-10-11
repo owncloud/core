@@ -2421,9 +2421,7 @@ class DefaultShareProviderTest extends TestCase {
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function ($userId) use ($users) {
-				return $users[$userId];
-			})
+			$this->returnCallback(fn ($userId) => $users[$userId])
 		);
 
 		$file1 = $this->createMock(File::class);
@@ -2482,9 +2480,7 @@ class DefaultShareProviderTest extends TestCase {
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function ($userId) use ($users) {
-				return $users[$userId];
-			})
+			$this->returnCallback(fn ($userId) => $users[$userId])
 		);
 
 		$file1 = $this->createMock(File::class);
@@ -2550,9 +2546,7 @@ class DefaultShareProviderTest extends TestCase {
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function ($userId) use ($users) {
-				return $users[$userId];
-			})
+			$this->returnCallback(fn ($userId) => $users[$userId])
 		);
 
 		$file1 = $this->createMock(File::class);
@@ -2609,9 +2603,7 @@ class DefaultShareProviderTest extends TestCase {
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function ($userId) use ($users) {
-				return $users[$userId];
-			})
+			$this->returnCallback(fn ($userId) => $users[$userId])
 		);
 
 		$groups = [];
@@ -2622,9 +2614,7 @@ class DefaultShareProviderTest extends TestCase {
 		}
 
 		$this->groupManager->method('get')->will(
-			$this->returnCallback(function ($groupId) use ($groups) {
-				return $groups[$groupId];
-			})
+			$this->returnCallback(fn ($groupId) => $groups[$groupId])
 		);
 
 		$file1 = $this->createMock(File::class);
@@ -2717,9 +2707,7 @@ class DefaultShareProviderTest extends TestCase {
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function ($userId) use ($users) {
-				return $users[$userId];
-			})
+			$this->returnCallback(fn ($userId) => $users[$userId])
 		);
 
 		$groups = [];
@@ -2730,9 +2718,7 @@ class DefaultShareProviderTest extends TestCase {
 		}
 
 		$this->groupManager->method('get')->will(
-			$this->returnCallback(function ($groupId) use ($groups) {
-				return $groups[$groupId];
-			})
+			$this->returnCallback(fn ($groupId) => $groups[$groupId])
 		);
 
 		$file1 = $this->createMock(File::class);

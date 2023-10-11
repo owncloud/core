@@ -23,7 +23,7 @@ namespace Test\Files\External\Auth;
 
 class AuthMechanismTest extends \Test\TestCase {
 	public function testJsonSerialization() {
-		$mechanism = $this->getMockBuilder('\OCP\Files\External\Auth\AuthMechanism')
+		$mechanism = $this->getMockBuilder('\\' . \OCP\Files\External\Auth\AuthMechanism::class)
 			->setMethods(['jsonSerializeDefinition'])
 			->getMock();
 		$mechanism->expects($this->once())
@@ -50,7 +50,7 @@ class AuthMechanismTest extends \Test\TestCase {
 	 * @dataProvider validateStorageProvider
 	 */
 	public function testValidateStorage($expectedSuccess, $scheme, $definitionSuccess) {
-		$mechanism = $this->getMockBuilder('\OCP\Files\External\Auth\AuthMechanism')
+		$mechanism = $this->getMockBuilder('\\' . \OCP\Files\External\Auth\AuthMechanism::class)
 			->setMethods(['validateStorageDefinition'])
 			->getMock();
 		$mechanism->expects($this->atMost(1))
@@ -59,14 +59,14 @@ class AuthMechanismTest extends \Test\TestCase {
 
 		$mechanism->setScheme($scheme);
 
-		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+		$backend = $this->getMockBuilder('\\' . \OCP\Files\External\Backend\Backend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$backend->expects($this->once())
 			->method('getAuthSchemes')
 			->willReturn(['scheme' => true, 'foobar' => true]);
 
-		$storageConfig = $this->getMockBuilder('\OCP\Files\External\IStorageConfig')
+		$storageConfig = $this->getMockBuilder('\\' . \OCP\Files\External\IStorageConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$storageConfig->expects($this->once())

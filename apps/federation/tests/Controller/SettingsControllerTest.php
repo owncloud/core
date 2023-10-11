@@ -27,24 +27,23 @@ use OCP\AppFramework\Http\DataResponse;
 use Test\TestCase;
 
 class SettingsControllerTest extends TestCase {
-	/** @var SettingsController  */
-	private $controller;
+	private \OCA\Federation\Controller\SettingsController $controller;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | \OCP\IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | \OCP\IL10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | \OCA\Federation\TrustedServers */
-	private $trustedServers;
+	private \PHPUnit\Framework\MockObject\MockObject $trustedServers;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->createMock('OCP\IRequest');
-		$this->l10n = $this->createMock('OCP\IL10N');
-		$this->trustedServers = $this->getMockBuilder('OCA\Federation\TrustedServers')
+		$this->request = $this->createMock(\OCP\IRequest::class);
+		$this->l10n = $this->createMock(\OCP\IL10N::class);
+		$this->trustedServers = $this->getMockBuilder(\OCA\Federation\TrustedServers::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->controller = new SettingsController(

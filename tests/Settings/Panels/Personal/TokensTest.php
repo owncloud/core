@@ -16,8 +16,7 @@ use OC\Settings\Panels\Personal\Tokens;
  * @package Tests\Settings\Panels\Personal
  */
 class TokensTest extends \Test\TestCase {
-	/** @var Tokens */
-	private $panel;
+	private \OC\Settings\Panels\Personal\Tokens $panel;
 
 	public function setUp(): void {
 		parent::setUp();

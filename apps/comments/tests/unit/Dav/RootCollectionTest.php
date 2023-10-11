@@ -47,13 +47,13 @@ class RootCollectionTest extends \Test\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->user = $this->createMock('\OCP\IUser');
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
 
-		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
-		$this->userManager = $this->createMock('\OCP\IUserManager');
-		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->commentsManager = $this->createMock('\\' . \OCP\Comments\ICommentsManager::class);
+		$this->userManager = $this->createMock('\\' . \OCP\IUserManager::class);
+		$this->userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$this->dispatcher = new EventDispatcher();
-		$this->logger = $this->createMock('\OCP\ILogger');
+		$this->logger = $this->createMock('\\' . \OCP\ILogger::class);
 
 		$this->collection = new \OCA\Comments\Dav\RootCollection(
 			$this->commentsManager,
@@ -74,9 +74,7 @@ class RootCollectionTest extends \Test\TestCase {
 			->will($this->returnValue($this->user));
 
 		$this->dispatcher->addListener(CommentsEntityEvent::EVENT_ENTITY, function (CommentsEntityEvent $event) {
-			$event->addEntityCollection('files', function () {
-				return true;
-			});
+			$event->addEntityCollection('files', fn () => true);
 		});
 	}
 

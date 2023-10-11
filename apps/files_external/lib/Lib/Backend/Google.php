@@ -36,7 +36,7 @@ class Google extends ExternalBackend {
 		$this
 			->setIdentifier('googledrive')
 			->addIdentifierAlias('\OC\Files\Storage\Google') // legacy compat
-			->setStorageClass('\OCA\Files_External\Lib\Storage\Google')
+			->setStorageClass('\\' . \OCA\Files_External\Lib\Storage\Google::class)
 			->setText($l->t('Google Drive'))
 			->addParameters([
 				// all parameters handled in OAuth2 mechanism

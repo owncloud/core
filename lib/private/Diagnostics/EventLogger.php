@@ -30,12 +30,12 @@ class EventLogger implements IEventLogger {
 	/**
 	 * @var \OC\Diagnostics\Event[]
 	 */
-	private $events = [];
+	private array $events = [];
 	
 	/**
 	 * @var bool - Module needs to be activated by some app
 	 */
-	private $activated = false;
+	private bool $activated = false;
 
 	/**
 	 * @inheritdoc

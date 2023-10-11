@@ -36,10 +36,7 @@ use Test\TestCase;
  * @package OCA\Files\Tests\Command
  */
 class DeleteOrphanedFilesTest extends TestCase {
-	/**
-	 * @var DeleteOrphanedFiles
-	 */
-	private $command;
+	private \OCA\Files\Command\DeleteOrphanedFiles $command;
 
 	/**
 	 * @var \OCP\IDBConnection
@@ -85,10 +82,10 @@ class DeleteOrphanedFilesTest extends TestCase {
 	 * Test clearing orphaned files
 	 */
 	public function testClearFiles() {
-		$input = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
+		$input = $this->getMockBuilder(\Symfony\Component\Console\Input\InputInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$output = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')
+		$output = $this->getMockBuilder(\Symfony\Component\Console\Output\OutputInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -20,7 +20,7 @@ use Test\Traits\UserTrait;
 class RootTest extends TestCase {
 	use UserTrait;
 
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -36,11 +36,11 @@ class RootTest extends TestCase {
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 */
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\\' . \OC\Files\Storage\Storage::class);
 		/**
 		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
-		$view = $this->createMock('\OC\Files\View');
+		$view = $this->createMock('\\' . \OC\Files\View::class);
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
 
 		$view->expects($this->once())
@@ -55,7 +55,7 @@ class RootTest extends TestCase {
 		$root->mount($storage, '');
 		$node = $root->get('/bar/foo');
 		$this->assertEquals(10, $node->getId());
-		$this->assertInstanceOf('\OC\Files\Node\File', $node);
+		$this->assertInstanceOf('\\' . \OC\Files\Node\File::class, $node);
 	}
 
 	/**
@@ -67,11 +67,11 @@ class RootTest extends TestCase {
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 */
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\\' . \OC\Files\Storage\Storage::class);
 		/**
 		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
-		$view = $this->createMock('\OC\Files\View');
+		$view = $this->createMock('\\' . \OC\Files\View::class);
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
 
 		$view->expects($this->once())
@@ -92,7 +92,7 @@ class RootTest extends TestCase {
 		/**
 		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
-		$view = $this->createMock('\OC\Files\View');
+		$view = $this->createMock('\\' . \OC\Files\View::class);
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
 
 		$root->get('/../foo');
@@ -107,7 +107,7 @@ class RootTest extends TestCase {
 		/**
 		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
 		 */
-		$view = $this->createMock('\OC\Files\View');
+		$view = $this->createMock('\\' . \OC\Files\View::class);
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
 
 		$root->get('/bar/foo');

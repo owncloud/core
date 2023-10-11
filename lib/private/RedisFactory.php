@@ -29,8 +29,7 @@ class RedisFactory {
 	public const REDIS_MINIMAL_VERSION = '2.2.5';
 	public const REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION = '5.3.0';
 
-	/** @var  SystemConfig */
-	private $config;
+	private \OC\SystemConfig $config;
 
 	/**
 	 * RedisFactory constructor.

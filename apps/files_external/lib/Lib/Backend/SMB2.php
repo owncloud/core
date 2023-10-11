@@ -35,7 +35,7 @@ class SMB2 extends ExternalBackend {
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('smb-coll')
-			->setStorageClass('\OCA\Files_External\Lib\Storage\SMB2')
+			->setStorageClass('\\' . \OCA\Files_External\Lib\Storage\SMB2::class)
 			->setText($l->t('SMB Collaborative (shared file IDs)'))
 			->addParameters([
 				(new DefinitionParameter('host', $l->t('Host'))),

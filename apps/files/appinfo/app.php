@@ -27,7 +27,7 @@
 // required for translation purpose
 // t('Files')
 
-\OC::$server->getSearch()->registerProvider('OC\Search\Provider\File', ['apps' => ['files']]);
+\OC::$server->getSearch()->registerProvider(\OC\Search\Provider\File::class, ['apps' => ['files']]);
 
 // instantiate to make sure services get registered
 $app = new \OCA\Files\AppInfo\Application();
@@ -50,17 +50,15 @@ $templateManager->registerTemplate('application/vnd.oasis.opendocument.graphics'
 	];
 });
 
-\OC::$server->getActivityManager()->registerExtension(function () {
-	return new \OCA\Files\Activity(
-		\OC::$server->query('L10NFactory'),
-		\OC::$server->getURLGenerator(),
-		\OC::$server->getActivityManager(),
-		new \OCA\Files\ActivityHelper(
-			\OC::$server->getTagManager()
-		),
-		\OC::$server->getDatabaseConnection(),
-		\OC::$server->getConfig()
-	);
-});
+\OC::$server->getActivityManager()->registerExtension(fn () => new \OCA\Files\Activity(
+	\OC::$server->query('L10NFactory'),
+	\OC::$server->getURLGenerator(),
+	\OC::$server->getActivityManager(),
+	new \OCA\Files\ActivityHelper(
+		\OC::$server->getTagManager()
+	),
+	\OC::$server->getDatabaseConnection(),
+	\OC::$server->getConfig()
+));
 
-\OCP\Util::connectHook('\OCP\Config', 'js', '\OCA\Files\App', 'extendJsConfig');
+\OCP\Util::connectHook('\OCP\Config', 'js', '\\' . \OCA\Files\App::class, 'extendJsConfig');

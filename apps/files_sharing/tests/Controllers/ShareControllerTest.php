@@ -53,50 +53,48 @@ class ShareControllerTest extends \Test\TestCase {
 	/** @var string */
 	private $oldUser;
 
-	/** @var string */
-	private $appName = 'files_sharing';
-	/** @var ShareController */
-	private $shareController;
+	private string $appName = 'files_sharing';
+	private \OCA\Files_Sharing\Controllers\ShareController $shareController;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 	/** @var \OCP\IPreview | \PHPUnit\Framework\MockObject\MockObject */
-	private $previewManager;
+	private \PHPUnit\Framework\MockObject\MockObject $previewManager;
 	/** @var \OCP\IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var  \OC\Share20\Manager | \PHPUnit\Framework\MockObject\MockObject */
-	private $shareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 	/** @var EventDispatcher | \PHPUnit\Framework\MockObject\MockObject */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
 		$this->appName = 'files_sharing';
 
-		$this->shareManager = $this->getMockBuilder('\OC\Share20\Manager')->disableOriginalConstructor()->getMock();
-		$this->urlGenerator = $this->createMock('\OCP\IURLGenerator');
-		$this->session = $this->createMock('\OCP\ISession');
-		$this->previewManager = $this->createMock('\OCP\IPreview');
-		$this->config = $this->createMock('\OCP\IConfig');
-		$this->userManager = $this->createMock('\OCP\IUserManager');
+		$this->shareManager = $this->getMockBuilder('\\' . \OC\Share20\Manager::class)->disableOriginalConstructor()->getMock();
+		$this->urlGenerator = $this->createMock('\\' . \OCP\IURLGenerator::class);
+		$this->session = $this->createMock('\\' . \OCP\ISession::class);
+		$this->previewManager = $this->createMock('\\' . \OCP\IPreview::class);
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
+		$this->userManager = $this->createMock('\\' . \OCP\IUserManager::class);
 		$this->eventDispatcher = new EventDispatcher();
 
 		$this->shareController = new \OCA\Files_Sharing\Controllers\ShareController(
 			$this->appName,
-			$this->createMock('\OCP\IRequest'),
+			$this->createMock('\\' . \OCP\IRequest::class),
 			$this->config,
 			$this->urlGenerator,
 			$this->userManager,
-			$this->createMock('\OCP\ILogger'),
-			$this->createMock('\OCP\Activity\IManager'),
+			$this->createMock('\\' . \OCP\ILogger::class),
+			$this->createMock('\\' . \OCP\Activity\IManager::class),
 			$this->shareManager,
 			$this->session,
 			$this->previewManager,
-			$this->createMock('\OCP\Files\IRootFolder'),
-			$this->createMock('\OCP\IUserSession'),
+			$this->createMock('\\' . \OCP\Files\IRootFolder::class),
+			$this->createMock('\\' . \OCP\IUserSession::class),
 			$this->eventDispatcher
 		);
 
@@ -269,7 +267,7 @@ class ShareControllerTest extends \Test\TestCase {
 			->method('set');
 
 		$hookListner = $this->getMockBuilder('Dummy')->setMethods(['access'])->getMock();
-		\OCP\Util::connectHook('OCP\Share', 'share_link_access', $hookListner, 'access');
+		\OCP\Util::connectHook(\OCP\Share::class, 'share_link_access', $hookListner, 'access');
 
 		$calledShareLinkAccess = [];
 		$this->eventDispatcher->addListener(
@@ -297,14 +295,12 @@ class ShareControllerTest extends \Test\TestCase {
 
 		$hookListner->expects($this->once())
 			->method('access')
-			->with($this->callback(function (array $data) {
-				return $data['itemType'] === 'file' &&
+			->with($this->callback(fn (array $data) => $data['itemType'] === 'file' &&
 					$data['itemSource'] === 100 &&
 					$data['uidOwner'] === 'initiator' &&
 					$data['token'] === 'token' &&
 					$data['errorCode'] === 403 &&
-					$data['errorMessage'] === 'Wrong password';
-			}));
+					$data['errorMessage'] === 'Wrong password'));
 
 		$response = $this->shareController->authenticate('token', 'invalidpassword');
 		$expectedResponse =  new TemplateResponse($this->appName, 'authenticate', ['wrongpw' => true], 'guest');
@@ -358,11 +354,11 @@ class ShareControllerTest extends \Test\TestCase {
 	}
 
 	public function testShowShare() {
-		$owner = $this->createMock('OCP\IUser');
+		$owner = $this->createMock(\OCP\IUser::class);
 		$owner->method('getDisplayName')->willReturn('ownerDisplay');
 		$owner->method('getUID')->willReturn('ownerUID');
 
-		$file = $this->createMock('OCP\Files\File');
+		$file = $this->createMock(\OCP\Files\File::class);
 		$file->method('getName')->willReturn('file1.txt');
 		$file->method('getMimetype')->willReturn('text/plain');
 		$file->method('getSize')->willReturn(33);
@@ -447,11 +443,11 @@ class ShareControllerTest extends \Test\TestCase {
 	public function testShowShareInvalid() {
 		$this->expectException(\OCP\Files\NotFoundException::class);
 
-		$owner = $this->createMock('OCP\IUser');
+		$owner = $this->createMock(\OCP\IUser::class);
 		$owner->method('getDisplayName')->willReturn('ownerDisplay');
 		$owner->method('getUID')->willReturn('ownerUID');
 
-		$file = $this->createMock('OCP\Files\File');
+		$file = $this->createMock(\OCP\Files\File::class);
 		$file->method('getName')->willReturn('file1.txt');
 		$file->method('getMimetype')->willReturn('text/plain');
 		$file->method('getSize')->willReturn(33);
@@ -492,7 +488,7 @@ class ShareControllerTest extends \Test\TestCase {
 	}
 
 	public function testDownloadShare() {
-		$share = $this->createMock('\OCP\Share\IShare');
+		$share = $this->createMock('\\' . \OCP\Share\IShare::class);
 		$share->method('getPassword')->willReturn('password');
 
 		$this->shareManager
@@ -517,7 +513,7 @@ class ShareControllerTest extends \Test\TestCase {
 	public function testDownloadShareNoReadPermission() {
 		$this->expectException(\OCP\Files\NotFoundException::class);
 
-		$share = $this->createMock('\OCP\Share\IShare');
+		$share = $this->createMock('\\' . \OCP\Share\IShare::class);
 		$share->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_CREATE);
 
 		$this->shareManager

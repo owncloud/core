@@ -43,17 +43,14 @@ class Migrator {
 	/** @var \Doctrine\DBAL\Connection $connection */
 	protected $connection;
 
-	/** @var ISecureRandom */
-	private $random;
+	private \OCP\Security\ISecureRandom $random;
 
 	/** @var IConfig */
 	protected $config;
 
-	/** @var EventDispatcher  */
-	private $dispatcher;
+	private ?\Symfony\Component\EventDispatcher\EventDispatcher $dispatcher = null;
 
-	/** @var bool */
-	private $noEmit = false;
+	private bool $noEmit = false;
 
 	/**
 	 * @param \Doctrine\DBAL\Connection|Connection $connection

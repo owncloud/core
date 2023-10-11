@@ -36,14 +36,11 @@ use OCP\IL10N;
  * @package OCA\Federation
  */
 class DbHandler {
-	/** @var  IDBConnection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
-	/** @var  IL10N */
-	private $il10n;
+	private \OCP\IL10N $il10n;
 
-	/** @var string  */
-	private $dbTable = 'trusted_servers';
+	private string $dbTable = 'trusted_servers';
 
 	/**
 	 * @param IDBConnection $connection

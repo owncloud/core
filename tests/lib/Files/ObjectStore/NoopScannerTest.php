@@ -13,10 +13,9 @@ namespace Test\Files\ObjectStore;
 
 class NoopScannerTest extends \Test\TestCase {
 	/** @var \OC\Files\Storage\Storage $storage */
-	private $storage;
+	private \OC\Files\Storage\Temporary $storage;
 
-	/** @var \OC\Files\ObjectStore\NoopScanner $scanner */
-	private $scanner;
+	private \OC\Files\ObjectStore\NoopScanner $scanner;
 
 	protected function setUp(): void {
 		parent::setUp();

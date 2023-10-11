@@ -32,28 +32,26 @@ use Sabre\HTTP\Response;
 use Test\TestCase;
 
 class PluginTest extends TestCase {
-	/** @var PublishPlugin */
-	private $plugin;
-	/** @var Server */
-	private $server;
+	private \OCA\DAV\CalDAV\Publishing\PublishPlugin $plugin;
+	private \Sabre\DAV\Server $server;
 	/** @var Calendar | \PHPUnit\Framework\MockObject\MockObject */
-	private $book;
+	private \PHPUnit\Framework\MockObject\MockObject $book;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)->
 			disableOriginalConstructor()->
 			getMock();
 		$this->config->expects($this->any())->method('getSystemValue')
 			->with($this->equalTo('secret'))
 			->willReturn('mysecret');
 
-		$this->urlGenerator = $this->getMockBuilder('OCP\IURLGenerator')->
+		$this->urlGenerator = $this->getMockBuilder(\OCP\IURLGenerator::class)->
 			disableOriginalConstructor()->
 			getMock();
 
@@ -63,7 +61,7 @@ class PluginTest extends TestCase {
 		$root = new SimpleCollection('calendars');
 		$this->server = new Server($root);
 		/** @var SimpleCollection $node */
-		$this->book = $this->getMockBuilder('OCA\DAV\CalDAV\Calendar')->
+		$this->book = $this->getMockBuilder(\OCA\DAV\CalDAV\Calendar::class)->
 			disableOriginalConstructor()->
 			getMock();
 		$this->book->method('getName')->willReturn('cal1');

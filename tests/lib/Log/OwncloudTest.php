@@ -69,7 +69,7 @@ class OwncloudTest extends TestCase {
 		\fclose($handle);
 		
 		# check timestamp has microseconds part
-		$values = (array) \json_decode($line);
+		$values = (array) \json_decode($line, null, 512, JSON_THROW_ON_ERROR);
 		$microseconds = $values['time'];
 		$this->assertMatchesRegularExpression('/^\d{6}$/', $microseconds);
 	}

@@ -26,20 +26,18 @@ use OCP\IGroup;
 
 class MetaDataTest extends \Test\TestCase {
 	/** @var \OC\Group\Manager */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 	/** @var \OCP\IUserSession */
-	private $userSession;
-	/** @var \OC\Group\MetaData */
-	private $groupMetadata;
-	/** @var bool */
-	private $isAdmin = true;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
+	private \OC\Group\MetaData $groupMetadata;
+	private bool $isAdmin = true;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->groupManager = $this->getMockBuilder('\OC\Group\Manager')
+		$this->groupManager = $this->getMockBuilder('\\' . \OC\Group\Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$this->groupMetadata = new \OC\Group\MetaData(
 			'foo',
 			$this->isAdmin,
@@ -69,7 +67,7 @@ class MetaDataTest extends \Test\TestCase {
 			->with('')
 			->will($this->returnValue($groups));
 
-		list($adminGroups, $ordinaryGroups) = $this->groupMetadata->get();
+		[$adminGroups, $ordinaryGroups] = $this->groupMetadata->get();
 
 		$this->assertCount(1, $adminGroups);
 		$this->assertCount(2, $ordinaryGroups);
@@ -102,7 +100,7 @@ class MetaDataTest extends \Test\TestCase {
 			->with('')
 			->will($this->returnValue($groups));
 
-		list($adminGroups, $ordinaryGroups) = $this->groupMetadata->get();
+		[$adminGroups, $ordinaryGroups] = $this->groupMetadata->get();
 
 		$this->assertCount(1, $adminGroups);
 		$this->assertCount(2, $ordinaryGroups);

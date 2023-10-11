@@ -42,7 +42,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 	private $connection;
 
 	/** @var  IRepairStep */
-	private $repair;
+	private \OC\Repair\RepairOrphanedSubshare $repair;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -80,7 +80,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		//Lets create 10 entries in oc_share to share
 		$parentReshareCount = 1;
 		for ($i=1; $i <= 10; $i++) {
-			$time = 1522762088 + $i * 60;
+			$time = 1_522_762_088 + $i * 60;
 			if ($i <= 5) {
 				$shareWithUser = $user1;
 				$uidOwner = 'admin';
@@ -183,7 +183,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$firstIdSet = false;
 		foreach ($totalUsers as $user) {
 			for ($i=1; $i <= 100; $i++) {
-				$time = 1522762088 + $i * 60;
+				$time = 1_522_762_088 + $i * 60;
 				$userIndex = \array_search($user, $totalUsers, true);
 				if (($userIndex+1) === \count($totalUsers)) {
 					break;
@@ -313,7 +313,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 				if (($userIndex+1) === \count($totalUsers)) {
 					break;
 				}
-				$time = 1522762088 + $userIndex + 1 +  $i * 60;
+				$time = 1_522_762_088 + $userIndex + 1 +  $i * 60;
 
 				$shareWithUser = $totalUsers[$userIndex+1];
 				$uidOwner = $user;

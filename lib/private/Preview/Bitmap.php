@@ -105,7 +105,7 @@ abstract class Bitmap implements IProvider2 {
 	 * @return \Imagick
 	 */
 	private function resize($bp, $maxX, $maxY) {
-		list($previewWidth, $previewHeight) = \array_values($bp->getImageGeometry());
+		[$previewWidth, $previewHeight] = \array_values($bp->getImageGeometry());
 
 		// We only need to resize a preview which doesn't fit in the maximum dimensions
 		if ($previewWidth > $maxX || $previewHeight > $maxY) {

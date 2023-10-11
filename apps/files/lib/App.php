@@ -25,10 +25,7 @@
 namespace OCA\Files;
 
 class App {
-	/**
-	 * @var \OCP\INavigationManager
-	 */
-	private static $navigationManager;
+	private static ?\OC\NavigationManager $navigationManager = null;
 
 	/**
 	 * Returns the app's navigation manager

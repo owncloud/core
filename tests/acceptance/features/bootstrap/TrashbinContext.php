@@ -124,7 +124,7 @@ class TrashbinContext implements Context {
 					'href' => (string) $href,
 					'name' => isset($name[0]) ? (string) $name[0] : null,
 					'mtime' => isset($mtime[0]) ? (string) $mtime[0] : null,
-					'collection' => isset($collection[0]) ? $collection[0] : false,
+					'collection' => $collection[0] ?? false,
 					'original-location' => isset($originalLocation[0]) ? (string) $originalLocation[0] : null
 				];
 			},
@@ -173,9 +173,7 @@ class TrashbinContext implements Context {
 		// filter root element
 		$files = \array_filter(
 			$files,
-			static function ($element) use ($user) {
-				return ($element['href'] !== "/remote.php/dav/trash-bin/$user/");
-			}
+			static fn ($element) => $element['href'] !== "/remote.php/dav/trash-bin/$user/"
 		);
 		return $files;
 	}
@@ -279,9 +277,7 @@ class TrashbinContext implements Context {
 				// filter the collection element. We only want the members.
 				$nextFiles = \array_filter(
 					$nextFiles,
-					static function ($element) use ($user, $trashbinRef) {
-						return ($element['href'] !== $trashbinRef);
-					}
+					static fn ($element) => $element['href'] !== $trashbinRef
 				);
 				\array_push($files, ...$nextFiles);
 			}
@@ -369,8 +365,8 @@ class TrashbinContext implements Context {
 	 * @throws Exception
 	 */
 	public function sendTrashbinListRequest(string $user, ?string $asUser = null, ?string $password = null):void {
-		$asUser = $asUser ?? $user;
-		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
+		$asUser ??= $user;
+		$password ??= $this->featureContext->getPasswordForUser($asUser);
 		$davPathVersion = $this->featureContext->getDavPathVersion();
 		$response = WebDavHelper::propfind(
 			$this->featureContext->getBaseUrl(),
@@ -580,7 +576,7 @@ class TrashbinContext implements Context {
 	 */
 	public function tryToDeleteFileFromTrashbin(?string $user, ?string $originalPath, ?string $asUser = null, ?string $password = null):int {
 		$user = $this->featureContext->getActualUsername($user);
-		$asUser = $asUser ?? $user;
+		$asUser ??= $user;
 		$listing = $this->listTrashbinFolder($user);
 		$originalPath = \trim($originalPath, '/');
 		$numItemsDeleted = 0;
@@ -750,7 +746,7 @@ class TrashbinContext implements Context {
 	 * @return ResponseInterface
 	 */
 	private function sendUndeleteRequest(string $user, string $trashItemHRef, string $destinationPath, ?string $asUser = null, ?string $password = null):ResponseInterface {
-		$asUser = $asUser ?? $user;
+		$asUser ??= $user;
 		$destinationPath = \trim($destinationPath, '/');
 		$destinationValue = $this->featureContext->getBaseUrl() . "/remote.php/dav/files/$user/$destinationPath";
 
@@ -785,7 +781,7 @@ class TrashbinContext implements Context {
 	 * @throws Exception
 	 */
 	private function restoreElement(string $user, string $originalPath, ?string $destinationPath = null, bool $throwExceptionIfNotFound = true, ?string $asUser = null, ?string $password = null):void {
-		$asUser = $asUser ?? $user;
+		$asUser ??= $user;
 		$listing = $this->listTrashbinFolder($user);
 		$originalPath = \trim($originalPath, '/');
 		if ($destinationPath === null) {
@@ -824,7 +820,7 @@ class TrashbinContext implements Context {
 	 * @throws Exception
 	 */
 	public function restoreFileWithoutDestination(string $user, string $originalPath):ResponseInterface {
-		$asUser = $asUser ?? $user;
+		$asUser ??= $user;
 		$listing = $this->listTrashbinFolder($user);
 		$originalPath = \trim($originalPath, '/');
 

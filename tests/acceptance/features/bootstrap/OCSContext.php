@@ -964,7 +964,9 @@ class OCSContext implements Context {
 		if ($language !== null) {
 			$multiLingualMessage = \json_decode(
 				\file_get_contents(__DIR__ . "/../../fixtures/multiLanguageErrors.json"),
-				true
+				true,
+				512,
+				JSON_THROW_ON_ERROR
 			);
 
 			if (isset($multiLingualMessage[$statusMessage][$language])) {

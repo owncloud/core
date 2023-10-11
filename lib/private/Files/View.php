@@ -84,19 +84,16 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class View {
 	use EventEmitterTrait;
-	/** @var string */
-	private $fakeRoot = '';
+	private string $fakeRoot = '';
 
 	/**
 	 * @var \OCP\Lock\ILockingProvider
 	 */
 	private $lockingProvider;
 
-	/** @var bool  */
-	private $lockingEnabled;
+	private bool $lockingEnabled;
 
-	/** @var bool  */
-	private $updaterEnabled = true;
+	private bool $updaterEnabled = true;
 
 	/** @var \OC\User\Manager  */
 	private $userManager;
@@ -107,7 +104,7 @@ class View {
 	/** @var \OCP\IConfig */
 	private $config;
 
-	private static $ignorePartFile = false;
+	private static bool $ignorePartFile = false;
 
 	/**
 	 * @param string $root
@@ -247,7 +244,7 @@ class View {
 	public function getLocalFile($path) {
 		$parent = \substr($path, 0, \strrpos($path, '/'));
 		$path = $this->getAbsolutePath($path);
-		list($storage, $internalPath) = Filesystem::resolvePath($path);
+		[$storage, $internalPath] = Filesystem::resolvePath($path);
 		if (Filesystem::isValidPath($parent) and $storage) {
 			return $storage->getLocalFile($internalPath);
 		} else {
@@ -262,7 +259,7 @@ class View {
 	public function getLocalFolder($path) {
 		$parent = \substr($path, 0, \strrpos($path, '/'));
 		$path = $this->getAbsolutePath($path);
-		list($storage, $internalPath) = Filesystem::resolvePath($path);
+		[$storage, $internalPath] = Filesystem::resolvePath($path);
 		if (Filesystem::isValidPath($parent) and $storage) {
 			return $storage->getLocalFolder($internalPath);
 		} else {
@@ -722,10 +719,10 @@ class View {
 					$this->changeLock($path, ILockingProvider::LOCK_EXCLUSIVE);
 
 					/** @var \OC\Files\Storage\Storage $storage */
-					list($storage, $internalPath) = $this->resolvePath($path);
+					[$storage, $internalPath] = $this->resolvePath($path);
 					$target = $storage->fopen($internalPath, 'w');
 					if ($target) {
-						list(, $result) = \OC_Helper::streamCopy($data, $target);
+						[, $result] = \OC_Helper::streamCopy($data, $target);
 						\fclose($target);
 						\fclose($data);
 
@@ -1162,7 +1159,7 @@ class View {
 					[Filesystem::signal_param_path => $this->getHookPath($path)]
 				);
 			}
-			list($storage, $internalPath) = Filesystem::resolvePath($absolutePath . $postFix);
+			[$storage, $internalPath] = Filesystem::resolvePath($absolutePath . $postFix);
 			if ($storage) {
 				$result = $storage->hash($type, $internalPath, $raw);
 				return $result;
@@ -1213,7 +1210,7 @@ class View {
 
 			$run = $this->runHooks($hooks, $path);
 			/** @var \OC\Files\Storage\Storage $storage */
-			list($storage, $internalPath) = Filesystem::resolvePath($absolutePath . $postFix);
+			[$storage, $internalPath] = Filesystem::resolvePath($absolutePath . $postFix);
 			if ($run and $storage) {
 				if (\in_array('write', $hooks) || \in_array('delete', $hooks)) {
 					$this->changeLock($path, ILockingProvider::LOCK_EXCLUSIVE);
@@ -1535,9 +1532,7 @@ class View {
 			/**
 			 * @var \OC\Files\FileInfo[] $files
 			 */
-			$files = \array_filter($contents, function (ICacheEntry $content) {
-				return (!\OC\Files\Filesystem::isForbiddenFileOrDir($content['path']));
-			});
+			$files = \array_filter($contents, fn (ICacheEntry $content) => !\OC\Files\Filesystem::isForbiddenFileOrDir($content['path']));
 			$files = \array_map(function (ICacheEntry $content) use ($path, $storage, $mount, $sharingDisabled) {
 				try {
 					$itemPath = $this->getPath($content['fileid'], false);
@@ -1570,9 +1565,7 @@ class View {
 						$subScanner = $subStorage->getScanner('');
 						try {
 							$subScanner->scanFile('');
-						} catch (\OCP\Files\StorageNotAvailableException $e) {
-							continue;
-						} catch (\OCP\Files\StorageInvalidException $e) {
+						} catch (\OCP\Files\StorageNotAvailableException|\OCP\Files\StorageInvalidException $e) {
 							continue;
 						} catch (\Exception $e) {
 							// sometimes when the storage is not available it can be any exception
@@ -1665,7 +1658,7 @@ class View {
 		 * @var \OC\Files\Storage\Storage $storage
 		 * @var string $internalPath
 		 */
-		list($storage, $internalPath) = Filesystem::resolvePath($path);
+		[$storage, $internalPath] = Filesystem::resolvePath($path);
 		if ($storage) {
 			$cache = $storage->getCache($path);
 
@@ -1797,7 +1790,7 @@ class View {
 		 * @var Storage\Storage $storage
 		 * @var string $internalPath
 		 */
-		list($storage, $internalPath) = $this->resolvePath($path);
+		[$storage, $internalPath] = $this->resolvePath($path);
 		if ($storage) {
 			return $storage->getETag($internalPath);
 		} else {
@@ -1873,8 +1866,8 @@ class View {
 	 * @return boolean
 	 */
 	private function canMove(MoveableMount $mount1, $target) {
-		list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($target);
-		if (!$targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage')) {
+		[$targetStorage, $targetInternalPath] = \OC\Files\Filesystem::resolvePath($target);
+		if (!$targetStorage->instanceOfStorage('\\' . \OCP\Files\IHomeStorage::class)) {
 			Util::writeLog(
 				'files',
 				'It is not allowed to move one mount point into another one',
@@ -1954,7 +1947,7 @@ class View {
 
 		try {
 			/** @type \OCP\Files\Storage $storage */
-			list($storage, $internalPath) = $this->resolvePath($path);
+			[$storage, $internalPath] = $this->resolvePath($path);
 			$storage->verifyPath($internalPath, $fileName);
 		} catch (ReservedWordException $ex) {
 			throw new InvalidPathException($l10n->t('File name is a reserved word'));
@@ -2040,7 +2033,7 @@ class View {
 		if ($mount) {
 			try {
 				$storage = $mount->getStorage();
-				if ($storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+				if ($storage->instanceOfStorage('\\' . \OCP\Files\Storage\ILockingStorage::class)) {
 					$storage->acquireLock(
 						$mount->getInternalPath($absolutePath),
 						$type,
@@ -2081,7 +2074,7 @@ class View {
 		if ($mount) {
 			try {
 				$storage = $mount->getStorage();
-				if ($storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+				if ($storage->instanceOfStorage('\\' . \OCP\Files\Storage\ILockingStorage::class)) {
 					$storage->changeLock(
 						$mount->getInternalPath($absolutePath),
 						$type,
@@ -2119,7 +2112,7 @@ class View {
 		$mount = $this->getMountForLock($absolutePath, $lockMountPoint);
 		if ($mount) {
 			$storage = $mount->getStorage();
-			if ($storage && $storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+			if ($storage && $storage->instanceOfStorage('\\' . \OCP\Files\Storage\ILockingStorage::class)) {
 				$storage->releaseLock(
 					$mount->getInternalPath($absolutePath),
 					$type,
@@ -2220,10 +2213,7 @@ class View {
 		if (!isset($parts[1]) || $parts[1] !== 'files') {
 			throw new \InvalidArgumentException('"' . $absolutePath . '" must be relative to "files"');
 		}
-		if (isset($parts[2])) {
-			return $parts[2];
-		}
-		return '';
+		return $parts[2] ?? '';
 	}
 
 	/**

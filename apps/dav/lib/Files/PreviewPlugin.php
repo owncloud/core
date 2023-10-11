@@ -42,10 +42,8 @@ use Sabre\HTTP\ResponseInterface;
 class PreviewPlugin extends ServerPlugin {
 	/** @var Server */
 	protected $server;
-	/** @var ITimeFactory */
-	private $timeFactory;
-	/** @var IPreview */
-	private $previewManager;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
+	private \OCP\IPreview $previewManager;
 
 	/**
 	 * PreviewPlugin constructor.

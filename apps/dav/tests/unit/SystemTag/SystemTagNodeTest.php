@@ -32,18 +32,18 @@ class SystemTagNodeTest extends \Test\TestCase {
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager
 	 */
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
 	/**
 	 * @var \OCP\IUser
 	 */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');
-		$this->user = $this->createMock('\OCP\IUser');
+		$this->tagManager = $this->createMock('\\' . \OCP\SystemTag\ISystemTagManager::class);
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
 	}
 
 	protected function getTagNode($isAdmin = true, $tag = null) {
@@ -130,37 +130,37 @@ class SystemTagNodeTest extends \Test\TestCase {
 				// changing permissions not allowed
 				new SystemTag(1, 'Original', true, true),
 				['Original', false, true],
-				'Sabre\DAV\Exception\Forbidden',
+				\Sabre\DAV\Exception\Forbidden::class,
 			],
 			[
 				// changing permissions not allowed
 				new SystemTag(1, 'Original', true, true),
 				['Original', true, false],
-				'Sabre\DAV\Exception\Forbidden',
+				\Sabre\DAV\Exception\Forbidden::class,
 			],
 			[
 				// changing permissions not allowed
 				new SystemTag(1, 'Original', true, true),
 				['Original', false, false],
-				'Sabre\DAV\Exception\Forbidden',
+				\Sabre\DAV\Exception\Forbidden::class,
 			],
 			[
 				// changing non-assignable not allowed
 				new SystemTag(1, 'Original', true, false),
 				['Rename', true, false],
-				'Sabre\DAV\Exception\Forbidden',
+				\Sabre\DAV\Exception\Forbidden::class,
 			],
 			[
 				// changing non-assignable not allowed
 				new SystemTag(1, 'Original', true, false),
 				['Original', true, true],
-				'Sabre\DAV\Exception\Forbidden',
+				\Sabre\DAV\Exception\Forbidden::class,
 			],
 			[
 				// invisible tag does not exist
 				new SystemTag(1, 'Original', false, false),
 				['Rename', false, false],
-				'Sabre\DAV\Exception\NotFound',
+				\Sabre\DAV\Exception\NotFound::class,
 			],
 		];
 	}
@@ -281,12 +281,12 @@ class SystemTagNodeTest extends \Test\TestCase {
 			[
 				// cannot delete invisible tag
 				new SystemTag(1, 'Original', false, true),
-				'Sabre\DAV\Exception\NotFound',
+				\Sabre\DAV\Exception\NotFound::class,
 			],
 			[
 				// cannot delete non-assignable tag
 				new SystemTag(1, 'Original', true, false),
-				'Sabre\DAV\Exception\Forbidden',
+				\Sabre\DAV\Exception\Forbidden::class,
 			],
 		];
 	}

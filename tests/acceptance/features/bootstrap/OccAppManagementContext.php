@@ -111,7 +111,7 @@ class OccAppManagementContext implements Context {
 	 */
 	public function theAppNameReturnedByTheOccCommandShouldBe(string $appName):void {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputArray = \json_decode($lastOutput, true);
+		$lastOutputArray = \json_decode($lastOutput, true, 512, JSON_THROW_ON_ERROR);
 		Assert::assertEquals(
 			$appName,
 			\key($lastOutputArray['apps']),
@@ -133,7 +133,7 @@ class OccAppManagementContext implements Context {
 
 		$this->occContext->invokingTheCommand("config:list");
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$configOutputArray = \json_decode($lastOutput, true);
+		$configOutputArray = \json_decode($lastOutput, true, 512, JSON_THROW_ON_ERROR);
 
 		// Default apps location is '${INSTALLED_LOCATION}/apps/${appName}
 		if (\substr_compare($appPath, "/apps/$appName", 0)) {
@@ -165,7 +165,7 @@ class OccAppManagementContext implements Context {
 	 */
 	public function theAppEnabledStatusShouldBe(string $appName, string $appStatus):void {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputArray = \json_decode($lastOutput, true);
+		$lastOutputArray = \json_decode($lastOutput, true, 512, JSON_THROW_ON_ERROR);
 		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
 		Assert::assertEquals(
 			$appStatus,
@@ -185,7 +185,7 @@ class OccAppManagementContext implements Context {
 	public function theAppsReturnedByTheOccCommandShouldInclude(TableNode $appListTable):void {
 		$this->featureContext->verifyTableNodeColumnsCount($appListTable, 1);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputApps = \array_keys(\json_decode($lastOutput, true)['apps']);
+		$lastOutputApps = \array_keys(\json_decode($lastOutput, true, 512, JSON_THROW_ON_ERROR)['apps']);
 
 		$apps = $appListTable->getRows();
 		$appsSimplified = $this->featureContext->simplifyArray($apps);

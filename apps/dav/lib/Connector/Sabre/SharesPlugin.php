@@ -33,21 +33,13 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	public const SHARETYPES_PROPERTYNAME = '{http://owncloud.org/ns}share-types';
 
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
-	/**
-	 * @var \OCP\Share\IManager
-	 */
-	private $shareManager;
+	private \OCP\Share\IManager $shareManager;
 
-	/**
-	 * @var \Sabre\DAV\Tree
-	 */
-	private $tree;
+	private \Sabre\DAV\Tree $tree;
 
 	/**
 	 * @var string
@@ -93,7 +85,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
 		$server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
-		$server->xml->elementMap[self::SHARETYPES_PROPERTYNAME] = 'OCA\\DAV\\Connector\\Sabre\\ShareTypeList';
+		$server->xml->elementMap[self::SHARETYPES_PROPERTYNAME] = \OCA\DAV\Connector\Sabre\ShareTypeList::class;
 		$server->protectedProperties[] = self::SHARETYPES_PROPERTYNAME;
 
 		$this->server = $server;

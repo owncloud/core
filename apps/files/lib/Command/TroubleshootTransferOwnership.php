@@ -47,7 +47,7 @@ class TroubleshootTransferOwnership extends Command {
 	 */
 	protected $connection;
 
-	private $allowedOps = "all|invalid-owner|invalid-initiator";
+	private string $allowedOps = "all|invalid-owner|invalid-initiator";
 
 	public function __construct(IDBConnection $connection, ProviderFactory $shareProviderFactory) {
 		$this->connection = $connection;
@@ -290,9 +290,7 @@ class TroubleshootTransferOwnership extends Command {
 		$resharers = $cursor->fetchAll();
 		$cursor->closeCursor();
 
-		$entities = \array_map(function ($row) {
-			return $row['uid_initiator'];
-		}, $resharers);
+		$entities = \array_map(fn ($row) => $row['uid_initiator'], $resharers);
 
 		return $entities;
 	}

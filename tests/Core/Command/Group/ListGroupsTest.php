@@ -31,8 +31,7 @@ use Test\TestCase;
  * @group DB
  */
 class ListGroupsTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	protected function setUp(): void {
 		parent::setUp();

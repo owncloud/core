@@ -42,7 +42,7 @@ class RepairSubSharesTest extends TestCase {
 	private $connection;
 
 	/** @var  IRepairStep */
-	private $repair;
+	private \OC\Repair\RepairSubShares $repair;
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -81,7 +81,7 @@ class RepairSubSharesTest extends TestCase {
 		 */
 		$userName = "user";
 		$groupName = "group1";
-		$time = 1523892;
+		$time = 1_523_892;
 		//This array holds the id, share_with and parent per user
 		$getAllIdsPerUser = [];
 		\OC::$server->getGroupManager()->createGroup($groupName);
@@ -163,7 +163,7 @@ class RepairSubSharesTest extends TestCase {
 		$userName = "user";
 		$groupName = "group";
 		$folderName = "/test";
-		$time = 1523892;
+		$time = 1_523_892;
 		$groupCount = 1;
 		$totalGroups = 3;
 		$parent = 1;
@@ -244,7 +244,7 @@ class RepairSubSharesTest extends TestCase {
 	public function testLargeDuplicateShareRows() {
 		$qb = $this->connection->getQueryBuilder();
 		$userName = "user";
-		$time = 15238923;
+		$time = 15_238_923;
 		$groupCount = 0;
 		$folderName = "/test";
 		$maxUsersPerGroup = 1000;

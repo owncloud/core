@@ -50,57 +50,51 @@ class OcmControllerTest extends TestCase {
 	/**
 	 * @var IRequest | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/**
 	 * @var OcmMiddleware | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $ocmMiddleware;
+	private \PHPUnit\Framework\MockObject\MockObject $ocmMiddleware;
 
 	/**
 	 * @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/**
 	 * @var IAppManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 
 	/**
 	 * @var IUserManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/**
 	 * @var AddressHandler | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $addressHandler;
+	private \PHPUnit\Framework\MockObject\MockObject $addressHandler;
 
 	/**
 	 * @var FedShareManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $fedShareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $fedShareManager;
 
 	/**
 	 * @var ILogger | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/**
 	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
-	/**
-	 * @var OcmController
-	 */
-	private $ocmController;
+	private \OCA\FederatedFileSharing\Controller\OcmController $ocmController;
 
-	/**
-	 * @var string
-	 */
-	private $shareToken = 'abc';
+	private string $shareToken = 'abc';
 
 	protected function setUp(): void {
 		parent::setUp();

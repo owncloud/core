@@ -193,7 +193,7 @@ class TUSContext implements Context {
 		);
 		$client->setMetadata($uploadMetadata);
 		$sourceFile = $this->featureContext->acceptanceTestsDirLocation() . $source;
-		$client->setKey((string)rand())->file($sourceFile, $destination);
+		$client->setKey((string)random_int(0, mt_getrandmax()))->file($sourceFile, $destination);
 		$this->featureContext->pauseUploadDelete();
 
 		if ($bytes !== null) {

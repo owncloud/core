@@ -80,7 +80,7 @@ abstract class AbstractDatabase {
 		$dbName = $config['dbname'];
 		$dbConnectionString = $config['dbconnectionstring'] ?? '';
 		$dbHost = !empty($config['dbhost']) ? $config['dbhost'] : 'localhost';
-		$dbTablePrefix = isset($config['dbtableprefix']) ? $config['dbtableprefix'] : 'oc_';
+		$dbTablePrefix = $config['dbtableprefix'] ?? 'oc_';
 
 		$this->config->setSystemValues([
 			'dbname'		=> $dbName,

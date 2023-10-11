@@ -20,8 +20,7 @@ class VerifyChecksumsTest extends TestCase {
 
 	public const BROKEN_CHECKSUM_STRING = '_BROKEN_';
 
-	/** @var CommandTester */
-	private $cmd;
+	private \Symfony\Component\Console\Tester\CommandTester $cmd;
 
 	/**
 	 * @var \OCP\Files\IRootFolder
@@ -38,10 +37,7 @@ class VerifyChecksumsTest extends TestCase {
 	 */
 	private $user2;
 
-	/**
-	 * @var array
-	 */
-	private $testFiles;
+	private array $testFiles;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -101,14 +97,12 @@ class VerifyChecksumsTest extends TestCase {
 
 		return [
 			'file' => $f,
-			'expectedChecksums' => function () use ($content) {
-				return \sprintf(
-					Checksum::CHECKSUMS_DB_FORMAT,
-					\hash('sha1', $content),
-					\hash('md5', $content),
-					\hash('adler32', $content)
-				);
-			},
+			'expectedChecksums' => fn () => \sprintf(
+				Checksum::CHECKSUMS_DB_FORMAT,
+				\hash('sha1', $content),
+				\hash('md5', $content),
+				\hash('adler32', $content)
+			),
 		];
 	}
 

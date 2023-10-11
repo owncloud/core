@@ -46,14 +46,13 @@ use OCP\Security\IHasher;
  * @package OC\Security
  */
 class Hasher implements IHasher {
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 	/** @var array Options passed to password_hash and password_needs_rehash */
-	private $options = [];
+	private array $options = [];
 	/** @var string Salt used for legacy passwords */
 	private $legacySalt = null;
 	/** @var int Current version of the generated hash */
-	private $currentVersion = 1;
+	private int $currentVersion = 1;
 
 	/**
 	 * @param IConfig $config

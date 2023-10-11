@@ -43,30 +43,29 @@ class ConnectionFactory {
 	*/
 	protected $defaultConnectionParams = [
 		'mysql' => [
-			'adapter' => '\OC\DB\AdapterMySQL',
+			'adapter' => '\\' . \OC\DB\AdapterMySQL::class,
 			'charset' => 'UTF8',
 			'driver' => 'pdo_mysql',
-			'wrapperClass' => 'OC\DB\Connection',
+			'wrapperClass' => \OC\DB\Connection::class,
 		],
 		'oci' => [
-			'adapter' => '\OC\DB\AdapterOCI8',
+			'adapter' => '\\' . \OC\DB\AdapterOCI8::class,
 			'charset' => 'AL32UTF8',
 			'driver' => 'oci8',
-			'wrapperClass' => 'OC\DB\OracleConnection',
+			'wrapperClass' => \OC\DB\OracleConnection::class,
 		],
 		'pgsql' => [
-			'adapter' => '\OC\DB\AdapterPgSql',
+			'adapter' => '\\' . \OC\DB\AdapterPgSql::class,
 			'driver' => 'pdo_pgsql',
-			'wrapperClass' => 'OC\DB\Connection',
+			'wrapperClass' => \OC\DB\Connection::class,
 		],
 		'sqlite3' => [
-			'adapter' => '\OC\DB\AdapterSqlite',
+			'adapter' => '\\' . \OC\DB\AdapterSqlite::class,
 			'driver' => 'pdo_sqlite',
-			'wrapperClass' => 'OC\DB\Connection',
+			'wrapperClass' => \OC\DB\Connection::class,
 		],
 	];
-	/** @var SystemConfig */
-	private $config;
+	private \OC\SystemConfig $config;
 
 	/**
 	 * ConnectionFactory constructor.
@@ -188,7 +187,7 @@ class ConnectionFactory {
 			$host = $this->config->getValue('dbhost', '');
 			if (\strpos($host, ':')) {
 				// Host variable may carry a port or socket.
-				list($host, $portOrSocket) = \explode(':', $host, 2);
+				[$host, $portOrSocket] = \explode(':', $host, 2);
 				if (\ctype_digit($portOrSocket)) {
 					$connectionParams['port'] = $portOrSocket;
 				} else {

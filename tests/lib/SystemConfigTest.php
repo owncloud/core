@@ -34,9 +34,8 @@ use OC\SystemConfig;
  */
 class SystemConfigTest extends TestCase {
 	/** @var \OC\Config */
-	private $config;
-	/** @var SystemConfig */
-	private $systemConfig;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
+	private \OC\SystemConfig $systemConfig;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -46,7 +45,7 @@ class SystemConfigTest extends TestCase {
 	}
 
 	public function testGetKeys() {
-		$keyList = ['key1', \rand(0, 40), 45, 'another'];
+		$keyList = ['key1', random_int(0, 40), 45, 'another'];
 		$this->config->expects($this->once())
 			->method('getKeys')
 			->willReturn($keyList);
@@ -56,7 +55,7 @@ class SystemConfigTest extends TestCase {
 
 	public function testSetValue() {
 		$key = \str_shuffle('abcdefghijk');
-		$value = \rand();
+		$value = random_int(0, mt_getrandmax());
 
 		$this->config->expects($this->once())
 			->method('setValue')

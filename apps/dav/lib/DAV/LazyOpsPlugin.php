@@ -41,22 +41,15 @@ use Sabre\HTTP\ResponseInterface;
  * @package OCA\DAV\DAV
  */
 class LazyOpsPlugin extends ServerPlugin {
-	/** @var Server */
-	private $server;
+	private ?\Sabre\DAV\Server $server = null;
 	/** @var string */
 	private $jobId;
-	/** @var JobStatus */
-	private $entity;
-	/** @var IUserSession */
-	private $userSession;
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var IShutdownManager */
-	private $shutdownManager;
-	/** @var ILogger */
-	private $logger;
-	/** @var JobStatusMapper */
-	private $mapper;
+	private ?\OCA\DAV\JobStatus\Entity\JobStatus $entity = null;
+	private \OCP\IUserSession $userSession;
+	private \OCP\IURLGenerator $urlGenerator;
+	private \OCP\Shutdown\IShutdownManager $shutdownManager;
+	private \OCP\ILogger $logger;
+	private \OCA\DAV\JobStatus\Entity\JobStatusMapper $mapper;
 
 	public function __construct(
 		IUserSession $userSession,
@@ -103,9 +96,7 @@ class LazyOpsPlugin extends ServerPlugin {
 		$response->setHeader('Connection', 'close');
 		$response->setHeader('OC-JobStatus-Location', $location);
 
-		$this->shutdownManager->register(function () use ($request, $response) {
-			return $this->afterResponse($request, $response);
-		}, IShutdownManager::HIGH);
+		$this->shutdownManager->register(fn () => $this->afterResponse($request, $response), IShutdownManager::HIGH);
 
 		return false;
 	}
@@ -146,12 +137,12 @@ class LazyOpsPlugin extends ServerPlugin {
 			$userId = $this->getUserId();
 
 			$this->entity = new JobStatus();
-			$this->entity->setStatusInfo(\json_encode($status));
+			$this->entity->setStatusInfo(\json_encode($status, JSON_THROW_ON_ERROR));
 			$this->entity->setUserId($userId);
 			$this->entity->setUuid($this->jobId);
 			$this->mapper->insert($this->entity);
 		} else {
-			$this->entity->setStatusInfo(\json_encode($status));
+			$this->entity->setStatusInfo(\json_encode($status, JSON_THROW_ON_ERROR));
 			$this->mapper->update($this->entity);
 		}
 	}

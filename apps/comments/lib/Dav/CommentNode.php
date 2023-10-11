@@ -79,9 +79,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 		$this->logger = $logger;
 
 		$methods = \get_class_methods($this->comment);
-		$methods = \array_filter($methods, function ($name) {
-			return \strpos($name, 'get') === 0;
-		});
+		$methods = \array_filter($methods, fn ($name) => \strpos($name, 'get') === 0);
 		foreach ($methods as $getter) {
 			$name = '{'.self::NS_OWNCLOUD.'}' . \lcfirst(\substr($getter, 3));
 			$this->properties[$name] = $getter;

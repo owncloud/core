@@ -28,10 +28,7 @@ use OCP\Files\Config\IUserMountCache;
  * Listen to hooks and update the mount cache as needed
  */
 class UserMountCacheListener {
-	/**
-	 * @var IUserMountCache
-	 */
-	private $userMountCache;
+	private \OCP\Files\Config\IUserMountCache $userMountCache;
 
 	/**
 	 * UserMountCacheListener constructor.

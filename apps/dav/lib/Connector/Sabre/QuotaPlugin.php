@@ -44,11 +44,9 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	private $view;
 
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
 	/**
 	 * @param \OC\Files\View $view
@@ -189,7 +187,7 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 			$length = $this->getLength();
 		}
 		if ($length !== null) {
-			list($parentPath, $newName) = \Sabre\Uri\split($path);
+			[$parentPath, $newName] = \Sabre\Uri\split($path);
 			if ($parentPath === null) {
 				$parentPath = '';
 			}

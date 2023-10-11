@@ -57,7 +57,7 @@ class Syslog {
 
 		$request = \OC::$server->getRequest();
 		if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
-			$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
+			$user = \OC_User::getUser() ?: '--';
 		} else {
 			$user = '--';
 		}

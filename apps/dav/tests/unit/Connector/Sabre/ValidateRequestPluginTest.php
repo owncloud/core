@@ -30,11 +30,9 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  */
 class ValidateRequestPluginTest extends TestCase {
-	/** @var \Sabre\DAV\Server */
-	private $server;
+	private \Sabre\DAV\Server $server;
 
-	/** @var ValidateRequestPlugin */
-	private $plugin;
+	private ?\OCA\DAV\Connector\Sabre\ValidateRequestPlugin $plugin = null;
 
 	public function setUp(): void {
 		parent::setUp();

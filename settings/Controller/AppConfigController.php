@@ -36,8 +36,7 @@ use OCP\AppFramework\Http\JSONResponse;
  * @package OC\Settings\Controller
  */
 class AppConfigController extends Controller {
-	/** @var IAppConfig */
-	private $appConfig;
+	private \OCP\IAppConfig $appConfig;
 
 	/**
 	 * @param string $appName

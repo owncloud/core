@@ -51,7 +51,7 @@ class TagsTest extends TestCase {
 		$userId = self::getUniqueID('user_');
 		$this->user = $this->createUser($userId, 'pass');
 		\OC_User::setUserId($userId);
-		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$this->userSession
 			->expects($this->any())
 			->method('getUser')
@@ -71,7 +71,7 @@ class TagsTest extends TestCase {
 	}
 
 	public function testTagManagerWithoutUserReturnsNull() {
-		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$this->userSession
 			->expects($this->any())
 			->method('getUser')
@@ -287,7 +287,7 @@ class TagsTest extends TestCase {
 
 	public function testShareTags() {
 		$testTag = 'TestTag';
-		\OCP\Share::registerBackend('test', 'Test\Share\Backend');
+		\OCP\Share::registerBackend('test', \Test\Share\Backend::class);
 
 		$tagger = $this->tagMgr->load('test');
 		$tagger->tagAs(1, $testTag);

@@ -25,8 +25,7 @@ use OC\Diagnostics\EventLogger;
 use Test\TestCase;
 
 class EventLoggerTest extends TestCase {
-	/** @var \OC\Diagnostics\EventLogger */
-	private $logger;
+	private \OC\Diagnostics\EventLogger $logger;
 
 	public function setUp(): void {
 		parent::setUp();

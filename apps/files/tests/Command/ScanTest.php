@@ -63,17 +63,17 @@ class ScanTest extends TestCase {
 	/**
 	 * @var ILockingProvider | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $lockingProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $lockingProvider;
 
 	/**
 	 * @var IMimeTypeLoader | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $mimeTypeLoader;
+	private \PHPUnit\Framework\MockObject\MockObject $mimeTypeLoader;
 
 	/**
 	 * @var IConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/**
 	 * @var IUser
@@ -85,15 +85,12 @@ class ScanTest extends TestCase {
 	 */
 	private $scanUser2;
 
-	/**
-	 * @var CommandTester
-	 */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	/**
 	 * @var string[]
 	 */
-	private $groupsCreated = [];
+	private array $groupsCreated = [];
 
 	protected function setUp(): void {
 		if ($this->runsWithPrimaryObjectstorage()) {

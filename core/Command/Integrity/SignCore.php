@@ -37,10 +37,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package OC\Core\Command\Integrity
  */
 class SignCore extends Command {
-	/** @var Checker */
-	private $checker;
-	/** @var FileAccessHelper */
-	private $fileAccessHelper;
+	private \OC\IntegrityCheck\Checker $checker;
+	private \OC\IntegrityCheck\Helpers\FileAccessHelper $fileAccessHelper;
 
 	/**
 	 * @param Checker $checker

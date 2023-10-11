@@ -25,16 +25,13 @@ class TestTimedJob extends \OC\BackgroundJob\TimedJob {
 }
 
 class TimedJobTest extends \Test\TestCase {
-	/**
-	 * @var DummyJobList $jobList
-	 */
-	private $jobList;
+	private \Test\BackgroundJob\DummyJobList $jobList;
 	/**
 	 * @var \OC\BackgroundJob\TimedJob $job
 	 */
-	private $job;
+	private \Test\BackgroundJob\TestTimedJob $job;
 
-	private $jobRun = false;
+	private bool $jobRun = false;
 
 	public function markRun() {
 		$this->jobRun = true;

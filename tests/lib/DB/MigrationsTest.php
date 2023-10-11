@@ -25,7 +25,7 @@ class MigrationsTest extends \Test\TestCase {
 	/** @var MigrationService | \PHPUnit\Framework\MockObject\MockObject */
 	private $migrationService;
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IDBConnection $db */
-	private $db;
+	private \PHPUnit\Framework\MockObject\MockObject $db;
 
 	public function setUp(): void {
 		parent::setUp();

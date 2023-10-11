@@ -103,9 +103,7 @@ class ManagerTest extends \Test\TestCase {
 			->getMock();
 		$backend->expects($this->any())
 			->method('implementsActions')
-			->will($this->returnCallback(function ($actions) use ($implementedActions) {
-				return (bool)($actions & $implementedActions);
-			}));
+			->will($this->returnCallback(fn ($actions) => (bool)($actions & $implementedActions)));
 		if ($visibleForScopes === null) {
 			$backend->expects($this->any())
 				->method('isVisibleForScope')
@@ -537,7 +535,7 @@ class ManagerTest extends \Test\TestCase {
 
 	public function testGetUserGroupIds() {
 		/** @var \PHPUnit\Framework\MockObject\MockObject|\OC\Group\Manager $manager */
-		$manager = $this->getMockBuilder('OC\Group\Manager')
+		$manager = $this->getMockBuilder(\OC\Group\Manager::class)
 			->disableOriginalConstructor()
 			->setMethods(['getUserGroups'])
 			->getMock();
@@ -549,7 +547,7 @@ class ManagerTest extends \Test\TestCase {
 			]);
 
 		/** @var \OC\User\User $user */
-		$user = $this->getMockBuilder('OC\User\User')
+		$user = $this->getMockBuilder(\OC\User\User::class)
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -37,7 +37,7 @@ class SMB extends ExternalBackend {
 		$this
 			->setIdentifier('smb')
 			->addIdentifierAlias('\OC\Files\Storage\SMB') // legacy compat
-			->setStorageClass('\OCA\Files_External\Lib\Storage\SMB')
+			->setStorageClass('\\' . \OCA\Files_External\Lib\Storage\SMB::class)
 			->setText($l->t('SMB Personal (unique file IDs)'))
 			->addParameters([
 				(new DefinitionParameter('host', $l->t('Host'))),

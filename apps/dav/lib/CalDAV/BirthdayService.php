@@ -37,14 +37,11 @@ use Sabre\VObject\UUIDUtil;
 class BirthdayService {
 	public const BIRTHDAY_CALENDAR_URI = 'contact_birthdays';
 
-	/** @var GroupPrincipalBackend */
-	private $principalBackend;
+	private \OCA\DAV\DAV\GroupPrincipalBackend $principalBackend;
 
-	/** @var CardDavBackend  */
-	private $cardDavBackEnd;
+	private \OCA\DAV\CardDAV\CardDavBackend $cardDavBackEnd;
 
-	/** @var CalDavBackend  */
-	private $calDavBackEnd;
+	private \OCA\DAV\CalDAV\CalDavBackend $calDavBackEnd;
 
 	/**
 	 * BirthdayService constructor.

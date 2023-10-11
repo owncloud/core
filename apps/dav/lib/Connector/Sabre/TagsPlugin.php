@@ -54,16 +54,11 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 	public const TAG_FAVORITE = '_$!<Favorite>!$_';
 
 	/**
-	 * Reference to main server object
-	 *
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
-	/**
-	 * @var \OCP\ITagManager
-	 */
-	private $tagManager;
+	private \OCP\ITagManager $tagManager;
 
 	/**
 	 * @var \OCP\ITags
@@ -78,10 +73,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	private $cachedTags;
 
-	/**
-	 * @var \Sabre\DAV\Tree
-	 */
-	private $tree;
+	private \Sabre\DAV\Tree $tree;
 
 	/**
 	 * @param \Sabre\DAV\Tree $tree tree
@@ -107,7 +99,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
 		$server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
-		$server->xml->elementMap[self::TAGS_PROPERTYNAME] = 'OCA\\DAV\\Connector\\Sabre\\TagList';
+		$server->xml->elementMap[self::TAGS_PROPERTYNAME] = \OCA\DAV\Connector\Sabre\TagList::class;
 
 		$this->server = $server;
 		$this->server->on('propFind', [$this, 'handleGetProperties']);
@@ -241,13 +233,13 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 		$isFav = null;
 
 		$propFind->handle(self::TAGS_PROPERTYNAME, function () use ($tags, &$isFav, $node) {
-			list($tags, $isFav) = $this->getTagsAndFav($node->getId());
+			[$tags, $isFav] = $this->getTagsAndFav($node->getId());
 			return new TagList($tags);
 		});
 
 		$propFind->handle(self::FAVORITE_PROPERTYNAME, function () use ($isFav, $node) {
 			if ($isFav === null) {
-				list(, $isFav) = $this->getTagsAndFav($node->getId());
+				[, $isFav] = $this->getTagsAndFav($node->getId());
 			}
 			if ($isFav) {
 				return 1;

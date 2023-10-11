@@ -39,40 +39,19 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class FedShareManager {
 	public const ACTION_URL = 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/';
 
-	/**
-	 * @var FederatedShareProvider
-	 */
-	private $federatedShareProvider;
+	private \OCA\FederatedFileSharing\FederatedShareProvider $federatedShareProvider;
 
-	/**
-	 * @var Notifications
-	 */
-	private $notifications;
+	private \OCA\FederatedFileSharing\Notifications $notifications;
 
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/**
-	 * @var ActivityManager
-	 */
-	private $activityManager;
+	private \OCP\Activity\IManager $activityManager;
 
-	/**
-	 * @var NotificationManager
-	 */
-	private $notificationManager;
+	private \OCP\Notification\IManager $notificationManager;
 
-	/**
-	 * @var AddressHandler
-	 */
-	private $addressHandler;
+	private \OCA\FederatedFileSharing\AddressHandler $addressHandler;
 
-	/**
-	 * @var EventDispatcherInterface
-	 */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
 	/**
 	 * FedShareManager constructor.
@@ -217,7 +196,7 @@ class FedShareManager {
 	public function acceptShare(IShare $share) {
 		$uid = $this->getCorrectUid($share);
 		$fileId = $share->getNode()->getId();
-		list($file, $link) = $this->getFile($uid, $fileId);
+		[$file, $link] = $this->getFile($uid, $fileId);
 		$this->publishActivity(
 			$uid,
 			Activity::SUBJECT_REMOTE_SHARE_ACCEPTED,
@@ -243,7 +222,7 @@ class FedShareManager {
 		$uid = $this->getCorrectUid($share);
 		$fileId = $share->getNode()->getId();
 		$this->federatedShareProvider->removeShareFromTable($share);
-		list($file, $link) = $this->getFile($uid, $fileId);
+		[$file, $link] = $this->getFile($uid, $fileId);
 		$this->publishActivity(
 			$uid,
 			Activity::SUBJECT_REMOTE_SHARE_DECLINED,
@@ -360,7 +339,7 @@ class FedShareManager {
 	protected function notifyRemote($share, $callback) {
 		if ($share->getShareOwner() !== $share->getSharedBy()) {
 			try {
-				list(, $remote) = $this->addressHandler->splitUserRemote(
+				[, $remote] = $this->addressHandler->splitUserRemote(
 					$share->getSharedBy()
 				);
 				$remoteId = $this->federatedShareProvider->getRemoteId($share);

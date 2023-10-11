@@ -45,7 +45,7 @@ class ManagerTest extends TestCase {
 	/** @var  EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject */
 	protected $eventDispatcher;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/**
 	 * @return IAppConfig | \PHPUnit\Framework\MockObject\MockObject
@@ -177,9 +177,7 @@ class ManagerTest extends TestCase {
 			->method('isTheme')
 			->will(
 				$this->returnCallback(
-					function ($appId) use ($appThemeName) {
-						return $appId === $appThemeName;
-					}
+					fn ($appId) => $appId === $appThemeName
 				)
 			);
 
@@ -245,7 +243,7 @@ class ManagerTest extends TestCase {
 		$this->expectClearCache();
 
 		/** @var AppManager|\PHPUnit\Framework\MockObject\MockObject $manager */
-		$manager = $this->getMockBuilder('OC\App\AppManager')
+		$manager = $this->getMockBuilder(\OC\App\AppManager::class)
 			->setConstructorArgs([
 				$this->userSession, $this->appConfig, $this->groupManager,
 				$this->cacheFactory, $this->eventDispatcher, $this->config
@@ -290,7 +288,7 @@ class ManagerTest extends TestCase {
 		];
 
 		/** @var AppManager|\PHPUnit\Framework\MockObject\MockObject $manager */
-		$manager = $this->getMockBuilder('OC\App\AppManager')
+		$manager = $this->getMockBuilder(\OC\App\AppManager::class)
 			->setConstructorArgs([
 				$this->userSession, $this->appConfig, $this->groupManager,
 				$this->cacheFactory, $this->eventDispatcher, $this->config
@@ -418,7 +416,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testGetAppsNeedingUpgrade() {
-		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
+		$this->manager = $this->getMockBuilder('\\' . \OC\App\AppManager::class)
 			->setConstructorArgs([$this->userSession, $this->appConfig,
 				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
 			->setMethods(['getAppInfo'])
@@ -439,9 +437,7 @@ class ManagerTest extends TestCase {
 		$this->manager->expects($this->any())
 			->method('getAppInfo')
 			->will($this->returnCallback(
-				function ($appId) use ($appInfos) {
-					return $appInfos[$appId];
-				}
+				fn ($appId) => $appInfos[$appId]
 			));
 
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
@@ -461,7 +457,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testGetIncompatibleApps() {
-		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
+		$this->manager = $this->getMockBuilder('\\' . \OC\App\AppManager::class)
 			->setConstructorArgs([$this->userSession, $this->appConfig,
 				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
 			->setMethods(['getAppInfo'])
@@ -481,9 +477,7 @@ class ManagerTest extends TestCase {
 		$this->manager->expects($this->any())
 			->method('getAppInfo')
 			->will($this->returnCallback(
-				function ($appId) use ($appInfos) {
-					return $appInfos[$appId];
-				}
+				fn ($appId) => $appInfos[$appId]
 			));
 
 		$this->appConfig->setValue('test1', 'enabled', 'yes');

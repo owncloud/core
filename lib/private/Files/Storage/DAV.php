@@ -74,10 +74,8 @@ class DAV extends Common {
 	protected $ready;
 	/** @var Client */
 	private $client;
-	/** @var ArrayCache */
-	private $statCache;
-	/** @var array */
-	private static $tempFiles = [];
+	private \OC\Memcache\ArrayCache $statCache;
+	private static array $tempFiles = [];
 	/** @var \OCP\Http\Client\IClientService */
 	private $httpClientService;
 
@@ -115,7 +113,7 @@ class DAV extends Common {
 			} else {
 				$this->secure = false;
 			}
-			$this->root = isset($params['root']) ? $params['root'] : '/';
+			$this->root = $params['root'] ?? '/';
 			if (!$this->root || $this->root[0] != '/') {
 				$this->root = '/' . $this->root;
 			}

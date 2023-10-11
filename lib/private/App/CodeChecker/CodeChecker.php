@@ -42,8 +42,7 @@ class CodeChecker extends BasicEmitter {
 	public const CLASS_USE_NOT_ALLOWED =  1006;
 	public const CLASS_METHOD_CALL_NOT_ALLOWED =  1007;
 
-	/** @var Parser */
-	private $parser;
+	private \PhpParser\Parser $parser;
 
 	/** @var ICheck */
 	protected $checkList;
@@ -73,9 +72,7 @@ class CodeChecker extends BasicEmitter {
 	public function analyseFolder($folder) {
 		$errors = [];
 
-		$excludes = \array_map(function ($item) use ($folder) {
-			return $folder . '/' . $item;
-		}, ['vendor', '.git', 'l10n', 'tests', 'test']);
+		$excludes = \array_map(fn ($item) => $folder . '/' . $item, ['vendor', '.git', 'l10n', 'tests', 'test']);
 
 		$iterator = new RecursiveDirectoryIterator($folder, RecursiveDirectoryIterator::SKIP_DOTS);
 		$iterator = new RecursiveCallbackFilterIterator($iterator, function ($item) use ($folder, $excludes) {

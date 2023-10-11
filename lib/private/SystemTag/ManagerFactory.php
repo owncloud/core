@@ -34,11 +34,9 @@ use OCP\SystemTag\ISystemTagObjectMapper;
  */
 class ManagerFactory implements ISystemTagManagerFactory {
 	/**
-	 * Server container
-	 *
-	 * @var IServerContainer
-	 */
-	private $serverContainer;
+  * Server container
+  */
+	private \OCP\IServerContainer $serverContainer;
 
 	/**
 	 * Constructor for the system tag manager factory

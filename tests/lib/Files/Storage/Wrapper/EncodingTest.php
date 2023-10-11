@@ -12,10 +12,7 @@ class EncodingTest extends \Test\Files\Storage\Storage {
 	public const NFD_NAME = 'ümlaut';
 	public const NFC_NAME = 'ümlaut';
 
-	/**
-	 * @var \OC\Files\Storage\Temporary
-	 */
-	private $sourceStorage;
+	private \OC\Files\Storage\Temporary $sourceStorage;
 
 	public function setUp(): void {
 		parent::setUp();

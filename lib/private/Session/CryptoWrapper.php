@@ -62,11 +62,9 @@ class CryptoWrapper {
 	/** @var string  */
 	private $passphrase;
 
-	/** @var IRequest  */
-	private $request;
+	private \OCP\IRequest $request;
 
-	/** @var ITimeFactory */
-	private $timeFactory;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
 
 	/**
 	 * @param IConfig $config
@@ -179,7 +177,7 @@ class CryptoWrapper {
 
 	private function sendCookieToBrowser($value, $options) {
 		if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
-			\setcookie(self::COOKIE_NAME, $value, $options['expires'], $options['path'], $options['domain'], $options['secure'], $options['httpOnly']);
+			\setcookie(self::COOKIE_NAME, $value, ['expires' => $options['expires'], 'path' => $options['path'], 'domain' => $options['domain'], 'secure' => $options['secure'], 'httponly' => $options['httpOnly']]);
 		} else {
 			\setcookie(self::COOKIE_NAME, $value, $options);
 		}

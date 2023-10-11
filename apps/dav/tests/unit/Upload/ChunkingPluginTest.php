@@ -32,29 +32,26 @@ class ChunkingPluginTest extends TestCase {
 	/**
 	 * @var \Sabre\DAV\Server | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $server;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
 
 	/**
 	 * @var \Sabre\DAV\Tree | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 
-	/**
-	 * @var ChunkingPlugin
-	 */
-	private $plugin;
+	private \OCA\DAV\Upload\ChunkingPlugin $plugin;
 	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $response;
+	private \PHPUnit\Framework\MockObject\MockObject $response;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->server = $this->getMockBuilder('\Sabre\DAV\Server')
+		$this->server = $this->getMockBuilder('\\' . \Sabre\DAV\Server::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->tree = $this->getMockBuilder('\Sabre\DAV\Tree')
+		$this->tree = $this->getMockBuilder('\\' . \Sabre\DAV\Tree::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -168,12 +165,12 @@ class ChunkingPluginTest extends TestCase {
 	 */
 	public function expectedAndActualSizeData() {
 		return [
-			['12345678910', 12345678910.0],
-			['12345678910', 12345678910.0123],
-			['9999999999999', 9999999999999.0],
-			['9999999999999.9999', 9999999999999.9999],
-			['999999999999999.9999', 999999999999999.9999],
-			['9999999999999999999', 9999999999999999999],
+			['12345678910', 12_345_678_910.0],
+			['12345678910', 12_345_678_910.0123],
+			['9999999999999', 9_999_999_999_999.0],
+			['9999999999999.9999', 9_999_999_999_999.9999],
+			['999999999999999.9999', 999_999_999_999_999.9999],
+			['9999999999999999999', 9_999_999_999_999_999_999.0],
 		];
 	}
 

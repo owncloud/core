@@ -34,11 +34,9 @@ class SharingPersonalSettingsController extends Controller {
 		'auto_accept_share_trusted'
 	];
 
-	/** @var IConfig $config */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var IUserSession $userSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
 	public function __construct(string $appName, IRequest $request, IConfig $config, IUserSession $userSession) {
 		parent::__construct($appName, $request);
@@ -96,9 +94,7 @@ class SharingPersonalSettingsController extends Controller {
 	private function getUserRequestParams() {
 		return \array_filter(
 			$this->request->getParams(),
-			function ($key) {
-				return (\substr($key, 0, 1) !== '_');
-			},
+			fn ($key) => \substr($key, 0, 1) !== '_',
 			ARRAY_FILTER_USE_KEY
 		);
 	}

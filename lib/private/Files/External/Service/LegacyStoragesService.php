@@ -34,10 +34,7 @@ class LegacyStoragesService {
 	 */
 	protected $backendService;
 
-	/**
-	 * @var LegacyUtil
-	 */
-	private $legacyUtil;
+	private \OC\Files\External\LegacyUtil $legacyUtil;
 
 	/**
 	 * @param IStoragesBackendService $backendService

@@ -3,7 +3,7 @@
 namespace OCA\FederatedFileSharing\Tests\appinfo\Migrations;
 
 // FIXME: autoloader fails to load migration
-require_once \dirname(\dirname(\dirname(__DIR__))) . "/appinfo/Migrations/Version20190410160725.php";
+require_once \dirname(__DIR__, 3) . "/appinfo/Migrations/Version20190410160725.php";
 
 use Doctrine\DBAL\Schema\Table;
 use OCA\FederatedFileSharing\Migrations\Version20190410160725;

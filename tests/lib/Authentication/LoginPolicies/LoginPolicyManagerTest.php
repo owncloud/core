@@ -30,13 +30,12 @@ use Test\TestCase;
 
 class LoginPolicyManagerTest extends TestCase {
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var IL10N */
-	private $l10n;
-	/** @var LoginPolicyManager */
-	private $loginPolicyManager;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
+	private \OC\Authentication\LoginPolicies\LoginPolicyManager $loginPolicyManager;
 
 	protected function setUp(): void {
 		parent::setUp();

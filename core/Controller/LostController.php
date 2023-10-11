@@ -74,8 +74,7 @@ class LostController extends Controller {
 	protected $timeFactory;
 	/** @var ILogger */
 	protected $logger;
-	/** @var Session */
-	private $userSession;
+	private \OC\User\Session $userSession;
 
 	/**
 	 * @param string $appName
@@ -225,7 +224,7 @@ class LostController extends Controller {
 		}
 		// FIXME: use HTTP error codes
 		try {
-			list($link, $token) = $this->generateTokenAndLink($user);
+			[$link, $token] = $this->generateTokenAndLink($user);
 			$this->sendEmail($user, $token, $link);
 		} catch (\Exception $e) {
 			return $this->error($e->getMessage());

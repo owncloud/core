@@ -48,12 +48,9 @@ use OCP\ILogger;
 class Mailer implements IMailer {
 	/** @var \Swift_SmtpTransport|\Swift_SendmailTransport Cached transport */
 	private $instance = null;
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
-	/** @var \OC_Defaults */
-	private $defaults;
+	private \OCP\IConfig $config;
+	private \OCP\ILogger $logger;
+	private \OC_Defaults $defaults;
 
 	/**
 	 * @param IConfig $config
@@ -117,8 +114,8 @@ class Mailer implements IMailer {
 		$logMessage = 'Sent mail from "{from}" to "{recipients}" with subject "{subject}"';
 		$this->logger->debug($logMessage, [
 			'app' => 'core',
-			'from' => \json_encode($message->getFrom()),
-			'recipients' => \json_encode($allRecipients),
+			'from' => \json_encode($message->getFrom(), JSON_THROW_ON_ERROR),
+			'recipients' => \json_encode($allRecipients, JSON_THROW_ON_ERROR),
 			'subject' => $message->getSubject()
 		]);
 
@@ -149,7 +146,7 @@ class Mailer implements IMailer {
 			return $email;
 		}
 
-		list($name, $domain) = \explode('@', $email, 2);
+		[$name, $domain] = \explode('@', $email, 2);
 		if (\defined('INTL_IDNA_VARIANT_UTS46')) {
 			$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 		} else {

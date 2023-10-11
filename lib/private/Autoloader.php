@@ -34,8 +34,7 @@ namespace OC;
 use \OCP\AutoloadNotAllowedException;
 
 class Autoloader {
-	/** @var array */
-	private $validRoots = [];
+	private array $validRoots = [];
 
 	/**
 	 * Optional low-latency memory cache for class to path mapping.
@@ -76,7 +75,7 @@ class Autoloader {
 
 		$paths = [];
 		if (\strpos($class, 'OCA\\') === 0) {
-			list(, $app, $rest) = \explode('\\', $class, 3);
+			[, $app, $rest] = \explode('\\', $class, 3);
 			$app = \strtolower($app);
 			$appPath = \OC_App::getAppPath($app);
 			if ($appPath && \stream_resolve_include_path($appPath)) {

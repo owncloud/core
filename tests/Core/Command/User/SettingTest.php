@@ -39,19 +39,19 @@ class SettingTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->userManager = $this->getMockBuilder('OCP\IUserManager')
+		$this->userManager = $this->getMockBuilder(\OCP\IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->getMockBuilder('OCP\IConfig')
+		$this->config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->connection = $this->getMockBuilder('OCP\IDBConnection')
+		$this->connection = $this->getMockBuilder(\OCP\IDBConnection::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
+		$this->consoleInput = $this->getMockBuilder(\Symfony\Component\Console\Input\InputInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleOutput = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')
+		$this->consoleOutput = $this->getMockBuilder(\Symfony\Component\Console\Output\OutputInterface::class)
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -60,7 +60,7 @@ class SettingTest extends TestCase {
 		if (empty($methods)) {
 			return new Setting($this->userManager, $this->config, $this->connection);
 		} else {
-			$mock = $this->getMockBuilder('OC\Core\Command\User\Setting')
+			$mock = $this->getMockBuilder(\OC\Core\Command\User\Setting::class)
 				->setConstructorArgs([
 					$this->userManager,
 					$this->config,

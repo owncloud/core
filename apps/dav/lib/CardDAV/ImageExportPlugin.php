@@ -35,8 +35,7 @@ use Sabre\VObject\Reader;
 class ImageExportPlugin extends ServerPlugin {
 	/** @var Server */
 	protected $server;
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	public function __construct(ILogger $logger) {
 		$this->logger = $logger;
@@ -116,7 +115,7 @@ class ImageExportPlugin extends ServerPlugin {
 					return false;
 				}
 				if (\substr_count($parsed['path'], ';') === 1) {
-					list($type, ) = \explode(';', $parsed['path']);
+					[$type, ] = \explode(';', $parsed['path']);
 				}
 				$val = \file_get_contents($val);
 			}
@@ -147,7 +146,7 @@ class ImageExportPlugin extends ServerPlugin {
 		$params = $photo->parameters();
 		if (isset($params['TYPE']) || isset($params['MEDIATYPE'])) {
 			/** @var Parameter $typeParam */
-			$typeParam = isset($params['TYPE']) ? $params['TYPE'] : $params['MEDIATYPE'];
+			$typeParam = $params['TYPE'] ?? $params['MEDIATYPE'];
 			$type = $typeParam->getValue();
 
 			if (\strpos($type, 'image/') === 0) {

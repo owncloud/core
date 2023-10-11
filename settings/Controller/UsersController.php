@@ -64,40 +64,28 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OC\Settings\Controller
  */
 class UsersController extends Controller {
-	/** @var IL10N */
-	private $l10n;
-	/** @var Session */
-	private $userSession;
+	private \OCP\IL10N $l10n;
+	private \OC\User\Session $userSession;
 	/** @var bool */
 	private $isAdmin;
-	/** @var IUserManager */
-	private $userManager;
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $log;
-	/** @var \OC_Defaults */
-	private $defaults;
-	/** @var IMailer */
-	private $mailer;
+	private \OCP\IUserManager $userManager;
+	private \OCP\IGroupManager $groupManager;
+	private \OCP\IConfig $config;
+	private \OCP\ILogger $log;
+	private \OC_Defaults $defaults;
+	private \OCP\Mail\IMailer $mailer;
 	/** @var string */
 	private $fromMailAddress;
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 	/** @var bool contains the state of the admin recovery setting */
-	private $isRestoreEnabled = false;
-	/** @var IAvatarManager */
-	private $avatarManager;
+	private bool $isRestoreEnabled = false;
+	private \OCP\IAvatarManager $avatarManager;
 	/** @var ISecureRandom */
 	protected $secureRandom;
 	/** @var ITimeFactory */
 	protected $timeFactory;
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
-	/** @var UserTypeHelper */
-	private $userTypeHelper;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
+	private \OC\Helper\UserTypeHelper $userTypeHelper;
 
 	/**
 	 * @param string $appName
@@ -217,7 +205,7 @@ class UsersController extends Controller {
 			}
 		}
 
-		$groups = ($userGroups === null) ? $this->groupManager->getUserGroups($user, 'management') : $userGroups;
+		$groups = $userGroups ?? $this->groupManager->getUserGroups($user, 'management');
 		$groupsKV = [];
 		foreach ($groups as $group) {
 			$groupsKV[$group->getGID()] = [

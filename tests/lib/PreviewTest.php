@@ -48,25 +48,24 @@ class PreviewTest extends TestCase {
 
 	public const TEST_PREVIEW_USER1 = "test-preview-user1";
 
-	/** @var View */
-	private $rootView;
+	private \OC\Files\View $rootView;
 	/**
 	 * Note that using 756 with an image with a ratio of 1.6 brings interesting rounding issues
 	 *
 	 * @var int maximum width allowed for a preview
 	 * */
-	private $configMaxWidth = 756;
+	private int $configMaxWidth = 756;
 	/** @var int maximum height allowed for a preview */
-	private $configMaxHeight = 756;
+	private int $configMaxHeight = 756;
 	private $keepAspect;
 	private $scalingUp;
 
-	private $samples = [];
+	private array $samples = [];
 	private $sampleFileId;
 	private $sampleFilename;
 	private $sampleWidth;
 	private $sampleHeight;
-	private $maxScaleFactor;
+	private int $maxScaleFactor;
 	/** @var int width of the max preview */
 	private $maxPreviewWidth;
 	/** @var int height of the max preview */
@@ -103,21 +102,20 @@ class PreviewTest extends TestCase {
 
 		// We need to enable the providers we're going to use in the tests
 		$providers = [
-			'OC\\Preview\\JPEG',
-			'OC\\Preview\\PNG',
-			'OC\\Preview\\GIF',
-			'OC\\Preview\\TXT',
-			'OC\\Preview\\Postscript'
+			\OC\Preview\JPEG::class,
+			\OC\Preview\PNG::class,
+			\OC\Preview\GIF::class,
+			\OC\Preview\TXT::class,
+			\OC\Preview\Postscript::class
 		];
 		\OC::$server->getConfig()
 			->setSystemValue('enabledPreviewProviders', $providers);
 
 		//re-initialize the preview manager due to config change above
 		unset(\OC::$server['PreviewManager']);
-		\OC::$server->registerService('PreviewManager', function ($c) {
-			/** @var Server $c */
-			return new PreviewManager($c->getConfig(), $c->getLazyRootFolder(), $c->getUserSession());
-		});
+		\OC::$server->registerService('PreviewManager', fn ($c) =>
+	  /** @var Server $c */
+	  new PreviewManager($c->getConfig(), $c->getLazyRootFolder(), $c->getUserSession()));
 		// Sample is 1680x1050 JPEG
 		$this->prepareSample('testimage.jpg', 1680, 1050);
 		// Sample is 2400x1707 EPS
@@ -246,20 +244,20 @@ class PreviewTest extends TestCase {
 					for ($d = 0; $d < 4; $d++) {
 						$coordinates = [
 							[
-								-\rand($samples[$a][0], $samples[$a][1]),
-								-\rand($samples[$a][0], $samples[$a][1])
+								-random_int($samples[$a][0], $samples[$a][1]),
+								-random_int($samples[$a][0], $samples[$a][1])
 							],
 							[
-								\rand($samples[$a][0], $samples[$a][1]),
-								\rand($samples[$a][0], $samples[$a][1])
+								random_int($samples[$a][0], $samples[$a][1]),
+								random_int($samples[$a][0], $samples[$a][1])
 							],
 							[
-								-\rand($samples[$a][0], $samples[$a][1]),
-								\rand($samples[$a][0], $samples[$a][1])
+								-random_int($samples[$a][0], $samples[$a][1]),
+								random_int($samples[$a][0], $samples[$a][1])
 							],
 							[
-								\rand($samples[$a][0], $samples[$a][1]),
-								-\rand($samples[$a][0], $samples[$a][1])
+								random_int($samples[$a][0], $samples[$a][1]),
+								-random_int($samples[$a][0], $samples[$a][1])
 							]
 						];
 						$row = [$a];
@@ -337,7 +335,7 @@ class PreviewTest extends TestCase {
 		$this->assertEquals($this->maxPreviewHeight, \imagesy($maxPreview));
 
 		// A thumbnail of the asked dimensions should also have been created (within the constraints of the max preview)
-		list($limitedPreviewWidth, $limitedPreviewHeight) =
+		[$limitedPreviewWidth, $limitedPreviewHeight] =
 			$this->simulatePreviewDimensions($previewWidth, $previewHeight);
 
 		$actualWidth = $image->width();
@@ -460,7 +458,7 @@ class PreviewTest extends TestCase {
 		$image = $preview->getPreview();
 		$this->assertNotFalse($image);
 
-		list($expectedWidth, $expectedHeight) =
+		[$expectedWidth, $expectedHeight] =
 			$this->simulatePreviewDimensions($previewWidth, $previewHeight);
 		$this->assertEquals($expectedWidth, $image->width());
 		$this->assertEquals($expectedHeight, $image->height());
@@ -532,7 +530,7 @@ class PreviewTest extends TestCase {
 		$this->getCachedSmallThumbnail($fileId, 32, 32);
 
 		// We create a preview in order to be able to delete the cache
-		$preview = $this->createPreview(\rand(), \rand());
+		$preview = $this->createPreview(random_int(0, mt_getrandmax()), random_int(0, mt_getrandmax()));
 		$this->cachedBigger = [];
 	}
 
@@ -626,7 +624,7 @@ class PreviewTest extends TestCase {
 		$this->assertNotFalse($image);
 
 		// A thumbnail of the asked dimensions should also have been created (within the constraints of the max preview)
-		list($limitedPreviewWidth, $limitedPreviewHeight) =
+		[$limitedPreviewWidth, $limitedPreviewHeight] =
 			$this->simulatePreviewDimensions($previewWidth, $previewHeight);
 
 		$this->assertEquals($limitedPreviewWidth, $image->width());
@@ -744,7 +742,7 @@ class PreviewTest extends TestCase {
 		$this->rootView->file_put_contents($imgPath, $imgData);
 		$fileInfo = $this->rootView->getFileInfo($imgPath);
 
-		list($maxPreviewWidth, $maxPreviewHeight) =
+		[$maxPreviewWidth, $maxPreviewHeight] =
 			$this->setMaxPreview($sampleWidth, $sampleHeight);
 
 		$this->samples[] =
@@ -795,7 +793,7 @@ class PreviewTest extends TestCase {
 		$this->maxPreviewRatio = $sampleWidth / $sampleHeight;
 		$maxPreviewWidth = \min($sampleWidth, $this->configMaxWidth);
 		$maxPreviewHeight = \min($sampleHeight, $this->configMaxHeight);
-		list($maxPreviewWidth, $maxPreviewHeight) =
+		[$maxPreviewWidth, $maxPreviewHeight] =
 			$this->applyAspectRatio($maxPreviewWidth, $maxPreviewHeight);
 
 		return [$maxPreviewWidth, $maxPreviewHeight];
@@ -819,10 +817,10 @@ class PreviewTest extends TestCase {
 			$scaleFactor = $this->scalingUp ? $this->maxScaleFactor : 1;
 			$newPreviewWidth = \min($askedWidth, $this->maxPreviewWidth * $scaleFactor);
 			$newPreviewHeight = \min($askedHeight, $this->maxPreviewHeight * $scaleFactor);
-			list($newPreviewWidth, $newPreviewHeight) =
+			[$newPreviewWidth, $newPreviewHeight] =
 				$this->applyAspectRatio($newPreviewWidth, $newPreviewHeight);
 		} else {
-			list($newPreviewWidth, $newPreviewHeight) =
+			[$newPreviewWidth, $newPreviewHeight] =
 				$this->fixSize($askedWidth, $askedHeight);
 		}
 

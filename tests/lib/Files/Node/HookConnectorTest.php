@@ -28,15 +28,9 @@ class HookConnectorTest extends TestCase {
 	use UserTrait;
 	use MountProviderTrait;
 
-	/**
-	 * @var View
-	 */
-	private $view;
+	private \OC\Files\View $view;
 
-	/**
-	 * @var Root
-	 */
-	private $root;
+	private \OC\Files\Node\Root $root;
 
 	/**
 	 * @var string

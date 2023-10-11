@@ -62,17 +62,11 @@ class Manager extends PublicEmitter implements IGroupManager {
 	/**
 	 * @var GroupInterface[] $backends
 	 */
-	private $backends = [];
+	private array $backends = [];
 
-	/**
-	 * @var UserManager $userManager
-	 */
-	private $userManager;
+	private \OC\User\Manager $userManager;
 
-	/**
-	 * @var UserSearch $userSearch
-	 */
-	private $userSearch;
+	private \OCP\Util\UserSearch $userSearch;
 
 	/**
 	 * @var \OC\Group\Group[]
@@ -84,11 +78,9 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 */
 	private $cachedUserGroups = [];
 
-	/** @var \OC\SubAdmin */
-	private $subAdmin = null;
+	private ?\OC\SubAdmin $subAdmin = null;
 
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
 	/**
 	 * @param \OC\User\Manager $userManager
@@ -162,10 +154,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return \OC\Group\Group|null
 	 */
 	public function get($gid) {
-		if (isset($this->cachedGroups[$gid])) {
-			return $this->cachedGroups[$gid];
-		}
-		return $this->getGroupObject($gid);
+		return $this->cachedGroups[$gid] ?? $this->getGroupObject($gid);
 	}
 
 	/**
@@ -302,9 +291,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	private function filterExcludedBackendsForScope($groups, $scope) {
 		$excludedBackendsForScope = $this->getExcludedBackendsForScope($scope);
 		if (!empty($excludedBackendsForScope)) {
-			return \array_filter($groups, function ($group) use ($excludedBackendsForScope) {
-				return !\in_array($group->getBackend(), $excludedBackendsForScope);
-			});
+			return \array_filter($groups, fn ($group) => !\in_array($group->getBackend(), $excludedBackendsForScope));
 		}
 		return $groups;
 	}
@@ -366,9 +353,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return array with group ids
 	 */
 	public function getUserGroupIds($user, $scope = null) {
-		return \array_map(function ($value) {
-			return (string) $value;
-		}, \array_keys($this->getUserGroups($user, $scope)));
+		return \array_map(fn ($value) => (string) $value, \array_keys($this->getUserGroups($user, $scope)));
 	}
 
 	/**

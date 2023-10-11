@@ -29,7 +29,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @package OCP\Roles
  */
 class AddRolesEvent extends Event {
-	private $roles;
+	private ?array $roles = null;
 
 	/**
 	 * @param array $role

@@ -31,23 +31,22 @@ use Test\TestCase;
 
 class AddServerMiddlewareTest extends TestCase {
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | \OCP\IL10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
-	/** @var  AddServerMiddleware */
-	private $middleware;
+	private \OCA\Federation\Middleware\AddServerMiddleware $middleware;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | Controller */
-	private $controller;
+	private \PHPUnit\Framework\MockObject\MockObject $controller;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->logger = $this->createMock('OCP\ILogger');
-		$this->l10n = $this->createMock('OCP\IL10N');
-		$this->controller = $this->getMockBuilder('OCP\AppFramework\Controller')
+		$this->logger = $this->createMock(\OCP\ILogger::class);
+		$this->l10n = $this->createMock(\OCP\IL10N::class);
+		$this->controller = $this->getMockBuilder(\OCP\AppFramework\Controller::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->middleware = new AddServerMiddleware(
@@ -70,9 +69,7 @@ class AddServerMiddlewareTest extends TestCase {
 
 		$this->l10n->expects($this->any())->method('t')
 			->willReturnCallback(
-				function ($message) {
-					return $message;
-				}
+				fn ($message) => $message
 			);
 
 		$result = $this->middleware->afterException($this->controller, 'method', $exception);

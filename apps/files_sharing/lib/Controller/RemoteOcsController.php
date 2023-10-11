@@ -149,9 +149,7 @@ class RemoteOcsController extends OCSController {
 		foreach ($this->externalManager->getAcceptedShares() as $shareInfo) {
 			try {
 				$shares[] = $this->extendShareInfo($shareInfo);
-			} catch (StorageNotAvailableException $e) {
-				//TODO: Log the exception here? There are several logs already below the stack
-			} catch (StorageInvalidException $e) {
+			} catch (StorageNotAvailableException|StorageInvalidException $e) {
 				//TODO: Log the exception here? There are several logs already below the stack
 			}
 		}
@@ -164,9 +162,7 @@ class RemoteOcsController extends OCSController {
 			foreach ($groupExternalManager->getAcceptedShares() as $shareInfo) {
 				try {
 					$shares[] = $this->extendShareInfo($shareInfo);
-				} catch (StorageNotAvailableException $e) {
-					$this->logger->logException($e, ['app' => 'files_sharing']);
-				} catch (StorageInvalidException $e) {
+				} catch (StorageNotAvailableException|StorageInvalidException $e) {
 					$this->logger->logException($e, ['app' => 'files_sharing']);
 				}
 			}

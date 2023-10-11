@@ -9,7 +9,7 @@
 namespace Test\Files\Stream;
 
 class StaticStreamTest extends \Test\TestCase {
-	private $sourceFile;
+	private string $sourceFile;
 	private $sourceText;
 
 	protected function setUp(): void {

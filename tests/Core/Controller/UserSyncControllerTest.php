@@ -37,18 +37,15 @@ use Test\TestCase;
  * @package OC\Core\Controller
  */
 class UserSyncControllerTest extends TestCase {
-	/**
-	 * @var UserSyncController
-	 */
-	private $controller;
+	private \OC\Core\Controller\UserSyncController $controller;
 	/**
 	 * @var MockObject | IUserManager
 	 */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 	/**
 	 * @var MockObject | SyncService
 	 */
-	private $syncService;
+	private \PHPUnit\Framework\MockObject\MockObject $syncService;
 
 	protected function setUp(): void {
 		/** @var IRequest $request */

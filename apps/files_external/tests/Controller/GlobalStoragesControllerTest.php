@@ -34,17 +34,17 @@ use OCP\Files\StorageNotAvailableException;
 class GlobalStoragesControllerTest extends StoragesControllerTest {
 	public function setUp(): void {
 		parent::setUp();
-		$this->service = $this->createMock('\OCP\Files\External\Service\IGlobalStoragesService');
+		$this->service = $this->createMock('\\' . \OCP\Files\External\Service\IGlobalStoragesService::class);
 
 		$this->service->method('getVisibilityType')
 			->willReturn(IStoragesBackendService::VISIBILITY_ADMIN);
 
 		$this->controller = new GlobalStoragesController(
 			'files_external',
-			$this->createMock('\OCP\IRequest'),
-			$this->createMock('\OCP\IL10N'),
+			$this->createMock('\\' . \OCP\IRequest::class),
+			$this->createMock('\\' . \OCP\IL10N::class),
 			$this->service,
-			$this->createMock('\OCP\ILogger')
+			$this->createMock('\\' . \OCP\ILogger::class)
 		);
 	}
 

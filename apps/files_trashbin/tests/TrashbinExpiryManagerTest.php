@@ -39,17 +39,14 @@ class TrashbinExpiryManagerTest extends TestCase {
 	/**
 	 * @var Expiration| \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $expiration;
+	private \PHPUnit\Framework\MockObject\MockObject $expiration;
 
 	/**
 	 * @var Quota| \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $quota;
+	private \PHPUnit\Framework\MockObject\MockObject $quota;
 
-	/**
-	 * @var TrashExpiryManager
-	 */
-	private $trashExpiryManager;
+	private \OCA\Files_Trashbin\TrashExpiryManager $trashExpiryManager;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -86,7 +83,7 @@ class TrashbinExpiryManagerTest extends TestCase {
 
 	public function providesRetentionEnabled() {
 		return [
-			[1000000, true],
+			[1_000_000, true],
 			[false, false]
 		];
 	}

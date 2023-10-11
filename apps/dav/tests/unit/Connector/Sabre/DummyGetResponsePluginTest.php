@@ -32,8 +32,7 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  */
 class DummyGetResponsePluginTest extends TestCase {
-	/** @var DummyGetResponsePlugin */
-	private $dummyGetResponsePlugin;
+	private \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin $dummyGetResponsePlugin;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -43,7 +42,7 @@ class DummyGetResponsePluginTest extends TestCase {
 
 	public function testInitialize() {
 		/** @var \Sabre\DAV\Server $server */
-		$server = $this->createMock('\Sabre\DAV\Server');
+		$server = $this->createMock('\\' . \Sabre\DAV\Server::class);
 		$server
 			->expects($this->once())
 			->method('on')
@@ -54,9 +53,9 @@ class DummyGetResponsePluginTest extends TestCase {
 
 	public function testHttpGet() {
 		/** @var \Sabre\HTTP\RequestInterface $request */
-		$request = $this->createMock('\Sabre\HTTP\RequestInterface');
+		$request = $this->createMock('\\' . \Sabre\HTTP\RequestInterface::class);
 		/** @var \Sabre\HTTP\ResponseInterface $response */
-		$response = $server = $this->createMock('\Sabre\HTTP\ResponseInterface');
+		$response = $server = $this->createMock('\\' . \Sabre\HTTP\ResponseInterface::class);
 		$response
 			->expects($this->once())
 			->method('setBody');

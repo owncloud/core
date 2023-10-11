@@ -140,12 +140,12 @@ class ObjectTreeTest extends TestCase {
 			$_SERVER['HTTP_OC_CHUNKED'] = true;
 		}
 
-		$rootNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+		$rootNode = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$mountManager = $this->createMock('\OC\Files\Mount\Manager');
-		$view = $this->createMock('\OC\Files\View');
-		$fileInfo = $this->createMock('\OCP\Files\FileInfo');
+		$mountManager = $this->createMock('\\' . \OC\Files\Mount\Manager::class);
+		$view = $this->createMock('\\' . \OC\Files\View::class);
+		$fileInfo = $this->createMock('\\' . \OCP\Files\FileInfo::class);
 		$fileInfo->expects($this->once())
 			->method('getType')
 			->will($this->returnValue($type));
@@ -258,14 +258,12 @@ class ObjectTreeTest extends TestCase {
 			->getMock();
 		$view->expects($this->once())
 			->method('resolvePath')
-			->will($this->returnCallback(function ($path) use ($storage) {
-				return [$storage, \ltrim($path, '/')];
-			}));
+			->will($this->returnCallback(fn ($path) => [$storage, \ltrim($path, '/')]));
 
 		$rootNode = $this->getMockBuilder(Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$mountManager = $this->createMock('\OC\Files\Mount\Manager');
+		$mountManager = $this->createMock('\\' . \OC\Files\Mount\Manager::class);
 
 		$tree = new ObjectTree();
 		$tree->init($rootNode, $view, $mountManager);
@@ -278,21 +276,19 @@ class ObjectTreeTest extends TestCase {
 
 		$storage = new Temporary([]);
 
-		$view = $this->createMock('\OC\Files\View', ['resolvePath']);
+		$view = $this->createMock('\\' . \OC\Files\View::class);
 		$view->expects($this->any())
 			->method('resolvePath')
-			->will($this->returnCallback(function ($path) use ($storage) {
-				return [$storage, \ltrim($path, '/')];
-			}));
+			->will($this->returnCallback(fn ($path) => [$storage, \ltrim($path, '/')]));
 
-		$rootNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+		$rootNode = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$mountManager = $this->createMock('\OC\Files\Mount\Manager');
+		$mountManager = $this->createMock('\\' . \OC\Files\Mount\Manager::class);
 
 		$tree = new \OCA\DAV\Connector\Sabre\ObjectTree();
 		$tree->init($rootNode, $view, $mountManager);
 
-		$this->assertInstanceOf('\Sabre\DAV\INode', $tree->getNodeForPath($path));
+		$this->assertInstanceOf('\\' . \Sabre\DAV\INode::class, $tree->getNodeForPath($path));
 	}
 }

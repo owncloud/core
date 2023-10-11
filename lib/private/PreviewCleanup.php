@@ -27,10 +27,7 @@ use OCP\IDBConnection;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
 class PreviewCleanup {
-	/**
-	 * @var IDBConnection
-	 */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	public function __construct(IDBConnection $connection) {
 		$this->connection = $connection;

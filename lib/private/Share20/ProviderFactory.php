@@ -34,10 +34,8 @@ use OCP\IServerContainer;
  * @package OC\Share20
  */
 class ProviderFactory implements IProviderFactory {
-	/** @var IServerContainer */
-	private $serverContainer;
-	/** @var DefaultShareProvider */
-	private $defaultProvider = null;
+	private \OCP\IServerContainer $serverContainer;
+	private ?\OC\Share20\DefaultShareProvider $defaultProvider = null;
 	/** @var FederatedShareProvider */
 	private $federatedProvider = null;
 

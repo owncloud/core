@@ -28,60 +28,58 @@ use Test\TestCase;
 
 class ManagerTest extends TestCase {
 	/** @var \OCP\IUser|\PHPUnit\Framework\MockObject\MockObject */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	/** @var \OC\App\AppManager|\PHPUnit\Framework\MockObject\MockObject */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 
 	/** @var \OCP\ISession|\PHPUnit\Framework\MockObject\MockObject */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 
 	/** @var IGroupManager */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	/** @var Manager */
-	private $manager;
+	private \PHPUnit\Framework\MockObject\MockObject $manager;
 
 	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var \OCP\IRequest | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/** @var \OCP\ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/** @var \OCP\Authentication\TwoFactorAuth\IProvider|\PHPUnit\Framework\MockObject\MockObject */
-	private $fakeProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $fakeProvider;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->user = $this->createMock('\OCP\IUser');
-		$this->appManager = $this->getMockBuilder('\OC\App\AppManager')
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
+		$this->appManager = $this->getMockBuilder('\\' . \OC\App\AppManager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->session = $this->createMock('\OCP\ISession');
+		$this->session = $this->createMock('\\' . \OCP\ISession::class);
 		$this->groupManager = $this->createMock(IGroupManager::class);
-		$this->config = $this->createMock('\OCP\IConfig');
-		$this->request = $this->createMock('\OCP\IRequest');
-		$this->logger = $this->createMock('\OCP\ILogger');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
+		$this->request = $this->createMock('\\' . \OCP\IRequest::class);
+		$this->logger = $this->createMock('\\' . \OCP\ILogger::class);
 
-		$this->manager = $this->getMockBuilder('\OC\Authentication\TwoFactorAuth\Manager')
+		$this->manager = $this->getMockBuilder('\\' . \OC\Authentication\TwoFactorAuth\Manager::class)
 			->setConstructorArgs([$this->appManager, $this->session, $this->groupManager, $this->config, $this->request, $this->logger])
 			->setMethods(['loadTwoFactorApp']) // Do not actually load the apps
 			->getMock();
 
-		$this->fakeProvider = $this->createMock('\OCP\Authentication\TwoFactorAuth\IProvider');
+		$this->fakeProvider = $this->createMock('\\' . \OCP\Authentication\TwoFactorAuth\IProvider::class);
 		$this->fakeProvider->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('email'));
 		$this->fakeProvider->expects($this->any())
 			->method('isTwoFactorAuthEnabledForUser')
 			->will($this->returnValue(true));
-		\OC::$server->registerService('\OCA\MyCustom2faApp\FakeProvider', function () {
-			return $this->fakeProvider;
-		});
+		\OC::$server->registerService('\OCA\MyCustom2faApp\FakeProvider', fn () => $this->fakeProvider);
 	}
 
 	private function prepareProviders() {

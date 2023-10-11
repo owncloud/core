@@ -62,9 +62,7 @@ class OC_Mount_Config extends \OC\Files\External\LegacyUtil {
 		}
 
 		foreach ($dependencyGroups as $module => $dependants) {
-			$backends = \implode(', ', \array_map(function ($backend) {
-				return '<i>' . $backend->getText() . '</i>';
-			}, $dependants));
+			$backends = \implode(', ', \array_map(fn ($backend) => '<i>' . $backend->getText() . '</i>', $dependants));
 			$message .= '<br />' . OC_Mount_Config::getSingleDependencyMessage($l, $module, $backends);
 		}
 

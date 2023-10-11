@@ -36,9 +36,8 @@ class AppConfigControllerTest extends TestCase {
 	/** @var (IRequest & MockObject) */
 	public $request;
 	/** @var IAppConfig */
-	private $appConfig;
-	/** @var AppConfigController */
-	private $appConfigController;
+	private \PHPUnit\Framework\MockObject\MockObject $appConfig;
+	private \OC\Settings\Controller\AppConfigController $appConfigController;
 
 	public function setUp(): void {
 		parent::setUp();

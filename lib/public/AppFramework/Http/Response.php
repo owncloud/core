@@ -41,10 +41,9 @@ use OCP\AppFramework\Http;
  */
 class Response {
 	/**
-	 * Headers - defaults to ['Cache-Control' => 'no-cache, no-store, must-revalidate']
-	 * @var array
-	 */
-	private $headers = [
+  * Headers - defaults to ['Cache-Control' => 'no-cache, no-store, must-revalidate']
+  */
+	private array $headers = [
 		'Cache-Control' => 'no-cache, no-store, must-revalidate'
 	];
 
@@ -55,10 +54,9 @@ class Response {
 	private $cookies = [];
 
 	/**
-	 * HTTP status code - defaults to STATUS OK
-	 * @var int
-	 */
-	private $status = Http::STATUS_OK;
+  * HTTP status code - defaults to STATUS OK
+  */
+	private int $status = Http::STATUS_OK;
 
 	/**
 	 * Last modified date
@@ -73,7 +71,7 @@ class Response {
 	private $ETag;
 
 	/** @var ContentSecurityPolicy|null Used Content-Security-Policy */
-	private $contentSecurityPolicy = null;
+	private ?\OCP\AppFramework\Http\ContentSecurityPolicy $contentSecurityPolicy = null;
 
 	/**
 	 * Caches the response

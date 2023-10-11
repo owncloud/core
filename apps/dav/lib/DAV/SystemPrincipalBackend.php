@@ -160,7 +160,7 @@ class SystemPrincipalBackend extends AbstractBackend {
 	 * @return array
 	 */
 	public function getGroupMembership($principal) {
-		list($prefix, $name) = \Sabre\Uri\split($principal);
+		[$prefix, $name] = \Sabre\Uri\split($principal);
 
 		if ($prefix === 'principals/system') {
 			$principal = $this->getPrincipalByPath($principal);

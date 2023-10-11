@@ -39,14 +39,14 @@ $activityManager = \OC::$server->getActivityManager();
 $activityManager->registerExtension(function () {
 	$application = new \OCP\AppFramework\App('comments');
 	/** @var \OCA\Comments\Activity\Extension $extension */
-	$extension = $application->getContainer()->query('OCA\Comments\Activity\Extension');
+	$extension = $application->getContainer()->query(\OCA\Comments\Activity\Extension::class);
 	return $extension;
 });
 
 $managerListener = function (\OCP\Comments\CommentsEvent $event) {
 	$application = new \OCP\AppFramework\App('comments');
 	/** @var \OCA\Comments\Activity\Listener $listener */
-	$listener = $application->getContainer()->query('OCA\Comments\Activity\Listener');
+	$listener = $application->getContainer()->query(\OCA\Comments\Activity\Listener::class);
 	$listener->commentEvent($event);
 };
 

@@ -30,8 +30,7 @@ use OC_App;
 use OC_OCS_Result;
 
 class Apps {
-	/** @var \OCP\App\IAppManager */
-	private $appManager;
+	private \OCP\App\IAppManager $appManager;
 
 	/**
 	 * @param \OCP\App\IAppManager $appManager
@@ -50,7 +49,7 @@ class Apps {
 		foreach ($apps as $app) {
 			$list[] = $app['id'];
 		}
-		$filter = isset($_GET['filter']) ? $_GET['filter'] : false;
+		$filter = $_GET['filter'] ?? false;
 		if ($filter) {
 			switch ($filter) {
 				case 'enabled':

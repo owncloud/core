@@ -23,11 +23,11 @@ class LegacyHelperTest extends \Test\TestCase {
 		return [
 			['0 B', 0],
 			['1 KB', 1024],
-			['9.5 MB', 10000000],
-			['1.3 GB', 1395864371],
-			['465.7 GB', 500000000000],
-			['454.7 TB', 500000000000000],
-			['444.1 PB', 500000000000000000],
+			['9.5 MB', 10_000_000],
+			['1.3 GB', 1_395_864_371],
+			['465.7 GB', 500_000_000_000],
+			['454.7 TB', 500_000_000_000_000],
+			['444.1 PB', 500_000_000_000_000_000],
 		];
 	}
 
@@ -43,11 +43,11 @@ class LegacyHelperTest extends \Test\TestCase {
 		return [
 			['0B', 0],
 			['1K', 1024],
-			['9.5M', 10000000],
-			['1.3G', 1395864371],
-			['465.7G', 500000000000],
-			['465661.3G', 500000000000000],
-			['465661287.3G', 500000000000000000],
+			['9.5M', 10_000_000],
+			['1.3G', 1_395_864_371],
+			['465.7G', 500_000_000_000],
+			['465661.3G', 500_000_000_000_000],
+			['465661287.3G', 500_000_000_000_000_000],
 		];
 	}
 
@@ -63,9 +63,9 @@ class LegacyHelperTest extends \Test\TestCase {
 		return [
 			[0.0, "0 B"],
 			[1024.0, "1 KB"],
-			[1395864371.0, '1.3 GB'],
-			[9961472.0, "9.5 MB"],
-			[500041567437.0, "465.7 GB"],
+			[1_395_864_371.0, '1.3 GB'],
+			[9_961_472.0, "9.5 MB"],
+			[500_041_567_437.0, "465.7 GB"],
 			[false, "12 GB etfrhzui"]
 		];
 	}
@@ -124,7 +124,7 @@ class LegacyHelperTest extends \Test\TestCase {
 	}
 
 	public function testBuildNotExistingFileNameForView() {
-		$viewMock = $this->createMock('\OC\Files\View', [], [], '', false);
+		$viewMock = $this->createMock('\\' . \OC\Files\View::class);
 		$this->assertEquals('/filename', OC_Helper::buildNotExistingFileNameForView('/', 'filename', $viewMock));
 		$this->assertEquals('dir/filename.ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename.ext', $viewMock));
 
@@ -178,7 +178,7 @@ class LegacyHelperTest extends \Test\TestCase {
 			$target = \fopen($target, 'w');
 		}
 
-		list($count, $result) = \OC_Helper::streamCopy($source, $target);
+		[$count, $result] = \OC_Helper::streamCopy($source, $target);
 
 		if (\is_resource($source)) {
 			\fclose($source);

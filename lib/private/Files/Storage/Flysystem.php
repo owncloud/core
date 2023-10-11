@@ -162,9 +162,7 @@ abstract class Flysystem extends Common {
 		} catch (FileNotFoundException $e) {
 			return false;
 		}
-		$names = \array_map(function ($object) {
-			return $object['basename'];
-		}, $content);
+		$names = \array_map(fn ($object) => $object['basename'], $content);
 		return IteratorDirectory::wrap($names);
 	}
 

@@ -24,49 +24,46 @@
 namespace OCA\DAV\Tests\unit\SystemTag;
 
 class SystemTagsObjectTypeCollectionTest extends \Test\TestCase {
-	/**
-	 * @var \OCA\DAV\SystemTag\SystemTagsObjectTypeCollection
-	 */
-	private $node;
+	private \OCA\DAV\SystemTag\SystemTagsObjectTypeCollection $node;
 
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager
 	 */
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
 	/**
 	 * @var \OCP\SystemTag\ISystemTagObjectMapper
 	 */
-	private $tagMapper;
+	private \PHPUnit\Framework\MockObject\MockObject $tagMapper;
 
 	/**
 	 * @var \OCP\Files\Folder
 	 */
-	private $userFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $userFolder;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');
-		$this->tagMapper = $this->createMock('\OCP\SystemTag\ISystemTagObjectMapper');
+		$this->tagManager = $this->createMock('\\' . \OCP\SystemTag\ISystemTagManager::class);
+		$this->tagMapper = $this->createMock('\\' . \OCP\SystemTag\ISystemTagObjectMapper::class);
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('testuser'));
-		$userSession = $this->createMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
-		$groupManager = $this->createMock('\OCP\IGroupManager');
+		$groupManager = $this->createMock('\\' . \OCP\IGroupManager::class);
 		$groupManager->expects($this->any())
 			->method('isAdmin')
 			->with('testuser')
 			->will($this->returnValue(true));
 
-		$this->userFolder = $this->createMock('\OCP\Files\Folder');
+		$this->userFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
-		$fileRoot = $this->createMock('\OCP\Files\IRootFolder');
+		$fileRoot = $this->createMock('\\' . \OCP\Files\IRootFolder::class);
 		$fileRoot->expects($this->any())
 			->method('getUserfolder')
 			->with('testuser')
@@ -105,7 +102,7 @@ class SystemTagsObjectTypeCollectionTest extends \Test\TestCase {
 			->will($this->returnValue([true]));
 		$childNode = $this->node->getChild('555');
 
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagsObjectMappingCollection', $childNode);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagsObjectMappingCollection::class, $childNode);
 		$this->assertEquals('555', $childNode->getName());
 	}
 

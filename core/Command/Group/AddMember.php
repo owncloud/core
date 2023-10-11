@@ -33,8 +33,7 @@ class AddMember extends Command {
 	/** @var \OCP\IGroupManager */
 	protected $groupManager;
 
-	/** @var IUserManager  */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
 	/**
 	 * @param IGroupManager $groupManager

@@ -73,16 +73,13 @@ class Filesystem {
 	private static $mounts;
 
 	public static $loaded = false;
-	/**
-	 * @var \OC\Files\View $defaultInstance
-	 */
-	private static $defaultInstance;
+	private static ?\OC\Files\View $defaultInstance = null;
 
 	private static $usersSetup = [];
 
 	private static $normalizedPathCache = null;
 
-	private static $listeningForProviders = false;
+	private static bool $listeningForProviders = false;
 
 	/**
 	 * classname which used for hooks handling
@@ -201,13 +198,9 @@ class Filesystem {
 	public const signal_param_mount_type = 'mounttype';
 	public const signal_param_users = 'users';
 
-	/**
-	 * @var \OC\Files\Storage\StorageFactory $loader
-	 */
-	private static $loader;
+	private static ?\OC\Files\Storage\StorageFactory $loader = null;
 
-	/** @var bool */
-	private static $logWarningWhenAddingStorageWrapper = true;
+	private static bool $logWarningWhenAddingStorageWrapper = true;
 
 	/**
 	 * @param bool $shouldLog
@@ -407,7 +400,7 @@ class Filesystem {
 
 		if ($userObject === null) {
 			$msg = "Backends provided no user object for $user";
-			\OC::$server->getLogger()->error($msg, ['app' => __CLASS__]);
+			\OC::$server->getLogger()->error($msg, ['app' => self::class]);
 			// reset flag, this will make it possible to rethrow the exception if called again
 			unset(self::$usersSetup[$user]);
 			throw new \OC\User\NoUserException($msg);
@@ -416,7 +409,7 @@ class Filesystem {
 		$realUid = $userObject->getUID();
 		// workaround in case of different casings
 		if ($user !== $realUid) {
-			$stack = \json_encode(\debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			$stack = \json_encode(\debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50), JSON_THROW_ON_ERROR);
 			\OCP\Util::writeLog('files', 'initMountPoints() called with wrong user casing. This could be a bug. Expected: "' . $realUid . '" got "' . $user . '". Stack: ' . $stack, \OCP\Util::DEBUG);
 			$user = $realUid;
 
@@ -654,7 +647,7 @@ class Filesystem {
 		if (\preg_last_error() !== PREG_NO_ERROR) {
 			\OC::$server->getLogger()->error(
 				'Regex error: ' . $regexToBeChecked . ' - ' . $callerMessage . ': ' . self::pregErrorText(),
-				['app' => __CLASS__]
+				['app' => self::class]
 			);
 			return false;
 		}
@@ -752,7 +745,7 @@ class Filesystem {
 		// further explode each array element with '\' and add to result array if found
 		foreach ($ppx as $pp) {
 			// only add an array element if strlen != 0
-			$pathParts = \array_merge($pathParts, \array_filter(\explode('\\', $pp), 'strlen'));
+			$pathParts = [...$pathParts, ...\array_filter(\explode('\\', $pp), 'strlen')];
 		}
 
 		// force that the last element (possibly the filename) is an entry in an array
@@ -969,7 +962,7 @@ class Filesystem {
 		 */
 		$path = (string)$path;
 
-		$cacheKey = \json_encode([$path, $stripTrailingSlash, $isAbsolutePath, $keepUnicode]);
+		$cacheKey = \json_encode([$path, $stripTrailingSlash, $isAbsolutePath, $keepUnicode], JSON_THROW_ON_ERROR);
 
 		if (isset(self::$normalizedPathCache[$cacheKey])) {
 			return self::$normalizedPathCache[$cacheKey];

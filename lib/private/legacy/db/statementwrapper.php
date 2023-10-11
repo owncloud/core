@@ -39,8 +39,8 @@ class OC_DB_StatementWrapper {
 	 * @var \Doctrine\DBAL\Driver\Statement
 	 */
 	private $statement = null;
-	private $isManipulation = false;
-	private $lastArguments = [];
+	private bool $isManipulation = false;
+	private array $lastArguments = [];
 
 	/**
 	 * @param boolean $isManipulation

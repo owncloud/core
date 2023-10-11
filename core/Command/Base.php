@@ -35,11 +35,9 @@ class Base extends Command {
 
 	protected $defaultOutputFormat = self::OUTPUT_FORMAT_PLAIN;
 
-	/** @var boolean */
-	private $php_pcntl_signal = false;
+	private bool $php_pcntl_signal = false;
 
-	/** @var boolean */
-	private $interrupted = false;
+	private bool $interrupted = false;
 
 	protected function configure() {
 		$this
@@ -62,7 +60,7 @@ class Base extends Command {
 	protected function writeArrayInOutputFormat(InputInterface $input, OutputInterface $output, $items, $prefix = self::DEFAULT_OUTPUT_PREFIX, $showIntKeys = false) {
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_JSON:
-				$output->writeln(\json_encode($items));
+				$output->writeln(\json_encode($items, JSON_THROW_ON_ERROR));
 				break;
 			case self::OUTPUT_FORMAT_JSON_PRETTY:
 				$output->writeln(\json_encode($items, JSON_PRETTY_PRINT));
@@ -102,7 +100,7 @@ class Base extends Command {
 
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_JSON:
-				$output->writeln(\json_encode($item));
+				$output->writeln(\json_encode($item, JSON_THROW_ON_ERROR));
 				break;
 			case self::OUTPUT_FORMAT_JSON_PRETTY:
 				$output->writeln(\json_encode($item, JSON_PRETTY_PRINT));

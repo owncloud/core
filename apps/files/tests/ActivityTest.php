@@ -34,7 +34,7 @@ use Test\TestCase;
  */
 class ActivityTest extends TestCase {
 	/** @var \OCP\Activity\IManager|\PHPUnit\Framework\MockObject\MockObject */
-	private $activityManager;
+	private \PHPUnit\Framework\MockObject\MockObject $activityManager;
 
 	/** @var \OCP\IRequest|\PHPUnit\Framework\MockObject\MockObject */
 	protected $request;
@@ -57,35 +57,33 @@ class ActivityTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->getMockBuilder('OCP\IRequest')
+		$this->request = $this->getMockBuilder(\OCP\IRequest::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->session = $this->getMockBuilder('OCP\IUserSession')
+		$this->session = $this->getMockBuilder(\OCP\IUserSession::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->getMockBuilder('OCP\IConfig')
+		$this->config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->activityHelper = $this->getMockBuilder('OCA\Files\ActivityHelper')
+		$this->activityHelper = $this->getMockBuilder(\OCA\Files\ActivityHelper::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->activityManager = $this->getMockBuilder('OC\Activity\Manager')
+		$this->activityManager = $this->getMockBuilder(\OC\Activity\Manager::class)
 			->setConstructorArgs([$this->request, $this->session, $this->config])
 			->setMethods(['isFormattingFilteredObject'])
 			->getMock();
 
-		$this->l10nFactory = $this->getMockBuilder('OCP\L10N\IFactory')
+		$this->l10nFactory = $this->getMockBuilder(\OCP\L10N\IFactory::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$deL10n = $this->getMockBuilder('\OCP\IL10N')
+		$deL10n = $this->getMockBuilder('\\' . \OCP\IL10N::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$deL10n->expects($this->any())
 			->method('t')
-			->willReturnCallback(function ($argument) {
-				return 'translate(' . $argument . ')';
-			});
+			->willReturnCallback(fn ($argument) => 'translate(' . $argument . ')');
 
 		$this->l10nFactory->expects($this->any())
 			->method('get')
@@ -97,16 +95,14 @@ class ActivityTest extends TestCase {
 
 		$this->activityExtension = $activityExtension = new Activity(
 			$this->l10nFactory,
-			$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder(\OCP\IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->activityManager,
 			$this->activityHelper,
 			\OC::$server->getDatabaseConnection(),
 			$this->config
 		);
 
-		$this->activityManager->registerExtension(function () use ($activityExtension) {
-			return $activityExtension;
-		});
+		$this->activityManager->registerExtension(fn () => $activityExtension);
 	}
 
 	public function testNotificationTypes() {
@@ -393,7 +389,7 @@ class ActivityTest extends TestCase {
 	}
 
 	public function executeQueryForFilter(array $result) {
-		list($resultQuery, $resultParameters) = $result;
+		[$resultQuery, $resultParameters] = $result;
 		$resultQuery = \str_replace('`file`', '`user`', $resultQuery);
 		$resultQuery = \str_replace('`type`', '`key`', $resultQuery);
 
@@ -406,7 +402,7 @@ class ActivityTest extends TestCase {
 	}
 
 	protected function mockUserSession($user) {
-		$mockUser = $this->getMockBuilder('\OCP\IUser')
+		$mockUser = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockUser->expects($this->any())

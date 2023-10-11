@@ -34,14 +34,10 @@ use OCP\IConfig;
  * @package OC\Http
  */
 class Client implements IClient {
-	/** @var GuzzleClient */
-	private $client;
-	/** @var IConfig */
-	private $config;
-	/** @var ICertificateManager */
-	private $certificateManager;
-	/** @var array */
-	private $defaultOptions;
+	private \GuzzleHttp\Client $client;
+	private \OCP\IConfig $config;
+	private \OCP\ICertificateManager $certificateManager;
+	private ?array $defaultOptions = null;
 
 	/**
 	 * @param IConfig $config

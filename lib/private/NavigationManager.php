@@ -44,16 +44,11 @@ class NavigationManager implements INavigationManager {
 	protected $init = false;
 	/** @var IAppManager */
 	protected $appManager;
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var IFactory */
-	private $l10nFac;
-	/** @var IUserSession */
-	private $userSession;
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IConfig */
-	private $config;
+	private ?\OCP\IURLGenerator $urlGenerator = null;
+	private ?\OCP\L10N\IFactory $l10nFac = null;
+	private ?\OCP\IUserSession $userSession = null;
+	private ?\OCP\IGroupManager $groupManager = null;
+	private ?\OCP\IConfig $config = null;
 
 	public function __construct(
 		IAppManager $appManager = null,
@@ -152,12 +147,12 @@ class NavigationManager implements INavigationManager {
 			if (!isset($nav['route']) && !isset($nav['static'])) {
 				continue;
 			}
-			$role = isset($nav['@attributes']['role']) ? $nav['@attributes']['role'] : 'all';
+			$role = $nav['@attributes']['role'] ?? 'all';
 			if ($role === 'admin' && !$this->isAdmin()) {
 				continue;
 			}
 			$l = $this->l10nFac->get($app);
-			$order = isset($nav['order']) ? $nav['order'] : 100;
+			$order = $nav['order'] ?? 100;
 			if (isset($nav['route'])) {
 				$route = $this->urlGenerator->linkToRoute($nav['route']);
 			} else {
@@ -167,8 +162,8 @@ class NavigationManager implements INavigationManager {
 				}
 				$route = $this->urlGenerator->linkTo($app, $html);
 			}
-			$name = isset($nav['name']) ? $nav['name'] : \ucfirst($app);
-			$icon = isset($nav['icon']) ? $nav['icon'] : 'app.svg';
+			$name = $nav['name'] ?? \ucfirst($app);
+			$icon = $nav['icon'] ?? 'app.svg';
 			$iconPath = null;
 			foreach ([$icon, "$app.svg"] as $i) {
 				try {

@@ -37,15 +37,15 @@ class CredentialsManagerTest extends \Test\TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->crypto = $this->createMock('\OCP\Security\ICrypto');
-		$this->dbConnection = $this->getMockBuilder('\OC\DB\Connection')
+		$this->crypto = $this->createMock('\\' . \OCP\Security\ICrypto::class);
+		$this->dbConnection = $this->getMockBuilder('\\' . \OC\DB\Connection::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->manager = new CredentialsManager($this->crypto, $this->dbConnection);
 	}
 
 	private function getQueryResult($row) {
-		$result = $this->getMockBuilder('\Doctrine\DBAL\Driver\Statement')
+		$result = $this->getMockBuilder('\\' . \Doctrine\DBAL\Driver\Statement::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +86,7 @@ class CredentialsManagerTest extends \Test\TestCase {
 			->with('baz')
 			->willReturn(\json_encode('bar'));
 
-		$qb = $this->getMockBuilder('\OC\DB\QueryBuilder\QueryBuilder')
+		$qb = $this->getMockBuilder('\\' . \OC\DB\QueryBuilder\QueryBuilder::class)
 			->setConstructorArgs([$this->dbConnection])
 			->setMethods(['execute'])
 			->getMock();

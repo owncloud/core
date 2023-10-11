@@ -27,10 +27,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Check extends Base {
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
 	public function __construct(IConfig $config) {
 		parent::__construct();
@@ -49,9 +46,7 @@ class Check extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$errors = \OC_Util::checkServer($this->config);
 		if (!empty($errors)) {
-			$errors = \array_map(function ($item) {
-				return (string) $item['error'];
-			}, $errors);
+			$errors = \array_map(fn ($item) => (string) $item['error'], $errors);
 
 			$this->writeArrayInOutputFormat($input, $output, $errors);
 			return 1;

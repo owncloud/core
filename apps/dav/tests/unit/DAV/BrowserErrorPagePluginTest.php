@@ -33,13 +33,13 @@ class BrowserErrorPagePluginTest extends \Test\TestCase {
 	 */
 	public function test($expectedCode, $exception) {
 		/** @var BrowserErrorPagePlugin | PHPUnit\Framework\MockObject\MockObject $plugin */
-		$plugin = $this->getMockBuilder('OCA\DAV\Files\BrowserErrorPagePlugin')->setMethods(['sendResponse', 'generateBody'])->getMock();
+		$plugin = $this->getMockBuilder(\OCA\DAV\Files\BrowserErrorPagePlugin::class)->setMethods(['sendResponse', 'generateBody'])->getMock();
 		$plugin->expects($this->once())->method('generateBody')->willReturn(':boom:');
 		$plugin->expects($this->once())->method('sendResponse');
 		/** @var \Sabre\DAV\Server | PHPUnit\Framework\MockObject\MockObject $server */
-		$server = $this->getMockBuilder('Sabre\DAV\Server')->disableOriginalConstructor()->getMock();
+		$server = $this->getMockBuilder(\Sabre\DAV\Server::class)->disableOriginalConstructor()->getMock();
 		$server->expects($this->once())->method('on');
-		$httpResponse = $this->getMockBuilder('Sabre\HTTP\Response')->disableOriginalConstructor()->getMock();
+		$httpResponse = $this->getMockBuilder(\Sabre\HTTP\Response::class)->disableOriginalConstructor()->getMock();
 		$httpResponse->expects($this->once())->method('addHeaders');
 		$httpResponse->expects($this->once())->method('setStatus')->with($expectedCode);
 		$httpResponse->expects($this->once())->method('setBody')->with(':boom:');

@@ -84,9 +84,7 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 
 	// FIXME: should not add storage wrappers outside of preSetup, need to find a better way
 	$previousLog = Filesystem::logWarningWhenAddingStorageWrapper(false);
-	Filesystem::addStorageWrapper('sharePermissions', function ($mountPoint, $storage) use ($share) {
-		return new PermissionsMask(['storage' => $storage, 'mask' => $share->getPermissions() | Constants::PERMISSION_SHARE]);
-	});
+	Filesystem::addStorageWrapper('sharePermissions', fn ($mountPoint, $storage) => new PermissionsMask(['storage' => $storage, 'mask' => $share->getPermissions() | Constants::PERMISSION_SHARE]));
 	Filesystem::logWarningWhenAddingStorageWrapper($previousLog);
 
 	# in case any fs is already mounted: tear it down

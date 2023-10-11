@@ -35,24 +35,24 @@ class ImageTest extends \Test\TestCase {
 	public function testConstructDestruct() {
 		$img = new \OC_Image(OC::$SERVERROOT.'/tests/data/testimage.png');
 		$this->assertInstanceOf('\OC_Image', $img);
-		$this->assertInstanceOf('\OCP\IImage', $img);
+		$this->assertInstanceOf('\\' . \OCP\IImage::class, $img);
 		unset($img);
 
 		$imgcreate = \imagecreatefromjpeg(OC::$SERVERROOT.'/tests/data/testimage.jpg');
 		$img = new \OC_Image($imgcreate);
 		$this->assertInstanceOf('\OC_Image', $img);
-		$this->assertInstanceOf('\OCP\IImage', $img);
+		$this->assertInstanceOf('\\' . \OCP\IImage::class, $img);
 		unset($img);
 
 		$base64 = \base64_encode(\file_get_contents(OC::$SERVERROOT.'/tests/data/testimage.gif'));
 		$img = new \OC_Image($base64);
 		$this->assertInstanceOf('\OC_Image', $img);
-		$this->assertInstanceOf('\OCP\IImage', $img);
+		$this->assertInstanceOf('\\' . \OCP\IImage::class, $img);
 		unset($img);
 
 		$img = new \OC_Image(null);
 		$this->assertInstanceOf('\OC_Image', $img);
-		$this->assertInstanceOf('\OCP\IImage', $img);
+		$this->assertInstanceOf('\\' . \OCP\IImage::class, $img);
 		unset($img);
 	}
 

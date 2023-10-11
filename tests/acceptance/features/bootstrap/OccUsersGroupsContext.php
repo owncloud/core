@@ -587,7 +587,7 @@ class OccUsersGroupsContext implements Context {
 	public function theUsersReturnedByTheOccCommandShouldBe(TableNode $useridTable):void {
 		$this->featureContext->verifyTableNodeColumns($useridTable, ['uid']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputUsers = \json_decode($lastOutput, true);
+		$lastOutputUsers = \json_decode($lastOutput, true, 512, JSON_THROW_ON_ERROR);
 		$result = [];
 		// check if an array is a multi-dimensional array with inner array key 'displayName'
 		if (\array_column($lastOutputUsers, 'displayName')) {
@@ -626,7 +626,7 @@ class OccUsersGroupsContext implements Context {
 	public function theInactiveUsersReturnedByTheOccCommandShouldBe(TableNode $userTable):void {
 		$this->featureContext->verifyTableNodeColumns($userTable, ['uid', 'display name', 'inactive days']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputUsers = \json_decode($lastOutput, true);
+		$lastOutputUsers = \json_decode($lastOutput, true, 512, JSON_THROW_ON_ERROR);
 
 		Assert::assertEquals(
 			\count($userTable->getColumnsHash()),
@@ -675,7 +675,7 @@ class OccUsersGroupsContext implements Context {
 	public function theGroupsReturnedByTheOccCommandShouldBe(TableNode $groupTableNode):void {
 		$this->featureContext->verifyTableNodeColumns($groupTableNode, ['group']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputGroups = \json_decode($lastOutput, true);
+		$lastOutputGroups = \json_decode($lastOutput, true, 512, JSON_THROW_ON_ERROR);
 
 		foreach ($groupTableNode as $row) {
 			Assert::assertContains(
@@ -718,7 +718,7 @@ class OccUsersGroupsContext implements Context {
 				$index = 0;
 		}
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputUser = \json_decode($lastOutput, true);
+		$lastOutputUser = \json_decode($lastOutput, true, 512, JSON_THROW_ON_ERROR);
 		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[$index];
 		Assert::assertEquals(
 			$displayName,

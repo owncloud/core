@@ -65,7 +65,7 @@ class HomeTest extends Storage {
 	/**
 	 * @var \OC\User\User $user
 	 */
-	private $user;
+	private \Test\Files\Storage\DummyUser $user;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -92,7 +92,7 @@ class HomeTest extends Storage {
 	 * Tests that getCache() returns an instance of HomeCache
 	 */
 	public function testGetCacheReturnsHomeCache() {
-		$this->assertInstanceOf('\OC\Files\Cache\HomeCache', $this->instance->getCache());
+		$this->assertInstanceOf('\\' . \OC\Files\Cache\HomeCache::class, $this->instance->getCache());
 	}
 
 	public function testGetOwner() {

@@ -36,16 +36,11 @@ use OCP\Mail\IMailer;
  * @package OC\Settings\Controller
  */
 class MailSettingsController extends Controller {
-	/** @var \OCP\IL10N */
-	private $l10n;
-	/** @var \OCP\IConfig */
-	private $config;
-	/** @var Session */
-	private $userSession;
-	/** @var \OC_Defaults */
-	private $defaults;
-	/** @var IMailer */
-	private $mailer;
+	private \OCP\IL10N $l10n;
+	private \OCP\IConfig $config;
+	private \OC\User\Session $userSession;
+	private \OC_Defaults $defaults;
+	private \OCP\Mail\IMailer $mailer;
 	/** @var string */
 	private $defaultMailAddress;
 

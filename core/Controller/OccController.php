@@ -31,8 +31,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class OccController extends Controller {
-	/** @var array  */
-	private $allowedCommands = [
+	private array $allowedCommands = [
 		'app:disable',
 		'app:enable',
 		'app:getpath',
@@ -45,12 +44,9 @@ class OccController extends Controller {
 		'upgrade'
 	];
 
-	/** @var IConfig */
-	private $config;
-	/** @var Application */
-	private $console;
-	/** @var ILogger */
-	private $logger;
+	private \OCP\IConfig $config;
+	private \OC\Console\Application $console;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * OccController constructor.

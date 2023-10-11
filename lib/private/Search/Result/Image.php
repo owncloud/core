@@ -32,7 +32,7 @@ class Image extends File {
 	 * @var string
 	 */
 	public $type = 'image';
-	
+
 	/**
 	 * @TODO add EXIF information
 	 */

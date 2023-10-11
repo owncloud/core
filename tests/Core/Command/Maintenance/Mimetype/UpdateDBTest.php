@@ -43,15 +43,15 @@ class UpdateDBTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->detector = $this->getMockBuilder('OC\Files\Type\Detection')
+		$this->detector = $this->getMockBuilder(\OC\Files\Type\Detection::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->loader = $this->getMockBuilder('OC\Files\Type\Loader')
+		$this->loader = $this->getMockBuilder(\OC\Files\Type\Loader::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock(\Symfony\Component\Console\Input\InputInterface::class);
+		$this->consoleOutput = $this->createMock(\Symfony\Component\Console\Output\OutputInterface::class);
 
 		$this->command = new UpdateDB($this->detector, $this->loader);
 	}

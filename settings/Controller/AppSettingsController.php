@@ -40,12 +40,9 @@ class AppSettingsController extends Controller {
 	public const CAT_ENABLED = 0;
 	public const CAT_DISABLED = 1;
 
-	/** @var \OCP\IL10N */
-	private $l10n;
-	/** @var IConfig */
-	private $config;
-	/** @var IAppManager */
-	private $appManager;
+	private \OCP\IL10N $l10n;
+	private \OCP\IConfig $config;
+	private \OCP\App\IAppManager $appManager;
 
 	/**
 	 * @param string $appName
@@ -84,25 +81,17 @@ class AppSettingsController extends Controller {
 				\usort($apps, function ($a, $b) {
 					$a = (string)$a['name'];
 					$b = (string)$b['name'];
-					if ($a === $b) {
-						return 0;
-					}
-					return ($a < $b) ? -1 : 1;
+					return $a <=> $b;
 				});
 				break;
 				// not-installed apps
 			case 'disabled':
 				$apps = \OC_App::listAllApps();
-				$apps = \array_filter($apps, function ($app) {
-					return !$app['active'];
-				});
+				$apps = \array_filter($apps, fn ($app) => !$app['active']);
 				\usort($apps, function ($a, $b) {
 					$a = (string)$a['name'];
 					$b = (string)$b['name'];
-					if ($a === $b) {
-						return 0;
-					}
-					return ($a < $b) ? -1 : 1;
+					return $a <=> $b;
 				});
 				break;
 			default:
@@ -117,7 +106,7 @@ class AppSettingsController extends Controller {
 			// fix groups
 			$groups = [];
 			if (\is_string($app['groups'])) {
-				$groups = \json_decode($app['groups']);
+				$groups = \json_decode($app['groups'], null, 512, JSON_THROW_ON_ERROR);
 			} elseif (\is_array($app['groups'])) {
 				$groups = $app['groups'];
 			}
@@ -148,9 +137,7 @@ class AppSettingsController extends Controller {
 	 */
 	private function getInstalledApps() {
 		$apps = \OC_App::listAllApps();
-		$apps = \array_filter($apps, function ($app) {
-			return $app['active'];
-		});
+		$apps = \array_filter($apps, fn ($app) => $app['active']);
 		return $apps;
 	}
 }

@@ -46,13 +46,12 @@ class ManagerTest extends TestCase {
 	use UserTrait;
 
 	/** @var Manager **/
-	private $manager;
+	private \OCA\Files_Sharing\External\Manager $manager;
 
 	/** @var \OC\Files\Mount\Manager */
 	private $mountManager;
 
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
-	private $eventDispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $eventDispatcher;
 
 	private $uid;
 
@@ -60,7 +59,7 @@ class ManagerTest extends TestCase {
 	 * @var \OCP\IUser
 	 */
 	private $user;
-	private $mountProvider;
+	private \OCA\Files_Sharing\External\MountProvider $mountProvider;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -80,9 +79,7 @@ class ManagerTest extends TestCase {
 			$eventDispatcher,
 			$this->uid
 		);
-		$this->mountProvider = new MountProvider(\OC::$server->getDatabaseConnection(), function () {
-			return $this->manager;
-		});
+		$this->mountProvider = new MountProvider(\OC::$server->getDatabaseConnection(), fn () => $this->manager);
 	}
 
 	private function setupMounts() {
@@ -153,9 +150,7 @@ class ManagerTest extends TestCase {
 			->withConsecutive(
 				[
 					$this->callback(
-						function ($event) use ($openShares) {
-							return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class);
-						}
+						fn ($event) => $this->verifyShareEvent($event, $openShares[0], AcceptShare::class)
 					),
 					AcceptShare::class
 				],
@@ -207,9 +202,7 @@ class ManagerTest extends TestCase {
 			->withConsecutive(
 				[
 					$this->callback(
-						function ($event) use ($openShares) {
-							return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class);
-						}
+						fn ($event) => $this->verifyShareEvent($event, $openShares[1], DeclineShare::class)
 					),
 					DeclineShare::class
 				],
@@ -244,17 +237,13 @@ class ManagerTest extends TestCase {
 			->withConsecutive(
 				[
 					$this->callback(
-						function ($event) use ($openShares) {
-							return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class);
-						}
+						fn ($event) => $this->verifyShareEvent($event, $openShares[0], DeclineShare::class)
 					),
 					DeclineShare::class
 				],
 				[
 					$this->callback(
-						function ($event) use ($acceptedShares) {
-							return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class);
-						}
+						fn ($event) => $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class)
 					),
 					DeclineShare::class
 				],
@@ -315,18 +304,18 @@ class ManagerTest extends TestCase {
 	private function assertMount($mountPoint) {
 		$mountPoint = \rtrim($mountPoint, '/');
 		$mount = $this->mountManager->find($this->getFullPath($mountPoint));
-		$this->assertInstanceOf('\OCA\Files_Sharing\External\Mount', $mount);
-		$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
+		$this->assertInstanceOf('\\' . \OCA\Files_Sharing\External\Mount::class, $mount);
+		$this->assertInstanceOf('\\' . \OCP\Files\Mount\IMountPoint::class, $mount);
 		$this->assertEquals($this->getFullPath($mountPoint), \rtrim($mount->getMountPoint(), '/'));
 		$storage = $mount->getStorage();
-		$this->assertInstanceOf('\OCA\Files_Sharing\External\Storage', $storage);
+		$this->assertInstanceOf('\\' . \OCA\Files_Sharing\External\Storage::class, $storage);
 	}
 
 	private function assertNotMount($mountPoint) {
 		$mountPoint = \rtrim($mountPoint, '/');
 		$mount = $this->mountManager->find($this->getFullPath($mountPoint));
 		if ($mount) {
-			$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
+			$this->assertInstanceOf('\\' . \OCP\Files\Mount\IMountPoint::class, $mount);
 			$this->assertNotEquals($this->getFullPath($mountPoint), \rtrim($mount->getMountPoint(), '/'));
 		} else {
 			$this->assertNull($mount);

@@ -135,9 +135,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 
 		foreach ($this->allowedKeys as $name) {
-			$this->items[$name] = isset($vars[$name])
-				? $vars[$name]
-				: [];
+			$this->items[$name] = $vars[$name] ?? [];
 		}
 
 		$this->items['parameters'] = \array_merge(
@@ -194,9 +192,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	* @see offsetExists
 	*/
 	public function offsetGet($offset) {
-		return isset($this->items['parameters'][$offset])
-			? $this->items['parameters'][$offset]
-			: null;
+		return $this->items['parameters'][$offset] ?? null;
 	}
 
 	/**
@@ -253,16 +249,12 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			case 'cookies':
 			case 'urlParams':
 			case 'method':
-				return isset($this->items[$name])
-					? $this->items[$name]
-					: null;
+				return $this->items[$name] ?? null;
 			case 'parameters':
 			case 'params':
 				return $this->getContent();
 			default:
-				return isset($this[$name])
-					? $this[$name]
-					: null;
+				return $this[$name] ?? null;
 		}
 	}
 
@@ -326,9 +318,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return mixed the content of the array
 	 */
 	public function getParam($key, $default = null) {
-		return isset($this->parameters[$key])
-			? $this->parameters[$key]
-			: $default;
+		return $this->parameters[$key] ?? $default;
 	}
 
 	/**
@@ -354,7 +344,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return array|null the file in the $_FILES element
 	 */
 	public function getUploadedFile($key) {
-		return isset($this->files[$key]) ? $this->files[$key] : null;
+		return $this->files[$key] ?? null;
 	}
 
 	/**
@@ -363,7 +353,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return array|null the value in the $_ENV element
 	 */
 	public function getEnv($key) {
-		return isset($this->env[$key]) ? $this->env[$key] : null;
+		return $this->env[$key] ?? null;
 	}
 
 	/**
@@ -372,7 +362,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string|null the value in the $_COOKIE element
 	 */
 	public function getCookie($key) {
-		return isset($this->cookies[$key]) ? $this->cookies[$key] : null;
+		return $this->cookies[$key] ?? null;
 	}
 
 	/**
@@ -419,7 +409,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 		// 'application/json' must be decoded manually.
 		if (\strpos($this->getHeader('Content-Type') ?? '', 'application/json') !== false) {
-			$params = \json_decode(\file_get_contents($this->inputStream), true);
+			$params = \json_decode(\file_get_contents($this->inputStream), true, 512, JSON_THROW_ON_ERROR);
 			if (\is_array($params) && \count($params) > 0) {
 				$this->items['params'] = $params;
 				if ($this->method === 'POST') {
@@ -511,7 +501,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string IP address
 	 */
 	public function getRemoteAddress() {
-		$remoteAddress = isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : '';
+		$remoteAddress = $this->server['REMOTE_ADDR'] ?? '';
 		$trustedProxies = $this->config->getSystemValue('trusted_proxies', []);
 
 		if (\is_array($trustedProxies) && \in_array($remoteAddress, $trustedProxies)) {
@@ -542,7 +532,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 */
 	private function isOverwriteCondition($type = '') {
 		$regex = '/' . $this->config->getSystemValue('overwritecondaddr', '')  . '/';
-		$remoteAddr = isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : '';
+		$remoteAddr = $this->server['REMOTE_ADDR'] ?? '';
 		return $regex === '//' || \preg_match($regex, $remoteAddr) === 1
 		|| $type !== 'protocol';
 	}
@@ -608,7 +598,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string
 	 */
 	public function getRequestUri() {
-		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
+		$uri = $this->server['REQUEST_URI'] ?? '';
 		// remove too many leading slashes - can be caused by reverse proxy configuration
 		if (\strpos($uri, '/') === 0) {
 			$uri = '/' . \ltrim($uri, '/');
@@ -639,7 +629,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string Path info
 	 */
 	public function getRawPathInfo() {
-		$requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
+		$requestUri = $this->server['REQUEST_URI'] ?? '';
 		// remove too many leading slashes - can be caused by reverse proxy configuration
 		if (\strpos($requestUri, '/') === 0) {
 			$requestUri = '/' . \ltrim($requestUri, '/');
@@ -658,7 +648,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 		// strip off the script name's dir and file name
 		// FIXME: Sabre does not really belong here
-		list($path, $name) = \Sabre\Uri\split($scriptName);
+		[$path, $name] = \Sabre\Uri\split($scriptName);
 		if (!empty($path)) {
 			if ($path === $pathInfo || \strpos($pathInfo, $path.'/') === 0) {
 				$pathInfo = \substr($pathInfo, \strlen($path));
@@ -686,7 +676,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string|false Path info or false when not found
 	 */
 	public function getPathInfo() {
-		$pathInfo = isset($this->server['PATH_INFO']) ? $this->server['PATH_INFO'] : '';
+		$pathInfo = $this->server['PATH_INFO'] ?? '';
 		if ($pathInfo !== '') {
 			return $pathInfo;
 		}

@@ -32,19 +32,16 @@ use Test\TestCase;
  * @group DB
  */
 class DeleteTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 	/** @var IJobList */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->jobList = $this->createMock(IJobList::class);
 		$this->jobList->expects($this->any())->method('jobIdExists')
-			->willReturnCallback(function ($id) {
-				return ($id !== '666') ? true : false;
-			});
+			->willReturnCallback(fn ($id) => ($id !== '666') ? true : false);
 
 		$command = new Delete($this->jobList);
 		$this->commandTester = new CommandTester($command);

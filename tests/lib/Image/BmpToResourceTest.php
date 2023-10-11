@@ -67,7 +67,7 @@ class BmpToResourceTest extends TestCase {
 		$this->assertEquals(32, $dibHeader['imagesize']);
 		$this->assertEquals(2836, $dibHeader['xres']);
 		$this->assertEquals(2835, $dibHeader['yres']);
-		$this->assertEquals(\pow(2, $dibHeader['bits']), $dibHeader['colors']);
+		$this->assertEquals(2 ** $dibHeader['bits'], $dibHeader['colors']);
 		$this->assertEquals(0, $dibHeader['important']);
 	}
 

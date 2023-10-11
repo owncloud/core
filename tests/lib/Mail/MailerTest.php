@@ -17,11 +17,11 @@ use OC\Mail\Message;
 
 class MailerTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var OC_Defaults */
-	private $defaults;
+	private \PHPUnit\Framework\MockObject\MockObject $defaults;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var Mailer */
 	private $mailer;
 

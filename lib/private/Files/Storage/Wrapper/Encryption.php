@@ -50,14 +50,11 @@ class Encryption extends Wrapper {
 	/** @var string */
 	private $mountPoint;
 
-	/** @var \OC\Encryption\Util */
-	private $util;
+	private ?\OC\Encryption\Util $util = null;
 
-	/** @var \OCP\Encryption\IManager */
-	private $encryptionManager;
+	private ?\OCP\Encryption\IManager $encryptionManager = null;
 
-	/** @var \OCP\ILogger */
-	private $logger;
+	private ?\OCP\ILogger $logger = null;
 
 	/** @var string */
 	private $uid;
@@ -65,31 +62,26 @@ class Encryption extends Wrapper {
 	/** @var array */
 	protected $unencryptedSize;
 
-	/** @var \OCP\Encryption\IFile */
-	private $fileHelper;
+	private ?\OCP\Encryption\IFile $fileHelper = null;
 
 	/** @var IMountPoint */
 	private $mount;
 
-	/** @var IStorage */
-	private $keyStorage;
+	private ?\OCP\Encryption\Keys\IStorage $keyStorage = null;
 
-	/** @var Update */
-	private $update;
+	private ?\OC\Encryption\Update $update = null;
 
-	/** @var Manager */
-	private $mountManager;
+	private ?\OC\Files\Mount\Manager $mountManager = null;
 
 	/** @var array remember for which path we execute the repair step to avoid recursions */
-	private $fixUnencryptedSizeOf = [];
+	private array $fixUnencryptedSizeOf = [];
 
-	/** @var  ArrayCache */
-	private $arrayCache;
+	private ?\OC\Memcache\ArrayCache $arrayCache = null;
 
 	/** @var array which has information of sourcePath during rename operation */
-	private $sourcePath;
+	private ?array $sourcePath = null;
 
-	private static $disableWriteEncryption = false;
+	private static bool $disableWriteEncryption = false;
 
 	/**
 	 * @param array $parameters
@@ -850,7 +842,7 @@ class Encryption extends Wrapper {
 					unset($this->sourcePath[$targetInternalPath]);
 				}
 				$target = $this->fopen($targetInternalPath, 'w');
-				list(, $result) = \OC_Helper::streamCopy($source, $target);
+				[, $result] = \OC_Helper::streamCopy($source, $target);
 				\fclose($source);
 				\fclose($target);
 			} catch (\Exception $e) {

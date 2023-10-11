@@ -19,13 +19,12 @@ use OCP\ILogger;
 
 class AvatarTest extends \Test\TestCase {
 	/** @var IStorage | \PHPUnit\Framework\MockObject\MockObject */
-	private $storage;
+	private \PHPUnit\Framework\MockObject\MockObject $storage;
 
-	/** @var \OC\Avatar */
-	private $avatar;
+	private \OC\Avatar $avatar;
 
 	/** @var \OC\User\User | \PHPUnit\Framework\MockObject\MockObject $user */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	public function setUp(): void {
 		parent::setUp();

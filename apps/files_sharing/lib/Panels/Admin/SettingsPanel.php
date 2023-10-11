@@ -25,11 +25,9 @@ use OCA\Files_Sharing\SharingBlacklist;
 use OCA\Files_Sharing\SharingAllowlist;
 
 class SettingsPanel implements ISettings {
-	/** @var SharingBlacklist */
-	private $sharingBlacklist;
+	private \OCA\Files_Sharing\SharingBlacklist $sharingBlacklist;
 
-	/** @var SharingAllowlist */
-	private $sharingAllowlist;
+	private \OCA\Files_Sharing\SharingAllowlist $sharingAllowlist;
 
 	public function __construct(SharingBlacklist $sharingBlacklist, SharingAllowlist $sharingAllowlist) {
 		$this->sharingBlacklist = $sharingBlacklist;

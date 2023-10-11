@@ -31,23 +31,18 @@ use OCP\IUserManager;
 use OCP\Util;
 
 class HookManager {
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var SyncService */
-	private $syncService;
+	private \OCA\DAV\CardDAV\SyncService $syncService;
 
 	/** @var IUser[] */
-	private $usersToDelete;
+	private ?array $usersToDelete = null;
 
-	/** @var CalDavBackend */
-	private $calDav;
+	private \OCA\DAV\CalDAV\CalDavBackend $calDav;
 
-	/** @var CardDavBackend */
-	private $cardDav;
+	private \OCA\DAV\CardDAV\CardDavBackend $cardDav;
 
-	/** @var IL10N */
-	private $l10n;
+	private \OCP\IL10N $l10n;
 
 	/** @var array */
 	private $calendarsToDelete;

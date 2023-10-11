@@ -40,14 +40,14 @@ class EnableTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$config = $this->config = $this->getMockBuilder('OCP\IConfig')
+		$config = $this->config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$manager = $this->manager = $this->getMockBuilder('OCP\Encryption\IManager')
+		$manager = $this->manager = $this->getMockBuilder(\OCP\Encryption\IManager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock(\Symfony\Component\Console\Input\InputInterface::class);
+		$this->consoleOutput = $this->createMock(\Symfony\Component\Console\Output\OutputInterface::class);
 
 		/** @var \OCP\IConfig $config */
 		/** @var \OCP\Encryption\IManager $manager */
@@ -75,7 +75,7 @@ class EnableTest extends TestCase {
 	 * @param string $expectedDefaultModuleString
 	 */
 	public function testEnable($oldStatus, $defaultModule, $availableModules, $isUpdating, $expectedString, $expectedDefaultModuleString) {
-		$defaultModule = ($defaultModule === null) ? '' : $defaultModule;
+		$defaultModule ??= '';
 		$invokeCount = 0;
 		$this->manager->method('isEnabled')
 			->willReturn(\filter_var($oldStatus, FILTER_VALIDATE_BOOLEAN));

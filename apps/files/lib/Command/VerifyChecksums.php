@@ -48,16 +48,10 @@ class VerifyChecksums extends Command {
 	public const EXIT_CHECKSUM_ERRORS = 1;
 	public const EXIT_INVALID_ARGS = 2;
 
-	/**
-	 * @var IRootFolder
-	 */
-	private $rootFolder;
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private \OCP\Files\IRootFolder $rootFolder;
+	private \OCP\IUserManager $userManager;
 
-	private $exitStatus = self::EXIT_NO_ERRORS;
+	private int $exitStatus = self::EXIT_NO_ERRORS;
 
 	/**
 	 * VerifyChecksums constructor.

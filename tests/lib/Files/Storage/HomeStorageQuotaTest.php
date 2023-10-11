@@ -40,7 +40,7 @@ class HomeStorageQuotaTest extends \Test\TestCase {
 
 		$userMount = \OC\Files\Filesystem::getMountManager()->find('/' . $user1 . '/');
 		$this->assertNotNull($userMount);
-		$this->assertNotInstanceOf('\OC\Files\Storage\Wrapper\Quota', $userMount->getStorage());
+		$this->assertNotInstanceOf('\\' . \OC\Files\Storage\Wrapper\Quota::class, $userMount->getStorage());
 
 		// clean up
 		\OC_User::setUserId('');
@@ -65,12 +65,12 @@ class HomeStorageQuotaTest extends \Test\TestCase {
 
 		$userMount = \OC\Files\Filesystem::getMountManager()->find('/' . $user1 . '/');
 		$this->assertNotNull($userMount);
-		$this->assertTrue($userMount->getStorage()->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota'));
+		$this->assertTrue($userMount->getStorage()->instanceOfStorage('\\' . \OC\Files\Storage\Wrapper\Quota::class));
 
 		// ensure that root wasn't wrapped
 		$rootMount = \OC\Files\Filesystem::getMountManager()->find('/');
 		$this->assertNotNull($rootMount);
-		$this->assertNotInstanceOf('\OC\Files\Storage\Wrapper\Quota', $rootMount->getStorage());
+		$this->assertNotInstanceOf('\\' . \OC\Files\Storage\Wrapper\Quota::class, $rootMount->getStorage());
 
 		// clean up
 		\OC_User::setUserId('');

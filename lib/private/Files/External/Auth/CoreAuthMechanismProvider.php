@@ -28,11 +28,10 @@ use OCP\Files\External\Config\IAuthMechanismProvider;
  * @package OC\Files\External
  */
 class CoreAuthMechanismProvider implements IAuthMechanismProvider {
-	/** @var ServerContainer */
-	private $server;
+	private \OC\ServerContainer $server;
 
 	/** @var array class names */
-	private $classNames;
+	private array $classNames;
 
 	/**
 	 * Constructs a new provider
@@ -48,8 +47,6 @@ class CoreAuthMechanismProvider implements IAuthMechanismProvider {
 	 * @{inheritdoc}
 	 */
 	public function getAuthMechanisms() {
-		return \array_map(function ($className) {
-			return $this->server->query($className);
-		}, $this->classNames);
+		return \array_map(fn ($className) => $this->server->query($className), $this->classNames);
 	}
 }

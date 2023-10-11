@@ -1058,8 +1058,7 @@ class PublicWebDavContext implements Context {
 			$range,
 			$path,
 			$publicWebDAVAPIVersion,
-			"",
-			$content
+			""
 		);
 	}
 

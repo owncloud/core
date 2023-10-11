@@ -29,21 +29,21 @@ class HelperTest extends \Test\TestCase {
 	public function expireDateProvider() {
 		return [
 			// no default expire date, we take the users expire date
-			[['defaultExpireDateSet' => false], 2000000000, 2000010000, 2000010000],
+			[['defaultExpireDateSet' => false], 2_000_000_000, 2_000_010_000, 2_000_010_000],
 			// no default expire date and no user defined expire date, return false
-			[['defaultExpireDateSet' => false], 2000000000, null, false],
+			[['defaultExpireDateSet' => false], 2_000_000_000, null, false],
 			// unenforced expire data and no user defined expire date, return false (because the default is not enforced)
-			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => false], 2000000000, null, false],
+			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => false], 2_000_000_000, null, false],
 			// enforced expire date and no user defined expire date, take default expire date
-			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => true], 2000000000, null, 2000086400],
+			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => true], 2_000_000_000, null, 2_000_086_400],
 			// unenforced expire date and user defined date > default expire date, take users expire date
-			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => false], 2000000000, 2000100000, 2000100000],
+			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => false], 2_000_000_000, 2_000_100_000, 2_000_100_000],
 			// unenforced expire date and user expire date < default expire date, take users expire date
-			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => false], 2000000000, 2000010000, 2000010000],
+			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => false], 2_000_000_000, 2_000_010_000, 2_000_010_000],
 			// enforced expire date and user expire date < default expire date, take users expire date
-			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => true], 2000000000, 2000010000, 2000010000],
+			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => true], 2_000_000_000, 2_000_010_000, 2_000_010_000],
 			// enforced expire date and users expire date > default expire date, take default expire date
-			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => true], 2000000000, 2000100000, 2000086400],
+			[['defaultExpireDateSet' => true, 'expireAfterDays' => 1, 'enforceExpireDate' => true], 2_000_000_000, 2_000_100_000, 2_000_086_400],
 		];
 	}
 
@@ -94,7 +94,7 @@ class HelperTest extends \Test\TestCase {
 	 * @param string $expectedUrl
 	 */
 	public function testSplitUserRemote($remote, $expectedUser, $expectedUrl) {
-		list($remoteUser, $remoteUrl) = \OC\Share\Helper::splitUserRemote($remote);
+		[$remoteUser, $remoteUrl] = \OC\Share\Helper::splitUserRemote($remote);
 		$this->assertSame($expectedUser, $remoteUser);
 		$this->assertSame($expectedUrl, $remoteUrl);
 	}

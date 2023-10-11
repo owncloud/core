@@ -52,8 +52,7 @@ class OC_Image implements \OCP\IImage {
 	protected $bitDepth = 24;
 	/** @var null|string */
 	protected $filePath = null;
-	/** @var finfo */
-	private $fileInfo;
+	private ?\finfo $fileInfo = null;
 	/** @var \OCP\ILogger */
 	private $logger;
 	/** @var \OCP\IConfig */
@@ -1027,7 +1026,7 @@ if (!\function_exists('imagebmp')) {
 		} elseif ($bit == 32) {
 			$bit = 24;
 		}
-		$bits = \pow(2, $bit);
+		$bits = 2 ** $bit;
 		\imagetruecolortopalette($im, true, $bits);
 		$width = \imagesx($im);
 		$height = \imagesy($im);

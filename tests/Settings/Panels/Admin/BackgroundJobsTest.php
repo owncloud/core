@@ -18,10 +18,9 @@ use OCP\IConfig;
  * @group DB
  */
 class BackgroundJobsTest extends \Test\TestCase {
-	/** @var BackgroundJobs */
-	private $panel;
+	private \OC\Settings\Panels\Admin\BackgroundJobs $panel;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();

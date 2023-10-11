@@ -35,12 +35,11 @@ use Test\TestCase;
  * @package OCA\Files_Versions\Tests\Command
  */
 class ExpireVersionsTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
-	private $expiration;
+	private \PHPUnit\Framework\MockObject\MockObject $expiration;
 
 	public function setUp(): void {
 		parent::setUp();

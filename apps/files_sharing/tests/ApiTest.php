@@ -46,13 +46,12 @@ use OCA\Files_Sharing\SharingAllowlist;
 class ApiTest extends TestCase {
 	public const TEST_FOLDER_NAME = '/folder_share_api_test';
 
-	private static $tempStorage;
+	private static ?\OC\Files\Storage\Temporary $tempStorage = null;
 
 	/** @var \OCP\Files\Folder */
 	private $userFolder;
 
-	/** @var string */
-	private $subsubfolder;
+	private string $subsubfolder;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -95,12 +94,7 @@ class ApiTest extends TestCase {
 	private function createRequest(array $data) {
 		$request = $this->createMock(IRequest::class);
 		$request->method('getParam')
-			->will($this->returnCallback(function ($param, $default = null) use ($data) {
-				if (isset($data[$param])) {
-					return $data[$param];
-				}
-				return $default;
-			}));
+			->will($this->returnCallback(fn ($param, $default = null) => $data[$param] ?? $default));
 		return $request;
 	}
 
@@ -121,9 +115,7 @@ class ApiTest extends TestCase {
 
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 
 		return new \OCA\Files_Sharing\Controller\Share20OcsController(
 			'files_sharing',
@@ -1350,7 +1342,7 @@ class ApiTest extends TestCase {
 		// needed because the sharing code sometimes switches the user internally and mounts the user's
 		// storages. In our case the temp storage isn't mounted automatically, so doing it in the post hook
 		// (similar to how ext storage works)
-		\OCP\Util::connectHook('OC_Filesystem', 'post_initMountPoints', '\OCA\Files_Sharing\Tests\ApiTest', 'initTestMountPointsHook');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_initMountPoints', '\\' . \OCA\Files_Sharing\Tests\ApiTest::class, 'initTestMountPointsHook');
 
 		// logging in will auto-mount the temp storage for user1 as well
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
@@ -1376,7 +1368,7 @@ class ApiTest extends TestCase {
 
 		$this->shareManager->deleteShare($share);
 
-		\OC_Hook::clear('OC_Filesystem', 'post_initMountPoints', '\OCA\Files_Sharing\Tests\ApiTest', 'initTestMountPointsHook');
+		\OC_Hook::clear('OC_Filesystem', 'post_initMountPoints');
 	}
 	/**
 	 */

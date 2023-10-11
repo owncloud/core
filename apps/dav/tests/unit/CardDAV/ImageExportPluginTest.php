@@ -33,29 +33,29 @@ use Test\TestCase;
 
 class ImageExportPluginTest extends TestCase {
 	/** @var ResponseInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $response;
+	private \PHPUnit\Framework\MockObject\MockObject $response;
 	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var ImageExportPlugin | \PHPUnit\Framework\MockObject\MockObject */
 	private $plugin;
 	/** @var Server */
-	private $server;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')->getMock();
-		$this->response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')->getMock();
-		$this->server = $this->getMockBuilder('Sabre\DAV\Server')->getMock();
-		$this->tree = $this->getMockBuilder('Sabre\DAV\Tree')->disableOriginalConstructor()->getMock();
+		$this->request = $this->getMockBuilder(\Sabre\HTTP\RequestInterface::class)->getMock();
+		$this->response = $this->getMockBuilder(\Sabre\HTTP\ResponseInterface::class)->getMock();
+		$this->server = $this->getMockBuilder(\Sabre\DAV\Server::class)->getMock();
+		$this->tree = $this->getMockBuilder(\Sabre\DAV\Tree::class)->disableOriginalConstructor()->getMock();
 		$this->server->tree = $this->tree;
-		$this->logger = $this->getMockBuilder('\OCP\ILogger')->getMock();
+		$this->logger = $this->getMockBuilder('\\' . \OCP\ILogger::class)->getMock();
 
-		$this->plugin = $this->getMockBuilder('OCA\DAV\CardDAV\ImageExportPlugin')
+		$this->plugin = $this->getMockBuilder(\OCA\DAV\CardDAV\ImageExportPlugin::class)
 			->setMethods(['getPhoto'])
 			->setConstructorArgs([$this->logger])
 			->getMock();
@@ -97,7 +97,7 @@ class ImageExportPluginTest extends TestCase {
 		$this->request->expects($this->once())->method('getQueryParameters')->willReturn(['photo' => true]);
 		$this->request->expects($this->once())->method('getPath')->willReturn('/files/welcome.txt');
 
-		$card = $this->getMockBuilder('Sabre\CardDAV\Card')->disableOriginalConstructor()->getMock();
+		$card = $this->getMockBuilder(\Sabre\CardDAV\Card::class)->disableOriginalConstructor()->getMock();
 		$this->tree->expects($this->once())->method('getNodeForPath')->with('/files/welcome.txt')->willReturn($card);
 
 		$this->plugin->expects($this->once())->method('getPhoto')->willReturn($getPhotoResult);
@@ -129,7 +129,7 @@ class ImageExportPluginTest extends TestCase {
 	 */
 	public function testGetPhoto($expected, $cardData) {
 		/** @var Card | \PHPUnit\Framework\MockObject\MockObject $card */
-		$card = $this->getMockBuilder('Sabre\CardDAV\Card')->disableOriginalConstructor()->getMock();
+		$card = $this->getMockBuilder(\Sabre\CardDAV\Card::class)->disableOriginalConstructor()->getMock();
 		$card->expects($this->once())->method('get')->willReturn($cardData);
 
 		$this->plugin = new ImageExportPlugin($this->logger);

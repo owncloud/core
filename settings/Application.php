@@ -65,174 +65,134 @@ class Application extends App {
 		/**
 		 * Controllers
 		 */
-		$container->registerService('SettingsPageController', function (IContainer $c) {
-			return new SettingsPageController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('SettingsManager'),
-				$c->query('ServerContainer')->getURLGenerator(),
-				$c->query('GroupManager'),
-				$c->query('UserSession')
-			);
-		});
-		$container->registerService('MailSettingsController', function (IContainer $c) {
-			return new MailSettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('L10N'),
-				$c->query('Config'),
-				$c->query('UserSession'),
-				$c->query('Defaults'),
-				$c->query('Mailer'),
-				$c->query('DefaultMailAddress')
-			);
-		});
-		$container->registerService('AppSettingsController', function (IContainer $c) {
-			return new AppSettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('L10N'),
-				$c->query('Config'),
-				$c->query('IAppManager')
-			);
-		});
-		$container->registerService('AuthSettingsController', function (IContainer $c) {
-			return new AuthSettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('ServerContainer')->query('OC\Authentication\Token\IProvider'),
-				$c->query('UserManager'),
-				$c->query('ServerContainer')->getSession(),
-				$c->query('ServerContainer')->getSecureRandom(),
-				$c->query('UserId')
-			);
-		});
-		$container->registerService('CertificateController', function (IContainer $c) {
-			return new CertificateController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('CertificateManager'),
-				$c->query('SystemCertificateManager'),
-				$c->query('L10N'),
-				$c->query('IAppManager')
-			);
-		});
-		$container->registerService('GroupsController', function (IContainer $c) {
-			return new GroupsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('GroupManager'),
-				$c->query('UserSession'),
-				$c->query('IsAdmin'),
-				$c->query('L10N')
-			);
-		});
-		$container->registerService('UsersController', function (IContainer $c) {
-			return new UsersController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('UserManager'),
-				$c->query('GroupManager'),
-				$c->query('UserSession'),
-				$c->query('Config'),
-				$c->query('SecureRandom'),
-				$c->query('IsAdmin'),
-				$c->query('L10N'),
-				$c->query('Logger'),
-				$c->query('Defaults'),
-				$c->query('Mailer'),
-				$c->query('TimeFactory'),
-				$c->query('DefaultMailAddress'),
-				$c->query('URLGenerator'),
-				$c->query('OCP\\App\\IAppManager'),
-				$c->query('OCP\\IAvatarManager'),
-				$c->query('ServerContainer')->getEventDispatcher()
-			);
-		});
-		$container->registerService('LogSettingsController', function (IContainer $c) {
-			return new LogSettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('Config'),
-				$c->query('L10N')
-			);
-		});
-		$container->registerService('LegalSettingsController', function (IContainer $c) {
-			return new LegalSettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('L10N'),
-				$c->query('Config')
-			);
-		});
-		$container->registerService('CheckSetupController', function (IContainer $c) {
-			return new CheckSetupController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('Config'),
-				$c->query('ClientService'),
-				$c->query('URLGenerator'),
-				$c->query('Util'),
-				$c->query('L10N'),
-				$c->query('Checker')
-			);
-		});
-		$container->registerService('CorsController', function (IContainer $c) {
-			return new CorsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('UserSession'),
-				$c->query('Logger'),
-				$c->query('URLGenerator'),
-				$c->query('Config'),
-				$c->query('L10N')
-			);
-		});
-		$container->registerService('AppConfigController', function (IContainer $c) {
-			return new AppConfigController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('ServerContainer')->getAppConfig()
-			);
-		});
+		$container->registerService('SettingsPageController', fn (IContainer $c) => new SettingsPageController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('SettingsManager'),
+			$c->query('ServerContainer')->getURLGenerator(),
+			$c->query('GroupManager'),
+			$c->query('UserSession')
+		));
+		$container->registerService('MailSettingsController', fn (IContainer $c) => new MailSettingsController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('L10N'),
+			$c->query('Config'),
+			$c->query('UserSession'),
+			$c->query('Defaults'),
+			$c->query('Mailer'),
+			$c->query('DefaultMailAddress')
+		));
+		$container->registerService('AppSettingsController', fn (IContainer $c) => new AppSettingsController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('L10N'),
+			$c->query('Config'),
+			$c->query('IAppManager')
+		));
+		$container->registerService('AuthSettingsController', fn (IContainer $c) => new AuthSettingsController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('ServerContainer')->query(\OC\Authentication\Token\IProvider::class),
+			$c->query('UserManager'),
+			$c->query('ServerContainer')->getSession(),
+			$c->query('ServerContainer')->getSecureRandom(),
+			$c->query('UserId')
+		));
+		$container->registerService('CertificateController', fn (IContainer $c) => new CertificateController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('CertificateManager'),
+			$c->query('SystemCertificateManager'),
+			$c->query('L10N'),
+			$c->query('IAppManager')
+		));
+		$container->registerService('GroupsController', fn (IContainer $c) => new GroupsController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('GroupManager'),
+			$c->query('UserSession'),
+			$c->query('IsAdmin'),
+			$c->query('L10N')
+		));
+		$container->registerService('UsersController', fn (IContainer $c) => new UsersController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('UserManager'),
+			$c->query('GroupManager'),
+			$c->query('UserSession'),
+			$c->query('Config'),
+			$c->query('SecureRandom'),
+			$c->query('IsAdmin'),
+			$c->query('L10N'),
+			$c->query('Logger'),
+			$c->query('Defaults'),
+			$c->query('Mailer'),
+			$c->query('TimeFactory'),
+			$c->query('DefaultMailAddress'),
+			$c->query('URLGenerator'),
+			$c->query(\OCP\App\IAppManager::class),
+			$c->query(\OCP\IAvatarManager::class),
+			$c->query('ServerContainer')->getEventDispatcher()
+		));
+		$container->registerService('LogSettingsController', fn (IContainer $c) => new LogSettingsController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('Config'),
+			$c->query('L10N')
+		));
+		$container->registerService('LegalSettingsController', fn (IContainer $c) => new LegalSettingsController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('L10N'),
+			$c->query('Config')
+		));
+		$container->registerService('CheckSetupController', fn (IContainer $c) => new CheckSetupController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('Config'),
+			$c->query('ClientService'),
+			$c->query('URLGenerator'),
+			$c->query('Util'),
+			$c->query('L10N'),
+			$c->query('Checker')
+		));
+		$container->registerService('CorsController', fn (IContainer $c) => new CorsController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('UserSession'),
+			$c->query('Logger'),
+			$c->query('URLGenerator'),
+			$c->query('Config'),
+			$c->query('L10N')
+		));
+		$container->registerService('AppConfigController', fn (IContainer $c) => new AppConfigController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('ServerContainer')->getAppConfig()
+		));
 
 		/**
 		 * Middleware
 		 */
-		$container->registerService('SubadminMiddleware', function (IContainer $c) {
-			return new SubadminMiddleware(
-				$c->query('ControllerMethodReflector'),
-				$c->query('IsSubAdmin')
-			);
-		});
+		$container->registerService('SubadminMiddleware', fn (IContainer $c) => new SubadminMiddleware(
+			$c->query('ControllerMethodReflector'),
+			$c->query('IsSubAdmin')
+		));
 		// Execute middlewares
 		$container->registerMiddleware('SubadminMiddleware');
 
 		/**
 		 * Core class wrappers
 		 */
-		$container->registerService('Config', function (IContainer $c) {
-			return $c->query('ServerContainer')->getConfig();
-		});
-		$container->registerService('ICacheFactory', function (IContainer $c) {
-			return $c->query('ServerContainer')->getMemCacheFactory();
-		});
-		$container->registerService('L10N', function (IContainer $c) {
-			return $c->query('ServerContainer')->getL10N('settings');
-		});
-		$container->registerService('GroupManager', function (IContainer $c) {
-			return $c->query('ServerContainer')->getGroupManager();
-		});
-		$container->registerService('UserManager', function (IContainer $c) {
-			return $c->query('ServerContainer')->getUserManager();
-		});
-		$container->registerService('UserSession', function (IContainer $c) {
-			return $c->query('ServerContainer')->getUserSession();
-		});
+		$container->registerService('Config', fn (IContainer $c) => $c->query('ServerContainer')->getConfig());
+		$container->registerService('ICacheFactory', fn (IContainer $c) => $c->query('ServerContainer')->getMemCacheFactory());
+		$container->registerService('L10N', fn (IContainer $c) => $c->query('ServerContainer')->getL10N('settings'));
+		$container->registerService('GroupManager', fn (IContainer $c) => $c->query('ServerContainer')->getGroupManager());
+		$container->registerService('UserManager', fn (IContainer $c) => $c->query('ServerContainer')->getUserManager());
+		$container->registerService('UserSession', fn (IContainer $c) => $c->query('ServerContainer')->getUserSession());
 		/** FIXME: Remove once OC_User is non-static and mockable */
-		$container->registerService('IsAdmin', function (IContainer $c) {
-			return \OC_User::isAdminUser(\OC_User::getUser());
-		});
+		$container->registerService('IsAdmin', fn (IContainer $c) => \OC_User::isAdminUser(\OC_User::getUser()));
 		/** FIXME: Remove once OC_SubAdmin is non-static and mockable */
 		$container->registerService('IsSubAdmin', function (IContainer $c) {
 			$userObject = \OC::$server->getUserSession()->getUser();
@@ -242,58 +202,26 @@ class Application extends App {
 			}
 			return $isSubAdmin;
 		});
-		$container->registerService('Mailer', function (IContainer $c) {
-			return $c->query('ServerContainer')->getMailer();
-		});
-		$container->registerService('Defaults', function (IContainer $c) {
-			return new \OC_Defaults;
-		});
-		$container->registerService('DefaultMailAddress', function (IContainer $c) {
-			return Util::getDefaultEmailAddress('no-reply');
-		});
-		$container->registerService('Logger', function (IContainer $c) {
-			return $c->query('ServerContainer')->getLogger();
-		});
-		$container->registerService('URLGenerator', function (IContainer $c) {
-			return $c->query('ServerContainer')->getURLGenerator();
-		});
-		$container->registerService('ClientService', function (IContainer $c) {
-			return $c->query('ServerContainer')->getHTTPClientService();
-		});
-		$container->registerService('INavigationManager', function (IContainer $c) {
-			return $c->query('ServerContainer')->getNavigationManager();
-		});
-		$container->registerService('IAppManager', function (IContainer $c) {
-			return $c->query('ServerContainer')->getAppManager();
-		});
-		$container->registerService('OcsClient', function (IContainer $c) {
-			return $c->query('ServerContainer')->getOcsClient();
-		});
-		$container->registerService('Util', function (IContainer $c) {
-			return new \OC_Util();
-		});
-		$container->registerService('DatabaseConnection', function (IContainer $c) {
-			return $c->query('ServerContainer')->getDatabaseConnection();
-		});
-		$container->registerService('CertificateManager', function (IContainer $c) {
-			return $c->query('ServerContainer')->getCertificateManager();
-		});
-		$container->registerService('SystemCertificateManager', function (IContainer $c) {
-			return $c->query('ServerContainer')->getCertificateManager(null);
-		});
+		$container->registerService('Mailer', fn (IContainer $c) => $c->query('ServerContainer')->getMailer());
+		$container->registerService('Defaults', fn (IContainer $c) => new \OC_Defaults);
+		$container->registerService('DefaultMailAddress', fn (IContainer $c) => Util::getDefaultEmailAddress('no-reply'));
+		$container->registerService('Logger', fn (IContainer $c) => $c->query('ServerContainer')->getLogger());
+		$container->registerService('URLGenerator', fn (IContainer $c) => $c->query('ServerContainer')->getURLGenerator());
+		$container->registerService('ClientService', fn (IContainer $c) => $c->query('ServerContainer')->getHTTPClientService());
+		$container->registerService('INavigationManager', fn (IContainer $c) => $c->query('ServerContainer')->getNavigationManager());
+		$container->registerService('IAppManager', fn (IContainer $c) => $c->query('ServerContainer')->getAppManager());
+		$container->registerService('OcsClient', fn (IContainer $c) => $c->query('ServerContainer')->getOcsClient());
+		$container->registerService('Util', fn (IContainer $c) => new \OC_Util());
+		$container->registerService('DatabaseConnection', fn (IContainer $c) => $c->query('ServerContainer')->getDatabaseConnection());
+		$container->registerService('CertificateManager', fn (IContainer $c) => $c->query('ServerContainer')->getCertificateManager());
+		$container->registerService('SystemCertificateManager', fn (IContainer $c) => $c->query('ServerContainer')->getCertificateManager(null));
 		$container->registerService('Checker', function (IContainer $c) {
 			/** @var Server $server */
 			$server = $c->query('ServerContainer');
 			return $server->getIntegrityCodeChecker();
 		});
-		$container->registerService('TimeFactory', function (IContainer $c) {
-			return new TimeFactory();
-		});
-		$container->registerService('SecureRandom', function (IContainer $c) {
-			return $c->query('ServerContainer')->getSecureRandom();
-		});
-		$container->registerService('SettingsManager', function (IContainer $c) {
-			return $c->query('ServerContainer')->getSettingsManager();
-		});
+		$container->registerService('TimeFactory', fn (IContainer $c) => new TimeFactory());
+		$container->registerService('SecureRandom', fn (IContainer $c) => $c->query('ServerContainer')->getSecureRandom());
+		$container->registerService('SettingsManager', fn (IContainer $c) => $c->query('ServerContainer')->getSettingsManager());
 	}
 }

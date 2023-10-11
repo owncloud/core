@@ -24,12 +24,12 @@ namespace Test\Files\External;
 
 class FrontendDefinitionTraitTest extends \Test\TestCase {
 	public function testJsonSerialization() {
-		$param = $this->getMockBuilder('\OCP\Files\External\DefinitionParameter')
+		$param = $this->getMockBuilder('\\' . \OCP\Files\External\DefinitionParameter::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$param->method('getName')->willReturn('foo');
 
-		$trait = $this->getMockForTrait('\OC\Files\External\FrontendDefinitionTrait');
+		$trait = $this->getMockForTrait('\\' . \OC\Files\External\FrontendDefinitionTrait::class);
 		$trait->setText('test');
 		$trait->addParameters([$param]);
 		$trait->addCustomJs('foo/bar.js');
@@ -58,7 +58,7 @@ class FrontendDefinitionTraitTest extends \Test\TestCase {
 	public function testValidateStorage($expectedSuccess, $params) {
 		$backendParams = [];
 		foreach ($params as $name => $valid) {
-			$param = $this->getMockBuilder('\OCP\Files\External\DefinitionParameter')
+			$param = $this->getMockBuilder('\\' . \OCP\Files\External\DefinitionParameter::class)
 				->disableOriginalConstructor()
 				->getMock();
 			$param->method('getName')
@@ -71,7 +71,7 @@ class FrontendDefinitionTraitTest extends \Test\TestCase {
 			$backendParams[] = $param;
 		}
 
-		$storageConfig = $this->getMockBuilder('\OCP\Files\External\IStorageConfig')
+		$storageConfig = $this->getMockBuilder('\\' . \OCP\Files\External\IStorageConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$storageConfig->expects($this->any())
@@ -80,7 +80,7 @@ class FrontendDefinitionTraitTest extends \Test\TestCase {
 		$storageConfig->expects($this->any())
 			->method('setBackendOption');
 
-		$trait = $this->getMockForTrait('\OC\Files\External\FrontendDefinitionTrait');
+		$trait = $this->getMockForTrait('\\' . \OC\Files\External\FrontendDefinitionTrait::class);
 		$trait->setText('test');
 		$trait->addParameters($backendParams);
 
@@ -88,7 +88,7 @@ class FrontendDefinitionTraitTest extends \Test\TestCase {
 	}
 
 	public function testValidateStorageSet() {
-		$param = $this->getMockBuilder('\OCP\Files\External\DefinitionParameter')
+		$param = $this->getMockBuilder('\\' . \OCP\Files\External\DefinitionParameter::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$param->method('getName')
@@ -100,7 +100,7 @@ class FrontendDefinitionTraitTest extends \Test\TestCase {
 				return true;
 			}));
 
-		$storageConfig = $this->getMockBuilder('\OCP\Files\External\IStorageConfig')
+		$storageConfig = $this->getMockBuilder('\\' . \OCP\Files\External\IStorageConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$storageConfig->expects($this->once())
@@ -111,7 +111,7 @@ class FrontendDefinitionTraitTest extends \Test\TestCase {
 			->method('setBackendOption')
 			->with('param', 'foobar');
 
-		$trait = $this->getMockForTrait('\OC\Files\External\FrontendDefinitionTrait');
+		$trait = $this->getMockForTrait('\\' . \OC\Files\External\FrontendDefinitionTrait::class);
 		$trait->setText('test');
 		$trait->addParameter($param);
 

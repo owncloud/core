@@ -171,9 +171,7 @@ class RepairUnmergedShares implements IRepairStep {
 	private function findBestTargetName($groupShares, $subShares) {
 		$pickedShare = null;
 		// sort by stime, this also properly sorts the direct user share if any
-		@\usort($subShares, function ($a, $b) {
-			return ((int)$a['stime'] - (int)$b['stime']);
-		});
+		@\usort($subShares, fn ($a, $b) => (int)$a['stime'] - (int)$b['stime']);
 
 		foreach ($subShares as $subShare) {
 			// skip entries that have parenthesis with numbers

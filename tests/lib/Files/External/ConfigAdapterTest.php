@@ -36,22 +36,21 @@ use OC\Files\External\StorageConfig;
 
 class ConfigAdapterTest extends \Test\TestCase {
 	/** @var \OCP\IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var IUserStoragesService */
-	private $userStoragesService;
+	private \PHPUnit\Framework\MockObject\MockObject $userStoragesService;
 
 	/** @var IUserGlobalStoragesService */
-	private $userGlobalStoragesService;
+	private \PHPUnit\Framework\MockObject\MockObject $userGlobalStoragesService;
 
 	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject **/
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject **/
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 
-	/** @var int */
-	private $configId;
+	private int $configId;
 
 	protected function setUp(): void {
 		$this->config = $this->createMock(IConfig::class);
@@ -86,7 +85,7 @@ class ConfigAdapterTest extends \Test\TestCase {
 
 		$backend->expects($this->once())
 			->method('getStorageClass')
-			->willReturn('\OC\Files\Storage\Temporary');
+			->willReturn('\\' . \OC\Files\Storage\Temporary::class);
 
 		$backend->expects($this->once())
 			->method('wrapStorage')

@@ -34,24 +34,23 @@ use OCP\Files\NotFoundException;
  */
 class SharingCheckMiddlewareTest extends \Test\TestCase {
 	/** @var \OCP\IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var \OCP\App\IAppManager */
-	private $appManager;
-	/** @var SharingCheckMiddleware */
-	private $sharingCheckMiddleware;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
+	private \OCA\Files_Sharing\Middleware\SharingCheckMiddleware $sharingCheckMiddleware;
 	/** @var \OCP\AppFramework\Controller */
-	private $controllerMock;
+	private \PHPUnit\Framework\MockObject\MockObject $controllerMock;
 	/** @var IControllerMethodReflector */
-	private $reflector;
+	private \PHPUnit\Framework\MockObject\MockObject $reflector;
 
 	protected function setUp(): void {
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->appManager = $this->getMockBuilder('\OCP\App\IAppManager')
+		$this->appManager = $this->getMockBuilder('\\' . \OCP\App\IAppManager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->controllerMock = $this->getMockBuilder('\OCP\AppFramework\Controller')
+		$this->controllerMock = $this->getMockBuilder('\\' . \OCP\AppFramework\Controller::class)
 			->disableOriginalConstructor()->getMock();
-		$this->reflector = $this->getMockBuilder('\OCP\AppFramework\Utility\IControllerMethodReflector')
+		$this->reflector = $this->getMockBuilder('\\' . \OCP\AppFramework\Utility\IControllerMethodReflector::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->sharingCheckMiddleware = new SharingCheckMiddleware(
@@ -188,7 +187,7 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 			->method('getAppValue')
 			->will($this->returnValueMap($config));
 
-		$controller = $this->getMockBuilder('\OCA\Files_Sharing\Controllers\ExternalSharesController')
+		$controller = $this->getMockBuilder('\\' . \OCA\Files_Sharing\Controllers\ExternalSharesController::class)
 			->disableOriginalConstructor()->getMock();
 
 		$exceptionThrown = false;
@@ -218,7 +217,7 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 			)
 			->willReturnOnConsecutiveCalls('yes', 'yes');
 
-		$controller = $this->getMockBuilder('\OCA\Files_Sharing\Controllers\ShareController')
+		$controller = $this->getMockBuilder('\\' . \OCA\Files_Sharing\Controllers\ShareController::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->sharingCheckMiddleware->beforeController($controller, 'myMethod');
@@ -236,7 +235,7 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 			->with('files_sharing')
 			->will($this->returnValue(true));
 
-		$controller = $this->getMockBuilder('\OCA\Files_Sharing\Controllers\ShareController')
+		$controller = $this->getMockBuilder('\\' . \OCA\Files_Sharing\Controllers\ShareController::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->sharingCheckMiddleware->beforeController($controller, 'myMethod');

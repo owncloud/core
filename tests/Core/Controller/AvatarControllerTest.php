@@ -50,29 +50,29 @@ class AvatarControllerTest extends TestCase {
 	use UserTrait;
 
 	/** @var \OC\Core\Controller\AvatarController */
-	private $avatarController;
+	private \PHPUnit\Framework\MockObject\MockObject $avatarController;
 	/** @var IAvatar | \PHPUnit\Framework\MockObject\MockObject */
-	private $avatarMock;
+	private \PHPUnit\Framework\MockObject\MockObject $avatarMock;
 	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
-	private $userMock;
+	private \PHPUnit\Framework\MockObject\MockObject $userMock;
 	/** @var File | \PHPUnit\Framework\MockObject\MockObject*/
-	private $avatarFile;
+	private \PHPUnit\Framework\MockObject\MockObject $avatarFile;
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
-	private $l10N;
+	private \PHPUnit\Framework\MockObject\MockObject $l10N;
 	/** @var IAvatarManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $avatarManager;
+	private \PHPUnit\Framework\MockObject\MockObject $avatarManager;
 	/** @var \OC\Cache\File | \PHPUnit\Framework\MockObject\MockObject */
-	private $cache;
+	private \PHPUnit\Framework\MockObject\MockObject $cache;
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var Folder | \PHPUnit\Framework\MockObject\MockObject */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -108,9 +108,7 @@ class AvatarControllerTest extends TestCase {
 		$this->avatarController
 			->expects($this->any())
 			->method('isUploadFile')
-			->willReturnCallback(function ($file) {
-				return \file_exists($file);
-			});
+			->willReturnCallback(fn ($file) => \file_exists($file));
 
 		// Configure userMock
 		$this->userMock->expects($this->any())->method('getDisplayName')->willReturn('displayName');
@@ -119,7 +117,7 @@ class AvatarControllerTest extends TestCase {
 			->willReturnMap([['userId', false, $this->userMock]]);
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($this->userMock);
 
-		$this->avatarFile = $this->createMock('OCP\Files\File');
+		$this->avatarFile = $this->createMock(\OCP\Files\File::class);
 		$this->avatarFile->expects($this->any())->method('getContent')->willReturn('image data');
 		$this->avatarFile->expects($this->any())->method('getMimeType')->willReturn('image type');
 		$this->avatarFile->expects($this->any())->method('getEtag')->willReturn('my etag');
@@ -333,7 +331,7 @@ class AvatarControllerTest extends TestCase {
 	public function testPostAvatarFromFile() {
 		//Mock node API call
 		$userFolder = $this->createMock(Folder::class);
-		$file = $this->getMockBuilder('OCP\Files\File')
+		$file = $this->getMockBuilder(\OCP\Files\File::class)
 			->disableOriginalConstructor()->getMock();
 		$filePath = \OC::$SERVERROOT.'/tests/data/testimage.jpg';
 		$handle = \fopen($filePath, 'r');
@@ -354,7 +352,7 @@ class AvatarControllerTest extends TestCase {
 	 */
 	public function testPostAvatarFromNoFile() {
 		$userFolder = $this->createMock(Folder::class);
-		$file = $this->createMock('OCP\Files\Node');
+		$file = $this->createMock(\OCP\Files\Node::class);
 		$userFolder
 			->expects($this->once())
 			->method('get')
@@ -377,7 +375,7 @@ class AvatarControllerTest extends TestCase {
 			->method('set')
 			->will($this->throwException(new \Exception("foo")));
 		$userFolder = $this->createMock(Folder::class);
-		$file = $this->getMockBuilder('OCP\Files\File')
+		$file = $this->getMockBuilder(\OCP\Files\File::class)
 			->disableOriginalConstructor()->getMock();
 		$filePath = \OC::$SERVERROOT.'/tests/data/testimage.jpg';
 		$handle = \fopen($filePath, 'r');

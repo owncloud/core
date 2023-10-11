@@ -19,8 +19,7 @@ class CertificateManagerTest extends \Test\TestCase {
 	use \Test\Traits\UserTrait;
 	use \Test\Traits\MountProviderTrait;
 
-	/** @var CertificateManager */
-	private $certificateManager;
+	private \OC\Security\CertificateManager $certificateManager;
 	/** @var String */
 	private $username;
 
@@ -38,7 +37,7 @@ class CertificateManagerTest extends \Test\TestCase {
 		\OC\Files\Filesystem::tearDown();
 		\OC_Util::setupFS($this->username);
 
-		$config = $this->createMock('OCP\IConfig');
+		$config = $this->createMock(\OCP\IConfig::class);
 		$config->expects($this->any())->method('getSystemValue')
 			->with('installed', false)->willReturn(true);
 

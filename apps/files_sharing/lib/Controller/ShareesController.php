@@ -312,9 +312,7 @@ class ShareesController extends OCSController {
 		}
 
 		$groups = $this->groupManager->search($search, $this->limit, $this->offset, 'sharing');
-		$groupIds = \array_map(function (IGroup $group) {
-			return $group->getGID();
-		}, $groups);
+		$groupIds = \array_map(fn (IGroup $group) => $group->getGID(), $groups);
 
 		if (!$this->shareeEnumeration || \sizeof($groups) < $this->limit) {
 			$this->reachedEndFor[] = 'groups';
@@ -324,9 +322,7 @@ class ShareesController extends OCSController {
 		if (!empty($groups) && ($this->shareWithMembershipGroupOnly || $this->shareeEnumerationGroupMembers)) {
 			// Intersect all the groups that match with the groups this user is a member of
 			$userGroups = $this->groupManager->getUserGroups($this->userSession->getUser(), 'sharing');
-			$userGroups = \array_map(function (IGroup $group) {
-				return $group->getGID();
-			}, $userGroups);
+			$userGroups = \array_map(fn (IGroup $group) => $group->getGID(), $userGroups);
 			$groupIds = \array_intersect($groupIds, $userGroups);
 		}
 
@@ -435,7 +431,7 @@ class ShareesController extends OCSController {
 
 			$lowerSearch = \strtolower($search);
 			foreach ($cloudIds as $cloudId) {
-				list(, $serverUrl) = $this->splitUserRemote($cloudId);
+				[, $serverUrl] = $this->splitUserRemote($cloudId);
 
 				if (\strtolower($cloudId) === $lowerSearch) {
 					$foundRemoteById = true;

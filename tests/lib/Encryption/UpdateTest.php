@@ -25,44 +25,42 @@ use OC\Encryption\Update;
 use Test\TestCase;
 
 class UpdateTest extends TestCase {
-	/** @var \OC\Encryption\Update */
-	private $update;
+	private \OC\Encryption\Update $update;
 
-	/** @var string */
-	private $uid;
+	private string $uid;
 
 	/** @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject */
-	private $view;
+	private \PHPUnit\Framework\MockObject\MockObject $view;
 
 	/** @var \OC\Encryption\Util | \PHPUnit\Framework\MockObject\MockObject */
-	private $util;
+	private \PHPUnit\Framework\MockObject\MockObject $util;
 
 	/** @var \OC\Files\Mount\Manager | \PHPUnit\Framework\MockObject\MockObject */
-	private $mountManager;
+	private \PHPUnit\Framework\MockObject\MockObject $mountManager;
 
 	/** @var \OC\Encryption\Manager | \PHPUnit\Framework\MockObject\MockObject */
-	private $encryptionManager;
+	private \PHPUnit\Framework\MockObject\MockObject $encryptionManager;
 
 	/** @var \OCP\Encryption\IEncryptionModule | \PHPUnit\Framework\MockObject\MockObject */
-	private $encryptionModule;
+	private \PHPUnit\Framework\MockObject\MockObject $encryptionModule;
 
 	/** @var \OC\Encryption\File | \PHPUnit\Framework\MockObject\MockObject */
-	private $fileHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $fileHelper;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->view = $this->getMockBuilder('\OC\Files\View')
+		$this->view = $this->getMockBuilder('\\' . \OC\Files\View::class)
 			->disableOriginalConstructor()->getMock();
-		$this->util = $this->getMockBuilder('\OC\Encryption\Util')
+		$this->util = $this->getMockBuilder('\\' . \OC\Encryption\Util::class)
 			->disableOriginalConstructor()->getMock();
-		$this->mountManager = $this->getMockBuilder('\OC\Files\Mount\Manager')
+		$this->mountManager = $this->getMockBuilder('\\' . \OC\Files\Mount\Manager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->encryptionManager = $this->getMockBuilder('\OC\Encryption\Manager')
+		$this->encryptionManager = $this->getMockBuilder('\\' . \OC\Encryption\Manager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->fileHelper = $this->getMockBuilder('\OC\Encryption\File')
+		$this->fileHelper = $this->getMockBuilder('\\' . \OC\Encryption\File::class)
 			->disableOriginalConstructor()->getMock();
-		$this->encryptionModule = $this->getMockBuilder('\OCP\Encryption\IEncryptionModule')
+		$this->encryptionModule = $this->getMockBuilder('\\' . \OCP\Encryption\IEncryptionModule::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->uid = 'testUser1';
@@ -213,7 +211,7 @@ class UpdateTest extends TestCase {
 	 * @return \OC\Encryption\Update | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getUpdateMock($methods) {
-		return  $this->getMockBuilder('\OC\Encryption\Update')
+		return  $this->getMockBuilder('\\' . \OC\Encryption\Update::class)
 			->setConstructorArgs(
 				[
 					$this->view,

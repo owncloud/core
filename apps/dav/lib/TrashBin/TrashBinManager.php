@@ -64,9 +64,7 @@ class TrashBinManager {
 				throw new InvalidResourceType();
 			}
 			$files = $view->getDirectoryContent($path);
-			return \array_map(function ($fileInfo) use ($user) {
-				return $this->nodeFactory($user, $fileInfo);
-			}, $files);
+			return \array_map(fn ($fileInfo) => $this->nodeFactory($user, $fileInfo), $files);
 		} catch (\Exception $exception) {
 			return [];
 		}

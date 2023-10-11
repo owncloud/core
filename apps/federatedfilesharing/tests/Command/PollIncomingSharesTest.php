@@ -46,25 +46,24 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @package OCA\FederatedFileSharing\Tests\Command
  */
 class PollIncomingSharesTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	/** @var IDBConnection | MockObject */
-	private $dbConnection;
+	private \PHPUnit\Framework\MockObject\MockObject $dbConnection;
 
 	/** @var IUserManager | MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var MountProvider | MockObject */
-	private $externalMountProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $externalMountProvider;
 
 	/** @var IStorageFactory | MockObject */
-	private $loader;
+	private \PHPUnit\Framework\MockObject\MockObject $loader;
 
 	/**
 	 * @var Manager | MockObject
 	 */
-	private $externalManager;
+	private \PHPUnit\Framework\MockObject\MockObject $externalManager;
 
 	protected function setUp(): void {
 		parent::setUp();

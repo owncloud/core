@@ -22,10 +22,10 @@
 namespace OCA\DAV\Files\PublicFiles;
 
 class PublicShareSigner {
-	private $token;
-	private $fileName;
+	private string $token;
+	private string $fileName;
 	private $validUntil;
-	private $signingKey;
+	private string $signingKey;
 
 	public function __construct(String $token, String $fileName, \DateTime $validUntil, String $signingKey) {
 		$this->token = $token;

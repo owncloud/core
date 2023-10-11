@@ -31,9 +31,9 @@ use Test\TestCase;
 
 class TreeTest1 extends TestCase {
 	/** @var ICollection | \PHPUnit\Framework\MockObject\MockObject */
-	private $rootNode;
+	private \PHPUnit\Framework\MockObject\MockObject $rootNode;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
-	private $tree;
+	private \OCA\DAV\Tree $tree;
 
 	private $copyHookParams;
 	private $postCopyHookParams;

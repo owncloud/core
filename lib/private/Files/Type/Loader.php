@@ -37,8 +37,7 @@ class Loader implements IMimeTypeLoader {
 	public const CACHE_PREFIX_FOR_ID = ':id:';
 	public const CACHE_PREFIX_FOR_MIME = ':mime:';
 
-	/** @var IDBConnection */
-	private $dbConnection;
+	private \OCP\IDBConnection $dbConnection;
 
 	/** @var ICache */
 	private $memcache;

@@ -57,7 +57,7 @@ if (isset($_POST['client_id'], $_POST['client_secret'], $_POST['redirect'])) {
 			try {
 				$token = $client->authenticate((string)$_POST['code']);
 				OCP\JSON::success(['data' => [
-					'token' => \json_encode($token)
+					'token' => \json_encode($token, JSON_THROW_ON_ERROR)
 				]]);
 			} catch (Exception $exception) {
 				OCP\JSON::error(['data' => [

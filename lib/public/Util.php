@@ -816,7 +816,7 @@ class Util {
 			throw new \InvalidArgumentException('Only http based URLs supported');
 		}
 
-		if (isset($parts['port']) && $port !== '') {
+		if (isset($parts['port']) && $port !== 0) {
 			$port = $parts['port'];
 		}
 

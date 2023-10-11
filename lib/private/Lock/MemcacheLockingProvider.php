@@ -27,10 +27,7 @@ use OCP\Lock\LockedException;
 use OCP\IMemcache;
 
 class MemcacheLockingProvider extends AbstractLockingProvider {
-	/**
-	 * @var \OCP\IMemcache
-	 */
-	private $memcache;
+	private \OCP\IMemcache $memcache;
 
 	/**
 	 * @param \OCP\IMemcache $memcache

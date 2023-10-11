@@ -61,37 +61,24 @@ use OC\Helper\UserTypeHelper;
  * @package OCA\Files_Sharing\Controller
  */
 class Share20OcsController extends OCSController {
-	/** @var IManager */
-	private $shareManager;
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IUserManager */
-	private $userManager;
-	/** @var IRootFolder */
-	private $rootFolder;
-	/** @var IUserSession */
-	private $userSession;
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var IL10N */
-	private $l;
-	/** @var IConfig */
-	private $config;
-	/** @var NotificationPublisher */
-	private $notificationPublisher;
-	/** @var EventDispatcher  */
-	private $eventDispatcher;
-	/** @var SharingBlacklist */
-	private $sharingBlacklist;
-	/** @var SharingAllowlist */
-	private $sharingAllowlist;
+	private \OCP\Share\IManager $shareManager;
+	private \OCP\IGroupManager $groupManager;
+	private \OCP\IUserManager $userManager;
+	private \OCP\Files\IRootFolder $rootFolder;
+	private \OCP\IUserSession $userSession;
+	private \OCP\IURLGenerator $urlGenerator;
+	private \OCP\IL10N $l;
+	private \OCP\IConfig $config;
+	private \OCA\Files_Sharing\Service\NotificationPublisher $notificationPublisher;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
+	private \OCA\Files_Sharing\SharingBlacklist $sharingBlacklist;
+	private \OCA\Files_Sharing\SharingAllowlist $sharingAllowlist;
 	/**
 	 * @var string
 	 */
 	private $additionalInfoField;
 
-	/** @var UserTypeHelper */
-	private $userTypeHelper;
+	private \OC\Helper\UserTypeHelper $userTypeHelper;
 
 	/** @var Folder[] */
 	private $currentUserFolder;
@@ -278,7 +265,7 @@ class Share20OcsController extends OCSController {
 
 		$result['attributes'] = null;
 		if ($attributes = $share->getAttributes()) {
-			$result['attributes'] = \json_encode($attributes->toArray());
+			$result['attributes'] = \json_encode($attributes->toArray(), JSON_THROW_ON_ERROR);
 		}
 
 		return $result;
@@ -421,7 +408,7 @@ class Share20OcsController extends OCSController {
 		 * We check the permissions via webdav. But the permissions of the mount point
 		 * do not equal the share permissions. Here we fix that for federated mounts.
 		 */
-		if ($path->getStorage()->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+		if ($path->getStorage()->instanceOfStorage(\OCA\Files_Sharing\External\Storage::class)) {
 			$permissions &= ~($permissions & ~$path->getPermissions());
 		}
 
@@ -640,9 +627,7 @@ class Share20OcsController extends OCSController {
 			);
 		}
 
-		$shares = \array_filter($shares, function (IShare $share) {
-			return $share->getShareOwner() !== $this->userSession->getUser()->getUID();
-		});
+		$shares = \array_filter($shares, fn (IShare $share) => $share->getShareOwner() !== $this->userSession->getUser()->getUID());
 
 		$formatted = [];
 		foreach ($shares as $share) {
@@ -1237,9 +1222,9 @@ class Share20OcsController extends OCSController {
 	private function setShareAttributes(IShare $share, $formattedShareAttributes) {
 		$newShareAttributes = $this->shareManager->newShare()->newAttributes();
 		foreach ($formattedShareAttributes as $formattedAttr) {
-			$value = isset($formattedAttr['value']) ? $formattedAttr['value'] : null;
+			$value = $formattedAttr['value'] ?? null;
 			if (isset($formattedAttr['enabled'])) {
-				$value = (bool) \json_decode($formattedAttr['enabled']);
+				$value = (bool) \json_decode($formattedAttr['enabled'], null, 512, JSON_THROW_ON_ERROR);
 			}
 			if ($value !== null) {
 				$newShareAttributes->setAttribute(

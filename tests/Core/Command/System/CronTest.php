@@ -40,16 +40,15 @@ class CronTest extends TestCase {
 	use UserTrait;
 
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var IJobList | \PHPUnit_Framework_MockObject_MockObject */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 	/** @var ITempManager | \PHPUnit_Framework_MockObject_MockObject */
-	private $tempManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tempManager;
 
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	protected function setUp(): void {
 		parent::setUp();

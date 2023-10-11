@@ -32,20 +32,11 @@
  * use server side events with caution, to many open requests can hang the server
  */
 class OC_EventSource implements \OCP\IEventSource {
-	/**
-	 * @var bool
-	 */
-	private $fallback;
+	private ?bool $fallback = null;
 
-	/**
-	 * @var int
-	 */
-	private $fallBackId = 0;
+	private int $fallBackId = 0;
 
-	/**
-	 * @var bool
-	 */
-	private $started = false;
+	private bool $started = false;
 
 	protected function init() {
 		if ($this->started) {

@@ -36,11 +36,9 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	/** @var  \Sabre\DAV\Server */
 	protected $server;
 
-	/** @var ICommentsManager */
-	private $commentsManager;
+	private \OCP\Comments\ICommentsManager $commentsManager;
 
-	/** @var IUserSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
 	/**
 	 * @var int[]
@@ -125,17 +123,11 @@ class CommentPropertiesPlugin extends ServerPlugin {
 			}
 		}
 
-		$propFind->handle(self::PROPERTY_NAME_COUNT, function () use ($node) {
-			return $this->commentsManager->getNumberOfCommentsForObject('files', \strval($node->getId()));
-		});
+		$propFind->handle(self::PROPERTY_NAME_COUNT, fn () => $this->commentsManager->getNumberOfCommentsForObject('files', \strval($node->getId())));
 
-		$propFind->handle(self::PROPERTY_NAME_HREF, function () use ($node) {
-			return $this->getCommentsLink($node);
-		});
+		$propFind->handle(self::PROPERTY_NAME_HREF, fn () => $this->getCommentsLink($node));
 
-		$propFind->handle(self::PROPERTY_NAME_UNREAD, function () use ($node) {
-			return $this->getUnreadCount($node);
-		});
+		$propFind->handle(self::PROPERTY_NAME_UNREAD, fn () => $this->getUnreadCount($node));
 	}
 
 	/**

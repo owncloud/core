@@ -23,16 +23,15 @@ use OCP\L10N\IFactory;
 * @package Tests\Settings\Panels\Personal
 */
 class ProfileTest extends \Test\TestCase {
-	/** @var Profile */
-	private $panel;
+	private \OC\Settings\Panels\Personal\Profile $panel;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IGroupManager */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 	/** @var IFactory */
-	private $lfactory;
+	private \PHPUnit\Framework\MockObject\MockObject $lfactory;
 	/** @var IUserSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	public function setUp(): void {
 		parent::setUp();

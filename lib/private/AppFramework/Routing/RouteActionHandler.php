@@ -30,7 +30,7 @@ use \OC\AppFramework\DependencyInjection\DIContainer;
 class RouteActionHandler {
 	private $controllerName;
 	private $actionName;
-	private $container;
+	private \OC\AppFramework\DependencyInjection\DIContainer $container;
 
 	/**
 	 * @param DIContainer $container

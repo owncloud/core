@@ -33,10 +33,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MoveHome extends Command {
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
 	public function __construct(
 		IUserManager $userManager

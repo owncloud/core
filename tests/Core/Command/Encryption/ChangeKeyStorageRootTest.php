@@ -63,14 +63,14 @@ class ChangeKeyStorageRootTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->view = $this->createMock('\OC\Files\View');
-		$this->userManager = $this->createMock('\OCP\IUserManager');
-		$this->config = $this->createMock('\OCP\IConfig');
-		$this->util = $this->getMockBuilder('OC\Encryption\Util')->disableOriginalConstructor()->getMock();
-		$this->questionHelper = $this->createMock('Symfony\Component\Console\Helper\QuestionHelper');
-		$this->inputInterface = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->outputInterface = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
-		$this->userInterface = $this->createMock('\OCP\UserInterface');
+		$this->view = $this->createMock('\\' . \OC\Files\View::class);
+		$this->userManager = $this->createMock('\\' . \OCP\IUserManager::class);
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
+		$this->util = $this->getMockBuilder(\OC\Encryption\Util::class)->disableOriginalConstructor()->getMock();
+		$this->questionHelper = $this->createMock(\Symfony\Component\Console\Helper\QuestionHelper::class);
+		$this->inputInterface = $this->createMock(\Symfony\Component\Console\Input\InputInterface::class);
+		$this->outputInterface = $this->createMock(\Symfony\Component\Console\Output\OutputInterface::class);
+		$this->userInterface = $this->createMock('\\' . \OCP\UserInterface::class);
 
 		$outputFormatterInterface = $this->createMock(OutputFormatterInterface::class);
 		$outputFormatterInterface->expects($this->any())->method('isDecorated')
@@ -91,7 +91,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 	 * @dataProvider dataTestExecute
 	 */
 	public function testExecute($newRoot, $answer, $successMoveKey) {
-		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
+		$changeKeyStorageRoot = $this->getMockBuilder(\OC\Core\Command\Encryption\ChangeKeyStorageRoot::class)
 			->setConstructorArgs(
 				[
 					$this->view,
@@ -145,7 +145,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 
 	public function testMoveAllKeys() {
 		/** @var \OC\Core\Command\Encryption\ChangeKeyStorageRoot $changeKeyStorageRoot */
-		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
+		$changeKeyStorageRoot = $this->getMockBuilder(\OC\Core\Command\Encryption\ChangeKeyStorageRoot::class)
 			->setConstructorArgs(
 				[
 					$this->view,
@@ -226,7 +226,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 	 * @param bool $executeRename
 	 */
 	public function testMoveSystemKeys($dirExists, $targetExists, $executeRename) {
-		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
+		$changeKeyStorageRoot = $this->getMockBuilder(\OC\Core\Command\Encryption\ChangeKeyStorageRoot::class)
 			->setConstructorArgs(
 				[
 					$this->view,
@@ -262,7 +262,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 	}
 
 	public function testMoveUserKeys() {
-		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
+		$changeKeyStorageRoot = $this->getMockBuilder(\OC\Core\Command\Encryption\ChangeKeyStorageRoot::class)
 			->setConstructorArgs(
 				[
 					$this->view,
@@ -292,7 +292,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 	 * @param bool $shouldRename
 	 */
 	public function testMoveUserEncryptionFolder($userExists, $isDir, $targetExists, $shouldRename) {
-		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
+		$changeKeyStorageRoot = $this->getMockBuilder(\OC\Core\Command\Encryption\ChangeKeyStorageRoot::class)
 			->setConstructorArgs(
 				[
 					$this->view,

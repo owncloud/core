@@ -56,12 +56,12 @@ use OC\Repair;
  * upgrading and removing apps.
  */
 class OC_App {
-	private static $adminForms = [];
-	private static $personalForms = [];
+	private static array $adminForms = [];
+	private static array $personalForms = [];
 	private static $appTypes = [];
-	private static $loadedApps = [];
-	private static $loadedTypes = [];
-	private static $altLogin = [];
+	private static array $loadedApps = [];
+	private static array $loadedTypes = [];
+	private static array $altLogin = [];
 	public const officialApp = 200;
 	public const approvedApp = 100;
 
@@ -137,7 +137,7 @@ class OC_App {
 					$session->validateSession();
 				} else {
 					/** @var \OC\Authentication\Token\DefaultTokenProvider $tokenProvider */
-					$tokenProvider = \OC::$server->query('\OC\Authentication\Token\DefaultTokenProvider');
+					$tokenProvider = \OC::$server->query('\\' . \OC\Authentication\Token\DefaultTokenProvider::class);
 					$token = null;
 					try {
 						$token = $tokenProvider->getToken($session->getSession()->getId());
@@ -604,10 +604,7 @@ class OC_App {
 	 */
 	public static function getAppVersion($appId) {
 		$info = \OC::$server->getAppManager()->getAppInfo($appId);
-		if (isset($info['version'])) {
-			return $info['version'];
-		}
-		return '0';
+		return $info['version'] ?? '0';
 	}
 
 	/**
@@ -1028,7 +1025,7 @@ class OC_App {
 			try {
 				$r->addStep($step);
 			} catch (Exception $ex) {
-				$r->emit('\OC\Repair', 'error', [$ex->getMessage()]);
+				$r->emit('\\' . \OC\Repair::class, 'error', [$ex->getMessage()]);
 				\OC::$server->getLogger()->logException($ex);
 			}
 		}
@@ -1051,7 +1048,7 @@ class OC_App {
 	private static function setupLiveMigrations($appId, array $steps) {
 		$queue = \OC::$server->getJobList();
 		foreach ($steps as $step) {
-			$queue->add('OC\Migration\BackgroundRepair', [
+			$queue->add(\OC\Migration\BackgroundRepair::class, [
 				'app' => $appId,
 				'step' => $step]);
 		}

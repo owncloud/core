@@ -49,8 +49,7 @@ use OCP\Files\StorageNotAvailableException;
 class ScanExternalSharesJob extends TimedJob {
 	/** @var IDBConnection */
 	private $connection;
-	/** @var Manager */
-	private $externalManager;
+	private ?\OCA\Files_Sharing\External\Manager $externalManager = null;
 	/** @var IConfig */
 	private $config;
 	/** @var IUserManager */

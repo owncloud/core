@@ -46,14 +46,10 @@ class Crypto implements ICrypto {
 	public const CRYPT_HASH = 'sha1';
 	public const SALT = 'phpseclib';
 
-	/** @var AES $cipher */
-	private $cipher;
-	/** @var int */
-	private $ivLength = 16;
-	/** @var IConfig */
-	private $config;
-	/** @var ISecureRandom */
-	private $random;
+	private \phpseclib3\Crypt\AES $cipher;
+	private int $ivLength = 16;
+	private \OCP\IConfig $config;
+	private \OCP\Security\ISecureRandom $random;
 
 	/**
 	 * @param IConfig $config
@@ -98,7 +94,7 @@ class Crypto implements ICrypto {
 		// to harden against related-key attacks
 		// https://github.com/owncloud/encryption/issues/215
 		$derived = \hash_hkdf('sha512', $password, 0);
-		list($password, $hmacKey) = \str_split($derived, 32);
+		[$password, $hmacKey] = \str_split($derived, 32);
 		$this->cipher->setPassword($password, self::CRYPT_METHOD, self::CRYPT_HASH, self::SALT);
 
 		$iv = \random_bytes($this->ivLength);
@@ -127,7 +123,7 @@ class Crypto implements ICrypto {
 		// v2 uses stronger binary random iv
 		if (\sizeof($parts) === 4 && $parts[0] === 'v2') {
 			$derived = \hash_hkdf('sha512', $password, 0);
-			list($password, $hmacKey) = \str_split($derived, 32);
+			[$password, $hmacKey] = \str_split($derived, 32);
 			$this->cipher->setPassword($password, self::CRYPT_METHOD, self::CRYPT_HASH, self::SALT);
 
 			$ciphertext = \hex2bin($parts[1]);

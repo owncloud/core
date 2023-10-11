@@ -36,11 +36,10 @@ use Test\TestCase;
  */
 class CheckCacheTest extends TestCase {
 	/** @var IRootFolder */
-	private $rootFolder;
-	/** @var CheckCache */
-	private $command;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
+	private \OCA\Files\Command\CheckCache $command;
 	/**@var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	protected function setUp(): void {
 		parent::setUp();

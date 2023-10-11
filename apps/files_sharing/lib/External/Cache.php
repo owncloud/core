@@ -24,7 +24,7 @@
 namespace OCA\Files_Sharing\External;
 
 class Cache extends \OC\Files\Cache\Cache {
-	private $remote;
+	private string $remote;
 	private $remoteUser;
 	private $storage;
 
@@ -35,7 +35,7 @@ class Cache extends \OC\Files\Cache\Cache {
 	 */
 	public function __construct($storage, $remote, $remoteUser) {
 		$this->storage = $storage;
-		list(, $remote) = \explode('://', $remote, 2);
+		[, $remote] = \explode('://', $remote, 2);
 		$this->remote = $remote;
 		$this->remoteUser = $remoteUser;
 		parent::__construct($storage);

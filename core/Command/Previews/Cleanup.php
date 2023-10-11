@@ -28,10 +28,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Cleanup extends Base {
-	/**
-	 * @var IDBConnection
-	 */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	public function __construct(IDBConnection $connection) {
 		parent::__construct();

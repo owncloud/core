@@ -28,10 +28,10 @@ use OC\Files\External\StorageConfig;
 
 class StorageConfigTest extends \Test\TestCase {
 	public function testJsonSerialization() {
-		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+		$backend = $this->getMockBuilder('\\' . \OCP\Files\External\Backend\Backend::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$parameter = $this->getMockBuilder('\OCP\Files\External\DefinitionParameter')
+		$parameter = $this->getMockBuilder('\\' . \OCP\Files\External\DefinitionParameter::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$parameter
@@ -45,7 +45,7 @@ class StorageConfigTest extends \Test\TestCase {
 		$backend->method('getIdentifier')
 			->willReturn('storage::identifier');
 
-		$authMech = $this->getMockBuilder('\OCP\Files\External\Auth\AuthMechanism')
+		$authMech = $this->getMockBuilder('\\' . \OCP\Files\External\Auth\AuthMechanism::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$authMech->method('getIdentifier')

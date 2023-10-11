@@ -50,18 +50,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Scan extends Base {
-	/** @var IUserManager $userManager */
-	private $userManager;
-	/** @var  IGroupManager $groupManager */
-	private $groupManager;
-	/** @var ILockingProvider */
-	private $lockingProvider;
-	/** @var IMimeTypeLoader */
-	private $mimeTypeLoader;
-	/** @var ILogger */
-	private $logger;
-	/** @var IConfig */
-	private $config;
+	private \OCP\IUserManager $userManager;
+	private \OCP\IGroupManager $groupManager;
+	private \OCP\Lock\ILockingProvider $lockingProvider;
+	private \OCP\Files\IMimeTypeLoader $mimeTypeLoader;
+	private \OCP\ILogger $logger;
+	private \OCP\IConfig $config;
 	/** @var float */
 	protected $execTime = 0;
 	/** @var int */
@@ -177,7 +171,7 @@ class Scan extends Base {
 		$connection = $this->reconnectToDatabase($output);
 		$scanner = new \OC\Files\Utils\Scanner($user, $connection, \OC::$server->getLogger());
 		if ($shouldRepair) {
-			$scanner->listen('\OC\Files\Utils\Scanner', 'beforeScanStorage', function ($storage) use ($output, $connection) {
+			$scanner->listen('\\' . \OC\Files\Utils\Scanner::class, 'beforeScanStorage', function ($storage) use ($output, $connection) {
 				try {
 					// FIXME: this will lock the storage even if there is nothing to repair
 					$storage->acquireLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
@@ -204,42 +198,42 @@ class Scan extends Base {
 		# check on each file/folder if there was a user interrupt (ctrl-c) and throw an exception
 		# printout and count
 		if ($verbose) {
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
+			$scanner->listen('\\' . \OC\Files\Utils\Scanner::class, 'scanFile', function ($path) use ($output) {
 				$output->writeln("\tFile   <info>$path</info>");
 				$this->filesCounter += 1;
 				if ($this->hasBeenInterrupted()) {
 					throw new InterruptedException();
 				}
 			});
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
+			$scanner->listen('\\' . \OC\Files\Utils\Scanner::class, 'scanFolder', function ($path) use ($output) {
 				$output->writeln("\tFolder <info>$path</info>");
 				$this->foldersCounter += 1;
 				if ($this->hasBeenInterrupted()) {
 					throw new InterruptedException();
 				}
 			});
-			$scanner->listen('\OC\Files\Utils\Scanner', 'StorageNotAvailable', function (StorageNotAvailableException $e) use ($output) {
+			$scanner->listen('\\' . \OC\Files\Utils\Scanner::class, 'StorageNotAvailable', function (StorageNotAvailableException $e) use ($output) {
 				$output->writeln("Error while scanning, storage not available (" . $e->getMessage() . ")");
 			});
 			# count only
 		} else {
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () {
+			$scanner->listen('\\' . \OC\Files\Utils\Scanner::class, 'scanFile', function () {
 				$this->filesCounter += 1;
 				if ($this->hasBeenInterrupted()) {
 					throw new InterruptedException();
 				}
 			});
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function () {
+			$scanner->listen('\\' . \OC\Files\Utils\Scanner::class, 'scanFolder', function () {
 				$this->foldersCounter += 1;
 				if ($this->hasBeenInterrupted()) {
 					throw new InterruptedException();
 				}
 			});
 		}
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
+		$scanner->listen('\\' . \OC\Files\Utils\Scanner::class, 'scanFile', function ($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
+		$scanner->listen('\\' . \OC\Files\Utils\Scanner::class, 'scanFolder', function ($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
 
@@ -247,7 +241,7 @@ class Scan extends Base {
 			if ($backgroundScan) {
 				$scanner->backgroundScan($path);
 			} else {
-				$scanner->scan($path, $shouldRepair);
+				$scanner->scan($path);
 			}
 		} catch (ForbiddenException $e) {
 			$output->writeln("<error>Home storage for user $user not writable</error>");
@@ -301,7 +295,7 @@ class Scan extends Base {
 			}
 		} elseif ($inputPath) {
 			$inputPath = '/' . \trim($inputPath, '/');
-			list(, $user, ) = \explode('/', $inputPath, 3);
+			[, $user, ] = \explode('/', $inputPath, 3);
 			$users = [$user];
 		} elseif ($input->getOption('all')) {
 			// we can only repair all storages in bulk (more efficient) if singleuser or maintenance mode
@@ -389,7 +383,7 @@ class Scan extends Base {
 			$user_count += 1;
 			if ($this->userManager->userExists($user)) {
 				$user = $this->userManager->get($user)->getUID();
-				$path = $inputPath ? $inputPath : '/' . $user;
+				$path = $inputPath ?: '/' . $user;
 				# add an extra line when verbose is set to optical separate users
 				if ($verbose) {
 					$output->writeln("");
@@ -490,7 +484,7 @@ class Scan extends Base {
 	 * @return string
 	 */
 	protected function formatExecTime() {
-		list($secs, $tens) = \explode('.', \sprintf("%.1f", ($this->execTime)));
+		[$secs, $tens] = \explode('.', \sprintf("%.1f", ($this->execTime)));
 
 		# if you want to have microseconds add this:   . '.' . $tens;
 		return \date('H:i:s', $secs);

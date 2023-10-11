@@ -18,7 +18,7 @@ use OCP\Migration\IRepairStep;
  */
 class RepairInnoDBTest extends \Test\TestCase {
 	/** @var IRepairStep */
-	private $repair;
+	private \OC\Repair\InnoDB $repair;
 
 	/** @var \Doctrine\DBAL\Connection */
 	private $connection;
@@ -51,7 +51,7 @@ class RepairInnoDBTest extends \Test\TestCase {
 		$this->assertEquals(1, $result);
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -31,10 +31,7 @@ use OCP\AppFramework\Http\Response;
 use Test\TestCase;
 
 class ResponseTest extends TestCase {
-	/**
-	 * @var \OCP\AppFramework\Http\Response
-	 */
-	private $childResponse;
+	private \OCP\AppFramework\Http\Response $childResponse;
 
 	protected function setUp(): void {
 		parent::setUp();

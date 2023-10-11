@@ -29,9 +29,8 @@ use Test\TestCase;
 
 class MessageServiceTest extends TestCase {
 	/** @var IFactory */
-	private $l10Factory;
-	/** @var MessageService */
-	private $messageService;
+	private \PHPUnit\Framework\MockObject\MockObject $l10Factory;
+	private \OC\License\MessageService $messageService;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -217,10 +216,9 @@ class MessageServiceTest extends TestCase {
 	public function testGetMessageForLicense($licenseInfo, $expectedResult) {
 		$l10n = $this->createMock(IL10n::class);
 		$l10n->method('t')
-			->will($this->returnCallback(function ($text, $params) {
-				// change the text to camel case so the translated text is more predictable
-				return \vsprintf(\ucwords($text), $params);
-			}));
+			->will($this->returnCallback(fn ($text, $params) =>
+	   // change the text to camel case so the translated text is more predictable
+	   \vsprintf(\ucwords($text), $params)));
 
 		$this->l10Factory->method('get')
 			->willReturn($l10n);

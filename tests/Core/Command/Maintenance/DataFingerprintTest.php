@@ -31,15 +31,14 @@ use Test\TestCase;
 
 class DataFingerprintTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var \Symfony\Component\Console\Command\Command */
-	private $command;
-	/** @var CommandTester */
-	private $commandTester;
+	private \OC\Core\Command\Maintenance\DataFingerprint $command;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	public function providesAnswers() {
 		return [

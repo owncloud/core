@@ -29,15 +29,15 @@ use OC\AppFramework\Http\Request;
 
 class DIContainerTest extends \Test\TestCase {
 	private $container;
-	private $api;
+	private \PHPUnit\Framework\MockObject\MockObject $api;
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->container = $this->getMockBuilder('OC\AppFramework\DependencyInjection\DIContainer')
+		$this->container = $this->getMockBuilder(\OC\AppFramework\DependencyInjection\DIContainer::class)
 			->setMethods(['isAdminUser'])
 			->setConstructorArgs(['name'])
 			->getMock();
-		$this->api = $this->getMockBuilder('OC\AppFramework\Core\API')
+		$this->api = $this->getMockBuilder(\OC\AppFramework\Core\API::class)
 			->setConstructorArgs(['hi'])
 			->getMock();
 	}
@@ -69,8 +69,8 @@ class DIContainerTest extends \Test\TestCase {
 	public function testMiddlewareDispatcherIncludesSecurityMiddleware() {
 		$this->container['Request'] = new Request(
 			['method' => 'GET'],
-			$this->createMock('\OCP\Security\ISecureRandom'),
-			$this->createMock('\OCP\IConfig')
+			$this->createMock('\\' . \OCP\Security\ISecureRandom::class),
+			$this->createMock('\\' . \OCP\IConfig::class)
 		);
 		$security = $this->container['SecurityMiddleware'];
 		$dispatcher = $this->container['MiddlewareDispatcher'];

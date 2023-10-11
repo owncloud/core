@@ -45,25 +45,19 @@ class TrustedServers {
 	public const STATUS_ACCESS_REVOKED = 4;
 
 	/** @var DbHandler dbHandler */
-	private $dbHandler;
+	private \OCA\Federation\DbHandler $dbHandler;
 
-	/** @var IClientService */
-	private $httpClientService;
+	private \OCP\Http\Client\IClientService $httpClientService;
 
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var IJobList */
-	private $jobList;
+	private \OCP\BackgroundJob\IJobList $jobList;
 
-	/** @var ISecureRandom */
-	private $secureRandom;
+	private \OCP\Security\ISecureRandom $secureRandom;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var EventDispatcherInterface */
-	private $dispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
 
 	/**
 	 * @param DbHandler $dbHandler
@@ -105,7 +99,7 @@ class TrustedServers {
 			$token = $this->secureRandom->generate(16);
 			$this->dbHandler->addToken($url, $token);
 			$this->jobList->add(
-				'OCA\Federation\BackgroundJob\RequestSharedSecret',
+				\OCA\Federation\BackgroundJob\RequestSharedSecret::class,
 				[
 					'url' => $url,
 					'token' => $token
@@ -238,7 +232,7 @@ class TrustedServers {
 	 * @throws HintException
 	 */
 	protected function checkOwnCloudVersion($status) {
-		$decoded = \json_decode($status, true);
+		$decoded = \json_decode($status, true, 512, JSON_THROW_ON_ERROR);
 		if (!empty($decoded) && isset($decoded['version'])) {
 			if (!\version_compare($decoded['version'], '9.0.0', '>=')) {
 				throw new HintException('Remote server version is too low. ownCloud 9.0 is required.');

@@ -48,12 +48,9 @@ use OC\User\LoginException;
  * ```
  */
 class GroupLoginPolicy implements ILoginPolicy {
-	/** @var IGroupManager */
-	private $groupManager;
-	/** @var IConfig */
-	private $config;
-	/** @var IL10N */
-	private $l10n;
+	private \OCP\IGroupManager $groupManager;
+	private \OCP\IConfig $config;
+	private \OCP\IL10N $l10n;
 
 	public function __construct(IGroupManager $groupManager, IConfig $config, IL10N $l10n) {
 		$this->groupManager = $groupManager;

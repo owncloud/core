@@ -28,8 +28,8 @@ namespace Test\AppFramework\Db;
  */
 abstract class MapperTestUtility extends \Test\TestCase {
 	protected $db;
-	private $query;
-	private $fetchAt;
+	private \PHPUnit\Framework\MockObject\MockObject $query;
+	private int $fetchAt;
 	private $iterators;
 
 	/**
@@ -40,7 +40,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		parent::setUp();
 
 		$this->db = $this->getMockBuilder(
-			'\OCP\IDBConnection'
+			'\\' . \OCP\IDBConnection::class
 		)
 			->disableOriginalConstructor()
 			->getMock();

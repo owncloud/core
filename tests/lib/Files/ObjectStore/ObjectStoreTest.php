@@ -46,9 +46,9 @@ interface IObjectStoreTest extends IObjectStore, IVersionedObjectStorage {
  */
 class ObjectStoreTest extends TestCase {
 	/** @var IObjectStoreTest | \PHPUnit\Framework\MockObject\MockObject */
-	private $impl;
+	private \PHPUnit\Framework\MockObject\MockObject $impl;
 	/** @var ObjectStoreStorage | \PHPUnit\Framework\MockObject\MockObject */
-	private $objectStore;
+	private \PHPUnit\Framework\MockObject\MockObject $objectStore;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -193,7 +193,7 @@ class ObjectStoreTest extends TestCase {
 			throw new NotFoundException();
 		}
 		$this->impl->expects($this->never())->method($method)->willReturn([]);
-		$this->assertEquals([], $this->objectStore->$method('unknown-file.txt', '1'));
+		$this->assertEquals([], $this->objectStore->$method('unknown-file.txt'));
 	}
 
 	/**
@@ -203,7 +203,7 @@ class ObjectStoreTest extends TestCase {
 		$path = 'file-with-versions.txt';
 		$this->assertTrue($this->objectStore->touch($path));
 		$this->impl->expects($this->once())->method($method)->willReturn([]);
-		$this->assertEquals([], $this->objectStore->$method($path, '1'));
+		$this->assertEquals([], $this->objectStore->$method($path));
 	}
 
 	public function providesMethods() {

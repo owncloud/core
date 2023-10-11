@@ -42,7 +42,7 @@ class SizePropagationTest extends TestCase {
 	protected function setupUser($name) {
 		$this->createUser($name);
 		$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
-		$this->registerMount($name, '\OC\Files\Storage\Local', '/' . $name, ['datadir' => $tmpFolder]);
+		$this->registerMount($name, '\\' . \OC\Files\Storage\Local::class, '/' . $name, ['datadir' => $tmpFolder]);
 		self::loginAsUser($name);
 		return new View('/' . $name . '/files');
 	}

@@ -34,14 +34,8 @@ use OCP\IUserSession;
  * @package OC\Files\Meta
  */
 class MetaRootNode extends AbstractFolder {
-	/**
-	 * @var IRootFolder
-	 */
-	private $rootFolder;
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
+	private \OCP\Files\IRootFolder $rootFolder;
+	private \OCP\IUserSession $userSession;
 
 	public function __construct(IRootFolder $rootFolder, IUserSession $userSession) {
 		$this->rootFolder = $rootFolder;

@@ -18,12 +18,11 @@ use OCP\IConfig;
  * @package Tests\Settings\Panels\Personal
  */
 class ClientsTest extends \Test\TestCase {
-	/** @var Clients */
-	private $panel;
+	private \OC\Settings\Panels\Personal\Clients $panel;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var Defaults */
-	private $defaults;
+	private \PHPUnit\Framework\MockObject\MockObject $defaults;
 
 	public function setUp(): void {
 		parent::setUp();

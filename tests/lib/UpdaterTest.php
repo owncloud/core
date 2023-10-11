@@ -29,13 +29,12 @@ use OCP\ILogger;
 
 class UpdaterTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
-	/** @var Updater */
-	private $updater;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
+	private \OC\Updater $updater;
 	/** @var Checker | \PHPUnit\Framework\MockObject\MockObject */
-	private $checker;
+	private \PHPUnit\Framework\MockObject\MockObject $checker;
 
 	public function setUp(): void {
 		parent::setUp();

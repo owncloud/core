@@ -35,38 +35,32 @@ class Application extends App {
 		/*
 		 * Register capabilities
 		 */
-		$container->registerCapability('OCA\Files_Trashbin\Capabilities');
+		$container->registerCapability(\OCA\Files_Trashbin\Capabilities::class);
 
 		/*
 		 * Register expiration
 		 */
-		$container->registerService('Expiration', function ($c) {
-			return new Expiration(
-				$c->query('ServerContainer')->getConfig(),
-				$c->query('OCP\AppFramework\Utility\ITimeFactory')
-			);
-		});
+		$container->registerService('Expiration', fn ($c) => new Expiration(
+			$c->query('ServerContainer')->getConfig(),
+			$c->query(\OCP\AppFramework\Utility\ITimeFactory::class)
+		));
 
 		/*
 		 * Register quota
 		 */
-		$container->registerService('Quota', function ($c) {
-			return new Quota(
-				$c->getServer()->getUserManager(),
-				$c->query('ServerContainer')->getConfig()
-			);
-		});
+		$container->registerService('Quota', fn ($c) => new Quota(
+			$c->getServer()->getUserManager(),
+			$c->query('ServerContainer')->getConfig()
+		));
 
 		/*
 		 * Register trashbin service
 		 */
-		$container->registerService('Trashbin', function ($c) {
-			return new Trashbin(
-				$c->getServer()->getLazyRootFolder(),
-				$c->getServer()->getUrlGenerator(),
-				$c->getServer()->getEventDispatcher()
-			);
-		});
+		$container->registerService('Trashbin', fn ($c) => new Trashbin(
+			$c->getServer()->getLazyRootFolder(),
+			$c->getServer()->getUrlGenerator(),
+			$c->getServer()->getEventDispatcher()
+		));
 	}
 
 	public function registerListeners() {

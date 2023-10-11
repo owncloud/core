@@ -42,7 +42,7 @@ class DateTimeFormatterTest extends TestCase {
 	}
 
 	public function formatTimeSpanData() {
-		$time = 1416916800; // Use a fixed timestamp so we don't switch days/years with the getTimestampAgo
+		$time = 1_416_916_800; // Use a fixed timestamp so we don't switch days/years with the getTimestampAgo
 		$deL10N = \OC::$server->getL10NFactory()->get('lib', 'de');
 		return [
 			['seconds ago',	$time, $time],
@@ -80,7 +80,7 @@ class DateTimeFormatterTest extends TestCase {
 	}
 
 	public function formatDateSpanData() {
-		$time = 1416916800; // Use a fixed timestamp so we don't switch days/years with the getTimestampAgo
+		$time = 1_416_916_800; // Use a fixed timestamp so we don't switch days/years with the getTimestampAgo
 		$deL10N = \OC::$server->getL10NFactory()->get('lib', 'de');
 		return [
 			// Normal testing
@@ -141,7 +141,7 @@ class DateTimeFormatterTest extends TestCase {
 
 	public function formatDateData() {
 		return [
-			[1102831200, 'December 12, 2004'],
+			[1_102_831_200, 'December 12, 2004'],
 		];
 	}
 
@@ -155,8 +155,8 @@ class DateTimeFormatterTest extends TestCase {
 	public function formatDateTimeData() {
 		$narrowNoBreakSpace = "\xE2\x80\xAF";
 		return [
-			[1350129205, null, "October 13, 2012, 11:53:25{$narrowNoBreakSpace}AM UTC"],
-			[1350129205, new \DateTimeZone('Europe/Berlin'), "October 13, 2012, 1:53:25{$narrowNoBreakSpace}PM GMT+2"],
+			[1_350_129_205, null, "October 13, 2012, 11:53:25{$narrowNoBreakSpace}AM UTC"],
+			[1_350_129_205, new \DateTimeZone('Europe/Berlin'), "October 13, 2012, 1:53:25{$narrowNoBreakSpace}PM GMT+2"],
 		];
 	}
 
@@ -179,6 +179,6 @@ class DateTimeFormatterTest extends TestCase {
 	public function testFormatDateWithInvalidTZ() {
 		$this->expectException(\Exception::class);
 
-		$this->formatter->formatDate(1350129205, 'long', new \DateTimeZone('Mordor/Barad-dûr'));
+		$this->formatter->formatDate(1_350_129_205, 'long', new \DateTimeZone('Mordor/Barad-dûr'));
 	}
 }

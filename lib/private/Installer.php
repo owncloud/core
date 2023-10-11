@@ -85,7 +85,7 @@ class Installer {
 	public static function installApp($data = []) {
 		$l = \OC::$server->getL10N('lib');
 
-		list($extractDir, $path) = self::downloadApp($data);
+		[$extractDir, $path] = self::downloadApp($data);
 
 		$info = self::checkAppsIntegrity($data, $extractDir, $path);
 		$appId = OC_App::cleanAppId($info['id']);
@@ -214,7 +214,7 @@ class Installer {
 	 * "\OC::$server->getAppConfig()->getValue($appid, 'installed_version')"
 	 */
 	public static function updateApp($info= [], $isShipped=false) {
-		list($extractDir, $path) = self::downloadApp($info);
+		[$extractDir, $path] = self::downloadApp($info);
 		$info = self::checkAppsIntegrity($info, $extractDir, $path, $isShipped);
 
 		$currentDir = OC_App::getAppPath($info['id']);
@@ -491,7 +491,7 @@ class Installer {
 					try {
 						Installer::installShippedApp($appToInstall);
 					} catch (TableExistsException $e) {
-						\OC::$server->getLogger()->logException($e, ['app' => __CLASS__]);
+						\OC::$server->getLogger()->logException($e, ['app' => self::class]);
 						$errors[$appToInstall] = $e;
 						continue;
 					}

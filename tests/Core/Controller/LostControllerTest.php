@@ -42,35 +42,34 @@ use PHPUnit\Framework\TestCase;
  * @package OC\Core\Controller
  */
 class LostControllerTest extends TestCase {
-	/** @var LostController */
-	private $lostController;
+	private \OC\Core\Controller\LostController $lostController;
 	/** @var IUser */
-	private $existingUser;
+	private \PHPUnit\Framework\MockObject\MockObject $existingUser;
 	/** @var IURLGenerator | PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var IL10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 	/** @var \OC_Defaults */
-	private $defaults;
+	private \PHPUnit\Framework\MockObject\MockObject $defaults;
 	/** @var IConfig | PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IMailer | PHPUnit\Framework\MockObject\MockObject */
-	private $mailer;
+	private \PHPUnit\Framework\MockObject\MockObject $mailer;
 	/** @var ISecureRandom | PHPUnit\Framework\MockObject\MockObject */
-	private $secureRandom;
+	private \PHPUnit\Framework\MockObject\MockObject $secureRandom;
 	/** @var ITimeFactory | PHPUnit\Framework\MockObject\MockObject */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 	/** @var IRequest | PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var ILogger | PHPUnit\Framework\MockObject\MockObject*/
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var Session */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	protected function setUp(): void {
-		$this->existingUser = $this->getMockBuilder('OCP\IUser')
+		$this->existingUser = $this->getMockBuilder(\OCP\IUser::class)
 				->disableOriginalConstructor()->getMock();
 
 		$this->existingUser
@@ -88,33 +87,31 @@ class LostControllerTest extends TestCase {
 			->method('getUID')
 			->willReturn('ExistingUser');
 
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
+		$this->l10n = $this->getMockBuilder('\\' . \OCP\IL10N::class)
 			->disableOriginalConstructor()->getMock();
 		$this->l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 		$this->defaults = $this->getMockBuilder('\OC_Defaults')
 			->disableOriginalConstructor()->getMock();
-		$this->userManager = $this->getMockBuilder('\OCP\IUserManager')
+		$this->userManager = $this->getMockBuilder('\\' . \OCP\IUserManager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$this->urlGenerator = $this->getMockBuilder('\\' . \OCP\IURLGenerator::class)
 			->disableOriginalConstructor()->getMock();
-		$this->mailer = $this->getMockBuilder('\OCP\Mail\IMailer')
+		$this->mailer = $this->getMockBuilder('\\' . \OCP\Mail\IMailer::class)
 			->disableOriginalConstructor()->getMock();
-		$this->secureRandom = $this->getMockBuilder('\OCP\Security\ISecureRandom')
+		$this->secureRandom = $this->getMockBuilder('\\' . \OCP\Security\ISecureRandom::class)
 			->disableOriginalConstructor()->getMock();
-		$this->timeFactory = $this->getMockBuilder('\OCP\AppFramework\Utility\ITimeFactory')
+		$this->timeFactory = $this->getMockBuilder('\\' . \OCP\AppFramework\Utility\ITimeFactory::class)
 			->disableOriginalConstructor()->getMock();
-		$this->request = $this->getMockBuilder('OCP\IRequest')
+		$this->request = $this->getMockBuilder(\OCP\IRequest::class)
 			->disableOriginalConstructor()->getMock();
-		$this->logger = $this->getMockBuilder('OCP\ILogger')
+		$this->logger = $this->getMockBuilder(\OCP\ILogger::class)
 			->disableOriginalConstructor()->getMock();
-		$this->userSession = $this->getMockBuilder('OC\User\Session')
+		$this->userSession = $this->getMockBuilder(\OC\User\Session::class)
 			->disableOriginalConstructor()->getMock();
 		$this->lostController = new LostController(
 			'Core',
@@ -157,7 +154,7 @@ class LostControllerTest extends TestCase {
 			->method('getUserValue')
 			->with('ValidTokenUser', 'owncloud', 'lostpassword', null)
 			->will($this->returnValue('12345:TheOnlyAndOnlyOneTokenToResetThePassword'));
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()->getMock();
 		$user
 			->expects($this->once())
@@ -185,7 +182,7 @@ class LostControllerTest extends TestCase {
 	}
 
 	public function testResetFormExpiredToken() {
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()->getMock();
 		$this->userManager
 			->expects($this->once())
@@ -218,7 +215,7 @@ class LostControllerTest extends TestCase {
 	}
 
 	public function testResetFormValidToken() {
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()->getMock();
 		$user
 			->expects($this->once())
@@ -389,7 +386,7 @@ class LostControllerTest extends TestCase {
 			->method('linkToRouteAbsolute')
 			->with('core.lost.resetform', ['userId' => 'ExistingUser', 'token' => 'ThisIsMaybeANotSoSecretToken!'])
 			->will($this->returnValue('https://ownCloud.com/index.php/lostpassword/'));
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder('\\' . \OC\Mail\Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message
 			->expects($this->once())
@@ -490,7 +487,7 @@ class LostControllerTest extends TestCase {
 			->method('linkToRouteAbsolute')
 			->with('core.lost.resetform', ['userId' => 'ExistingUser', 'token' => 'ThisIsMaybeANotSoSecretToken!'])
 			->will($this->returnValue('https://ownCloud.com/index.php/lostpassword/'));
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder('\\' . \OC\Mail\Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message
 			->expects($this->once())
@@ -555,7 +552,7 @@ class LostControllerTest extends TestCase {
 			->method('linkToRouteAbsolute')
 			->with('core.lost.resetform', ['userId' => 'ExistingUser', 'token' => 'ThisIsMaybeANotSoSecretToken!'])
 			->will($this->returnValue('https://ownCloud.com/index.php/lostpassword/'));
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder('\\' . \OC\Mail\Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message
 			->expects($this->once())
@@ -620,7 +617,7 @@ class LostControllerTest extends TestCase {
 			->method('getUserValue')
 			->with('ValidTokenUser', 'owncloud', 'lostpassword', null)
 			->will($this->returnValue('12345:TheOnlyAndOnlyOneTokenToResetThePassword'));
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()->getMock();
 		$user
 			->expects($this->once())
@@ -647,7 +644,7 @@ class LostControllerTest extends TestCase {
 			->method('getDisplayName')
 			->will($this->returnValue('ValidTokenUser'));
 
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder('\\' . \OC\Mail\Message::class)
 			->disableOriginalConstructor()->getMock();
 		$message
 			->expects($this->once())
@@ -689,7 +686,7 @@ class LostControllerTest extends TestCase {
 			->method('getUserValue')
 			->with('ValidTokenUser', 'owncloud', 'lostpassword', null)
 			->will($this->returnValue('12345:TheOnlyAndOnlyOneTokenToResetThePassword'));
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()->getMock();
 		$this->userManager
 			->expects($this->once())
@@ -715,7 +712,7 @@ class LostControllerTest extends TestCase {
 			->method('getUserValue')
 			->with('ValidTokenUser', 'owncloud', 'lostpassword', null)
 			->will($this->returnValue('TheOnlyAndOnlyOneTokenToResetThePassword'));
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()->getMock();
 		$this->userManager
 			->expects($this->once())
@@ -737,7 +734,7 @@ class LostControllerTest extends TestCase {
 			->method('getUserValue')
 			->with('ValidTokenUser', 'owncloud', 'lostpassword', null)
 			->will($this->returnValue('12345:TheOnlyAndOnlyOneTokenToResetThePassword'));
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)
 			->disableOriginalConstructor()->getMock();
 		$user
 			->expects($this->once())

@@ -33,7 +33,7 @@ use Sabre\DAV\Exception\Forbidden;
 
 class CalendarTest extends TestCase {
 	/** @var IL10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -42,9 +42,7 @@ class CalendarTest extends TestCase {
 		$this->l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 	}
 
 	public function testDelete() {

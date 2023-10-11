@@ -25,20 +25,14 @@ use Test\Traits\UserTrait;
 class IntegrationTest extends TestCase {
 	use UserTrait;
 
-	/**
-	 * @var \OC\Files\Node\Root $root
-	 */
-	private $root;
+	private \OC\Files\Node\Root $root;
 
 	/**
 	 * @var \OC\Files\Storage\Storage[]
 	 */
-	private $storages;
+	private array $storages;
 
-	/**
-	 * @var \OC\Files\View $view
-	 */
-	private $view;
+	private \OC\Files\View $view;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -74,7 +68,7 @@ class IntegrationTest extends TestCase {
 		$this->assertCount(3, $this->root->getDirectoryListing());
 		$this->assertTrue($this->root->nodeExists('/foo.txt'));
 		$id = $file->getId();
-		$this->assertInstanceOf('\OC\Files\Node\File', $file);
+		$this->assertInstanceOf('\\' . \OC\Files\Node\File::class, $file);
 		$file->putContent('qwerty');
 		$this->assertEquals('text/plain', $file->getMimeType());
 		$this->assertEquals('qwerty', $file->getContent());
@@ -112,7 +106,7 @@ class IntegrationTest extends TestCase {
 		 * @var \OC\Files\Node\File $file
 		 */
 		$file = $folder->get('/bar');
-		$this->assertInstanceOf('\OC\Files\Node\File', $file);
+		$this->assertInstanceOf('\\' . \OC\Files\Node\File::class, $file);
 		$this->assertFalse($this->root->nodeExists('/foo/bar'));
 		$this->assertTrue($this->root->nodeExists('/asd/bar'));
 		$this->assertEquals('qwerty', $file->getContent());
@@ -121,7 +115,7 @@ class IntegrationTest extends TestCase {
 		 * @var \OC\Files\Node\File $file
 		 */
 		$file = $folder->get('/bar');
-		$this->assertInstanceOf('\OC\Files\Node\File', $file);
+		$this->assertInstanceOf('\\' . \OC\Files\Node\File::class, $file);
 		$this->assertTrue($this->root->nodeExists('/substorage/foo/bar'));
 		$this->assertEquals('qwerty', $file->getContent());
 	}

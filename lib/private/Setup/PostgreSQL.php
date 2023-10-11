@@ -36,7 +36,7 @@ class PostgreSQL extends AbstractDatabase {
 
 		// Fix database with port connection
 		if (\strpos($e_host, ':')) {
-			list($e_host, $port)=\explode(':', $e_host, 2);
+			[$e_host, $port]=\explode(':', $e_host, 2);
 		} else {
 			$port=false;
 		}
@@ -95,7 +95,7 @@ class PostgreSQL extends AbstractDatabase {
 
 		// Fix database with port connection
 		if (\strpos($e_host, ':')) {
-			list($e_host, $port)=\explode(':', $e_host, 2);
+			[$e_host, $port]=\explode(':', $e_host, 2);
 		} else {
 			$port=false;
 		}

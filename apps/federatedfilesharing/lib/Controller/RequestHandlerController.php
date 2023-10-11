@@ -50,17 +50,13 @@ use OCP\IUserManager;
  * @package OCA\FederatedFileSharing\API
  */
 class RequestHandlerController extends OCSController {
-	/** @var OcmMiddleware */
-	private $ocmMiddleware;
+	private \OCA\FederatedFileSharing\Middleware\OcmMiddleware $ocmMiddleware;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var AddressHandler */
-	private $addressHandler;
+	private \OCA\FederatedFileSharing\AddressHandler $addressHandler;
 
-	/** @var  FedShareManager */
-	private $fedShareManager;
+	private \OCA\FederatedFileSharing\FedShareManager $fedShareManager;
 
 	/**
 	 * Server2Server constructor.

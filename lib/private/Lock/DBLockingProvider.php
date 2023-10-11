@@ -38,20 +38,11 @@ use OCP\Lock\LockedException;
  * Locking provider that stores the locks in the database
  */
 class DBLockingProvider extends AbstractLockingProvider {
-	/**
-	 * @var \OCP\IDBConnection
-	 */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
-	/**
-	 * @var \OCP\ILogger
-	 */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/**
-	 * @var \OCP\AppFramework\Utility\ITimeFactory
-	 */
-	private $timeFactory;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
 
 	private $sharedLocks = [];
 
@@ -287,9 +278,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 
 		// since we keep shared locks we need to manually clean those
 		$lockedPaths = \array_keys($this->sharedLocks);
-		$lockedPaths = \array_filter($lockedPaths, function ($path) {
-			return $this->sharedLocks[$path];
-		});
+		$lockedPaths = \array_filter($lockedPaths, fn ($path) => $this->sharedLocks[$path]);
 
 		$chunkedPaths = \array_chunk($lockedPaths, 100);
 

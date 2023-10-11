@@ -115,10 +115,7 @@ class OC {
 	 */
 	public static $server = null;
 
-	/**
-	 * @var \OC\Config
-	 */
-	private static $config = null;
+	private static ?\OC\Config $config = null;
 
 	/**
 	 * @throws \RuntimeException when the app path list is empty or contains an invalid path
@@ -461,7 +458,7 @@ class OC {
 				// session timeout
 				\OC::$server->getUserSession()->logout();
 				if (isset($_COOKIE[\session_name()])) {
-					\setcookie(\session_name(), null, -1, self::$WEBROOT ? : '/');
+					\setcookie(\session_name(), null, ['expires' => -1, 'path' => self::$WEBROOT ? : '/']);
 				}
 			}
 		}
@@ -581,10 +578,10 @@ class OC {
 		}
 
 		// register the stream wrappers
-		\stream_wrapper_register('fakedir', 'OC\Files\Stream\Dir');
-		\stream_wrapper_register('static', 'OC\Files\Stream\StaticStream');
-		\stream_wrapper_register('close', 'OC\Files\Stream\Close');
-		\stream_wrapper_register('quota', 'OC\Files\Stream\Quota');
+		\stream_wrapper_register('fakedir', \OC\Files\Stream\Dir::class);
+		\stream_wrapper_register('static', \OC\Files\Stream\StaticStream::class);
+		\stream_wrapper_register('close', \OC\Files\Stream\Close::class);
+		\stream_wrapper_register('quota', \OC\Files\Stream\Quota::class);
 
 		\OC::$server->getEventLogger()->start('init_session', 'Initialize session');
 		OC_App::loadApps(['session', 'theme']);
@@ -620,7 +617,7 @@ class OC {
 					}
 
 					try {
-						\OC::$server->getConfig()->setAppValue('core', 'cronErrors', \json_encode($staticErrors));
+						\OC::$server->getConfig()->setAppValue('core', 'cronErrors', \json_encode($staticErrors, JSON_THROW_ON_ERROR));
 					} catch (\Exception $e) {
 						echo('Writing to database failed');
 					}
@@ -652,7 +649,7 @@ class OC {
 		\OCP\Util::connectHook(
 			'\OCA\Files_Sharing\API\Server2Server',
 			'preLoginNameUsedAsUserName',
-			'\OC\User\Database',
+			'\\' . \OC\User\Database::class,
 			'preLoginNameUsedAsUserName'
 		);
 
@@ -667,7 +664,7 @@ class OC {
 		self::registerCacheHooks();
 		self::registerFilesystemHooks();
 		if ($systemConfig->getValue('enable_previews', true)) {
-			OC_Hook::connect('OC_Filesystem', 'post_write', 'OC\Preview', 'post_write');
+			OC_Hook::connect('OC_Filesystem', 'post_write', \OC\Preview::class, 'post_write');
 		}
 		self::registerShareHooks();
 		self::registerLogRotate();
@@ -766,10 +763,10 @@ class OC {
 		//Call share hooks if they are not masterkey
 		if ($enabled &&
 			(\OC::$server->getConfig()->getAppValue('encryption', 'useMasterKey', '0') === '0')) {
-			\OCP\Util::connectHook('OCP\Share', 'post_shared', 'OC\Encryption\HookManager', 'postShared');
-			\OCP\Util::connectHook('OCP\Share', 'post_unshare', 'OC\Encryption\HookManager', 'postUnshared');
-			\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OC\Encryption\HookManager', 'postRename');
-			\OCP\Util::connectHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', 'OC\Encryption\HookManager', 'postRestore');
+			\OCP\Util::connectHook(\OCP\Share::class, 'post_shared', \OC\Encryption\HookManager::class, 'postShared');
+			\OCP\Util::connectHook(\OCP\Share::class, 'post_unshare', \OC\Encryption\HookManager::class, 'postUnshared');
+			\OCP\Util::connectHook('OC_Filesystem', 'post_rename', \OC\Encryption\HookManager::class, 'postRename');
+			\OCP\Util::connectHook('\\' . \OCA\Files_Trashbin\Trashbin::class, 'post_restore', \OC\Encryption\HookManager::class, 'postRestore');
 		}
 	}
 
@@ -781,7 +778,7 @@ class OC {
 		if ($systemConfig->getValue('installed', false) && $systemConfig->getValue('log_rotate_size', false) && !self::checkUpgrade(false)) {
 			//don't try to do this before we are properly setup
 			//use custom logfile path if defined, otherwise use default of owncloud.log in data directory
-			\OCP\BackgroundJob::registerJob('OC\Log\Rotate', $systemConfig->getValue('logfile', $systemConfig->getValue('datadirectory', OC::$SERVERROOT . '/data') . '/owncloud.log'));
+			\OCP\BackgroundJob::registerJob(\OC\Log\Rotate::class, $systemConfig->getValue('logfile', $systemConfig->getValue('datadirectory', OC::$SERVERROOT . '/data') . '/owncloud.log'));
 		}
 	}
 
@@ -790,8 +787,8 @@ class OC {
 	 */
 	public static function registerFilesystemHooks() {
 		// Check for blacklisted files
-		OC_Hook::connect('OC_Filesystem', 'write', 'OC\Files\Filesystem', 'isForbiddenFileOrDir_Hook');
-		OC_Hook::connect('OC_Filesystem', 'rename', 'OC\Files\Filesystem', 'isForbiddenFileOrDir_Hook');
+		OC_Hook::connect('OC_Filesystem', 'write', \OC\Files\Filesystem::class, 'isForbiddenFileOrDir_Hook');
+		OC_Hook::connect('OC_Filesystem', 'rename', \OC\Files\Filesystem::class, 'isForbiddenFileOrDir_Hook');
 	}
 
 	/**
@@ -799,9 +796,9 @@ class OC {
 	 */
 	public static function registerShareHooks() {
 		if (\OC::$server->getSystemConfig()->getValue('installed')) {
-			OC_Hook::connect('OC_User', 'post_deleteUser', 'OC\Share20\Hooks', 'post_deleteUser');
-			OC_Hook::connect('OC_User', 'post_removeFromGroup', 'OC\Share20\Hooks', 'post_removeFromGroup');
-			OC_Hook::connect('OC_User', 'post_deleteGroup', 'OC\Share20\Hooks', 'post_deleteGroup');
+			OC_Hook::connect('OC_User', 'post_deleteUser', \OC\Share20\Hooks::class, 'post_deleteUser');
+			OC_Hook::connect('OC_User', 'post_removeFromGroup', \OC\Share20\Hooks::class, 'post_removeFromGroup');
+			OC_Hook::connect('OC_User', 'post_deleteGroup', \OC\Share20\Hooks::class, 'post_deleteGroup');
 		}
 	}
 
@@ -988,7 +985,7 @@ class OC {
 		];
 		foreach ($vars as $var) {
 			if (isset($_SERVER[$var]) && \preg_match('/Basic\s+(.*)$/i', $_SERVER[$var], $matches)) {
-				list($name, $password) = \explode(':', \base64_decode($matches[1]), 2);
+				[$name, $password] = \explode(':', \base64_decode($matches[1]), 2);
 				$_SERVER['PHP_AUTH_USER'] = $name;
 				$_SERVER['PHP_AUTH_PW'] = $password;
 				break;

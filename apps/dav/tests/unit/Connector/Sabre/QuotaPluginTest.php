@@ -44,10 +44,10 @@ use OCP\Files\FileInfo;
  */
 class QuotaPluginTest extends TestCase {
 	/** @var \Sabre\DAV\Server | \PHPUnit\Framework\MockObject\MockObject */
-	private $server;
+	private ?\Sabre\DAV\Server $server = null;
 
 	/** @var \OCA\DAV\Connector\Sabre\QuotaPlugin | \PHPUnit\Framework\MockObject\MockObject */
-	private $plugin;
+	private ?\PHPUnit\Framework\MockObject\MockObject $plugin = null;
 
 	private function init($quota, $checkedPath = '') {
 		$view = $this->buildFileViewMock($quota, $checkedPath);

@@ -34,12 +34,10 @@ use Test\TestCase;
  * @group DB
  */
 class JobStatusMapperTest extends TestCase {
-	/** @var JobStatusMapper */
-	private $mapper;
+	private \OCA\DAV\JobStatus\Entity\JobStatusMapper $mapper;
 	/** @var IDBConnection */
 	private $database;
-	/** @var JobStatus */
-	private $testJobStatus;
+	private \OCA\DAV\JobStatus\Entity\JobStatus $testJobStatus;
 
 	public function setUp(): void {
 		parent::setUp();

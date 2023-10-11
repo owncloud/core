@@ -51,10 +51,7 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	private $renderAs;
 
-	/**
-	 * @var array
-	 */
-	private $headers = [];
+	private array $headers = [];
 
 	/**
 	 * @var string
@@ -159,7 +156,7 @@ class OC_Template extends \OC\Template\Base {
 			// specified in core/js/core.json
 			$fileContent = \file_get_contents(OC::$SERVERROOT . '/core/js/core.json');
 			if ($fileContent !== false) {
-				$coreDependencies = \json_decode($fileContent, true);
+				$coreDependencies = \json_decode($fileContent, true, 512, JSON_THROW_ON_ERROR);
 				foreach (\array_reverse($coreDependencies['vendor']) as $vendorLibrary) {
 					// remove trailing ".js" as addVendorScript will append it
 					OC_Util::addVendorScript(
@@ -275,7 +272,7 @@ class OC_Template extends \OC\Template\Base {
 	 * to include template from a different app.
 	 */
 	public function inc($file, $additionalParams = null) {
-		$app = (isset($additionalParams['app'])) ? $additionalParams['app'] : $this->app;
+		$app = $additionalParams['app'] ?? $this->app;
 		$template = $this->findTemplate($this->theme, $app, $file);
 		return $this->load($template, $additionalParams);
 	}

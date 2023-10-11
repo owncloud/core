@@ -32,17 +32,16 @@ use OCP\ICacheFactory;
 
 class DiscoveryManagerTest extends \Test\TestCase {
 	/** @var ICache */
-	private $cache;
+	private \PHPUnit\Framework\MockObject\MockObject $cache;
 	/** @var IClient */
-	private $client;
-	/** @var DiscoveryManager */
-	private $discoveryManager;
+	private \PHPUnit\Framework\MockObject\MockObject $client;
+	private \OCA\FederatedFileSharing\DiscoveryManager $discoveryManager;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->cache = $this->createMock('\OCP\ICache');
+		$this->cache = $this->createMock('\\' . \OCP\ICache::class);
 		/** @var ICacheFactory $cacheFactory */
-		$cacheFactory = $this->getMockBuilder('\OCP\ICacheFactory')
+		$cacheFactory = $this->getMockBuilder('\\' . \OCP\ICacheFactory::class)
 			->disableOriginalConstructor()->getMock();
 		$cacheFactory
 			->expects($this->once())
@@ -50,10 +49,10 @@ class DiscoveryManagerTest extends \Test\TestCase {
 			->with('ocs-discovery')
 			->willReturn($this->cache);
 
-		$this->client = $this->getMockBuilder('\OCP\Http\Client\IClient')
+		$this->client = $this->getMockBuilder('\\' . \OCP\Http\Client\IClient::class)
 			->disableOriginalConstructor()->getMock();
 		/** @var IClientService $clientService */
-		$clientService = $this->getMockBuilder('\OCP\Http\Client\IClientService')
+		$clientService = $this->getMockBuilder('\\' . \OCP\Http\Client\IClientService::class)
 			->disableOriginalConstructor()->getMock();
 		$clientService
 			->expects($this->once())
@@ -68,7 +67,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 	}
 
 	public function testWithMalformedFormattedEndpointCached() {
-		$response = $this->createMock('\OCP\Http\Client\IResponse');
+		$response = $this->createMock('\\' . \OCP\Http\Client\IResponse::class);
 		$response
 			->expects($this->once())
 			->method('getStatusCode')
@@ -97,7 +96,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 				],
 			)
 			->willReturnOnConsecutiveCalls(
-				$this->createMock('\OCP\Http\Client\IResponse'),
+				$this->createMock('\\' . \OCP\Http\Client\IResponse::class),
 				$response,
 			);
 
@@ -125,7 +124,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 	}
 
 	public function testGetWebDavEndpointWithValidFormattedEndpointAndNotCached() {
-		$response = $this->createMock('\OCP\Http\Client\IResponse');
+		$response = $this->createMock('\\' . \OCP\Http\Client\IResponse::class);
 		$response
 			->expects($this->once())
 			->method('getStatusCode')
@@ -155,7 +154,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 				],
 			)
 			->willReturnOnConsecutiveCalls(
-				$this->createMock('\OCP\Http\Client\IResponse'),
+				$this->createMock('\\' . \OCP\Http\Client\IResponse::class),
 				$response,
 			);
 
@@ -164,7 +163,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 	}
 
 	public function testGetWebDavEndpointWithValidFormattedEndpointWithoutDataAndNotCached() {
-		$response = $this->createMock('\OCP\Http\Client\IResponse');
+		$response = $this->createMock('\\' . \OCP\Http\Client\IResponse::class);
 		$response
 			->expects($this->once())
 			->method('getStatusCode')
@@ -194,7 +193,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 				],
 			)
 			->willReturnOnConsecutiveCalls(
-				$this->createMock('\OCP\Http\Client\IResponse'),
+				$this->createMock('\\' . \OCP\Http\Client\IResponse::class),
 				$response,
 			);
 
@@ -203,7 +202,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 	}
 
 	public function testGetShareEndpointWithValidFormattedEndpointAndNotCached() {
-		$response = $this->createMock('\OCP\Http\Client\IResponse');
+		$response = $this->createMock('\\' . \OCP\Http\Client\IResponse::class);
 		$response
 			->expects($this->once())
 			->method('getStatusCode')
@@ -226,7 +225,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 	}
 
 	public function testWithMaliciousEndpointCached() {
-		$response = $this->createMock('\OCP\Http\Client\IResponse');
+		$response = $this->createMock('\\' . \OCP\Http\Client\IResponse::class);
 		$response
 			->expects($this->once())
 			->method('getStatusCode')
@@ -256,7 +255,7 @@ class DiscoveryManagerTest extends \Test\TestCase {
 				],
 			)
 			->willReturnOnConsecutiveCalls(
-				$this->createMock('\OCP\Http\Client\IResponse'),
+				$this->createMock('\\' . \OCP\Http\Client\IResponse::class),
 				$response,
 			);
 

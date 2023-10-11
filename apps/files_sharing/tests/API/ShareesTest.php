@@ -1128,9 +1128,7 @@ class ShareesTest extends TestCase {
 				->with($searchTerm, self::invokePrivate($this->sharees, 'limit'), self::invokePrivate($this->sharees, 'offset'))
 				->willReturn($groupResponse);
 
-			$getGroupValueMap = \array_map(function ($group) {
-				return [$group->getGID(), $group];
-			}, $groupResponse);
+			$getGroupValueMap = \array_map(fn ($group) => [$group->getGID(), $group], $groupResponse);
 
 			$this->groupManager->method('get')
 				->will($this->returnValueMap($getGroupValueMap));
@@ -1151,9 +1149,7 @@ class ShareesTest extends TestCase {
 			// don't care about the particular implementation of the method
 			// just mark the group as blacklisted based on the displayname
 			$this->sharingBlacklist->method('isGroupBlacklisted')
-				->will($this->returnCallback(function (IGroup $group) use ($blacklistedGroupNames) {
-					return \in_array($group->getDisplayName(), $blacklistedGroupNames, true);
-				}));
+				->will($this->returnCallback(fn (IGroup $group) => \in_array($group->getDisplayName(), $blacklistedGroupNames, true)));
 		}
 
 		self::invokePrivate($this->sharees, 'getGroups', [$searchTerm]);
@@ -1568,9 +1564,7 @@ class ShareesTest extends TestCase {
 		$mockedRemoteClass = \get_class($this->customRemoteSearchMock);
 
 		// need to register the mock as service. It will be removed in the tearDown
-		\OC::$server->registerService($mockedRemoteClass, function () {
-			return $this->customRemoteSearchMock;
-		});
+		\OC::$server->registerService($mockedRemoteClass, fn () => $this->customRemoteSearchMock);
 
 		$this->config->method('getSystemValue')
 			->with('sharing.remoteShareesSearch')
@@ -1715,14 +1709,14 @@ class ShareesTest extends TestCase {
 		$sharees = $this->getMockBuilder(ShareesController::class)
 			->setConstructorArgs([
 				'files_sharing',
-				$this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock(),
+				$this->getMockBuilder(\OCP\IRequest::class)->disableOriginalConstructor()->getMock(),
 				$this->groupManager,
 				$this->userManager,
 				$this->contactsManager,
 				$this->config,
 				$this->session,
-				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
-				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
+				$this->getMockBuilder(\OCP\IURLGenerator::class)->disableOriginalConstructor()->getMock(),
+				$this->getMockBuilder(\OCP\ILogger::class)->disableOriginalConstructor()->getMock(),
 				$this->shareManager,
 				$this->sharingBlacklist,
 				$this->userSearch
@@ -1997,7 +1991,7 @@ class ShareesTest extends TestCase {
 	 * @param string $expectedUrl
 	 */
 	public function testSplitUserRemote($remote, $expectedUser, $expectedUrl) {
-		list($remoteUser, $remoteUrl) = $this->sharees->splitUserRemote($remote);
+		[$remoteUser, $remoteUrl] = $this->sharees->splitUserRemote($remote);
 		$this->assertSame($expectedUser, $remoteUser);
 		$this->assertSame($expectedUrl, $remoteUrl);
 	}

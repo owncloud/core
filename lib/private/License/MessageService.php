@@ -26,8 +26,7 @@ use OCP\License\ILicenseManager;
  * This class will provide translated messages based on the current license status
  */
 class MessageService {
-	/** @var IFactory */
-	private $l10nFactory;
+	private \OCP\L10N\IFactory $l10nFactory;
 
 	public function __construct(IFactory $l10nFactory) {
 		$this->l10nFactory = $l10nFactory;

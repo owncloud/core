@@ -39,32 +39,24 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 class LockMapperTest extends TestCase {
 	/** @var IDBConnection */
 	private $db;
-	/** @var Account */
-	private $account;
+	private \OC\User\Account $account;
 	/** @var int */
 	private $fileCacheId;
 	/** @var int */
 	private $fileCacheChildId;
 	/** @var int */
 	private $fileCacheParentId;
-	/** @var int */
-	private $storageId;
-	/** @var int */
-	private $unrelatedStorageId;
-	/** @var LockMapper */
-	private $mapper;
+	private int $storageId;
+	private int $unrelatedStorageId;
+	private \OC\Lock\Persistent\LockMapper $mapper;
 	/** @var Lock[] */
-	private $locks = [];
-	/** @var string */
-	private $parentPath;
-	/** @var string */
-	private $path;
-	/** @var string */
-	private $childPath;
-	/** @var string */
-	private $unrelatedPath;
+	private array $locks = [];
+	private string $parentPath;
+	private string $path;
+	private string $childPath;
+	private string $unrelatedPath;
 	/** @var ITimeFactory */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -161,19 +153,19 @@ class LockMapperTest extends TestCase {
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->path, false);
 		$this->assertCount(1, $l);
-		$this->assertLock($lock, $l[0], 'query on locked path returns lock from locked path itself');
+		$this->assertLock($lock, $l[0]);
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->parentPath, false);
 		$this->assertCount(0, $l, 'query on parent path returns no lock');
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->path, true);
 		$this->assertCount(1, $l);
-		$this->assertLock($lock, $l[0], 'query on locked path including children returns lock from locked path itself');
+		$this->assertLock($lock, $l[0]);
 
 		// parent is able to retrieve for children when asking for children
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->parentPath, true);
 		$this->assertCount(1, $l);
-		$this->assertLock($lock, $l[0], 'query on parent path and including children returns lock from locked path');
+		$this->assertLock($lock, $l[0]);
 
 		// unrelated storage with same paths
 		$l = $this->mapper->getLocksByPath($this->unrelatedStorageId, $this->path, false);
@@ -204,19 +196,19 @@ class LockMapperTest extends TestCase {
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->path, false);
 		$this->assertCount(1, $l);
-		$this->assertLock($lock, $l[0], 'query on child path returns lock from parent due to infinite depth');
+		$this->assertLock($lock, $l[0]);
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->parentPath, false);
 		$this->assertCount(1, $l);
-		$this->assertLock($lock, $l[0], 'query on parent path returns lock from parent path itself');
+		$this->assertLock($lock, $l[0]);
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->path, true);
 		$this->assertCount(1, $l);
-		$this->assertLock($lock, $l[0], 'query on child path including children returns lock from parent path due to infinite depth');
+		$this->assertLock($lock, $l[0]);
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->parentPath, true);
 		$this->assertCount(1, $l);
-		$this->assertLock($lock, $l[0], 'query on parent path including children returns lock from parent path itself');
+		$this->assertLock($lock, $l[0]);
 
 		// unrelated storage with same paths
 		$l = $this->mapper->getLocksByPath($this->unrelatedStorageId, $this->path, false);
@@ -248,19 +240,19 @@ class LockMapperTest extends TestCase {
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->path, false);
 		$this->sortLocks($l);
 		$this->assertCount(2, $l);
-		$this->assertLock($parentLock, $l[0], 'parent lock returned due to infinite depth');
-		$this->assertLock($lock, $l[1], 'path lock returned due to it being direct target');
+		$this->assertLock($parentLock, $l[0]);
+		$this->assertLock($lock, $l[1]);
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->parentPath, false);
 		$this->assertCount(1, $l);
-		$this->assertLock($parentLock, $l[0], 'parent lock returned due to it being direct target');
+		$this->assertLock($parentLock, $l[0]);
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->childPath, false);
 		$this->sortLocks($l);
 		$this->assertCount(2, $l);
-		$this->assertLock($parentLock, $l[0], 'parent lock returned due to infinite depth');
+		$this->assertLock($parentLock, $l[0]);
 		// $lock not included because it has Depth 0
-		$this->assertLock($childLock, $l[1], 'child lock returned');
+		$this->assertLock($childLock, $l[1]);
 	}
 
 	/**
@@ -278,23 +270,23 @@ class LockMapperTest extends TestCase {
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->path, true);
 		$this->sortLocks($l);
 		$this->assertCount(3, $l);
-		$this->assertLock($parentLock, $l[0], 'parent lock returned due to infinite depth');
-		$this->assertLock($lock, $l[1], 'path lock returned due to it being direct target');
-		$this->assertLock($childLock, $l[2], 'child lock returned');
+		$this->assertLock($parentLock, $l[0]);
+		$this->assertLock($lock, $l[1]);
+		$this->assertLock($childLock, $l[2]);
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->parentPath, true);
 		$this->sortLocks($l);
 		$this->assertCount(3, $l);
-		$this->assertLock($parentLock, $l[0], 'parent lock returned due to it being direct target');
-		$this->assertLock($lock, $l[1], 'path lock returned due to it being a child');
-		$this->assertLock($childLock, $l[2], 'child lock returned');
+		$this->assertLock($parentLock, $l[0]);
+		$this->assertLock($lock, $l[1]);
+		$this->assertLock($childLock, $l[2]);
 
 		$l = $this->mapper->getLocksByPath($this->storageId, $this->childPath, true);
 		$this->sortLocks($l);
 		$this->assertCount(2, $l);
-		$this->assertLock($parentLock, $l[0], 'parent lock returned due to infinite depth');
+		$this->assertLock($parentLock, $l[0]);
 		// $lock not included because it has Depth 0
-		$this->assertLock($childLock, $l[1], 'child lock returned');
+		$this->assertLock($childLock, $l[1]);
 	}
 
 	/**
@@ -429,8 +421,6 @@ class LockMapperTest extends TestCase {
 	 * Sorts an array of locks by file id for easier matching
 	 */
 	private function sortLocks(&$l) {
-		\usort($l, function ($a, $b) {
-			return $a->getId() - $b->getId();
-		});
+		\usort($l, fn ($a, $b) => $a->getId() - $b->getId());
 	}
 }

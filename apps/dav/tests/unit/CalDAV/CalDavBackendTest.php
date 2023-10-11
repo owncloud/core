@@ -102,9 +102,7 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 		$l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 
 		$calendarId = $this->createTestCalendar();
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
@@ -380,9 +378,7 @@ EOD;
 			'comp-filters' => $compFilter
 		]);
 
-		$expectedEventsInResult = \array_map(function ($index) use ($events) {
-			return $events[$index];
-		}, $expectedEventsInResult);
+		$expectedEventsInResult = \array_map(fn ($index) => $events[$index], $expectedEventsInResult);
 		$this->assertEqualsCanonicalizing($expectedEventsInResult, $result);
 	}
 
@@ -610,9 +606,7 @@ EOS;
 	 */
 	public function testHugeMultiGet() {
 		$calendarId = $this->createTestCalendar();
-		$urls = \array_map(function ($number) {
-			return "url-$number";
-		}, \range(0, 2000));
+		$urls = \array_map(fn ($number) => "url-$number", \range(0, 2000));
 		$calendarObjects = $this->backend->getMultipleCalendarObjects($calendarId, $urls);
 		$this->assertEquals([], $calendarObjects);
 	}

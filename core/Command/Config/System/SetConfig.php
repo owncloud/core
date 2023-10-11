@@ -171,7 +171,7 @@ class SetConfig extends Base {
 				];
 
 			case 'json':
-				$decodedJson = \json_decode($value, true);
+				$decodedJson = \json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 				if ($decodedJson === null) {
 					throw new \InvalidArgumentException('Unable to parse value as json');
 				}

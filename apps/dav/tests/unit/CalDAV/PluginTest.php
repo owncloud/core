@@ -10,8 +10,7 @@ use Sabre\DAV\Xml\Property\ShareAccess;
 use Test\TestCase;
 
 class PluginTest extends TestCase {
-	/** @var Plugin */
-	private $plugin;
+	private \OCA\DAV\CalDAV\Plugin $plugin;
 
 	protected function setUp(): void {
 		parent::setUp();

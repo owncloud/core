@@ -27,8 +27,7 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class RepairSubShares implements IRepairStep {
-	/** @var IDBConnection  */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	/** @var  IQueryBuilder */
 	private $getDuplicateRows;
@@ -101,9 +100,7 @@ class RepairSubShares implements IRepairStep {
 		$rowIds = [];
 		if (\count($rows) > 0) {
 			$rowIds = \array_map(
-				function ($value) {
-					return (int)$value['id'];
-				},
+				fn ($value) => (int)$value['id'],
 				$rows
 			);
 		}

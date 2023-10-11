@@ -29,11 +29,10 @@ use Test\TestCase;
 
 class LicenseFetcherTest extends TestCase {
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ITimeFactory */
-	private $timeFactory;
-	/** @var LicenseFetcher */
-	private $licenseFetcher;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
+	private \OC\License\LicenseFetcher $licenseFetcher;
 
 	protected function setUp(): void {
 		$this->config = $this->createMock(IConfig::class);
@@ -69,7 +68,7 @@ class LicenseFetcherTest extends TestCase {
 
 	public function testGetOwncloudLicenseFromDB(): void {
 		$this->timeFactory->method('getTime')
-			->willReturn(1010000000);
+			->willReturn(1_010_000_000);
 
 		$this->config->expects(self::once())
 			->method('getAppValue')
@@ -89,7 +88,7 @@ class LicenseFetcherTest extends TestCase {
 
 	public function testGetOwncloudLicenseDBExpired(): void {
 		$this->timeFactory->method('getTime')
-			->willReturn(1010000000);
+			->willReturn(1_010_000_000);
 
 		$this->config->expects(self::once())
 			->method('getAppValue')
@@ -116,7 +115,7 @@ class LicenseFetcherTest extends TestCase {
 
 	public function testGetOwncloudLicenseDBInvalid(): void {
 		$this->timeFactory->method('getTime')
-			->willReturn(1010000000);
+			->willReturn(1_010_000_000);
 
 		$this->config->expects(self::once())
 			->method('getAppValue')
@@ -143,7 +142,7 @@ class LicenseFetcherTest extends TestCase {
 
 	public function testGetOwncloudLicenseDBInvalidConfigMissing(): void {
 		$this->timeFactory->method('getTime')
-			->willReturn(1010000000);
+			->willReturn(1_010_000_000);
 
 		$this->config->expects(self::exactly(2))
 			->method('getSystemValue')

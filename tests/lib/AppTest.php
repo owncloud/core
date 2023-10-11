@@ -477,11 +477,7 @@ class AppTest extends \Test\TestCase {
 
 	private function setupAppConfigMock() {
 		$appConfig = $this->createMock(
-			'\OC\AppConfig',
-			['getValues'],
-			[\OC::$server->getDatabaseConnection()],
-			'',
-			false
+			'\\' . \OC\AppConfig::class
 		);
 
 		$this->registerAppConfig($appConfig);
@@ -494,38 +490,30 @@ class AppTest extends \Test\TestCase {
 	 * @param IAppConfig $appConfig app config mock
 	 */
 	private function registerAppConfig(IAppConfig $appConfig) {
-		\OC::$server->registerService('AppConfig', function ($c) use ($appConfig) {
-			return $appConfig;
-		});
-		\OC::$server->registerService('AppManager', function (\OC\Server $c) use ($appConfig) {
-			return new \OC\App\AppManager(
-				$c->getUserSession(),
-				$appConfig,
-				$c->getGroupManager(),
-				$c->getMemCacheFactory(),
-				$c->getEventDispatcher(),
-				$c->getConfig()
-			);
-		});
+		\OC::$server->registerService('AppConfig', fn ($c) => $appConfig);
+		\OC::$server->registerService('AppManager', fn (\OC\Server $c) => new \OC\App\AppManager(
+			$c->getUserSession(),
+			$appConfig,
+			$c->getGroupManager(),
+			$c->getMemCacheFactory(),
+			$c->getEventDispatcher(),
+			$c->getConfig()
+		));
 	}
 
 	/**
 	 * Restore the original app config service.
 	 */
 	private function restoreAppConfig() {
-		\OC::$server->registerService('AppConfig', function (\OC\Server $c) {
-			return new \OC\AppConfig($c->getDatabaseConnection());
-		});
-		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
-			return new \OC\App\AppManager(
-				$c->getUserSession(),
-				$c->getAppConfig(),
-				$c->getGroupManager(),
-				$c->getMemCacheFactory(),
-				$c->getEventDispatcher(),
-				$c->getConfig()
-			);
-		});
+		\OC::$server->registerService('AppConfig', fn (\OC\Server $c) => new \OC\AppConfig($c->getDatabaseConnection()));
+		\OC::$server->registerService('AppManager', fn (\OC\Server $c) => new \OC\App\AppManager(
+			$c->getUserSession(),
+			$c->getAppConfig(),
+			$c->getGroupManager(),
+			$c->getMemCacheFactory(),
+			$c->getEventDispatcher(),
+			$c->getConfig()
+		));
 
 		// Remove the cache of the mocked apps list with a forceRefresh
 		\OC_App::getEnabledApps();

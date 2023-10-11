@@ -32,7 +32,7 @@ class TransferOwnershipContext implements Context {
 	private FeatureContext $featureContext;
 	private OccContext $occContext;
 
-	private ?string $lastTransferPath;
+	private ?string $lastTransferPath = null;
 
 	/**
 	 * @return string

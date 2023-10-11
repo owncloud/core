@@ -35,11 +35,10 @@ use Test\TestCase;
  * @group DB
  */
 class HomeListUsersTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	/** @var IDBConnection | \PHPUnit\Framework\MockObject\MockObject */
-	private $connection;
+	private \PHPUnit\Framework\MockObject\MockObject $connection;
 
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
@@ -84,7 +83,7 @@ class HomeListUsersTest extends TestCase {
 
 		$resultMock = $this->createMock(DriverStatement::class);
 		$resultMock->method('fetch')->willReturnOnConsecutiveCalls(['user_id' => $uid], false);
-		$queryMock = $this->getMockBuilder('\OC\DB\QueryBuilder\QueryBuilder')
+		$queryMock = $this->getMockBuilder('\\' . \OC\DB\QueryBuilder\QueryBuilder::class)
 			->setConstructorArgs([$this->connection])
 			->setMethods(['execute'])
 			->getMock();
@@ -109,7 +108,7 @@ class HomeListUsersTest extends TestCase {
 	public function testCommandInputAll() {
 		$uid = 'testhomeuser';
 		$path = '/some/path';
-		$userObject = $this->getMockBuilder('\OC\User\User')
+		$userObject = $this->getMockBuilder('\\' . \OC\User\User::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$userObject->method('getHome')->willReturn($path . '/' . $uid);
@@ -134,7 +133,7 @@ class HomeListUsersTest extends TestCase {
 	}
 
 	private function overwriteConfigWithObjectStorage() {
-		$config = $this->createMock('\OCP\IConfig');
+		$config = $this->createMock('\\' . \OCP\IConfig::class);
 		$config->expects($this->any())
 			->method('getSystemValue')
 			->willReturn(['objectstore' => true]);
@@ -143,7 +142,7 @@ class HomeListUsersTest extends TestCase {
 	}
 
 	private function overwriteAppManagerWithObjectStorage() {
-		$config = $this->createMock('\OCP\App\IAppManager');
+		$config = $this->createMock('\\' . \OCP\App\IAppManager::class);
 		$config->expects($this->any())
 			->method('isEnabledForUser')
 			->willReturn(true);

@@ -30,8 +30,7 @@ use OCP\IUser;
  * Map a user to a bucket.
  */
 class Mapper {
-	/** @var IUser */
-	private $user;
+	private \OCP\IUser $user;
 
 	/**
 	 * Mapper constructor.

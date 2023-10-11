@@ -160,7 +160,7 @@ class Encryption extends Wrapper {
 		$headerSize,
 		$signed,
 		$sourceFileOfRename = null,
-		$wrapper =  'OC\Files\Stream\Encryption'
+		$wrapper =  \OC\Files\Stream\Encryption::class
 	) {
 		$context = \stream_context_create([
 			'ocencryption' => [

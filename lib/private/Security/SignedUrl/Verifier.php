@@ -25,18 +25,12 @@ use OCP\IConfig;
 use Sabre\HTTP\RequestInterface;
 
 class Verifier {
-	/**
-	 * @var RequestInterface
-	 */
-	private $request;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
+	private \Sabre\HTTP\RequestInterface $request;
+	private \OCP\IConfig $config;
 	/**
 	 * @var \DateTime|null
 	 */
-	private $now;
+	private \DateTime $now;
 
 	public function __construct(RequestInterface $request, IConfig $config, \DateTime $now = null) {
 		$this->request = $request;
@@ -52,7 +46,7 @@ class Verifier {
 	public function signedRequestIsValid(): bool {
 		$params = $this->getQueryParameters();
 		if (!isset($params['OC-Signature'], $params['OC-Credential'], $params['OC-Date'], $params['OC-Expires'], $params['OC-Verb'])) {
-			$q = \json_encode($params);
+			$q = \json_encode($params, JSON_THROW_ON_ERROR);
 			\OC::$server->getLogger()->debug("Query parameters are missing: $q", ['app' => 'signed-url']);
 			return false;
 		}

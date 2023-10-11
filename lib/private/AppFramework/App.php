@@ -65,9 +65,9 @@ class App {
 	 */
 	public static function main($controllerName, $methodName, DIContainer $container, array $urlParams = null) {
 		if ($urlParams !== null) {
-			$container['OCP\\IRequest']->setUrlParameters($urlParams);
+			$container[\OCP\IRequest::class]->setUrlParameters($urlParams);
 		} elseif (isset($container['urlParams']) && $container['urlParams'] !== null) {
-			$container['OCP\\IRequest']->setUrlParameters($container['urlParams']);
+			$container[\OCP\IRequest::class]->setUrlParameters($container['urlParams']);
 		}
 		$appName = $container['AppName'];
 
@@ -90,15 +90,9 @@ class App {
 		/** @var Dispatcher $dispatcher */
 		$dispatcher = $container['Dispatcher'];
 
-		list(
-			$httpHeaders,
-			$responseHeaders,
-			$responseCookies,
-			$output,
-			$response
-		) = $dispatcher->dispatch($controller, $methodName);
+		[$httpHeaders, $responseHeaders, $responseCookies, $output, $response] = $dispatcher->dispatch($controller, $methodName);
 
-		$io = $container['OCP\\AppFramework\\Http\\IOutput'];
+		$io = $container[\OCP\AppFramework\Http\IOutput::class];
 
 		if ($httpHeaders !== null) {
 			$io->setHeader($httpHeaders);
@@ -155,7 +149,7 @@ class App {
 
 		$dispatcher = $container['Dispatcher'];
 
-		list(, , $output) =  $dispatcher->dispatch($controller, $methodName);
+		[, , $output] =  $dispatcher->dispatch($controller, $methodName);
 		return $output;
 	}
 }

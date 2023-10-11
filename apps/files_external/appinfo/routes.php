@@ -58,6 +58,6 @@ $this->create('files_external_list_applicable', '/applicable')
 \OCP\API::register(
 	'get',
 	'/apps/files_external/api/v1/mounts',
-	['\OCA\Files_External\Lib\Api', 'getUserMounts'],
+	['\\' . \OCA\Files_External\Lib\Api::class, 'getUserMounts'],
 	'files_external'
 );

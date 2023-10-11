@@ -48,10 +48,7 @@ class TagServiceTest extends \Test\TestCase {
 	 */
 	private $root;
 
-	/**
-	 * @var \OCA\Files\Service\TagService
-	 */
-	private $tagService;
+	private \OCA\Files\Service\TagService $tagService;
 
 	/**
 	 * @var \OCP\ITagManager
@@ -65,7 +62,7 @@ class TagServiceTest extends \Test\TestCase {
 		\OC_User::setUserId($this->user);
 		\OC_Util::setupFS($this->user);
 		/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
-		$userSession = $this->createMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$userSession->expects($this->any())
 			->method('getUser')
 			->withAnyParameters()

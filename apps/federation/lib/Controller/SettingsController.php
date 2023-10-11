@@ -29,11 +29,9 @@ use OCP\IL10N;
 use OCP\IRequest;
 
 class SettingsController extends Controller {
-	/** @var IL10N */
-	private $l;
+	private \OCP\IL10N $l;
 
-	/** @var  TrustedServers */
-	private $trustedServers;
+	private \OCA\Federation\TrustedServers $trustedServers;
 
 	/**
 	 * @param string $AppName

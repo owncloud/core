@@ -34,11 +34,10 @@ use OCP\Migration\ISqlMigration;
  * Drop all entries that can't be resolved
  */
 class Version20170202213905 implements ISqlMigration {
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
 	/** @var string[]  */
-	private $statements = [];
+	private array $statements = [];
 
 	public function __construct(IUserManager $userManager) {
 		$this->userManager = $userManager;

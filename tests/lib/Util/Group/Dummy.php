@@ -35,7 +35,7 @@ use OC\Group\Backend;
  * dummy group backend, does not keep state, only for testing use
  */
 class Dummy extends Backend {
-	private $groups= [];
+	private array $groups= [];
 	/**
 	 * Try to create a new group
 	 * @param string $gid The name of the group to create

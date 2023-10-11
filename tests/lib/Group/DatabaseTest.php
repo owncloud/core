@@ -31,7 +31,7 @@ namespace Test\Group;
  * @group DB
  */
 class DatabaseTest extends Backend {
-	private $groups = [];
+	private array $groups = [];
 
 	/**
 	 * get a new unique group name

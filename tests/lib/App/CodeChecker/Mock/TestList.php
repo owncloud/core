@@ -49,7 +49,7 @@ class TestList implements ICheck {
 	public function getClasses() {
 		return [
 			// Deprecated classes
-			'OCP\AppFramework\IApi' => '8.0.0',
+			\OCP\AppFramework\IApi::class => '8.0.0',
 		];
 	}
 

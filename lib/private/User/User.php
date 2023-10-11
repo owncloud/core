@@ -56,8 +56,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class User implements IUser {
 	use EventEmitterTrait;
 
-	/** @var Account */
-	private $account;
+	private \OC\User\Account $account;
 
 	/** @var Emitter|Manager $emitter */
 	private $emitter;
@@ -74,8 +73,7 @@ class User implements IUser {
 	/** @var EventDispatcher */
 	private $eventDispatcher;
 
-	/** @var AccountMapper */
-	private $mapper;
+	private \OC\User\AccountMapper $mapper;
 
 	/** @var \OC\Group\Manager  */
 	private $groupManager;
@@ -87,13 +85,12 @@ class User implements IUser {
 	private $userExtendedAttributes = null;
 
 	/**
-	 * This flag is true by default. This flag when set to false
-	 * would not allow the set operations in this class. Or in other
-	 * words the update to the accounts table will be restricted through this flag.
-	 * This flag is only modified inside getExtendedAttributes method.
-	 * @var bool
-	 */
-	private $allowUserAccountUpdate = true;
+  * This flag is true by default. This flag when set to false
+  * would not allow the set operations in this class. Or in other
+  * words the update to the accounts table will be restricted through this flag.
+  * This flag is only modified inside getExtendedAttributes method.
+  */
+	private bool $allowUserAccountUpdate = true;
 
 	/**
 	 * User constructor.
@@ -647,9 +644,7 @@ class User implements IUser {
 		}
 
 		// Check length of terms, cut if too long
-		$terms = \array_map(function ($term) {
-			return \substr($term, 0, 191);
-		}, $terms);
+		$terms = \array_map(fn ($term) => \substr($term, 0, 191), $terms);
 		$this->mapper->setTermsForAccount($this->account->getId(), $terms);
 	}
 

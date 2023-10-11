@@ -29,10 +29,7 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 
 class JSONResponseTest extends \Test\TestCase {
-	/**
-	 * @var JSONResponse
-	 */
-	private $json;
+	private \OCP\AppFramework\Http\JSONResponse $json;
 
 	protected function setUp(): void {
 		parent::setUp();

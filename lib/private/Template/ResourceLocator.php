@@ -156,9 +156,7 @@ abstract class ResourceLocator {
 	 */
 	protected function buildPath($parts) {
 		$trimmedParts = \array_map(
-			function ($part) {
-				return \rtrim($part, '/');
-			},
+			fn ($part) => \rtrim($part, '/'),
 			$parts
 		);
 		return \join(DIRECTORY_SEPARATOR, $trimmedParts);

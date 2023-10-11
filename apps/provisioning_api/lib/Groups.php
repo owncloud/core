@@ -30,14 +30,11 @@ use OCP\IGroup;
 use OCP\IUser;
 
 class Groups {
-	/** @var \OCP\IGroupManager */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
-	/** @var \OCP\IUserSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
-	/** @var \OCP\IRequest */
-	private $request;
+	private \OCP\IRequest $request;
 
 	/**
 	 * @param \OCP\IGroupManager $groupManager
@@ -73,10 +70,9 @@ class Groups {
 		}
 
 		$groups = $this->groupManager->search($search, $limit, $offset, 'management');
-		$groups = \array_map(function ($group) {
-			/** @var IGroup $group */
-			return $group->getGID();
-		}, $groups);
+		$groups = \array_map(fn ($group) =>
+	  /** @var IGroup $group */
+	  $group->getGID(), $groups);
 
 		return new OC_OCS_Result(['groups' => $groups]);
 	}
@@ -112,10 +108,9 @@ class Groups {
 		if ($this->groupManager->isAdmin($user->getUID())
 		   || $isSubadminOfGroup) {
 			$users = $this->groupManager->get($groupId)->getUsers();
-			$users =  \array_map(function ($user) {
-				/** @var IUser $user */
-				return $user->getUID();
-			}, $users);
+			$users =  \array_map(fn ($user) =>
+	   /** @var IUser $user */
+	   $user->getUID(), $users);
 			$users = \array_values($users);
 			return new OC_OCS_Result(['users' => $users]);
 		}

@@ -38,14 +38,11 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	public const REPORT_SCORE = '{http://owncloud.org/ns}search-score';
 
 	/**
-	 * Reference to main server object
-	 *
-	 * @var DavServer
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
-	/** @var ISearch */
-	private $searchService;
+	private \OCP\ISearch $searchService;
 
 	public function __construct(ISearch $searchService) {
 		$this->searchService = $searchService;

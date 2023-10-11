@@ -30,8 +30,7 @@ use Swift_Message;
  * @package OC\Mail
  */
 class Message {
-	/** @var Swift_Message */
-	private $swiftMessage;
+	private \Swift_Message $swiftMessage;
 
 	/**
 	 * @param Swift_Message $swiftMessage
@@ -56,7 +55,7 @@ class Message {
 
 		foreach ($addresses as $email => $readableName) {
 			if (!\is_numeric($email)) {
-				list($name, $domain) = \explode('@', $email, 2);
+				[$name, $domain] = \explode('@', $email, 2);
 				if (\defined('INTL_IDNA_VARIANT_UTS46')) {
 					$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 				} else {
@@ -64,7 +63,7 @@ class Message {
 				}
 				$convertedAddresses[$name.'@'.$domain] = $readableName;
 			} else {
-				list($name, $domain) = \explode('@', $readableName, 2);
+				[$name, $domain] = \explode('@', $readableName, 2);
 				if (\defined('INTL_IDNA_VARIANT_UTS46')) {
 					$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 				} else {

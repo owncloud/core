@@ -21,18 +21,17 @@ use OCP\Lock\ILockingProvider;
  * @package Tests\Settings\Panels\Admin
  */
 class SecurityWarningTest extends \Test\TestCase {
-	/** @var SecurityWarning */
-	private $panel;
+	private \OC\Settings\Panels\Admin\SecurityWarning $panel;
 	/** @var IL10N */
-	private $l;
+	private \PHPUnit\Framework\MockObject\MockObject $l;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IDBConnection */
-	private $dbconnection;
+	private \PHPUnit\Framework\MockObject\MockObject $dbconnection;
 	/** @var ILockingProvider */
-	private $lockingProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $lockingProvider;
 	/** @var Helper */
-	private $helper;
+	private \PHPUnit\Framework\MockObject\MockObject $helper;
 
 	public function setUp(): void {
 		parent::setUp();

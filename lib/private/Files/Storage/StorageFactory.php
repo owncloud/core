@@ -31,7 +31,7 @@ class StorageFactory implements IStorageFactory {
 	/**
 	 * @var array[] [$name=>['priority'=>$priority, 'wrapper'=>$callable] $storageWrappers
 	 */
-	private $storageWrappers = [];
+	private array $storageWrappers = [];
 
 	/**
 	 * allow modifier storage behaviour by adding wrappers around storages
@@ -89,13 +89,9 @@ class StorageFactory implements IStorageFactory {
 	 */
 	public function wrap(IMountPoint $mountPoint, $storage) {
 		$wrappers = \array_values($this->storageWrappers);
-		\usort($wrappers, function ($a, $b) {
-			return $b['priority'] - $a['priority'];
-		});
+		\usort($wrappers, fn ($a, $b) => $b['priority'] - $a['priority']);
 		/** @var callable[] $wrappers */
-		$wrappers = \array_map(function ($wrapper) {
-			return $wrapper['wrapper'];
-		}, $wrappers);
+		$wrappers = \array_map(fn ($wrapper) => $wrapper['wrapper'], $wrappers);
 		foreach ($wrappers as $wrapper) {
 			$storage = $wrapper($mountPoint->getMountPoint(), $storage, $mountPoint);
 			if (!($storage instanceof \OCP\Files\Storage)) {

@@ -33,20 +33,19 @@ use Sabre\DAV\Xml\Service as XMLService;
 use Test\TestCase;
 
 class MetaPluginTest extends TestCase {
-	/** @var MetaPlugin */
-	private $plugin;
+	private \OCA\DAV\Meta\MetaPlugin $plugin;
 	/**
 	 * @var IRootFolder | MockObject
 	 */
-	private $rootfolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootfolder;
 	/**
 	 * @var IUserSession | MockObject
 	 */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/**
 	 * @var Server | MockObject
 	 */
-	private $server;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
 
 	public function setUp(): void {
 		parent::setUp();

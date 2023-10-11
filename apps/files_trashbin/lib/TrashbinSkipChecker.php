@@ -35,15 +35,9 @@ use OCP\Util;
  * @package OCA\Files_Trashbin
  */
 class TrashbinSkipChecker {
-	/**
-	 * @var ILogger
-	 */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/**
-	 * @var  IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * @param ILogger $logger

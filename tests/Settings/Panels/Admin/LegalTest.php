@@ -28,10 +28,9 @@ use OCP\IConfig;
  * @package Tests\Settings\Panels\Admin
  */
 class LegalTest extends \Test\TestCase {
-	/** @var Legal */
-	private $panel;
+	private \OC\Settings\Panels\Admin\Legal $panel;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();

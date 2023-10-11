@@ -350,13 +350,13 @@ class SubAdminTest extends TestCase {
 		$g = $this->groups[0];
 		$count = 0;
 
-		$subAdmin->listen('\OC\SubAdmin', 'postCreateSubAdmin', function ($user, $group) use ($test, $u, $g, &$count) {
+		$subAdmin->listen('\\' . \OC\SubAdmin::class, 'postCreateSubAdmin', function ($user, $group) use ($test, $u, $g, &$count) {
 			$test->assertEquals($u->getUID(), $user->getUID());
 			$test->assertEquals($g->getGID(), $group->getGID());
 			$count++;
 		});
 
-		$subAdmin->listen('\OC\SubAdmin', 'postDeleteSubAdmin', function ($user, $group) use ($test, $u, $g, &$count) {
+		$subAdmin->listen('\\' . \OC\SubAdmin::class, 'postDeleteSubAdmin', function ($user, $group) use ($test, $u, $g, &$count) {
 			$test->assertEquals($u->getUID(), $user->getUID());
 			$test->assertEquals($g->getGID(), $group->getGID());
 			$count++;

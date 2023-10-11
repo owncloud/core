@@ -17,23 +17,17 @@ use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Http\Response;
 
 class SessionMiddlewareTest extends \Test\TestCase {
-	/**
-	 * @var ControllerMethodReflector
-	 */
-	private $reflector;
+	private \OC\AppFramework\Utility\ControllerMethodReflector $reflector;
 
-	/**
-	 * @var Request
-	 */
-	private $request;
+	private \OC\AppFramework\Http\Request $request;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->request = new Request(
 			[],
-			$this->getMockBuilder('\OCP\Security\ISecureRandom')->getMock(),
-			$this->createMock('\OCP\IConfig')
+			$this->getMockBuilder('\\' . \OCP\Security\ISecureRandom::class)->getMock(),
+			$this->createMock('\\' . \OCP\IConfig::class)
 		);
 		$this->reflector = new ControllerMethodReflector();
 	}
@@ -80,7 +74,7 @@ class SessionMiddlewareTest extends \Test\TestCase {
 	 * @return mixed
 	 */
 	private function getSessionMock($expectedCloseCount) {
-		$session = $this->getMockBuilder('\OC\Session\Memory')
+		$session = $this->getMockBuilder('\\' . \OC\Session\Memory::class)
 			->disableOriginalConstructor()
 			->getMock();
 

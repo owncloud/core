@@ -29,9 +29,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 $app = new Application();
 $app->registerHooks();
 
-\OC::$server->registerService('CardDAVSyncService', function () use ($app) {
-	return $app->getSyncService();
-});
+\OC::$server->registerService('CardDAVSyncService', fn () => $app->getSyncService());
 
 $eventDispatcher = \OC::$server->getEventDispatcher();
 

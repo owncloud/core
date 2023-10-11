@@ -31,8 +31,7 @@ use Test\TestCase;
  * @group DB
  */
 class AppsGetPathTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	public function setUp(): void {
 		parent::setUp();

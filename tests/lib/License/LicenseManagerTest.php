@@ -33,19 +33,18 @@ use Test\TestCase;
 
 class LicenseManagerTest extends TestCase {
 	/** @var LicenseFetcher */
-	private $licenseFetcher;
+	private \PHPUnit\Framework\MockObject\MockObject $licenseFetcher;
 	/**@var MessageService */
-	private $messageService;
+	private \PHPUnit\Framework\MockObject\MockObject $messageService;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IAppManager */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 	/** @var ITimeFactory */
-	private $timeFactory;
-	/** @var LicenseManager */
-	private $licenseManager;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
+	private \OC\License\LicenseManager $licenseManager;
 	/** @var ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	protected function setUp(): void {
 		$this->licenseFetcher = $this->createMock(LicenseFetcher::class);
@@ -67,10 +66,10 @@ class LicenseManagerTest extends TestCase {
 
 	public function getGracePeriodProviderWrong() {
 		return [
-			[null, 1581945782, false],  // no grace period started
-			[null, 1581945782, true],
-			[1581945782 - (LicenseManager::GRACE_PERIOD * 2), 1581945782, false],  // grace period expired
-			[1581945782 - (LicenseManager::GRACE_PERIOD * 2), 1581945782, true],
+			[null, 1_581_945_782, false],  // no grace period started
+			[null, 1_581_945_782, true],
+			[1_581_945_782 - (LicenseManager::GRACE_PERIOD * 2), 1_581_945_782, false],  // grace period expired
+			[1_581_945_782 - (LicenseManager::GRACE_PERIOD * 2), 1_581_945_782, true],
 		];
 	}
 
@@ -110,16 +109,16 @@ class LicenseManagerTest extends TestCase {
 		$ocLicenseInvalidExpired->method('getExpirationTime')->willReturn(PHP_INT_MIN);
 		$ocLicenseInvalidExpired->method('getLicenseString')->willReturn('dummy-license-string');
 		return [
-			[1581945782, 1581945782, null],  // no license set
-			[1581945782, 1581945782 + LicenseManager::GRACE_PERIOD, null],
-			[1581945782, 1581945782, $ocLicenseValid],
-			[1581945782, 1581945782 + LicenseManager::GRACE_PERIOD, $ocLicenseValid],
-			[1581945782, 1581945782, $ocLicenseInvalid],
-			[1581945782, 1581945782 + LicenseManager::GRACE_PERIOD, $ocLicenseInvalid],
-			[1581945782, 1581945782, $ocLicenseExpired],
-			[1581945782, 1581945782 + LicenseManager::GRACE_PERIOD, $ocLicenseExpired],
-			[1581945782, 1581945782, $ocLicenseInvalidExpired],
-			[1581945782, 1581945782 + LicenseManager::GRACE_PERIOD, $ocLicenseInvalidExpired],
+			[1_581_945_782, 1_581_945_782, null],  // no license set
+			[1_581_945_782, 1_581_945_782 + LicenseManager::GRACE_PERIOD, null],
+			[1_581_945_782, 1_581_945_782, $ocLicenseValid],
+			[1_581_945_782, 1_581_945_782 + LicenseManager::GRACE_PERIOD, $ocLicenseValid],
+			[1_581_945_782, 1_581_945_782, $ocLicenseInvalid],
+			[1_581_945_782, 1_581_945_782 + LicenseManager::GRACE_PERIOD, $ocLicenseInvalid],
+			[1_581_945_782, 1_581_945_782, $ocLicenseExpired],
+			[1_581_945_782, 1_581_945_782 + LicenseManager::GRACE_PERIOD, $ocLicenseExpired],
+			[1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired],
+			[1_581_945_782, 1_581_945_782 + LicenseManager::GRACE_PERIOD, $ocLicenseInvalidExpired],
 		];
 	}
 
@@ -251,7 +250,7 @@ class LicenseManagerTest extends TestCase {
 
 		$ocLicenseAboutExpire = $this->createMock(ILicense::class);
 		$ocLicenseAboutExpire->method('isValid')->willReturn(true);
-		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(100300500 + 3600);
+		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(100_300_500 + 3600);
 		$ocLicenseAboutExpire->method('getLicenseString')->willReturn('dummy-license-string');
 
 		$ocLicenseInvalid = $this->createMock(ILicense::class);
@@ -282,7 +281,7 @@ class LicenseManagerTest extends TestCase {
 	 * @dataProvider getLicenseStateForProvider
 	 */
 	public function testGetLicenseStateFor($ocLicense, $expectedState) {
-		$this->timeFactory->method('getTime')->willReturn(100300500);
+		$this->timeFactory->method('getTime')->willReturn(100_300_500);
 		$this->licenseFetcher->method('getOwncloudLicense')->willReturn($ocLicense);
 
 		$this->assertSame($expectedState, $this->licenseManager->getLicenseStateFor('dummyApp'));
@@ -296,7 +295,7 @@ class LicenseManagerTest extends TestCase {
 
 		$ocLicenseAboutExpire = $this->createMock(ILicense::class);
 		$ocLicenseAboutExpire->method('isValid')->willReturn(true);
-		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(100300500 + 3600);
+		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(100_300_500 + 3600);
 		$ocLicenseAboutExpire->method('getLicenseString')->willReturn('dummy-license-string');
 
 		$ocLicenseInvalid = $this->createMock(ILicense::class);
@@ -333,7 +332,7 @@ class LicenseManagerTest extends TestCase {
 	 * @dataProvider getLicenseMessageForProvider
 	 */
 	public function testGetLicenseMessageFor($license, $expectedLicenseState, $expectedMessageInfo) {
-		$this->timeFactory->method('getTime')->willReturn(100300500);
+		$this->timeFactory->method('getTime')->willReturn(100_300_500);
 		$this->licenseFetcher->method('getOwncloudLicense')->willReturn($license);
 		$this->messageService->method('getMessageForLicense')->willReturn($expectedMessageInfo);
 
@@ -370,7 +369,7 @@ class LicenseManagerTest extends TestCase {
 
 		$ocLicenseAboutExpire = $this->createMock(ILicense::class);
 		$ocLicenseAboutExpire->method('isValid')->willReturn(true);
-		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(1581945782 + 60);
+		$ocLicenseAboutExpire->method('getExpirationTime')->willReturn(1_581_945_782 + 60);
 		$ocLicenseAboutExpire->method('getLicenseString')->willReturn('dummy-license-string');
 
 		$options0 = [];
@@ -383,176 +382,176 @@ class LicenseManagerTest extends TestCase {
 		$options7 = ['startGracePeriod' => true, 'disableApp' => false];
 		$options8 = ['startGracePeriod' => true, 'disableApp' => true];
 		return [
-			/*0*/ [null, 1581945782, null, $options0, true],
-			/*1*/ [1581945782, 1581945782, null, $options0, true],  // no license set
-			/*2*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options0, false],
-			/*3*/ [null, 1581945782, $ocLicenseValid, $options0, true],
-			/*4*/ [1581945782, 1581945782, $ocLicenseValid, $options0, true],
-			/*5*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options0, true],
-			/*6*/ [null, 1581945782, $ocLicenseInvalid, $options0, true],
-			/*7*/ [1581945782, 1581945782, $ocLicenseInvalid, $options0, true],
-			/*8*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options0, false],
-			/*9*/ [null, 1581945782, $ocLicenseExpired, $options0, true],
-			/*10*/ [1581945782, 1581945782, $ocLicenseExpired, $options0, true],
-			/*11*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options0, false],
-			/*12*/ [null, 1581945782, $ocLicenseInvalidExpired, $options0, true],
-			/*13*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options0, true],
-			/*14*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options0, false],
-			/*15*/ [null, 1581945782, $ocLicenseAboutExpire, $options0, true],
-			/*16*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options0, true],
-			/*17*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options0, false],
+			/*0*/ [null, 1_581_945_782, null, $options0, true],
+			/*1*/ [1_581_945_782, 1_581_945_782, null, $options0, true],  // no license set
+			/*2*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options0, false],
+			/*3*/ [null, 1_581_945_782, $ocLicenseValid, $options0, true],
+			/*4*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options0, true],
+			/*5*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options0, true],
+			/*6*/ [null, 1_581_945_782, $ocLicenseInvalid, $options0, true],
+			/*7*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options0, true],
+			/*8*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options0, false],
+			/*9*/ [null, 1_581_945_782, $ocLicenseExpired, $options0, true],
+			/*10*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options0, true],
+			/*11*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options0, false],
+			/*12*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options0, true],
+			/*13*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options0, true],
+			/*14*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options0, false],
+			/*15*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options0, true],
+			/*16*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options0, true],
+			/*17*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options0, false],
 
-			/*18*/ [null, 1581945782, null, $options1, false],
-			/*19*/ [1581945782, 1581945782, null, $options1, true],  // no license set
-			/*20*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options1, false],
-			/*21*/ [null, 1581945782, $ocLicenseValid, $options1, true],
-			/*22*/ [1581945782, 1581945782, $ocLicenseValid, $options1, true],
-			/*23*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options1, true],
-			/*24*/ [null, 1581945782, $ocLicenseInvalid, $options1, false],
-			/*25*/ [1581945782, 1581945782, $ocLicenseInvalid, $options1, true],
-			/*26*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options1, false],
-			/*27*/ [null, 1581945782, $ocLicenseExpired, $options1, false],
-			/*28*/ [1581945782, 1581945782, $ocLicenseExpired, $options1, true],
-			/*29*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options1, false],
-			/*30*/ [null, 1581945782, $ocLicenseInvalidExpired, $options1, false],
-			/*31*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options1, true],
-			/*32*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options1, false],
-			/*33*/ [null, 1581945782, $ocLicenseAboutExpire, $options1, true],
-			/*34*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options1, true],
-			/*35*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options1, false],
+			/*18*/ [null, 1_581_945_782, null, $options1, false],
+			/*19*/ [1_581_945_782, 1_581_945_782, null, $options1, true],  // no license set
+			/*20*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options1, false],
+			/*21*/ [null, 1_581_945_782, $ocLicenseValid, $options1, true],
+			/*22*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options1, true],
+			/*23*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options1, true],
+			/*24*/ [null, 1_581_945_782, $ocLicenseInvalid, $options1, false],
+			/*25*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options1, true],
+			/*26*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options1, false],
+			/*27*/ [null, 1_581_945_782, $ocLicenseExpired, $options1, false],
+			/*28*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options1, true],
+			/*29*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options1, false],
+			/*30*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options1, false],
+			/*31*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options1, true],
+			/*32*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options1, false],
+			/*33*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options1, true],
+			/*34*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options1, true],
+			/*35*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options1, false],
 
-			/*36*/ [null, 1581945782, null, $options2, true],
-			/*37*/ [1581945782, 1581945782, null, $options2, true],  // no license set
-			/*38*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options2, false],
-			/*39*/ [null, 1581945782, $ocLicenseValid, $options2, true],
-			/*40*/ [1581945782, 1581945782, $ocLicenseValid, $options2, true],
-			/*41*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options2, true],
-			/*42*/ [null, 1581945782, $ocLicenseInvalid, $options2, true],
-			/*43*/ [1581945782, 1581945782, $ocLicenseInvalid, $options2, true],
-			/*44*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options2, false],
-			/*45*/ [null, 1581945782, $ocLicenseExpired, $options2, true],
-			/*46*/ [1581945782, 1581945782, $ocLicenseExpired, $options2, true],
-			/*47*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options2, false],
-			/*48*/ [null, 1581945782, $ocLicenseInvalidExpired, $options2, true],
-			/*49*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options2, true],
-			/*50*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options2, false],
-			/*51*/ [null, 1581945782, $ocLicenseAboutExpire, $options2, true],
-			/*52*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options2, true],
-			/*53*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options2, false],
+			/*36*/ [null, 1_581_945_782, null, $options2, true],
+			/*37*/ [1_581_945_782, 1_581_945_782, null, $options2, true],  // no license set
+			/*38*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options2, false],
+			/*39*/ [null, 1_581_945_782, $ocLicenseValid, $options2, true],
+			/*40*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options2, true],
+			/*41*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options2, true],
+			/*42*/ [null, 1_581_945_782, $ocLicenseInvalid, $options2, true],
+			/*43*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options2, true],
+			/*44*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options2, false],
+			/*45*/ [null, 1_581_945_782, $ocLicenseExpired, $options2, true],
+			/*46*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options2, true],
+			/*47*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options2, false],
+			/*48*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options2, true],
+			/*49*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options2, true],
+			/*50*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options2, false],
+			/*51*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options2, true],
+			/*52*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options2, true],
+			/*53*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options2, false],
 
-			/*54*/ [null, 1581945782, null, $options3, true],
-			/*55*/ [1581945782, 1581945782, null, $options3, true],  // no license set
-			/*56*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options3, false],
-			/*57*/ [null, 1581945782, $ocLicenseValid, $options3, true],
-			/*58*/ [1581945782, 1581945782, $ocLicenseValid, $options3, true],
-			/*59*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options3, true],
-			/*60*/ [null, 1581945782, $ocLicenseInvalid, $options3, true],
-			/*61*/ [1581945782, 1581945782, $ocLicenseInvalid, $options3, true],
-			/*62*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options3, false],
-			/*63*/ [null, 1581945782, $ocLicenseExpired, $options3, true],
-			/*64*/ [1581945782, 1581945782, $ocLicenseExpired, $options3, true],
-			/*65*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options3, false],
-			/*66*/ [null, 1581945782, $ocLicenseInvalidExpired, $options3, true],
-			/*67*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options3, true],
-			/*68*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options3, false],
-			/*69*/ [null, 1581945782, $ocLicenseAboutExpire, $options3, true],
-			/*70*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options3, true],
-			/*71*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options3, false],
+			/*54*/ [null, 1_581_945_782, null, $options3, true],
+			/*55*/ [1_581_945_782, 1_581_945_782, null, $options3, true],  // no license set
+			/*56*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options3, false],
+			/*57*/ [null, 1_581_945_782, $ocLicenseValid, $options3, true],
+			/*58*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options3, true],
+			/*59*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options3, true],
+			/*60*/ [null, 1_581_945_782, $ocLicenseInvalid, $options3, true],
+			/*61*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options3, true],
+			/*62*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options3, false],
+			/*63*/ [null, 1_581_945_782, $ocLicenseExpired, $options3, true],
+			/*64*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options3, true],
+			/*65*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options3, false],
+			/*66*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options3, true],
+			/*67*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options3, true],
+			/*68*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options3, false],
+			/*69*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options3, true],
+			/*70*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options3, true],
+			/*71*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options3, false],
 
-			/*72*/ [null, 1581945782, null, $options4, true],
-			/*73*/ [1581945782, 1581945782, null, $options4, true],  // no license set
-			/*74*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options4, false],
-			/*75*/ [null, 1581945782, $ocLicenseValid, $options4, true],
-			/*76*/ [1581945782, 1581945782, $ocLicenseValid, $options4, true],
-			/*77*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options4, true],
-			/*78*/ [null, 1581945782, $ocLicenseInvalid, $options4, true],
-			/*79*/ [1581945782, 1581945782, $ocLicenseInvalid, $options4, true],
-			/*80*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options4, false],
-			/*81*/ [null, 1581945782, $ocLicenseExpired, $options4, true],
-			/*82*/ [1581945782, 1581945782, $ocLicenseExpired, $options4, true],
-			/*83*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options4, false],
-			/*84*/ [null, 1581945782, $ocLicenseInvalidExpired, $options4, true],
-			/*85*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options4, true],
-			/*86*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options4, false],
-			/*87*/ [null, 1581945782, $ocLicenseAboutExpire, $options4, true],
-			/*88*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options4, true],
-			/*89*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options4, false],
+			/*72*/ [null, 1_581_945_782, null, $options4, true],
+			/*73*/ [1_581_945_782, 1_581_945_782, null, $options4, true],  // no license set
+			/*74*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options4, false],
+			/*75*/ [null, 1_581_945_782, $ocLicenseValid, $options4, true],
+			/*76*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options4, true],
+			/*77*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options4, true],
+			/*78*/ [null, 1_581_945_782, $ocLicenseInvalid, $options4, true],
+			/*79*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options4, true],
+			/*80*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options4, false],
+			/*81*/ [null, 1_581_945_782, $ocLicenseExpired, $options4, true],
+			/*82*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options4, true],
+			/*83*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options4, false],
+			/*84*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options4, true],
+			/*85*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options4, true],
+			/*86*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options4, false],
+			/*87*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options4, true],
+			/*88*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options4, true],
+			/*89*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options4, false],
 
-			/*90*/ [null, 1581945782, null, $options5, false],
-			/*91*/ [1581945782, 1581945782, null, $options5, true],  // no license set
-			/*92*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options5, false],
-			/*93*/ [null, 1581945782, $ocLicenseValid, $options5, true],
-			/*94*/ [1581945782, 1581945782, $ocLicenseValid, $options5, true],
-			/*95*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options5, true],
-			/*96*/ [null, 1581945782, $ocLicenseInvalid, $options5, false],
-			/*97*/ [1581945782, 1581945782, $ocLicenseInvalid, $options5, true],
-			/*98*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options5, false],
-			/*99*/ [null, 1581945782, $ocLicenseExpired, $options5, false],
-			/*100*/ [1581945782, 1581945782, $ocLicenseExpired, $options5, true],
-			/*101*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options5, false],
-			/*102*/ [null, 1581945782, $ocLicenseInvalidExpired, $options5, false],
-			/*103*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options5, true],
-			/*104*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options5, false],
-			/*105*/ [null, 1581945782, $ocLicenseAboutExpire, $options5, true],
-			/*106*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options5, true],
-			/*107*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options5, false],
+			/*90*/ [null, 1_581_945_782, null, $options5, false],
+			/*91*/ [1_581_945_782, 1_581_945_782, null, $options5, true],  // no license set
+			/*92*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options5, false],
+			/*93*/ [null, 1_581_945_782, $ocLicenseValid, $options5, true],
+			/*94*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options5, true],
+			/*95*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options5, true],
+			/*96*/ [null, 1_581_945_782, $ocLicenseInvalid, $options5, false],
+			/*97*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options5, true],
+			/*98*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options5, false],
+			/*99*/ [null, 1_581_945_782, $ocLicenseExpired, $options5, false],
+			/*100*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options5, true],
+			/*101*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options5, false],
+			/*102*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options5, false],
+			/*103*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options5, true],
+			/*104*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options5, false],
+			/*105*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options5, true],
+			/*106*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options5, true],
+			/*107*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options5, false],
 
-			/*108*/ [null, 1581945782, null, $options6, false],
-			/*109*/ [1581945782, 1581945782, null, $options6, true],  // no license set
-			/*110*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options6, false],
-			/*111*/ [null, 1581945782, $ocLicenseValid, $options6, true],
-			/*112*/ [1581945782, 1581945782, $ocLicenseValid, $options6, true],
-			/*113*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options6, true],
-			/*114*/ [null, 1581945782, $ocLicenseInvalid, $options6, false],
-			/*115*/ [1581945782, 1581945782, $ocLicenseInvalid, $options6, true],
-			/*116*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options6, false],
-			/*117*/ [null, 1581945782, $ocLicenseExpired, $options6, false],
-			/*118*/ [1581945782, 1581945782, $ocLicenseExpired, $options6, true],
-			/*119*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options6, false],
-			/*120*/ [null, 1581945782, $ocLicenseInvalidExpired, $options6, false],
-			/*121*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options6, true],
-			/*122*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options6, false],
-			/*123*/ [null, 1581945782, $ocLicenseAboutExpire, $options6, true],
-			/*124*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options6, true],
-			/*125*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options6, false],
+			/*108*/ [null, 1_581_945_782, null, $options6, false],
+			/*109*/ [1_581_945_782, 1_581_945_782, null, $options6, true],  // no license set
+			/*110*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options6, false],
+			/*111*/ [null, 1_581_945_782, $ocLicenseValid, $options6, true],
+			/*112*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options6, true],
+			/*113*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options6, true],
+			/*114*/ [null, 1_581_945_782, $ocLicenseInvalid, $options6, false],
+			/*115*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options6, true],
+			/*116*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options6, false],
+			/*117*/ [null, 1_581_945_782, $ocLicenseExpired, $options6, false],
+			/*118*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options6, true],
+			/*119*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options6, false],
+			/*120*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options6, false],
+			/*121*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options6, true],
+			/*122*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options6, false],
+			/*123*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options6, true],
+			/*124*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options6, true],
+			/*125*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options6, false],
 
-			/*126*/ [null, 1581945782, null, $options7, true],
-			/*127*/ [1581945782, 1581945782, null, $options7, true],  // no license set
-			/*128*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options7, false],
-			/*129*/ [null, 1581945782, $ocLicenseValid, $options7, true],
-			/*130*/ [1581945782, 1581945782, $ocLicenseValid, $options7, true],
-			/*131*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options7, true],
-			/*132*/ [null, 1581945782, $ocLicenseInvalid, $options7, true],
-			/*133*/ [1581945782, 1581945782, $ocLicenseInvalid, $options7, true],
-			/*134*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options7, false],
-			/*135*/ [null, 1581945782, $ocLicenseExpired, $options7, true],
-			/*136*/ [1581945782, 1581945782, $ocLicenseExpired, $options7, true],
-			/*137*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options7, false],
-			/*138*/ [null, 1581945782, $ocLicenseInvalidExpired, $options7, true],
-			/*139*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options7, true],
-			/*140*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options7, false],
-			/*141*/ [null, 1581945782, $ocLicenseAboutExpire, $options7, true],
-			/*142*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options7, true],
-			/*143*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options7, false],
+			/*126*/ [null, 1_581_945_782, null, $options7, true],
+			/*127*/ [1_581_945_782, 1_581_945_782, null, $options7, true],  // no license set
+			/*128*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options7, false],
+			/*129*/ [null, 1_581_945_782, $ocLicenseValid, $options7, true],
+			/*130*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options7, true],
+			/*131*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options7, true],
+			/*132*/ [null, 1_581_945_782, $ocLicenseInvalid, $options7, true],
+			/*133*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options7, true],
+			/*134*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options7, false],
+			/*135*/ [null, 1_581_945_782, $ocLicenseExpired, $options7, true],
+			/*136*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options7, true],
+			/*137*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options7, false],
+			/*138*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options7, true],
+			/*139*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options7, true],
+			/*140*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options7, false],
+			/*141*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options7, true],
+			/*142*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options7, true],
+			/*143*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options7, false],
 
-			/*144*/ [null, 1581945782, null, $options8, true],
-			/*145*/ [1581945782, 1581945782, null, $options8, true],  // no license set
-			/*146*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), null, $options8, false],
-			/*147*/ [null, 1581945782, $ocLicenseValid, $options8, true],
-			/*148*/ [1581945782, 1581945782, $ocLicenseValid, $options8, true],
-			/*149*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options8, true],
-			/*150*/ [null, 1581945782, $ocLicenseInvalid, $options8, true],
-			/*151*/ [1581945782, 1581945782, $ocLicenseInvalid, $options8, true],
-			/*152*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options8, false],
-			/*153*/ [null, 1581945782, $ocLicenseExpired, $options8, true],
-			/*154*/ [1581945782, 1581945782, $ocLicenseExpired, $options8, true],
-			/*155*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options8, false],
-			/*156*/ [null, 1581945782, $ocLicenseInvalidExpired, $options8, true],
-			/*157*/ [1581945782, 1581945782, $ocLicenseInvalidExpired, $options8, true],
-			/*158*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options8, false],
-			/*159*/ [null, 1581945782, $ocLicenseAboutExpire, $options8, true],
-			/*160*/ [1581945782, 1581945782, $ocLicenseAboutExpire, $options8, true],
-			/*161*/ [1581945782, 1581945782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options8, false],
+			/*144*/ [null, 1_581_945_782, null, $options8, true],
+			/*145*/ [1_581_945_782, 1_581_945_782, null, $options8, true],  // no license set
+			/*146*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), null, $options8, false],
+			/*147*/ [null, 1_581_945_782, $ocLicenseValid, $options8, true],
+			/*148*/ [1_581_945_782, 1_581_945_782, $ocLicenseValid, $options8, true],
+			/*149*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseValid, $options8, true],
+			/*150*/ [null, 1_581_945_782, $ocLicenseInvalid, $options8, true],
+			/*151*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalid, $options8, true],
+			/*152*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalid, $options8, false],
+			/*153*/ [null, 1_581_945_782, $ocLicenseExpired, $options8, true],
+			/*154*/ [1_581_945_782, 1_581_945_782, $ocLicenseExpired, $options8, true],
+			/*155*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseExpired, $options8, false],
+			/*156*/ [null, 1_581_945_782, $ocLicenseInvalidExpired, $options8, true],
+			/*157*/ [1_581_945_782, 1_581_945_782, $ocLicenseInvalidExpired, $options8, true],
+			/*158*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseInvalidExpired, $options8, false],
+			/*159*/ [null, 1_581_945_782, $ocLicenseAboutExpire, $options8, true],
+			/*160*/ [1_581_945_782, 1_581_945_782, $ocLicenseAboutExpire, $options8, true],
+			/*161*/ [1_581_945_782, 1_581_945_782 + (LicenseManager::GRACE_PERIOD * 2), $ocLicenseAboutExpire, $options8, false],
 		];
 	}
 
@@ -611,7 +610,7 @@ class LicenseManagerTest extends TestCase {
 	 * @dataProvider checkLicenseForInvalidProvider
 	 */
 	public function testCheckLicenseForWithoutGracePeriodStartedInvalidLicense($ocLicense) {
-		$this->timeFactory->method('getTime')->willReturn(100300500);
+		$this->timeFactory->method('getTime')->willReturn(100_300_500);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
@@ -632,7 +631,7 @@ class LicenseManagerTest extends TestCase {
 		$this->config->expects($this->exactly(2))
 			->method('setAppValue')
 			->withConsecutive(
-				['core', 'grace_period', 100300500],
+				['core', 'grace_period', 100_300_500],
 				['core-license-complains', 'dummyApp', $expectedString]
 			);
 
@@ -643,11 +642,11 @@ class LicenseManagerTest extends TestCase {
 	 * @dataProvider checkLicenseForInvalidProvider
 	 */
 	public function testCheckLicenseForWithGracePeriodExpiredInvalidLicense($ocLicense) {
-		$this->timeFactory->method('getTime')->willReturn(100300500);
+		$this->timeFactory->method('getTime')->willReturn(100_300_500);
 
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
-				['core', 'grace_period', null, -100300500],
+				['core', 'grace_period', null, -100_300_500],
 			]));
 
 		$this->licenseFetcher->method('getOwncloudLicense')->willReturn($ocLicense);

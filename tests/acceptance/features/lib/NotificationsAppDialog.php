@@ -29,10 +29,10 @@ use Exception;
  * PageObject for the Notifications area
  */
 class NotificationsAppDialog extends OwncloudPage {
-	private $notificationContainerXpath = "//div[@class='notification']";
-	private $notificationTitleXpath = "//h3[@class='notification-title']";
-	private $notificationLinkXpath = "//a[@class='notification-link']";
-	private $notificationMessageXpath = "//p[@class='notification-message']";
+	private string $notificationContainerXpath = "//div[@class='notification']";
+	private string $notificationTitleXpath = "//h3[@class='notification-title']";
+	private string $notificationLinkXpath = "//a[@class='notification-link']";
+	private string $notificationMessageXpath = "//p[@class='notification-message']";
 
 	/**
 	 *

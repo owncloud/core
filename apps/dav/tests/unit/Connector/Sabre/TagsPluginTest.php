@@ -33,39 +33,33 @@ class TagsPluginTest extends \Test\TestCase {
 	public const FAVORITE_PROPERTYNAME = \OCA\DAV\Connector\Sabre\TagsPlugin::FAVORITE_PROPERTYNAME;
 	public const TAG_FAVORITE = \OCA\DAV\Connector\Sabre\TagsPlugin::TAG_FAVORITE;
 
-	/**
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+	private \Sabre\DAV\Server $server;
 
 	/**
 	 * @var \Sabre\DAV\Tree
 	 */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 
 	/**
 	 * @var \OCP\ITagManager
 	 */
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
 	/**
 	 * @var \OCP\ITags
 	 */
-	private $tagger;
+	private \PHPUnit\Framework\MockObject\MockObject $tagger;
 
-	/**
-	 * @var \OCA\DAV\Connector\Sabre\TagsPlugin
-	 */
-	private $plugin;
+	private \OCA\DAV\Connector\Sabre\TagsPlugin $plugin;
 
 	public function setUp(): void {
 		parent::setUp();
 		$this->server = new \Sabre\DAV\Server();
-		$this->tree = $this->getMockBuilder('\Sabre\DAV\Tree')
+		$this->tree = $this->getMockBuilder('\\' . \Sabre\DAV\Tree::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->tagger = $this->createMock('\OCP\ITags');
-		$this->tagManager = $this->createMock('\OCP\ITagManager');
+		$this->tagger = $this->createMock('\\' . \OCP\ITags::class);
+		$this->tagManager = $this->createMock('\\' . \OCP\ITagManager::class);
 		$this->tagManager->expects($this->any())
 			->method('load')
 			->with('files')
@@ -78,7 +72,7 @@ class TagsPluginTest extends \Test\TestCase {
 	 * @dataProvider tagsGetPropertiesDataProvider
 	 */
 	public function testGetProperties($tags, $requestedProperties, $expectedProperties) {
-		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Node')
+		$node = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Node::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->any())
@@ -117,13 +111,13 @@ class TagsPluginTest extends \Test\TestCase {
 	 * @dataProvider tagsGetPropertiesDataProvider
 	 */
 	public function testPreloadThenGetProperties($tags, $requestedProperties, $expectedProperties) {
-		$node1 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$node1 = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node1->expects($this->any())
 			->method('getId')
 			->will($this->returnValue(111));
-		$node2 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$node2 = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node2->expects($this->any())
@@ -138,7 +132,7 @@ class TagsPluginTest extends \Test\TestCase {
 			$expectedCallCount = 1;
 		}
 
-		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+		$node = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->any())
@@ -253,7 +247,7 @@ class TagsPluginTest extends \Test\TestCase {
 	public function testUpdateTags() {
 		// this test will replace the existing tags "tagremove" with "tag1" and "tag2"
 		// and keep "tagkeep"
-		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Node')
+		$node = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Node::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->any())
@@ -305,7 +299,7 @@ class TagsPluginTest extends \Test\TestCase {
 	}
 
 	public function testUpdateTagsFromScratch() {
-		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Node')
+		$node = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Node::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->any())
@@ -354,7 +348,7 @@ class TagsPluginTest extends \Test\TestCase {
 	public function testUpdateFav() {
 		// this test will replace the existing tags "tagremove" with "tag1" and "tag2"
 		// and keep "tagkeep"
-		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Node')
+		$node = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Node::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->any())

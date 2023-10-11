@@ -46,7 +46,7 @@ class ForbiddenTest extends \Test\TestCase {
 EOD;
 
 		$ex = new Forbidden($message, $retry);
-		$server = $this->createMock('Sabre\DAV\Server');
+		$server = $this->createMock(\Sabre\DAV\Server::class);
 		$ex->serialize($server, $error);
 
 		// assert

@@ -35,21 +35,20 @@ use Test\TestCase;
 
 class NotificationControllerTest extends TestCase {
 	/** @var IRequest | MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var MailNotifications | MockObject */
-	private $mailNotifications;
+	private \PHPUnit\Framework\MockObject\MockObject $mailNotifications;
 	/** @var IUserSession | MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var IUserManager | MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 	/** @var IGroupManager | MockObject */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 	/** @var IRootFolder | MockObject */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 	/** @var IL10N | MockObject */
-	private $l;
-	/** @var NotificationController $notificationController */
-	private $notificationController;
+	private \PHPUnit\Framework\MockObject\MockObject $l;
+	private \OCA\Files_Sharing\Controller\NotificationController $notificationController;
 
 	protected function setUp(): void {
 		parent::setUp();

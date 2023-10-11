@@ -14,23 +14,23 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class LoggerWithoutWriteExtraTest extends TestCase {
 	/** @var \OCP\ILogger */
-	private $logger;
+	private \OC\Log $logger;
 	private static $logs = [];
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		self::$logs = [];
 		$this->config = $this->getMockBuilder(
-			'\OC\SystemConfig'
+			'\\' . \OC\SystemConfig::class
 		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->logger = new Log(
-			'Test\LoggerWithoutWriteExtraTest',
+			\Test\LoggerWithoutWriteExtraTest::class,
 			$this->config,
 			null,
 			new EventDispatcher()

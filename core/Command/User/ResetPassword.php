@@ -44,14 +44,10 @@ use Laminas\Validator\EmailAddress;
 class ResetPassword extends Command {
 	/** @var IUserManager */
 	protected $userManager;
-	/** @var IConfig  */
-	private $config;
-	/** @var ITimeFactory */
-	private $timeFactory;
-	/** @var EnvironmentHelper  */
-	private $environmentHelper;
-	/** @var LostController */
-	private $lostController;
+	private \OCP\IConfig $config;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
+	private \OC\Helper\EnvironmentHelper $environmentHelper;
+	private \OC\Core\Controller\LostController $lostController;
 
 	public function __construct(
 		IUserManager $userManager,
@@ -118,7 +114,7 @@ class ResetPassword extends Command {
 			}
 		} elseif ($emailLink || $displayLink) {
 			$userId = $user->getUID();
-			list($link, $token) = $this->lostController->generateTokenAndLink($userId);
+			[$link, $token] = $this->lostController->generateTokenAndLink($userId);
 
 			if ($emailLink && $this->hasValidEmailAddress($user->getEMailAddress())) {
 				try {
@@ -174,7 +170,7 @@ class ResetPassword extends Command {
 
 		if ($emailLink) {
 			$userId = $user->getUID();
-			list(, $token) = $this->lostController->generateTokenAndLink($userId);
+			[, $token] = $this->lostController->generateTokenAndLink($userId);
 			if (!$this->hasValidEmailAddress($user->getEMailAddress())) {
 				$output->writeln('<error>Email address is not set for the user ' . $user->getUID() . '</error>');
 				return 1;

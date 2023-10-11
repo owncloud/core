@@ -62,26 +62,20 @@ class AppManager implements IAppManager {
 		'theme',
 	];
 
-	/** @var \OCP\IUserSession */
-	private $userSession;
-	/** @var \OCP\IAppConfig */
-	private $appConfig;
+	private ?\OCP\IUserSession $userSession = null;
+	private ?\OCP\IAppConfig $appConfig = null;
 	/** @var \OCP\ICache */
 	private $appInfo;
-	/** @var \OCP\IGroupManager */
-	private $groupManager;
-	/** @var \OCP\ICacheFactory */
-	private $memCacheFactory;
+	private ?\OCP\IGroupManager $groupManager = null;
+	private \OCP\ICacheFactory $memCacheFactory;
 	/** @var string[] $appId => $enabled */
-	private $installedAppsCache;
+	private ?array $installedAppsCache = null;
 	/** @var string[] */
 	private $shippedApps;
 	/** @var string[] */
 	private $alwaysEnabled;
-	/** @var EventDispatcherInterface */
-	private $dispatcher;
-	/** @var IConfig */
-	private $config;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
+	private \OCP\IConfig $config;
 
 	/**
 	 * Apps as 'appId' => [
@@ -90,7 +84,7 @@ class AppManager implements IAppManager {
 	 * ]
 	 * @var string[][]
 	 */
-	private $appDirs = [];
+	private array $appDirs = [];
 
 	/**
 	 * @param IUserSession $userSession
@@ -137,9 +131,7 @@ class AppManager implements IAppManager {
 				$values[$appId] = 'yes';
 			}
 
-			$this->installedAppsCache = \array_filter($values, function ($value) {
-				return $value !== 'no';
-			});
+			$this->installedAppsCache = \array_filter($values, fn ($value) => $value !== 'no');
 			\ksort($this->installedAppsCache);
 		}
 		return $this->installedAppsCache;
@@ -162,9 +154,7 @@ class AppManager implements IAppManager {
 	 */
 	public function getEnabledAppsForUser(IUser $user = null) {
 		$apps = $this->getInstalledAppsValues();
-		$appsForUser = \array_filter($apps, function ($enabled, $appName) use ($user) {
-			return $this->checkAppForUser($enabled, $appName, $user);
-		}, ARRAY_FILTER_USE_BOTH);
+		$appsForUser = \array_filter($apps, fn ($enabled, $appName) => $this->checkAppForUser($enabled, $appName, $user), ARRAY_FILTER_USE_BOTH);
 		return \array_keys($appsForUser);
 	}
 
@@ -334,12 +324,11 @@ class AppManager implements IAppManager {
 			Installer::installShippedApp($appId);
 		}
 
-		$groupIds = \array_map(function ($group) {
-			/** @var \OCP\IGroup $group */
-			return $group->getGID();
-		}, $groups);
-		$this->installedAppsCache[$appId] = \json_encode($groupIds);
-		$this->appConfig->setValue($appId, 'enabled', \json_encode($groupIds));
+		$groupIds = \array_map(fn ($group) =>
+	  /** @var \OCP\IGroup $group */
+	  $group->getGID(), $groups);
+		$this->installedAppsCache[$appId] = \json_encode($groupIds, JSON_THROW_ON_ERROR);
+		$this->appConfig->setValue($appId, 'enabled', \json_encode($groupIds, JSON_THROW_ON_ERROR));
 		$this->dispatcher->dispatch(
 			new ManagerEvent(ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS, $appId, $groups),
 			ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS
@@ -501,10 +490,7 @@ class AppManager implements IAppManager {
 		$parser = new InfoParser();
 		try {
 			$info = $parser->parse($file);
-		} catch (\InvalidArgumentException $e) {
-			\OC::$server->getLogger()->logException($e);
-			throw $e;
-		} catch (AppNotFoundException $e) {
+		} catch (\InvalidArgumentException|AppNotFoundException $e) {
 			\OC::$server->getLogger()->logException($e);
 			throw $e;
 		}
@@ -580,7 +566,7 @@ class AppManager implements IAppManager {
 			if (!\file_exists($shippedJson)) {
 				throw new \Exception("File not found: $shippedJson");
 			}
-			$content = \json_decode(\file_get_contents($shippedJson), true);
+			$content = \json_decode(\file_get_contents($shippedJson), true, 512, JSON_THROW_ON_ERROR);
 			$this->shippedApps = $content['shippedApps'];
 			$this->alwaysEnabled = $content['alwaysEnabled'];
 		}
@@ -639,7 +625,7 @@ class AppManager implements IAppManager {
 			'source' => 'path',
 			'path' => $path,
 		];
-		list($appCodeDir, $path) = Installer::downloadApp($data);
+		[$appCodeDir, $path] = Installer::downloadApp($data);
 		$appInfo = Installer::checkAppsIntegrity($data, $appCodeDir, $path);
 		Files::rmdirr($appCodeDir);
 		return $appInfo;
@@ -794,6 +780,6 @@ class AppManager implements IAppManager {
 	public function getAppVersionByPath($path) {
 		$infoFile = "{$path}/appinfo/info.xml";
 		$appData = $this->getAppInfoByPath($infoFile);
-		return isset($appData['version']) ? $appData['version'] : '';
+		return $appData['version'] ?? '';
 	}
 }

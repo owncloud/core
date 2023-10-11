@@ -45,14 +45,10 @@ use OCP\ILogger;
  */
 
 class Avatar implements IAvatar {
-	/** @var IStorage */
-	private $storage;
-	/** @var IL10N */
-	private $l;
-	/** @var User */
-	private $user;
-	/** @var ILogger  */
-	private $logger;
+	private \OCP\Files\Storage\IStorage $storage;
+	private \OCP\IL10N $l;
+	private \OC\User\User $user;
+	private \OCP\ILogger $logger;
 	/** @var string */
 	private $path;
 

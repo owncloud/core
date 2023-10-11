@@ -489,7 +489,7 @@ class TrashbinTest extends TestCase {
 		$trashedFile = $filesInTrash[0];
 
 		// delete source folder
-		list($storage, $internalPath) = $this->rootView->resolvePath('/' . self::TEST_TRASHBIN_USER1 . '/files/folder');
+		[$storage, $internalPath] = $this->rootView->resolvePath('/' . self::TEST_TRASHBIN_USER1 . '/files/folder');
 		if ($storage instanceof Local) {
 			$folderAbsPath = $storage->getSourcePath($internalPath);
 			// make folder read-only
@@ -524,19 +524,19 @@ class TrashbinTest extends TestCase {
 			->method('nodeExists')
 			->will($this->returnValue(true));
 
-		$parentNode = $this->createMock('\OCP\Files\Folder');
+		$parentNode = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$parentNode->expects($this->once())
 			->method('getPath')
 			->will($this->returnValue('test@#?%test/files_trashbin/files/test.d1462861890/sub'));
 
-		$baseFolderTrash = $this->createMock('\OCP\Files\Folder');
+		$baseFolderTrash = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$rootFolder->expects($this->once())
 			->method('get')
 			->with('test@#?%test/files_trashbin/files/')
 			->will($this->returnValue($baseFolderTrash));
 
-		$node = $this->createMock('\OCP\Files\File');
+		$node = $this->createMock('\\' . \OCP\Files\File::class);
 		$node->expects($this->once())
 			->method('getParent')
 			->will($this->returnValue($parentNode));
@@ -582,6 +582,6 @@ class TrashbinTest extends TestCase {
 		$sourceStorage->expects($this->once())
 			->method('deleteAllFileKeys')
 			->with('//files/file1.txt');
-		self::invokePrivate(Trashbin::class, 'retainVersions', ['file1.txt', 'test-trashbin-user1', 'file1.txt', 1529567106, $sourceStorage]);
+		self::invokePrivate(Trashbin::class, 'retainVersions', ['file1.txt', 'test-trashbin-user1', 'file1.txt', 1_529_567_106, $sourceStorage]);
 	}
 }

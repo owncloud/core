@@ -39,14 +39,12 @@ class SchemaDiffTest extends TestCase {
 	/** @var \Doctrine\DBAL\Connection $connection */
 	private $connection;
 
-	/** @var MDB2SchemaManager */
-	private $manager;
+	private \OC\DB\MDB2SchemaManager $manager;
 
 	/** @var IConfig */
 	private $config;
 
-	/** @var string */
-	private $testPrefix;
+	private string $testPrefix;
 
 	protected function setUp(): void {
 		parent::setUp();

@@ -33,8 +33,8 @@ use OC\User\Backend;
  * dummy user backend, does not keep state, only for testing use
  */
 class Dummy extends Backend implements \OCP\IUserBackend {
-	private $users = [];
-	private $displayNames = [];
+	private array $users = [];
+	private array $displayNames = [];
 
 	/**
 	 * Create a new user
@@ -160,7 +160,7 @@ class Dummy extends Backend implements \OCP\IUserBackend {
 	}
 
 	public function getDisplayName($uid) {
-		return isset($this->displayNames[$uid])? $this->displayNames[$uid]: $uid;
+		return $this->displayNames[$uid] ?? $uid;
 	}
 
 	/**

@@ -43,45 +43,45 @@ class DetailsDialog extends OwncloudPage {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/';
-	private $detailsDialogCloseXpath = "//*[@class='close icon-close']";
-	private $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
-	private $thumbnailFromContainerXpath = "/a";
-	private $detailsTabId = [
+	private string $detailsDialogCloseXpath = "//*[@class='close icon-close']";
+	private string $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
+	private string $thumbnailFromContainerXpath = "/a";
+	private array $detailsTabId = [
 		'comments' => "commentsTabView",
 		'sharing' => "shareTabView",
 		'versions' => "versionsTabView",
 		'tags' => "systemTagsTabView",
 	];
-	private $tabSwitchBtnXpath = "//li[@data-tabid='%s']";
-	private $tagsContainer = "//div[@class='systemTagsInputFieldContainer']";
-	private $tagList = "//span[@class='system-tag-list-item']";
-	private $tagSearchChoiceXpath = "//li[@class='select2-search-choice']" . "//span[@class='label']";
+	private string $tabSwitchBtnXpath = "//li[@data-tabid='%s']";
+	private string $tagsContainer = "//div[@class='systemTagsInputFieldContainer']";
+	private string $tagList = "//span[@class='system-tag-list-item']";
+	private string $tagSearchChoiceXpath = "//li[@class='select2-search-choice']" . "//span[@class='label']";
 
-	private $tagsInputXpath = "//li[@class='select2-search-field']//input";
+	private string $tagsInputXpath = "//li[@class='select2-search-field']//input";
 
-	private $tagsSuggestDropDownXpath = "//div[contains(@class, 'systemtags-select2-dropdown') and contains(@id, 'select2-drop')]";
+	private string $tagsSuggestDropDownXpath = "//div[contains(@class, 'systemtags-select2-dropdown') and contains(@id, 'select2-drop')]";
 
-	private $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
-	private $tagEditButtonInTagXpath = "//div[@class='systemtags-actions']//a[contains(@class, 'rename')]";
-	private $tagDeleteButtonInTagXpath = "//div[@class='systemtags-actions']//a[contains(@class, 'delete')]";
-	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
+	private string $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
+	private string $tagEditButtonInTagXpath = "//div[@class='systemtags-actions']//a[contains(@class, 'rename')]";
+	private string $tagDeleteButtonInTagXpath = "//div[@class='systemtags-actions']//a[contains(@class, 'delete')]";
+	private string $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
-	private $tagEditInputXpath = "//input[contains(@id, 'rename-input') and contains(@value, %s)]";
+	private string $tagEditInputXpath = "//input[contains(@id, 'rename-input') and contains(@value, %s)]";
 	protected $tagDeleteConfirmButtonXpath
 		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='Yes']";
 
-	private $commentXpath = "//ul[@class='comments']//div[@class='message' and contains(., '%s')]";
-	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
-	private $commentPostXpath = "//form[@class='newCommentForm']//input[@class='submit']";
-	private $commentEditFormXpath = "//ul[@class='comments']//div[@class='newCommentRow comment']";
-	private $commentEditButtonXpath = "//a[@data-original-title='Edit comment']";
-	private $commentDeleteButtonXpath = "//a[@data-original-title='Delete comment']";
-	private $commentListXpath = "//ul[@class='comments']//div[@class='message']";
+	private string $commentXpath = "//ul[@class='comments']//div[@class='message' and contains(., '%s')]";
+	private string $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
+	private string $commentPostXpath = "//form[@class='newCommentForm']//input[@class='submit']";
+	private string $commentEditFormXpath = "//ul[@class='comments']//div[@class='newCommentRow comment']";
+	private string $commentEditButtonXpath = "//a[@data-original-title='Edit comment']";
+	private string $commentDeleteButtonXpath = "//a[@data-original-title='Delete comment']";
+	private string $commentListXpath = "//ul[@class='comments']//div[@class='message']";
 
-	private $versionsListXpath = "//div[@id='versionsTabView']//ul[@class='versions']";
-	private $versionDetailsXpath = "//div[@id='versionsTabView']//ul[@class='versions']/li//div[@class='version-details']";
-	private $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[2]/div/div[@class='action-container']/a";
+	private string $versionsListXpath = "//div[@id='versionsTabView']//ul[@class='versions']";
+	private string $versionDetailsXpath = "//div[@id='versionsTabView']//ul[@class='versions']/li//div[@class='version-details']";
+	private string $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[2]/div/div[@class='action-container']/a";
 
 	/**
 	 *

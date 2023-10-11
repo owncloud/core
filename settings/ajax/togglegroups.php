@@ -73,9 +73,7 @@ if (\OC::$server->getGroupManager()->inGroup($username, $group)) {
 	$action = "remove";
 	$targetGroupObject->removeUser($targetUserObject);
 	$usersInGroup = $targetGroupObject->getUsers();
-	$usersInGroup = \array_values(\array_map(function (\OCP\IUser $g) {
-		return $g->getUID();
-	}, $usersInGroup));
+	$usersInGroup = \array_values(\array_map(fn (\OCP\IUser $g) => $g->getUID(), $usersInGroup));
 } else {
 	$targetGroupObject->addUser($targetUserObject);
 }

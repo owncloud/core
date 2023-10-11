@@ -220,7 +220,7 @@ class DecryptAll {
 			$content = $this->rootView->getDirectoryContent($root);
 			foreach ($content as $file) {
 				// only decrypt files owned by the user, exclude incoming local shares, and incoming federated shares
-				if ($file->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
+				if ($file->getStorage()->instanceOfStorage('\\' . \OCA\Files_Sharing\ISharedStorage::class)) {
 					continue;
 				}
 				$path = $root . '/' . $file['name'];
@@ -243,7 +243,7 @@ class DecryptAll {
 					} catch (\Exception $e) {
 						$this->logger->logException($e, [
 							'message' => "Exception trying to decrypt file <$path> for user <$uid>",
-							'app' => __CLASS__
+							'app' => self::class
 						]);
 						if (isset($this->failed[$uid])) {
 							$this->failed[$uid][] = ['path' => $path, 'exception' => $e];
@@ -273,7 +273,7 @@ class DecryptAll {
 			View::setIgnorePartFile(true);
 			$this->rootView->rename($target, $source);
 			View::setIgnorePartFile(false);
-			list($storage, $internalPath) = $this->rootView->resolvePath($source);
+			[$storage, $internalPath] = $this->rootView->resolvePath($source);
 			//Update the encrypted column in file cache to zero, as the file is decrypted
 			$storage->getCache()->put($internalPath, ['encrypted' => 0]);
 		} catch (DecryptionFailedException $e) {

@@ -62,7 +62,7 @@ class RootCollection extends AbstractPrincipalCollection {
 	 * @throws NotAuthenticated
 	 */
 	public function getChildForPrincipal(array $principalInfo) {
-		list(, $name) = \Sabre\Uri\split($principalInfo['uri']);
+		[, $name] = \Sabre\Uri\split($principalInfo['uri']);
 		$sessionUser = $this->userSession->getUser();
 		if ($sessionUser === null || $name !== $sessionUser->getUID()) {
 			throw new NotAuthenticated();

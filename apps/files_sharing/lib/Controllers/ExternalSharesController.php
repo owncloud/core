@@ -40,19 +40,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\Files_Sharing\Controllers
  */
 class ExternalSharesController extends Controller {
-	/** @var \OCA\Files_Sharing\External\Manager */
-	private $externalManager;
+	private \OCA\Files_Sharing\External\Manager $externalManager;
 	/** @var \OCA\Files_Sharing\External\Manager */
 	private $groupExternalManager = null;
-	/** @var IClientService */
-	private $clientService;
-	/**
-	 * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-	 */
-	private $dispatcher;
+	private \OCP\Http\Client\IClientService $clientService;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher;
 
-	/** @var IConfig $config */
-	private $config;
+	private \OCP\IConfig $config;
 
 	public const group_share_type = "group";
 	/**
@@ -191,7 +185,7 @@ class ExternalSharesController extends Controller {
 					'timeout' => 3,
 					'connect_timeout' => 3,
 				]
-			)->getBody());
+			)->getBody(), null, 512, JSON_THROW_ON_ERROR);
 
 			if ($checkVersion) {
 				return !empty($response->version) && \version_compare($response->version, '7.0.0', '>=');

@@ -55,7 +55,7 @@ class CorsContext implements Context {
 		);
 		if ($occStatus === 0) {
 			$domainsJson = $this->featureContext->getStdOutOfOccCommand();
-			$domains = \json_decode($domainsJson);
+			$domains = \json_decode($domainsJson, null, 512, JSON_THROW_ON_ERROR);
 		} else {
 			$domainsJson = "";
 			$domains = [];
@@ -67,7 +67,7 @@ class CorsContext implements Context {
 		}
 
 		$domains[] = $domain;
-		$valueString = \json_encode($domains);
+		$valueString = \json_encode($domains, JSON_THROW_ON_ERROR);
 		$occStatus = $this->featureContext->runOcc(
 			[
 				'user:setting',
@@ -92,7 +92,7 @@ class CorsContext implements Context {
 				'domains'
 			]
 		);
-		$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$domains = \json_decode($this->featureContext->getStdOutOfOccCommand(), null, 512, JSON_THROW_ON_ERROR);
 
 		Assert::assertIsArray(
 			$domains,

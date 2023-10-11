@@ -22,12 +22,12 @@ namespace OC\License;
 use OCP\License\AbstractLicense;
 
 class BasicLicense extends AbstractLicense {
-	private $rawLicense;
-	private $org;
+	private string $rawLicense;
+	private ?string $org = null;
 	private $expirationDateTimestamp = 0;  // to ensure an integer as expiration value
-	private $rawCodes;
-	private $codes;
-	private $checksum;
+	private ?string $rawCodes = null;
+	private ?array $codes = null;
+	private ?string $checksum = null;
 
 	public function __construct(string $licenseKey) {
 		$this->rawLicense = $licenseKey;

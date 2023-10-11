@@ -706,7 +706,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testSetMarkRead() {
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('alice'));
@@ -722,7 +722,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testSetMarkReadUpdate() {
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('alice'));
@@ -741,7 +741,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testReadMarkDeleteUser() {
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('alice'));
@@ -758,7 +758,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testReadMarkDeleteObject() {
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('alice'));

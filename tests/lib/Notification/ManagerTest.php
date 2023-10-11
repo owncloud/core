@@ -71,9 +71,7 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$closure = function () use ($app) {
-			return $app;
-		};
+		$closure = fn () => $app;
 
 		$this->assertEquals([], self::invokePrivate($this->manager, 'getApps'));
 
@@ -96,9 +94,7 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$closure = function () use ($notifier) {
-			return $notifier;
-		};
+		$closure = fn () => $notifier;
 
 		$this->manager->registerApp($closure);
 
@@ -136,25 +132,19 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$closure = function () use ($notifier) {
-			return $notifier;
-		};
+		$closure = fn () => $notifier;
 
 		$this->assertEquals([], self::invokePrivate($this->manager, 'getNotifiers'));
 		$this->assertEquals([], self::invokePrivate($this->manager, 'listNotifiers'));
 
-		$this->manager->registerNotifier($closure, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+		$this->manager->registerNotifier($closure, fn () => ['id' => 'test1', 'name' => 'Test One']);
 
 		$this->assertEquals([$notifier], self::invokePrivate($this->manager, 'getNotifiers'));
 		$this->assertEquals(['test1' => 'Test One'], self::invokePrivate($this->manager, 'listNotifiers'));
 		$this->assertEquals([$notifier], self::invokePrivate($this->manager, 'getNotifiers'));
 		$this->assertEquals(['test1' => 'Test One'], self::invokePrivate($this->manager, 'listNotifiers'));
 
-		$this->manager->registerNotifier($closure, function () {
-			return ['id' => 'test2', 'name' => 'Test Two'];
-		});
+		$this->manager->registerNotifier($closure, fn () => ['id' => 'test2', 'name' => 'Test Two']);
 
 		$this->assertEquals([$notifier, $notifier], self::invokePrivate($this->manager, 'getNotifiers'));
 		$this->assertEquals(['test1' => 'Test One', 'test2' => 'Test Two'], self::invokePrivate($this->manager, 'listNotifiers'));
@@ -169,13 +159,9 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$closure = function () use ($app) {
-			return $app;
-		};
+		$closure = fn () => $app;
 
-		$this->manager->registerNotifier($closure, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+		$this->manager->registerNotifier($closure, fn () => ['id' => 'test1', 'name' => 'Test One']);
 
 		self::invokePrivate($this->manager, 'getNotifiers');
 	}
@@ -201,13 +187,9 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$closure = function () use ($app) {
-			return $app;
-		};
+		$closure = fn () => $app;
 
-		$this->manager->registerNotifier($closure, function () use ($data) {
-			return $data;
-		});
+		$this->manager->registerNotifier($closure, fn () => $data);
 
 		$this->manager->listNotifiers();
 	}
@@ -222,17 +204,11 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$closure = function () use ($app) {
-			return $app;
-		};
+		$closure = fn () => $app;
 
-		$this->manager->registerNotifier($closure, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+		$this->manager->registerNotifier($closure, fn () => ['id' => 'test1', 'name' => 'Test One']);
 
-		$this->manager->registerNotifier($closure, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+		$this->manager->registerNotifier($closure, fn () => ['id' => 'test1', 'name' => 'Test One']);
 
 		$this->manager->listNotifiers();
 	}
@@ -365,9 +341,7 @@ class ManagerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$closure = function () use ($notifier) {
-			return $notifier;
-		};
+		$closure = fn () => $notifier;
 
 		$callbackCalledCount = 0;
 
@@ -379,9 +353,7 @@ class ManagerTest extends TestCase {
 			}
 		);
 
-		$this->manager->registerNotifier($closure, function () {
-			return ['id' => 'testid1', 'name' => 'test app name'];
-		});
+		$this->manager->registerNotifier($closure, fn () => ['id' => 'testid1', 'name' => 'test app name']);
 
 		$notifiers = self::invokePrivate($this->manager, 'getNotifiers');
 		$this->assertEquals(1, $callbackCalledCount);
@@ -458,12 +430,8 @@ class ManagerTest extends TestCase {
 			->method('notify')
 			->with($notification);
 
-		$this->manager->registerApp(function () use ($app) {
-			return $app;
-		});
-		$this->manager->registerApp(function () use ($app2) {
-			return $app2;
-		});
+		$this->manager->registerApp(fn () => $app);
+		$this->manager->registerApp(fn () => $app2);
 
 		$this->manager->notify($notification);
 	}
@@ -518,16 +486,8 @@ class ManagerTest extends TestCase {
 			->with($notification, 'en')
 			->willReturn($notification2);
 
-		$this->manager->registerNotifier(function () use ($notifier) {
-			return $notifier;
-		}, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
-		$this->manager->registerNotifier(function () use ($notifier2) {
-			return $notifier2;
-		}, function () {
-			return ['id' => 'test2', 'name' => 'Test Two'];
-		});
+		$this->manager->registerNotifier(fn () => $notifier, fn () => ['id' => 'test1', 'name' => 'Test One']);
+		$this->manager->registerNotifier(fn () => $notifier2, fn () => ['id' => 'test2', 'name' => 'Test Two']);
 
 		$this->assertEquals($notification2, $this->manager->prepare($notification, 'en'));
 	}
@@ -554,11 +514,7 @@ class ManagerTest extends TestCase {
 			->with($notification, 'de')
 			->willReturnArgument(0);
 
-		$this->manager->registerNotifier(function () use ($notifier) {
-			return $notifier;
-		}, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+		$this->manager->registerNotifier(fn () => $notifier, fn () => ['id' => 'test1', 'name' => 'Test One']);
 
 		$this->manager->prepare($notification, 'de');
 	}
@@ -581,11 +537,7 @@ class ManagerTest extends TestCase {
 			->with($notification, 'de')
 			->willThrowException(new \InvalidArgumentException);
 
-		$this->manager->registerNotifier(function () use ($notifier) {
-			return $notifier;
-		}, function () {
-			return ['id' => 'test1', 'name' => 'Test One'];
-		});
+		$this->manager->registerNotifier(fn () => $notifier, fn () => ['id' => 'test1', 'name' => 'Test One']);
 
 		$this->assertEquals($notification, $this->manager->prepare($notification, 'de'));
 	}
@@ -628,12 +580,8 @@ class ManagerTest extends TestCase {
 			->method('markProcessed')
 			->with($notification);
 
-		$this->manager->registerApp(function () use ($app) {
-			return $app;
-		});
-		$this->manager->registerApp(function () use ($app2) {
-			return $app2;
-		});
+		$this->manager->registerApp(fn () => $app);
+		$this->manager->registerApp(fn () => $app2);
 
 		$this->manager->markProcessed($notification);
 	}
@@ -662,12 +610,8 @@ class ManagerTest extends TestCase {
 			->with($notification)
 			->willReturn(42);
 
-		$this->manager->registerApp(function () use ($app) {
-			return $app;
-		});
-		$this->manager->registerApp(function () use ($app2) {
-			return $app2;
-		});
+		$this->manager->registerApp(fn () => $app);
+		$this->manager->registerApp(fn () => $app2);
 
 		$this->assertSame(63, $this->manager->getCount($notification));
 	}

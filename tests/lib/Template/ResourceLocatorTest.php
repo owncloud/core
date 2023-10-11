@@ -25,7 +25,7 @@ class ResourceLocatorTest extends \Test\TestCase {
 	
 	protected function setUp(): void {
 		parent::setUp();
-		$this->logger = $this->createMock('OCP\ILogger');
+		$this->logger = $this->createMock(\OCP\ILogger::class);
 		
 		vfsStreamWrapper::register();
 		$root = vfsStream::newDirectory('resources');
@@ -45,13 +45,13 @@ class ResourceLocatorTest extends \Test\TestCase {
 	 * @return \PHPUnit\Framework\MockObject\MockObject
 	 */
 	public function getResourceLocator($theme, $core_map, $appsRoots) {
-		$themeInstance = $this->createMock('OC\Theme\Theme');
+		$themeInstance = $this->createMock(\OC\Theme\Theme::class);
 		$themeInstance->method('getName')->willReturn($theme);
 
 		$appManagerInstance = $this->createMock(AppManager::class);
 
 		return $this->getMockForAbstractClass(
-			'OC\Template\ResourceLocator',
+			\OC\Template\ResourceLocator::class,
 			[$themeInstance, $appManagerInstance, $this->logger, $core_map, $appsRoots],
 			'',
 			true,

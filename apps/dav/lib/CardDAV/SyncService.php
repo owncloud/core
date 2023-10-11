@@ -34,14 +34,11 @@ use Sabre\HTTP\ClientHttpException;
 use Sabre\VObject\Reader;
 
 class SyncService {
-	/** @var CardDavBackend */
-	private $backend;
+	private \OCA\DAV\CardDAV\CardDavBackend $backend;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/** @var array */
 	private $localSystemAddressBook;

@@ -33,15 +33,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ExpireVersions extends Command {
-	/**
-	 * @var Expiration
-	 */
-	private $expiration;
+	private ?\OCA\Files_Versions\Expiration $expiration = null;
 
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private ?\OCP\IUserManager $userManager = null;
 
 	/**
 	 * @param IUserManager|null $userManager

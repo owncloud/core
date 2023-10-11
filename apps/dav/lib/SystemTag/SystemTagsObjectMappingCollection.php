@@ -46,22 +46,14 @@ class SystemTagsObjectMappingCollection implements ICollection {
 	 */
 	private $objectType;
 
-	/**
-	 * @var ISystemTagManager
-	 */
-	private $tagManager;
+	private \OCP\SystemTag\ISystemTagManager $tagManager;
+
+	private \OCP\SystemTag\ISystemTagObjectMapper $tagMapper;
 
 	/**
-	 * @var ISystemTagObjectMapper
-	 */
-	private $tagMapper;
-
-	/**
-	 * User
-	 *
-	 * @var IUser
-	 */
-	private $user;
+  * User
+  */
+	private \OCP\IUser $user;
 
 	/**
 	 * Constructor
@@ -140,13 +132,9 @@ class SystemTagsObjectMappingCollection implements ICollection {
 		$tags = $this->tagManager->getTagsByIds($tagIds);
 
 		// filter out non-visible tags
-		$tags = \array_filter($tags, function ($tag) {
-			return $this->tagManager->canUserSeeTag($tag, $this->user);
-		});
+		$tags = \array_filter($tags, fn ($tag) => $this->tagManager->canUserSeeTag($tag, $this->user));
 
-		return \array_values(\array_map(function ($tag) {
-			return $this->makeNode($tag);
-		}, $tags));
+		return \array_values(\array_map(fn ($tag) => $this->makeNode($tag), $tags));
 	}
 
 	public function childExists($tagId) {

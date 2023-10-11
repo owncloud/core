@@ -42,11 +42,9 @@ class AssemblyStream implements \Icewind\Streams\File {
 	/** @var IFile[] */
 	private $nodes;
 
-	/** @var int */
-	private $pos = 0;
+	private int $pos = 0;
 
-	/** @var array */
-	private $sortedNodes;
+	private ?array $sortedNodes = null;
 
 	/** @var int */
 	private $size;
@@ -70,9 +68,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 		// sort the nodes
 		$nodes = $this->nodes;
 		// http://stackoverflow.com/a/10985500
-		@\usort($nodes, function (IFile $a, IFile $b) {
-			return \strnatcmp($a->getName(), $b->getName());
-		});
+		@\usort($nodes, fn (IFile $a, IFile $b) => \strnatcmp($a->getName(), $b->getName()));
 		$this->nodes = $nodes;
 
 		// build additional information
@@ -113,7 +109,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 		$lastNode = null;
 		do {
 			if ($this->currentStream === null) {
-				list($node, $posInNode) = $this->getNodeForPosition($this->pos);
+				[$node, $posInNode] = $this->getNodeForPosition($this->pos);
 				if ($node === null) {
 					// reached last node, no more data
 					return '';
@@ -248,7 +244,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 			'assembly' => [
 				'nodes' => $nodes]
 		]);
-		\stream_wrapper_register('assembly', '\OCA\DAV\Upload\AssemblyStream');
+		\stream_wrapper_register('assembly', '\\' . \OCA\DAV\Upload\AssemblyStream::class);
 		try {
 			$wrapped = \fopen('assembly://', 'r', null, $context);
 		} catch (\BadMethodCallException $e) {

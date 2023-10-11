@@ -28,8 +28,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Delete extends Command {
-	/** @var \OCP\BackgroundJob\IJobList */
-	private $jobList;
+	private \OCP\BackgroundJob\IJobList $jobList;
 
 	public function __construct(IJobList $jobList) {
 		$this->jobList = $jobList;

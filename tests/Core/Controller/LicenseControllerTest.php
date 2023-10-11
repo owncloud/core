@@ -27,11 +27,10 @@ use Test\TestCase;
 
 class LicenseControllerTest extends TestCase {
 	/** @var IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var ILicenseManager */
-	private $licenseManager;
-	/** @var LicenseController */
-	private $licenseController;
+	private \PHPUnit\Framework\MockObject\MockObject $licenseManager;
+	private \OC\Core\Controller\LicenseController $licenseController;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -44,13 +43,13 @@ class LicenseControllerTest extends TestCase {
 	public function testGetGracePeriod() {
 		$this->licenseManager->method('getGracePeriod')
 			->willReturn([
-				'start' => 100200300,
-				'end' => 100300500,
+				'start' => 100_200_300,
+				'end' => 100_300_500,
 			]);
 
 		$expected = [
-			'start' => 100200300,
-			'end' => 100300500,
+			'start' => 100_200_300,
+			'end' => 100_300_500,
 		];
 		$this->assertSame($expected, $this->licenseController->getGracePeriod()->getData());
 	}
@@ -71,14 +70,14 @@ class LicenseControllerTest extends TestCase {
 		$this->licenseManager->method('getGracePeriod')
 			->willReturn([
 				'apps' => $appList,
-				'start' => 100200300,
-				'end' => 100300500,
+				'start' => 100_200_300,
+				'end' => 100_300_500,
 			]);
 
 		$expected = [
 			'apps' => $expectedCount,
-			'start' => 100200300,
-			'end' => 100300500,
+			'start' => 100_200_300,
+			'end' => 100_300_500,
 		];
 		$this->assertSame($expected, $this->licenseController->getGracePeriod()->getData());
 	}

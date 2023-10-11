@@ -173,13 +173,9 @@ class GlobalStoragesService extends StoragesService implements IGlobalStoragesSe
 	public function getStorageForAllUsers() {
 		$mounts = $this->dbConfig->getAllMounts();
 		$configs = \array_map([$this, 'getStorageConfigFromDBMount'], $mounts);
-		$configs = \array_filter($configs, function ($config) {
-			return $config instanceof IStorageConfig;
-		});
+		$configs = \array_filter($configs, fn ($config) => $config instanceof IStorageConfig);
 
-		$keys = \array_map(function (IStorageConfig $config) {
-			return $config->getId();
-		}, $configs);
+		$keys = \array_map(fn (IStorageConfig $config) => $config->getId(), $configs);
 
 		return \array_combine($keys, $configs);
 	}

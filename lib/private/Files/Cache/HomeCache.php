@@ -57,7 +57,7 @@ class HomeCache extends Cache {
 			$result = \OC_DB::executeAudited($sql, [$id, $this->getNumericStorageId()]);
 			if ($row = $result->fetchRow()) {
 				$result->closeCursor();
-				list($sum) = \array_values($row);
+				[$sum] = \array_values($row);
 				$totalSize = 0 + $sum;
 				$entry['size'] += 0;
 				if ($entry['size'] !== $totalSize) {

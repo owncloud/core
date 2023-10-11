@@ -57,17 +57,17 @@ class StorageTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->util = $this->getMockBuilder('OC\Encryption\Util')
+		$this->util = $this->getMockBuilder(\OC\Encryption\Util::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->util->method('getKeyStorageRoot')->willReturn('');
 
-		$this->view = $this->getMockBuilder('OC\Files\View')
+		$this->view = $this->getMockBuilder(\OC\Files\View::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->config = $this->getMockBuilder('OCP\IConfig')
+		$this->config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -329,9 +329,7 @@ class StorageTest extends TestCase {
 		// verify that user2's FS got mounted when retrieving the key
 		$mountManager = \OC::$server->getMountManager();
 		$mounts = $mountManager->getAll();
-		$mounts = \array_filter($mounts, function ($mount) use ($userId) {
-			return ($mount->getMountPoint() === "/$userId/");
-		});
+		$mounts = \array_filter($mounts, fn ($mount) => $mount->getMountPoint() === "/$userId/");
 
 		return !empty($mounts);
 	}

@@ -48,47 +48,44 @@ class HooksTest extends \Test\TestCase {
 	/**
 	 * @var EventDispatcherInterface | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
 
 	/**
 	 * @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/**
 	 * @var IUserSession | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	/**
 	 * @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 
 	/**
 	 * @var \OCP\Share\IManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $shareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
 
 	/**
 	 * @var NotificationPublisher | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $notificationPublisher;
+	private \PHPUnit\Framework\MockObject\MockObject $notificationPublisher;
 
 	/**
 	 * @var ActivityManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $activityManager;
+	private \PHPUnit\Framework\MockObject\MockObject $activityManager;
 
 	/**
 	 * @var SharingAllowlist | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $sharingAllowlist;
+	private \PHPUnit\Framework\MockObject\MockObject $sharingAllowlist;
 
-	/**
-	 * @var Hooks
-	 */
-	private $hooks;
+	private \OCA\Files_Sharing\Hooks $hooks;
 
 	public function setUp(): void {
 		$this->eventDispatcher = new EventDispatcher();

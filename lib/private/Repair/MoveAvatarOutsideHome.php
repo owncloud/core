@@ -47,23 +47,17 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	/** @var \OCP\IConfig */
 	protected $config;
 
-	/** @var IDBConnection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IAvatarManager */
-	private $avatarManager;
+	private \OCP\IAvatarManager $avatarManager;
 
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
-	/** @var \OCP\ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var \OCP\IL10N */
-	private $l;
+	private \OCP\IL10N $l;
 
 	/**
 	 * @param IConfig $config config

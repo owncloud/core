@@ -60,24 +60,17 @@ use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
  * check fails
  */
 class SecurityMiddleware extends Middleware {
-	/** @var INavigationManager */
-	private $navigationManager;
-	/** @var IRequest */
-	private $request;
-	/** @var ControllerMethodReflector */
-	private $reflector;
+	private \OCP\INavigationManager $navigationManager;
+	private \OCP\IRequest $request;
+	private \OC\AppFramework\Utility\ControllerMethodReflector $reflector;
 	/** @var string */
 	private $appName;
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var ILogger */
-	private $logger;
+	private \OCP\IURLGenerator $urlGenerator;
+	private \OCP\ILogger $logger;
 	/** @var bool */
 	private $isAdminUser;
-	/** @var ContentSecurityPolicyManager */
-	private $contentSecurityPolicyManager;
-	/** @var IUserSession */
-	private $session;
+	private \OC\Security\CSP\ContentSecurityPolicyManager $contentSecurityPolicyManager;
+	private \OCP\IUserSession $session;
 
 	/**
 	 * @param IRequest $request
@@ -169,7 +162,7 @@ class SecurityMiddleware extends Middleware {
 	 * @return Response
 	 */
 	public function afterController($controller, $methodName, Response $response) {
-		$policy = $response->getContentSecurityPolicy() !== null ? $response->getContentSecurityPolicy() : new ContentSecurityPolicy();
+		$policy = $response->getContentSecurityPolicy() ?? new ContentSecurityPolicy();
 
 		$defaultPolicy = $this->contentSecurityPolicyManager->getDefaultPolicy();
 		$defaultPolicy = $this->contentSecurityPolicyManager->mergePolicies($defaultPolicy, $policy);

@@ -63,7 +63,7 @@ class App {
 		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer($appName, $urlParams);
 	}
 
-	private $container;
+	private \OC\AppFramework\DependencyInjection\DIContainer $container;
 
 	/**
 	 * @return IAppContainer

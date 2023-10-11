@@ -42,7 +42,7 @@ class Defaults {
 	 * @return string
 	 * @since 6.0.0
 	 */
-	private $defaults;
+	private \OC_Defaults $defaults;
 
 	/**
 	 * creates a \OC_Defaults instance which is used in all methods to retrieve the

@@ -38,22 +38,19 @@ class MetaVersionCollectionTest extends TestCase {
 	/**
 	 * @var Node
 	 */
-	private $node;
+	private \PHPUnit\Framework\MockObject\MockObject $node;
 
 	/**
 	 * @var IRootFolder
 	 */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 
-	/**
-	 * @var MetaVersionCollection
-	 */
-	private $collection;
+	private \OC\Files\Meta\MetaVersionCollection $collection;
 
 	/**
 	 * @var Common
 	 */
-	private $storage;
+	private \PHPUnit\Framework\MockObject\MockObject $storage;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -81,8 +78,8 @@ class MetaVersionCollectionTest extends TestCase {
 			->method('getVersions')
 			->with('/abc')
 			->willReturn([
-				['version' => '1014', 'timestamp' => 12345678],
-				['version' => '1015', 'mimetype' => 'text/plain', 'timestamp' => 12345679],
+				['version' => '1014', 'timestamp' => 12_345_678],
+				['version' => '1015', 'mimetype' => 'text/plain', 'timestamp' => 12_345_679],
 			]);
 
 		$children = $this->collection->getDirectoryListing();
@@ -91,11 +88,11 @@ class MetaVersionCollectionTest extends TestCase {
 		$this->assertInstanceOf(MetaFileVersionNode::class, $children[0]);
 		$this->assertEquals('1014', $children[0]->getName());
 		$this->assertEquals('application/json', $children[0]->getMimetype());
-		$this->assertEquals(12345678, $children[0]->getMtime());
+		$this->assertEquals(12_345_678, $children[0]->getMtime());
 		$this->assertInstanceOf(MetaFileVersionNode::class, $children[1]);
 		$this->assertEquals('1015', $children[1]->getName());
 		$this->assertEquals('text/plain', $children[1]->getMimetype());
-		$this->assertEquals(12345679, $children[1]->getMtime());
+		$this->assertEquals(12_345_679, $children[1]->getMtime());
 	}
 
 	public function testGetDirectoryListingNonVersionedStorage() {
@@ -125,14 +122,14 @@ class MetaVersionCollectionTest extends TestCase {
 		$this->storage->expects($this->once())
 			->method('getVersion')
 			->with('/abc', '1014')
-			->willReturn(['version' => '1014', 'timestamp' => 12345678]);
+			->willReturn(['version' => '1014', 'timestamp' => 12_345_678]);
 
 		$result = $this->collection->get('1014');
 
 		$this->assertInstanceOf(MetaFileVersionNode::class, $result);
 		$this->assertEquals('1014', $result->getName());
 		$this->assertEquals('application/json', $result->getMimetype());
-		$this->assertEquals(12345678, $result->getMtime());
+		$this->assertEquals(12_345_678, $result->getMtime());
 	}
 
 	/**

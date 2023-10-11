@@ -48,7 +48,7 @@ class OwncloudPage extends Page {
 	protected $titleXpath = ".//title";
 	protected $searchBoxId = "searchbox";
 	protected $sidebarNavXpath = "//li[@data-id='%s']";
-	private $sidebarItemId = [
+	private array $sidebarItemId = [
 		'All files' => "files",
 		'Favorites' => "favorites",
 		'Shared with you' => "sharingin",

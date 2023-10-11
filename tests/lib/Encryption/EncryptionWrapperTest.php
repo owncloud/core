@@ -25,25 +25,24 @@ use OC\Encryption\EncryptionWrapper;
 use Test\TestCase;
 
 class EncryptionWrapperTest extends TestCase {
-	/** @var  EncryptionWrapper */
-	private $instance;
+	private \OC\Encryption\EncryptionWrapper $instance;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OCP\ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OC\Encryption\Manager */
-	private $manager;
+	private \PHPUnit\Framework\MockObject\MockObject $manager;
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | \OC\Memcache\ArrayCache */
-	private $arrayCache;
+	private \PHPUnit\Framework\MockObject\MockObject $arrayCache;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->arrayCache = $this->createMock('OC\Memcache\ArrayCache');
-		$this->manager = $this->getMockBuilder('OC\Encryption\Manager')
+		$this->arrayCache = $this->createMock(\OC\Memcache\ArrayCache::class);
+		$this->manager = $this->getMockBuilder(\OC\Encryption\Manager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->logger = $this->createMock('OCP\ILogger');
+		$this->logger = $this->createMock(\OCP\ILogger::class);
 
 		$this->instance = new EncryptionWrapper($this->arrayCache, $this->manager, $this->logger);
 	}
@@ -52,7 +51,7 @@ class EncryptionWrapperTest extends TestCase {
 	 * @dataProvider provideWrapStorage
 	 */
 	public function testWrapStorage($expectedWrapped, $wrappedStorages) {
-		$storage = $this->getMockBuilder('OC\Files\Storage\Storage')
+		$storage = $this->getMockBuilder(\OC\Files\Storage\Storage::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -64,7 +63,7 @@ class EncryptionWrapperTest extends TestCase {
 				]);
 		}
 
-		$mount = $this->getMockBuilder('OCP\Files\Mount\IMountPoint')
+		$mount = $this->getMockBuilder(\OCP\Files\Mount\IMountPoint::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,7 +71,7 @@ class EncryptionWrapperTest extends TestCase {
 
 		$this->assertEquals(
 			$expectedWrapped,
-			$returnedStorage->instanceOfStorage('OC\Files\Storage\Wrapper\Encryption'),
+			$returnedStorage->instanceOfStorage(\OC\Files\Storage\Wrapper\Encryption::class),
 			'Asserted that the storage is (not) wrapped with encryption'
 		);
 	}
@@ -81,16 +80,16 @@ class EncryptionWrapperTest extends TestCase {
 		return [
 			// Wrap when not wrapped or not wrapped with storage
 			[true, []],
-			[true, ['OCA\Files_Trashbin\Storage']],
+			[true, [\OCA\Files_Trashbin\Storage::class]],
 
 			// Do not wrap shared storages
-			[false, ['OCA\Files_Sharing\SharedStorage']],
-			[false, ['OCA\Files_Sharing\External\Storage']],
+			[false, [\OCA\Files_Sharing\SharedStorage::class]],
+			[false, [\OCA\Files_Sharing\External\Storage::class]],
 			[false, ['OC\Files\Storage\OwnCloud']],
-			[false, ['OCA\Files_Sharing\SharedStorage', 'OCA\Files_Sharing\External\Storage']],
-			[false, ['OCA\Files_Sharing\SharedStorage', 'OC\Files\Storage\OwnCloud']],
-			[false, ['OCA\Files_Sharing\External\Storage', 'OC\Files\Storage\OwnCloud']],
-			[false, ['OCA\Files_Sharing\SharedStorage', 'OCA\Files_Sharing\External\Storage', 'OC\Files\Storage\OwnCloud']],
+			[false, [\OCA\Files_Sharing\SharedStorage::class, \OCA\Files_Sharing\External\Storage::class]],
+			[false, [\OCA\Files_Sharing\SharedStorage::class, 'OC\Files\Storage\OwnCloud']],
+			[false, [\OCA\Files_Sharing\External\Storage::class, 'OC\Files\Storage\OwnCloud']],
+			[false, [\OCA\Files_Sharing\SharedStorage::class, \OCA\Files_Sharing\External\Storage::class, 'OC\Files\Storage\OwnCloud']],
 		];
 	}
 }

@@ -56,8 +56,7 @@ class Storage extends DAV implements ISharedStorage {
 	private $config;
 	/** @var \OCP\ICertificateManager */
 	private $certificateManager;
-	/** @var bool */
-	private $updateChecked = false;
+	private bool $updateChecked = false;
 
 	/**
 	 * @var \OCA\Files_Sharing\External\Manager
@@ -73,9 +72,9 @@ class Storage extends DAV implements ISharedStorage {
 		$this->certificateManager = $options['certificateManager'];
 		$this->remote = $options['remote'];
 		$this->remoteUser = $options['owner'];
-		list($protocol, $remote) = \explode('://', $this->remote);
+		[$protocol, $remote] = \explode('://', $this->remote);
 		if (\strpos($remote, '/')) {
-			list($host, $root) = \explode('/', $remote, 2);
+			[$host, $root] = \explode('/', $remote, 2);
 		} else {
 			$host = $remote;
 			$root = '';
@@ -350,11 +349,9 @@ class Storage extends DAV implements ISharedStorage {
 				'timeout' => 10,
 				'connect_timeout' => 10,
 			])->getBody();
-			$data = \json_decode($result);
+			$data = \json_decode($result, null, 512, JSON_THROW_ON_ERROR);
 			$returnValue = (\is_object($data) && !empty($data->version));
-		} catch (ConnectException $e) {
-			$returnValue = false;
-		} catch (ClientException $e) {
+		} catch (ConnectException|ClientException $e) {
 			$returnValue = false;
 		}
 
@@ -363,7 +360,7 @@ class Storage extends DAV implements ISharedStorage {
 	}
 
 	public function getOwner($path) {
-		list(, $remote) = \explode('://', $this->remote, 2);
+		[, $remote] = \explode('://', $this->remote, 2);
 		return $this->remoteUser . '@' . $remote;
 	}
 

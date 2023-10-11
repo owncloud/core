@@ -14,7 +14,7 @@ class AutoLoaderTest extends TestCase {
 	/**
 	 * @var Autoloader $loader
 	 */
-	private $loader;
+	private \OC\AutoLoader $loader;
 
 	protected function setUp(): void {
 		parent::setUp();

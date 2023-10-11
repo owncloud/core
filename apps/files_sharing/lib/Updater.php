@@ -99,7 +99,7 @@ class Updater {
 		$mountManager = \OC\Files\Filesystem::getMountManager();
 		$mountedShares = $mountManager->findIn('/' . \OCP\User::getUser() . '/files/' . $oldPath);
 		foreach ($mountedShares as $mount) {
-			if ($mount->getStorage()->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
+			if ($mount->getStorage()->instanceOfStorage(\OCA\Files_Sharing\ISharedStorage::class)) {
 				$mountPoint = $mount->getMountPoint();
 				$target = \str_replace($absOldPath, $absNewPath, $mountPoint);
 				'@phan-var \OCA\Files_Sharing\SharedMount $mount';

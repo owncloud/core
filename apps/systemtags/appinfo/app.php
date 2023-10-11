@@ -50,14 +50,14 @@ $activityManager = \OC::$server->getActivityManager();
 $activityManager->registerExtension(function () {
 	$application = new \OCP\AppFramework\App('systemtags');
 	/** @var \OCA\SystemTags\Activity\Extension $extension */
-	$extension = $application->getContainer()->query('OCA\SystemTags\Activity\Extension');
+	$extension = $application->getContainer()->query(\OCA\SystemTags\Activity\Extension::class);
 	return $extension;
 });
 
 $managerListener = function (ManagerEvent $event) {
 	$application = new \OCP\AppFramework\App('systemtags');
 	/** @var \OCA\SystemTags\Activity\Listener $listener */
-	$listener = $application->getContainer()->query('OCA\SystemTags\Activity\Listener');
+	$listener = $application->getContainer()->query(\OCA\SystemTags\Activity\Listener::class);
 	$listener->event($event);
 };
 
@@ -68,14 +68,14 @@ $eventDispatcher->addListener(ManagerEvent::EVENT_UPDATE, $managerListener);
 $mapperListener = function (MapperEvent $event) {
 	$application = new \OCP\AppFramework\App('systemtags');
 	/** @var \OCA\SystemTags\Activity\Listener $listener */
-	$listener = $application->getContainer()->query('OCA\SystemTags\Activity\Listener');
+	$listener = $application->getContainer()->query(\OCA\SystemTags\Activity\Listener::class);
 	$listener->mapperEvent($event);
 };
 
 $eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, $mapperListener);
 $eventDispatcher->addListener(MapperEvent::EVENT_UNASSIGN, $mapperListener);
 
-if (\class_exists('OCA\Files\App')) {
+if (\class_exists(\OCA\Files\App::class)) {
 	\OCA\Files\App::getNavigationManager()->add(function () {
 		$l = \OC::$server->getL10N('systemtags');
 		return [

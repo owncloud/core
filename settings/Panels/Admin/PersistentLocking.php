@@ -27,8 +27,7 @@ use OCP\Template;
 use OCP\IConfig;
 
 class PersistentLocking implements ISettings {
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	public function __construct(IConfig $config) {
 		$this->config = $config;
@@ -43,7 +42,7 @@ class PersistentLocking implements ISettings {
 	}
 
 	public function getPanel() {
-		$lockBreakerGroups = \json_decode($this->config->getAppValue('core', 'lock-breaker-groups', '[]'), true);
+		$lockBreakerGroups = \json_decode($this->config->getAppValue('core', 'lock-breaker-groups', '[]'), true, 512, JSON_THROW_ON_ERROR);
 
 		// we must use the same container
 		$tmpl = new Template('settings', 'panels/admin/persistentlocking');

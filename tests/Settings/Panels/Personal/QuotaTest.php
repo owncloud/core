@@ -17,10 +17,9 @@ use OC\Settings\Panels\Personal\Quota;
  * @package Tests\Settings\Panels
  */
 class QuotaTest extends \Test\TestCase {
-	/** @var Quota */
-	private $panel;
+	private \OC\Settings\Panels\Personal\Quota $panel;
 	/** @var Helper */
-	private $helper;
+	private \PHPUnit\Framework\MockObject\MockObject $helper;
 
 	public function setUp(): void {
 		parent::setUp();

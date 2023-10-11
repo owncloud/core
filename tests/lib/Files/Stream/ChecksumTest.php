@@ -25,7 +25,7 @@ use org\bovigo\vfs\vfsStream;
 
 class ChecksumTest extends \Test\TestCase {
 	private $root;
-	private $fileList = [];
+	private array $fileList = [];
 
 	protected function setUp(): void {
 		parent::setUp();

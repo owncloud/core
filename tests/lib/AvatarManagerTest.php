@@ -40,25 +40,24 @@ class AvatarManagerTest extends TestCase {
 	use MountProviderTrait;
 
 	/** @var AvatarManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $avatarManager;
+	private \OC\AvatarManager $avatarManager;
 
 	/** @var \OC\Files\Storage\Temporary */
-	private $storage;
+	private \PHPUnit\Framework\MockObject\MockObject $storage;
 
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
-	/** @var Folder */
-	private $folder;
+	private \OC\Files\Storage\Folder $folder;
 
 	/** @var IRootFolder | \PHPUnit\Framework\MockObject\MockObject */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	public function setUp(): void {
 		parent::setUp();

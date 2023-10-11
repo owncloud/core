@@ -30,11 +30,8 @@ use Test\TestCase;
  */
 class PersistentLockingTest extends TestCase {
 	/** @var IConfig */
-	private $config;
-	/**
-	 * @var PersistentLocking
-	 */
-	private $panel;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
+	private \OC\Settings\Panels\Admin\PersistentLocking $panel;
 
 	public function setUp(): void {
 		parent::setUp();

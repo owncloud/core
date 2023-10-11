@@ -12,14 +12,10 @@ use OCP\IConfig;
 use OCP\ILogger;
 
 class Version20210511082903 implements ISimpleMigration {
-	/** @var IGlobalStoragesService */
-	private $storageService;
-	/** @var ICrypto */
-	private $crypto;
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
+	private \OCP\Files\External\Service\IGlobalStoragesService $storageService;
+	private \OCP\Security\ICrypto $crypto;
+	private \OCP\IConfig $config;
+	private \OCP\ILogger $logger;
 
 	public function __construct(
 		IGlobalStoragesService $storageService,

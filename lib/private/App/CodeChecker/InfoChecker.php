@@ -27,13 +27,11 @@ use OC\Hooks\BasicEmitter;
 use OCP\App\IAppManager;
 
 class InfoChecker extends BasicEmitter {
-	/** @var InfoParser */
-	private $infoParser;
+	private \OC\App\InfoParser $infoParser;
 
-	/** @var IAppManager */
-	private $appManager;
+	private \OCP\App\IAppManager $appManager;
 
-	private $mandatoryFields = [
+	private array $mandatoryFields = [
 		'author',
 		'description',
 		'id',
@@ -41,7 +39,7 @@ class InfoChecker extends BasicEmitter {
 		'name',
 		'version',
 	];
-	private $optionalFields = [
+	private array $optionalFields = [
 		'bugs',
 		'category',
 		'default_enable',
@@ -54,7 +52,7 @@ class InfoChecker extends BasicEmitter {
 		'types',
 		'website',
 	];
-	private $deprecatedFields = [
+	private array $deprecatedFields = [
 		'info',
 		'require',
 		'requiremax',
@@ -115,7 +113,7 @@ class InfoChecker extends BasicEmitter {
 
 		foreach ($info as $key => $value) {
 			if (\is_array($value)) {
-				$value = \json_encode($value);
+				$value = \json_encode($value, JSON_THROW_ON_ERROR);
 			}
 			if (\in_array($key, $this->mandatoryFields)) {
 				$this->emit('InfoChecker', 'mandatoryFieldFound', [$key, $value]);

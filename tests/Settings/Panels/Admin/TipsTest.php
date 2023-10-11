@@ -16,8 +16,7 @@ use OC\Settings\Panels\Admin\Tips;
  * @package Tests\Settings\Panels\Admin
  */
 class TipsTest extends \Test\TestCase {
-	/** @var Tips */
-	private $panel;
+	private \OC\Settings\Panels\Admin\Tips $panel;
 
 	public function setUp(): void {
 		parent::setUp();

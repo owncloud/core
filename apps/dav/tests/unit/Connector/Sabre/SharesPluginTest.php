@@ -27,43 +27,37 @@ use OCP\Share\IShare;
 class SharesPluginTest extends \Test\TestCase {
 	public const SHARETYPES_PROPERTYNAME = \OCA\DAV\Connector\Sabre\SharesPlugin::SHARETYPES_PROPERTYNAME;
 
-	/**
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+	private \Sabre\DAV\Server $server;
 
 	/**
 	 * @var \Sabre\DAV\Tree
 	 */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 
 	/**
 	 * @var \OCP\Share\IManager
 	 */
-	private $shareManager;
+	private \PHPUnit\Framework\MockObject\MockObject $shareManager;
 
 	/**
 	 * @var \OCP\Files\Folder
 	 */
 	private $userFolder;
 
-	/**
-	 * @var \OCA\DAV\Connector\Sabre\SharesPlugin
-	 */
-	private $plugin;
+	private \OCA\DAV\Connector\Sabre\SharesPlugin $plugin;
 
 	public function setUp(): void {
 		parent::setUp();
 		$this->server = new \Sabre\DAV\Server();
-		$this->tree = $this->getMockBuilder('\Sabre\DAV\Tree')
+		$this->tree = $this->getMockBuilder('\\' . \Sabre\DAV\Tree::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->shareManager = $this->createMock('\OCP\Share\IManager');
-		$user = $this->createMock('\OCP\IUser');
+		$this->shareManager = $this->createMock('\\' . \OCP\Share\IManager::class);
+		$user = $this->createMock('\\' . \OCP\IUser::class);
 		$user->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('user1'));
-		$userSession = $this->createMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$userSession->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($user));
@@ -80,7 +74,7 @@ class SharesPluginTest extends \Test\TestCase {
 	 * @dataProvider sharesGetPropertiesDataProvider
 	 */
 	public function testGetProperties($shareTypes) {
-		$sabreNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Node')
+		$sabreNode = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Node::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode->expects($this->any())
@@ -138,7 +132,7 @@ class SharesPluginTest extends \Test\TestCase {
 	 * @dataProvider sharesGetPropertiesDataProvider
 	 */
 	public function testPreloadThenGetProperties($shareTypes) {
-		$sabreNode1 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$sabreNode1 = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode1->expects($this->any())
@@ -146,7 +140,7 @@ class SharesPluginTest extends \Test\TestCase {
 			->will($this->returnValue(111));
 		$sabreNode1->expects($this->never())
 			->method('getPath');
-		$sabreNode2 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+		$sabreNode2 = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\File::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode2->expects($this->any())
@@ -155,7 +149,7 @@ class SharesPluginTest extends \Test\TestCase {
 		$sabreNode2->expects($this->never())
 			->method('getPath');
 
-		$sabreNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+		$sabreNode = $this->getMockBuilder('\\' . \OCA\DAV\Connector\Sabre\Directory::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$sabreNode->expects($this->any())

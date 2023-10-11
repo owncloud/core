@@ -36,13 +36,13 @@ class OccControllerTest extends TestCase {
 	public const TEMP_SECRET = 'test';
 
 	/** @var \OC\AppFramework\Http\Request | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private ?\PHPUnit\Framework\MockObject\MockObject $request = null;
 	/** @var  \OC\Core\Controller\OccController | \PHPUnit\Framework\MockObject\MockObject */
-	private $controller;
+	private ?\OC\Core\Controller\OccController $controller = null;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private ?\PHPUnit\Framework\MockObject\MockObject $config = null;
 	/** @var  Application | \PHPUnit\Framework\MockObject\MockObject */
-	private $console;
+	private ?\PHPUnit\Framework\MockObject\MockObject $console = null;
 
 	public function testFromInvalidLocation() {
 		$fakeHost = 'example.org';
@@ -102,14 +102,14 @@ class OccControllerTest extends TestCase {
 		$this->assertEquals(0, $responseData['exitCode']);
 
 		$this->assertArrayHasKey('response', $responseData);
-		$decoded = \json_decode($responseData['response'], true);
+		$decoded = \json_decode($responseData['response'], true, 512, JSON_THROW_ON_ERROR);
 
 		$this->assertArrayHasKey('installed', $decoded);
 		$this->assertTrue($decoded['installed']);
 	}
 
 	private function getControllerMock($host) {
-		$this->request = $this->getMockBuilder('OC\AppFramework\Http\Request')
+		$this->request = $this->getMockBuilder(\OC\AppFramework\Http\Request::class)
 			->setConstructorArgs([
 				['server' => []],
 				\OC::$server->getSecureRandom(),
@@ -121,14 +121,14 @@ class OccControllerTest extends TestCase {
 		$this->request->expects($this->any())->method('getRemoteAddress')
 			->will($this->returnValue($host));
 
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->config->expects($this->any())->method('getSystemValue')
 			->with('updater.secret')
 			->willReturn(\password_hash(self::TEMP_SECRET, PASSWORD_DEFAULT));
 
-		$this->console = $this->getMockBuilder('\OC\Console\Application')
+		$this->console = $this->getMockBuilder('\\' . \OC\Console\Application::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -137,7 +137,7 @@ class OccControllerTest extends TestCase {
 			$this->request,
 			$this->config,
 			$this->console,
-			$this->getMockBuilder('\OCP\ILogger')
+			$this->getMockBuilder('\\' . \OCP\ILogger::class)
 				->disableOriginalConstructor()
 				->getMock()
 		);

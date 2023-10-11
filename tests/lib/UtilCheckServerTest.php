@@ -22,15 +22,13 @@ class UtilCheckServerTest extends TestCase {
 	 */
 	protected function getConfig($systemOptions) {
 		$systemOptions['datadirectory'] = $this->datadir;
-		$config = $this->getMockBuilder('\OCP\IConfig')
+		$config = $this->getMockBuilder('\\' . \OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		$config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnCallback(function ($key, $default) use ($systemOptions) {
-				return isset($systemOptions[$key]) ? $systemOptions[$key] : $default;
-			}));
+			->will($this->returnCallback(fn ($key, $default) => $systemOptions[$key] ?? $default));
 		return $config;
 	}
 

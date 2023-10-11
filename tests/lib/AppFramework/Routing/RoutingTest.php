@@ -65,7 +65,7 @@ class RoutingTest extends \Test\TestCase {
 		]];
 
 		// router mock
-		$router = $this->createMock("\OC\Route\Router", ['create'], [\OC::$server->getLogger()]);
+		$router = $this->createMock('\\' . \OC\Route\Router::class);
 
 		// load route configuration
 		$container = new DIContainer('app1');
@@ -111,7 +111,7 @@ class RoutingTest extends \Test\TestCase {
 		$route = $this->mockRoute($container, $verb, $controllerName, $actionName, $requirements, $defaults);
 
 		// router mock
-		$router = $this->createMock("\OC\Route\Router", ['create'], [\OC::$server->getLogger()]);
+		$router = $this->createMock('\\' . \OC\Route\Router::class);
 
 		// we expect create to be called once:
 		$router
@@ -134,7 +134,7 @@ class RoutingTest extends \Test\TestCase {
 	 */
 	private function assertResource($yaml, $resourceName, $url, $controllerName, $paramName) {
 		// router mock
-		$router = $this->createMock("\OC\Route\Router", ['create'], [\OC::$server->getLogger()]);
+		$router = $this->createMock('\\' . \OC\Route\Router::class);
 
 		// route mocks
 		$container = new DIContainer('app1');
@@ -187,7 +187,7 @@ class RoutingTest extends \Test\TestCase {
 		array $requirements= [],
 		array $defaults= []
 	) {
-		$route = $this->createMock("\OC\Route\Route", ['method', 'action', 'requirements', 'defaults'], [], '', false);
+		$route = $this->createMock('\\' . \OC\Route\Route::class);
 		$route
 			->expects($this->exactly(1))
 			->method('method')

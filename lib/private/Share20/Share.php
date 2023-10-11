@@ -32,28 +32,21 @@ use OCP\Share\IAttributes;
 use OCP\Share\IShare;
 
 class Share implements IShare {
-	/** @var string */
-	private $id;
-	/** @var string */
-	private $providerId;
+	private ?string $id = null;
+	private ?string $providerId = null;
 	/** @var Node */
 	private $node;
 	/** @var int */
 	private $fileId;
-	/** @var string */
-	private $nodeType;
+	private ?string $nodeType = null;
 	/** @var int */
 	private $shareType;
-	/** @var string */
-	private $sharedWith;
-	/** @var string */
-	private $sharedBy;
-	/** @var string */
-	private $shareOwner;
+	private ?string $sharedWith = null;
+	private ?string $sharedBy = null;
+	private ?string $shareOwner = null;
 	/** @var int */
 	private $permissions;
-	/** @var IAttributes */
-	private $attributes;
+	private ?\OCP\Share\IAttributes $attributes = null;
 	/** @var \DateTime */
 	private $expireDate;
 	/** @var string */
@@ -64,22 +57,18 @@ class Share implements IShare {
 	private $parent;
 	/** @var string */
 	private $target;
-	/** @var \DateTime */
-	private $shareTime;
+	private ?\DateTime $shareTime = null;
 	/** @var bool */
 	private $mailSend;
 	/** @var string */
 	private $name;
 	/** @var int */
 	private $state;
-	/** @var bool */
-	private $shouldHashPassword = true;
+	private bool $shouldHashPassword = true;
 
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
 	public function __construct(IRootFolder $rootFolder, IUserManager $userManager) {
 		$this->rootFolder = $rootFolder;

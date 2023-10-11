@@ -49,7 +49,7 @@ use Symfony\Component\Process\ExecutableFinder;
  * Collection of useful functions
  */
 class OC_Helper {
-	private static $templateManager;
+	private static ?\OC\Files\Type\TemplateManager $templateManager = null;
 
 	/**
 	 * Creates an absolute url for public use
@@ -591,7 +591,7 @@ class OC_Helper {
 		$quota = \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		$storage = $rootInfo->getStorage();
 		$sourceStorage = $storage;
-		if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
+		if ($storage->instanceOfStorage('\\' . \OCA\Files_Sharing\SharedStorage::class)) {
 			$includeExtStorage = false;
 			'@phan-var \OCA\Files_Sharing\SharedStorage $storage';
 			$sourceStorage = $storage->getSourceStorage();
@@ -605,7 +605,7 @@ class OC_Helper {
 		}
 
 		// TODO: need a better way to get total space from storage
-		if ($sourceStorage->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota')) {
+		if ($sourceStorage->instanceOfStorage('\\' . \OC\Files\Storage\Wrapper\Quota::class)) {
 			/** @var \OC\Files\Storage\Wrapper\Quota $sourceStorage */
 			'@phan-var \OC\Files\Storage\Wrapper\Quota $sourceStorage';
 			$quota = $sourceStorage->getQuota();

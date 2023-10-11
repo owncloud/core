@@ -101,17 +101,13 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		'{http://calendarserver.org/ns/}subscribed-strip-attachments' => 'stripattachments',
 	];
 
-	/** @var IDBConnection */
-	private $db;
+	private \OCP\IDBConnection $db;
 
-	/** @var Backend */
-	private $sharingBackend;
+	private \OCA\DAV\DAV\Sharing\Backend $sharingBackend;
 
-	/** @var Principal */
-	private $principalBackend;
+	private \OCA\DAV\Connector\Sabre\Principal $principalBackend;
 
-	/** @var ISecureRandom */
-	private $random;
+	private \OCP\Security\ISecureRandom $random;
 
 	/** @var bool */
 	private $legacyMode;
@@ -234,7 +230,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->execute();
 
 		while ($row = $result->fetch()) {
-			list(, $name) = \Sabre\Uri\split($row['principaluri']);
+			[, $name] = \Sabre\Uri\split($row['principaluri']);
 			$uri = $row['uri'] . '_shared_by_' . $name;
 			$row['displayname'] .= " ($name)";
 			$components = [];
@@ -337,7 +333,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->execute();
 
 		while ($row = $result->fetch()) {
-			list(, $name) = \Sabre\Uri\split($row['principaluri']);
+			[, $name] = \Sabre\Uri\split($row['principaluri']);
 			$row['displayname'] .= "($name)";
 			$components = [];
 			if ($row['components']) {
@@ -401,7 +397,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			throw new NotFound('Node with name \'' . $uri . '\' could not be found');
 		}
 
-		list(, $name) = \Sabre\Uri\split($row['principaluri']);
+		[, $name] = \Sabre\Uri\split($row['principaluri']);
 		$row['displayname'] = $row['displayname'] . ' ' . "($name)";
 		$components = [];
 		if ($row['components']) {
@@ -788,9 +784,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			return $result;
 		}
 		$chunks = \array_chunk($uris, $chunkSize);
-		$results = \array_map(function ($chunk) use ($calendarId) {
-			return $this->getMultipleCalendarObjects($calendarId, $chunk);
-		}, $chunks);
+		$results = \array_map(fn ($chunk) => $this->getMultipleCalendarObjects($calendarId, $chunk), $chunks);
 
 		return \array_merge(...$results);
 	}
@@ -1659,8 +1653,8 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 
 	private function convertPrincipal($principalUri, $toV2 = null) {
 		if ($this->principalBackend->getPrincipalPrefix() === 'principals') {
-			list(, $name) = \Sabre\Uri\split($principalUri);
-			$toV2 = $toV2 === null ? !$this->legacyMode : $toV2;
+			[, $name] = \Sabre\Uri\split($principalUri);
+			$toV2 ??= !$this->legacyMode;
 			if ($toV2) {
 				return "principals/users/$name";
 			}

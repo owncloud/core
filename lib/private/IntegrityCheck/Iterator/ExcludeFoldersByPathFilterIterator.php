@@ -23,7 +23,7 @@
 namespace OC\IntegrityCheck\Iterator;
 
 class ExcludeFoldersByPathFilterIterator extends \RecursiveFilterIterator {
-	private $excludedFolders = [];
+	private array $excludedFolders = [];
 
 	public function __construct(\RecursiveIterator $iterator, $root = '') {
 		parent::__construct($iterator);

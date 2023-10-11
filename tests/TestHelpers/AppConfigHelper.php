@@ -513,7 +513,7 @@ class AppConfigHelper extends Assert {
 		}
 
 		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data[0];
-		return \json_decode(\json_encode($responseXml), true)['element'];
+		return \json_decode(\json_encode($responseXml, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR)['element'];
 	}
 
 	/**
@@ -567,6 +567,6 @@ class AppConfigHelper extends Assert {
 		}
 
 		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data[0];
-		return \json_decode(\json_encode($responseXml), true)['element'];
+		return \json_decode(\json_encode($responseXml, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR)['element'];
 	}
 }

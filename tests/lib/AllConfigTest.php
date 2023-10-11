@@ -34,7 +34,7 @@ class AllConfigTest extends \Test\TestCase {
 			$connection = $this->connection;
 		}
 		if ($systemConfig === null) {
-			$systemConfig = $this->getMockBuilder('\OC\SystemConfig')
+			$systemConfig = $this->getMockBuilder('\\' . \OC\SystemConfig::class)
 				->disableOriginalConstructor()
 				->getMock();
 		}
@@ -220,13 +220,13 @@ class AllConfigTest extends \Test\TestCase {
 		// TODO - FIXME until the dependency injection is handled properly (in AllConfig)
 		$this->markTestSkipped('Skipped because this is just testable if database connection can be injected');
 
-		$resultMock = $this->getMockBuilder('\Doctrine\DBAL\Driver\Statement')
+		$resultMock = $this->getMockBuilder('\\' . \Doctrine\DBAL\Driver\Statement::class)
 			->disableOriginalConstructor()->getMock();
 		$resultMock->expects($this->once())
 			->method('fetchColumn')
 			->will($this->returnValue('valueSetUnchanged'));
 
-		$connectionMock = $this->createMock('\OCP\IDBConnection');
+		$connectionMock = $this->createMock('\\' . \OCP\IDBConnection::class);
 		$connectionMock->expects($this->once())
 			->method('executeQuery')
 			->with(
@@ -463,7 +463,7 @@ class AllConfigTest extends \Test\TestCase {
 
 	public function testGetUsersForUserValue() {
 		// mock the check for the database to run the correct SQL statements for each database type
-		$systemConfig = $this->getMockBuilder('\OC\SystemConfig')
+		$systemConfig = $this->getMockBuilder('\\' . \OC\SystemConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$config = $this->getConfig($systemConfig);

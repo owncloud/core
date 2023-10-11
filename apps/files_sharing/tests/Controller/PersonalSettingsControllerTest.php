@@ -32,16 +32,15 @@ use Test\TestCase;
 
 class PersonalSettingsControllerTest extends TestCase {
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
-	/** @var PersonalSettingsController $personalSettingsController */
-	private $personalSettingsController;
+	private \OCA\Files_Sharing\Controller\PersonalSettingsController $personalSettingsController;
 
 	protected function setUp(): void {
 		parent::setUp();

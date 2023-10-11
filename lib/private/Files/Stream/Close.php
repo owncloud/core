@@ -28,11 +28,11 @@ namespace OC\Files\Stream;
  * stream wrapper that provides a callback on stream close
  */
 class Close {
-	private static $callBacks = [];
-	private $path = '';
+	private static array $callBacks = [];
+	private string $path = '';
 	private $source;
-	private static $open = [];
-	private $meta;
+	private static array $open = [];
+	private ?array $meta = null;
 
 	public function stream_open($path, $mode, $options, &$opened_path) {
 		$path = \substr($path, \strlen('close://'));

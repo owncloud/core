@@ -19,12 +19,12 @@ use OCP\Route\IRouter;
  */
 class UrlGeneratorTest extends TestCase {
 	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OC\URLGenerator $urlGenerator;
 	/** @var IRouter | \PHPUnit\Framework\MockObject\MockObject */
-	private $router;
+	private \PHPUnit\Framework\MockObject\MockObject $router;
 
 	/** @var EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
-	private $environmentHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $environmentHelper;
 
 	public function setUp(): void {
 		parent::setUp();

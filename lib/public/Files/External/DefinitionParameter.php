@@ -47,10 +47,10 @@ class DefinitionParameter implements \JsonSerializable {
 	private $text;
 
 	/** @var int value type, see self::VALUE_* constants */
-	private $type = self::VALUE_TEXT;
+	private int $type = self::VALUE_TEXT;
 
 	/** @var int flags, see self::FLAG_* constants */
-	private $flags = self::FLAG_NONE;
+	private int $flags = self::FLAG_NONE;
 
 	/**
 	 * @param string $name

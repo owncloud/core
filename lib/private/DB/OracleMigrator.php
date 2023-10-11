@@ -69,9 +69,7 @@ class OracleMigrator extends Migrator {
 		return new Index(
 			//TODO migrate existing uppercase indexes, then $this->connection->quoteIdentifier($index->getName()),
 			$index->getName(),
-			\array_map(function ($columnName) {
-				return $this->connection->quoteIdentifier($columnName);
-			}, $index->getColumns()),
+			\array_map(fn ($columnName) => $this->connection->quoteIdentifier($columnName), $index->getColumns()),
 			$index->isUnique(),
 			$index->isPrimary(),
 			$index->getFlags(),
@@ -88,13 +86,9 @@ class OracleMigrator extends Migrator {
 	 */
 	protected function quoteForeignKeyConstraint($fkc) {
 		return new ForeignKeyConstraint(
-			\array_map(function ($columnName) {
-				return $this->connection->quoteIdentifier($columnName);
-			}, $fkc->getLocalColumns()),
+			\array_map(fn ($columnName) => $this->connection->quoteIdentifier($columnName), $fkc->getLocalColumns()),
 			$this->connection->quoteIdentifier($fkc->getForeignTableName()),
-			\array_map(function ($columnName) {
-				return $this->connection->quoteIdentifier($columnName);
-			}, $fkc->getForeignColumns()),
+			\array_map(fn ($columnName) => $this->connection->quoteIdentifier($columnName), $fkc->getForeignColumns()),
 			$fkc->getName(),
 			$fkc->getOptions()
 		);
@@ -109,40 +103,28 @@ class OracleMigrator extends Migrator {
 		$schemaDiff = parent::getDiff($targetSchema, $connection);
 
 		// oracle forces us to quote the identifiers
-		$schemaDiff->newTables = \array_map(function (Table $table) {
-			return new Table(
-				$this->connection->quoteIdentifier($table->getName()),
-				\array_map(function (Column $column) {
-					return $this->quoteColumn($column);
-				}, $table->getColumns()),
-				\array_map(function (Index $index) {
-					return $this->quoteIndex($index);
-				}, $table->getIndexes()),
-				\array_map(function (ForeignKeyConstraint $fck) {
-					return $this->quoteForeignKeyConstraint($fck);
-				}, $table->getForeignKeys()),
-				0,
-				$table->getOptions()
-			);
-		}, $schemaDiff->newTables);
+		$schemaDiff->newTables = \array_map(fn (Table $table) => new Table(
+			$this->connection->quoteIdentifier($table->getName()),
+			\array_map(fn (Column $column) => $this->quoteColumn($column), $table->getColumns()),
+			\array_map(fn (Index $index) => $this->quoteIndex($index), $table->getIndexes()),
+			\array_map(fn (ForeignKeyConstraint $fck) => $this->quoteForeignKeyConstraint($fck), $table->getForeignKeys()),
+			0,
+			$table->getOptions()
+		), $schemaDiff->newTables);
 
-		$schemaDiff->removedTables = \array_map(function (Table $table) {
-			return new Table(
-				$this->connection->quoteIdentifier($table->getName()),
-				$table->getColumns(),
-				$table->getIndexes(),
-				$table->getForeignKeys(),
-				0,
-				$table->getOptions()
-			);
-		}, $schemaDiff->removedTables);
+		$schemaDiff->removedTables = \array_map(fn (Table $table) => new Table(
+			$this->connection->quoteIdentifier($table->getName()),
+			$table->getColumns(),
+			$table->getIndexes(),
+			$table->getForeignKeys(),
+			0,
+			$table->getOptions()
+		), $schemaDiff->removedTables);
 
 		foreach ($schemaDiff->changedTables as $tableDiff) {
 			$tableDiff->name = $this->connection->quoteIdentifier($tableDiff->name);
 
-			$tableDiff->addedColumns = \array_map(function (Column $column) {
-				return $this->quoteColumn($column);
-			}, $tableDiff->addedColumns);
+			$tableDiff->addedColumns = \array_map(fn (Column $column) => $this->quoteColumn($column), $tableDiff->addedColumns);
 
 			foreach ($tableDiff->changedColumns as $column) {
 				$column->oldColumnName = $this->connection->quoteIdentifier($column->oldColumnName);
@@ -150,45 +132,25 @@ class OracleMigrator extends Migrator {
 				$column->changedProperties = \array_diff($column->changedProperties, ['autoincrement', 'unsigned']);
 			}
 			// remove columns that no longer have changed (because autoincrement and unsigned are not supported)
-			$tableDiff->changedColumns = \array_filter($tableDiff->changedColumns, function (ColumnDiff $column) {
-				return \count($column->changedProperties) > 0;
-			});
+			$tableDiff->changedColumns = \array_filter($tableDiff->changedColumns, fn (ColumnDiff $column) => \count($column->changedProperties) > 0);
 
-			$tableDiff->removedColumns = \array_map(function (Column $column) {
-				return $this->quoteColumn($column);
-			}, $tableDiff->removedColumns);
+			$tableDiff->removedColumns = \array_map(fn (Column $column) => $this->quoteColumn($column), $tableDiff->removedColumns);
 
-			$tableDiff->renamedColumns = \array_map(function (Column $column) {
-				return $this->quoteColumn($column);
-			}, $tableDiff->renamedColumns);
+			$tableDiff->renamedColumns = \array_map(fn (Column $column) => $this->quoteColumn($column), $tableDiff->renamedColumns);
 
-			$tableDiff->addedIndexes = \array_map(function (Index $index) {
-				return $this->quoteIndex($index);
-			}, $tableDiff->addedIndexes);
+			$tableDiff->addedIndexes = \array_map(fn (Index $index) => $this->quoteIndex($index), $tableDiff->addedIndexes);
 
-			$tableDiff->changedIndexes = \array_map(function (Index $index) {
-				return $this->quoteIndex($index);
-			}, $tableDiff->changedIndexes);
+			$tableDiff->changedIndexes = \array_map(fn (Index $index) => $this->quoteIndex($index), $tableDiff->changedIndexes);
 
-			$tableDiff->removedIndexes = \array_map(function (Index $index) {
-				return $this->quoteIndex($index);
-			}, $tableDiff->removedIndexes);
+			$tableDiff->removedIndexes = \array_map(fn (Index $index) => $this->quoteIndex($index), $tableDiff->removedIndexes);
 
-			$tableDiff->renamedIndexes = \array_map(function (Index $index) {
-				return $this->quoteIndex($index);
-			}, $tableDiff->renamedIndexes);
+			$tableDiff->renamedIndexes = \array_map(fn (Index $index) => $this->quoteIndex($index), $tableDiff->renamedIndexes);
 
-			$tableDiff->addedForeignKeys = \array_map(function (ForeignKeyConstraint $fkc) {
-				return $this->quoteForeignKeyConstraint($fkc);
-			}, $tableDiff->addedForeignKeys);
+			$tableDiff->addedForeignKeys = \array_map(fn (ForeignKeyConstraint $fkc) => $this->quoteForeignKeyConstraint($fkc), $tableDiff->addedForeignKeys);
 
-			$tableDiff->changedForeignKeys = \array_map(function (ForeignKeyConstraint $fkc) {
-				return $this->quoteForeignKeyConstraint($fkc);
-			}, $tableDiff->changedForeignKeys);
+			$tableDiff->changedForeignKeys = \array_map(fn (ForeignKeyConstraint $fkc) => $this->quoteForeignKeyConstraint($fkc), $tableDiff->changedForeignKeys);
 
-			$tableDiff->removedForeignKeys = \array_map(function (ForeignKeyConstraint $fkc) {
-				return $this->quoteForeignKeyConstraint($fkc);
-			}, $tableDiff->removedForeignKeys);
+			$tableDiff->removedForeignKeys = \array_map(fn (ForeignKeyConstraint $fkc) => $this->quoteForeignKeyConstraint($fkc), $tableDiff->removedForeignKeys);
 		}
 
 		return $schemaDiff;

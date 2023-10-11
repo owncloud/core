@@ -59,6 +59,6 @@ class LockNotAcquiredException extends \Exception {
 	 * @since 7.0.0
 	 */
 	public function __toString() {
-		return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+		return self::class . ": [{$this->code}]: {$this->message}\n";
 	}
 }

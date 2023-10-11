@@ -27,14 +27,11 @@ use Sabre\DAV\Exception\NotFound;
 use Test\TestCase;
 
 class TrashBinHomeTest extends TestCase {
-	/**
-	 * @var TrashBinHome
-	 */
-	private $trashBinHome;
+	private \OCA\DAV\TrashBin\TrashBinHome $trashBinHome;
 	/**
 	 * @var TrashBinManager | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $trashBinManager;
+	private \PHPUnit\Framework\MockObject\MockObject $trashBinManager;
 
 	protected function setUp(): void {
 		parent::setUp();

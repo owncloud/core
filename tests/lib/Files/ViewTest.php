@@ -43,7 +43,7 @@ class TemporaryNoCross extends Temporary {
 
 class TemporaryNoLocal extends Temporary {
 	public function instanceOfStorage($className) {
-		if ($className === '\OC\Files\Storage\Local') {
+		if ($className === '\\' . \OC\Files\Storage\Local::class) {
 			return false;
 		}
 
@@ -63,12 +63,9 @@ class ViewTest extends TestCase {
 	/**
 	 * @var Storage[] $storages
 	 */
-	private $storages = [];
+	private array $storages = [];
 
-	/**
-	 * @var string
-	 */
-	private $user;
+	private string $user;
 
 	/**
 	 * @var \OCP\IUser
@@ -80,11 +77,10 @@ class ViewTest extends TestCase {
 	 */
 	private $groupObject;
 
-	/** @var Storage */
-	private $tempStorage;
+	private ?\OC\Files\Storage\Temporary $tempStorage = null;
 
 	/** @var \OC\AllConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -1661,7 +1657,7 @@ class ViewTest extends TestCase {
 	public function testMountPointMove() {
 		static::loginAsUser($this->user);
 
-		list($mount1, $mount2) = $this->createTestMovableMountPoints([
+		[$mount1, $mount2] = $this->createTestMovableMountPoints([
 			$this->user . '/files/mount1',
 			$this->user . '/files/mount2',
 		]);
@@ -1686,7 +1682,7 @@ class ViewTest extends TestCase {
 	public function testMoveMountPointIntoAnother() {
 		static::loginAsUser($this->user);
 
-		list($mount1, $mount2) = $this->createTestMovableMountPoints([
+		[$mount1, $mount2] = $this->createTestMovableMountPoints([
 			$this->user . '/files/mount1',
 			$this->user . '/files/mount2',
 		]);
@@ -1711,7 +1707,7 @@ class ViewTest extends TestCase {
 
 		$userFolder = \OC::$server->getUserFolder($this->user);
 
-		list($mount1) = $this->createTestMovableMountPoints([
+		[$mount1] = $this->createTestMovableMountPoints([
 			$this->user . '/files/mount1',
 		], false);
 
@@ -2167,7 +2163,7 @@ class ViewTest extends TestCase {
 
 		$storage->expects($this->any())
 			->method('filemtime')
-			->will($this->returnValue(123456789));
+			->will($this->returnValue(123_456_789));
 
 		$sourcePath = 'original.txt';
 		$targetPath = 'target.txt';
@@ -2299,9 +2295,7 @@ class ViewTest extends TestCase {
 		$this->assertEquals('test', $view->getFileInfo($path)->getOwner()->getUID());
 
 		$folderInfo = $view->getDirectoryContent('');
-		$folderInfo = \array_values(\array_filter($folderInfo, function (FileInfo $info) {
-			return $info->getName() === 'foo.txt';
-		}));
+		$folderInfo = \array_values(\array_filter($folderInfo, fn (FileInfo $info) => $info->getName() === 'foo.txt'));
 
 		$this->assertEquals('test', $folderInfo[0]->getOwner()->getUID());
 
@@ -2309,9 +2303,7 @@ class ViewTest extends TestCase {
 		Filesystem::mount($subStorage, [], '/test/files/asd');
 
 		$folderInfo = $view->getDirectoryContent('');
-		$folderInfo = \array_values(\array_filter($folderInfo, function (FileInfo $info) {
-			return $info->getName() === 'asd';
-		}));
+		$folderInfo = \array_values(\array_filter($folderInfo, fn (FileInfo $info) => $info->getName() === 'asd'));
 
 		$this->assertEquals('test', $folderInfo[0]->getOwner()->getUID());
 	}
@@ -2347,7 +2339,7 @@ class ViewTest extends TestCase {
 
 		$storage2->expects($this->any())
 			->method('filemtime')
-			->will($this->returnValue(123456789));
+			->will($this->returnValue(123_456_789));
 
 		$sourcePath = 'original.txt';
 		$targetPath = 'substorage/target.txt';
@@ -2396,7 +2388,7 @@ class ViewTest extends TestCase {
 	public function testLockMoveMountPoint() {
 		static::loginAsUser('test');
 
-		list($mount) = $this->createTestMovableMountPoints([
+		[$mount] = $this->createTestMovableMountPoints([
 			$this->user . '/files/substorage',
 		]);
 
@@ -2615,9 +2607,7 @@ class ViewTest extends TestCase {
 
 		$content = $view->getDirectoryContent('', $filter);
 
-		$files = \array_map(function (FileInfo $info) {
-			return $info->getName();
-		}, $content);
+		$files = \array_map(fn (FileInfo $info) => $info->getName(), $content);
 		\sort($files);
 
 		$this->assertEquals($expected, $files);

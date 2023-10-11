@@ -62,15 +62,15 @@ class ApplicationTest extends TestCase {
 		if ($isHandlerRegistered === true) {
 			$eventDispatcher->method('addListener')
 				->withConsecutive(
-					['OCP\Share\Events\AcceptShare', $this->anything()],
-					['OCP\Share\Events\DeclineShare', $this->anything()],
+					[\OCP\Share\Events\AcceptShare::class, $this->anything()],
+					[\OCP\Share\Events\DeclineShare::class, $this->anything()],
 					['OCA\Files_Sharing::loadAdditionalScripts', $this->anything()]
 				);
 		} else {
 			$eventDispatcher->method('addListener')
 				->withConsecutive(
-					['OCP\Share\Events\AcceptShare', $this->anything()],
-					['OCP\Share\Events\DeclineShare', $this->anything()]
+					[\OCP\Share\Events\AcceptShare::class, $this->anything()],
+					[\OCP\Share\Events\DeclineShare::class, $this->anything()]
 				);
 		}
 		$application->registerListeners();

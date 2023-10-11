@@ -103,8 +103,8 @@ class OC_API {
 	 * api actions
 	 */
 	protected static $actions = [];
-	private static $logoutRequired = false;
-	private static $isLoggedIn = false;
+	private static bool $logoutRequired = false;
+	private static bool $isLoggedIn = false;
 
 	/**
 	 * registers an api call
@@ -502,7 +502,7 @@ class OC_API {
 	 * @param string $format
 	 */
 	public static function setContentType($format = null) {
-		$format = $format === null ? self::requestedFormat() : $format;
+		$format ??= self::requestedFormat();
 		if ($format === 'xml') {
 			\header('Content-type: text/xml; charset=UTF-8');
 			return;

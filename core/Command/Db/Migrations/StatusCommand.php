@@ -30,8 +30,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class StatusCommand extends Command {
-	/** @var IDBConnection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	/**
 	 * @param IDBConnection $connection

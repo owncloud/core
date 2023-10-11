@@ -39,15 +39,9 @@ use OC\Cache\CappedMemoryCache;
  * Cache mounts points per user in the cache so we can easily look them up
  */
 class UserMountCache implements IUserMountCache {
-	/**
-	 * @var IDBConnection
-	 */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
 	/**
 	 * Cached mount info.
@@ -57,10 +51,7 @@ class UserMountCache implements IUserMountCache {
 	 **/
 	private $mountsForUsers;
 
-	/**
-	 * @var ILogger
-	 */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * @var CappedMemoryCache
@@ -95,10 +86,9 @@ class UserMountCache implements IUserMountCache {
 		$newMounts = \array_values(\array_filter($newMounts));
 
 		$cachedMounts = $this->getMountsForUser($user);
-		$mountDiff = function (ICachedMountInfo $mount1, ICachedMountInfo $mount2) {
-			// since we are only looking for mounts for a specific user comparing on root id is enough
-			return $mount1->getRootId() - $mount2->getRootId();
-		};
+		$mountDiff = fn (ICachedMountInfo $mount1, ICachedMountInfo $mount2) =>
+	  // since we are only looking for mounts for a specific user comparing on root id is enough
+	  $mount1->getRootId() - $mount2->getRootId();
 
 		/** @var ICachedMountInfo[] $addedMounts */
 		$addedMounts = \array_udiff($newMounts, $cachedMounts, $mountDiff);
@@ -291,7 +281,7 @@ class UserMountCache implements IUserMountCache {
 	 */
 	public function getMountsForFileId($fileId) {
 		try {
-			list($storageId, $internalPath) = $this->getCacheInfoFromFileId($fileId);
+			[$storageId, $internalPath] = $this->getCacheInfoFromFileId($fileId);
 		} catch (NotFoundException $e) {
 			return [];
 		}
@@ -303,7 +293,7 @@ class UserMountCache implements IUserMountCache {
 				return true;
 			}
 			try {
-				list(, $internalMountPath) = $this->getCacheInfoFromFileId($mount->getRootId());
+				[, $internalMountPath] = $this->getCacheInfoFromFileId($mount->getRootId());
 			} catch (NotFoundException $e) {
 				return false;
 			}

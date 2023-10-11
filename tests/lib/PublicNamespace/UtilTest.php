@@ -34,7 +34,7 @@ class UtilTest extends \Test\TestCase {
 	*/
 	public function testOverrideChannel($channel) {
 		\OCP\Util::setChannel($channel);
-		$actual = \OCP\Util::getChannel($channel);
+		$actual = \OCP\Util::getChannel();
 		$this->assertEquals($channel, $actual);
 	}
 	

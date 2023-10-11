@@ -38,17 +38,13 @@ use Sabre\DAV\PropPatch;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 
 class Principal implements BackendInterface {
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IGroupManager */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
-	/** @var string */
-	private $principalPrefix;
+	private string $principalPrefix;
 
-	/** @var bool */
-	private $hasGroups;
+	private bool $hasGroups;
 
 	/**
 	 * @param IUserManager $userManager
@@ -100,7 +96,7 @@ class Principal implements BackendInterface {
 	 * @return array
 	 */
 	public function getPrincipalByPath($path) {
-		list($prefix, $name) = \Sabre\Uri\split($path);
+		[$prefix, $name] = \Sabre\Uri\split($path);
 
 		if ($prefix === $this->principalPrefix) {
 			$user = $this->userManager->get($name);
@@ -138,7 +134,7 @@ class Principal implements BackendInterface {
 	 * @throws Exception
 	 */
 	public function getGroupMembership($principal, $needGroups = false) {
-		list($prefix, $name) = \Sabre\Uri\split($principal);
+		[$prefix, $name] = \Sabre\Uri\split($principal);
 
 		if ($prefix === $this->principalPrefix) {
 			$user = $this->userManager->get($name);
@@ -148,10 +144,9 @@ class Principal implements BackendInterface {
 
 			if ($this->hasGroups || $needGroups) {
 				$groups = $this->groupManager->getUserGroups($user, 'sharing');
-				$groups = \array_map(function ($group) {
-					/** @var IGroup $group */
-					return 'principals/groups/' . $group->getGID();
-				}, $groups);
+				$groups = \array_map(fn ($group) =>
+		/** @var IGroup $group */
+		'principals/groups/' . $group->getGID(), $groups);
 
 				return $groups;
 			}
@@ -224,7 +219,7 @@ class Principal implements BackendInterface {
 		$displayName = $user->getDisplayName();
 		$principal = [
 				'uri' => $this->principalPrefix . '/' . $userId,
-				'{DAV:}displayname' => $displayName === null ? $userId : $displayName,
+				'{DAV:}displayname' => $displayName ?? $userId,
 		];
 
 		$email = $user->getEMailAddress();

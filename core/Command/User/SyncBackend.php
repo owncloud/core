@@ -160,7 +160,7 @@ class SyncBackend extends Command {
 			$helper = $this->getHelper('question');
 			$question = new ChoiceQuestion(
 				'If unknown users are found, what do you want to do with their accounts? (removing the account will also remove its data)',
-				\array_merge(self::VALID_ACTIONS, ['ask later']),
+				[...self::VALID_ACTIONS, 'ask later'],
 				0
 			);
 			$missingAccountsAction = $helper->ask($input, $output, $question);
@@ -344,9 +344,7 @@ class SyncBackend extends Command {
 				break;
 		}
 		$backends = $this->userManager->getBackends();
-		$match = \array_filter($backends, static function ($b) use ($backend) {
-			return \get_class($b) === $backend;
-		});
+		$match = \array_filter($backends, static fn ($b) => \get_class($b) === $backend);
 		if (empty($match)) {
 			return null;
 		}

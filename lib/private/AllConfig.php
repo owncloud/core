@@ -39,14 +39,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * Class to combine all the configuration options ownCloud offers
  */
 class AllConfig implements IConfig {
-	/** @var SystemConfig */
-	private $systemConfig;
+	private \OC\SystemConfig $systemConfig;
 
 	/** @var IDBConnection */
 	private $connection;
 
-	/** @var EventDispatcher */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
 
 	/**
 	 * 3 dimensional array with the following structure:

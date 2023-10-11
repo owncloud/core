@@ -34,7 +34,7 @@ abstract class ForwardingEmitter extends BasicEmitter {
 	/**
 	 * @var \OC\Hooks\Emitter[] array
 	 */
-	private $forwardEmitters = [];
+	private array $forwardEmitters = [];
 
 	/**
 	 * @param string $scope
@@ -56,7 +56,7 @@ abstract class ForwardingEmitter extends BasicEmitter {
 
 		//forward all previously connected hooks
 		foreach ($this->listeners as $key => $listeners) {
-			list($scope, $method) = \explode('::', $key, 2);
+			[$scope, $method] = \explode('::', $key, 2);
 			foreach ($listeners as $listener) {
 				$emitter->listen($scope, $method, $listener);
 			}

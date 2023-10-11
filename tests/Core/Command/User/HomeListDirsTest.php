@@ -31,11 +31,10 @@ use Test\TestCase;
  * Class HomeListDirsTest
  */
 class HomeListDirsTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -87,7 +86,7 @@ class HomeListDirsTest extends TestCase {
 	}
 
 	private function overwriteConfigWithObjectStorage() {
-		$config = $this->createMock('\OCP\IConfig');
+		$config = $this->createMock('\\' . \OCP\IConfig::class);
 		$config->expects($this->any())
 			->method('getSystemValue')
 			->willReturn(['objectstore' => true]);
@@ -96,7 +95,7 @@ class HomeListDirsTest extends TestCase {
 	}
 
 	private function overwriteAppManagerWithObjectStorage() {
-		$config = $this->createMock('\OCP\App\IAppManager');
+		$config = $this->createMock('\\' . \OCP\App\IAppManager::class);
 		$config->expects($this->any())
 			->method('isEnabledForUser')
 			->willReturn(true);

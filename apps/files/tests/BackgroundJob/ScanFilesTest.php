@@ -33,19 +33,19 @@ use Test\TestCase;
  */
 class ScanFilesTest extends TestCase {
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var IUserManager */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 	/** @var ScanFiles */
-	private $scanFiles;
+	private \PHPUnit\Framework\MockObject\MockObject $scanFiles;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->createMock('\OCP\IConfig');
-		$this->userManager = $this->createMock('\OCP\IUserManager');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
+		$this->userManager = $this->createMock('\\' . \OCP\IUserManager::class);
 
-		$this->scanFiles = $this->getMockBuilder('\OCA\Files\BackgroundJob\ScanFiles')
+		$this->scanFiles = $this->getMockBuilder('\\' . \OCA\Files\BackgroundJob\ScanFiles::class)
 				->setConstructorArgs([
 						$this->config,
 						$this->userManager,
@@ -77,7 +77,7 @@ class ScanFilesTest extends TestCase {
 	}
 
 	public function testRunWithUsers() {
-		$fakeUser = $this->createMock('\OCP\IUser');
+		$fakeUser = $this->createMock('\\' . \OCP\IUser::class);
 		$this->config
 				->expects($this->once())
 				->method('getAppValue')

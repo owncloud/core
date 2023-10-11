@@ -16,13 +16,12 @@ use Test\TestCase;
 
 class DependencyAnalyzerTest extends TestCase {
 	/** @var Platform */
-	private $platformMock;
+	private \PHPUnit\Framework\MockObject\MockObject $platformMock;
 
 	/** @var IL10N */
-	private $l10nMock;
+	private \PHPUnit\Framework\MockObject\MockObject $l10nMock;
 
-	/** @var DependencyAnalyzer */
-	private $analyser;
+	private \OC\App\DependencyAnalyzer $analyser;
 
 	public function setUp(): void {
 		$this->platformMock = $this->getMockBuilder(Platform::class)
@@ -42,9 +41,7 @@ class DependencyAnalyzerTest extends TestCase {
 			->will($this->returnValue('Linux'));
 		$this->platformMock->expects($this->any())
 			->method('isCommandKnown')
-			->will($this->returnCallback(function ($command) {
-				return ($command === 'grep');
-			}));
+			->will($this->returnCallback(fn ($command) => $command === 'grep'));
 		$this->platformMock->expects($this->any())
 			->method('getLibraryVersion')
 			->will($this->returnCallback(function ($lib) {
@@ -57,14 +54,12 @@ class DependencyAnalyzerTest extends TestCase {
 			->method('getOcVersion')
 			->will($this->returnValue('8.0.2'));
 
-		$this->l10nMock = $this->getMockBuilder('\OCP\IL10N')
+		$this->l10nMock = $this->getMockBuilder('\\' . \OCP\IL10N::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->l10nMock->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 
 		$this->analyser = new DependencyAnalyzer($this->platformMock, $this->l10nMock);
 	}

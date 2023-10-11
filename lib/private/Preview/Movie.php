@@ -35,10 +35,9 @@ class Movie implements IProvider2 {
 	public static $atomicParsleyBinary;
 
 	/**
-	 * Keep track of movies without artwork to avoid retries in same request
-	 * @var array
-	 */
-	private $noArtworkIndex = [];
+  * Keep track of movies without artwork to avoid retries in same request
+  */
+	private array $noArtworkIndex = [];
 
 	/**
 	 * {@inheritDoc}
@@ -63,7 +62,7 @@ class Movie implements IProvider2 {
 
 			// we better use 5MB (1024 * 1024 * 5 = 5242880) instead of 1MB.
 			// in some cases 1MB was no enough to generate thumbnail
-			$firstmb = \stream_get_contents($handle, 5242880);
+			$firstmb = \stream_get_contents($handle, 5_242_880);
 			\file_put_contents($absPath, $firstmb);
 			\fclose($handle);
 		}

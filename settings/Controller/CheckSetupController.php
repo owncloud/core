@@ -43,18 +43,12 @@ use OCP\IURLGenerator;
  * @package OC\Settings\Controller
  */
 class CheckSetupController extends Controller {
-	/** @var IConfig */
-	private $config;
-	/** @var IClientService */
-	private $clientService;
-	/** @var \OC_Util */
-	private $util;
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var IL10N */
-	private $l10n;
-	/** @var Checker */
-	private $checker;
+	private \OCP\IConfig $config;
+	private \OCP\Http\Client\IClientService $clientService;
+	private \OC_Util $util;
+	private \OCP\IURLGenerator $urlGenerator;
+	private \OCP\IL10N $l10n;
+	private \OC\IntegrityCheck\Checker $checker;
 
 	/**
 	 * @param string $AppName
@@ -232,7 +226,7 @@ class CheckSetupController extends Controller {
 	 * @return bool
 	 */
 	private function isCorrectMemcachedPHPModuleInstalled() {
-		if ($this->config->getSystemValue('memcache.distributed', null) !== '\OC\Memcache\Memcached') {
+		if ($this->config->getSystemValue('memcache.distributed', null) !== '\\' . \OC\Memcache\Memcached::class) {
 			return true;
 		}
 

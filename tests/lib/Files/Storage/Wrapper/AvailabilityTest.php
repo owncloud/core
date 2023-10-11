@@ -23,7 +23,7 @@ namespace Test\Files\Storage\Wrapper;
 
 class AvailabilityTest extends \Test\TestCase {
 	protected function getWrapperInstance() {
-		$storage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
+		$storage = $this->getMockBuilder('\\' . \OC\Files\Storage\Temporary::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$wrapper = new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
@@ -34,7 +34,7 @@ class AvailabilityTest extends \Test\TestCase {
 	 * Storage is available
 	 */
 	public function testAvailable() {
-		list($storage, $wrapper) = $this->getWrapperInstance();
+		[$storage, $wrapper] = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
 			->willReturn(['available' => true, 'last_checked' => 0]);
@@ -53,7 +53,7 @@ class AvailabilityTest extends \Test\TestCase {
 	public function testUnavailable() {
 		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
 
-		list($storage, $wrapper) = $this->getWrapperInstance();
+		[$storage, $wrapper] = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
 			->willReturn(['available' => false, 'last_checked' => \time()]);
@@ -69,7 +69,7 @@ class AvailabilityTest extends \Test\TestCase {
 	 * Storage marked unavailable, TTL expired
 	 */
 	public function testUnavailableRecheck() {
-		list($storage, $wrapper) = $this->getWrapperInstance();
+		[$storage, $wrapper] = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
 			->willReturn(['available' => false, 'last_checked' => 0]);
@@ -95,7 +95,7 @@ class AvailabilityTest extends \Test\TestCase {
 	public function testAvailableThrowStorageNotAvailable() {
 		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
 
-		list($storage, $wrapper) = $this->getWrapperInstance();
+		[$storage, $wrapper] = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
 			->willReturn(['available' => true, 'last_checked' => 0]);
@@ -116,7 +116,7 @@ class AvailabilityTest extends \Test\TestCase {
 	 * Method failure does not indicate storage unavailability
 	 */
 	public function testAvailableFailure() {
-		list($storage, $wrapper) = $this->getWrapperInstance();
+		[$storage, $wrapper] = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
 			->willReturn(['available' => true, 'last_checked' => 0]);
@@ -139,7 +139,7 @@ class AvailabilityTest extends \Test\TestCase {
 	public function testAvailableThrow() {
 		$this->expectException(\Exception::class);
 
-		list($storage, $wrapper) = $this->getWrapperInstance();
+		[$storage, $wrapper] = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
 			->willReturn(['available' => true, 'last_checked' => 0]);

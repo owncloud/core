@@ -27,12 +27,11 @@ use OCA\Federation\DbHandler;
 use OCA\Federation\SyncFederationAddressBooks;
 
 class SyncFederationAddressbooksTest extends \Test\TestCase {
-	/** @var array */
-	private $callBacks = [];
+	private array $callBacks = [];
 
 	public function testSync() {
 		/** @var DbHandler | \PHPUnit\Framework\MockObject\MockObject $dbHandler */
-		$dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')->
+		$dbHandler = $this->getMockBuilder(\OCA\Federation\DbHandler::class)->
 			disableOriginalConstructor()->
 			getMock();
 		$dbHandler->method('getAllServer')->
@@ -46,7 +45,7 @@ class SyncFederationAddressbooksTest extends \Test\TestCase {
 		]);
 		$dbHandler->expects($this->once())->method('setServerStatus')->
 			with('https://cloud.drop.box', 1, '1');
-		$syncService = $this->getMockBuilder('OCA\DAV\CardDAV\SyncService')
+		$syncService = $this->getMockBuilder(\OCA\DAV\CardDAV\SyncService::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$syncService->expects($this->once())->method('syncRemoteAddressBook')
@@ -62,7 +61,7 @@ class SyncFederationAddressbooksTest extends \Test\TestCase {
 
 	public function testException() {
 		/** @var DbHandler | \PHPUnit\Framework\MockObject\MockObject $dbHandler */
-		$dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')->
+		$dbHandler = $this->getMockBuilder(\OCA\Federation\DbHandler::class)->
 		disableOriginalConstructor()->
 		getMock();
 		$dbHandler->method('getAllServer')->
@@ -74,7 +73,7 @@ class SyncFederationAddressbooksTest extends \Test\TestCase {
 				'sync_token' => '0'
 			]
 		]);
-		$syncService = $this->getMockBuilder('OCA\DAV\CardDAV\SyncService')
+		$syncService = $this->getMockBuilder(\OCA\DAV\CardDAV\SyncService::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$syncService->expects($this->once())->method('syncRemoteAddressBook')

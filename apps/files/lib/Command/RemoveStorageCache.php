@@ -36,8 +36,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RemoveStorageCache extends Command {
 	private const DEFAULT_CHUNK_SIZE = 1000;
 
-	/** @var IDBConnection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	public function __construct(IDBConnection $connection) {
 		parent::__construct();

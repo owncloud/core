@@ -22,27 +22,25 @@ class UtilTest extends TestCase {
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $groupManager;
 
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
-	/** @var  \OC\Encryption\Util */
-	private $util;
+	private \OC\Encryption\Util $util;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->view = $this->getMockBuilder('OC\Files\View')
+		$this->view = $this->getMockBuilder(\OC\Files\View::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->userManager = $this->getMockBuilder('OC\User\Manager')
+		$this->userManager = $this->getMockBuilder(\OC\User\Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->groupManager = $this->getMockBuilder('OC\Group\Manager')
+		$this->groupManager = $this->getMockBuilder(\OC\Group\Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->config = $this->getMockBuilder('OCP\IConfig')
+		$this->config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,7 +72,7 @@ class UtilTest extends TestCase {
 	 * @dataProvider providesHeaders
 	 */
 	public function testCreateHeader($expected, $header, $moduleId) {
-		$em = $this->createMock('\OCP\Encryption\IEncryptionModule');
+		$em = $this->createMock('\\' . \OCP\Encryption\IEncryptionModule::class);
 		$em->expects($this->any())->method('getId')->willReturn($moduleId);
 
 		$result = $this->util->createHeader($header, $em);
@@ -97,7 +95,7 @@ class UtilTest extends TestCase {
 
 		$header = ['header1' => 1, 'header2' => 2, 'oc_encryption_module' => 'foo'];
 
-		$em = $this->createMock('\OCP\Encryption\IEncryptionModule');
+		$em = $this->createMock('\\' . \OCP\Encryption\IEncryptionModule::class);
 		$em->expects($this->any())->method('getId')->willReturn('moduleId');
 
 		$this->util->createHeader($header, $em);

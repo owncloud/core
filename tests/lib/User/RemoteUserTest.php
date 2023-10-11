@@ -32,8 +32,7 @@ use Test\TestCase;
  * @package Test\User
  */
 class RemoteUserTest extends TestCase {
-	/** @var RemoteUser */
-	private $remoteUser;
+	private \OC\User\RemoteUser $remoteUser;
 
 	protected function setUp(): void {
 		$user = $this->createMock(IUser::class);

@@ -35,8 +35,7 @@ use OCP\AppFramework\Http\JSONResponse;
  * @package OCA\Files\Controller
  */
 class VersionController extends Controller {
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * @param string $appName

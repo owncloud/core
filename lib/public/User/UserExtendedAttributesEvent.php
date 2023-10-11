@@ -35,11 +35,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 class UserExtendedAttributesEvent extends Event {
 	public const USER_EXTENDED_ATTRIBUTES = 'UserExtendedAttributesEvent';
 
-	/** @var array */
-	private $attributes = [];
+	private array $attributes = [];
 
-	/** @var IUser */
-	private $user;
+	private \OCP\IUser $user;
 
 	/**
 	 * UserExtendedAttributesEvent constructor.

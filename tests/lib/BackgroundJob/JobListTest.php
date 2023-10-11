@@ -40,8 +40,8 @@ class JobListTest extends TestCase {
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->clearJobsList();
-		$this->config = $this->createMock('OCP\IConfig');
-		$this->timeFactory = $this->createMock('OCP\AppFramework\Utility\ITimeFactory');
+		$this->config = $this->createMock(\OCP\IConfig::class);
+		$this->timeFactory = $this->createMock(\OCP\AppFramework\Utility\ITimeFactory::class);
 		$this->logger = $this->createMock(ILogger::class);
 		$this->instance = new \OC\BackgroundJob\JobList(
 			$this->connection,
@@ -60,9 +60,7 @@ class JobListTest extends TestCase {
 	protected function getAllSorted() {
 		$jobs = $this->instance->getAll();
 
-		\usort($jobs, function (IJob $job1, IJob $job2) {
-			return $job1->getId() - $job2->getId();
-		});
+		\usort($jobs, fn (IJob $job1, IJob $job2) => $job1->getId() - $job2->getId());
 
 		return $jobs;
 	}
@@ -85,7 +83,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testAddRemove($argument) {
-		$this->timeFactory->method('getTime')->willReturn(164419800);
+		$this->timeFactory->method('getTime')->willReturn(164_419_800);
 		$existingJobs = $this->getAllSorted();
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
@@ -94,7 +92,7 @@ class JobListTest extends TestCase {
 
 		$this->assertCount(\count($existingJobs) + 1, $jobs);
 		$addedJob = $jobs[\count($jobs) - 1];
-		$this->assertInstanceOf('\Test\BackgroundJob\TestJob', $addedJob);
+		$this->assertInstanceOf('\\' . \Test\BackgroundJob\TestJob::class, $addedJob);
 		$this->assertEquals($argument, $addedJob->getArgument());
 
 		$this->instance->remove($job, $argument);
@@ -108,7 +106,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testRemoveDifferentArgument($argument) {
-		$this->timeFactory->method('getTime')->willReturn(164419800);
+		$this->timeFactory->method('getTime')->willReturn(164_419_800);
 		$existingJobs = $this->getAllSorted();
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
@@ -130,7 +128,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testJobIdExists($argument) {
-		$this->timeFactory->method('getTime')->willReturn(164419800);
+		$this->timeFactory->method('getTime')->willReturn(164_419_800);
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
 		$jobs = $this->getAllSorted();
@@ -146,7 +144,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testHas($argument) {
-		$this->timeFactory->method('getTime')->willReturn(164419800);
+		$this->timeFactory->method('getTime')->willReturn(164_419_800);
 		$job = new TestJob();
 		$this->assertFalse($this->instance->has($job, $argument));
 		$this->instance->add($job, $argument);
@@ -163,7 +161,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testHasDifferentArgument($argument) {
-		$this->timeFactory->method('getTime')->willReturn(164419800);
+		$this->timeFactory->method('getTime')->willReturn(164_419_800);
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
 
@@ -207,7 +205,7 @@ class JobListTest extends TestCase {
 
 		$this->timeFactory->expects($this->atLeastOnce())
 			->method('getTime')
-			->willReturn(123456789);
+			->willReturn(123_456_789);
 		$nextJob = $this->instance->getNext();
 
 		$this->assertEquals($savedJob1, $nextJob);
@@ -215,15 +213,15 @@ class JobListTest extends TestCase {
 
 	public function testGetNextSkipReserved() {
 		$job = new TestJob();
-		$this->createTempJob(\get_class($job), 1, 123456789, 12345);
+		$this->createTempJob(\get_class($job), 1, 123_456_789, 12345);
 		$this->createTempJob(\get_class($job), 2, 0, 12346);
 
 		$this->timeFactory->expects($this->atLeastOnce())
 			->method('getTime')
-			->willReturn(123456789);
+			->willReturn(123_456_789);
 		$nextJob = $this->instance->getNext();
 
-		$this->assertEquals(\get_class($job), \get_class($nextJob));
+		$this->assertEquals(\get_class($job), $nextJob !== null ? \get_class($nextJob) : self::class);
 		$this->assertEquals(2, $nextJob->getArgument());
 	}
 
@@ -234,10 +232,10 @@ class JobListTest extends TestCase {
 
 		$this->timeFactory->expects($this->atLeastOnce())
 			->method('getTime')
-			->willReturn(123456789);
+			->willReturn(123_456_789);
 		$nextJob = $this->instance->getNext();
 
-		$this->assertEquals(\get_class($job), \get_class($nextJob));
+		$this->assertEquals(\get_class($job), $nextJob !== null ? \get_class($nextJob) : self::class);
 		$this->assertEquals(2, $nextJob->getArgument());
 	}
 
@@ -246,7 +244,7 @@ class JobListTest extends TestCase {
 	 * @param $argument
 	 */
 	public function testGetById($argument) {
-		$this->timeFactory->method('getTime')->willReturn(164419800);
+		$this->timeFactory->method('getTime')->willReturn(164_419_800);
 		$job = new TestJob();
 		$this->instance->add($job, $argument);
 
@@ -258,7 +256,7 @@ class JobListTest extends TestCase {
 	}
 
 	public function testSetLastRun() {
-		$this->timeFactory->method('getTime')->willReturn(164419800);
+		$this->timeFactory->method('getTime')->willReturn(164_419_800);
 		$job = new TestJob();
 		$this->instance->add($job);
 

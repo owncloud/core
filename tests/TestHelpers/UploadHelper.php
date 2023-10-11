@@ -82,7 +82,7 @@ class UploadHelper extends Assert {
 		} else {
 			//prepare chunking
 			$chunks = self::chunkFile($source, $noOfChunks);
-			$chunkingId = 'chunking-' . \rand(1000, 9999);
+			$chunkingId = 'chunking-' . random_int(1000, 9999);
 			$v2ChunksDestination = '/uploads/' . $user . '/' . $chunkingId;
 		}
 

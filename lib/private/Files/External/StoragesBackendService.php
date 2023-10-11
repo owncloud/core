@@ -38,20 +38,19 @@ class StoragesBackendService implements IStoragesBackendService {
 	/** @var IConfig */
 	protected $config;
 
-	/** @var bool */
-	private $userMountingAllowed = true;
+	private bool $userMountingAllowed = true;
 
 	/** @var string[] */
-	private $userMountingBackends = [];
+	private array $userMountingBackends = [];
 
 	/** @var Backend[] */
-	private $backends = [];
+	private array $backends = [];
 
 	/** @var IBackendProvider[] */
 	private $backendProviders = [];
 
 	/** @var AuthMechanism[] */
-	private $authMechanisms = [];
+	private array $authMechanisms = [];
 
 	/** @var IAuthMechanismProvider[] */
 	private $authMechanismProviders = [];
@@ -183,9 +182,7 @@ class StoragesBackendService implements IStoragesBackendService {
 	 * @return Backend[]
 	 */
 	public function getAvailableBackends() {
-		return \array_filter($this->getBackends(), function ($backend) {
-			return !($backend->checkDependencies());
-		});
+		return \array_filter($this->getBackends(), fn ($backend) => !($backend->checkDependencies()));
 	}
 
 	/**
@@ -194,10 +191,7 @@ class StoragesBackendService implements IStoragesBackendService {
 	 */
 	public function getBackend($identifier) {
 		$this->loadBackendProviders();
-		if (isset($this->backends[$identifier])) {
-			return $this->backends[$identifier];
-		}
-		return null;
+		return $this->backends[$identifier] ?? null;
 	}
 
 	/**
@@ -222,9 +216,7 @@ class StoragesBackendService implements IStoragesBackendService {
 	 * @return AuthMechanism[]
 	 */
 	public function getAuthMechanismsByScheme(array $schemes) {
-		return \array_filter($this->getAuthMechanisms(), function ($authMech) use ($schemes) {
-			return \in_array($authMech->getScheme(), $schemes, true);
-		});
+		return \array_filter($this->getAuthMechanisms(), fn ($authMech) => \in_array($authMech->getScheme(), $schemes, true));
 	}
 
 	/**
@@ -233,10 +225,7 @@ class StoragesBackendService implements IStoragesBackendService {
 	 */
 	public function getAuthMechanism($identifier) {
 		$this->loadAuthMechanismProviders();
-		if (isset($this->authMechanisms[$identifier])) {
-			return $this->authMechanisms[$identifier];
-		}
-		return null;
+		return $this->authMechanisms[$identifier] ?? null;
 	}
 
 	/**

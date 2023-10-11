@@ -34,10 +34,7 @@ class TestCollationRepair extends Collation {
  * @see \OC\Repair\RepairMimeTypes
  */
 class RepairCollationTest extends TestCase {
-	/**
-	 * @var TestCollationRepair
-	 */
-	private $repair;
+	private \Test\Repair\TestCollationRepair $repair;
 
 	/**
 	 * @var Connection | IDBConnection
@@ -80,7 +77,7 @@ class RepairCollationTest extends TestCase {
 		$this->assertGreaterThanOrEqual(1, \count($tables));
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

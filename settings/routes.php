@@ -97,13 +97,13 @@ $this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins.p
 	->actionInclude('settings/ajax/togglesubadmins.php');
 $this->create('settings_users_changepassword', '/settings/users/changepassword')
 	->post()
-	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
+	->action(\OC\Settings\ChangePassword\Controller::class, 'changeUserPassword');
 $this->create('settings_ajax_changegroupname', '/settings/ajax/changegroupname.php')
 	->actionInclude('settings/ajax/changegroupname.php');
 // personal
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
 	->post()
-	->action('OC\Settings\ChangePassword\Controller', 'changePersonalPassword');
+	->action(\OC\Settings\ChangePassword\Controller::class, 'changePersonalPassword');
 $this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage.php')
 	->actionInclude('settings/ajax/setlanguage.php');
 // apps

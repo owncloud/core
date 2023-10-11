@@ -88,8 +88,6 @@ class RootCollection extends Collection {
 		}
 
 		$shares = $this->shareManager->getAllSharedWith(null, [Constants::SHARE_TYPE_LINK]);
-		return \array_map(function (IShare $share) {
-			return new PublicSharedRootNode($share, $this->request);
-		}, $shares);
+		return \array_map(fn (IShare $share) => new PublicSharedRootNode($share, $this->request), $shares);
 	}
 }

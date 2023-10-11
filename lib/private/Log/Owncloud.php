@@ -93,7 +93,7 @@ class Owncloud {
 		$url = ($request->getRequestUri() !== '') ? $request->getRequestUri() : '--';
 		$method = \is_string($request->getMethod()) ? $request->getMethod() : '--';
 		if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
-			$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
+			$user = \OC_User::getUser() ?: '--';
 		} else {
 			$user = '--';
 		}
@@ -114,7 +114,7 @@ class Owncloud {
 			$entry = \array_merge($entry, $extraFields);
 		}
 
-		$entry = \json_encode($entry);
+		$entry = \json_encode($entry, JSON_THROW_ON_ERROR);
 		if ($conditionalLogFile !== null) {
 			if ($conditionalLogFile[0] !== '/') {
 				$conditionalLogFile = \OC::$server->getConfig()->getSystemValue('datadirectory') . "/" . $conditionalLogFile;

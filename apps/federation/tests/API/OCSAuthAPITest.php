@@ -35,25 +35,24 @@ use Test\TestCase;
 
 class OCSAuthAPITest extends TestCase {
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | ISecureRandom  */
-	private $secureRandom;
+	private \PHPUnit\Framework\MockObject\MockObject $secureRandom;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | JobList */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers */
-	private $trustedServers;
+	private \PHPUnit\Framework\MockObject\MockObject $trustedServers;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | DbHandler */
-	private $dbHandler;
+	private \PHPUnit\Framework\MockObject\MockObject $dbHandler;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
-	/** @var  OCSAuthAPIController */
-	private $ocsAuthApi;
+	private \OCA\Federation\Controller\OCSAuthAPIController $ocsAuthApi;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -99,9 +98,9 @@ class OCSAuthAPITest extends TestCase {
 
 		if ($expected === Http::STATUS_OK) {
 			$this->jobList->expects($this->once())->method('add')
-				->with('OCA\Federation\BackgroundJob\GetSharedSecret', ['url' => $url, 'token' => $token]);
+				->with(\OCA\Federation\BackgroundJob\GetSharedSecret::class, ['url' => $url, 'token' => $token]);
 			$this->jobList->expects($this->once())->method('remove')
-				->with('OCA\Federation\BackgroundJob\RequestSharedSecret', ['url' => $url, 'token' => $localToken]);
+				->with(\OCA\Federation\BackgroundJob\RequestSharedSecret::class, ['url' => $url, 'token' => $localToken]);
 		} else {
 			$this->jobList->expects($this->never())->method('add');
 			$this->jobList->expects($this->never())->method('remove');

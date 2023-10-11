@@ -28,11 +28,10 @@ use phpseclib3\Crypt\RSA;
 
 class RSAStoreTest extends \Test\TestCase {
 	/** @var ICredentialsManager */
-	private $credentialsManager;
+	private \PHPUnit\Framework\MockObject\MockObject $credentialsManager;
 	/** @var IConfig */
-	private $config;
-	/** @var RSAStore */
-	private $rsaStore;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
+	private \OCA\Files_External\Lib\RSAStore $rsaStore;
 
 	protected function setUp(): void {
 		$this->credentialsManager = $this->createMock(ICredentialsManager::class);

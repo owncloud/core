@@ -92,9 +92,7 @@ class DisableExtraThemes implements IRepairStep {
 		$appTypes = $this->appConfig->getValues(false, 'types');
 		$allThemes = \array_filter(
 			$appTypes,
-			function ($appTypes) {
-				return \in_array('theme', \explode(',', $appTypes));
-			}
+			fn ($appTypes) => \in_array('theme', \explode(',', $appTypes))
 		);
 
 		// calculate an intersection to get enabled themes

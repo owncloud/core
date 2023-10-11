@@ -33,23 +33,19 @@ use OCP\IUserSession;
  * @package OC\Settings\Controller
  */
 class CorsController extends Controller {
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 
 	/** @var string */
 	private $userId;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/** @var string  */
 	private $AppName;
 
-	/** @var IL10N */
-	private $l10n;
+	private \OCP\IL10N $l10n;
 
 	/**
 	 * CorsController constructor.
@@ -90,7 +86,7 @@ class CorsController extends Controller {
 	 */
 	public function getDomains() {
 		$userId = $this->userId;
-		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true, 512, JSON_THROW_ON_ERROR);
 		return new JSONResponse($domains);
 	}
 
@@ -106,7 +102,7 @@ class CorsController extends Controller {
 	public function addDomain($domain) {
 		if ($this->isValidUrl($domain)) {
 			$userId = $this->userId;
-			$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+			$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true, 512, JSON_THROW_ON_ERROR);
 			$domains = \array_filter($domains);
 			\array_push($domains, $domain);
 
@@ -114,7 +110,7 @@ class CorsController extends Controller {
 			$domains = \array_unique($domains);
 
 			// Store as comma separated string
-			$domainsString = \json_encode($domains);
+			$domainsString = \json_encode($domains, JSON_THROW_ON_ERROR);
 
 			$this->config->setUserValue($userId, 'core', 'domains', $domainsString);
 			$this->logger->debug("The domain {$domain} has been white-listed.", ['app' => $this->appName]);
@@ -137,11 +133,11 @@ class CorsController extends Controller {
 	public function removeDomain($domain) {
 		$userId = $this->userId;
 		$decodedDomain = \urldecode($domain);
-		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true, 512, JSON_THROW_ON_ERROR);
 		if (($key = \array_search($decodedDomain, $domains)) !== false) {
 			unset($domains[$key]);
 			if (\count($domains)) {
-				$this->config->setUserValue($userId, 'core', 'domains', \json_encode($domains));
+				$this->config->setUserValue($userId, 'core', 'domains', \json_encode($domains, JSON_THROW_ON_ERROR));
 			} else {
 				$this->config->deleteUserValue($userId, 'core', 'domains');
 			}

@@ -58,11 +58,9 @@ class MetaStorage {
 	/** @var string File-extension of the metadata file for a specific version */
 	public const VERSION_FILE_EXT = ".json";
 
-	/** @var string  */
-	private $dataDir;
+	private string $dataDir;
 
-	/** @var FileHelper  */
-	private $fileHelper;
+	private \OCA\Files_Versions\FileHelper $fileHelper;
 
 	/** @var boolean */
 	private $objectStoreEnabled;
@@ -332,7 +330,7 @@ class MetaStorage {
 	 * @return int|false
 	 */
 	private function writeMetaFile(array $metadata, string $diskPath) {
-		$metaJson = \json_encode($metadata);
+		$metaJson = \json_encode($metadata, JSON_THROW_ON_ERROR);
 		return \file_put_contents($diskPath, $metaJson);
 	}
 
@@ -346,7 +344,7 @@ class MetaStorage {
 		}
 
 		$json = \file_get_contents($diskPath);
-		if ($decoded = \json_decode($json, true)) {
+		if ($decoded = \json_decode($json, true, 512, JSON_THROW_ON_ERROR)) {
 			$metadata = [];
 
 			// handling for edited_by

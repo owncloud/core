@@ -40,10 +40,7 @@ class Factory implements ICacheFactory {
 	 */
 	private $globalPrefix;
 
-	/**
-	 * @var ILogger $logger
-	 */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * @var string $localCacheClass

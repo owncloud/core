@@ -42,25 +42,19 @@ class StorageConfig implements IStorageConfig {
 	private $id;
 
 	/**
-	 * Backend
-	 *
-	 * @var Backend
-	 */
-	private $backend;
+  * Backend
+  */
+	private ?\OCP\Files\External\Backend\Backend $backend = null;
 
 	/**
-	 * Authentication mechanism
-	 *
-	 * @var AuthMechanism
-	 */
-	private $authMechanism;
+  * Authentication mechanism
+  */
+	private ?\OCP\Files\External\Auth\AuthMechanism $authMechanism = null;
 
 	/**
-	 * Backend options
-	 *
-	 * @var array
-	 */
-	private $backendOptions = [];
+  * Backend options
+  */
+	private array $backendOptions = [];
 
 	/**
 	 * Mount point path, relative to the user's "files" folder
@@ -91,25 +85,19 @@ class StorageConfig implements IStorageConfig {
 	private $priority;
 
 	/**
-	 * List of users who have access to this storage
-	 *
-	 * @var array
-	 */
-	private $applicableUsers = [];
+  * List of users who have access to this storage
+  */
+	private array $applicableUsers = [];
 
 	/**
-	 * List of groups that have access to this storage
-	 *
-	 * @var array
-	 */
-	private $applicableGroups = [];
+  * List of groups that have access to this storage
+  */
+	private array $applicableGroups = [];
 
 	/**
-	 * Mount-specific options
-	 *
-	 * @var array
-	 */
-	private $mountOptions = [];
+  * Mount-specific options
+  */
+	private array $mountOptions = [];
 
 	/**
 	 * Whether it's a personal or admin mount
@@ -232,10 +220,7 @@ class StorageConfig implements IStorageConfig {
 	 * @return mixed
 	 */
 	public function getBackendOption($key) {
-		if (isset($this->backendOptions[$key])) {
-			return $this->backendOptions[$key];
-		}
-		return null;
+		return $this->backendOptions[$key] ?? null;
 	}
 
 	/**
@@ -332,10 +317,7 @@ class StorageConfig implements IStorageConfig {
 	 * @return mixed
 	 */
 	public function getMountOption($key) {
-		if (isset($this->mountOptions[$key])) {
-			return $this->mountOptions[$key];
-		}
-		return null;
+		return $this->mountOptions[$key] ?? null;
 	}
 
 	/**

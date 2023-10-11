@@ -40,7 +40,7 @@ namespace OC;
 use OCP\License\ILicenseManager;
 
 class TemplateLayout extends \OC_Template {
-	private static $versionHash = '';
+	private static string $versionHash = '';
 
 	/**
 	 * @var \OCP\IConfig

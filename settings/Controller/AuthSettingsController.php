@@ -35,20 +35,16 @@ use OCP\Security\ISecureRandom;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 
 class AuthSettingsController extends Controller {
-	/** @var IProvider */
-	private $tokenProvider;
+	private \OC\Authentication\Token\IProvider $tokenProvider;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var ISession */
-	private $session;
+	private \OCP\ISession $session;
 
 	/** @var string */
 	private $uid;
 
-	/** @var ISecureRandom */
-	private $random;
+	private \OCP\Security\ISecureRandom $random;
 
 	/**
 	 * @param string $appName
@@ -141,9 +137,7 @@ class AuthSettingsController extends Controller {
 				'loginName' => $loginName,
 				'deviceToken' => $deviceToken
 			];
-		} catch (\InvalidArgumentException $ex) {
-			return $this->getServiceNotAvailableResponse();
-		} catch (InvalidTokenException $ex) {
+		} catch (\InvalidArgumentException|InvalidTokenException $ex) {
 			return $this->getServiceNotAvailableResponse();
 		}
 	}

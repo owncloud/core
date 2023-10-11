@@ -37,7 +37,7 @@ abstract class Storage extends \Test\TestCase {
 	 */
 	protected function wait() {
 		if ($this->waitDelay > 0) {
-			\usleep($this->waitDelay * 1000000);
+			\usleep($this->waitDelay * 1_000_000);
 		}
 	}
 
@@ -582,7 +582,7 @@ abstract class Storage extends \Test\TestCase {
 	}
 
 	public function testInstanceOfStorage() {
-		$this->assertTrue($this->instance->instanceOfStorage('\OCP\Files\Storage'));
+		$this->assertTrue($this->instance->instanceOfStorage('\\' . \OCP\Files\Storage::class));
 		$this->assertTrue($this->instance->instanceOfStorage(\get_class($this->instance)));
 		$this->assertFalse($this->instance->instanceOfStorage('\OC'));
 	}

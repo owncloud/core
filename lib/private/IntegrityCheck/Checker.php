@@ -52,20 +52,14 @@ use phpseclib3\File\X509;
  */
 class Checker {
 	public const CACHE_KEY = 'oc.integritycheck.checker';
-	/** @var EnvironmentHelper */
-	private $environmentHelper;
-	/** @var AppLocator */
-	private $appLocator;
-	/** @var FileAccessHelper */
-	private $fileAccessHelper;
-	/** @var IConfig */
-	private $config;
+	private \OC\IntegrityCheck\Helpers\EnvironmentHelper $environmentHelper;
+	private \OC\IntegrityCheck\Helpers\AppLocator $appLocator;
+	private \OC\IntegrityCheck\Helpers\FileAccessHelper $fileAccessHelper;
+	private ?\OCP\IConfig $config = null;
 	/** @var ICache */
 	private $cache;
-	/** @var IAppManager */
-	private $appManager;
-	/** @var ITempManager */
-	private $tempManager;
+	private ?\OCP\App\IAppManager $appManager = null;
+	private \OCP\ITempManager $tempManager;
 
 	/**
 	 * @param EnvironmentHelper $environmentHelper
@@ -246,7 +240,7 @@ class Checker {
 			->withSaltLength(0)
 			->withPadding(RSA::SIGNATURE_PSS);
 
-		$signature = $privateKey->sign(\json_encode($hashes));
+		$signature = $privateKey->sign(\json_encode($hashes, JSON_THROW_ON_ERROR));
 
 		return [
 				'hashes' => $hashes,
@@ -342,7 +336,7 @@ class Checker {
 			return [];
 		}
 
-		$signatureData = \json_decode($this->fileAccessHelper->file_get_contents($signaturePath), true);
+		$signatureData = \json_decode($this->fileAccessHelper->file_get_contents($signaturePath), true, 512, JSON_THROW_ON_ERROR);
 		if (!\is_array($signatureData)) {
 			throw new MissingSignatureException('Signature data not found.');
 		}
@@ -395,7 +389,7 @@ class Checker {
 			->withPadding(RSA::SIGNATURE_PSS)
 			->withSaltLength(0);
 
-		if (!$rsa->verify(\json_encode($expectedHashes), $signature)) {
+		if (!$rsa->verify(\json_encode($expectedHashes, JSON_THROW_ON_ERROR), $signature)) {
 			throw new InvalidSignatureException('Signature could not get verified.');
 		}
 
@@ -461,10 +455,10 @@ class Checker {
 	public function getResults() {
 		$cachedResults = $this->cache->get(self::CACHE_KEY);
 		if ($cachedResults !== null) {
-			return \json_decode($cachedResults, true);
+			return \json_decode($cachedResults, true, 512, JSON_THROW_ON_ERROR);
 		}
 
-		return \json_decode($this->getAppValue(self::CACHE_KEY, '{}'), true);
+		return \json_decode($this->getAppValue(self::CACHE_KEY, '{}'), true, 512, JSON_THROW_ON_ERROR);
 	}
 
 	/**
@@ -480,10 +474,10 @@ class Checker {
 			$resultArray[$scope] = $result;
 		}
 
-		$this->setAppValue(self::CACHE_KEY, \json_encode($resultArray));
+		$this->setAppValue(self::CACHE_KEY, \json_encode($resultArray, JSON_THROW_ON_ERROR));
 		//Set cache for each app
-		$this->cache->set($scope, \json_encode($resultArray));
-		$this->cache->set(self::CACHE_KEY, \json_encode($resultArray));
+		$this->cache->set($scope, \json_encode($resultArray, JSON_THROW_ON_ERROR));
+		$this->cache->set(self::CACHE_KEY, \json_encode($resultArray, JSON_THROW_ON_ERROR));
 	}
 
 	/**

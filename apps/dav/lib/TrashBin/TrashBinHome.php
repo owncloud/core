@@ -25,10 +25,8 @@ use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
 
 class TrashBinHome extends Collection {
-	/** @var TrashBinManager */
-	private $trashBinManager;
-	/** @var string */
-	private $user;
+	private \OCA\DAV\TrashBin\TrashBinManager $trashBinManager;
+	private string $user;
 
 	/**
 	 * TrashBinHome constructor.

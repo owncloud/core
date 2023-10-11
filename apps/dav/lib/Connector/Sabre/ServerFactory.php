@@ -46,22 +46,14 @@ use Sabre\DAV\Exception\PreconditionFailed;
 use Sabre\HTTP\Request;
 
 class ServerFactory {
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
-	/** @var IDBConnection */
-	private $databaseConnection;
-	/** @var IUserSession */
-	private $userSession;
-	/** @var IMountManager */
-	private $mountManager;
-	/** @var ITagManager */
-	private $tagManager;
-	/** @var IRequest */
-	private $request;
-	/** @var ITimeFactory */
-	private $timeFactory;
+	private \OCP\IConfig $config;
+	private \OCP\ILogger $logger;
+	private \OCP\IDBConnection $databaseConnection;
+	private \OCP\IUserSession $userSession;
+	private \OCP\Files\Mount\IMountManager $mountManager;
+	private \OCP\ITagManager $tagManager;
+	private \OCP\IRequest $request;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
 
 	/**
 	 * @param IConfig $config
@@ -127,9 +119,7 @@ class ServerFactory {
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin($this->config, \OC::$server->getGroupManager()));
 
 		$fileLocksBackend = new FileLocksBackend($server->tree, true, $this->timeFactory, $isPublicAccess);
-		$server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, function ($uri) use ($isPublicAccess) {
-			return $isPublicAccess;
-		}));
+		$server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, fn ($uri) => $isPublicAccess));
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
 			$server->addPlugin(new BrowserErrorPagePlugin());

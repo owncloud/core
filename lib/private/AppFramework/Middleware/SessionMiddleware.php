@@ -30,14 +30,11 @@ use OCP\AppFramework\Middleware;
 use OCP\ISession;
 
 class SessionMiddleware extends Middleware {
-	/** @var IRequest */
-	private $request;
+	private \OCP\IRequest $request;
 
-	/** @var ControllerMethodReflector */
-	private $reflector;
+	private \OC\AppFramework\Utility\ControllerMethodReflector $reflector;
 
-	/** @var ISession */
-	private $session;
+	private \OCP\ISession $session;
 
 	/**
 	 * @param IRequest $request

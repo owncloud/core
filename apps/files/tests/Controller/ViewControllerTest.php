@@ -48,50 +48,48 @@ use Test\TestCase;
  */
 class ViewControllerTest extends TestCase {
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var IL10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $eventDispatcher;
 	/** @var ViewController | \PHPUnit\Framework\MockObject\MockObject */
-	private $viewController;
+	private \PHPUnit\Framework\MockObject\MockObject $viewController;
 	/** @var IUser */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 	/** @var IUserSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 	/** @var Folder | \PHPUnit\Framework\MockObject\MockObject */
-	private $rootFolder;
+	private \PHPUnit\Framework\MockObject\MockObject $rootFolder;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->request = $this->createMock('\OCP\IRequest');
-		$this->urlGenerator = $this->createMock('\OCP\IURLGenerator');
-		$this->l10n = $this->createMock('\OCP\IL10N');
-		$this->config = $this->createMock('\OCP\IConfig');
-		$this->eventDispatcher = $this->createMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+		$this->request = $this->createMock('\\' . \OCP\IRequest::class);
+		$this->urlGenerator = $this->createMock('\\' . \OCP\IURLGenerator::class);
+		$this->l10n = $this->createMock('\\' . \OCP\IL10N::class);
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
+		$this->eventDispatcher = $this->createMock('\\' . \Symfony\Component\EventDispatcher\EventDispatcherInterface::class);
 		$this->eventDispatcher->expects($this->any())->method('dispatch')
 			->will(
-				$this->returnCallback(function ($object) {
-					return $object;
-				})
+				$this->returnCallback(fn ($object) => $object)
 			);
-		$this->userSession = $this->createMock('\OCP\IUserSession');
-		$this->appManager = $this->createMock('\OCP\App\IAppManager');
-		$this->user = $this->createMock('\OCP\IUser');
+		$this->userSession = $this->createMock('\\' . \OCP\IUserSession::class);
+		$this->appManager = $this->createMock('\\' . \OCP\App\IAppManager::class);
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
 		$this->user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('test@#?%test'));
 		$this->userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
-		$this->rootFolder = $this->createMock('\OCP\Files\Folder');
-		$this->viewController = $this->getMockBuilder('\OCA\Files\Controller\ViewController')
+		$this->rootFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
+		$this->viewController = $this->getMockBuilder('\\' . \OCA\Files\Controller\ViewController::class)
 			->setConstructorArgs([
 				'files',
 				$this->request,
@@ -332,12 +330,12 @@ class ViewControllerTest extends TestCase {
 	 * @dataProvider showFileMethodProvider
 	 */
 	public function testShowFileRouteWithFolder($useShowFile) {
-		$node = $this->createMock('\OCP\Files\Folder');
+		$node = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$node->expects($this->any())
 			->method('getPath')
 			->will($this->returnValue('/test@#?%test/files/to sp@ce/a@b#?%'));
 
-		$baseFolder = $this->createMock('\OCP\Files\Folder');
+		$baseFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$this->rootFolder->expects($this->once())
 			->method('get')
@@ -372,19 +370,19 @@ class ViewControllerTest extends TestCase {
 	 * @dataProvider showFileMethodProvider
 	 */
 	public function testShowFileRouteWithFile($useShowFile) {
-		$parentNode = $this->createMock('\OCP\Files\Folder');
+		$parentNode = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$parentNode->expects($this->any())
 			->method('getPath')
 			->will($this->returnValue('test@#?%test/files/test'));
 
-		$baseFolder = $this->createMock('\OCP\Files\Folder');
+		$baseFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 
 		$this->rootFolder->expects($this->once())
 			->method('get')
 			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolder));
 
-		$node = $this->createMock('\OCP\Files\File');
+		$node = $this->createMock('\\' . \OCP\Files\File::class);
 		$node->expects($this->once())
 			->method('getParent')
 			->will($this->returnValue($parentNode));
@@ -425,7 +423,7 @@ class ViewControllerTest extends TestCase {
 	 * @dataProvider showFileMethodProvider
 	 */
 	public function testShowFileRouteWithInvalidFileId($useShowFile) {
-		$baseFolder = $this->createMock('\OCP\Files\Folder');
+		$baseFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('get')
 			->with('test@#?%test/files/')
@@ -437,7 +435,7 @@ class ViewControllerTest extends TestCase {
 			->will($this->returnValue([]));
 
 		if ($useShowFile) {
-			$this->expectException('OCP\Files\NotFoundException');
+			$this->expectException(\OCP\Files\NotFoundException::class);
 			$this->viewController->showFile(123);
 		} else {
 			$this->viewController
@@ -449,7 +447,7 @@ class ViewControllerTest extends TestCase {
 					'ownerDisplayName' => 'MyDisplayName',
 				]));
 			$response = $this->viewController->index('MyDir', 'MyView', '123');
-			$this->assertInstanceOf('OCP\AppFramework\Http\TemplateResponse', $response);
+			$this->assertInstanceOf(\OCP\AppFramework\Http\TemplateResponse::class, $response);
 			$params = $response->getParams();
 			$this->assertEquals(1, $params['fileNotFound']);
 		}
@@ -458,7 +456,7 @@ class ViewControllerTest extends TestCase {
 	/**
 	 */
 	public function testShowFileRouteWithInvalidFileIdLoggedIn() {
-		$baseFolder = $this->createMock('\OCP\Files\Folder');
+		$baseFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('get')
 			->with('test@#?%test/files/')
@@ -474,7 +472,7 @@ class ViewControllerTest extends TestCase {
 			->will($this->returnValue(true));
 
 		$response = $this->viewController->index('MyDir', 'MyView', '123');
-		$this->assertInstanceOf('OCP\AppFramework\Http\TemplateResponse', $response);
+		$this->assertInstanceOf(\OCP\AppFramework\Http\TemplateResponse::class, $response);
 		$params = $response->getParams();
 		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
 	}
@@ -483,7 +481,7 @@ class ViewControllerTest extends TestCase {
 	 * @dataProvider showFileMethodProvider
 	 */
 	public function testShowFileRouteWithDispatcher($useShowFile) {
-		$baseFolder = $this->createMock('\OCP\Files\Folder');
+		$baseFolder = $this->createMock('\\' . \OCP\Files\Folder::class);
 		$this->rootFolder->expects($this->once())
 			->method('get')
 			->with('test@#?%test/files/')

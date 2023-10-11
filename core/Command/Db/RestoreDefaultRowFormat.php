@@ -29,11 +29,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class RestoreDefaultRowFormat extends Command {
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var IDBConnection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	/**
 	 * @param IConfig $config

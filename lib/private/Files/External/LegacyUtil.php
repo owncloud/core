@@ -203,7 +203,7 @@ class LegacyUtil {
 				$storage = new $class($options);
 
 				try {
-					$result = $storage->test($isPersonal, $testOnly);
+					$result = $storage->test();
 					$storage->setAvailability($result);
 					if ($result) {
 						return StorageNotAvailableException::STATUS_SUCCESS;
@@ -235,7 +235,7 @@ class LegacyUtil {
 			$jsonFile = $config->getSystemValue('mount_file', $datadir . '/mount.json');
 		}
 		if (\is_file($jsonFile)) {
-			$mountPoints = \json_decode(\file_get_contents($jsonFile), true);
+			$mountPoints = \json_decode(\file_get_contents($jsonFile), true, 512, JSON_THROW_ON_ERROR);
 			if (\is_array($mountPoints)) {
 				return $mountPoints;
 			}
@@ -328,9 +328,10 @@ class LegacyUtil {
 				'a' => $config['authMechanism'],
 				'm' => $config['mountpoint'],
 				'o' => $config['options'],
-				'p' => isset($config['priority']) ? $config['priority'] : -1,
-				'mo' => isset($config['mountOptions']) ? $config['mountOptions'] : [],
-			]
+				'p' => $config['priority'] ?? -1,
+				'mo' => $config['mountOptions'] ?? [],
+			],
+			JSON_THROW_ON_ERROR
 		);
 		return \hash('md5', $data);
 	}

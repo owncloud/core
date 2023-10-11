@@ -46,8 +46,7 @@ class Checksum extends Wrapper {
 	/** File needs to be checksummed on first read because it is already in cache but has no checksum */
 	public const PATH_IN_CACHE_WITHOUT_CHECKSUM = 2;
 
-	/** @var array */
-	private $pathsInCacheWithoutChecksum = [];
+	private array $pathsInCacheWithoutChecksum = [];
 
 	/**
 	 * @param string $path

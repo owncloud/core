@@ -37,13 +37,13 @@ class MiddlewareDispatcher {
 	/**
 	 * @var array array containing all the middlewares
 	 */
-	private $middlewares;
+	private array $middlewares;
 
 	/**
 	 * @var int counter which tells us what middleware was executed once an
 	 *                  exception occurs
 	 */
-	private $middlewareCounter;
+	private int $middlewareCounter;
 
 	/**
 	 * Constructor

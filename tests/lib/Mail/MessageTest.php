@@ -14,9 +14,8 @@ use Test\TestCase;
 
 class MessageTest extends TestCase {
 	/** @var Swift_Message */
-	private $swiftMessage;
-	/** @var Message */
-	private $message;
+	private \PHPUnit\Framework\MockObject\MockObject $swiftMessage;
+	private \OC\Mail\Message $message;
 
 	/**
 	 * @return array

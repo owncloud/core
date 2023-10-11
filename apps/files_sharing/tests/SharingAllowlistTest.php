@@ -28,13 +28,13 @@ use OCP\IUser;
 
 class SharingAllowlistTest extends \Test\TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	/** @var SharingAllowlist | \PHPUnit\Framework\MockObject\MockObject */
-	private $sharingAllowlist;
+	private \OCA\Files_Sharing\SharingAllowlist $sharingAllowlist;
 
 	public function setUp(): void {
 		$this->config = $this->getMockBuilder(IConfig::class)

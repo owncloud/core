@@ -34,10 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package OC\Core\Command\Integrity
  */
 class CheckApp extends Base {
-	/**
-	 * @var Checker
-	 */
-	private $checker;
+	private \OC\IntegrityCheck\Checker $checker;
 
 	public function __construct(Checker $checker) {
 		parent::__construct();

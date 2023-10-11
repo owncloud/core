@@ -26,8 +26,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TrustedServerList extends Command {
-	/** @var TrustedServers */
-	private $trustedServers;
+	private \OCA\Federation\TrustedServers $trustedServers;
 
 	/**
 	 * @param TrustedServers $trustedServers

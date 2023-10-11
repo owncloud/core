@@ -87,28 +87,22 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class Session implements IUserSession, Emitter {
 	use EventEmitterTrait;
 	/** @var IUserManager | PublicEmitter $manager */
-	private $manager;
+	private \OCP\IUserManager $manager;
 
-	/** @var ISession $session */
-	private $session;
+	private \OCP\ISession $session;
 
-	/** @var ITimeFactory */
-	private $timeFactory;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
 
-	/** @var IProvider */
-	private $tokenProvider;
+	private \OC\Authentication\Token\IProvider $tokenProvider;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/** @var User $activeUser */
 	protected $activeUser;
 
-	/** @var IServiceLoader */
-	private $serviceLoader;
+	private \OCP\App\IServiceLoader $serviceLoader;
 
 	/** @var SyncService */
 	protected $userSyncService;
@@ -396,7 +390,7 @@ class Session implements IUserSession, Emitter {
 		if ($request->getCookie('cookie_test') !== null) {
 			return true;
 		}
-		\setcookie('cookie_test', 'test', $this->timeFactory->getTime() + 3600);
+		\setcookie('cookie_test', 'test', ['expires' => $this->timeFactory->getTime() + 3600]);
 		return false;
 	}
 
@@ -602,7 +596,7 @@ class Session implements IUserSession, Emitter {
 			&& $uidAndBackend[0] !== null
 			&& $uidAndBackend[1] instanceof UserInterface
 		) {
-			list($uid, $backend) = $uidAndBackend;
+			[$uid, $backend] = $uidAndBackend;
 		} elseif (\is_string($uidAndBackend)) {
 			$uid = $uidAndBackend;
 			if ($apacheBackend instanceof UserInterface) {
@@ -664,7 +658,7 @@ class Session implements IUserSession, Emitter {
 			// User does not exist
 			return false;
 		}
-		$name = isset($request->server['HTTP_USER_AGENT']) ? $request->server['HTTP_USER_AGENT'] : 'unknown browser';
+		$name = $request->server['HTTP_USER_AGENT'] ?? 'unknown browser';
 		try {
 			$sessionId = $this->session->getId();
 			$pwd = $this->getPassword($password);
@@ -1187,9 +1181,7 @@ class Session implements IUserSession, Emitter {
 			$sessionId = $this->session->getId();
 			$token = $this->tokenProvider->getToken($sessionId);
 			$this->tokenProvider->setPassword($token, $sessionId, $password);
-		} catch (SessionNotAvailableException $ex) {
-			// Nothing to do
-		} catch (InvalidTokenException $ex) {
+		} catch (SessionNotAvailableException|InvalidTokenException $ex) {
 			// Nothing to do
 		}
 	}

@@ -24,10 +24,9 @@ use Test\TestCase;
  */
 class RepairMimeTypesTest extends TestCase {
 	/** @var IRepairStep */
-	private $repair;
+	private \OC\Repair\RepairMimeTypes $repair;
 
-	/** @var Temporary */
-	private $storage;
+	private \OC\Files\Storage\Temporary $storage;
 
 	/** @var IMimeTypeLoader */
 	private $mimetypeLoader;
@@ -38,7 +37,7 @@ class RepairMimeTypesTest extends TestCase {
 		$this->mimetypeLoader = \OC::$server->getMimeTypeLoader();
 
 		/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
-		$config = $this->getMockBuilder('OCP\IConfig')
+		$config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$config->expects($this->any())
@@ -106,7 +105,7 @@ class RepairMimeTypesTest extends TestCase {
 		$this->addEntries($currentMimeTypes);
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

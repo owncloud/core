@@ -77,9 +77,7 @@ class UsersControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->container['L10N']
 			->method('t')
-			->willReturnCallback(function ($text, $parameters = []) {
-				return vsprintf($text, $parameters);
-			});
+			->willReturnCallback(fn ($text, $parameters = []) => vsprintf($text, $parameters));
 		$this->container['Defaults'] = $this->getMockBuilder(OC_Defaults::class)
 			->disableOriginalConstructor()->getMock();
 		$this->container['Mailer'] = $this->getMockBuilder(IMailer::class)
@@ -89,7 +87,7 @@ class UsersControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->container['URLGenerator'] = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()->getMock();
-		$this->container['OCP\\App\\IAppManager'] = $this->getMockBuilder(IAppManager::class)
+		$this->container[\OCP\App\IAppManager::class] = $this->getMockBuilder(IAppManager::class)
 			->disableOriginalConstructor()->getMock();
 		$this->container['SecureRandom'] = $this->getMockBuilder(ISecureRandom::class)
 			->disableOriginalConstructor()->getMock();
@@ -104,13 +102,13 @@ class UsersControllerTest extends TestCase {
 		/*
 		 * Set default avtar behaviour for whole testsuite
 		 */
-		$this->container['OCP\\IAvatarManager'] = $this->createMock(IAvatarManager::class);
+		$this->container[\OCP\IAvatarManager::class] = $this->createMock(IAvatarManager::class);
 
 		$avatarExists = $this->createMock(IAvatar::class);
 		$avatarExists->method('exists')->willReturn(true);
 		$avatarNotExists = $this->createMock(IAvatar::class);
 		$avatarNotExists->method('exists')->willReturn(false);
-		$this->container['OCP\\IAvatarManager']
+		$this->container[\OCP\IAvatarManager::class]
 			->method('getAvatar')
 			->willReturnMap([
 				['foo', $avatarExists],
@@ -191,7 +189,7 @@ class UsersControllerTest extends TestCase {
 		$admin
 			->expects($this->once())
 			->method('getBackendClassName')
-			->willReturn('\Test\Util\User\Dummy');
+			->willReturn('\\' . \Test\Util\User\Dummy::class);
 		$bar = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$bar
@@ -222,7 +220,7 @@ class UsersControllerTest extends TestCase {
 		$bar
 			->expects($this->once())
 			->method('getBackendClassName')
-			->willReturn('\Test\Util\User\Dummy');
+			->willReturn('\\' . \Test\Util\User\Dummy::class);
 
 		$group1 = $this->createMock(IGroup::class);
 		$group1->method('getGID')->willReturn('abc-cde-123-456');
@@ -324,7 +322,7 @@ class UsersControllerTest extends TestCase {
 					'quota' => 404,
 					'storageLocation' => '/home/admin',
 					'lastLogin' => 12000,
-					'backend' => '\Test\Util\User\Dummy',
+					'backend' => '\\' . \Test\Util\User\Dummy::class,
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => false,
@@ -344,8 +342,8 @@ class UsersControllerTest extends TestCase {
 					'isEnabled' => false,
 					'quota' => 2323,
 					'storageLocation' => '/home/bar',
-					'lastLogin' => 3999000,
-					'backend' => '\Test\Util\User\Dummy',
+					'lastLogin' => 3_999_000,
+					'backend' => '\\' . \Test\Util\User\Dummy::class,
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
@@ -431,7 +429,7 @@ class UsersControllerTest extends TestCase {
 		$admin
 			->expects($this->once())
 			->method('getBackendClassName')
-			->willReturn('\Test\Util\User\Dummy');
+			->willReturn('\\' . \Test\Util\User\Dummy::class);
 		$bar = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$bar
@@ -462,7 +460,7 @@ class UsersControllerTest extends TestCase {
 		$bar
 			->expects($this->once())
 			->method('getBackendClassName')
-			->willReturn('\Test\Util\User\Dummy');
+			->willReturn('\\' . \Test\Util\User\Dummy::class);
 
 		$this->container['GroupManager']
 			->expects($this->exactly(2))
@@ -543,8 +541,8 @@ class UsersControllerTest extends TestCase {
 					'isEnabled' => false,
 					'quota' => 2323,
 					'storageLocation' => '/home/bar',
-					'lastLogin' => 3999000,
-					'backend' => '\Test\Util\User\Dummy',
+					'lastLogin' => 3_999_000,
+					'backend' => '\\' . \Test\Util\User\Dummy::class,
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
@@ -590,7 +588,7 @@ class UsersControllerTest extends TestCase {
 					'quota' => 404,
 					'storageLocation' => '/home/admin',
 					'lastLogin' => 12000,
-					'backend' => '\Test\Util\User\Dummy',
+					'backend' => '\\' . \Test\Util\User\Dummy::class,
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => false,
@@ -675,7 +673,7 @@ class UsersControllerTest extends TestCase {
 		$admin
 			->expects($this->once())
 			->method('getBackendClassName')
-			->willReturn('\Test\Util\User\Dummy');
+			->willReturn('\\' . \Test\Util\User\Dummy::class);
 		$bar = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
 		$bar
@@ -706,7 +704,7 @@ class UsersControllerTest extends TestCase {
 		$bar
 			->expects($this->once())
 			->method('getBackendClassName')
-			->willReturn('\Test\Util\User\Dummy');
+			->willReturn('\\' . \Test\Util\User\Dummy::class);
 
 		$this->container['UserManager']
 			->expects($this->once())
@@ -787,7 +785,7 @@ class UsersControllerTest extends TestCase {
 					'quota' => 404,
 					'storageLocation' => '/home/admin',
 					'lastLogin' => 12000,
-					'backend' => '\Test\Util\User\Dummy',
+					'backend' => '\\' . \Test\Util\User\Dummy::class,
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => false,
@@ -807,8 +805,8 @@ class UsersControllerTest extends TestCase {
 					'isEnabled' => false,
 					'quota' => 2323,
 					'storageLocation' => '/home/bar',
-					'lastLogin' => 3999000,
-					'backend' => '\Test\Util\User\Dummy',
+					'lastLogin' => 3_999_000,
+					'backend' => '\\' . \Test\Util\User\Dummy::class,
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
@@ -902,7 +900,7 @@ class UsersControllerTest extends TestCase {
 				]
 			]
 		);
-		$response = $this->container['UsersController']->index(0, 10, '', '', '\Test\Util\User\Dummy');
+		$response = $this->container['UsersController']->index(0, 10, '', '', '\\' . \Test\Util\User\Dummy::class);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -920,7 +918,7 @@ class UsersControllerTest extends TestCase {
 			->willReturn([]);
 
 		$expectedResponse = new DataResponse([]);
-		$response = $this->container['UsersController']->index(0, 10, '', '', '\Test\Util\User\Dummy');
+		$response = $this->container['UsersController']->index(0, 10, '', '', '\\' . \Test\Util\User\Dummy::class);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -1788,7 +1786,7 @@ class UsersControllerTest extends TestCase {
 	public function testRestorePossibleWithoutEncryption(): void {
 		$this->container['IsAdmin'] = true;
 
-		list($user, $expectedResult) = $this->mockUser();
+		[$user, $expectedResult] = $this->mockUser();
 		$expectedResult['isGuest'] = false;
 
 		$subadmin = $this->getMockBuilder(SubAdmin::class)
@@ -1810,10 +1808,10 @@ class UsersControllerTest extends TestCase {
 	public function testRestorePossibleWithAdminAndUserRestore(): void {
 		$this->container['IsAdmin'] = true;
 
-		list($user, $expectedResult) = $this->mockUser();
+		[$user, $expectedResult] = $this->mockUser();
 		$expectedResult['isGuest'] = false;
 
-		$this->container['OCP\\App\\IAppManager']
+		$this->container[\OCP\App\IAppManager::class]
 			->expects($this->once())
 			->method('isEnabledForUser')
 			->with(
@@ -1867,10 +1865,10 @@ class UsersControllerTest extends TestCase {
 	public function testRestoreNotPossibleWithoutAdminRestore(): void {
 		$this->container['IsAdmin'] = true;
 
-		list($user, $expectedResult) = $this->mockUser();
+		[$user, $expectedResult] = $this->mockUser();
 		$expectedResult['isGuest'] = false;
 
-		$this->container['OCP\\App\\IAppManager']
+		$this->container[\OCP\App\IAppManager::class]
 			->method('isEnabledForUser')
 			->with(
 				$this->equalTo('encryption')
@@ -1898,10 +1896,10 @@ class UsersControllerTest extends TestCase {
 	public function testRestoreNotPossibleWithoutUserRestore(): void {
 		$this->container['IsAdmin'] = true;
 
-		list($user, $expectedResult) = $this->mockUser();
+		[$user, $expectedResult] = $this->mockUser();
 		$expectedResult['isGuest'] = false;
 
-		$this->container['OCP\\App\\IAppManager']
+		$this->container[\OCP\App\IAppManager::class]
 			->expects($this->once())
 			->method('isEnabledForUser')
 			->with(
@@ -1957,7 +1955,7 @@ class UsersControllerTest extends TestCase {
 	public function testNoAvatar(): void {
 		$this->container['IsAdmin'] = true;
 
-		list($user, $expectedResult) = $this->mockUser();
+		[$user, $expectedResult] = $this->mockUser();
 		$expectedResult['isGuest'] = false;
 
 		$subadmin = $this->getMockBuilder(SubAdmin::class)
@@ -1972,7 +1970,7 @@ class UsersControllerTest extends TestCase {
 			->willReturn($subadmin);
 		$this->container['GroupManager']->method('getUserGroups')->willReturn([]);
 
-		$this->container['OCP\\IAvatarManager']
+		$this->container[\OCP\IAvatarManager::class]
 			->method('getAvatar')
 			->will($this->throwException(new NotFoundException()));
 		$expectedResult['isAvatarAvailable'] = false;

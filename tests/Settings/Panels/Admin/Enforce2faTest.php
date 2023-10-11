@@ -28,9 +28,8 @@ use OCP\IConfig;
  */
 class Enforce2faTest extends \Test\TestCase {
 	/** @var IConfig */
-	private $config;
-	/** @var Enforce2fa */
-	private $panel;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
+	private \OC\Settings\Panels\Admin\Enforce2fa $panel;
 
 	protected function setUp(): void {
 		parent::setUp();

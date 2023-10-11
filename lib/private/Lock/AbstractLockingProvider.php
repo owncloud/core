@@ -126,6 +126,6 @@ abstract class AbstractLockingProvider implements ILockingProvider {
 	}
 
 	protected function getOwnSharedLockCount($path) {
-		return isset($this->acquiredLocks['shared'][$path]) ? $this->acquiredLocks['shared'][$path] : 0;
+		return $this->acquiredLocks['shared'][$path] ?? 0;
 	}
 }

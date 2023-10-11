@@ -45,15 +45,14 @@ use Test\TestCase;
 
 class PreviewPluginTest extends TestCase {
 	/** @var RequestInterface | MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var IPreviewNode | MockObject */
-	private $previewNode;
+	private \PHPUnit\Framework\MockObject\MockObject $previewNode;
 	/** @var IPreview | MockObject */
-	private $previewManager;
-	/** @var PreviewPlugin */
-	private $plugin;
+	private \PHPUnit\Framework\MockObject\MockObject $previewManager;
+	private ?\OCA\DAV\Files\PreviewPlugin $plugin = null;
 	/** @var ResponseInterface| MockObject */
-	private $response;
+	private \PHPUnit\Framework\MockObject\MockObject $response;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -73,7 +72,7 @@ class PreviewPluginTest extends TestCase {
 	private function initPlugin(): void {
 		/** @var ITimeFactory | MockObject $timeFactory */
 		$timeFactory = $this->createMock(ITimeFactory::class);
-		$timeFactory->method('getTime')->willReturn(1234567);
+		$timeFactory->method('getTime')->willReturn(1_234_567);
 
 		$this->plugin = new PreviewPlugin($timeFactory, $this->previewManager);
 
@@ -188,7 +187,7 @@ class PreviewPluginTest extends TestCase {
 				['Content-Type', 'application/octet-stream'],
 				['Content-Disposition', 'attachment'],
 				['Cache-Control', 'max-age=86400, must-revalidate'],
-				['Expires', \gmdate('D, d M Y H:i:s', 1234567 + 86400) . ' GMT']
+				['Expires', \gmdate('D, d M Y H:i:s', 1_234_567 + 86400) . ' GMT']
 			);
 
 		$this->assertFalse($this->plugin->httpGet($this->request, $this->response));

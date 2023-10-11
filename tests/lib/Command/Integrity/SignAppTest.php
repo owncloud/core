@@ -28,21 +28,20 @@ use Test\TestCase;
 
 class SignAppTest extends TestCase {
 	/** @var Checker */
-	private $checker;
-	/** @var SignApp */
-	private $signApp;
+	private \PHPUnit\Framework\MockObject\MockObject $checker;
+	private \OC\Core\Command\Integrity\SignApp $signApp;
 	/** @var FileAccessHelper */
-	private $fileAccessHelper;
+	private \PHPUnit\Framework\MockObject\MockObject $fileAccessHelper;
 	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
+		$this->checker = $this->getMockBuilder('\\' . \OC\IntegrityCheck\Checker::class)
 			->disableOriginalConstructor()->getMock();
-		$this->fileAccessHelper = $this->getMockBuilder('\OC\IntegrityCheck\Helpers\FileAccessHelper')
+		$this->fileAccessHelper = $this->getMockBuilder('\\' . \OC\IntegrityCheck\Helpers\FileAccessHelper::class)
 			->disableOriginalConstructor()->getMock();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$this->urlGenerator = $this->getMockBuilder('\\' . \OCP\IURLGenerator::class)
 				->disableOriginalConstructor()->getMock();
 		$this->signApp = new SignApp(
 			$this->checker,
@@ -52,8 +51,8 @@ class SignAppTest extends TestCase {
 	}
 
 	public function testExecuteWithMissingPath() {
-		$inputInterface = $this->createMock('\Symfony\Component\Console\Input\InputInterface');
-		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
+		$inputInterface = $this->createMock('\\' . \Symfony\Component\Console\Input\InputInterface::class);
+		$outputInterface = $this->createMock('\\' . \Symfony\Component\Console\Output\OutputInterface::class);
 
 		$inputInterface
 			->method('getOption')
@@ -79,8 +78,8 @@ class SignAppTest extends TestCase {
 	}
 
 	public function testExecuteWithMissingPrivateKey() {
-		$inputInterface = $this->createMock('\Symfony\Component\Console\Input\InputInterface');
-		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
+		$inputInterface = $this->createMock('\\' . \Symfony\Component\Console\Input\InputInterface::class);
+		$outputInterface = $this->createMock('\\' . \Symfony\Component\Console\Output\OutputInterface::class);
 
 		$inputInterface
 			->method('getOption')
@@ -106,8 +105,8 @@ class SignAppTest extends TestCase {
 	}
 
 	public function testExecuteWithMissingCertificate() {
-		$inputInterface = $this->createMock('\Symfony\Component\Console\Input\InputInterface');
-		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
+		$inputInterface = $this->createMock('\\' . \Symfony\Component\Console\Input\InputInterface::class);
+		$outputInterface = $this->createMock('\\' . \Symfony\Component\Console\Output\OutputInterface::class);
 
 		$inputInterface
 			->method('getOption')
@@ -133,8 +132,8 @@ class SignAppTest extends TestCase {
 	}
 
 	public function testExecuteWithNotExistingPrivateKey() {
-		$inputInterface = $this->createMock('\Symfony\Component\Console\Input\InputInterface');
-		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
+		$inputInterface = $this->createMock('\\' . \Symfony\Component\Console\Input\InputInterface::class);
+		$outputInterface = $this->createMock('\\' . \Symfony\Component\Console\Output\OutputInterface::class);
 
 		$inputInterface
 			->method('getOption')
@@ -170,8 +169,8 @@ class SignAppTest extends TestCase {
 	}
 
 	public function testExecuteWithNotExistingCertificate() {
-		$inputInterface = $this->createMock('\Symfony\Component\Console\Input\InputInterface');
-		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
+		$inputInterface = $this->createMock('\\' . \Symfony\Component\Console\Input\InputInterface::class);
+		$outputInterface = $this->createMock('\\' . \Symfony\Component\Console\Output\OutputInterface::class);
 
 		$inputInterface
 			->method('getOption')
@@ -207,8 +206,8 @@ class SignAppTest extends TestCase {
 	}
 
 	public function testExecute() {
-		$inputInterface = $this->createMock('\Symfony\Component\Console\Input\InputInterface');
-		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
+		$inputInterface = $this->createMock('\\' . \Symfony\Component\Console\Input\InputInterface::class);
+		$outputInterface = $this->createMock('\\' . \Symfony\Component\Console\Output\OutputInterface::class);
 
 		$inputInterface
 			->method('getOption')

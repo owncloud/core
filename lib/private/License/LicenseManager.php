@@ -29,19 +29,12 @@ use OCP\ILogger;
 
 class LicenseManager implements ILicenseManager {
 	public const GRACE_PERIOD = 60 * 60 * 24;  // 24h
-
-	/** @var LicenseFetcher */
-	private $licenseFetcher;
-	/** @var MessageService */
-	private $messageService;
-	/** @var IConfig */
-	private $config;
-	/** @var IAppManager */
-	private $appManager;
-	/** @var ITimeFactory */
-	private $timeFactory;
-	/** @var ILogger */
-	private $logger;
+	private \OC\License\LicenseFetcher $licenseFetcher;
+	private \OC\License\MessageService $messageService;
+	private \OCP\IConfig $config;
+	private \OCP\App\IAppManager $appManager;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
+	private \OCP\ILogger $logger;
 
 	public function __construct(
 		LicenseFetcher $licenseFetcher,
@@ -246,9 +239,7 @@ class LicenseManager implements ILicenseManager {
 		}
 
 		// function names are case-insensitive...
-		$lowerCaseMethods = \array_map(function ($value) {
-			return \strtolower($value);
-		}, $licenseObj->getProtectedMethods());
+		$lowerCaseMethods = \array_map(fn ($value) => \strtolower($value), $licenseObj->getProtectedMethods());
 
 		if (\in_array(\strtolower($method), $lowerCaseMethods, true)) {
 			throw new LicenseManagerException("License doesn't allow method $method to be called", 3);

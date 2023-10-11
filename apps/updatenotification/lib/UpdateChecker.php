@@ -25,8 +25,7 @@ namespace OCA\UpdateNotification;
 use OC\Updater\VersionCheck;
 
 class UpdateChecker {
-	/** @var VersionCheck */
-	private $updater;
+	private \OC\Updater\VersionCheck $updater;
 
 	/**
 	 * @param VersionCheck $updater
@@ -62,7 +61,7 @@ class UpdateChecker {
 		$data['array']['oc_updateState'] =  \json_encode([
 			'updateAvailable' => true,
 			'updateVersion' => $this->getUpdateState()['updateVersion'],
-			'updateLink' => isset($this->getUpdateState()['updateLink']) ? $this->getUpdateState()['updateLink'] : '',
-		]);
+			'updateLink' => $this->getUpdateState()['updateLink'] ?? '',
+		], JSON_THROW_ON_ERROR);
 	}
 }

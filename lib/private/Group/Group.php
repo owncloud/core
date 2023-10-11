@@ -43,12 +43,9 @@ class Group implements IGroup {
 	/**
 	 * @var \OC\User\User[] $users
 	 */
-	private $users = [];
+	private array $users = [];
 
-	/**
-	 * @var bool $usersLoaded
-	 */
-	private $usersLoaded;
+	private ?bool $usersLoaded = null;
 
 	/**
 	 * @var \OC\Group\Backend[]|\OC\Group\Database[] $backend
@@ -65,8 +62,7 @@ class Group implements IGroup {
 	 */
 	private $userManager;
 
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
 	/** @var null|string  */
 	private $displayName;

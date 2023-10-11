@@ -55,10 +55,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	public const CANASSIGN_PROPERTYNAME = '{http://owncloud.org/ns}can-assign';
 	public const WHITELISTEDINGROUP = '{http://owncloud.org/ns}editable-in-group';
 
-	/**
-	 * @var \Sabre\DAV\Server $server
-	 */
-	private $server;
+	private ?\Sabre\DAV\Server $server = null;
 
 	/**
 	 * @var ISystemTagManager
@@ -163,7 +160,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	private function createTag($data, $contentType = 'application/json'): ISystemTag {
 		if (\explode(';', $contentType)[0] === 'application/json') {
-			$data = \json_decode($data, true);
+			$data = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 		} else {
 			throw new UnsupportedMediaType();
 		}
@@ -231,32 +228,23 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			return;
 		}
 
-		$propFind->handle(self::ID_PROPERTYNAME, function () use ($node) {
-			return $node->getSystemTag()->getId();
-		});
+		$propFind->handle(self::ID_PROPERTYNAME, fn () => $node->getSystemTag()->getId());
 
-		$propFind->handle(self::DISPLAYNAME_PROPERTYNAME, function () use ($node) {
-			return $node->getSystemTag()->getName();
-		});
+		$propFind->handle(self::DISPLAYNAME_PROPERTYNAME, fn () => $node->getSystemTag()->getName());
 
-		$propFind->handle(self::USERVISIBLE_PROPERTYNAME, function () use ($node) {
-			return $node->getSystemTag()->isUserVisible() ? 'true' : 'false';
-		});
+		$propFind->handle(self::USERVISIBLE_PROPERTYNAME, fn () => $node->getSystemTag()->isUserVisible() ? 'true' : 'false');
 
-		$propFind->handle(self::USEREDITABLE_PROPERTYNAME, function () use ($node) {
-			// this is the tag's inherent property "is user editable"
-			return $node->getSystemTag()->isUserEditable() ? 'true' : 'false';
-		});
+		$propFind->handle(self::USEREDITABLE_PROPERTYNAME, fn () =>
+	  // this is the tag's inherent property "is user editable"
+	  $node->getSystemTag()->isUserEditable() ? 'true' : 'false');
 
-		$propFind->handle(self::USERASSIGNABLE_PROPERTYNAME, function () use ($node) {
-			// this is the tag's inherent property "is user assignable"
-			return $node->getSystemTag()->isUserAssignable() ? 'true' : 'false';
-		});
+		$propFind->handle(self::USERASSIGNABLE_PROPERTYNAME, fn () =>
+	  // this is the tag's inherent property "is user assignable"
+	  $node->getSystemTag()->isUserAssignable() ? 'true' : 'false');
 
-		$propFind->handle(self::CANASSIGN_PROPERTYNAME, function () use ($node) {
-			// this is the effective permission for the current user
-			return $this->tagManager->canUserAssignTag($node->getSystemTag(), $this->userSession->getUser()) ? 'true' : 'false';
-		});
+		$propFind->handle(self::CANASSIGN_PROPERTYNAME, fn () =>
+	  // this is the effective permission for the current user
+	  $this->tagManager->canUserAssignTag($node->getSystemTag(), $this->userSession->getUser()) ? 'true' : 'false');
 
 		$propFind->handle(self::GROUPS_PROPERTYNAME, function () use ($node) {
 			if (!$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) {
@@ -276,9 +264,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			return \implode('|', $groups);
 		});
 
-		$propFind->handle(self::WHITELISTEDINGROUP, function () use ($node) {
-			return $this->tagManager->canUserUseStaticTagInGroup($node->getSystemTag(), $this->userSession->getUser()) ? 'true' : 'false';
-		});
+		$propFind->handle(self::WHITELISTEDINGROUP, fn () => $this->tagManager->canUserUseStaticTagInGroup($node->getSystemTag(), $this->userSession->getUser()) ? 'true' : 'false');
 	}
 
 	/**

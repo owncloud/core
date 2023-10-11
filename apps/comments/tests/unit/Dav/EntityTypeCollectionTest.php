@@ -45,7 +45,7 @@ class EntityTypeCollectionTest extends \Test\TestCase {
 
 	protected $childMap = [];
 	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
-	private $dispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $dispatcher;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -65,9 +65,7 @@ class EntityTypeCollectionTest extends \Test\TestCase {
 			$this->userSession,
 			$this->dispatcher,
 			$this->logger,
-			function ($child) use ($instance) {
-				return !empty($instance->childMap[$child]);
-			}
+			fn ($child) => !empty($instance->childMap[$child])
 		);
 	}
 

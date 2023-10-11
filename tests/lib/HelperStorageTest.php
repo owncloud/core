@@ -19,8 +19,7 @@ use OCP\IUser;
 class HelperStorageTest extends TestCase {
 	/** @var string */
 	private $user;
-	/** @var \OC\Files\Storage\Storage */
-	private $storageMock;
+	private ?\PHPUnit\Framework\MockObject\MockObject $storageMock = null;
 	/** @var \OC\Files\Storage\Storage */
 	private $storage;
 	/** @var IUser */
@@ -67,7 +66,7 @@ class HelperStorageTest extends TestCase {
 	 * @return \OC\Files\Storage\Storage
 	 */
 	private function getStorageMock($freeSpace = 12) {
-		$this->storageMock = $this->getMockBuilder('\OC\Files\Storage\Temporary')
+		$this->storageMock = $this->getMockBuilder('\\' . \OC\Files\Storage\Temporary::class)
 			->setMethods(['free_space'])
 			->setConstructorArgs([''])
 			->getMock();

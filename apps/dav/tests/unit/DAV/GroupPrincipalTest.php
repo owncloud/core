@@ -29,10 +29,9 @@ use OC\Group\Group;
 
 class GroupPrincipalTest extends \Test\TestCase {
 	/** @var IGroupManager | PHPUnit\Framework\MockObject\MockObject */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
-	/** @var GroupPrincipalBackend */
-	private $connector;
+	private \OCA\DAV\DAV\GroupPrincipalBackend $connector;
 
 	public function setUp(): void {
 		$this->groupManager = $this->getMockBuilder(IGroupManager::class)

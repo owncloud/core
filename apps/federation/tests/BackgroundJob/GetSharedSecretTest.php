@@ -43,41 +43,40 @@ use Test\TestCase;
  */
 class GetSharedSecretTest extends TestCase {
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IClient */
-	private $httpClient;
+	private \PHPUnit\Framework\MockObject\MockObject $httpClient;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IJobList */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IURLGenerator */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers  */
-	private $trustedServers;
+	private \PHPUnit\Framework\MockObject\MockObject $trustedServers;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | DbHandler */
-	private $dbHandler;
+	private \PHPUnit\Framework\MockObject\MockObject $dbHandler;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | ILogger */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IResponse */
-	private $response;
+	private \PHPUnit\Framework\MockObject\MockObject $response;
 
-	/** @var GetSharedSecret */
-	private $getSharedSecret;
+	private \OCA\Federation\BackgroundJob\GetSharedSecret $getSharedSecret;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->httpClient = $this->createMock('OCP\Http\Client\IClient');
-		$this->jobList = $this->createMock('OCP\BackgroundJob\IJobList');
-		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
-		$this->trustedServers = $this->getMockBuilder('OCA\Federation\TrustedServers')
+		$this->httpClient = $this->createMock(\OCP\Http\Client\IClient::class);
+		$this->jobList = $this->createMock(\OCP\BackgroundJob\IJobList::class);
+		$this->urlGenerator = $this->createMock(\OCP\IURLGenerator::class);
+		$this->trustedServers = $this->getMockBuilder(\OCA\Federation\TrustedServers::class)
 			->disableOriginalConstructor()->getMock();
-		$this->dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')
+		$this->dbHandler = $this->getMockBuilder(\OCA\Federation\DbHandler::class)
 			->disableOriginalConstructor()->getMock();
-		$this->logger = $this->createMock('OCP\ILogger');
-		$this->response = $this->createMock('OCP\Http\Client\IResponse');
+		$this->logger = $this->createMock(\OCP\ILogger::class);
+		$this->response = $this->createMock(\OCP\Http\Client\IResponse::class);
 
 		$this->getSharedSecret = new GetSharedSecret(
 			$this->httpClient,
@@ -97,7 +96,7 @@ class GetSharedSecretTest extends TestCase {
 	 */
 	public function testExecute($isTrustedServer, $retainBackgroundJob) {
 		/** @var GetSharedSecret |\PHPUnit\Framework\MockObject\MockObject $getSharedSecret */
-		$getSharedSecret = $this->getMockBuilder('OCA\Federation\BackgroundJob\GetSharedSecret')
+		$getSharedSecret = $this->getMockBuilder(\OCA\Federation\BackgroundJob\GetSharedSecret::class)
 			->setConstructorArgs(
 				[
 					$this->httpClient,

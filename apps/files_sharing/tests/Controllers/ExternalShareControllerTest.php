@@ -40,19 +40,19 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ExternalShareControllerTest extends \Test\TestCase {
 	/** @var IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var \OCA\Files_Sharing\External\Manager */
-	private $externalManager;
+	private \PHPUnit\Framework\MockObject\MockObject $externalManager;
 	/** @var IClientService */
-	private $clientService;
+	private \PHPUnit\Framework\MockObject\MockObject $clientService;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->request = $this->getMockBuilder('\\OCP\\IRequest')
+		$this->request = $this->getMockBuilder('\\' . \OCP\IRequest::class)
 			->disableOriginalConstructor()->getMock();
-		$this->externalManager = $this->getMockBuilder('\\OCA\\Files_Sharing\\External\\Manager')
+		$this->externalManager = $this->getMockBuilder('\\' . \OCA\Files_Sharing\External\Manager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->clientService = $this->getMockBuilder('\\OCP\Http\\Client\\IClientService')
+		$this->clientService = $this->getMockBuilder('\\' . \OCP\Http\Client\IClientService::class)
 			->disableOriginalConstructor()->getMock();
 	}
 
@@ -145,9 +145,9 @@ class ExternalShareControllerTest extends \Test\TestCase {
 	}
 
 	public function testRemoteWithValidHttps() {
-		$client = $this->getMockBuilder('\\OCP\\Http\\Client\\IClient')
+		$client = $this->getMockBuilder('\\' . \OCP\Http\Client\IClient::class)
 			->disableOriginalConstructor()->getMock();
-		$response = $this->getMockBuilder('\\OCP\\Http\\Client\\IResponse')
+		$response = $this->getMockBuilder('\\' . \OCP\Http\Client\IResponse::class)
 			->disableOriginalConstructor()->getMock();
 		$response
 			->expects($this->exactly(2))
@@ -167,9 +167,9 @@ class ExternalShareControllerTest extends \Test\TestCase {
 	}
 
 	public function testRemoteWithWorkingHttp() {
-		$client = $this->getMockBuilder('\\OCP\\Http\\Client\\IClient')
+		$client = $this->getMockBuilder('\\' . \OCP\Http\Client\IClient::class)
 			->disableOriginalConstructor()->getMock();
-		$response = $this->getMockBuilder('\\OCP\\Http\\Client\\IResponse')
+		$response = $this->getMockBuilder('\\' . \OCP\Http\Client\IResponse::class)
 			->disableOriginalConstructor()->getMock();
 		$client
 			->method('get')
@@ -187,9 +187,9 @@ class ExternalShareControllerTest extends \Test\TestCase {
 	}
 
 	public function testRemoteWithInvalidRemote() {
-		$client = $this->getMockBuilder('\\OCP\\Http\\Client\\IClient')
+		$client = $this->getMockBuilder('\\' . \OCP\Http\Client\IClient::class)
 			->disableOriginalConstructor()->getMock();
-		$response = $this->getMockBuilder('\\OCP\\Http\\Client\\IResponse')
+		$response = $this->getMockBuilder('\\' . \OCP\Http\Client\IResponse::class)
 			->disableOriginalConstructor()->getMock();
 		$client
 			->method('get')

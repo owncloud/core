@@ -28,8 +28,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncFederationAddressBooks extends Command {
-	/** @var \OCA\Federation\SyncFederationAddressBooks */
-	private $syncService;
+	private \OCA\Federation\SyncFederationAddressBooks $syncService;
 
 	/**
 	 * @param \OCA\Federation\SyncFederationAddressBooks $syncService

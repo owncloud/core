@@ -35,8 +35,7 @@ class Cors implements ISettings {
 	 */
 	protected $urlGenerator;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	public function __construct(
 		IUserSession $userSession,
@@ -57,7 +56,7 @@ class Cors implements ISettings {
 	 */
 	public function getPanel() {
 		$userId = $this->userSession->getUser()->getUID();
-		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true, 512, JSON_THROW_ON_ERROR);
 
 		$t = new Template('settings', 'panels/personal/cors');
 		$t->assign('user_id', $userId);

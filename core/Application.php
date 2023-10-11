@@ -70,44 +70,38 @@ class Application extends App {
 		/**
 		 * Controllers
 		 */
-		$container->registerService('AppRegistryController', static function (SimpleContainer $c) use ($server) {
-			return new AppRegistryController(
-				$c->query('AppName'),
-				$server->getRequest(),
-				$server->getAppManager(),
-				$server->query('LazyRootFolder'),
-				$server->getURLGenerator(),
-				$server->getConfig(),
-				$server->getLogger()
-			);
-		});
+		$container->registerService('AppRegistryController', static fn (SimpleContainer $c) => new AppRegistryController(
+			$c->query('AppName'),
+			$server->getRequest(),
+			$server->getAppManager(),
+			$server->query('LazyRootFolder'),
+			$server->getURLGenerator(),
+			$server->getConfig(),
+			$server->getLogger()
+		));
 
-		$container->registerService('LostController', static function (SimpleContainer $c) {
-			return new LostController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('URLGenerator'),
-				$c->query('UserManager'),
-				$c->query('Defaults'),
-				$c->query('L10N'),
-				$c->query('Config'),
-				$c->query('SecureRandom'),
-				$c->query('DefaultEmailAddress'),
-				$c->query('IsEncryptionEnabled'),
-				$c->query('Mailer'),
-				$c->query('TimeFactory'),
-				$c->query('Logger'),
-				$c->query('UserSession')
-			);
-		});
-		$container->registerService('UserController', static function (SimpleContainer $c) {
-			return new UserController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('UserManager'),
-				$c->query('Defaults')
-			);
-		});
+		$container->registerService('LostController', static fn (SimpleContainer $c) => new LostController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('URLGenerator'),
+			$c->query('UserManager'),
+			$c->query('Defaults'),
+			$c->query('L10N'),
+			$c->query('Config'),
+			$c->query('SecureRandom'),
+			$c->query('DefaultEmailAddress'),
+			$c->query('IsEncryptionEnabled'),
+			$c->query('Mailer'),
+			$c->query('TimeFactory'),
+			$c->query('Logger'),
+			$c->query('UserSession')
+		));
+		$container->registerService('UserController', static fn (SimpleContainer $c) => new UserController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('UserManager'),
+			$c->query('Defaults')
+		));
 		$container->registerService('AvatarController', static function (SimpleContainer $c) {
 			/** @var IServerContainer $server */
 			$server = $c->query('ServerContainer');
@@ -123,45 +117,37 @@ class Application extends App {
 				$c->query('Logger')
 			);
 		});
-		$container->registerService('LoginController', static function (SimpleContainer $c) {
-			return new LoginController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('UserManager'),
-				$c->query('Config'),
-				$c->query('Session'),
-				$c->query('UserSession'),
-				$c->query('URLGenerator'),
-				$c->query('TwoFactorAuthManager'),
-				$c->query('ServerContainer')->getLicenseManager()
-			);
-		});
-		$container->registerService('TwoFactorChallengeController', static function (SimpleContainer $c) {
-			return new TwoFactorChallengeController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('TwoFactorAuthManager'),
-				$c->query('UserSession'),
-				$c->query('Session'),
-				$c->query('URLGenerator')
-			);
-		});
-		$container->registerService('TokenController', static function (SimpleContainer $c) {
-			return new TokenController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('UserManager'),
-				$c->query('ServerContainer')->query('OC\Authentication\Token\IProvider'),
-				$c->query('TwoFactorAuthManager'),
-				$c->query('SecureRandom')
-			);
-		});
-		$container->registerService('CloudController', static function (SimpleContainer $c) {
-			return new CloudController(
-				$c->query('AppName'),
-				$c->query('Request')
-			);
-		});
+		$container->registerService('LoginController', static fn (SimpleContainer $c) => new LoginController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('UserManager'),
+			$c->query('Config'),
+			$c->query('Session'),
+			$c->query('UserSession'),
+			$c->query('URLGenerator'),
+			$c->query('TwoFactorAuthManager'),
+			$c->query('ServerContainer')->getLicenseManager()
+		));
+		$container->registerService('TwoFactorChallengeController', static fn (SimpleContainer $c) => new TwoFactorChallengeController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('TwoFactorAuthManager'),
+			$c->query('UserSession'),
+			$c->query('Session'),
+			$c->query('URLGenerator')
+		));
+		$container->registerService('TokenController', static fn (SimpleContainer $c) => new TokenController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('UserManager'),
+			$c->query('ServerContainer')->query(\OC\Authentication\Token\IProvider::class),
+			$c->query('TwoFactorAuthManager'),
+			$c->query('SecureRandom')
+		));
+		$container->registerService('CloudController', static fn (SimpleContainer $c) => new CloudController(
+			$c->query('AppName'),
+			$c->query('Request')
+		));
 		$container->registerService('RolesController', static function (SimpleContainer $c) {
 			/** @var IServerContainer $serverContainer */
 			$serverContainer = $c->query('ServerContainer');
@@ -185,15 +171,13 @@ class Application extends App {
 				$c->query('UserManager')
 			);
 		});
-		$container->registerService('CronController', static function (SimpleContainer $c) {
-			return new CronController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query(IConfig::class),
-				$c->query(ILogger::class),
-				$c->query(IJobList::class)
-			);
-		});
+		$container->registerService('CronController', static fn (SimpleContainer $c) => new CronController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query(IConfig::class),
+			$c->query(ILogger::class),
+			$c->query(IJobList::class)
+		));
 		$container->registerService('LicenseController', static function (SimpleContainer $c) {
 			$server = $c->query('ServerContainer');
 			return new LicenseController(
@@ -206,53 +190,21 @@ class Application extends App {
 		/**
 		 * Core class wrappers
 		 */
-		$container->registerService('IsEncryptionEnabled', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getEncryptionManager()->isEnabled();
-		});
-		$container->registerService('URLGenerator', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getURLGenerator();
-		});
-		$container->registerService('UserManager', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getUserManager();
-		});
-		$container->registerService('Config', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getConfig();
-		});
-		$container->registerService('L10N', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getL10N('core');
-		});
-		$container->registerService('SecureRandom', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getSecureRandom();
-		});
-		$container->registerService('AvatarManager', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getAvatarManager();
-		});
-		$container->registerService('Session', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getSession();
-		});
-		$container->registerService('UserSession', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getUserSession();
-		});
-		$container->registerService('Cache', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getCache();
-		});
-		$container->registerService('Defaults', static function () {
-			return new OC_Defaults;
-		});
-		$container->registerService('Mailer', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getMailer();
-		});
-		$container->registerService('Logger', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getLogger();
-		});
-		$container->registerService('TimeFactory', static function (SimpleContainer $c) {
-			return new TimeFactory();
-		});
-		$container->registerService('DefaultEmailAddress', static function () {
-			return Util::getDefaultEmailAddress('lostpassword-noreply');
-		});
-		$container->registerService('TwoFactorAuthManager', static function (SimpleContainer $c) {
-			return $c->query('ServerContainer')->getTwoFactorAuthManager();
-		});
+		$container->registerService('IsEncryptionEnabled', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getEncryptionManager()->isEnabled());
+		$container->registerService('URLGenerator', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getURLGenerator());
+		$container->registerService('UserManager', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getUserManager());
+		$container->registerService('Config', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getConfig());
+		$container->registerService('L10N', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getL10N('core'));
+		$container->registerService('SecureRandom', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getSecureRandom());
+		$container->registerService('AvatarManager', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getAvatarManager());
+		$container->registerService('Session', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getSession());
+		$container->registerService('UserSession', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getUserSession());
+		$container->registerService('Cache', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getCache());
+		$container->registerService('Defaults', static fn () => new OC_Defaults);
+		$container->registerService('Mailer', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getMailer());
+		$container->registerService('Logger', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getLogger());
+		$container->registerService('TimeFactory', static fn (SimpleContainer $c) => new TimeFactory());
+		$container->registerService('DefaultEmailAddress', static fn () => Util::getDefaultEmailAddress('lostpassword-noreply'));
+		$container->registerService('TwoFactorAuthManager', static fn (SimpleContainer $c) => $c->query('ServerContainer')->getTwoFactorAuthManager());
 	}
 }

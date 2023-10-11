@@ -314,7 +314,7 @@ class AppRegistryController extends Controller {
 			'ios' => 'https://'
 		]);
 		foreach ($clientRules as $client => $rule) {
-			if (strpos($userAgent, $rule) !== false) {
+			if (strpos($userAgent, (string) $rule) !== false) {
 				return str_replace('https://', $schema[$client], $uri);
 			}
 		}

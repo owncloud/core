@@ -30,17 +30,14 @@ use Test\TestCase;
  * @group DB
  */
 class DBConfigServiceTest extends TestCase {
-	/**
-	 * @var DBConfigService
-	 */
-	private $dbConfig;
+	private \OC\Files\External\Service\DBConfigService $dbConfig;
 
 	/**
 	 * @var IDBConnection
 	 */
 	private $connection;
 
-	private $mounts = [];
+	private array $mounts = [];
 
 	public function setUp(): void {
 		parent::setUp();
@@ -88,9 +85,7 @@ class DBConfigServiceTest extends TestCase {
 		$this->dbConfig->addApplicable($id, DBConfigService::APPLICABLE_TYPE_GLOBAL, null);
 
 		$mount = $this->dbConfig->getMountById($id);
-		\usort($mount['applicable'], function ($m1, $m2) {
-			return $m1['type'] - $m2['type'];
-		});
+		\usort($mount['applicable'], fn ($m1, $m2) => $m1['type'] - $m2['type']);
 
 		$this->assertEquals([
 			['type' => DBConfigService::APPLICABLE_TYPE_GLOBAL, 'value' => null, 'mount_id' => $id],

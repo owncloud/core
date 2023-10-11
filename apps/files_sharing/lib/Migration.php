@@ -34,14 +34,12 @@ use OCP\IDBConnection;
  * @group DB
  */
 class Migration {
-	/** @var IDBConnection */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
 	/** @var  array with all shares we already saw */
 	private $shareCache;
 
-	/** @var string */
-	private $table = 'share';
+	private string $table = 'share';
 
 	public function __construct(IDBConnection $connection) {
 		$this->connection = $connection;

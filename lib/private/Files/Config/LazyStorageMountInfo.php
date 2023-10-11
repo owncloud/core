@@ -26,8 +26,7 @@ use OCP\Files\Mount\IMountPoint;
 use OCP\IUser;
 
 class LazyStorageMountInfo extends CachedMountInfo {
-	/** @var IMountPoint */
-	private $mount;
+	private \OCP\Files\Mount\IMountPoint $mount;
 
 	/**
 	 * CachedMountInfo constructor.

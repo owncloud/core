@@ -30,8 +30,7 @@ use OCP\IConfig;
  * @package OC\Security
  */
 class TrustedDomainHelper {
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * @param IConfig $config

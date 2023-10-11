@@ -93,7 +93,7 @@ class Config extends Base {
 			$value = $mount->getBackendOption($key);
 		}
 		if (!\is_string($value)) { // show bools and objects correctly
-			$value = \json_encode($value);
+			$value = \json_encode($value, JSON_THROW_ON_ERROR);
 		}
 		$output->writeln($value);
 	}
@@ -105,7 +105,7 @@ class Config extends Base {
 	 * @param OutputInterface $output
 	 */
 	protected function setOption(IStorageConfig $mount, $key, $value, OutputInterface $output) {
-		$decoded = \json_decode($value, true);
+		$decoded = \json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 		if ($decoded !== null) {
 			$value = $decoded;
 		}

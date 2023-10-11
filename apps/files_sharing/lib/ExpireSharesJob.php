@@ -34,25 +34,13 @@ use OCP\Activity\IManager as ActivityIManager;
  * Delete all shares that are expired
  */
 class ExpireSharesJob extends TimedJob {
-	/**
-	 * @var IManager $shareManager
-	 */
-	private $shareManager;
+	private \OCP\Share\IManager $shareManager;
 
-	/**
-	 * @var IDBConnection $connection
-	 */
-	private $connection;
+	private \OCP\IDBConnection $connection;
 
-	/**
-	 * @var DefaultShareProvider $defaultShareProvider
-	 */
-	private $defaultShareProvider;
+	private \OC\Share20\DefaultShareProvider $defaultShareProvider;
 
-	/**
-	 * @var ActivityIManager $activityManager
-	 */
-	private $activityManager;
+	private \OCP\Activity\IManager $activityManager;
 
 	/**
 	 * sets the correct interval for this timed job

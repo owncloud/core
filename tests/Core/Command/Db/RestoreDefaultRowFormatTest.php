@@ -37,13 +37,12 @@ use Test\TestCase;
  */
 class RestoreDefaultRowFormatTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ConnectionFactory | \PHPUnit\Framework\MockObject\MockObject */
-	private $connectionFactory;
-	/** @var CommandTester */
-	private $commandTester;
+	private \PHPUnit\Framework\MockObject\MockObject $connectionFactory;
+	private ?\Symfony\Component\Console\Tester\CommandTester $commandTester = null;
 	/** @var \Doctrine\DBAL\Connection | \PHPUnit\Framework\MockObject\MockObject */
-	private $connection;
+	private \PHPUnit\Framework\MockObject\MockObject $connection;
 
 	protected function setUp(): void {
 		parent::setUp();

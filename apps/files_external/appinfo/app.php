@@ -31,7 +31,7 @@
 $appContainer = \OC_Mount_Config::$app->getContainer();
 
 $config = \OC::$server->getConfig();
-if (\class_exists('OCA\Files\App') && $config->getAppValue('core', 'enable_external_storage', 'no') === 'yes') {
+if (\class_exists(\OCA\Files\App::class) && $config->getAppValue('core', 'enable_external_storage', 'no') === 'yes') {
 	\OCA\Files\App::getNavigationManager()->add(function () {
 		$l = \OC::$server->getL10N('files_external');
 		return [

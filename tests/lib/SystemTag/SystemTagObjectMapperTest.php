@@ -31,12 +31,12 @@ class SystemTagObjectMapperTest extends TestCase {
 	/**
 	 * @var ISystemTagManager
 	 **/
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
 	/**
 	 * @var ISystemTagObjectMapper
 	 **/
-	private $tagMapper;
+	private \OC\SystemTag\SystemTagObjectMapper $tagMapper;
 
 	/**
 	 * @var IDBConnection
@@ -46,22 +46,22 @@ class SystemTagObjectMapperTest extends TestCase {
 	/**
 	 * @var EventDispatcherInterface
 	 */
-	private $dispatcher;
+	private \PHPUnit\Framework\MockObject\MockObject $dispatcher;
 
 	/**
 	 * @var ISystemTag
 	 */
-	private $tag1;
+	private \OC\SystemTag\SystemTag $tag1;
 
 	/**
 	 * @var ISystemTag
 	 */
-	private $tag2;
+	private \OC\SystemTag\SystemTag $tag2;
 
 	/**
 	 * @var ISystemTag
 	 */
-	private $tag3;
+	private \OC\SystemTag\SystemTag $tag3;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -69,10 +69,10 @@ class SystemTagObjectMapperTest extends TestCase {
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->pruneTagsTables();
 
-		$this->tagManager = $this->getMockBuilder('OCP\SystemTag\ISystemTagManager')
+		$this->tagManager = $this->getMockBuilder(\OCP\SystemTag\ISystemTagManager::class)
 			->getMock();
 
-		$this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')
+		$this->dispatcher = $this->getMockBuilder(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class)
 			->getMock();
 
 		$this->tagMapper = new SystemTagObjectMapper(

@@ -47,10 +47,7 @@ use OCP\Share\Exceptions\ShareNotFound;
 class OcmController extends Controller {
 	public const API_VERSION = '1.0-proposal1';
 
-	/**
-	 * @var OcmMiddleware
-	 */
-	private $ocmMiddleware;
+	private \OCA\FederatedFileSharing\Middleware\OcmMiddleware $ocmMiddleware;
 
 	/**
 	 * @var IURLGenerator
@@ -77,8 +74,7 @@ class OcmController extends Controller {
 	 */
 	protected $logger;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * OcmController constructor.

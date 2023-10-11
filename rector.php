@@ -21,5 +21,7 @@ return static function (RectorConfig $rectorConfig): void {
 	$rectorConfig->skip([
 		__DIR__ . '/*/templates/*',
 		__DIR__ . '/lib/composer/*',
+		__DIR__ . '/lib/private/Repair/DropOldJobs.php',
+		__DIR__ . '/lib/private/legacy/defaults.php'
 	]);
 };

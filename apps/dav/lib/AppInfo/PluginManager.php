@@ -29,29 +29,19 @@ use OCP\AppFramework\QueryException;
  * to the Sabre server.
  */
 class PluginManager {
-	/**
-	 * @var ServerContainer
-	 */
-	private $container;
+	private \OC\ServerContainer $container;
+
+	private \OCP\App\IAppManager $appManager;
 
 	/**
-	 * @var IAppManager
-	 */
-	private $appManager;
+  * App plugins
+  */
+	private ?array $plugins = null;
 
 	/**
-	 * App plugins
-	 *
-	 * @var array
-	 */
-	private $plugins = null;
-
-	/**
-	 * App collections
-	 *
-	 * @var array
-	 */
-	private $collections = null;
+  * App collections
+  */
+	private ?array $collections = null;
 
 	/**
 	 * Construct a PluginManager

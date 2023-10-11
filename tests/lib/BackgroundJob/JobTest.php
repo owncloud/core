@@ -9,7 +9,7 @@
 namespace Test\BackgroundJob;
 
 class JobTest extends \Test\TestCase {
-	private $run = false;
+	private bool $run = false;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -24,7 +24,7 @@ class JobTest extends \Test\TestCase {
 		});
 		$jobList->add($job);
 
-		$logger = $this->getMockBuilder('OCP\ILogger')
+		$logger = $this->getMockBuilder(\OCP\ILogger::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$logger->expects($this->once())

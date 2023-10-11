@@ -25,8 +25,7 @@ use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use Test\TestCase;
 
 class EnvironmentHelperTest extends TestCase {
-	/** @var EnvironmentHelper */
-	private $environmentHelper;
+	private \OC\IntegrityCheck\Helpers\EnvironmentHelper $environmentHelper;
 
 	public function setUp(): void {
 		$this->environmentHelper = new EnvironmentHelper();

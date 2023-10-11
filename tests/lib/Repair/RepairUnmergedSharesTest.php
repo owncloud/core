@@ -40,24 +40,23 @@ use Test\TestCase;
  */
 class RepairUnmergedSharesTest extends TestCase {
 	/** @var IRepairStep */
-	private $repair;
+	private \OC\Repair\RepairUnmergedShares $repair;
 
 	/** @var \OCP\IDBConnection */
 	private $connection;
 
-	/** @var int */
-	private $lastShareTime;
+	private int $lastShareTime;
 
 	/** @var IUserManager */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var IGroupManager */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$config = $this->getMockBuilder('OCP\IConfig')
+		$config = $this->getMockBuilder(\OCP\IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$config->expects($this->any())
@@ -108,7 +107,7 @@ class RepairUnmergedSharesTest extends TestCase {
 		/** @var \OCP\IConfig $config */
 		$this->repair = new RepairUnmergedShares($config, $this->connection, $this->userManager, $this->groupManager);
 
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -534,12 +533,12 @@ class RepairUnmergedSharesTest extends TestCase {
 	 * @dataProvider sharesDataProvider
 	 */
 	public function xtestMergeGroupShares($shares, $expectedShares) {
-		$user1 = $this->createMock('\OCP\IUser');
+		$user1 = $this->createMock('\\' . \OCP\IUser::class);
 		$user1->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user1'));
 
-		$user2 = $this->createMock('\OCP\IUser');
+		$user2 = $this->createMock('\\' . \OCP\IUser::class);
 		$user2->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user2'));
@@ -580,7 +579,7 @@ class RepairUnmergedSharesTest extends TestCase {
 		}
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

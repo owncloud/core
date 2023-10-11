@@ -29,12 +29,9 @@ namespace OC\App;
 use OCP\IL10N;
 
 class DependencyAnalyzer {
-	/** @var Platform */
-	private $platform;
-	/** @var \OCP\IL10N */
-	private $l;
-	/** @var array */
-	private $appInfo;
+	private \OC\App\Platform $platform;
+	private \OCP\IL10N $l;
+	private ?array $appInfo = null;
 
 	/**
 	 * @param Platform $platform
@@ -101,7 +98,7 @@ class DependencyAnalyzer {
 		// version string but null. In case one parameter is null normalization
 		// will therefore be skipped
 		if ($first !== null && $second !== null) {
-			list($first, $second) = $this->normalizeVersions($first, $second);
+			[$first, $second] = $this->normalizeVersions($first, $second);
 		}
 
 		return \version_compare($first, $second, $operator);
@@ -171,9 +168,7 @@ class DependencyAnalyzer {
 		if (!\is_array($supportedDatabases)) {
 			$supportedDatabases = [$supportedDatabases];
 		}
-		$supportedDatabases = \array_map(function ($db) {
-			return $this->getValue($db);
-		}, $supportedDatabases);
+		$supportedDatabases = \array_map(fn ($db) => $this->getValue($db), $supportedDatabases);
 		$currentDatabase = $this->platform->getDatabase();
 		if (!\in_array($currentDatabase, $supportedDatabases)) {
 			$missing[] = (string)$this->l->t('Following databases are supported: %s', \join(', ', $supportedDatabases));
@@ -275,9 +270,7 @@ class DependencyAnalyzer {
 			return $missing;
 		}
 		if (\is_array($oss)) {
-			$oss = \array_map(function ($os) {
-				return $this->getValue($os);
-			}, $oss);
+			$oss = \array_map(fn ($os) => $this->getValue($os), $oss);
 		} else {
 			$oss = [$oss];
 		}
@@ -328,9 +321,6 @@ class DependencyAnalyzer {
 	 * @return mixed
 	 */
 	private function getValue($element) {
-		if (isset($element['@value'])) {
-			return $element['@value'];
-		}
-		return (string)$element;
+		return $element['@value'] ?? (string)$element;
 	}
 }

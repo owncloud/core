@@ -56,8 +56,8 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	/**
 	 * @return \OCP\Files\External\Backend\Backend
 	 */
-	protected function getBackendMock($class = '\OCA\Files_External\Lib\Backend\SMB', $storageClass = '\OCA\Files_External\Lib\Storage\SMB') {
-		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+	protected function getBackendMock($class = '\\' . \OCA\Files_External\Lib\Backend\SMB::class, $storageClass = '\\' . \OCA\Files_External\Lib\Storage\SMB::class) {
+		$backend = $this->getMockBuilder('\\' . \OCP\Files\External\Backend\Backend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$backend->method('getStorageClass')
@@ -70,8 +70,8 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	/**
 	 * @return \OCP\Files\External\Backend\Backend
 	 */
-	protected function getBackendMockLocal($class = '\OCA\Files_External\Lib\Backend\Local', $storageClass = '\OC\Files\Storage\Local') {
-		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+	protected function getBackendMockLocal($class = '\\' . \OCA\Files_External\Lib\Backend\Local::class, $storageClass = '\\' . \OC\Files\Storage\Local::class) {
+		$backend = $this->getMockBuilder('\\' . \OCP\Files\External\Backend\Backend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$backend->method('getStorageClass')
@@ -85,7 +85,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	 * @return \OCP\Files\External\Auth\AuthMechanism
 	 */
 	protected function getAuthMechMock($scheme = 'null', $class = '\OCA\Files_External\Lib\Auth\NullMechanism') {
-		$authMech = $this->getMockBuilder('\OCP\Files\External\Auth\AuthMechanism')
+		$authMech = $this->getMockBuilder('\\' . \OCP\Files\External\Auth\AuthMechanism::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$authMech->method('getScheme')
@@ -123,7 +123,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 		$response = $this->controller->create(
 			'mount',
-			'\OCA\Files_External\Lib\Storage\SMB',
+			'\\' . \OCA\Files_External\Lib\Storage\SMB::class,
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			[],
 			[],
@@ -200,7 +200,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$response = $this->controller->update(
 			1,
 			'mount',
-			'\OCA\Files_External\Lib\Storage\SMB',
+			'\\' . \OCA\Files_External\Lib\Storage\SMB::class,
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			[],
 			[],
@@ -242,7 +242,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 		$response = $this->controller->create(
 			$mountPoint,
-			'\OCA\Files_External\Lib\Storage\SMB',
+			'\\' . \OCA\Files_External\Lib\Storage\SMB::class,
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			[],
 			[],
@@ -256,7 +256,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$response = $this->controller->update(
 			1,
 			$mountPoint,
-			'\OCA\Files_External\Lib\Storage\SMB',
+			'\\' . \OCA\Files_External\Lib\Storage\SMB::class,
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			[],
 			[],
@@ -333,7 +333,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$response = $this->controller->update(
 			255,
 			'mount',
-			'\OCA\Files_External\Lib\Storage\SMB',
+			'\\' . \OCA\Files_External\Lib\Storage\SMB::class,
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			[],
 			[],
@@ -429,7 +429,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 		$response = $this->controller->create(
 			'mount',
-			'\OCA\Files_External\Lib\Storage\SMB',
+			'\\' . \OCA\Files_External\Lib\Storage\SMB::class,
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			[],
 			[],
@@ -544,9 +544,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$expected = [$expectedStorage1, $expectedStorage2, $expectedStorage3];
 
 		$result = $this->controller->index();
-		$actual = \array_map(function ($item) {
-			return $item->jsonSerialize();
-		}, $result->getData());
+		$actual = \array_map(fn ($item) => $item->jsonSerialize(), $result->getData());
 		$this->assertEquals(Http::STATUS_OK, $result->getStatus());
 		$this->assertEquals($expected, $actual);
 	}

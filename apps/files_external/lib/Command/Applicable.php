@@ -39,15 +39,9 @@ class Applicable extends Base {
 	 */
 	protected $globalService;
 
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/**
-	 * @var IGroupManager
-	 */
-	private $groupManager;
+	private \OCP\IGroupManager $groupManager;
 
 	public function __construct(
 		IGlobalStoragesService $globalService,

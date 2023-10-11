@@ -20,16 +20,15 @@ use OCP\IUserSession;
  * @package Tests\Settings\Panels\Admin
  */
 class MailTest extends \Test\TestCase {
-	/** @var Mail */
-	private $panel;
+	private \OC\Settings\Panels\Admin\Mail $panel;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var Helper */
-	private $helper;
+	private \PHPUnit\Framework\MockObject\MockObject $helper;
 	/** @var IUserSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var IUser */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 
 	public function setUp(): void {
 		parent::setUp();

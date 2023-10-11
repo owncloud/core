@@ -34,11 +34,9 @@ class MaintenancePlugin extends ServerPlugin {
 	private $config;
 
 	/**
-	 * Reference to main server object
-	 *
-	 * @var Server
-	 */
-	private $server;
+  * Reference to main server object
+  */
+	private ?\Sabre\DAV\Server $server = null;
 
 	/**
 	 * @param IConfig $config

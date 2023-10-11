@@ -37,17 +37,16 @@ use OCP\ILogger;
  * @package OCA\FederatedFileSharing\BackgroundJob
  */
 class RetryJob extends Job {
-	/** @var  bool */
-	private $retainJob = true;
+	private bool $retainJob = true;
 
 	/** @var Notifications */
 	private $notifications;
 
 	/** @var int max number of attempts to send the request */
-	private $maxTry = 20;
+	private int $maxTry = 20;
 
 	/** @var int how much time should be between two tries (10 minutes) */
-	private $interval = 600;
+	private int $interval = 600;
 
 	/**
 	 * UnShare constructor.
@@ -84,7 +83,7 @@ class RetryJob extends Job {
 		$remoteId = $argument['remoteId'];
 		$token = $argument['token'];
 		$action = $argument['action'];
-		$data = \json_decode($argument['data'], true);
+		$data = \json_decode($argument['data'], true, 512, JSON_THROW_ON_ERROR);
 		$try = (int)$argument['try'] + 1;
 
 		$result = $this->notifications->sendUpdateToRemote($remote, $remoteId, $token, $action, $data, $try);
@@ -102,7 +101,7 @@ class RetryJob extends Job {
 	 */
 	protected function reAddJob(IJobList $jobList, array $argument) {
 		$jobList->add(
-			'OCA\FederatedFileSharing\BackgroundJob\RetryJob',
+			\OCA\FederatedFileSharing\BackgroundJob\RetryJob::class,
 			[
 				'remote' => $argument['remote'],
 				'remoteId' => $argument['remoteId'],

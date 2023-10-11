@@ -43,20 +43,15 @@ use OCP\Security\ISecureRandom;
  * @package OCA\Federation\Controller
  */
 class OCSAuthAPIController extends OCSController {
-	/** @var ISecureRandom  */
-	private $secureRandom;
+	private \OCP\Security\ISecureRandom $secureRandom;
 
-	/** @var IJobList */
-	private $jobList;
+	private \OCP\BackgroundJob\IJobList $jobList;
 
-	/** @var TrustedServers */
-	private $trustedServers;
+	private \OCA\Federation\TrustedServers $trustedServers;
 
-	/** @var DbHandler */
-	private $dbHandler;
+	private \OCA\Federation\DbHandler $dbHandler;
 
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
 	/**
 	 * OCSAuthAPI constructor.
@@ -117,7 +112,7 @@ class OCSAuthAPIController extends OCSController {
 		// we ask for the shared secret so we no longer have to ask the other server
 		// to request the shared secret
 		$this->jobList->remove(
-			'OCA\Federation\BackgroundJob\RequestSharedSecret',
+			\OCA\Federation\BackgroundJob\RequestSharedSecret::class,
 			[
 				'url' => $url,
 				'token' => $localToken
@@ -125,7 +120,7 @@ class OCSAuthAPIController extends OCSController {
 		);
 
 		$this->jobList->add(
-			'OCA\Federation\BackgroundJob\GetSharedSecret',
+			\OCA\Federation\BackgroundJob\GetSharedSecret::class,
 			[
 				'url' => $url,
 				'token' => $token,

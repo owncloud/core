@@ -35,7 +35,7 @@ class DropOldJobsTest extends \Test\TestCase {
 		$this->assertTrue($this->jobList->has('OC_Cache_FileGlobalGC', null), 'Asserting that the job OC_Cache_FileGlobalGC exists before repairing');
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
-		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+		$outputMock = $this->getMockBuilder('\\' . \OCP\Migration\IOutput::class)
 			->disableOriginalConstructor()
 			->getMock();
 

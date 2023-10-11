@@ -11,7 +11,7 @@ namespace Test;
 use OC\Installer;
 
 class InstallerTest extends TestCase {
-	private static $appid = 'testapp';
+	private static string $appid = 'testapp';
 
 	protected function setUp(): void {
 		parent::setUp();

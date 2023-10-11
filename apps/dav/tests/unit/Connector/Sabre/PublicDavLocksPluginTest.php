@@ -29,11 +29,10 @@ use Test\TestCase;
 
 class PublicDavLocksPluginTest extends TestCase {
 	/** @var BackendInterface */
-	private $backendInterface;
+	private \PHPUnit\Framework\MockObject\MockObject $backendInterface;
 	/** @var callable */
 	private $matcher;
-	/** @var PublicDavLocksPlugin */
-	private $publicDavLocksPlugin;
+	private \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin $publicDavLocksPlugin;
 
 	protected function setUp(): void {
 		parent::setUp();

@@ -30,15 +30,9 @@ use OCP\IConfig;
  * @package OC\Settings\Controller
  */
 class LegalSettingsController extends Controller {
-	/**
-	 * @var \OCP\IL10N
-	 */
-	private $l10n;
+	private \OCP\IL10N $l10n;
 
-	/**
-	 * @var \OCP\IConfig
-	 */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * @param string $appName

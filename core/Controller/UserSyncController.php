@@ -45,14 +45,8 @@ use OCP\IUserManager;
  * @package OC\Core\Controller
  */
 class UserSyncController extends OCSController {
-	/**
-	 * @var SyncService
-	 */
-	private $syncService;
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private \OC\User\SyncService $syncService;
+	private \OCP\IUserManager $userManager;
 
 	/**
 	 * UserSyncController constructor.

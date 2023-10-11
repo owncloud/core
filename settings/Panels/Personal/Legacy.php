@@ -28,8 +28,7 @@ use OCP\Template;
 use OC\Settings\Panels\Helper;
 
 class Legacy implements ISettings {
-	/** @var Helper  */
-	private $helper;
+	private \OC\Settings\Panels\Helper $helper;
 
 	public function __construct(Helper $helper) {
 		$this->helper = $helper;

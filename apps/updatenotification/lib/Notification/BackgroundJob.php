@@ -138,7 +138,7 @@ class BackgroundJob extends TimedJob {
 			return $this->users;
 		}
 
-		$notifyGroups = \json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true);
+		$notifyGroups = \json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true, 512, JSON_THROW_ON_ERROR);
 		$this->users = [];
 		foreach ($notifyGroups as $group) {
 			$groupToNotify = $this->groupManager->get($group);

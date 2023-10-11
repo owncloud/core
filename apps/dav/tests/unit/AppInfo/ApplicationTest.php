@@ -42,23 +42,23 @@ class ApplicationTest extends TestCase {
 
 		// assert service instances in the container are properly setup
 		$s = $c->query(ContactsManager::class);
-		$this->assertInstanceOf('OCA\DAV\CardDAV\ContactsManager', $s);
+		$this->assertInstanceOf(\OCA\DAV\CardDAV\ContactsManager::class, $s);
 		$s = $c->query(CardDavBackend::class);
-		$this->assertInstanceOf('OCA\DAV\CardDAV\CardDavBackend', $s);
+		$this->assertInstanceOf(\OCA\DAV\CardDAV\CardDavBackend::class, $s);
 	}
 
 	public function testContactsManagerSetup() {
 		$app = new Application();
 		$c = $app->getContainer();
 		$c->registerService(CardDavBackend::class, function ($c) {
-			$service = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
+			$service = $this->getMockBuilder(\OCA\DAV\CardDAV\CardDavBackend::class)->disableOriginalConstructor()->getMock();
 			$service->method('getAddressBooksForUser')->willReturn([]);
 			return $service;
 		});
 
 		// assert setupContactsProvider() is proper
 		/** @var IManager | \PHPUnit\Framework\MockObject\MockObject $cm */
-		$cm = $this->getMockBuilder('OCP\Contacts\IManager')->disableOriginalConstructor()->getMock();
+		$cm = $this->getMockBuilder(\OCP\Contacts\IManager::class)->disableOriginalConstructor()->getMock();
 		$app->setupContactsProvider($cm, 'xxx');
 		$this->assertTrue(true);
 	}

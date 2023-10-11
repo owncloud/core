@@ -31,18 +31,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class CreateSignKey extends Base {
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var ISecureRandom
-	 */
-	private $secureRandom;
+	private \OCP\IUserManager $userManager;
+	private \OCP\IConfig $config;
+	private \OCP\Security\ISecureRandom $secureRandom;
 
 	public function __construct(IUserManager $userManager, IConfig $config, ISecureRandom $secureRandom) {
 		parent::__construct();

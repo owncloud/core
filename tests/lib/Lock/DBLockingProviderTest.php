@@ -49,18 +49,16 @@ class DBLockingProviderTest extends LockingProvider {
 	/**
 	 * @var \OCP\AppFramework\Utility\ITimeFactory
 	 */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 
 	private $currentTime;
 
 	public function setUp(): void {
 		$this->currentTime = \time();
-		$this->timeFactory = $this->createMock('\OCP\AppFramework\Utility\ITimeFactory');
+		$this->timeFactory = $this->createMock('\\' . \OCP\AppFramework\Utility\ITimeFactory::class);
 		$this->timeFactory->expects($this->any())
 			->method('getTime')
-			->will($this->returnCallback(function () {
-				return $this->currentTime;
-			}));
+			->will($this->returnCallback(fn () => $this->currentTime));
 		parent::setUp();
 		# we shall operate on a clean table
 		$this->connection->executeQuery('DELETE FROM `*PREFIX*file_locks`');
@@ -125,6 +123,6 @@ class DBLockingProviderTest extends LockingProvider {
 
 	protected function assertLocks(array $expected) {
 		$locks = $this->getLockEntries();
-		$this->assertCount(\count($expected), $locks, \json_encode($locks));
+		$this->assertCount(\count($expected), $locks, \json_encode($locks, JSON_THROW_ON_ERROR));
 	}
 }

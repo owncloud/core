@@ -594,9 +594,7 @@ class Manager implements ICommentsManager {
 			new CommentsEvent(CommentsEvent::EVENT_ADD, $comment),
 			CommentsEvent::EVENT_ADD
 		);
-		return $this->emittingCall(function () use ($affectedRows) {
-			return $affectedRows > 0;
-		}, [
+		return $this->emittingCall(fn () => $affectedRows > 0, [
 			'before' => ['objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()],
 			'after' => ['commentId' => $comment->getId(), 'objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()]
 		], 'comment', 'create');

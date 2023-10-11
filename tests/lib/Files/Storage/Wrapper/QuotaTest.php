@@ -12,7 +12,7 @@ namespace Test\Files\Storage\Wrapper;
 use OC\Files\Cache\CacheEntry;
 use OC\Files\Storage\Local;
 
-\OC::$loader->load('\OC\Files\Filesystem');
+\OC::$loader->load('\\' . \OC\Files\Filesystem::class);
 
 /**
  * Class QuotaTest
@@ -32,7 +32,7 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 
 		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		$storage = new \OC\Files\Storage\Local(['datadir' => $this->tmpDir]);
-		$this->instance = new \OC\Files\Storage\Wrapper\Quota(['storage' => $storage, 'quota' => 10000000]);
+		$this->instance = new \OC\Files\Storage\Wrapper\Quota(['storage' => $storage, 'quota' => 10_000_000]);
 	}
 
 	protected function tearDown(): void {
@@ -117,7 +117,7 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 		$instance = $this->getLimitedStorage(16);
 		$inputStream = \fopen('data://text/plain,foobarqwerty', 'r');
 		$outputStream = $instance->fopen('files/foo', 'w+');
-		list($count, $result) = \OC_Helper::streamCopy($inputStream, $outputStream);
+		[$count, $result] = \OC_Helper::streamCopy($inputStream, $outputStream);
 		$this->assertEquals(12, $count);
 		$this->assertTrue($result);
 		\fclose($inputStream);
@@ -128,7 +128,7 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 		$instance = $this->getLimitedStorage(9);
 		$inputStream = \fopen('data://text/plain,foobarqwerty', 'r');
 		$outputStream = $instance->fopen('files/foo', 'w+');
-		list($count, $result) = \OC_Helper::streamCopy($inputStream, $outputStream);
+		[$count, $result] = \OC_Helper::streamCopy($inputStream, $outputStream);
 		$this->assertEquals(9, $count);
 		$this->assertFalse($result);
 		\fclose($inputStream);
@@ -136,7 +136,7 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 	}
 
 	public function testReturnFalseWhenFopenFailed() {
-		$failStorage = $this->getMockBuilder('\OC\Files\Storage\Local')
+		$failStorage = $this->getMockBuilder('\\' . \OC\Files\Storage\Local::class)
 			->setMethods(['fopen'])
 			->setConstructorArgs([['datadir' => $this->tmpDir]])
 			->getMock();
@@ -190,8 +190,8 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 	}
 
 	public function testSpaceRoot() {
-		$storage = $this->getMockBuilder('\OC\Files\Storage\Local')->disableOriginalConstructor()->getMock();
-		$cache = $this->getMockBuilder('\OC\Files\Cache\Cache')->disableOriginalConstructor()->getMock();
+		$storage = $this->getMockBuilder('\\' . \OC\Files\Storage\Local::class)->disableOriginalConstructor()->getMock();
+		$cache = $this->getMockBuilder('\\' . \OC\Files\Cache\Cache::class)->disableOriginalConstructor()->getMock();
 		$storage->expects($this->once())
 			->method('getCache')
 			->will($this->returnValue($cache));
@@ -209,8 +209,8 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 	}
 
 	public function testInstanceOfStorageWrapper() {
-		$this->assertTrue($this->instance->instanceOfStorage('\OC\Files\Storage\Local'));
-		$this->assertTrue($this->instance->instanceOfStorage('\OC\Files\Storage\Wrapper\Wrapper'));
-		$this->assertTrue($this->instance->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota'));
+		$this->assertTrue($this->instance->instanceOfStorage('\\' . \OC\Files\Storage\Local::class));
+		$this->assertTrue($this->instance->instanceOfStorage('\\' . \OC\Files\Storage\Wrapper\Wrapper::class));
+		$this->assertTrue($this->instance->instanceOfStorage('\\' . \OC\Files\Storage\Wrapper\Quota::class));
 	}
 }

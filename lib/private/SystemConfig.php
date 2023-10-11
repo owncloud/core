@@ -78,8 +78,7 @@ class SystemConfig {
 			'client-secret' => true
 		]
 	];
-	/** @var Config */
-	private $config;
+	private \OC\Config $config;
 
 	public function __construct(Config $config) {
 		$this->config = $config;

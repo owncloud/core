@@ -46,10 +46,7 @@ class FileCacheTest extends TestCache {
 	 * @var \OC\Files\Storage\Storage
 	 * */
 	private $storage;
-	/**
-	 * @var \OC\Files\View
-	 * */
-	private $rootView;
+	private \OC\Files\View $rootView;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -99,7 +96,7 @@ class FileCacheTest extends TestCache {
 	}
 
 	private function setupMockStorage() {
-		$mockStorage = $this->getMockBuilder('\OC\Files\Storage\Local')
+		$mockStorage = $this->getMockBuilder('\\' . \OC\Files\Storage\Local::class)
 			->setMethods(['filemtime', 'unlink'])
 			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
 			->getMock();

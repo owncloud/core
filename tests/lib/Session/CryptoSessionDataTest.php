@@ -37,19 +37,15 @@ class CryptoSessionDataTest extends Session {
 		parent::setUp();
 
 		$this->wrappedSession = new \OC\Session\Memory(static::getUniqueID());
-		$this->crypto = $this->getMockBuilder('OCP\Security\ICrypto')
+		$this->crypto = $this->getMockBuilder(\OCP\Security\ICrypto::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->crypto->expects($this->any())
 			->method('encrypt')
-			->willReturnCallback(function ($input) {
-				return '#' . $input . '#';
-			});
+			->willReturnCallback(fn ($input) => '#' . $input . '#');
 		$this->crypto->expects($this->any())
 			->method('decrypt')
-			->willReturnCallback(function ($input) {
-				return \substr($input, 1, -1);
-			});
+			->willReturnCallback(fn ($input) => \substr($input, 1, -1));
 
 		$this->instance = new CryptoSessionData($this->wrappedSession, $this->crypto, 'PASS');
 	}

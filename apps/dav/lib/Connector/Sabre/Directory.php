@@ -62,19 +62,14 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 *
 	 * @var INode[]
 	 */
-	private $dirContent;
+	private ?array $dirContent = null;
 
 	/**
-	 * Cached quota info
-	 *
-	 * @var array
-	 */
-	private $quotaInfo;
+  * Cached quota info
+  */
+	private ?array $quotaInfo = null;
 
-	/**
-	 * @var ObjectTree|null
-	 */
-	private $tree;
+	private ?\OCA\DAV\Connector\Sabre\ObjectTree $tree = null;
 
 	/**
 	 * Sets up the node, expects a full path name
@@ -215,13 +210,13 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			}
 
 			$absolutePath = Filesystem::normalizePath($this->fileView->getAbsolutePath($name));
-			list($targetStorage, $targetInternalPath) = Filesystem::resolvePath($absolutePath);
+			[$targetStorage, $targetInternalPath] = Filesystem::resolvePath($absolutePath);
 
 			// We are using == instead of === as the computerFileSize method which is
 			// used to get the quota may return a float type. Note that the same
 			// has been observed for the disk_free_space function in local storage
-			list($used, $free) = $this->getQuotaInfo();
-			if ($free == 0 && ($targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage') === true)) {
+			[$used, $free] = $this->getQuotaInfo();
+			if ($free == 0 && ($targetStorage->instanceOfStorage('\\' . \OCP\Files\IHomeStorage::class) === true)) {
 				throw new SabreInsufficientStorage('Creation of empty directories is forbidden in case of no available quota');
 			}
 
@@ -455,7 +450,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			throw new SabreForbidden('Could not copy directory ' . $sourceNode->getName() . ', target exists');
 		}
 
-		list($sourceDir, ) = \Sabre\Uri\split($sourceNode->getPath());
+		[$sourceDir, ] = \Sabre\Uri\split($sourceNode->getPath());
 		$destinationDir = $this->getPath();
 
 		$sourcePath = $sourceNode->getPath();
@@ -499,8 +494,8 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			$renameOkay = $this->fileView->rename($sourcePath, $destinationPath);
 
 			if (!$renameOkay) {
-				list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($destinationPath);
-				if ($isMovableMount === true && $targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage') !== true) {
+				[$targetStorage, $targetInternalPath] = \OC\Files\Filesystem::resolvePath($destinationPath);
+				if ($isMovableMount === true && $targetStorage->instanceOfStorage('\\' . \OCP\Files\IHomeStorage::class) !== true) {
 					throw new SabreForbidden('It is not allowed to move one mount point into another one');
 				}
 

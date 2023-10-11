@@ -26,8 +26,7 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class License implements ISettings {
-	/** @var ILicenseManager */
-	private $licenseManager;
+	private \OCP\License\ILicenseManager $licenseManager;
 
 	public function __construct(ILicenseManager $licenseManager) {
 		$this->licenseManager = $licenseManager;

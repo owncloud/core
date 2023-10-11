@@ -34,7 +34,7 @@ class ZIP extends Archive {
 	/**
 	 * @var \ZipArchive zip
 	 */
-	private $zip=null;
+	private ?\ZipArchive $zip=null;
 	private $path;
 
 	/**
@@ -209,7 +209,7 @@ class ZIP extends Archive {
 		}
 	}
 
-	private static $tempFiles= [];
+	private static array $tempFiles= [];
 	/**
 	 * write back temporary files
 	 */

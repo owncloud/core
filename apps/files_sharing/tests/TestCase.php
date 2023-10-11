@@ -69,7 +69,7 @@ abstract class TestCase extends \Test\TestCase {
 	/** @var \OCP\Files\IRootFolder */
 	protected $rootFolder;
 
-	private static $alreadyRegistered = false;
+	private static bool $alreadyRegistered = false;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -85,7 +85,7 @@ abstract class TestCase extends \Test\TestCase {
 		\OC::$server->getGroupManager()->clearBackends();
 
 		// clear share hooks
-		\OC_Hook::clear('OCP\\Share');
+		\OC_Hook::clear(\OCP\Share::class);
 		\OC::registerShareHooks();
 	}
 

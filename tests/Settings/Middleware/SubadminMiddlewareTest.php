@@ -23,19 +23,17 @@ use OCP\AppFramework\Http\TemplateResponse;
  * @package Tests\Settings\Middleware
  */
 class SubadminMiddlewareTest extends \Test\TestCase {
-	/** @var SubadminMiddleware */
-	private $subadminMiddlewareAsSubAdmin;
-	/** @var SubadminMiddleware */
-	private $subadminMiddleware;
+	private \OC\Settings\Middleware\SubadminMiddleware $subadminMiddlewareAsSubAdmin;
+	private \OC\Settings\Middleware\SubadminMiddleware $subadminMiddleware;
 	/** @var ControllerMethodReflector */
-	private $reflector;
+	private \PHPUnit\Framework\MockObject\MockObject $reflector;
 	/** @var Controller */
-	private $controller;
+	private \PHPUnit\Framework\MockObject\MockObject $controller;
 
 	protected function setUp(): void {
-		$this->reflector = $this->getMockBuilder('\OC\AppFramework\Utility\ControllerMethodReflector')
+		$this->reflector = $this->getMockBuilder('\\' . \OC\AppFramework\Utility\ControllerMethodReflector::class)
 			->disableOriginalConstructor()->getMock();
-		$this->controller = $this->getMockBuilder('\OCP\AppFramework\Controller')
+		$this->controller = $this->getMockBuilder('\\' . \OCP\AppFramework\Controller::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->subadminMiddlewareAsSubAdmin = new SubadminMiddleware($this->reflector, true);

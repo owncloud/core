@@ -232,7 +232,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		} else {
 			$source = $this->fopen($path1, 'r');
 			$target = $this->fopen($path2, 'w');
-			list(, $result) = \OC_Helper::streamCopy($source, $target);
+			[, $result] = \OC_Helper::streamCopy($source, $target);
 			$this->removeCachedFile($path2);
 			return $result;
 		}
@@ -482,7 +482,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	public function instanceOfStorage($class) {
 		if (\ltrim($class, '\\') === 'OC\Files\Storage\Shared') {
 			// FIXME Temporary fix to keep existing checks working
-			$class = '\OCA\Files_Sharing\SharedStorage';
+			$class = '\\' . \OCA\Files_Sharing\SharedStorage::class;
 		}
 		return \is_a($this, $class);
 	}
@@ -554,7 +554,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	 * @return mixed
 	 */
 	public function getMountOption($name, $default = null) {
-		return isset($this->mountOptions[$name]) ? $this->mountOptions[$name] : $default;
+		return $this->mountOptions[$name] ?? $default;
 	}
 
 	/**
@@ -587,7 +587,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 			// are not the same as the original one.Once this is fixed we also
 			// need to adjust the encryption wrapper.
 			$target = $this->fopen($targetInternalPath, 'w');
-			list(, $result) = \OC_Helper::streamCopy($source, $target);
+			[, $result] = \OC_Helper::streamCopy($source, $target);
 			if ($result and $preserveMtime) {
 				$this->touch($targetInternalPath, $sourceStorage->filemtime($sourceInternalPath));
 			}
@@ -706,7 +706,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		if (!\OC_App::isEnabled('files_versions')) {
 			return [];
 		}
-		list($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
+		[$uid, $filename] =  $this->convertInternalPathToGlobalPath($internalPath);
 
 		return \array_map(function ($version) use ($internalPath) {
 			$version['mimetype'] = $this->getMimeType($internalPath);
@@ -721,7 +721,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		if (!\OC_App::isEnabled('files_versions')) {
 			return [];
 		}
-		list($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
+		[$uid, $filename] =  $this->convertInternalPathToGlobalPath($internalPath);
 
 		return \OCA\Files_Versions\Storage::getCurrentVersion($uid, $filename);
 	}
@@ -753,9 +753,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 
 	public function getVersion($internalPath, $versionId) {
 		$versions = $this->getVersions($internalPath);
-		$versions = \array_filter($versions, function ($version) use ($versionId) {
-			return $version['version'] === $versionId;
-		});
+		$versions = \array_filter($versions, fn ($version) => $version['version'] === $versionId);
 		return \array_shift($versions);
 	}
 
@@ -800,7 +798,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 		$locks = $locksManager->getLocks($storageId, $internalPath, $returnChildLocks);
 
 		return \array_map(function (Lock $lock) {
-			list($uid, $fileName) = $this->convertInternalPathToGlobalPath($lock->getPath());
+			[$uid, $fileName] = $this->convertInternalPathToGlobalPath($lock->getPath());
 			$lock->setDavUserId($uid);
 			$lock->setAbsoluteDavPath($fileName);
 			return $lock;

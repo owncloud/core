@@ -31,11 +31,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncBirthdayCalendar extends Command {
-	/** @var BirthdayService */
-	private $birthdayService;
+	private \OCA\DAV\CalDAV\BirthdayService $birthdayService;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
 	/**
 	 * @param IUserManager $userManager

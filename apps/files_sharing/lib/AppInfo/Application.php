@@ -47,7 +47,7 @@ use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCP\Notification\Events\RegisterNotifierEvent;
 
 class Application extends App {
-	private $isProviderRegistered = false;
+	private bool $isProviderRegistered = false;
 
 	public function __construct(array $urlParams = []) {
 		parent::__construct('files_sharing', $urlParams);
@@ -58,53 +58,47 @@ class Application extends App {
 		/**
 		 * Controllers
 		 */
-		$container->registerService('ShareController', function (SimpleContainer $c) use ($server) {
-			return new ShareController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$server->getConfig(),
-				$server->getURLGenerator(),
-				$server->getUserManager(),
-				$server->getLogger(),
-				$server->getActivityManager(),
-				$server->getShareManager(),
-				$server->getSession(),
-				$server->getPreviewManager(),
-				$server->getRootFolder(),
-				$server->getUserSession(),
-				$server->getEventDispatcher()
-			);
-		});
-		$container->registerService('ExternalSharesController', function (SimpleContainer $c) use ($server) {
-			return new ExternalSharesController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('ExternalManager'),
-				$c->query('HttpClientService'),
-				$server->getEventDispatcher(),
-				$server->getConfig()
-			);
-		});
+		$container->registerService('ShareController', fn (SimpleContainer $c) => new ShareController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$server->getConfig(),
+			$server->getURLGenerator(),
+			$server->getUserManager(),
+			$server->getLogger(),
+			$server->getActivityManager(),
+			$server->getShareManager(),
+			$server->getSession(),
+			$server->getPreviewManager(),
+			$server->getRootFolder(),
+			$server->getUserSession(),
+			$server->getEventDispatcher()
+		));
+		$container->registerService('ExternalSharesController', fn (SimpleContainer $c) => new ExternalSharesController(
+			$c->query('AppName'),
+			$c->query('Request'),
+			$c->query('ExternalManager'),
+			$c->query('HttpClientService'),
+			$server->getEventDispatcher(),
+			$server->getConfig()
+		));
 
-		$container->registerService('Share20OcsController', function (SimpleContainer $c) use ($server) {
-			return new Share20OcsController(
-				$c->query('AppName'),
-				$server->getRequest(),
-				$server->getShareManager(),
-				$server->getGroupManager(),
-				$server->getUserManager(),
-				$server->getRootFolder(),
-				$server->getURLGenerator(),
-				$server->getUserSession(),
-				$server->getL10N('files_sharing'),
-				$server->getConfig(),
-				$c->query(NotificationPublisher::class),
-				$server->getEventDispatcher(),
-				$c->query(SharingBlacklist::class),
-				$c->query(SharingAllowlist::class),
-				$c->query(UserTypeHelper::class)
-			);
-		});
+		$container->registerService('Share20OcsController', fn (SimpleContainer $c) => new Share20OcsController(
+			$c->query('AppName'),
+			$server->getRequest(),
+			$server->getShareManager(),
+			$server->getGroupManager(),
+			$server->getUserManager(),
+			$server->getRootFolder(),
+			$server->getURLGenerator(),
+			$server->getUserSession(),
+			$server->getL10N('files_sharing'),
+			$server->getConfig(),
+			$c->query(NotificationPublisher::class),
+			$server->getEventDispatcher(),
+			$c->query(SharingBlacklist::class),
+			$c->query(SharingAllowlist::class),
+			$c->query(UserTypeHelper::class)
+		));
 
 		$container->registerService('RemoteOcsController', function (SimpleContainer $c) use ($server) {
 			$user = $server->getUserSession()->getUser();
@@ -129,9 +123,7 @@ class Application extends App {
 		/**
 		 * Core class wrappers
 		 */
-		$container->registerService('HttpClientService', function (SimpleContainer $c) use ($server) {
-			return $server->getHTTPClientService();
-		});
+		$container->registerService('HttpClientService', fn (SimpleContainer $c) => $server->getHTTPClientService());
 		$container->registerService('ExternalManager', function (SimpleContainer $c) use ($server) {
 			$user = $server->getUserSession()->getUser();
 			$uid = $user ? $user->getUID() : null;
@@ -148,14 +140,12 @@ class Application extends App {
 		/**
 		 * Middleware
 		 */
-		$container->registerService('SharingCheckMiddleware', function (SimpleContainer $c) use ($server) {
-			return new SharingCheckMiddleware(
-				$c->query('AppName'),
-				$server->getConfig(),
-				$server->getAppManager(),
-				$c['ControllerMethodReflector']
-			);
-		});
+		$container->registerService('SharingCheckMiddleware', fn (SimpleContainer $c) => new SharingCheckMiddleware(
+			$c->query('AppName'),
+			$server->getConfig(),
+			$server->getAppManager(),
+			$c['ControllerMethodReflector']
+		));
 
 		// Execute middlewares
 		$container->registerMiddleware('SharingCheckMiddleware');
@@ -175,29 +165,25 @@ class Application extends App {
 			$server = $c->query('ServerContainer');
 			return new \OCA\Files_Sharing\External\MountProvider(
 				$server->getDatabaseConnection(),
-				function () use ($c) {
-					return $c->query('ExternalManager');
-				}
+				fn () => $c->query('ExternalManager')
 			);
 		});
 
-		$container->registerService('Hooks', function ($c) {
-			return new Hooks(
-				$c->getServer()->getLazyRootFolder(),
-				$c->getServer()->getUrlGenerator(),
-				$c->getServer()->getEventDispatcher(),
-				$c->getServer()->getShareManager(),
-				$c->query(NotificationPublisher::class),
-				$c->getServer()->getActivityManager(),
-				$c->query(SharingAllowlist::class),
-				$c->getServer()->getUserSession()
-			);
-		});
+		$container->registerService('Hooks', fn ($c) => new Hooks(
+			$c->getServer()->getLazyRootFolder(),
+			$c->getServer()->getUrlGenerator(),
+			$c->getServer()->getEventDispatcher(),
+			$c->getServer()->getShareManager(),
+			$c->query(NotificationPublisher::class),
+			$c->getServer()->getActivityManager(),
+			$c->query(SharingAllowlist::class),
+			$c->getServer()->getUserSession()
+		));
 
 		/*
 		 * Register capabilities
 		 */
-		$container->registerCapability('OCA\Files_Sharing\Capabilities');
+		$container->registerCapability(\OCA\Files_Sharing\Capabilities::class);
 	}
 
 	public function registerMountProviders() {

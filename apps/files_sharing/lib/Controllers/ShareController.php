@@ -238,7 +238,7 @@ class ShareController extends Controller {
 				$exception = $e;
 			}
 		}
-		\OC_Hook::emit('OCP\Share', 'share_link_access', [
+		\OC_Hook::emit(\OCP\Share::class, 'share_link_access', [
 			'itemType' => $itemType,
 			'itemSource' => $itemSource,
 			'uidOwner' => $uidOwner,
@@ -533,7 +533,7 @@ class ShareController extends Controller {
 			&& !isset($downloadStartSecret[32])
 			&& \preg_match('!^[a-zA-Z0-9]+$!', $downloadStartSecret) === 1) {
 			// FIXME: set on the response once we use an actual app framework response
-			\setcookie('ocDownloadStarted', $downloadStartSecret, \time() + 20, '/');
+			\setcookie('ocDownloadStarted', $downloadStartSecret, ['expires' => \time() + 20, 'path' => '/']);
 		}
 
 		$this->emitAccessShareHook($share);

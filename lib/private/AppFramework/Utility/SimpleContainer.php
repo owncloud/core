@@ -107,9 +107,7 @@ class SimpleContainer extends Container implements IContainer {
 			return $this->offsetGet($name);
 		} catch (\InvalidArgumentException $ex) {
 			$object = $this->resolve($name);
-			$this->registerService($name, function () use ($object) {
-				return $object;
-			});
+			$this->registerService($name, fn () => $object);
 			return $object;
 		}
 	}
@@ -151,9 +149,7 @@ class SimpleContainer extends Container implements IContainer {
 	 * @param string $target the target that should be resolved instead
 	 */
 	public function registerAlias($alias, $target) {
-		$this->registerService($alias, function (IContainer $container) use ($target) {
-			return $container->query($target);
-		}, false);
+		$this->registerService($alias, fn (IContainer $container) => $container->query($target), false);
 	}
 
 	/*

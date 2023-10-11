@@ -35,8 +35,7 @@ use Sabre\DAV\Collection;
  * @package OCA\DAV\Meta
  */
 class MetaFolder extends Collection {
-	/** @var Folder */
-	private $folder;
+	private \OCP\Files\Folder $folder;
 
 	/**
 	 * MetaFolder constructor.
@@ -52,9 +51,7 @@ class MetaFolder extends Collection {
 	 */
 	public function getChildren() {
 		$nodes = $this->folder->getDirectoryListing();
-		return \array_map(function ($node) {
-			return $this->nodeFactory($node);
-		}, $nodes);
+		return \array_map(fn ($node) => $this->nodeFactory($node), $nodes);
 	}
 
 	/**

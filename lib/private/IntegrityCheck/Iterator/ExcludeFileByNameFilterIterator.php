@@ -30,13 +30,11 @@ namespace OC\IntegrityCheck\Iterator;
  */
 class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 	/**
-	 * Array of excluded file names. Those are not scanned by the integrity checker.
-	 * This is used to exclude files which administrators could upload by mistakes
-	 * such as .DS_Store files.
-	 *
-	 * @var array
-	 */
-	private $excludedFilenames = [
+  * Array of excluded file names. Those are not scanned by the integrity checker.
+  * This is used to exclude files which administrators could upload by mistakes
+  * such as .DS_Store files.
+  */
+	private array $excludedFilenames = [
 		'.DS_Store', // Mac OS X
 		'Thumbs.db', // Microsoft Windows
 		'.directory', // Dolphin (KDE)
@@ -44,24 +42,20 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 	];
 
 	/**
-	 * Array of excluded file name parts. Those are not scanned by the integrity checker.
-	 * These strings are regular expressions and any file names
-	 * matching these expressions are ignored.
-	 *
-	 * @var array
-	 */
-	private $excludedFileNamePatterns = [
+  * Array of excluded file name parts. Those are not scanned by the integrity checker.
+  * These strings are regular expressions and any file names
+  * matching these expressions are ignored.
+  */
+	private array $excludedFileNamePatterns = [
 		'/^\.webapp-owncloud-.*/', // Gentoo/Funtoo & derivatives use a tool known as webapp-config to manage wep-apps.
 	];
 	
 	/**
-	 * Array of excluded path and file name parts. Those are not scanned by the integrity checker.
-	 * These strings are regular expressions and any filepath
-	 * matching these expressions are ignored.
-	 *
-	 * @var array
-	 */
-	private $excludedFilePathPatterns = [
+  * Array of excluded path and file name parts. Those are not scanned by the integrity checker.
+  * These strings are regular expressions and any filepath
+  * matching these expressions are ignored.
+  */
+	private array $excludedFilePathPatterns = [
 		'|/core/js/mimetypelist.js$|', // this file can be regenerated with additional entries with occ maintenance:mimetype:update-js
 	];
 

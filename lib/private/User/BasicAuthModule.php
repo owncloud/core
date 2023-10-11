@@ -32,16 +32,11 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class BasicAuthModule implements IAuthModule {
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
-	/** @var IUserManager */
-	private $manager;
-	/** @var ISession */
-	private $session;
-	/** @var ITimeFactory */
-	private $timeFactory;
+	private \OCP\IConfig $config;
+	private \OCP\ILogger $logger;
+	private \OCP\IUserManager $manager;
+	private \OCP\ISession $session;
+	private \OCP\AppFramework\Utility\ITimeFactory $timeFactory;
 
 	public function __construct(IConfig $config, ILogger $logger, IUserManager $manager, ISession $session, ITimeFactory $timeFactory) {
 		$this->config = $config;
@@ -111,9 +106,7 @@ class BasicAuthModule implements IAuthModule {
 						'app' => __METHOD__,
 						'authUser' => $authUser,
 						'users' => \array_map(
-							function (IUser $user) {
-								return $user->getUID();
-							},
+							fn (IUser $user) => $user->getUID(),
 							$users
 						)
 					]

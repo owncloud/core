@@ -19,10 +19,7 @@ use OCP\Files\InvalidPathException;
  * @package Test\Files
  */
 class PathVerificationTest extends \Test\TestCase {
-	/**
-	 * @var \OC\Files\View
-	 */
-	private $view;
+	private \OC\Files\View $view;
 
 	protected function setUp(): void {
 		parent::setUp();

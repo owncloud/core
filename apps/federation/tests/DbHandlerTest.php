@@ -33,23 +33,21 @@ use Test\TestCase;
  * @group DB
  */
 class DbHandlerTest extends TestCase {
-	/** @var  DbHandler */
-	private $dbHandler;
+	private \OCA\Federation\DbHandler $dbHandler;
 
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
-	private $il10n;
+	private \PHPUnit\Framework\MockObject\MockObject $il10n;
 
 	/** @var  IDBConnection */
 	private $connection;
 
-	/** @var string  */
-	private $dbTable = 'trusted_servers';
+	private string $dbTable = 'trusted_servers';
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
-		$this->il10n = $this->createMock('OCP\IL10N');
+		$this->il10n = $this->createMock(\OCP\IL10N::class);
 
 		$this->dbHandler = new DbHandler(
 			$this->connection,

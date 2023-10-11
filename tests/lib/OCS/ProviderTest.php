@@ -25,17 +25,16 @@ use OC\OCS\Provider;
 
 class ProviderTest extends \Test\TestCase {
 	/** @var \OCP\IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var \OCP\App\IAppManager */
-	private $appManager;
-	/** @var Provider */
-	private $ocsProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
+	private \OC\OCS\Provider $ocsProvider;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->getMockBuilder('\\OCP\\IRequest')->getMock();
-		$this->appManager = $this->getMockBuilder('\\OCP\\App\\IAppManager')->getMock();
+		$this->request = $this->getMockBuilder('\\' . \OCP\IRequest::class)->getMock();
+		$this->appManager = $this->getMockBuilder('\\' . \OCP\App\IAppManager::class)->getMock();
 		$this->ocsProvider = new Provider('ocs_provider', $this->request, $this->appManager);
 	}
 

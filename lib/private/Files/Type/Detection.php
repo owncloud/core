@@ -49,8 +49,7 @@ class Detection implements IMimeTypeDetector {
 	/** @var string[] */
 	protected $mimeTypeAlias = [];
 
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 
 	/** @var string */
 	private $customConfigDir;
@@ -107,7 +106,7 @@ class Detection implements IMimeTypeDetector {
 
 		// Update the alternative mimetypes to avoid having to look them up each time.
 		foreach ($this->mimetypes as $mimeType) {
-			$this->secureMimeTypes[$mimeType[0]] = isset($mimeType[1]) ? $mimeType[1]: $mimeType[0];
+			$this->secureMimeTypes[$mimeType[0]] = $mimeType[1] ?? $mimeType[0];
 		}
 	}
 
@@ -119,10 +118,10 @@ class Detection implements IMimeTypeDetector {
 			return;
 		}
 
-		$this->mimeTypeAlias = \json_decode(\file_get_contents($this->defaultConfigDir . '/mimetypealiases.dist.json'), true);
+		$this->mimeTypeAlias = \json_decode(\file_get_contents($this->defaultConfigDir . '/mimetypealiases.dist.json'), true, 512, JSON_THROW_ON_ERROR);
 
 		if (\file_exists($this->customConfigDir . '/mimetypealiases.json')) {
-			$custom = \json_decode(\file_get_contents($this->customConfigDir . '/mimetypealiases.json'), true);
+			$custom = \json_decode(\file_get_contents($this->customConfigDir . '/mimetypealiases.json'), true, 512, JSON_THROW_ON_ERROR);
 			$this->mimeTypeAlias = \array_merge($this->mimeTypeAlias, $custom);
 		}
 	}
@@ -143,11 +142,11 @@ class Detection implements IMimeTypeDetector {
 			return;
 		}
 
-		$mimetypeMapping = \json_decode(\file_get_contents($this->defaultConfigDir . '/mimetypemapping.dist.json'), true);
+		$mimetypeMapping = \json_decode(\file_get_contents($this->defaultConfigDir . '/mimetypemapping.dist.json'), true, 512, JSON_THROW_ON_ERROR);
 
 		//Check if need to load custom mappings
 		if (\file_exists($this->customConfigDir . '/mimetypemapping.json')) {
-			$custom = \json_decode(\file_get_contents($this->customConfigDir . '/mimetypemapping.json'), true);
+			$custom = \json_decode(\file_get_contents($this->customConfigDir . '/mimetypemapping.json'), true, 512, JSON_THROW_ON_ERROR);
 			$mimetypeMapping = \array_merge($mimetypeMapping, $custom);
 		}
 
@@ -285,9 +284,7 @@ class Detection implements IMimeTypeDetector {
 	public function getSecureMimeType($mimeType) {
 		$this->loadMappings();
 
-		return isset($this->secureMimeTypes[$mimeType])
-			? $this->secureMimeTypes[$mimeType]
-			: 'application/octet-stream';
+		return $this->secureMimeTypes[$mimeType] ?? 'application/octet-stream';
 	}
 
 	/**

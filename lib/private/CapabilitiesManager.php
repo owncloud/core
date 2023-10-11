@@ -27,7 +27,7 @@ class CapabilitiesManager {
 	/**
 	 * @var \Closure[]
 	 */
-	private $capabilities = [];
+	private array $capabilities = [];
 
 	/**
 	 * Get an array of al the capabilities that are registered at this manager

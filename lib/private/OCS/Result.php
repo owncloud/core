@@ -45,8 +45,7 @@ class Result {
 	/** @var integer */
 	protected $perPage;
 
-	/** @var array */
-	private $headers = [];
+	private array $headers = [];
 
 	/**
 	 * create the OCS_Result object

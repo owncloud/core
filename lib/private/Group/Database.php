@@ -44,7 +44,7 @@ namespace OC\Group;
  */
 class Database extends \OC\Group\Backend {
 	/** @var string[] */
-	private $groupCache = [];
+	private array $groupCache = [];
 
 	/** @var \OCP\IDBConnection */
 	private $dbConn;

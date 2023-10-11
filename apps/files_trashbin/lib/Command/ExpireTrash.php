@@ -32,15 +32,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ExpireTrash extends Command {
-	/**
-	 * @var TrashExpiryManager
-	 */
-	private $trashExpiryManager;
+	private ?\OCA\Files_Trashbin\TrashExpiryManager $trashExpiryManager = null;
 
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private ?\OCP\IUserManager $userManager = null;
 
 	/**
 	 * @param IUserManager|null $userManager

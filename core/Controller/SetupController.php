@@ -32,8 +32,7 @@ use OC\Setup;
 class SetupController {
 	/** @var Setup */
 	protected $setupHelper;
-	/** @var string */
-	private $autoConfigFile;
+	private string $autoConfigFile;
 
 	/**
 	 * @param Setup $setupHelper

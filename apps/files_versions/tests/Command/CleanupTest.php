@@ -47,9 +47,9 @@ class CleanupTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->rootFolder = $this->getMockBuilder('OCP\Files\IRootFolder')
+		$this->rootFolder = $this->getMockBuilder(\OCP\Files\IRootFolder::class)
 			->disableOriginalConstructor()->getMock();
-		$this->userManager = $this->getMockBuilder('OC\User\Manager')
+		$this->userManager = $this->getMockBuilder(\OC\User\Manager::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->cleanup = new CleanUp($this->rootFolder, $this->userManager);
@@ -95,7 +95,7 @@ class CleanupTest extends TestCase {
 	public function testExecuteDeleteListOfUsers() {
 		$userIds = ['user1', 'user2', 'user3'];
 
-		$instance = $this->getMockBuilder('OCA\Files_Versions\Command\CleanUp')
+		$instance = $this->getMockBuilder(\OCA\Files_Versions\Command\CleanUp::class)
 			->setMethods(['deleteVersions'])
 			->setConstructorArgs([$this->rootFolder, $this->userManager])
 			->getMock();
@@ -108,13 +108,13 @@ class CleanupTest extends TestCase {
 		$this->userManager->expects($this->exactly(\count($userIds)))
 			->method('userExists')->willReturn(true);
 
-		$inputInterface = $this->getMockBuilder('\Symfony\Component\Console\Input\InputInterface')
+		$inputInterface = $this->getMockBuilder('\\' . \Symfony\Component\Console\Input\InputInterface::class)
 			->disableOriginalConstructor()->getMock();
 		$inputInterface->expects($this->once())->method('getArgument')
 			->with('user_id')
 			->willReturn($userIds);
 
-		$outputInterface = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
+		$outputInterface = $this->getMockBuilder('\\' . \Symfony\Component\Console\Output\OutputInterface::class)
 			->disableOriginalConstructor()->getMock();
 
 		self::invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
@@ -127,7 +127,7 @@ class CleanupTest extends TestCase {
 		$userIds = [];
 		$backendUsers = ['user1', 'user2'];
 
-		$instance = $this->getMockBuilder('OCA\Files_Versions\Command\CleanUp')
+		$instance = $this->getMockBuilder(\OCA\Files_Versions\Command\CleanUp::class)
 			->setMethods(['deleteVersions'])
 			->setConstructorArgs([$this->rootFolder, $this->userManager])
 			->getMock();
@@ -144,13 +144,13 @@ class CleanupTest extends TestCase {
 				$this->assertContains($user, $backendUsers);
 			});
 
-		$inputInterface = $this->getMockBuilder('\Symfony\Component\Console\Input\InputInterface')
+		$inputInterface = $this->getMockBuilder('\\' . \Symfony\Component\Console\Input\InputInterface::class)
 			->disableOriginalConstructor()->getMock();
 		$inputInterface->expects($this->once())->method('getArgument')
 			->with('user_id')
 			->willReturn($userIds);
 
-		$outputInterface = $this->getMockBuilder('\Symfony\Component\Console\Output\OutputInterface')
+		$outputInterface = $this->getMockBuilder('\\' . \Symfony\Component\Console\Output\OutputInterface::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->userManager->expects($this->once())

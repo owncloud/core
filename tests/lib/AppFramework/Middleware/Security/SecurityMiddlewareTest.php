@@ -56,23 +56,23 @@ class SecurityMiddlewareTest extends TestCase {
 	/** @var SecurityMiddleware */
 	private $middleware;
 	/** @var Controller | \PHPUnit\Framework\MockObject\MockObject */
-	private $controller;
-	private $secException;
-	private $secAjaxException;
+	private \PHPUnit\Framework\MockObject\MockObject $controller;
+	private \OC\AppFramework\Middleware\Security\Exceptions\SecurityException $secException;
+	private \OC\AppFramework\Middleware\Security\Exceptions\SecurityException $secAjaxException;
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
 	/** @var ControllerMethodReflector | \PHPUnit\Framework\MockObject\MockObject */
-	private $reader;
+	private \OC\AppFramework\Utility\ControllerMethodReflector $reader;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
-	private $logger;
+	private \PHPUnit\Framework\MockObject\MockObject $logger;
 	/** @var INavigationManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $navigationManager;
+	private \PHPUnit\Framework\MockObject\MockObject $navigationManager;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var ContentSecurityPolicyManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $contentSecurityPolicyManager;
+	private \PHPUnit\Framework\MockObject\MockObject $contentSecurityPolicyManager;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
-	private $session;
+	private ?\PHPUnit\Framework\MockObject\MockObject $session = null;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -143,8 +143,8 @@ class SecurityMiddlewareTest extends TestCase {
 			->method('setActiveEntry')
 			->with($this->equalTo('files'));
 
-		$this->reader->reflect(__CLASS__, __FUNCTION__);
-		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
+		$this->reader->reflect(self::class, __FUNCTION__);
+		$this->middleware->beforeController(self::class, __FUNCTION__);
 	}
 
 	/**
@@ -165,8 +165,8 @@ class SecurityMiddlewareTest extends TestCase {
 		$sec = $this->getMiddleware($isLoggedIn, $isAdminUser);
 
 		try {
-			$this->reader->reflect(__CLASS__, $method);
-			$sec->beforeController(__CLASS__, $method);
+			$this->reader->reflect(self::class, $method);
+			$sec->beforeController(self::class, $method);
 		} catch (SecurityException $ex) {
 			$this->assertEquals($status, $ex->getCode());
 		}
@@ -254,8 +254,8 @@ class SecurityMiddlewareTest extends TestCase {
 
 		$sec = $this->getMiddleware(false, false);
 
-		$this->reader->reflect(__CLASS__, __FUNCTION__);
-		$sec->beforeController(__CLASS__, __FUNCTION__);
+		$this->reader->reflect(self::class, __FUNCTION__);
+		$sec->beforeController(self::class, __FUNCTION__);
 	}
 
 	/**
@@ -283,8 +283,8 @@ class SecurityMiddlewareTest extends TestCase {
 			$this->assertTrue(true);
 		}
 
-		$this->reader->reflect(__CLASS__, $method);
-		$sec->beforeController(__CLASS__, $method);
+		$this->reader->reflect(self::class, $method);
+		$sec->beforeController(self::class, $method);
 	}
 
 	/**
@@ -299,8 +299,8 @@ class SecurityMiddlewareTest extends TestCase {
 			->method('passesCSRFCheck')
 			->will($this->returnValue(false));
 
-		$this->reader->reflect(__CLASS__, __FUNCTION__);
-		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
+		$this->reader->reflect(self::class, __FUNCTION__);
+		$this->middleware->beforeController(self::class, __FUNCTION__);
 	}
 
 	/**
@@ -314,8 +314,8 @@ class SecurityMiddlewareTest extends TestCase {
 			->method('passesCSRFCheck')
 			->will($this->returnValue(false));
 
-		$this->reader->reflect(__CLASS__, __FUNCTION__);
-		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
+		$this->reader->reflect(self::class, __FUNCTION__);
+		$this->middleware->beforeController(self::class, __FUNCTION__);
 	}
 
 	/**
@@ -328,8 +328,8 @@ class SecurityMiddlewareTest extends TestCase {
 			->method('passesCSRFCheck')
 			->will($this->returnValue(true));
 
-		$this->reader->reflect(__CLASS__, __FUNCTION__);
-		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
+		$this->reader->reflect(self::class, __FUNCTION__);
+		$this->middleware->beforeController(self::class, __FUNCTION__);
 	}
 
 	/**
@@ -346,8 +346,8 @@ class SecurityMiddlewareTest extends TestCase {
 			->method('getHeader')
 			->willReturn('');
 
-		$this->reader->reflect(__CLASS__, __FUNCTION__);
-		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
+		$this->reader->reflect(self::class, __FUNCTION__);
+		$this->middleware->beforeController(self::class, __FUNCTION__);
 	}
 
 	/**

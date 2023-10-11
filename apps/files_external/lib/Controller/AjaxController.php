@@ -31,8 +31,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 
 class AjaxController extends Controller {
-	/** @var RSA */
-	private $rsaMechanism;
+	private \OCA\Files_External\Lib\Auth\PublicKey\RSA $rsaMechanism;
 
 	public function __construct($appName, IRequest $request, RSA $rsaMechanism) {
 		parent::__construct($appName, $request);

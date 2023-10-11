@@ -25,12 +25,12 @@ use OCP\ILogger;
  */
 class RepairMismatchFileCachePathTest extends TestCase {
 	/** @var IRepairStep */
-	private $repair;
+	private \OC\Repair\RepairMismatchFileCachePath $repair;
 
 	/** @var \OCP\IDBConnection */
 	private $connection;
 
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	protected function setUp(): void {
 		parent::setUp();
 

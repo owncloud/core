@@ -120,7 +120,7 @@ class MySQL extends AbstractDatabase {
 		// adding port support
 		if (\strpos($this->dbHost, ':')) {
 			// Host variable may carry a port or socket.
-			list($host, $portOrSocket) = \explode(':', $this->dbHost, 2);
+			[$host, $portOrSocket] = \explode(':', $this->dbHost, 2);
 			if (\ctype_digit($portOrSocket)) {
 				$connectionParams['port'] = $portOrSocket;
 			} else {

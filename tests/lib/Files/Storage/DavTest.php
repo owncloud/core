@@ -57,32 +57,32 @@ class DavTest extends TestCase {
 	/**
 	 * @var IClientService | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $httpClientService;
+	private \PHPUnit\Framework\MockObject\MockObject $httpClientService;
 
 	/**
 	 * @var IWebDavClientService | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $webDavClientService;
+	private \PHPUnit\Framework\MockObject\MockObject $webDavClientService;
 
 	/**
 	 * @var Client | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $davClient;
+	private \PHPUnit\Framework\MockObject\MockObject $davClient;
 
 	/**
 	 * @var IClient | \PHPUnit\Framework\MockObject\MockObject
 	 **/
-	private $httpClient;
+	private \PHPUnit\Framework\MockObject\MockObject $httpClient;
 
 	/**
 	 * @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 
 	/**
 	 * @var Cache | \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $cache;
+	private \PHPUnit\Framework\MockObject\MockObject $cache;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -768,11 +768,11 @@ class DavTest extends TestCase {
 	public function touchProvider() {
 		return [
 			// server accepted mtime
-			[1508496363, null, '2017-10-20T12:46:03+02:00', true],
+			[1_508_496_363, null, '2017-10-20T12:46:03+02:00', true],
 			// server did not accept mtime
-			[1508496363, null, '2017-10-20T12:40:00+02:00', false],
+			[1_508_496_363, null, '2017-10-20T12:40:00+02:00', false],
 			// time factory generated mtime
-			[null, 1508496363, '2017-10-20T12:46:03+02:00', true],
+			[null, 1_508_496_363, '2017-10-20T12:46:03+02:00', true],
 		];
 	}
 
@@ -854,7 +854,7 @@ class DavTest extends TestCase {
 			->method('proppatch')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
 
-		$this->instance->touch('/some%dir', 1508496363);
+		$this->instance->touch('/some%dir', 1_508_496_363);
 	}
 
 	public function testTouchNotFound() {
@@ -874,7 +874,7 @@ class DavTest extends TestCase {
 			->expects($this->once())
 			->method('proppatch');
 
-		$this->assertFalse($this->instance->touch('/some%dir', 1508496363));
+		$this->assertFalse($this->instance->touch('/some%dir', 1_508_496_363));
 	}
 
 	public function testTouchNoServerSupport() {
@@ -890,7 +890,7 @@ class DavTest extends TestCase {
 			->method('proppatch')
 			->willThrowException($this->createClientHttpException(Http::STATUS_NOT_IMPLEMENTED));
 
-		$this->assertFalse($this->instance->touch('/some%dir', 1508496363));
+		$this->assertFalse($this->instance->touch('/some%dir', 1_508_496_363));
 	}
 
 	public function renameDataProvider() {
@@ -927,13 +927,13 @@ class DavTest extends TestCase {
 				'{DAV:}getlastmodified' => '2017-10-20T12:46:03+02:00',
 				'{DAV:}getcontentlength' => 1024,
 			], [
-				'mtime' => 1508496363,
+				'mtime' => 1_508_496_363,
 				'size' => 1024
 			]],
 			[[
 				'{DAV:}getlastmodified' => '2017-10-20T12:46:03+02:00',
 			], [
-				'mtime' => 1508496363,
+				'mtime' => 1_508_496_363,
 				'size' => 0
 			]],
 		];
@@ -957,8 +957,8 @@ class DavTest extends TestCase {
 			->with('', $this->logicalAnd($this->containsIdentical('{DAV:}getlastmodified'), $this->containsIdentical('{DAV:}getcontentlength')))
 			->willReturn(['{DAV:}getlastmodified' => '2017-10-20T12:46:03+02:00']);
 
-		$this->assertEquals(['mtime' => 1508496363, 'size' => 0], $this->instance->stat(''));
-		$this->assertEquals(['mtime' => 1508496363, 'size' => 0], $this->instance->stat(''));
+		$this->assertEquals(['mtime' => 1_508_496_363, 'size' => 0], $this->instance->stat(''));
+		$this->assertEquals(['mtime' => 1_508_496_363, 'size' => 0], $this->instance->stat(''));
 	}
 
 	/**
@@ -1288,7 +1288,7 @@ class DavTest extends TestCase {
 				->method('get');
 		}
 
-		$this->assertEquals($expectedResult, $this->instance->hasUpdated('some%dir', 1508496363));
+		$this->assertEquals($expectedResult, $this->instance->hasUpdated('some%dir', 1_508_496_363));
 	}
 
 	public function testHasUpdatedPathNotfound() {
@@ -1296,7 +1296,7 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willReturn(false);
 
-		$this->assertFalse($this->instance->hasUpdated('some%dir', 1508496363));
+		$this->assertFalse($this->instance->hasUpdated('some%dir', 1_508_496_363));
 	}
 
 	/**
@@ -1308,7 +1308,7 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willReturn(false);
 
-		$this->instance->hasUpdated('', 1508496363);
+		$this->instance->hasUpdated('', 1_508_496_363);
 	}
 
 	/**
@@ -1320,7 +1320,7 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_METHOD_NOT_ALLOWED));
 
-		$this->instance->hasUpdated('', 1508496363);
+		$this->instance->hasUpdated('', 1_508_496_363);
 	}
 
 	/**
@@ -1332,7 +1332,7 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_METHOD_NOT_ALLOWED));
 
-		$this->assertFalse($this->instance->hasUpdated('some%dir', 1508496363));
+		$this->assertFalse($this->instance->hasUpdated('some%dir', 1_508_496_363));
 	}
 
 	/**
@@ -1344,7 +1344,7 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
 
-		$this->instance->hasUpdated('some%dir', 1508496363);
+		$this->instance->hasUpdated('some%dir', 1_508_496_363);
 	}
 
 	public function testPropfindNotFoundOnCurlException() {

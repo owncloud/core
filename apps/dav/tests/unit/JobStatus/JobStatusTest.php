@@ -32,12 +32,10 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\Unit\JobStatus
  */
 class JobStatusTest extends TestCase {
-	/** @var JobStatus */
-	private $jobStatus;
-	/** @var JobStatusEntity */
-	private $jobStatusEntity;
+	private \OCA\DAV\JobStatus\JobStatus $jobStatus;
+	private \OCA\DAV\JobStatus\Entity\JobStatus $jobStatusEntity;
 	/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $mapper;
+	private \PHPUnit\Framework\MockObject\MockObject $mapper;
 
 	protected function setUp(): void {
 		parent::setUp();

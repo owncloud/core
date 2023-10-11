@@ -87,7 +87,7 @@ class SMB extends StorageAdapter {
 		if (!empty($loggedParams['password'])) {
 			$loggedParams['password'] = '***removed***';
 		}
-		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
+		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams, JSON_THROW_ON_ERROR).')');
 
 		if (isset($params['host'], $params['user'], $params['password'], $params['share'])) {
 			$domain = $params['domain'] ?? '';
@@ -100,7 +100,7 @@ class SMB extends StorageAdapter {
 			$shareClass = \get_class($this->share);
 			$this->log("using $shareClass for the connection");
 
-			$this->root = isset($params['root']) ? $params['root'] : '/';
+			$this->root = $params['root'] ?? '/';
 			if (!$this->root || $this->root[0] != '/') {
 				$this->root = '/' . $this->root;
 			}
@@ -108,7 +108,7 @@ class SMB extends StorageAdapter {
 				$this->root .= '/';
 			}
 		} else {
-			$ex = new \Exception('Invalid configuration: '.\json_encode($loggedParams));
+			$ex = new \Exception('Invalid configuration: '.\json_encode($loggedParams, JSON_THROW_ON_ERROR));
 			$this->leave(__FUNCTION__, $ex);
 			throw $ex;
 		}
@@ -183,9 +183,7 @@ class SMB extends StorageAdapter {
 						0,
 						$this->statCache[$path]->getMTime(),
 						$mode,
-						function () {
-							return [];
-						}
+						fn () => []
 					);
 				}
 			} catch (ConnectException $e) {
@@ -205,9 +203,7 @@ class SMB extends StorageAdapter {
 						0,
 						$this->shareMTime(),
 						IFileInfo::MODE_DIRECTORY,
-						function () {
-							return [];
-						}
+						fn () => []
 					);
 				} else {
 					$this->leave(__FUNCTION__, $e);
@@ -250,9 +246,7 @@ class SMB extends StorageAdapter {
 						//remember entry so we can answer file_exists and filetype without a full stat
 						$this->statCache[$fullPath] = $fileInfo;
 					}
-				} catch (NotFoundException $e) {
-					$this->swallow(__FUNCTION__, $e);
-				} catch (ForbiddenException $e) {
+				} catch (NotFoundException|ForbiddenException $e) {
 					$this->swallow(__FUNCTION__, $e);
 				}
 			}
@@ -584,10 +578,9 @@ class SMB extends StorageAdapter {
 		$result = false;
 		try {
 			$files = $this->getFolderContents($path);
-			$names = \array_map(function ($info) {
-				/** @var \Icewind\SMB\IFileInfo $info */
-				return $info->getName();
-			}, $files);
+			$names = \array_map(fn ($info) =>
+	   /** @var \Icewind\SMB\IFileInfo $info */
+	   $info->getName(), $files);
 			$result = IteratorDirectory::wrap($names);
 		} catch (ConnectException $e) {
 			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);

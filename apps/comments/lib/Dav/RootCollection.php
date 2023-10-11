@@ -36,7 +36,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RootCollection implements ICollection {
 	/** @var EntityTypeCollection[]|null */
-	private $entityTypeCollections;
+	private ?array $entityTypeCollections = null;
 
 	/** @var ICommentsManager */
 	protected $commentsManager;

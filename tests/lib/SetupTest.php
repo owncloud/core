@@ -14,11 +14,11 @@ class SetupTest extends \Test\TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 	/** @var \bantu\IniGetWrapper\IniGetWrapper | \PHPUnit\Framework\MockObject\MockObject */
-	private $iniWrapper;
+	private \PHPUnit\Framework\MockObject\MockObject $iniWrapper;
 	/** @var \OCP\IL10N | \PHPUnit\Framework\MockObject\MockObject */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 	/** @var \OC_Defaults | \PHPUnit\Framework\MockObject\MockObject */
-	private $defaults;
+	private \PHPUnit\Framework\MockObject\MockObject $defaults;
 	/** @var \OC\Setup | \PHPUnit\Framework\MockObject\MockObject */
 	protected $setupClass;
 	/** @var \OCP\ILogger | \PHPUnit\Framework\MockObject\MockObject */
@@ -29,13 +29,13 @@ class SetupTest extends \Test\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->createMock('\OCP\IConfig');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
 		$this->iniWrapper = $this->createMock('\bantu\IniGetWrapper\IniGetWrapper');
-		$this->l10n = $this->createMock('\OCP\IL10N');
+		$this->l10n = $this->createMock('\\' . \OCP\IL10N::class);
 		$this->defaults = $this->createMock('\OC_Defaults');
-		$this->logger = $this->createMock('\OCP\ILogger');
-		$this->random = $this->createMock('\OCP\Security\ISecureRandom');
-		$this->setupClass = $this->getMockBuilder('\OC\Setup')
+		$this->logger = $this->createMock('\\' . \OCP\ILogger::class);
+		$this->random = $this->createMock('\\' . \OCP\Security\ISecureRandom::class);
+		$this->setupClass = $this->getMockBuilder('\\' . \OC\Setup::class)
 			->setMethods(['IsClassExisting', 'is_callable', 'getAvailableDbDriversForPdo'])
 			->setConstructorArgs([$this->config, $this->iniWrapper, $this->l10n, $this->defaults, $this->logger, $this->random])
 			->getMock();

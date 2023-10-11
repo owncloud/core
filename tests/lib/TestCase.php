@@ -34,17 +34,14 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use PHPUnit\Util\Test as TestUtil;
 
 abstract class TestCase extends BaseTestCase {
-	/** @var \OC\Command\QueueBus */
-	private $commandBus;
+	private \OC\Command\QueueBus $commandBus;
 
 	/** @var IDBConnection */
 	protected static $realDatabase = null;
 
-	/** @var bool */
-	private static $wasDatabaseAllowed = false;
+	private static bool $wasDatabaseAllowed = false;
 
-	/** @var string */
-	private static $lastTest = '';
+	private static string $lastTest = '';
 
 	/** @var array */
 	protected $services = [];
@@ -60,9 +57,7 @@ abstract class TestCase extends BaseTestCase {
 		}
 
 		$this->services[$name] = \OC::$server->query($name);
-		\OC::$server->registerService($name, function () use ($newService) {
-			return $newService;
-		});
+		\OC::$server->registerService($name, fn () => $newService);
 
 		return true;
 	}
@@ -74,9 +69,7 @@ abstract class TestCase extends BaseTestCase {
 	public function restoreService($name) {
 		if (isset($this->services[$name])) {
 			$oldService = $this->services[$name];
-			\OC::$server->registerService($name, function () use ($oldService) {
-				return $oldService;
-			});
+			\OC::$server->registerService($name, fn () => $oldService);
 
 			unset($this->services[$name]);
 			return true;
@@ -95,9 +88,7 @@ abstract class TestCase extends BaseTestCase {
 			$traits = \array_merge(\class_uses($trait), $traits);
 		}
 		$traits = \array_unique($traits);
-		return \array_filter($traits, function ($trait) {
-			return \substr($trait, 0, 5) === 'Test\\';
-		});
+		return \array_filter($traits, fn ($trait) => \substr($trait, 0, 5) === 'Test\\');
 	}
 
 	protected function setUp(): void {
@@ -115,9 +106,7 @@ abstract class TestCase extends BaseTestCase {
 
 		// overwrite the command bus with one we can run ourselves
 		$this->commandBus = new QueueBus();
-		\OC::$server->registerService('AsyncCommandBus', function () {
-			return $this->commandBus;
-		});
+		\OC::$server->registerService('AsyncCommandBus', fn () => $this->commandBus);
 
 		$traits = $this->getTestTraits();
 		foreach ($traits as $trait) {
@@ -138,9 +127,7 @@ abstract class TestCase extends BaseTestCase {
 
 		// restore database connection
 		if (!$this->IsDatabaseAccessAllowed()) {
-			\OC::$server->registerService('DatabaseConnection', function () {
-				return self::$realDatabase;
-			});
+			\OC::$server->registerService('DatabaseConnection', fn () => self::$realDatabase);
 		}
 
 		\OC::$server->getLockingProvider()->releaseAll();
@@ -240,9 +227,7 @@ abstract class TestCase extends BaseTestCase {
 		if (!self::$wasDatabaseAllowed && self::$realDatabase !== null) {
 			// in case an error is thrown in a test, PHPUnit jumps straight to tearDownAfterClass,
 			// so we need the database again
-			\OC::$server->registerService('DatabaseConnection', function () {
-				return self::$realDatabase;
-			});
+			\OC::$server->registerService('DatabaseConnection', fn () => self::$realDatabase);
 		}
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
 		if (self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()) {
@@ -393,7 +378,7 @@ abstract class TestCase extends BaseTestCase {
 		// get the user for which the fs is setup
 		$view = Filesystem::getView();
 		if ($view) {
-			list(, $user) = \explode('/', $view->getRoot());
+			[, $user] = \explode('/', $view->getRoot());
 		} else {
 			$user = null;
 		}
@@ -472,14 +457,12 @@ abstract class TestCase extends BaseTestCase {
 		$requestToken = 12345;
 		$theme = new OC_Defaults();
 		/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject $l10n */
-		$l10n = $this->getMockBuilder('\OCP\IL10N')
+		$l10n = $this->getMockBuilder('\\' . \OCP\IL10N::class)
 			->disableOriginalConstructor()->getMock();
 		$l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
-			}));
+			->will($this->returnCallback(fn ($text, $parameters = []) => \vsprintf($text, $parameters)));
 
 		$t = new Base($template, $requestToken, $l10n, null, $theme);
 		$buf = $t->fetchPage($vars);

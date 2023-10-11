@@ -24,10 +24,7 @@ namespace Test\Lock;
 use OC\Memcache\ArrayCache;
 
 class MemcacheLockingProviderTest extends LockingProvider {
-	/**
-	 * @var \OCP\IMemcache
-	 */
-	private $memcache;
+	private ?\OC\Memcache\ArrayCache $memcache = null;
 
 	/**
 	 * @return \OCP\Lock\ILockingProvider

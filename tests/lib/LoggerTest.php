@@ -26,14 +26,14 @@ use OC\SystemConfig;
 
 class LoggerTest extends TestCase {
 	/** @var ILogger */
-	private $logger;
+	private \OC\Log $logger;
 	private static $logs = [];
 
 	/** @var IConfig | MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var EventDispatcherInterface | MockObject */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
 
 	public function providesCreateSessionToken(): array {
 		return [
@@ -51,7 +51,7 @@ class LoggerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$this->eventDispatcher = new EventDispatcher();
-		$this->logger = new Log(__CLASS__, $this->config, null, $this->eventDispatcher);
+		$this->logger = new Log(self::class, $this->config, null, $this->eventDispatcher);
 	}
 
 	public function testInterpolation(): void {
@@ -130,7 +130,7 @@ class LoggerTest extends TestCase {
 	}
 
 	public static function writeExtra($app, $message, $level, $logConditionFile, $extraFields): void {
-		$encodedFields = \json_encode($extraFields);
+		$encodedFields = \json_encode($extraFields, JSON_THROW_ON_ERROR);
 		self::$logs[]= "$level $message fields=$encodedFields";
 	}
 

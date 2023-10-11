@@ -41,22 +41,22 @@ use OCP\Share\Events\DeclineShare;
 
 class NotificationsTest extends \Test\TestCase {
 	/** @var  AddressHandler | \PHPUnit\Framework\MockObject\MockObject */
-	private $addressHandler;
+	private \PHPUnit\Framework\MockObject\MockObject $addressHandler;
 
 	/** @var  IClientService | \PHPUnit\Framework\MockObject\MockObject*/
-	private $httpClientService;
+	private \PHPUnit\Framework\MockObject\MockObject $httpClientService;
 
 	/** @var  DiscoveryManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $discoveryManager;
+	private \PHPUnit\Framework\MockObject\MockObject $discoveryManager;
 
 	/** @var NotificationManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $notificationManager;
+	private \OCA\FederatedFileSharing\Ocm\NotificationManager $notificationManager;
 
 	/** @var  IJobList | \PHPUnit\Framework\MockObject\MockObject */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 
 	/** @var  IConfig | \PHPUnit\Framework\MockObject\MockObject */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -187,10 +187,8 @@ class NotificationsTest extends \Test\TestCase {
 			->with(
 				$this->anything(),
 				$this->callback(
-					function ($options) {
-						return isset($options['json'])
-						  && !isset($options['body']);
-					}
+					fn ($options) => isset($options['json'])
+						  && !isset($options['body'])
 				)
 			)
 			->willReturn($responseMock);

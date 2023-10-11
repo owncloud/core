@@ -38,25 +38,25 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @var NodeElement of this popup
 	 */
 	private $popupElement;
-	private $nameInputXpath = ".//input[@name='linkName']";
-	private $passwordInputXpath = ".//input[@type='password']";
-	private $expirationDateLabelXpath = ".//label[contains(text(), 'Expiration')]";
-	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
-	private $emailInputXpath = "//form[@id='emailPrivateLink']//input[@class='select2-input']";
-	private $emailToSelfCheckboxXpath = "//form[@id='emailPrivateLink']" . "//input[@class='emailPrivateLinkForm--emailToSelf']";
-	private $emailInputCloseXpath = "//a[@class='select2-search-choice-close']";
-	private $personalMessageInputXpath = "//*[@class='public-link-modal--input emailPrivateLinkForm--emailBodyField']";
-	private $shareButtonXpath = ".//button[contains(text(), 'Share') or contains(text(), 'Save')]";
-	private $cancelButtonXpath = ".//button[contains(text(), 'Cancel')]";
-	private $permissionLabelXpath = [
+	private string $nameInputXpath = ".//input[@name='linkName']";
+	private string $passwordInputXpath = ".//input[@type='password']";
+	private string $expirationDateLabelXpath = ".//label[contains(text(), 'Expiration')]";
+	private string $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
+	private string $emailInputXpath = "//form[@id='emailPrivateLink']//input[@class='select2-input']";
+	private string $emailToSelfCheckboxXpath = "//form[@id='emailPrivateLink']" . "//input[@class='emailPrivateLinkForm--emailToSelf']";
+	private string $emailInputCloseXpath = "//a[@class='select2-search-choice-close']";
+	private string $personalMessageInputXpath = "//*[@class='public-link-modal--input emailPrivateLinkForm--emailBodyField']";
+	private string $shareButtonXpath = ".//button[contains(text(), 'Share') or contains(text(), 'Save')]";
+	private string $cancelButtonXpath = ".//button[contains(text(), 'Cancel')]";
+	private array $permissionLabelXpath = [
 		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
 		'read-write-folder' => ".//label[contains(@for, 'sharingDialogAllowPublicFolderReadWrite')]",
 		'read-write-file' => ".//label[contains(@for, 'sharingDialogAllowPublicFileReadWrite')]",
 		'upload-write-without-modify' => ".//label[contains(@for, 'sharingDialogAllowpublicUploadWrite')]",
 		'upload' => ".//label[contains(@for, 'sharingDialogAllowPublicUpload')]"
 	];
-	private $popupCloseButton = "//a[@class='oc-dialog-close']";
-	private $expirationDateRequiredErrorMessageXpath = './/*[@id="shareDialogLinkExpirationView"]//span[@class="error-message"]';
+	private string $popupCloseButton = "//a[@class='oc-dialog-close']";
+	private string $expirationDateRequiredErrorMessageXpath = './/*[@id="shareDialogLinkExpirationView"]//span[@class="error-message"]';
 
 	/**
 	 * sets the NodeElement for the current popup

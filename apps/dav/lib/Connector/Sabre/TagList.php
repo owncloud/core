@@ -36,11 +36,9 @@ class TagList implements Element {
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/**
-	 * tags
-	 *
-	 * @var array
-	 */
-	private $tags;
+  * tags
+  */
+	private array $tags;
 
 	/**
 	 * @param array $tags

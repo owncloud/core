@@ -35,33 +35,26 @@ use Sabre\CalDAV\Calendar;
  * @package OCA\DAV\Tests\unit\DAV
  */
 class MiscCustomPropertiesBackendTest extends \Test\TestCase {
-	/**
-	 * @var \Sabre\DAV\Server
-	 */
-	private $server;
+	private \Sabre\DAV\Server $server;
 
 	/**
 	 * @var \Sabre\DAV\Tree
 	 */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 
-	/**
-	 * @var MiscCustomPropertiesBackend
-	 */
-	private $plugin;
+	private \OCA\DAV\DAV\MiscCustomPropertiesBackend $plugin;
 
 	/**
 	 * @var \OCP\IUser
 	 */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 	
-	/** @var int */
-	private $maxId;
+	private int $maxId;
 
 	public function setUp(): void {
 		parent::setUp();
 		$this->server = new \Sabre\DAV\Server();
-		$this->tree = $this->getMockBuilder('\Sabre\DAV\Tree')
+		$this->tree = $this->getMockBuilder('\\' . \Sabre\DAV\Tree::class)
 			->disableOriginalConstructor()
 			->getMock();
 

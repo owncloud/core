@@ -46,35 +46,27 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class TransferOwnership extends Command {
-	/** @var IUserManager $userManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IManager */
-	private $shareManager;
+	private \OCP\Share\IManager $shareManager;
 
-	/** @var IMountManager */
-	private $mountManager;
+	private \OCP\Files\Mount\IMountManager $mountManager;
 
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
-	/** @var Manager  */
-	private $encryptionManager;
+	private \OC\Encryption\Manager $encryptionManager;
 
-	/** @var ProviderFactory  */
-	private $shareProviderFactory;
+	private \OC\Share20\ProviderFactory $shareProviderFactory;
 
-	/** @var bool */
-	private $filesExist = false;
+	private bool $filesExist = false;
 
-	/** @var bool */
-	private $foldersExist = false;
+	private bool $foldersExist = false;
 
 	/** @var FileInfo[] */
-	private $encryptedFiles = [];
+	private array $encryptedFiles = [];
 
 	/** @var IShare[] */
-	private $shares = [];
+	private array $shares = [];
 
 	/** @var string */
 	private $sourceUser;
@@ -85,8 +77,7 @@ class TransferOwnership extends Command {
 	/** @var string */
 	private $inputPath;
 
-	/** @var string */
-	private $finalTarget;
+	private ?string $finalTarget = null;
 
 	public function __construct(
 		IUserManager $userManager,

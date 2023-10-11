@@ -39,24 +39,20 @@ class Application extends App {
 		/*
 		 * Register capabilities
 		 */
-		$container->registerCapability('OCA\Files_Versions\Capabilities');
+		$container->registerCapability(\OCA\Files_Versions\Capabilities::class);
 
 		/*
 		 * Register expiration
 		 */
-		$container->registerService('Expiration', function ($c) {
-			return new Expiration(
-				$c->query('ServerContainer')->getConfig(),
-				$c->query('OCP\AppFramework\Utility\ITimeFactory')
-			);
-		});
+		$container->registerService('Expiration', fn ($c) => new Expiration(
+			$c->query('ServerContainer')->getConfig(),
+			$c->query(\OCP\AppFramework\Utility\ITimeFactory::class)
+		));
 
 		/*
 		 * Register FileHelper
 		 */
-		$container->registerService('FileHelper', function ($c) {
-			return new FileHelper();
-		});
+		$container->registerService('FileHelper', fn ($c) => new FileHelper());
 
 		/** @var AllConfig $config */
 		$config = $container->query('ServerContainer')->getConfig();
@@ -64,12 +60,10 @@ class Application extends App {
 		if ($metaEnabled) {
 			$container->registerService(
 				MetaStorage::class,
-				function ($c) {
-					return new MetaStorage(
-						$c->query('ServerContainer')->getConfig()->getSystemValue('datadirectory'),
-						$c->query('FileHelper'),
-					);
-				}
+				fn ($c) => new MetaStorage(
+					$c->query('ServerContainer')->getConfig()->getSystemValue('datadirectory'),
+					$c->query('FileHelper'),
+				)
 			);
 
 			Storage::enableMetaData($container->query(MetaStorage::class));

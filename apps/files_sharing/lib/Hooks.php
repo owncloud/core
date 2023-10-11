@@ -36,45 +36,24 @@ use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCP\Activity\IManager as ActivityManager;
 
 class Hooks {
-	/**
-	 * @var IURLGenerator
-	 */
-	private $urlGenerator;
+	private \OCP\IURLGenerator $urlGenerator;
 
-	/**
-	 * @var IRootFolder
-	 */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
 	/**
 	 * @var IUserSession|null
 	 */
 	private $userSession;
 
-	/**
-	 * @var EventDispatcher
-	 */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher;
 
-	/**
-	 * @var \OCP\Share\IManager
-	 */
-	private $shareManager;
+	private \OCP\Share\IManager $shareManager;
 
-	/**
-	 * @var NotificationPublisher
-	 */
-	private $notificationPublisher;
+	private \OCA\Files_Sharing\Service\NotificationPublisher $notificationPublisher;
 
-	/**
-	 * @var SharingAllowlist
-	 */
-	private $sharingAllowlist;
+	private \OCA\Files_Sharing\SharingAllowlist $sharingAllowlist;
 
-	/**
-	 * @var ActivityManager
-	 */
-	private $activityManager;
+	private \OCP\Activity\IManager $activityManager;
 
 	/**
 	 * Hooks constructor.
@@ -129,7 +108,7 @@ class Hooks {
 		$mountManager = \OC\Files\Filesystem::getMountManager();
 		$mountedShares = $mountManager->findIn($path);
 		foreach ($mountedShares as $mount) {
-			if ($mount->getStorage()->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
+			if ($mount->getStorage()->instanceOfStorage(\OCA\Files_Sharing\ISharedStorage::class)) {
 				$mountPoint = $mount->getMountPoint();
 				$view->unlink($mountPoint);
 			}
@@ -252,9 +231,7 @@ class Hooks {
 	}
 
 	private function filterSharesByFileId($shares, $fileId) {
-		return \array_filter($shares, function (IShare $share) use ($fileId) {
-			return \strval($share->getNodeId()) === \strval($fileId);
-		});
+		return \array_filter($shares, fn (IShare $share) => \strval($share->getNodeId()) === \strval($fileId));
 	}
 
 	/**

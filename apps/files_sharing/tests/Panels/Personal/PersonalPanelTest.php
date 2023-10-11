@@ -28,16 +28,15 @@ use OCP\IUserSession;
 
 class PersonalPanelTest extends \Test\TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject $l10n */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 
-	/** @var PersonalPanel $personalPanel */
-	private $personalPanel;
+	private \OCA\Files_Sharing\Panels\Personal\PersonalPanel $personalPanel;
 
 	protected function setUp(): void {
 		$this->config = $this->getMockBuilder(IConfig::class)

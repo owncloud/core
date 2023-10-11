@@ -41,11 +41,11 @@ class InactiveTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$userManager = $this->userManager = $this->getMockBuilder('OCP\IUserManager')
+		$userManager = $this->userManager = $this->getMockBuilder(\OCP\IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock(\Symfony\Component\Console\Input\InputInterface::class);
+		$this->consoleOutput = $this->createMock(\Symfony\Component\Console\Output\OutputInterface::class);
 
 		/** @var \OCP\IUserManager $userManager */
 		$this->command = new Inactive($userManager);
@@ -124,9 +124,7 @@ class InactiveTest extends TestCase {
 
 		$this->consoleOutput->expects($this->once())
 			->method('writeLn')
-			->with($this->callback(function ($output) use ($expectedCount) {
-				return self::isJson($output) && \count(\json_decode($output)) === $expectedCount;
-			}));
+			->with($this->callback(fn ($output) => self::isJson() && \count(\json_decode($output, null, 512, JSON_THROW_ON_ERROR)) === $expectedCount));
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}

@@ -34,7 +34,7 @@ class HintException extends \Exception {
 	}
 
 	public function __toString() {
-		return __CLASS__ . ": [{$this->code}]: {$this->message} ({$this->hint})\n";
+		return self::class . ": [{$this->code}]: {$this->message} ({$this->hint})\n";
 	}
 
 	public function getHint() {

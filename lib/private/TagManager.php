@@ -40,18 +40,14 @@ use OC\Tagging\TagMapper;
 
 class TagManager implements \OCP\ITagManager {
 	/**
-	 * User session
-	 *
-	 * @var \OCP\IUserSession
-	 */
-	private $userSession;
+  * User session
+  */
+	private \OCP\IUserSession $userSession;
 
 	/**
-	 * TagMapper
-	 *
-	 * @var TagMapper
-	 */
-	private $mapper;
+  * TagMapper
+  */
+	private \OC\Tagging\TagMapper $mapper;
 
 	/**
 	* Constructor.

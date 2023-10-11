@@ -35,12 +35,11 @@ use Sabre\HTTP\RequestInterface;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
 class ViewOnlyPluginTest extends TestCase {
-	/** @var ViewOnlyPlugin */
-	private $plugin;
+	private \OCA\DAV\DAV\ViewOnlyPlugin $plugin;
 	/** @var Tree | \PHPUnit\Framework\MockObject\MockObject */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 	/** @var RequestInterface | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 
 	public function setUp(): void {
 		$this->plugin = new ViewOnlyPlugin(

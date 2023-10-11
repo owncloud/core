@@ -28,10 +28,9 @@ use OCP\License\ILicenseManager;
  * @package Tests\Settings\Panels\Admin
  */
 class LicenseTest extends \Test\TestCase {
-	/** @var License */
-	private $panel;
+	private \OC\Settings\Panels\Admin\License $panel;
 	/** @var ILicenseManager */
-	private $licenseManager;
+	private \PHPUnit\Framework\MockObject\MockObject $licenseManager;
 
 	protected function setUp(): void {
 		parent::setUp();

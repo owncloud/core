@@ -29,12 +29,11 @@ use OCP\Files\Mount\IMountManager;
 use Test\TestCase;
 
 class FilesHomeTest extends TestCase {
-	/** @var FilesHome */
-	private $filesHome;
+	private \OCA\DAV\Files\FilesHome $filesHome;
 	/** @var Directory | \PHPUnit\Framework\MockObject\MockObject */
-	private $rootNode;
+	private \PHPUnit\Framework\MockObject\MockObject $rootNode;
 	/** @var View | \PHPUnit\Framework\MockObject\MockObject */
-	private $view;
+	private \PHPUnit\Framework\MockObject\MockObject $view;
 
 	protected function setUp(): void {
 		$this->view = $this->createMock(View::class);

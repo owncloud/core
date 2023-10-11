@@ -48,19 +48,17 @@ class CardDavBackendTest extends TestCase {
 	private $backend;
 
 	/** @var Principal | \PHPUnit\Framework\MockObject\MockObject */
-	private $principal;
+	private \PHPUnit\Framework\MockObject\MockObject $principal;
 
 	/** @var GroupPrincipalBackend | \PHPUnit\Framework\MockObject\MockObject */
-	private $groupPrincipal;
+	private \PHPUnit\Framework\MockObject\MockObject $groupPrincipal;
 
 	/** @var  IDBConnection */
 	private $db;
 
-	/** @var string */
-	private $dbCardsTable = 'cards';
+	private string $dbCardsTable = 'cards';
 
-	/** @var string */
-	private $dbCardsPropertiesTable = 'cards_properties';
+	private string $dbCardsPropertiesTable = 'cards_properties';
 
 	public const UNIT_TEST_USER = 'principals/users/carddav-unit-test';
 	public const UNIT_TEST_USER1 = 'principals/users/carddav-unit-test1';
@@ -461,7 +459,7 @@ class CardDavBackendTest extends TestCase {
 					'addressbookid' => $query->createNamedParameter(1),
 					'carddata' => $query->createNamedParameter(''),
 					'uri' => $query->createNamedParameter('uri'),
-					'lastmodified' => $query->createNamedParameter(4738743),
+					'lastmodified' => $query->createNamedParameter(4_738_743),
 					'etag' => $query->createNamedParameter('etag'),
 					'size' => $query->createNamedParameter(120)
 				]
@@ -569,7 +567,7 @@ class CardDavBackendTest extends TestCase {
 			$found = [];
 			foreach ($result as $r) {
 				foreach ($expected as $exp) {
-					if ($r['uri'] === $exp[0] && \strpos($r['carddata'], $exp[1]) > 0) {
+					if ($r['uri'] === $exp[0] && \strpos($r['carddata'], (string) $exp[1]) > 0) {
 						$found[$exp[1]] = true;
 						break;
 					}
@@ -613,7 +611,7 @@ class CardDavBackendTest extends TestCase {
 								'addressbookid' => $query->createNamedParameter(1),
 								'carddata' => $query->createNamedParameter('carddata', IQueryBuilder::PARAM_LOB),
 								'uri' => $query->createNamedParameter('uri'),
-								'lastmodified' => $query->createNamedParameter(5489543),
+								'lastmodified' => $query->createNamedParameter(5_489_543),
 								'etag' => $query->createNamedParameter('etag'),
 								'size' => $query->createNamedParameter(120),
 						]
@@ -642,7 +640,7 @@ class CardDavBackendTest extends TestCase {
 									'addressbookid' => $query->createNamedParameter($i),
 									'carddata' => $query->createNamedParameter('carddata' . $i, IQueryBuilder::PARAM_LOB),
 									'uri' => $query->createNamedParameter('uri' . $i),
-									'lastmodified' => $query->createNamedParameter(5489543),
+									'lastmodified' => $query->createNamedParameter(5_489_543),
 									'etag' => $query->createNamedParameter('etag' . $i),
 									'size' => $query->createNamedParameter(120),
 							]
@@ -654,7 +652,7 @@ class CardDavBackendTest extends TestCase {
 		$this->assertCount(7, $result);
 		$this->assertSame(0, (int)$result['addressbookid']);
 		$this->assertSame('uri0', $result['uri']);
-		$this->assertSame(5489543, (int)$result['lastmodified']);
+		$this->assertSame(5_489_543, (int)$result['lastmodified']);
 		$this->assertSame('etag0', $result['etag']);
 		$this->assertSame(120, (int)$result['size']);
 
@@ -687,9 +685,7 @@ class CardDavBackendTest extends TestCase {
 
 	public function testHugeMultiGet() {
 		$bookId = 1;
-		$urls = \array_map(function ($number) {
-			return "url-$number";
-		}, \range(0, 2000));
+		$urls = \array_map(fn ($number) => "url-$number", \range(0, 2000));
 		$multipleCards = $this->backend->getMultipleCards($bookId, $urls);
 		$this->assertEquals([], $multipleCards);
 	}

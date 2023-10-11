@@ -55,23 +55,17 @@ use Test\TestCase;
 class VersioningTest extends TestCase {
 	public const USERS_VERSIONS_ROOT = '/test-versions-user/files_versions';
 
-	/** @var string */
-	private $user1;
-	/** @var string */
-	private $user2;
-	/** @var string */
-	private $versionsRootOfUser1;
+	private string $user1;
+	private string $user2;
+	private string $versionsRootOfUser1;
 	/** @var IConfig|MockObject */
-	private $mockConfig;
+	private ?\PHPUnit\Framework\MockObject\MockObject $mockConfig = null;
 	/** @var string */
 	private $dataDir;
 	/** @var bool */
 	private $objectStoreEnabled;
 
-	/**
-	 * @var \OC\Files\View
-	 */
-	private $rootView;
+	private \OC\Files\View $rootView;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -141,7 +135,7 @@ class VersioningTest extends TestCase {
 	 */
 	private function overwriteConfig($saveVersionMetadata=false, $versionsRetentionObligation='auto') {
 		$config = \OC::$server->getConfig();
-		$this->mockConfig = $this->createMock('\OCP\IConfig');
+		$this->mockConfig = $this->createMock('\\' . \OCP\IConfig::class);
 		$this->mockConfig->expects($this->any())
 			->method('getSystemValue')
 			->will($this->returnCallback(
@@ -219,9 +213,9 @@ class VersioningTest extends TestCase {
 			$m1 = $versionsFolder2 . '/test.txt.v' . $t1 . MetaStorage::VERSION_FILE_EXT;
 			$m2 = $versionsFolder2 . '/test.txt.v' . $t2 . MetaStorage::VERSION_FILE_EXT;
 
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user2]));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2]));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
 		}
 
 		// move file into the shared folder as recipient
@@ -274,7 +268,7 @@ class VersioningTest extends TestCase {
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
 			$m0 = $this->versionsRootOfUser1 . '/folder1/test.txt' . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1']));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1'], JSON_THROW_ON_ERROR));
 		}
 
 		$current0 = \OCA\Files_Versions\Storage::getCurrentVersion($this->user1, '/folder1/test.txt');
@@ -333,12 +327,12 @@ class VersioningTest extends TestCase {
 			$m3 = $this->versionsRootOfUser1 . '/test.txt.v' . $t3 . MetaStorage::VERSION_FILE_EXT;
 			$m4 = $this->versionsRootOfUser1 . '/test.txt.v' . $t4 . MetaStorage::VERSION_FILE_EXT;
 			$m5 = $this->versionsRootOfUser1 . '/test.txt.v' . $t5 . MetaStorage::VERSION_FILE_EXT;
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.2']));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1']));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.0'])); // published
-			\file_put_contents("$this->dataDir/$m3", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.3']));
-			\file_put_contents("$this->dataDir/$m4", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.2']));
-			\file_put_contents("$this->dataDir/$m5", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.1']));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.2'], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1'], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.0'], JSON_THROW_ON_ERROR)); // published
+			\file_put_contents("$this->dataDir/$m3", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.3'], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m4", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.2'], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m5", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.1'], JSON_THROW_ON_ERROR));
 		}
 
 		$versions = \OCA\Files_Versions\Storage::getVersions($this->user1, '/test.txt');
@@ -397,9 +391,9 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1']));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.0']));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.1']));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.1'], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1, 'version_tag' => '1.0'], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1, 'version_tag' => '0.1'], JSON_THROW_ON_ERROR));
 		}
 
 		self::loginAsUser($this->user1);
@@ -422,9 +416,9 @@ class VersioningTest extends TestCase {
 		$this->overwriteConfig();
 
 		// last interval end at 2592000
-		$startTime = 5000000;
+		$startTime = 5_000_000;
 
-		list($deleted, $size) = VersionStorageToTest::callProtectedGetExpireList($startTime, $versions);
+		[$deleted, $size] = VersionStorageToTest::callProtectedGetExpireList($startTime, $versions);
 
 		// we should have deleted 16 files each of the size 1
 		$this->assertEquals($sizeOfAllDeletedFiles, $size);
@@ -447,46 +441,46 @@ class VersioningTest extends TestCase {
 			[
 				[
 					// first slice (10sec) keep one version every 2 seconds
-					["version" => 4999999, "path" => "keep", "size" => 1],
-					["version" => 4999998, "path" => "delete", "size" => 1],
-					["version" => 4999997, "path" => "keep", "size" => 1],
-					["version" => 4999995, "path" => "keep", "size" => 1],
-					["version" => 4999994, "path" => "delete", "size" => 1],
+					["version" => 4_999_999, "path" => "keep", "size" => 1],
+					["version" => 4_999_998, "path" => "delete", "size" => 1],
+					["version" => 4_999_997, "path" => "keep", "size" => 1],
+					["version" => 4_999_995, "path" => "keep", "size" => 1],
+					["version" => 4_999_994, "path" => "delete", "size" => 1],
 					//next slice (60sec) starts at 4999990 keep one version every 10 seconds
-					["version" => 4999988, "path" => "keep", "size" => 1],
-					["version" => 4999978, "path" => "keep", "size" => 1],
-					["version" => 4999975, "path" => "delete", "size" => 1],
-					["version" => 4999972, "path" => "delete", "size" => 1],
-					["version" => 4999967, "path" => "keep", "size" => 1],
-					["version" => 4999958, "path" => "delete", "size" => 1],
-					["version" => 4999957, "path" => "keep", "size" => 1],
+					["version" => 4_999_988, "path" => "keep", "size" => 1],
+					["version" => 4_999_978, "path" => "keep", "size" => 1],
+					["version" => 4_999_975, "path" => "delete", "size" => 1],
+					["version" => 4_999_972, "path" => "delete", "size" => 1],
+					["version" => 4_999_967, "path" => "keep", "size" => 1],
+					["version" => 4_999_958, "path" => "delete", "size" => 1],
+					["version" => 4_999_957, "path" => "keep", "size" => 1],
 					//next slice (3600sec) start at 4999940 keep one version every 60 seconds
-					["version" => 4999900, "path" => "keep", "size" => 1],
-					["version" => 4999841, "path" => "delete", "size" => 1],
-					["version" => 4999840, "path" => "keep", "size" => 1],
-					["version" => 4999780, "path" => "keep", "size" => 1],
-					["version" => 4996401, "path" => "keep", "size" => 1],
+					["version" => 4_999_900, "path" => "keep", "size" => 1],
+					["version" => 4_999_841, "path" => "delete", "size" => 1],
+					["version" => 4_999_840, "path" => "keep", "size" => 1],
+					["version" => 4_999_780, "path" => "keep", "size" => 1],
+					["version" => 4_996_401, "path" => "keep", "size" => 1],
 					// next slice (86400sec) start at 4996400 keep one version every 3600 seconds
-					["version" => 4996350, "path" => "delete", "size" => 1],
-					["version" => 4992800, "path" => "keep", "size" => 1],
-					["version" => 4989800, "path" => "delete", "size" => 1],
-					["version" => 4989700, "path" => "delete", "size" => 1],
-					["version" => 4989200, "path" => "keep", "size" => 1],
+					["version" => 4_996_350, "path" => "delete", "size" => 1],
+					["version" => 4_992_800, "path" => "keep", "size" => 1],
+					["version" => 4_989_800, "path" => "delete", "size" => 1],
+					["version" => 4_989_700, "path" => "delete", "size" => 1],
+					["version" => 4_989_200, "path" => "keep", "size" => 1],
 					// next slice (2592000sec) start at 4913600 keep one version every 86400 seconds
-					["version" => 4913600, "path" => "keep", "size" => 1],
-					["version" => 4852800, "path" => "delete", "size" => 1],
-					["version" => 4827201, "path" => "delete", "size" => 1],
-					["version" => 4827200, "path" => "keep", "size" => 1],
-					["version" => 4777201, "path" => "delete", "size" => 1],
-					["version" => 4777501, "path" => "delete", "size" => 1],
-					["version" => 4740000, "path" => "keep", "size" => 1],
+					["version" => 4_913_600, "path" => "keep", "size" => 1],
+					["version" => 4_852_800, "path" => "delete", "size" => 1],
+					["version" => 4_827_201, "path" => "delete", "size" => 1],
+					["version" => 4_827_200, "path" => "keep", "size" => 1],
+					["version" => 4_777_201, "path" => "delete", "size" => 1],
+					["version" => 4_777_501, "path" => "delete", "size" => 1],
+					["version" => 4_740_000, "path" => "keep", "size" => 1],
 					// final slice starts at 2408000 keep one version every 604800 seconds
-					["version" => 2408000, "path" => "keep", "size" => 1],
-					["version" => 1803201, "path" => "delete", "size" => 1],
-					["version" => 1803200, "path" => "keep", "size" => 1],
-					["version" => 1800199, "path" => "delete", "size" => 1],
-					["version" => 1800100, "path" => "delete", "size" => 1],
-					["version" => 1198300, "path" => "keep", "size" => 1],
+					["version" => 2_408_000, "path" => "keep", "size" => 1],
+					["version" => 1_803_201, "path" => "delete", "size" => 1],
+					["version" => 1_803_200, "path" => "keep", "size" => 1],
+					["version" => 1_800_199, "path" => "delete", "size" => 1],
+					["version" => 1_800_100, "path" => "delete", "size" => 1],
+					["version" => 1_198_300, "path" => "keep", "size" => 1],
 				],
 				16 // size of all deleted files (every file has the size 1)
 			],
@@ -497,28 +491,28 @@ class VersioningTest extends TestCase {
 					// next slice (60sec) starts at 4999990 keep one version every 10 seconds
 					// next slice (3600sec) start at 4999940 keep one version every 60 seconds
 					// next slice (86400sec) start at 4996400 keep one version every 3600 seconds
-					["version" => 4996400, "path" => "keep", "size" => 1],
-					["version" => 4996350, "path" => "delete", "size" => 1],
-					["version" => 4996350, "path" => "delete", "size" => 1],
-					["version" => 4992800, "path" => "keep", "size" => 1],
-					["version" => 4989800, "path" => "delete", "size" => 1],
-					["version" => 4989700, "path" => "delete", "size" => 1],
-					["version" => 4989200, "path" => "keep", "size" => 1],
+					["version" => 4_996_400, "path" => "keep", "size" => 1],
+					["version" => 4_996_350, "path" => "delete", "size" => 1],
+					["version" => 4_996_350, "path" => "delete", "size" => 1],
+					["version" => 4_992_800, "path" => "keep", "size" => 1],
+					["version" => 4_989_800, "path" => "delete", "size" => 1],
+					["version" => 4_989_700, "path" => "delete", "size" => 1],
+					["version" => 4_989_200, "path" => "keep", "size" => 1],
 					// next slice (2592000sec) start at 4913600 keep one version every 86400 seconds
-					["version" => 4913600, "path" => "keep", "size" => 1],
-					["version" => 4852800, "path" => "delete", "size" => 1],
-					["version" => 4827201, "path" => "delete", "size" => 1],
-					["version" => 4827200, "path" => "keep", "size" => 1],
-					["version" => 4777201, "path" => "delete", "size" => 1],
-					["version" => 4777501, "path" => "delete", "size" => 1],
-					["version" => 4740000, "path" => "keep", "size" => 1],
+					["version" => 4_913_600, "path" => "keep", "size" => 1],
+					["version" => 4_852_800, "path" => "delete", "size" => 1],
+					["version" => 4_827_201, "path" => "delete", "size" => 1],
+					["version" => 4_827_200, "path" => "keep", "size" => 1],
+					["version" => 4_777_201, "path" => "delete", "size" => 1],
+					["version" => 4_777_501, "path" => "delete", "size" => 1],
+					["version" => 4_740_000, "path" => "keep", "size" => 1],
 					// final slice starts at 2408000 keep one version every 604800 seconds
-					["version" => 2408000, "path" => "keep", "size" => 1],
-					["version" => 1803201, "path" => "delete", "size" => 1],
-					["version" => 1803200, "path" => "keep", "size" => 1],
-					["version" => 1800199, "path" => "delete", "size" => 1],
-					["version" => 1800100, "path" => "delete", "size" => 1],
-					["version" => 1198300, "path" => "keep", "size" => 1],
+					["version" => 2_408_000, "path" => "keep", "size" => 1],
+					["version" => 1_803_201, "path" => "delete", "size" => 1],
+					["version" => 1_803_200, "path" => "keep", "size" => 1],
+					["version" => 1_800_199, "path" => "delete", "size" => 1],
+					["version" => 1_800_100, "path" => "delete", "size" => 1],
+					["version" => 1_198_300, "path" => "keep", "size" => 1],
 				],
 				11 // size of all deleted files (every file has the size 1)
 			],
@@ -526,32 +520,32 @@ class VersioningTest extends TestCase {
 			[
 				[
 					// first slice (10sec) keep one version every 2 seconds
-					["version" => 4999999, "path" => "keep", "size" => 1],
-					["version" => 4999998, "path" => "delete", "size" => 1],
-					["version" => 4999997, "path" => "keep", "size" => 1],
-					["version" => 4999995, "path" => "keep", "size" => 1],
-					["version" => 4999994, "path" => "delete", "size" => 1],
+					["version" => 4_999_999, "path" => "keep", "size" => 1],
+					["version" => 4_999_998, "path" => "delete", "size" => 1],
+					["version" => 4_999_997, "path" => "keep", "size" => 1],
+					["version" => 4_999_995, "path" => "keep", "size" => 1],
+					["version" => 4_999_994, "path" => "delete", "size" => 1],
 					//next slice (60sec) starts at 4999990 keep one version every 10 seconds
-					["version" => 4999988, "path" => "keep", "size" => 1],
-					["version" => 4999978, "path" => "keep", "size" => 1],
+					["version" => 4_999_988, "path" => "keep", "size" => 1],
+					["version" => 4_999_978, "path" => "keep", "size" => 1],
 					//next slice (3600sec) start at 4999940 keep one version every 60 seconds
 					// next slice (86400sec) start at 4996400 keep one version every 3600 seconds
-					["version" => 4989200, "path" => "keep", "size" => 1],
+					["version" => 4_989_200, "path" => "keep", "size" => 1],
 					// next slice (2592000sec) start at 4913600 keep one version every 86400 seconds
-					["version" => 4913600, "path" => "keep", "size" => 1],
-					["version" => 4852800, "path" => "delete", "size" => 1],
-					["version" => 4827201, "path" => "delete", "size" => 1],
-					["version" => 4827200, "path" => "keep", "size" => 1],
-					["version" => 4777201, "path" => "delete", "size" => 1],
-					["version" => 4777501, "path" => "delete", "size" => 1],
-					["version" => 4740000, "path" => "keep", "size" => 1],
+					["version" => 4_913_600, "path" => "keep", "size" => 1],
+					["version" => 4_852_800, "path" => "delete", "size" => 1],
+					["version" => 4_827_201, "path" => "delete", "size" => 1],
+					["version" => 4_827_200, "path" => "keep", "size" => 1],
+					["version" => 4_777_201, "path" => "delete", "size" => 1],
+					["version" => 4_777_501, "path" => "delete", "size" => 1],
+					["version" => 4_740_000, "path" => "keep", "size" => 1],
 					// final slice starts at 2408000 keep one version every 604800 seconds
-					["version" => 2408000, "path" => "keep", "size" => 1],
-					["version" => 1803201, "path" => "delete", "size" => 1],
-					["version" => 1803200, "path" => "keep", "size" => 1],
-					["version" => 1800199, "path" => "delete", "size" => 1],
-					["version" => 1800100, "path" => "delete", "size" => 1],
-					["version" => 1198300, "path" => "keep", "size" => 1],
+					["version" => 2_408_000, "path" => "keep", "size" => 1],
+					["version" => 1_803_201, "path" => "delete", "size" => 1],
+					["version" => 1_803_200, "path" => "keep", "size" => 1],
+					["version" => 1_800_199, "path" => "delete", "size" => 1],
+					["version" => 1_800_100, "path" => "delete", "size" => 1],
+					["version" => 1_198_300, "path" => "keep", "size" => 1],
 				],
 				9 // size of all deleted files (every file has the size 1)
 			],
@@ -588,9 +582,9 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user2]));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2]));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
 		}
 
 		// execute rename hook of versions app
@@ -648,9 +642,9 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
 		}
 
 		$node = \OC::$server->getUserFolder($this->user1)->get('folder1');
@@ -725,9 +719,9 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
 		}
 
 		// execute rename hook of versions app
@@ -790,9 +784,9 @@ class VersioningTest extends TestCase {
 			$m0 = $versionsFolder2 . '/folder2/test.txt' . MetaStorage::CURRENT_FILE_PREFIX . MetaStorage::VERSION_FILE_EXT;
 			$m1 = $v1 . MetaStorage::VERSION_FILE_EXT;
 			$m2 = $v2 . MetaStorage::VERSION_FILE_EXT;
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user2]));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2]));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user2], JSON_THROW_ON_ERROR));
 		}
 
 		$this->rootView->file_put_contents($v1, 'version1');
@@ -858,9 +852,9 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
 		}
 
 		$node = \OC::$server->getUserFolder($this->user1)->get('test.txt');
@@ -931,9 +925,9 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m0", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
 		}
 
 		// execute copy hook of versions app
@@ -1003,8 +997,8 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($enableMetadata && !$this->objectStoreEnabled) {
-			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1]));
-			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
+			\file_put_contents("$this->dataDir/$m2", \json_encode(['edited_by' => $this->user1], JSON_THROW_ON_ERROR));
 		}
 
 		// execute copy hook of versions app
@@ -1149,15 +1143,15 @@ class VersioningTest extends TestCase {
 			\file_put_contents("$this->dataDir/$m0", \json_encode([
 				'edited_by' => $this->user1,
 				'version_tag' => '0.3'
-			]));
+			], JSON_THROW_ON_ERROR));
 			\file_put_contents("$this->dataDir/$m1", \json_encode([
 				'edited_by' => $this->user1,
 				'version_tag' => '0.2'
-			]));
+			], JSON_THROW_ON_ERROR));
 			\file_put_contents("$this->dataDir/$m2", \json_encode([
 				'edited_by' => $this->user2,
 				'version_tag' => '0.1'
-			]));
+			], JSON_THROW_ON_ERROR));
 		}
 
 		$oldVersions = \OCA\Files_Versions\Storage::getVersions(
@@ -1371,7 +1365,7 @@ class VersioningTest extends TestCase {
 		self::loginAsUser($this->user1);
 
 		// need to scan for the versions
-		list($rootStorage, ) = $this->rootView->resolvePath($this->user1 . '/files_versions');
+		[$rootStorage, ] = $this->rootView->resolvePath($this->user1 . '/files_versions');
 		$rootStorage->getScanner()->scan('files_versions');
 
 		$versions = \OCA\Files_Versions\Storage::getVersions(
@@ -1395,7 +1389,7 @@ class VersioningTest extends TestCase {
 			\OC::$server->getUserManager()->createUser($user, $user);
 		}
 
-		$storage = new \ReflectionClass('\OCA\Files_Sharing\SharedStorage');
+		$storage = new \ReflectionClass('\\' . \OCA\Files_Sharing\SharedStorage::class);
 		$isInitialized = $storage->getProperty('initialized');
 		$isInitialized->setAccessible(true);
 		$isInitialized->setValue($storage, false);
@@ -1411,7 +1405,7 @@ class VersioningTest extends TestCase {
 
 	private function markTestSkippedIfStorageHasOwnVersioning() {
 		/** @var Storage $storage */
-		list($storage, $internalPath) = $this->rootView->resolvePath(self::USERS_VERSIONS_ROOT);
+		[$storage, $internalPath] = $this->rootView->resolvePath(self::USERS_VERSIONS_ROOT);
 		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
 			$this->markTestSkipped();
 		}

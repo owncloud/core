@@ -35,12 +35,11 @@ use Test\TestCase;
  * @group DB
  */
 class ExecuteTest extends TestCase {
-	/** @var CommandTester */
-	private $commandTester;
+	private \Symfony\Component\Console\Tester\CommandTester $commandTester;
 	/** @var IJobList */
-	private $jobList;
+	private \PHPUnit\Framework\MockObject\MockObject $jobList;
 	/** @var ITimeFactory */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 	/** @var IJob[] */
 	private $jobById = [];
 

@@ -44,7 +44,7 @@ class AsyncBus implements IBus {
 	 *
 	 * @var string[]
 	 */
-	private $syncTraits = [];
+	private array $syncTraits = [];
 
 	/**
 	 * @param IJobList $jobList
@@ -92,15 +92,15 @@ class AsyncBus implements IBus {
 	 */
 	private function getJobClass($command) {
 		if ($command instanceof Closure) {
-			return 'OC\Command\ClosureJob';
+			return \OC\Command\ClosureJob::class;
 		}
 
 		if (\is_callable($command)) {
-			return 'OC\Command\CallableJob';
+			return \OC\Command\CallableJob::class;
 		}
 
 		if ($command instanceof ICommand) {
-			return 'OC\Command\CommandJob';
+			return \OC\Command\CommandJob::class;
 		}
 
 		throw new InvalidArgumentException('Invalid command');

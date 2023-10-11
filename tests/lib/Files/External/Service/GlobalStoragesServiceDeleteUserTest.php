@@ -59,7 +59,7 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 						'applicableGroups' => ['group1'],
 						'priority' => 12,
 						'authMechanism' => 'identifier:\Auth\Mechanism',
-						'storageClass' => 'OC\Files\Storage\DAV',
+						'storageClass' => \OC\Files\Storage\DAV::class,
 						'backendIdentifier' => 'identifier:\Test\Files\External\Backend\DummyBackend',
 						'backendOptions' => [
 							'host' => 'http://localhost',
@@ -74,7 +74,7 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 						'applicableGroups' => [],
 						'priority' => 13,
 						'authMechanism' => 'identifier:\Auth\Mechanism',
-						'storageClass' => 'OC\Files\Storage\DAV',
+						'storageClass' => \OC\Files\Storage\DAV::class,
 						'backendIdentifier' => 'identifier:\Test\Files\External\Backend\DummyBackend2',
 						'backendOptions' => [
 							'host' => 'http://localhost',
@@ -88,7 +88,7 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 						'applicableUsers' => ['user1', 'user4'],
 						'applicableGroups' => [],
 						'priority' => 14,
-						'storageClass' => 'OC\Files\Storage\DAV',
+						'storageClass' => \OC\Files\Storage\DAV::class,
 						'authMechanism' => 'identifier:\Auth\Mechanism',
 						'backendIdentifier' => 'identifier:\Test\Files\External\Backend\DummyBackend2',
 						'backendOptions' => [
@@ -105,7 +105,7 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 						'applicableGroups' => [],
 						'priority' => 15,
 						'authMechanism' => 'identifier:\Auth\Mechanism',
-						'storageClass' => 'OC\Files\Storage\DAV',
+						'storageClass' => \OC\Files\Storage\DAV::class,
 						'backendIdentifier' => 'identifier:\Test\Files\External\Backend\DummyBackend2',
 						'backendOptions' => [
 							'host' => 'http://localhost',

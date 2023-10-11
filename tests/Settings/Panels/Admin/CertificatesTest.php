@@ -20,14 +20,13 @@ use OCP\IURLGenerator;
  * @package Tests\Settings\Panels\Admin
  */
 class CertificatesTest extends \Test\TestCase {
-	/** @var Certificates */
-	private $panel;
+	private \OC\Settings\Panels\Admin\Certificates $panel;
 	/** @var IURLGenerator */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 	/** @var IConfig */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 	/** @var ICertificateManager */
-	private $certManager;
+	private \PHPUnit\Framework\MockObject\MockObject $certManager;
 
 	public function setUp(): void {
 		parent::setUp();

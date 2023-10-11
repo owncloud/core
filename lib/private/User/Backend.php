@@ -43,9 +43,9 @@ abstract class Backend implements UserInterface {
 	public const CHECK_PASSWORD	= 256;			// 1 << 8
 	public const GET_HOME			= 4096;			// 1 << 12
 	public const GET_DISPLAYNAME	= 65536;		// 1 << 16
-	public const SET_DISPLAYNAME	= 1048576;		// 1 << 20
-	public const PROVIDE_AVATAR	= 16777216;		// 1 << 24
-	public const COUNT_USERS		= 268435456;	// 1 << 28
+	public const SET_DISPLAYNAME	= 1_048_576;		// 1 << 20
+	public const PROVIDE_AVATAR	= 16_777_216;		// 1 << 24
+	public const COUNT_USERS		= 268_435_456;	// 1 << 28
 
 	protected $possibleActions = [
 		self::CREATE_USER => 'createUser',

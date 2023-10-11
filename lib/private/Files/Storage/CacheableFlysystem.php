@@ -108,9 +108,7 @@ abstract class CacheableFlysystem extends \OCP\Files\Storage\FlysystemStorageAda
 		} catch (FileNotFoundException $e) {
 			return false;
 		}
-		$names = \array_map(function ($object) {
-			return $object['basename'];
-		}, $content);
+		$names = \array_map(fn ($object) => $object['basename'], $content);
 		return IteratorDirectory::wrap($names);
 	}
 

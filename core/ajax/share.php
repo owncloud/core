@@ -158,9 +158,7 @@ if (isset($_GET['fetch'])) {
 				$groups = getGroups((string)$_GET['search']);
 				if ($shareWithinGroupOnly) {
 					$usergroups = \OC::$server->getGroupManager()->getUserIdGroups(OC_User::getUser());
-					$usergroups = \array_values(\array_map(function (\OCP\IGroup $g) {
-						return $g->getGID();
-					}, $usergroups));
+					$usergroups = \array_values(\array_map(fn (\OCP\IGroup $g) => $g->getGID(), $usergroups));
 					$groups = \array_intersect($groups, $usergroups);
 				}
 
@@ -275,10 +273,8 @@ if (isset($_GET['fetch'])) {
 
 				if ($sharingAutocompletion !== 'yes') {
 					$searchTerm = \strtolower($_GET['search']);
-					$shareWith = \array_filter($shareWith, function ($user) use ($searchTerm) {
-						return \strtolower($user['label']) === $searchTerm
-							|| \strtolower($user['value']['shareWith']) === $searchTerm;
-					});
+					$shareWith = \array_filter($shareWith, fn ($user) => \strtolower($user['label']) === $searchTerm
+							|| \strtolower($user['value']['shareWith']) === $searchTerm);
 				}
 
 				$sorter = new \OC\Share\SearchResultSorter(

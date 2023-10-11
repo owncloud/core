@@ -49,16 +49,16 @@ class OC_Files {
 	public const ZIP_FILES = 2;
 	public const ZIP_DIR = 3;
 
-	public const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
+	public const UPLOAD_MIN_LIMIT_BYTES = 1_048_576; // 1 MiB
 
-	private static $multipartBoundary = '';
+	private static string $multipartBoundary = '';
 
 	/**
 	 * @return string
 	 */
 	private static function getBoundary() {
 		if (empty(self::$multipartBoundary)) {
-			self::$multipartBoundary = \md5(\mt_rand());
+			self::$multipartBoundary = \md5(random_int(0, mt_getrandmax()));
 		}
 		return self::$multipartBoundary;
 	}
@@ -121,7 +121,7 @@ class OC_Files {
 			} elseif (\count($listOfFiles) === 1) {
 				$filename = "{$dir}/{$listOfFiles[0]}";
 				if (!$view->is_dir($filename)) {
-					self::getSingleFile($view, $dir, $listOfFiles[0], $params === null ? [] : $params);
+					self::getSingleFile($view, $dir, $listOfFiles[0], $params ?? []);
 					return;
 				} else {
 					$getType = self::ZIP_DIR;
@@ -347,10 +347,9 @@ class OC_Files {
 			$view->lockFile($filePath, ILockingProvider::LOCK_SHARED);
 			if ($view->is_dir($filePath)) {
 				$contents = $view->getDirectoryContent($filePath);
-				$contents = \array_map(function ($fileInfo) use ($file) {
-					/** @var \OCP\Files\FileInfo $fileInfo */
-					return "{$file}/" . $fileInfo->getName();
-				}, $contents);
+				$contents = \array_map(fn ($fileInfo) =>
+		/** @var \OCP\Files\FileInfo $fileInfo */
+		"{$file}/" . $fileInfo->getName(), $contents);
 				self::lockFiles($view, $dir, $contents);
 				// $dir is expected to remain constant while $files can
 				// evolve to ["d1/d2/d3/file001", "d1/d2/d3/file002", ...]
@@ -369,10 +368,9 @@ class OC_Files {
 			$view->unlockFile($filePath, ILockingProvider::LOCK_SHARED);
 			if ($view->is_dir($filePath)) {
 				$contents = $view->getDirectoryContent($filePath);
-				$contents = \array_map(function ($fileInfo) use ($file) {
-					/** @var \OCP\Files\FileInfo $fileInfo */
-					return "{$file}/" . $fileInfo->getName();
-				}, $contents);
+				$contents = \array_map(fn ($fileInfo) =>
+		/** @var \OCP\Files\FileInfo $fileInfo */
+		"{$file}/" . $fileInfo->getName(), $contents);
 				self::unlockFiles($view, $dir, $contents);
 				// $dir is expected to remain constant while $files can
 				// evolve to ["d1/d2/d3/file001", "d1/d2/d3/file002", ...]

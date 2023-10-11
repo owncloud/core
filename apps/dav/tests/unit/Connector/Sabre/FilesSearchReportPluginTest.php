@@ -34,16 +34,16 @@ use Sabre\DAV\PropFind;
 
 class FilesSearchReportPluginTest extends \Test\TestCase {
 	/** @var Server|\PHPUnit\Framework\MockObject\MockObject */
-	private $server;
+	private \PHPUnit\Framework\MockObject\MockObject $server;
 
 	/** @var Tree|\PHPUnit\Framework\MockObject\MockObject */
-	private $tree;
+	private \PHPUnit\Framework\MockObject\MockObject $tree;
 
 	/** @var ISearch|\PHPUnit\Framework\MockObject\MockObject */
-	private $searchService;
+	private \PHPUnit\Framework\MockObject\MockObject $searchService;
 
 	/** @var FilesSearchReportPlugin|\PHPUnit\Framework\MockObject\MockObject */
-	private $plugin;
+	private \OCA\DAV\Connector\Sabre\FilesSearchReportPlugin $plugin;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -183,25 +183,21 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 		$node = $this->createMock(Directory::class);
 		$node->method('getPath')->willReturn($nodePath);
 
-		$expectedLimit = (isset($searchInfo['limit'])) ? $searchInfo['limit'] : 30;
+		$expectedLimit = $searchInfo['limit'] ?? 30;
 		$realLimit = \min($expectedLimit, 8);
 
 		$searchList = $this->getSearchList($searchInfo['pattern'], $realLimit);
-		$searchListNodePaths = \array_map(function ($path) use ($base) {
-			return "{$base}{$path}";
-		}, $searchList);
+		$searchListNodePaths = \array_map(fn ($path) => "{$base}{$path}", $searchList);
 
 		$this->searchService->method('searchPaged')
 			->with($searchInfo['pattern'], ['files'], 1, $expectedLimit)
-			->will($this->returnCallback(function ($pattern, $apps, $page, $limit) use ($searchList) {
-				return \array_map(function ($key, $value) {
-					$mock = $this->createMock(ResultFile::class);
-					$mock->path = $value;
-					$mock->highlights = ['test value' . $key];
-					$mock->score = '3.' . $key;
-					return $mock;
-				}, \array_keys($searchList), $searchList);
-			}));
+			->will($this->returnCallback(fn ($pattern, $apps, $page, $limit) => \array_map(function ($key, $value) {
+				$mock = $this->createMock(ResultFile::class);
+				$mock->path = $value;
+				$mock->highlights = ['test value' . $key];
+				$mock->score = '3.' . $key;
+				return $mock;
+			}, \array_keys($searchList), $searchList)));
 
 		$this->tree->method('getMultipleNodes')
 			->with($searchListNodePaths)

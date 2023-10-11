@@ -59,7 +59,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$this->user = $this->createUser($this->userId, $this->userId);
 
 		/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject $userSession */
-		$userSession = $this->createMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$userSession
 			->expects($this->any())
 			->method('getUser')
@@ -205,27 +205,27 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 
 		$newStorage = $this->globalStoragesService->addStorage($storage);
 
-		$this->assertInstanceOf('\OC\Files\External\StorageConfig', $this->globalStoragesService->getStorage($newStorage->getId()));
+		$this->assertInstanceOf('\\' . \OC\Files\External\StorageConfig::class, $this->globalStoragesService->getStorage($newStorage->getId()));
 
 		$this->service->getStorage($newStorage->getId());
 	}
 
 	private function getStorage($storageId, $rootId) {
-		$storageCache = $this->getMockBuilder('\OC\Files\Cache\Storage')
+		$storageCache = $this->getMockBuilder('\\' . \OC\Files\Cache\Storage::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$storageCache->expects($this->any())
 			->method('getNumericId')
 			->will($this->returnValue($storageId));
 
-		$cache = $this->getMockBuilder('\OC\Files\Cache\Cache')
+		$cache = $this->getMockBuilder('\\' . \OC\Files\Cache\Cache::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$cache->expects($this->any())
 			->method('getId')
 			->will($this->returnValue($rootId));
 
-		$storage = $this->getMockBuilder('\OC\Files\Storage\Storage')
+		$storage = $this->getMockBuilder('\\' . \OC\Files\Storage\Storage::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$storage->expects($this->any())

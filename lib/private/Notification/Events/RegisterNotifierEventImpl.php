@@ -37,8 +37,7 @@ use OC\Notification\Manager;
  * several instances are used.
  */
 class RegisterNotifierEventImpl extends RegisterNotifierEvent {
-	/** @var Manager */
-	private $manager;
+	private \OC\Notification\Manager $manager;
 
 	public function __construct(Manager $manager) {
 		$this->manager = $manager;

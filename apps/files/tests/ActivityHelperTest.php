@@ -35,17 +35,14 @@ class ActivityHelperTest extends \Test\TestCase {
 	/**
 	 * @var ITagManager
 	 */
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
 	/**
 	 * @var ITags
 	 */
-	private $tags;
+	private \PHPUnit\Framework\MockObject\MockObject $tags;
 
-	/**
-	 * @var ActivityHelper
-	 */
-	private $helper;
+	private \OCA\Files\ActivityHelper $helper;
 
 	/**
 	 * @var string

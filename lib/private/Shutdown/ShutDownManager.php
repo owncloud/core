@@ -25,7 +25,7 @@ use OCP\Shutdown\IShutdownManager;
 
 class ShutDownManager implements IShutdownManager {
 	/** @var array[] */
-	private $callbacks = [];
+	private array $callbacks = [];
 
 	/**
 	 * ShutDownManager constructor.

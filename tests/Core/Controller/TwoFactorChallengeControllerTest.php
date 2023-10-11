@@ -38,18 +38,18 @@ use OCP\Template;
 
 class TwoFactorChallengeControllerTest extends TestCase {
 	/** @var IRequest | MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var Manager | MockObject */
-	private $twoFactorManager;
+	private \PHPUnit\Framework\MockObject\MockObject $twoFactorManager;
 	/** @var IUserSession | MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var ISession | MockObject */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 	/** @var IURLGenerator | MockObject */
-	private $urlGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $urlGenerator;
 
 	/** @var TwoFactorChallengeController|MockObject */
-	private $controller;
+	private \PHPUnit\Framework\MockObject\MockObject $controller;
 
 	protected function setUp(): void {
 		parent::setUp();

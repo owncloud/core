@@ -19,7 +19,7 @@ class WatcherTest extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Storage\Storage[] $storages
 	 */
-	private $storages = [];
+	private array $storages = [];
 
 	protected function setUp(): void {
 		parent::setUp();

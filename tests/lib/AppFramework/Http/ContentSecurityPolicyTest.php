@@ -17,8 +17,7 @@ use Test\TestCase;
  * @package OC\AppFramework\Http
  */
 class ContentSecurityPolicyTest extends TestCase {
-	/** @var ContentSecurityPolicy */
-	private $contentSecurityPolicy;
+	private \OCP\AppFramework\Http\ContentSecurityPolicy $contentSecurityPolicy;
 
 	public function setUp(): void {
 		parent::setUp();

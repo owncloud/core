@@ -36,8 +36,8 @@ class Notification extends OwncloudPage {
 	 */
 	private $notificationElement;
 
-	private $buttonByTextXpath = "//button[text()='%s']";
-	private $notificationLinkXpath = "//a[@class='notification-link']";
+	private string $buttonByTextXpath = "//button[text()='%s']";
+	private string $notificationLinkXpath = "//a[@class='notification-link']";
 
 	/**
 	 * sets the NodeElement for the current notification

@@ -34,24 +34,17 @@ use GuzzleHttp\Exception\ClientException;
 
 class Notifications {
 	public const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
+	private \OCA\FederatedFileSharing\AddressHandler $addressHandler;
 
-	/** @var AddressHandler */
-	private $addressHandler;
+	private \OCP\Http\Client\IClientService $httpClientService;
 
-	/** @var IClientService */
-	private $httpClientService;
+	private \OCA\FederatedFileSharing\DiscoveryManager $discoveryManager;
 
-	/** @var DiscoveryManager */
-	private $discoveryManager;
+	private \OCA\FederatedFileSharing\Ocm\NotificationManager $notificationManager;
 
-	/** @var NotificationManager */
-	private $notificationManager;
+	private \OCP\BackgroundJob\IJobList $jobList;
 
-	/** @var IJobList  */
-	private $jobList;
-
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
 	/**
 	 * @param AddressHandler $addressHandler
@@ -123,7 +116,7 @@ class Notifications {
 		}
 		if ($remoteShareSuccess === true) {
 			\OC_Hook::emit(
-				'OCP\Share',
+				\OCP\Share::class,
 				'federated_share_added',
 				['server' => $shareWithAddress->getHostName()]
 			);
@@ -157,7 +150,7 @@ class Notifications {
 		);
 		$result = $this->tryHttpPostToShareEndpoint($url, '/notifications', $ocmFields, true);
 		if (isset($result['statusCode']) && $result['statusCode'] === Http::STATUS_CREATED) {
-			$response = \json_decode($result['result'], true);
+			$response = \json_decode($result['result'], true, 512, JSON_THROW_ON_ERROR);
 			if (\is_array($response) && isset($response['sharedSecret'], $response['providerId'])) {
 				return [
 					$response['sharedSecret'],
@@ -176,7 +169,7 @@ class Notifications {
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
 		$result = $this->tryHttpPostToShareEndpoint(\rtrim($url, '/'), '/' . $id . '/reshare', $fields);
-		$status = \json_decode($result['result'], true);
+		$status = \json_decode($result['result'], true, 512, JSON_THROW_ON_ERROR);
 
 		$httpRequestSuccessful = $result['success'];
 		$validToken = isset($status['ocs']['data']['token']) && \is_string($status['ocs']['data']['token']);
@@ -288,20 +281,20 @@ class Notifications {
 			'/'
 		);
 		$result = $this->tryHttpPostToShareEndpoint($url, '/' . $remoteId . '/' . $action, $fields);
-		$status = \json_decode($result['result'], true);
+		$status = \json_decode($result['result'], true, 512, JSON_THROW_ON_ERROR);
 
 		if ($result['success'] && $this->isOcsStatusOk($status)) {
 			return true;
 		} elseif ($try === 0) {
 			// only add new job on first try
 			$this->jobList->add(
-				'OCA\FederatedFileSharing\BackgroundJob\RetryJob',
+				\OCA\FederatedFileSharing\BackgroundJob\RetryJob::class,
 				[
 					'remote' => $remote,
 					'remoteId' => $remoteId,
 					'token' => $token,
 					'action' => $action,
-					'data' => \json_encode($data),
+					'data' => \json_encode($data, JSON_THROW_ON_ERROR),
 					'try' => $try,
 					'lastRun' => $this->getTimestamp()
 				]
@@ -451,7 +444,7 @@ class Notifications {
 		];
 		$url = $shareWithAddress->getHostName();
 		$result = $this->tryHttpPostToShareEndpoint($url, '', $fields);
-		$status = \json_decode($result['result'], true);
+		$status = \json_decode($result['result'], true, 512, JSON_THROW_ON_ERROR);
 		if ($result['success'] && $this->isOcsStatusOk($status)) {
 			return true;
 		}

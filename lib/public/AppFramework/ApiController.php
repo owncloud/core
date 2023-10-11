@@ -59,7 +59,7 @@ abstract class ApiController extends Controller {
 		IRequest $request,
 		$corsMethods='PUT, POST, GET, DELETE, PATCH',
 		$corsAllowedHeaders='Authorization, Content-Type, Accept',
-		$corsMaxAge=1728000
+		$corsMaxAge=1_728_000
 	) {
 		parent::__construct($appName, $request);
 		$this->corsMethods = $corsMethods;

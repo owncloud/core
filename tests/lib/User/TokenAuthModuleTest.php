@@ -34,15 +34,15 @@ use Test\TestCase;
 
 class TokenAuthModuleTest extends TestCase {
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $manager;
+	private \PHPUnit\Framework\MockObject\MockObject $manager;
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
-	private $user;
+	private \PHPUnit\Framework\MockObject\MockObject $user;
 	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 	/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject */
-	private $tokenProvider;
+	private \PHPUnit\Framework\MockObject\MockObject $tokenProvider;
 
 	public function setUp(): void {
 		parent::setUp();

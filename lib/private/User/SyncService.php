@@ -44,12 +44,9 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
  * @package OC\User
  */
 class SyncService {
-	/** @var IConfig */
-	private $config;
-	/** @var ILogger */
-	private $logger;
-	/** @var AccountMapper */
-	private $mapper;
+	private \OCP\IConfig $config;
+	private \OCP\ILogger $logger;
+	private \OC\User\AccountMapper $mapper;
 
 	/**
 	 * SyncService constructor.
@@ -150,7 +147,7 @@ class SyncService {
 	 */
 	private function syncState(Account $a) {
 		$uid = $a->getUserId();
-		list($hasKey, $value) = $this->readUserConfig($uid, 'core', 'enabled');
+		[$hasKey, $value] = $this->readUserConfig($uid, 'core', 'enabled');
 		if ($hasKey) {
 			if ($value === 'true') {
 				$a->setState(Account::STATE_ENABLED);
@@ -178,7 +175,7 @@ class SyncService {
 	 */
 	private function syncLastLogin(Account $a) {
 		$uid = $a->getUserId();
-		list($hasKey, $value) = $this->readUserConfig($uid, 'login', 'lastLogin');
+		[$hasKey, $value] = $this->readUserConfig($uid, 'login', 'lastLogin');
 		if ($hasKey) {
 			$a->setLastLogin($value);
 			if (\array_key_exists('lastLogin', $a->getUpdatedFields())) {
@@ -201,7 +198,7 @@ class SyncService {
 			$email = $backend->getEMailAddress($uid);
 			$a->setEmail($email);
 		} else {
-			list($hasKey, $email) = $this->readUserConfig($uid, 'settings', 'email');
+			[$hasKey, $email] = $this->readUserConfig($uid, 'settings', 'email');
 			if ($hasKey) {
 				$a->setEmail($email);
 			}
@@ -228,7 +225,7 @@ class SyncService {
 			}
 		}
 		if ($quota === null) {
-			list($hasKey, $quota) = $this->readUserConfig($uid, 'files', 'quota');
+			[$hasKey, $quota] = $this->readUserConfig($uid, 'files', 'quota');
 			if ($hasKey) {
 				$a->setQuota($quota);
 			}

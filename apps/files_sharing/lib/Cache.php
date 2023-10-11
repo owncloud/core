@@ -42,15 +42,9 @@ class Cache extends CacheJail {
 	 */
 	private $storage;
 
-	/**
-	 * @var IStorage
-	 */
-	private $sourceStorage;
+	private \OCP\Files\Storage\IStorage $sourceStorage;
 
-	/**
-	 * @var ICacheEntry
-	 */
-	private $sourceRootInfo;
+	private \OCP\Files\Cache\ICacheEntry $sourceRootInfo;
 
 	/**
 	 * @var \OCP\Files\Cache\ICache
@@ -74,7 +68,7 @@ class Cache extends CacheJail {
 	}
 
 	protected function formatCacheEntry($entry) {
-		$path = isset($entry['path']) ? $entry['path'] : '';
+		$path = $entry['path'] ?? '';
 		$entry = parent::formatCacheEntry($entry);
 		$sharePermissions = $this->storage->getPermissions($path);
 		if (isset($entry['permissions'])) {

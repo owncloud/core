@@ -263,9 +263,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 			}
 		}
 
-		return \array_map(function (FileInfo $file) {
-			return $this->createNode($file->getPath(), $file);
-		}, $files);
+		return \array_map(fn (FileInfo $file) => $this->createNode($file->getPath(), $file), $files);
 	}
 
 	/**

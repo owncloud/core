@@ -23,13 +23,12 @@ namespace Test\Security\CSRF\TokenStorage;
 
 class SessionStorageTest extends \Test\TestCase {
 	/** @var \OCP\ISession */
-	private $session;
-	/** @var \OC\Security\CSRF\TokenStorage\SessionStorage */
-	private $sessionStorage;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
+	private \OC\Security\CSRF\TokenStorage\SessionStorage $sessionStorage;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->session = $this->getMockBuilder('\OCP\ISession')
+		$this->session = $this->getMockBuilder('\\' . \OCP\ISession::class)
 			->disableOriginalConstructor()->getMock();
 		$this->sessionStorage = new \OC\Security\CSRF\TokenStorage\SessionStorage($this->session);
 	}

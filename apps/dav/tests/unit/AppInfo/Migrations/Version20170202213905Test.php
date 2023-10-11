@@ -33,9 +33,7 @@ class Version20170202213905Test extends TestCase {
 		$expressionBuilder = $this->createMock(IExpressionBuilder::class);
 		$expressionBuilder->expects($this->any())->method('eq')->will($this->returnArgument(1));
 		$expressionBuilder->expects($this->any())->method('literal')->will(
-			$this->returnCallback(function ($arg) {
-				return \sprintf("'%s'", $arg);
-			})
+			$this->returnCallback(fn ($arg) => \sprintf("'%s'", $arg))
 		);
 
 		$queryBuilder = $this->createMock(IQueryBuilder::class);

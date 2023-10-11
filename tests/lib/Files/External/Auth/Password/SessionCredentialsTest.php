@@ -29,13 +29,13 @@ use OCP\IUser;
 
 class SessionCredentialsTest extends \Test\TestCase {
 	/** @var SessionCredentials | \PHPUnit\Framework\MockObject\MockObject */
-	private $authMech;
+	private \OC\Files\External\Auth\Password\SessionCredentials $authMech;
 
 	/** @var ISession | \PHPUnit\Framework\MockObject\MockObject */
-	private $session;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
 
 	/** @var ICrypto | \PHPUnit\Framework\MockObject\MockObject */
-	private $crypto;
+	private \PHPUnit\Framework\MockObject\MockObject $crypto;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -87,9 +87,7 @@ class SessionCredentialsTest extends \Test\TestCase {
 		}
 
 		$this->session->method('get')->will($this->returnValueMap($sessionData));
-		$this->session->method('exists')->will($this->returnCallback(function ($key) {
-			return $this->session->get($key) !== null;
-		}));
+		$this->session->method('exists')->will($this->returnCallback(fn ($key) => $this->session->get($key) !== null));
 
 		$this->crypto->expects($this->once())
 			->method('decrypt')

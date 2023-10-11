@@ -41,26 +41,15 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Create extends Base {
-	/**
-	 * @var IGlobalStoragesService
-	 */
-	private $globalService;
+	private \OCP\Files\External\Service\IGlobalStoragesService $globalService;
 
-	/**
-	 * @var IUserStoragesService
-	 */
-	private $userService;
+	private \OCP\Files\External\Service\IUserStoragesService $userService;
 
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
-	/** @var IStoragesBackendService */
-	private $backendService;
+	private \OCP\Files\External\IStoragesBackendService $backendService;
 
-	/** @var IUserSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
 	public function __construct(
 		IGlobalStoragesService $globalService,
@@ -151,7 +140,7 @@ class Create extends Base {
 				$output->writeln('<error>Invalid mount configuration option "' . $configOption . '"</error>');
 				return 1;
 			}
-			list($key, $value) = \explode('=', $configOption, 2);
+			[$key, $value] = \explode('=', $configOption, 2);
 			if (!$this->validateParam($key, $value, $storageBackend, $authBackend)) {
 				$output->writeln('<error>Unknown configuration for backends "' . $key . '"</error>');
 				return 1;

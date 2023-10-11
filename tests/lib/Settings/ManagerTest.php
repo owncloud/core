@@ -45,20 +45,20 @@ class SettingsManagerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->l = $this->getMockBuilder('\OCP\IL10N')->getMock();
-		$this->appManager = $this->getMockBuilder('\OCP\App\IAppManager')->getMock();
-		$this->userSession = $this->getMockBuilder('\OCP\IUserSession')->getMock();
-		$this->logger = $this->getMockBuilder('\OCP\ILogger')->getMock();
-		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
-		$this->defaults = $this->getMockBuilder('\OCP\Defaults')->getMock();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IUrlGenerator')->getMock();
-		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
-		$this->lockingProvider = $this->getMockBuilder('\OCP\Lock\ILockingProvider')->getMock();
-		$this->dbconnection = $this->getMockBuilder('\OCP\IDBConnection')->getMock();
-		$this->certificateManager = $this->getMockBuilder('\OC\Security\CertificateManager')
+		$this->l = $this->getMockBuilder('\\' . \OCP\IL10N::class)->getMock();
+		$this->appManager = $this->getMockBuilder('\\' . \OCP\App\IAppManager::class)->getMock();
+		$this->userSession = $this->getMockBuilder('\\' . \OCP\IUserSession::class)->getMock();
+		$this->logger = $this->getMockBuilder('\\' . \OCP\ILogger::class)->getMock();
+		$this->groupManager = $this->getMockBuilder('\\' . \OCP\IGroupManager::class)->getMock();
+		$this->config = $this->getMockBuilder('\\' . \OCP\IConfig::class)->getMock();
+		$this->defaults = $this->getMockBuilder('\\' . \OCP\Defaults::class)->getMock();
+		$this->urlGenerator = $this->getMockBuilder('\\' . \OCP\IUrlGenerator::class)->getMock();
+		$this->helper = $this->getMockBuilder('\\' . \OC\Settings\Panels\Helper::class)->getMock();
+		$this->lockingProvider = $this->getMockBuilder('\\' . \OCP\Lock\ILockingProvider::class)->getMock();
+		$this->dbconnection = $this->getMockBuilder('\\' . \OCP\IDBConnection::class)->getMock();
+		$this->certificateManager = $this->getMockBuilder('\\' . \OC\Security\CertificateManager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->factory = $this->getMockBuilder('\OCP\L10N\IFactory')->getMock();
+		$this->factory = $this->getMockBuilder('\\' . \OCP\L10N\IFactory::class)->getMock();
 		$this->licenseManager = $this->createMock(ILicenseManager::class);
 
 		$this->settingsManager = new SettingsManager(
@@ -85,22 +85,22 @@ class SettingsManagerTest extends TestCase {
 	}
 
 	public function testGetBuiltInPanel() {
-		$panel = $this->settingsManager->getBuiltInPanel('OC\Settings\Panels\Personal\Profile');
+		$panel = $this->settingsManager->getBuiltInPanel(\OC\Settings\Panels\Personal\Profile::class);
 		$this->assertNotFalse($panel);
-		$this->assertEquals('OC\Settings\Panels\Personal\Profile', \get_class($panel));
+		$this->assertEquals(\OC\Settings\Panels\Personal\Profile::class, \get_class($panel));
 	}
 
 	public function testGetPanelsList() {
-		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)->getMock();
 		$this->userSession->expects($this->once())->method('getUser')->willReturn($user);
 		$this->appManager->expects($this->once())->method('getEnabledAppsForUser')->with($user)->willReturn([]);
 		$list = $this->settingsManager->getPanelsList('personal');
-		$this->assertContains('OC\Settings\Panels\Personal\Profile', $list);
+		$this->assertContains(\OC\Settings\Panels\Personal\Profile::class, $list);
 	}
 
 	public function testFindRegisteredPanelsAdmin() {
 		// Return a mock user
-		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)->getMock();
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
 		// Return encryption as example app with
 		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
@@ -115,7 +115,7 @@ class SettingsManagerTest extends TestCase {
 
 	public function testFindRegisteredPanelsPersonal() {
 		// Return a mock user
-		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)->getMock();
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
 		// Return encryption as example app with
 		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
@@ -131,7 +131,7 @@ class SettingsManagerTest extends TestCase {
 
 	public function testFindRegisteredPanelsPersonalMultiple() {
 		// Return a mock user
-		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)->getMock();
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
 		// Return encryption as example app with
 		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
@@ -145,7 +145,7 @@ class SettingsManagerTest extends TestCase {
 	}
 
 	public function testLoadPersonalPanels() {
-		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)->getMock();
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
 		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
 		$this->appManager->expects($this->exactly(1))->method('getAppInfo')->with('encryption')->willReturn([]);
@@ -157,13 +157,13 @@ class SettingsManagerTest extends TestCase {
 			}
 		}
 		$this->assertArrayHasKey('additional', $panelClasses);
-		$this->assertContains('OC\Settings\Panels\Personal\Legacy', $panelClasses['additional']);
+		$this->assertContains(\OC\Settings\Panels\Personal\Legacy::class, $panelClasses['additional']);
 		$this->assertArrayHasKey('general', $panelClasses);
-		$this->assertContains('OC\Settings\Panels\Personal\Profile', $panelClasses['general']);
+		$this->assertContains(\OC\Settings\Panels\Personal\Profile::class, $panelClasses['general']);
 	}
 
 	public function testLoadAdminPanels() {
-		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$user = $this->getMockBuilder('\\' . \OCP\IUser::class)->getMock();
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
 		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
 		$this->appManager->expects($this->exactly(1))->method('getAppInfo')->with('encryption')->willReturn([]);
@@ -176,7 +176,7 @@ class SettingsManagerTest extends TestCase {
 		}
 		$this->assertArrayHasKey('additional', $panelClasses);
 		$this->assertArrayHasKey('general', $panelClasses);
-		$this->assertContains('OC\Settings\Panels\Admin\Legacy', $panelClasses['additional']);
-		$this->assertContains('OC\Settings\Panels\Admin\SecurityWarning', $panelClasses['general']);
+		$this->assertContains(\OC\Settings\Panels\Admin\Legacy::class, $panelClasses['additional']);
+		$this->assertContains(\OC\Settings\Panels\Admin\SecurityWarning::class, $panelClasses['general']);
 	}
 }

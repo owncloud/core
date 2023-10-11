@@ -258,14 +258,14 @@ class Router implements IRouter {
 	public function match($url) {
 		if (\substr($url, 0, 6) === '/apps/') {
 			// empty string / 'apps' / $app / rest of the route
-			list(, , $app, ) = \explode('/', $url, 4);
+			[, , $app, ] = \explode('/', $url, 4);
 
 			$app = \OC_App::cleanAppId($app);
 			\OC::$REQUESTEDAPP = $app;
 			$this->loadRoutes($app);
 		} elseif (\substr($url, 0, 13) === '/ocsapp/apps/') {
 			// empty string / 'ocsapp' / 'apps' / $app / rest of the route
-			list(, , , $app, ) = \explode('/', $url, 5);
+			[, , , $app, ] = \explode('/', $url, 5);
 
 			$app = \OC_App::cleanAppId($app);
 			\OC::$REQUESTEDAPP = $app;

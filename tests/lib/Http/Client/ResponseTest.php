@@ -15,10 +15,8 @@ use OC\Http\Client\Response;
  * Class ResponseTest
  */
 class ResponseTest extends \Test\TestCase {
-	/** @var Response */
-	private $response;
-	/** @var GuzzleResponse */
-	private $guzzleResponse;
+	private \OC\Http\Client\Response $response;
+	private \GuzzleHttp\Psr7\Response $guzzleResponse;
 
 	public function setUp(): void {
 		parent::setUp();

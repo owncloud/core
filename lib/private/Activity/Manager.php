@@ -71,13 +71,13 @@ class Manager implements IManager {
 	}
 
 	/** @var \Closure[] */
-	private $consumersClosures = [];
+	private array $consumersClosures = [];
 
 	/** @var IConsumer[] */
 	private $consumers = [];
 
 	/** @var \Closure[] */
-	private $extensionsClosures = [];
+	private array $extensionsClosures = [];
 
 	/** @var IExtension[] */
 	private $extensions = [];
@@ -262,11 +262,11 @@ class Manager implements IManager {
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->getNotificationTypes($languageCode);
 			if (\is_array($result)) {
-				if (\class_exists('\OCA\Files\Activity', false) && $c instanceof \OCA\Files\Activity) {
+				if (\class_exists('\\' . \OCA\Files\Activity::class, false) && $c instanceof \OCA\Files\Activity) {
 					$filesNotificationTypes = $result;
 					continue;
 				}
-				if (\class_exists('\OCA\Files_Sharing\Activity', false) && $c instanceof \OCA\Files_Sharing\Activity) {
+				if (\class_exists('\\' . \OCA\Files_Sharing\Activity::class, false) && $c instanceof \OCA\Files_Sharing\Activity) {
 					$sharingNotificationTypes = $result;
 					continue;
 				}
@@ -466,7 +466,7 @@ class Manager implements IManager {
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->getQueryForFilter($filter);
 			if (\is_array($result)) {
-				list($condition, $parameter) = $result;
+				[$condition, $parameter] = $result;
 				if ($condition && \is_array($parameter)) {
 					$conditions[] = $condition;
 					$parameters = \array_merge($parameters, $parameter);

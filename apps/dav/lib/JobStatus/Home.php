@@ -29,8 +29,7 @@ use Sabre\DAV\Exception\NotFound;
 class Home extends Collection {
 	/** @var array */
 	private $principalInfo;
-	/** @var JobStatusMapper */
-	private $mapper;
+	private \OCA\DAV\JobStatus\Entity\JobStatusMapper $mapper;
 
 	/**
 	 * Home constructor.
@@ -58,7 +57,7 @@ class Home extends Collection {
 	}
 
 	public function getName() {
-		list(, $name) = \Sabre\Uri\split($this->principalInfo['uri']);
+		[, $name] = \Sabre\Uri\split($this->principalInfo['uri']);
 		return $name;
 	}
 }

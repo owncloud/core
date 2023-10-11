@@ -36,10 +36,10 @@ class AdminEncryptionSettingsPage extends OwncloudPage {
 	 */
 	protected $path = '/index.php/settings/admin?sectionid=encryption';
 
-	private $encryptionRecoveryPasswordFieldId = 'encryptionRecoveryPassword';
-	private $repeatEncryptionRecoveryPasswordFieldId = 'repeatEncryptionRecoveryPassword';
-	private $enableRecoveryBtnId = 'enableRecoveryKey';
-	private $enableEncryptionCheckboxId = 'enableEncryption';
+	private string $encryptionRecoveryPasswordFieldId = 'encryptionRecoveryPassword';
+	private string $repeatEncryptionRecoveryPasswordFieldId = 'repeatEncryptionRecoveryPassword';
+	private string $enableRecoveryBtnId = 'enableRecoveryKey';
+	private string $enableEncryptionCheckboxId = 'enableEncryption';
 
 	/**
 	 * Enable recovery key and set recovery key

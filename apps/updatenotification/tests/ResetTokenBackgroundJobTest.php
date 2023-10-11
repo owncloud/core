@@ -29,16 +29,15 @@ use Test\TestCase;
 
 class ResetTokenBackgroundJobTest extends TestCase {
 	/** @var IConfig */
-	private $config;
-	/** @var ResetTokenBackgroundJob */
-	private $resetTokenBackgroundJob;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
+	private \OCA\UpdateNotification\ResetTokenBackgroundJob $resetTokenBackgroundJob;
 	/** @var ITimeFactory */
-	private $timeFactory;
+	private \PHPUnit\Framework\MockObject\MockObject $timeFactory;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->config = $this->createMock('\\OCP\\IConfig');
-		$this->timeFactory = $this->createMock('\\OCP\\AppFramework\\Utility\\ITimeFactory');
+		$this->config = $this->createMock('\\' . \OCP\IConfig::class);
+		$this->timeFactory = $this->createMock('\\' . \OCP\AppFramework\Utility\ITimeFactory::class);
 		$this->resetTokenBackgroundJob = new ResetTokenBackgroundJob($this->config, $this->timeFactory);
 	}
 
@@ -64,14 +63,14 @@ class ResetTokenBackgroundJobTest extends TestCase {
 			->expects($this->exactly(2))
 			->method('getTime')
 			->willReturnOnConsecutiveCalls(
-				1455131633,
-				1455045234,
+				1_455_131_633,
+				1_455_045_234,
 			);
 
 		$this->config
 			->expects($this->once())
 			->method('getAppValue')
-			->with('core', 'updater.secret.created', 1455045234);
+			->with('core', 'updater.secret.created', 1_455_045_234);
 		$this->config
 			->expects($this->once())
 			->method('deleteSystemValue')

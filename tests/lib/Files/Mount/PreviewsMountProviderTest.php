@@ -73,7 +73,7 @@ class PreviewsMountProviderTest extends \Test\TestCase {
 
 		$this->loader->expects($this->once())
 			->method('getInstance')
-			->with($mount, '\OC\Files\Storage\Local', $storageArgs);
+			->with($mount, '\\' . \OC\Files\Storage\Local::class, $storageArgs);
 
 		// trigger storage creation which will pass config args above
 		$mount->getStorage();

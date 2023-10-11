@@ -48,19 +48,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *  - failure(string $message)
  */
 class Updater extends BasicEmitter {
-	/** @var ILogger $log */
-	private $log;
+	private ?\OCP\ILogger $log = null;
 	
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var Checker */
-	private $checker;
+	private \OC\IntegrityCheck\Checker $checker;
 
-	/** @var bool */
-	private $forceMajorUpgrade = false;
+	private bool $forceMajorUpgrade = false;
 
-	private $logLevelNames = [
+	private array $logLevelNames = [
 		0 => 'Debug',
 		1 => 'Info',
 		2 => 'Warning',
@@ -93,14 +89,14 @@ class Updater extends BasicEmitter {
 		$this->emitRepairEvents();
 
 		$logLevel = $this->config->getSystemValue('loglevel', Util::WARN);
-		$this->emit('\OC\Updater', 'setDebugLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
+		$this->emit('\\' . \OC\Updater::class, 'setDebugLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
 		$this->config->setSystemValue('loglevel', Util::DEBUG);
 
 		$wasMaintenanceModeEnabled = $this->config->getSystemValue('maintenance', false);
 
 		if (!$wasMaintenanceModeEnabled) {
 			$this->config->setSystemValue('maintenance', true);
-			$this->emit('\OC\Updater', 'maintenanceEnabled');
+			$this->emit('\\' . \OC\Updater::class, 'maintenanceEnabled');
 		}
 
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
@@ -113,20 +109,20 @@ class Updater extends BasicEmitter {
 			$this->doUpgrade($currentVersion, $installedVersion);
 		} catch (\Exception $exception) {
 			$this->log->logException($exception, ['app' => 'core']);
-			$this->emit('\OC\Updater', 'failure', [\get_class($exception) . ': ' .$exception->getMessage()]);
+			$this->emit('\\' . \OC\Updater::class, 'failure', [\get_class($exception) . ': ' .$exception->getMessage()]);
 			$success = false;
 		}
 
-		$this->emit('\OC\Updater', 'updateEnd', [$success]);
+		$this->emit('\\' . \OC\Updater::class, 'updateEnd', [$success]);
 
 		if (!$wasMaintenanceModeEnabled && $success) {
 			$this->config->setSystemValue('maintenance', false);
-			$this->emit('\OC\Updater', 'maintenanceDisabled');
+			$this->emit('\\' . \OC\Updater::class, 'maintenanceDisabled');
 		} else {
-			$this->emit('\OC\Updater', 'maintenanceActive');
+			$this->emit('\\' . \OC\Updater::class, 'maintenanceActive');
 		}
 
-		$this->emit('\OC\Updater', 'resetLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
+		$this->emit('\\' . \OC\Updater::class, 'resetLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
 		$this->config->setSystemValue('loglevel', $logLevel);
 		$this->config->setSystemValue('installed', true);
 
@@ -277,7 +273,7 @@ class Updater extends BasicEmitter {
 		foreach ($errors as $appId => $exception) {
 			/** @var \Exception $exception */
 			$this->log->logException($exception, ['app' => $appId]);
-			$this->emit('\OC\Updater', 'failure', [$appId . ': ' . $exception->getMessage()]);
+			$this->emit('\\' . \OC\Updater::class, 'failure', [$appId . ': ' . $exception->getMessage()]);
 		}
 
 		// post-upgrade repairs
@@ -289,9 +285,9 @@ class Updater extends BasicEmitter {
 
 		// Check for code integrity if not disabled
 		if (\OC::$server->getIntegrityCodeChecker()->isCodeCheckEnforced()) {
-			$this->emit('\OC\Updater', 'startCheckCodeIntegrity');
+			$this->emit('\\' . \OC\Updater::class, 'startCheckCodeIntegrity');
 			$this->checker->runInstanceVerification();
-			$this->emit('\OC\Updater', 'finishedCheckCodeIntegrity');
+			$this->emit('\\' . \OC\Updater::class, 'finishedCheckCodeIntegrity');
 		}
 
 		// only set the final version if everything went well
@@ -300,7 +296,7 @@ class Updater extends BasicEmitter {
 	}
 
 	protected function doCoreUpgrade() {
-		$this->emit('\OC\Updater', 'dbUpgradeBefore');
+		$this->emit('\\' . \OC\Updater::class, 'dbUpgradeBefore');
 
 		// execute core migrations
 		if (\is_dir(\OC::$SERVERROOT."/core/Migrations")) {
@@ -308,7 +304,7 @@ class Updater extends BasicEmitter {
 			$ms->migrate();
 		}
 
-		$this->emit('\OC\Updater', 'dbUpgrade');
+		$this->emit('\\' . \OC\Updater::class, 'dbUpgrade');
 	}
 
 	/**
@@ -342,9 +338,9 @@ class Updater extends BasicEmitter {
 		foreach ($stacks as $type => $stack) {
 			foreach ($stack as $appId) {
 				if (\OC_App::shouldUpgrade($appId)) {
-					$this->emit('\OC\Updater', 'appUpgradeStarted', [$appId, \OC_App::getAppVersion($appId)]);
+					$this->emit('\\' . \OC\Updater::class, 'appUpgradeStarted', [$appId, \OC_App::getAppVersion($appId)]);
 					\OC_App::updateApp($appId);
-					$this->emit('\OC\Updater', 'appUpgrade', [$appId, \OC_App::getAppVersion($appId)]);
+					$this->emit('\\' . \OC\Updater::class, 'appUpgrade', [$appId, \OC_App::getAppVersion($appId)]);
 				}
 				if ($type !== $pseudoOtherType) {
 					// load authentication, filesystem and logging apps after
@@ -363,22 +359,22 @@ class Updater extends BasicEmitter {
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$dispatcher->addListener('\OC\Repair::warning', function ($event) {
 			if ($event instanceof GenericEvent) {
-				$this->emit('\OC\Updater', 'repairWarning', $event->getArguments());
+				$this->emit('\\' . \OC\Updater::class, 'repairWarning', $event->getArguments());
 			}
 		});
 		$dispatcher->addListener('\OC\Repair::error', function ($event) {
 			if ($event instanceof GenericEvent) {
-				$this->emit('\OC\Updater', 'repairError', $event->getArguments());
+				$this->emit('\\' . \OC\Updater::class, 'repairError', $event->getArguments());
 			}
 		});
 		$dispatcher->addListener('\OC\Repair::info', function ($event) {
 			if ($event instanceof GenericEvent) {
-				$this->emit('\OC\Updater', 'repairInfo', $event->getArguments());
+				$this->emit('\\' . \OC\Updater::class, 'repairInfo', $event->getArguments());
 			}
 		});
 		$dispatcher->addListener('\OC\Repair::step', function ($event) {
 			if ($event instanceof GenericEvent) {
-				$this->emit('\OC\Updater', 'repairStep', $event->getArguments());
+				$this->emit('\\' . \OC\Updater::class, 'repairStep', $event->getArguments());
 			}
 		});
 	}

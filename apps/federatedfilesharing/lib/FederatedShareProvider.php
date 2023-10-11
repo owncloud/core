@@ -49,41 +49,29 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class FederatedShareProvider implements IShareProvider {
 	public const SHARE_TYPE_REMOTE = 6;
 
-	/** @var IDBConnection */
-	private $dbConnection;
+	private \OCP\IDBConnection $dbConnection;
 
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
+	private \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
-	/** @var AddressHandler */
-	private $addressHandler;
+	private \OCA\FederatedFileSharing\AddressHandler $addressHandler;
 
-	/** @var Notifications */
-	private $notifications;
+	private \OCA\FederatedFileSharing\Notifications $notifications;
 
-	/** @var TokenHandler */
-	private $tokenHandler;
+	private \OCA\FederatedFileSharing\TokenHandler $tokenHandler;
 
-	/** @var IL10N */
-	private $l;
+	private \OCP\IL10N $l;
 
-	/** @var ILogger */
-	private $logger;
+	private \OCP\ILogger $logger;
 
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
-	/** @var IConfig */
-	private $config;
+	private \OCP\IConfig $config;
 
-	/** @var string */
-	private $externalShareTable = 'share_external';
+	private string $externalShareTable = 'share_external';
 
-	/** @var string */
-	private $shareTable = 'share';
+	private string $shareTable = 'share';
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
 	/**
 	 * DefaultShareProvider constructor.
@@ -184,7 +172,7 @@ class FederatedShareProvider implements IShareProvider {
 				$uidOwner = $remoteShare['owner'] . '@' . $remoteShare['remote'];
 				$shareId = $this->addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, $expiration, 'tmp_token_' . \time());
 				$share->setId($shareId);
-				list($token, $remoteId) = $this->askOwnerToReShare($shareWith, $share, $shareId);
+				[$token, $remoteId] = $this->askOwnerToReShare($shareWith, $share, $shareId);
 				// remote share was create successfully if we get a valid token as return
 				$send = \is_string($token) && $token !== '';
 			} catch (\Exception $e) {
@@ -296,7 +284,7 @@ class FederatedShareProvider implements IShareProvider {
 		$remoteId = $remoteShare['remote_id'];
 		$remote = $remoteShare['remote'];
 
-		list($token, $remoteId) = $this->notifications->requestReShare(
+		[$token, $remoteId] = $this->notifications->requestReShare(
 			$token,
 			$remoteId,
 			$shareId,
@@ -420,9 +408,9 @@ class FederatedShareProvider implements IShareProvider {
 		$remoteId = $this->getRemoteId($share);
 		// if the local user is the owner we send the permission change to the initiator
 		if ($this->userManager->userExists($share->getShareOwner())) {
-			list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedBy());
+			[, $remote] = $this->addressHandler->splitUserRemote($share->getSharedBy());
 		} else { // ... if not we send the permission change to the owner
-			list(, $remote) = $this->addressHandler->splitUserRemote($share->getShareOwner());
+			[, $remote] = $this->addressHandler->splitUserRemote($share->getShareOwner());
 		}
 		$this->notifications->sendPermissionChange($remote, $remoteId, $share->getToken(), $share->getPermissions());
 	}
@@ -521,7 +509,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * @param IShare $share
 	 */
 	public function delete(IShare $share) {
-		list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedWith());
+		[, $remote] = $this->addressHandler->splitUserRemote($share->getSharedWith());
 
 		$isOwner = false;
 
@@ -540,9 +528,9 @@ class FederatedShareProvider implements IShareProvider {
 		if ($this->shouldNotifyRemote($share)) {
 			$remoteId = $this->getRemoteId($share);
 			if ($isOwner) {
-				list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedBy());
+				[, $remote] = $this->addressHandler->splitUserRemote($share->getSharedBy());
 			} else {
-				list(, $remote) = $this->addressHandler->splitUserRemote($share->getShareOwner());
+				[, $remote] = $this->addressHandler->splitUserRemote($share->getShareOwner());
 			}
 			$this->notifications->sendRevokeShare($remote, $remoteId, $share->getToken());
 		}
@@ -562,9 +550,9 @@ class FederatedShareProvider implements IShareProvider {
 		// also send a unShare request to the initiator
 		if ($this->shouldNotifyRemote($share)) {
 			if ($isOwner) {
-				list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedBy());
+				[, $remote] = $this->addressHandler->splitUserRemote($share->getSharedBy());
 			} else {
-				list(, $remote) = $this->addressHandler->splitUserRemote($share->getShareOwner());
+				[, $remote] = $this->addressHandler->splitUserRemote($share->getShareOwner());
 			}
 			$remoteId = $this->getRemoteId($share);
 			$this->notifications->sendRevokeShare($remote, $remoteId, $share->getToken());

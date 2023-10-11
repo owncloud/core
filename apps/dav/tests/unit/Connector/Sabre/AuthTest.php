@@ -51,21 +51,20 @@ use Sabre\DAV\Server;
  */
 class AuthTest extends TestCase {
 	/** @var ISession | MockObject */
-	private $session;
-	/** @var Auth */
-	private $auth;
+	private \PHPUnit\Framework\MockObject\MockObject $session;
+	private \OCA\DAV\Connector\Sabre\Auth $auth;
 	/** @var Session | MockObject */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 	/** @var IRequest | MockObject */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var Manager | MockObject */
-	private $twoFactorManager;
+	private \PHPUnit\Framework\MockObject\MockObject $twoFactorManager;
 	/** @var AccountModuleManager | MockObject */
-	private $accountModuleManager;
+	private \PHPUnit\Framework\MockObject\MockObject $accountModuleManager;
 	/**
 	 * @var IConfig|MockObject
 	 */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	public function setUp(): void {
 		parent::setUp();

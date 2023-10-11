@@ -36,25 +36,24 @@ use OCP\IUser;
  */
 class NotificationPublisherTest extends TestCase {
 	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $groupManager;
+	private \PHPUnit\Framework\MockObject\MockObject $groupManager;
 
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $userManager;
+	private \PHPUnit\Framework\MockObject\MockObject $userManager;
 
 	/** @var \OCP\Notification\IManager | \PHPUnit\Framework\MockObject\MockObject */
-	private $notificationManager;
+	private \PHPUnit\Framework\MockObject\MockObject $notificationManager;
 
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	/** @var NotificationPublisher */
-	private $publisher;
+	private \OCA\Files_Sharing\Service\NotificationPublisher $publisher;
 
 	protected function setUp(): void {
-		$this->groupManager = $this->createMock('OCP\IGroupManager');
-		$this->userManager = $this->createMock('OCP\IUserManager');
+		$this->groupManager = $this->createMock(\OCP\IGroupManager::class);
+		$this->userManager = $this->createMock(\OCP\IUserManager::class);
 		$this->notificationManager = $this->createMock(\OCP\Notification\IManager::class);
-		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
+		$this->urlGenerator = $this->createMock(\OCP\IURLGenerator::class);
 
 		$this->publisher = new NotificationPublisher(
 			$this->notificationManager,

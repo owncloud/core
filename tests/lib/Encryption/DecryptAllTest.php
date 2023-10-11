@@ -226,9 +226,7 @@ class DecryptAllTest extends TestCase {
 			->with($this->inputInterface, $this->outputInterface, $user)
 			->willReturn($success);
 
-		$callback = function () use ($dummyEncryptionModule) {
-			return $dummyEncryptionModule;
-		};
+		$callback = fn () => $dummyEncryptionModule;
 		$moduleDescription = [
 			'id' => 'id',
 			'displayName' => 'displayName',
@@ -364,7 +362,7 @@ class DecryptAllTest extends TestCase {
 			'display_name' => 'user1',
 			'quota' => null,
 			'last_login' => '1527174420',
-			'backend' => 'OC\User\Database',
+			'backend' => \OC\User\Database::class,
 			'home' => '',
 			'state' => 1
 		];
@@ -475,9 +473,7 @@ class DecryptAllTest extends TestCase {
 		$storage = $this->createMock($storageClass);
 		$storage->expects($this->any())
 			->method('instanceOfStorage')
-			->will($this->returnCallback(function ($className) use ($storage) {
-				return ($storage instanceof $className);
-			}));
+			->will($this->returnCallback(fn ($className) => $storage instanceof $className));
 
 		/** @var DecryptAll | \PHPUnit\Framework\MockObject\MockObject  $instance */
 		$instance = $this->getMockBuilder(DecryptAll::class)
@@ -580,7 +576,7 @@ class DecryptAllTest extends TestCase {
 		$this->view->expects($this->once())
 			->method('rename')
 			->with($path . '.decrypted.42.part', $path);
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\\' . \OC\Files\Storage\Storage::class);
 		$fileCache = $this->createMock(Cache::class);
 		$fileCache->expects($this->once())
 			->method('put')
@@ -681,7 +677,7 @@ class DecryptAllTest extends TestCase {
 	 * @param $path
 	 */
 	private function markTestSkippedIfStorageHasOwnVersioning(View $view, $path) {
-		list($storage, $internalPath) = $view->resolvePath($path);
+		[$storage, $internalPath] = $view->resolvePath($path);
 		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
 			$this->markTestSkipped();
 		}

@@ -35,7 +35,7 @@ class FedAuthTest extends TestCase {
 	 */
 	public function testFedAuth($expected, $user, $password) {
 		/** @var DbHandler | \PHPUnit\Framework\MockObject\MockObject $db */
-		$db = $this->getMockBuilder('OCA\Federation\DbHandler')->disableOriginalConstructor()->getMock();
+		$db = $this->getMockBuilder(\OCA\Federation\DbHandler::class)->disableOriginalConstructor()->getMock();
 		$db->method('auth')->willReturn(true);
 		$auth = new FedAuth($db);
 		$result = self::invokePrivate($auth, 'validateUserPass', [$user, $password]);

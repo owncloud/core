@@ -27,13 +27,12 @@ use OCP\IUserSession;
 
 class SharingPersonalPanelTest extends \Test\TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject $config */
-	private $config;
+	private \PHPUnit\Framework\MockObject\MockObject $config;
 
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject $userSession */
-	private $userSession;
+	private \PHPUnit\Framework\MockObject\MockObject $userSession;
 
-	/** @var SharingPersonalPanel $personalPanel */
-	private $sharingPersonalPanel;
+	private \OCA\FederatedFileSharing\Panels\SharingPersonalPanel $sharingPersonalPanel;
 
 	protected function setUp(): void {
 		$this->config = $this->getMockBuilder(IConfig::class)

@@ -21,35 +21,17 @@ class LegacyDBTest extends \Test\TestCase {
 	protected static $schema_file = 'static://test_db_scheme';
 	protected $test_prefix;
 
-	/**
-	 * @var string
-	 */
-	private $table1;
+	private string $table1;
 
-	/**
-	 * @var string
-	 */
-	private $table2;
+	private string $table2;
 
-	/**
-	 * @var string
-	 */
-	private $table3;
+	private string $table3;
 
-	/**
-	 * @var string
-	 */
-	private $table4;
+	private string $table4;
 
-	/**
-	 * @var string
-	 */
-	private $table5;
+	private string $table5;
 
-	/**
-	 * @var string
-	 */
-	private $text_table;
+	private string $text_table;
 
 	protected function setUp(): void {
 		parent::setUp();

@@ -36,28 +36,28 @@ use OCP\IRequest;
  */
 class CertificateControllerTest extends \Test\TestCase {
 	/** @var CertificateController */
-	private $certificateController;
+	private \PHPUnit\Framework\MockObject\MockObject $certificateController;
 	/** @var IRequest */
-	private $request;
+	private \PHPUnit\Framework\MockObject\MockObject $request;
 	/** @var ICertificateManager */
-	private $certificateManager;
+	private \PHPUnit\Framework\MockObject\MockObject $certificateManager;
 	/** @var IL10N */
-	private $l10n;
+	private \PHPUnit\Framework\MockObject\MockObject $l10n;
 	/** @var IAppManager */
-	private $appManager;
+	private \PHPUnit\Framework\MockObject\MockObject $appManager;
 	/** @var  ICertificateManager */
-	private $systemCertificateManager;
+	private \PHPUnit\Framework\MockObject\MockObject $systemCertificateManager;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->createMock('\OCP\IRequest');
-		$this->certificateManager = $this->createMock('\OCP\ICertificateManager');
-		$this->systemCertificateManager = $this->createMock('\OCP\ICertificateManager');
-		$this->l10n = $this->createMock('\OCP\IL10N');
-		$this->appManager = $this->createMock('OCP\App\IAppManager');
+		$this->request = $this->createMock('\\' . \OCP\IRequest::class);
+		$this->certificateManager = $this->createMock('\\' . \OCP\ICertificateManager::class);
+		$this->systemCertificateManager = $this->createMock('\\' . \OCP\ICertificateManager::class);
+		$this->l10n = $this->createMock('\\' . \OCP\IL10N::class);
+		$this->appManager = $this->createMock(\OCP\App\IAppManager::class);
 
-		$this->certificateController = $this->getMockBuilder('OC\Settings\Controller\CertificateController')
+		$this->certificateController = $this->getMockBuilder(\OC\Settings\Controller\CertificateController::class)
 			->setConstructorArgs(
 				[
 					'settings',
@@ -90,7 +90,7 @@ class CertificateControllerTest extends \Test\TestCase {
 			'name' => 'goodCertificate.crt',
 		];
 
-		$certificate = $this->createMock('\OCP\ICertificate');
+		$certificate = $this->createMock('\\' . \OCP\ICertificate::class);
 		$certificate
 			->expects($this->once())
 			->method('getName')
@@ -147,8 +147,8 @@ class CertificateControllerTest extends \Test\TestCase {
 			'name' => 'Name',
 			'commonName' => 'CommonName',
 			'organization' => 'Organization',
-			'validFrom' => 1429099555,
-			'validTill' => 1529099555,
+			'validFrom' => 1_429_099_555,
+			'validTill' => 1_529_099_555,
 			'validFromString' => 'Valid From as String',
 			'validTillString' => 'Valid Till as String',
 			'issuer' => 'Issuer',

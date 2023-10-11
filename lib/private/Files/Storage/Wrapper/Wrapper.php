@@ -494,7 +494,7 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 	public function instanceOfStorage($class) {
 		if (\ltrim($class, '\\') === 'OC\Files\Storage\Shared') {
 			// FIXME Temporary fix to keep existing checks working
-			$class = '\OCA\Files_Sharing\SharedStorage';
+			$class = '\\' . \OCA\Files_Sharing\SharedStorage::class;
 		}
 		return \is_a($this, $class) or $this->getWrapperStorage()->instanceOfStorage($class);
 	}

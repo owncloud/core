@@ -22,18 +22,17 @@
 namespace Test\Security\CSRF;
 
 class CsrfTokenManagerTest extends \Test\TestCase {
-	/** @var \OC\Security\CSRF\CsrfTokenManager */
-	private $csrfTokenManager;
+	private \OC\Security\CSRF\CsrfTokenManager $csrfTokenManager;
 	/** @var \OC\Security\CSRF\CsrfTokenGenerator */
-	private $tokenGenerator;
+	private \PHPUnit\Framework\MockObject\MockObject $tokenGenerator;
 	/** @var \OC\Security\CSRF\TokenStorage\SessionStorage */
-	private $storageInterface;
+	private \PHPUnit\Framework\MockObject\MockObject $storageInterface;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->tokenGenerator = $this->getMockBuilder('\OC\Security\CSRF\CsrfTokenGenerator')
+		$this->tokenGenerator = $this->getMockBuilder('\\' . \OC\Security\CSRF\CsrfTokenGenerator::class)
 			->disableOriginalConstructor()->getMock();
-		$this->storageInterface = $this->getMockBuilder('\OC\Security\CSRF\TokenStorage\SessionStorage')
+		$this->storageInterface = $this->getMockBuilder('\\' . \OC\Security\CSRF\TokenStorage\SessionStorage::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->csrfTokenManager = new \OC\Security\CSRF\CsrfTokenManager(

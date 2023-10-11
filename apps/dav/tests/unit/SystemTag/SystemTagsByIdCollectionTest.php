@@ -31,29 +31,26 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager
 	 */
-	private $tagManager;
+	private \PHPUnit\Framework\MockObject\MockObject $tagManager;
 
-	/**
-	 * @var \OCP\IUser
-	 */
-	private $user;
+	private ?\PHPUnit\Framework\MockObject\MockObject $user = null;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');
+		$this->tagManager = $this->createMock('\\' . \OCP\SystemTag\ISystemTagManager::class);
 	}
 
 	public function getNode($isAdmin = true) {
-		$this->user = $this->createMock('\OCP\IUser');
+		$this->user = $this->createMock('\\' . \OCP\IUser::class);
 		$this->user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('testuser'));
-		$userSession = $this->createMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\\' . \OCP\IUserSession::class);
 		$userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
-		$groupManager = $this->createMock('\OCP\IGroupManager');
+		$groupManager = $this->createMock('\\' . \OCP\IGroupManager::class);
 		$groupManager->expects($this->any())
 			->method('isAdmin')
 			->with('testuser')
@@ -99,7 +96,7 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 
 		$childNode = $this->getNode()->getChild('123');
 
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $childNode);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $childNode);
 		$this->assertEquals('123', $childNode->getName());
 		$this->assertEquals($tag, $childNode->getSystemTag());
 	}
@@ -158,8 +155,8 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 
 		$this->assertCount(2, $children);
 
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[0]);
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[1]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[0]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[1]);
 		$this->assertEquals($tag1, $children[0]->getSystemTag());
 		$this->assertEquals($tag2, $children[1]->getSystemTag());
 	}
@@ -177,8 +174,8 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 
 		$this->assertCount(2, $children);
 
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[0]);
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[1]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[0]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[1]);
 		$this->assertEquals($tag1, $children[0]->getSystemTag());
 		$this->assertEquals($tag2, $children[1]->getSystemTag());
 	}
@@ -205,9 +202,9 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 		$children = $this->getNode(false)->getChildren();
 
 		$this->assertCount(3, $children);
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[0]);
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[1]);
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[2]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[0]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[1]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[2]);
 		$this->assertEquals($visibleTag, $children[0]->getSystemTag());
 		$this->assertEquals($restrictTag, $children[1]->getSystemTag());
 		$this->assertEquals($staticTag, $children[2]->getSystemTag());
@@ -236,8 +233,8 @@ class SystemTagsByIdCollectionTest extends \Test\TestCase {
 
 		$this->assertCount(2, $children);
 
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[0]);
-		$this->assertInstanceOf('\OCA\DAV\SystemTag\SystemTagNode', $children[1]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[0]);
+		$this->assertInstanceOf('\\' . \OCA\DAV\SystemTag\SystemTagNode::class, $children[1]);
 		$this->assertEquals($visibleTag, $children[0]->getSystemTag());
 		$this->assertEquals($restrictTag, $children[1]->getSystemTag());
 	}

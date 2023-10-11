@@ -23,8 +23,7 @@
 namespace OC\OCS;
 
 class Exception extends \Exception {
-	/** @var Result */
-	private $result;
+	private \OC\OCS\Result $result;
 
 	public function __construct(Result $result) {
 		parent::__construct();

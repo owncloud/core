@@ -72,7 +72,7 @@ class APITest extends \Test\TestCase {
 	 * @param bool $expected
 	 */
 	public function testIsV2($scriptName, $expected) {
-		$request = $this->getMockBuilder('\OCP\IRequest')
+		$request = $this->getMockBuilder('\\' . \OCP\IRequest::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$request

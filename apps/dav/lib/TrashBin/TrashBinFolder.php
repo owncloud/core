@@ -47,9 +47,7 @@ class TrashBinFolder extends AbstractTrashBinNode implements ICollection {
 		try {
 			$ret = $this->getChild($name);
 			return $ret !== null;
-		} catch (NotFound $ex) {
-			return false;
-		} catch (MethodNotAllowed $ex) {
+		} catch (NotFound|MethodNotAllowed $ex) {
 			return false;
 		}
 	}

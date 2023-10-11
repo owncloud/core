@@ -36,8 +36,7 @@ class CheckCache extends Command {
 	public const ERROR_NOT_A_FILE = 2;
 	public const ERROR_CANNOT_OPEN = 3;
 
-	/** @var IRootFolder */
-	private $rootFolder;
+	private \OCP\Files\IRootFolder $rootFolder;
 
 	public function __construct(IRootFolder $rootFolder) {
 		parent::__construct();

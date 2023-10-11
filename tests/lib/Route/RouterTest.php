@@ -37,7 +37,7 @@ class LoadableRouter extends Router {
 
 class RouterTest extends \Test\TestCase {
 	/** @var ILogger */
-	private $l;
+	private \PHPUnit\Framework\MockObject\MockObject $l;
 
 	protected function setUp(): void {
 		parent::setUp();

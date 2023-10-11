@@ -28,16 +28,15 @@ use OCP\AppFramework\Http\TemplateResponse;
 use Test\TestCase;
 
 class TemplateResponseTest extends TestCase {
-	/** @var \OCP\AppFramework\Http\TemplateResponse */
-	private $tpl;
+	private \OCP\AppFramework\Http\TemplateResponse $tpl;
 
 	/** @var \OCP\AppFramework\IApi */
-	private $api;
+	private \PHPUnit\Framework\MockObject\MockObject $api;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->api = $this->getMockBuilder('OC\AppFramework\Core\API')
+		$this->api = $this->getMockBuilder(\OC\AppFramework\Core\API::class)
 			->setMethods(['getAppName'])
 			->setConstructorArgs(['test'])
 			->getMock();

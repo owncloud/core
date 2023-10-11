@@ -29,8 +29,7 @@ class TimestampFormatter implements OutputFormatterInterface {
 	/** @var IConfig */
 	protected $config;
 
-	/** @var OutputFormatterInterface  */
-	private $formatter;
+	private \Symfony\Component\Console\Formatter\OutputFormatterInterface $formatter;
 
 	/**
 	 * @param IConfig $config

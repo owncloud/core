@@ -35,14 +35,11 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	public const SELECT_SINGLE_STMT = 'SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ? ';
 	public const DELETE_STMT = 'DELETE FROM `*PREFIX*privatedata`  WHERE `user` = ? AND `app` = ? AND `key` = ? ';
 
-	/** @var IDBConnection */
-	private $dbConnection;
+	private \OCP\IDBConnection $dbConnection;
 
-	/** @var IUserSession */
-	private $userSession;
+	private \OCP\IUserSession $userSession;
 
-	/** @var IUserManager */
-	private $userManager;
+	private \OCP\IUserManager $userManager;
 
 	/**
 	 * OccController constructor.

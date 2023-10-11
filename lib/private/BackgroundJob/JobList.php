@@ -68,7 +68,7 @@ class JobList implements IJobList {
 				$class = $job;
 			}
 
-			$argument = \json_encode($argument);
+			$argument = \json_encode($argument, JSON_THROW_ON_ERROR);
 			if (\strlen($argument) > 4000) {
 				throw new \InvalidArgumentException('Background job arguments can\'t exceed 4000 characters (json encoded)');
 			}
@@ -102,7 +102,7 @@ class JobList implements IJobList {
 		$query->delete('jobs')
 			->where($query->expr()->eq('class', $query->createNamedParameter($class)));
 		if ($argument !== null) {
-			$argument = \json_encode($argument);
+			$argument = \json_encode($argument, JSON_THROW_ON_ERROR);
 			$query->andWhere($query->expr()->eq('argument', $query->createNamedParameter($argument)));
 		}
 		$query->execute();
@@ -131,7 +131,7 @@ class JobList implements IJobList {
 		} else {
 			$class = $job;
 		}
-		$argument = \json_encode($argument);
+		$argument = \json_encode($argument, JSON_THROW_ON_ERROR);
 
 		$query = $this->connection->getQueryBuilder();
 		$query->select('id')
@@ -293,7 +293,7 @@ class JobList implements IJobList {
 
 			$job->setId($row['id']);
 			$job->setLastRun($row['last_run']);
-			$job->setArgument(\json_decode($row['argument'], true));
+			$job->setArgument(\json_decode($row['argument'], true, 512, JSON_THROW_ON_ERROR));
 			$job->setLastChecked($row['last_checked']);
 			$job->setReservedAt($row['reserved_at']);
 			$job->setExecutionDuration($row['execution_duration']);
