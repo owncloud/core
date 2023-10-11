@@ -41,13 +41,17 @@
     "require": {
         "php": ">=7.4",
         "ext-apcu": "*",
+        "ext-ctype": "*",
         "ext-curl": "*",
         "ext-exif": "*",
         "ext-fileinfo": "*",
         "ext-gd": "*",
+        "ext-iconv": "*",
         "ext-imagick": "*",
+        "ext-intl": "*",
         "ext-json": "*",
         "ext-libxml": "*",
+        "ext-mbstring": "*",
         "ext-memcached": "*",
         "ext-pdo": "*",
         "ext-posix": "*",
@@ -86,6 +90,16 @@
         "symfony/process": "^5.4",
         "symfony/routing": "^5.4",
         "symfony/translation": "^5.4"
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-intl-grapheme": "*",
+        "symfony/polyfill-intl-idn": "*",
+        "symfony/polyfill-intl-normalizer": "*",
+        "symfony/polyfill-mbstring": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*"
     },
     "scripts": {
         "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
