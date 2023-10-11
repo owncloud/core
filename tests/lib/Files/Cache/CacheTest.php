@@ -503,60 +503,9 @@ class CacheTest extends TestCase {
 	}
 
 	/**
-	 * this test show the bug resulting if we have no normalizer installed
-	 */
-	public function testWithoutNormalizer() {
-		// folder name "Schön" with U+00F6 (normalized)
-		$folderWith00F6 = "\x53\x63\x68\xc3\xb6\x6e";
-
-		// folder name "Schön" with U+0308 (un-normalized)
-		$folderWith0308 = "\x53\x63\x68\x6f\xcc\x88\x6e";
-
-		/**
-		 * @var Cache | \PHPUnit\Framework\MockObject\MockObject $cacheMock
-		 */
-		$cacheMock = $this->getMockBuilder('\OC\Files\Cache\Cache')
-			->setMethods(['normalize'])
-			->setConstructorArgs([$this->storage])
-			->getMock();
-
-		$cacheMock->expects($this->any())
-			->method('normalize')
-			->will($this->returnArgument(0));
-
-		$data = ['size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory'];
-
-		// put root folder
-		$this->assertFalse($cacheMock->get('folder'));
-		$this->assertGreaterThan(0, $cacheMock->put('folder', $data));
-
-		// put un-normalized folder
-		$this->assertFalse($cacheMock->get('folder/' . $folderWith0308));
-		$this->assertGreaterThan(0, $cacheMock->put('folder/' . $folderWith0308, $data));
-
-		// get un-normalized folder by name
-		$unNormalizedFolderName = $cacheMock->get('folder/' . $folderWith0308);
-
-		// check if database layer normalized the folder name (this should not happen)
-		$this->assertEquals($folderWith0308, $unNormalizedFolderName['name']);
-
-		// put normalized folder
-		$this->assertFalse($cacheMock->get('folder/' . $folderWith00F6));
-		$this->assertGreaterThan(0, $cacheMock->put('folder/' . $folderWith00F6, $data));
-
-		// this is our bug, we have two different hashes with the same name (Schön)
-		$this->assertCount(2, $cacheMock->getFolderContents('folder'));
-	}
-
-	/**
 	 * this test shows that there is no bug if we use the normalizer
 	 */
-	public function testWithNormalizer() {
-		if (!\class_exists('Patchwork\PHP\Shim\Normalizer')) {
-			$this->markTestSkipped('The 3rdparty Normalizer extension is not available.');
-			return;
-		}
-
+	public function testWithNormalizer(): void {
 		// folder name "Schön" with U+00F6 (normalized)
 		$folderWith00F6 = "\x53\x63\x68\xc3\xb6\x6e";
 
