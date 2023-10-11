@@ -36,6 +36,7 @@
         "bamarni/composer-bin-plugin": "^1.8",
         "mikey179/vfsstream": "^1.6",
         "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.18.5",
         "roave/security-advisories": "dev-latest"
     },
     "require": {
@@ -109,7 +110,8 @@
             "bin-links": false
         },
         "cleaner-ignore": {
-            "phpunit/phpunit": true
+            "phpunit/phpunit": true,
+            "rector/rector": true
         },
         "google/apiclient-services": [
             "Drive"
