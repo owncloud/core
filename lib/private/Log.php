@@ -333,12 +333,15 @@ class Log implements ILogger {
 						$request = \OC::$server->getRequest();
 
 						// if token is found in the request change set the log condition to satisfied
-						if ($request && \hash_equals($logCondition['shared_secret'], $request->getParam('log_secret', ''))) {
-							$this->logConditionSatisfied = true;
-							if (!empty($logCondition['logfile'])) {
-								$logConditionFile = $logCondition['logfile'];
+						if ($request) {
+							$q = $request->query;
+							if (\hash_equals($logCondition['shared_secret'], $q['log_secret'] ?? '')) {
+								$this->logConditionSatisfied = true;
+								if (!empty($logCondition['logfile'])) {
+									$logConditionFile = $logCondition['logfile'];
+								}
+								break;
 							}
-							break;
 						}
 					}
 

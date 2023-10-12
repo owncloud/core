@@ -35,7 +35,7 @@
 namespace OCP;
 
 /**
- * This interface provides an immutable object with with accessors to
+ * This interface provides an immutable object with accessors to
  * request variables and headers.
  *
  * Access request variables by method and name.
@@ -54,10 +54,11 @@ namespace OCP;
  *   will return false on subsequent access to ->put or ->patch.
  * - When accessing ->patch and the Content-Type is either application/json
  *   or application/x-www-form-urlencoded (most cases) it will act like ->get
- *   and ->post and return an array. Otherwise the raw data will be returned.
+ *   and ->post and return an array. Otherwise, the raw data will be returned.
  *
  * @property-read string[] $server
  * @property-read string[] $urlParams
+ * @property-read string[] $query
  * @since 6.0.0
  */
 interface IRequest {

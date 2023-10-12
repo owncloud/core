@@ -27,7 +27,7 @@ use OC\SystemConfig;
 class LoggerTest extends TestCase {
 	/** @var ILogger */
 	private $logger;
-	private static $logs = [];
+	private static array $logs = [];
 
 	/** @var IConfig | MockObject */
 	private $config;
@@ -37,7 +37,7 @@ class LoggerTest extends TestCase {
 
 	public function providesCreateSessionToken(): array {
 		return [
-			[ new Request(), 'carlos', 'carlos', 'myCarlos']
+			[new Request(), 'carlos', 'carlos', 'myCarlos']
 		];
 	}
 
@@ -54,12 +54,17 @@ class LoggerTest extends TestCase {
 		$this->logger = new Log(__CLASS__, $this->config, null, $this->eventDispatcher);
 	}
 
+	protected function tearDown(): void {
+		$this->restoreService('Request');
+		parent::tearDown();
+	}
+
 	public function testInterpolation(): void {
 		$logger = $this->logger;
 		$logger->warning('{Message {nothing} {user} {foo.bar} a}', ['user' => 'Bob', 'foo.bar' => 'Bar']);
 
-		$expected = ['2 {Message {nothing} Bob Bar a}'];
-		$this->assertEquals($expected, $this->getLogs());
+		$expected = '{Message {nothing} Bob Bar a}';
+		$this->assertEquals($expected, $this->getLogs()[0]['message']);
 	}
 
 	public function testAppCondition(): void {
@@ -76,8 +81,19 @@ class LoggerTest extends TestCase {
 		$logger->warning('Show warning messages of other apps');
 
 		$expected = [
-			'1 Show info messages of files app',
-			'2 Show warning messages of other apps',
+			[
+				'app' => 'files',
+				'message' => 'Show info messages of files app',
+				'level' => 1,
+				'logConditionFile' => null
+
+			],
+			[
+				'app' => 'no app in context',
+				'message' => 'Show warning messages of other apps',
+				'level' => 2,
+				'logConditionFile' => null
+			],
 		];
 		$this->assertEquals($expected, $this->getLogs());
 	}
@@ -87,7 +103,7 @@ class LoggerTest extends TestCase {
 			->method('getValue')
 			->will(($this->returnValueMap([
 				['loglevel', Util::WARN, Util::WARN],
-				['log.conditions', [], [['apps' => ['files'], 'logfile' => '/tmp/test.log']]]
+				['log.conditions', [], [['apps' => ['files'], 'logfile' => '/tmp/test.log', 'shared_secret' => '0xdeadbeef']]]
 			])));
 		$logger = $this->logger;
 
@@ -95,7 +111,48 @@ class LoggerTest extends TestCase {
 		$logger->info('Show info messages of files app', ['app' => 'files']);
 
 		$expected = [
-			'1 Show info messages of files app',
+			[
+				'app' => 'files',
+				'message' => 'Show info messages of files app',
+				'level' => 1,
+				'logConditionFile' => '/tmp/test.log'
+			],
+		];
+		$this->assertEquals($expected, $this->getLogs());
+	}
+
+	public function testLogConditionWithSecret(): void {
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')->willReturn('');
+		$r = new Request([
+			'method' => 'PUT',
+			'server' => [
+				'CONTENT_TYPE' => 'image/png',
+				'CONTENT_LENGTH' => 123,
+				'REQUEST_URI' => '/remote.php/dav/files/admin/welcome.txt?log_secret=0xdeadbeef',
+				'SCRIPT_NAME' => 'remote.php'
+			],
+		], null, $config);
+		# access the content once - simulates that the request was already processed
+		$r->getParam('put');
+		$this->overwriteService('Request', $r);
+
+		$this->config
+			->method('getValue')
+			->will(($this->returnValueMap([
+				['loglevel', Util::WARN, Util::WARN],
+				['log.conditions', [], [['logfile' => '/tmp/test.log', 'shared_secret' => '0xdeadbeef']]]
+			])));
+		$logger = $this->logger;
+
+		$logger->info('Message 1');
+
+		$expected = [
+			['app' => 'no app in context',
+				'message' => 'Message 1',
+				'level' => 1,
+				'logConditionFile' => '/tmp/test.log'
+			],
 		];
 		$this->assertEquals($expected, $this->getLogs());
 	}
@@ -107,17 +164,22 @@ class LoggerTest extends TestCase {
 			->willReturn(null);
 		$this->config
 			->method('getValue')
-			->will(($this->returnValueMap([
+			->willReturnMap([
 				['loglevel', Util::WARN, Util::WARN],
 				['log.conditions', [], [['users' => ['foo'], 'apps' => ['files'], 'logfile' => '/tmp/test.log']]]
-			])));
+			]);
 		$logger = $this->logger;
 
-		$logger->warning('Don\'t display info messages');
+		$logger->warning('No user -> no condition.');
 
 		$expected = [
-			'2 Don\'t display info messages',
-			];
+			[
+				'app' => 'no app in context',
+				'message' => 'No user -> no condition.',
+				'level' => 2,
+				'logConditionFile' => null
+			],
+		];
 		$this->assertEquals($expected, $this->getLogs());
 	}
 
@@ -125,13 +187,12 @@ class LoggerTest extends TestCase {
 		return self::$logs;
 	}
 
-	public static function write($app, $message, $level): void {
-		self::$logs[]= "$level $message";
+	public static function write($app, $message, $level, $logConditionFile): void {
+		self::$logs[] = compact('app', 'message', 'level', 'logConditionFile');
 	}
 
 	public static function writeExtra($app, $message, $level, $logConditionFile, $extraFields): void {
-		$encodedFields = \json_encode($extraFields);
-		self::$logs[]= "$level $message fields=$encodedFields";
+		self::$logs[] = compact('app', 'message', 'level', 'logConditionFile', 'extraFields');
 	}
 
 	public function userAndPasswordData(): array {
@@ -157,11 +218,12 @@ class LoggerTest extends TestCase {
 
 		$logLines = $this->getLogs();
 		foreach ($logLines as $logLine) {
-			$this->assertStringNotContainsString($user, $logLine);
-			$this->assertStringNotContainsString($password, $logLine);
+			$logMessage = $logLine['message'];
+			$this->assertStringNotContainsString($user, $logMessage);
+			$this->assertStringNotContainsString($password, $logMessage);
 			$this->assertStringContainsString(
 				'login(*** sensitive parameters replaced ***)',
-				$logLine
+				$logMessage
 			);
 		}
 	}
@@ -175,11 +237,12 @@ class LoggerTest extends TestCase {
 		$logLines = $this->getLogs();
 
 		foreach ($logLines as $logLine) {
-			$this->assertStringNotContainsString($user, $logLine);
-			$this->assertStringNotContainsString($password, $logLine);
+			$logMessage = $logLine['message'];
+			$this->assertStringNotContainsString($user, $logMessage);
+			$this->assertStringNotContainsString($password, $logMessage);
 			$this->assertStringContainsString(
 				'checkPassword(*** sensitive parameters replaced ***)',
-				$logLine
+				$logMessage
 			);
 		}
 	}
@@ -193,6 +256,7 @@ class LoggerTest extends TestCase {
 		$logLines = $this->getLogs();
 
 		foreach ($logLines as $logLine) {
+			$logLine = $logLine['message'];
 			$this->assertStringNotContainsString($user, $logLine);
 			$this->assertStringNotContainsString($password, $logLine);
 			$this->assertStringContainsString(
@@ -211,6 +275,7 @@ class LoggerTest extends TestCase {
 		$logLines = $this->getLogs();
 
 		foreach ($logLines as $logLine) {
+			$logLine = $logLine['message'];
 			$this->assertStringNotContainsString($user, $logLine);
 			$this->assertStringNotContainsString($password, $logLine);
 			$this->assertStringContainsString(
@@ -229,6 +294,7 @@ class LoggerTest extends TestCase {
 		$logLines = $this->getLogs();
 
 		foreach ($logLines as $logLine) {
+			$logLine = $logLine['message'];
 			$this->assertStringNotContainsString($user, $logLine);
 			$this->assertStringNotContainsString($password, $logLine);
 			$this->assertStringContainsString(
@@ -247,12 +313,13 @@ class LoggerTest extends TestCase {
 		$logLines = $this->getLogs();
 
 		foreach ($logLines as $logLine) {
-			$this->assertStringNotContainsString($uid, $logLine);
-			$this->assertStringNotContainsString($loginName, $logLine);
-			$this->assertStringNotContainsString($password, $logLine);
+			$logMessage = $logLine['message'];
+			$this->assertStringNotContainsString($uid, $logMessage);
+			$this->assertStringNotContainsString($loginName, $logMessage);
+			$this->assertStringNotContainsString($password, $logMessage);
 			$this->assertStringContainsString(
 				'createSessionToken(*** sensitive parameters replaced ***)',
-				$logLine
+				$logMessage
 			);
 		}
 	}
@@ -277,6 +344,7 @@ class LoggerTest extends TestCase {
 			$logLines = $this->getLogs();
 
 			foreach ($logLines as $logLine) {
+				$logLine = $logLine['message'];
 				$this->assertStringNotContainsString($uid, $logLine);
 				$this->assertStringNotContainsString($password, $logLine);
 				$this->assertStringContainsString(
@@ -311,8 +379,23 @@ class LoggerTest extends TestCase {
 
 		$logLines = $this->getLogs();
 
-		$this->assertEquals('1 extra fields test fields={"one":"un","two":"deux","three":"trois"}', $logLines[0]);
-		$this->assertEquals('1 no fields', $logLines[1]);
+		$this->assertEquals([
+			'app' => 'no app in context',
+			'message' => 'extra fields test',
+			'level' => 1,
+			'logConditionFile' => null,
+			'extraFields' => [
+				'one' => 'un',
+				'two' => 'deux',
+				'three' => 'trois'
+			]
+		], $logLines[0]);
+		$this->assertEquals([
+			'app' => 'no app in context',
+			'message' => 'no fields',
+			'level' => 1,
+			'logConditionFile' => null
+		], $logLines[1]);
 	}
 
 	public function testEvents(): void {
