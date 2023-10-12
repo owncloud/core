@@ -83,7 +83,8 @@ abstract class Bitmap implements IProvider2 {
 	private function getResizedPreview($stream, $maxX, $maxY) {
 		$bp = new Imagick();
 
-		$bp->readImageFile($stream);
+		# using [0] as file name will tell Imagick to use the first page
+		$bp->readImageFile($stream, '[0]');
 
 		$bp = $this->resize($bp, $maxX, $maxY);
 
