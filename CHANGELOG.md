@@ -8,10 +8,18 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
 Details
 -------
+
+* Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
+
+   Outlook CalDAV plugin is sending `false` as time range which no longer results in a crash.
+
+   https://github.com/owncloud/core/issues/39922
+   https://github.com/owncloud/core/pull/41050
 
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
