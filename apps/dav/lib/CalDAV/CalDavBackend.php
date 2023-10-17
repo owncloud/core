@@ -988,10 +988,11 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			// There was a time-range filter
 			if ($componentType == 'VEVENT' && isset($filters['comp-filters'][0]['time-range'])) {
 				$timeRange = $filters['comp-filters'][0]['time-range'];
+				$hasTimeRange = isset($timeRange['start'], $timeRange['end']);
 
 				// If start time OR the end time is not specified, we can do a
 				// 100% accurate mysql query.
-				if (!$filters['prop-filters'] && !$filters['comp-filters'][0]['comp-filters'] && !$filters['comp-filters'][0]['prop-filters'] && (!$timeRange['start'] || !$timeRange['end'])) {
+				if (!$filters['prop-filters'] && !$filters['comp-filters'][0]['comp-filters'] && !$filters['comp-filters'][0]['prop-filters'] && (!$hasTimeRange)) {
 					$requirePostFilter = false;
 				}
 			}
