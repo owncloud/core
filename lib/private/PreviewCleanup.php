@@ -22,6 +22,7 @@ namespace OC;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCP\Files\Folder;
 use OCP\IDBConnection;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -102,12 +103,27 @@ class PreviewCleanup {
 		$dbPlatform = $this->connection->getDatabasePlatform();
 		$isOracle = ($dbPlatform instanceof OraclePlatform);
 
-		$castTo = 'BIGINT';
+		$castToInt = 'BIGINT';
+		$castToVchar = 'VARCHAR(250)';
 		if ($dbPlatform instanceof MySqlPlatform) {
 			// for MySQL we need to cast to "signed" instead
-			$castTo = 'SIGNED';
+			$castToInt = 'SIGNED';
+			$castToVchar = 'CHAR';
 		} elseif ($isOracle) {
-			$castTo = 'NUMBER';
+			$castToInt = 'NUMBER';
+			$castToVchar = 'VARCHAR2(250)';
+		}
+
+		// The cast condition will be applied to all DB except sqlite (which doesn't
+		// have the regexp_replace function as built-in and requires extensions).
+		// If the name contains only digits, the name will be casted to an integer;
+		// otherwise, the name will be replaced with the fileid. This is intended
+		// because we want to exclude those rows from the final result.
+		$castCondition = "CAST(REGEXP_REPLACE(`thumb`.`name`, '(^.*[^[:digit:]]+.*$|^$)', CAST(`thumb`.`fileid` AS {$castToVchar})) AS {$castToInt})";
+		if ($dbPlatform instanceof SqlitePlatform) {
+			// For sqlite, the cast function seems to return 0 if the value can't be
+			// casted properly. We'll use that instead the regexp.
+			$castCondition = "COALESCE(NULLIF(CAST(`thumb`.`name` AS {$castToInt}), 0), `thumb`.`fileid`)";
 		}
 
 		// for the path_hash -> 3b8779ba05b8f0aed49650f3ff8beb4b = MD5('thumbnails')
@@ -128,7 +144,7 @@ WHERE `parent` IN (
 AND NOT EXISTS (
   SELECT 1
   FROM `*PREFIX*filecache`
-  WHERE `fileid` = CAST(`thumb`.`name` AS ${castTo})
+  WHERE `fileid` = {$castCondition}
 )
 AND `fileid` > ?
 ORDER BY `storage`";
