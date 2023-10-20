@@ -74,6 +74,8 @@ var OC = {
 	 */
 	_capabilities: window.oc_capabilities || null,
 
+	_user: window.oc_user || null,
+
 	appswebroots: (typeof oc_appswebroots !== 'undefined') ? oc_appswebroots : false,
 	/**
 	 * Currently logged in user or null if none
@@ -321,7 +323,7 @@ var OC = {
 	 * @since 9.0.0
 	 */
 	getCurrentUser: function () {
-		if (!_.isUndefined(window.oc_user)) {
+		if (OC._user !== null) {
 			return oc_user;
 		}
 		return {
