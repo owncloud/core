@@ -397,6 +397,8 @@
 			this.$el.find('#dir').val('');
 			// remove summary
 			this.$el.find('tfoot tr.summary').remove();
+			// detach click event handler, this ensures that older _onClickFile events won't be triggered
+			this.$fileList.off('click');
 			this.$fileList.empty();
 			// remove events attached to the $el
 			this.$el.off('show', this._onResize);
