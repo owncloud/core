@@ -116,13 +116,13 @@ function addSelect2 ($elements, userListLimit) {
 					var userCount = 0; // users is an object
 
 					// add groups
-					$.each(data.groups, function(i, group) {
-						results.push({name:i, displayname:group, type:'group' });
+					$.each(data.groups, function(id, group) {
+						results.push({name:'g:'+id, displayname:group, type:'group'});
 					});
 					// add users
 					$.each(data.users, function(id, user) {
 						userCount++;
-						results.push({name:id, displayname:user, type:'user' });
+						results.push({name:'u:'+id, displayname:user, type:'user'});
 					});
 
 
@@ -152,14 +152,14 @@ function addSelect2 ($elements, userListLimit) {
 				var results = [];
 				if (d1[0].status === 'success') {
 					$.each(d1[0].users, function(user, displayname) {
-						results.push({name:user, displayname:displayname, type:'user'});
+						results.push({name:'u:'+user, displayname:displayname, type:'user'});
 					});
 				} else {
 					//FIXME add error handling
 				}
 				if (d2[0].status === 'success') {
 					$.each(d2[0].groups, function(group, displayname) {
-						results.push({name:group, displayname:displayname, type:'group'});
+						results.push({name:'g:'+group, displayname:displayname, type:'group'});
 					});
 				} else {
 					//FIXME add error handling
@@ -194,7 +194,7 @@ function addSelect2 ($elements, userListLimit) {
 		$.each($('.avatardiv'), function(i, div) {
 			var $div = $(div);
 			if ($div.data('type') === 'user') {
-				$div.avatar($div.data('name'),32);
+				$div.avatar($div.data('name').substring(2),32); // need to remove the 'u:' prefix
 			}
 		});
 	});
@@ -969,10 +969,18 @@ MountConfigListView.prototype = _.extend({
 
 		var applicable = [];
 		if (storageConfig.applicableUsers) {
-			applicable = applicable.concat(storageConfig.applicableUsers);
+			applicable = applicable.concat(
+				_.map(storageConfig.applicableUsers, function(user) {
+					return 'u:'+user;
+				})
+			);
 		}
 		if (storageConfig.applicableGroups) {
-			applicable = applicable.concat(storageConfig.applicableGroups);
+			applicable = applicable.concat(
+				_.map(storageConfig.applicableGroups, function(group) {
+					return 'g:'+group;
+				})
+			);
 		}
 		$tr.find('.applicableUsers').val(applicable).trigger('change');
 
@@ -1175,11 +1183,11 @@ MountConfigListView.prototype = _.extend({
 			var users = [];
 			var multiselect = getSelection($tr);
 			$.each(multiselect, function(index, value) {
-				var pos = (value.indexOf)?value.indexOf('(group)'): -1;
-				if (pos !== -1) {
-					groups.push(value.substr(0, pos));
+				if (value.startsWith('g:')) {
+					groups.push(value.substring(2));
 				} else {
-					users.push(value);
+					// only option left is that value.startsWith('u:'), so no need to check
+					users.push(value.substring(2));
 				}
 			});
 			// FIXME: this should be done in the multiselect change event instead
