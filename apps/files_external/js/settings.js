@@ -99,7 +99,7 @@ function addSelect2 ($elements, userListLimit) {
 		multiple: true,
 		//minimumInputLength: 1,
 		ajax: {
-			url: OC.generateUrl('apps/files_external/applicable'),
+			url: OC.generateUrl('apps/files_external/applicable/search'),
 			dataType: 'json',
 			quietMillis: 100,
 			data: function (term, page) { // page is the one-based page number tracked by Select2
@@ -117,7 +117,7 @@ function addSelect2 ($elements, userListLimit) {
 
 					// add groups
 					$.each(data.groups, function(i, group) {
-						results.push({name:group+'(group)', displayname:group, type:'group' });
+						results.push({name:i, displayname:group, type:'group' });
 					});
 					// add users
 					$.each(data.users, function(id, user) {
@@ -134,31 +134,38 @@ function addSelect2 ($elements, userListLimit) {
 			}
 		},
 		initSelection: function(element, callback) {
-			var users = {};
-			users['users'] = [];
-			var toSplit = element.val().split(",");
-			for (var i = 0; i < toSplit.length; i++) {
-				users['users'].push(toSplit[i]);
-			}
-
-			$.ajax(OC.generateUrl('displaynames'), {
-				type: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify(users),
-				dataType: 'json'
-			}).done(function(data) {
+			var storageConfig = element.closest('tr').data('storageConfig');
+			$.when(
+				$.ajax(OC.generateUrl('apps/files_external/applicable/users'), {
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify({'users' : storageConfig.applicableUsers}),
+					dataType: 'json'
+				}),
+				$.ajax(OC.generateUrl('apps/files_external/applicable/groups'), {
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify({'groups' : storageConfig.applicableGroups}),
+					dataType: 'json'
+				})
+			).done(function (d1, d2) {
 				var results = [];
-				if (data.status === 'success') {
-					$.each(data.users, function(user, displayname) {
-						if (displayname !== false) {
-							results.push({name:user, displayname:displayname, type:'user'});
-						}
+				if (d1[0].status === 'success') {
+					$.each(d1[0].users, function(user, displayname) {
+						results.push({name:user, displayname:displayname, type:'user'});
 					});
-					callback(results);
 				} else {
 					//FIXME add error handling
 				}
-			});
+				if (d2[0].status === 'success') {
+					$.each(d2[0].groups, function(group, displayname) {
+						results.push({name:group, displayname:displayname, type:'group'});
+					});
+				} else {
+					//FIXME add error handling
+				}
+				callback(results);
+			})
 		},
 		id: function(element) {
 			return element.name;
@@ -965,11 +972,7 @@ MountConfigListView.prototype = _.extend({
 			applicable = applicable.concat(storageConfig.applicableUsers);
 		}
 		if (storageConfig.applicableGroups) {
-			applicable = applicable.concat(
-				_.map(storageConfig.applicableGroups, function(group) {
-					return group+'(group)';
-				})
-			);
+			applicable = applicable.concat(storageConfig.applicableGroups);
 		}
 		$tr.find('.applicableUsers').val(applicable).trigger('change');
 
