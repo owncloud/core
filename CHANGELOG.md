@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
+* Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
 Details
@@ -20,6 +21,13 @@ Details
 
    https://github.com/owncloud/core/issues/39922
    https://github.com/owncloud/core/pull/41050
+
+* Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
+
+   Web frontend offers a lot of proper translations. Browser capabilities are not needed.
+
+   https://github.com/owncloud/core/issues/39946
+   https://github.com/owncloud/core/pull/41067
 
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
