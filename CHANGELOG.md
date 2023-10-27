@@ -9,7 +9,9 @@ Summary
 -------
 
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
+* Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
+* Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
 Details
@@ -22,12 +24,27 @@ Details
    https://github.com/owncloud/core/issues/39922
    https://github.com/owncloud/core/pull/41050
 
+* Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
+
+   Before user information was stored in the browser global object. In some rare cases browsers
+   seem to loose data stored in the global object. This is fixed now.
+
+   https://github.com/owncloud/enterprise/issues/5873
+   https://github.com/owncloud/core/pull/41054
+
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 
    Web frontend offers a lot of proper translations. Browser capabilities are not needed.
 
    https://github.com/owncloud/core/issues/39946
    https://github.com/owncloud/core/pull/41067
+
+* Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
+
+   Negative performance impact when `file_storage.save_version_metadata` is enabled has
+   been removed.
+
+   https://github.com/owncloud/core/pull/41069
 
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 

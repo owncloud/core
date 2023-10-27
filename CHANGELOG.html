@@ -7,7 +7,9 @@
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - CalDAV query where the time range is not given: <a href="https://github.com/owncloud/core/pull/41050">#41050</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Store user information in explicit variable: <a href="https://github.com/owncloud/core/pull/41054">#41054</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Limit performance impact when version meta data is enabled: <a href="https://github.com/owncloud/core/pull/41069">#41069</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/41033">#41033</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
@@ -21,12 +23,28 @@
             <p>https://github.com/owncloud/core/pull/41050<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Store user information in explicit variable: <a href="https://github.com/owncloud/core/pull/41054">#41054</a></p>
+            <p>Before user information was stored in the browser global object. In some rare cases browsers
+   seem to loose data stored in the global object. This is fixed now.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5873<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/41054<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></p>
             <p>Web frontend offers a lot of proper translations. Browser capabilities are not needed.
             </p>
             <p>https://github.com/owncloud/core/issues/39946<br>
             </p>
             <p>https://github.com/owncloud/core/pull/41067<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Limit performance impact when version meta data is enabled: <a href="https://github.com/owncloud/core/pull/41069">#41069</a></p>
+            <p>Negative performance impact when `file_storage.save_version_metadata` is enabled has
+   been removed.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41069<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/41033">#41033</a></p>
