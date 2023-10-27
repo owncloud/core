@@ -1,0 +1,5 @@
+Bugfix: Limit performance impact when version meta data is enabled
+
+Negative performance impact when `file_storage.save_version_metadata` is enabled has been removed.
+
+https://github.com/owncloud/core/pull/41069
