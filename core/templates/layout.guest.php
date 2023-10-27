@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html class="ng-csp" data-placeholder-focus="false" lang="<?php p($_['language']); ?>" >
+<html class="ng-csp" data-placeholder-focus="false" lang="<?php p($_['language']); ?>" translate="no">
 	<head data-requesttoken="<?php p($_['requesttoken']); ?>">
 		<meta charset="utf-8">
+		<meta name="google" content="notranslate" />
 		<title>
 		<?php p($theme->getTitle()); ?>
 		</title>
