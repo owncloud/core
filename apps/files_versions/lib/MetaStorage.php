@@ -64,8 +64,7 @@ class MetaStorage {
 	/** @var FileHelper  */
 	private $fileHelper;
 
-	/** @var boolean */
-	private $objectStoreEnabled;
+	private ?bool $objectStoreEnabled = null;
 
 	/**
 	 * @param string $dataDir Absolute path to the data-directory
@@ -74,10 +73,6 @@ class MetaStorage {
 	public function __construct(string $dataDir, FileHelper $fileHelper) {
 		$this->dataDir = $dataDir;
 		$this->fileHelper = $fileHelper;
-		$this->objectStoreEnabled = (new View(""))
-			->getFileInfo("/")
-			->getStorage()
-			->instanceOfStorage(ObjectStoreStorage::class);
 	}
 
 	/**
@@ -282,6 +277,12 @@ class MetaStorage {
 	 * @return bool
 	 */
 	public function isObjectStoreEnabled(): bool {
+		if ($this->objectStoreEnabled === null) {
+			$this->objectStoreEnabled = (new View(""))
+				->getFileInfo("/")
+				->getStorage()
+				->instanceOfStorage(ObjectStoreStorage::class);
+		}
 		return $this->objectStoreEnabled;
 	}
 
