@@ -11,6 +11,7 @@ Summary
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
 * Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
+* Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
@@ -46,6 +47,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/5873
    https://github.com/owncloud/core/pull/41054
+
+* Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
+
+   The https://github.com/owncloud/core/pull/41014 PR introduced performance problems for
+   large installation. We're reverting that change
+
+   https://github.com/owncloud/core/pull/41059
 
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 

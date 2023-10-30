@@ -9,6 +9,7 @@
         <li class="type-bugfix changelog-item">Bugfix - CalDAV query where the time range is not given: <a href="https://github.com/owncloud/core/pull/41050">#41050</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: <a href="https://github.com/owncloud/core/pull/41051">#41051</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Store user information in explicit variable: <a href="https://github.com/owncloud/core/pull/41054">#41054</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: <a href="https://github.com/owncloud/core/pull/41059">#41059</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Limit performance impact when version meta data is enabled: <a href="https://github.com/owncloud/core/pull/41069">#41069</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/41033">#41033</a></li>
@@ -43,6 +44,13 @@
             <p>https://github.com/owncloud/enterprise/issues/5873<br>
             </p>
             <p>https://github.com/owncloud/core/pull/41054<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: <a href="https://github.com/owncloud/core/pull/41059">#41059</a></p>
+            <p>The https://github.com/owncloud/core/pull/41014 PR introduced performance problems for
+   large installation. We're reverting that change
+            </p>
+            <p>https://github.com/owncloud/core/pull/41059<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></p>
