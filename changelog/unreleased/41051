@@ -1,0 +1,14 @@
+Bugfix: Fix potential issue with the PreviewCleanup job in postgresql
+
+One of the filters of the preview cleanup job requires casting a filename,
+which is supposed to contain only digits, to an integer. The expected execution
+of the DB query should have filtered the results so the condition above should
+be true, but the DB's query planner might choose to apply the filters in a
+different way, so we could potentially cast random strings to integer.
+For the case of postgresql, the cast function will cause an error if the string
+can't be casted to an integer (because it has non-digit chars, for example)
+
+This situation is fixed for all the supported DBs, so we don't require the
+query planner to execute the query in any particular way.
+
+https://github.com/owncloud/core/pull/41051
