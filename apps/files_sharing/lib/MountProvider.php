@@ -82,7 +82,7 @@ class MountProvider implements IMountProvider {
 		$mounts = [];
 		foreach ($superShares as $share) {
 			try {
-				$shareMount = new SharedMount(
+				$mounts[] = new SharedMount(
 					'\OCA\Files_Sharing\SharedStorage',
 					$mounts,
 					[
@@ -94,13 +94,6 @@ class MountProvider implements IMountProvider {
 					],
 					$storageFactory
 				);
-
-				$shareStorage = $shareMount->getStorage();
-				if ($shareStorage !== null && $shareStorage->getPermissions('') !== 0) {
-					// permissions = 0 implies that the underlying storage
-					// being shared isn't valid
-					$mounts[] = $shareMount;
-				}
 			} catch (\Exception $e) {
 				$this->logger->logException($e);
 				$this->logger->error('Error while trying to create shared mount');
