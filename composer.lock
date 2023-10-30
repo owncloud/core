@@ -4554,16 +4554,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v5.4.24",
+            "version": "v5.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "de237e59c5833422342be67402d487fbf50334ff"
+                "reference": "8560dc532e4e48d331937532a7cbfd2a9f9f53ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/de237e59c5833422342be67402d487fbf50334ff",
-                "reference": "de237e59c5833422342be67402d487fbf50334ff",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/8560dc532e4e48d331937532a7cbfd2a9f9f53ce",
+                "reference": "8560dc532e4e48d331937532a7cbfd2a9f9f53ce",
                 "shasum": ""
             },
             "require": {
@@ -4631,7 +4631,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v5.4.24"
+                "source": "https://github.com/symfony/translation/tree/v5.4.30"
             },
             "funding": [
                 {
@@ -4647,7 +4647,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-19T12:34:17+00:00"
+            "time": "2023-10-28T09:19:54+00:00"
         },
         {
             "name": "symfony/translation-contracts",
