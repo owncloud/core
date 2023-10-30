@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
+* Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
@@ -23,6 +24,20 @@ Details
 
    https://github.com/owncloud/core/issues/39922
    https://github.com/owncloud/core/pull/41050
+
+* Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
+
+   One of the filters of the preview cleanup job requires casting a filename, which is supposed to
+   contain only digits, to an integer. The expected execution of the DB query should have filtered
+   the results so the condition above should be true, but the DB's query planner might choose to
+   apply the filters in a different way, so we could potentially cast random strings to integer.
+   For the case of postgresql, the cast function will cause an error if the string can't be casted to
+   an integer (because it has non-digit chars, for example)
+
+   This situation is fixed for all the supported DBs, so we don't require the query planner to
+   execute the query in any particular way.
+
+   https://github.com/owncloud/core/pull/41051
 
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
 

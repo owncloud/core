@@ -7,6 +7,7 @@
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - CalDAV query where the time range is not given: <a href="https://github.com/owncloud/core/pull/41050">#41050</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: <a href="https://github.com/owncloud/core/pull/41051">#41051</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Store user information in explicit variable: <a href="https://github.com/owncloud/core/pull/41054">#41054</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Limit performance impact when version meta data is enabled: <a href="https://github.com/owncloud/core/pull/41069">#41069</a></li>
@@ -21,6 +22,18 @@
             <p>https://github.com/owncloud/core/issues/39922<br>
             </p>
             <p>https://github.com/owncloud/core/pull/41050<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: <a href="https://github.com/owncloud/core/pull/41051">#41051</a></p>
+            <p>One of the filters of the preview cleanup job requires casting a filename, which is supposed to
+   contain only digits, to an integer. The expected execution of the DB query should have filtered
+   the results so the condition above should be true, but the DB's query planner might choose to
+   apply the filters in a different way, so we could potentially cast random strings to integer.
+   For the case of postgresql, the cast function will cause an error if the string can't be casted to
+   an integer (because it has non-digit chars, for example)This situation is fixed for all the supported DBs, so we don't require the query planner to
+   execute the query in any particular way.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41051<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Store user information in explicit variable: <a href="https://github.com/owncloud/core/pull/41054">#41054</a></p>
