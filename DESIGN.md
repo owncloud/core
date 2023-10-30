@@ -18,4 +18,4 @@ https://owncloud.com/contribute/design/
 
 **We encourage you to:**
 
-- Get in touch with the team by joining our public #design-ux channel on [talk.owncloud.com](https://talk.owncloud.com/channel/design-ux)
+- Get in touch with the team by joining our public #server channel on [talk.owncloud.com](https://talk.owncloud.com/channel/server)
