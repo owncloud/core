@@ -3,6 +3,7 @@ Change: Update PHP dependencies
 The following have been updated:
 - firebase/php-jwt (6.8.1 to 6.9.0)
 - symfony/translation (5.4.24 to 5.4.30)
+- laravel/serializable-closure (v1.3.1 to v1.3.2)
 
 https://github.com/owncloud/core/pull/41033
 https://github.com/owncloud/core/pull/41071
