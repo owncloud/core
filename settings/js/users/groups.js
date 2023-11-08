@@ -6,6 +6,7 @@
  */
 
 var GroupList;
+var GroupDeleteHandler;
 
 (function () {
 	GroupList = {
@@ -287,12 +288,7 @@ var GroupList;
 		initDeleteHandling: function () {
 			//set up handler
 			GroupDeleteHandler = new DeleteHandler('/settings/users/groups', 'groupname',
-				GroupList.hide, GroupList.remove);
-
-			var msg = escapeHTML(t('settings', 'deleted {groupName}', {groupName: '%oid'})) + '<span class="undo">' +
-				escapeHTML(t('settings', 'undo')) + '</span>';
-			GroupDeleteHandler.setNotification(OC.Notification, 'deletegroup', msg,
-				GroupList.remove);
+				GroupList.hide, GroupList.remove, GroupList.show);
 
 			//when to mark user for delete
 			this.$userGroupList.on('click', '.delete', function () {

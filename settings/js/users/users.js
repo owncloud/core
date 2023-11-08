@@ -349,14 +349,7 @@ var UserList = {
 	initDeleteHandling: function() {
 		//set up handler
 		UserDeleteHandler = new DeleteHandler('/settings/users/users', 'username',
-											UserList.markRemove, UserList.remove);
-
-		//configure undo
-		OC.Notification.hide();
-		var msg = escapeHTML(t('settings', 'deleted {userName}', {userName: '%oid'})) + '<span class="undo">' +
-			escapeHTML(t('settings', 'undo')) + '</span>';
-		UserDeleteHandler.setNotification(OC.Notification, 'deleteuser', msg,
-										UserList.undoRemove);
+											UserList.markRemove, UserList.remove, UserList.undoRemove);
 
 		//when to mark user for delete
 		$userListBody.on('click', '.delete', function () {
