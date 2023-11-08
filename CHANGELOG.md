@@ -14,6 +14,7 @@ Summary
 * Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
+* Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
 Details
@@ -68,6 +69,11 @@ Details
    been removed.
 
    https://github.com/owncloud/core/pull/41069
+
+* Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
+
+   https://github.com/owncloud/core/pull/41077
+   https://github.com/owncloud/core/pull/41075
 
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
