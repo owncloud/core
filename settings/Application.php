@@ -172,7 +172,6 @@ class Application extends App {
 				$c->query('Config'),
 				$c->query('ClientService'),
 				$c->query('URLGenerator'),
-				$c->query('Util'),
 				$c->query('L10N'),
 				$c->query('Checker')
 			);

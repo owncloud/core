@@ -24,7 +24,6 @@ namespace Tests\Settings\Controller;
 use GuzzleHttp\Exception\ClientException;
 use OC\IntegrityCheck\Checker;
 use OC\Settings\Controller\CheckSetupController;
-use OC_Util;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\DataResponse;
@@ -52,8 +51,6 @@ class CheckSetupControllerTest extends TestCase {
 	private $clientService;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */
 	private $urlGenerator;
-	/** @var OC_Util */
-	private $util;
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject */
 	private $l10n;
 	/** @var Checker | \PHPUnit\Framework\MockObject\MockObject */
@@ -66,21 +63,17 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->config = $this->getMockBuilder('\OCP\IConfig')
 			->disableOriginalConstructor()->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
-			->disableOriginalConstructor()->getMock();
 		$this->clientService = $this->getMockBuilder('\OCP\Http\Client\IClientService')
-			->disableOriginalConstructor()->getMock();
-		$this->util = $this->getMockBuilder('\OC_Util')
 			->disableOriginalConstructor()->getMock();
 		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
 			->disableOriginalConstructor()->getMock();
 		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
 			->disableOriginalConstructor()->getMock();
-		$this->l10n->expects($this->any())
+		$this->l10n
 			->method('t')
-			->will($this->returnCallback(function ($message, array $replace) {
+			->willReturnCallback(function ($message, array $replace) {
 				return \vsprintf($message, $replace);
-			}));
+			});
 		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
 				->disableOriginalConstructor()->getMock();
 		$this->checkSetupController = $this->getMockBuilder('\OC\Settings\Controller\CheckSetupController')
@@ -90,7 +83,6 @@ class CheckSetupControllerTest extends TestCase {
 				$this->config,
 				$this->clientService,
 				$this->urlGenerator,
-				$this->util,
 				$this->l10n,
 				$this->checker,
 				])
@@ -101,7 +93,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$this->assertFalse(
 			self::invokePrivate(
@@ -115,7 +107,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
@@ -129,7 +121,7 @@ class CheckSetupControllerTest extends TestCase {
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
-			->will($this->returnValue($client));
+			->willReturn($client);
 
 		$this->assertTrue(
 			self::invokePrivate(
@@ -143,7 +135,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
@@ -155,7 +147,7 @@ class CheckSetupControllerTest extends TestCase {
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
-			->will($this->returnValue($client));
+			->willReturn($client);
 
 		$this->assertFalse(
 			self::invokePrivate(
@@ -169,7 +161,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
@@ -187,7 +179,7 @@ class CheckSetupControllerTest extends TestCase {
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
-			->will($this->returnValue($client));
+			->willReturn($client);
 
 		$this->assertFalse(
 			self::invokePrivate(
@@ -201,7 +193,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('memcache.local', null)
-			->will($this->returnValue(null));
+			->willReturn(null);
 
 		$this->assertFalse(
 			self::invokePrivate(
@@ -215,7 +207,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('memcache.local', null)
-			->will($this->returnValue('SomeProvider'));
+			->willReturn('SomeProvider');
 
 		$this->assertTrue(
 			self::invokePrivate(
@@ -325,7 +317,7 @@ class CheckSetupControllerTest extends TestCase {
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
-			->will($this->returnValue($client));
+			->willReturn($client);
 		$this->urlGenerator
 			->expects($this->any())
 			->method('linkToDocs')
@@ -376,7 +368,6 @@ class CheckSetupControllerTest extends TestCase {
 				$this->config,
 				$this->clientService,
 				$this->urlGenerator,
-				$this->util,
 				$this->l10n,
 				$this->checker
 			])
@@ -388,77 +379,77 @@ class CheckSetupControllerTest extends TestCase {
 	public function testIsUsedTlsLibOutdatedWithAnotherLibrary() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue(['ssl_version' => 'SSLlib']));
+			->willReturn(['ssl_version' => 'SSLlib']);
 		$this->assertSame('', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithMisbehavingCurl() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue([]));
+			->willReturn([]);
 		$this->assertSame('', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithOlderOpenSsl() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.1c']));
+			->willReturn(['ssl_version' => 'OpenSSL/1.0.1c']);
 		$this->assertSame('cURL is using an outdated OpenSSL version (OpenSSL/1.0.1c). Please update your operating system or features such as installing and updating apps via the market or Federated Cloud Sharing will not work reliably.', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithOlderOpenSsl1() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.2a']));
+			->willReturn(['ssl_version' => 'OpenSSL/1.0.2a']);
 		$this->assertSame('cURL is using an outdated OpenSSL version (OpenSSL/1.0.2a). Please update your operating system or features such as installing and updating apps via the market or Federated Cloud Sharing will not work reliably.', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithMatchingOpenSslVersion() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.1d']));
+			->willReturn(['ssl_version' => 'OpenSSL/1.0.1d']);
 		$this->assertSame('', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithMatchingOpenSslVersion1() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.2b']));
+			->willReturn(['ssl_version' => 'OpenSSL/1.0.2b']);
 		$this->assertSame('', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsBuggyNss400() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue(['ssl_version' => 'NSS/1.0.2b']));
+			->willReturn(['ssl_version' => 'NSS/1.0.2b']);
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
 		/** @var ClientException | \PHPUnit\Framework\MockObject\MockObject $exception */
@@ -468,10 +459,10 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$response->expects($this->once())
 			->method('getStatusCode')
-			->will($this->returnValue(400));
+			->willReturn(400);
 		$exception->expects($this->once())
 			->method('getResponse')
-			->will($this->returnValue($response));
+			->willReturn($response);
 
 		$client
 			->expects($this->once())
@@ -481,7 +472,7 @@ class CheckSetupControllerTest extends TestCase {
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
-			->will($this->returnValue($client));
+			->willReturn($client);
 
 		$this->assertSame('cURL is using an outdated NSS version (NSS/1.0.2b). Please update your operating system or features such as installing and updating apps via the market or Federated Cloud Sharing will not work reliably.', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
@@ -489,11 +480,11 @@ class CheckSetupControllerTest extends TestCase {
 	public function testIsBuggyNss200() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue(['ssl_version' => 'NSS/1.0.2b']));
+			->willReturn(['ssl_version' => 'NSS/1.0.2b']);
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
 		/** @var ClientException | \PHPUnit\Framework\MockObject\MockObject $exception */
@@ -503,10 +494,10 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$response->expects($this->once())
 			->method('getStatusCode')
-			->will($this->returnValue(200));
+			->willReturn(200);
 		$exception->expects($this->once())
 			->method('getResponse')
-			->will($this->returnValue($response));
+			->willReturn($response);
 
 		$client
 			->expects($this->once())
@@ -516,7 +507,7 @@ class CheckSetupControllerTest extends TestCase {
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
-			->will($this->returnValue($client));
+			->willReturn($client);
 
 		$this->assertSame('', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
@@ -526,7 +517,7 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->assertSame('', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
@@ -535,7 +526,7 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->config
 			->expects($this->once())
 			->method('getAppValue')
@@ -545,7 +536,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->checkSetupController
 			->expects($this->once())
 			->method('getCurlVersion')
-			->will($this->returnValue([]));
+			->willReturn([]);
 		$this->assertSame('', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
@@ -553,7 +544,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->config
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->config
 			->expects($this->exactly(2))
 			->method('getAppValue')
@@ -569,7 +560,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->checkSetupController
 			->expects($this->never())
 			->method('getCurlVersion')
-			->will($this->returnValue([]));
+			->willReturn([]);
 		$this->assertSame('', self::invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
@@ -581,7 +572,7 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('linkToRoute')
 			->with('settings.SettingsPage.getAdmin')
-			->will($this->returnValue('/admin'));
+			->willReturn('/admin');
 
 		$expected = new RedirectResponse('/admin');
 		$this->assertEquals($expected, $this->checkSetupController->rescanFailedIntegrityCheck());
@@ -605,7 +596,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->checker
 			->expects($this->once())
 			->method('getResults')
-			->will($this->returnValue([]));
+			->willReturn([]);
 
 		$expected = new DataDisplayResponse(
 			'No errors have been found.',
@@ -625,7 +616,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->checker
 				->expects($this->once())
 				->method('getResults')
-				->will($this->returnValue(['core' => ['EXTRA_FILE' => ['/testfile' => []], 'INVALID_HASH' => ['/.idea/workspace.xml' => ['expected' => 'f1c5e2630d784bc9cb02d5a28f55d6f24d06dae2a0fee685f3c2521b050955d9d452769f61454c9ddfa9c308146ade10546cfa829794448eaffbc9a04a29d216', 'current' => 'ce08bf30bcbb879a18b49239a9bec6b8702f52452f88a9d32142cad8d2494d5735e6bfa0d8642b2762c62ca5be49f9bf4ec231d4a230559d4f3e2c471d3ea094',], '/lib/private/integritycheck/checker.php' => ['expected' => 'c5a03bacae8dedf8b239997901ba1fffd2fe51271d13a00cc4b34b09cca5176397a89fc27381cbb1f72855fa18b69b6f87d7d5685c3b45aee373b09be54742ea', 'current' => '88a3a92c11db91dec1ac3be0e1c87f862c95ba6ffaaaa3f2c3b8f682187c66f07af3a3b557a868342ef4a271218fe1c1e300c478e6c156c5955ed53c40d06585',], '/settings/controller/checksetupcontroller.php' => ['expected' => '3e1de26ce93c7bfe0ede7c19cb6c93cadc010340225b375607a7178812e9de163179b0dc33809f451e01f491d93f6f5aaca7929685d21594cccf8bda732327c4', 'current' => '09563164f9904a837f9ca0b5f626db56c838e5098e0ccc1d8b935f68fa03a25c5ec6f6b2d9e44a868e8b85764dafd1605522b4af8db0ae269d73432e9a01e63a',],],], 'bookmarks' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'dav' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'encryption' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'external' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'federation' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_antivirus' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_drop' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_external' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_pdfviewer' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_sharing' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_trashbin' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_versions' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_videoviewer' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'firstrunwizard' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'gitsmart' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'logreader' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature could not get verified.',],], 'password_policy' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'provisioning_api' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'sketch' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'threatblock' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'two_factor_auth' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'user_ldap' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'user_shibboleth' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],],]));
+				->willReturn(['core' => ['EXTRA_FILE' => ['/testfile' => []], 'INVALID_HASH' => ['/.idea/workspace.xml' => ['expected' => 'f1c5e2630d784bc9cb02d5a28f55d6f24d06dae2a0fee685f3c2521b050955d9d452769f61454c9ddfa9c308146ade10546cfa829794448eaffbc9a04a29d216', 'current' => 'ce08bf30bcbb879a18b49239a9bec6b8702f52452f88a9d32142cad8d2494d5735e6bfa0d8642b2762c62ca5be49f9bf4ec231d4a230559d4f3e2c471d3ea094',], '/lib/private/integritycheck/checker.php' => ['expected' => 'c5a03bacae8dedf8b239997901ba1fffd2fe51271d13a00cc4b34b09cca5176397a89fc27381cbb1f72855fa18b69b6f87d7d5685c3b45aee373b09be54742ea', 'current' => '88a3a92c11db91dec1ac3be0e1c87f862c95ba6ffaaaa3f2c3b8f682187c66f07af3a3b557a868342ef4a271218fe1c1e300c478e6c156c5955ed53c40d06585',], '/settings/controller/checksetupcontroller.php' => ['expected' => '3e1de26ce93c7bfe0ede7c19cb6c93cadc010340225b375607a7178812e9de163179b0dc33809f451e01f491d93f6f5aaca7929685d21594cccf8bda732327c4', 'current' => '09563164f9904a837f9ca0b5f626db56c838e5098e0ccc1d8b935f68fa03a25c5ec6f6b2d9e44a868e8b85764dafd1605522b4af8db0ae269d73432e9a01e63a',],],], 'bookmarks' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'dav' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'encryption' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'external' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'federation' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_antivirus' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_drop' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_external' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_pdfviewer' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_sharing' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_trashbin' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_versions' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'files_videoviewer' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'firstrunwizard' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'gitsmart' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'logreader' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature could not get verified.',],], 'password_policy' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'provisioning_api' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'sketch' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'threatblock' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'two_factor_auth' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'user_ldap' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],], 'user_shibboleth' => ['EXCEPTION' => ['class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException', 'message' => 'Signature data not found.',],],]);
 
 		$expected = new DataDisplayResponse(
 			'Technical information
