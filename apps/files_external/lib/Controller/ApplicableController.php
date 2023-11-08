@@ -31,6 +31,12 @@ class ApplicableController extends Controller {
 	/** @var IGroupManager */
 	private $groupManager;
 
+	/**
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param IUserManager $userManager
+	 * @param IGroupManager $groupManager
+	 */
 	public function __construct($appName, IRequest $request, IUserManager $userManager, IGroupManager $groupManager) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
@@ -41,9 +47,8 @@ class ApplicableController extends Controller {
 	 * @param string $pattern
 	 * @param int $limit
 	 * @param int $offset
-	 * @return JSONResponse
 	 */
-	public function patternSearch($pattern = '', $limit = null, $offset = null) {
+	public function patternSearch($pattern = '', $limit = null, $offset = null): JSONResponse {
 		$groups = [];
 		foreach ($this->groupManager->search($pattern, $limit, $offset) as $group) {
 			$groups[$group->getGID()] = $group->getDisplayName();
@@ -64,9 +69,8 @@ class ApplicableController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 * @param array $users
-	 * @return JSONResponse
 	 */
-	public function userDisplayNames($users) {
+	public function userDisplayNames($users): JSONResponse {
 		$result = [];
 
 		foreach ($users as $user) {
@@ -87,9 +91,8 @@ class ApplicableController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 * @param array $groups
-	 * @return JSONResponse
 	 */
-	public function groupDisplayNames($groups) {
+	public function groupDisplayNames($groups): JSONResponse {
 		$result = [];
 
 		foreach ($groups as $group) {
