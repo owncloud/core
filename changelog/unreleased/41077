@@ -1,0 +1,4 @@
+Bugfix: Proper error handling when deleting users or groups
+
+https://github.com/owncloud/core/pull/41077
+https://github.com/owncloud/core/pull/41075
