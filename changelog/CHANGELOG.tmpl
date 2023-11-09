@@ -5,7 +5,6 @@
 {{ end -}}
 {{ $allVersions := . }}
 {{- range $index, $changes := . }}{{ with $changes -}}
-{{ if gt (len $allVersions) 1 }}
 # Changelog for ownCloud Core [{{ .Version }}] ({{ .Date }})
 
 The following sections list the changes in ownCloud core {{ .Version }} relevant to
