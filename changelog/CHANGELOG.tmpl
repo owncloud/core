@@ -1,7 +1,7 @@
 # Table of Contents
 
 {{ range . -}}
-  * [Changelog for {{ .Version }}](#changelog-for-{{ .Version | replace "." ""}}-{{ .Date -}})
+  * [Changelog for {{ .Version }}](#changelog-for-core-{{ .Version | replace "." ""}}-{{ .Date | lower -}})
 {{ end -}}
 {{ $allVersions := . }}
 {{- range $index, $changes := . }}{{ with $changes -}}
