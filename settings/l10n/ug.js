@@ -17,7 +17,6 @@ OC.L10N.register(
     "Error while updating app" : "ئەپنى يېڭىلاۋاتقاندا خاتالىق كۆرۈلدى",
     "Updated" : "يېڭىلاندى",
     "Groups" : "گۇرۇپپا",
-    "undo" : "يېنىۋال",
     "Delete group" : "گۇرۇپپا ئۆچۈر",
     "never" : "ھەرگىز",
     "enabled" : "قوزغىتىلغان",

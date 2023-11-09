@@ -64,7 +64,6 @@ OC.L10N.register(
     "Strong password" : "Buena contraseña",
     "Passwords do not match" : "Las contraseñas no coinciden",
     "Groups" : "Grupos",
-    "undo" : "deshacer",
     "Delete group" : "Eliminar grupo",
     "never" : "nunca",
     "unknown" : "desconocido",

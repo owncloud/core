@@ -44,7 +44,6 @@ OC.L10N.register(
     "Sending..." : "Đang gửi...",
     "Select a profile picture" : "Chọn một ảnh hồ sơ",
     "Groups" : "Nhóm",
-    "undo" : "lùi lại",
     "Delete group" : "Xóa nhóm",
     "never" : "không bao gi",
     "unknown" : " Chưa biết",

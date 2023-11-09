@@ -7,7 +7,6 @@ OC.L10N.register(
     "Share" : "Rhannu",
     "Invalid request" : "Cais annilys",
     "Groups" : "Grwpiau",
-    "undo" : "dadwneud",
     "never" : "byth",
     "None" : "Dim",
     "Save" : "Cadw",

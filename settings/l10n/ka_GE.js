@@ -19,7 +19,6 @@ OC.L10N.register(
     "Updated" : "განახლებულია",
     "Select a profile picture" : "აირჩიეთ პროფილის სურათი",
     "Groups" : "ჯგუფები",
-    "undo" : "დაბრუნება",
     "Delete group" : "ჯგუფის წაშლა",
     "never" : "არასდროს",
     "enabled" : "ჩართულია",
