@@ -1,7 +1,13 @@
+# Table of Contents
+
+{{ range . -}}
+  * [Changelog for {{ .Version }}](#changelog-for-{{ .Version | replace "." ""}}-{{ .Date -}})
+{{ end -}}
 {{ $allVersions := . }}
 {{- range $index, $changes := . }}{{ with $changes -}}
-Changelog for ownCloud Core [{{ .Version }}] ({{ .Date }})
-=======================================
+{{ if gt (len $allVersions) 1 }}
+# Changelog for ownCloud Core [{{ .Version }}] ({{ .Date }})
+
 The following sections list the changes in ownCloud core {{ .Version }} relevant to
 ownCloud admins and users.
 
@@ -21,14 +27,12 @@ ownCloud admins and users.
 [{{ .Version }}]: https://github.com/owncloud/core/compare/v10.3.1...v{{ .Version }}
 {{- end }}
 
-Summary
--------
+## Summary
 {{ range $entry := .Entries }}{{ with $entry }}
 * {{ .Type }} - {{ .Title }}: [#{{ .PrimaryID }}]({{ .PrimaryURL }})
 {{- end }}{{ end }}
 
-Details
--------
+## Details
 {{ range $entry := .Entries }}{{ with $entry }}
 * {{ .Type }} - {{ .Title }}: [#{{ .PrimaryID }}]({{ .PrimaryURL }})
 {{ range $par := .Paragraphs }}
