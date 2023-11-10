@@ -64,7 +64,8 @@ class MetaStorage {
 	/** @var FileHelper  */
 	private $fileHelper;
 
-	private ?bool $objectStoreEnabled = null;
+	/** @var boolean|null */
+	private $objectStoreEnabled = null;
 
 	/**
 	 * @param string $dataDir Absolute path to the data-directory
