@@ -873,6 +873,11 @@ $CONFIG = [
 		'apps' => ['files_mediaviewer'],
 		'logfile' => '/tmp/mediaviewer.log'
 	],
+	[
+		# special sql query logging
+		'apps' => ['core/sql'],
+		'logfile' => __DIR__ . '/../data/sql.jsonl'
+	],
   ],
 
 /**

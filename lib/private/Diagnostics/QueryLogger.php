@@ -25,15 +25,16 @@
 namespace OC\Diagnostics;
 
 use OCP\Diagnostics\IQueryLogger;
+use function microtime;
 
 class QueryLogger implements IQueryLogger {
 	/**
-	 * @var \OC\Diagnostics\Query
+	 * @var Query
 	 */
 	protected $activeQuery;
 
 	/**
-	 * @var \OC\Diagnostics\Query[]
+	 * @var Query[]
 	 */
 	protected $queries = [];
 
@@ -47,7 +48,7 @@ class QueryLogger implements IQueryLogger {
 	 */
 	public function startQuery($sql, array $params = null, array $types = null) {
 		if ($this->activated) {
-			$this->activeQuery = new Query($sql, $params, \microtime(true));
+			$this->activeQuery = new Query($sql, $params ?? [], microtime(true));
 		}
 	}
 
@@ -56,7 +57,7 @@ class QueryLogger implements IQueryLogger {
 	 */
 	public function stopQuery() {
 		if ($this->activated && $this->activeQuery) {
-			$this->activeQuery->end(\microtime(true));
+			$this->activeQuery->end(microtime(true));
 			$this->queries[] = $this->activeQuery;
 			$this->activeQuery = null;
 		}
@@ -74,5 +75,9 @@ class QueryLogger implements IQueryLogger {
 	 */
 	public function activate() {
 		$this->activated = true;
+	}
+
+	public function flush(): void {
+		$this->queries = [];
 	}
 }
