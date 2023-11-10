@@ -41,6 +41,7 @@
 
 namespace OC\Share;
 
+use Doctrine\DBAL\Connection;
 use OC\Files\Filesystem;
 use OC\Group\Group;
 use OCA\FederatedFileSharing\DiscoveryManager;
@@ -181,8 +182,11 @@ class Share extends Constants {
 			}
 		}
 
+		$connection = \OC::$server->getDatabaseConnection();
+
 		$paths = [];
 		$rejected = [];
+		# TODO: performance consideration - build list of all parent folders up front - don't loop
 		while ($source !== -1) {
 			// Fetch all shares with another user
 			if (!$returnUserPaths) {
@@ -221,17 +225,17 @@ class Share extends Constants {
 			}
 
 			// We also need to take group shares into account
-			$sql = 'SELECT `share_with`, `file_source`, `file_target`
-				FROM
-				`*PREFIX*share`
-				WHERE
-				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\') AND `id` NOT IN (?)';
+			$qb = $connection->getQueryBuilder();
+			$qb->select('share_with', 'file_source', 'file_target')
+				->from('share')
+				->where($qb->expr()->eq('item_source', $qb->createNamedParameter($source)))
+				->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_GROUP)))
+				->andWhere($qb->expr()->in('item_type', $qb->createNamedParameter(['file', 'folder'], Connection::PARAM_STR_ARRAY)));
 
-			$result = \OC::$server->getDatabaseConnection()->executeQuery(
-				$sql,
-				[$source, self::SHARE_TYPE_GROUP, $rejected],
-				[null, null, IQueryBuilder::PARAM_INT_ARRAY]
-			);
+			if (!empty($rejected)) {
+				$qb->andWhere($qb->expr()->notIn('id', $qb->createNamedParameter($rejected, Connection::PARAM_INT_ARRAY)));
+			}
+			$result = $qb->execute();
 
 			while ($row = $result->fetch()) {
 				$usersInGroup = self::usersInGroup($row['share_with']);
