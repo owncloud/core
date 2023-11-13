@@ -160,17 +160,6 @@ class API implements IApi {
 	}
 
 	/**
-	 * Register a backgroundjob task
-	 * @param string $className full namespace and class name of the class
-	 * @param string $methodName the name of the static method that should be
-	 * called
-	 * @deprecated Use \OC::$server->getJobList()->add();
-	 */
-	public function addRegularTask($className, $methodName) {
-		\OCP\BackgroundJob::addRegularTask($className, $methodName);
-	}
-
-	/**
 	 * Tells ownCloud to include a template in the admin overview
 	 * @param string $mainPath the path to the main php file without the php
 	 * suffix, relative to your apps directory! not the template directory

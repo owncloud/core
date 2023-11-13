@@ -21,7 +21,7 @@
 
 namespace Tests\Core\Command\Background\Queue;
 
-use OC\BackgroundJob\Legacy\RegularJob;
+use OC\Authentication\Token\DefaultTokenCleanupJob;
 use OC\Core\Command\Background\Queue\Status;
 use OCP\BackgroundJob\IJobList;
 use Symfony\Component\Console\Application;
@@ -49,9 +49,9 @@ class StatusTest extends TestCase {
 	}
 
 	public function testCommandInput() {
-		$this->jobList->expects($this->any())->method('listJobs')
+		$this->jobList->method('listJobs')
 			->willReturnCallback(function (\Closure $callBack) {
-				$job = new RegularJob();
+				$job = new DefaultTokenCleanupJob();
 				$job->setId(666);
 				$job->setLastChecked(10);
 				$job->setReservedAt(0);
@@ -62,11 +62,11 @@ class StatusTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
-+--------+------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
-| Job ID | Job                                | Job Arguments | Last Run | Last Checked              | Reserved At | Execution Duration (s) |
-+--------+------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
-| 666    | OC\BackgroundJob\Legacy\RegularJob |               | N/A      | 1970-01-01T00:00:10+00:00 | N/A         | N/A                    |
-+--------+------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
++--------+------------------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
+| Job ID | Job                                            | Job Arguments | Last Run | Last Checked              | Reserved At | Execution Duration (s) |
++--------+------------------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
+| 666    | OC\Authentication\Token\DefaultTokenCleanupJob |               | N/A      | 1970-01-01T00:00:10+00:00 | N/A         | N/A                    |
++--------+------------------------------------------------+---------------+----------+---------------------------+-------------+------------------------+
 EOS;
 
 		$this->assertStringContainsString($expected, $output);
@@ -75,7 +75,7 @@ EOS;
 	public function testJobWithArray() {
 		$this->jobList->expects($this->any())->method('listJobs')
 			->willReturnCallback(function (\Closure $callBack) {
-				$job = new RegularJob();
+				$job = new DefaultTokenCleanupJob();
 				$job->setId(666);
 				$job->setArgument(['k'=> 'v','test2']);
 				$job->setLastChecked(10);
@@ -86,20 +86,20 @@ EOS;
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
-+--------+------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
-| Job ID | Job                                | Job Arguments         | Last Run | Last Checked              | Reserved At | Execution Duration (s) |
-+--------+------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
-| 666    | OC\BackgroundJob\Legacy\RegularJob | {"k":"v","0":"test2"} | N/A      | 1970-01-01T00:00:10+00:00 | N/A         | N/A                    |
-+--------+------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
++--------+------------------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
+| Job ID | Job                                            | Job Arguments         | Last Run | Last Checked              | Reserved At | Execution Duration (s) |
++--------+------------------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
+| 666    | OC\Authentication\Token\DefaultTokenCleanupJob | {"k":"v","0":"test2"} | N/A      | 1970-01-01T00:00:10+00:00 | N/A         | N/A                    |
++--------+------------------------------------------------+-----------------------+----------+---------------------------+-------------+------------------------+
 EOS;
 
 		$this->assertStringContainsString($expected, $output);
 	}
 
-	public function testJobWithSchedulingInfo() {
-		$this->jobList->expects($this->any())->method('listJobs')
+	public function testJobWithSchedulingInfo(): void {
+		$this->jobList->method('listJobs')
 			->willReturnCallback(function (\Closure $callBack) {
-				$job = new RegularJob();
+				$job = new DefaultTokenCleanupJob();
 				$job->setId(666);
 				$job->setArgument(['k'=> 'v','test2']);
 				$job->setLastRun(10);
@@ -111,21 +111,21 @@ EOS;
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
-+--------+------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
-| Job ID | Job                                | Job Arguments         | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) |
-+--------+------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
-| 666    | OC\BackgroundJob\Legacy\RegularJob | {"k":"v","0":"test2"} | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1                      |
-+--------+------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
++--------+------------------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
+| Job ID | Job                                            | Job Arguments         | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) |
++--------+------------------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
+| 666    | OC\Authentication\Token\DefaultTokenCleanupJob | {"k":"v","0":"test2"} | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1                      |
++--------+------------------------------------------------+-----------------------+---------------------------+---------------------------+---------------------------+------------------------+
 EOS;
 
 		$this->assertStringContainsString($expected, $output);
 	}
 
-	public function testListingInvalidJob() {
-		$this->jobList->expects($this->any())->method('listJobsIncludingInvalid')
+	public function testListingInvalidJob(): void {
+		$this->jobList->method('listJobsIncludingInvalid')
 			->willReturnCallback(
 				function (\Closure $validJobCallback, \Closure $invalidJobCallback) {
-					$job = new RegularJob();
+					$job = new DefaultTokenCleanupJob();
 					$job->setId(42);
 					$job->setArgument(['k'=> 'v']);
 					$job->setLastRun(10);
@@ -149,12 +149,12 @@ EOS;
 		);
 		$output = $this->commandTester->getDisplay();
 		$expected = <<<EOS
-+--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
-| Job ID | Job                                | Job Arguments | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) | Status  |
-+--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
-| 42     | OC\BackgroundJob\Legacy\RegularJob | {"k":"v"}     | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 7                      |         |
-| 98     | SomeUnknownClass                   |               | 1970-01-01T00:01:00+00:00 | 1970-01-01T00:02:00+00:00 | 1970-01-01T00:03:00+00:00 | 14                     | invalid |
-+--------+------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
++--------+------------------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
+| Job ID | Job                                            | Job Arguments | Last Run                  | Last Checked              | Reserved At               | Execution Duration (s) | Status  |
++--------+------------------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
+| 42     | OC\Authentication\Token\DefaultTokenCleanupJob | {"k":"v"}     | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 1970-01-01T00:00:10+00:00 | 7                      |         |
+| 98     | SomeUnknownClass                               |               | 1970-01-01T00:01:00+00:00 | 1970-01-01T00:02:00+00:00 | 1970-01-01T00:03:00+00:00 | 14                     | invalid |
++--------+------------------------------------------------+---------------+---------------------------+---------------------------+---------------------------+------------------------+---------+
 EOS;
 
 		$this->assertStringContainsString($expected, $output);
