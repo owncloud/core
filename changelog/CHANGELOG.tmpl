@@ -1,10 +1,11 @@
 # Table of Contents
 
 {{ range . -}}
-  * [Changelog for {{ .Version }}](#changelog-for-core-{{ .Version | replace "." ""}}-{{ .Date | lower -}})
+  * [Changelog for {{ .Version }}](#changelog-for-owncloud-core-{{ .Version | replace "." ""}}-{{ .Date | lower -}})
 {{ end -}}
 {{ $allVersions := . }}
 {{- range $index, $changes := . }}{{ with $changes -}}
+
 # Changelog for ownCloud Core [{{ .Version }}] ({{ .Date }})
 
 The following sections list the changes in ownCloud core {{ .Version }} relevant to
