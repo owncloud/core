@@ -31,7 +31,7 @@ class QueryLoggerTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->logger = new QueryLogger();
+		$this->logger = new QueryLogger(2444666668888888);
 	}
 
 	public function testQueryLogger(): void {
@@ -48,5 +48,17 @@ class QueryLoggerTest extends TestCase {
 
 		$queries = $this->logger->getQueries();
 		self::assertCount(1, $queries);
+
+		# assert json serialize
+		self::assertEquals([
+			'query' => 'SELECT',
+			'parameters' => [
+				'testuser',
+				'count'
+			],
+			'duration' => 0,
+			'start' => 2444666668888888,
+			'end' => 2444666668888888
+		], $queries[0]->jsonSerialize());
 	}
 }
