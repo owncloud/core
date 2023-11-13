@@ -1,0 +1,3 @@
+Bugfix: Users can only delete their own external storage configurations
+
+https://github.com/owncloud/core/pull/41092
