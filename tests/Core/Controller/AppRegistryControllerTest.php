@@ -19,7 +19,7 @@
  *
  */
 
-namespace Core\Controller;
+namespace Tests\Core\Controller;
 
 use OC\Core\Controller\AppRegistryController;
 use OC\Files\Node\File;

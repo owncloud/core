@@ -12,7 +12,6 @@ parameters:
   ignoreErrors:
     - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
     - '#Undefined variable: \$vendor#'
-    - '#Instantiated class Test\\Util\\User\\Dummy not found.#'
     # errors below are to be addressed by own pull requests - non trivial changes required
     - '#Instantiated class OCA\\Encryption\\Crypto\\Crypt not found.#'
     - '#Instantiated class OCA\\Encryption\\Util not found.#'

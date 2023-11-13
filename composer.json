@@ -28,6 +28,11 @@
 
     },
     "autoload-dev" : {
+        "psr-4": {
+            "Test\\": "tests/lib/",
+            "TestHelpers\\": "tests/TestHelpers/",
+            "Tests\\": "tests/"
+        },
         "files": [
             "tests/lib/TestCase.php"
         ]
