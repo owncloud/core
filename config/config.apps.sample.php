@@ -137,14 +137,14 @@ $CONFIG = [
  */
 
 /**
- * Kerberos keytab file location
+ * Kerberos keytab File Location
  * Path to the 'keytab' file to use, defaults to '/etc/krb5.keytab'.
  */
 
 'kerberos.keytab' => '/etc/apache2/www-data.keytab',
 
 /**
- * Kerberos SPNEGO timeout
+ * Kerberos SPNEGO Timeout
  * Timeout before re-enabling SPNEGO based authentication after logout, defaults to 60 seconds.
  */
 
@@ -159,14 +159,14 @@ $CONFIG = [
 'kerberos.domain' => '',
 
 /**
- * Login name button
+ * Login Name Button
  * The name of the login button shown on the login page.
  */
 
 'kerberos.login.buttonName' => 'Windows Domain Login',
 
 /**
- * Immediate login
+ * Immediate Login
  * If set to true, the login page will immediately try to log in via Kerberos.
  */
 
