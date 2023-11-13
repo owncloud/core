@@ -31,15 +31,15 @@ class QueryLoggerTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->logger = new QueryLogger();
+		$this->logger = new QueryLogger(2444666668888888);
 	}
 
-	public function testQueryLogger() {
+	public function testQueryLogger(): void {
 		// Module is not activated and this should not be logged
 		$this->logger->startQuery("SELECT", ["testuser", "count"], ["string", "int"]);
 		$this->logger->stopQuery();
 		$queries = $this->logger->getQueries();
-		$this->assertCount(0, $queries);
+		self::assertCount(0, $queries);
 
 		// Activate module and log some query
 		$this->logger->activate();
@@ -47,6 +47,18 @@ class QueryLoggerTest extends TestCase {
 		$this->logger->stopQuery();
 
 		$queries = $this->logger->getQueries();
-		$this->assertCount(1, $queries);
+		self::assertCount(1, $queries);
+
+		# assert json serialize
+		self::assertEquals([
+			'query' => 'SELECT',
+			'parameters' => [
+				'testuser',
+				'count'
+			],
+			'duration' => 0,
+			'start' => 2444666668888888,
+			'end' => 2444666668888888
+		], $queries[0]->jsonSerialize());
 	}
 }
