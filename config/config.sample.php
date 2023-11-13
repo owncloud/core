@@ -51,9 +51,16 @@ $CONFIG = [
 /**
  * Define list of trusted domains that users can log into
  * Specifying trusted domains prevents host header poisoning.
+ * This parameter reperesents a white list of approved IP addresses and
+ * hostnames that this server is known by / is used to access it.
+ * Wildcards, slash notation and ports are not supported.
  * Do not remove this, as it performs necessary security checks.
  * Please consider that for backend processes like background jobs or occ commands,
  * the URL parameter in key `overwrite.cli.url` is used. For more details, please see that key.
+
+ * NOTE: When defined via the `OWNCLOUD_TRUSTED_DOMAINS` property in docker, the values should be
+ * a comma delimited list without white space. like `OWNCLOUD_TRUSTED_DOMAINS=localhost,10.10.1.1`.
+ * Wildcards, slash notation and ports are not supported.
  */
 'trusted_domains' => [
 	'demo.example.org',
