@@ -25,29 +25,31 @@
 namespace OC\Diagnostics;
 
 use OCP\Diagnostics\IQueryLogger;
+use function microtime;
 
 class QueryLogger implements IQueryLogger {
-	/**
-	 * @var \OC\Diagnostics\Query
-	 */
-	protected $activeQuery;
+	protected ?Query $activeQuery = null;
 
 	/**
-	 * @var \OC\Diagnostics\Query[]
+	 * @var Query[]
 	 */
-	protected $queries = [];
+	protected array $queries = [];
 
-	/**
-	 * @var bool - Module needs to be activated by some app
-	 */
-	private $activated = false;
+	private bool $activated = false;
+
+	# allows to overwrite the current timestamp for testing purpose
+	private ?float $testNow;
+
+	public function __construct(?float $testNow = null) {
+		$this->testNow = $testNow;
+	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function startQuery($sql, array $params = null, array $types = null) {
 		if ($this->activated) {
-			$this->activeQuery = new Query($sql, $params, \microtime(true));
+			$this->activeQuery = new Query($sql, $params ?? [], $this->getMicrotime());
 		}
 	}
 
@@ -56,7 +58,7 @@ class QueryLogger implements IQueryLogger {
 	 */
 	public function stopQuery() {
 		if ($this->activated && $this->activeQuery) {
-			$this->activeQuery->end(\microtime(true));
+			$this->activeQuery->end($this->getMicrotime());
 			$this->queries[] = $this->activeQuery;
 			$this->activeQuery = null;
 		}
@@ -74,5 +76,16 @@ class QueryLogger implements IQueryLogger {
 	 */
 	public function activate() {
 		$this->activated = true;
+	}
+
+	public function flush(): void {
+		$this->queries = [];
+	}
+
+	private function getMicrotime(): float {
+		if ($this->testNow) {
+			return $this->testNow;
+		}
+		return microtime(true);
 	}
 }

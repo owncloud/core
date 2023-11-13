@@ -9,6 +9,7 @@
 
 namespace Test;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Test\Traits\AssertQueryCountTrait;
 
 /**
  * Class AppConfigTest
@@ -18,6 +19,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package Test
  */
 class AppConfigTest extends TestCase {
+	use AssertQueryCountTrait;
+
 	/** @var \OCP\IAppConfig */
 	protected $appConfig;
 
@@ -146,15 +149,17 @@ class AppConfigTest extends TestCase {
 		});
 	}
 
-	public function testGetApps() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+	public function testGetApps(): void {
+		$this->assertQueryCountMatches(1, function () {
+			$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
 
-		$this->assertEquals([
-			'anotherapp',
-			'someapp',
-			'testapp',
-			'123456',
-		], $config->getApps());
+			$this->assertEquals([
+				'anotherapp',
+				'someapp',
+				'testapp',
+				'123456',
+			], $config->getApps());
+		});
 	}
 
 	public function testGetKeys() {

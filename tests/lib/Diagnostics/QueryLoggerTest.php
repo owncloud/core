@@ -34,12 +34,12 @@ class QueryLoggerTest extends TestCase {
 		$this->logger = new QueryLogger();
 	}
 
-	public function testQueryLogger() {
+	public function testQueryLogger(): void {
 		// Module is not activated and this should not be logged
 		$this->logger->startQuery("SELECT", ["testuser", "count"], ["string", "int"]);
 		$this->logger->stopQuery();
 		$queries = $this->logger->getQueries();
-		$this->assertCount(0, $queries);
+		self::assertCount(0, $queries);
 
 		// Activate module and log some query
 		$this->logger->activate();
@@ -47,6 +47,6 @@ class QueryLoggerTest extends TestCase {
 		$this->logger->stopQuery();
 
 		$queries = $this->logger->getQueries();
-		$this->assertCount(1, $queries);
+		self::assertCount(1, $queries);
 	}
 }

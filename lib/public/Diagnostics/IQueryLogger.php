@@ -71,4 +71,11 @@ interface IQueryLogger extends SQLLogger {
 	 * @since 10.0.0
 	 */
 	public function activate();
+
+	/**
+	 * Clears out the query log
+	 *
+	 * @since 10.14.0
+	 */
+	public function flush(): void;
 }
