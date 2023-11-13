@@ -73,9 +73,9 @@ class DBConfigService {
 		$mounts = $this->getMountsFromQuery($query);
 		if (\count($mounts) > 0) {
 			return $mounts[0];
-		} else {
-			return null;
 		}
+
+		return null;
 	}
 
 	/**
@@ -424,6 +424,20 @@ class DBConfigService {
 				return \json_decode($option);
 			}, $options);
 		}, $optionsMap);
+	}
+
+	public function getPersonalMountById(int $mountId, string $userId): ?array {
+		$builder = $this->connection->getQueryBuilder();
+		$query = $this->getForQuery($builder, self::APPLICABLE_TYPE_USER, $userId);
+		$query->andWhere($builder->expr()->eq('m.type', $builder->expr()->literal(self::MOUNT_TYPE_PERSONAl, IQueryBuilder::PARAM_INT)));
+		$query->andWhere($builder->expr()->eq('m.mount_id', $builder->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)));
+
+		$mounts = $this->getMountsFromQuery($query);
+		if (\count($mounts) > 0) {
+			return $mounts[0];
+		}
+
+		return null;
 	}
 
 	/**
