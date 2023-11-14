@@ -55,7 +55,7 @@ class SinceTagCheckVisitor extends \PhpParser\NodeVisitorAbstract {
 			/** @var \PhpParser\Comment\Doc[] $comments */
 			$comments = $node->getAttribute('comments');
 
-			if (\count($comments) === 0) {
+			if ($comments === null || \count($comments) === 0) {
 				$this->errors[] = 'PHPDoc is needed for ' . $this->namespace . '\\' . $this->className . '::' . $node->name;
 				return;
 			}
@@ -84,7 +84,7 @@ class SinceTagCheckVisitor extends \PhpParser\NodeVisitorAbstract {
 			/** @var \PhpParser\Comment\Doc[] $comments */
 			$comments = $node->getAttribute('comments');
 
-			if (\count($comments) === 0) {
+			if ($comments === null || \count($comments) === 0) {
 				$this->errors[] = 'PHPDoc is needed for ' . $this->namespace . '\\' . $this->className . '::' . $node->name;
 				return;
 			}
