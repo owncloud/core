@@ -35,6 +35,7 @@ ownCloud admins and users.
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
+* Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 
 ## Details
 
@@ -106,6 +107,13 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41071
    https://github.com/owncloud/core/pull/41081
    https://github.com/owncloud/core/pull/41097
+
+* Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
+
+   As soon as a user has rejected a share no activities within this share are reported via the
+   activity app.
+
+   https://github.com/owncloud/core/pull/41078
 
 # Changelog for ownCloud Core [10.13.2] (2023-10-04)
 
