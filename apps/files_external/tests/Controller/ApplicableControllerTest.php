@@ -31,13 +31,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class ApplicableControllerTest extends \Test\TestCase {
 	/** @var IRequest */
-	private $request;
+	private MockObject $request;
 	/** @var IUserManager */
-	private $userManager;
+	private MockObject $userManager;
 	/** @var IGroupManager */
-	private $groupManager;
+	private MockObject $groupManager;
 	/** @var ApplicableController */
-	private $controller;
+	private ApplicableController $controller;
 
 	protected function setUp(): void {
 		$this->request = $this->createMock(IRequest::class);

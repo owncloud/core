@@ -27,9 +27,9 @@ use OCP\IGroupManager;
 
 class ApplicableController extends Controller {
 	/** @var IUserManager */
-	private $userManager;
+	private IUserManager $userManager;
 	/** @var IGroupManager */
-	private $groupManager;
+	private IGroupManager $groupManager;
 
 	/**
 	 * @param string $appName
