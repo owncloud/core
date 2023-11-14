@@ -2,13 +2,13 @@
 	$.fn.singleSelect = function () {
 		return this.each(function (i, select) {
 			var input = $('<input/>'),
-				gravity = $(select).attr('data-tipsy-gravity'),
+				placement = $(select).attr('data-tooltip-placement'),
 				inputTooltip = $(select).attr('data-inputtitle');
 			if (inputTooltip){
 				input.attr('title', inputTooltip);
 			}
-			if (typeof gravity === 'undefined') {
-				gravity = 'n'
+			if (typeof placement === 'undefined') {
+				placement = 'top'
 			}
 			select = $(select);
 			input.css('position', 'absolute');
@@ -38,10 +38,9 @@
 					// adjust offset, in case the user scrolled
 					input.css(select.offset());
 					input.show();
-					if ($.fn.tipsy){
-						input.tipsy({gravity: gravity, trigger: 'manual'});
-						input.tipsy('show');
-					}
+					input.tooltip({trigger: 'manual', placement: placement});
+					input.tooltip('show');
+
 					select.css('background-color', 'white');
 					input.focus();
 				}
@@ -83,9 +82,7 @@
 
 			input.on('blur', function () {
 				$(this).change();
-				if ($.fn.tipsy){
-					$(this).tipsy('hide');
-				}
+				$(this).tooltip('hide');
 			});
 			input.click(function(ev) {
 				// prevent clicks to close any container
