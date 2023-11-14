@@ -41,6 +41,7 @@
 
 namespace OC\Share;
 
+use Doctrine\DBAL\Connection;
 use OC\Files\Filesystem;
 use OC\Group\Group;
 use OCA\FederatedFileSharing\DiscoveryManager;
@@ -181,12 +182,16 @@ class Share extends Constants {
 			}
 		}
 
+		$connection = \OC::$server->getDatabaseConnection();
+
 		$paths = [];
+		$rejected = [];
+		# TODO: performance consideration - build list of all parent folders up front - don't loop
 		while ($source !== -1) {
 			// Fetch all shares with another user
 			if (!$returnUserPaths) {
 				$query = \OC_DB::prepare(
-					'SELECT `share_with`, `file_source`, `file_target`
+					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
 					FROM
 					`*PREFIX*share`
 					WHERE
@@ -195,7 +200,7 @@ class Share extends Constants {
 				$result = $query->execute([$source, self::SHARE_TYPE_USER]);
 			} else {
 				$query = \OC_DB::prepare(
-					'SELECT `share_with`, `file_source`, `file_target`
+					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
 				FROM
 				`*PREFIX*share`
 				WHERE
@@ -208,6 +213,10 @@ class Share extends Constants {
 				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 			} else {
 				while ($row = $result->fetchRow()) {
+					if ((int)($row['accepted']) === Constants::STATE_REJECTED) {
+						$rejected[]= $row['parent'];
+						continue;
+					}
 					$shares[] = $row['share_with'];
 					if ($returnUserPaths) {
 						$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
@@ -216,30 +225,28 @@ class Share extends Constants {
 			}
 
 			// We also need to take group shares into account
-			$query = \OC_DB::prepare(
-				'SELECT `share_with`, `file_source`, `file_target`
-				FROM
-				`*PREFIX*share`
-				WHERE
-				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
-			);
+			$qb = $connection->getQueryBuilder();
+			$qb->select('share_with', 'file_source', 'file_target')
+				->from('share')
+				->where($qb->expr()->eq('item_source', $qb->createNamedParameter($source)))
+				->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_GROUP)))
+				->andWhere($qb->expr()->in('item_type', $qb->createNamedParameter(['file', 'folder'], Connection::PARAM_STR_ARRAY)));
 
-			$result = $query->execute([$source, self::SHARE_TYPE_GROUP]);
+			if (!empty($rejected)) {
+				$qb->andWhere($qb->expr()->notIn('id', $qb->createNamedParameter($rejected, Connection::PARAM_INT_ARRAY)));
+			}
+			$result = $qb->execute();
 
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-			} else {
-				while ($row = $result->fetchRow()) {
-					$usersInGroup = self::usersInGroup($row['share_with']);
-					$shares = \array_merge($shares, $usersInGroup);
-					if ($returnUserPaths) {
-						foreach ($usersInGroup as $user) {
-							if (!isset($fileTargets[(int) $row['file_source']][$user])) {
-								// When the user already has an entry for this file source
-								// the file is either shared directly with him as well, or
-								// he has an exception entry (because of naming conflict).
-								$fileTargets[(int) $row['file_source']][$user] = $row;
-							}
+			while ($row = $result->fetch()) {
+				$usersInGroup = self::usersInGroup($row['share_with']);
+				$shares = \array_merge($shares, $usersInGroup);
+				if ($returnUserPaths) {
+					foreach ($usersInGroup as $user) {
+						if (!isset($fileTargets[(int) $row['file_source']][$user])) {
+							// When the user already has an entry for this file source
+							// the file is either shared directly with him as well, or
+							// he has an exception entry (because of naming conflict).
+							$fileTargets[(int) $row['file_source']][$user] = $row;
 						}
 					}
 				}
