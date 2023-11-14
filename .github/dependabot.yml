@@ -10,6 +10,10 @@ updates:
   - phil-davis
   assignees:
   - phil-davis
+  groups:
+    symfony:
+      patterns:
+        - "symfony/*"
   ignore:
   - dependency-name: guzzlehttp/guzzle
     versions:
