@@ -99,11 +99,13 @@ ownCloud admins and users.
    google/apiclient-services (v0.319.0 to v0.322.0) - google/auth (v1.31.0 to v1.32.1) -
    laravel/serializable-closure (v1.3.1 to v1.3.2) - league/mime-type-detection (1.13.0 to
    1.14.0) - monolog/monolog (2.9.1 to 2.9.2) - sabre/vobject (4.5.3 to 4.5.4) -
-   symfony/translation (5.4.24 to 5.4.30)
+   symfony/console (5.4.28 to 5.4.31) - symfony/string (5.4.29 to 5.4.31) -
+   symfony/translation (5.4.24 to 5.4.31)
 
    https://github.com/owncloud/core/pull/41033
    https://github.com/owncloud/core/pull/41071
    https://github.com/owncloud/core/pull/41081
+   https://github.com/owncloud/core/pull/41097
 
 # Changelog for ownCloud Core [10.13.2] (2023-10-04)
 
