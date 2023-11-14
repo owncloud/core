@@ -10,6 +10,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: <a href="https://github.com/owncloud/core/pull/41051">#41051</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Store user information in explicit variable: <a href="https://github.com/owncloud/core/pull/41054">#41054</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: <a href="https://github.com/owncloud/core/pull/41059">#41059</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - LDAP groups will be properly applied to external storages: <a href="https://github.com/owncloud/core/pull/41063">#41063</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Limit performance impact when version meta data is enabled: <a href="https://github.com/owncloud/core/pull/41069">#41069</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Proper error handling when deleting users or groups: <a href="https://github.com/owncloud/core/pull/41077">#41077</a></li>
@@ -53,6 +54,15 @@
    large installation. We're reverting that change
             </p>
             <p>https://github.com/owncloud/core/pull/41059<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - LDAP groups will be properly applied to external storages: <a href="https://github.com/owncloud/core/pull/41063">#41063</a></p>
+            <p>The admin can setup external storages to be used by specific users and groups. When a LDAP group
+   was setup, there were some issues so users belonging to that group weren't able to access the
+   external storage even though they should.Now, users belonging to LDAP groups can access external storages configured to be accessed by
+   those groups.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41063<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></p>

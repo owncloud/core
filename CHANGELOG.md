@@ -31,6 +31,7 @@ ownCloud admins and users.
 * Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
 * Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
+* Bugfix - LDAP groups will be properly applied to external storages: [#41063](https://github.com/owncloud/core/pull/41063)
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
@@ -74,6 +75,17 @@ ownCloud admins and users.
    large installation. We're reverting that change
 
    https://github.com/owncloud/core/pull/41059
+
+* Bugfix - LDAP groups will be properly applied to external storages: [#41063](https://github.com/owncloud/core/pull/41063)
+
+   The admin can setup external storages to be used by specific users and groups. When a LDAP group
+   was setup, there were some issues so users belonging to that group weren't able to access the
+   external storage even though they should.
+
+   Now, users belonging to LDAP groups can access external storages configured to be accessed by
+   those groups.
+
+   https://github.com/owncloud/core/pull/41063
 
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 
