@@ -2478,7 +2478,6 @@ function getScrollBarWidth() {
  * jQuery tipsy shim for the bootstrap tooltip
  */
 jQuery.fn.tipsy = function (argument) {
-	console.warn('Deprecation warning: tipsy is deprecated. Use tooltip instead.');
 	if (typeof argument === 'object' && argument !== null) {
 
 		// tipsy defaults
