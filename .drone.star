@@ -3050,7 +3050,7 @@ def checkGitCommit():
                 "name": "format-check-starlark",
                 "image": "commitlint/commitlint:latest",
                 "commands": [
-                    "echo ${DRONE_COMMIT_MESSAGE} | commitlint",
+                    "echo $DRONE_COMMIT_MESSAGE | commitlint",
                 ],
             },
         ],
