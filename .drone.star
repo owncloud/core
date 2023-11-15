@@ -3050,8 +3050,7 @@ def checkGitCommit():
                 "name": "format-check-git-commit",
                 "image": "commitlint/commitlint:latest",
                 "commands": [
-                    "pwd && ls -l",
-                    "set",
+                    "commitlint -f $DRONE_COMMIT_BEFORE -t $DRONE_COMMIT_AFTER"
                 ],
             },
         ],
