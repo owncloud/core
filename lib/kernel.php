@@ -64,6 +64,7 @@ require_once 'public/Constants.php';
  * No, we can not put this class in its own file because it is used by
  * OC_autoload!
  */
+/** @codeCoverageIgnore */
 class OC {
 	/**
 	 * Associative array for autoloading. classname => filename
@@ -551,12 +552,12 @@ class OC {
 		@\ini_set('log_errors', 1);
 
 		if (!\date_default_timezone_set('UTC')) {
-			\OC::$server->getLogger()->error('Could not set timezone to UTC');
-		};
+			self::$server->getLogger()->error('Could not set timezone to UTC');
+		}
 
-		//try to configure php to enable big file uploads.
-		//this doesn´t work always depending on the webserver and php configuration.
-		//Let´s try to overwrite some defaults anyway
+		// try to configure php to enable big file uploads.
+		// this doesn't work always depending on the webserver and php configuration.
+		// Let´s try to overwrite some defaults anyway
 
 		//try to set the maximum execution time to 60min
 		@\set_time_limit(3600);
@@ -685,6 +686,18 @@ class OC {
 			$lockProvider = \OC::$server->getLockingProvider();
 			$lockProvider->releaseAll();
 		});
+		$debug = \OC::$server->getConfig()->getSystemValue('debug', false);
+		if ($debug) {
+			\OC::$server->getShutdownHandler()->register(function () {
+				$queries = \OC::$server->getQueryLogger()->getQueries();
+				\OC::$server->getLogger()->debug("SQL query log", [
+					'app' => 'core/sql',
+					'extraFields' => [
+						'queries' => $queries
+					]
+				]);
+			});
+		}
 
 		// Check whether the sample configuration has been copied
 		if ($systemConfig->getValue('copied_sample_config', false)) {

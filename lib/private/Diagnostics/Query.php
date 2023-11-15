@@ -24,21 +24,21 @@ namespace OC\Diagnostics;
 
 use OCP\Diagnostics\IQuery;
 
-class Query implements IQuery {
-	private $sql;
+class Query implements IQuery, \JsonSerializable {
+	private string $sql;
 
-	private $params;
+	private array $params;
 
-	private $start;
+	private int $start;
 
-	private $end;
+	private int $end;
 
 	/**
 	 * @param string $sql
 	 * @param array $params
 	 * @param int $start
 	 */
-	public function __construct($sql, $params, $start) {
+	public function __construct(string $sql, $params, $start) {
 		$this->sql = $sql;
 		$this->params = $params;
 		$this->start = $start;
@@ -74,5 +74,15 @@ class Query implements IQuery {
 	 */
 	public function getDuration() {
 		return $this->end - $this->start;
+	}
+
+	public function jsonSerialize() {
+		return [
+			'query' => $this->sql,
+			'parameters' => $this->params,
+			'duration' => $this->getDuration(),
+			'start' => $this->start,
+			'end' => $this->end,
+		];
 	}
 }
