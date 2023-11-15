@@ -21,7 +21,7 @@ $CONFIG = [
 /**
  * App: Activity
  *
- * Possible keys: `activity_expire_days` DAYS
+ * Possible key: `activity_expire_days` DAYS
  */
 
 /**
@@ -32,9 +32,9 @@ $CONFIG = [
 /**
  * App: Admin Audit
  *
- * Possible keys: `log.conditions` ARRAY
+ * Possible key: `log.conditions` ARRAY
  *
- * Possible keys: `admin_audit.groups` ARRAY
+ * Possible key: `admin_audit.groups` ARRAY
  */
 
 /**
@@ -56,9 +56,9 @@ $CONFIG = [
 /**
  * App: Files Antivirus
  *
- * Possible keys: `files_antivirus.av_path` STRING
+ * Possible key: `files_antivirus.av_path` STRING
  *
- * Possible keys: `files_antivirus.av_cmd_options` STRING
+ * Possible key: `files_antivirus.av_cmd_options` STRING
  */
 
 /**
@@ -78,7 +78,7 @@ $CONFIG = [
 /**
  * App: Files Versions
  *
- * Possible keys: `versions_retention_obligation` STRING
+ * Possible key: `versions_retention_obligation` STRING
  *
  * Use following values to configure the retention behaviour. Replace `D` with the number of days.
  *
@@ -102,11 +102,11 @@ $CONFIG = [
 /**
  * App: Firstrunwizard
  *
- * Possible keys: `customclient_desktop` URL
+ * Possible key: `customclient_desktop` URL
  *
- * Possible keys: `customclient_android` URL
+ * Possible key: `customclient_android` URL
  *
- * Possible keys: `customclient_ios` URL
+ * Possible key: `customclient_ios` URL
  */
 
 /**
@@ -125,15 +125,15 @@ $CONFIG = [
 /**
  * App: Kerberos
  *
- * Possible keys: `kerberos.keytab` STRING
+ * Possible key: `kerberos.keytab` STRING
  *
- * Possible keys: `kerberos.suppress.timeout` INTEGER
+ * Possible key: `kerberos.suppress.timeout` INTEGER
  *
- * Possible keys: `kerberos.domain` STRING
+ * Possible key: `kerberos.domain` STRING
  *
- * Possible keys: `kerberos.login.buttonName` STRING
+ * Possible key: `kerberos.login.buttonName` STRING
  *
- * Possible keys: `kerberos.login.autoRedirect` BOOL
+ * Possible key: `kerberos.login.autoRedirect` BOOL
  */
 
 /**
@@ -175,9 +175,9 @@ $CONFIG = [
 /**
  * App: LDAP
  *
- * Possible keys: `ldapIgnoreNamingRules` `doSet` or `false`
+ * Possible key: `ldapIgnoreNamingRules` `doSet` or `false`
  *
- * Possible keys: `user_ldap.enable_medial_search` BOOL
+ * Possible key: `user_ldap.enable_medial_search` BOOL
  */
 
 /**
@@ -190,7 +190,7 @@ $CONFIG = [
 /**
  * App: Market
  *
- * Possible keys: `appstoreurl` URL
+ * Possible key: `appstoreurl` URL
  */
 
 /**
@@ -204,7 +204,7 @@ $CONFIG = [
  *
  * Note: This app is for Enterprise customers only.
  *
- * Possible keys: `metrics_shared_secret` STRING
+ * Possible key: `metrics_shared_secret` STRING
  */
 
 /**
@@ -223,17 +223,17 @@ $CONFIG = [
  *
  * Note: This app is for Enterprise customers only.
  *
- * Possible keys: `wopi.token.key` STRING
+ * Possible key: `wopi.token.key` STRING
  *
- * Possible keys: `wopi.proxy.key` STRING
+ * Possible key: `wopi.proxy.key` STRING
  *
- * Possible keys: `wopi.office-online.server` URL
+ * Possible key: `wopi.office-online.server` URL
  *
- * Possible keys: `wopi_group` STRING
+ * Possible key: `wopi_group` STRING
  *
- * Possible keys: `wopi.proxy.url` URL
+ * Possible key: `wopi.proxy.url` URL
  *
- * Possible keys: `wopi.business-flow.enabled` STRING
+ * Possible key: `wopi.business-flow.enabled` STRING
  */
 
 /**
@@ -284,7 +284,7 @@ $CONFIG = [
 /**
  * App: Microsoft Teams Bridge
  *
- * Possible keys: `msteamsbridge` ARRAY
+ * Possible key: `msteamsbridge` ARRAY
  *
  * Sub key: `loginButtonName` STRING
  */
@@ -303,9 +303,9 @@ $CONFIG = [
 /**
  * App: OpenID Connect (OIDC)
  *
- * Possible keys: `openid-connect` ARRAY
+ * Possible key: `openid-connect` ARRAY
  *
- * Possible keys: `openid-connect.basic_auth_guest_only` BOOL
+ * Possible key: `openid-connect.basic_auth_guest_only` BOOL
  *
  *
  * **Configure OpenID Connect - all possible sub-keys**
@@ -495,7 +495,7 @@ $CONFIG = [
 /**
  * App: Richdocuments
  *
- * Possible keys: `collabora_group` STRING
+ * Possible key: `collabora_group` STRING
  */
 
 /**
@@ -507,7 +507,7 @@ $CONFIG = [
 /**
  * App: S3 Primary Object Storage
  *
- * Possible keys: `objectstore` ARRAY
+ * Possible key: `objectstore` ARRAY
  */
 
 /**
@@ -528,108 +528,44 @@ $CONFIG = [
  *
  * Note: This app is for Enterprise customers only.
  *
- * Possible keys: `wnd.listen.reconnectAfterTime` INTEGER
+ * Possible key: `wnd.activity.registerExtension` BOOL
  *
- * Possible keys: `wnd.logging.enable` BOOL
+ * Possible key: `wnd.activity.sendToSharees` BOOL
  *
- * Possible keys: `wnd.fileInfo.parseAttrs.mode` STRING
+ * Possible key: `wnd.connector.opts.timeout` INTEGER
  *
- * Possible keys: `wnd.in_memory_notifier.enable` BOOL
+ * Possible key: `wnd.errorCodes.passwordReset` ARRAY
  *
- * Possible keys: `wnd.permissionmanager.cache.size` INTEGER
+ * Possible key: `wnd.fileInfo.parseAttrs.mode` STRING
  *
- * Possible keys: `wnd2.cachewrapper.ttl` INTEGER
+ * Possible key: `wnd.groupmembership.checkUserFirst` BOOL
  *
- * Possible keys: `wnd.activity.registerExtension` BOOL
+ * Possible key: `wnd.in_memory_notifier.enable` BOOL
  *
- * Possible keys: `wnd.activity.sendToSharees` BOOL
+ * Possible key: `wnd.kerberos.servers` ARRAY
  *
- * Possible keys: `wnd.groupmembership.checkUserFirst` BOOL
+ * Possible key: `wnd.listen_events.smb_acl` BOOL
  *
- * Possible keys: `wnd.connector.opts.timeout` INTEGER
+ * Possible key: `wnd.listen.reconnectAfterTime` INTEGER
  *
- * Possible keys: `wnd2.cachewrapper.normalize` BOOL
+ * Possible key: `wnd.logging.enable` BOOL
+ *
+ * Possible key: `wnd.permissionmanager.cache.size` INTEGER
+ *
+ * Possible key: `wnd2.cachewrapper.normalize` BOOL
+ *
+ * Possible key: `wnd2.cachewrapper.ttl` INTEGER
  *
  * *Note* With WND 2.1.0, key `wnd.storage.testForHiddenMount` is obsolete and has been removed completely.
  */
-
-/**
- * Mandatory Listener Reconnect to the Database
- * The listener will reconnect to the DB after given seconds. This will
- * prevent the listener to crash if the connection to the DB is closed after
- * being idle for a long time.
- */
-'wnd.listen.reconnectAfterTime' => 28800,
-
-/**
- * Enable Additional Debug Logging for the WND App
- */
-'wnd.logging.enable' => false,
-
-/**
- * The Way File Attributes for Folders and Files will be Handled
- * There are 3 possible values: "none", "stat" and "getxattr":
- *
- * - "stat". This is the default if the option is missing or has an invalid value.
- *   This means that the file attributes will be evaluated only for files, NOT for folders.
- *   Folders will be shown even if the "hidden" file attribute is set.
- *
- * - "none". This means that the file attributes won't be evaluated in any case. Both
- *   hidden files and folders will be shown, and you can write on read-only files
- *   (the action is available in ownCloud, but it will fail in the SMB server).
- *
- * - "getxattr". This means that file attributes will always be evaluated. However, due to
- *   problems in recent libsmbclient versions (4.11+, it might be earlier) it will cause
- *   malfunctions in ownCloud; permissions are wrongly evaluated. So far, this mode works
- *   with libsmbclient 4.7 but not with 4.11+ (not tested with any version in between).
- *
- * Note that the ACLs (if active) will be evaluated and applied on top of this mechanism.
- */
-'wnd.fileInfo.parseAttrs.mode' => 'stat',
-
-/**
- * Enable or Disable the WND In-Memory Notifier for Password Changes
- * Having this feature enabled implies that whenever a WND process detects a
- * wrong password in the storage - maybe the password has changed in the
- * backend - all WND storages that are in-memory will be notified in order to reset
- * their passwords if applicable and not to requery again.
- * The intention is to prevent a potential password lockout for the user in the backend.
- * As with PHP lower than 7.4, this feature can take a lot of memory resources.
- * This is because WND keeps the storage access and its caches in-memory.
- * With PHP 7.4 or above, the memory usage has been reduced significantly.
- * Alternatively, you can disable this feature completely.
- */
-'wnd.in_memory_notifier.enable' => true,
-
-/**
- * Maximum Number of Items for the Cache Used by the WND Permission Managers
- * A higher number implies that more items are allowed, increasing the memory usage.
- * Real memory usage per item varies because it depends on the path being cached.
- * Note that this is an in-memory cache used per request.
- * Multiple mounts using the same permission manager will share the same
- * cache, limiting the maximum memory that will be used.
- */
-'wnd.permissionmanager.cache.size' => 512,
-
-/**
- * TTL for the WND2 Caching Wrapper
- * Time to Live (TTL) in seconds to be used to cache information for the WND2 (collaborative)
- * cache wrapper implementation. The value will be used by all WND2 storages. Although the
- * cache isn't exactly per user but per storage id, consider the cache to be per user, because
- * it will be like that for common use cases. Data will remain in the cache and won't
- * be removed by ownCloud. Aim for a low TTL value in order to not fill the memcache
- * completely. In order to properly disable caching, use -1 or any negative value. 0 (zero)
- * isn't considered a valid TTL value and will also disable caching.
- */
-'wnd2.cachewrapper.ttl' => 1800,  // 30 minutes
 
 /**
  * Enable to Push WND Events to the Activity App
  * Register WND as extension into the Activity app in order to send information about what
  * the `wnd:process-queue` command is doing. The activity sent will be based on what
  * the `wnd:process-queue` detects, and the activity will be sent to each affected user. There
- * won't be any activity being sent outside of the `wnd:process-queue` command. `wnd:listen` +
- * `wnd:process-queue` + `activity app` are required for this to work properly. See `wnd.activity.sendToSharees`
+ * won't be any activity being sent outside of the `wnd:process-queue` command.
+ * `wnd:listen` + `wnd:process-queue` + `activity app` are required for this to work properly. See `wnd.activity.sendToSharees`
  * below for information on how to send activities for shared resources. Please consider
  * that this can have a performance impact when changes are sent to many users.
  */
@@ -643,6 +579,58 @@ $CONFIG = [
  * be ignored. This flag depends on the `wnd.activity.registerExtension` and has the same restrictions.
  */
 'wnd.activity.sendToSharees' => false,
+
+/**
+ * The Timeout (in ms) for All the Operations Against the Backend
+ * The same timeout will be applied for all the connections.
+ *
+ * Increase it if requests to the server sometimes time out. This can happen when SMB3
+ * encryption is selected and smbclient is overwhelming the server with requests.
+ */
+'wnd.connector.opts.timeout' => 20000,  // 20 seconds
+
+/**
+ * Reset the Password When Receiving Any of the Following Error Codes.
+ * By default, we will reset the password with error code 13, which means
+ * access denied. Depending on circumstances, you might want to add the
+ * error code 1, which means an operation not permitted (although there could
+ * be cases where this "operation not permitted" might not be caused by a wrong
+ * password).
+ *
+ * Some examples:
+ *
+ * - `'wnd.errorCodes.passwordReset' => [13],`
+ * - `'wnd.errorCodes.passwordReset' => [13, 1],`
+ *
+ * The password reset feature can be disabled by providing an empty list
+ *
+ * - `'wnd.errorCodes.passwordReset' => [],`
+ *
+ * Note that disabling the password reset feature can lead to an account lockout
+ * if such feature is enabled in the target windows / samba machine.
+ */
+'wnd.errorCodes.passwordReset' => [13],
+
+/**
+ * The Way File Attributes for Folders and Files will be Handled
+ * There are 3 possible values: `none`, `stat` and `getxattr`:
+ *
+ * - `stat`. This is the default if the option is missing or has an invalid value.
+ *   This means that the file attributes will be evaluated only for files, NOT for folders.
+ *   Folders will be shown even if the "hidden" file attribute is set.
+ *
+ * - `none`. This means that the file attributes won't be evaluated in any case. Both
+ *   hidden files and folders will be shown, and you can write on read-only files
+ *   (the action is available in ownCloud, but it will fail in the SMB server).
+ *
+ * - `getxattr`. This means that file attributes will always be evaluated. However, due to
+ *   problems in recent libsmbclient versions (4.11+, it might be earlier) it will cause
+ *   malfunctions in ownCloud; permissions are wrongly evaluated. So far, this mode works
+ *   with libsmbclient 4.7 but not with 4.11+ (not tested with any version in between).
+ *
+ * Note that the ACLs (if active) will be evaluated and applied on top of this mechanism.
+ */
+'wnd.fileInfo.parseAttrs.mode' => 'stat',
 
 /**
  * Make the Group Membership Component Assume that the ACL Contains a User
@@ -662,13 +650,114 @@ $CONFIG = [
 'wnd.groupmembership.checkUserFirst' => false,
 
 /**
- * The timeout (in ms) for all the operations against the backend.
- * The same timeout will be applied for all the connections.
- *
- * Increase it if requests to the server sometimes time out. This can happen when SMB3
- * encryption is selected and smbclient is overwhelming the server with requests.
+ * Enable or Disable the WND In-Memory Notifier for Password Changes
+ * Having this feature enabled implies that whenever a WND process detects a
+ * wrong password in the storage - maybe the password has changed in the
+ * backend - all WND storages that are in-memory will be notified in order to reset
+ * their passwords if applicable and not to requery again.
+ * The intention is to prevent a potential password lockout for the user in the backend.
+ * As with PHP lower than 7.4, this feature can take a lot of memory resources.
+ * This is because WND keeps the storage access and its caches in-memory.
+ * With PHP 7.4 or above, the memory usage has been reduced significantly.
+ * Alternatively, you can disable this feature completely.
  */
-'wnd.connector.opts.timeout' => 20000,  // 20 seconds
+'wnd.in_memory_notifier.enable' => true,
+
+/**
+ * A Map of Servers With the Required Kerberos Data
+ *
+ * A map of servers with the required data to get the Kerberos credentials
+ * in order to access them.
+ *
+ * Each key of the map must be unique and identifies a server. This ID will
+ * be used in the web UI to configure the mount points to use the Kerberos
+ * authentication. You can use any ID (choose one meaningful and easy to remember).
+ *
+ * The data contained in each key is as follows:
+ *
+ * - `ockeytab` (required): The location of the keytab file that ownCloud
+ * will use to access to the mounts using that server ID. The keytab must
+ * be for a service account with special privileges, in particular, it must
+ * be able to impersonate the users. It is highly recommended that the password
+ * for this service account doesn't expire, otherwise you will have to replace
+ * the file manually before the expiration.
+ *
+ * - `ocservice` (required): The name of the service of the account. This matches
+ * the SPN of the Windows / Samba account. It usually is in the form "HTTP/<server>",
+ * but it might be different.
+ *
+ * - `usermapping` (optional): The ownCloud-to-windows user mapping to be used. See below
+ * for available options. If no user mapping is provided, the `Noop` mapping will
+ * be used. The mapping data contains the type of mapping and the parameters, if any.
+ *
+ * - `ccachettl` (optional): The time (in seconds) that the credential cache
+ * will be considered as valid from the ownCloud's side. This TTL MUST be
+ * lower than the actual TTL. Once the TTL is over, new credentials will be
+ * requested automatically. The default TTL is 9 hours, which is less than
+ * the 10 hours set by Windows by default.
+ *
+ * Available mapping types:
+ *
+ * - `Noop`: Do not perform any mapping. The ownCloud user ID will be
+ * returned without changes, so it's expected that the ownCloud user ID
+ * matches the Windows / Samba user ID.
+ *
+ * - `RemoveDomain`: Remove the domain (if any) from the ownCloud user ID.
+ * This means that "user001@my.dom.com" will map to "user001". Note that
+ * it's assumed that all users belong to the same domain, otherwise
+ * "user001@my.dom.com" will be mapped to the same windows user as
+ * "user001@not.mine.eu".
+ */
+'wnd.kerberos.servers' => [
+  'server1' => [
+	'ockeytab' => '/var/www/owncloud/octest1.mountain.tree.prv.keytab',
+	'ocservice' => 'HTTP/octest1.mountain.tree.prv',
+	'usermapping' => ['type' => 'Noop'],
+	'ccachettl' => 60 * 60 * 9,
+  ],
+  'server11' => [
+	'ockeytab' => '/var/www/owncloud/octest1.mountain.tree.prv.keytab',
+	'ocservice' => 'HTTP/octest1.mountain.tree.prv',
+	'usermapping' => ['type' => 'RemoveDomain'],
+	'ccachettl' => 60 * 60 * 9,
+  ],
+  'server2' => [
+	'ockeytab' => '/var/www/owncloud/octest0.desert.sand.prv.keytab',
+	'ocservice' => 'HTTP/octest0.desert.sand.prv',
+	'usermapping' => ['type' => 'CustomFile', 'params' => ['mapfile' => '/var/www/owncloud/ocwin_krb5_map.json']],
+	'cachettl' => 3600,
+  ],
+],
+
+/**
+ * Listen to the Events Triggered by the smb_acl App
+ * The current use is to update the WND storages (with "login credentials,
+ * saved in DB" authentication) when an ACL changes via the smb_acl app
+ */
+'wnd.listen_events.smb_acl' => false,
+
+/**
+ * Mandatory Listener Reconnect to the Database
+ * The listener will reconnect to the DB after given seconds. This will
+ * prevent the listener to crash if the connection to the DB is closed after
+ * being idle for a long time.
+ */
+'wnd.listen.reconnectAfterTime' => 28800,
+
+/**
+ * Enable Additional Debug Logging for the WND App
+ */
+'wnd.logging.enable' => false,
+
+/**
+ * Maximum Number of Items for the Cache Used by the WND Permission Managers
+ * A higher number implies that more items are allowed, increasing the memory usage.
+ * Real memory usage per item varies because it depends on the path being cached.
+ * Note that this is an in-memory cache used per request.
+ * Multiple mounts using the same permission manager will share the same
+ * cache, limiting the maximum memory that will be used.
+ */
+'wnd.permissionmanager.cache.size' => 512,
 
 /**
  * Manage UTF-8 Glyph Normalization on macOS
@@ -686,11 +775,23 @@ $CONFIG = [
 'wnd2.cachewrapper.normalize' => false,
 
 /**
+ * TTL for the WND2 Caching Wrapper
+ * Time to Live (TTL) in seconds to be used to cache information for the WND2 (collaborative)
+ * cache wrapper implementation. The value will be used by all WND2 storages. Although the
+ * cache isn't exactly per user but per storage id, consider the cache to be per user, because
+ * it will be like that for common use cases. Data will remain in the cache and won't
+ * be removed by ownCloud. Aim for a low TTL value in order to not fill the memcache
+ * completely. In order to properly disable caching, use -1 or any negative value. 0 (zero)
+ * isn't considered a valid TTL value and will also disable caching.
+ */
+'wnd2.cachewrapper.ttl' => 1800,  // 30 minutes
+
+/**
  * App: Workflow / Tagging
  *
  * Note: This app is for Enterprise customers only.
  *
- * Possible keys: `workflow.retention_engine` STRING
+ * Possible key: `workflow.retention_engine` STRING
  */
 
 /**
