@@ -774,9 +774,9 @@ $(document).ready(function () {
 		var isRestoreDisabled = UserList.getRestoreDisabled($td) === true;
 		if(isRestoreDisabled) {
 			$tr.addClass('row-warning');
-			// add tipsy if the password change could cause data loss - no recovery enabled
-			$input.tipsy({gravity:'s'});
-			$input.attr('title', t('settings', 'Changing the password will result in data loss, because data recovery is not available for this user'));
+			// add tooltip if the password change could cause data loss - no recovery enabled
+			var title = t('settings', 'Changing the password will result in data loss, because data recovery is not available for this user');
+			$input.tooltip({placement:'bottom', title: title});
 		}
 		$td.find('img').hide();
 		$td.children('span').replaceWith($input);

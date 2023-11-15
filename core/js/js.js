@@ -1459,6 +1459,9 @@ function object(o) {
  * Initializes core
  */
 function initCore() {
+	// setup tooltip
+	$('.section .icon-info').tooltip({placement: 'right'});
+
 	/**
 	 * Disable automatic evaluation of responses for $.ajax() functions (and its
 	 * higher-level alternatives like $.get() and $.post()).
@@ -2472,66 +2475,6 @@ jQuery.fn.exists = function () {
  */
 function getScrollBarWidth() {
 	return OC.Util.getScrollBarWidth();
-}
-
-/**
- * jQuery tipsy shim for the bootstrap tooltip
- */
-jQuery.fn.tipsy = function (argument) {
-	console.warn('Deprecation warning: tipsy is deprecated. Use tooltip instead.');
-	if (typeof argument === 'object' && argument !== null) {
-
-		// tipsy defaults
-		var options = {
-			placement: 'bottom',
-			delay: {'show': 0, 'hide': 0},
-			trigger: 'hover',
-			html: false,
-			container: 'body'
-		};
-		if (argument.gravity) {
-			switch (argument.gravity) {
-				case 'n':
-				case 'nw':
-				case 'ne':
-					options.placement = 'bottom';
-					break;
-				case 's':
-				case 'sw':
-				case 'se':
-					options.placement = 'top';
-					break;
-				case 'w':
-					options.placement = 'right';
-					break;
-				case 'e':
-					options.placement = 'left';
-					break;
-			}
-		}
-		if (argument.trigger) {
-			options.trigger = argument.trigger;
-		}
-		if (argument.delayIn) {
-			options.delay["show"] = argument.delayIn;
-		}
-		if (argument.delayOut) {
-			options.delay["hide"] = argument.delayOut;
-		}
-		if (argument.html) {
-			options.html = true;
-		}
-		if (argument.fallback) {
-			options.title = argument.fallback;
-		}
-		// destroy old tooltip in case the title has changed
-		jQuery.fn.tooltip.call(this, 'destroy');
-		jQuery.fn.tooltip.call(this, options);
-	} else {
-		this.tooltip(argument);
-		jQuery.fn.tooltip.call(this, argument);
-	}
-	return this;
 }
 
 jQuery.extend = jQuery.fn.extend = function() {
