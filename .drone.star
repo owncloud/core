@@ -3047,10 +3047,11 @@ def checkGitCommit():
         "name": "check-git-commit-messages",
         "steps": [
             {
-                "name": "format-check-starlark",
+                "name": "format-check-git-commit",
                 "image": "commitlint/commitlint:latest",
                 "commands": [
-                    "echo $DRONE_COMMIT_MESSAGE | commitlint",
+                    "pwd && ls -l",
+                    "set",
                 ],
             },
         ],
