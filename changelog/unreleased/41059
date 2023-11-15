@@ -1,0 +1,6 @@
+Bugfix: Revert https://github.com/owncloud/core/pull/41014 for performance
+
+The https://github.com/owncloud/core/pull/41014 PR introduced performance
+problems for large installation. We're reverting that change
+
+https://github.com/owncloud/core/pull/41059

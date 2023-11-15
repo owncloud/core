@@ -144,14 +144,14 @@ class Internal extends Session {
 	 * @param string $errorString
 	 * @throws \ErrorException
 	 */
-	public function trapError($errorNumber, $errorString) {
+	public function trapError($errorNumber, $errorString): void {
 		throw new \ErrorException($errorString);
 	}
 
 	/**
 	 * @throws \Exception
 	 */
-	private function validateSession() {
+	private function validateSession(): void {
 		if ($this->sessionClosed) {
 			throw new SessionNotAvailableException('Session has been closed - no further changes to the session are allowed');
 		}
@@ -173,27 +173,16 @@ class Internal extends Session {
 			//try to set the session lifetime
 			$sessionLifeTime = self::getSessionLifeTime();
 			@\ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
-
-			if (\version_compare(PHP_VERSION, '7.3.0') !== -1) {
-				$samesite = \OC::$server->getConfig()->getSystemValue('http.cookie.samesite', 'Strict');
-				\ini_set('session.cookie_samesite', $samesite);
-			}
 		}
 		\session_start();
 	}
 
-	/**
-	 * @return string
-	 */
-	private static function getSessionLifeTime() {
+	private static function getSessionLifeTime(): string {
 		return \OC::$server->getConfig()->getSystemValue('session_lifetime', 60 * 20);
 	}
 
-	private function getServerProtocol() {
-		$method = null;
-		if (isset($_SERVER['REQUEST_METHOD'])) {
-			$method = $_SERVER['REQUEST_METHOD'];
-		}
+	private function getServerProtocol(): string {
+		$method = $_SERVER['REQUEST_METHOD'] ?? null;
 		$req = new Request(
 			[
 				'get' => $_GET,

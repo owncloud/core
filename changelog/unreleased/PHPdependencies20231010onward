@@ -1,0 +1,22 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- deepdiver/zipstreamer (2.0.0 to v2.0.2)
+- firebase/php-jwt (6.8.1 to 6.9.0)
+- google/apiclient-services (v0.319.0 to v0.324.0)
+- google/auth (v1.31.0 to v1.32.1)
+- laravel/serializable-closure (v1.3.1 to v1.3.3)
+- league/mime-type-detection (1.13.0 to 1.14.0)
+- monolog/monolog (2.9.1 to 2.9.2)
+- sabre/dav (4.4.0 to 4.5.0)
+- sabre/vobject (4.5.3 to 4.5.4)
+- symfony/console (5.4.28 to 5.4.31)
+- symfony/string (5.4.29 to 5.4.31)
+- symfony/translation (5.4.24 to 5.4.31)
+
+https://github.com/owncloud/core/pull/41033
+https://github.com/owncloud/core/pull/41071
+https://github.com/owncloud/core/pull/41081
+https://github.com/owncloud/core/pull/41097
+https://github.com/owncloud/core/pull/41101
+https://github.com/owncloud/core/pull/41102

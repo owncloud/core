@@ -10,7 +10,6 @@ OC.L10N.register(
     "Updating...." : "...ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
     "Updated" : "ਅੱਪਡੇਟ ਕੀਤਾ",
     "Groups" : "ਗਰੁੱਪ",
-    "undo" : "ਵਾਪਸ",
     "unknown" : "ਅਣਜਾਣ",
     "Sharing" : "ਸਾਂਝ",
     "Login" : "ਲਾਗਇਨ",

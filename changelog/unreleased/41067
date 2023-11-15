@@ -1,0 +1,6 @@
+Bugfix: Disallow browsers to translate the frontend
+
+Web frontend offers a lot of proper translations. Browser capabilities are not needed.
+
+https://github.com/owncloud/core/pull/41067
+https://github.com/owncloud/core/issues/39946

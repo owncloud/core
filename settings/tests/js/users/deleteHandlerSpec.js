@@ -28,9 +28,7 @@ describe('DeleteHandler tests', function() {
 	var undoCallback;
 
 	function init(markCallback, removeCallback, undoCallback) {
-		var handler = new DeleteHandler('dummyendpoint.php', 'paramid', markCallback, removeCallback);
-		handler.setNotification(OC.Notification, 'dataid', 'removed %oid entry', undoCallback);
-		return handler;
+		return new DeleteHandler('dummyendpoint.php', 'paramid', markCallback, removeCallback, undoCallback);
 	}
 
 	beforeEach(function() {

@@ -27,9 +27,9 @@
 namespace OC\Settings\Controller;
 
 use GuzzleHttp\Exception\ClientException;
-use OC\AppFramework\Http;
 use OC\IntegrityCheck\Checker;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -47,8 +47,6 @@ class CheckSetupController extends Controller {
 	private $config;
 	/** @var IClientService */
 	private $clientService;
-	/** @var \OC_Util */
-	private $util;
 	/** @var IURLGenerator */
 	private $urlGenerator;
 	/** @var IL10N */
@@ -58,13 +56,6 @@ class CheckSetupController extends Controller {
 
 	/**
 	 * @param string $AppName
-	 * @param IRequest $request
-	 * @param IConfig $config
-	 * @param IClientService $clientService
-	 * @param IURLGenerator $urlGenerator
-	 * @param \OC_Util $util
-	 * @param IL10N $l10n
-	 * @param Checker $checker
 	 */
 	public function __construct(
 		$AppName,
@@ -72,14 +63,12 @@ class CheckSetupController extends Controller {
 		IConfig $config,
 		IClientService $clientService,
 		IURLGenerator $urlGenerator,
-		\OC_Util $util,
 		IL10N $l10n,
 		Checker $checker
 	) {
 		parent::__construct($AppName, $request);
 		$this->config = $config;
 		$this->clientService = $clientService;
-		$this->util = $util;
 		$this->urlGenerator = $urlGenerator;
 		$this->l10n = $l10n;
 		$this->checker = $checker;
@@ -87,9 +76,8 @@ class CheckSetupController extends Controller {
 
 	/**
 	 * Checks if the ownCloud server can connect to the internet using HTTPS and HTTP
-	 * @return bool
 	 */
-	private function isInternetConnectionWorking() {
+	private function isInternetConnectionWorking(): bool {
 		if ($this->config->getSystemValue('has_internet_connection', true) === false) {
 			return false;
 		}
@@ -106,18 +94,15 @@ class CheckSetupController extends Controller {
 
 	/**
 	 * Checks whether a local memcache is installed or not
-	 * @return bool
 	 */
-	private function isMemcacheConfigured() {
+	private function isMemcacheConfigured(): bool {
 		return $this->config->getSystemValue('memcache.local', null) !== null;
 	}
 
 	/**
 	 * Whether /dev/urandom is available to the PHP controller
-	 *
-	 * @return bool
 	 */
-	private function isUrandomAvailable() {
+	private function isUrandomAvailable(): bool {
 		if (@\file_exists('/dev/urandom')) {
 			$file = \fopen('/dev/urandom', 'rb');
 			if ($file) {
@@ -131,10 +116,8 @@ class CheckSetupController extends Controller {
 
 	/**
 	 * Public for the sake of unit-testing
-	 *
-	 * @return array
 	 */
-	protected function getCurlVersion() {
+	protected function getCurlVersion(): array {
 		return \curl_version();
 	}
 
@@ -146,11 +129,12 @@ class CheckSetupController extends Controller {
 	 * @link https://github.com/owncloud/core/issues/17446#issuecomment-122877546
 	 * @link https://bugzilla.redhat.com/show_bug.cgi?id=1241172
 	 * @return string
+	 * @throws \Exception
 	 */
-	private function isUsedTlsLibOutdated() {
+	private function isUsedTlsLibOutdated(): string {
 		// Don't run check when:
 		// 1. Server has `has_internet_connection` set to false
-		// 2. AppStore AND S2S is disabled
+		// 2. App Store AND S2S is disabled
 		if (!$this->config->getSystemValue('has_internet_connection', true)) {
 			return '';
 		}
@@ -199,10 +183,8 @@ class CheckSetupController extends Controller {
 	/**
 	 * Whether the php version is still supported (at time of release)
 	 * according to: https://secure.php.net/supported-versions.php
-	 *
-	 * @return array
 	 */
-	private function isPhpSupported() {
+	private function isPhpSupported(): array {
 		$eol = $this->isEndOfLive();
 
 		return ['eol' => $eol, 'version' => PHP_VERSION];
@@ -213,11 +195,11 @@ class CheckSetupController extends Controller {
 	 *
 	 * @return bool
 	 */
-	private function forwardedForHeadersWorking() {
+	private function forwardedForHeadersWorking(): bool {
 		$trustedProxies = $this->config->getSystemValue('trusted_proxies', []);
 		$remoteAddress = $this->request->getRemoteAddress();
 
-		if (\is_array($trustedProxies) && \in_array($remoteAddress, $trustedProxies)) {
+		if (\is_array($trustedProxies) && \in_array($remoteAddress, $trustedProxies, true)) {
 			return false;
 		}
 
@@ -228,10 +210,8 @@ class CheckSetupController extends Controller {
 	/**
 	 * Checks if the correct memcache module for PHP is installed. Only
 	 * fails if memcached is configured and the working module is not installed.
-	 *
-	 * @return bool
 	 */
-	private function isCorrectMemcachedPHPModuleInstalled() {
+	private function isCorrectMemcachedPHPModuleInstalled(): bool {
 		if ($this->config->getSystemValue('memcache.distributed', null) !== '\OC\Memcache\Memcached') {
 			return true;
 		}
@@ -245,7 +225,7 @@ class CheckSetupController extends Controller {
 	/**
 	 * @return RedirectResponse
 	 */
-	public function rescanFailedIntegrityCheck() {
+	public function rescanFailedIntegrityCheck(): RedirectResponse {
 		$this->checker->runInstanceVerification();
 		return new RedirectResponse(
 			$this->urlGenerator->linkToRoute('settings.SettingsPage.getAdmin')
@@ -254,9 +234,8 @@ class CheckSetupController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
-	 * @return DataResponse | DataDisplayResponse
 	 */
-	public function getFailedIntegrityCheckFiles() {
+	public function getFailedIntegrityCheckFiles(): DataDisplayResponse {
 		if (!$this->checker->isCodeCheckEnforced()) {
 			return new DataDisplayResponse('Integrity checker has been disabled. Integrity cannot be verified.');
 		}
@@ -283,7 +262,7 @@ Results
 							$formattedTextResponse .= "\t\t- $key\n";
 						}
 					} else {
-						foreach ($result as $key => $results) {
+						foreach ($result as $results) {
 							$formattedTextResponse .= "\t\t- $results\n";
 						}
 					}
@@ -299,21 +278,19 @@ Raw output
 			$formattedTextResponse = 'No errors have been found.';
 		}
 
-		$response = new DataDisplayResponse(
+		return new DataDisplayResponse(
 			$formattedTextResponse,
 			Http::STATUS_OK,
 			[
 				'Content-Type' => 'text/plain',
 			]
 		);
-
-		return $response;
 	}
 
 	/**
-	 * @return DataResponse
+	 * @throws \Exception
 	 */
-	public function check() {
+	public function check(): DataResponse {
 		return new DataResponse(
 			[
 				'serverHasInternetConnection' => $this->isInternetConnectionWorking(),
@@ -333,18 +310,10 @@ Raw output
 		);
 	}
 
-	/**
-	 * @return bool
-	 */
-	protected function isEndOfLive() {
-		$eol = false;
-
+	protected function isEndOfLive(): bool {
 		// PHP 5.4 is EOL on 14 Sep 2015
 		// PHP 5.5 is EOL on 21 Jul 2016
-		if (\version_compare(PHP_VERSION, '5.6.0') === -1) {
-			$eol = true;
-			return $eol;
-		}
-		return $eol;
+		# PHP 7.4 is EOL as well - but we support it via distributions
+		return \version_compare(PHP_VERSION, '7.3.0') === -1;
 	}
 }

@@ -42,7 +42,22 @@
 				'url' => '/ajax/public_key.php',
 				'verb' => 'POST',
 				'requirements' => []
-			]
+			],
+			[
+				'name' => 'Applicable#patternSearch',
+				'url' => '/applicable/search',
+				'verb' => 'GET',
+			],
+			[
+				'name' => 'Applicable#userDisplayNames',
+				'url' => '/applicable/users',
+				'verb' => 'POST',
+			],
+			[
+				'name' => 'Applicable#groupDisplayNames',
+				'url' => '/applicable/groups',
+				'verb' => 'POST',
+			],
 		]
 	]
 );

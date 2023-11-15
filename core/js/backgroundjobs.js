@@ -22,6 +22,4 @@
 // start worker once page has loaded
 $(document).ready(function(){
 	$.get( OC.webroot+'/cron.php' );
-
-	$('.section .icon-info').tipsy({gravity: 'w'});
 });

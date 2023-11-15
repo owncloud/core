@@ -2,19 +2,133 @@
 <h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
     <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.13.1...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.13.2...master">Full list of changes in unreleased </a>
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - CalDAV query where the time range is not given: <a href="https://github.com/owncloud/core/pull/41050">#41050</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: <a href="https://github.com/owncloud/core/pull/41051">#41051</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Store user information in explicit variable: <a href="https://github.com/owncloud/core/pull/41054">#41054</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: <a href="https://github.com/owncloud/core/pull/41059">#41059</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - LDAP groups will be properly applied to external storages: <a href="https://github.com/owncloud/core/pull/41063">#41063</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Limit performance impact when version meta data is enabled: <a href="https://github.com/owncloud/core/pull/41069">#41069</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Proper error handling when deleting users or groups: <a href="https://github.com/owncloud/core/pull/41077">#41077</a></li>
+        <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/41033">#41033</a></li>
+        <li class="type-change changelog-item">Change - No activities on rejected shares: <a href="https://github.com/owncloud/core/pull/41078">#41078</a></li>
+    </ul>
+    <h3 id="unreleased-details">Details</h3>
+    <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - CalDAV query where the time range is not given: <a href="https://github.com/owncloud/core/pull/41050">#41050</a></p>
+            <p>Outlook CalDAV plugin is sending `false` as time range which no longer results in a crash.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39922<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/41050<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: <a href="https://github.com/owncloud/core/pull/41051">#41051</a></p>
+            <p>One of the filters of the preview cleanup job requires casting a filename, which is supposed to
+   contain only digits, to an integer. The expected execution of the DB query should have filtered
+   the results so the condition above should be true, but the DB's query planner might choose to
+   apply the filters in a different way, so we could potentially cast random strings to integer.
+   For the case of postgresql, the cast function will cause an error if the string can't be casted to
+   an integer (because it has non-digit chars, for example)This situation is fixed for all the supported DBs, so we don't require the query planner to
+   execute the query in any particular way.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41051<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Store user information in explicit variable: <a href="https://github.com/owncloud/core/pull/41054">#41054</a></p>
+            <p>Before user information was stored in the browser global object. In some rare cases browsers
+   seem to loose data stored in the global object. This is fixed now.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/5873<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/41054<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: <a href="https://github.com/owncloud/core/pull/41059">#41059</a></p>
+            <p>The https://github.com/owncloud/core/pull/41014 PR introduced performance problems for
+   large installation. We're reverting that change
+            </p>
+            <p>https://github.com/owncloud/core/pull/41059<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - LDAP groups will be properly applied to external storages: <a href="https://github.com/owncloud/core/pull/41063">#41063</a></p>
+            <p>The admin can setup external storages to be used by specific users and groups. When a LDAP group
+   was setup, there were some issues so users belonging to that group weren't able to access the
+   external storage even though they should.Now, users belonging to LDAP groups can access external storages configured to be accessed by
+   those groups.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41063<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Disallow browsers to translate the frontend: <a href="https://github.com/owncloud/core/pull/41067">#41067</a></p>
+            <p>Web frontend offers a lot of proper translations. Browser capabilities are not needed.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39946<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/41067<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Limit performance impact when version meta data is enabled: <a href="https://github.com/owncloud/core/pull/41069">#41069</a></p>
+            <p>Negative performance impact when `file_storage.save_version_metadata` is enabled has
+   been removed.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41069<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Proper error handling when deleting users or groups: <a href="https://github.com/owncloud/core/pull/41077">#41077</a></p>
+            <p>https://github.com/owncloud/core/pull/41077<br>https://github.com/owncloud/core/pull/41075<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/41033">#41033</a></p>
+            <p>The following have been updated: - deepdiver/zipstreamer (2.0.0 to v2.0.2) -
+   firebase/php-jwt (6.8.1 to 6.9.0) - google/apiclient-services (v0.319.0 to v0.324.0) -
+   google/auth (v1.31.0 to v1.32.1) - laravel/serializable-closure (v1.3.1 to v1.3.3) -
+   league/mime-type-detection (1.13.0 to 1.14.0) - monolog/monolog (2.9.1 to 2.9.2) -
+   sabre/dav (4.4.0 to 4.5.0) - sabre/vobject (4.5.3 to 4.5.4) - symfony/console (5.4.28 to
+   5.4.31) - symfony/string (5.4.29 to 5.4.31) - symfony/translation (5.4.24 to 5.4.31)
+            </p>
+            <p>https://github.com/owncloud/core/pull/41033<br>https://github.com/owncloud/core/pull/41071<br>https://github.com/owncloud/core/pull/41081<br>https://github.com/owncloud/core/pull/41097<br>https://github.com/owncloud/core/pull/41101<br>https://github.com/owncloud/core/pull/41102<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - No activities on rejected shares: <a href="https://github.com/owncloud/core/pull/41078">#41078</a></p>
+            <p>As soon as a user has rejected a share no activities within this share are reported via the
+   activity app.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41078<br></p>
+        </li>
+    </ul>
+    <h2 id="10.13.2" class="version"> Changelog for ownCloud Core [10.13.2] (2023-10-04)</h2>
+    <p>The following sections list the changes in ownCloud core 10.13.2 relevant to ownCloud admins and users.</p>
+    <p>
+    <a href="https://github.com/owncloud/core/compare/v10.13.1...v10.13.2">Full list of changes in 10.13.2</a>
+    </p>
+    <h3 id="10.13.2-summary">Summary</h3>
+    <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Delete all files from object store when user is deleted: <a href="https://github.com/owncloud/core/pull/40959">#40959</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow subadmins to read app config values: <a href="https://github.com/owncloud/core/pull/40961">#40961</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Remove regular expression from Preview Manager list: <a href="https://github.com/owncloud/core/pull/40990">#40990</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Check if account creation time exists for migrations: <a href="https://github.com/owncloud/core/pull/40991">#40991</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Do not mount shared storage which are failing: <a href="https://github.com/owncloud/core/pull/41014">#41014</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40983">#40983</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve preview cleanup query: <a href="https://github.com/owncloud/core/pull/40974">#40974</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Remove "Fill E-Tags" Repair-Step: <a href="https://github.com/owncloud/core/pull/40996">#40996</a></li>
     </ul>
-    <h3 id="unreleased-details">Details</h3>
+    <h3 id="10.13.2-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Delete all files from object store when user is deleted: <a href="https://github.com/owncloud/core/pull/40959">#40959</a></p>
+            <p>As soon as a user is deleted files will also be removed from object storage (s3). In previous
+   versions when a user was deleted, files belonging to this user were not correctly removed from
+   the object storage (s3) and were therefore left as remnants taking unnecessary space. This has
+   been corrected and files are now properly removed.
+            </p>
+            <p>https://github.com/owncloud/core/pull/40959<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Allow subadmins to read app config values: <a href="https://github.com/owncloud/core/pull/40961">#40961</a></p>
             <p>Previously, subadmins couldn't read app config values. This caused problems in the users page
@@ -39,6 +153,16 @@
    present. This has been now fixed.
             </p>
             <p>https://github.com/owncloud/core/pull/40991<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Do not mount shared storage which are failing: <a href="https://github.com/owncloud/core/pull/41014">#41014</a></p>
+            <p>Some mounts use a shared storage, which points to a different storage. If the underlying
+   storage is removed, the share mount was still being present as if the underlying storage could
+   still be accessed. This was causing problems with the `occ files:remove-storage
+   --show-candidates` command because the removed storage wasn't shown as possible candidate.Now, that share storage won't be mounted, and the underlying storage will be detected as a
+   candidate to be removed with the command above.
+            </p>
+            <p>https://github.com/owncloud/core/pull/41014<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/40983">#40983</a></p>

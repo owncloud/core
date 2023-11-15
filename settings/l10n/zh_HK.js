@@ -19,7 +19,6 @@ OC.L10N.register(
     "Uninstall" : "解除安裝",
     "Sending..." : "發送中...",
     "Groups" : "群組",
-    "undo" : "復原",
     "never" : "永不",
     "enabled" : "已啟用",
     "Language" : "語言",

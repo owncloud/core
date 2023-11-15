@@ -27,6 +27,9 @@ use OC\Files\Filesystem;
 use OC\Template\Base;
 use OC_Defaults;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Files\File;
+use OCP\Files\Folder;
+use OCP\Files\NotPermittedException;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\Security\ISecureRandom;
@@ -535,12 +538,21 @@ abstract class TestCase extends BaseTestCase {
 		return $stream;
 	}
 
-	public function runsWithPrimaryObjectstorage() {
+	public function runsWithPrimaryObjectstorage(): bool {
 		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore_multibucket', null);
 		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', $objectstoreConfiguration);
 		if ($objectstoreConfiguration !== null) {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @throws NotPermittedException
+	 */
+	public static function createFileWithContent(?Folder $folder, string $fileName, string $fileContent): File {
+		$file = $folder->newFile($fileName);
+		$file->putContent($fileContent);
+		return $file;
 	}
 }

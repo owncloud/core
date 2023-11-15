@@ -1,22 +1,162 @@
-Changelog for ownCloud Core [unreleased] (UNRELEASED)
-=======================================
+# Table of Contents
+
+* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.13.2](#changelog-for-owncloud-core-10132-2023-10-04)
+* [Changelog for 10.13.1](#changelog-for-owncloud-core-10131-2023-09-04)
+* [Changelog for 10.13.0](#changelog-for-owncloud-core-10130-2023-08-22)
+* [Changelog for 10.12.2](#changelog-for-owncloud-core-10122-2023-05-31)
+* [Changelog for 10.12.1](#changelog-for-owncloud-core-10121-2023-04-03)
+* [Changelog for 10.12.0](#changelog-for-owncloud-core-10120-2023-02-24)
+* [Changelog for 10.11.0](#changelog-for-owncloud-core-10110-2022-08-23)
+* [Changelog for 10.10.0](#changelog-for-owncloud-core-10100-2022-05-16)
+* [Changelog for 10.9.1](#changelog-for-owncloud-core-1091-2022-01-12)
+* [Changelog for 10.9.0](#changelog-for-owncloud-core-1090-2021-12-20)
+* [Changelog for 10.8.0](#changelog-for-owncloud-core-1080-2021-07-15)
+* [Changelog for 10.7.0](#changelog-for-owncloud-core-1070-2021-03-26)
+* [Changelog for 10.6.0](#changelog-for-owncloud-core-1060-2020-11-25)
+* [Changelog for 10.5.0](#changelog-for-owncloud-core-1050-2020-07-31)
+* [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
+* [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
+* [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.13.1...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.13.2...master
 
-Summary
--------
+## Summary
 
+* Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
+* Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
+* Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
+* Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
+* Bugfix - LDAP groups will be properly applied to external storages: [#41063](https://github.com/owncloud/core/pull/41063)
+* Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
+* Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
+* Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
+* Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
+* Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
+
+## Details
+
+* Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
+
+   Outlook CalDAV plugin is sending `false` as time range which no longer results in a crash.
+
+   https://github.com/owncloud/core/issues/39922
+   https://github.com/owncloud/core/pull/41050
+
+* Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
+
+   One of the filters of the preview cleanup job requires casting a filename, which is supposed to
+   contain only digits, to an integer. The expected execution of the DB query should have filtered
+   the results so the condition above should be true, but the DB's query planner might choose to
+   apply the filters in a different way, so we could potentially cast random strings to integer.
+   For the case of postgresql, the cast function will cause an error if the string can't be casted to
+   an integer (because it has non-digit chars, for example)
+
+   This situation is fixed for all the supported DBs, so we don't require the query planner to
+   execute the query in any particular way.
+
+   https://github.com/owncloud/core/pull/41051
+
+* Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
+
+   Before user information was stored in the browser global object. In some rare cases browsers
+   seem to loose data stored in the global object. This is fixed now.
+
+   https://github.com/owncloud/enterprise/issues/5873
+   https://github.com/owncloud/core/pull/41054
+
+* Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
+
+   The https://github.com/owncloud/core/pull/41014 PR introduced performance problems for
+   large installation. We're reverting that change
+
+   https://github.com/owncloud/core/pull/41059
+
+* Bugfix - LDAP groups will be properly applied to external storages: [#41063](https://github.com/owncloud/core/pull/41063)
+
+   The admin can setup external storages to be used by specific users and groups. When a LDAP group
+   was setup, there were some issues so users belonging to that group weren't able to access the
+   external storage even though they should.
+
+   Now, users belonging to LDAP groups can access external storages configured to be accessed by
+   those groups.
+
+   https://github.com/owncloud/core/pull/41063
+
+* Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
+
+   Web frontend offers a lot of proper translations. Browser capabilities are not needed.
+
+   https://github.com/owncloud/core/issues/39946
+   https://github.com/owncloud/core/pull/41067
+
+* Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
+
+   Negative performance impact when `file_storage.save_version_metadata` is enabled has
+   been removed.
+
+   https://github.com/owncloud/core/pull/41069
+
+* Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
+
+   https://github.com/owncloud/core/pull/41077
+   https://github.com/owncloud/core/pull/41075
+
+* Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
+
+   The following have been updated: - deepdiver/zipstreamer (2.0.0 to v2.0.2) -
+   firebase/php-jwt (6.8.1 to 6.9.0) - google/apiclient-services (v0.319.0 to v0.324.0) -
+   google/auth (v1.31.0 to v1.32.1) - laravel/serializable-closure (v1.3.1 to v1.3.3) -
+   league/mime-type-detection (1.13.0 to 1.14.0) - monolog/monolog (2.9.1 to 2.9.2) -
+   sabre/dav (4.4.0 to 4.5.0) - sabre/vobject (4.5.3 to 4.5.4) - symfony/console (5.4.28 to
+   5.4.31) - symfony/string (5.4.29 to 5.4.31) - symfony/translation (5.4.24 to 5.4.31)
+
+   https://github.com/owncloud/core/pull/41033
+   https://github.com/owncloud/core/pull/41071
+   https://github.com/owncloud/core/pull/41081
+   https://github.com/owncloud/core/pull/41097
+   https://github.com/owncloud/core/pull/41101
+   https://github.com/owncloud/core/pull/41102
+
+* Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
+
+   As soon as a user has rejected a share no activities within this share are reported via the
+   activity app.
+
+   https://github.com/owncloud/core/pull/41078
+
+# Changelog for ownCloud Core [10.13.2] (2023-10-04)
+
+The following sections list the changes in ownCloud core 10.13.2 relevant to
+ownCloud admins and users.
+
+[10.13.2]: https://github.com/owncloud/core/compare/v10.13.1...v10.13.2
+
+## Summary
+
+* Bugfix - Delete all files from object store when user is deleted: [#40959](https://github.com/owncloud/core/pull/40959)
 * Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
 * Bugfix - Remove regular expression from Preview Manager list: [#40990](https://github.com/owncloud/core/pull/40990)
 * Bugfix - Check if account creation time exists for migrations: [#40991](https://github.com/owncloud/core/pull/40991)
+* Bugfix - Do not mount shared storage which are failing: [#41014](https://github.com/owncloud/core/pull/41014)
 * Change - Update PHP dependencies: [#40983](https://github.com/owncloud/core/pull/40983)
 * Enhancement - Improve preview cleanup query: [#40974](https://github.com/owncloud/core/pull/40974)
 * Enhancement - Remove "Fill E-Tags" Repair-Step: [#40996](https://github.com/owncloud/core/pull/40996)
 
-Details
--------
+## Details
+
+* Bugfix - Delete all files from object store when user is deleted: [#40959](https://github.com/owncloud/core/pull/40959)
+
+   As soon as a user is deleted files will also be removed from object storage (s3). In previous
+   versions when a user was deleted, files belonging to this user were not correctly removed from
+   the object storage (s3) and were therefore left as remnants taking unnecessary space. This has
+   been corrected and files are now properly removed.
+
+   https://github.com/owncloud/core/pull/40959
 
 * Bugfix - Allow subadmins to read app config values: [#40961](https://github.com/owncloud/core/pull/40961)
 
@@ -43,6 +183,18 @@ Details
 
    https://github.com/owncloud/core/pull/40991
 
+* Bugfix - Do not mount shared storage which are failing: [#41014](https://github.com/owncloud/core/pull/41014)
+
+   Some mounts use a shared storage, which points to a different storage. If the underlying
+   storage is removed, the share mount was still being present as if the underlying storage could
+   still be accessed. This was causing problems with the `occ files:remove-storage
+   --show-candidates` command because the removed storage wasn't shown as possible candidate.
+
+   Now, that share storage won't be mounted, and the underlying storage will be detected as a
+   candidate to be removed with the command above.
+
+   https://github.com/owncloud/core/pull/41014
+
 * Change - Update PHP dependencies: [#40983](https://github.com/owncloud/core/pull/40983)
 
    The following have been updated: - phpseclib/phpseclib (3.0.21 to 3.0.23) - symfony/string
@@ -68,15 +220,14 @@ Details
 
    https://github.com/owncloud/core/pull/40996
 
-Changelog for ownCloud Core [10.13.1] (2023-09-04)
-=======================================
+# Changelog for ownCloud Core [10.13.1] (2023-09-04)
+
 The following sections list the changes in ownCloud core 10.13.1 relevant to
 ownCloud admins and users.
 
 [10.13.1]: https://github.com/owncloud/core/compare/v10.13.0...v10.13.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix namespace map setting: [#40943](https://github.com/owncloud/core/pull/40943)
 * Bugfix - Make sure that parameters are a string when string is expected: [#40944](https://github.com/owncloud/core/pull/40944)
@@ -88,8 +239,7 @@ Summary
 * Change - Update PHP dependencies: [#40939](https://github.com/owncloud/core/pull/40939)
 * Enhancement - Allow disabling background jobs: [#40969](https://github.com/owncloud/core/pull/40969)
 
-Details
--------
+## Details
 
 * Bugfix - Fix namespace map setting: [#40943](https://github.com/owncloud/core/pull/40943)
 
@@ -166,15 +316,14 @@ Details
 
    https://github.com/owncloud/core/pull/40969
 
-Changelog for ownCloud Core [10.13.0] (2023-08-22)
-=======================================
+# Changelog for ownCloud Core [10.13.0] (2023-08-22)
+
 The following sections list the changes in ownCloud core 10.13.0 relevant to
 ownCloud admins and users.
 
 [10.13.0]: https://github.com/owncloud/core/compare/v10.12.2...v10.13.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
 * Bugfix - Always return an int for the Symfony Command execute method: [#40793](https://github.com/owncloud/core/pull/40793)
@@ -209,8 +358,7 @@ Summary
 * Enhancement - Enforce 2-factor authentication: [#40830](https://github.com/owncloud/core/pull/40830)
 * Enhancement - Improve the performance of the occ files:remove-storage command: [#40859](https://github.com/owncloud/core/pull/40859)
 
-Details
--------
+## Details
 
 * Bugfix - Align to new accounts.google.com authorization URI: [#40783](https://github.com/owncloud/core/pull/40783)
 
@@ -515,21 +663,19 @@ Details
 
    https://github.com/owncloud/core/pull/40859
 
-Changelog for ownCloud Core [10.12.2] (2023-05-31)
-=======================================
+# Changelog for ownCloud Core [10.12.2] (2023-05-31)
+
 The following sections list the changes in ownCloud core 10.12.2 relevant to
 ownCloud admins and users.
 
 [10.12.2]: https://github.com/owncloud/core/compare/v10.12.1...v10.12.2
 
-Summary
--------
+## Summary
 
 * Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
 * Bugfix - Disallow permission tobe upgraded via federated sharing: [#40803](https://github.com/owncloud/core/pull/40803)
 
-Details
--------
+## Details
 
 * Bugfix - Filter sensitive data in log for Session::loginInOwnCloud: [#40792](https://github.com/owncloud/core/pull/40792)
 
@@ -539,15 +685,14 @@ Details
 
    https://github.com/owncloud/core/pull/40803
 
-Changelog for ownCloud Core [10.12.1] (2023-04-03)
-=======================================
+# Changelog for ownCloud Core [10.12.1] (2023-04-03)
+
 The following sections list the changes in ownCloud core 10.12.1 relevant to
 ownCloud admins and users.
 
 [10.12.1]: https://github.com/owncloud/core/compare/v10.12.0...v10.12.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: [#40693](https://github.com/owncloud/core/pull/40693)
 * Bugfix - Add rewrite base to .htaccess: [#40697](https://github.com/owncloud/core/pull/40697)
@@ -556,8 +701,7 @@ Summary
 * Change - Fix permission bits when enforcing passwords on public links: [#40701](https://github.com/owncloud/core/pull/40701)
 * Change - Do not auto-enable user-key encryption: [#40702](https://github.com/owncloud/core/pull/40702)
 
-Details
--------
+## Details
 
 * Bugfix - Respect User Home Folder Naming Rule home directory for chunks uploads: [#40693](https://github.com/owncloud/core/pull/40693)
 
@@ -620,15 +764,14 @@ Details
    https://github.com/owncloud/core/pull/40702
    https://doc.owncloud.com/docs/next/server_release_notes.html#deprecation-note-for-user-key-storage-encryption
 
-Changelog for ownCloud Core [10.12.0] (2023-02-24)
-=======================================
+# Changelog for ownCloud Core [10.12.0] (2023-02-24)
+
 The following sections list the changes in ownCloud core 10.12.0 relevant to
 ownCloud admins and users.
 
 [10.12.0]: https://github.com/owncloud/core/compare/v10.11.0...v10.12.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Bump bower_components/clipboard from v2.0.6 to v2.0.11 in /build: [#40064](https://github.com/owncloud/core/pull/40064)
 * Bugfix - Properly remove file versions from the trashbin: [#40286](https://github.com/owncloud/core/issues/40286)
@@ -677,8 +820,7 @@ Summary
 * Enhancement - Drag & Drop folders into public file upload: [#40643](https://github.com/owncloud/core/pull/40643)
 * Enhancement - Make sender display name in mail notifications configurable: [#40671](https://github.com/owncloud/core/pull/40671)
 
-Details
--------
+## Details
 
 * Bugfix - Bump bower_components/clipboard from v2.0.6 to v2.0.11 in /build: [#40064](https://github.com/owncloud/core/pull/40064)
 
@@ -1117,15 +1259,14 @@ Details
 
    https://github.com/owncloud/core/pull/40671
 
-Changelog for ownCloud Core [10.11.0] (2022-08-23)
-=======================================
+# Changelog for ownCloud Core [10.11.0] (2022-08-23)
+
 The following sections list the changes in ownCloud core 10.11.0 relevant to
 ownCloud admins and users.
 
 [10.11.0]: https://github.com/owncloud/core/compare/v10.10.0...v10.11.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 * Bugfix - Replace userid with username in login form: [#39870](https://github.com/owncloud/core/pull/39870)
@@ -1163,8 +1304,7 @@ Summary
 * Enhancement - Allow sharing with multiple users at once: [#40155](https://github.com/owncloud/core/pull/40155)
 * Enhancement - Allow editing of public link shared single files: [#40264](https://github.com/owncloud/core/pull/40264)
 
-Details
--------
+## Details
 
 * Bugfix - Trigger the right event when the filecache is updated: [#39844](https://github.com/owncloud/core/pull/39844)
 
@@ -1482,15 +1622,14 @@ Details
 
    https://github.com/owncloud/core/pull/40264
 
-Changelog for ownCloud Core [10.10.0] (2022-05-16)
-=======================================
+# Changelog for ownCloud Core [10.10.0] (2022-05-16)
+
 The following sections list the changes in ownCloud core 10.10.0 relevant to
 ownCloud admins and users.
 
 [10.10.0]: https://github.com/owncloud/core/compare/v10.9.1...v10.10.0
 
-Summary
--------
+## Summary
 
 * Security - Prevent stored mail settings password from showing in the webUI: [#39833](https://github.com/owncloud/core/pull/39833)
 * Bugfix - Properly setup share owner file system on public link shares: [#39518](https://github.com/owncloud/core/pull/39518)
@@ -1531,8 +1670,7 @@ Summary
 * Enhancement - Expose user type of share receiver in share api: [#40013](https://github.com/owncloud/core/pull/40013)
 * Enhancement - Use the same string in the header also in public view: [#40032](https://github.com/owncloud/core/pull/40032)
 
-Details
--------
+## Details
 
 * Security - Prevent stored mail settings password from showing in the webUI: [#39833](https://github.com/owncloud/core/pull/39833)
 
@@ -1900,22 +2038,20 @@ Details
 
    https://github.com/owncloud/core/pull/40032
 
-Changelog for ownCloud Core [10.9.1] (2022-01-12)
-=======================================
+# Changelog for ownCloud Core [10.9.1] (2022-01-12)
+
 The following sections list the changes in ownCloud core 10.9.1 relevant to
 ownCloud admins and users.
 
 [10.9.1]: https://github.com/owncloud/core/compare/v10.9.0...v10.9.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
 * Bugfix - Getting the file owner for share recipients: [#39670](https://github.com/owncloud/core/pull/39670)
 * Bugfix - Prevent version author from being overwritten with wrong uid: [#39673](https://github.com/owncloud/core/pull/39673)
 
-Details
--------
+## Details
 
 * Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
 
@@ -1941,15 +2077,14 @@ Details
    https://github.com/owncloud/core/issues/39672
    https://github.com/owncloud/core/pull/39673
 
-Changelog for ownCloud Core [10.9.0] (2021-12-20)
-=======================================
+# Changelog for ownCloud Core [10.9.0] (2021-12-20)
+
 The following sections list the changes in ownCloud core 10.9.0 relevant to
 ownCloud admins and users.
 
 [10.9.0]: https://github.com/owncloud/core/compare/v10.8.0...v10.9.0
 
-Summary
--------
+## Summary
 
 * Security - Patch jquery ui: [#39451](https://github.com/owncloud/core/pull/39451)
 * Security - Patch jquery ui CVE-2016-7103: [#39545](https://github.com/owncloud/core/pull/39545)
@@ -2067,8 +2202,7 @@ Summary
 * Enhancement - Expand file name area to click: [#39592](https://github.com/owncloud/core/pull/39592)
 * Enhancement - Add support for the x-office/drawing mimetype: [#39594](https://github.com/owncloud/core/pull/39594)
 
-Details
--------
+## Details
 
 * Security - Patch jquery ui: [#39451](https://github.com/owncloud/core/pull/39451)
 
@@ -3062,15 +3196,14 @@ Details
    https://github.com/owncloud/core/issues/39593
    https://github.com/owncloud/core/pull/39594
 
-Changelog for ownCloud Core [10.8.0] (2021-07-15)
-=======================================
+# Changelog for ownCloud Core [10.8.0] (2021-07-15)
+
 The following sections list the changes in ownCloud core 10.8.0 relevant to
 ownCloud admins and users.
 
 [10.8.0]: https://github.com/owncloud/core/compare/v10.7.0...v10.8.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Expire shares at end of day: [#4324](https://github.com/owncloud/enterprise/issues/4324)
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
@@ -3137,8 +3270,7 @@ Summary
 * Enhancement - Trigger file scan after accepting a federated share: [#38880](https://github.com/owncloud/core/pull/38880)
 * Enhancement - Allow to pass password on redis cluster connection: [#38917](https://github.com/owncloud/core/pull/38917)
 
-Details
--------
+## Details
 
 * Bugfix - Expire shares at end of day: [#4324](https://github.com/owncloud/enterprise/issues/4324)
 
@@ -3743,15 +3875,14 @@ Details
    https://github.com/owncloud/enterprise/issues/4658
    https://github.com/owncloud/core/pull/38917
 
-Changelog for ownCloud Core [10.7.0] (2021-03-26)
-=======================================
+# Changelog for ownCloud Core [10.7.0] (2021-03-26)
+
 The following sections list the changes in ownCloud core 10.7.0 relevant to
 ownCloud admins and users.
 
 [10.7.0]: https://github.com/owncloud/core/compare/v10.6.0...v10.7.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
 * Bugfix - Fix some code smells reported by SonarCloud: [#38147](https://github.com/owncloud/core/pull/38147)
@@ -3802,8 +3933,7 @@ Summary
 * Enhancement - UI improvement external storage: [#38483](https://github.com/owncloud/core/pull/38483)
 * Enhancement - Improve systemtags UI for delete and fix case sensitivity problem: [#38498](https://github.com/owncloud/core/pull/38498)
 
-Details
--------
+## Details
 
 * Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
 
@@ -4249,15 +4379,14 @@ Details
    https://github.com/owncloud/core/issues/38496
    https://github.com/owncloud/core/pull/38498
 
-Changelog for ownCloud Core [10.6.0] (2020-11-25)
-=======================================
+# Changelog for ownCloud Core [10.6.0] (2020-11-25)
+
 The following sections list the changes in ownCloud core 10.6.0 relevant to
 ownCloud admins and users.
 
 [10.6.0]: https://github.com/owncloud/core/compare/v10.5.0...v10.6.0
 
-Summary
--------
+## Summary
 
 * Bugfix - OCS and Public WebDAV Apis should handle LoginException: [#112](https://github.com/owncloud/brute_force_protection/issues/112)
 * Bugfix - Do not emit "share.failedpasswordcheck" events for authenticated links: [#138](https://github.com/owncloud/brute_force_protection/issues/138)
@@ -4359,8 +4488,7 @@ Summary
 * Enhancement - GetShare API request's "subfiles" parameter allows new interactions: [#38053](https://github.com/owncloud/core/pull/38053)
 * Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
 
-Details
--------
+## Details
 
 * Bugfix - OCS and Public WebDAV Apis should handle LoginException: [#112](https://github.com/owncloud/brute_force_protection/issues/112)
 
@@ -5101,15 +5229,14 @@ Details
 
    https://github.com/owncloud/core/pull/38054
 
-Changelog for ownCloud Core [10.5.0] (2020-07-31)
-=======================================
+# Changelog for ownCloud Core [10.5.0] (2020-07-31)
+
 The following sections list the changes in ownCloud core 10.5.0 relevant to
 ownCloud admins and users.
 
 [10.5.0]: https://github.com/owncloud/core/compare/v10.4.1...v10.5.0
 
-Summary
--------
+## Summary
 
 * Security - Add new system config to enforce strict login check with user backend: [#37569](https://github.com/owncloud/core/pull/37569)
 * Security - Patch htmlPrefilter: [#37598](https://github.com/owncloud/core/issues/37598)
@@ -5189,8 +5316,7 @@ Summary
 * Enhancement - Boost performance of external storages: [#37451](https://github.com/owncloud/core/pull/37451)
 * Enhancement - Change the behavior of the header menus: [#37490](https://github.com/owncloud/core/pull/37490)
 
-Details
--------
+## Details
 
 * Security - Add new system config to enforce strict login check with user backend: [#37569](https://github.com/owncloud/core/pull/37569)
 
@@ -5755,15 +5881,14 @@ Details
 
    https://github.com/owncloud/core/pull/37490
 
-Changelog for ownCloud Core [10.4.1] (2020-03-30)
-=======================================
+# Changelog for ownCloud Core [10.4.1] (2020-03-30)
+
 The following sections list the changes in ownCloud core 10.4.1 relevant to
 ownCloud admins and users.
 
 [10.4.1]: https://github.com/owncloud/core/compare/v10.4.0...v10.4.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Show re-share public links to share-owner: [#36865](https://github.com/owncloud/core/pull/36865)
 * Bugfix - It's not possible to download externally encrypted files: [#36921](https://github.com/owncloud/core/pull/36921)
@@ -5816,8 +5941,7 @@ Summary
 * Change - Update nikic/php-parser (4.3.0 => 4.4.0): [#37237](https://github.com/owncloud/core/pull/37237)
 * Enhancement - Add new occ command to check the cache for primary storages: [#37067](https://github.com/owncloud/core/pull/37067)
 
-Details
--------
+## Details
 
 * Bugfix - Show re-share public links to share-owner: [#36865](https://github.com/owncloud/core/pull/36865)
 
@@ -6140,15 +6264,14 @@ Details
 
    https://github.com/owncloud/core/pull/37067
 
-Changelog for ownCloud Core [10.4.0] (2020-02-10)
-=======================================
+# Changelog for ownCloud Core [10.4.0] (2020-02-10)
+
 The following sections list the changes in ownCloud core 10.4.0 relevant to
 ownCloud admins and users.
 
 [10.4.0]: https://github.com/owncloud/core/compare/v10.3.2...v10.4.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Stream_read not returning requested length for encrypted remote storage: [#34599](https://github.com/owncloud/core/issues/34599)
 * Bugfix - Fix links in setupchecks.js: [#36315](https://github.com/owncloud/core/pull/36315)
@@ -6229,8 +6352,7 @@ Summary
 * Enhancement - Additional share owner and initiator info in shares API response: [#36823](https://github.com/owncloud/core/issues/36823)
 * Enhancement - Add very verbose mode to remote shares polling: [#36832](https://github.com/owncloud/core/pull/36832)
 
-Details
--------
+## Details
 
 * Bugfix - Stream_read not returning requested length for encrypted remote storage: [#34599](https://github.com/owncloud/core/issues/34599)
 
@@ -6789,15 +6911,14 @@ Details
 
    https://github.com/owncloud/core/pull/36832
 
-Changelog for ownCloud Core [10.3.2] (2019-12-04)
-=======================================
+# Changelog for ownCloud Core [10.3.2] (2019-12-04)
+
 The following sections list the changes in ownCloud core 10.3.2 relevant to
 ownCloud admins and users.
 
 [10.3.2]: https://github.com/owncloud/core/compare/v10.3.1...v10.3.2
 
-Summary
--------
+## Summary
 
 * Bugfix - Do not create error log about user home in user creation: [#30853](https://github.com/owncloud/core/issues/30853)
 * Bugfix - Fix sharing behavior to distinguish user and group having the same name: [#35488](https://github.com/owncloud/core/issues/35488)
@@ -6838,8 +6959,7 @@ Summary
 * Change - Update webmozart/assert (1.5.0 => 1.6.0): [#36465](https://github.com/owncloud/core/pull/36465)
 * Enhancement - New option in occ command files_external:list --mount-options: [#36420](https://github.com/owncloud/core/pull/36420)
 
-Details
--------
+## Details
 
 * Bugfix - Do not create error log about user home in user creation: [#30853](https://github.com/owncloud/core/issues/30853)
 

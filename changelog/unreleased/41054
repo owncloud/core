@@ -1,0 +1,7 @@
+Bugfix: Store user information in explicit variable
+
+Before user information was stored in the browser global object. In some rare
+cases browsers seem to loose data stored in the global object. This is fixed now.
+
+https://github.com/owncloud/core/pull/41054
+https://github.com/owncloud/enterprise/issues/5873

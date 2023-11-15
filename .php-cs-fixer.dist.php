@@ -22,10 +22,8 @@ $bundledApps = [
 $excludeDirs = [
 	'lib/composer',
 	'build',
-	'apps/files_external/3rdparty',
 	'apps-external',
 	'data',
-	'3rdparty',
 ];
 
 foreach ($dirIterator as $fileinfo) {

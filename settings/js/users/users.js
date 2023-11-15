@@ -349,14 +349,7 @@ var UserList = {
 	initDeleteHandling: function() {
 		//set up handler
 		UserDeleteHandler = new DeleteHandler('/settings/users/users', 'username',
-											UserList.markRemove, UserList.remove);
-
-		//configure undo
-		OC.Notification.hide();
-		var msg = escapeHTML(t('settings', 'deleted {userName}', {userName: '%oid'})) + '<span class="undo">' +
-			escapeHTML(t('settings', 'undo')) + '</span>';
-		UserDeleteHandler.setNotification(OC.Notification, 'deleteuser', msg,
-										UserList.undoRemove);
+											UserList.markRemove, UserList.remove, UserList.undoRemove);
 
 		//when to mark user for delete
 		$userListBody.on('click', '.delete', function () {
@@ -781,9 +774,9 @@ $(document).ready(function () {
 		var isRestoreDisabled = UserList.getRestoreDisabled($td) === true;
 		if(isRestoreDisabled) {
 			$tr.addClass('row-warning');
-			// add tipsy if the password change could cause data loss - no recovery enabled
-			$input.tipsy({gravity:'s'});
-			$input.attr('title', t('settings', 'Changing the password will result in data loss, because data recovery is not available for this user'));
+			// add tooltip if the password change could cause data loss - no recovery enabled
+			var title = t('settings', 'Changing the password will result in data loss, because data recovery is not available for this user');
+			$input.tooltip({placement:'bottom', title: title});
 		}
 		$td.find('img').hide();
 		$td.children('span').replaceWith($input);

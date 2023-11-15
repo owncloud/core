@@ -8,6 +8,4 @@ $(document).ready(function() {
 		var app = (this.id !== 'autoAcceptTrusted') ? 'files_sharing' : 'federatedfilesharing';
 		OC.AppConfig.setValue(app, $(this).attr('name'), value);
 	});
-
-	$('.section .icon-info').tipsy({gravity: 'w'});
 });

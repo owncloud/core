@@ -32,7 +32,6 @@ OC.L10N.register(
     "Good password" : "OK passord",
     "Strong password" : "Sterkt passord",
     "Groups" : "Grupper",
-    "undo" : "angra",
     "Delete group" : "Slett gruppe",
     "never" : "aldri",
     "unknown" : "ukjend",

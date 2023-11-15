@@ -151,6 +151,7 @@ OC.L10N.register(
     "Nothing to configure." : "Nichts zu konfigurieren. ",
     "Group Sharing Blacklist" : "Vom Teilen ausgeschlossene Gruppen",
     "Exclude groups from receiving shares" : "Gruppen von Teilen ausschliessen",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares addressed to other groups they are members of as usual." : "Diese Gruppen stehen nicht zum Teilen von Daten zur Verfügung. Mitglieder können weiterhin Freigaben oder Einladungen anlegen und empfangen, auch von anderen Gruppen empfangen, in denen sie Mitglied sind.",
     "Only certain groups are allowed to create public links" : "Gruppen denen es erlaubt ist, öffentliche Links zu erstellen"
 },
 "nplurals=2; plural=(n != 1);");

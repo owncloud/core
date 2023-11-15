@@ -69,7 +69,6 @@ class CryptoWrapper {
 	private $timeFactory;
 
 	/**
-	 * @param IConfig $config
 	 * @param ICrypto $crypto
 	 * @param ISecureRandom $random
 	 * @param IRequest $request
@@ -93,7 +92,7 @@ class CryptoWrapper {
 	 * If the target cookie hasn't been received from the request, a cookie containing the passphrase
 	 * will also be sent to the browser for the future.
 	 */
-	public function sendCookie(IConfig $config) {
+	public function sendCookie(IConfig $config): void {
 		if ($this->request->getCookie(self::COOKIE_NAME) !== null) {
 			// just set the passphrase, don't send it to the browser.
 			$this->passphrase = $this->request->getCookie(self::COOKIE_NAME);
@@ -118,7 +117,7 @@ class CryptoWrapper {
 	/**
 	 * Refresh the cookie expiration time
 	 */
-	public function refreshCookie(IConfig $config, $expire = null) {
+	public function refreshCookie(IConfig $config, $expire = null): void {
 		if ($this->request->getCookie(self::COOKIE_NAME) === null) {
 			return;
 		}
@@ -137,7 +136,7 @@ class CryptoWrapper {
 	/**
 	 * Try to delete the cookie
 	 */
-	public function deleteCookie() {
+	public function deleteCookie(): void {
 		// FIXME: Required for CI
 		if (!\defined('PHPUNIT_RUN')) {
 			$options = [
@@ -152,7 +151,7 @@ class CryptoWrapper {
 		}
 	}
 
-	private function prepareOptions(IConfig $config) {
+	private function prepareOptions(IConfig $config): array {
 		$secureCookie = $this->request->getServerProtocol() === 'https';
 		$webRoot = \OC::$WEBROOT;
 		if ($webRoot === '') {
@@ -177,19 +176,11 @@ class CryptoWrapper {
 		];
 	}
 
-	private function sendCookieToBrowser($value, $options) {
-		if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
-			\setcookie(self::COOKIE_NAME, $value, $options['expires'], $options['path'], $options['domain'], $options['secure'], $options['httpOnly']);
-		} else {
-			\setcookie(self::COOKIE_NAME, $value, $options);
-		}
+	private function sendCookieToBrowser(string $value, array $options): void {
+		\setcookie(self::COOKIE_NAME, $value, $options);
 	}
 
-	/**
-	 * @param ISession $session
-	 * @return ISession
-	 */
-	public function wrapSession(ISession $session) {
+	public function wrapSession(ISession $session): CryptoSessionData {
 		if (!($session instanceof CryptoSessionData)) {
 			return new CryptoSessionData($session, $this->crypto, $this->passphrase);
 		}

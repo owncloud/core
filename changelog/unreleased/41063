@@ -1,0 +1,11 @@
+Bugfix: LDAP groups will be properly applied to external storages
+
+The admin can setup external storages to be used by specific users and groups.
+When a LDAP group was setup, there were some issues so users belonging to
+that group weren't able to access the external storage even though they
+should.
+
+Now, users belonging to LDAP groups can access external storages configured
+to be accessed by those groups.
+
+https://github.com/owncloud/core/pull/41063

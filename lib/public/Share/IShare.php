@@ -21,6 +21,7 @@
 
 namespace OCP\Share;
 
+use OC\Share\Constants;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\Node;

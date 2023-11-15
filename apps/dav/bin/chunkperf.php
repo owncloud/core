@@ -19,8 +19,6 @@
  *
  */
 
-require '../../../../3rdparty/autoload.php';
-
 if ($argc !== 6) {
 	echo "Invalid number of arguments" . PHP_EOL;
 	exit;
