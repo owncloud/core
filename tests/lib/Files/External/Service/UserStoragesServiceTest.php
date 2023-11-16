@@ -31,9 +31,12 @@ use OC\Files\External\StorageConfig;
 use OC\Files\Filesystem;
 use OC\Files\Mount\MountPoint;
 use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\ILogger;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\Traits\UserTrait;
+use OCP\IUserSession;
 
 /**
  * @group DB
@@ -58,17 +61,16 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$this->userId = self::getUniqueID('user_');
 		$this->user = $this->createUser($this->userId, $this->userId);
 
-		/** @var \OCP\IUserSession|\PHPUnit\Framework\MockObject\MockObject $userSession */
-		$userSession = $this->createMock('\OCP\IUserSession');
+		/** @var IUserSession|MockObject $userSession */
+		$userSession = $this->createMock(IUserSession::class);
 		$userSession
-			->expects($this->any())
 			->method('getUser')
-			->will($this->returnValue($this->user));
+			->willReturn($this->user);
 
 		$this->service = new UserStoragesService($this->backendService, $this->dbConfig, $userSession, $this->mountCache, $this->crypto);
 	}
 
-	private function makeTestStorageData() {
+	private function makeTestStorageData(): StorageConfig {
 		return $this->makeStorageConfig([
 			'mountPoint' => 'mountpoint',
 			'backendIdentifier' => 'identifier:\Test\Files\External\Backend\DummyBackend',
@@ -84,7 +86,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		]);
 	}
 
-	public function testAddStorage() {
+	public function testAddStorage(): void {
 		$storage = $this->makeTestStorageData();
 
 		$newStorage = $this->service->addStorage($storage);
@@ -112,7 +114,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$this->assertEquals($id + 1, $nextStorage->getId());
 	}
 
-	public function testUpdateStorage() {
+	public function testUpdateStorage(): void {
 		$storage = $this->makeStorageConfig([
 			'mountPoint' => 'mountpoint',
 			'backendIdentifier' => 'identifier:\Test\Files\External\Backend\DummyBackend',
@@ -160,7 +162,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		);
 	}
 
-	public function testHooksRenameMountPoint() {
+	public function testHooksRenameMountPoint(): void {
 		$storage = $this->makeTestStorageData();
 		$storage = $this->service->addStorage($storage);
 
@@ -190,7 +192,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 
 	/**
 	 */
-	public function testGetAdminStorage() {
+	public function testGetAdminStorage(): void {
 		$this->expectException(\OCP\Files\External\NotFoundException::class);
 
 		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');
@@ -216,24 +218,24 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 			->getMock();
 		$storageCache->expects($this->any())
 			->method('getNumericId')
-			->will($this->returnValue($storageId));
+			->willReturn($storageId);
 
 		$cache = $this->getMockBuilder('\OC\Files\Cache\Cache')
 			->disableOriginalConstructor()
 			->getMock();
 		$cache->expects($this->any())
 			->method('getId')
-			->will($this->returnValue($rootId));
+			->willReturn($rootId);
 
 		$storage = $this->getMockBuilder('\OC\Files\Storage\Storage')
 			->disableOriginalConstructor()
 			->getMock();
 		$storage->expects($this->any())
 			->method('getStorageCache')
-			->will($this->returnValue($storageCache));
+			->willReturn($storageCache);
 		$storage->expects($this->any())
 			->method('getCache')
-			->will($this->returnValue($cache));
+			->willReturn($cache);
 
 		return $storage;
 	}
@@ -272,5 +274,26 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$this->assertEquals(12, $storage1Result2[0]->getStorageId());
 		$this->assertEquals('/bar/', $storage1Result2[0]->getMountPoint());
 		$this->assertNull($dbConfigService->getMountById($id));
+	}
+
+	public function testDeletePersonalStorageOtherUser(): void {
+		# alice is creating an external storage
+		$alice = $this->createUser('alice');
+		$this->user = $alice;
+		$aliceStorage = $this->makeTestStorageData();
+		$aliceStorage->setApplicableUsers([$alice->getUID()]);
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession
+			->method('getUser')
+			->willReturn($alice);
+
+		$aliceService = new UserStoragesService($this->backendService, $this->dbConfig, $userSession, $this->mountCache, $this->crypto);
+
+		$newStorage = $aliceService->addStorage($aliceStorage);
+
+		# currently logged-in user cannot delete Alice external storage
+		$this->expectException(NotFoundException::class);
+		$this->expectExceptionMessage('Storage with id "' . $newStorage->getId() . '" not found');
+		$this->service->removeStorage((string)$aliceStorage->getId());
 	}
 }

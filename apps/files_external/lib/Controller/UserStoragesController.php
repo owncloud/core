@@ -29,7 +29,6 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\IStorageConfig;
-use OCP\Files\External\Lib\Backend\Backend;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IUserStoragesService;
 use OCP\IL10N;
@@ -75,10 +74,8 @@ class UserStoragesController extends StoragesController {
 	}
 
 	protected function manipulateStorageConfig(IStorageConfig $storage) {
-		/** @var AuthMechanism */
 		$authMechanism = $storage->getAuthMechanism();
 		$authMechanism->manipulateStorageConfig($storage, $this->userSession->getUser());
-		/** @var Backend */
 		$backend = $storage->getBackend();
 		$backend->manipulateStorageConfig($storage, $this->userSession->getUser());
 	}
