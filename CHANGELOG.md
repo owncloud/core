@@ -27,6 +27,7 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Validate comment verb length: [#40965](https://github.com/owncloud/core/pull/40965)
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
 * Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
@@ -40,6 +41,12 @@ ownCloud admins and users.
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 
 ## Details
+
+* Bugfix - Validate comment verb length: [#40965](https://github.com/owncloud/core/pull/40965)
+
+   User input validation of comment verb
+
+   https://github.com/owncloud/core/pull/40965
 
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
 
