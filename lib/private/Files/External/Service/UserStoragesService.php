@@ -178,4 +178,13 @@ class UserStoragesService extends StoragesService implements IUserStoragesServic
 		}
 		return $result;
 	}
+
+	public function removeStorage($id) {
+		$mount = $this->dbConfig->getPersonalMountById($id, $this->getUser()->getUID());
+		if (!\is_array($mount)) {
+			throw new NotFoundException('Storage with id "' . $id . '" not found');
+		}
+
+		parent::removeStorage($id);
+	}
 }
