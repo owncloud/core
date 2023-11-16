@@ -20,7 +20,7 @@
  *
  */
 
-namespace Test\Settings\Controller;
+namespace Tests\Settings\Controller;
 
 use OC\AppFramework\Http;
 use OC\Authentication\Exceptions\InvalidTokenException;

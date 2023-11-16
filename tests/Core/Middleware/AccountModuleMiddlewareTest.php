@@ -19,7 +19,7 @@
  *
  */
 
-namespace Test\Core\Middleware;
+namespace Tests\Core\Middleware;
 
 use OC\Authentication\AccountModule\Manager;
 use OC\Core\Controller\LoginController;

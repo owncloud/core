@@ -19,7 +19,7 @@
  *
  */
 
-namespace Tests\Core\Command\Config;
+namespace Tests\Core\Command\Apps;
 
 use OC\Core\Command\App\GetPath;
 use Symfony\Component\Console\Tester\CommandTester;

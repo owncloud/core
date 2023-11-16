@@ -19,10 +19,11 @@
  *
  */
 
-namespace Test;
+namespace Test\Settings;
 
 use OC\Settings\SettingsManager;
 use OCP\License\ILicenseManager;
+use Test\TestCase;
 
 class SettingsManagerTest extends TestCase {
 	/** @var \OC\Settings\SettingsManager */

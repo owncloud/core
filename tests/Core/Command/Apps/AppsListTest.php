@@ -19,7 +19,7 @@
  *
  */
 
-namespace Tests\Core\Command\Config;
+namespace Tests\Core\Command\Apps;
 
 use OC\Core\Command\App\ListApps;
 use Symfony\Component\Console\Tester\CommandTester;

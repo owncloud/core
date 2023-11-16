@@ -19,7 +19,7 @@
  *
  */
 
-namespace Tests\Core\Command\User;
+namespace Tests\Core\Command\Maintenance;
 
 use OC\Core\Command\Maintenance\Repair;
 use Symfony\Component\Console\Application;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Share;
+namespace Test\Share\Filters;
 
 use OC\Share\Filters\MailNotificationFilter;
 use Test\TestCase;

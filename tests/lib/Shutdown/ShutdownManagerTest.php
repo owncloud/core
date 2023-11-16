@@ -19,13 +19,13 @@
  *
  */
 
-namespace Tests\Shutdown;
+namespace Test\Shutdown;
 
 use OC\Shutdown\ShutDownManager;
 use Test\TestCase;
 
 class ShutdownManagerTest extends TestCase {
-	public function testOrderedRun() {
+	public function testOrderedRun(): void {
 		/** @var ShutDownManager $manager */
 		$manager = $this->getMockBuilder(ShutDownManager::class)
 			->disableOriginalConstructor()

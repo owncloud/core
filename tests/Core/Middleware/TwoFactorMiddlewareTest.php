@@ -21,7 +21,7 @@
  *
  */
 
-namespace Test\Core\Middleware;
+namespace Tests\Core\Middleware;
 
 use OC\AppFramework\Http\Request;
 use OC\Authentication\TwoFactorAuth\Manager;

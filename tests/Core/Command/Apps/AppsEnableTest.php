@@ -19,7 +19,7 @@
  *
  */
 
-namespace Tests\Core\Command\Config;
+namespace Tests\Core\Command\Apps;
 
 use OC\Core\Command\App\Enable;
 use Symfony\Component\Console\Tester\CommandTester;
