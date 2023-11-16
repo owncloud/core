@@ -69,6 +69,7 @@ class CommentTest extends TestCase {
 			['Message', true],
 			['Verb', true],
 			['Verb', ''],
+			['Verb', str_repeat('x', IComment::MAX_VERB_LENGTH + 1)],
 			['ChildrenCount', true],
 		];
 	}

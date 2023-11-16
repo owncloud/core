@@ -27,7 +27,7 @@ use OCP\Comments\IllegalIDChangeException;
 use OCP\Comments\MessageTooLongException;
 
 class Comment implements IComment {
-	protected $data = [
+	protected array $data = [
 		'id'              => '',
 		'parentId'        => '0',
 		'topmostParentId' => '0',
@@ -45,7 +45,7 @@ class Comment implements IComment {
 	/**
 	 * Comment constructor.
 	 *
-	 * @param [] $data	optional, array with keys according to column names from
+	 * @param array|null $data	optional, array with keys according to column names from
 	 * 					the comments database scheme
 	 */
 	public function __construct(array $data = null) {
@@ -193,7 +193,7 @@ class Comment implements IComment {
 			throw new \InvalidArgumentException('String expected.');
 		}
 		$message = \trim($message);
-		if (\mb_strlen($message, 'UTF-8') > IComment::MAX_MESSAGE_LENGTH) {
+		if (\strlen($message) > IComment::MAX_MESSAGE_LENGTH) {
 			throw new MessageTooLongException('Comment message must not exceed ' . IComment::MAX_MESSAGE_LENGTH . ' characters');
 		}
 		$this->data['message'] = $message;
@@ -221,6 +221,11 @@ class Comment implements IComment {
 		if (!\is_string($verb) || !\trim($verb)) {
 			throw new \InvalidArgumentException('Non-empty String expected.');
 		}
+		$verb = \trim($verb);
+		if (\strlen($verb) > IComment::MAX_VERB_LENGTH) {
+			throw new \InvalidArgumentException('Comment verb must not exceed ' . IComment::MAX_VERB_LENGTH . ' characters');
+		}
+
 		$this->data['verb'] = \trim($verb);
 		return $this;
 	}

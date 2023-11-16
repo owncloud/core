@@ -31,6 +31,7 @@ namespace OCP\Comments;
  */
 interface IComment {
 	public const MAX_MESSAGE_LENGTH = 1000;
+	public const MAX_VERB_LENGTH = 64;
 
 	/**
 	 * returns the ID of the comment
