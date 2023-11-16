@@ -708,7 +708,7 @@ $CONFIG = [
  * "user001@my.dom.com" will be mapped to the same windows user as
  * "user001@not.mine.eu".
  *
- * - `CustomFile`: This mapping is reserved and should only be used explicit request of ownCloud support.
+ * - `CustomFile`: This mapping is reserved and should only be used on explicit request of ownCloud support.
  */
 'wnd.kerberos.servers' => [
   'server1' => [
