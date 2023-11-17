@@ -305,6 +305,8 @@ $CONFIG = [
  *
  * Possible key: `openid-connect` ARRAY
  *
+ * Possible key: `openid-connect.basic_auth_guest_only` BOOL
+ *
  *
  * **Configure OpenID Connect - all possible sub-keys**
  *
@@ -520,6 +522,7 @@ $CONFIG = [
  * Note: This app is for Enterprise customers only.
  *
  * Possible key: `wnd.activity.registerExtension` BOOL
+<<<<<<< HEAD
  *
  * Possible key: `wnd.activity.sendToSharees` BOOL
  *
