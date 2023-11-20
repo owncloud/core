@@ -778,7 +778,6 @@ def changelog(ctx):
                 "image": TOOLHIPPIE_CALENS,
                 "commands": [
                     "calens >| CHANGELOG.md",
-                    "calens -t changelog/CHANGELOG-html.tmpl >| CHANGELOG.html",
                 ],
             },
             {
