@@ -44,6 +44,7 @@ namespace OC\Share;
 use Doctrine\DBAL\Connection;
 use OC\Files\Filesystem;
 use OC\Group\Group;
+use OC\User\NoUserException;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IUser;
@@ -151,7 +152,7 @@ class Share extends Constants {
 		if ($userObject === null) {
 			$msg = "Backends provided no user object for $ownerUser";
 			\OC::$server->getLogger()->error($msg, ['app' => __CLASS__]);
-			throw new \OC\User\NoUserException($msg);
+			throw new NoUserException($msg);
 		}
 
 		$ownerUser = $userObject->getUID();
@@ -160,7 +161,7 @@ class Share extends Constants {
 		$shares = $sharePaths = $fileTargets = [];
 		$publicShare = false;
 		$remoteShare = false;
-		$source = -1;
+		$sources = [];
 		$cache = $mountPath = false;
 
 		$view = new \OC\Files\View('/' . $ownerUser . '/files');
@@ -172,8 +173,10 @@ class Share extends Constants {
 			$meta = $view->getFileInfo(\dirname($path));
 		}
 
+		$source = -1;
 		if ($meta !== false) {
 			$source = $meta['fileid'];
+			$sources[]= $source;
 			$cache = new \OC\Files\Cache\Cache($meta['storage']);
 
 			$mountPath = $meta->getMountPoint()->getMountPoint();
@@ -182,127 +185,96 @@ class Share extends Constants {
 			}
 		}
 
-		$connection = \OC::$server->getDatabaseConnection();
-
+		// let's get the parent for the next round
 		$paths = [];
-		$rejected = [];
-		# TODO: performance consideration - build list of all parent folders up front - don't loop
-		while ($source !== -1) {
-			// Fetch all shares with another user
-			if (!$returnUserPaths) {
-				$query = \OC_DB::prepare(
-					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
-					FROM
-					`*PREFIX*share`
-					WHERE
-					`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
-				);
-				$result = $query->execute([$source, self::SHARE_TYPE_USER]);
-			} else {
-				$query = \OC_DB::prepare(
-					'SELECT `parent`, `share_with`, `file_source`, `file_target`, `accepted`
-				FROM
-				`*PREFIX*share`
-				WHERE
-				`item_source` = ? AND `share_type` IN (?, ?) AND `item_type` IN (\'file\', \'folder\')'
-				);
-				$result = $query->execute([$source, self::SHARE_TYPE_USER, self::$shareTypeGroupUserUnique]);
-			}
-
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-			} else {
-				while ($row = $result->fetchRow()) {
-					if ((int)($row['accepted']) === Constants::STATE_REJECTED) {
-						$rejected[]= $row['parent'];
-						continue;
-					}
-					$shares[] = $row['share_with'];
-					if ($returnUserPaths) {
-						$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
-					}
-				}
-			}
-
-			// We also need to take group shares into account
-			$qb = $connection->getQueryBuilder();
-			$qb->select('share_with', 'file_source', 'file_target')
-				->from('share')
-				->where($qb->expr()->eq('item_source', $qb->createNamedParameter($source)))
-				->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_GROUP)))
-				->andWhere($qb->expr()->in('item_type', $qb->createNamedParameter(['file', 'folder'], Connection::PARAM_STR_ARRAY)));
-
-			if (!empty($rejected)) {
-				$qb->andWhere($qb->expr()->notIn('id', $qb->createNamedParameter($rejected, Connection::PARAM_INT_ARRAY)));
-			}
-			$result = $qb->execute();
-
-			while ($row = $result->fetch()) {
-				$usersInGroup = self::usersInGroup($row['share_with']);
-				$shares = \array_merge($shares, $usersInGroup);
-				if ($returnUserPaths) {
-					foreach ($usersInGroup as $user) {
-						if (!isset($fileTargets[(int) $row['file_source']][$user])) {
-							// When the user already has an entry for this file source
-							// the file is either shared directly with him as well, or
-							// he has an exception entry (because of naming conflict).
-							$fileTargets[(int) $row['file_source']][$user] = $row;
-						}
-					}
-				}
-			}
-
-			//check for public link shares
-			if (!$publicShare) {
-				$query = \OC_DB::prepare(
-					'
-					SELECT `share_with`
-					FROM `*PREFIX*share`
-					WHERE `item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')',
-					1
-				);
-
-				$result = $query->execute([$source, self::SHARE_TYPE_LINK]);
-
-				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
+		if ($recursive === true) {
+			while ($source !== -1) {
+				$meta = $cache->get((int)$source);
+				if ($meta !== false) {
+					$paths[$source] = $meta['path'];
+					$source = (int)$meta['parent'];
+					$sources[]= $source;
 				} else {
-					if ($result->fetchRow()) {
-						$publicShare = true;
-					}
+					\OC::$server->getLogger()->debug("Share::getUsersSharingFile: could not find $source in file cache.");
+					break;
 				}
-			}
-
-			//check for remote share
-			if (!$remoteShare) {
-				$query = \OC_DB::prepare(
-					'
-					SELECT `share_with`
-					FROM `*PREFIX*share`
-					WHERE `item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')',
-					1
-				);
-
-				$result = $query->execute([$source, self::SHARE_TYPE_REMOTE]);
-
-				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-				} else {
-					if ($result->fetchRow()) {
-						$remoteShare = true;
-					}
-				}
-			}
-
-			// let's get the parent for the next round
-			$meta = $cache->get((int)$source);
-			if ($recursive === true && $meta !== false) {
-				$paths[$source] = $meta['path'];
-				$source = (int)$meta['parent'];
-			} else {
-				$source = -1;
 			}
 		}
+
+		$connection = \OC::$server->getDatabaseConnection();
+
+		$rejected = [];
+		// Fetch all shares with another user
+		$qb = $connection->getQueryBuilder();
+		$qb->select('parent', 'share_with', 'file_source', 'file_target', 'accepted')
+			->from('share')
+			->where($qb->expr()->in('item_source', $qb->createNamedParameter($sources, Connection::PARAM_INT_ARRAY)))
+			->andWhere($qb->expr()->in('item_type', $qb->createNamedParameter(['file', 'folder'], Connection::PARAM_STR_ARRAY)));
+
+		if ($returnUserPaths) {
+			$qb->andWhere($qb->expr()->in('share_type', $qb->createNamedParameter([self::SHARE_TYPE_USER, self::$shareTypeGroupUserUnique], Connection::PARAM_INT_ARRAY)));
+		} else {
+			$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USER)));
+		}
+		$result = $qb->execute();
+		while ($row = $result->fetch()) {
+			if ((int)($row['accepted']) === Constants::STATE_REJECTED) {
+				$rejected[]= $row['parent'];
+				continue;
+			}
+			$shares[] = $row['share_with'];
+			if ($returnUserPaths) {
+				$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
+			}
+		}
+		$result->free();
+
+		// We also need to take group shares into account
+		$qb = $connection->getQueryBuilder();
+		$qb->select('share_with', 'file_source', 'file_target')
+			->from('share')
+			->where($qb->expr()->in('item_source', $qb->createNamedParameter($sources, Connection::PARAM_INT_ARRAY)))
+			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_GROUP)))
+			->andWhere($qb->expr()->in('item_type', $qb->createNamedParameter(['file', 'folder'], Connection::PARAM_STR_ARRAY)));
+
+		if (!empty($rejected)) {
+			$qb->andWhere($qb->expr()->notIn('id', $qb->createNamedParameter($rejected, Connection::PARAM_INT_ARRAY)));
+		}
+		$result = $qb->execute();
+
+		while ($row = $result->fetch()) {
+			$usersInGroup = self::usersInGroup($row['share_with']);
+			$shares = \array_merge($shares, $usersInGroup);
+			if ($returnUserPaths) {
+				foreach ($usersInGroup as $user) {
+					if (!isset($fileTargets[(int) $row['file_source']][$user])) {
+						// When the user already has an entry for this file source
+						// the file is either shared directly with him as well, or
+						// he has an exception entry (because of naming conflict).
+						$fileTargets[(int) $row['file_source']][$user] = $row;
+					}
+				}
+			}
+		}
+		$result->free();
+
+		//check for public link shares
+		$qb = $connection->getQueryBuilder();
+		$qb->select('share_with', 'share_type')
+			->from('share')
+			->where($qb->expr()->in('item_source', $qb->createNamedParameter($sources, Connection::PARAM_INT_ARRAY)))
+			->andWhere($qb->expr()->in('share_type', $qb->createNamedParameter([3, 6], Connection::PARAM_INT_ARRAY)))
+			->andWhere($qb->expr()->in('item_type', $qb->createNamedParameter(['file', 'folder'], Connection::PARAM_STR_ARRAY)));
+		$result = $qb->execute();
+		while ($row = $result->fetch()) {
+			if ((int)($row['share_type']) ===  self::SHARE_TYPE_LINK) {
+				$publicShare = true;
+			}
+			if ((int)($row['share_type']) ===  self::SHARE_TYPE_REMOTE) {
+				$remoteShare = true;
+			}
+		}
+		$result->free();
 
 		// Include owner in list of users, if requested
 		if ($includeOwner) {
@@ -314,30 +286,28 @@ class Share extends Constants {
 			$fileTargetIDs = \array_unique($fileTargetIDs);
 
 			if (!empty($fileTargetIDs)) {
-				$query = \OC_DB::prepare(
-					'SELECT `fileid`, `path`
-					FROM `*PREFIX*filecache`
-					WHERE `fileid` IN (' . \implode(',', $fileTargetIDs) . ')'
-				);
-				$result = $query->execute();
+				$qb = $connection->getQueryBuilder();
+				$qb->select('fileid', 'path')
+					->from('filecache')
+					->where($qb->expr()->in('fileid', $qb->createNamedParameter($fileTargetIDs, Connection::PARAM_INT_ARRAY)));
 
-				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-				} else {
-					while ($row = $result->fetchRow()) {
-						foreach ($fileTargets[$row['fileid']] as $uid => $shareData) {
-							if ($mountPath !== false) {
-								$sharedPath = $shareData['file_target'];
-								$sharedPath .= \substr($path, \strlen($mountPath) + \strlen($paths[$row['fileid']]));
-								$sharePaths[$uid] = $sharedPath;
-							} else {
-								$sharedPath = $shareData['file_target'];
-								$sharedPath .= \substr($path, \strlen($row['path']) -5);
-								$sharePaths[$uid] = $sharedPath;
-							}
+				$result = $qb->execute();
+
+				while ($row = $result->fetch()) {
+					foreach ($fileTargets[$row['fileid']] as $uid => $shareData) {
+						if ($mountPath !== false) {
+							$sharedPath = $shareData['file_target'];
+							# TODO: this produces spooky results
+							$sharedPath .= \substr($path, \strlen($mountPath) + \strlen($paths[$row['fileid']]));
+							$sharePaths[$uid] = $sharedPath;
+						} else {
+							$sharedPath = $shareData['file_target'];
+							$sharedPath .= \substr($path, \strlen($row['path']) -5);
+							$sharePaths[$uid] = $sharedPath;
 						}
 					}
 				}
+				$result->free();
 			}
 
 			if ($includeOwner) {
