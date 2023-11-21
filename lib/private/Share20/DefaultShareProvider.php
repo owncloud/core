@@ -398,6 +398,8 @@ class DefaultShareProvider implements IShareProvider {
 			}
 
 			if (!$group->inGroup($user)) {
+				$u = $user === null ? "No longer known user: $recipient" : $user->getUID();
+				\OC::$server->getLogger()->error("DefaultShareProvider: $u not in group " . $group->getGID());
 				throw new ProviderException('Recipient not in receiving group');
 			}
 

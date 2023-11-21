@@ -42,6 +42,8 @@ use OCP\IRequest;
  * @since 6.0.0
  */
 abstract class Controller {
+	use ControllerValidationTrait;
+
 	/**
 	 * app name
 	 * @var string

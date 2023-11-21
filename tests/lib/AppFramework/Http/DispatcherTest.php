@@ -26,12 +26,14 @@ namespace Test\AppFramework\Http;
 use OC\AppFramework\Http;
 use OC\AppFramework\Http\Dispatcher;
 use OC\AppFramework\Http\Request;
+use OC\AppFramework\Middleware\InputValidationMiddleware;
 use OC\AppFramework\Middleware\MiddlewareDispatcher;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
+use OCP\AppFramework\ValidationException;
 
 class TestController extends Controller {
 	/**
@@ -68,8 +70,18 @@ class TestController extends Controller {
 			'text' => [$int, $bool, $test, $test2]
 		]);
 	}
+
+	/**
+	 * @PublicPage
+	 */
+	public function doesNotValidate() {
+		throw new ValidationException();
+	}
 }
 
+/**
+ * @group DB
+ */
 class DispatcherTest extends \Test\TestCase {
 	/** @var MiddlewareDispatcher | \PHPUnit\Framework\MockObject\MockObject */
 	private $middlewareDispatcher;
@@ -494,6 +506,24 @@ class DispatcherTest extends \Test\TestCase {
 		// reflector is supposed to be called once
 		$this->dispatcherPassthrough();
 		$response = $this->dispatcher->dispatch($controller, 'exec');
+
+		$this->assertEquals('{"text":[3,true,4,1]}', $response[3]);
+	}
+	public function testHandlingValidationException(): void {
+		$this->request = new Request();
+		$middlewareDispatcher = \OC::$server->getAppContainer('app')->query('MiddlewareDispatcher');
+
+		$this->dispatcher = new Dispatcher(
+			$this->http,
+			$middlewareDispatcher,
+			$this->reflector,
+			$this->request
+		);
+		$controller = new TestController('app', $this->request);
+
+		// reflector is supposed to be called once
+		$this->dispatcherPassthrough();
+		$response = $this->dispatcher->dispatch($controller, 'doesNotValidate');
 
 		$this->assertEquals('{"text":[3,true,4,1]}', $response[3]);
 	}

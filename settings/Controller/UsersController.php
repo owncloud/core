@@ -41,6 +41,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\AppFramework\ValidationException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IGroup;
@@ -424,16 +425,11 @@ class UsersController extends Controller {
 	 * @param array $groups
 	 * @param string $email
 	 * @return DataResponse
+	 * @throws ValidationException
 	 */
 	public function create($username, $password, array $groups= [], $email='') {
-		$resp = $this->validateString($username, 255);
-		if ($resp) {
-			return $resp;
-		}
-		$resp = $this->validateEMail($email, true);
-		if ($resp) {
-			return $resp;
-		}
+		$this->validateString($username, 255);
+		$this->validateEMail($email, true);
 
 		$currentUser = $this->userSession->getUser();
 
@@ -939,10 +935,7 @@ class UsersController extends Controller {
 			}
 		}
 
-		$resp = $this->validateEMail($mailAddress);
-		if ($resp) {
-			return $resp;
-		}
+		$this->validateEMail($mailAddress);
 
 		if (!$user) {
 			return new DataResponse(
@@ -1069,8 +1062,10 @@ class UsersController extends Controller {
 	 * @param string $username
 	 * @param string $displayName
 	 * @return DataResponse
+	 * @throws ValidationException
 	 */
 	public function setDisplayName($username, $displayName) {
+		$this->validateString($displayName, 64);
 		$currentUser = $this->userSession->getUser();
 
 		if ($username === null) {
@@ -1167,12 +1162,10 @@ class UsersController extends Controller {
 	 * @param string $id
 	 * @param string $mailAddress
 	 * @return JSONResponse
+	 * @throws ValidationException
 	 */
 	public function setEmailAddress($id, $mailAddress) {
-		$resp = $this->validateEMail($mailAddress);
-		if ($resp) {
-			return $resp;
-		}
+		$this->validateEMail($mailAddress);
 		$user = $this->userManager->get($id);
 		'@phan-var \OC\Group\Manager $this->groupManager';
 		if ($this->isAdmin ||
@@ -1307,31 +1300,6 @@ class UsersController extends Controller {
 				]
 			],
 			Http::STATUS_OK
-		);
-	}
-
-	private function validateString(string $string, int $max) {
-		if (\strlen($string) > $max) {
-			return $this->buildUnprocessableEntityResponse((string)$this->l10n->t('Data too long'));
-		}
-	}
-
-	private function validateEMail(string $email, bool $allowEmpty = false): ?DataResponse {
-		if ($allowEmpty && $email === '') {
-			return null;
-		}
-		if ($email !== '' && !$this->mailer->validateMailAddress($email)) {
-			return $this->buildUnprocessableEntityResponse((string)$this->l10n->t('Invalid mail address'));
-		}
-		return null;
-	}
-
-	private function buildUnprocessableEntityResponse(string $message): DataResponse {
-		return new DataResponse(
-			[
-				'message' => $message
-			],
-			Http::STATUS_UNPROCESSABLE_ENTITY
 		);
 	}
 }

@@ -48,6 +48,8 @@ function changeDisplayName () {
 				$('#newdisplayname').val(data.data.displayName);
 			}
 			OC.msg.finishedSaving('#displaynameform .msg', data);
+		}).fail(function(result){
+			OC.msg.finishedSaving('#displaynameform .msg', result.responseJSON);
 		});
 	}
 }

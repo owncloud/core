@@ -22,6 +22,7 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\IAppContainer;
+use OCP\AppFramework\ValidationException;
 use OCP\Files\NotFoundException;
 use OCP\IRequest;
 use OCP\IUserManager;
@@ -1627,16 +1628,15 @@ class UsersControllerTest extends TestCase {
 	 * test if an invalid mail result in a failure response
 	 */
 	public function testCreateUnsuccessfulWithInvalidEmailAdmin(): void {
+		$this->expectException(ValidationException::class);
 		$this->container['IsAdmin'] = true;
+		$this->container['UsersController']->create('foo', 'password', [], 'invalidMailAddress');
+	}
 
-		$expectedResponse = new DataResponse(
-			[
-				'message' => 'Invalid mail address',
-			],
-			Http::STATUS_UNPROCESSABLE_ENTITY
-		);
-		$response = $this->container['UsersController']->create('foo', 'password', [], 'invalidMailAddress');
-		$this->assertEquals($expectedResponse, $response);
+	public function testTooLongDisplayname(): void {
+		$this->expectException(ValidationException::class);
+		$this->container['IsAdmin'] = true;
+		$this->container['UsersController']->setDisplayName('foo', str_repeat('x', 65));
 	}
 
 	/**
@@ -1685,11 +1685,6 @@ class UsersControllerTest extends TestCase {
 			->method('setFrom')
 			->with(['no-reply@owncloud.com' => null]);
 
-		$this->container['Mailer']
-			->expects($this->once())
-			->method('validateMailAddress')
-			->with('validMail@Adre.ss')
-			->willReturn(true);
 		$this->container['Mailer']
 			->expects($this->once())
 			->method('createMessage')
@@ -2135,8 +2130,6 @@ class UsersControllerTest extends TestCase {
 			->method('getUser')
 			->willReturn($iUser);
 
-		$iMailer->expects($this->once())->method('validateMailAddress')
-			->willReturn(true);
 		$mailMessage = $this->createMock(Message::class);
 		$iMailer->expects($this->once())
 			->method('createMessage')
@@ -2260,6 +2253,9 @@ class UsersControllerTest extends TestCase {
 			->method('send')
 			->with($message);
 
+		if ($responseCode === Http::STATUS_UNPROCESSABLE_ENTITY) {
+			$this->expectException(ValidationException::class);
+		}
 		$response = $this->container['UsersController']->setMailAddress($user->getUID(), $mailAddress);
 		$this->assertSame($responseCode, $response->getStatus());
 	}
@@ -2909,14 +2905,8 @@ class UsersControllerTest extends TestCase {
 	}
 
 	public function testCreateSuccessfulWithEmailAndUsername(): void {
-		$this->container['Mailer']->expects($this->once())
-			->method('validateMailAddress')
-			->willReturn(true);
-
 		$user = $this->getMockBuilder(User::class)
 			->disableOriginalConstructor()->getMock();
-
-		//$user = $this->createMock(IUser::class);
 
 		$this->container['UserSession']->method('getUser')
 			->willReturn($user);

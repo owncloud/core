@@ -34,6 +34,7 @@ use OC;
 use OC\AppFramework\Http;
 use OC\AppFramework\Http\Dispatcher;
 use OC\AppFramework\Http\Output;
+use OC\AppFramework\Middleware\InputValidationMiddleware;
 use OC\AppFramework\Middleware\MiddlewareDispatcher;
 use OC\AppFramework\Middleware\Security\CORSMiddleware;
 use OC\AppFramework\Middleware\Security\SecurityMiddleware;
@@ -399,6 +400,7 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			$dispatcher->registerMiddleware($c['SecurityMiddleware']);
 			$dispatcher->registerMiddleware($c['TwoFactorMiddleware']);
 			$dispatcher->registerMiddleware($c->query(AccountModuleMiddleware::class));
+			$dispatcher->registerMiddleware($c->query(InputValidationMiddleware::class));
 
 			foreach ($middleWares as $middleWare) {
 				$dispatcher->registerMiddleware($c[$middleWare]);
