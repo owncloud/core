@@ -305,8 +305,6 @@ $CONFIG = [
  *
  * Possible key: `openid-connect` ARRAY
  *
- * Possible key: `openid-connect.basic_auth_guest_only` BOOL
- *
  *
  * **Configure OpenID Connect - all possible sub-keys**
  *
@@ -484,13 +482,6 @@ $CONFIG = [
 	  // do not verify tls host or peer
 	'insecure' => true
 ],
-
-/**
- * Authenticate guests only with basic auth
- * Only guests are able to log in using basic auth. Other users will need to use
- * another auth mechanisms (such as OIDC).
- */
-'openid-connect.basic_auth_guest_only' => false,
 
 /**
  * App: Richdocuments
