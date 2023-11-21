@@ -40,7 +40,6 @@ use OC\Core\Controller\LostController;
 use OC\Core\Controller\RolesController;
 use OC\Core\Controller\TokenController;
 use OC\Core\Controller\TwoFactorChallengeController;
-use OC\Core\Controller\UserController;
 use OC\Core\Controller\UserSyncController;
 use OC\User\AccountMapper;
 use OC\User\SyncService;
@@ -98,14 +97,6 @@ class Application extends App {
 				$c->query('TimeFactory'),
 				$c->query('Logger'),
 				$c->query('UserSession')
-			);
-		});
-		$container->registerService('UserController', static function (SimpleContainer $c) {
-			return new UserController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('UserManager'),
-				$c->query('Defaults')
 			);
 		});
 		$container->registerService('AvatarController', static function (SimpleContainer $c) {
