@@ -1,0 +1,9 @@
+Bugfix: Fix expiration date and eliminate duplicate entries in file list
+
+We've addressed two visual issues in the web ui file list. 
+Firstly, the problem where the start of the epoch was mistakenly displayed as an expiration date in the shared file list
+has been resolved.
+Secondly, we've tackled the pesky bug causing duplicate entries to appear when switching between shared tabs and
+clicking on a file list entry.
+
+https://github.com/owncloud/core/pull/41056

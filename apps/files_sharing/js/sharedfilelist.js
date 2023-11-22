@@ -93,7 +93,14 @@
 			// add row with expiration date for link only shares - influenced by _createRow of filelist
 			if (this._linksOnly) {
 				var expirationTimestamp = 0;
-				if(fileData.shares && fileData.shares[0].expiration !== null) {
+				/**
+    				 * The endpoint returns 'null' for the expiration if none has been set.
+				 * In this context, we also need to check for a value of '0'. 
+    				 * This is important because after the element gets updated from JavaScript events, the data will be fetched from the jQuery data attributes, rather than from the endpoint. 
+				 * A few lines down in the code, you can find the statement '$tr.attr('data-expiration', expirationTimestamp);,' which will set the value to '0' if no expiration has been previously set. 
+    				 * Therefore, we need to account for these two different conditions.
+				 */
+				if(fileData.shares && fileData.shares[0].expiration !== null && fileData.shares[0].expiration !== 0) {
 					expirationTimestamp = moment(fileData.shares[0].expiration).endOf('day').valueOf();
 				}
 				$tr.attr('data-expiration', expirationTimestamp);
