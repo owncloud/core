@@ -106,7 +106,7 @@ class Account extends Entity {
 	 * @param string[] $terms
 	 */
 	public function setSearchTerms(array $terms) {
-		if (\array_diff($terms, $this->terms)) {
+		if (!empty(\array_diff($terms, $this->terms)) || !empty(\array_diff($this->terms, $terms))) {
 			$this->terms = $terms;
 			$this->_termsChanged = true;
 		}
