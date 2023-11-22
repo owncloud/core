@@ -1,0 +1,8 @@
+Enhancement: Update config.apps.sample.php
+
+Comments describing the configuration variables related to kerberos and windows_network_drive 
+are now updated and in sync with published online documentation.
+
+https://github.com/owncloud/core/pull/41104
+https://github.com/owncloud/core/pull/41106
+https://github.com/owncloud/core/pull/41109
