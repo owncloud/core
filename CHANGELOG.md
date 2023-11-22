@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.13.3](#changelog-for-owncloud-core-10133-2023-11-17)
 * [Changelog for 10.13.2](#changelog-for-owncloud-core-10132-2023-10-04)
 * [Changelog for 10.13.1](#changelog-for-owncloud-core-10131-2023-09-04)
 * [Changelog for 10.13.0](#changelog-for-owncloud-core-10130-2023-08-22)
@@ -23,20 +24,17 @@
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.13.2...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.13.3...master
 
 ## Summary
 
 * Bugfix - Validate comment verb length: [#40965](https://github.com/owncloud/core/pull/40965)
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
-* Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
-* Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
 * Bugfix - LDAP groups will be properly applied to external storages: [#41063](https://github.com/owncloud/core/pull/41063)
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
-* Bugfix - Users can only delete their own external storage configurations: [#41092](https://github.com/owncloud/core/pull/41092)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 
@@ -56,21 +54,6 @@ ownCloud admins and users.
    https://github.com/owncloud/core/issues/39922
    https://github.com/owncloud/core/pull/41050
 
-* Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
-
-   One of the filters of the preview cleanup job requires casting a filename, which
-   is supposed to contain only digits, to an integer. The expected execution of the
-   DB query should have filtered the results so the condition above should be true,
-   but the DB's query planner might choose to apply the filters in a different way,
-   so we could potentially cast random strings to integer. For the case of
-   postgresql, the cast function will cause an error if the string can't be casted
-   to an integer (because it has non-digit chars, for example)
-
-   This situation is fixed for all the supported DBs, so we don't require the query
-   planner to execute the query in any particular way.
-
-   https://github.com/owncloud/core/pull/41051
-
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
 
    Before user information was stored in the browser global object. In some rare
@@ -79,13 +62,6 @@ ownCloud admins and users.
 
    https://github.com/owncloud/enterprise/issues/5873
    https://github.com/owncloud/core/pull/41054
-
-* Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
-
-   The https://github.com/owncloud/core/pull/41014 PR introduced performance
-   problems for large installation. We're reverting that change
-
-   https://github.com/owncloud/core/pull/41059
 
 * Bugfix - LDAP groups will be properly applied to external storages: [#41063](https://github.com/owncloud/core/pull/41063)
 
@@ -118,10 +94,6 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41077
    https://github.com/owncloud/core/pull/41075
 
-* Bugfix - Users can only delete their own external storage configurations: [#41092](https://github.com/owncloud/core/pull/41092)
-
-   https://github.com/owncloud/core/pull/41092
-
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
    The following have been updated: - deepdiver/zipstreamer (2.0.0 to v2.0.2) -
@@ -145,6 +117,58 @@ ownCloud admins and users.
    reported via the activity app.
 
    https://github.com/owncloud/core/pull/41078
+
+# Changelog for ownCloud Core [10.13.3] (2023-11-17)
+
+The following sections list the changes in ownCloud core 10.13.3 relevant to
+ownCloud admins and users.
+
+[10.13.3]: https://github.com/owncloud/core/compare/v10.13.2...v10.13.3
+
+## Summary
+
+* Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
+* Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
+* Bugfix - Users can only delete their own external storage configurations: [#41092](https://github.com/owncloud/core/pull/41092)
+* Enhancement - Update config.apps.sample.php: [#41104](https://github.com/owncloud/core/pull/41104)
+
+## Details
+
+* Bugfix - Fix potential issue with the PreviewCleanup job in postgresql: [#41051](https://github.com/owncloud/core/pull/41051)
+
+   One of the filters of the preview cleanup job requires casting a filename, which
+   is supposed to contain only digits, to an integer. The expected execution of the
+   DB query should have filtered the results so the condition above should be true,
+   but the DB's query planner might choose to apply the filters in a different way,
+   so we could potentially cast random strings to integer. For the case of
+   postgresql, the cast function will cause an error if the string can't be casted
+   to an integer (because it has non-digit chars, for example)
+
+   This situation is fixed for all the supported DBs, so we don't require the query
+   planner to execute the query in any particular way.
+
+   https://github.com/owncloud/core/pull/41051
+
+* Bugfix - Revert https://github.com/owncloud/core/pull/41014 for performance: [#41059](https://github.com/owncloud/core/pull/41059)
+
+   The https://github.com/owncloud/core/pull/41014 PR introduced performance
+   problems for large installation. We're reverting that change
+
+   https://github.com/owncloud/core/pull/41059
+
+* Bugfix - Users can only delete their own external storage configurations: [#41092](https://github.com/owncloud/core/pull/41092)
+
+   https://github.com/owncloud/core/pull/41092
+
+* Enhancement - Update config.apps.sample.php: [#41104](https://github.com/owncloud/core/pull/41104)
+
+   Comments describing the configuration variables related to kerberos and
+   windows_network_drive are now updated and in sync with published online
+   documentation.
+
+   https://github.com/owncloud/core/pull/41104
+   https://github.com/owncloud/core/pull/41106
+   https://github.com/owncloud/core/pull/41109
 
 # Changelog for ownCloud Core [10.13.2] (2023-10-04)
 
