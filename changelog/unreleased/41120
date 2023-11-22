@@ -1,0 +1,8 @@
+Bugfix: account terms can be removed if they differ with the ones stored
+
+Search terms for the account can now be removed from the DB if they differ
+with the ones stored in the DB.
+This can happen with the user_ldap app, when user search attributes are
+removed from the connection configuration in the LDAP wizard.
+
+https://github.com/owncloud/core/pull/41120
