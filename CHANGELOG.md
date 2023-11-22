@@ -31,6 +31,7 @@ ownCloud admins and users.
 * Bugfix - Validate comment verb length: [#40965](https://github.com/owncloud/core/pull/40965)
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
+* Bugfix - Fix expiration date and eliminate duplicate entries in file list: [#41056](https://github.com/owncloud/core/pull/41056)
 * Bugfix - LDAP groups will be properly applied to external storages: [#41063](https://github.com/owncloud/core/pull/41063)
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
@@ -62,6 +63,16 @@ ownCloud admins and users.
 
    https://github.com/owncloud/enterprise/issues/5873
    https://github.com/owncloud/core/pull/41054
+
+* Bugfix - Fix expiration date and eliminate duplicate entries in file list: [#41056](https://github.com/owncloud/core/pull/41056)
+
+   We've addressed two visual issues in the web ui file list. Firstly, the problem
+   where the start of the epoch was mistakenly displayed as an expiration date in
+   the shared file list has been resolved. Secondly, we've tackled the pesky bug
+   causing duplicate entries to appear when switching between shared tabs and
+   clicking on a file list entry.
+
+   https://github.com/owncloud/core/pull/41056
 
 * Bugfix - LDAP groups will be properly applied to external storages: [#41063](https://github.com/owncloud/core/pull/41063)
 
