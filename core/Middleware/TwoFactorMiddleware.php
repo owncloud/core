@@ -82,11 +82,6 @@ class TwoFactorMiddleware extends Middleware {
 	 * @throws UserAlreadyLoggedInException
 	 */
 	public function beforeController($controller, $methodName) {
-		if ($this->reflector->hasAnnotation('PublicPage')) {
-			// Don't block public pages
-			return;
-		}
-
 		if ($controller instanceof LoginController && $methodName === 'logout') {
 			// Don't block the logout page, to allow canceling the 2FA
 			return;
@@ -98,22 +93,30 @@ class TwoFactorMiddleware extends Middleware {
 				throw new \UnexpectedValueException('User isLoggedIn but session does not contain user');
 			}
 			if ($this->twoFactorManager->isTwoFactorAuthenticated($user)) {
-				$this->checkTwoFactor($controller, $methodName);
+				$this->checkTwoFactor($controller);
 			} elseif ($controller instanceof TwoFactorChallengeController) {
 				// two-factor authentication is in progress.
 				throw new UserAlreadyLoggedInException('Grant access to the two-factor controllers');
 			}
+			# user is fine
+			return;
 		}
+		if ($this->reflector->hasAnnotation('PublicPage')) {
+			// Don't block public pages
+			return;
+		}
+
+		# no user in session and also not on a public page - no 2fa required
+
 		// TODO: dont check/enforce 2FA if a auth token is used
 	}
 
 	/**
 	 * @param $controller
-	 * @param $methodName
 	 * @throws TwoFactorAuthRequiredException
 	 * @throws UserAlreadyLoggedInException
 	 */
-	private function checkTwoFactor($controller, $methodName) {
+	private function checkTwoFactor($controller): void {
 		// If two-factor auth is in progress disallow access to any controllers
 		// defined within "LoginController".
 		$needsSecondFactor = $this->twoFactorManager->needsSecondFactor();

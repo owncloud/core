@@ -24,33 +24,37 @@
 namespace Tests\Core\Middleware;
 
 use OC\AppFramework\Http\Request;
+use OC\Authentication\Exceptions\TwoFactorAuthRequiredException;
+use OC\Authentication\Exceptions\UserAlreadyLoggedInException;
 use OC\Authentication\TwoFactorAuth\Manager;
 use OC\Core\Middleware\TwoFactorMiddleware;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Utility\IControllerMethodReflector;
 use OCP\IConfig;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
 use OCP\Security\ISecureRandom;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
+use OCP\IUser;
+use OC\Core\Controller\TwoFactorChallengeController;
 
 class TwoFactorMiddlewareTest extends TestCase {
-	/** @var Manager|\PHPUnit\Framework\MockObject\MockObject */
+	/** @var Manager|MockObject */
 	private $twoFactorManager;
 
-	/** @var IUserSession|\PHPUnit\Framework\MockObject\MockObject */
+	/** @var IUserSession|MockObject */
 	private $userSession;
 
-	/** @var IURLGenerator|\PHPUnit\Framework\MockObject\MockObject */
+	/** @var IURLGenerator|MockObject */
 	private $urlGenerator;
 
-	/** @var IControllerMethodReflector|\PHPUnit\Framework\MockObject\MockObject */
+	/** @var IControllerMethodReflector|MockObject */
 	private $reflector;
 
-	/** @var Request */
-	private $request;
+	private Request $request;
 
-	/** @var TwoFactorMiddleware */
-	private $middleware;
+	private TwoFactorMiddleware $middleware;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -74,14 +78,14 @@ class TwoFactorMiddlewareTest extends TestCase {
 		$this->middleware = new TwoFactorMiddleware($this->twoFactorManager, $this->userSession, $this->urlGenerator, $this->reflector, $this->request);
 	}
 
-	public function testBeforeControllerNotLoggedIn() {
+	public function testBeforeControllerNotLoggedIn(): void {
 		$this->reflector->expects($this->once())
 			->method('hasAnnotation')
 			->with('PublicPage')
-			->will($this->returnValue(false));
+			->willReturn(false);
 		$this->userSession->expects($this->once())
 			->method('isLoggedIn')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$this->userSession->expects($this->never())
 			->method('getUser');
@@ -89,117 +93,131 @@ class TwoFactorMiddlewareTest extends TestCase {
 		$this->middleware->beforeController(null, 'index');
 	}
 
-	public function testBeforeControllerPublicPage() {
+	/**
+	 * @throws TwoFactorAuthRequiredException
+	 * @throws UserAlreadyLoggedInException
+	 */
+	public function testBeforeControllerPublicPage(): void {
 		$this->reflector->expects($this->once())
 			->method('hasAnnotation')
 			->with('PublicPage')
-			->will($this->returnValue(true));
-		$this->userSession->expects($this->never())
-			->method('isLoggedIn');
+			->willReturn(true);
+		$this->userSession->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(false);
 
 		$this->middleware->beforeController(null, 'create');
 	}
 
-	public function testBeforeControllerNoTwoFactorCheckNeeded() {
-		$user = $this->createMock('\OCP\IUser');
+	/**
+	 * @throws TwoFactorAuthRequiredException
+	 * @throws UserAlreadyLoggedInException
+	 */
+	public function testBeforeControllerNoTwoFactorCheckNeeded(): void {
+		$user = $this->createMock(IUser::class);
 
-		$this->reflector->expects($this->once())
+		$this->reflector->expects($this->never())
 			->method('hasAnnotation')
-			->with('PublicPage')
-			->will($this->returnValue(false));
+			->with('PublicPage');
 		$this->userSession->expects($this->once())
 			->method('isLoggedIn')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->userSession->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($user));
+			->willReturn($user);
 		$this->twoFactorManager->expects($this->once())
 			->method('isTwoFactorAuthenticated')
 			->with($user)
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$this->middleware->beforeController(null, 'index');
 	}
 
 	/**
+	 * @throws UserAlreadyLoggedInException
 	 */
-	public function testBeforeControllerTwoFactorAuthRequired() {
-		$this->expectException(\OC\Authentication\Exceptions\TwoFactorAuthRequiredException::class);
+	public function testBeforeControllerTwoFactorAuthRequired(): void {
+		$this->expectException(TwoFactorAuthRequiredException::class);
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock(IUser::class);
 
-		$this->reflector->expects($this->once())
+		$this->reflector->expects($this->never())
 			->method('hasAnnotation')
-			->with('PublicPage')
-			->will($this->returnValue(false));
+			->with('PublicPage');
 		$this->userSession->expects($this->once())
 			->method('isLoggedIn')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->userSession->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($user));
+			->willReturn($user);
 		$this->twoFactorManager->expects($this->once())
 			->method('isTwoFactorAuthenticated')
 			->with($user)
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->twoFactorManager->expects($this->once())
 			->method('needsSecondFactor')
-			->will($this->returnValue(true));
+			->willReturn(true);
 
 		$this->middleware->beforeController(null, 'index');
 	}
 
 	/**
+	 * @throws TwoFactorAuthRequiredException
 	 */
-	public function testBeforeControllerUserAlreadyLoggedIn() {
-		$this->expectException(\OC\Authentication\Exceptions\UserAlreadyLoggedInException::class);
+	public function testBeforeControllerUserAlreadyLoggedIn(): void {
+		$this->expectException(UserAlreadyLoggedInException::class);
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->createMock(IUser::class);
 
-		$this->reflector->expects($this->once())
+		$this->reflector->expects($this->never())
 			->method('hasAnnotation')
-			->with('PublicPage')
-			->will($this->returnValue(false));
+			->with('PublicPage');
 		$this->userSession->expects($this->once())
 			->method('isLoggedIn')
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->userSession->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($user));
+			->willReturn($user);
 		$this->twoFactorManager->expects($this->once())
 			->method('isTwoFactorAuthenticated')
 			->with($user)
-			->will($this->returnValue(true));
+			->willReturn(true);
 		$this->twoFactorManager->expects($this->once())
 			->method('needsSecondFactor')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
-		$twoFactorChallengeController = $this->getMockBuilder('\OC\Core\Controller\TwoFactorChallengeController')
+		$twoFactorChallengeController = $this->getMockBuilder(TwoFactorChallengeController::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->middleware->beforeController($twoFactorChallengeController, 'index');
 	}
 
-	public function testAfterExceptionTwoFactorAuthRequired() {
-		$ex = new \OC\Authentication\Exceptions\TwoFactorAuthRequiredException();
+	/**
+	 * @throws \Exception
+	 */
+	public function testAfterExceptionTwoFactorAuthRequired(): void {
+		$ex = new TwoFactorAuthRequiredException();
 
 		$this->urlGenerator->expects($this->once())
 			->method('linkToRoute')
 			->with('core.TwoFactorChallenge.selectChallenge')
-			->will($this->returnValue('test/url'));
-		$expected = new \OCP\AppFramework\Http\RedirectResponse('test/url');
+			->willReturn('test/url');
+		$expected = new RedirectResponse('test/url');
 
 		$this->assertEquals($expected, $this->middleware->afterException(null, 'index', $ex));
 	}
 
-	public function testAfterException() {
-		$ex = new \OC\Authentication\Exceptions\UserAlreadyLoggedInException();
+	/**
+	 * @throws \Exception
+	 */
+	public function testAfterException(): void {
+		$ex = new UserAlreadyLoggedInException();
 
 		$this->urlGenerator->expects($this->once())
 			->method('getAbsoluteUrl')
 			->with('')
-			->will($this->returnValue('http://cloud.local/'));
-		$expected = new \OCP\AppFramework\Http\RedirectResponse('http://cloud.local/');
+			->willReturn('http://cloud.local/');
+		$expected = new RedirectResponse('http://cloud.local/');
 
 		$this->assertEquals($expected, $this->middleware->afterException(null, 'index', $ex));
 	}
