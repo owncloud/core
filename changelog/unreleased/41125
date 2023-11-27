@@ -1,0 +1,5 @@
+Bugfix: "user:list -a" occ command now correctly displays user's creation time
+
+Previously, the "user:list -a" occ command was not correctly returning the user's creation time but rather the path to the user's home directory. This has been now fixed.
+
+https://github.com/owncloud/core/pull/41125
