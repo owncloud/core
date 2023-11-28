@@ -141,7 +141,7 @@ class ListUsers extends Base {
 							break;
 						case 'creationtime':
 							$this->add($row, 'creationTime', $user->getCreationTime(), $useKey);
-							// no break
+							break;
 						case 'home':
 							$this->add($row, 'home', $user->getHome(), $useKey);
 							break;
