@@ -111,9 +111,10 @@ ownCloud admins and users.
    firebase/php-jwt (6.8.1 to 6.9.0) - google/apiclient-services (v0.319.0 to
    v0.325.0) - google/auth (v1.31.0 to v1.32.1) - laravel/serializable-closure
    (v1.3.1 to v1.3.3) - league/mime-type-detection (1.13.0 to 1.14.0) -
-   monolog/monolog (2.9.1 to 2.9.2) - sabre/dav (4.4.0 to 4.5.1) - sabre/vobject
-   (4.5.3 to 4.5.4) - symfony/console (5.4.28 to 5.4.31) - symfony/string (5.4.29
-   to 5.4.31) - symfony/translation (5.4.24 to 5.4.31)
+   monolog/monolog (2.9.1 to 2.9.2) - phpseclib/phpseclib (3.0.33 to 3.0.34) -
+   sabre/dav (4.4.0 to 4.5.1) - sabre/vobject (4.5.3 to 4.5.4) - symfony/console
+   (5.4.28 to 5.4.31) - symfony/string (5.4.29 to 5.4.31) - symfony/translation
+   (5.4.24 to 5.4.31)
 
    https://github.com/owncloud/core/pull/41033
    https://github.com/owncloud/core/pull/41071
@@ -122,6 +123,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41101
    https://github.com/owncloud/core/pull/41102
    https://github.com/owncloud/core/pull/41121
+   https://github.com/owncloud/core/pull/41126
 
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 
