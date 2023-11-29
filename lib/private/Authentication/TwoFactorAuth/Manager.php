@@ -80,7 +80,7 @@ class Manager {
 	 * @return boolean
 	 */
 	public function isTwoFactorAuthenticated(IUser $user) {
-                $twoFactorEnabled = ((int) $this->config->getUserValue($user->getUID(), 'core', 'two_factor_auth_disabled', 0)) === 0;
+		$twoFactorEnabled = ((int) $this->config->getUserValue($user->getUID(), 'core', 'two_factor_auth_disabled', 0)) === 0;
 		if ($this->isTwoFactorEnforcedForUser($user) && $twoFactorEnabled) {
 			return \count($this->getProviders($user)) > 0;
 		}

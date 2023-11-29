@@ -1,0 +1,5 @@
+Bugfix: Fix "twofactorauth:*" occ commands in case 2FA is globally enforced
+
+Previously, the "twofactorauth:*" occ commands did not work correctly in case 2FA was globally enforced. This has been now fixed.
+
+https://github.com/owncloud/core/pull/41128
