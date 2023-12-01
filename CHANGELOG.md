@@ -36,6 +36,7 @@ ownCloud admins and users.
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
+* Bugfix - Check 2FA on controllers which are accessible publicly and authenticated: [#41123](https://github.com/owncloud/core/pull/41123)
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
@@ -105,6 +106,10 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41077
    https://github.com/owncloud/core/pull/41075
+
+* Bugfix - Check 2FA on controllers which are accessible publicly and authenticated: [#41123](https://github.com/owncloud/core/pull/41123)
+
+   https://github.com/owncloud/core/pull/41123
 
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
 
