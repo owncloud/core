@@ -1,0 +1,3 @@
+Bugfix: check 2FA on controllers which are accessible publicly and authenticated
+
+https://github.com/owncloud/core/pull/41123
