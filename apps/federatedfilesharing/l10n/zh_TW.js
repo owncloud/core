@@ -24,6 +24,7 @@ OC.L10N.register(
     "Periodically synchronize outdated federated shares for active users" : "定期同步活動用戶的過期的聯合共享",
     "Allow users on this server to send shares to other servers" : "允許這台伺服器上的使用者發送分享給其他伺服器",
     "Allow users on this server to receive shares from other servers" : "允許這台伺服器上的使用者發送接收來自其他伺服器的分享",
+    "Automatically accept federated shares from trusted servers" : "可信的自動地接受自動接受來自受信任伺服器的聯合共享",
     "Federated Cloud" : "聯盟式雲端",
     "Your Federated Cloud ID:" : "您的雲端聯盟 ID：",
     "Share it:" : "分享它：",

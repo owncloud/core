@@ -50,6 +50,7 @@
     "%s email address changed successfully" : "%s電子郵件位址已經被成功變更",
     "Couldn't send email address change notification mail. Please contact your administrator." : "無法發送電子電子郵件位址更改通知郵件。 請與您的管理員聯繫。",
     "Unable to enable/disable user." : "無法啟用/停用使用者。",
+    "Data too long" : "數據太長",
     "Invalid mail address" : "無效的 email 地址",
     "Owner language" : "所有者語言",
     "Create" : "建立",
