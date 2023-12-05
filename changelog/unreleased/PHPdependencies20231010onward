@@ -2,7 +2,7 @@ Change: Update PHP dependencies
 
 The following have been updated:
 - deepdiver/zipstreamer (2.0.0 to v2.0.2)
-- firebase/php-jwt (6.8.1 to 6.9.0)
+- firebase/php-jwt (6.8.1 to 6.10.0)
 - google/apiclient-services (v0.319.0 to v0.325.0)
 - google/auth (v1.31.0 to v1.32.1)
 - laravel/serializable-closure (v1.3.1 to v1.3.3)
@@ -25,3 +25,4 @@ https://github.com/owncloud/core/pull/41102
 https://github.com/owncloud/core/pull/41121
 https://github.com/owncloud/core/pull/41126
 https://github.com/owncloud/core/pull/41130
+https://github.com/owncloud/core/pull/41133
