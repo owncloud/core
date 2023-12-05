@@ -671,11 +671,11 @@ $CONFIG = [
  * be for a service account with special privileges, in particular, it must
  * be able to impersonate the users. It is highly recommended that the password
  * for this service account doesn't expire, otherwise you will have to replace
- * the file manually before the expiration.
+ * the file manually before the expiration. See the Kerberos documentation for details.
  *
  * - `ocservice` (required): The name of the service of the account. This matches
- * the SPN of the Windows / Samba account. It usually is in the form "HTTP/<server>",
- * but it might be different.
+ * the SPN of the Windows / Samba account. It usually is in the form "HTTP/<hostname>",
+ * but it might be different. See the Kerberos documentation for details.
  *
  * - `usermapping` (optional): The ownCloud-to-windows user mapping to be used. See below
  * for available options. If no user mapping is provided, the `Noop` mapping will
@@ -699,25 +699,33 @@ $CONFIG = [
  * "user001@my.dom.com" will be mapped to the same windows user as
  * "user001@not.mine.eu".
  *
- * - `CustomFile`: This mapping is reserved and should only be used on explicit request of ownCloud support.
+ * - `EALdapAttr`: Use ownCloud's user extended attributes to map the ownCloud
+ * user to the target LDAP attribute. The mapping has an "attr" parameter in order
+ * to select the LDAP attribute you want to use. Note that it's required that
+ * the user_ldap app exposes the chosen attribute which requires user_ldap 0.19.0+.
+ * In case ownCloud can't map the user, an error will be thrown.
+ * The same will happen for non-LDAP users.
  */
 'wnd.kerberos.servers' => [
-  'server1' => [
-	'ockeytab' => '/var/www/owncloud/octest1.mountain.tree.prv.keytab',
-	'ocservice' => 'HTTP/octest1.mountain.tree.prv',
+  'server_ID1' => [
+	'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
+	'ocservice' => 'HTTP/<hostname_or_FQDN>',
 	'usermapping' => ['type' => 'Noop'],
 	'ccachettl' => 60 * 60 * 9,
   ],
-  'server11' => [
-	'ockeytab' => '/var/www/owncloud/octest1.mountain.tree.prv.keytab',
-	'ocservice' => 'HTTP/octest1.mountain.tree.prv',
+  'server_ID2' => [
+	'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
+	'ocservice' => 'HTTP/<hostname_or_FQDN>',
 	'usermapping' => ['type' => 'RemoveDomain'],
 	'ccachettl' => 60 * 60 * 9,
   ],
-  'server2' => [
-	'ockeytab' => '/var/www/owncloud/octest0.desert.sand.prv.keytab',
-	'ocservice' => 'HTTP/octest0.desert.sand.prv',
-	'usermapping' => ['type' => 'CustomFile', 'params' => ['mapfile' => '/var/www/owncloud/ocwin_krb5_map.json']],
+  'server_ID3' => [
+	'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
+	'ocservice' => 'HTTP/<hostname_or_FQDN>',
+	'usermapping' => [
+		'type' => 'EALdapAttr',
+		'params' => ['attr' => 'userPrincipalName']
+		],
 	'cachettl' => 3600,
   ],
 ],
