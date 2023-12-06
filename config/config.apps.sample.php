@@ -703,7 +703,7 @@ $CONFIG = [
  * user to the target LDAP attribute. The mapping has an "attr" parameter in order
  * to select the LDAP attribute you want to use. Note that it's required that
  * the user_ldap app exposes the chosen attribute which requires user_ldap 0.19.0+.
- * In case ownCloud can't map the user, an error will be thrown.
+ * If ownCloud can't map the user, an error will be thrown.
  * The same will happen for non-LDAP users.
  */
 'wnd.kerberos.servers' => [
