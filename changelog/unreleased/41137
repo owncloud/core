@@ -1,0 +1,6 @@
+Change: Display IoC-Scanner Prompt
+
+Prompt the admins of licensed instances to run the IoC-Scanner. The Prompt
+appears in the admin menu and after an upgrade on the CLI.
+
+https://github.com/owncloud/core/pull/41137
