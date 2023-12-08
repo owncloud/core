@@ -6,6 +6,14 @@ updateDocsComment: >
 
 updateDocsWhiteList:
   - Tests-only
+  - "build:"
+  - "build("
+  - "ci:"
+  - "ci("
+  - "docs:"
+  - "docs("
+  - "test:"
+  - "test("
 
 updateDocsTargetFiles:
   - changelog/unreleased/
