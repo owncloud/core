@@ -32,6 +32,16 @@ You also must have installed `yarn` and `node` (v14 or higher).
 ## Contribution Guidelines
 https://owncloud.com/contribute/
 
+## Commit Messages
+To ease bringing commits into context, a CI job check that the commit message satisfies a specification for adding human and machine readable meaning to commit messages. For details see: [Conventional Commits](www.conventionalcommits.org/). Note that if conventional commits are not satisfied, CI will not be green. In this case, you need to rewrite the git commit history to meet the requirement.
+
+You must at least provide a `type` + `description` as described in the [Examples](https://www.conventionalcommits.org/en/v1.0.0/#examples) section.
+
+For a quickstart, the following types can be used:
+
+`fix:`, `feat:`, `build:`, `chore:`, `ci:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`
+
+
 ## Support
 Learn about the different ways you can get support for ownCloud: https://owncloud.com/support/
 
