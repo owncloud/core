@@ -10,7 +10,7 @@ The following have been updated:
 - league/mime-type-detection (1.13.0 to 1.14.0)
 - monolog/monolog (2.9.1 to 2.9.2)
 - phpseclib/phpseclib (3.0.33 to 3.0.35)
-- sabre/dav (4.4.0 to 4.5.1)
+- sabre/dav (4.4.0 to 4.6.0)
 - sabre/vobject (4.5.3 to 4.5.4)
 - symfony/console (5.4.28 to 5.4.34)
 - symfony/event-dispatcher (5.4.26 to 5.4.34)
@@ -30,5 +30,6 @@ https://github.com/owncloud/core/pull/41126
 https://github.com/owncloud/core/pull/41130
 https://github.com/owncloud/core/pull/41132
 https://github.com/owncloud/core/pull/41133
+https://github.com/owncloud/core/pull/41139
 https://github.com/owncloud/core/pull/41151
 https://github.com/owncloud/core/pull/41152
