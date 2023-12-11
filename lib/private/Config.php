@@ -250,10 +250,8 @@ class Config {
 				throw new \Exception(\sprintf('Could not acquire a shared lock on the config file %s', $file));
 			}
 
-			/* @phpstan-ignore-next-line */
 			unset($CONFIG);
 			include $file;
-			/* @phpstan-ignore-next-line */
 			if (isset($CONFIG) && \is_array($CONFIG)) {
 				$this->cache = \array_merge($this->cache, $CONFIG);
 			}

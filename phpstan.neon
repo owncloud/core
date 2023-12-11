@@ -10,8 +10,6 @@ parameters:
       - %currentWorkingDirectory%/apps/*/composer/*
       - %currentWorkingDirectory%/apps/*/3rdparty/*
   ignoreErrors:
-    - '#Undefined variable: \$OC_[a-zA-Z0-9\\_]+#'
-    - '#Undefined variable: \$vendor#'
     # errors below are to be addressed by own pull requests - non trivial changes required
     - '#Instantiated class OCA\\Encryption\\Crypto\\Crypt not found.#'
     - '#Instantiated class OCA\\Encryption\\Util not found.#'
