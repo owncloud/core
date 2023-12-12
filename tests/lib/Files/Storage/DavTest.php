@@ -361,18 +361,9 @@ class DavTest extends TestCase {
 
 	public function testOpenDirNotFound() {
 		$this->davClient->expects($this->once())
-			->method('propfind')
+			->method('propFind')
 			->with('some%25dir', [], 1)
 			->willThrowException($this->createClientHttpException(Http::STATUS_NOT_FOUND));
-
-		$this->assertFalse($this->instance->opendir('/some%dir'));
-	}
-
-	public function testOpenDirNotFound2() {
-		$this->davClient->expects($this->once())
-			->method('propfind')
-			->with('some%25dir', [], 1)
-			->willReturn(false);
 
 		$this->assertFalse($this->instance->opendir('/some%dir'));
 	}
@@ -448,9 +439,9 @@ class DavTest extends TestCase {
 
 	public function testFileExists() {
 		$this->davClient->expects($this->once())
-			->method('propfind')
+			->method('propFind')
 			->with('some%25dir/file%25.txt')
-			->willReturn(true);
+			->willReturn([]);
 
 		$this->assertTrue($this->instance->file_exists('/some%dir/file%.txt'));
 
@@ -460,9 +451,9 @@ class DavTest extends TestCase {
 
 	public function testFileExistsDoesNot() {
 		$this->davClient->expects($this->once())
-			->method('propfind')
+			->method('propFind')
 			->with('some%25dir/file%25.txt')
-			->willReturn(false);
+			->willThrowException($this->createClientHttpException(Http::STATUS_NOT_FOUND));
 
 		$this->assertFalse($this->instance->file_exists('/some%dir/file%.txt'));
 
@@ -605,14 +596,12 @@ class DavTest extends TestCase {
 
 	public function testFopenWriteNewFile() {
 		$this->davClient
-			->expects($this->exactly(2))
-			->method('propfind')
+			->expects($this->exactly(1))
+			->method('propFind')
 			->withConsecutive(
 				['some%25dir/file%25.txt'],
-				['some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions')],
 			)
 			->willReturnOnConsecutiveCalls(
-				false,
 				['{http://owncloud.org/ns}permissions' => 'RDWCK'],
 			);
 
@@ -636,14 +625,12 @@ class DavTest extends TestCase {
 
 	public function testFopenWriteNewFileNoPermission() {
 		$this->davClient
-			->expects($this->exactly(2))
-			->method('propfind')
+			->expects($this->exactly(1))
+			->method('propFind')
 			->withConsecutive(
 				['some%25dir/file%25.txt'],
-				['some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions')],
 			)
 			->willReturnOnConsecutiveCalls(
-				false,
 				['{http://owncloud.org/ns}permissions' => 'R'],
 			);
 
@@ -738,7 +725,6 @@ class DavTest extends TestCase {
 
 	public function freespaceProvider() {
 		return [
-			[false, FileInfo::SPACE_UNKNOWN],
 			[['{DAV:}quota-available-bytes' => 123], 123],
 			[['{DAV:}quota-available-bytes' => FileInfo::SPACE_UNKNOWN], FileInfo::SPACE_UNKNOWN],
 			[[], FileInfo::SPACE_UNKNOWN],
@@ -812,13 +798,13 @@ class DavTest extends TestCase {
 	public function testTouchNonExisting() {
 		$this->davClient
 			->expects($this->exactly(2))
-			->method('propfind')
+			->method('propFind')
 			->withConsecutive(
 				['some%25dir/file%25.txt'],
 				['some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions')],
 			)
 			->willReturnOnConsecutiveCalls(
-				false,
+				$this->throwException($this->createClientHttpException(Http::STATUS_NOT_FOUND)),
 				['{http://owncloud.org/ns}permissions' => 'RDWCK'],
 			);
 
@@ -858,23 +844,35 @@ class DavTest extends TestCase {
 	}
 
 	public function testTouchNotFound() {
+		// The first davClient propFind that the code does returns an empty array
+		// which means that the resource exists at that point.
+		// But the second propFind returns "not found". That simulates the
+		// scenario where the resource existed at first, then the code did a proppatch
+		// to the resource, but then when it does a propFind again to check that
+		// the mtime has really updated, it finds that the resource has gone.
+		// That could happen in real-time if another client has deleted the resource
+		// in the middle of the "touch" sequence of propPatch and propFind
+		// that is done by the DAV.php touch method.
 		$this->davClient
 			->expects($this->exactly(2))
-			->method('propfind')
+			->method('propFind')
 			->withConsecutive(
 				['some%25dir'],
 				['some%25dir', $this->containsIdentical('{DAV:}getlastmodified'), 0],
 			)
 			->willReturnOnConsecutiveCalls(
 				[],
-				false,
+				$this->throwException($this->createClientHttpException(Http::STATUS_NOT_FOUND)),
 			);
 
 		$this->davClient
 			->expects($this->once())
 			->method('proppatch');
 
-		$this->assertFalse($this->instance->touch('/some%dir', 1508496363));
+		// The underlying code converts a ClientHttpException like STATUS_NOT_FOUND
+		// to a StorageNotAvailableException. So we expect to get that exception.
+		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
+		$this->instance->touch('/some%dir', 1508496363);
 	}
 
 	public function testTouchNoServerSupport() {
@@ -975,10 +973,10 @@ class DavTest extends TestCase {
 
 	/**
 	 */
-	public function testStatPropfindFalse() {
+	public function testStatPropfindEmpty() {
 		$this->davClient->expects($this->once())
-			->method('propfind')
-			->willReturn(false);
+			->method('propFind')
+			->willReturn([]);
 
 		$returnValue = $this->instance->stat('/some%dir/file%type');
 		$this->assertFalse($returnValue);
@@ -1095,9 +1093,11 @@ class DavTest extends TestCase {
 
 	public function testGetPermissionsUnexist() {
 		$this->davClient->expects($this->once())
-			->method('propfind')
+			->method('propFind')
 			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
-			->willReturn(false);
+			->willThrowException(
+				$this->createClientHttpException(Http::STATUS_NOT_FOUND),
+			);
 
 		// all perms given
 		$path = 'some%dir';
@@ -1144,9 +1144,9 @@ class DavTest extends TestCase {
 
 	public function testGetEtagUnexist() {
 		$this->davClient->expects($this->once())
-			->method('propfind')
+			->method('propFind')
 			->with('some%25dir', $this->containsIdentical('{DAV:}getetag'))
-			->willReturn(false);
+			->willThrowException($this->createClientHttpException(Http::STATUS_NOT_FOUND));
 
 		$this->assertNull($this->instance->getETag('some%dir'));
 	}
@@ -1293,8 +1293,8 @@ class DavTest extends TestCase {
 
 	public function testHasUpdatedPathNotfound() {
 		$this->davClient->expects($this->once())
-			->method('propfind')
-			->willReturn(false);
+			->method('propFind')
+			->willThrowException($this->createClientHttpException(Http::STATUS_NOT_FOUND));
 
 		$this->assertFalse($this->instance->hasUpdated('some%dir', 1508496363));
 	}
@@ -1305,8 +1305,8 @@ class DavTest extends TestCase {
 		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
 
 		$this->davClient->expects($this->once())
-			->method('propfind')
-			->willReturn(false);
+			->method('propFind')
+			->willThrowException($this->createClientHttpException(Http::STATUS_NOT_FOUND));
 
 		$this->instance->hasUpdated('', 1508496363);
 	}
