@@ -1,3 +1,11 @@
+
+<?php $license = \OC::$server->query(\OC\License\LicenseFetcher::class)->getOwncloudLicense();
+if ($license !== null) {
+	?>
+<div class="update">
+<?php include_once('ioc.warning.php'); ?>
+</div>
+<?php } ?>
 <div class="update" data-productname="<?php p($_['productName']) ?>" data-version="<?php p($_['version']) ?>">
 	<div class="updateOverview">
 		<?php if ($_['isAppsOnlyUpgrade']) {
