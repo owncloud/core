@@ -40,6 +40,7 @@ ownCloud admins and users.
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
+* Change - Display IoC-Scanner Prompt: [#41137](https://github.com/owncloud/core/pull/41137)
 
 ## Details
 
@@ -149,6 +150,13 @@ ownCloud admins and users.
    reported via the activity app.
 
    https://github.com/owncloud/core/pull/41078
+
+* Change - Display IoC-Scanner Prompt: [#41137](https://github.com/owncloud/core/pull/41137)
+
+   Prompt the admins of licensed instances to run the IoC-Scanner. The Prompt
+   appears in the admin menu and after an upgrade on the CLI.
+
+   https://github.com/owncloud/core/pull/41137
 
 # Changelog for ownCloud Core [10.13.3] (2023-11-17)
 
