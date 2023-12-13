@@ -30,6 +30,7 @@
 namespace OC\Core\Command;
 
 use OC\Console\TimestampFormatter;
+use OC\License\LicenseFetcher;
 use OC\Updater;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -58,10 +59,6 @@ class Upgrade extends Command {
 	/** @var ICacheFactory */
 	private $cacheFactory;
 
-	/**
-	 * @param IConfig $config
-	 * @param ILogger $logger
-	 */
 	public function __construct(IConfig $config, ILogger $logger, ICacheFactory $cacheFactory) {
 		parent::__construct();
 		$this->config = $config;
@@ -103,10 +100,16 @@ class Upgrade extends Command {
 		}
 
 		if (\OC::checkUpgrade(false)) {
+			$defaultFormat = $output->getFormatter();
 			if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
 				// Prepend each line with a little timestamp
 				$timestampFormatter = new TimestampFormatter($this->config, $output->getFormatter());
 				$output->setFormatter($timestampFormatter);
+			}
+			$license = \OC::$server->query(LicenseFetcher::class)->getOwncloudLicense();
+			if ($license !== null) {
+				$output->setFormatter($defaultFormat);
+				$this->printAdvisory($output);
 			}
 
 			$updater = new Updater(
@@ -197,7 +200,7 @@ class Upgrade extends Command {
 			$dispatcher->addListener('\OC\Repair::info', $repairListener);
 			$dispatcher->addListener('\OC\Repair::warning', $repairListener);
 			$dispatcher->addListener('\OC\Repair::error', $repairListener);
-			
+
 			$updater->listen('\OC\Updater', 'maintenanceEnabled', function () use ($output) {
 				$output->writeln('<info>Turned on maintenance mode</info>');
 			});
@@ -281,8 +284,11 @@ class Upgrade extends Command {
 			// TODO: Note that only the "create" method is available in the interface. It isn't
 			// possible to create local or distributed caches explicitly
 			$this->cacheFactory->create()->clear();
+
 			return self::ERROR_SUCCESS;
-		} elseif ($this->config->getSystemValue('maintenance', false)) {
+		}
+
+		if ($this->config->getSystemValue('maintenance', false)) {
 			//Possible scenario: ownCloud core is updated but an app failed
 			$output->writeln('<warning>ownCloud is in maintenance mode</warning>');
 			$output->write('<comment>Maybe an upgrade is already in process. Please check the '
@@ -290,10 +296,10 @@ class Upgrade extends Command {
 				. 'upgrade procedure, remove the "maintenance mode" from '
 				. 'config.php and call this script again.</comment>', true);
 			return self::ERROR_MAINTENANCE_MODE;
-		} else {
-			$output->writeln('<info>ownCloud is already latest version</info>');
-			return self::ERROR_UP_TO_DATE;
 		}
+
+		$output->writeln('<info>ownCloud is already latest version</info>');
+		return self::ERROR_UP_TO_DATE;
 	}
 
 	/**
@@ -311,5 +317,43 @@ class Upgrade extends Command {
 				'please set it manually</warning>'
 			);
 		}
+	}
+
+	private function printAdvisory(OutputInterface $output):void {
+		$heading = <<<EOT
+
+  ______             __    __      __                      __         ______   __                        __     
+ /      \           /  |  /  |    /  |                    /  |       /      \ /  |                      /  |    
+/$$$$$$  |  ______  $$/  _$$ |_   $$/   _______   ______  $$ |      /$$$$$$  |$$ |  ______    ______   _$$ |_   
+$$ |  $$/  /      \ /  |/ $$   |  /  | /       | /      \ $$ |      $$ |__$$ |$$ | /      \  /      \ / $$   |  
+$$ |      /$$$$$$  |$$ |$$$$$$/   $$ |/$$$$$$$/  $$$$$$  |$$ |      $$    $$ |$$ |/$$$$$$  |/$$$$$$  |$$$$$$/   
+$$ |   __ $$ |  $$/ $$ |  $$ | __ $$ |$$ |       /    $$ |$$ |      $$$$$$$$ |$$ |$$    $$ |$$ |  $$/   $$ | __ 
+$$ \__/  |$$ |      $$ |  $$ |/  |$$ |$$ \_____ /$$$$$$$ |$$ |      $$ |  $$ |$$ |$$$$$$$$/ $$ |        $$ |/  |
+$$    $$/ $$ |      $$ |  $$  $$/ $$ |$$       |$$    $$ |$$ |      $$ |  $$ |$$ |$$       |$$ |        $$  $$/ 
+ $$$$$$/  $$/       $$/    $$$$/  $$/  $$$$$$$/  $$$$$$$/ $$/       $$/   $$/ $$/  $$$$$$$/ $$/          $$$$/    
+                                                                                                      
+EOT;
+
+		$output->writeln([
+			"<info>$heading</info>",
+			'',
+			'<fg=red;options=bold>               Urgent Security Advisory for All ownCloud Operators: Immediate Action Required</>',
+			'',
+			'<fg=red>In response to recent, high-severity security vulnerabilities, ownCloud has developed an essential system scan</>',
+			'<fg=red>tool. This tool is designed to determine whether your systems have been compromised by vulnerabilities addressed in</>',
+			'<fg=red>our latest updates.</>',
+			'',
+			'<fg=red;options=bold>Immediate Action Required</>',
+			'',
+			'<fg=red;options=bold>1. Download the Script:</> <fg=red>Access the critical security script at https://cloud.owncloud.com/s/WwZGSJYsKigcj10.</>',
+			'',
+			'<fg=red;options=bold>2. Root Access Needed:</> <fg=red>The script requires root access to analyze log files effectively. Ensure you have the necessary permissions before proceeding.</>',
+			'',
+			'<fg=red;options=bold>3. Detailed Information and Documentation:</> <fg=red>For comprehensive instructions and details about the script, visit https://cloud.owncloud.com/s/WwZGSJYsKigcj10.</>',
+			'',
+			'<fg=red>You MUST execute the above security measures. Failure to implement these security measures could lead to severe consequences, including significant</>',
+			'<fg=red>data loss, privacy violations, and legal repercussions. This is not merely a preventive step but a necessary action to safeguard your organization.</>',
+			'',
+		]);
 	}
 }
