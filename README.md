@@ -1,4 +1,8 @@
-# ownCloud Core
+# ownCloud Core - Freedom
+
+This is an improved version that allows you to wildcard trusted domains for use cases where it is being accessed ad hoc on networks rather than as a permanent hosted website.  
+
+The fork was needed because [the core devs don't have a desire to increase usage](https://github.com/owncloud/core/issues/40655).  
 
 [![Build Status](https://drone.owncloud.com/api/badges/owncloud/core/status.svg?branch=master)](https://drone.owncloud.com/owncloud/core)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=alert_status)](https://sonarcloud.io/dashboard?id=owncloud_core)
