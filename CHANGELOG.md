@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.13.4](#changelog-for-owncloud-core-10134-2023-12-13)
 * [Changelog for 10.13.3](#changelog-for-owncloud-core-10133-2023-11-17)
 * [Changelog for 10.13.2](#changelog-for-owncloud-core-10132-2023-10-04)
 * [Changelog for 10.13.1](#changelog-for-owncloud-core-10131-2023-09-04)
@@ -24,7 +25,7 @@
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.13.3...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.13.4...master
 
 ## Summary
 
@@ -36,11 +37,9 @@ ownCloud admins and users.
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
-* Bugfix - Check 2FA on controllers which are accessible publicly and authenticated: [#41123](https://github.com/owncloud/core/pull/41123)
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
-* Change - Display IoC-Scanner Prompt: [#41137](https://github.com/owncloud/core/pull/41137)
 
 ## Details
 
@@ -108,10 +107,6 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41077
    https://github.com/owncloud/core/pull/41075
 
-* Bugfix - Check 2FA on controllers which are accessible publicly and authenticated: [#41123](https://github.com/owncloud/core/pull/41123)
-
-   https://github.com/owncloud/core/pull/41123
-
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
 
    Previously, the "user:list -a" occ command was not correctly returning the
@@ -151,9 +146,27 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41078
 
+# Changelog for ownCloud Core [10.13.4] (2023-12-13)
+
+The following sections list the changes in ownCloud core 10.13.4 relevant to
+ownCloud admins and users.
+
+[10.13.4]: https://github.com/owncloud/core/compare/v10.13.3...v10.13.4
+
+## Summary
+
+* Bugfix - Check 2FA on controllers which are accessible publicly and authenticated: [#41123](https://github.com/owncloud/core/pull/41123)
 * Change - Display IoC-Scanner Prompt: [#41137](https://github.com/owncloud/core/pull/41137)
 
-   Prompt the admins of licensed instances to run the IoC-Scanner. The Prompt
+## Details
+
+* Bugfix - Check 2FA on controllers which are accessible publicly and authenticated: [#41123](https://github.com/owncloud/core/pull/41123)
+
+   https://github.com/owncloud/core/pull/41123
+
+* Change - Display IoC-Scanner Prompt: [#41137](https://github.com/owncloud/core/pull/41137)
+
+   Prompt the admins of licensed instances to run the IoC-Scanner. The prompt
    appears in the admin menu and after an upgrade on the CLI.
 
    https://github.com/owncloud/core/pull/41137
