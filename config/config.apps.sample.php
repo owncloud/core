@@ -700,34 +700,42 @@ $CONFIG = [
  * "user001@not.mine.eu".
  *
  * - `EALdapAttr`: Use ownCloud's user extended attributes to map the ownCloud
- * user to the target LDAP attribute. The mapping has an "attr" parameter in order
- * to select the LDAP attribute you want to use. Note that it's required that
- * the user_ldap app exposes the chosen attribute which requires user_ldap 0.19.0+.
- * If ownCloud can't map the user, an error will be thrown.
- * The same will happen for non-LDAP users.
+ * user to the target LDAP attribute. The mapping has 2 parameters:
+ * * `attr`: in order to select the LDAP attribute you want to use. Note
+ * that it's required that the user_ldap app exposes the chosen attribute which
+ * requires user_ldap 0.19.0+.
+ * * `nomap` (optional): a list of uids not registered in ownCloud that
+ * won't be mapped and be returned without any change.
+ * - The following scenarios will cause errors:
+ * ** If ownCloud can't map the user and he isn't in the `nomap` list.
+ * ** If the user is registered in ownCloud and is in the `nomap` list.
+ * ** If it isn't a LDAP user.
  */
 'wnd.kerberos.servers' => [
-  'server_ID1' => [
-	'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
-	'ocservice' => 'HTTP/<hostname_or_FQDN>',
-	'usermapping' => ['type' => 'Noop'],
-	'ccachettl' => 60 * 60 * 9,
-  ],
-  'server_ID2' => [
-	'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
-	'ocservice' => 'HTTP/<hostname_or_FQDN>',
-	'usermapping' => ['type' => 'RemoveDomain'],
-	'ccachettl' => 60 * 60 * 9,
-  ],
-  'server_ID3' => [
-	'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
-	'ocservice' => 'HTTP/<hostname_or_FQDN>',
-	'usermapping' => [
-		'type' => 'EALdapAttr',
-		'params' => ['attr' => 'userPrincipalName']
+	'server_ID1' => [
+		'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
+		'ocservice' => 'HTTP/<hostname_or_FQDN>',
+		'usermapping' => ['type' => 'Noop'],
+		'ccachettl' => 60 * 60 * 9,
+	],
+	'server_ID2' => [
+		'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
+		'ocservice' => 'HTTP/<hostname_or_FQDN>',
+		'usermapping' => ['type' => 'RemoveDomain'],
+		'ccachettl' => 60 * 60 * 9,
+	],
+	'server_ID3' => [
+		'ockeytab' => '<keytab-file-location>/<user-name>.keytab',
+		'ocservice' => 'HTTP/<hostname_or_FQDN>',
+		'usermapping' => [
+			'type' => 'EALdapAttr',
+			'params' => [
+				'attr' => 'userPrincipalName',
+				'nomap' => ['ocService@example.prv', 'secondaryAccount@company.com'],
+			]
 		],
-	'cachettl' => 3600,
-  ],
+		'cachettl' => 3600,
+	],
 ],
 
 /**
