@@ -326,9 +326,10 @@
   version "1.0.6"
   resolved "https://codeload.github.com/HenningM/jstimezonedetect/tar.gz/bd595ed253292934991a414979007f3d51a1547d"
 
-"@bower_components/moment@moment/moment#2.29.4":
-  version "2.29.4"
-  resolved "https://codeload.github.com/moment/moment/tar.gz/000ac1800e620f770f4eb31b5ae908f6167b0ab2"
+"@bower_components/moment@moment/moment#2.30.1":
+  version "2.30.1"
+  uid "485d9a7d709bd5f3869a7ad24630cf0746d072dc"
+  resolved "https://codeload.github.com/moment/moment/tar.gz/485d9a7d709bd5f3869a7ad24630cf0746d072dc"
 
 "@bower_components/select2@ivaynberg/select2#3.5.4":
   version "3.5.4"
