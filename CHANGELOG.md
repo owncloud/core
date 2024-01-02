@@ -123,8 +123,9 @@ ownCloud admins and users.
    7.8.1) - laravel/serializable-closure (v1.3.1 to v1.3.3) -
    league/mime-type-detection (1.13.0 to 1.14.0) - monolog/monolog (2.9.1 to 2.9.2)
    - phpseclib/phpseclib (3.0.33 to 3.0.34) - sabre/dav (4.4.0 to 4.5.1) -
-   sabre/vobject (4.5.3 to 4.5.4) - symfony/console (5.4.28 to 5.4.32) -
-   symfony/routing (5.4.26 to 5.4.33) - symfony/string (5.4.29 to 5.4.31) -
+   sabre/vobject (4.5.3 to 4.5.4) - symfony/console (5.4.28 to 5.4.34) -
+   symfony/event-dispatcher (5.4.26 to 5.4.34) - symfony/process (5.4.28 to 5.4.34)
+   - symfony/routing (5.4.26 to 5.4.34) - symfony/string (5.4.29 to 5.4.34) -
    symfony/translation (5.4.24 to 5.4.31)
 
    https://github.com/owncloud/core/pull/41033
@@ -138,6 +139,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41130
    https://github.com/owncloud/core/pull/41132
    https://github.com/owncloud/core/pull/41133
+   https://github.com/owncloud/core/pull/41151
 
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 
