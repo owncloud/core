@@ -3300,16 +3300,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.5.1",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "b29899b675371aee73920165d1dc5a2235aa104b"
+                "reference": "554145304b4a026477d130928d16e626939b0b2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/b29899b675371aee73920165d1dc5a2235aa104b",
-                "reference": "b29899b675371aee73920165d1dc5a2235aa104b",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/554145304b4a026477d130928d16e626939b0b2a",
+                "reference": "554145304b4a026477d130928d16e626939b0b2a",
                 "shasum": ""
             },
             "require": {
@@ -3333,7 +3333,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.19",
-                "monolog/monolog": "^1.27",
+                "monolog/monolog": "^1.27 || ^2.0",
                 "phpstan/phpstan": "^0.12 || ^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6"
@@ -3379,7 +3379,7 @@
                 "issues": "https://github.com/sabre-io/dav/issues",
                 "source": "https://github.com/fruux/sabre-dav"
             },
-            "time": "2023-11-23T04:33:31+00:00"
+            "time": "2023-12-11T13:01:23+00:00"
         },
         {
             "name": "sabre/event",
