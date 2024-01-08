@@ -122,7 +122,7 @@ ownCloud admins and users.
    v0.330.0) - google/auth (v1.31.0 to v1.33.0) - guzzlehttp/guzzle (7.8.0 to
    7.8.1) - laravel/serializable-closure (v1.3.1 to v1.3.3) -
    league/mime-type-detection (1.13.0 to 1.14.0) - monolog/monolog (2.9.1 to 2.9.2)
-   - phpseclib/phpseclib (3.0.33 to 3.0.35) - sabre/dav (4.4.0 to 4.5.1) -
+   - phpseclib/phpseclib (3.0.33 to 3.0.35) - sabre/dav (4.4.0 to 4.6.0) -
    sabre/vobject (4.5.3 to 4.5.4) - symfony/console (5.4.28 to 5.4.34) -
    symfony/event-dispatcher (5.4.26 to 5.4.34) - symfony/process (5.4.28 to 5.4.34)
    - symfony/routing (5.4.26 to 5.4.34) - symfony/string (5.4.29 to 5.4.34) -
@@ -139,6 +139,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41130
    https://github.com/owncloud/core/pull/41132
    https://github.com/owncloud/core/pull/41133
+   https://github.com/owncloud/core/pull/41139
    https://github.com/owncloud/core/pull/41151
    https://github.com/owncloud/core/pull/41152
 
