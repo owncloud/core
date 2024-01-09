@@ -186,7 +186,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 				}
 			}
 		}
-		if ($node instanceof Node\Stmt\UseUse) {
+		if ($node instanceof Node\UseItem) {
 			$this->checkBlackList($node->name->toString(), CodeChecker::CLASS_USE_NOT_ALLOWED, $node);
 			if ($node->alias) {
 				$this->addUseNameToBlackList($node->name->toString(), $node->alias);
