@@ -50,7 +50,7 @@ class CodeChecker extends BasicEmitter {
 
 	public function __construct(ICheck $checkList) {
 		$this->checkList = $checkList;
-		$this->parser = (new \PhpParser\ParserFactory())->create(\PhpParser\ParserFactory::PREFER_PHP7);
+		$this->parser = (new \PhpParser\ParserFactory())->createForHostVersion();
 	}
 
 	/**
