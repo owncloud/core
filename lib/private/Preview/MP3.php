@@ -87,8 +87,10 @@ class MP3 implements IProvider2 {
 			return false;
 		}
 
+		$stream = \fopen($icon, 'r');
 		$image = new \OC_Image();
-		$image->loadFromFile($icon);
+		$image->loadFromFileHandle($stream);
+		\fclose($stream);
 		return $image->valid() ? $image : false;
 	}
 

@@ -1,0 +1,5 @@
+Bugfix: Fix log exceptions for mp3 preview
+
+This change fixes log exceptions when previews for mp3 files are being created
+
+https://github.com/owncloud/core/pull/41153
