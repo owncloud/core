@@ -38,6 +38,7 @@ ownCloud admins and users.
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
+* Bugfix - Fix log exceptions for mp3 preview: [#41153](https://github.com/owncloud/core/pull/41153)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 
@@ -114,6 +115,12 @@ ownCloud admins and users.
    been now fixed.
 
    https://github.com/owncloud/core/pull/41125
+
+* Bugfix - Fix log exceptions for mp3 preview: [#41153](https://github.com/owncloud/core/pull/41153)
+
+   This change fixes log exceptions when previews for mp3 files are being created
+
+   https://github.com/owncloud/core/pull/41153
 
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
