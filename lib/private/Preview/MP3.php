@@ -88,17 +88,9 @@ class MP3 implements IProvider2 {
 		}
 
 		$stream = \fopen($icon, 'r');
-		$content = \stream_get_contents($stream);
-		\fclose($stream);
-
-		$svg = new \Imagick();
-		$svg->setBackgroundColor(new \ImagickPixel('transparent'));
-		$svg->setResolution(1200, 1200);
-		$svg->readImageBlob($content);
-		$svg->setImageFormat('png32');
-
 		$image = new \OC_Image();
-		$image->loadFromData($svg);
+		$image->loadFromFileHandle($stream);
+		\fclose($stream);
 		return $image->valid() ? $image : false;
 	}
 
