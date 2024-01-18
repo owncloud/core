@@ -285,7 +285,7 @@ class AppRegistryController extends Controller {
 		}
 		# https://github.com/owncloud/richdocuments/blob/5adc1dd3a0ab39918b2c3f7a3c62f3231f216cb6/appinfo/routes.php#L26
 		if ($app_name === 'richdocuments') {
-			$uri = $this->generator->linkToRouteAbsolute('richdocuments.document.index', [
+			$uri = $this->generator->linkToRouteAbsolute('richdocuments.Document.index', [
 				'fileId' => $fileId
 			]);
 		}
