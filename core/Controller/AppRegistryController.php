@@ -285,9 +285,13 @@ class AppRegistryController extends Controller {
 		}
 		# https://github.com/owncloud/richdocuments/blob/5adc1dd3a0ab39918b2c3f7a3c62f3231f216cb6/appinfo/routes.php#L26
 		if ($app_name === 'richdocuments') {
-			$uri = $this->generator->linkToRouteAbsolute('richdocuments.Document.index', [
-				'fileId' => $fileId
-			]);
+			# this is required in order to keep compatibility with richdocuments < 4.1.0 where the old richdocuments.document.index route is present
+			$link = $this->generator->linkToRoute('richdocuments.Document.index', ['fileId' => $fileId]);
+			if ($link !== '') {
+				$uri = $this->generator->getAbsoluteUrl($link);
+			} else {
+				$uri = $this->generator->linkToRouteAbsolute('richdocuments.document.index', ['fileId' => $fileId]);
+			}
 		}
 		# https://github.com/owncloud/wopi/blob/f24b081d8bc1ac89b73ae211636cb4194d0cf0a8/appinfo/routes.php#LL22C15-L22C26
 		if ($app_name === 'wopi') {
