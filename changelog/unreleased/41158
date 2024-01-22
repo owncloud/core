@@ -1,0 +1,3 @@
+Bugfix: set oc_file_locks.id to bigint
+
+https://github.com/owncloud/core/pull/41158
