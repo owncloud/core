@@ -1,0 +1,3 @@
+Bugfix: add compatibility to richdocuments.document.index route
+
+https://github.com/owncloud/core/pull/41161
