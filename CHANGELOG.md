@@ -40,6 +40,7 @@ ownCloud admins and users.
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
 * Bugfix - Fix log exceptions for mp3 preview: [#41153](https://github.com/owncloud/core/pull/41153)
 * Bugfix - Set oc_file_locks.id to bigint: [#41158](https://github.com/owncloud/core/pull/41158)
+* Bugfix - Add compatibility to richdocuments.document.index route: [#41161](https://github.com/owncloud/core/pull/41161)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 
@@ -126,6 +127,10 @@ ownCloud admins and users.
 * Bugfix - Set oc_file_locks.id to bigint: [#41158](https://github.com/owncloud/core/pull/41158)
 
    https://github.com/owncloud/core/pull/41158
+
+* Bugfix - Add compatibility to richdocuments.document.index route: [#41161](https://github.com/owncloud/core/pull/41161)
+
+   https://github.com/owncloud/core/pull/41161
 
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
