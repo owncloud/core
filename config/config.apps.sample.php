@@ -76,6 +76,25 @@ $CONFIG = [
 'files_antivirus.av_cmd_options' => '',
 
 /**
+ * App: Files PDF Viewer
+ *
+ * Possible key: `files_pdfviewer.enableScripting` STRING
+ *
+ * PDF files may contain JavaScript which for example can be necessary to process editable fields.
+ * Under normal circumstances and for security reasons, scripts are not allowed to be processed. To allow
+ * processing these scripts, the following config key can be set. Note that enabling scripting can be
+ * a major security issue and should be considered as possible thread vector.
+ *
+ */
+
+/**
+ * Enable Scripting in PDF files.
+ * To enable scripting in PDF files, set the value to 'yes'. Any other value will be treated
+ * as disable scripting.
+ */
+'files_pdfviewer.enableScripting' => '',
+
+/**
  * App: Files Versions
  *
  * Possible key: `versions_retention_obligation` STRING
