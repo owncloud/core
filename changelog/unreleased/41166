@@ -1,0 +1,3 @@
+Bugfix: sanitize title in dialogs
+
+https://github.com/owncloud/core/pull/41166
