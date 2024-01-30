@@ -75,7 +75,7 @@
 						this.$title.text(value);
 					} else {
 						var $title = $('<h3 class="oc-dialog-title">' +
-							value +
+							escapeHTML(value) +
 							'</h3>');
 						this.$title = $title.prependTo(this.$dialog);
 					}
