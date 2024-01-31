@@ -1,13 +1,23 @@
 { "translations": {
     "Uploading..." : "يۈكلەۋاتىدۇ…",
+    "Federated share" : "يىغىلغان ھەمبەھىر",
     "Cancel" : "ۋاز كەچ",
     "Add" : "قوش",
     "Share" : "ھەمبەھىر",
     "Pending" : "كۈتۈۋاتىدۇ",
     "Shared by" : "ھەمبەھىرلىگۈچى",
     "Sharing" : "ھەمبەھىر",
+    "Automatically accept new incoming local user shares" : "كەلگەن يەرلىك ئىشلەتكۈچى ھەمبەھىرىنى ئاپتوماتىك قوبۇل قىلىش",
+    "This share is password-protected" : "بۇ ھەمبەھىر مەخپىي نۇمۇر بىلەن قوغدالغان",
     "Password" : "ئىم",
+    "The password is wrong. Try again." : "ئىم خاتا. قايتا سىناڭ.",
+    "No entries found in this folder" : "بۇ قىسقۇچتا تۈر يوق",
     "Name" : "ئاتى",
-    "Download" : "چۈشۈر"
+    "Expiration date" : "مۇددەت چېسلاسى",
+    "Reasons might be:" : "سەۋەبلەر:",
+    "the item was removed" : "بۇ تۈر چىقىرىۋېتىلگەن",
+    "sharing is disabled" : "ھەمبەھىر چەكلەنگەن",
+    "Download" : "چۈشۈر",
+    "Download %s" : "چۈشۈرۈش %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -16,6 +16,9 @@
     "A valid password must be provided" : "چوقۇم ئىناۋەتلىك ئىم تەمىنلەش كېرەك",
     "Settings" : "تەڭشەكلەر",
     "Users" : "ئىشلەتكۈچىلەر",
-    "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى"
+    "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
+    "Unknown user" : "نامەلۇم ئىشلەتكۈچى",
+    "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "بۇ بەلكىم Zend OPcache ياكى eAccelerator غا ئوخشاش غەملەك/تېزلەتكۈچ تەرىپىدىن كىلىپ چىققان.",
+    "Storage is temporarily not available" : "ساقلاشنى ۋاقتىنچە ئىشلەتكىلى بولمايدۇ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

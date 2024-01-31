@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "External storage" : "سىرتقى ساقلىغۇچ",
     "Personal" : "شەخسىي",
+    "Saved" : "ساقلاندى",
     "Username" : "ئىشلەتكۈچى ئاتى",
     "Password" : "ئىم",
     "Save" : "ساقلا",
@@ -12,7 +13,10 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "Host" : "باش ئاپپارات",
     "Share" : "ھەمبەھىر",
+    "Domain" : "دائىرە",
     "Name" : "ئاتى",
+    "Enable encryption" : "شىفىرلاشنى قوزغات",
+    "Never" : "ھەرگىز",
     "Folder name" : "قىسقۇچ ئاتى",
     "Configuration" : "سەپلىمە",
     "Delete" : "ئۆچۈر"
