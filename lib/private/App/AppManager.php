@@ -92,6 +92,12 @@ class AppManager implements IAppManager {
 	 */
 	private $appDirs = [];
 
+	private $outdated_apps = [
+		'enterprise_key' => 'It is not used from core 10.5.0 onwards.',
+		'templateeditor' => 'Discontinued - please use a theme to change mail templates.',
+		'extract' => 'Unmaintained.',
+	];
+
 	/**
 	 * @param IUserSession $userSession
 	 * @param IAppConfig $appConfig
@@ -263,6 +269,7 @@ class AppManager implements IAppManager {
 		if ($this->getAppPath($appId) === false) {
 			throw new \Exception("$appId can't be enabled since it is not installed.");
 		}
+		$this->canEnable($appId);
 
 		if (!Installer::isInstalled($appId)) {
 			Installer::installShippedApp($appId);
@@ -329,6 +336,7 @@ class AppManager implements IAppManager {
 				throw new \Exception("$appId can't be enabled for groups.");
 			}
 		}
+		$this->canEnable($appId);
 
 		if (!Installer::isInstalled($appId)) {
 			Installer::installShippedApp($appId);
@@ -795,5 +803,19 @@ class AppManager implements IAppManager {
 		$infoFile = "{$path}/appinfo/info.xml";
 		$appData = $this->getAppInfoByPath($infoFile);
 		return isset($appData['version']) ? $appData['version'] : '';
+	}
+
+	/**
+	 * @param string $appId
+	 * @return void
+	 * @throws \Exception
+	 */
+	private function canEnable(string $appId): void {
+		if (isset($this->outdated_apps[$appId])) {
+			$hint = $this->outdated_apps[$appId];
+			throw new \Exception(
+				"App $appId can't be enabled. $hint"
+			);
+		}
 	}
 }
