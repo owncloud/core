@@ -346,11 +346,11 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool if admin
 	 */
 	public function isAdmin($userId) {
-		$adminGroup = $this->get('admin');
 		$user = $this->userManager->get($userId);
 		if ($user === null) {
 			return false;
 		}
+		$adminGroup = $this->get('admin');
 		return $adminGroup->inGroup($user);
 	}
 
