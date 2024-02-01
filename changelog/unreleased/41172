@@ -1,0 +1,3 @@
+Bugfix: input validation when setting the displayname of a user or self
+
+https://github.com/owncloud/core/pull/41172
