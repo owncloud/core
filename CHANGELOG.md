@@ -45,6 +45,7 @@ ownCloud admins and users.
 * Bugfix - Decommission of templateeditor and extract apps: [#41168](https://github.com/owncloud/core/pull/41168)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
+* Enhancement - Replace the isAdmin implementation: [#41171](https://github.com/owncloud/core/pull/41171)
 
 ## Details
 
@@ -177,6 +178,13 @@ ownCloud admins and users.
    reported via the activity app.
 
    https://github.com/owncloud/core/pull/41078
+
+* Enhancement - Replace the isAdmin implementation: [#41171](https://github.com/owncloud/core/pull/41171)
+
+   Instead of asking the backends for the groups an user belongs to, we now get the
+   admin group and list the members to detect if user is admin or not
+
+   https://github.com/owncloud/core/pull/41171
 
 # Changelog for ownCloud Core [10.13.4] (2023-12-13)
 
