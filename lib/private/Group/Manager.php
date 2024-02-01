@@ -35,7 +35,6 @@
 
 namespace OC\Group;
 
-use OC\User\NoUserException;
 use OC\Hooks\PublicEmitter;
 use OC\User\Manager as UserManager;
 use OCP\GroupInterface;
@@ -350,7 +349,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 		$adminGroup = $this->get('admin');
 		$user = $this->userManager->get($userId);
 		if ($user === null) {
-			throw new NoUserException("user $userId not found");
+			return false;
 		}
 		return $adminGroup->inGroup($user);
 	}
