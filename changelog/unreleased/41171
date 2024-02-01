@@ -1,0 +1,5 @@
+Enhancement: Replace the isAdmin implementation
+
+Instead of asking the backends for the groups an user belongs to, we now get the admin group and list the members to detect if user is admin or not
+
+https://github.com/owncloud/core/pull/41171
