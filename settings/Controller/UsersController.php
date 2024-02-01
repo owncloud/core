@@ -1071,6 +1071,11 @@ class UsersController extends Controller {
 	 * @return DataResponse
 	 */
 	public function setDisplayName($username, $displayName) {
+		$resp = $this->validateString($displayName, 64);
+		if ($resp) {
+			return $resp;
+		}
+
 		$currentUser = $this->userSession->getUser();
 
 		if ($username === null) {
@@ -1166,7 +1171,7 @@ class UsersController extends Controller {
 	 *
 	 * @param string $id
 	 * @param string $mailAddress
-	 * @return JSONResponse
+	 * @return JSONResponse|DataResponse
 	 */
 	public function setEmailAddress($id, $mailAddress) {
 		$resp = $this->validateEMail($mailAddress);
