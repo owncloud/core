@@ -690,15 +690,19 @@ class ManagerTest extends \Test\TestCase {
 		 * @var \PHPUnit\Framework\MockObject\MockObject | \OC\Group\Backend $backend
 		 */
 		$backend = $this->getTestBackend();
-		$backend->expects($this->once())
-			->method('getUserGroups')
-			->with('user1')
-			->will($this->returnValue(['group1', 'admin', 'group2']));
 		$backend->expects($this->any())
 			->method('groupExists')
 			->will($this->returnValue(true));
+		$backend->expects($this->once())
+			->method('inGroup')
+			->with('user1')
+			->will($this->returnValue(true));
 
 		$this->manager->addBackend($backend);
+
+		$this->userManager->expects($this->once())
+			->method('get')
+			->will($this->returnValue($this->getTestUser('user1')));
 
 		$this->assertTrue($this->manager->isAdmin('user1'));
 	}
@@ -708,15 +712,19 @@ class ManagerTest extends \Test\TestCase {
 		 * @var \PHPUnit\Framework\MockObject\MockObject | \OC\Group\Backend $backend
 		 */
 		$backend = $this->getTestBackend();
-		$backend->expects($this->once())
-			->method('getUserGroups')
-			->with('user1')
-			->will($this->returnValue(['group1', 'group2']));
 		$backend->expects($this->any())
 			->method('groupExists')
 			->will($this->returnValue(true));
+		$backend->expects($this->once())
+			->method('inGroup')
+			->with('user1')
+			->will($this->returnValue(false));
 
 		$this->manager->addBackend($backend);
+
+		$this->userManager->expects($this->once())
+			->method('get')
+			->will($this->returnValue($this->getTestUser('user1')));
 
 		$this->assertFalse($this->manager->isAdmin('user1'));
 	}

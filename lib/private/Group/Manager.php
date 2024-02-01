@@ -347,7 +347,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 */
 	public function isAdmin($userId) {
 		$adminGroup = $this->get('admin');
-		return $adminGroup->inGroup($userId);
+		return $adminGroup->inGroup($this->userManager->get($userId));
 	}
 
 	/**
