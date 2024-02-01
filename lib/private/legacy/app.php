@@ -384,15 +384,6 @@ class OC_App {
 	 * This function set an app as enabled in appconfig.
 	 */
 	public static function enable($app, $groups = null) {
-		// Since core 10.5.0, enterprise_key app is no longer used
-		// Be sure not to accidentally enable it if it has been
-		// left behind in an apps dir.
-		if ($app === 'enterprise_key') {
-			throw new \Exception(
-				"App $app can't be enabled. It is not used from core 10.5.0 onwards."
-			);
-		}
-
 		self::$enabledAppsCache = []; // flush
 
 		// check for required dependencies
