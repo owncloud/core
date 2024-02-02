@@ -215,6 +215,15 @@ class AvatarController extends Controller {
 			$image = new \OC_Image();
 			$image->load($handle);
 			$image->fixOrientation();
+			// don't accept images with too big dimensions
+			// 4k - 4096×2160
+			if ($image->width() > 4096 || $image->height() > 2160) {
+				return new DataResponse(
+					['data' => ['message' => $this->l->t('Image too large')]],
+					Http::STATUS_OK,
+					$headers
+				);
+			}
 
 			if ($image->valid()) {
 				$mimeType = $image->mimeType();

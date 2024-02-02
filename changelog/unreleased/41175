@@ -1,0 +1,3 @@
+Bugfix: image dimension validation on avatar upload and preview generation
+
+https://github.com/owncloud/core/pull/41175
