@@ -46,6 +46,11 @@ abstract class Image implements IProvider2 {
 		$handle = $file->fopen('r');
 		$image->load($handle);
 		$image->fixOrientation();
+		// don't generate previews on images with too big dimensions
+		// 4k - 4096×2160
+		if ($image->width() > 4096 || $image->height() > 2160) {
+			return false;
+		}
 
 		if (\is_resource($handle)) {
 			\fclose($handle);

@@ -293,6 +293,24 @@ class AvatarControllerTest extends TestCase {
 		$this->assertFileDoesNotExist($fileName);
 	}
 
+	public function testPostAvatarFilePixelFlood(): void {
+		//Create temp file
+		$fileName = \tempnam(null, "avatarTest");
+		$copyRes = \copy(\OC::$SERVERROOT.'/tests/data/pixel.jpg', $fileName);
+		$this->assertTrue($copyRes);
+
+		//Create request return
+		$reqRet = ['error' => [0], 'tmp_name' => [$fileName], 'size' => [\filesize(\OC::$SERVERROOT.'/tests/data/testimage.jpg')]];
+		$this->request->expects($this->once())->method('getUploadedFile')->willReturn($reqRet);
+
+		$response = $this->avatarController->postAvatar(null);
+
+		$this->assertEquals('Image too large', $response->getData()['data']['message']);
+
+		//File should be deleted
+		$this->assertFileDoesNotExist($fileName);
+	}
+
 	/**
 	 * Test invalid post of an avatar using POST
 	 */
