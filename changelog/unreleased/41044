@@ -1,6 +1,6 @@
 Bugfix: log.conditions with `shared_secret` shall not break file uploads
 
-Any file upload (or PUT request in general) could case a 500/Internal Server Error
+Any file upload (or PUT request in general) could cause a 500/Internal Server Error
 due to wrong usage of the request object. This is now fixed.
 
 https://github.com/owncloud/core/pull/41044
