@@ -44,6 +44,7 @@ ownCloud admins and users.
 * Bugfix - Sanitize title in dialogs: [#41166](https://github.com/owncloud/core/pull/41166)
 * Bugfix - Decommission of templateeditor and extract apps: [#41168](https://github.com/owncloud/core/pull/41168)
 * Bugfix - Input validation when setting the displayname of a user or self: [#41172](https://github.com/owncloud/core/pull/41172)
+* Bugfix - Image dimension validation on avatar upload and preview generation: [#41175](https://github.com/owncloud/core/pull/41175)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 * Enhancement - Replace the isAdmin implementation: [#41171](https://github.com/owncloud/core/pull/41171)
@@ -147,6 +148,10 @@ ownCloud admins and users.
 * Bugfix - Input validation when setting the displayname of a user or self: [#41172](https://github.com/owncloud/core/pull/41172)
 
    https://github.com/owncloud/core/pull/41172
+
+* Bugfix - Image dimension validation on avatar upload and preview generation: [#41175](https://github.com/owncloud/core/pull/41175)
+
+   https://github.com/owncloud/core/pull/41175
 
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
