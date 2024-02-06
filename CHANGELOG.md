@@ -38,6 +38,7 @@ ownCloud admins and users.
 * Bugfix - Disallow browsers to translate the frontend: [#41067](https://github.com/owncloud/core/pull/41067)
 * Bugfix - Limit performance impact when version meta data is enabled: [#41069](https://github.com/owncloud/core/pull/41069)
 * Bugfix - Proper error handling when deleting users or groups: [#41077](https://github.com/owncloud/core/pull/41077)
+* Bugfix - Account terms can be removed if they differ with the ones stored: [#41120](https://github.com/owncloud/core/pull/41120)
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
 * Bugfix - Fix log exceptions for mp3 preview: [#41153](https://github.com/owncloud/core/pull/41153)
 * Bugfix - Set oc_file_locks.id to bigint: [#41158](https://github.com/owncloud/core/pull/41158)
@@ -122,6 +123,15 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41077
    https://github.com/owncloud/core/pull/41075
+
+* Bugfix - Account terms can be removed if they differ with the ones stored: [#41120](https://github.com/owncloud/core/pull/41120)
+
+   Search terms for the account can now be removed from the DB if they differ with
+   the ones stored in the DB. This can happen with the user_ldap app, when user
+   search attributes are removed from the connection configuration in the LDAP
+   wizard.
+
+   https://github.com/owncloud/core/pull/41120
 
 * Bugfix - "user:list -a" occ command now correctly displays user's creation time: [#41125](https://github.com/owncloud/core/pull/41125)
 
