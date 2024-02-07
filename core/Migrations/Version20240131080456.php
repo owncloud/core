@@ -15,7 +15,7 @@ class Version20240131080456 implements ISimpleMigration {
 		}
 
 		$appManager = \OC::$server->getAppManager();
-		$apps_to_disable = ['templateeditor', 'extract'];
+		$apps_to_disable = ['templateeditor'];
 		foreach ($apps_to_disable as $app) {
 			if ($appManager->isInstalled($app)) {
 				$appManager->disableApp($app);
