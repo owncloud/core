@@ -95,7 +95,6 @@ class AppManager implements IAppManager {
 	private $outdated_apps = [
 		'enterprise_key' => 'It is not used from core 10.5.0 onwards.',
 		'templateeditor' => 'Discontinued - please use a theme to change mail templates.',
-		'extract' => 'Unmaintained.',
 	];
 
 	/**
