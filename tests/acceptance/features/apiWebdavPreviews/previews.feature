@@ -279,7 +279,8 @@ Feature: previews of files downloaded through the webdav API
 
 
   Scenario: the preview should be of content in the first page of a multi-page document
-    Given user "Alice" has uploaded file "fixtures/Preview-test.pdf" to "/Preview-test.pdf"
+    Given the administrator has updated system config key "enabledPreviewProviders 0" with value "OC\Preview\PDF"
+    And user "Alice" has uploaded file "fixtures/Preview-test.pdf" to "/Preview-test.pdf"
     When user "Alice" downloads the preview of "/Preview-test.pdf" with width "612" and height "792" using the WebDAV API
     Then the HTTP status code should be "200"
     And the downloaded image should be "612" pixels wide and "792" pixels high
