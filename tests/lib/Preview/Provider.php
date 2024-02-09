@@ -21,12 +21,14 @@
 
 namespace Test\Preview;
 
+use OC\Preview\TXT;
 use OCP\Files\File;
 use OCP\Files\Node;
 use OCP\Preview\IProvider2;
+use Test\TestCase;
 use Test\Traits\UserTrait;
 
-abstract class Provider extends \Test\TestCase {
+abstract class Provider extends TestCase {
 	use UserTrait;
 
 	/** @var File */
@@ -92,15 +94,10 @@ abstract class Provider extends \Test\TestCase {
 		$this->maxWidth = $this->width - $widthAdjustment;
 		$this->maxHeight = $this->height - $heightAdjustment;
 
-		// Testing code
-		/*print_r("w $this->width ");
-		print_r("h $this->height ");
-		print_r("r $ratio ");*/
-
 		$preview = $this->getPreview($this->provider);
 		// The TXT provider uses the max dimensions to create its canvas,
 		// so the ratio will always be the one of the max dimension canvas
-		if (!$this->provider instanceof \OC\Preview\TXT) {
+		if (!$this->provider instanceof TXT) {
 			$this->doesRatioMatch($preview, $ratio);
 		}
 		$this->doesPreviewFit($preview);

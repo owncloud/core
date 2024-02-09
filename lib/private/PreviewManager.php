@@ -327,8 +327,6 @@ class PreviewManager implements IPreview {
 		// This library adds imagick support for SVG, WMF, OpenEXR, DjVu and Graphviz:
 		
 		if (\extension_loaded('imagick')) {
-			$checkImagick = new \Imagick();
-
 			$imagickProviders = [
 				'SVG'	=> ['mimetype' => '/image\/svg\+xml/', 'class' => '\OC\Preview\SVG'],
 				'TIFF'	=> ['mimetype' => '/image\/tiff/', 'class' => '\OC\Preview\TIFF'],
@@ -348,12 +346,12 @@ class PreviewManager implements IPreview {
 					continue;
 				}
 
-				if (\count($checkImagick->queryFormats($queryFormat)) === 1) {
+				if (\count(\Imagick::queryFormats($queryFormat)) === 1) {
 					$this->registerCoreProvider($class, $provider['mimetype']);
 				}
 			}
 
-			if (\count($checkImagick->queryFormats('PDF')) === 1) {
+			if (\count(\Imagick::queryFormats('PDF')) === 1) {
 				// Office previews are only supported if either LibreOffice or OpenOffice is installed on the server
 				if (\OC_Helper::is_function_enabled('shell_exec')) {
 					$officeFound = \is_string($this->config->getSystemValue('preview_libreoffice_path', null));

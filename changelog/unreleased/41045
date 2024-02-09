@@ -1,0 +1,6 @@
+Bugfix: create previews from first page
+
+On multi-page documents (doc, odt, pdf etc) the preview will now be generated
+from the first page and no longer from the last page.
+
+https://github.com/owncloud/core/pull/41045
