@@ -276,3 +276,11 @@ Feature: previews of files downloaded through the webdav API
     When user "Alice" downloads the preview of "/testavatar_high.jpg" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
     And the requested JPEG image should have a quality value of "100"
+
+
+  Scenario: the preview should be of content in the first page of a multi-page document
+    Given user "Alice" has uploaded file "fixtures/Preview-test.pdf" to "/Preview-test.pdf"
+    When user "Alice" downloads the preview of "/Preview-test.pdf" with width "612" and height "792" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the downloaded image should be "612" pixels wide and "792" pixels high
+    And the downloaded preview content should match with "Preview-test-612-792.png" fixtures preview content
