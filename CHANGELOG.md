@@ -31,6 +31,7 @@ ownCloud admins and users.
 
 * Bugfix - Validate comment verb length: [#40965](https://github.com/owncloud/core/pull/40965)
 * Bugfix - Log.conditions with `shared_secret` shall not break file uploads: [#41044](https://github.com/owncloud/core/pull/41044)
+* Bugfix - Create previews from first page: [#41045](https://github.com/owncloud/core/pull/41045)
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
 * Bugfix - Store user information in explicit variable: [#41054](https://github.com/owncloud/core/pull/41054)
 * Bugfix - Fix expiration date and eliminate duplicate entries in file list: [#41056](https://github.com/owncloud/core/pull/41056)
@@ -65,6 +66,13 @@ ownCloud admins and users.
    Error due to wrong usage of the request object. This is now fixed.
 
    https://github.com/owncloud/core/pull/41044
+
+* Bugfix - Create previews from first page: [#41045](https://github.com/owncloud/core/pull/41045)
+
+   On multi-page documents (doc, odt, pdf etc) the preview will now be generated
+   from the first page and no longer from the last page.
+
+   https://github.com/owncloud/core/pull/41045
 
 * Bugfix - CalDAV query where the time range is not given: [#41050](https://github.com/owncloud/core/pull/41050)
 
