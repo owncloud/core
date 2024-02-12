@@ -277,7 +277,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "200"
     And the requested JPEG image should have a quality value of "100"
 
-
+  @skipOnOcV10.12 @skipOnOcV10.13
   Scenario: the preview should be of content in the first page of a multi-page document
     Given the administrator has updated system config key "enabledPreviewProviders 0" with value "OC\Preview\PDF"
     And user "Alice" has uploaded file "fixtures/Preview-test.pdf" to "/Preview-test.pdf"
