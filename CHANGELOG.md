@@ -182,14 +182,15 @@ ownCloud admins and users.
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
    The following have been updated: - deepdiver/zipstreamer (2.0.0 to v2.0.2) -
-   doctrine/deprecations (1.1.2 to 1.1.3) - firebase/php-jwt (6.8.1 to 6.10.0) -
-   google/apiclient (v2.15.1 to v2.15.3) - google/apiclient-services (v0.319.0 to
-   v0.331.0) - google/auth (v1.31.0 to v1.34.0) - guzzlehttp/guzzle (7.8.0 to
-   7.8.1) - laravel/serializable-closure (v1.3.1 to v1.3.3) -
-   league/mime-type-detection (1.13.0 to 1.15.0) - monolog/monolog (2.9.1 to 2.9.2)
-   - phpseclib/phpseclib (3.0.33 to 3.0.35) - sabre/dav (4.4.0 to 4.6.0) -
-   sabre/vobject (4.5.3 to 4.5.4) - symfony/console (5.4.28 to 5.4.35) -
-   symfony/event-dispatcher (5.4.26 to 5.4.35) - symfony/process (5.4.28 to 5.4.35)
+   doctrine/deprecations (1.1.2 to 1.1.3) - doctrine/lexer (2.1.0 to 2.1.1) -
+   firebase/php-jwt (6.8.1 to 6.10.0) - google/apiclient (v2.15.1 to v2.15.3) -
+   google/apiclient-services (v0.319.0 to v0.335.0) - google/auth (v1.31.0 to
+   v1.35.0) - guzzlehttp/guzzle (7.8.0 to 7.8.1) - laravel/serializable-closure
+   (v1.3.1 to v1.3.3) - league/mime-type-detection (1.13.0 to 1.15.0) -
+   monolog/monolog (2.9.1 to 2.9.2) - phpseclib/phpseclib (3.0.33 to 3.0.35) -
+   sabre/dav (4.4.0 to 4.6.0) - sabre/vobject (4.5.3 to 4.5.4) - symfony/console
+   (5.4.28 to 5.4.35) - symfony/event-dispatcher (5.4.26 to 5.4.35) -
+   symfony/polyfill-php80 (v1.28.0 to v1.29.0) - symfony/process (5.4.28 to 5.4.35)
    - symfony/routing (5.4.26 to 5.4.35) - symfony/string (5.4.29 to 5.4.35) -
    symfony/translation (5.4.24 to 5.4.35)
 
@@ -209,6 +210,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41152
    https://github.com/owncloud/core/pull/41155
    https://github.com/owncloud/core/pull/41173
+   https://github.com/owncloud/core/pull/41182
 
 * Change - No activities on rejected shares: [#41078](https://github.com/owncloud/core/pull/41078)
 
