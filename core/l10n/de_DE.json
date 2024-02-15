@@ -3,6 +3,7 @@
     "File is too big" : "Datei ist zu groß.",
     "Invalid file provided" : "Ungültige Datei zur Verfügung gestellt",
     "No image or file provided" : "Es wurde weder ein Bild noch eine Datei zur Verfügung gestellt.",
+    "Image too large" : "Bild zu groß",
     "Unknown filetype" : "Unbekannter Dateityp",
     "Invalid image" : "Ungültiges Bild",
     "An error occurred. Please contact your admin." : "Es ist ein Fehler aufgetreten; bitte kontaktieren Sie Ihre Administration.",

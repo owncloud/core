@@ -3,6 +3,7 @@
     "File is too big" : "O arquivo é muito grande",
     "Invalid file provided" : "Arquivo fornecido inválido",
     "No image or file provided" : "Nenhuma imagem ou arquivo fornecido",
+    "Image too large" : "Imagem muito grande",
     "Unknown filetype" : "Tipo de arquivo desconhecido",
     "Invalid image" : "Imagem inválida",
     "An error occurred. Please contact your admin." : "Ocorreu um erro. Entre em contato com seu administrador.",
