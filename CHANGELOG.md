@@ -45,7 +45,7 @@ ownCloud admins and users.
 * Bugfix - Set oc_file_locks.id to bigint: [#41158](https://github.com/owncloud/core/pull/41158)
 * Bugfix - Add compatibility to richdocuments.document.index route: [#41161](https://github.com/owncloud/core/pull/41161)
 * Bugfix - Sanitize title in dialogs: [#41166](https://github.com/owncloud/core/pull/41166)
-* Bugfix - Decommission of templateeditor and extract apps: [#41168](https://github.com/owncloud/core/pull/41168)
+* Bugfix - Decommission of templateeditor app: [#41168](https://github.com/owncloud/core/pull/41168)
 * Bugfix - Input validation when setting the displayname of a user or self: [#41172](https://github.com/owncloud/core/pull/41172)
 * Bugfix - Image dimension validation on avatar upload and preview generation: [#41175](https://github.com/owncloud/core/pull/41175)
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
@@ -167,7 +167,7 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41166
 
-* Bugfix - Decommission of templateeditor and extract apps: [#41168](https://github.com/owncloud/core/pull/41168)
+* Bugfix - Decommission of templateeditor app: [#41168](https://github.com/owncloud/core/pull/41168)
 
    https://github.com/owncloud/core/pull/41168
 
