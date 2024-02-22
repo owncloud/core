@@ -21,10 +21,10 @@
     "Avatar image is not square" : "תמונת דמות מייצגת, אווטאר, אינה ריבועית",
     "today" : "היום",
     "yesterday" : "אתמול",
-    "_%n day ago_::_%n days ago_" : ["לפני %n יום","לפני %n ימים","לפני %n ימים","לפני %n ימים"],
+    "_%n day ago_::_%n days ago_" : ["לפני %n יום","לפני %n ימים","לפני %n ימים"],
     "last month" : "חודש שעבר",
     "last year" : "שנה שעברה",
-    "_%n year ago_::_%n years ago_" : ["לפני %n שנה","לפני %n שנים","לפני %n שנים","לפני %n שנים"],
+    "_%n year ago_::_%n years ago_" : ["לפני %n שנה","לפני %n שנים","לפני %n שנים"],
     "seconds ago" : "שניות",
     "Module with id: %s does not exist. Please enable it in your apps settings or contact your administrator." : "מודול עם זהות: %s אינו קיים. יש לאפשר את זה בהגדרות היישומים או ליצור קשר עם המנהל.",
     "Builtin" : "מובנה",
@@ -193,5 +193,5 @@
     "Storage is temporarily not available" : "אחסון באופן זמני אינו זמין",
     "Storage connection timeout. %s" : "פסק זמן חיבור אחסון. %s",
     "\"%s\" is locked" : "\"%s\" נעול"
-},"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;"
+},"pluralForm" :"nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;"
 }
