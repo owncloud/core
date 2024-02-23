@@ -178,6 +178,7 @@ ownCloud admins and users.
 * Bugfix - Image dimension validation on avatar upload and preview generation: [#41175](https://github.com/owncloud/core/pull/41175)
 
    https://github.com/owncloud/core/pull/41175
+   https://github.com/owncloud/core/pull/41193
 
 * Change - Update PHP dependencies: [#41033](https://github.com/owncloud/core/pull/41033)
 
