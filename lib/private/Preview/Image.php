@@ -46,9 +46,7 @@ abstract class Image implements IProvider2 {
 		$handle = $file->fopen('r');
 		$image->load($handle);
 		$image->fixOrientation();
-		// don't generate previews on images with too big dimensions
-		// 4k - 4096×2160
-		if ($image->width() > 4096 || $image->height() > 2160) {
+		if (!$this->validateImageDimensions($image)) {
 			return false;
 		}
 
@@ -69,5 +67,25 @@ abstract class Image implements IProvider2 {
 	 */
 	public function isAvailable(FileInfo $file) {
 		return true;
+	}
+
+	private function validateImageDimensions(\OC_Image $image): bool {
+		[$width, $height] = $this->getMaxDimensions();
+		return !($image->width() > $width || $image->height() > $height);
+	}
+
+	private function getMaxDimensions(): array {
+		// 24 MP - 6016 x 4000
+		$maxDimension = \OC::$server->getConfig()->getSystemValue('preview_max_dimensions', '6016x4000');
+		$exploded = explode('x', strtolower($maxDimension));
+		if ($exploded === false || \count($exploded) !== 2) {
+			return [6016, 4000];
+		}
+		[$w, $h] = $exploded;
+		if (is_numeric($w) && is_numeric($h)) {
+			return [(int)$w, (int)$h];
+		}
+
+		return [6016, 4000];
 	}
 }
