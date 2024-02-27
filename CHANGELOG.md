@@ -1,6 +1,6 @@
 # Table of Contents
 
-* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.14.0](#changelog-for-owncloud-core-10140-2024-02-19)
 * [Changelog for 10.13.4](#changelog-for-owncloud-core-10134-2023-12-13)
 * [Changelog for 10.13.3](#changelog-for-owncloud-core-10133-2023-11-17)
 * [Changelog for 10.13.2](#changelog-for-owncloud-core-10132-2023-10-04)
@@ -20,12 +20,12 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
-# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+# Changelog for ownCloud Core [10.14.0] (2024-02-19)
 
-The following sections list the changes in ownCloud core unreleased relevant to
+The following sections list the changes in ownCloud core 10.14.0 relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.13.4...master
+[10.14.0]: https://github.com/owncloud/core/compare/v10.13.4...v10.14.0
 
 ## Summary
 
