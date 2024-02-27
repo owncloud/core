@@ -199,6 +199,7 @@ class LoginController extends Controller {
 			$altLogins = \array_merge($altLogins, $altLogins2);
 		}
 		$parameters['alt_login'] = $altLogins;
+		$parameters['login.token_auth_enforced'] = $this->config->getSystemValue('login.token_auth_enforced', false);
 		$parameters['rememberLoginAllowed'] = OC_Util::rememberLoginAllowed();
 		$parameters['rememberLoginState'] = !empty($remember_login) ? $remember_login : 0;
 
