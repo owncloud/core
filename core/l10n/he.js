@@ -123,7 +123,7 @@ OC.L10N.register(
     "Ok" : "בסדר",
     "Error loading message template: {error}" : "שגיאה בטעינת תבנית ההודעות: {error}",
     "read-only" : "לקריאה בלבד",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} הנגשות קובץ","{count} התנגשויות קבצים","{count} התנגשויות קבצים","{count} התנגשויות קבצים"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} הנגשות קובץ","{count} התנגשויות קבצים","{count} התנגשויות קבצים"],
     "One file conflict" : "התנגשות קובץ אחת",
     "New Files" : "קבצים חדשים",
     "Already existing files" : "קבצים קיימים כבר",
@@ -219,7 +219,7 @@ OC.L10N.register(
     "Share details could not be loaded for this item." : "לא ניתן היה לטעון מידע שיתוף לפריט זה",
     "No users or groups found for {search}" : "לא אותרו משתמשים או קבוצות עבור {search}",
     "No users found for {search}" : "לא אותרו משתמשים עבור {search}",
-    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["יש להכניס לפחות {chars} תו להצעות","יש להכניס לפחות {chars} תווים להצעות","יש להכניס לפחות {chars} תווים להצעות","יש להכניס לפחות {chars} תווים להצעות"],
+    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["יש להכניס לפחות {chars} תו להצעות","יש להכניס לפחות {chars} תווים להצעות","יש להכניס לפחות {chars} תווים להצעות"],
     "An error occurred. Please try again" : "אירעה שגיאה. יש לנסות שנית",
     "User" : "שתמש",
     "Group" : "קבוצה",
@@ -254,7 +254,7 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "שלום {name}, מזג האוויר הנו {weather}",
     "Hello {name}" : "שלום {name}",
     "new" : "חדש",
-    "_download %n file_::_download %n files_" : ["הורד %n קובץ","הורדו %n קבצים","הורדו %n קבצים","הורדו %n קבצים"],
+    "_download %n file_::_download %n files_" : ["הורד %n קובץ","הורדו %n קבצים","הורדו %n קבצים"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "מתבצע עכשיו שדרוג, מעבר מדף זה עלול לפגוע בתהליך בסביבות הפעלה מסויימות.",
     "Updating to {version}" : "מעדכן ל- {version}",
     "An error occurred." : "אירעה שגיאה.",
@@ -265,7 +265,7 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "תהליך העדכון הסתיים בהצלחה. עכשיו מנתב אותך אל ownCloud.",
     "Searching other places" : "מחפש במקומות אחרים",
     "No search results in other folders" : "אין תוצאות חיפוש בתיקיות אחרות",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} תוצאת חיפוש בתיקייה אחרות","{count} תוצאות חיפוש בתיקיות אחרות","{count} תוצאות חיפוש בתיקיות אחרות","{count} תוצאות חיפוש בתיקיות אחרות"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} תוצאת חיפוש בתיקייה אחרות","{count} תוצאות חיפוש בתיקיות אחרות","{count} תוצאות חיפוש בתיקיות אחרות"],
     "Personal" : "אישי",
     "Users" : "משתמשים",
     "Apps" : "יישומים",
@@ -360,4 +360,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "הפעלה %s זו כרגע במצב אחזקה, שתמשך זמן מה.",
     "This page will refresh itself when the %s instance is available again." : "עמוד זה ירענן את עצמו כשהפעלת %s תהיה זמינה שוב."
 },
-"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");
+"nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;");

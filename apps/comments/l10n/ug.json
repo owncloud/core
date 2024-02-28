@@ -1,6 +1,24 @@
 { "translations": {
+    "Type in a new comment..." : "يېڭى ئىزاھتا كىرگۈزۈڭ...",
+    "Delete comment" : "ئىزاھنى ئۆچۈرۈڭ",
+    "Post" : "يوللا",
     "Cancel" : "ۋاز كەچ",
+    "Edit comment" : "ئىزاھنى تەھرىرلەش",
+    "[Deleted user]" : "[ئۆچۈرۈلگەن ئىشلەتكۈچى]",
+    "Comments" : "ئىزاھلار",
+    "No other comments available" : "باشقا ئىزاھ يوق",
+    "More comments..." : "تېخىمۇ كۆپ ئىزاھلار...",
     "Save" : "ساقلا",
-    "Comment" : "ئىزاھات"
+    "Allowed characters {count} of {max}" : "يول قويۇلغان ھەرىپلەر [ئەڭ كۆپ] نىڭ [نۆۋەتتىكى]",
+    "Error occurred while retrieving comment with id {id}" : "id [id] نۇمۇرلۇق ئىزاھنى تاپشۇرۋاتقاندا خاتالىق كۆرۈلدى",
+    "Error occurred while updating comment with id {id}" : "id [id] نۇمۇرلۇق ئىزاھنى يېڭىلاۋاتقاندا خاتالىق كۆرۈلدى",
+    "Error occurred while posting comment" : "ئىزاھنى چىقىرۋاتقاندا خاتالىق كۆرۈلدى",
+    "{count} unread comments" : "[سان] ئوقۇلمىغان ئىزاھلار",
+    "Comment" : "ئىزاھات",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "ھۆججەتلەرنىڭ <strong>ئىزاھلىرى</strong> <em>(ھەرۋاقىت ئېقىمدا تىزىلغان)</em>",
+    "You commented" : "سىز ئىزاھلىدىڭىز",
+    "%1$s commented" : "%1$sئىزاھلاندى",
+    "You commented on %2$s" : "سىز %2$sگە ئىزاھ بەردىڭىز",
+    "%1$s commented on %2$s" : "%1$sبولسا %2$sگە ئىزاھ بەردى"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

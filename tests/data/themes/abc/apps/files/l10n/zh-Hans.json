@@ -1,4 +1,5 @@
 { "translations": {
-    "Close" : "关闭"
+    "Close" : "关闭",
+    "Unknown user" : "未知用户"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

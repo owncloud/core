@@ -1,6 +1,9 @@
 { "translations": {
+    "Unknown filetype" : "نامەلۇم ھۆججەت تىپى",
+    "Invalid image" : "سۈرەت ئىناۋەتسىز",
     "today" : "بۈگۈن",
     "yesterday" : "تۈنۈگۈن",
+    "seconds ago" : "سېكۇنت ئىلگىرى",
     "None" : "يوق",
     "Username" : "ئىشلەتكۈچى ئاتى",
     "Password" : "ئىم",
@@ -16,6 +19,8 @@
     "A valid password must be provided" : "چوقۇم ئىناۋەتلىك ئىم تەمىنلەش كېرەك",
     "Settings" : "تەڭشەكلەر",
     "Users" : "ئىشلەتكۈچىلەر",
+    "Imprint" : "بارماق ئىزى",
+    "Privacy Policy" : "شەخسىيەت سىياسىتى",
     "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
     "Unknown user" : "نامەلۇم ئىشلەتكۈچى",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "بۇ بەلكىم Zend OPcache ياكى eAccelerator غا ئوخشاش غەملەك/تېزلەتكۈچ تەرىپىدىن كىلىپ چىققان.",

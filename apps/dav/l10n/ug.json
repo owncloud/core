@@ -1,5 +1,8 @@
 { "translations": {
     "Personal" : "شەخسىي",
-    "Contacts" : "ئالاقەداشلار"
+    "Contacts" : "ئالاقەداشلار",
+    "Technical details" : "تېخنىكىلىق تەپسىلات",
+    "Remote Address: %s" : "يىراقتىكى ئادرېس: %s",
+    "Request ID: %s" : "ئىلتىماس ID سى: %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
