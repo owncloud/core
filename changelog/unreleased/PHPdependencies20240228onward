@@ -6,7 +6,9 @@ The following have been updated:
 - phpseclib/phpseclib (3.0.35 to 3.0.37)
 - symfony/console (v5.4.35 to v5.4.36)
 - symfony/process (v5.4.35 to v5.4.36)
+- symfony/routing (v5.4.35 to v5.4.37)
 - symfony/string (v5.4.35 to v5.4.36)
 
 https://github.com/owncloud/core/pull/41195
 https://github.com/owncloud/core/pull/41203
+https://github.com/owncloud/core/pull/41205
