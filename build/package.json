@@ -42,7 +42,7 @@
     "jasmine-sinon": "^0.4.0",
     "karma": "^6.4.3",
     "karma-coverage": "*",
-    "karma-firefox-launcher": "^2.1.2",
+    "karma-firefox-launcher": "^2.1.3",
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
