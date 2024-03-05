@@ -39,10 +39,12 @@ ownCloud admins and users.
    The following have been updated: - google/apiclient-services (v0.335.0 to
    v0.338.0) - google/auth (v1.35.0 to v1.37.0) - phpseclib/phpseclib (3.0.35 to
    3.0.37) - symfony/console (v5.4.35 to v5.4.36) - symfony/process (v5.4.35 to
-   v5.4.36) - symfony/string (v5.4.35 to v5.4.36)
+   v5.4.36) - symfony/routing (v5.4.35 to v5.4.37) - symfony/string (v5.4.35 to
+   v5.4.36)
 
    https://github.com/owncloud/core/pull/41195
    https://github.com/owncloud/core/pull/41203
+   https://github.com/owncloud/core/pull/41205
 
 # Changelog for ownCloud Core [10.14.0] (2024-02-19)
 
