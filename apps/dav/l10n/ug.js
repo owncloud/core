@@ -1,6 +1,9 @@
 OC.L10N.register(
     "dav",
     {
+    "Contact birthdays" : "ئالاقىداش تۇغۇلغان كۈنى",
+    "User unknown" : "نامەلۇم ئىشلەتكۈچى",
+    "User disabled" : "ئىشلەتكۈچى تاقالدى",
     "Personal" : "شەخسىي",
     "Contacts" : "ئالاقەداشلار",
     "Technical details" : "تېخنىكىلىق تەپسىلات",

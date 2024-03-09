@@ -15,8 +15,12 @@
     "Encryption" : "شىفىرلاش",
     "Sharing" : "ھەمبەھىر",
     "Search" : "ئىزدە",
+    "Invalid Federated Cloud ID" : "ئىناۋەتسىز فېدىراتسىيەلىك بۇلۇت كىملىكى",
+    "Sharing %s failed, because this item is already shared with %s" : "%sنى ھەمبەھىرلەش مەغلۇپ بولدى، چۈنكى بۇ بۇيۇم بولسا ئاللىبۇرۇن %sبىلەن ھەمبەھىرلەندى",
+    "Not allowed to create a federated share with the same user" : "ئوخشاش ئىشلەتكۈچى بىلەن فېدىراتسىيەلىك ھەمبەھىر قۇرۇشقا يول قويۇلمىدى",
     "A valid username must be provided" : "چوقۇم ئىناۋەتلىك ئىشلەتكۈچى ئىسمىدىن بىرنى تەمىنلەش كېرەك",
     "A valid password must be provided" : "چوقۇم ئىناۋەتلىك ئىم تەمىنلەش كېرەك",
+    "User disabled" : "ئىشلەتكۈچى تاقالدى",
     "Settings" : "تەڭشەكلەر",
     "Users" : "ئىشلەتكۈچىلەر",
     "Imprint" : "بارماق ئىزى",
@@ -24,6 +28,7 @@
     "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
     "Unknown user" : "نامەلۇم ئىشلەتكۈچى",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "بۇ بەلكىم Zend OPcache ياكى eAccelerator غا ئوخشاش غەملەك/تېزلەتكۈچ تەرىپىدىن كىلىپ چىققان.",
+    "User unknown" : "نامەلۇم ئىشلەتكۈچى",
     "Storage is temporarily not available" : "ساقلاشنى ۋاقتىنچە ئىشلەتكىلى بولمايدۇ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
