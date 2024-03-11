@@ -22,8 +22,10 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\INode;
+use Sabre\DAVACL\Exception\NeedPrivileges;
 use Sabre\DAVACL\Plugin;
 
 /**
@@ -40,12 +42,28 @@ class DavAclPlugin extends Plugin {
 		$this->allowUnauthenticatedAccess = false;
 	}
 
+	/**
+	 * @throws NotAuthenticated
+	 * @throws NotFound
+	 * @throws NeedPrivileges
+	 */
 	public function checkPrivileges($uri, $privileges, $recursion = self::R_PARENT, $throwExceptions = true) {
 		// within public-files throwing the exception NeedPrivileges is desired
 		$shallThrowExceptions = false;
 		$elements = \explode('/', $uri);
 		if ($elements[0] === 'public-files') {
 			$shallThrowExceptions = true;
+		}
+		if ($elements[0] === 'calendars' && $privileges === '{DAV:}write-properties') {
+			$currentPrincipal = $this->getCurrentUserPrincipal();
+			$calendar = $this->server->tree->getNodeForPath($uri);
+			if ($calendar->getPrincipalURI() !== $currentPrincipal) {
+				if ($throwExceptions) {
+					throw new NotFound();
+
+				}
+				return false;
+			}
 		}
 
 		$access = parent::checkPrivileges($uri, $privileges, $recursion, $shallThrowExceptions);
