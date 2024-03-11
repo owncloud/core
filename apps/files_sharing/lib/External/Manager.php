@@ -30,10 +30,12 @@
 namespace OCA\Files_Sharing\External;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use GuzzleHttp\Exception\ConnectException;
 use OC\Files\Filesystem;
 use OC\User\NoUserException;
 use OCA\Files_Sharing\Helper;
 use OCP\Files;
+use OCP\Http\Client\IClientService;
 use OCP\Notification\IManager;
 use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
@@ -82,11 +84,11 @@ class Manager {
 	 * @param string $uid
 	 */
 	public function __construct(
-		\OCP\IDBConnection $connection,
-		\OC\Files\Mount\Manager $mountManager,
+		\OCP\IDBConnection                 $connection,
+		\OC\Files\Mount\Manager            $mountManager,
 		\OCP\Files\Storage\IStorageFactory $storageLoader,
-		IManager $notificationManager,
-		EventDispatcherInterface $eventDispatcher,
+		IManager                           $notificationManager,
+		EventDispatcherInterface           $eventDispatcher,
 		$uid
 	) {
 		$this->connection = $connection;
@@ -110,7 +112,7 @@ class Manager {
 	 * @param string $remoteId
 	 * @return Mount|null
 	 */
-	public function addShare($remote, $token, $password, $name, $owner, $accepted=false, $user = null, $remoteId = -1) {
+	public function addShare($remote, $token, $password, $name, $owner, $accepted = false, $user = null, $remoteId = -1) {
 		$user = $user ? $user : $this->uid;
 		$accepted = $accepted ? 1 : 0;
 		$name = Filesystem::normalizePath('/' . $name);
@@ -124,16 +126,16 @@ class Manager {
 			$mountPoint = $tmpMountPointName;
 			$hash = \md5($tmpMountPointName);
 			$data = [
-				'remote'		=> $remote,
-				'share_token'	=> $token,
-				'password'		=> $password,
-				'name'			=> $name,
-				'owner'			=> $owner,
-				'user'			=> $user,
-				'mountpoint'	=> $mountPoint,
-				'mountpoint_hash'	=> $hash,
-				'accepted'		=> $accepted,
-				'remote_id'		=> $remoteId,
+				'remote' => $remote,
+				'share_token' => $token,
+				'password' => $password,
+				'name' => $name,
+				'owner' => $owner,
+				'user' => $user,
+				'mountpoint' => $mountPoint,
+				'mountpoint_hash' => $hash,
+				'accepted' => $accepted,
+				'remote_id' => $remoteId,
 			];
 
 			$i = 1;
@@ -159,11 +161,11 @@ class Manager {
 		$query->execute([$remote, $token, $password, $name, $owner, $user, $mountPoint, $hash, $accepted, $remoteId]);
 
 		$options = [
-			'remote'	=> $remote,
-			'token'		=> $token,
-			'password'	=> $password,
-			'mountpoint'	=> $mountPoint,
-			'owner'		=> $owner
+			'remote' => $remote,
+			'token' => $token,
+			'password' => $password,
+			'mountpoint' => $mountPoint,
+			'owner' => $owner
 		];
 		return $this->mountShare($options);
 	}
@@ -194,10 +196,10 @@ class Manager {
 	 */
 	public function getShareFileId($share, $mountPoint) {
 		$options = [
-			'remote'	=> $share['remote'],
-			'token'		=> $share['share_token'],
-			'mountpoint'	=> $mountPoint,
-			'owner'		=> $share['owner']
+			'remote' => $share['remote'],
+			'token' => $share['share_token'],
+			'mountpoint' => $mountPoint,
+			'owner' => $share['owner']
 		];
 
 		// We need to scan the new file/folder here to get its fileId
@@ -318,7 +320,7 @@ class Manager {
 		$filter = $this->notificationManager->createNotification();
 		$filter->setApp('files_sharing')
 			->setUser($this->uid)
-			->setObject('remote_share', (int) $remoteShare);
+			->setObject('remote_share', (int)$remoteShare);
 		$this->notificationManager->markProcessed($filter);
 	}
 
@@ -529,7 +531,7 @@ class Manager {
 		$parameters = [$this->uid];
 		if ($accepted !== null) {
 			$query .= ' AND `accepted` = ?';
-			$parameters[] = (int) $accepted;
+			$parameters[] = (int)$accepted;
 		}
 		$query .= ' ORDER BY `id` ASC';
 
@@ -537,5 +539,56 @@ class Manager {
 		$result = $shares->execute($parameters);
 
 		return $result ? $shares->fetchAll() : [];
+	}
+
+	/**
+	 * Test whether the specified remote is accessible
+	 */
+	protected function testUrl(IClientService $clientService, string $remote, bool $checkVersion = false): bool {
+		try {
+			$client = $clientService->newClient();
+			$response = \json_decode($client->get(
+				$remote,
+				[
+					'timeout' => 3,
+					'connect_timeout' => 3,
+				]
+			)->getBody());
+
+			if ($checkVersion) {
+				return !empty($response->version) && \version_compare($response->version, '7.0.0', '>=');
+			}
+
+			return \is_object($response);
+		} catch (ConnectException $e) {
+			throw $e;
+		} catch (\Exception $e) {
+			return false;
+		}
+	}
+
+	public function testRemoteUrl(IClientService $clientService, string $remote) {
+		try {
+			// cut query and|or anchor part off
+			$remote = \strtok($remote, '?#');
+			if ($this->testUrl($clientService, 'https://' . $remote . '/ocs-provider/') ||
+				$this->testUrl($clientService, 'https://' . $remote . '/ocs-provider/index.php') ||
+				$this->testUrl($clientService, 'https://' . $remote . '/status.php', true)
+			) {
+				return 'https';
+			}
+
+			if (
+				$this->testUrl($clientService, 'http://' . $remote . '/ocs-provider/') ||
+				$this->testUrl($clientService, 'http://' . $remote . '/ocs-provider/index.php') ||
+				$this->testUrl($clientService, 'http://' . $remote . '/status.php', true)
+			) {
+				return 'http';
+			}
+		} catch (ConnectException $e) {
+			// noop
+		}
+
+		return false;
 	}
 }

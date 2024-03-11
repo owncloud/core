@@ -29,7 +29,6 @@
 /*
  * sharing_external_add ajax call handler
  */
-
 OCP\JSON::callCheck();
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('files_sharing');
@@ -74,6 +73,13 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 	\OC::$server->getEventDispatcher(),
 	\OC::$server->getUserSession()->getUser()->getUID()
 );
+
+# test remote before adding the share
+$resp = $externalManager->testRemoteUrl(\OC::$server->getHTTPClientService(), $remote);
+if ($resp === false) {
+	\OCP\JSON::error(['data' => ['message' => $l->t('Remote is unreachable')]]);
+	exit();
+}
 
 // add federated share
 $mount = $externalManager->addShare($remote, $token, $password, $name, $ownerDisplayName, true);

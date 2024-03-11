@@ -28,6 +28,9 @@ use OC\Files\Storage\StorageFactory;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
 use OCA\Files_Sharing\Tests\TestCase;
+use OCP\Http\Client\IClient;
+use OCP\Http\Client\IClientService;
+use OCP\Http\Client\IResponse;
 use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
 use OCP\Share\Events\ShareEvent;
@@ -413,5 +416,95 @@ class ManagerTest extends TestCase {
 		$this->manager->removeShare('/SharedFolder');
 		$this->assertSame('\OCA\Files_Sharing::unshareEvent', $called[0]);
 		$this->assertArrayHasKey('user', $called[1]);
+	}
+
+	public function testRemoteWithValidHttps(): void {
+		$client = $this->getMockBuilder(IClient::class)
+			->disableOriginalConstructor()->getMock();
+		$response = $this->getMockBuilder(IResponse::class)
+			->disableOriginalConstructor()->getMock();
+		$response
+			->expects($this->exactly(2))
+			->method('getBody')
+			->will($this->onConsecutiveCalls('Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+		$client
+			->method('get')
+			->willReturn($response);
+
+		$clientService = $this->createMock(IClientService::class);
+		$clientService
+			->expects($this->exactly(2))
+			->method('newClient')
+			->willReturn($client);
+
+		$this->assertEquals('https', $this->manager->testRemoteUrl($clientService, 'owncloud.com'));
+	}
+
+	public function testRemoteWithWorkingHttp(): void {
+		$client = $this->getMockBuilder(IClient::class)
+			->disableOriginalConstructor()->getMock();
+		$response = $this->getMockBuilder(IResponse::class)
+			->disableOriginalConstructor()->getMock();
+		$client
+			->method('get')
+			->willReturn($response);
+		$response
+			->expects($this->exactly(5))
+			->method('getBody')
+			->will($this->onConsecutiveCalls('Certainly not a JSON string', 'Certainly not a JSON string', 'Certainly not a JSON string', 'Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+
+		$clientService = $this->createMock(IClientService::class);
+		$clientService
+			->expects($this->exactly(5))
+			->method('newClient')
+			->willReturn($client);
+
+		$this->assertEquals('http', $this->manager->testRemoteUrl($clientService, 'owncloud.com'));
+	}
+
+	public function testRemoteWithInvalidRemote(): void {
+		$client = $this->getMockBuilder(IClient::class)
+			->disableOriginalConstructor()->getMock();
+		$response = $this->getMockBuilder(IResponse::class)
+			->disableOriginalConstructor()->getMock();
+		$client
+			->method('get')
+			->willReturn($response);
+		$response
+			->expects($this->exactly(6))
+			->method('getBody')
+			->willReturn('Certainly not a JSON string');
+		$clientService = $this->createMock(IClientService::class);
+		$clientService
+			->expects($this->exactly(6))
+			->method('newClient')
+			->willReturn($client);
+
+		$this->assertFalse($this->manager->testRemoteUrl($clientService, 'owncloud.com'));
+	}
+
+	public function testRemoteIsCleanedUp() {
+		$client = $this->createMock(IClient::class);
+		$response = $this->createMock(IResponse::class);
+		$response
+			->expects($this->exactly(2))
+			->method('getBody')
+			->will($this->onConsecutiveCalls('Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+		$client
+			->expects($this->any())
+			->method('get')
+			->withConsecutive(
+				['https://owncloud.com/ocs-provider/'],
+				['https://owncloud.com/ocs-provider/index.php']
+			)
+			->willReturn($response);
+
+		$clientService = $this->createMock(IClientService::class);
+		$clientService
+			->expects($this->exactly(2))
+			->method('newClient')
+			->willReturn($client);
+		$response = $this->manager->testRemoteUrl($clientService, 'owncloud.com?app=files#anchor');
+		$this->assertEquals('https', $response);
 	}
 }

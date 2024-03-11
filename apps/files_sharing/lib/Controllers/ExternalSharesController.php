@@ -25,6 +25,7 @@
 
 namespace OCA\Files_Sharing\Controllers;
 
+use GuzzleHttp\Exception\ConnectException;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
@@ -42,8 +43,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ExternalSharesController extends Controller {
 	/** @var \OCA\Files_Sharing\External\Manager */
 	private $externalManager;
-	/** @var \OCA\Files_Sharing\External\Manager */
-	private $groupExternalManager = null;
 	/** @var IClientService */
 	private $clientService;
 	/**
@@ -176,34 +175,6 @@ class ExternalSharesController extends Controller {
 	}
 
 	/**
-	 * Test whether the specified remote is accessible
-	 *
-	 * @param string $remote
-	 * @param bool $checkVersion
-	 * @return bool
-	 */
-	protected function testUrl($remote, $checkVersion = false) {
-		try {
-			$client = $this->clientService->newClient();
-			$response = \json_decode($client->get(
-				$remote,
-				[
-					'timeout' => 3,
-					'connect_timeout' => 3,
-				]
-			)->getBody());
-
-			if ($checkVersion) {
-				return !empty($response->version) && \version_compare($response->version, '7.0.0', '>=');
-			} else {
-				return \is_object($response);
-			}
-		} catch (\Exception $e) {
-			return false;
-		}
-	}
-
-	/**
 	 * @PublicPage
 	 * @NoOutgoingFederatedSharingRequired
 	 * @NoIncomingFederatedSharingRequired
@@ -212,22 +183,7 @@ class ExternalSharesController extends Controller {
 	 * @return DataResponse
 	 */
 	public function testRemote($remote) {
-		// cut query and|or anchor part off
-		$remote = \strtok($remote, '?#');
-		if (
-			$this->testUrl('https://' . $remote . '/ocs-provider/') ||
-			$this->testUrl('https://' . $remote . '/ocs-provider/index.php') ||
-			$this->testUrl('https://' . $remote . '/status.php', true)
-		) {
-			return new DataResponse('https');
-		} elseif (
-			$this->testUrl('http://' . $remote . '/ocs-provider/') ||
-			$this->testUrl('http://' . $remote . '/ocs-provider/index.php') ||
-			$this->testUrl('http://' . $remote . '/status.php', true)
-		) {
-			return new DataResponse('http');
-		} else {
-			return new DataResponse(false);
-		}
+		$response = $this->externalManager->testRemoteUrl($this->clientService, $remote);
+		return new DataResponse($response);
 	}
 }
