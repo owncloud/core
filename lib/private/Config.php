@@ -34,6 +34,7 @@
  */
 
 namespace OC;
+
 use OCP\Events\EventEmitterTrait;
 
 /**
@@ -44,22 +45,32 @@ class Config {
 	use EventEmitterTrait;
 	public const ENV_PREFIX = 'OC_';
 
-	/** @var array Associative array ($key => $value) */
+	/**
+	 * @var array Associative array ($key => $value)
+	 */
 	protected $cache = [];
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $configDir;
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $configFilePath;
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $configFileName;
 
 	/**
 	 * @param string $configDir Path to the config dir, needs to end with '/'
 	 * @param string $fileName (Optional) Name of the config file. Defaults to config.php
+	 *
+	 * @throws \Exception
 	 */
 	public function __construct($configDir, $fileName = 'config.php') {
 		$this->configDir = $configDir;
-		$this->configFilePath = $this->configDir.$fileName;
+		$this->configFilePath = $this->configDir . $fileName;
 		$this->configFileName = $fileName;
 		$this->readData();
 	}
@@ -76,14 +87,13 @@ class Config {
 	}
 
 	/**
-	 * Returns a config value
-	 *
-	 * gets its value from an `OC_` prefixed environment variable
+	 * Returns a config value gets its value from an `OC_` prefixed environment variable
 	 * if it doesn't exist from config.php
 	 * if this doesn't exist either, it will return the given `$default`
 	 *
 	 * @param string $key key
 	 * @param mixed $default = null default value
+	 *
 	 * @return mixed the value or $default
 	 */
 	public function getValue($key, $default = null) {
@@ -104,6 +114,8 @@ class Config {
 	 *
 	 * @param array $configs Associative array with `key => value` pairs
 	 *                       If value is null, the config key will be deleted
+	 *
+	 * @throws \Exception Config file not found
 	 */
 	public function setValues(array $configs) {
 		if ($this->isReadOnly()) {
@@ -129,6 +141,8 @@ class Config {
 	 *
 	 * @param string $key key
 	 * @param mixed $value value
+	 *
+	 * @throws \Exception Config file not found
 	 */
 	public function setValue($key, $value) {
 		/**
@@ -154,34 +168,62 @@ class Config {
 	}
 
 	/**
+	 * This function removes leading and preceding whitespace from string
+	 *
+	 * @param mixed $arr data
+	 *
+	 * @return string | array Remove whitespace from data
+	 */
+	protected function stripWhitespace($arr) {
+		if (\is_array($arr)) {
+			foreach ($arr as $key => $element) {
+				$arr[$key] = $this->stripWhitespace($element);
+			}
+		} else {
+			$arr = trim($arr);
+		}
+		return $arr;
+	}
+
+	/**
 	 * This function sets the value
 	 *
 	 * @param string $key key
 	 * @param mixed $value value
+	 *
 	 * @return bool True if the file needs to be updated, false otherwise
 	 */
 	protected function set($key, $value) {
-		return $this->emittingCall(function (&$afterArray) use (&$key, &$value) {
-			if (!isset($this->cache[$key]) || $this->cache[$key] !== $value) {
-				if (isset($this->cache[$key])) {
-					$afterArray['update'] = true;
-					$afterArray['oldvalue'] = $this->cache[$key];
+		return $this->emittingCall(
+			function (&$afterArray) use (&$key, &$value) {
+				if (!isset($this->cache[$key]) || $this->cache[$key] !== $value) {
+					if (isset($this->cache[$key])) {
+						$afterArray['update'] = true;
+						$afterArray['oldvalue'] = $this->cache[$key];
+					}
+					// Add change
+					$this->cache[$key] = $this->stripWhitespace($value);
+					return true;
 				}
-				// Add change
-				$this->cache[$key] = $value;
-				return true;
-			}
 
-			return false;
-		}, [
+				return false;
+			},
+			[
 			'before' => ['key' => $key, 'value' => $value],
 			'after' => ['key' => $key, 'value' => $value, 'update' => false, 'oldvalue' => null]
-		], 'config', 'setvalue');
+			],
+			'config',
+			'setvalue'
+		);
 	}
 
 	/**
 	 * Removes a key from the config and removes it from config.php if required
+	 *
 	 * @param string $key
+	 *
+	 * @return bool True if delete is successful
+	 * @throws \Exception If file is readonly
 	 */
 	public function deleteKey($key) {
 		if ($this->isReadOnly()) {
@@ -199,21 +241,27 @@ class Config {
 	 * This function removes a key from the config
 	 *
 	 * @param string $key
+	 *
 	 * @return bool True if the file needs to be updated, false otherwise
 	 */
 	protected function delete($key) {
-		return $this->emittingCall(function (&$afterArray) use (&$key) {
-			if (isset($this->cache[$key])) {
-				$afterArray['value'] = $this->cache[$key];
-				// Delete key from cache
-				unset($this->cache[$key]);
-				return true;
-			}
-			return false;
-		}, [
+		return $this->emittingCall(
+			function (&$afterArray) use (&$key) {
+				if (isset($this->cache[$key])) {
+					$afterArray['value'] = $this->cache[$key];
+					// Delete key from cache
+					unset($this->cache[$key]);
+					return true;
+				}
+				return false;
+			},
+			[
 			'before' => ['key' => $key, 'value' => null],
 			'after' => ['key' => $key, 'value' => null]
-		], 'config', 'deletevalue');
+			],
+			'config',
+			'deletevalue'
+		);
 	}
 
 	/**
@@ -228,7 +276,7 @@ class Config {
 		$configFiles = [$this->configFilePath];
 
 		// Add all files in the config dir ending with the same file name
-		$extra = \glob($this->configDir.'*.'.$this->configFileName);
+		$extra = \glob($this->configDir . '*.' . $this->configFileName);
 		if (\is_array($extra)) {
 			\natsort($extra);
 			$configFiles = \array_merge($configFiles, $extra);
@@ -237,9 +285,10 @@ class Config {
 		// Include file and merge config
 		foreach ($configFiles as $file) {
 			$filePointer = \file_exists($file) ? \fopen($file, 'r') : false;
-			if ($file === $this->configFilePath &&
-				$filePointer === false &&
-				@!\file_exists($this->configFilePath)) {
+			if ($file === $this->configFilePath
+				&& $filePointer === false
+				&& @!\file_exists($this->configFilePath)
+			) {
 				// Opening the main config might not be possible, e.g. if the wrong
 				// permissions are set (likely on a new installation)
 				continue;
@@ -291,7 +340,7 @@ class Config {
 			throw new HintException(
 				"Can't write into config directory!",
 				'This can usually be fixed by '
-				.'<a href="' . $url . '" target="_blank" rel="noreferrer">giving the webserver write access to the config directory</a>.'
+				. '<a href="' . $url . '" target="_blank" rel="noreferrer">giving the webserver write access to the config directory</a>.'
 			);
 		}
 
@@ -314,6 +363,11 @@ class Config {
 		}
 	}
 
+	/**
+	 * Check if file is read-only
+	 *
+	 * @return false|mixed
+	 */
 	public function isReadOnly() {
 		if (!$this->getValue('installed', false)) {
 			return false;
