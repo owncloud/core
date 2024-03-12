@@ -10,40 +10,54 @@ namespace Test\Security;
 
 use OC\Security\TrustedDomainHelper;
 use OCP\IConfig;
+use Test\TestCase;
 
 /**
  * Class TrustedDomainHelperTest
  */
-class TrustedDomainHelperTest extends \Test\TestCase {
+class TrustedDomainHelperTest extends TestCase {
 	/** @var IConfig */
 	protected $config;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
+		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
+	}
+
+	public function testIsUrlTrusted(): void {
+		$trustedHostTestList = [
+			'host.one.test',
+			'host.two.test',
+			'[1fff:0:a88:85a3::ac1f]',
+			'host.three.test:443',
+		];
+		$this->config
+			->method('getSystemValue')
+			->with('trusted_domains')
+			->willReturn($trustedHostTestList);
+
+		$trustedDomainHelper = new TrustedDomainHelper($this->config);
+		$this->assertTrue($trustedDomainHelper->isUrlTrusted("http://host.one.test/index.php/s/123456"));
+		$this->assertTrue($trustedDomainHelper->isUrlTrusted("http://host.one.test:1234/index.php/s/123456"));
+		$this->assertTrue($trustedDomainHelper->isUrlTrusted("http://host.three.test:443/index.php/s/123456"));
+		$this->assertFalse($trustedDomainHelper->isUrlTrusted(""));
 	}
 
 	/**
 	 * @dataProvider trustedDomainDataProvider
-	 * @param string $trustedDomains
-	 * @param string $testDomain
-	 * @param bool $result
 	 */
-	public function testIsTrustedDomain($trustedDomains, $testDomain, $result) {
+	public function testIsTrustedDomain($trustedDomains, string $testDomain, bool $result): void {
 		$this->config->expects($this->once())
 			->method('getSystemValue')
 			->with('trusted_domains')
-			->will($this->returnValue($trustedDomains));
+			->willReturn($trustedDomains);
 
 		$trustedDomainHelper = new TrustedDomainHelper($this->config);
 		$this->assertEquals($result, $trustedDomainHelper->isTrustedDomain($testDomain));
 	}
 
-	/**
-	 * @return array
-	 */
-	public function trustedDomainDataProvider() {
+	public function trustedDomainDataProvider(): array {
 		$trustedHostTestList = [
 			'host.one.test',
 			'host.two.test',
