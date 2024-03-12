@@ -111,6 +111,25 @@ class RemoteOcsController extends OCSController {
 			);
 		}
 
+		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
+		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
+		if (!empty($managerClass)) {
+			$groupExternalManager = \OC::$server->query($managerClass);
+
+			if ($groupExternalManager->acceptShare((int) $id)) {
+				$share = $groupExternalManager->getShare($id);
+				// Frontend part expects a list of accepted shares having state and mountpoint at least
+				return new Result(
+					[
+						[
+							'state' => Share::STATE_ACCEPTED,
+							'file_target' => $share['mountpoint']
+						]
+					]
+				);
+			}
+		}
+
 		// Make sure the user has no notification for something that does not exist anymore.
 		$this->externalManager->processNotification((int) $id);
 
@@ -127,6 +146,16 @@ class RemoteOcsController extends OCSController {
 	public function declineShare($id) {
 		if ($this->externalManager->declineShare((int) $id)) {
 			return new Result();
+		}
+
+		// Allow the Federated Groups app to overwrite the behaviour of this endpoint
+		$managerClass = $this->config->getSystemValue('sharing.groupExternalManager');
+		if (!empty($managerClass)) {
+			$groupExternalManager = \OC::$server->query($managerClass);
+
+			if ($groupExternalManager->declineShare((int) $id)) {
+				return new Result();
+			}
 		}
 
 		// Make sure the user has no notification for something that does not exist anymore.
