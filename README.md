@@ -6,8 +6,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=coverage)](https://sonarcloud.io/dashboard?id=owncloud_core)
 [![Design](https://contribute.design/api/shield/owncloud/core)](https://contribute.design/owncloud/core)
 
-**[ownCloud](http://ownCloud.com) gives you freedom and control over your own data.
-A personal cloud which runs on your own server.**
+**[ownCloud](http://ownCloud.com) offers file sharing and collaboration trusted by 200+ million users worldwide regardless of device or location.**
 
 ![](https://github.com/owncloud/screenshots/blob/master/files/sidebar_1.png)
 
