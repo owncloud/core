@@ -89,7 +89,7 @@ class Storage extends DAV implements ISharedStorage {
 			// root will be adjusted lazily in init() with discovery manager
 			'root' => $root,
 			'user' => $options['token'],
-			'password' => (string)$options['password'],
+			'password' => (string)($options['password'] ?? ''),
 			// Federated sharing always uses BASIC auth
 			'authType' => Client::AUTH_BASIC
 		]);
