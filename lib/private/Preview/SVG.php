@@ -51,7 +51,10 @@ class SVG implements IProvider2 {
 			\fclose($stream);
 
 			// Do not parse SVG files with references
-			if (\stripos($content, 'xlink:href') !== false) {
+			// accepted:   xlink:href=#...     xlink:href= '#...'   xlink:href = " #..."
+			// rejected:   xlink:href=../secr  xlink:href= "https://..."
+			if (\preg_match('/xlink:href\s*=[\s"\']*[^#"\']/', $content, $matches)) {
+				\OCP\Util::writeLog('core', "getThumbnail {$file->getName()}: rejected $matches[0]", \OCP\Util::ERROR);
 				return false;
 			}
 
