@@ -308,15 +308,6 @@ describe('OCA.External.Settings tests', function() {
 				expect(storage.validate()).toBe(false);
 			});
 		});
-		describe('update storage', function() {
-			// TODO
-		});
-		describe('delete storage', function() {
-			// TODO
-		});
-		describe('recheck storages', function() {
-			// TODO
-		});
 		describe('mount options dropdown', function() {
 			var $tr;
 			var $td;
@@ -413,12 +404,6 @@ describe('OCA.External.Settings tests', function() {
 
 			});
 		});
-	});
-	describe('applicable user list', function() {
-		// TODO: test select2 retrieval logic
-	});
-	describe('allow user mounts section', function() {
-		// TODO: test allowUserMounting section
 	});
 
 	describe('mountConfigLoaded event is triggered', function() {

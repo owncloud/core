@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "handlebars": "^4.7.8",
-    "jasmine-core": "^2.99.1",
+    "jasmine-core": "^5.1.1",
     "jasmine-sinon": "^0.4.0",
     "karma": "^6.4.3",
     "karma-coverage": "*",

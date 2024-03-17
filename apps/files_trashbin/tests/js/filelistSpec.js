@@ -211,29 +211,6 @@ describe('OCA.Trashbin.FileList tests', function() {
 			expect(fileList.$el.find('tbody tr .filesize').length).toEqual(0);
 		});
 	});
-	describe('File actions', function() {
-		describe('Deleting single files', function() {
-			// TODO: checks ajax call
-			// TODO: checks spinner
-			// TODO: remove item after delete
-			// TODO: bring back item if delete failed
-		});
-		describe('Restoring single files', function() {
-			// TODO: checks ajax call
-			// TODO: checks spinner
-			// TODO: remove item after restore
-			// TODO: bring back item if restore failed
-		});
-	});
-	describe('file previews', function() {
-		// TODO: check that preview URL is going through files_trashbin
-	});
-	describe('loading file list', function() {
-		// TODO: check that ajax URL is going through files_trashbin
-	});
-	describe('breadcrumbs', function() {
-		// TODO: test label + URL
-	});
 	describe('elementToFile', function() {
 		var $tr;
 

@@ -97,7 +97,9 @@ window.oc_config = {
 	blacklist_files_regex: '\.(part|filepart)$'
 };
 window.oc_appconfig = {
-	core: {}
+	core: {},
+	files: {},
+	files_sharing: {}
 };
 window.oc_defaults = {};
 window.oc_requesttoken = 'testrequesttoken';
