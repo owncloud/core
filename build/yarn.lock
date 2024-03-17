@@ -272,9 +272,10 @@
   version "1.0.1"
   resolved "https://codeload.github.com/blueimp/JavaScript-MD5/tar.gz/b84e37f2574f57be6b06d9690da865b6546b4d76"
 
-"@bower_components/bootstrap@twbs/bootstrap#3.4.1":
-  version "3.4.1"
-  resolved "https://codeload.github.com/twbs/bootstrap/tar.gz/68b0d231a13201eb14acd3dc84e51543d16e5f7e"
+"@bower_components/bootstrap@twbs/bootstrap#v5.3.3":
+  version "5.3.3"
+  uid "6e1f75f420f68e1d52733b8e407fc7c3766c9dba"
+  resolved "https://codeload.github.com/twbs/bootstrap/tar.gz/6e1f75f420f68e1d52733b8e407fc7c3766c9dba"
 
 "@bower_components/bowser@ded/bowser#1.9.4":
   version "1.9.4"
