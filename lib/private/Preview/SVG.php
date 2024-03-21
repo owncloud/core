@@ -26,6 +26,7 @@ namespace OC\Preview;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
+use Rhukster\DomSanitizer\DOMSanitizer;
 
 class SVG implements IProvider2 {
 	/**
@@ -45,17 +46,15 @@ class SVG implements IProvider2 {
 
 			$stream = $file->fopen('r');
 			$content = \stream_get_contents($stream);
-			if (\substr($content, 0, 5) !== '<?xml') {
+			if (\strpos($content, '<?xml') !== 0) {
 				$content = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . $content;
 			}
 			\fclose($stream);
 
-			// Do not parse SVG files with references
-			if (\stripos($content, 'xlink:href') !== false) {
-				return false;
-			}
+			# sanitize SVG content
+			$output = self::sanitizeSVGContent($content);
 
-			$svg->readImageBlob($content);
+			$svg->readImageBlob($output);
 			$svg->setImageFormat('png32');
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
@@ -79,5 +78,12 @@ class SVG implements IProvider2 {
 	 */
 	public function isAvailable(FileInfo $file) {
 		return true;
+	}
+
+	public static function sanitizeSVGContent(string $content): string {
+		$sanitizer = new DOMSanitizer(DOMSanitizer::SVG);
+		$sanitizer->addDisallowedTags(['image']);
+		$sanitizer->addDisallowedAttributes(['xlink:href']);
+		return $sanitizer->sanitize($content);
 	}
 }
