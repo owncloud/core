@@ -1,0 +1,3 @@
+Bugfix: User can only change their own external storage configuration
+
+https://github.com/owncloud/core/pull/41225

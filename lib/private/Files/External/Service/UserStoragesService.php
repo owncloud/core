@@ -128,6 +128,12 @@ class UserStoragesService extends StoragesService implements IUserStoragesServic
 	 * @throws NotFoundException if the given storage does not exist in the config
 	 */
 	public function updateStorage(IStorageConfig $updatedStorage) {
+		$id = $updatedStorage->getId();
+		$mount = $this->dbConfig->getPersonalMountById($id, $this->getUser()->getUID());
+		if (!\is_array($mount)) {
+			throw new NotFoundException('Storage with id "' . $id . '" not found');
+		}
+
 		$updatedStorage->setApplicableUsers([$this->getUser()->getUID()]);
 		return parent::updateStorage($updatedStorage);
 	}
