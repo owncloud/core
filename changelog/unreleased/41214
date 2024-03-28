@@ -1,0 +1,3 @@
+Bugfix: Link in public link notification has to be from a trusted domain
+
+https://github.com/owncloud/core/pull/41214

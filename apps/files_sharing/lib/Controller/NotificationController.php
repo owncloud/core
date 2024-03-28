@@ -22,6 +22,7 @@
 namespace OCA\Files_Sharing\Controller;
 
 use OC\OCS\Result;
+use OC\Security\TrustedDomainHelper;
 use OC\Share\MailNotifications;
 use OCP\AppFramework\OCSController;
 use OCP\Files\IRootFolder;
@@ -48,6 +49,8 @@ class NotificationController extends OCSController {
 	private $rootFolder;
 	/** @var IL10N */
 	private $l;
+	private TrustedDomainHelper $trustedDomainHelper;
+
 	public function __construct(
 		string $appName,
 		IRequest $request,
@@ -56,7 +59,8 @@ class NotificationController extends OCSController {
 		IUserManager $userManager,
 		IGroupManager $groupManager,
 		IRootFolder $rootFolder,
-		IL10N $l
+		IL10N $l,
+		TrustedDomainHelper $trustedDomainHelper
 	) {
 		parent::__construct($appName, $request);
 		$this->mailNotifications = $mailNotifications;
@@ -65,6 +69,7 @@ class NotificationController extends OCSController {
 		$this->groupManager = $groupManager;
 		$this->rootFolder = $rootFolder;
 		$this->l = $l;
+		$this->trustedDomainHelper = $trustedDomainHelper;
 	}
 
 	/**
@@ -77,6 +82,11 @@ class NotificationController extends OCSController {
 	 * @return Result
 	 */
 	public function notifyPublicLinkRecipientsByEmail($link, $recipients, $personalNote) {
+		# verify that the link is for a trusted domain
+		if (!$this->trustedDomainHelper->isUrlTrusted($link)) {
+			return new Result(null, 400, "Invalid shared link");
+		}
+
 		$message = null;
 		$code = 100;
 		$sender = $this->userSession->getUser();

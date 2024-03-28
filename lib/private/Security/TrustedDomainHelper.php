@@ -56,16 +56,29 @@ class TrustedDomainHelper {
 		return $host;
 	}
 
+	public function isUrlTrusted(string $url): bool {
+		$host = parse_url($url, PHP_URL_HOST);
+		$port = parse_url($url, PHP_URL_PORT);
+		if (!$host) {
+			return false;
+		}
+		if ($port) {
+			return $this->isTrustedDomain("$host:$port");
+		}
+		return $this->isTrustedDomain((string)$host);
+	}
+
 	/**
 	 * Checks whether a domain is considered as trusted from the list
 	 * of trusted domains. If no trusted domains have been configured, returns
 	 * true.
 	 * This is used to prevent Host Header Poisoning.
+	 *
 	 * @param string $domainWithPort
 	 * @return bool true if the given domain is trusted or if no trusted domains
 	 * have been configured
 	 */
-	public function isTrustedDomain($domainWithPort) {
+	public function isTrustedDomain(string $domainWithPort): bool {
 		$domain = $this->getDomainWithoutPort($domainWithPort);
 
 		// Read trusted domains from config

@@ -21,6 +21,7 @@
 
 namespace OCA\Files_Sharings\Tests\Controller;
 
+use OC\Security\TrustedDomainHelper;
 use OC\Share\MailNotifications;
 use OCA\Files_Sharing\Controller\NotificationController;
 use OCP\Files\IRootFolder;
@@ -50,6 +51,8 @@ class NotificationControllerTest extends TestCase {
 	private $l;
 	/** @var NotificationController $notificationController */
 	private $notificationController;
+	/** @var TrustedDomainHelper| MockObject */
+	private $trustedDomainHelper;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -60,6 +63,7 @@ class NotificationControllerTest extends TestCase {
 		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->l = $this->createMock(IL10N::class);
+		$this->trustedDomainHelper = $this->createMock(TrustedDomainHelper::class);
 
 		$this->notificationController = new NotificationController(
 			'files_sharing',
@@ -69,30 +73,30 @@ class NotificationControllerTest extends TestCase {
 			$this->userManager,
 			$this->groupManager,
 			$this->rootFolder,
-			$this->l
+			$this->l,
+			$this->trustedDomainHelper,
 		);
 	}
 
-	public function dataNotifyPublicLinkByEmail() {
+	public function dataNotifyPublicLinkByEmail(): array {
 		$mockUser = $this->createMock(IUser::class);
 		return [
-			[$mockUser, [], 100],
-			[null, [], 400],
-			[$mockUser, ['failed@user'], 400]
+			[100, $mockUser, [], true],
+			[400, $mockUser, [], false],
+			[400, null, [], true],
+			[400, $mockUser, ['failed@user'], true]
 		];
 	}
 
 	/**
 	 * @dataProvider dataNotifyPublicLinkByEmail
-	 * @param IUser $sender
-	 * @param string[] $failedRecipients
-	 * @param int $statusCode
 	 */
-	public function testNotifyPublicLinkRecipientsByEmail($sender, $failedRecipients, $statusCode) {
+	public function testNotifyPublicLinkRecipientsByEmail(int $expectedStatusCode, ?IUser $sender, array $failedRecipients, bool $isUrlTrusted): void {
+		$this->trustedDomainHelper->method('isUrlTrusted')->willReturn($isUrlTrusted);
 		$this->mailNotifications->method('sendLinkShareMail')->willReturn($failedRecipients);
 		$this->userSession->method('getUser')->willReturn($sender);
 		$this->assertEquals(
-			$statusCode,
+			$expectedStatusCode,
 			$this->notificationController->notifyPublicLinkRecipientsByEmail(
 				'localhost/token',
 				['failed@user'],
