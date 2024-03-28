@@ -30,9 +30,14 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Link in public link notification has to be from a trusted domain: [#41214](https://github.com/owncloud/core/pull/41214)
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
 ## Details
+
+* Bugfix - Link in public link notification has to be from a trusted domain: [#41214](https://github.com/owncloud/core/pull/41214)
+
+   https://github.com/owncloud/core/pull/41214
 
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
