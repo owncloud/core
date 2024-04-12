@@ -47,10 +47,12 @@ ownCloud admins and users.
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
    The following have been updated: - google/apiclient-services (v0.335.0 to
-   v0.338.0) - google/auth (v1.35.0 to v1.37.0) - pear/archive_tar (1.4.14 to
+   v0.343.0) - google/auth (v1.35.0 to v1.37.1) - pear/archive_tar (1.4.14 to
    1.15.0) - pear/pear-core-minimal (v1.10.14 to v1.10.15) - phpseclib/phpseclib
-   (3.0.35 to 3.0.37) - symfony/console (v5.4.35 to v5.4.36) - symfony/process
-   (v5.4.35 to v5.4.36) - symfony/routing (v5.4.35 to v5.4.37) - symfony/string
+   (3.0.35 to 3.0.37) - symfony/event-dispatcher-contracts (v2.5.2 to v2.5.3) -
+   symfony/service-contracts (v2.5.2 to v2.5.3) - symfony/translation-contracts
+   (v2.5.2 to v2.5.3) - symfony/console (v5.4.35 to v5.4.36) - symfony/process
+   (v5.4.35 to v5.4.36) - symfony/routing (v5.4.35 to v5.4.38) - symfony/string
    (v5.4.35 to v5.4.36)
 
    https://github.com/owncloud/core/pull/41195
@@ -58,6 +60,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41205
    https://github.com/owncloud/core/pull/41212
    https://github.com/owncloud/core/pull/41222
+   https://github.com/owncloud/core/pull/41230
 
 # Changelog for ownCloud Core [10.14.0] (2024-02-19)
 
