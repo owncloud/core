@@ -5,6 +5,7 @@ OC.L10N.register(
     "File is too big" : "File is too big",
     "Invalid file provided" : "Invalid file provided",
     "No image or file provided" : "No image or file provided",
+    "Image too large" : "Image too large",
     "Unknown filetype" : "Unknown filetype",
     "Invalid image" : "Invalid image",
     "An error occurred. Please contact your admin." : "An error occurred. Please contact your admin.",
