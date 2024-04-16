@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a21c5d2887359a7354108b26e04c8267",
+    "content-hash": "b8a857c8aa3885944380ae6742fe8c50",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -3289,6 +3289,52 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "rhukster/dom-sanitizer",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rhukster/dom-sanitizer.git",
+                "reference": "757e4d6ac03afe9afa4f97cbef453fc5c25f0729"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rhukster/dom-sanitizer/zipball/757e4d6ac03afe9afa4f97cbef453fc5c25f0729",
+                "reference": "757e4d6ac03afe9afa4f97cbef453fc5c25f0729",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rhukster\\DomSanitizer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Miller",
+                    "email": "rhuk@rhuk.net"
+                }
+            ],
+            "description": "A simple but effective DOM/SVG/MathML Sanitizer for PHP 7.4+",
+            "support": {
+                "issues": "https://github.com/rhukster/dom-sanitizer/issues",
+                "source": "https://github.com/rhukster/dom-sanitizer/tree/main"
+            },
+            "time": "2024-04-15T08:48:55+00:00"
         },
         {
             "name": "sabre/dav",
@@ -7259,6 +7305,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "rhukster/dom-sanitizer": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
