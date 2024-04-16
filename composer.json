@@ -1,7 +1,7 @@
 {
     "name": "owncloud/core",
     "description": "A safe home for all your data",
-    "license": "AGPL-1.0",
+    "license": "AGPL-3.0-or-later",
     "config" : {
         "vendor-dir": "lib/composer",
         "optimize-autoloader": true,
