@@ -1,0 +1,5 @@
+Bugfix: hardening SVG processing
+
+Purify SVGs before processing.
+
+https://github.com/owncloud/core/pull/41234
