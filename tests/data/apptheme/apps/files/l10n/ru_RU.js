@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Files" : "Файлы",
     "Cancel" : "Отмена",
     "Create" : "Создать"
 },
