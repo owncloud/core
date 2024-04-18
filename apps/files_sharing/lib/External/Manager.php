@@ -568,6 +568,10 @@ class Manager {
 	}
 
 	public function testRemoteUrl(IClientService $clientService, string $remote) {
+		$parsed_url = parse_url($remote, PHP_URL_HOST);
+		if (\is_string($parsed_url)) {
+			$remote = $parsed_url;
+		}
 		try {
 			// cut query and|or anchor part off
 			$remote = \strtok($remote, '?#');
@@ -587,6 +591,7 @@ class Manager {
 			}
 		} catch (ConnectException $e) {
 			// noop
+			\OC::$server->getLogger()->logException($e, ['message' => "Remote $remote not reachable"]);
 		}
 
 		return false;

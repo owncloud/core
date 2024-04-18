@@ -77,6 +77,7 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 # test remote before adding the share
 $resp = $externalManager->testRemoteUrl(\OC::$server->getHTTPClientService(), $remote);
 if ($resp === false) {
+	\OC::$server->getLogger()->error("Remote $remote is unreachable");
 	\OCP\JSON::error(['data' => ['message' => $l->t('Remote is unreachable')]]);
 	exit();
 }
