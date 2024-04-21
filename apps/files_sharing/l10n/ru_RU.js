@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_sharing",
     {
     "Shared by link" : "Доступные по ссылке",
+    "Uploading..." : "Загрузка...",
     "No shared links" : "Нет ссылок",
     "Cancel" : "Отмена",
     "Add" : "Добавить",

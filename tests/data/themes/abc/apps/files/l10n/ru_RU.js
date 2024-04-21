@@ -4,6 +4,7 @@ OC.L10N.register(
     "Unknown error" : "Неизвестная ошибка",
     "All files" : "Все файлы",
     "Close" : "Закрыть",
+    "Uploading..." : "Загрузка...",
     "Download" : "Загрузка",
     "Rename" : "Переименовать",
     "Delete" : "Удалить",
