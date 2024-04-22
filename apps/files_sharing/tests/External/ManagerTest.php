@@ -34,9 +34,13 @@ use OCP\Http\Client\IResponse;
 use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
 use OCP\Share\Events\ShareEvent;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\Traits\UserTrait;
+use OCP\Files\Mount\IMountPoint;
+use OCA\Files_Sharing\External\Mount;
+use OCA\Files_Sharing\External\Storage;
 
 /**
  * Class ManagerTest
@@ -54,7 +58,7 @@ class ManagerTest extends TestCase {
 	/** @var \OC\Files\Mount\Manager */
 	private $mountManager;
 
-	/** @var \PHPUnit\Framework\MockObject\MockObject */
+	/** @var MockObject */
 	private $eventDispatcher;
 
 	private $uid;
@@ -88,14 +92,14 @@ class ManagerTest extends TestCase {
 		});
 	}
 
-	private function setupMounts() {
+	private function setupMounts(): void {
 		$mounts = $this->mountProvider->getMountsForUser($this->user, new StorageFactory());
 		foreach ($mounts as $mount) {
 			$this->mountManager->addMount($mount);
 		}
 	}
 
-	public function testAddShare() {
+	public function testAddShare(): void {
 		$shareData1 = [
 			'remote' => 'http://localhost',
 			'token' => 'token1',
@@ -273,7 +277,7 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 	}
 
-	public function testAddShareAccepted() {
+	public function testAddShareAccepted(): void {
 		$shareData1 = [
 			'remote' => 'http://localhost',
 			'token' => 'token1',
@@ -284,7 +288,7 @@ class ManagerTest extends TestCase {
 			'user' => $this->uid,
 		];
 
-		// Add a accepted share for "user"
+		// Add an accepted share for "user"
 		\call_user_func_array([$this->manager, 'addShare'], $shareData1);
 		$this->setupMounts();
 		$this->assertMount($shareData1['name']);
@@ -295,7 +299,7 @@ class ManagerTest extends TestCase {
 	 * Verify that a share event matches a given share
 	 *
 	 */
-	protected function verifyShareEvent(ShareEvent $event, $share, $expectedClass) {
+	protected function verifyShareEvent(ShareEvent $event, $share, $expectedClass): bool {
 		return $share['remote_id'] == $event->getRemoteId() && \get_class($event) === $expectedClass;
 	}
 
@@ -305,7 +309,7 @@ class ManagerTest extends TestCase {
 	 * @param int $share
 	 * @param string $mountPoint
 	 */
-	protected function assertExternalShareEntry($expected, $actual, $share, $mountPoint) {
+	protected function assertExternalShareEntry($expected, $actual, $share, $mountPoint): void {
 		$this->assertEquals($expected['remote'], $actual['remote'], 'Asserting remote of a share #' . $share);
 		$this->assertEquals($expected['token'], $actual['share_token'], 'Asserting token of a share #' . $share);
 		$this->assertEquals($expected['name'], $actual['name'], 'Asserting name of a share #' . $share);
@@ -315,32 +319,32 @@ class ManagerTest extends TestCase {
 		$this->assertEquals($mountPoint, $actual['mountpoint'], 'Asserting mountpoint of a share #' . $share);
 	}
 
-	private function assertMount($mountPoint) {
+	private function assertMount($mountPoint): void {
 		$mountPoint = \rtrim($mountPoint, '/');
 		$mount = $this->mountManager->find($this->getFullPath($mountPoint));
-		$this->assertInstanceOf('\OCA\Files_Sharing\External\Mount', $mount);
-		$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
+		$this->assertInstanceOf(Mount::class, $mount);
+		$this->assertInstanceOf(IMountPoint::class, $mount);
 		$this->assertEquals($this->getFullPath($mountPoint), \rtrim($mount->getMountPoint(), '/'));
 		$storage = $mount->getStorage();
-		$this->assertInstanceOf('\OCA\Files_Sharing\External\Storage', $storage);
+		$this->assertInstanceOf(Storage::class, $storage);
 	}
 
-	private function assertNotMount($mountPoint) {
+	private function assertNotMount($mountPoint): void {
 		$mountPoint = \rtrim($mountPoint, '/');
 		$mount = $this->mountManager->find($this->getFullPath($mountPoint));
 		if ($mount) {
-			$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
+			$this->assertInstanceOf(IMountPoint::class, $mount);
 			$this->assertNotEquals($this->getFullPath($mountPoint), \rtrim($mount->getMountPoint(), '/'));
 		} else {
 			$this->assertNull($mount);
 		}
 	}
 
-	private function getFullPath($path) {
+	private function getFullPath($path): string {
 		return '/' . $this->uid . '/files' . $path;
 	}
 
-	public function testRemoveShare() {
+	public function testRemoveShare(): void {
 		/*$shareData1 = [
 			'remote' => 'http://localhost',
 			'token' => 'token1',
@@ -424,16 +428,16 @@ class ManagerTest extends TestCase {
 		$response = $this->getMockBuilder(IResponse::class)
 			->disableOriginalConstructor()->getMock();
 		$response
-			->expects($this->exactly(2))
+			->expects($this->exactly(3))
 			->method('getBody')
-			->will($this->onConsecutiveCalls('Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+			->willReturnOnConsecutiveCalls('{}', 'Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}');
 		$client
 			->method('get')
 			->willReturn($response);
 
 		$clientService = $this->createMock(IClientService::class);
 		$clientService
-			->expects($this->exactly(2))
+			->expects($this->exactly(3))
 			->method('newClient')
 			->willReturn($client);
 
@@ -449,13 +453,13 @@ class ManagerTest extends TestCase {
 			->method('get')
 			->willReturn($response);
 		$response
-			->expects($this->exactly(5))
+			->expects($this->exactly(6))
 			->method('getBody')
-			->will($this->onConsecutiveCalls('Certainly not a JSON string', 'Certainly not a JSON string', 'Certainly not a JSON string', 'Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+			->willReturnOnConsecutiveCalls('{}', 'Certainly not a JSON string', 'Certainly not a JSON string', 'Certainly not a JSON string', 'Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}');
 
 		$clientService = $this->createMock(IClientService::class);
 		$clientService
-			->expects($this->exactly(5))
+			->expects($this->exactly(6))
 			->method('newClient')
 			->willReturn($client);
 
@@ -471,29 +475,37 @@ class ManagerTest extends TestCase {
 			->method('get')
 			->willReturn($response);
 		$response
-			->expects($this->exactly(6))
+			->expects($this->exactly(7))
 			->method('getBody')
-			->willReturn('Certainly not a JSON string');
+			->willReturnOnConsecutiveCalls(
+				'{}', // connectivity call
+				'Certainly not a JSON string',
+				'Certainly not a JSON string',
+				'Certainly not a JSON string',
+				'Certainly not a JSON string',
+				'Certainly not a JSON string',
+				'Certainly not a JSON string',
+			);
 		$clientService = $this->createMock(IClientService::class);
 		$clientService
-			->expects($this->exactly(6))
+			->expects($this->exactly(7))
 			->method('newClient')
 			->willReturn($client);
 
 		$this->assertFalse($this->manager->testRemoteUrl($clientService, 'owncloud.com'));
 	}
 
-	public function testRemoteIsCleanedUp() {
+	public function testRemoteIsCleanedUp(): void {
 		$client = $this->createMock(IClient::class);
 		$response = $this->createMock(IResponse::class);
 		$response
-			->expects($this->exactly(2))
+			->expects($this->exactly(3))
 			->method('getBody')
-			->will($this->onConsecutiveCalls('Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+			->will($this->onConsecutiveCalls('{}', 'Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
 		$client
-			->expects($this->any())
 			->method('get')
 			->withConsecutive(
+				['http://owncloud.com/status.php'],
 				['https://owncloud.com/ocs-provider/'],
 				['https://owncloud.com/ocs-provider/index.php']
 			)
@@ -501,7 +513,7 @@ class ManagerTest extends TestCase {
 
 		$clientService = $this->createMock(IClientService::class);
 		$clientService
-			->expects($this->exactly(2))
+			->expects($this->exactly(3))
 			->method('newClient')
 			->willReturn($client);
 		$response = $this->manager->testRemoteUrl($clientService, 'owncloud.com?app=files#anchor');

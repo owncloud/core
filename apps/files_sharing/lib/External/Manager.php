@@ -544,7 +544,7 @@ class Manager {
 	/**
 	 * Test whether the specified remote is accessible
 	 */
-	protected function testUrl(IClientService $clientService, string $remote, bool $checkVersion = false): bool {
+	protected function testUrl(IClientService $clientService, string $remote, bool $checkVersion = false, bool $throwConnectException = false): bool {
 		try {
 			$client = $clientService->newClient();
 			$response = \json_decode($client->get(
@@ -561,20 +561,29 @@ class Manager {
 
 			return \is_object($response);
 		} catch (ConnectException $e) {
-			throw $e;
+			if ($throwConnectException) {
+				throw $e;
+			}
 		} catch (\Exception $e) {
-			return false;
 		}
+		return false;
 	}
 
 	public function testRemoteUrl(IClientService $clientService, string $remote) {
 		$parsed_url = parse_url($remote, PHP_URL_HOST);
 		if (\is_string($parsed_url)) {
 			$remote = $parsed_url;
+		} else {
+			$parsed_url = parse_url('http://' . $remote, PHP_URL_HOST);
+			if (\is_string($parsed_url)) {
+				$remote = $parsed_url;
+			}
 		}
 		try {
-			// cut query and|or anchor part off
-			$remote = \strtok($remote, '?#');
+			// one initial connectivity check on https and http
+			if (!$this->checkConnectivity($clientService, $remote)) {
+				return false;
+			}
 			if ($this->testUrl($clientService, 'https://' . $remote . '/ocs-provider/') ||
 				$this->testUrl($clientService, 'https://' . $remote . '/ocs-provider/index.php') ||
 				$this->testUrl($clientService, 'https://' . $remote . '/status.php', true)
@@ -590,10 +599,25 @@ class Manager {
 				return 'http';
 			}
 		} catch (ConnectException $e) {
-			// noop
 			\OC::$server->getLogger()->logException($e, ['message' => "Remote $remote not reachable"]);
 		}
 
+		return false;
+	}
+
+	private function checkConnectivity(IClientService $clientService, string $remote): bool {
+		foreach (['http://', 'https://'] as $schema) {
+			try {
+				if ($this->testUrl($clientService, $schema . $remote . '/status.php', false, true)) {
+					\OC::$server->getLogger()->error("Remote $schema$remote/status.php reachable");
+					return true;
+				}
+			} catch (\Exception $ex) {
+				\OC::$server->getLogger()->logException($ex, ['message' => "Remote $schema$remote/status.php not reachable"]);
+			}
+		}
+
+		\OC::$server->getLogger()->error("Remote $remote not reachable via http and https");
 		return false;
 	}
 }
