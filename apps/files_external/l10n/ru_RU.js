@@ -4,6 +4,7 @@ OC.L10N.register(
     "Username" : "Пользователь",
     "Password" : "Пароль",
     "Save" : "Сохранить",
+    "Location" : "Расположение",
     "Share" : "Сделать общим",
     "Never" : "Никогда",
     "Folder name" : "Имя папки",

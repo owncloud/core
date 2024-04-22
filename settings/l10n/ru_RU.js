@@ -3,9 +3,13 @@ OC.L10N.register(
     {
     "Couldn't send reset email. Please contact your administrator." : "Ошибка при отправке письма-сброса. Пожалуйста, сообщите администратору.",
     "Invalid mail address" : "ошибочный почтовый адрес",
+    "Create" : "Создать",
     "Delete" : "Удалить",
     "Share" : "Сделать общим",
     "unknown" : "неизвестно",
+    "Cheers!" : "Всего наилучшего!",
+    "days" : "дней",
+    "None" : "Нет",
     "Save" : "Сохранить",
     "Server address" : "URL",
     "Cancel" : "Отмена",
@@ -13,6 +17,7 @@ OC.L10N.register(
     "Username" : "Пользователь",
     "Password" : "Пароль",
     "Change password" : "Изменить пароль",
+    "Name" : "Имя",
     "Set password" : "назначить новый пароль",
     "Settings" : "Конфигурация",
     "Group" : "Группа"

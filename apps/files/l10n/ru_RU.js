@@ -11,6 +11,7 @@ OC.L10N.register(
     "Files" : "Файлы",
     "Details" : "Подробно",
     "Pending" : "Ожидание",
+    "group" : "группа",
     "New folder" : "Новая папка",
     "Cancel" : "Отмена",
     "Create" : "Создать",

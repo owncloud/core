@@ -1,5 +1,6 @@
 { "translations": {
     "seconds ago" : "секунд назад",
+    "None" : "Нет",
     "Username" : "Пользователь",
     "Password" : "Пароль",
     "File name contains at least one invalid character" : "Имя файла содержит по крайней мере один некорректный символ",
