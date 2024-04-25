@@ -1,11 +1,14 @@
 OC.L10N.register(
     "files_external",
     {
+    "Personal" : "Персональный",
     "Username" : "Пользователь",
     "Password" : "Пароль",
     "Save" : "Сохранить",
     "Location" : "Расположение",
+    "Host" : "Сервер",
     "Share" : "Сделать общим",
+    "Name" : "Имя",
     "Never" : "Никогда",
     "Folder name" : "Имя папки",
     "Delete" : "Удалить"
