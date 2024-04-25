@@ -570,13 +570,22 @@ class Manager {
 	}
 
 	public function testRemoteUrl(IClientService $clientService, string $remote) {
-		$parsed_url = parse_url($remote, PHP_URL_HOST);
-		if (\is_string($parsed_url)) {
-			$remote = $parsed_url;
+		$parsed_host = parse_url($remote, PHP_URL_HOST);
+		$parsed_port = parse_url($remote, PHP_URL_PORT);
+		if (\is_string($parsed_host)) {
+			$remote = $parsed_host;
+			if ($parsed_port !== null) {
+				$remote .= ':' . $parsed_port;
+			}
 		} else {
-			$parsed_url = parse_url('http://' . $remote, PHP_URL_HOST);
-			if (\is_string($parsed_url)) {
-				$remote = $parsed_url;
+			$string_to_parse = 'http://' . $remote;
+			$parsed_host = parse_url($string_to_parse, PHP_URL_HOST);
+			$parsed_port = parse_url($string_to_parse, PHP_URL_PORT);
+			if (\is_string($parsed_host)) {
+				$remote = $parsed_host;
+				if ($parsed_port !== null) {
+					$remote .= ':' . $parsed_port;
+				}
 			}
 		}
 		try {
