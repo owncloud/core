@@ -1,0 +1,6 @@
+Bugfix: Fail fast on unresponsive remote servers
+
+In case a remote/federated server is not responding the share will not be added
+and any requests will fail faster.
+
+https://github.com/owncloud/core/pull/41210
