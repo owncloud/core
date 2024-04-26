@@ -10,10 +10,19 @@
     "Apps" : "Приложения",
     "General" : "Общие",
     "Security" : "Безопасность",
+    "Sharing" : "Совместное использование",
     "Search" : "Поиск",
+    "Invalid Federated Cloud ID" : "Неверный ID в объединении облачных хранилищ.",
+    "%s" : "%s",
+    "Sharing %s failed, because this item is already shared with %s" : "Не удалось поделиться %s, так как элемент находится в общем доступе у %s",
+    "Not allowed to create a federated share with the same user" : "Не допускается создание федеративного общего ресурса с тем же пользователем",
+    "User disabled" : "Пользователь отключен",
     "Settings" : "Конфигурация",
     "Users" : "Пользователи",
     "Imprint" : "Штамп",
-    "Privacy Policy" : "Политика конфиденциальности"
+    "Privacy Policy" : "Политика конфиденциальности",
+    "Unknown user" : "Неизвестный пользователь",
+    "User unknown" : "Неизвестный пользователь",
+    "Storage is temporarily not available" : "Хранилище временно не доступно"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }
