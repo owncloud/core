@@ -142,6 +142,7 @@ OC.L10N.register(
     "Reasons might be:" : "Причиной может быть:",
     "the item was removed" : "элемент был удалён",
     "the link expired" : "срок действия ссылки истёк",
+    "sharing is disabled" : "общий доступ отключен",
     "Download" : "Загрузка",
     "Nothing to configure." : "Здесь настраивать нечего."
 },
