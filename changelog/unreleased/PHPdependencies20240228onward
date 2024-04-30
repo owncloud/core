@@ -1,11 +1,14 @@
 Change: Update PHP dependencies
 
 The following have been updated:
-- google/apiclient-services (v0.335.0 to v0.343.0)
+- google/apiclient (v2.15.3 to v2.16.0)
+- google/apiclient-services (v0.335.0 to v0.351.0)
 - google/auth (v1.35.0 to v1.37.1)
+- monolog/monolog (2.9.2 to 2.9.3)
 - pear/archive_tar (1.4.14 to 1.15.0)
 - pear/pear-core-minimal (v1.10.14 to v1.10.15)
 - phpseclib/phpseclib (3.0.35 to 3.0.37)
+- sabre/xml (2.2.6 to 2.2.7)
 - symfony/event-dispatcher-contracts (v2.5.2 to v2.5.3)
 - symfony/service-contracts (v2.5.2 to v2.5.3)
 - symfony/translation-contracts (v2.5.2 to v2.5.3)
