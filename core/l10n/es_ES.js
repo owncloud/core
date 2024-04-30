@@ -2,7 +2,9 @@ OC.L10N.register(
     "core",
     {
     "Settings" : "Preferencias",
+    "Saving..." : "Guardando...",
     "Name" : "Nombre",
+    "Save" : "Guardar",
     "group" : "grupo",
     "Group" : "Grupo",
     "Help" : "Ayuda"

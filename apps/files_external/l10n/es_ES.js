@@ -1,6 +1,8 @@
 OC.L10N.register(
     "files_external",
     {
+    "Saved" : "Guardado",
+    "Save" : "Guardar",
     "Name" : "Nombre",
     "Never" : "Nunca"
 },

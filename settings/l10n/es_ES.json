@@ -1,5 +1,7 @@
 { "translations": {
+    "Saved" : "Guardado",
     "None" : "Ninguno",
+    "Save" : "Guardar",
     "Name" : "Nombre",
     "Settings" : "Preferencias",
     "Group" : "Grupo"

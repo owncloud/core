@@ -1,7 +1,9 @@
 OC.L10N.register(
     "settings",
     {
+    "Saved" : "Guardado",
     "None" : "Ninguno",
+    "Save" : "Guardar",
     "Name" : "Nombre",
     "Settings" : "Preferencias",
     "Group" : "Grupo"

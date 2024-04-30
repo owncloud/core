@@ -8,6 +8,7 @@ OC.L10N.register(
     "group" : "grupo",
     "Name" : "Nombre",
     "Size" : "Tamaño",
+    "File name cannot be empty." : "El nombre del archivo no puede ser vacío.",
     "New folder" : "Nueva carpeta",
     "Upload" : "Subidas",
     "Settings" : "Preferencias"
