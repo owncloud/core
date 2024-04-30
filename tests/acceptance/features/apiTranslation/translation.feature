@@ -19,10 +19,10 @@ Feature: translate messages in api response to preferred language
     Examples:
       | dav_version | language |
       | old         | de-DE    |
-      | old         | es-ES    |
+      | old         | es       |
       | old         | zh-CN    |
       | old         | fr-FR    |
       | new         | de-DE    |
-      | new         | es-ES    |
+      | new         | es       |
       | new         | zh-CN    |
       | new         | fr-FR    |
