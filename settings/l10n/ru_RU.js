@@ -8,9 +8,11 @@ OC.L10N.register(
     "Email sent" : "Письмо отправлено",
     "Invalid mail address" : "ошибочный почтовый адрес",
     "Create" : "Создать",
+    "Change" : "Изменения",
     "Delete" : "Удалить",
     "Share" : "Сделать общим",
     "Unknown user" : "Неизвестный пользователь",
+    "Approved" : "Подтвержденное",
     "All" : "Все",
     "Enabled" : "Включено",
     "Disconnect" : "Отключить",
@@ -23,6 +25,7 @@ OC.L10N.register(
     "Groups" : "Группы",
     "never" : "никогда",
     "unknown" : "неизвестно",
+    "enabled" : "включен",
     "A valid username must be provided" : "Укажите допустимое имя пользователя",
     "A valid password must be provided" : "Должен быть указан правильный пароль",
     "Cheers!" : "Всего наилучшего!",
@@ -64,6 +67,7 @@ OC.L10N.register(
     "Admin" : "Администратор",
     "Settings" : "Конфигурация",
     "Group" : "Группа",
-    "Other" : "Другое"
+    "Other" : "Другое",
+    "Default" : "По умолчанию"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");
