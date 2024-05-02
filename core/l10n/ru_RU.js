@@ -22,6 +22,7 @@ OC.L10N.register(
     "Download / View" : "Скачивание / Просмотр",
     "Recipients can view or download contents." : "Получатели могут просматривать или скачивать содержимое.",
     "Download / View / Upload" : "Скачивание / Просмотр / Закачка",
+    "Recipients can view, download and upload contents." : "Получатели могут просматривать, скачивать и закачивать содержимое.",
     "Download / View / Edit" : "Скачивание / Просмотр / Правка",
     "Recipients can view, download, edit, delete and upload contents." : "Получатели могут просматривать, скачивать, править, удалять и закачивать содержимое.",
     "Upload only" : "Только закачка",
