@@ -30,6 +30,7 @@ OC.L10N.register(
     "A valid password must be provided" : "Должен быть указан правильный пароль",
     "Cheers!" : "Всего наилучшего!",
     "Open documentation" : "Открыть документацию",
+    "Valid until" : "Действительно до",
     "Enable encryption" : "Включить шифрование",
     "Sharing" : "Совместное использование",
     "days" : "дней",
