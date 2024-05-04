@@ -29,6 +29,8 @@ OC.L10N.register(
     "A valid username must be provided" : "Укажите допустимое имя пользователя",
     "A valid password must be provided" : "Должен быть указан правильный пароль",
     "Cheers!" : "Всего наилучшего!",
+    "Language" : "Язык",
+    "Report a bug" : "Сообщить об ошибке",
     "Open documentation" : "Открыть документацию",
     "Valid until" : "Действительно до",
     "Enable encryption" : "Включить шифрование",
