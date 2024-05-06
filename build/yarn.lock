@@ -1122,10 +1122,10 @@ istanbul-reports@^3.0.5:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-jasmine-core@^2.99.1:
-  version "2.99.1"
-  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-2.99.1.tgz#e6400df1e6b56e130b61c4bcd093daa7f6e8ca15"
-  integrity sha1-5kAN8ea1bhMLYcS80JPap/boyhU=
+jasmine-core@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-5.1.1.tgz#38b6ccfbe60aa2a863cf441751d9639b5a571edc"
+  integrity sha512-UrzO3fL7nnxlQXlvTynNAenL+21oUQRlzqQFsA2U11ryb4+NLOCOePZ70PTojEaUKhiFugh7dG0Q+I58xlPdWg==
 
 jasmine-sinon@^0.4.0:
   version "0.4.0"
