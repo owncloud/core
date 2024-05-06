@@ -34,6 +34,7 @@ ownCloud admins and users.
 * Bugfix - Link in public link notification has to be from a trusted domain: [#41214](https://github.com/owncloud/core/pull/41214)
 * Bugfix - User can only change their own external storage configuration: [#41225](https://github.com/owncloud/core/pull/41225)
 * Bugfix - Hardening SVG processing: [#41234](https://github.com/owncloud/core/pull/41234)
+* Bugfix - Handle no longer existing user in preview cleanup: [#41247](https://github.com/owncloud/core/pull/41247)
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
 ## Details
@@ -58,6 +59,13 @@ ownCloud admins and users.
    Purify SVGs before processing.
 
    https://github.com/owncloud/core/pull/41234
+
+* Bugfix - Handle no longer existing user in preview cleanup: [#41247](https://github.com/owncloud/core/pull/41247)
+
+   A no longer existing user no longer causes an exception in the preview cleanup
+   job.
+
+   https://github.com/owncloud/core/pull/41247
 
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
