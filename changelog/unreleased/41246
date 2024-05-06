@@ -1,0 +1,5 @@
+Bugfix: fix exception on external storages public links when encryption enabled
+
+Having masterkey encryption enabled, when trying to upload into a public link created on an external storage being assigned to at least one user/group, an exception was thrown and the upload operation was not possible. This is now fixed.
+
+https://github.com/owncloud/core/pull/41246  
