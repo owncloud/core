@@ -23,6 +23,7 @@
 namespace OCP\Files;
 
 use OC\Hooks\Emitter;
+use OC\User\NoUserException;
 
 /**
  * Interface IRootFolder
@@ -36,6 +37,7 @@ interface IRootFolder extends Folder, Emitter {
 	 *
 	 * @param String $userId user ID
 	 * @return \OCP\Files\Folder
+	 * @throws  NoUserException
 	 * @since 8.2.0
 	 */
 	public function getUserFolder($userId);
