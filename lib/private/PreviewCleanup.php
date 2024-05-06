@@ -25,7 +25,9 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\DBAL\Platforms\MariaDb1027Platform;
+use OC\User\NoUserException;
 use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
 use OCP\IDBConnection;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
@@ -65,16 +67,16 @@ class PreviewCleanup {
 					$resultData = $result->fetchAll(); // only 1 result expected
 					if (empty($resultData)) {
 						continue; // we can't do anything without the user_id
-					} else {
-						// we only expect one result from the query, and we want to remove
-						// the previous cached storage info.
-						$lastStorageInfo = [$storageId => $resultData[0]['user_id']];
 					}
+
+					// we only expect one result from the query, and we want to remove
+					// the previous cached storage info.
+					$lastStorageInfo = [$storageId => $resultData[0]['user_id']];
 				}
 
 				$userId = $lastStorageInfo[$storageId];
-				$userFiles = $root->getUserFolder($userId);
-				if ($userFiles->getParent()->nodeExists('thumbnails')) {
+				$userFiles = $this->getUserFolder($root, $userId);
+				if ($userFiles && $userFiles->getParent()->nodeExists('thumbnails')) {
 					/** @var Folder $thumbnailsFolder */
 					$thumbnailsFolder = $userFiles->getParent()->get('thumbnails');
 					if ($thumbnailsFolder instanceof Folder && $thumbnailsFolder->nodeExists($name)) {
@@ -109,7 +111,7 @@ class PreviewCleanup {
 		$castToInt = 'BIGINT';
 		$castToVchar = 'VARCHAR(250)';
 		if ($dbPlatform instanceof MySqlPlatform) {
-			// for MySQL we need to cast to "signed" instead
+			// for MySQL, we need to cast to "signed" instead
 			$castToInt = 'SIGNED';
 			$castToVchar = 'CHAR';
 		} elseif ($isOracle) {
@@ -119,13 +121,13 @@ class PreviewCleanup {
 
 		// The cast condition will be applied to all DB except sqlite (which doesn't
 		// have the regexp_replace function as built-in and requires extensions).
-		// If the name contains only digits, the name will be casted to an integer;
+		// If the name contains only digits, the name will be cast to an integer;
 		// otherwise, the name will be replaced with the fileid. This is intended
 		// because we want to exclude those rows from the final result.
 		$castCondition = "CAST(REGEXP_REPLACE(`thumb`.`name`, '(^.*[^[:digit:]]+.*$|^$)', CAST(`thumb`.`fileid` AS {$castToVchar})) AS {$castToInt})";
 		if ($dbPlatform instanceof SqlitePlatform || $isOldMysql) {
 			// For sqlite, the cast function seems to return 0 if the value can't be
-			// casted properly. We'll use that instead the regexp.
+			// cast properly. We'll use that instead the regexp.
 			// Note that casting "123explode" to bigint will return the 123 integer,
 			// not the 0 we want. We'll rely on the "parent" condition (in the sql
 			// statement) to deal with these false positives.
@@ -170,5 +172,13 @@ ORDER BY `storage`";
 	private function cleanFileCache($name, int $storageId): void {
 		$sql = "delete from `*PREFIX*filecache` where (path like 'thumbnails/$name/%' or path = 'thumbnails/$name') and storage = ?";
 		$this->connection->executeQuery($sql, [$storageId])->rowCount();
+	}
+
+	private function getUserFolder(IRootFolder $root, $userId): ?Folder {
+		try {
+			return $root->getUserFolder($userId);
+		} catch (NoUserException $ex) {
+			return null;
+		}
 	}
 }

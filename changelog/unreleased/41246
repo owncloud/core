@@ -1,0 +1,5 @@
+Bugfix: handle no longer existing user in preview cleanup
+
+A no longer existing user no longer causes an exception in the preview cleanup job.
+
+https://github.com/owncloud/core/pull/41247
