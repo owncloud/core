@@ -4,6 +4,7 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Server to server sharing is not enabled on this server",
     "The mountpoint name contains invalid characters." : "The mountpoint name contains invalid characters.",
     "Not allowed to create a federated share with the same user server" : "Not allowed to create a federated share with the same user server",
+    "Remote is unreachable" : "Remote is unreachable",
     "Could not authenticate to federated share, password might be wrong" : "Could not authenticate to federated share, password might be wrong",
     "Storage not valid" : "Storage not valid",
     "Couldn't add federated share" : "Couldn't add federated share",
