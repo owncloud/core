@@ -31,6 +31,7 @@ use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IGlobalStoragesService;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\StorageNotAvailableException;
+use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class StoragesControllerTest extends \Test\TestCase {
 	/**
@@ -39,7 +40,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	protected $controller;
 
 	/**
-	 * @var IGlobalStoragesService
+	 * @var IGlobalStoragesService | MockObject
 	 */
 	protected $service;
 
