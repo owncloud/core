@@ -52,7 +52,7 @@ Feature: get user
       | a@-+_.b  | A weird b    | a.b@example.com     |
       | a space  | A Space Name | a.space@example.com |
 
- 
+
   Scenario: admin gets an existing user, providing uppercase username in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
@@ -126,7 +126,7 @@ Feature: get user
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
- 
+
   Scenario Outline: a normal user gets their own information, providing uppercase username as authentication and in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -143,7 +143,7 @@ Feature: get user
       | BRAND-NEW-USER | brand-new-user |
       | brand-new-user | BRAND-NEW-USER |
 
- 
+
   Scenario Outline: a mixed-case normal user gets their own information, providing lowercase and mixed-case username in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
@@ -160,7 +160,7 @@ Feature: get user
       | Brand-New-User | brand-new-user |
       | brand-new-user | Brand-New-User |
 
- 
+
   Scenario: admin gets information of a user with admin permissions
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |

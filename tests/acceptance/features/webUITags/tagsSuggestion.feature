@@ -29,7 +29,7 @@ Feature: Suggestion for matching tag names
     And the user types "sp" in the collaborative tags field using the webUI
     Then all the tags starting with "sp" in their name should be listed in the dropdown list on the webUI
     But tag "gham" should not be listed in the dropdown list on the webUI
-    But tag "notspam" should not be listed in the dropdown list on the webUI
+    And tag "notspam" should not be listed in the dropdown list on the webUI
     And tag "Violates T&C" should not be listed in the dropdown list on the webUI
     And tag "sponsored" should not be listed in the dropdown list on the webUI
 
@@ -43,7 +43,7 @@ Feature: Suggestion for matching tag names
     And the user types "St" in the collaborative tags field using the webUI
     Then all the tags starting with "St" in their name should be listed in the dropdown list on the webUI
     But tag "gham" should not be listed in the dropdown list on the webUI
-    But tag "notspam" should not be listed in the dropdown list on the webUI
+    And tag "notspam" should not be listed in the dropdown list on the webUI
     And tag "Violates T&C" should not be listed in the dropdown list on the webUI
     And tag "sponsored" should not be listed in the dropdown list on the webUI
     And the tag "StaticTagName" should be listed in the dropdown list on the webUI

@@ -39,7 +39,7 @@ Feature: reshare as public link
     And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "some content"
     And the public should be able to download file "file.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "some content"
     But uploading a file should not work using the old public WebDAV API
-    But uploading a file should not work using the new public WebDAV API
+    And uploading a file should not work using the new public WebDAV API
 
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -90,7 +90,7 @@ Feature: reshare as public link
     And the public should be able to download file "file.txt" from inside the last public link shared folder using the old public WebDAV API without password and the content should be "some content"
     And the public should be able to download file "file.txt" from inside the last public link shared folder using the new public WebDAV API without password and the content should be "some content"
     But uploading a file should not work using the old public WebDAV API
-    But uploading a file should not work using the new public WebDAV API
+    And uploading a file should not work using the new public WebDAV API
 
     Examples:
       | ocs_api_version | ocs_status_code |
