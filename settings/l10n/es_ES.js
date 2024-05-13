@@ -2,8 +2,11 @@ OC.L10N.register(
     "settings",
     {
     "Saved" : "Guardado",
+    "Delete" : "Borrar",
     "None" : "Ninguno",
     "Save" : "Guardar",
+    "Username" : "Nombre de usuario",
+    "Password" : "Contraseña",
     "Name" : "Nombre",
     "Settings" : "Preferencias",
     "Group" : "Grupo"

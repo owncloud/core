@@ -4,9 +4,12 @@ OC.L10N.register(
     "Settings" : "Preferencias",
     "Saving..." : "Guardando...",
     "Name" : "Nombre",
+    "Password" : "Contraseña",
     "Save" : "Guardar",
     "group" : "grupo",
     "Group" : "Grupo",
-    "Help" : "Ayuda"
+    "Delete" : "Borrar",
+    "Help" : "Ayuda",
+    "Username" : "Nombre de usuario"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

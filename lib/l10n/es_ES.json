@@ -1,5 +1,7 @@
 { "translations": {
     "None" : "Ninguno",
+    "Username" : "Nombre de usuario",
+    "Password" : "Contraseña",
     "General" : "General",
     "Security" : "Seguridad",
     "Settings" : "Preferencias"

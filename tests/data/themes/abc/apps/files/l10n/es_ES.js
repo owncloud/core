@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "All files" : "Todos los archivos",
     "Close" : "Cerrar",
+    "Delete" : "Borrar",
     "Files" : "Archivos",
     "Details" : "Detalles",
     "group" : "grupo",

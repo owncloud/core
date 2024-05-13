@@ -1,7 +1,10 @@
 { "translations": {
     "Saved" : "Guardado",
+    "Username" : "Nombre de usuario",
+    "Password" : "Contraseña",
     "Save" : "Guardar",
     "Name" : "Nombre",
-    "Never" : "Nunca"
+    "Never" : "Nunca",
+    "Delete" : "Borrar"
 },"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }
