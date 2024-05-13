@@ -1,0 +1,8 @@
+Bugfix: handle short classes in Autoloader
+
+The Autoloader findClass method was emitting a PHP notice "undefined offset"
+for class strings at the top OCA level. The code has been corrected so that
+the PHP notice is not emitted.
+
+https://github.com/owncloud/core/pull/41252
+https://github.com/owncloud/core/pull/41253

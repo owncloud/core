@@ -76,7 +76,18 @@ class Autoloader {
 
 		$paths = [];
 		if (\strpos($class, 'OCA\\') === 0) {
-			list(, $app, $rest) = \explode('\\', $class, 3);
+			list(, $app, $rest) = \array_pad(\explode('\\', $class, 3), 3, '');
+			// findClass might be called with a string like 'OCA\Files'
+			// because there is code that has an event listener with a name like
+			// OCA\Files::loadAdditionalScripts
+			// That looks like there could be a class 'OCA\Files` with a method
+			// 'loadAdditionalScripts'. But that is just an event name.
+			// phpstan seems to do this when trying to find all "classes" that
+			// it might need to use and analyze.
+			// In this case, return early.
+			if ($rest === '') {
+				return $paths;
+			}
 			$app = \strtolower($app);
 			$appPath = \OC_App::getAppPath($app);
 			if ($appPath && \stream_resolve_include_path($appPath)) {
