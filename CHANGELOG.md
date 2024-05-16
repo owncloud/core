@@ -35,6 +35,7 @@ ownCloud admins and users.
 * Bugfix - User can only change their own external storage configuration: [#41225](https://github.com/owncloud/core/pull/41225)
 * Bugfix - Hardening SVG processing: [#41234](https://github.com/owncloud/core/pull/41234)
 * Bugfix - Handle no longer existing user in preview cleanup: [#41247](https://github.com/owncloud/core/pull/41247)
+* Bugfix - Handle short classes in Autoloader: [#41252](https://github.com/owncloud/core/pull/41252)
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
 ## Details
@@ -66,6 +67,15 @@ ownCloud admins and users.
    job.
 
    https://github.com/owncloud/core/pull/41247
+
+* Bugfix - Handle short classes in Autoloader: [#41252](https://github.com/owncloud/core/pull/41252)
+
+   The Autoloader findClass method was emitting a PHP notice "undefined offset" for
+   class strings at the top OCA level. The code has been corrected so that the PHP
+   notice is not emitted.
+
+   https://github.com/owncloud/core/pull/41252
+   https://github.com/owncloud/core/pull/41253
 
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
