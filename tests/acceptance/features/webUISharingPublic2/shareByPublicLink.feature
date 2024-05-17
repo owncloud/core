@@ -270,9 +270,9 @@ Feature: Share by public link
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email from user "Brian" with the body containing
-			"""
-			%displayname% shared simple-folder with you
-			"""
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
 

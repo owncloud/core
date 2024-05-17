@@ -354,7 +354,7 @@ Feature: sharing
       | permissions | share,read,update |
       | uid_owner   | %username%        |
     And user "brian" should see the following elements
-     | /randomfile.txt |
+      | /randomfile.txt |
     And the content of file "randomfile.txt" for user "brian" should be "Random data"
 
   @skipOnLDAP

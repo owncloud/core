@@ -19,7 +19,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
       | dav_version |
       | old         |
       | new         |
-      
+
 
   Scenario Outline: rename a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path

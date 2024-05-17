@@ -62,7 +62,7 @@ Feature: accessing a public link share
   Scenario Outline: Request to non-existent public link
     When a user requests "<endpoint>" with "<method>" and no authentication
     Then the HTTP status code should be "404"
-    Examples: 
+    Examples:
       | endpoint                                        | method   |
       | /remote.php/dav/public-files/thisWillNeverExist | GET      |
       | /remote.php/dav/public-files/thisWillNeverExist | PUT      |

@@ -63,9 +63,9 @@ Feature: Share by public link
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co |
     Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
-    """
-    %displayname% shared simple-folder with you
-    """
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
 
@@ -77,13 +77,13 @@ Feature: Share by public link
       | email       | foo@bar.co |
       | emailToSelf | true       |
     Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
-    """
-    %displayname% shared simple-folder with you
-    """
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address of user "Alice" should have received an email from user "Alice" with the body containing
-    """
-    %displayname% shared simple-folder with you
-    """
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address of user "Alice" should have received an email containing the last shared public link
 
@@ -95,13 +95,13 @@ Feature: Share by public link
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | email | foo@bar.co, goo@barr.co |
     Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
-    """
-    %displayname% shared simple-folder with you
-    """
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address "goo@barr.co" should have received an email from user "Alice" with the body containing
-    """
-    %displayname% shared simple-folder with you
-    """
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
     And the email address "goo@barr.co" should have received an email containing the last shared public link
 
@@ -114,13 +114,13 @@ Feature: Share by public link
       | email           | foo@bar.co  |
       | personalMessage | lorem ipsum |
     Then the email address "foo@bar.co" should have received an email from user "Alice" with the body containing
-    """
-    %displayname% shared simple-folder with you
-    """
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address "foo@bar.co" should have received an email with the body containing
-    """
-    lorem ipsum
-    """
+      """
+      lorem ipsum
+      """
     And the email address "foo@bar.co" should have received an email containing the last shared public link
 
 
@@ -143,13 +143,13 @@ Feature: Share by public link
       | foo5678@barr.co |
     And the user creates the public link using the webUI
     Then the email address "foo5678@bar.co" should have received an email from user "Alice" with the body containing
-    """
-    %displayname% shared simple-folder with you
-    """
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address "foo1234@barr.co" should have received an email from user "Alice" with the body containing
-    """
-    %displayname% shared simple-folder with you
-    """
+      """
+      %displayname% shared simple-folder with you
+      """
     And the email address "foo5678@bar.co" should have received an email containing the last shared public link
     And the email address "foo1234@barr.co" should have received an email containing the last shared public link
     But the email address "foo1234@bar.co" should not have received an email

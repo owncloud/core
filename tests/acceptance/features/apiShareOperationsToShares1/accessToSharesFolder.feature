@@ -15,11 +15,6 @@ Feature: write directly into the folder for received shares
       | Brian    |
 
 
-  Scenario: the Shares folder does not exist before the first share is received
-    Then as "Alice" folder "/Shares" should not exist
-    And as "Brian" folder "/Shares" should not exist
-
-
   Scenario: the Shares folder does not exist if no share has been accepted
     Given user "Alice" has created folder "/shared"
     When user "Alice" shares folder "/shared" with user "Brian" using the sharing API

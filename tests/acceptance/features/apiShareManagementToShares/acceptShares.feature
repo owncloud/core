@@ -173,7 +173,7 @@ Feature: accept/decline shares coming from internal users
       | ReceivedShares      | /ReceivedShares     | PARENT               | textfile0.txt          |
       | /My/Received/Shares | /My/Received/Shares | PARENT               | textfile0.txt          |
 
- 
+
   Scenario: accept an accepted share
     Given user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "/shared" with user "Brian"
@@ -322,7 +322,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/testfile (2) (2).txt |
     And the content of file "/Shares/testfile.txt" for user "Carol" should be "Third file"
     And the content of file "/Shares/testfile (2).txt" for user "Carol" should be "Second file"
-    And the content of file "/Shares/testfile (2) (2).txt" for user "Carol" should be "First file"   
+    And the content of file "/Shares/testfile (2) (2).txt" for user "Carol" should be "First file"
     Examples:
       | accepted_share_path |
       | /testfile (2).txt   |
@@ -357,7 +357,7 @@ Feature: accept/decline shares coming from internal users
       | accepted_share_path_1 | accepted_share_path_2 |
       | /PARENT (2)           | /PARENT (2) (2)       |
 
- 
+
   Scenario: user shares folder with matching folder-name for both user involved in sharing
     Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
@@ -380,7 +380,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT/abc.txt" for user "Brian" should be "uploaded content"
     And the content of file "/Shares/FOLDER/abc.txt" for user "Brian" should be "uploaded content"
 
- 
+
   Scenario: user shares folder in a group with matching folder-name for every users involved
     Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
@@ -419,7 +419,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT/abc.txt" for user "Carol" should be "uploaded content"
     And the content of file "/Shares/FOLDER/abc.txt" for user "Carol" should be "uploaded content"
 
- 
+
   Scenario: user shares files in a group with matching file-names for every users involved in sharing
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
     And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
@@ -444,7 +444,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/textfile0.txt |
       | /Shares/textfile1.txt |
 
- 
+
   Scenario: user shares resource with matching resource-name with another user when auto accept is disabled
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
@@ -466,7 +466,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/       |
       | /Shares/textfile0.txt |
 
- 
+
   Scenario: user shares file in a group with matching filename when auto accept is disabled
     Given user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API

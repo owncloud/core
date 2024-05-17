@@ -186,7 +186,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
-  
+
   Scenario: test resharing folder and set it as readonly by owner
     Given using server "LOCAL"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -205,7 +205,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
-  
+
   Scenario: test sharing long file names with federation share
     When user "Alice" moves file "/lorem.txt" to "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" using the WebDAV API
     And the user has reloaded the current page of the webUI
