@@ -5,6 +5,7 @@ OC.L10N.register(
     "Saving..." : "Guardando...",
     "Name" : "Nombre",
     "Password" : "Contraseña",
+    "Share" : "Compartir",
     "Save" : "Guardar",
     "group" : "grupo",
     "Group" : "Grupo",

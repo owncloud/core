@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_sharing",
     {
     "Shared by link" : "Compartido por enlace",
+    "Share" : "Compartir",
     "Password" : "Contraseña",
     "Name" : "Nombre"
 },

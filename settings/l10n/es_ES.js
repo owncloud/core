@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Saved" : "Guardado",
     "Delete" : "Borrar",
+    "Share" : "Compartir",
     "None" : "Ninguno",
     "Save" : "Guardar",
     "Username" : "Nombre de usuario",

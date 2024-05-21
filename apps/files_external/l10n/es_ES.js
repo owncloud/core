@@ -5,6 +5,7 @@ OC.L10N.register(
     "Username" : "Nombre de usuario",
     "Password" : "Contraseña",
     "Save" : "Guardar",
+    "Share" : "Compartir",
     "Name" : "Nombre",
     "Never" : "Nunca",
     "Delete" : "Borrar"
