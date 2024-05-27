@@ -164,22 +164,25 @@
         },
         {
             "name": "deepdiver/zipstreamer",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DeepDiver1975/PHPZipStreamer.git",
-                "reference": "f5659266771aeb3e356f75d7f39a092a291953b3"
+                "reference": "b9d1f53453a5736285facb723252ea2169dc472e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DeepDiver1975/PHPZipStreamer/zipball/f5659266771aeb3e356f75d7f39a092a291953b3",
-                "reference": "f5659266771aeb3e356f75d7f39a092a291953b3",
+                "url": "https://api.github.com/repos/DeepDiver1975/PHPZipStreamer/zipball/b9d1f53453a5736285facb723252ea2169dc472e",
+                "reference": "b9d1f53453a5736285facb723252ea2169dc472e",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "php": ">=7.1"
             },
             "require-dev": {
+                "ext-xdebug": "*",
+                "ext-zlib": "*",
                 "phpunit/phpunit": "^7 || ^8"
             },
             "suggest": {
@@ -230,9 +233,15 @@
             ],
             "support": {
                 "issues": "https://github.com/DeepDiver1975/PHPZipStreamer/issues",
-                "source": "https://github.com/DeepDiver1975/PHPZipStreamer/tree/v2.0.2"
+                "source": "https://github.com/DeepDiver1975/PHPZipStreamer/tree/v2.0.3"
             },
-            "time": "2023-11-14T16:21:07+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/DeepDiver1975",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-13T14:30:52+00:00"
         },
         {
             "name": "dg/composer-cleaner",
