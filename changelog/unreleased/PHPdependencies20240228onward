@@ -1,6 +1,7 @@
 Change: Update PHP dependencies
 
 The following have been updated:
+- deepdiver/zipstreamer (2.0.2 to 2.0.3)
 - google/apiclient (v2.15.3 to v2.16.0)
 - google/apiclient-services (v0.335.0 to v0.351.0)
 - google/auth (v1.35.0 to v1.37.1)
@@ -26,3 +27,4 @@ https://github.com/owncloud/core/pull/41212
 https://github.com/owncloud/core/pull/41222
 https://github.com/owncloud/core/pull/41230
 https://github.com/owncloud/core/pull/41242
+https://github.com/owncloud/core/pull/41255
