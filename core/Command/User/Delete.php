@@ -37,7 +37,6 @@ class Delete extends Command {
 
 	/**
 	 * @param IUserManager $userManager
-	 * @param IRootFolder $rootFolder
 	 */
 	public function __construct(IUserManager $userManager) {
 		$this->userManager = $userManager;
