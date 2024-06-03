@@ -65,8 +65,8 @@ class DetailsDialog extends OwncloudPage {
 	private $tagEditButtonInTagXpath = "//div[@class='systemtags-actions']//a[contains(@class, 'rename')]";
 	private $tagDeleteButtonInTagXpath = "//div[@class='systemtags-actions']//a[contains(@class, 'delete')]";
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
-	"//ul[@class='select2-results']" .
-	"//span[@class='label']";
+		"//ul[@class='select2-results']" .
+		"//span[@class='label']";
 	private $tagEditInputXpath = "//input[contains(@id, 'rename-input') and contains(@value, %s)]";
 	protected $tagDeleteConfirmButtonXpath
 		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='Yes']";
