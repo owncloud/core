@@ -7,17 +7,6 @@
 script('core', 'setupchecks');
 script('settings', 'panels/setupchecks');
 ?>
-
-<?php
-$license = \OC::$server->query(\OC\License\LicenseFetcher::class)->getOwncloudLicense();
-$ioc_exec_confirmation = \OC::$server->getConfig()->getSystemValue('indicators-of-compromise-scanner.confirmation', false);
-if ($license !== null && $ioc_exec_confirmation !== 'EXECUTED_ON_ALL_NODES') {
-	?>
-	<div id="security-warning" class="section">
-		<?php include_once(__DIR__ . '/../../../../core/templates/ioc.warning.php'); ?>
-	</div>
-<?php } ?>
-
 <div id="security-warning" class="section">
 	<h2 class="app-name"><?php p($l->t('Security & setup warnings'));?></h2>
 	<ul>
