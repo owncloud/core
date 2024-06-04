@@ -87,10 +87,10 @@ ownCloud admins and users.
    (3.0.35 to 3.0.37) - psr/http-factory (1.0.2 to 1.1.0) - sabre/xml (2.2.6 to
    2.2.7) - symfony/event-dispatcher-contracts (v2.5.2 to v2.5.3) -
    symfony/service-contracts (v2.5.2 to v2.5.3) - symfony/translation-contracts
-   (v2.5.2 to v2.5.3) - symfony/console (v5.4.35 to v5.4.39) -
-   symfony/event-dispatcher (v5.4.35 to v5.4.39) - symfony/process (v5.4.35 to
-   v5.4.39) - symfony/routing (v5.4.35 to v5.4.39) - symfony/string (v5.4.35 to
-   v5.4.39) - symfony/translation (v5.4.35 to v5.4.39)
+   (v2.5.2 to v2.5.3) - symfony/console (v5.4.35 to v5.4.40) -
+   symfony/event-dispatcher (v5.4.35 to v5.4.40) - symfony/process (v5.4.35 to
+   v5.4.40) - symfony/routing (v5.4.35 to v5.4.40) - symfony/string (v5.4.35 to
+   v5.4.40) - symfony/translation (v5.4.35 to v5.4.40)
 
    https://github.com/owncloud/core/pull/41195
    https://github.com/owncloud/core/pull/41203
@@ -100,6 +100,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41230
    https://github.com/owncloud/core/pull/41242
    https://github.com/owncloud/core/pull/41255
+   https://github.com/owncloud/core/pull/41259
 
 # Changelog for ownCloud Core [10.14.0] (2024-02-19)
 
