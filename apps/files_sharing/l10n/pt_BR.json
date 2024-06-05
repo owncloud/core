@@ -2,6 +2,7 @@
     "Server to server sharing is not enabled on this server" : "Compartilhamento de servidor para servidor não está habilitado no servidor",
     "The mountpoint name contains invalid characters." : "O nome do ponto de montagem contém caracteres inválidos.",
     "Not allowed to create a federated share with the same user server" : "Não permitido para criar um compartilhamento associado com o mesmo servidor do usuário",
+    "Remote is unreachable" : "O controle remoto está inacessível",
     "Could not authenticate to federated share, password might be wrong" : "Não foi possível autenticar no compartilhamento federado, a senha pode estar errada",
     "Storage not valid" : "Armazenamento não válido",
     "Couldn't add federated share" : "Não foi possível adicionar compartilhamento federado",
