@@ -21,6 +21,10 @@
  *
  */
 
+if (\OC::$server->getConfig()->getSystemValue('has_internet_connection', true) !== true) {
+	return;
+}
+
 if (\OC::$server->getConfig()->getSystemValue('updatechecker', true) === true) {
 	$updater = new \OC\Updater\VersionCheck(
 		\OC::$server->getHTTPClientService(),
