@@ -36,6 +36,7 @@ ownCloud admins and users.
 * Bugfix - Hardening SVG processing: [#41234](https://github.com/owncloud/core/pull/41234)
 * Bugfix - Handle no longer existing user in preview cleanup: [#41247](https://github.com/owncloud/core/pull/41247)
 * Bugfix - Handle short classes in Autoloader: [#41252](https://github.com/owncloud/core/pull/41252)
+* Bugfix - No update check if not connected to the internet: [#41262](https://github.com/owncloud/core/pull/41262)
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
 ## Details
@@ -76,6 +77,13 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41252
    https://github.com/owncloud/core/pull/41253
+
+* Bugfix - No update check if not connected to the internet: [#41262](https://github.com/owncloud/core/pull/41262)
+
+   In case an owncloud instance is not connected to the internet there is no need
+   in polling for updates in the update notification app.
+
+   https://github.com/owncloud/core/pull/41262
 
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
