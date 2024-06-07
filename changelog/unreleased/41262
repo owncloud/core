@@ -1,0 +1,6 @@
+Bugfix: No update check if not connected to the internet
+
+In case an owncloud instance is not connected to the internet there is no need
+in polling for updates in the update notification app.
+
+https://github.com/owncloud/core/pull/41262
