@@ -37,6 +37,7 @@ ownCloud admins and users.
 * Bugfix - Handle no longer existing user in preview cleanup: [#41247](https://github.com/owncloud/core/pull/41247)
 * Bugfix - Handle short classes in Autoloader: [#41252](https://github.com/owncloud/core/pull/41252)
 * Bugfix - No update check if not connected to the internet: [#41262](https://github.com/owncloud/core/pull/41262)
+* Bugfix - Default value of preview_max_dimensions is now 6016x6016: [#41263](https://github.com/owncloud/core/pull/41263)
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
 ## Details
@@ -84,6 +85,12 @@ ownCloud admins and users.
    in polling for updates in the update notification app.
 
    https://github.com/owncloud/core/pull/41262
+
+* Bugfix - Default value of preview_max_dimensions is now 6016x6016: [#41263](https://github.com/owncloud/core/pull/41263)
+
+   This allows processing of 4K portrait images by default.
+
+   https://github.com/owncloud/core/pull/41263
 
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
