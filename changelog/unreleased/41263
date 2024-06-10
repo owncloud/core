@@ -1,0 +1,5 @@
+Bugfix: default value of preview_max_dimensions is now 6016x6016
+
+This allows processing of 4K portrait images by default.
+
+https://github.com/owncloud/core/pull/41263

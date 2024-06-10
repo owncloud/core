@@ -1022,15 +1022,15 @@ $CONFIG = [
 
 /**
  * Define the maximum dimensions of the original image for preview generation
- * In contrast to `preview_max_x` and `preview_max_x` which define the maximum
+ * In contrast to `preview_max_x` and `preview_max_y` which define the maximum
  * dimensions of generated previews, this setting limits the original image's size.
  *
  * Original images bigger than the defined dimension will not be processed.
  *
  * Value represents the maximum dimension in the format width x height
- * Default is 6016x4000.
+ * Default is 6016x6016.
  */
-'preview_max_dimensions' => '6016x4000',
+'preview_max_dimensions' => '6016x6016',
 
 /**
  * Define the custom path for the LibreOffice / OpenOffice binary
