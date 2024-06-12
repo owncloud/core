@@ -35,6 +35,7 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Statement;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
 /**
@@ -47,17 +48,17 @@ interface IDBConnection {
 	/**
 	 * Gets the QueryBuilder for the connection.
 	 *
-	 * @return \OCP\DB\QueryBuilder\IQueryBuilder
+	 * @return IQueryBuilder
 	 * @since 8.2.0
 	 */
-	public function getQueryBuilder();
+	public function getQueryBuilder(): IQueryBuilder;
 
 	/**
 	 * Used to abstract the ownCloud database access away
 	 * @param string $sql the sql query with ? placeholder for params
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
-	 * @return \Doctrine\DBAL\Driver\Statement The prepared statement.
+	 * @return Statement The prepared statement.
 	 * @since 6.0.0
 	 */
 	public function prepare($sql, $limit=null, $offset=null);
@@ -71,7 +72,7 @@ interface IDBConnection {
 	 * @param string $query The SQL query to execute.
 	 * @param string[] $params The parameters to bind to the query, if any.
 	 * @param array $types The types the previous parameters are in.
-	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
+	 * @return Statement The executed statement.
 	 * @since 8.0.0
 	 */
 	public function executeQuery($query, array $params = [], $types = []);
