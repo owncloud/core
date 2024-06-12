@@ -111,7 +111,7 @@ Feature: edit users
     And user "Alice" has been added to group "<group_id3>"
     And the administrator has browsed to the users page
     When the administrator removes user "Alice" from group "<group_id1>" using the webUI
-    And user "Alice" should not belong to group "<group_id1>"
+    Then user "Alice" should not belong to group "<group_id1>"
     But user "Alice" should belong to group "<group_id2>"
     And user "Alice" should belong to group "<group_id3>"
     Examples:
