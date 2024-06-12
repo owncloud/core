@@ -41,7 +41,7 @@ Feature: Add group
     And group "<group_id3>" has been created
     And the administrator reloads the users page
     When the administrator adds user "Alice" to group "<group_id1>" using the webUI
-    And user "Alice" should belong to group "<group_id1>"
+    Then user "Alice" should belong to group "<group_id1>"
     But user "Alice" should not belong to group "<group_id2>"
     And user "Alice" should not belong to group "<group_id3>"
     Examples:
