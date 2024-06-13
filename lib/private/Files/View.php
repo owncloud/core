@@ -1233,7 +1233,7 @@ class View {
 					throw $e;
 				}
 
-				if ($result) {
+				if ($result !== false) {
 					if (\in_array('delete', $hooks)) {
 						$this->removeUpdate($storage, $internalPath);
 					}
