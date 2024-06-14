@@ -341,6 +341,11 @@ class Session implements IUserSession, Emitter {
 		if ($this->validateToken($password, $uid)) {
 			return $this->loginWithToken($password);
 		}
+		if ($this->isLoginTokenAuthEnforced()) {
+			$this->logger->warning("Login failed because token auth is enforced in browser: '$uid'", ['app' => 'core']);
+			$this->emitFailedLogin($uid);
+			throw new PasswordLoginForbiddenException();
+		}
 		return $this->loginWithPassword($uid, $password);
 	}
 
@@ -402,6 +407,10 @@ class Session implements IUserSession, Emitter {
 
 	private function isTokenAuthEnforced() {
 		return $this->config->getSystemValue('token_auth_enforced', false);
+	}
+
+	private function isLoginTokenAuthEnforced() {
+		return $this->config->getSystemValue('login.token_auth_enforced', false);
 	}
 
 	protected function isTwoFactorEnforced($username) {
