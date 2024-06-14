@@ -9,6 +9,10 @@
 namespace Test\Security;
 
 use OC\Security\CertificateManager;
+use OC\Files\View;
+use OCP\IUserManager;
+use OCP\IUser;
+use OCP\IConfig;
 
 /**
  * Class CertificateManagerTest
@@ -30,6 +34,8 @@ class CertificateManagerTest extends \Test\TestCase {
 		$this->username = self::getUniqueID('', 20);
 		$this->createUser($this->username);
 
+		$userManager = \OC::$server->getUserManager();
+
 		$storage = new \OC\Files\Storage\Temporary();
 		$this->registerMount($this->username, $storage, '/' . $this->username . '/');
 
@@ -39,10 +45,14 @@ class CertificateManagerTest extends \Test\TestCase {
 		\OC_Util::setupFS($this->username);
 
 		$config = $this->createMock('OCP\IConfig');
-		$config->expects($this->any())->method('getSystemValue')
-			->with('installed', false)->willReturn(true);
+		$config->expects($this->any())
+			->method('getSystemValue')
+			->will($this->returnValueMap([
+				['installed', false, true],
+				['datadirectory', \OC::$SERVERROOT . '/data', \OC::$SERVERROOT . '/data'],
+			]));
 
-		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View(), $config);
+		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View(), $config, $userManager);
 	}
 
 	protected function assertEqualsArrays($expected, $actual) {
@@ -114,5 +124,53 @@ class CertificateManagerTest extends \Test\TestCase {
 
 	public function testGetCertificateBundle() {
 		$this->assertSame('/' . $this->username . '/files_external/rootcerts.crt', $this->certificateManager->getCertificateBundle());
+	}
+
+	public function getPathToCertificatesProvider() {
+		return [
+			['uid', '/path/to/oc/data', '/path/to/oc/data/uid', '/uid/files_external/'],
+			['uid', '/path/to/oc/data', '/path/to/oc/data/home_of_uid', '/home_of_uid/files_external/'],
+			['uid', '/path/to/oc/data', '/path/to/oc/data/inner/home/uid', '/inner/home/uid/files_external/'],
+			['uid', '/path/to/oc/data', '/external/home', '/uid/files_external/'],
+			[null, '/path/to/oc/data', null, '/files_external/']
+		];
+	}
+
+	/**
+	 * @dataProvider getPathToCertificatesProvider
+	 */
+	public function testGetPathToCertificates($uid, $dataDir, $userHomeDir, $expectedResult) {
+		$userObj = $this->createMock(IUser::class);
+		$userObj->method('getHome')->willReturn($userHomeDir);
+
+		$userManager = $this->createMock(IUserManager::class);
+		$userManager->method('get')
+			->with($uid)
+			->willReturn($userObj);
+
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['datadirectory', \OC::$SERVERROOT . '/data', $dataDir],
+			]));
+
+		$certificateManager = new CertificateManager($uid, $this->createMock(View::class), $config, $userManager);
+		$this->assertSame($expectedResult, $this->invokePrivate($certificateManager, 'getPathToCertificates', [$uid]));
+	}
+
+	public function testGetPathToCertificatesMissingUser() {
+		$uid = 'missing_user';
+
+		$userManager = $this->createMock(IUserManager::class);
+		$userManager->method('get')->willReturn(null);
+
+		$config = $this->createMock(IConfig::class);
+		$config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['datadirectory', \OC::$SERVERROOT . '/data', '/path/to/oc/data'],
+			]));
+
+		$certificateManager = new CertificateManager($uid, $this->createMock(View::class), $config, $userManager);
+		$this->assertSame("/{$uid}/files_external/", $this->invokePrivate($certificateManager, 'getPathToCertificates', [$uid]));
 	}
 }
