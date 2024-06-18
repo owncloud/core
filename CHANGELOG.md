@@ -99,7 +99,7 @@ ownCloud admins and users.
    v0.355.0) - google/auth (v1.35.0 to v1.37.1) - monolog/monolog (2.9.2 to 2.9.3)
    - paragonie/constant_time_encoding (v2.6.3 to v2.7.0) - pear/archive_tar (1.4.14
    to 1.15.0) - pear/pear-core-minimal (v1.10.14 to v1.10.15) - phpseclib/phpseclib
-   (3.0.35 to 3.0.37) - psr/http-factory (1.0.2 to 1.1.0) - sabre/xml (2.2.6 to
+   (3.0.35 to 3.0.38) - psr/http-factory (1.0.2 to 1.1.0) - sabre/xml (2.2.6 to
    2.2.7) - symfony/event-dispatcher-contracts (v2.5.2 to v2.5.3) -
    symfony/service-contracts (v2.5.2 to v2.5.3) - symfony/translation-contracts
    (v2.5.2 to v2.5.3) - symfony/console (v5.4.35 to v5.4.40) -
@@ -116,6 +116,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41242
    https://github.com/owncloud/core/pull/41255
    https://github.com/owncloud/core/pull/41259
+   https://github.com/owncloud/core/pull/41267
 
 # Changelog for ownCloud Core [10.14.0] (2024-02-19)
 
