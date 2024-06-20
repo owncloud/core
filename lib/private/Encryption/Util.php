@@ -305,6 +305,9 @@ class Util {
 			$mounts = \OC\Files\External\LegacyUtil::getSystemMountPoints();
 			foreach ($mounts as $mount) {
 				if (\strpos($path, '/files/' . $mount['mountpoint']) === 0) {
+					if ($uid === false) {
+						return true;
+					}
 					if ($this->isMountPointApplicableToUser($mount, $uid)) {
 						return true;
 					}
