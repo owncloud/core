@@ -31,6 +31,7 @@ use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IUserStoragesService;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -44,23 +45,15 @@ class UserStoragesController extends StoragesController {
 	 * @var IUserSession
 	 */
 	private $userSession;
+	private IConfig $config;
 
-	/**
-	 * Creates a new user storages controller.
-	 *
-	 * @param string $AppName application name
-	 * @param IRequest $request request object
-	 * @param IL10N $l10n l10n service
-	 * @param IUserStoragesService $userStoragesService storage service
-	 * @param IUserSession $userSession
-	 * @param ILogger $logger
-	 */
 	public function __construct(
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
 		IUserStoragesService $userStoragesService,
 		IUserSession $userSession,
+		IConfig $config,
 		ILogger $logger
 	) {
 		parent::__construct(
@@ -71,6 +64,7 @@ class UserStoragesController extends StoragesController {
 			$logger
 		);
 		$this->userSession = $userSession;
+		$this->config = $config;
 	}
 
 	protected function manipulateStorageConfig(IStorageConfig $storage) {
@@ -88,6 +82,12 @@ class UserStoragesController extends StoragesController {
 	 * @return DataResponse
 	 */
 	public function index() {
+		if (!$this->isUserMountingAllowed()) {
+			return new DataResponse(
+				null,
+				Http::STATUS_FORBIDDEN
+			);
+		}
 		return parent::index();
 	}
 
@@ -122,8 +122,13 @@ class UserStoragesController extends StoragesController {
 		$backendOptions,
 		$mountOptions
 	) {
+		if (!$this->isUserMountingAllowed()) {
+			return new DataResponse(
+				null,
+				Http::STATUS_FORBIDDEN
+			);
+		}
 		$canCreateNewLocalStorage = \OC::$server->getConfig()->getSystemValue('files_external_allow_create_new_local', false);
-
 		if ($backend === 'local' && $canCreateNewLocalStorage === false) {
 			return new DataResponse(
 				null,
@@ -183,6 +188,12 @@ class UserStoragesController extends StoragesController {
 		$mountOptions,
 		$testOnly = true
 	) {
+		if (!$this->isUserMountingAllowed()) {
+			return new DataResponse(
+				null,
+				Http::STATUS_FORBIDDEN
+			);
+		}
 		$storage = $this->createStorage(
 			$mountPoint,
 			$backend,
@@ -230,6 +241,17 @@ class UserStoragesController extends StoragesController {
 	 * {@inheritdoc}
 	 */
 	public function destroy($id) {
+		if (!$this->isUserMountingAllowed()) {
+			return new DataResponse(
+				null,
+				Http::STATUS_FORBIDDEN
+			);
+		}
+
 		return parent::destroy($id);
+	}
+
+	private function isUserMountingAllowed(): bool {
+		return $this->config->getAppValue('files_external', 'allow_user_mounting', 'yes') === 'yes';
 	}
 }
