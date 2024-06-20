@@ -7,8 +7,11 @@
  */
 
 namespace Test;
+use OCP\IDBConnection;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\SystemConfig;
 
 /**
  * Class AllConfigTest
@@ -17,11 +20,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package Test
  */
-class AllConfigTest extends \Test\TestCase {
-	/** @var  \OCP\IDBConnection */
+class AllConfigTest extends TestCase {
+	/** @var  IDBConnection */
 	protected $connection;
 
-	/** @var  EventDispatcher */
+	/** @var EventDispatcher | MockObject*/
 	protected $eventDispatcher;
 
 	protected function getConfig($systemConfig = null, $connection = null) {
@@ -30,15 +33,12 @@ class AllConfigTest extends \Test\TestCase {
 		if ($this->connection === null) {
 			$this->connection = \OC::$server->getDatabaseConnection();
 		}
-		if ($connection === null) {
-			$connection = $this->connection;
-		}
 		if ($systemConfig === null) {
-			$systemConfig = $this->getMockBuilder('\OC\SystemConfig')
+			$systemConfig = $this->getMockBuilder(SystemConfig::class)
 				->disableOriginalConstructor()
 				->getMock();
 		}
-		return new \OC\AllConfig($systemConfig, $this->eventDispatcher, $connection);
+		return new \OC\AllConfig($systemConfig, $this->eventDispatcher);
 	}
 
 	public function testDeleteUserValue() {
@@ -487,6 +487,31 @@ class AllConfigTest extends \Test\TestCase {
 
 		$value = $config->getUsersForUserValue('appFetch9', 'keyFetch9', 'value9');
 		$this->assertEquals(['user1', 'user2', 'user6'], $value);
+
+		// cleanup
+		$this->connection->executeUpdate('DELETE FROM `*PREFIX*preferences`');
+	}
+
+	public function testGetUserKeysAllInts(): void {
+		$config = $this->getConfig();
+
+		// preparation - add something to the database
+		$data = [
+			['userFetch', 'appFetch1', '123', 'value'],
+			['userFetch', 'appFetch1', '456', 'value'],
+		];
+		foreach ($data as $entry) {
+			$this->connection->executeUpdate(
+				'INSERT INTO `*PREFIX*preferences` (`userid`, `appid`, ' .
+				'`configkey`, `configvalue`) VALUES (?, ?, ?, ?)',
+				$entry
+			);
+		}
+
+		$value = $config->getUserKeys('userFetch', 'appFetch1');
+		$this->assertEquals(['123', '456'], $value);
+		$this->assertIsString($value[0]);
+		$this->assertIsString($value[1]);
 
 		// cleanup
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*preferences`');
