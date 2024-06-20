@@ -1,0 +1,5 @@
+Bugfix: AllConfig::getUserKeys to return string[] only
+
+The array returned by getUserKeys() is now always an array of strings.
+
+https://github.com/owncloud/core/pull/41270
