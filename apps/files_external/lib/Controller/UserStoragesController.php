@@ -252,6 +252,6 @@ class UserStoragesController extends StoragesController {
 	}
 
 	private function isUserMountingAllowed(): bool {
-		return $this->config->getAppValue('files_external', 'allow_user_mounting', 'yes') === 'yes';
+		return $this->config->getAppValue('files_external', 'allow_user_mounting', 'no') === 'yes';
 	}
 }
