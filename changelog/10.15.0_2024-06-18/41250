@@ -1,5 +1,5 @@
 Bugfix: Disallow HTTP API requests for user external storages in case disabled
 
-API requests for a user's external storages now correctly fail when the user is disabled.
+API requests for a user's external storages now correctly fail when user mounted storages are disabled.
 
 https://github.com/owncloud/core/pull/41250
