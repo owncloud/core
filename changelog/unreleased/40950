@@ -1,0 +1,6 @@
+Bugfix: Remove Preceding and Trailing White Space from Config
+
+Create recursive function to remove white space during the writing of the config/config.php file. This will remove white space from nested array values as well (hence the recursive function).
+
+https://github.com/owncloud/core/issues/33294
+https://github.com/owncloud/core/pull/40950
