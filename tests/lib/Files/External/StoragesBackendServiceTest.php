@@ -152,7 +152,7 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 		$this->config->expects($this->exactly(2))
 			->method('getAppValue')
 			->will($this->returnValueMap([
-				['files_external', 'allow_user_mounting', 'yes', 'yes'],
+				['files_external', 'allow_user_mounting', 'no', 'yes'],
 				['files_external', 'user_mounting_backends', '', 'identifier:\User\Mount\Allowed,identifier_alias']
 			]));
 
