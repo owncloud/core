@@ -206,6 +206,8 @@
 				function (result) {
 					$loading.addClass('hidden');
 					$loading.removeClass('inlineblock');
+					var alreadyShared = false;
+
 					if (result.ocs.meta.statuscode == 100) {
 						var users   = result.ocs.data.exact.users.concat(result.ocs.data.users);
 						var groups  = result.ocs.data.exact.groups.concat(result.ocs.data.groups);
@@ -249,6 +251,9 @@
 								for (j = 0; j < usersLength; j++) {
 									if (users[j].value.shareWith === share.share_with) {
 										users.splice(j, 1);
+										if (trimmedSearch === share.share_with) {
+											alreadyShared = true;
+										}
 										break;
 									}
 								}
@@ -257,6 +262,9 @@
 								for (j = 0; j < groupsLength; j++) {
 									if (groups[j].value.shareWith === share.share_with) {
 										groups.splice(j, 1);
+										if (trimmedSearch === share.share_with) {
+											alreadyShared = true;
+										}
 										break;
 									}
 								}
@@ -265,6 +273,9 @@
 								for (j = 0; j < remotesLength; j++) {
 									if (remotes[j].value.shareWith === share.share_with) {
 										remotes.splice(j, 1);
+										if (trimmedSearch === share.share_with) {
+											alreadyShared = true;
+										}
 										break;
 									}
 								}
@@ -329,6 +340,12 @@
 							var title = t('core', 'No users or groups found for {search}', {search: $('.shareWithField').val()});
 							if (!view.configModel.get('allowGroupSharing')) {
 								title = t('core', 'No users found for {search}', {search: $('.shareWithField').val()});
+							}
+							if (alreadyShared) {
+								title = t('core', 'User or group already shared with.')
+								if (!view.configModel.get('allowGroupSharing')) {
+									title = t('core', 'User already shared with.')
+								}
 							}
 							var suggestStarts = OC.getCapabilities().files_sharing.search_min_length;
 							if (suggestStarts > $('.shareWithField').val().length) {
