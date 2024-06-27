@@ -5444,8 +5444,6 @@ trait WebDav {
 				$authors[] = $author->__toString();
 			}
 		}
-		// reverse the array to get the latest version first
-		\array_reverse($authors);
 		if (!isset($authors[$index - 1])) {
 			Assert::fail(
 				'could not find version with index "' . $index . '" for oc:meta-version-edited-by property in response to user "' . $this->responseUser . '"'
@@ -5468,8 +5466,6 @@ trait WebDav {
 				$displaynames[] = $displayname->__toString();
 			}
 		}
-		// reverse the array to get the latest version first
-		\array_reverse($displaynames);
 		if (!isset($displaynames[$index - 1])) {
 			Assert::fail(
 				'could not find version with index "' . $index . '" for oc:meta-version-edited-by-name property in response to user "' . $this->responseUser . '"'
