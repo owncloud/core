@@ -334,6 +334,7 @@ class TransferOwnership extends Command {
 							}
 						} catch (NotFoundException | NoUserException $e) {
 							$skipped++;
+							\OC::$server->getLogger()->logException($e);
 							$output->writeln("<error>Share with id {$share->getId()} and type {$share->getShareType()} points at deleted file or share that is no longer accessible, skipping</error>");
 							$progress->advance(1);
 						}
@@ -359,6 +360,7 @@ class TransferOwnership extends Command {
 						try {
 							$share->getNode()->getId();  // force loading the fileinfo
 						} catch (NotFoundException | NoUserException $e) {
+							\OC::$server->getLogger()->logException($e);
 							$output->writeln("<error>Share with id {$share->getId()} and type {$share->getShareType()} points at deleted file or share that is no longer accessible, skipping</error>");
 							return false;
 						}
@@ -442,6 +444,7 @@ class TransferOwnership extends Command {
 				}
 				$this->shareManager->transferShare($share, $this->sourceUser, $this->destinationUser, $this->finalTarget);
 			} catch (NotFoundException | NoUserException $e) {
+				\OC::$server->getLogger()->logException($e);
 				$output->writeln("error>Share with id {$share->getId()} and type {$share->getShareType()} points at deleted file or share that is no longer accessible, skipping</error>");
 			} catch (\Exception $e) {
 				$output->writeln('<error>Could not restore share with id ' . $share->getId() . ':' . $e->getTraceAsString() . '</error>');
