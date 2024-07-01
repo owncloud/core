@@ -106,6 +106,7 @@ OC.L10N.register(
     "So-so password" : "Svo-svo lykilorð",
     "Good password" : "Gott lykilorð",
     "Strong password" : "Sterkt lykilorð",
+    "Passwords do not match" : "Lykilorðin stemma ekki",
     "Groups" : "Hópar",
     "Unable to delete {objName}" : "Get ekki eytt {objName}",
     "Error creating group: {message}" : "Villa við að búa til hóp: {message}",
