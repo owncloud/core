@@ -1884,11 +1884,12 @@ $CONFIG = [
 'loginPolicy.groupLoginPolicy.forbidMap' => [],
 
 /**
- * Enable Sending of Telemetry Reports
- * Telemetry data is a subset of the config report as produced by e.g. the command `occ configreport:generate`.
+ * Enable Sending Telemetry Reports
+ * Telemetry data is a subset of the config report as produced by the command `occ configreport:generate`.
  *
- * If set to true, a daily telemetry report is sent to https://telemetry.owncloud.com/oc10-telemetry
- * If set to false, no telemetry reports are sent.
+ * * If set to true, a daily telemetry report is sent to https://telemetry.owncloud.com/oc10-telemetry
+ * * If set to false, no telemetry reports are sent.
+ * 
  * Default: true
  */
 'telemetry.enabled' => true,
