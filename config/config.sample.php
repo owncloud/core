@@ -1889,7 +1889,7 @@ $CONFIG = [
  *
  * * If set to true, a daily telemetry report is sent to https://telemetry.owncloud.com/oc10-telemetry
  * * If set to false, no telemetry reports are sent.
- * 
+ *
  * Default: true
  */
 'telemetry.enabled' => true,
