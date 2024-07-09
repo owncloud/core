@@ -1888,7 +1888,7 @@ $CONFIG = [
  * Telemetry data is a subset of the config report as produced by the command `occ configreport:generate`.
  *
  * * If set to true and an enterprise license key is installed, a daily telemetry report is sent to https://telemetry.owncloud.com/oc10-telemetry
- * * If set to false, no telemetry reports are sent
+ * * If set to false or the configreport app is disabled, no telemetry reports are sent
  *
  * Default: true
  * For community servers (without a license key) telemetry reports are never sent.
