@@ -1,0 +1,7 @@
+Bugfix: Wrong Logic When 'allow_user_mounting' is Initially Undefined
+
+On a freshly installed system, the checkbox '[ ] Allow users to mount external storage' is not set, implying 'no'.
+The code handled this as 'yes' until the admin once selected and unselected the checkbox.
+
+https://github.com/owncloud/core/pull/41272
+https://github.com/owncloud/core/pull/41273
