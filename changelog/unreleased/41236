@@ -1,0 +1,5 @@
+Bugfix: Allow images to be tagged as favorites in index.php-less URLs
+
+There was a bug preventing images to be tagged as favorites. This is fixed now.
+
+https://github.com/owncloud/core/pull/41236
