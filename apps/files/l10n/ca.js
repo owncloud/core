@@ -68,6 +68,7 @@ OC.L10N.register(
     "%2$s restored %1$s" : "%2$s ha restaurat %1$s",
     "Upload (max. %s)" : "Pujada (màx. %s)",
     "Settings" : "Arranjament",
+    "Show hidden files" : "Mostrar fitxers ocults",
     "WebDAV" : "WebDAV",
     "No files in here" : "No hi ha arxius",
     "Upload some content or sync with your devices!" : "Pugi continguts o sincronitzi els seus dispositius.",
