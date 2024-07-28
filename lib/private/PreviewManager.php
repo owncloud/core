@@ -238,7 +238,7 @@ class PreviewManager implements IPreview {
 	 *  - OC\Preview\BMP
 	 *  - OC\Preview\Heic
 	 *  - OC\Preview\XBitmap
-   	 *  - OC\Preview\SGI
+	 *  - OC\Preview\SGI
 	 *  - OC\Preview\MarkDown
 	 *  - OC\Preview\MP3
 	 *  - OC\Preview\TXT
