@@ -1,0 +1,11 @@
+Enhancement: Expiration date limits for re-share of a received share
+
+With this change, if a user re-shares an existent share with an expiration date,
+the expiration date of the target share will be taken for the new share,
+if the user doesn't provide an expiration date.
+
+If the expiration date is provided and exceeds the date of the target share,
+an error will be thrown.
+
+https://github.com/owncloud/core/pull/39452
+https://github.com/owncloud/core/issues/37013
