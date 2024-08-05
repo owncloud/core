@@ -1,6 +1,6 @@
 # Table of Contents
 
-* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.15.0](#changelog-for-owncloud-core-10150-2024-06-18)
 * [Changelog for 10.14.0](#changelog-for-owncloud-core-10140-2024-02-19)
 * [Changelog for 10.13.4](#changelog-for-owncloud-core-10134-2023-12-13)
 * [Changelog for 10.13.3](#changelog-for-owncloud-core-10133-2023-11-17)
@@ -21,12 +21,12 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
-# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+# Changelog for ownCloud Core [10.15.0] (2024-06-18)
 
-The following sections list the changes in ownCloud core unreleased relevant to
+The following sections list the changes in ownCloud core 10.15.0 relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.14.0...master
+[10.15.0]: https://github.com/owncloud/core/compare/v10.14.0...v10.15.0
 
 ## Summary
 
@@ -35,9 +35,12 @@ ownCloud admins and users.
 * Bugfix - User can only change their own external storage configuration: [#41225](https://github.com/owncloud/core/pull/41225)
 * Bugfix - Hardening SVG processing: [#41234](https://github.com/owncloud/core/pull/41234)
 * Bugfix - Handle no longer existing user in preview cleanup: [#41247](https://github.com/owncloud/core/pull/41247)
+* Bugfix - Disallow HTTP API requests for user external storages in case disabled: [#41250](https://github.com/owncloud/core/pull/41250)
 * Bugfix - Handle short classes in Autoloader: [#41252](https://github.com/owncloud/core/pull/41252)
 * Bugfix - No update check if not connected to the internet: [#41262](https://github.com/owncloud/core/pull/41262)
 * Bugfix - Default value of preview_max_dimensions is now 6016x6016: [#41263](https://github.com/owncloud/core/pull/41263)
+* Bugfix - AllConfig::getUserKeys to return string[] only: [#41270](https://github.com/owncloud/core/pull/41270)
+* Bugfix - Wrong Logic When 'allow_user_mounting' is Initially Undefined: [#41272](https://github.com/owncloud/core/pull/41272)
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
 ## Details
@@ -70,6 +73,13 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41247
 
+* Bugfix - Disallow HTTP API requests for user external storages in case disabled: [#41250](https://github.com/owncloud/core/pull/41250)
+
+   API requests for a user's external storages now correctly fail when user mounted
+   storages are disabled.
+
+   https://github.com/owncloud/core/pull/41250
+
 * Bugfix - Handle short classes in Autoloader: [#41252](https://github.com/owncloud/core/pull/41252)
 
    The Autoloader findClass method was emitting a PHP notice "undefined offset" for
@@ -92,6 +102,21 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41263
 
+* Bugfix - AllConfig::getUserKeys to return string[] only: [#41270](https://github.com/owncloud/core/pull/41270)
+
+   The array returned by getUserKeys() is now always an array of strings.
+
+   https://github.com/owncloud/core/pull/41270
+
+* Bugfix - Wrong Logic When 'allow_user_mounting' is Initially Undefined: [#41272](https://github.com/owncloud/core/pull/41272)
+
+   On a freshly installed system, the checkbox '[ ] Allow users to mount external
+   storage' is not set, implying 'no'. The code handled this as 'yes' until the
+   admin once selected and unselected the checkbox.
+
+   https://github.com/owncloud/core/pull/41272
+   https://github.com/owncloud/core/pull/41273
+
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
    The following have been updated: - deepdiver/zipstreamer (2.0.2 to 2.0.3) -
@@ -99,7 +124,7 @@ ownCloud admins and users.
    v0.355.0) - google/auth (v1.35.0 to v1.37.1) - monolog/monolog (2.9.2 to 2.9.3)
    - paragonie/constant_time_encoding (v2.6.3 to v2.7.0) - pear/archive_tar (1.4.14
    to 1.15.0) - pear/pear-core-minimal (v1.10.14 to v1.10.15) - phpseclib/phpseclib
-   (3.0.35 to 3.0.38) - psr/http-factory (1.0.2 to 1.1.0) - sabre/xml (2.2.6 to
+   (3.0.35 to 3.0.39) - psr/http-factory (1.0.2 to 1.1.0) - sabre/xml (2.2.6 to
    2.2.7) - symfony/event-dispatcher-contracts (v2.5.2 to v2.5.3) -
    symfony/service-contracts (v2.5.2 to v2.5.3) - symfony/translation-contracts
    (v2.5.2 to v2.5.3) - symfony/console (v5.4.35 to v5.4.40) -
@@ -117,6 +142,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41255
    https://github.com/owncloud/core/pull/41259
    https://github.com/owncloud/core/pull/41267
+   https://github.com/owncloud/core/pull/41276
 
 # Changelog for ownCloud Core [10.14.0] (2024-02-19)
 
