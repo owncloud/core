@@ -5,6 +5,7 @@ The following have been updated:
 - sabre/event (5.1.4 to 5.1.6)
 - sabre/http (5.1.10 to 5.1.11)
 - sabre/vobject (4.5.4 to 4.5.5)
+- sabre/xml (2.2.7 to 2.2.9)
 
 https://github.com/owncloud/core/pull/41287
 https://github.com/owncloud/core/pull/41297

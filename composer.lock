@@ -3723,16 +3723,16 @@
         },
         {
             "name": "sabre/xml",
-            "version": "2.2.7",
+            "version": "2.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "f1d53d55976bbd4cf3e640dda6ebc31120c71a4e"
+                "reference": "88288712d45f694be3679a0db7dfb3770f08d4f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/f1d53d55976bbd4cf3e640dda6ebc31120c71a4e",
-                "reference": "f1d53d55976bbd4cf3e640dda6ebc31120c71a4e",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/88288712d45f694be3679a0db7dfb3770f08d4f0",
+                "reference": "88288712d45f694be3679a0db7dfb3770f08d4f0",
                 "shasum": ""
             },
             "require": {
@@ -3746,7 +3746,7 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "~2.17.1",
                 "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0"
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6"
             },
             "type": "library",
             "autoload": {
@@ -3788,7 +3788,7 @@
                 "issues": "https://github.com/sabre-io/xml/issues",
                 "source": "https://github.com/fruux/sabre-xml"
             },
-            "time": "2024-04-18T10:15:43+00:00"
+            "time": "2024-07-26T12:32:40+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
