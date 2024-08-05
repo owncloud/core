@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2013 Bart Visscher <bartv@thisnet.nl>
+ *
+ * @author Bart Visscher <bartv@thisnet.nl>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
@@ -17,22 +19,30 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package Test
  */
 class ConfigTest extends TestCase {
-	public const TESTCONTENT = '<?php $CONFIG=array("foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
+	public const TESTCONTENT = '<?php $CONFIG=array("no"=>"whitespace", "foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
 
-	/** @var array */
-	private $initialConfig = ['foo' => 'bar', 'beers' => ['Appenzeller', 'Guinness', 'Kölsch'], 'alcohol_free' => false];
-	/** @var string */
+	/**
+	 * @var array
+	 */
+	private $initialConfig = ['no' => 'whitespace', 'foo' => 'bar', 'beers' => ['Appenzeller', 'Guinness', 'Kölsch'], 'alcohol_free' => false];
+	/**
+	 * @var string
+	 */
 	private $configFile;
-	/** @var \OC\Config */
+	/**
+	 * @var \OC\Config
+	 */
 	private $config;
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $randomTmpDir;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->randomTmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
-		$this->configFile = $this->randomTmpDir.'testconfig.php';
+		$this->configFile = $this->randomTmpDir . 'testconfig.php';
 		\file_put_contents($this->configFile, self::TESTCONTENT);
 		$this->config = new \OC\Config($this->randomTmpDir, 'testconfig.php');
 	}
@@ -43,7 +53,7 @@ class ConfigTest extends TestCase {
 	}
 
 	public function testGetKeys() {
-		$expectedConfig = ['foo', 'beers', 'alcohol_free'];
+		$expectedConfig = ['no', 'foo', 'beers', 'alcohol_free'];
 		$this->assertSame($expectedConfig, $this->config->getKeys());
 	}
 
@@ -69,11 +79,13 @@ class ConfigTest extends TestCase {
 
 	public function testSetValue() {
 		$this->config->setValue('foo', 'moo');
+		$this->config->setValue('no', ' whitespace ');
 		$expectedConfig = $this->initialConfig;
 		$expectedConfig['foo'] = 'moo';
+		$expectedConfig['no'] = 'whitespace';
 		$this->checkConfigMatchesExpected($expectedConfig);
 
-		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
 
@@ -110,7 +122,7 @@ class ConfigTest extends TestCase {
 		$this->assertArrayHasKey('update', $calledAfterSetValue[1]);
 		$this->assertArrayHasKey('oldvalue', $calledAfterSetValue[1]);
 
-		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n  'bar' => 'red',\n  'apps' => \n " .
 			" array (\n    0 => 'files',\n    1 => 'gallery',\n  ),\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
@@ -121,10 +133,12 @@ class ConfigTest extends TestCase {
 
 		// Changing configs to existing values and deleting nonexistent configs
 		// should not rewrite the config.php
-		$this->config->setValues([
+		$this->config->setValues(
+			[
 			'foo'			=> 'bar',
 			'not_exists'	=> null,
-		]);
+			]
+		);
 
 		$this->checkConfigMatchesExpected($this->initialConfig);
 		$this->assertStringEqualsFile($this->configFile, self::TESTCONTENT);
@@ -145,10 +159,12 @@ class ConfigTest extends TestCase {
 				$calledAfterUpdate[] = $event;
 			}
 		);
-		$this->config->setValues([
+		$this->config->setValues(
+			[
 			'foo'			=> 'moo',
 			'alcohol_free'	=> null,
-		]);
+			]
+		);
 		$expectedConfig = $this->initialConfig;
 		$expectedConfig['foo'] = 'moo';
 		unset($expectedConfig['alcohol_free']);
@@ -170,7 +186,7 @@ class ConfigTest extends TestCase {
 		$this->assertArrayHasKey('oldvalue', $calledAfterUpdate[1]);
 		$this->assertEquals('bar', $calledAfterUpdate[1]->getArgument('oldvalue'));
 
-		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
 
@@ -191,9 +207,11 @@ class ConfigTest extends TestCase {
 			}
 		);
 
-		$this->config->setValues([
+		$this->config->setValues(
+			[
 			'foo' => null
-		]);
+			]
+		);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDelete[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterDelete[1]);
 		$this->assertEquals('config.beforedeletevalue', $calledBeforeDelete[0]);
@@ -237,7 +255,7 @@ class ConfigTest extends TestCase {
 		$this->assertArrayHasKey('key', $calledBeforeDeleteValue[1]);
 		$this->assertArrayHasKey('key', $calledAfterDeleteValue[1]);
 
-		$expected = "<?php\n\$CONFIG = array (\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
 	}
@@ -245,7 +263,7 @@ class ConfigTest extends TestCase {
 	public function testConfigMerge() {
 		// Create additional config
 		$additionalConfig = '<?php $CONFIG=array("php53"=>"totallyOutdated");';
-		$additionalConfigPath = $this->randomTmpDir.'additionalConfig.testconfig.php';
+		$additionalConfigPath = $this->randomTmpDir . 'additionalConfig.testconfig.php';
 		\file_put_contents($additionalConfigPath, $additionalConfig);
 
 		// Reinstantiate the config to force a read-in of the additional configs
@@ -257,7 +275,7 @@ class ConfigTest extends TestCase {
 
 		// Write a new value to the config
 		$this->config->setValue('CoolWebsites', ['demo.owncloud.com', 'owncloud.com', 'owncloud.com']);
-		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'bar',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+		$expected = "<?php\n\$CONFIG = array (\n  'no' => 'whitespace',\n  'foo' => 'bar',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n  'php53' => 'totallyOutdated',\n  'CoolWebsites' => \n  array (\n  " .
 			"  0 => 'demo.owncloud.com',\n    1 => 'owncloud.com',\n    2 => 'owncloud.com',\n  ),\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
