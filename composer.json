@@ -67,7 +67,7 @@
         "composer/semver": "^3.3",
         "deepdiver/zipstreamer": "^2.0",
         "dg/composer-cleaner": "^2.2",
-        "doctrine/dbal": "^2.13",
+        "doctrine/dbal": "^3.8",
         "firebase/php-jwt": "^6.8",
         "google/apiclient": "^2.15",
         "guzzlehttp/guzzle": "^7.7",
