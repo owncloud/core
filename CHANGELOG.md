@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
 * [Changelog for 10.15.0](#changelog-for-owncloud-core-10150-2024-06-18)
 * [Changelog for 10.14.0](#changelog-for-owncloud-core-10140-2024-02-19)
 * [Changelog for 10.13.4](#changelog-for-owncloud-core-10134-2023-12-13)
@@ -21,6 +22,25 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v10.15.0...master
+
+## Summary
+
+* Change - Update PHP dependencies: [#41297](https://github.com/owncloud/core/pull/41297)
+
+## Details
+
+* Change - Update PHP dependencies: [#41297](https://github.com/owncloud/core/pull/41297)
+
+   The following have been updated: - guzzlehttp/guzzle (7.8.1 to 7.9.2)
+
+   https://github.com/owncloud/core/pull/41297
+
 # Changelog for ownCloud Core [10.15.0] (2024-06-18)
 
 The following sections list the changes in ownCloud core 10.15.0 relevant to
