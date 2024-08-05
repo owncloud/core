@@ -3868,16 +3868,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.4.40",
+            "version": "v5.4.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "aa73115c0c24220b523625bfcfa655d7d73662dd"
+                "reference": "cef62396a0477e94fc52e87a17c6e5c32e226b7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/aa73115c0c24220b523625bfcfa655d7d73662dd",
-                "reference": "aa73115c0c24220b523625bfcfa655d7d73662dd",
+                "url": "https://api.github.com/repos/symfony/console/zipball/cef62396a0477e94fc52e87a17c6e5c32e226b7f",
+                "reference": "cef62396a0477e94fc52e87a17c6e5c32e226b7f",
                 "shasum": ""
             },
             "require": {
@@ -3947,7 +3947,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v5.4.40"
+                "source": "https://github.com/symfony/console/tree/v5.4.42"
             },
             "funding": [
                 {
@@ -3963,7 +3963,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-07-26T12:21:55+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4198,16 +4198,16 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b"
+                "reference": "77fa7995ac1b21ab60769b7323d600a991a90433"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
-                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/77fa7995ac1b21ab60769b7323d600a991a90433",
+                "reference": "77fa7995ac1b21ab60769b7323d600a991a90433",
                 "shasum": ""
             },
             "require": {
@@ -4258,7 +4258,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -4274,7 +4274,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-29T20:11:03+00:00"
+            "time": "2024-05-31T15:07:36+00:00"
         },
         {
             "name": "symfony/process",
@@ -4340,16 +4340,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v5.4.40",
+            "version": "v5.4.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "6df1dd8b306649303267a760699cf04cf39b1f7b"
+                "reference": "f8dd6f80c96aeec9b13fc13757842342e05c4878"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/6df1dd8b306649303267a760699cf04cf39b1f7b",
-                "reference": "6df1dd8b306649303267a760699cf04cf39b1f7b",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/f8dd6f80c96aeec9b13fc13757842342e05c4878",
+                "reference": "f8dd6f80c96aeec9b13fc13757842342e05c4878",
                 "shasum": ""
             },
             "require": {
@@ -4410,7 +4410,7 @@
                 "url"
             ],
             "support": {
-                "source": "https://github.com/symfony/routing/tree/v5.4.40"
+                "source": "https://github.com/symfony/routing/tree/v5.4.42"
             },
             "funding": [
                 {
@@ -4426,7 +4426,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-07-09T20:57:15+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -4513,16 +4513,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.4.40",
+            "version": "v5.4.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "142877285aa974a6f7685e292ab5ba9aae86b143"
+                "reference": "909cec913edea162a3b2836788228ad45fcab337"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/142877285aa974a6f7685e292ab5ba9aae86b143",
-                "reference": "142877285aa974a6f7685e292ab5ba9aae86b143",
+                "url": "https://api.github.com/repos/symfony/string/zipball/909cec913edea162a3b2836788228ad45fcab337",
+                "reference": "909cec913edea162a3b2836788228ad45fcab337",
                 "shasum": ""
             },
             "require": {
@@ -4579,7 +4579,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v5.4.40"
+                "source": "https://github.com/symfony/string/tree/v5.4.42"
             },
             "funding": [
                 {
@@ -4595,20 +4595,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-07-20T18:38:32+00:00"
         },
         {
             "name": "symfony/translation",
-            "version": "v5.4.40",
+            "version": "v5.4.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "bb51d7f183756d1ac03f50ea47dc5726518cc7e8"
+                "reference": "1d702caccb9f091b738696185f778b1bfef7b5b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/bb51d7f183756d1ac03f50ea47dc5726518cc7e8",
-                "reference": "bb51d7f183756d1ac03f50ea47dc5726518cc7e8",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/1d702caccb9f091b738696185f778b1bfef7b5b2",
+                "reference": "1d702caccb9f091b738696185f778b1bfef7b5b2",
                 "shasum": ""
             },
             "require": {
@@ -4676,7 +4676,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v5.4.40"
+                "source": "https://github.com/symfony/translation/tree/v5.4.42"
             },
             "funding": [
                 {
@@ -4692,7 +4692,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-07-26T12:14:19+00:00"
         },
         {
             "name": "symfony/translation-contracts",
