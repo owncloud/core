@@ -1056,7 +1056,9 @@ $CONFIG = [
  *  - OC\Preview\WEBP
  *  - OC\Preview\GIF
  *  - OC\Preview\BMP
+ *  - OC\Preview\Heic
  *  - OC\Preview\XBitmap
+ *  - OC\Preview\SGI
  *  - OC\Preview\MarkDown
  *  - OC\Preview\MP3
  *  - OC\Preview\TXT
@@ -1064,18 +1066,17 @@ $CONFIG = [
  * See the Previews Configuration documentation for more details.
  */
 'enabledPreviewProviders' => [
-	'OC\Preview\PDF',
-	'OC\Preview\SGI',
-	'OC\Preview\Heic',
 	'OC\Preview\PNG',
 	'OC\Preview\JPEG',
 	'OC\Preview\WEBP',
 	'OC\Preview\GIF',
 	'OC\Preview\BMP',
+	'OC\Preview\Heic',
 	'OC\Preview\XBitmap',
+	'OC\Preview\SGI',
+	'OC\Preview\MarkDown',
 	'OC\Preview\MP3',
-	'OC\Preview\TXT',
-	'OC\Preview\MarkDown'
+	'OC\Preview\TXT'
   ],
 
 /**
