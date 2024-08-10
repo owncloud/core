@@ -22,6 +22,7 @@ OC.L10N.register(
     "the item was removed" : "die item is verwyder",
     "sharing is disabled" : "deling is gedeaktiveer",
     "Download" : "Laai Af",
-    "Download %s" : "Laai %s Af"
+    "Download %s" : "Laai %s Af",
+    "Nothing to configure." : "niks om te  verander nie"
 },
 "nplurals=2; plural=(n != 1);");

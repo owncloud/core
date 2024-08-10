@@ -162,6 +162,7 @@
     "An error occurred. Please try again" : "’n Fout het voorgekom. Probeer weer",
     "User" : "Gebruiker",
     "Group" : "Groep",
+    "Guest" : "gaste",
     "User and Groups" : "Gebruiker en Groepe",
     "Public Links" : "Openbare Skakels",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Deel met mense op ander ownClouds deur die sintaks gebruikernaam@voorbeeld.com/owncloud te gebruik",
