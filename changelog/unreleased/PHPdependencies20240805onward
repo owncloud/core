@@ -2,6 +2,7 @@ Change: Update PHP dependencies
 
 The following have been updated:
 - guzzlehttp/guzzle (7.8.1 to 7.9.2)
+- phpseclib/phpseclib (3.0.39 to 3.0.41)
 - sabre/event (5.1.4 to 5.1.6)
 - sabre/http (5.1.10 to 5.1.11)
 - sabre/vobject (4.5.4 to 4.5.5)
@@ -14,3 +15,4 @@ The following have been updated:
 
 https://github.com/owncloud/core/pull/41287
 https://github.com/owncloud/core/pull/41297
+https://github.com/owncloud/core/pull/41306
