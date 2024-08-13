@@ -38,14 +38,15 @@ ownCloud admins and users.
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 
    The following have been updated: - guzzlehttp/guzzle (7.8.1 to 7.9.2) -
-   sabre/event (5.1.4 to 5.1.6) - sabre/http (5.1.10 to 5.1.11) - sabre/vobject
-   (4.5.4 to 4.5.5) - sabre/xml (2.2.7 to 2.2.9) - symfony/console (5.4.40 to
-   5.4.42) - symfony/polyfill-php80 (1.29.0 to 1.30.0) - symfony/routing (5.4.40 to
-   5.4.42) - symfony/string (5.4.40 to 5.4.42) - symfony/translation (5.4.40 to
-   5.4.42)
+   phpseclib/phpseclib (3.0.39 to 3.0.41) - sabre/event (5.1.4 to 5.1.6) -
+   sabre/http (5.1.10 to 5.1.11) - sabre/vobject (4.5.4 to 4.5.5) - sabre/xml
+   (2.2.7 to 2.2.9) - symfony/console (5.4.40 to 5.4.42) - symfony/polyfill-php80
+   (1.29.0 to 1.30.0) - symfony/routing (5.4.40 to 5.4.42) - symfony/string (5.4.40
+   to 5.4.42) - symfony/translation (5.4.40 to 5.4.42)
 
    https://github.com/owncloud/core/pull/41287
    https://github.com/owncloud/core/pull/41297
+   https://github.com/owncloud/core/pull/41306
 
 # Changelog for ownCloud Core [10.15.0] (2024-06-18)
 
