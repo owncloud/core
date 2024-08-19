@@ -1,21 +1,21 @@
 <?php
-	script('updatenotification', 'admin');
+script('updatenotification', 'admin');
 
-	/** @var array $_ */
-	/** @var bool $isNewVersionAvailable */
-	$isNewVersionAvailable = $_['isNewVersionAvailable'];
-	/** @var string $newVersionString */
-	$newVersionString = $_['newVersionString'];
-	/** @var string $lastCheckedDate */
-	$lastCheckedDate = $_['lastChecked'];
-	/** @var array $channels */
-	$channels = $_['channels'];
-	/** @var string $currentChannel */
-	$currentChannel = $_['currentChannel'];
-	/** @var string $changeLogUrl */
-	$changeLogUrl = $_['changeLogUrl'];
-	
-	?>
+/** @var array $_ */
+/** @var bool $isNewVersionAvailable */
+$isNewVersionAvailable = $_['isNewVersionAvailable'];
+/** @var string $newVersionString */
+$newVersionString = $_['newVersionString'];
+/** @var string $lastCheckedDate */
+$lastCheckedDate = $_['lastChecked'];
+/** @var array $channels */
+$channels = $_['channels'];
+/** @var string $currentChannel */
+$currentChannel = $_['currentChannel'];
+/** @var string $changeLogUrl */
+$changeLogUrl = $_['changeLogUrl'];
+
+?>
 <form id="oca_updatenotification_section" class="section">
 	<h2 id="updater" class="app-name"><?php p($l->t('Updater')); ?></h2>
 

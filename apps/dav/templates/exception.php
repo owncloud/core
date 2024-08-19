@@ -1,9 +1,9 @@
 <?php
-	/** @var array $_ */
-	/** @var \OCP\IL10N $l */
+/** @var array $_ */
+/** @var \OCP\IL10N $l */
 
-	style('core', ['styles', 'header']);
-	?>
+style('core', ['styles', 'header']);
+?>
 <span class="error error-wide">
 	<h2><strong><?php p($_['title']) ?></strong></h2>
 	<?php if (isset($_['hint']) && $_['hint']): ?>

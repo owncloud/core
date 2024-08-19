@@ -920,10 +920,10 @@ class EncryptionTest extends Storage {
 			->method('isEnabled')
 			->willReturn($encryptionEnabled);
 		// FIXME can not overwrite the return after definition
-//		$this->mount
-//			->method('getOption')
-//			->withConsecutive('encrypt', true)
-//			->willReturn($mountPointEncryptionEnabled);
+		//		$this->mount
+		//			->method('getOption')
+		//			->withConsecutive('encrypt', true)
+		//			->willReturn($mountPointEncryptionEnabled);
 		global $mockedMountPointEncryptionEnabled;
 		$mockedMountPointEncryptionEnabled = $mountPointEncryptionEnabled;
 

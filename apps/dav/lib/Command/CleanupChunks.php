@@ -98,7 +98,7 @@ class CleanupChunks extends Command {
 				return;
 			}
 
-			$output->writeln(sprintf("Cleaning %d chunks for %s", \count($filteredUploads), $user->getUID()));
+			$output->writeln(\sprintf("Cleaning %d chunks for %s", \count($filteredUploads), $user->getUID()));
 
 			$p = new ProgressBar($output);
 			$p->start(\count($filteredUploads));
