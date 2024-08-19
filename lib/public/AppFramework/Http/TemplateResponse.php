@@ -149,6 +149,10 @@ class TemplateResponse extends Response {
 			$template->assign($key, $value);
 		}
 
+		$template->assign('continue_text', "Continue");
+		$template->assign('base_url', \OC::$server->getURLGenerator()->getAbsoluteURL("/"));
+
+
 		return $template->fetchPage();
 	}
 }
