@@ -1651,7 +1651,7 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": [DEFAULT_PHP_VERSION],
-        "databases": ["mariadb:10.2"],
+        "databases": ["postgres:9.2"],
         "federatedPhpVersion": DEFAULT_PHP_VERSION,
         "federatedServerNeeded": False,
         "federatedDb": "",

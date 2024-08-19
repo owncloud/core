@@ -212,7 +212,7 @@ class DefaultShareProviderTest extends TestCase {
 				['shareOwner', $shareOwnerFolder],
 			]));
 
-		$share = $this->provider->getShareById($id);
+		$share = $this->provider->getShareById("$id");
 
 		$this->assertEquals($id, $share->getId());
 		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
@@ -246,7 +246,7 @@ class DefaultShareProviderTest extends TestCase {
 
 		$this->rootFolder->expects($this->never())->method('getUserFolder');
 
-		$share = $this->provider->getShareById($id);
+		$share = $this->provider->getShareById("$id");
 
 		// We do not fetch the node so the rootfolder is never called.
 
@@ -289,7 +289,7 @@ class DefaultShareProviderTest extends TestCase {
 			->with('shareOwner')
 			->willReturn($shareOwnerFolder);
 
-		$share = $this->provider->getShareById($id);
+		$share = $this->provider->getShareById("$id");
 
 		// We fetch the node so the root folder is eventually called
 
@@ -334,7 +334,7 @@ class DefaultShareProviderTest extends TestCase {
 						['shareOwner', $shareOwnerFolder],
 				]));
 
-		$share = $this->provider->getShareById($id);
+		$share = $this->provider->getShareById("$id");
 
 		$this->assertEquals($id, $share->getId());
 		$this->assertEquals(Share::SHARE_TYPE_GROUP, $share->getShareType());
@@ -400,7 +400,7 @@ class DefaultShareProviderTest extends TestCase {
 		]));
 		$this->groupManager->method('get')->with('group0')->willReturn($group0);
 
-		$share = $this->provider->getShareById($id, 'user1');
+		$share = $this->provider->getShareById("$id", 'user1');
 
 		$this->assertEquals($id, $share->getId());
 		$this->assertEquals(Share::SHARE_TYPE_GROUP, $share->getShareType());
@@ -446,7 +446,7 @@ class DefaultShareProviderTest extends TestCase {
 						['shareOwner', $shareOwnerFolder],
 				]));
 
-		$share = $this->provider->getShareById($id);
+		$share = $this->provider->getShareById("$id");
 
 		$this->assertEquals($id, $share->getId());
 		$this->assertEquals(Share::SHARE_TYPE_LINK, $share->getShareType());
@@ -523,7 +523,7 @@ class DefaultShareProviderTest extends TestCase {
 
 		$this->rootFolder->expects($this->never())->method($this->anything());
 
-		$share = $this->provider->getShareById($id);
+		$share = $this->provider->getShareById("$id");
 		$this->provider->delete($share);
 
 		$qb = $this->dbConn->getQueryBuilder();
@@ -860,7 +860,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('password', $share2->getPassword());
 		$this->assertSame('token', $share2->getToken());
 		$this->assertSame('some_name', $share2->getName());
-		$this->assertEquals($expireDate->format(\DateTime::ISO8601), $share2->getExpirationDate()->format(\DateTime::ISO8601));
+		$this->assertEquals($expireDate->format(\DateTime::ATOM), $share2->getExpirationDate()->format(\DateTime::ATOM));
 
 		$share->setName(null);
 		$share2 = $this->provider->create($share);

@@ -559,7 +559,7 @@ class DefaultShareProvider implements IShareProvider {
 			// and, depending on the database, the query may throw an exception
 			// with a message like "invalid input syntax for type integer"
 			// So throw ShareNotFound now.
-			throw new ShareNotFound();
+			throw new ShareNotFound("invalid id: $id");
 		}
 		$qb = $this->dbConn->getQueryBuilder();
 
