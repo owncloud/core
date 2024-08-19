@@ -1,0 +1,9 @@
+Bugfix: Better output if dataDirectory is invalid
+
+If the server data directory is invalid, and the problem is being reported by
+an occ CLI command, then the value of the data directory setting is reported
+in the command output.
+
+This will assist the user of the command to analyse the problem.
+
+https://github.com/owncloud/core/pull/40482
