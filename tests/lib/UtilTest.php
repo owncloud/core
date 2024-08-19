@@ -421,13 +421,27 @@ class UtilTest extends \Test\TestCase {
 		\OCP\Files::rmdirr($dataDir);
 
 		$dataDir = \OCP\Files::tmpFolder();
+		$expectedDataDirMessage = "Value of Data directory was: '$dataDir'\n";
 		// no touch
 		$errors = \OC_Util::checkDataDirectoryValidity($dataDir);
 		$this->assertNotEmpty($errors);
+		$this->assertArrayHasKey(0, $errors);
+		$this->assertArrayHasKey("error", $errors[0]);
+		$this->assertArrayHasKey("hint", $errors[0]);
+		$this->assertSame('Your Data directory is invalid', $errors[0]["error"]);
+		$this->assertSame('Please check that the data directory contains a file ".ocdata" in its root.', $errors[0]["hint"]);
 		\OCP\Files::rmdirr($dataDir);
 
-		$errors = \OC_Util::checkDataDirectoryValidity('relative/path');
+		$relativeDataDir = 'relative/path';
+		$expectedDataDirMessage .= "Value of Data directory was: '$relativeDataDir'\n";
+		$this->expectOutputString($expectedDataDirMessage);
+		$errors = \OC_Util::checkDataDirectoryValidity($relativeDataDir);
 		$this->assertNotEmpty($errors);
+		$this->assertArrayHasKey(0, $errors);
+		$this->assertArrayHasKey("error", $errors[0]);
+		$this->assertArrayHasKey("hint", $errors[0]);
+		$this->assertSame('Your Data directory must be an absolute path', $errors[0]["error"]);
+		$this->assertSame('Check the value of "datadirectory" in your configuration', $errors[0]["hint"]);
 	}
 
 	/**
