@@ -3,6 +3,7 @@
 namespace Test\Traits;
 
 use Closure;
+use OC\Diagnostics\Query;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertGreaterThan;
 use function PHPUnit\Framework\assertLessThan;
@@ -33,7 +34,7 @@ trait AssertQueryCountTrait {
 		}
 
 		self::ensureTacking();
-		assertEquals($count, self::getQueryCount());
+		assertEquals($count, self::getQueryCount(), self::buildAssertMessage());
 
 		if ($closure) {
 			self::flushQueryLog();
@@ -48,7 +49,7 @@ trait AssertQueryCountTrait {
 		}
 
 		self::ensureTacking();
-		assertLessThan($count, self::getQueryCount());
+		assertLessThan($count, self::getQueryCount(), self::buildAssertMessage());
 
 		if ($closure) {
 			self::flushQueryLog();
@@ -63,7 +64,7 @@ trait AssertQueryCountTrait {
 		}
 
 		self::ensureTacking();
-		assertGreaterThan($count, self::getQueryCount());
+		assertGreaterThan($count, self::getQueryCount(), self::buildAssertMessage());
 
 		if ($closure) {
 			self::flushQueryLog();
@@ -80,6 +81,11 @@ trait AssertQueryCountTrait {
 		return \OC::$server->getQueryLogger()->getQueries();
 	}
 
+	public static function getQueriesExecutedHumanReadable(): array {
+		$queries = self::getQueriesExecuted();
+		return array_map(static fn (Query $q) => $q->getFullSql(), $queries);
+	}
+
 	public static function getQueryCount(): int {
 		return \count(self::getQueriesExecuted());
 	}
@@ -90,5 +96,9 @@ trait AssertQueryCountTrait {
 
 	private static function ensureTacking(): void {
 		assertTrue(self::$trackingStarted, "SQl query tracking not enabled.");
+	}
+
+	private static function buildAssertMessage(): string {
+		return "Recorded queries: " . PHP_EOL . implode(PHP_EOL, self::getQueriesExecutedHumanReadable());
 	}
 }

@@ -76,6 +76,23 @@ class Query implements IQuery, \JsonSerializable {
 		return $this->end - $this->start;
 	}
 
+	public function getFullSql(): string {
+		$s = preg_replace('/\s\s+/', ' ', $this->sql);
+		foreach ($this->params as $i => $param) {
+			$param = json_encode($param);
+			# NOTE: this might not result in a perfect sql query because ? must not be a placeholder
+			# nevertheless for analysis purpose this is a good enough approach
+			$pos = strpos($s, '?');
+			if ($pos !== false) {
+				$s = substr_replace($s, $param, $pos, \strlen('?'));
+			} else {
+				$s = str_replace(":$i", $param, $s);
+			}
+		}
+
+		return $s;
+	}
+
 	public function jsonSerialize() {
 		return [
 			'query' => $this->sql,
