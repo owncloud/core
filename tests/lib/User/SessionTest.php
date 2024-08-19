@@ -260,9 +260,9 @@ class SessionTest extends TestCase {
 				unset($managerMethods[$i]);
 			}
 		}
-//		$manager = $this->getMockBuilder(Manager::class)
-//			->setMethods($managerMethods)
-//			->getMock();
+		//		$manager = $this->getMockBuilder(Manager::class)
+		//			->setMethods($managerMethods)
+		//			->getMock();
 
 		$manager = $this->createMock(Manager::class);
 		$user = $this->createMock(IUser::class);

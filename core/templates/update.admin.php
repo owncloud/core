@@ -7,9 +7,9 @@
 		} else {
 			?>
 		<h2 class="title"><?php p($l->t(
-				'%s will be updated to version %s',
-				[$_['productName'], $_['version']]
-			)); ?></h2>
+			'%s will be updated to version %s',
+			[$_['productName'], $_['version']]
+		)); ?></h2>
 		<?php
 		} ?>
 		<?php if (!empty($_['appsToUpgrade'])) {

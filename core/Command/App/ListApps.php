@@ -121,7 +121,7 @@ class ListApps extends Base {
 				$appDetailRecord = [];
 
 				if ($minimalView) {
-					$apps['enabled'][$app] = sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
+					$apps['enabled'][$app] = \sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
 					continue;
 				}
 
@@ -140,7 +140,7 @@ class ListApps extends Base {
 				$appDetailRecord = [];
 
 				if ($minimalView) {
-					$apps['disabled'][$app] = sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
+					$apps['disabled'][$app] = \sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
 					continue;
 				}
 
