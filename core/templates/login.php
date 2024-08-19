@@ -10,6 +10,7 @@ script('core', [
 ?>
 
 <!--[if IE 8]><style>input[type="checkbox"]{padding:0;}</style><![endif]-->
+<?php if (empty($_['login.token_auth_enforced'])) { ?>
 <form method="post" name="login" autocapitalize="none">
 <?php if (!empty($_['accessLink'])) {
 	?>
@@ -134,6 +135,8 @@ script('core', [
 		<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
 
 </form>
+<?php } ?>
+
 <?php if (!empty($_['alt_login'])) {
 	?>
 <form id="alternative-logins">
