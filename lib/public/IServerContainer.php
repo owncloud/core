@@ -554,4 +554,10 @@ interface IServerContainer extends IContainer {
 	 * @since 10.12.0
 	 */
 	public function getLoginPolicyManager();
+
+	/**
+	 * @return \OCP\Sync\ISyncManager
+	 * @since 10.14.0
+	 */
+	public function getSyncManager();
 }

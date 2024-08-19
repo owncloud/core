@@ -95,6 +95,9 @@ use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
 use OC\User\Session;
 use OC\User\SyncService;
+use OC\Sync\User\UserSyncDBBackend;
+use OC\Sync\User\UserSyncer;
+use OC\Sync\SyncManager;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -111,6 +114,7 @@ use OCP\Security\IContentSecurityPolicyManager;
 use OCP\Shutdown\IShutdownManager;
 use OCP\Theme\IThemeService;
 use OCP\Util\UserSearch;
+use OCP\Sync\ISyncManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OC\Files\External\StoragesBackendService;
@@ -976,6 +980,18 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 			return $policyManager;
 		});
+
+		$this->registerService(SyncManager::class, function ($c) {
+			$userSyncDbBackend = new UserSyncDBBackend(new \OC\User\Database()); // anything better?
+
+			$userSyncer = new UserSyncer($c->getUserManager(), $c->getAccountMapper(), $c->getConfig(), $c->getLogger());
+			$userSyncer->registerBackend($userSyncDbBackend);
+
+			$syncManager = new SyncManager();
+			$syncManager->registerSyncer('user', $userSyncer);
+			return $syncManager;
+		});
+		$this->registerAlias(ISyncManager::class, SyncManager::class);
 	}
 
 	/**
@@ -1758,5 +1774,9 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 */
 	public function getLoginPolicyManager() {
 		return $this->query(LoginPolicyManager::class);
+	}
+
+	public function getSyncManager() {
+		return $this->query(ISyncManager::class);
 	}
 }
