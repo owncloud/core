@@ -130,6 +130,7 @@ class ScanExternalSharesJob extends TimedJob {
 					$this->updateLastScanned($share['id'], \time());
 
 					// do scan share
+					$this->logger->debug("Scanning fed share with id " . $share['id']);
 					$this->scan($share);
 					$scannedShares += 1;
 				}
