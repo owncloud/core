@@ -21,6 +21,7 @@ OC.L10N.register(
     "Download / View" : "Lataa / Näytä",
     "Recipients can view or download contents." : "Vastaanottaja voi katsoa tai ladata sisältöä.",
     "Download / View / Upload" : "Lataa / Näytä / Lähetä",
+    "Download / View / Edit" : "Lataa / Näytä / Muokkaa",
     "Recipients can view, download, edit, delete and upload contents." : "Vastaanottaja voi katsoa, ladata, muokata, poistaa ja lähettää sisältöä.",
     "Upload only" : "Vain lähetys",
     "Preparing update" : "Valmistellaan päivitystä",
