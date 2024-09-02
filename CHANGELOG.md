@@ -32,6 +32,7 @@ ownCloud admins and users.
 ## Summary
 
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
+* Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 
 ## Details
 
@@ -49,6 +50,13 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41297
    https://github.com/owncloud/core/pull/41306
    https://github.com/owncloud/core/pull/41307
+
+* Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
+
+   To avoid user confusion the share dialog informs the user that password policy
+   can apply in case enabled.
+
+   https://github.com/owncloud/core/pull/41314
 
 # Changelog for ownCloud Core [10.15.0] (2024-06-18)
 
