@@ -1,0 +1,6 @@
+Change: Add user hint in share dialog that password policy can apply
+
+To avoid user confusion the share dialog informs the user that password policy
+can apply in case enabled.
+
+https://github.com/owncloud/core/pull/41314
