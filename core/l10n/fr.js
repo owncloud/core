@@ -177,7 +177,6 @@ OC.L10N.register(
     "Not supported!" : "Non supporté !",
     "Press ⌘-C to copy." : "Appuyer sur ⌘-C pour copier.",
     "Press Ctrl-C to copy." : "Appuyer sur Ctrl-C pour copier.",
-    "Choose a password" : "Choisissez un mot de passe",
     "Password required" : "Mot de passe requis",
     "Link name" : "Nom du lien",
     "Name" : "Nom",

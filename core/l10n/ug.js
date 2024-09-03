@@ -177,7 +177,6 @@ OC.L10N.register(
     "Not supported!" : "قوللىمايدۇ!",
     "Press ⌘-C to copy." : "⌘-C نى بېسىپ كۆچۈرۈڭ.",
     "Press Ctrl-C to copy." : "كۆچۈرۈش ئۈچۈن Ctrl-C نى بېسىڭ.",
-    "Choose a password" : "ئىم تاللاڭ",
     "Password required" : "ئىم كىرگۈزۈڭ",
     "Link name" : "ئۇلانما ئاتى",
     "Name" : "ئاتى",

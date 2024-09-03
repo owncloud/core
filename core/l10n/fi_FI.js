@@ -157,7 +157,6 @@ OC.L10N.register(
     "Not supported!" : "Ei tuettu!",
     "Press ⌘-C to copy." : "Paina ⌘-C kopioidaksesi.",
     "Press Ctrl-C to copy." : "Paina Ctrl-C kopioidaksesi.",
-    "Choose a password" : "Valitse salasana",
     "Password required" : "Salasana vaaditaan",
     "Link name" : "Linkin nimi",
     "Name" : "Nimi",

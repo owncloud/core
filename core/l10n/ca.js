@@ -136,7 +136,6 @@ OC.L10N.register(
     "Anyone with the link has access to the file/folder" : "Qualsevol podrà accedir a l'arxiu o carpeta amb aquest link",
     "Copied!" : "Copiat",
     "Not supported!" : "No està suportat!",
-    "Choose a password" : "Introdueix una contrasenya",
     "Password required" : "Es requereix de contrasenya ",
     "Link name" : "Nom de l'enllaç",
     "Name" : "Nom",

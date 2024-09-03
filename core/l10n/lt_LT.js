@@ -126,7 +126,6 @@ OC.L10N.register(
     "Copy to clipboard" : "Kopijuoti į talpyklę",
     "Anyone with the link has access to the file/folder" : "Kiekvienas turintis šią nuorodą gali pasiekti failą/katalogą",
     "Copied!" : "Nukopijuota!",
-    "Choose a password" : "Pasirinkite slaptažodį",
     "Password required" : "Reikalingas slaptažodis",
     "Link name" : "Nuorodos pavadinimas",
     "Name" : "Pavadinimas",

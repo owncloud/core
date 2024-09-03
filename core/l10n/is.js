@@ -170,7 +170,6 @@ OC.L10N.register(
     "Not supported!" : "Óstutt!",
     "Press ⌘-C to copy." : "Ýttu á ⌘-C til að afrita.",
     "Press Ctrl-C to copy." : "Ýttu á Ctrl-C til að afrita.",
-    "Choose a password" : "Veldu lykilorð",
     "Password required" : "Lykilorðs krafist",
     "Link name" : "Heiti tengils",
     "Name" : "Heiti",

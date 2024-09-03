@@ -166,7 +166,6 @@ OC.L10N.register(
     "Not supported!" : "Nem támogatott!",
     "Press ⌘-C to copy." : "Használd a ⌘-C másoláshoz.",
     "Press Ctrl-C to copy." : "Használd a Ctrl+C másoláshoz.",
-    "Choose a password" : "Válasszon jelszót",
     "Password required" : "Jelszó szükséges",
     "Link name" : "Link neve",
     "Name" : "Név",
