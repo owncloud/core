@@ -549,6 +549,7 @@ class Trashbin {
 	public static function restore($file, $filename, $timestamp, $targetLocation = null) {
 		$user = User::getUser();
 		$view = new View('/' . $user);
+		$originalLocation = null;
 
 		if ($targetLocation === null) {
 			$location = '';
@@ -563,6 +564,7 @@ class Trashbin {
 						(!$view->is_dir('files/' . $location) ||
 							!$view->isCreatable('files/' . $location))
 					) {
+						$originalLocation = $location;
 						$location = '';
 					}
 				}
@@ -583,8 +585,14 @@ class Trashbin {
 		Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'pre_restore', [
 			'user' => $user,
 			'source' => $source,
-			'target' => $target
+			'target' => $target,
+			'originalLocation' => $originalLocation,
+			'abortRestore' => &$abortRestore,
 		]);
+
+		if ($abortRestore) {
+			return false;
+		}
 
 		// restore file
 		$restoreResult = $view->rename($source, $target);
