@@ -300,6 +300,9 @@ class OC {
 			&& OC::$SUBURI != '/core/ajax/update.php'
 			&& !$isOccControllerRequested
 		) {
+			// load the maintenance theme if any
+			\OC_App::loadMaintenanceTheme();
+
 			// send http status 503
 			\http_response_code(503);
 			\header('Status: 503 Service Temporarily Unavailable');

@@ -86,6 +86,25 @@ class OC_App {
 	}
 
 	/**
+	 * Loads a theme in maintenance mode if one has been set in the config.php at 'maintenance.theme'
+	 *
+	 * @return bool
+	 */
+	public static function loadMaintenanceTheme() {
+		$theme = \OC::$server->getConfig()->getSystemValue('maintenance.theme', null);
+		if ($theme === null || $theme === '') {
+			return false;
+		}
+
+		if (!self::isType($theme, ['theme'])) {
+			return false;
+		}
+
+		self::loadApp($theme, false);
+		return true;
+	}
+
+	/**
 	 * loads all apps
 	 *
 	 * @param string[] | string | null $types
@@ -101,9 +120,11 @@ class OC_App {
 		if (\is_array($types) && !\array_diff($types, self::$loadedTypes)) {
 			return true;
 		}
+
 		if (\OC::$server->getSystemConfig()->getValue('maintenance', false)) {
 			return false;
 		}
+
 		// Load the enabled apps here
 		$apps = self::getEnabledApps();
 
