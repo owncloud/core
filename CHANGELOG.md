@@ -39,7 +39,7 @@ ownCloud admins and users.
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 
    The following have been updated: - guzzlehttp/guzzle (7.8.1 to 7.9.2) -
-   laravel/serializable-closure (1.3.3 to 1.3.4) - league/mime-type-detection
+   laravel/serializable-closure (1.3.3 to 1.3.5) - league/mime-type-detection
    (1.15.0 to 1.16.0) - mikey179/vfsstream (1.6.11 to 1.6.12) - phpseclib/phpseclib
    (3.0.39 to 3.0.42) - sabre/event (5.1.4 to 5.1.7) - sabre/http (5.1.10 to
    5.1.12) - sabre/uri (2.3.3 t0 2.3.4) - sabre/vobject (4.5.4 to 4.5.5) -
@@ -54,6 +54,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41307
    https://github.com/owncloud/core/pull/41315
    https://github.com/owncloud/core/pull/41320
+   https://github.com/owncloud/core/pull/41327
 
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 
