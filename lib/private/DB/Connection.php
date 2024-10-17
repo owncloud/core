@@ -36,6 +36,7 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Statement;
 use OC\DB\QueryBuilder\QueryBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
@@ -63,12 +64,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		}
 	}
 
-	/**
-	 * Returns a QueryBuilder for the connection.
-	 *
-	 * @return \OCP\DB\QueryBuilder\IQueryBuilder
-	 */
-	public function getQueryBuilder() {
+	public function getQueryBuilder(): IQueryBuilder {
 		return new QueryBuilder($this);
 	}
 
@@ -148,14 +144,6 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		parent::setTransactionIsolation(parent::TRANSACTION_READ_COMMITTED);
 	}
 
-	/**
-	 * Prepares an SQL statement.
-	 *
-	 * @param string $statement The SQL statement to prepare.
-	 * @param int $limit
-	 * @param int $offset
-	 * @return \Doctrine\DBAL\Driver\Statement The prepared statement.
-	 */
 	public function prepare($statement, $limit=null, $offset=null) {
 		if ($limit === -1) {
 			$limit = null;
@@ -181,7 +169,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param array                                       $types  The types the previous parameters are in.
 	 * @param \Doctrine\DBAL\Cache\QueryCacheProfile|null $qcp    The query cache profile, optional.
 	 *
-	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
+	 * @return Statement The executed statement.
 	 *
 	 * @throws \Doctrine\DBAL\DBALException
 	 */

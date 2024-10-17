@@ -52,7 +52,7 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
-	public function getQueryBuilder() {
+	public function getQueryBuilder(): IQueryBuilder {
 		return $this->connection->getQueryBuilder();
 	}
 

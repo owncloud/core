@@ -1477,14 +1477,14 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 */
 	protected function addChange($calendarId, $objectUri, $operation) {
 		$stmt = $this->db->prepare('INSERT INTO `*PREFIX*calendarchanges` (`uri`, `synctoken`, `calendarid`, `operation`) SELECT ?, `synctoken`, ?, ? FROM `*PREFIX*calendars` WHERE `id` = ?');
-		$stmt->execute([
+		$stmt->executeStatement([
 			$objectUri,
 			$calendarId,
 			$operation,
 			$calendarId
 		]);
 		$stmt = $this->db->prepare('UPDATE `*PREFIX*calendars` SET `synctoken` = `synctoken` + 1 WHERE `id` = ?');
-		$stmt->execute([
+		$stmt->executeStatement([
 			$calendarId
 		]);
 	}
