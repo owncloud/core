@@ -21,6 +21,7 @@ OC.L10N.register(
     "Target folder does not exist any more" : "Целевой каталог уже не существует",
     "The file {file} is currently locked, please try again later" : "В настоящий момент файл {file} заблокирован, попробуйте ещё раз позже",
     "Not enough free space" : "Недостаточно свободного места",
+    "Failed to upload the file \"{fileName}\": {error}" : "Не удалось загрузить файл «{fileName}»: {error}",
     "Uploading..." : "Загрузка...",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} из {totalSize} ({bitrate})",

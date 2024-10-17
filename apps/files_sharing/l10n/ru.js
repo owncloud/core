@@ -4,6 +4,7 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "На данном сервере выключено межсерверное предоставление общего доступа",
     "The mountpoint name contains invalid characters." : "Имя точки монтирования содержит недопустимые символы.",
     "Not allowed to create a federated share with the same user server" : "Не допускается создание федеративного общего ресурса с тем-же сервером пользователя",
+    "Remote is unreachable" : "Удаленный ресурс недоступен",
     "Could not authenticate to federated share, password might be wrong" : "Не удалось аутентифицироваться на федеративном ресурсе, возможно пароль неверен",
     "Storage not valid" : "Хранилище недоступно",
     "Couldn't add federated share" : "Не удалось добавить федеративный ресурс",
