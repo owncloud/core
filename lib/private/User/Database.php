@@ -290,6 +290,58 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	}
 
 	/**
+	 * Get a list of all users, each user having "uid" and "displayname".
+	 * The data will be cached and available for other methods.
+	 * For example:
+	 * [
+	 *   ['uid' => 'user1', 'displayname' => 'display1'],
+	 *   ['uid' => 'user2', 'displayname' => 'awesome'],
+	 * ]
+	 *
+	 * Note: This method isn't part of the `UserInterface`. Additional data
+	 * could be included if needed
+	 *
+	 * @return array
+	 */
+	public function getUsersData($search = '', $limit = null, $offset = null) {
+		$parameters = [];
+		$searchLike = '';
+		if ($search !== '') {
+			$search = \OC::$server->getDatabaseConnection()->escapeLikeParameter($search);
+			$parameters[] = '%' . $search . '%';
+			$searchLike = ' WHERE LOWER(`uid`) LIKE LOWER(?)';
+		}
+
+		$query = \OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`' . $searchLike . ' ORDER BY `uid` ASC', $limit, $offset);
+		$result = $query->execute($parameters);
+		$users = [];
+		while ($row = $result->fetchRow()) {
+			$uid = $row['uid'];
+			$this->cache[$uid]['uid'] = $uid;
+			$this->cache[$uid]['displayname'] = $row['displayname'];
+			$users[] = [
+				'uid' => $uid,
+				'displayname' => $row['displayname'],
+			];
+		}
+		return $users;
+	}
+
+	/**
+	 * Get a map with user data, containing "uid" and "displayname"
+	 * The data will be cached and available for other methods.
+	 * For example:
+	 * ['uid' => 'user1', 'displayname' => 'display1']
+	 *
+	 * Note: This method isn't part of the `UserInterface`. Additional data
+	 * could be included if needed
+	 */
+	public function getUserData($uid) {
+		$this->loadUser($uid);
+		return $this->cache[$uid];
+	}
+
+	/**
 	 * check if a user exists
 	 * @param string $uid the username
 	 * @return boolean
