@@ -15,6 +15,7 @@ OC.L10N.register(
     "Update channel:" : "アップデートチャンネル:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "開発版の新しいバージョンにアップデートできます。ただし、アップデート後は安定版にダウングレードできません。",
     "Notify members of the following groups about available updates:" : "次のグループのメンバーに対してアップデートのメッセージが表示されます:",
-    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "アプリの更新のみ通知が有効です。選択したサーバーのアップデートチャンネルは、サーバーの更新については通知を許可していないからです。"
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "アプリの更新のみ通知が有効です。選択したサーバーのアップデートチャンネルは、サーバーの更新については通知を許可していないからです。",
+    "Online updater has been automatically disabled as you are currently running an ownCloud Enterprise edition. Please update your ownCloud instance manually." : "現在、ownCloud Enterprise エディションを実行しているため、オンラインアップデートは自動的に無効になっています。ownCloud インスタンスを手動で更新してください。"
 },
 "nplurals=1; plural=0;");
