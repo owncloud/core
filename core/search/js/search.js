@@ -329,7 +329,9 @@
 						var query = $searchBox.val();
 						if (lastQuery !== query) {
 							currentResult = -1;
-							if (query.length > 2) {
+							var hasChineseOrJapaneseCharactor = query.match(/[\u3400-\u9FBF]/)
+							var minimumInputCount = hasChineseOrJapaneseCharactor ? 2 : 3
+							if (query.length >= minimumInputCount) {
 								self.search(query);
 							} else {
 								self.hideResults();
