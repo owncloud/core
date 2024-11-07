@@ -44,9 +44,9 @@ ownCloud admins and users.
    (1.6.11 to 1.6.12) - phpseclib/phpseclib (3.0.39 to 3.0.42) - sabre/dav (4.6.0
    to 4.7.0) - sabre/event (5.1.4 to 5.1.7) - sabre/http (5.1.10 to 5.1.12) -
    sabre/uri (2.3.3 t0 2.3.4) - sabre/vobject (4.5.4 to 4.5.6) - sabre/xml (2.2.7
-   to 2.2.11) - symfony/console (5.4.40 to 5.4.45) - symfony/event-dispatcher
+   to 2.2.11) - symfony/console (5.4.40 to 5.4.46) - symfony/event-dispatcher
    (5.4.40 to 5.4.45) - symfony/polyfill-php80 (1.29.0 to 1.31.0) - symfony/process
-   (v5.4.40 to v5.4.45) - symfony/routing (5.4.40 to 5.4.45) - symfony/string
+   (v5.4.40 to v5.4.46) - symfony/routing (5.4.40 to 5.4.45) - symfony/string
    (5.4.40 to 5.4.45) - symfony/translation (5.4.40 to 5.4.45)
 
    https://github.com/owncloud/core/pull/41287
@@ -57,6 +57,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41320
    https://github.com/owncloud/core/pull/41327
    https://github.com/owncloud/core/pull/41329
+   https://github.com/owncloud/core/pull/41333
 
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 
