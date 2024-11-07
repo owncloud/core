@@ -13,7 +13,7 @@ The following have been updated:
 - sabre/uri (2.3.3 t0 2.3.4)
 - sabre/vobject (4.5.4 to 4.5.6)
 - sabre/xml (2.2.7 to 2.2.11)
-- symfony/console (5.4.40 to 5.4.45)
+- symfony/console (5.4.40 to 5.4.46)
 - symfony/event-dispatcher (5.4.40 to 5.4.45)
 - symfony/polyfill-php80 (1.29.0 to 1.31.0)
 - symfony/process (v5.4.40 to v5.4.46)
