@@ -1342,16 +1342,16 @@
         },
         {
             "name": "icewind/smb",
-            "version": "v3.6.0",
+            "version": "v3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/SMB.git",
-                "reference": "e0e86b16640f5892dd00408ed50ad18357dac6c1"
+                "reference": "e6904cbe75f678335092f4861c60c656b1a99e84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/e0e86b16640f5892dd00408ed50ad18357dac6c1",
-                "reference": "e0e86b16640f5892dd00408ed50ad18357dac6c1",
+                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/e6904cbe75f678335092f4861c60c656b1a99e84",
+                "reference": "e6904cbe75f678335092f4861c60c656b1a99e84",
                 "shasum": ""
             },
             "require": {
@@ -1383,9 +1383,9 @@
             "description": "php wrapper for smbclient and libsmbclient-php",
             "support": {
                 "issues": "https://github.com/icewind1991/SMB/issues",
-                "source": "https://github.com/icewind1991/SMB/tree/v3.6.0"
+                "source": "https://github.com/icewind1991/SMB/tree/v3.7.0"
             },
-            "time": "2023-08-10T13:17:39+00:00"
+            "time": "2024-11-11T14:08:34+00:00"
         },
         {
             "name": "icewind/streams",
