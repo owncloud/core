@@ -1,6 +1,6 @@
 Enhancement: Improve global search experience for Chinese and Japanese input
 
-Now the minimum charactors input requried is 2 for Chinese/Japanese inputs when perform global search.
+Now the minimum characters input required is 2 for Chinese/Japanese inputs when performing global search.
 
 https://github.com/owncloud/core/pull/41328
 https://github.com/owncloud/core/issues/25021
