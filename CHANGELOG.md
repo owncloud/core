@@ -33,6 +33,7 @@ ownCloud admins and users.
 
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
+* Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
 
 ## Details
 
@@ -67,6 +68,15 @@ ownCloud admins and users.
    can apply in case enabled.
 
    https://github.com/owncloud/core/pull/41314
+
+* Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
+
+   Now the minimum characters input required is 2 for Chinese/Japanese inputs when
+   performing global search.
+
+   https://github.com/owncloud/core/issues/25021
+   https://github.com/owncloud/core/issues/9916
+   https://github.com/owncloud/core/pull/41328
 
 # Changelog for ownCloud Core [10.15.0] (2024-06-18)
 
