@@ -4,7 +4,7 @@ The following have been updated:
 - guzzlehttp/guzzle (7.8.1 to 7.9.2)
 - guzzlehttp/promises (2.0.3 to 2.0.4)
 - icewind/smb (3.6.0 to 3.7.0)
-- laravel/serializable-closure (1.3.3 to 1.3.5)
+- laravel/serializable-closure (1.3.3 to 1.3.6)
 - league/mime-type-detection (1.15.0 to 1.16.0)
 - mikey179/vfsstream (1.6.11 to 1.6.12)
 - phpseclib/phpseclib (3.0.39 to 3.0.42)
@@ -32,3 +32,4 @@ https://github.com/owncloud/core/pull/41327
 https://github.com/owncloud/core/pull/41329
 https://github.com/owncloud/core/pull/41333
 https://github.com/owncloud/core/pull/41334
+https://github.com/owncloud/core/pull/41337
