@@ -1,0 +1,6 @@
+Bugfix: Unavailable shares storage will not block folder listing
+
+In case a shared storage is not available in certain situations no folder
+listing would be shown to the user.
+
+https://github.com/owncloud/core/pull/41338
