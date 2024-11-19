@@ -31,11 +31,19 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 * Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
 
 ## Details
+
+* Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
+
+   In case a shared storage is not available in certain situations no folder
+   listing would be shown to the user.
+
+   https://github.com/owncloud/core/pull/41338
 
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 
