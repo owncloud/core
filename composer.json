@@ -72,7 +72,7 @@
         "google/apiclient": "^2.15",
         "guzzlehttp/guzzle": "^7.7",
         "icewind/smb": "^3.6",
-        "icewind/streams": "0.7.7",
+        "icewind/streams": "0.7.8",
         "interfasys/lognormalizer": "^v1.0",
         "laminas/laminas-inputfilter": "^2.21",
         "laminas/laminas-servicemanager": "^3.17",
