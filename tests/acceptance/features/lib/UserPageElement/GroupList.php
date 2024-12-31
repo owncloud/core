@@ -21,12 +21,12 @@
  *
  */
 
-namespace Page\UserPageElement;
+namespace Tests\Acceptance\Page\UserPageElement;
 
 use Behat\Mink\Element\NodeElement;
 use Exception;
-use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use Tests\Acceptance\Page\OwncloudPage;
 
 /**
  * The list of groups

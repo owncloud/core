@@ -20,9 +20,11 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\PersonalEncryptionSettingsPage;
+use Tests\Acceptance\Page\PersonalEncryptionSettingsPage;
 
 require_once 'bootstrap.php';
 

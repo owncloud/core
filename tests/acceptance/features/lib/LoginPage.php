@@ -20,7 +20,7 @@
  *
  */
 
-namespace Page;
+namespace Tests\Acceptance\Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
