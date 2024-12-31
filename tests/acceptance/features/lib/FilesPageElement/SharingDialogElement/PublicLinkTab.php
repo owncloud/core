@@ -21,12 +21,12 @@
  *
  */
 
-namespace Page\FilesPageElement\SharingDialogElement;
+namespace Tests\Acceptance\Page\FilesPageElement\SharingDialogElement;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Exception;
-use Page\OwncloudPage;
+use Tests\Acceptance\Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 

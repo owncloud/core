@@ -21,7 +21,7 @@
  *
  */
 
-namespace Page;
+namespace Tests\Acceptance\Page;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Session;

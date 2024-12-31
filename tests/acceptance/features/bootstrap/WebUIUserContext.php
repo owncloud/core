@@ -20,10 +20,12 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\OwncloudPage;
 use PHPUnit\Framework\Assert;
+use Tests\Acceptance\Page\OwncloudPage;
 
 require_once 'bootstrap.php';
 

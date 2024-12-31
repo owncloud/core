@@ -21,9 +21,9 @@
  *
  */
 
-namespace Page\FilesPageElement;
+namespace Tests\Acceptance\Page\FilesPageElement;
 
-use Page\OwncloudPageElement\OCDialog;
+use Tests\Acceptance\Page\OwncloudPageElement\OCDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**

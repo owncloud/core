@@ -21,10 +21,12 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Page\FilesPageElement\NewFileMenu;
 use PHPUnit\Framework\Assert;
+use Tests\Acceptance\Page\FilesPageElement\NewFileMenu;
 
 require_once 'bootstrap.php';
 

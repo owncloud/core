@@ -20,7 +20,7 @@
  *
  */
 
-namespace Page;
+namespace Tests\Acceptance\Page;
 
 /**
  * Disabled page.

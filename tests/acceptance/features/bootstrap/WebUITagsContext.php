@@ -20,12 +20,14 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
-use Page\FilesPage;
 use PHPUnit\Framework\Assert;
+use Tests\Acceptance\Page\FilesPage;
 
 require_once 'bootstrap.php';
 

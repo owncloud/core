@@ -20,25 +20,27 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use GuzzleHttp\Exception\GuzzleException;
-use Page\ExternalStoragePage;
-use Page\FavoritesPage;
-use Page\FilesPage;
-use Page\FilesPageBasic;
-use Page\FilesPageElement\DetailsDialog;
-use Page\FilesPageElement\FileRow;
-use Page\OwncloudPage;
-use Page\SharedByLinkPage;
-use Page\SharedWithOthersPage;
-use Page\SharedWithYouPage;
-use Page\TagsPage;
-use Page\TrashbinPage;
-use Page\FilesPageElement\ConflictDialog;
-use Page\FilesPageElement\FileActionsMenu;
+use Tests\Acceptance\Page\ExternalStoragePage;
+use Tests\Acceptance\Page\FavoritesPage;
+use Tests\Acceptance\Page\FilesPage;
+use Tests\Acceptance\Page\FilesPageBasic;
+use Tests\Acceptance\Page\FilesPageElement\DetailsDialog;
+use Tests\Acceptance\Page\FilesPageElement\FileRow;
+use Tests\Acceptance\Page\OwncloudPage;
+use Tests\Acceptance\Page\SharedByLinkPage;
+use Tests\Acceptance\Page\SharedWithOthersPage;
+use Tests\Acceptance\Page\SharedWithYouPage;
+use Tests\Acceptance\Page\TagsPage;
+use Tests\Acceptance\Page\TrashbinPage;
+use Tests\Acceptance\Page\FilesPageElement\ConflictDialog;
+use Tests\Acceptance\Page\FilesPageElement\FileActionsMenu;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
