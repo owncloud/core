@@ -21,15 +21,15 @@
  *
  */
 
-namespace Page\FilesPageElement;
+namespace Tests\Acceptance\Page\FilesPageElement;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Exception;
-use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
-use Page\OwncloudPage;
+use Tests\Acceptance\Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
+use Tests\Acceptance\Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use Page\OwncloudPageElement\OCDialog;
+use Tests\Acceptance\Page\OwncloudPageElement\OCDialog;
 use WebDriver\Exception\StaleElementReference;
 use PHPUnit\Framework\Assert;
 
