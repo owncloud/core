@@ -82,6 +82,9 @@ class AppConfigController extends Controller {
 	 * @param string $default
 	 */
 	public function getValue($app, $key, $default = null) {
+		if ($app === 'core' && (\strpos((string)$key, 'remote_') === 0 || \strpos((string)$key, 'public_') === 0)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
 		return new JSONResponse($this->appConfig->getValue($app, $key, $default));
 	}
 
@@ -95,9 +98,17 @@ class AppConfigController extends Controller {
 	public function setValue($app, $key, $value) {
 		if (!isset($app, $key, $value)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
-		} else {
-			return new JSONResponse($this->appConfig->setValue($app, $key, $value));
 		}
+
+		// An admin should not be able to add remote and public services
+		// on its own. This should only be possible programmatically.
+		// This change is due the fact that an admin may not be expected
+		// to execute arbitrary code in every environment.
+		if ($app === 'core' && (\strpos((string)$key, 'remote_') === 0 || \strpos((string)$key, 'public_') === 0)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+
+		return new JSONResponse($this->appConfig->setValue($app, $key, $value));
 	}
 
 	/**
@@ -108,9 +119,12 @@ class AppConfigController extends Controller {
 	public function deleteKey($app, $key) {
 		if (!isset($app, $key)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
-		} else {
-			return new JSONResponse($this->appConfig->deleteKey($app, $key));
 		}
+		if ($app === 'core' && (\strpos((string)$key, 'remote_') === 0 || \strpos((string)$key, 'public_') === 0)) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
+
+		return new JSONResponse($this->appConfig->deleteKey($app, $key));
 	}
 
 	/**
@@ -121,8 +135,8 @@ class AppConfigController extends Controller {
 	public function deleteApp($app) {
 		if (!isset($app)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
-		} else {
-			return new JSONResponse($this->appConfig->deleteApp($app));
 		}
+
+		return new JSONResponse($this->appConfig->deleteApp($app));
 	}
 }
