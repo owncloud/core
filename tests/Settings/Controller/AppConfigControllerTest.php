@@ -37,8 +37,7 @@ class AppConfigControllerTest extends TestCase {
 	public $request;
 	/** @var IAppConfig */
 	private $appConfig;
-	/** @var AppConfigController */
-	private $appConfigController;
+	private AppConfigController $appConfigController;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -48,14 +47,14 @@ class AppConfigControllerTest extends TestCase {
 		$this->appConfigController = new AppConfigController('settings', $this->request, $this->appConfig);
 	}
 
-	public function testGetApps() {
+	public function testGetApps(): void {
 		$this->appConfig->method('getApps')->willReturn(['appId1', 'appId2']);
 
 		$expected = new JSONResponse(['appId1', 'appId2']);
 		$this->assertEquals($expected->getData(), $this->appConfigController->getApps()->getData());
 	}
 
-	public function testGetKeys() {
+	public function testGetKeys(): void {
 		$this->appConfig->method('getKeys')
 			->with('appId001')
 			->willReturn(['key1', 'key2']);
@@ -64,7 +63,7 @@ class AppConfigControllerTest extends TestCase {
 		$this->assertEquals($expected->getData(), $this->appConfigController->getKeys('appId001')->getData());
 	}
 
-	public function testGetValue() {
+	public function testGetValue(): void {
 		$this->appConfig->method('getValue')
 			->with('appId001', 'key1', null)
 			->willReturn('valueOfKey1');
@@ -73,7 +72,7 @@ class AppConfigControllerTest extends TestCase {
 		$this->assertEquals($expected->getData(), $this->appConfigController->getValue('appId001', 'key1', null)->getData());
 	}
 
-	public function testSetValue() {
+	public function testSetValue(): void {
 		$this->appConfig->method('setValue')
 			->with('appId003', 'key3', 'value3')
 			->willReturn(true);
@@ -89,13 +88,15 @@ class AppConfigControllerTest extends TestCase {
 			[null, null, null],
 			['appId1', null, null],
 			['appId1', 'key1', null],
+			['core', 'remote_key1', 'foo'],
+			['core', 'public_key1', 'foo'],
 		];
 	}
 
 	/**
 	 * @dataProvider setValueProvider
 	 */
-	public function testSetValueWrong($app, $key, $value) {
+	public function testSetValueWrong($app, $key, $value): void {
 		$this->appConfig->expects($this->never())
 			->method('setValue');
 
@@ -104,7 +105,7 @@ class AppConfigControllerTest extends TestCase {
 		$this->assertSame(Http::STATUS_BAD_REQUEST, $response->getStatus());
 	}
 
-	public function testDeleteKey() {
+	public function testDeleteKey(): void {
 		$this->appConfig->method('deleteKey')
 			->with('appId003', 'key3')
 			->willReturn(true);
@@ -115,17 +116,19 @@ class AppConfigControllerTest extends TestCase {
 		$this->assertSame(Http::STATUS_OK, $response->getStatus());
 	}
 
-	public function deleteKeyProvider() {
+	public function deleteKeyProvider(): array {
 		return [
 			[null, null],
 			['appId1', null, null],
+			['core', 'remote_key1', 'foo'],
+			['core', 'public_key1', 'foo'],
 		];
 	}
 
 	/**
 	 * @dataProvider deleteKeyProvider
 	 */
-	public function testdeleteKeyWrong($app, $key) {
+	public function testDeleteKeyWrong($app, $key): void {
 		$this->appConfig->expects($this->never())
 			->method('deleteKey');
 
@@ -134,7 +137,7 @@ class AppConfigControllerTest extends TestCase {
 		$this->assertSame(Http::STATUS_BAD_REQUEST, $response->getStatus());
 	}
 
-	public function testDeleteApp() {
+	public function testDeleteApp(): void {
 		$this->appConfig->method('deleteApp')
 			->with('appId003')
 			->willReturn(true);
@@ -145,7 +148,7 @@ class AppConfigControllerTest extends TestCase {
 		$this->assertSame(Http::STATUS_OK, $response->getStatus());
 	}
 
-	public function testdeleteAppWrong() {
+	public function testDeleteAppWrong(): void {
 		$this->appConfig->expects($this->never())
 			->method('deleteApp');
 
