@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.15.1](#changelog-for-owncloud-core-10151-2025-03-03)
 * [Changelog for 10.15.0](#changelog-for-owncloud-core-10150-2024-06-18)
 * [Changelog for 10.14.0](#changelog-for-owncloud-core-10140-2024-02-19)
 * [Changelog for 10.13.4](#changelog-for-owncloud-core-10134-2023-12-13)
@@ -27,7 +28,7 @@
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.15.0...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.15.1...master
 
 ## Summary
 
@@ -103,6 +104,27 @@ ownCloud admins and users.
    https://github.com/owncloud/core/issues/25021
    https://github.com/owncloud/core/issues/9916
    https://github.com/owncloud/core/pull/41328
+
+# Changelog for ownCloud Core [10.15.1] (2025-03-03)
+
+The following sections list the changes in ownCloud core 10.15.1 relevant to
+ownCloud admins and users.
+
+[10.15.1]: https://github.com/owncloud/core/compare/v10.15.0...v10.15.1
+
+## Summary
+
+* Bugfix - Prevent access to internal app config data: [#41338](https://github.com/owncloud/core/pull/41338)
+
+## Details
+
+* Bugfix - Prevent access to internal app config data: [#41338](https://github.com/owncloud/core/pull/41338)
+
+   Prevent access to app config where the key is prefixed with remote_ and public_
+   via the http api as these are internal configuration settings which are not to
+   be exposed via the network.
+
+   https://github.com/owncloud/core/pull/41338
 
 # Changelog for ownCloud Core [10.15.0] (2024-06-18)
 
