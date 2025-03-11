@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for 10.15.2](#changelog-for-owncloud-core-10152-2025-03-11)
 * [Changelog for 10.15.1](#changelog-for-owncloud-core-10151-2025-03-03)
 * [Changelog for 10.15.0](#changelog-for-owncloud-core-10150-2024-06-18)
 * [Changelog for 10.14.0](#changelog-for-owncloud-core-10140-2024-02-19)
@@ -22,6 +23,23 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [10.15.2] (2025-03-11)
+
+The following sections list the changes in ownCloud core 10.15.2 relevant to
+ownCloud admins and users.
+
+[10.15.2]: https://github.com/owncloud/core/compare/v10.15.1...v10.15.2
+
+## Summary
+
+* Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
+
+## Details
+
+* Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
+
+   https://github.com/owncloud/core/pull/41358
+
 # Changelog for ownCloud Core [10.15.1] (2025-03-03)
 
 The following sections list the changes in ownCloud core 10.15.1 relevant to
