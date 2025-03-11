@@ -32,12 +32,17 @@ ownCloud admins and users.
 
 ## Summary
 
+* Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
 * Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 * Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
 
 ## Details
+
+* Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
+
+   https://github.com/owncloud/core/pull/41358
 
 * Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
 
