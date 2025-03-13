@@ -320,15 +320,18 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	public function filetype($path) {
 		try {
 			$stat = $this->getConnection()->stat($this->absPath($path));
+			if (!is_array($stat) || !array_key_exists('type', $stat)) {
+                                return false;
+                        }
 			/* ToDo: Investigate if NET_SFTP_TYPE_REGULAR is an available constant */
 			/* @phan-suppress-next-line PhanUndeclaredConstant */
-			if ($stat['type'] == NET_SFTP_TYPE_REGULAR) {
+			if ((int) $stat['type'] === NET_SFTP_TYPE_REGULAR) {
 				return 'file';
 			}
 
 			/* ToDo: Investigate if NET_SFTP_TYPE_DIRECTORY is an available constant */
 			/* @phan-suppress-next-line PhanUndeclaredConstant */
-			if ($stat['type'] == NET_SFTP_TYPE_DIRECTORY) {
+			if ((int) $stat['type'] === NET_SFTP_TYPE_DIRECTORY) {
 				return 'dir';
 			}
 		} catch (\Exception $e) {
