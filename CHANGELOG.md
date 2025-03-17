@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.15.2](#changelog-for-owncloud-core-10152-2025-03-11)
 * [Changelog for 10.15.1](#changelog-for-owncloud-core-10151-2025-03-03)
 * [Changelog for 10.15.0](#changelog-for-owncloud-core-10150-2024-06-18)
 * [Changelog for 10.14.0](#changelog-for-owncloud-core-10140-2024-02-19)
@@ -23,6 +24,7 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+
 # Changelog for ownCloud Core [unreleased] (UNRELEASED)
 
 The following sections list the changes in ownCloud core unreleased relevant to
@@ -30,76 +32,23 @@ ownCloud admins and users.
 
 [unreleased]: https://github.com/owncloud/core/compare/v10.15.1...master
 
+# Changelog for ownCloud Core [10.15.2] (2025-03-11)
+
+The following sections list the changes in ownCloud core 10.15.2 relevant to
+ownCloud admins and users.
+
+[10.15.2]: https://github.com/owncloud/core/compare/v10.15.1...v10.15.2
+
+
 ## Summary
 
 * Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
-* Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
-* Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
-* Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
-* Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
 
 ## Details
 
 * Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
 
    https://github.com/owncloud/core/pull/41358
-
-* Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
-
-   In case a shared storage is not available in certain situations no folder
-   listing would be shown to the user.
-
-   https://github.com/owncloud/core/pull/41338
-
-* Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
-
-   The following have been updated: - doctrine/deprecations (1.1.3 to 1.1.4) -
-   guzzlehttp/guzzle (7.8.1 to 7.9.2) - guzzlehttp/promises (2.0.3 to 2.0.4) -
-   icewind/smb (3.6.0 to 3.7.0) - icewind/streams (0.7.7 to 0.7.8) -
-   laravel/serializable-closure (1.3.3 to 1.3.7) - league/mime-type-detection
-   (1.15.0 to 1.16.0) - mikey179/vfsstream (1.6.11 to 1.6.12) - monolog/monolog
-   (2.9.3 to 2.10.0) - pear/pear-core-minimal (v1.10.15 to v1.10.16) -
-   phpseclib/phpseclib (3.0.39 to 3.0.43) - sabre/dav (4.6.0 to 4.7.0) -
-   sabre/event (5.1.4 to 5.1.7) - sabre/http (5.1.10 to 5.1.12) - sabre/uri (2.3.3
-   t0 2.3.4) - sabre/vobject (4.5.4 to 4.5.6) - sabre/xml (2.2.7 to 2.2.11) -
-   symfony/console (5.4.40 to 5.4.47) - symfony/deprecation-contracts (2.5.3 to
-   2.5.4) - symfony/event-dispatcher (5.4.40 to 5.4.45) -
-   symfony/event-dispatcher-contracts (2.5.3 to 2.5.4) - symfony/polyfill-php80
-   (1.29.0 to 1.31.0) - symfony/process (v5.4.40 to v5.4.47) - symfony/routing
-   (5.4.40 to 5.4.48) - symfony/service-contracts (2.5.3 to 2.5.4) - symfony/string
-   (5.4.40 to 5.4.47) - symfony/translation (5.4.40 to 5.4.45) -
-   symfony/translation-contracts (2.5.3 to 2.5.4)
-
-   https://github.com/owncloud/core/pull/41287
-   https://github.com/owncloud/core/pull/41297
-   https://github.com/owncloud/core/pull/41306
-   https://github.com/owncloud/core/pull/41307
-   https://github.com/owncloud/core/pull/41315
-   https://github.com/owncloud/core/pull/41320
-   https://github.com/owncloud/core/pull/41327
-   https://github.com/owncloud/core/pull/41329
-   https://github.com/owncloud/core/pull/41333
-   https://github.com/owncloud/core/pull/41334
-   https://github.com/owncloud/core/pull/41337
-   https://github.com/owncloud/core/pull/41341
-   https://github.com/owncloud/core/pull/41344
-   https://github.com/owncloud/core/pull/41345
-
-* Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
-
-   To avoid user confusion the share dialog informs the user that password policy
-   can apply in case enabled.
-
-   https://github.com/owncloud/core/pull/41314
-
-* Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
-
-   Now the minimum characters input required is 2 for Chinese/Japanese inputs when
-   performing global search.
-
-   https://github.com/owncloud/core/issues/25021
-   https://github.com/owncloud/core/issues/9916
-   https://github.com/owncloud/core/pull/41328
 
 # Changelog for ownCloud Core [10.15.1] (2025-03-03)
 
