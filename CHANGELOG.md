@@ -123,17 +123,17 @@ ownCloud admins and users.
 
 ## Summary
 
-* Bugfix - Prevent access to internal app config data: [#41338](https://github.com/owncloud/core/pull/41338)
+* Bugfix - Prevent access to internal app config data: [#41355](https://github.com/owncloud/core/pull/41355)
 
 ## Details
 
-* Bugfix - Prevent access to internal app config data: [#41338](https://github.com/owncloud/core/pull/41338)
+* Bugfix - Prevent access to internal app config data: [#41355](https://github.com/owncloud/core/pull/41355)
 
    Prevent access to app config where the key is prefixed with remote_ and public_
    via the http api as these are internal configuration settings which are not to
    be exposed via the network.
 
-   https://github.com/owncloud/core/pull/41338
+   https://github.com/owncloud/core/pull/41355
 
 # Changelog for ownCloud Core [10.15.0] (2024-06-18)
 
