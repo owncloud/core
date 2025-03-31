@@ -96,6 +96,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s slettet %1$s",
     "You restored %1$s" : "Du gjenopprettet %1$s",
     "%2$s restored %1$s" : "%2$s gjenopprettet %1$s",
+    "%2$s moved %3$s to %1$s" : "%2$s flyttet %3$s til %1$s",
     "Changed by %2$s" : "Endret av %2$s",
     "Deleted by %2$s" : "Slettet av %2$s",
     "Restored by %2$s" : "Gjenopprettet av %2$s",
