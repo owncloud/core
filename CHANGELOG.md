@@ -49,7 +49,7 @@ ownCloud admins and users.
 
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 
-   The following have been updated: - doctrine/deprecations (1.1.3 to 1.1.4) -
+   The following have been updated: - doctrine/deprecations (1.1.3 to 1.1.5) -
    google/apiclient (v2.16.0 to v2.16.1) - google/auth (v1.37.1 to v1.37.2) -
    guzzlehttp/guzzle (7.8.1 to 7.9.3) - guzzlehttp/promises (2.0.3 to 2.2.0) -
    guzzlehttp/psr7 (2.7.0 to 2.7.1) - icewind/smb (3.6.0 to 3.7.0) -
@@ -59,7 +59,7 @@ ownCloud admins and users.
    1.13.0) - pear/pear-core-minimal (v1.10.15 to v1.10.16) - phpseclib/phpseclib
    (3.0.39 to 3.0.43) - sabre/dav (4.6.0 to 4.7.0) - sabre/event (5.1.4 to 5.1.7) -
    sabre/http (5.1.10 to 5.1.12) - sabre/uri (2.3.3 t0 2.3.4) - sabre/vobject
-   (4.5.4 to 4.5.6) - sabre/xml (2.2.7 to 2.2.11) - symfony/console (5.4.40 to
+   (4.5.4 to 4.5.7) - sabre/xml (2.2.7 to 2.2.11) - symfony/console (5.4.40 to
    5.4.47) - symfony/deprecation-contracts (2.5.3 to 2.5.4) -
    symfony/event-dispatcher (5.4.40 to 5.4.45) - symfony/event-dispatcher-contracts
    (2.5.3 to 2.5.4) - symfony/polyfill-php80 (1.29.0 to 1.31.0) - symfony/process
@@ -83,6 +83,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41344
    https://github.com/owncloud/core/pull/41345
    https://github.com/owncloud/core/pull/41363
+   https://github.com/owncloud/core/pull/41366
 
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 
