@@ -87,10 +87,16 @@ class Group implements IGroup {
 		$this->displayName = $displayName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getGID() {
 		return $this->gid;
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function getDisplayName() {
 		if ($this->displayName === null) {
 			return $this->gid;
