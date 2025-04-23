@@ -2438,10 +2438,10 @@ trait Sharing {
 
 		$this->getShareData($user, $share_id);
 		foreach ($bodyRows as $field => $value) {
-			if ($type === "user" && \in_array($field, ["share_with"])) {
+			if ($type === "user" && $field == "share_with") {
 				$value = $this->getActualUsername($value);
 			}
-			if (\in_array($field, ["uid_owner"])) {
+			if ($field == "uid_owner") {
 				$value = $this->getActualUsername($value);
 			}
 			$value = $this->replaceValuesFromTable($field, $value);

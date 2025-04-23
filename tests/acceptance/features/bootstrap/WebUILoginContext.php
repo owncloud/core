@@ -733,7 +733,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$goodToken = \array_pop($linkParts);
 		// reverse the token string, an easy way to make the token invalid
 		$invalidToken = \strrev($goodToken);
-		\array_push($linkParts, $invalidToken);
+		$linkParts[] = $invalidToken;
 		$linkParts[] = $username;
 		$adjustedLink = \implode('/', $linkParts);
 		$this->visitPath($adjustedLink);
