@@ -66,6 +66,8 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s ha esborrat %1$s",
     "You restored %1$s" : "Has restaurat %1$s",
     "%2$s restored %1$s" : "%2$s ha restaurat %1$s",
+    "%2$s renamed %3$s to %1$s" : "%2$s ha renombrat %3$s a %1$s",
+    "%2$s moved %3$s to %1$s" : "%2$s ha mogut %3$s cap a %1$s",
     "Upload (max. %s)" : "Pujada (màx. %s)",
     "Settings" : "Arranjament",
     "Show hidden files" : "Mostrar fitxers ocults",
