@@ -26,7 +26,7 @@ The following have been updated:
 - symfony/deprecation-contracts (2.5.3 to 2.5.4)
 - symfony/event-dispatcher (5.4.40 to 5.4.45)
 - symfony/event-dispatcher-contracts (2.5.3 to 2.5.4)
-- symfony/polyfill-php80 (1.29.0 to 1.31.0)
+- symfony/polyfill-php80 (1.29.0 to 1.32.0)
 - symfony/process (v5.4.40 to v5.4.47)
 - symfony/routing (5.4.40 to 5.4.48)
 - symfony/service-contracts (2.5.3 to 2.5.4)
@@ -50,3 +50,4 @@ https://github.com/owncloud/core/pull/41344
 https://github.com/owncloud/core/pull/41345
 https://github.com/owncloud/core/pull/41363
 https://github.com/owncloud/core/pull/41366
+https://github.com/owncloud/core/pull/41371
