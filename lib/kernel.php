@@ -571,7 +571,6 @@ class OC {
 
 		self::setRequiredIniValues();
 		self::handleAuthHeaders();
-		self::registerAutoloaderCache();
 
 		OC_Util::isSetLocaleWorking();
 
@@ -815,24 +814,6 @@ class OC {
 			OC_Hook::connect('OC_User', 'post_deleteUser', 'OC\Share20\Hooks', 'post_deleteUser');
 			OC_Hook::connect('OC_User', 'post_removeFromGroup', 'OC\Share20\Hooks', 'post_removeFromGroup');
 			OC_Hook::connect('OC_User', 'post_deleteGroup', 'OC\Share20\Hooks', 'post_deleteGroup');
-		}
-	}
-
-	protected static function registerAutoloaderCache() {
-		// The class loader takes an optional low-latency cache, which MUST be
-		// namespaced. The instanceid is used for namespacing, but might be
-		// unavailable at this point. Furthermore, it might not be possible to
-		// generate an instanceid via \OC_Util::getInstanceId() because the
-		// config file may not be writable. As such, we only register a class
-		// loader cache if instanceid is available without trying to create one.
-		$instanceId = \OC::$server->getSystemConfig()->getValue('instanceid', null);
-		if ($instanceId) {
-			try {
-				$memcacheFactory = \OC::$server->getMemCacheFactory();
-				'@phan-var \OC\MemCache\Factory $memcacheFactory';
-				self::$loader->setMemoryCache($memcacheFactory->createLocal('Autoloader'));
-			} catch (\Exception $ex) {
-			}
 		}
 	}
 
