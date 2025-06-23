@@ -1,0 +1,5 @@
+Change: No longer store auto loader information in any memory cache
+
+With composer managing auto loading for a long time this is no longer necessary.
+
+https://github.com/owncloud/core/pull/41376

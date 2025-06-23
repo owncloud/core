@@ -38,13 +38,6 @@ class Autoloader {
 	private $validRoots = [];
 
 	/**
-	 * Optional low-latency memory cache for class to path mapping.
-	 *
-	 * @var \OC\Memcache\Cache
-	 */
-	protected $memoryCache;
-
-	/**
 	 * Autoloader constructor.
 	 *
 	 * @param string[] $validRoots
@@ -120,10 +113,6 @@ class Autoloader {
 	 */
 	public function load($class) {
 		$pathsToRequire = null;
-		if ($this->memoryCache) {
-			$pathsToRequire = $this->memoryCache->get($class);
-		}
-
 		if (\class_exists($class, false)) {
 			return false;
 		}
@@ -137,10 +126,6 @@ class Autoloader {
 					$pathsToRequire[] = $fullPath;
 				}
 			}
-
-			if ($this->memoryCache) {
-				$this->memoryCache->set($class, $pathsToRequire, 60); // cache 60 sec
-			}
 		}
 
 		foreach ($pathsToRequire as $fullPath) {
@@ -148,14 +133,5 @@ class Autoloader {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Sets the optional low-latency cache for class to path mapping.
-	 *
-	 * @param \OC\Memcache\Cache $memoryCache Instance of memory cache.
-	 */
-	public function setMemoryCache(\OC\Memcache\Cache $memoryCache = null) {
-		$this->memoryCache = $memoryCache;
 	}
 }
