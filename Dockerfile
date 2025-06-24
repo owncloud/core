@@ -22,6 +22,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
  && npm install -g yarn \
  && rm -rf /var/lib/apt/lists/*
 
+ENV SERVER_NAME=localhost
+ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_IGNORE_PLATFORM_REQS=1
 
 WORKDIR /var/www/html
@@ -31,6 +33,8 @@ RUN git config --global --add safe.directory /var/www/html
 COPY . .
 
 RUN make install-composer-release-deps install-nodejs-deps
+
+RUN printf "ServerName ${SERVER_NAME}\n" > /etc/apache2/conf-available/servername.conf && a2enconf servername
 
 RUN chown -R www-data:www-data /var/www/html/
 
