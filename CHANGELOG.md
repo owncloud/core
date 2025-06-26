@@ -64,13 +64,13 @@ ownCloud admins and users.
    icewind/streams (0.7.7 to 0.7.8) - laravel/serializable-closure (1.3.3 to 1.3.7)
    - league/mime-type-detection (1.15.0 to 1.16.0) - mikey179/vfsstream (1.6.11 to
    1.6.12) - monolog/monolog (2.9.3 to 2.10.0) - myclabs/deep-copy (1.12.1 to
-   1.13.0) - pear/pear-core-minimal (v1.10.15 to v1.10.16) - phpseclib/phpseclib
-   (3.0.39 to 3.0.43) - sabre/dav (4.6.0 to 4.7.0) - sabre/event (5.1.4 to 5.1.7) -
+   1.13.1) - pear/pear-core-minimal (v1.10.15 to v1.10.16) - phpseclib/phpseclib
+   (3.0.39 to 3.0.45) - sabre/dav (4.6.0 to 4.7.0) - sabre/event (5.1.4 to 5.1.7) -
    sabre/http (5.1.10 to 5.1.12) - sabre/uri (2.3.3 t0 2.3.4) - sabre/vobject
    (4.5.4 to 4.5.7) - sabre/xml (2.2.7 to 2.2.11) - symfony/console (5.4.40 to
    5.4.47) - symfony/deprecation-contracts (2.5.3 to 2.5.4) -
    symfony/event-dispatcher (5.4.40 to 5.4.45) - symfony/event-dispatcher-contracts
-   (2.5.3 to 2.5.4) - symfony/polyfill-php80 (1.29.0 to 1.31.0) - symfony/process
+   (2.5.3 to 2.5.4) - symfony/polyfill-php80 (1.29.0 to 1.32.0) - symfony/process
    (v5.4.40 to v5.4.47) - symfony/routing (5.4.40 to 5.4.48) -
    symfony/service-contracts (2.5.3 to 2.5.4) - symfony/string (5.4.40 to 5.4.47) -
    symfony/translation (5.4.40 to 5.4.45) - symfony/translation-contracts (2.5.3 to
@@ -92,6 +92,7 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41345
    https://github.com/owncloud/core/pull/41363
    https://github.com/owncloud/core/pull/41366
+   https://github.com/owncloud/core/pull/41377
 
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 
