@@ -34,6 +34,7 @@ ownCloud admins and users.
 ## Summary
 
 * Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
+* Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 * Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
@@ -46,6 +47,13 @@ ownCloud admins and users.
    listing would be shown to the user.
 
    https://github.com/owncloud/core/pull/41338
+
+* Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
+
+   Remote services such as webdav, caldav, etc, will be loaded from the app or from
+   a hardcoded list.
+
+   https://github.com/owncloud/core/pull/41374
 
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 
