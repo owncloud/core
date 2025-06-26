@@ -21,13 +21,13 @@
  *
  */
 
-namespace Page\FilesPageElement;
+namespace Tests\Acceptance\Page\FilesPageElement;
 
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use Exception;
-use Page\OwncloudPage;
-use Page\FilesPageElement\LockDialogElement\LockEntry;
+use Tests\Acceptance\Page\OwncloudPage;
+use Tests\Acceptance\Page\FilesPageElement\LockDialogElement\LockEntry;
 
 /**
  * The Lock Dialog, lists all the locks and gives a possibility to delete them
