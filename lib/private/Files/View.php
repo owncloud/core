@@ -1933,6 +1933,13 @@ class View {
 			throw new InvalidPathException($l10n->t('Dot files are not allowed'));
 		}
 
+		// html tags are dangerous
+		$decodedName = \urldecode($fileName);
+		$strippedName = \strip_tags($decodedName);
+		if ($strippedName !== $decodedName) {
+			throw new InvalidPathException($l10n->t('Filename not allowed'));
+		}
+
 		$matches = [];
 
 		if (\preg_match('/' . FileInfo::BLACKLIST_FILES_REGEX . '/', $fileName, $matches) !== 0) {
