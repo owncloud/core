@@ -86,11 +86,10 @@ function handleException($e) {
 }
 
 /**
- * @param $service
- * @return string
+ * @return array
  */
-function resolveService($service) {
-	$services = [
+function getHardcodedServices() {
+	return [
 		'webdav' => 'dav/appinfo/v1/webdav.php',
 		'dav' => 'dav/appinfo/v2/remote.php',
 		'caldav' => 'dav/appinfo/v1/caldav.php',
@@ -99,6 +98,14 @@ function resolveService($service) {
 		'contacts' => 'dav/appinfo/v1/carddav.php',
 		'files' => 'dav/appinfo/v1/webdav.php',
 	];
+}
+
+/**
+ * @param $service
+ * @return string
+ */
+function resolveService($service) {
+	$services = getHardcodedServices();
 	if (isset($services[$service])) {
 		return $services[$service];
 	}
@@ -136,6 +143,10 @@ try {
 		throw new RemoteException('Path not found', OC_Response::STATUS_NOT_FOUND);
 	}
 
+	if (\strpos($file, '../') !== false || \strpos($file, '/..') !== false) {
+		throw new RemoteException('Path not allowed');
+	}
+
 	// force language as given in the http request
 	\OC::$server->getL10NFactory()->setLanguageFromRequest();
 
@@ -151,6 +162,9 @@ try {
 
 	switch ($app) {
 		case 'core':
+			if (!\in_array($service, \array_keys(getHardcodedServices()), true)) {
+				throw new RemoteException('Service not allowed');
+			}
 			$file =  OC::$SERVERROOT .'/'. $file;
 			break;
 		default:
