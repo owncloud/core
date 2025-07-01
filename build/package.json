@@ -10,7 +10,7 @@
   "homepage": "https://github.com/owncloud/",
   "contributors": [],
   "dependencies": {
-    "@bower_components/backbone": "jashkenas/backbone#1.6.0",
+    "@bower_components/backbone": "jashkenas/backbone#1.6.1",
     "@bower_components/blueimp-md5": "blueimp/JavaScript-MD5#1.0.1",
     "@bower_components/bootstrap": "twbs/bootstrap#3.4.1",
     "@bower_components/bowser": "ded/bowser#1.9.4",
