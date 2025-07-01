@@ -189,9 +189,10 @@
     "@babel/helper-validator-identifier" "^7.24.6"
     to-fast-properties "^2.0.0"
 
-"@bower_components/backbone@jashkenas/backbone#1.6.0":
-  version "1.6.0"
-  resolved "https://codeload.github.com/jashkenas/backbone/tar.gz/89cbe401f353d3543108ca52ff6924d650cb500d"
+"@bower_components/backbone@jashkenas/backbone#1.6.1":
+  version "1.6.1"
+  uid da75718e896e52e84aa1f0411ba67fafcdcf6af3
+  resolved "https://codeload.github.com/jashkenas/backbone/tar.gz/da75718e896e52e84aa1f0411ba67fafcdcf6af3"
   dependencies:
     underscore ">=1.8.3"
 
