@@ -14,6 +14,7 @@
 /build/phan.phar
 /build/phpstan.phar*
 /core/vendor
+/updater/
 
 # ignore all apps except core ones
 /apps*/*

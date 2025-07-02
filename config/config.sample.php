@@ -1711,6 +1711,12 @@ $CONFIG = [
 'upgrade.disable-web' => false,
 
 /**
+ * Explicitly enable the web updater - used by /updater/
+ * By default, it is disabled.
+ */
+'web-updater.enabled' => false,
+
+/**
  * Define whether to enable automatic update of market apps
  * Set to `false` to disable.
  */
