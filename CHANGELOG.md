@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.15.3](#changelog-for-owncloud-core-10153-2025-07-04)
 * [Changelog for 10.15.2](#changelog-for-owncloud-core-10152-2025-03-11)
 * [Changelog for 10.15.1](#changelog-for-owncloud-core-10151-2025-03-03)
 * [Changelog for 10.15.0](#changelog-for-owncloud-core-10150-2024-06-18)
@@ -29,29 +30,16 @@
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.15.2...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.15.3...master
 
 ## Summary
 
-* Bugfix - Disable web updater: [#41149](https://github.com/owncloud/core/issues/41149)
 * Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
-* Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 * Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
 * Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
 
 ## Details
-
-* Bugfix - Disable web updater: [#41149](https://github.com/owncloud/core/issues/41149)
-
-   The web updater is a relic of the past and not recommended for a long time. At
-   the end it can cause more pain than help.
-
-   In addition the use of the web updater is discouraged by removing the
-   integration in the admin ui.
-
-   https://github.com/owncloud/core/issues/41149
-   https://github.com/owncloud/core/pull/41385
 
 * Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
 
@@ -59,13 +47,6 @@ ownCloud admins and users.
    listing would be shown to the user.
 
    https://github.com/owncloud/core/pull/41338
-
-* Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
-
-   Remote services such as webdav, caldav, etc, will be loaded from the app or from
-   a hardcoded list.
-
-   https://github.com/owncloud/core/pull/41374
 
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
 
@@ -122,6 +103,38 @@ ownCloud admins and users.
    https://github.com/owncloud/core/issues/25021
    https://github.com/owncloud/core/issues/9916
    https://github.com/owncloud/core/pull/41328
+
+# Changelog for ownCloud Core [10.15.3] (2025-07-04)
+
+The following sections list the changes in ownCloud core 10.15.3 relevant to
+ownCloud admins and users.
+
+[10.15.3]: https://github.com/owncloud/core/compare/v10.15.2...v10.15.3
+
+## Summary
+
+* Bugfix - Disable web updater: [#41149](https://github.com/owncloud/core/issues/41149)
+* Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
+
+## Details
+
+* Bugfix - Disable web updater: [#41149](https://github.com/owncloud/core/issues/41149)
+
+   The web updater is a relic of the past and not recommended for a long time. At
+   the end it can cause more pain than help.
+
+   In addition the use of the web updater is discouraged by removing the
+   integration in the admin ui.
+
+   https://github.com/owncloud/core/issues/41149
+   https://github.com/owncloud/core/pull/41385
+
+* Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
+
+   Remote services such as webdav, caldav, etc, will be loaded from the app or from
+   a hardcoded list.
+
+   https://github.com/owncloud/core/pull/41374
 
 # Changelog for ownCloud Core [10.15.2] (2025-03-11)
 
