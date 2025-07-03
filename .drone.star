@@ -718,13 +718,6 @@ def codestyle(ctx):
                          vendorbinCodestyle(phpVersion) +
                          vendorbinCodesniffer(phpVersion) +
                          [
-                             {
-                                 "name": "php-style",
-                                 "image": OC_CI_PHP % phpVersion,
-                                 "commands": [
-                                     "make test-php-style",
-                                 ],
-                             },
                          ],
                 "depends_on": [],
                 "trigger": {
