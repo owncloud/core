@@ -33,6 +33,7 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Disable web updater: [#41149](https://github.com/owncloud/core/issues/41149)
 * Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
 * Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
 * Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
@@ -40,6 +41,17 @@ ownCloud admins and users.
 * Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
 
 ## Details
+
+* Bugfix - Disable web updater: [#41149](https://github.com/owncloud/core/issues/41149)
+
+   The web updater is a relic of the past and not recommended for a long time. At
+   the end it can cause more pain than help.
+
+   In addition the use of the web updater is discouraged by removing the
+   integration in the admin ui.
+
+   https://github.com/owncloud/core/issues/41149
+   https://github.com/owncloud/core/pull/41385
 
 * Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
 
