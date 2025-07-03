@@ -27,7 +27,6 @@ namespace OCA\UpdateNotification\Tests\Controller;
 
 use OCA\UpdateNotification\Controller\AdminController;
 use OCA\UpdateNotification\UpdateChecker;
-use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\IJobList;
@@ -121,7 +120,6 @@ class AdminControllerTest extends TestCase {
 			'currentChannel' => \OCP\Util::getChannel(),
 			'channels' => $channels,
 			'newVersionString' => 'ownCloud 10.7.0',
-			'changeLogUrl' => 'https://owncloud.com/changelog/server/#10.7.0',
 			'notify_groups' => 'admin'
 		];
 
@@ -166,39 +164,11 @@ class AdminControllerTest extends TestCase {
 			'currentChannel' => \OCP\Util::getChannel(),
 			'channels' => $channels,
 			'newVersionString' => '',
-			'changeLogUrl' => null,
 			'notify_groups' => 'admin',
 		];
 
 		$expected = new TemplateResponse('updatenotification', 'admin', $params, '');
 		$this->assertEquals($expected, $this->adminController->displayPanel());
-	}
-
-	public function testCreateCredentials() {
-		$this->jobList
-			->expects($this->once())
-			->method('add')
-			->with('OCA\UpdateNotification\ResetTokenBackgroundJob');
-		$this->secureRandom
-			->expects($this->once())
-			->method('generate')
-			->with(64)
-			->willReturn('MyGeneratedToken');
-		$this->config
-			->expects($this->once())
-			->method('setSystemValue')
-			->with('updater.secret');
-		$this->timeFactory
-			->expects($this->once())
-			->method('getTime')
-			->willReturn(12345);
-		$this->config
-			->expects($this->once())
-			->method('setAppValue')
-			->with('core', 'updater.secret.created', 12345);
-
-		$expected = new DataResponse('MyGeneratedToken');
-		$this->assertEquals($expected, $this->adminController->createCredentials());
 	}
 
 	public function testGetPriority() {
