@@ -24,6 +24,5 @@ use OCA\UpdateNotification\AppInfo\Application;
 
 $application = new Application();
 $application->registerRoutes($this, ['routes' => [
-	['name' => 'Admin#createCredentials', 'url' => '/credentials', 'verb' => 'GET'],
 	['name' => 'Admin#setChannel', 'url' => '/channel', 'verb' => 'POST'],
 ]]);

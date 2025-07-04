@@ -1,0 +1,10 @@
+Bugfix: Disable web updater
+
+The web updater is a relic of the past and not recommended for a long time.
+At the end it can cause more pain than help.
+
+In addition the use of the web updater is discouraged by removing the
+integration in the admin ui.
+
+https://github.com/owncloud/core/issues/41149
+https://github.com/owncloud/core/pull/41385
