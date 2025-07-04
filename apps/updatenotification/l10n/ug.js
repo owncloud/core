@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "% 1 $ s نىڭ% 2 $ s نەشرىگە يېڭىلىغىلى بولىدۇ.",
     "Updater" : "يېڭىلاش",
     "A new version is available: %s" : "يېڭى نەشرى بار:% s",
-    "Open updater" : "يېڭىلاشنى ئېچىڭ",
-    "Show changelog" : "Changelog نى كۆرسەت",
     "Your version is up to date." : "نەشرىڭىز يېڭىلاندى.",
     "Checked on %s" : "% S تەكشۈرۈلدى",
     "Update channel:" : "قانالنى يېڭىلاش:",

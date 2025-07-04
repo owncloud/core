@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "Je dostupná aktualizace pro %1$s na verzi %2$s.",
     "Updater" : "Automatické aktualizace",
     "A new version is available: %s" : "Je dostupná nová verze: %s",
-    "Open updater" : "Otevřít program aktualizací",
-    "Show changelog" : "Zobrazit seznam změn",
     "Your version is up to date." : "Používáte nejnovější verzi.",
     "Checked on %s" : "Zkontrolováno %s",
     "Update channel:" : "Aktualizovat kanál:",

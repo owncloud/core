@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "Upfærsla %1$s í útgáfu %2$s er tiltæk.",
     "Updater" : "Uppfærslustýring",
     "A new version is available: %s" : "Ný útgáfa er tiltæk: %s",
-    "Open updater" : "Opna uppfærslustýringu",
-    "Show changelog" : "Sýna breytingaskrá",
     "Your version is up to date." : "Útgáfan þín er af nýjustu gerð.",
     "Checked on %s" : "Athugað þann %s",
     "Update channel:" : "Uppfærslurás:",

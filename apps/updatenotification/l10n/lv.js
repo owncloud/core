@@ -6,7 +6,6 @@ OC.L10N.register(
     "ownCloud core" : "ownCloud kodols",
     "Update for %1$s to version %2$s is available." : "Ir pieejams atjauninājums no %1$s uz %2$s ",
     "A new version is available: %s" : "Pieejama jauna versija: %s",
-    "Open updater" : "Atvērt atjauninātāju",
     "Your version is up to date." : "Jūsu versija ir atjaunināta",
     "Checked on %s" : "Pārbaudīts %s"
 },

@@ -5,7 +5,6 @@ OC.L10N.register(
     "Updated channel" : "Canal actualizat",
     "Updater" : "Unealtă pentru actualizare",
     "A new version is available: %s" : "O nouă versiune este disponibilă: %s",
-    "Open updater" : "Deschide unealta pentru actualizare",
     "Your version is up to date." : "Versiunea curentă este la zi.",
     "Checked on %s" : "Verificat la %s",
     "Update channel:" : "Canal pentru actualizări:",

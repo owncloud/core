@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "עדכון של %1$s לגרסה %2$s זמין.",
     "Updater" : "מעדכן",
     "A new version is available: %s" : "קיימת גרסה מעודכנת: %s",
-    "Open updater" : "פתיחת מעדכן",
-    "Show changelog" : "הצגת לוג שינויים",
     "Your version is up to date." : "הגרסה שבידך מעודכנת.",
     "Checked on %s" : "נבדק לאחרונה ב- %s",
     "Update channel:" : "עדכון ערוץ:",

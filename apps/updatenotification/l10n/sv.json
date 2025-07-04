@@ -6,8 +6,6 @@
     "Update for %1$s to version %2$s is available." : "Uppdatering för %1$s till version %2$s finns tillgänglig.",
     "Updater" : "Uppdaterare",
     "A new version is available: %s" : "En ny version är tillgänglig: %s",
-    "Open updater" : "Öppna uppdateraren",
-    "Show changelog" : "Visa ändringslogg",
     "Your version is up to date." : "Din version är uppdaterad.",
     "Checked on %s" : "Senast kontrollerad %s",
     "Update channel:" : "Uppdateringskanal:",

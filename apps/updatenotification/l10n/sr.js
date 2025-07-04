@@ -5,7 +5,6 @@ OC.L10N.register(
     "Updated channel" : "Канал ажуриран",
     "Updater" : "Ажурирање",
     "A new version is available: %s" : "Доступна је нова верзија: %s",
-    "Open updater" : "Отвори ажурирање",
     "Your version is up to date." : "Ваша верзија је ажурна.",
     "Checked on %s" : "Проверено %s",
     "Update channel:" : "Канал за ажурирање:",

@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "Доступне оновлення з версії %1$s до %2$s.",
     "Updater" : "Оновлення",
     "A new version is available: %s" : "Доступна нова версія: %s",
-    "Open updater" : "Відкрити меню оновлення",
-    "Show changelog" : "Показати перелік змін",
     "Your version is up to date." : "Ви використовуєте останню версію ownCloud.",
     "Checked on %s" : "Остання перевірка відбулася %s",
     "Update channel:" : "Канал оновлення:",

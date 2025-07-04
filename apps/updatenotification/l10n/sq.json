@@ -6,8 +6,6 @@
     "Update for %1$s to version %2$s is available." : "Është gati përditësimi për %1$s në version %2$s.",
     "Updater" : "Përditësues",
     "A new version is available: %s" : "Ka gati një version të ri: %s",
-    "Open updater" : "Hapni përditësuesin",
-    "Show changelog" : "Shfaq regjistër ndryshimesh",
     "Your version is up to date." : "Versioni juaj është i përditësuar.",
     "Checked on %s" : "Kontrolluar më %s",
     "Update channel:" : "Kanal përditësimesh:",

@@ -6,8 +6,6 @@
     "Update for %1$s to version %2$s is available." : "Kohteen %1$s päivitys versioon %2$s on saatavilla.",
     "Updater" : "Päivitysohjelma",
     "A new version is available: %s" : "Uusi versio on saatavilla: %s",
-    "Open updater" : "Avaa päivitysohjelma",
-    "Show changelog" : "Näytä muutosloki",
     "Your version is up to date." : "Versiosi on ajan tasalla.",
     "Checked on %s" : "Tarkistettu %s",
     "Update channel:" : "Päivityskanava:",
