@@ -16,6 +16,8 @@ OC.L10N.register(
     "Files" : "Файлы",
     "group" : "група",
     "via" : "праз",
+    "Could not move \"{file}\", target exists" : "Не ўдалося перамясціць \"{file}\", файл ужо існуе",
+    "Could not move \"{file}\"" : "Не ўдалося перамясціць \"{file}\"",
     "Name" : "Назва",
     "Size" : "Памер",
     "Modified" : "Зменены",

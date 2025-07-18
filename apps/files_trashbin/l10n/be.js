@@ -1,8 +1,10 @@
 OC.L10N.register(
     "files_trashbin",
     {
+    "Deleted files" : "Выдаленыя файлы",
     "Delete" : "Выдаліць",
     "Error" : "Памылка",
+    "No deleted files" : "Няма выдаленых файлаў",
     "Select all" : "Выбраць усе",
     "Name" : "Назва"
 },

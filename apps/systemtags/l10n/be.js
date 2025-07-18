@@ -1,6 +1,10 @@
 OC.L10N.register(
     "systemtags",
     {
+    "Tags" : "Тэгі",
+    "Select tags to filter by" : "Выберыце тэгі для фільтрацыі",
+    "Please select tags to filter by" : "Выберыце тэгі для фільтрацыі",
+    "No files found for the selected tags" : "Для выбраных тэгаў не знойдзена файлаў",
     "No files in here" : "Тут няма файлаў",
     "Name" : "Назва",
     "Size" : "Памер",

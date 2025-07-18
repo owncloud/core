@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Shared with you" : "Абагулена з вамі",
     "Shared with others" : "Абагулена з іншымі",
+    "Shared by link" : "Абагулена праз спасылку",
     "Uploading..." : "Абнаўленне...",
     "Cancel" : "Скасаваць",
     "Add" : "Дадаць",
