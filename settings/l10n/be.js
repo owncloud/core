@@ -57,6 +57,7 @@ OC.L10N.register(
     "You are using %s of %s (%s %%)" : "Вы выкарыстоўваеце %s з %s (%s %%)",
     "Sessions" : "Сеансы",
     "Browser" : "Браўзер",
+    "Most recent activity" : "Апошняя актыўнасць",
     "Name" : "Назва",
     "App name" : "Назва праграмы",
     "Done" : "Гатова",
