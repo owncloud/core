@@ -6,7 +6,7 @@
  * @author Paurakh Sharma Humagain <paurakh@jankaritech.com>
  * @copyright Copyright (c) 2018 Paurakh Sharma Humagain paurakh@jankaritech.com
  *
- * This code is free software: you can redistribute it and/or modify
+ * This code is Tests\Acceptance\free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
  * as published by the Free Software Foundation;
  * either version 3 of the License, or any later version.
@@ -21,7 +21,7 @@
  *
  */
 
-namespace Page;
+namespace Tests\Acceptance\Page;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
