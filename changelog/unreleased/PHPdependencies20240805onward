@@ -15,6 +15,7 @@ The following have been updated:
 - monolog/monolog (2.9.3 to 2.10.0)
 - myclabs/deep-copy (1.12.1 to 1.13.1)
 - pear/pear-core-minimal (v1.10.15 to v1.10.16)
+- pear/archive_tar (1.5.0 to 1.6.0)
 - phpseclib/phpseclib (3.0.39 to 3.0.46)
 - sabre/dav (4.6.0 to 4.7.0)
 - sabre/event (5.1.4 to 5.1.7)
@@ -52,3 +53,4 @@ https://github.com/owncloud/core/pull/41363
 https://github.com/owncloud/core/pull/41366
 https://github.com/owncloud/core/pull/41377
 https://github.com/owncloud/core/pull/41382
+https://github.com/owncloud/core/pull/41390
