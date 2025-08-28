@@ -157,7 +157,18 @@ OCA.Sharing.PublicApp = {
 			img.attr('src', OC.filePath('files_sharing', 'ajax', 'publicpreview.php') + '?' + OC.buildQueryString(params));
 			img.appendTo('#imgframe');
 		} else if (mimetype.substr(0, mimetype.indexOf('/')) !== 'video') {
-			img.attr('src', OC.Util.replaceSVGIcon(mimetypeIcon));
+			// Only allow mimetypeIcon to be a safe file path that ends with .svg
+			var safeMimetypeIcon = '';
+			if (
+				typeof mimetypeIcon === 'string'
+				&& mimetypeIcon.match(/^\/?[^"'<>]*\.svg$/)
+			) {
+				safeMimetypeIcon = OC.Util.replaceSVGIcon(mimetypeIcon);
+			} else {
+				// fallback to a default icon if validation fails
+				safeMimetypeIcon = OC.filePath('core', 'img', 'file.svg');
+			}
+			img.attr('src', safeMimetypeIcon);
 			img.attr('width', 128);
 			img.appendTo('#imgframe');
 		} else if (previewSupported === 'true') {
