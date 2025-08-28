@@ -31,6 +31,9 @@ describe('OCA.Files.Files tests', function() {
 				'.a',
 				'..a',
 				'.dotfile',
+				'.apart',
+				'apart',
+				'party',
 				'single\'quote',
 				'  spaces before',
 				'spaces after   ',
@@ -64,7 +67,9 @@ describe('OCA.Files.Files tests', function() {
 				'/file',
 				'folder/file',
 				'foo.part',
-				'bar.filepart'
+				'bar.filepart',
+				'.part',
+				'.filepart'
 			];
 			for ( var i = 0; i < fileNames.length; i++ ) {
 				var threwException = false;
