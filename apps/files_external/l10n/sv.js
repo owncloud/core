@@ -15,6 +15,7 @@ OC.L10N.register(
     "Error generating key pair" : "Fel vid generering av nyckelpar",
     "All users. Type to select user or group." : "Alla användare. Skriv för att välja användare eller grupp.",
     "(group)" : "(grupp)",
+    "All users" : "Alla användare",
     "Compatibility with Mac NFD encoding (slow)" : "Kompativilitet med MAC NFD-omkodning (långsamt)",
     "Admin defined" : "Admin definerad",
     "Saved" : "Sparad",
