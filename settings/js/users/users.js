@@ -624,9 +624,9 @@ var UserList = {
 		// jquery.multiselect can only work with select+options in DOM ? We'll give jquery.multiselect what it wants...
 		var $groupsSelect;
 		if (isSubadminSelect) {
-			$groupsSelect = $('<select multiple="multiple" class="groupsselect multiselect button" title="' + placeholder + '"></select>');
+			$groupsSelect = $('<select multiple="multiple" class="groupsselect multiselect button" title="' + escapeHTML(placeholder) + '"></select>');
 		} else {
-			$groupsSelect = $('<select multiple="multiple" class="subadminsselect multiselect button" title="' + placeholder + '"></select>')
+			$groupsSelect = $('<select multiple="multiple" class="subadminsselect multiselect button" title="' + escapeHTML(placeholder) + '"></select>')
 		}
 
 		function createGroupItem(gid, group) {

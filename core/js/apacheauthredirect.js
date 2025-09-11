@@ -19,6 +19,30 @@
  $(document).ready(function() {
 
 	var redirect_url = document.getElementById('redirect_url').value;
-	window.location = redirect_url;
+	// Only allow safe same-origin or relative redirects
+	function isSafeRedirect(url) {
+		try {
+			// If url starts with "/", allow it (relative path)
+			if (url.startsWith("/")) {
+				return true;
+			}
+			// If absolute, check host and protocol
+			var loc = window.location;
+			var urlObj = new URL(url, loc.origin);
+			if (urlObj.origin === loc.origin && ["http:", "https:"].includes(urlObj.protocol)) {
+				return true;
+			}
+		} catch (e) {
+			// Malformed
+			return false;
+		}
+		return false;
+	}
+	if (isSafeRedirect(redirect_url)) {
+		window.location = redirect_url;
+	} else {
+		// Optionally, do not redirect or set to a safe default
+		console.warn("Unsafe redirect_url:", redirect_url);
+	}
 
 });
