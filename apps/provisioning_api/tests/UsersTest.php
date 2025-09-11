@@ -1770,7 +1770,6 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('GroupToAddTo')
 			->willReturn($targetGroup);
-		$this->setupBasicSubadminMock();
 		$this->groupManager
 			->method('isAdmin')
 			->with('unauthorizedUser')
@@ -1801,14 +1800,9 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('GroupToAddTo')
 			->willReturn($targetGroup);
-		$subAdminManager = $this->setupBasicSubadminMock();
 		$this->groupManager
 			->method('isAdmin')
 			->with('subadmin')
-			->willReturn(false);
-		$subAdminManager
-			->method('isSubAdminOfGroup')
-			->with($loggedInUser, $targetGroup)
 			->willReturn(false);
 
 		$expected = new Result(null, 104);
@@ -1845,11 +1839,6 @@ class UsersTest extends OriginalTest {
 				['subadmin', $subadminGroup],
 				['outsidegroup', $targetGroup]
 			]);
-		$subAdminManager = $this->setupBasicSubadminMock();
-		$subAdminManager
-			->method('isSubAdminofGroup')
-			->with($loggedInUser, $targetGroup)
-			->willReturn(false);
 		$this->groupManager
 			->method('isAdmin')
 			->with('subadmin')
@@ -1920,11 +1909,6 @@ class UsersTest extends OriginalTest {
 		$targetGroup
 			->method('addUser')
 			->with($targetUser);
-		$subAdminManager = $this->setupBasicSubadminMock();
-		$subAdminManager
-			->method('isSubAdminOfGroup')
-			->with($loggedInUser, $targetGroup)
-			->willReturn(true);
 
 		$expected = new Result(null, 104);
 		$this->assertEquals($expected, $this->api->addToGroup(['userid' => 'AnotherUser']));
