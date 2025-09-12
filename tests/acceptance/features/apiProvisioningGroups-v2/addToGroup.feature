@@ -205,6 +205,7 @@ Feature: add users to group
     Then the OCS status code should be "403"
     And the HTTP status code should be "403"
     And user "brand-new-user" should belong to group "brand-new-group"
+    And user "brand-new-user" should not belong to group "another-new-group"
 
   # merge this with scenario on line 62 once the issue is fixed
   @issue-31015 @skipOnLDAP @issue-product-284
