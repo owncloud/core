@@ -569,9 +569,6 @@ class OC {
 		@\ini_set('post_max_size', '10G');
 		@\ini_set('file_uploads', '50');
 
-		// disable phar handler
-		stream_wrapper_unregister("phar");
-
 		self::setRequiredIniValues();
 		self::handleAuthHeaders();
 		self::registerAutoloaderCache();
