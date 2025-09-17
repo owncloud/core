@@ -1,0 +1,6 @@
+Bugfix: The phar stream wrapper is disabled by default
+
+Previously, it was only disabled for non-cli access, but now it's disabled
+globally.
+
+https://github.com/owncloud/core/pull/41406
