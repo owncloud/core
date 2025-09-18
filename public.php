@@ -28,6 +28,7 @@
  */
 try {
 	require_once __DIR__ . '/lib/base.php';
+	stream_wrapper_unregister('phar'); // disable phar wrapper
 	if (\OCP\Util::needUpgrade()) {
 		// since the behavior of apps or remotes are unpredictable during
 		// an upgrade, return a 503 directly

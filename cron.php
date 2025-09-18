@@ -33,6 +33,7 @@
 
 require_once __DIR__ . '/lib/base.php';
 
+stream_wrapper_unregister('phar'); // disable phar wrapper
 if (!\OC::$CLI) {
 	$url = \OC::$server->getURLGenerator()->linkToRoute('core.Cron.run');
 	\header("Location: $url");

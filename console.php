@@ -54,6 +54,8 @@ try {
 	// set to run indefinitely if needed
 	\set_time_limit(0);
 
+	stream_wrapper_unregister('phar'); // disable phar wrapper
+
 	if (!OC::$CLI) {
 		echo "This script can be run from the command line only" . PHP_EOL;
 		exit(1);
