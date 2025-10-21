@@ -16,6 +16,3 @@ https://owncloud.com/contribute/design/
 3. Make sure create publicly accessible assets 
 4. Add your contributions to an issue and we promise we will review your contribution carefully and foster discussions
 
-**We encourage you to:**
-
-- Get in touch with the team by joining our public #server channel on [talk.owncloud.com](https://talk.owncloud.com/channel/server)
