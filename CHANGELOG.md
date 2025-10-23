@@ -1,6 +1,6 @@
 # Table of Contents
 
-* [Changelog for 10.16.0](#changelog-for-owncloud-core-10160-2025-10-17)
+* [Changelog for 10.16.0](#changelog-for-owncloud-core-10160-2025-10-23)
 * [Changelog for 10.15.3](#changelog-for-owncloud-core-10153-2025-07-04)
 * [Changelog for 10.15.2](#changelog-for-owncloud-core-10152-2025-03-11)
 * [Changelog for 10.15.1](#changelog-for-owncloud-core-10151-2025-03-03)
@@ -25,7 +25,7 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
-# Changelog for ownCloud Core [10.16.0] (2025-10-17)
+# Changelog for ownCloud Core [10.16.0] (2025-10-23)
 
 The following sections list the changes in ownCloud core 10.16.0 relevant to
 ownCloud admins and users.
