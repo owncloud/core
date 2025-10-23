@@ -545,9 +545,7 @@ def stagePipelines(ctx):
     return litmusPipelines + davPipelines + acceptancePipelines
 
 def afterCoveragePipelines(ctx):
-    return [
-        sonarAnalysis(ctx),
-    ]
+    return []
 
 def dependencies(ctx):
     pipelines = []
