@@ -22,6 +22,8 @@
  *
  */
 
+namespace Tests\Acceptance;
+
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\Assert;
