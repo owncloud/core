@@ -1,5 +1,6 @@
 # Table of Contents
 
+* [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
 * [Changelog for 10.16.0](#changelog-for-owncloud-core-10160-2025-10-23)
 * [Changelog for 10.15.3](#changelog-for-owncloud-core-10153-2025-07-04)
 * [Changelog for 10.15.2](#changelog-for-owncloud-core-10152-2025-03-11)
@@ -25,6 +26,26 @@
 * [Changelog for 10.4.1](#changelog-for-owncloud-core-1041-2020-03-30)
 * [Changelog for 10.4.0](#changelog-for-owncloud-core-1040-2020-02-10)
 * [Changelog for 10.3.2](#changelog-for-owncloud-core-1032-2019-12-04)
+# Changelog for ownCloud Core [unreleased] (UNRELEASED)
+
+The following sections list the changes in ownCloud core unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/core/compare/v10.16.0...master
+
+## Summary
+
+* Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
+
+## Details
+
+* Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
+
+   The following have been updated: - phpseclib/phpseclib (3.0.46 to 3.0.47) -
+   sabre/http (5.1.12 to 5.1.13)
+
+   https://github.com/owncloud/core/pull/41408
+
 # Changelog for ownCloud Core [10.16.0] (2025-10-23)
 
 The following sections list the changes in ownCloud core 10.16.0 relevant to
