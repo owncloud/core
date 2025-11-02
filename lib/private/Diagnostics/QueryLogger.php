@@ -47,7 +47,7 @@ class QueryLogger implements IQueryLogger {
 	/**
 	 * @inheritdoc
 	 */
-	public function startQuery($sql, array $params = null, array $types = null) {
+	public function startQuery($sql, ?array $params = null, ?array $types = null) {
 		if ($this->activated) {
 			$this->activeQuery = new Query($sql, $params ?? [], $this->getMicrotime());
 		}

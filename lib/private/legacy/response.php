@@ -285,7 +285,7 @@ class OC_Response {
 	 *
 	 * @return array
 	 */
-	public static function setCorsHeaders($userId, $domain, \OCP\IConfig $config = null, array $headers = []) {
+	public static function setCorsHeaders($userId, $domain, ?\OCP\IConfig $config = null, array $headers = []) {
 		if ($config === null) {
 			$config = \OC::$server->getConfig();
 		}
@@ -331,7 +331,7 @@ class OC_Response {
 	 * @param \OCP\IConfig|null $config
 	 * @return Sabre\HTTP\ResponseInterface $response
 	 */
-	public static function setOptionsRequestHeaders($response, $headers = [], \OCP\IConfig $config = null) {
+	public static function setOptionsRequestHeaders($response, $headers = [], ?\OCP\IConfig $config = null) {
 		// TODO: infer allowed verbs from existing known routes
 		$allHeaders['Access-Control-Allow-Headers'] = self::getAllowedCorsHeaders($config);
 		$allHeaders['Access-Control-Allow-Origin'] = ['*'];
@@ -382,7 +382,7 @@ class OC_Response {
 	 * @param \OCP\IConfig $config
 	 * @return array|mixed
 	 */
-	private static function getAllowedCorsHeaders(\OCP\IConfig $config = null) {
+	private static function getAllowedCorsHeaders(?\OCP\IConfig $config = null) {
 		if ($config === null) {
 			$config = \OC::$server->getConfig();
 		}

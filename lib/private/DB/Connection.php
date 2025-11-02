@@ -132,8 +132,8 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	public function __construct(
 		array $params,
 		Driver $driver,
-		Configuration $config = null,
-		EventManager $eventManager = null
+		?Configuration $config = null,
+		?EventManager $eventManager = null
 	) {
 		if (!isset($params['adapter'])) {
 			throw new \Exception('adapter not set');
@@ -185,7 +185,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
-	public function executeQuery($query, array $params = [], $types = [], QueryCacheProfile $qcp = null) {
+	public function executeQuery($query, array $params = [], $types = [], ?QueryCacheProfile $qcp = null) {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeQuery($query, $params, $types, $qcp);
@@ -272,7 +272,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return int number of inserted rows
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
-	public function insertIfNotExist($table, $input, array $compare = null) {
+	public function insertIfNotExist($table, $input, ?array $compare = null) {
 		return $this->adapter->insertIfNotExist($table, $input, $compare);
 	}
 
@@ -287,7 +287,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return int number of affected rows
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
-	public function upsert($table, $input, array $compare = null) {
+	public function upsert($table, $input, ?array $compare = null) {
 		return $this->adapter->upsert($table, $input, $compare);
 	}
 

@@ -62,7 +62,7 @@ class Manager implements IManager {
 	 */
 	public function __construct(
 		IRequest $request,
-		IUserSession $session = null,
+		?IUserSession $session = null,
 		IConfig $config
 	) {
 		$this->request = $request;

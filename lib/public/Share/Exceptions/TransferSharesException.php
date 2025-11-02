@@ -36,7 +36,7 @@ class TransferSharesException extends GenericShareException {
 	 * @param \Exception|null $previous
 	 * @since 10.0.9
 	 */
-	public function __construct($message = '', $hint = '', $code = 0, \Exception $previous = null) {
+	public function __construct($message = '', $hint = '', $code = 0, ?\Exception $previous = null) {
 		parent::__construct($message, $hint, $code, $previous);
 	}
 }

@@ -170,7 +170,7 @@ class UsersController extends Controller {
 	 * @param IGroup[]|null $userGroups
 	 * @return array
 	 */
-	private function formatUserForIndex(IUser $user, array $userGroups = null) {
+	private function formatUserForIndex(IUser $user, ?array $userGroups = null) {
 		// TODO: eliminate this encryption specific code below and somehow
 		// hook in additional user info from other apps
 

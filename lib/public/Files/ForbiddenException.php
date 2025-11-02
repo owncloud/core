@@ -39,7 +39,7 @@ class ForbiddenException extends \Exception {
 	 * @param \Exception $previous previous exception for cascading
 	 * @since 9.0.0
 	 */
-	public function __construct($message, $retry, \Exception $previous = null) {
+	public function __construct($message, $retry, ?\Exception $previous = null) {
 		parent::__construct($message, 0, $previous);
 		$this->retry = $retry;
 	}

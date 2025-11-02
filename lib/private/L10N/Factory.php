@@ -78,7 +78,7 @@ class Factory implements IFactory {
 		IConfig $config,
 		IRequest $request,
 		IThemeService $themeService,
-		IUserSession $userSession = null,
+		?IUserSession $userSession = null,
 		$serverRoot
 	) {
 		$this->config = $config;

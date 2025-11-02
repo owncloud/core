@@ -80,9 +80,9 @@ class Checker {
 		EnvironmentHelper $environmentHelper,
 		FileAccessHelper $fileAccessHelper,
 		AppLocator $appLocator,
-		IConfig $config = null,
+		?IConfig $config = null,
 		ICacheFactory $cacheFactory,
-		IAppManager $appManager = null,
+		?IAppManager $appManager = null,
 		ITempManager $tempManager
 	) {
 		$this->environmentHelper = $environmentHelper;

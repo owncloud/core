@@ -40,7 +40,7 @@ class TempManagerTest extends TestCase {
 		parent::tearDown();
 	}
 
-	protected function getManager(\OCP\ILogger $logger = null, IConfig $config = null): \OC\TempManager {
+	protected function getManager(?\OCP\ILogger $logger = null, ?IConfig $config = null): \OC\TempManager {
 		if (!$logger) {
 			$logger = new NullLogger();
 		}

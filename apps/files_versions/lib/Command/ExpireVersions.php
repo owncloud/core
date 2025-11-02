@@ -48,8 +48,8 @@ class ExpireVersions extends Command {
 	 * @param Expiration|null $expiration
 	 */
 	public function __construct(
-		IUserManager $userManager = null,
-		Expiration $expiration = null
+		?IUserManager $userManager = null,
+		?Expiration $expiration = null
 	) {
 		parent::__construct();
 

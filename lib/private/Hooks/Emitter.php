@@ -45,5 +45,5 @@ interface Emitter {
 	 * @param callable $callback optional
 	 * @return void
 	 */
-	public function removeListener($scope = null, $method = null, callable $callback = null);
+	public function removeListener($scope = null, $method = null, ?callable $callback = null);
 }

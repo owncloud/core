@@ -41,7 +41,7 @@ class PreviewCleanup {
 		$this->connection = $connection;
 	}
 
-	public function process(bool $all = false, int $chunkSize = 1000, \Closure $progress = null): int {
+	public function process(bool $all = false, int $chunkSize = 1000, ?\Closure $progress = null): int {
 		$root = \OC::$server->getLazyRootFolder();
 		$count = 0;
 

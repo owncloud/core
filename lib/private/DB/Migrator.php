@@ -65,7 +65,7 @@ class Migrator {
 		\Doctrine\DBAL\Connection $connection,
 		ISecureRandom $random,
 		IConfig $config,
-		EventDispatcher $dispatcher = null
+		?EventDispatcher $dispatcher = null
 	) {
 		$this->connection = $connection;
 		$this->random = $random;
@@ -184,7 +184,7 @@ class Migrator {
 	 * @param \Doctrine\DBAL\Schema\Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
 	 */
-	protected function applySchema(Schema $targetSchema, \Doctrine\DBAL\Connection $connection = null) {
+	protected function applySchema(Schema $targetSchema, ?\Doctrine\DBAL\Connection $connection = null) {
 		if ($connection === null) {
 			$connection = $this->connection;
 		}

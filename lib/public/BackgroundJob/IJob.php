@@ -38,7 +38,7 @@ interface IJob {
 	 * @param ILogger $logger
 	 * @since 7.0.0
 	 */
-	public function execute($jobList, ILogger $logger = null);
+	public function execute($jobList, ?ILogger $logger = null);
 
 	/**
 	 * @param int $id

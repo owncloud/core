@@ -743,7 +743,7 @@ class Share extends Constants {
 	 * @throws \OC\HintException when the share type is remote and the shareWith is invalid
 	 * @throws \Exception
 	 */
-	public static function shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions, $itemSourceName = null, \DateTime $expirationDate = null, $passwordChanged = null) {
+	public static function shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions, $itemSourceName = null, ?\DateTime $expirationDate = null, $passwordChanged = null) {
 		$backend = self::getBackend($itemType);
 		$l = \OC::$server->getL10N('lib');
 
@@ -2333,7 +2333,7 @@ class Share extends Constants {
 		$parentFolder = null,
 		$token = null,
 		$itemSourceName = null,
-		\DateTime $expirationDate = null
+		?\DateTime $expirationDate = null
 	) {
 		$queriesToExecute = [];
 		$suggestedItemTarget = null;

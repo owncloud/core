@@ -55,7 +55,7 @@ class SMB extends ExternalBackend {
 	 * @param StorageConfig $storage
 	 * @param IUser $user
 	 */
-	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
+	public function manipulateStorageConfig(IStorageConfig &$storage, ?IUser $user = null) {
 		$userFromBackendOption = $storage->getBackendOption('user');
 		if ($domain = $storage->getBackendOption('domain')) {
 			$storage->setBackendOption('user', $domain.'\\'.$userFromBackendOption);

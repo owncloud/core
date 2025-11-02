@@ -72,7 +72,7 @@ class DB {
 	 * @since 5.0.0 - parameter $compare was added in 8.1.0
 	 *
 	 */
-	public static function insertIfNotExist($table, $input, array $compare = null) {
+	public static function insertIfNotExist($table, $input, ?array $compare = null) {
 		return \OC::$server->getDatabaseConnection()->insertIfNotExist($table, $input, $compare);
 	}
 

@@ -48,7 +48,7 @@ trait EmitterTrait {
 	 * @param string $method optional
 	 * @param callable $callback optional
 	 */
-	public function removeListener($scope = null, $method = null, callable $callback = null) {
+	public function removeListener($scope = null, $method = null, ?callable $callback = null) {
 		$names = [];
 		$allNames = \array_keys($this->listeners);
 		if ($scope and $method) {

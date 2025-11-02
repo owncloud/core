@@ -84,7 +84,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @param ObjectTree|null $tree
 	 * @param \OCP\Share\IManager $shareManager
 	 */
-	public function __construct($view, $info, ObjectTree $tree = null, $shareManager = null) {
+	public function __construct($view, $info, ?ObjectTree $tree = null, $shareManager = null) {
 		parent::__construct($view, $info, $shareManager);
 		$this->tree = $tree;
 	}

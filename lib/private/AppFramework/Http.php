@@ -114,7 +114,7 @@ class Http extends BaseHttp {
 	 */
 	public function getStatusHeader(
 		$status,
-		\DateTime $lastModified=null,
+		?\DateTime $lastModified=null,
 		$ETag=null
 	) {
 		if ($lastModified !== null) {

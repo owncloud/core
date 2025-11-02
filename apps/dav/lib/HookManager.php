@@ -133,7 +133,7 @@ class HookManager {
 		$this->syncService->updateUser($user);
 	}
 
-	public function firstLogin(IUser $user = null) {
+	public function firstLogin(?IUser $user = null) {
 		if ($user !== null) {
 			$principal = 'principals/users/' . $user->getUID();
 			$calendars = $this->calDav->getCalendarsForUser($principal);

@@ -61,7 +61,7 @@ class PollIncomingShares extends Command {
 	 * @param MountProvider $externalMountProvider
 	 * @param IStorageFactory $loader
 	 */
-	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, IStorageFactory $loader, Manager $externalManager = null, MountProvider $externalMountProvider = null) {
+	public function __construct(IDBConnection $dbConnection, IUserManager $userManager, IStorageFactory $loader, ?Manager $externalManager = null, ?MountProvider $externalMountProvider = null) {
 		parent::__construct();
 		$this->dbConnection = $dbConnection;
 		$this->userManager = $userManager;

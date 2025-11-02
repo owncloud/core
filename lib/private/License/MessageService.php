@@ -63,7 +63,7 @@ class MessageService {
 	 * "contains_html. Both "raw_message" and "translated_message" will contain an array with the texts that
 	 * should be displayed one text per line
 	 */
-	public function getMessageForLicense(array $info, string $language = null): array {
+	public function getMessageForLicense(array $info, ?string $language = null): array {
 		$l = $this->l10nFactory->get('core', $language);
 
 		// check if present

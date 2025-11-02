@@ -114,7 +114,7 @@ interface ILicenseManager {
 	 *   The lines start counting at 0
 	 *
 	 */
-	public function getLicenseMessageFor(string $appid, string $language = null): array;
+	public function getLicenseMessageFor(string $appid, ?string $language = null): array;
 
 	/**
 	 * @since 10.8.0

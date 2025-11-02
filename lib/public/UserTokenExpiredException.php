@@ -38,7 +38,7 @@ class UserTokenExpiredException extends UserTokenException {
 	 * @param int $code
 	 * @since 10.0.10
 	 */
-	public function __construct($message = "", $code = 0, \Exception $previous = null) {
+	public function __construct($message = "", $code = 0, ?\Exception $previous = null) {
 		parent::__construct($message, $code, $previous);
 	}
 }

@@ -360,7 +360,7 @@ class SyncBackend extends Command {
 	 * @param callable|null $callbackMissing the callback used if the account doesn't exist.
 	 * The uid and account are passed as parameters to the callback
 	 */
-	private function doActionForAccountUids(array $uidToAccountMap, callable $callbackExists, callable $callbackMissing = null): void {
+	private function doActionForAccountUids(array $uidToAccountMap, callable $callbackExists, ?callable $callbackMissing = null): void {
 		foreach ($uidToAccountMap as $uid => $account) {
 			$user = $this->userManager->get($uid);
 			if ($user === null) {

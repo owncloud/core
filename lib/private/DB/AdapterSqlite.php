@@ -58,7 +58,7 @@ class AdapterSqlite extends Adapter {
 	 * @return int number of inserted rows
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
-	public function insertIfNotExist($table, $input, array $compare = null) {
+	public function insertIfNotExist($table, $input, ?array $compare = null) {
 		if (empty($compare)) {
 			$compare = \array_keys($input);
 		}

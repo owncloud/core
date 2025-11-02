@@ -466,7 +466,7 @@ class FilesPlugin extends ServerPlugin {
 	 * @param \Sabre\DAV\INode $node
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 */
-	public function sendFileIdHeader($filePath, \Sabre\DAV\INode $node = null) {
+	public function sendFileIdHeader($filePath, ?\Sabre\DAV\INode $node = null) {
 		// chunked upload handling
 		if (\OC_FileChunking::isWebdavChunk()) {
 			list($path, $name) = \Sabre\Uri\split($filePath);

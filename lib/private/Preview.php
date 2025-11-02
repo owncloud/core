@@ -105,7 +105,7 @@ class Preview {
 	public function __construct(
 		$user = '',
 		$root = '/',
-		Node $file = null,
+		?Node $file = null,
 		$maxX = 1,
 		$maxY = 1,
 		$scalingUp = true,

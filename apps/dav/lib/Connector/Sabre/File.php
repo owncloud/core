@@ -75,7 +75,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @param \OCP\Files\FileInfo $info
 	 * @param \OCP\Share\IManager $shareManager
 	 */
-	public function __construct($view, $info, $shareManager = null, Request $request = null) {
+	public function __construct($view, $info, $shareManager = null, ?Request $request = null) {
 		if (isset($request)) {
 			$this->request = $request;
 		} else {

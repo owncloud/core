@@ -155,7 +155,7 @@ class TUSContext implements Context {
 		string $destination,
 		array $uploadMetadata = [],
 		int $noOfChunks = 1,
-		int $bytes = null,
+		?int $bytes = null,
 		string $checksum = ''
 	):void {
 		$user = $this->featureContext->getActualUsername($user);

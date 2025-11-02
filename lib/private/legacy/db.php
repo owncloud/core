@@ -106,7 +106,7 @@ class OC_DB {
 	 * @return OC_DB_StatementWrapper
 	 * @throws \OC\DatabaseException
 	 */
-	public static function executeAudited($stmt, array $parameters = null) {
+	public static function executeAudited($stmt, ?array $parameters = null) {
 		if (\is_string($stmt)) {
 			// convert to an array with 'sql'
 			if (\stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT

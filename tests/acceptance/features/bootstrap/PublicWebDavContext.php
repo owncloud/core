@@ -1135,7 +1135,7 @@ class PublicWebDavContext implements Context {
 	 */
 	public function publiclyUploadingShouldNotWork(
 		string $publicWebDAVAPIVersion,
-		string $expectedHttpCode = null
+		?string $expectedHttpCode = null
 	):void {
 		if ($publicWebDAVAPIVersion === "new") {
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();

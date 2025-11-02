@@ -49,7 +49,7 @@ class AccountCheckException extends Exception {
 		RedirectResponse $redirectResponse,
 		$message = '',
 		$code = 0,
-		\Throwable $previous = null
+		?\Throwable $previous = null
 	) {
 		parent::__construct($message, $code, $previous);
 		$this->redirectResponse = $redirectResponse;

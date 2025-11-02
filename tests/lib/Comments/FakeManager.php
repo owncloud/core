@@ -17,11 +17,11 @@ class FakeManager implements \OCP\Comments\ICommentsManager {
 		$objectId,
 		$limit = 0,
 		$offset = 0,
-		\DateTime $notOlderThan = null
+		?\DateTime $notOlderThan = null
 	) {
 	}
 
-	public function getNumberOfCommentsForObject($objectType, $objectId, \DateTime $notOlderThan = null) {
+	public function getNumberOfCommentsForObject($objectType, $objectId, ?\DateTime $notOlderThan = null) {
 	}
 
 	public function create($actorType, $actorId, $objectType, $objectId) {

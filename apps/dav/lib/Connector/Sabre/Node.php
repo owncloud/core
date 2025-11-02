@@ -79,7 +79,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @param \OCP\Files\FileInfo $info
 	 * @param IManager $shareManager
 	 */
-	public function __construct($view, $info, IManager $shareManager = null) {
+	public function __construct($view, $info, ?IManager $shareManager = null) {
 		$this->fileView = $view;
 		$this->path = $this->fileView->getRelativePath($info->getPath());
 		$this->info = $info;

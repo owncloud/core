@@ -64,11 +64,11 @@ class ScanExternalSharesJob extends TimedJob {
 	public const BATCH_SIZE = 10;
 
 	public function __construct(
-		IDBConnection $connection = null,
-		IConfig $config = null,
-		IUserManager $userManager = null,
-		ILogger $logger = null,
-		Manager $externalManager = null
+		?IDBConnection $connection = null,
+		?IConfig $config = null,
+		?IUserManager $userManager = null,
+		?ILogger $logger = null,
+		?Manager $externalManager = null
 	) {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);
