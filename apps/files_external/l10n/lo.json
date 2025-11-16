@@ -1,6 +1,24 @@
 { "translations": {
     "Step 2 failed. Exception: %s" : "ຂັ້ນຕອນທີ 2 ລົ້ມເຫລວ. ຂໍ້​ຍົກ​ເວັ້ນ: %s",
     "Error verifying OAuth2 Code for " : "ຂໍ້ຜິດພາດຢືນຢັນລະຫັດ OAuth2 ສໍາລັບ",
-    "Personal" : "ສ່ວນບຸກຄົນ"
+    "Personal" : "ສ່ວນບຸກຄົນ",
+    "Saved" : "ບັນທຶກແລ້ວ",
+    "Username" : "ຊື່ຜູ້ໃຊ້",
+    "Password" : "ລະຫັດຜ່ານ",
+    "Save" : "ບັນທຶກ",
+    "%s" : "%s",
+    "API key" : "ຄີ API",
+    "Public key" : "ຄີສາທາລະນະ",
+    "URL" : "URL",
+    "Location" : "ສະຖານທີ່",
+    "Host" : "ໂຮສ",
+    "Share" : "ແຊຣ໌",
+    "Domain" : "ໂດເມນ",
+    "Name" : "ຊື່",
+    "Enable encryption" : "ເປີດໃຊ້ງານການເຂົ້າລະຫັດ",
+    "Never" : "ບໍ່ເຄີຍ",
+    "Folder name" : "ໃນ %1$s",
+    "Configuration" : "ການກຳນົດຄ່າ",
+    "Delete" : "ລຶບ"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

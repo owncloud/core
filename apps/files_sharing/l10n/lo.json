@@ -1,4 +1,23 @@
 { "translations": {
-    "Sharing" : "ການແບ່ງປັນ"
+    "Shared by link" : "ແຊຣ໌ຜ່ານລິ້ງ",
+    "Uploading..." : "ກຳລັງອັບໂຫຼດ...",
+    "No shared links" : "ບໍ່ມີໄຟລ໌ທີ່ແຊຣ໌ຜ່ານລິ້ງ",
+    "Cancel" : "ຍົກເລີກ",
+    "Add" : "ເພີ່ມ",
+    "Share" : "ແຊຣ໌",
+    "Create public link" : "ສ້າງລິ້ງສາທາລະນະ",
+    "Pending" : "ກຳລັງລໍຖ້າ",
+    "Sharing" : "ການແບ່ງປັນ",
+    "Shared with %2$s" : "ແຊຣ໌ກັບ %2$s",
+    "Shared by %2$s" : "ແຊຣ໌ໂດຍ %2$s",
+    "Shares" : "ການແຊຣ໌",
+    "Public link" : "ລິ້ງສາທາລະນະ",
+    "Accept" : "ຍອມຮັບ",
+    "Automatically accept new incoming local user shares" : "ຍອມຮັບການແບ່ງປັນຈາກຜູ້ໃຊ້ໃນລະບົບທີ່ເຂົ້າມາໃໝ່ໂດຍອັດຕະໂນມັດ",
+    "Password" : "ລະຫັດຜ່ານ",
+    "Proceed" : "ມາເລີ່ມກັນເລີຍ!",
+    "Name" : "ຊື່",
+    "Download" : "ດາວໂຫຼດ",
+    "Download %s" : "ດາວໂຫຼດ %s"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

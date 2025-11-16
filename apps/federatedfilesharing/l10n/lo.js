@@ -1,0 +1,11 @@
+OC.L10N.register(
+    "federatedfilesharing",
+    {
+    "Loading..." : "ກຳລັງໂຫລດ...",
+    "Invalid Federated Cloud ID" : "Federated Cloud ID ບໍ່ຖືກຕ້ອງ",
+    "Sharing %s failed, because this item is already shared with %s" : "ການແບ່ງປັນ %s ລົ້ມເຫຼວ, ເພາະວ່າລາຍການນີ້ໄດ້ຖືກແບ່ງປັນໃຫ້ກັບ %s ແລ້ວ",
+    "Not allowed to create a federated share with the same user" : "ບໍ່ອະນຸຍາດໃຫ້ສ້າງການແບ່ງປັນແບບ federated ກັບຜູ້ໃຊ້ຄົນດຽວກັນ",
+    "Accept" : "ຍອມຮັບ",
+    "Open documentation" : "ເປີດເອກະສານ"
+},
+"nplurals=1; plural=0;");
