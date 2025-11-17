@@ -14,9 +14,17 @@
     "Details" : "ລາຍລະອຽດ",
     "Pending" : "ກຳລັງລໍຖ້າ",
     "group" : "ກຸ່ມ",
+    "Federated share" : "ການແຊຣ໌ແບບເຊື່ອມໂຍງ",
+    "Could not move \"{file}\", target exists" : "ບໍ່ສາມາດຍ້າຍ \"{file}\" ໄດ້, ເນື່ອງຈາກມີໄຟລ໌ຊື່ນີ້ຢູ່ແລ້ວ",
+    "Could not move \"{file}\"" : "ບໍ່ສາມາດຍ້າຍ \"{file}\" ໄດ້",
+    "Could not create file \"{file}\"" : "ບໍ່ສາມາດສ້າງໄຟລ໌ \"{file}\" ໄດ້",
+    "Could not create file \"{file}\" because it already exists" : "ບໍ່ສາມາດສ້າງໄຟລ໌ \"{file}\" ໄດ້ ເພາະມີໄຟລ໌ຊື່ນີ້ຢູ່ແລ້ວ",
     "Name" : "ຊື່",
     "Size" : "ຂະໜາດ",
+    "New" : "ໃໝ່",
     "Unknown user" : "ບໍ່ຮູ້ຈັກຜູ້ໃຊ້ນີ້",
+    "\"{name}\" is an invalid file name." : "\"{name}\" ເປັນຊື່ໄຟລ໌ທີ່ບໍ່ຖືກຕ້ອງ.",
+    "File name cannot be empty." : "ຊື່ໄຟລ໌ຕ້ອງບໍ່ຫວ່າງເປົ່າ.",
     "Path" : "ເສັ້ນທາງ",
     "Folder" : "ໂຟເດີ",
     "New folder" : "ສ້າງໂຟລເດີໃໝ່",
@@ -31,6 +39,7 @@
     "Show hidden files" : "ສະແດງໄຟລ໌ທີ່ເຊື່ອງໄວ້",
     "No files in here" : "ບໍ່ມີໄຟລ໌",
     "Upload some content or sync with your devices!" : "ອັບໂຫຼດເນື້ອหาบางอย่างหรือซิงโครไนซ์อุปกรณ์ของคุณ!",
+    "No entries found in this folder" : "ບໍ່ພົບລາຍການໃນໂຟລເດີນີ້",
     "Select all" : "ເລືອກທັງໝົດ"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -21,6 +21,7 @@ OC.L10N.register(
     "Never" : "ບໍ່ເຄີຍ",
     "Folder name" : "ໃນ %1$s",
     "Configuration" : "ການກຳນົດຄ່າ",
+    "Advanced settings" : "ການຕັ້ງຄ່າຂັ້ນສູງ",
     "Delete" : "ລຶບ"
 },
 "nplurals=1; plural=0;");

@@ -2,6 +2,7 @@ OC.L10N.register(
     "comments",
     {
     "Cancel" : "ຍົກເລີກ",
-    "Save" : "ບັນທຶກ"
+    "Save" : "ບັນທຶກ",
+    "Comment" : "ຄວາມຄິດເຫັນ"
 },
 "nplurals=1; plural=0;");

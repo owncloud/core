@@ -1,5 +1,6 @@
 { "translations": {
     "Cancel" : "ຍົກເລີກ",
-    "Save" : "ບັນທຶກ"
+    "Save" : "ບັນທຶກ",
+    "Comment" : "ຄວາມຄິດເຫັນ"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
