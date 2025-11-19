@@ -19,6 +19,7 @@
     "Target folder does not exist any more" : "La carpeta de destino ya no existe",
     "The file {file} is currently locked, please try again later" : "El archivo {file} está bloqueado actualmente, inténtalo de nuevo más tarde",
     "Not enough free space" : "No hay suficiente espacio libre",
+    "Failed to upload the file \"{fileName}\": {error}" : "Fallo al subir el fichero \"{fileName}\": {error}",
     "Uploading..." : "Subiendo...",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} de {totalSize} ({bitrate})",
