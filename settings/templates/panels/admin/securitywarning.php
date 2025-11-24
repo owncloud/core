@@ -7,17 +7,6 @@
 script('core', 'setupchecks');
 script('settings', 'panels/setupchecks');
 ?>
-
-<?php
-$license = \OC::$server->query(\OC\License\LicenseFetcher::class)->getOwncloudLicense();
-$ioc_exec_confirmation = \OC::$server->getConfig()->getSystemValue('indicators-of-compromise-scanner.confirmation', false);
-if ($license !== null && $ioc_exec_confirmation !== 'EXECUTED_ON_ALL_NODES') {
-	?>
-	<div id="security-warning" class="section">
-		<?php include_once(__DIR__ . '/../../../../core/templates/ioc.warning.php'); ?>
-	</div>
-<?php } ?>
-
 <div id="security-warning" class="section">
 	<h2 class="app-name"><?php p($l->t('Security & setup warnings'));?></h2>
 	<ul>
@@ -31,88 +20,88 @@ if ($license !== null && $ioc_exec_confirmation !== 'EXECUTED_ON_ALL_NODES') {
 		</li>
 	<?php
 	}
-	// is read only config enabled
-	if ($_['readOnlyConfigEnabled']) {
-		?>
+// is read only config enabled
+if ($_['readOnlyConfigEnabled']) {
+	?>
 		<li>
 			<?php p($l->t('The Read-Only config has been enabled. This prevents setting some configurations via the web-interface. Furthermore, the file needs to be made writable manually for every update.')); ?>
 		</li>
 	<?php
-	}
-	// Are doc blocks accessible?
-	if (!$_['isAnnotationsWorking']) {
-		?>
+}
+// Are doc blocks accessible?
+if (!$_['isAnnotationsWorking']) {
+	?>
 		<li>
 			<?php p($l->t('PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible.')); ?><br>
 			<?php p($l->t('This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator.')); ?>
 		</li>
 	<?php
-	}
-	// Is the Transaction isolation level READ_COMMITTED?
-	if ($_['invalidTransactionIsolationLevel']) {
-		?>
+}
+// Is the Transaction isolation level READ_COMMITTED?
+if ($_['invalidTransactionIsolationLevel']) {
+	?>
 		<li>
 			<?php p($l->t('Your database does not run with "READ COMMITTED" transaction isolation level. This can cause problems when multiple actions are executed in parallel.')); ?>
 		</li>
 	<?php
-	}
-	// Warning if memcache is outdated
-	foreach ($_['OutdatedCacheWarning'] as $php_module => $data) {
-		?>
+}
+// Warning if memcache is outdated
+foreach ($_['OutdatedCacheWarning'] as $php_module => $data) {
+	?>
 		<li>
 			<?php p($l->t('%1$s below version %2$s is installed, for stability and performance reasons we recommend updating to a newer %1$s version.', $data)); ?>
 		</li>
 	<?php
-	}
-	// if module fileinfo available?
-	if (!$_['has_fileinfo']) {
-		?>
+}
+// if module fileinfo available?
+if (!$_['has_fileinfo']) {
+	?>
 		<li>
 			<?php p($l->t('The PHP module \'fileinfo\' is missing. We strongly recommend to enable this module to get best results with mime-type detection.')); ?>
 		</li>
 	<?php
-	}
-	// locking configured optimally?
-	if ($_['fileLockingType'] === 'none') {
-		?>
+}
+// locking configured optimally?
+if ($_['fileLockingType'] === 'none') {
+	?>
 		<li>
 			<?php print_unescaped($l->t('Transactional file locking is disabled, this might lead to issues with race conditions. Enable \'filelocking.enabled\' in config.php to avoid these problems. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs(\OCP\Constants::DOCS_ADMIN_TRANSACTIONAL_LOCKING))); ?>
 		</li>
 		<?php
-	} elseif ($_['fileLockingType'] === 'db') {
-		?>
+} elseif ($_['fileLockingType'] === 'db') {
+	?>
 		<li>
 			<?php print_unescaped($l->t('Transactional file locking should be configured to use memory-based locking, not the default slow database-based locking. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs(\OCP\Constants::DOCS_ADMIN_TRANSACTIONAL_LOCKING))); ?>
 		</li>
 		<?php
-	}
-	// is locale working ?
-	if (!$_['isLocaleWorking']) {
-		?>
+}
+// is locale working ?
+if (!$_['isLocaleWorking']) {
+	?>
 		<li>
 			<?php
-				$locales = 'en_US.UTF-8/fr_FR.UTF-8/es_ES.UTF-8/de_DE.UTF-8/ru_RU.UTF-8/pt_BR.UTF-8/it_IT.UTF-8/ja_JP.UTF-8/zh_CN.UTF-8';
-		p($l->t('System locale can not be set to a one which supports UTF-8.')); ?>
+			$locales = 'en_US.UTF-8/fr_FR.UTF-8/es_ES.UTF-8/de_DE.UTF-8/ru_RU.UTF-8/pt_BR.UTF-8/it_IT.UTF-8/ja_JP.UTF-8/zh_CN.UTF-8';
+	p($l->t('System locale can not be set to a one which supports UTF-8.')); ?>
 			<br>
 			<?php
-				p($l->t('This means that there might be problems with certain characters in file names.')); ?>
+			p($l->t('This means that there might be problems with certain characters in file names.')); ?>
 				<br>
 				<?php
-				p($l->t('We strongly suggest installing the required packages on your system to support one of the following locales: %s.', [$locales])); ?>
+			p($l->t('We strongly suggest installing the required packages on your system to support one of the following locales: %s.', [$locales])); ?>
 		</li>
 	<?php
-	}
-	if ($_['suggestedOverwriteCliUrl']) {
-		?>
+}
+if ($_['suggestedOverwriteCliUrl']) {
+	?>
 		<li>
 			<?php p($l->t('If your installation is not installed in the root of the domain and uses system cron, there can be issues with the URL generation. To avoid these problems, please set the "overwrite.cli.url" option in your config.php file to the webroot path of your installation (Suggested: "%s")', $_['suggestedOverwriteCliUrl'])); ?>
 		</li>
 	<?php
-	}
+}
 
-	// SQLite database performance issue
-	if ($_['databaseOverload']) {
-		?>
+// SQLite database performance issue
+if ($_['databaseOverload']) {
+	?>
 		<li>
 			<?php p($l->t('SQLite is used as database. For larger installations we recommend to switch to a different database backend.')); ?><br>
 			<?php p($l->t('Especially when using the desktop client for file syncing the use of SQLite is discouraged.')); ?><br>
@@ -120,17 +109,17 @@ if ($license !== null && $ioc_exec_confirmation !== 'EXECUTED_ON_ALL_NODES') {
 		</li>
 
 		<?php
-	}
-	if ($_['backgroundjobs_mode'] !== "cron") {
-		?>
+}
+if ($_['backgroundjobs_mode'] !== "cron") {
+	?>
 		<li>
 			<?php p($l->t('We recommend to enable system cron as any other cron method has possible performance and reliability implications.')); ?><br>
 		</li>
 
 		<?php
-	}
-	if ($_['cronErrors']) {
-		?>
+}
+if ($_['cronErrors']) {
+	?>
 		<li>
 				<?php p($l->t('It was not possible to execute the cronjob via CLI. The following technical errors have appeared:')); ?>
 				<br>
@@ -145,7 +134,7 @@ if ($license !== null && $ioc_exec_confirmation !== 'EXECUTED_ON_ALL_NODES') {
 				</ol>
 		</li>
 	<?php
-	}
+}
 ?>
 	</ul>
 

@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "%1$stik %2$s bertsiora eguneraketa eskuragarri dago.",
     "Updater" : "Eguneratzailea",
     "A new version is available: %s" : "Bertsio berri bat eskuragarri dago: %s",
-    "Open updater" : "Ireki eguneratzailea",
-    "Show changelog" : "Erakutsi aldaketak",
     "Your version is up to date." : "Zure bertsioa eguneratua dago.",
     "Checked on %s" : "%s-en egiaztatua",
     "Update channel:" : "Eguneraketa kanala:",

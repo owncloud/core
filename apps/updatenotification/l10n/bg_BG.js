@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "Налична е актуализация %1$s за версия %2$s.",
     "Updater" : "Актуализатор",
     "A new version is available: %s" : "Налична е нова версия: %s",
-    "Open updater" : "Отваряне на актуализатора",
-    "Show changelog" : "Показване на списъка с промените",
     "Your version is up to date." : "Версията ви е актуална.",
     "Checked on %s" : "Проверено на %s",
     "Update channel:" : "Актуализиране на канал:",

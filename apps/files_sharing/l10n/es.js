@@ -4,6 +4,7 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Compartir entre servidores no está habilitado en este servidor",
     "The mountpoint name contains invalid characters." : "El punto de montaje contiene caracteres inválidos.",
     "Not allowed to create a federated share with the same user server" : "No se permite crear un recurso compartido federado con el mismo servidor de usuario",
+    "Remote is unreachable" : "No se pudo conectar con el remoto",
     "Could not authenticate to federated share, password might be wrong" : "No se pudo autenticar la compartición federada, la contraseña podría ser incorrecta.",
     "Storage not valid" : "Almacenamiento inválido",
     "Couldn't add federated share" : "No se pudo añadir compartición federada",
@@ -151,6 +152,7 @@ OC.L10N.register(
     "Nothing to configure." : "Nada que configurar",
     "Group Sharing Blacklist" : "Lista negra Grupo compartidos",
     "Exclude groups from receiving shares" : "Excluir grupos de recibir compartidos",
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and receiving personal shares/invitations. Furthermore they can receive shares addressed to other groups they are members of as usual." : "Estos grupos no estarán disponibles para compartición. Miembros del grupo no están restringidos a crear y recibir comparticiones de otros usuarios o invitaciones. Además, podrán recibir comparticiones de otros grupos de los que sean miembros como habitualmente.",
     "Only certain groups are allowed to create public links" : "Solo ciertos grupos están autorizados para crear enlaces públicos"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

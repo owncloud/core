@@ -4,6 +4,7 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Das Server-zu-Server-Teilen ist auf diesem Server nicht aktiviert",
     "The mountpoint name contains invalid characters." : "Der Name des Einhängepunktes enthält ungültige Zeichen.",
     "Not allowed to create a federated share with the same user server" : "Das Erstellen einer Federated Cloud Freigabe mit dem gleichen Benutzer ist nicht erlaubt",
+    "Remote is unreachable" : "Entfernter Server ist unerreichbar",
     "Could not authenticate to federated share, password might be wrong" : "Authentifizung zur föderierten Freigabe nicht möglich. Das Passwort könnte falsch sein.",
     "Storage not valid" : "Speicher ungültig",
     "Couldn't add federated share" : "Die föderierte Freigabe konnte nicht hinzugefügt werden.",

@@ -178,7 +178,6 @@ OC.L10N.register(
     "Not supported!" : "Desteklenmiyor!",
     "Press ⌘-C to copy." : "Kopyalamak için ⌘-C kullanın.",
     "Press Ctrl-C to copy." : "Kopayamak için Ctrl-C kullanın.",
-    "Choose a password" : "Bir parola seçin",
     "Password required" : "Parola gerekli",
     "Link name" : "Bağlantı adı",
     "Name" : "Ad",

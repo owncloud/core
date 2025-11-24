@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "%1$s sürümü için %2$s sürümüne güncelleme mevcut.",
     "Updater" : "Güncelleyici",
     "A new version is available: %s" : "Yeni bir sürüm mevcut: %s",
-    "Open updater" : "Güncelleyiciyi aç",
-    "Show changelog" : "Değişim günlüğünü göster",
     "Your version is up to date." : "Sürümünüz güncel.",
     "Checked on %s" : "Son denetlenme: %s",
     "Update channel:" : "Güncelleme kanalı:",

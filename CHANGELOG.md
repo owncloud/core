@@ -1,6 +1,11 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-core-unreleased-unreleased)
+* [Changelog for 10.16.0](#changelog-for-owncloud-core-10160-2025-10-23)
+* [Changelog for 10.15.3](#changelog-for-owncloud-core-10153-2025-07-04)
+* [Changelog for 10.15.2](#changelog-for-owncloud-core-10152-2025-03-11)
+* [Changelog for 10.15.1](#changelog-for-owncloud-core-10151-2025-03-03)
+* [Changelog for 10.15.0](#changelog-for-owncloud-core-10150-2024-06-18)
 * [Changelog for 10.14.0](#changelog-for-owncloud-core-10140-2024-02-19)
 * [Changelog for 10.13.4](#changelog-for-owncloud-core-10134-2023-12-13)
 * [Changelog for 10.13.3](#changelog-for-owncloud-core-10133-2023-11-17)
@@ -26,7 +31,193 @@
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.14.0...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.16.0...master
+
+## Summary
+
+* Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
+
+## Details
+
+* Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
+
+   The following have been updated: - phpseclib/phpseclib (3.0.46 to 3.0.47) -
+   sabre/http (5.1.12 to 5.1.13)
+
+   https://github.com/owncloud/core/pull/41408
+
+# Changelog for ownCloud Core [10.16.0] (2025-10-23)
+
+The following sections list the changes in ownCloud core 10.16.0 relevant to
+ownCloud admins and users.
+
+[10.16.0]: https://github.com/owncloud/core/compare/v10.15.3...v10.16.0
+
+## Summary
+
+* Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
+* Bugfix - Subadmins won't add users to groups: [#41405](https://github.com/owncloud/core/pull/41405)
+* Bugfix - The phar stream wrapper is disabled by default: [#41406](https://github.com/owncloud/core/pull/41406)
+* Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
+* Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
+* Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
+
+## Details
+
+* Bugfix - Unavailable shares storage will not block folder listing: [#41338](https://github.com/owncloud/core/pull/41338)
+
+   In case a shared storage is not available in certain situations no folder
+   listing would be shown to the user.
+
+   https://github.com/owncloud/core/pull/41338
+
+* Bugfix - Subadmins won't add users to groups: [#41405](https://github.com/owncloud/core/pull/41405)
+
+   Subadmins won't be able to add user to groups, not even to groups they're
+   managing. Only admins will be able to.
+
+   https://github.com/owncloud/core/pull/41405
+
+* Bugfix - The phar stream wrapper is disabled by default: [#41406](https://github.com/owncloud/core/pull/41406)
+
+   Previously, it was only disabled for non-cli access, but now it's disabled
+   globally.
+
+   https://github.com/owncloud/core/pull/41406
+
+* Change - Update PHP dependencies: [#41287](https://github.com/owncloud/core/pull/41287)
+
+   The following have been updated: - doctrine/deprecations (1.1.3 to 1.1.5) -
+   google/apiclient (v2.16.0 to v2.16.1) - google/auth (v1.37.1 to v1.37.2) -
+   guzzlehttp/guzzle (7.8.1 to 7.9.3) - guzzlehttp/promises (2.0.3 to 2.2.0) -
+   guzzlehttp/psr7 (2.7.0 to 2.7.1) - icewind/smb (3.6.0 to 3.7.0) -
+   icewind/streams (0.7.7 to 0.7.8) - laravel/serializable-closure (1.3.3 to 1.3.7)
+   - league/mime-type-detection (1.15.0 to 1.16.0) - mikey179/vfsstream (1.6.11 to
+   1.6.12) - monolog/monolog (2.9.3 to 2.10.0) - myclabs/deep-copy (1.12.1 to
+   1.13.4) - pear/pear-core-minimal (v1.10.15 to v1.10.16) - pear/archive_tar
+   (1.5.0 to 1.6.0) - phpseclib/phpseclib (3.0.39 to 3.0.46) - sabre/dav (4.6.0 to
+   4.7.0) - sabre/event (5.1.4 to 5.1.7) - sabre/http (5.1.10 to 5.1.12) -
+   sabre/uri (2.3.3 t0 2.3.4) - sabre/vobject (4.5.4 to 4.5.7) - sabre/xml (2.2.7
+   to 2.2.11) - symfony/console (5.4.40 to 5.4.47) - symfony/deprecation-contracts
+   (2.5.3 to 2.5.4) - symfony/event-dispatcher (5.4.40 to 5.4.45) -
+   symfony/event-dispatcher-contracts (2.5.3 to 2.5.4) - symfony/polyfill-php80
+   (1.29.0 to 1.33.0) - symfony/process (v5.4.40 to v5.4.47) - symfony/routing
+   (5.4.40 to 5.4.48) - symfony/service-contracts (2.5.3 to 2.5.4) - symfony/string
+   (5.4.40 to 5.4.47) - symfony/translation (5.4.40 to 5.4.45) -
+   symfony/translation-contracts (2.5.3 to 2.5.4)
+
+   https://github.com/owncloud/core/pull/41287
+   https://github.com/owncloud/core/pull/41297
+   https://github.com/owncloud/core/pull/41306
+   https://github.com/owncloud/core/pull/41307
+   https://github.com/owncloud/core/pull/41315
+   https://github.com/owncloud/core/pull/41320
+   https://github.com/owncloud/core/pull/41327
+   https://github.com/owncloud/core/pull/41329
+   https://github.com/owncloud/core/pull/41333
+   https://github.com/owncloud/core/pull/41334
+   https://github.com/owncloud/core/pull/41337
+   https://github.com/owncloud/core/pull/41341
+   https://github.com/owncloud/core/pull/41344
+   https://github.com/owncloud/core/pull/41345
+   https://github.com/owncloud/core/pull/41363
+   https://github.com/owncloud/core/pull/41366
+   https://github.com/owncloud/core/pull/41377
+   https://github.com/owncloud/core/pull/41382
+   https://github.com/owncloud/core/pull/41390
+
+* Change - Add user hint in share dialog that password policy can apply: [#41314](https://github.com/owncloud/core/pull/41314)
+
+   To avoid user confusion the share dialog informs the user that password policy
+   can apply in case enabled.
+
+   https://github.com/owncloud/core/pull/41314
+
+* Enhancement - Improve global search experience for Chinese and Japanese input: [#41328](https://github.com/owncloud/core/pull/41328)
+
+   Now the minimum characters input required is 2 for Chinese/Japanese inputs when
+   performing global search.
+
+   https://github.com/owncloud/core/issues/25021
+   https://github.com/owncloud/core/issues/9916
+   https://github.com/owncloud/core/pull/41328
+
+# Changelog for ownCloud Core [10.15.3] (2025-07-04)
+
+The following sections list the changes in ownCloud core 10.15.3 relevant to
+ownCloud admins and users.
+
+[10.15.3]: https://github.com/owncloud/core/compare/v10.15.2...v10.15.3
+
+## Summary
+
+* Bugfix - Disable web updater: [#41149](https://github.com/owncloud/core/issues/41149)
+* Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
+
+## Details
+
+* Bugfix - Disable web updater: [#41149](https://github.com/owncloud/core/issues/41149)
+
+   The web updater is a relic of the past and not recommended for a long time. At
+   the end it can cause more pain than help.
+
+   In addition the use of the web updater is discouraged by removing the
+   integration in the admin ui.
+
+   https://github.com/owncloud/core/issues/41149
+   https://github.com/owncloud/core/pull/41385
+
+* Bugfix - Harden remote service resolution: [#41374](https://github.com/owncloud/core/pull/41374)
+
+   Remote services such as webdav, caldav, etc, will be loaded from the app or from
+   a hardcoded list.
+
+   https://github.com/owncloud/core/pull/41374
+
+# Changelog for ownCloud Core [10.15.2] (2025-03-11)
+
+The following sections list the changes in ownCloud core 10.15.2 relevant to
+ownCloud admins and users.
+
+[10.15.2]: https://github.com/owncloud/core/compare/v10.15.1...v10.15.2
+
+## Summary
+
+* Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
+
+## Details
+
+* Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
+
+   https://github.com/owncloud/core/pull/41358
+
+# Changelog for ownCloud Core [10.15.1] (2025-03-03)
+
+The following sections list the changes in ownCloud core 10.15.1 relevant to
+ownCloud admins and users.
+
+[10.15.1]: https://github.com/owncloud/core/compare/v10.15.0...v10.15.1
+
+## Summary
+
+* Bugfix - Prevent access to internal app config data: [#41355](https://github.com/owncloud/core/pull/41355)
+
+## Details
+
+* Bugfix - Prevent access to internal app config data: [#41355](https://github.com/owncloud/core/pull/41355)
+
+   Prevent access to app config where the key is prefixed with remote_ and public_
+   via the http api as these are internal configuration settings which are not to
+   be exposed via the network.
+
+   https://github.com/owncloud/core/pull/41355
+
+# Changelog for ownCloud Core [10.15.0] (2024-06-18)
+
+The following sections list the changes in ownCloud core 10.15.0 relevant to
+ownCloud admins and users.
+
+[10.15.0]: https://github.com/owncloud/core/compare/v10.14.0...v10.15.0
 
 ## Summary
 
@@ -34,6 +225,13 @@ ownCloud admins and users.
 * Bugfix - Link in public link notification has to be from a trusted domain: [#41214](https://github.com/owncloud/core/pull/41214)
 * Bugfix - User can only change their own external storage configuration: [#41225](https://github.com/owncloud/core/pull/41225)
 * Bugfix - Hardening SVG processing: [#41234](https://github.com/owncloud/core/pull/41234)
+* Bugfix - Handle no longer existing user in preview cleanup: [#41247](https://github.com/owncloud/core/pull/41247)
+* Bugfix - Disallow HTTP API requests for user external storages in case disabled: [#41250](https://github.com/owncloud/core/pull/41250)
+* Bugfix - Handle short classes in Autoloader: [#41252](https://github.com/owncloud/core/pull/41252)
+* Bugfix - No update check if not connected to the internet: [#41262](https://github.com/owncloud/core/pull/41262)
+* Bugfix - Default value of preview_max_dimensions is now 6016x6016: [#41263](https://github.com/owncloud/core/pull/41263)
+* Bugfix - AllConfig::getUserKeys to return string[] only: [#41270](https://github.com/owncloud/core/pull/41270)
+* Bugfix - Wrong Logic When 'allow_user_mounting' is Initially Undefined: [#41272](https://github.com/owncloud/core/pull/41272)
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
 ## Details
@@ -59,16 +257,71 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41234
 
+* Bugfix - Handle no longer existing user in preview cleanup: [#41247](https://github.com/owncloud/core/pull/41247)
+
+   A no longer existing user no longer causes an exception in the preview cleanup
+   job.
+
+   https://github.com/owncloud/core/pull/41247
+
+* Bugfix - Disallow HTTP API requests for user external storages in case disabled: [#41250](https://github.com/owncloud/core/pull/41250)
+
+   API requests for a user's external storages now correctly fail when user mounted
+   storages are disabled.
+
+   https://github.com/owncloud/core/pull/41250
+
+* Bugfix - Handle short classes in Autoloader: [#41252](https://github.com/owncloud/core/pull/41252)
+
+   The Autoloader findClass method was emitting a PHP notice "undefined offset" for
+   class strings at the top OCA level. The code has been corrected so that the PHP
+   notice is not emitted.
+
+   https://github.com/owncloud/core/pull/41252
+   https://github.com/owncloud/core/pull/41253
+
+* Bugfix - No update check if not connected to the internet: [#41262](https://github.com/owncloud/core/pull/41262)
+
+   In case an owncloud instance is not connected to the internet there is no need
+   in polling for updates in the update notification app.
+
+   https://github.com/owncloud/core/pull/41262
+
+* Bugfix - Default value of preview_max_dimensions is now 6016x6016: [#41263](https://github.com/owncloud/core/pull/41263)
+
+   This allows processing of 4K portrait images by default.
+
+   https://github.com/owncloud/core/pull/41263
+
+* Bugfix - AllConfig::getUserKeys to return string[] only: [#41270](https://github.com/owncloud/core/pull/41270)
+
+   The array returned by getUserKeys() is now always an array of strings.
+
+   https://github.com/owncloud/core/pull/41270
+
+* Bugfix - Wrong Logic When 'allow_user_mounting' is Initially Undefined: [#41272](https://github.com/owncloud/core/pull/41272)
+
+   On a freshly installed system, the checkbox '[ ] Allow users to mount external
+   storage' is not set, implying 'no'. The code handled this as 'yes' until the
+   admin once selected and unselected the checkbox.
+
+   https://github.com/owncloud/core/pull/41272
+   https://github.com/owncloud/core/pull/41273
+
 * Change - Update PHP dependencies: [#41195](https://github.com/owncloud/core/pull/41195)
 
-   The following have been updated: - google/apiclient-services (v0.335.0 to
-   v0.343.0) - google/auth (v1.35.0 to v1.37.1) - pear/archive_tar (1.4.14 to
-   1.15.0) - pear/pear-core-minimal (v1.10.14 to v1.10.15) - phpseclib/phpseclib
-   (3.0.35 to 3.0.37) - symfony/event-dispatcher-contracts (v2.5.2 to v2.5.3) -
+   The following have been updated: - deepdiver/zipstreamer (2.0.2 to 2.0.3) -
+   google/apiclient (v2.15.3 to v2.16.0) - google/apiclient-services (v0.335.0 to
+   v0.355.0) - google/auth (v1.35.0 to v1.37.1) - monolog/monolog (2.9.2 to 2.9.3)
+   - paragonie/constant_time_encoding (v2.6.3 to v2.7.0) - pear/archive_tar (1.4.14
+   to 1.15.0) - pear/pear-core-minimal (v1.10.14 to v1.10.15) - phpseclib/phpseclib
+   (3.0.35 to 3.0.39) - psr/http-factory (1.0.2 to 1.1.0) - sabre/xml (2.2.6 to
+   2.2.7) - symfony/event-dispatcher-contracts (v2.5.2 to v2.5.3) -
    symfony/service-contracts (v2.5.2 to v2.5.3) - symfony/translation-contracts
-   (v2.5.2 to v2.5.3) - symfony/console (v5.4.35 to v5.4.36) - symfony/process
-   (v5.4.35 to v5.4.36) - symfony/routing (v5.4.35 to v5.4.38) - symfony/string
-   (v5.4.35 to v5.4.36)
+   (v2.5.2 to v2.5.3) - symfony/console (v5.4.35 to v5.4.40) -
+   symfony/event-dispatcher (v5.4.35 to v5.4.40) - symfony/process (v5.4.35 to
+   v5.4.40) - symfony/routing (v5.4.35 to v5.4.40) - symfony/string (v5.4.35 to
+   v5.4.40) - symfony/translation (v5.4.35 to v5.4.40)
 
    https://github.com/owncloud/core/pull/41195
    https://github.com/owncloud/core/pull/41203
@@ -76,6 +329,11 @@ ownCloud admins and users.
    https://github.com/owncloud/core/pull/41212
    https://github.com/owncloud/core/pull/41222
    https://github.com/owncloud/core/pull/41230
+   https://github.com/owncloud/core/pull/41242
+   https://github.com/owncloud/core/pull/41255
+   https://github.com/owncloud/core/pull/41259
+   https://github.com/owncloud/core/pull/41267
+   https://github.com/owncloud/core/pull/41276
 
 # Changelog for ownCloud Core [10.14.0] (2024-02-19)
 

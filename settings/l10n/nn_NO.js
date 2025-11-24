@@ -42,6 +42,7 @@ OC.L10N.register(
     "Cron" : "Cron",
     "Open documentation" : "Opne dokumentasjon.",
     "Execute one task with each page loaded" : "Utfør éi oppgåve for kvar sidelasting",
+    "Valid until" : "Valid until",
     "Sharing" : "Deling",
     "Allow apps to use the Share API" : "La app-ar bruka API-et til deling",
     "Allow public uploads" : "Tillat offentlege opplastingar",

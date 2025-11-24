@@ -274,7 +274,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
- 
+
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -326,7 +326,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
- 
+
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -342,7 +342,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
- 
+
   Scenario Outline: user shares a file with file name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -360,7 +360,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
- 
+
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -377,7 +377,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
- 
+
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -415,7 +415,7 @@ Feature: sharing
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brian" should see the following elements
-     | /Shares/randomfile.txt |
+      | /Shares/randomfile.txt |
     And the content of file "Shares/randomfile.txt" for user "brian" should be "Random data"
 
   @skipOnLDAP

@@ -8,7 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "L'anovamientu pa la versión %1$s a la %2$s ta disponible",
     "Updater" : "Anovador",
     "A new version is available: %s" : "Una nueva versión ta disponible: %s",
-    "Open updater" : "Abrir anovador",
     "Your version is up to date." : "La to versión ta anovada",
     "Checked on %s" : "Revisáu en %s",
     "Update channel:" : "Anovar canal:",

@@ -149,7 +149,6 @@ OC.L10N.register(
     "Not supported!" : "Euskarririk ez!",
     "Press ⌘-C to copy." : "Sakatu ⌘-C kopiatzeko.",
     "Press Ctrl-C to copy." : "Sakatu Ctrl-C kopiatzeko.",
-    "Choose a password" : "Aukeratu pasahitza",
     "Password required" : "Pasahitza beharrezkoa",
     "Link name" : "Estekaren izena",
     "Name" : "Izena",

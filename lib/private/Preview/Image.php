@@ -75,17 +75,17 @@ abstract class Image implements IProvider2 {
 	}
 
 	private function getMaxDimensions(): array {
-		// 24 MP - 6016 x 4000
-		$maxDimension = \OC::$server->getConfig()->getSystemValue('preview_max_dimensions', '6016x4000');
+		// 24 MP - 6016 x 6016
+		$maxDimension = \OC::$server->getConfig()->getSystemValue('preview_max_dimensions', '6016x6016');
 		$exploded = explode('x', strtolower($maxDimension));
 		if ($exploded === false || \count($exploded) !== 2) {
-			return [6016, 4000];
+			return [6016, 6016];
 		}
 		[$w, $h] = $exploded;
 		if (is_numeric($w) && is_numeric($h)) {
 			return [(int)$w, (int)$h];
 		}
 
-		return [6016, 4000];
+		return [6016, 6016];
 	}
 }

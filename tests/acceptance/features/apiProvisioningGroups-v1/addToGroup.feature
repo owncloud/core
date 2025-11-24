@@ -200,7 +200,7 @@ Feature: add users to group
     And user "brand-new-user" should not belong to group "brand-new-group"
 
   @skipOnLDAP
-  Scenario: a subadmin can add users to other groups the subadmin is responsible for
+  Scenario: a subadmin cannot add users to other groups the subadmin is responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
@@ -211,9 +211,10 @@ Feature: add users to group
     And user "another-subadmin" has been made a subadmin of group "brand-new-group"
     And user "another-subadmin" has been made a subadmin of group "another-new-group"
     When user "another-subadmin" tries to add user "brand-new-user" to group "another-new-group" using the provisioning API
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "104"
     And the HTTP status code should be "200"
     And user "brand-new-user" should belong to group "brand-new-group"
+    And user "brand-new-user" should not belong to group "another-new-group"
 
   # merge this with scenario on line 62 once the issue is fixed
   @issue-31015 @skipOnLDAP @issue-product-284

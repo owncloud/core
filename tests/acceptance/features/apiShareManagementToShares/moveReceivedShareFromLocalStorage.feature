@@ -86,5 +86,4 @@ Feature: local-storage
     Examples:
       | ocs_api_version | pending_share_path |
       | 1               | /filetoshare.txt   |
-      | 2               | /filetoshare.txt   |      
- 
+      | 2               | /filetoshare.txt   |

@@ -77,15 +77,13 @@ class CertificateTest extends \Test\TestCase {
 	}
 
 	public function testGetIssueDate() {
-		$expected = new \DateTime('2015-08-27 20:03:42 GMT');
-		$this->assertEquals($expected->getTimestamp(), $this->goodCertificate->getIssueDate()->getTimestamp());
+		$this->assertEquals(1756285645, $this->goodCertificate->getIssueDate()->getTimestamp());
 		$expected = new \DateTime('2015-08-27 20:19:13 GMT');
 		$this->assertEquals($expected->getTimestamp(), $this->invalidCertificate->getIssueDate()->getTimestamp());
 	}
 
 	public function testGetExpireDate() {
-		$expected = new \DateTime('2025-08-24 20:03:42 GMT');
-		$this->assertEquals($expected->getTimestamp(), $this->goodCertificate->getExpireDate()->getTimestamp());
+		$this->assertEquals(2071645645, $this->goodCertificate->getExpireDate()->getTimestamp());
 		$expected = new \DateTime('2025-08-24 20:19:13 GMT');
 		$this->assertEquals($expected->getTimestamp(), $this->invalidCertificate->getExpireDate()->getTimestamp());
 		$expected = new \DateTime('2014-08-28 09:12:43 GMT');
@@ -94,7 +92,7 @@ class CertificateTest extends \Test\TestCase {
 
 	public function testIsExpired() {
 		$this->assertFalse($this->goodCertificate->isExpired());
-		$this->assertFalse($this->invalidCertificate->isExpired());
+		$this->assertTrue($this->invalidCertificate->isExpired());
 		$this->assertTrue($this->expiredCertificate->isExpired());
 	}
 

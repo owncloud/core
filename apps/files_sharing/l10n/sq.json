@@ -2,6 +2,7 @@
     "Server to server sharing is not enabled on this server" : "Ndarja mes shërbyesish s’është e aktivizuar në këtë shërbyes",
     "The mountpoint name contains invalid characters." : "Emri i pikës së montimit përmban shenja të pavlefshme.",
     "Not allowed to create a federated share with the same user server" : "S’ka leje të krijojë një pjesë të federuar me të njëjtin shërbyes përdoruesi",
+    "Remote is unreachable" : "I largëti s’kapet dot",
     "Could not authenticate to federated share, password might be wrong" : "S’u bë dot mirëfilltësimi te pjesë e federuar, fjalëkalimi mund të jetë i gabuar",
     "Storage not valid" : "Depozitë jo e vlefshme",
     "Couldn't add federated share" : "S’u shtua dot pjesë e federuar",

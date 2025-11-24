@@ -6,8 +6,6 @@
     "Update for %1$s to version %2$s is available." : "Jest dostępna aktualizacja dla %1$s do wersji %2$s",
     "Updater" : "Aktualizator",
     "A new version is available: %s" : "Dostępna jest nowa wersja: %s",
-    "Open updater" : "Otwórz aktualizator",
-    "Show changelog" : "Pokaż historię zmian",
     "Your version is up to date." : "Posiadasz aktualną wersję.",
     "Checked on %s" : "Sprawdzone na %s",
     "Update channel:" : "Kanał aktualizacji:",

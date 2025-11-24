@@ -5,9 +5,9 @@
 			<p id="quotatext">
 				<?php if ($_['quota'] === \OCP\Files\FileInfo::SPACE_UNLIMITED): ?>
 					<?php p($l->t(
-	'You are using %s',
-	[$_['usage']]
-));?>
+						'You are using %s',
+						[$_['usage']]
+					));?>
 				<?php else: ?>
 					<?php p($l->t(
 						'You are using %s of %s (%s %%)',

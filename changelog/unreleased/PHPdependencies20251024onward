@@ -1,0 +1,7 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- phpseclib/phpseclib (3.0.46 to 3.0.47)
+- sabre/http (5.1.12 to 5.1.13)
+
+https://github.com/owncloud/core/pull/41408

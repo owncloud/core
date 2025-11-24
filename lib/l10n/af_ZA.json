@@ -41,10 +41,12 @@
     "%s via %s" : "%s deur %s",
     "A valid username must be provided" : "’n Geldige gebruikersnaam moet verskaf word",
     "A valid password must be provided" : "’n Geldige wagwoord moet verskaf word",
+    "User disabled" : "gebruiker gedeaktiveer",
     "Settings" : "Instellings",
     "Users" : "Gebruikers",
     "A safe home for all your data" : "’n Veilige tuiste vir al u data",
     "Imprint" : "Afdruk",
-    "Unknown user" : "Onbekende gebruiker"
+    "Unknown user" : "Onbekende gebruiker",
+    "User unknown" : "onbekende gebruiker"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

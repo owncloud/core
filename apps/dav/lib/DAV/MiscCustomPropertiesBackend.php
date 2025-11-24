@@ -36,14 +36,14 @@ use Sabre\DAV\INode;
 class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	public const SELECT_BY_PATH_STMT = 'SELECT * FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
 	public const INSERT_BY_PATH_STMT = 'INSERT INTO `*PREFIX*dav_properties`'
-	. ' (`propertypath`, `propertyname`, `propertyvalue`, `propertytype`) VALUES(?,?,?,?)';
+		. ' (`propertypath`, `propertyname`, `propertyvalue`, `propertytype`) VALUES(?,?,?,?)';
 	public const UPDATE_BY_PATH_STMT = 'UPDATE `*PREFIX*dav_properties`'
-	. ' SET `propertypath` = ? WHERE `propertypath` = ?';
+		. ' SET `propertypath` = ? WHERE `propertypath` = ?';
 	public const UPDATE_BY_PATH_AND_NAME_STMT = 'UPDATE `*PREFIX*dav_properties` '
-	. 'SET `propertyvalue` = ?, `propertytype` = ? WHERE `propertypath` = ? AND `propertyname` = ?';
+		. 'SET `propertyvalue` = ?, `propertytype` = ? WHERE `propertypath` = ? AND `propertyname` = ?';
 	public const DELETE_BY_PATH_STMT = 'DELETE FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
 	public const DELETE_BY_PATH_AND_NAME_STMT = 'DELETE FROM `*PREFIX*dav_properties`'
-	. ' WHERE `propertypath` = ? AND `propertyname` = ?';
+		. ' WHERE `propertypath` = ? AND `propertyname` = ?';
 
 	/**
 	 * This method is called after a node is deleted.

@@ -156,7 +156,7 @@ Feature: files and folders can be deleted from the trashbin
     And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should not exist in the trashbin
     And as "Alice" the folder with original path "/PARENT/CHILD/" should not exist in the trashbin
     But as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
-    But as "Alice" the file with original path "/FOLDER/parent.txt" should exist in the trashbin
+    And as "Alice" the file with original path "/FOLDER/parent.txt" should exist in the trashbin
     And as "Alice" the file with original path "/FOLDER/CHILD/child.txt" should exist in the trashbin
     Examples:
       | dav-path |

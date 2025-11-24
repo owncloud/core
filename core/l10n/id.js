@@ -168,7 +168,6 @@ OC.L10N.register(
     "Not supported!" : "Tidak didukung!",
     "Press ⌘-C to copy." : "Tekan ⌘-C untuk meng-copy",
     "Press Ctrl-C to copy." : "Tekan Ctrl-C untuk meng-copy",
-    "Choose a password" : "Gunakan sebuah katasandi",
     "Password required" : "Kata sandi dibutuhkan",
     "Link name" : "Nama tautan",
     "Name" : "Nama",

@@ -506,7 +506,8 @@ class Users {
 			return new Result(null, 103);
 		}
 
-		if (!$this->groupManager->isAdmin($user->getUID()) && !$this->groupManager->getSubAdmin()->isUserAccessible($user, $targetUser)) {
+		if (!$this->groupManager->isAdmin($user->getUID())) {
+			// subadmins won't be able to add users to groups, only admins can
 			return new Result(null, 104);
 		}
 

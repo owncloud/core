@@ -6,8 +6,6 @@
     "Update for %1$s to version %2$s is available." : "更新對於%1$s到版本%2$s是可用的",
     "Updater" : "更新者",
     "A new version is available: %s" : "有新版本可用的：%s",
-    "Open updater" : "開啟更新器",
-    "Show changelog" : "顯示更新日誌",
     "Your version is up to date." : "你的版本是最新的了。",
     "Checked on %s" : "已檢查%s",
     "Update channel:" : "更新通道:",

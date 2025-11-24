@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "มีอัปเดตสำหรับ %1$s ไปยังเวอร์ชัน %2$s ที่พร้อมใช้งานแล้ว",
     "Updater" : "อัปเดต",
     "A new version is available: %s" : "มีเวอร์ชันใหม่ที่สามารถใช่ได้: %s",
-    "Open updater" : "เปิดตัวอัปเดต",
-    "Show changelog" : "แสดงบันทึกการเปลี่ยนแปลง",
     "Your version is up to date." : "<strong>เวอร์ชันของคุณใหม่ล่าสุดแล้ว</strong>",
     "Checked on %s" : "ตรวจสอบเมื่อ %s",
     "Update channel:" : "ช่องทางการอัปเดต:",

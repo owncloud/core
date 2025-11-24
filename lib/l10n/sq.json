@@ -53,7 +53,7 @@
     "No href specified when installing app from http" : "S’u tregua href gjatë instalimit të aplikacionit nga http",
     "No path specified when installing app from local file" : "S’u caktua shteg gjatë instalimit të aplikacionit prej kartele vendore",
     "Archives of type %s are not supported" : "Nuk mbulohen arkivat e llojit %s",
-    "Failed to open archive when installing app" : "S’u arrit të hapetkivi teksa instalohej aplikacioni",
+    "Failed to open archive when installing app" : "S’u arrit të hapet arkiv teksa instalohej aplikacioni",
     "App does not provide an info.xml file" : "Aplikacioni s’ofron kartelë të vlefshme .xml",
     "App cannot be installed because appinfo file cannot be read." : "Aplikacioni s’mund të instalohet, ngaqë s’lexohet dot kartela appinfo.",
     "Signature could not get checked. Please contact the app developer and check your admin screen." : "Nënshkrimi s’u kontrollua dot. Ju lutemi, lidhuni me zhvilluesin e aplikacionit dhe kontrolloni te skena juaj e përgjegjësit.",

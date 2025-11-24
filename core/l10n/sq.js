@@ -179,7 +179,7 @@ OC.L10N.register(
     "Not supported!" : "Nuk mbulohet!",
     "Press ⌘-C to copy." : "Shtypni ⌘-C që të kopjohet.",
     "Press Ctrl-C to copy." : "Shtypni Ctrl-C që të kopjohet.",
-    "Choose a password" : "Zgjidhni një fjalëkalim",
+    "Choose a password - password policy may apply" : "Zgjidhni një fjalëkalim - mund të ketë rregulla fjalëkalimesh",
     "Password required" : "Lypset fjalëkalim",
     "Link name" : "Emër lidhjeje",
     "Name" : "Emër",

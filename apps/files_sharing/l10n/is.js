@@ -20,6 +20,7 @@ OC.L10N.register(
     "Files and folders you share by link will show up here" : "Skrár og möppur sem þú deilir með tenglum birtast hér",
     "Accept Share" : "Samþykkja sameign",
     "Decline Share" : "Hafna sameign",
+    "Federated share" : "Sameiginleg deild",
     "Cancel" : "Hætta við",
     "You can upload into this folder" : "Þú getur sent inn skrár í þessa möppu",
     "Add" : "Bæta við",

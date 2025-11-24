@@ -176,6 +176,7 @@ OC.L10N.register(
     "Please contact your administrator." : "Bonvolu kontakti vian administranton.",
     "Please try again or contact your administrator." : "Bonvolu provi ree aŭ kontakti vian administranton.",
     "Login" : "Ensaluti",
+    "Username or email" : "Uzantonomo aŭ retpoŝtadreso",
     "Wrong password." : "Malĝusta pasvorto.",
     "Stay logged in" : "Daŭri ensalutinta",
     "Alternative Logins" : "Alternativaj ensalutoj",

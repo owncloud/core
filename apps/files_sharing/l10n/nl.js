@@ -103,6 +103,8 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" heeft u uitgenodigd om \"%3$s\" te bekijken",
     "Accept" : "Accepteren",
     "Decline" : "Afwijzen",
+    "Automatically accept new incoming local user shares" : "Automatisch nieuwe inkomende lokale gedeelde mappen accepteren",
+    "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "Je laten vinden via automatisch aanvullen in het delendialoog. Als dit is uitgeschakeld, moet de volledige gebruikersnaam worden ingevoerd.",
     "This share is password-protected" : "Deze share is met een wachtwoord beveiligd",
     "Password" : "Wachtwoord",
     "The password is wrong. Try again." : "Wachtwoord ongeldig. Probeer het nogmaals.",

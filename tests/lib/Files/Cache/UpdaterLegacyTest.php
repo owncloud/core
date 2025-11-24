@@ -263,14 +263,14 @@ class UpdaterLegacyTest extends \Test\TestCase {
 		$this->assertIsString($cachedData['etag']);
 		$this->assertNotSame($substorageCachedData['etag'], $cachedData['etag']);
 		// rename can cause mtime change - invalid assert
-//		$this->assertEquals($mtime, $cachedData['mtime']);
+		//		$this->assertEquals($mtime, $cachedData['mtime']);
 
 		$cachedData = $view->getFileInfo('folder');
 		$this->assertIsString($folderCachedData['etag']);
 		$this->assertIsString($cachedData['etag']);
 		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
 		// rename can cause mtime change - invalid assert
-//		$this->assertEquals($mtime, $cachedData['mtime']);
+		//		$this->assertEquals($mtime, $cachedData['mtime']);
 	}
 
 	public function testTouch() {

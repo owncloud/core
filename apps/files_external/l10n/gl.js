@@ -15,6 +15,7 @@ OC.L10N.register(
     "Error generating key pair" : "Produciuse un erro ao xerar o par de claves",
     "All users. Type to select user or group." : "Todos os usuarios. Escriba para seleccionar usuario ou grupo.",
     "(group)" : "(grupo)",
+    "All users" : "Todos os usuarios",
     "Compatibility with Mac NFD encoding (slow)" : "Compatibilidade coa codificación Mac MFD (lenta)",
     "Sharing cannot be enabled due to the chosen authentication method" : "Non é posíbel activar o uso compartido por mor do método de autenticación escollido",
     "Unknown auth backend \"{b}\"" : "Infraestrutura de autenticación descoñecida «{b}»",

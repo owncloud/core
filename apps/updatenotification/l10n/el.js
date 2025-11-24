@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "Εϊναι διαθέσιμη η ενημέρωση για την έκδοση %1$s στην %2$s",
     "Updater" : "Εφαρμογή Ενημέρωσης",
     "A new version is available: %s" : "Μία νέα έκδοση είναι διαθέσιμη: %s",
-    "Open updater" : "Άνοιγμα εφαρμογής ενημέρωσης",
-    "Show changelog" : "Εμφάνισε changelog",
     "Your version is up to date." : "Έχετε την τελευταία έκδοση.",
     "Checked on %s" : "Ελέγθηκε στις %s",
     "Update channel:" : "Ενημέρωση καναλιού:",

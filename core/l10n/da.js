@@ -155,7 +155,6 @@ OC.L10N.register(
     "Not supported!" : "Ikke understøttet!",
     "Press ⌘-C to copy." : "Tryk ⌘-C for at kopiere.",
     "Press Ctrl-C to copy." : "Tryk Ctrl-C for at kopiere.",
-    "Choose a password" : "Vælg et kodeord",
     "Password required" : "Kodeord påkrævet",
     "Link name" : "Linknavn",
     "Name" : "Navn",

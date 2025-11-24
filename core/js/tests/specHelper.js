@@ -94,7 +94,7 @@ window.oc_appswebroots = {
 window.oc_config = {
 	session_lifetime: 600 * 1000,
 	session_keepalive: false,
-	blacklist_files_regex: '\.(part|filepart)$'
+	blacklist_files_regex: '\\.(part|filepart)$'
 };
 window.oc_appconfig = {
 	core: {}

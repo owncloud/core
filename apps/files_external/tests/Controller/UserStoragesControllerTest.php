@@ -31,28 +31,56 @@ use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\StorageNotAvailableException;
+use OCP\ILogger;
+use OCP\IConfig;
+use OCP\IUserSession;
+use OCP\IL10N;
+use OCP\IRequest;
+use OCP\Files\External\Service\IUserStoragesService;
 
 class UserStoragesControllerTest extends StoragesControllerTest {
-	/**
-	 * @var array
-	 */
-	private $oldAllowedBackends;
-
 	public function setUp(): void {
 		parent::setUp();
-		$this->service = $this->createMock('\OCP\Files\External\Service\IUserStoragesService');
-
+		$this->service = $this->createMock(IUserStoragesService::class);
 		$this->service->method('getVisibilityType')
 			->willReturn(IStoragesBackendService::VISIBILITY_PERSONAL);
 
+		$this->config = $this->createMock(IConfig::class);
+		$this->config->method('getAppValue')->willReturn('yes');
+
 		$this->controller = new UserStoragesController(
 			'files_external',
-			$this->createMock('\OCP\IRequest'),
-			$this->createMock('\OCP\IL10N'),
+			$this->createMock(IRequest::class),
+			$this->createMock(IL10N::class),
 			$this->service,
-			$this->createMock('\OCP\IUserSession'),
-			$this->createMock('\OCP\ILogger')
+			$this->createMock(IUserSession::class),
+			$this->config,
+			$this->createMock(ILogger::class)
 		);
+	}
+
+	public function testApiWhenDisabled(): void {
+		$config = $this->createMock(IConfig::class);
+		$config->method('getAppValue')->willReturn('no');
+
+		$controller = new UserStoragesController(
+			'files_external',
+			$this->createMock(IRequest::class),
+			$this->createMock(IL10N::class),
+			$this->service,
+			$this->createMock(IUserSession::class),
+			$config,
+			$this->createMock(ILogger::class)
+		);
+
+		$resp = $controller->create(
+			'',
+			'',
+			'',
+			[],
+			[],
+		);
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $resp->getStatus());
 	}
 
 	public function testAddOrUpdateStorageDisallowedBackend() {

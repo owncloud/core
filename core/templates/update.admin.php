@@ -1,11 +1,3 @@
-
-<?php $license = \OC::$server->query(\OC\License\LicenseFetcher::class)->getOwncloudLicense();
-if ($license !== null) {
-	?>
-<div class="update">
-<?php include_once('ioc.warning.php'); ?>
-</div>
-<?php } ?>
 <div class="update" data-productname="<?php p($_['productName']) ?>" data-version="<?php p($_['version']) ?>">
 	<div class="updateOverview">
 		<?php if ($_['isAppsOnlyUpgrade']) {
@@ -15,9 +7,9 @@ if ($license !== null) {
 		} else {
 			?>
 		<h2 class="title"><?php p($l->t(
-				'%s will be updated to version %s',
-				[$_['productName'], $_['version']]
-			)); ?></h2>
+			'%s will be updated to version %s',
+			[$_['productName'], $_['version']]
+		)); ?></h2>
 		<?php
 		} ?>
 		<?php if (!empty($_['appsToUpgrade'])) {

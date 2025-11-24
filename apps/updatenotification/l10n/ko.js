@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "%1$s을(를) 버전 %2$s(으)로 업데이트할 수 있습니다.",
     "Updater" : "업데이터",
     "A new version is available: %s" : "새 버전을 사용할 수 있습니다: %s",
-    "Open updater" : "업데이터 열기",
-    "Show changelog" : "변경 사항 보기",
     "Your version is up to date." : "최신 버전을 사용하고 있습니다.",
     "Checked on %s" : "%s에 확인함",
     "Update channel:" : "업데이트 채널:",

@@ -177,7 +177,6 @@ OC.L10N.register(
     "Not supported!" : "Не се поддържа!",
     "Press ⌘-C to copy." : "Натиснете ⌘-C, за да копирате.",
     "Press Ctrl-C to copy." : "Натиснете Ctrl-C, за да копирате.",
-    "Choose a password" : "Изберете парола",
     "Password required" : "Изисква се парола",
     "Link name" : "Име на връзката",
     "Name" : "Име",

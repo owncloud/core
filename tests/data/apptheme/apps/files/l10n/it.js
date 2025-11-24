@@ -21,6 +21,7 @@ OC.L10N.register(
     "Target folder does not exist any more" : "Cartella di destinazione inesistente",
     "The file {file} is currently locked, please try again later" : "Il file {file} è attualmente bloccato, riprova più tardi",
     "Not enough free space" : "Spazio libero insufficiente",
+    "Failed to upload the file \"{fileName}\": {error}" : "Impossibile caricare il file \"{fileName}\": {error}",
     "Uploading..." : "Caricamento in corso...",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} di {totalSize} ({bitrate})",

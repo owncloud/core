@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "%1$s有可用更新，版本：%2$s",
     "Updater" : "更新管理器",
     "A new version is available: %s" : "有可用的新版本： %s",
-    "Open updater" : "打开更新管理器",
-    "Show changelog" : "查看更新日志",
     "Your version is up to date." : "您的版本已是最新。",
     "Checked on %s" : "检查于 %s",
     "Update channel:" : "更新通道：",

@@ -153,7 +153,6 @@ OC.L10N.register(
     "Not supported!" : "Не підтримується!",
     "Press ⌘-C to copy." : "Натисніть ⌘-C щоб скопіювати.",
     "Press Ctrl-C to copy." : "Натисніть Ctrl-C щоб скопіювати.",
-    "Choose a password" : "Оберіть пароль",
     "Password required" : "Необхідний пароль",
     "Link name" : "Ім'я посилання",
     "Name" : "Ім’я",

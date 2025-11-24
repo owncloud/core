@@ -1,0 +1,12 @@
+{ "translations": {
+    "seconds ago" : "seconds ago",
+    "Username" : "Username",
+    "Password" : "Password",
+    "File name contains at least one invalid character" : "File name contains at least one invalid character",
+    "General" : "General",
+    "Security" : "Security",
+    "Search" : "Search",
+    "Settings" : "Settings",
+    "Imprint" : "Imprint"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

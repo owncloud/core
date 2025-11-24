@@ -177,7 +177,6 @@ OC.L10N.register(
     "Not supported!" : "不支援！",
     "Press ⌘-C to copy." : "按下 ⌘-C 以複製",
     "Press Ctrl-C to copy." : "按下 Ctrl-C 以複製",
-    "Choose a password" : "選擇密碼",
     "Password required" : "需要密碼",
     "Link name" : "連結名稱",
     "Name" : "名稱",

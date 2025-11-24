@@ -349,7 +349,6 @@
 
 .public-link-modal--input[type="password"],
 .public-link-modal--input.datepicker {
-	max-width: 50%;
 	min-width: 175px;
 }
 

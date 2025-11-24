@@ -77,6 +77,6 @@ Feature: reset the password
     Then the user should be redirected to a webUI page with the title "%productname%"
     When the user resets the password to "%alt3%" and confirms with "foo" using the webUI
     Then the user should see a password mismatch message displayed on the webUI
-    """
-    Passwords do not match
-    """
+      """
+      Passwords do not match
+      """

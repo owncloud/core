@@ -1022,15 +1022,15 @@ $CONFIG = [
 
 /**
  * Define the maximum dimensions of the original image for preview generation
- * In contrast to `preview_max_x` and `preview_max_x` which define the maximum
+ * In contrast to `preview_max_x` and `preview_max_y` which define the maximum
  * dimensions of generated previews, this setting limits the original image's size.
  *
  * Original images bigger than the defined dimension will not be processed.
  *
  * Value represents the maximum dimension in the format width x height
- * Default is 6016x4000.
+ * Default is 6016x6016.
  */
-'preview_max_dimensions' => '6016x4000',
+'preview_max_dimensions' => '6016x6016',
 
 /**
  * Define the custom path for the LibreOffice / OpenOffice binary
@@ -1711,6 +1711,12 @@ $CONFIG = [
 'upgrade.disable-web' => false,
 
 /**
+ * Explicitly enable the web updater - used by /updater/
+ * By default, it is disabled.
+ */
+'web-updater.enabled' => false,
+
+/**
  * Define whether to enable automatic update of market apps
  * Set to `false` to disable.
  */
@@ -1882,4 +1888,16 @@ $CONFIG = [
  * This could happen in earlier versions of the openidconnect app when using the web UI.
  */
 'loginPolicy.groupLoginPolicy.forbidMap' => [],
+
+/**
+ * Enable Sending Telemetry Reports for Enterprise Customers
+ * Telemetry data is a subset of the config report as produced by the command `occ configreport:generate`.
+ *
+ * * If set to true and an enterprise license key is installed, a daily telemetry report is sent to https://telemetry.owncloud.com/oc10-telemetry
+ * * If set to false or the configreport app is disabled, no telemetry reports are sent
+ *
+ * Default: true
+ * For community servers (without a license key) telemetry reports are never sent.
+ */
+'telemetry.enabled' => true,
 ];

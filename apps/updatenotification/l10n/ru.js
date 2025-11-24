@@ -8,13 +8,12 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "Доступно обновление для %1$s до версии %2$s.",
     "Updater" : "Обновление",
     "A new version is available: %s" : "Доступна новая версия: %s",
-    "Open updater" : "Открыть окно обновления",
-    "Show changelog" : "Показать журнал измененеий",
     "Your version is up to date." : "Версия не требует обновления.",
     "Checked on %s" : "Проверено %s",
     "Update channel:" : "Канал обновлений:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Вы всегда можете переключится на экспериментальный канал обновлений для получения новейшей версии. Но учтите, что вы не сможете переключиться обратно на канал обновлений для стабильных версий. ",
     "Notify members of the following groups about available updates:" : "Уведомить членов следующих групп о наличии доступных обновлений:",
-    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Доступны только уведомления для обновлений приложений, так как выбранный канал обновления для самого ownCloud не поддерживает уведомления."
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Доступны только уведомления для обновлений приложений, так как выбранный канал обновления для самого ownCloud не поддерживает уведомления.",
+    "Online updater has been automatically disabled as you are currently running an ownCloud Enterprise edition. Please update your ownCloud instance manually." : "Автоматическое обновление отключено, так как вы используете версию ownCloud Enterprise. Пожалуйста, обновите вашу ownCloud вручную."
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

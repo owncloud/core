@@ -6,8 +6,6 @@
     "Update for %1$s to version %2$s is available." : "Ажурирање за  %1$s во верзија%2$s е достапно.",
     "Updater" : "Надградувач",
     "A new version is available: %s" : "Достапна е нова верзија: %s",
-    "Open updater" : "Започни ажурирање",
-    "Show changelog" : "Прикажи ги промените",
     "Your version is up to date." : "Вашата верзија е ажурирана.",
     "Checked on %s" : "Проверено на %s",
     "Update channel:" : "Канал за ажурирање:",

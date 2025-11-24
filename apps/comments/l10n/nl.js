@@ -5,7 +5,7 @@ OC.L10N.register(
     "Delete comment" : "Verwijder reactie",
     "Post" : "Reageer",
     "Cancel" : "Annuleren",
-    "Edit comment" : "Bewerk reactie",
+    "Edit comment" : "Wijzig reactie",
     "[Deleted user]" : "[Verwijderde gebruiker]",
     "Comments" : "Reacties",
     "No other comments available" : "Geen andere reacties beschikbaar",

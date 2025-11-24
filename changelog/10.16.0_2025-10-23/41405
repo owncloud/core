@@ -1,0 +1,6 @@
+Bugfix: Subadmins won't add users to groups
+
+Subadmins won't be able to add user to groups, not even to groups they're
+managing. Only admins will be able to.
+
+https://github.com/owncloud/core/pull/41405

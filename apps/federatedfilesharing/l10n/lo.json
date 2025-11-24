@@ -1,0 +1,15 @@
+{ "translations": {
+    "Loading..." : "ກຳລັງໂຫລດ...",
+    "Invalid Federated Cloud ID" : "Federated Cloud ID ບໍ່ຖືກຕ້ອງ",
+    "Sharing %s failed, because this item is already shared with %s" : "ການແບ່ງປັນ %s ລົ້ມເຫຼວ, ເພາະວ່າລາຍການນີ້ໄດ້ຖືກແບ່ງປັນໃຫ້ກັບ %s ແລ້ວ",
+    "Not allowed to create a federated share with the same user" : "ບໍ່ອະນຸຍາດໃຫ້ສ້າງການແບ່ງປັນແບບ federated ກັບຜູ້ໃຊ້ຄົນດຽວກັນ",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" ໄດ້ແຊຣ໌ \"%3$s\" ກັບທ່ານ (ໃນນາມຂອງ \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" ໄດ້ແຊຣ໌ \"%3$s\" ກັບທ່ານ",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" ໄດ້ເຊີນທ່ານໃຫ້ເບິ່ງ \"%3$s\" (ໃນນາມຂອງ \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" ໄດ້ເຊີນທ່ານໃຫ້ເບິ່ງ \"%3$s\"",
+    "Accept" : "ຍອມຮັບ",
+    "Decline" : "ປະຕິເສດ",
+    "Open documentation" : "ເປີດເອກະສານ",
+    "Nothing to configure." : "ບໍ່ມີຫຍັງໃຫ້ຕັ້ງຄ່າ."
+},"pluralForm" :"nplurals=1; plural=0;"
+}

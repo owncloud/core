@@ -64,44 +64,44 @@ Feature: using files external service with storage as webdav_owncloud
     Then mount point "/TestMountPoint1" should not be listed as an external storage
 
 
-    Scenario: adding an user to a webdav_owncloud external storage
-      Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
-        | host                   | %remote_server%    |
-        | root                   | TestMnt            |
-        | secure                 | false              |
-        | user                   | %username%         |
-        | password               | %password%         |
-        | storage_backend        | owncloud           |
-        | mount_point            | TestMountPoint     |
-        | authentication_backend | password::password |
-      And user "admin" has uploaded file with content "Hello from Local!" to "TestMountPoint/test.txt"
-      And user "Brian" has been created with default attributes and without skeleton files
-      When the administrator adds user "Brian" as the applicable user for local storage mount "TestMountPoint" using the occ command
-      Then the command should have been successful
-      And the following users should be listed as applicable for local storage mount "TestMountPoint"
-        | users  | Brian |
-      And as "Brian" file "TestMountPoint/test.txt" should exist
+  Scenario: adding an user to a webdav_owncloud external storage
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+      | host                   | %remote_server%    |
+      | root                   | TestMnt            |
+      | secure                 | false              |
+      | user                   | %username%         |
+      | password               | %password%         |
+      | storage_backend        | owncloud           |
+      | mount_point            | TestMountPoint     |
+      | authentication_backend | password::password |
+    And user "admin" has uploaded file with content "Hello from Local!" to "TestMountPoint/test.txt"
+    And user "Brian" has been created with default attributes and without skeleton files
+    When the administrator adds user "Brian" as the applicable user for local storage mount "TestMountPoint" using the occ command
+    Then the command should have been successful
+    And the following users should be listed as applicable for local storage mount "TestMountPoint"
+      | users  | Brian |
+    And as "Brian" file "TestMountPoint/test.txt" should exist
 
 
-    Scenario: removing an user from a webdav_owncloud external storage
-      Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
-        | host                   | %remote_server%    |
-        | root                   | TestMnt            |
-        | secure                 | false              |
-        | user                   | %username%         |
-        | password               | %password%         |
-        | storage_backend        | owncloud           |
-        | mount_point            | TestMountPoint     |
-        | authentication_backend | password::password |
-      And user "admin" has uploaded file with content "Hello from Local!" to "TestMountPoint/test.txt"
-      And user "Brian" has been created with default attributes and without skeleton files
-      And the administrator has added user "Brian" as the applicable user for local storage mount "TestMountPoint"
-      And the administrator has added user "admin" as the applicable user for local storage mount "TestMountPoint"
-      When the administrator removes user "Brian" from the applicable user for local storage mount "TestMountPoint" using the occ command
-      Then the command should have been successful
-      And the following users should be listed as applicable for local storage mount "TestMountPoint"
-        | users  | admin |
-      And as "Brian" file "TestMountPoint/test.txt" should not exist
+  Scenario: removing an user from a webdav_owncloud external storage
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+      | host                   | %remote_server%    |
+      | root                   | TestMnt            |
+      | secure                 | false              |
+      | user                   | %username%         |
+      | password               | %password%         |
+      | storage_backend        | owncloud           |
+      | mount_point            | TestMountPoint     |
+      | authentication_backend | password::password |
+    And user "admin" has uploaded file with content "Hello from Local!" to "TestMountPoint/test.txt"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And the administrator has added user "Brian" as the applicable user for local storage mount "TestMountPoint"
+    And the administrator has added user "admin" as the applicable user for local storage mount "TestMountPoint"
+    When the administrator removes user "Brian" from the applicable user for local storage mount "TestMountPoint" using the occ command
+    Then the command should have been successful
+    And the following users should be listed as applicable for local storage mount "TestMountPoint"
+      | users  | admin |
+    And as "Brian" file "TestMountPoint/test.txt" should not exist
 
 
   Scenario: adding a group to a webdav_owncloud external storage

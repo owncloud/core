@@ -8,8 +8,6 @@ OC.L10N.register(
     "Update for %1$s to version %2$s is available." : "Está dispoñíbel a actualización do %1$s á versión %2$s.",
     "Updater" : "Actualizador",
     "A new version is available: %s" : "Hai dispoñíbel unha versión: %s",
-    "Open updater" : "Abrir o actualizador",
-    "Show changelog" : "Amosar o rexistro de cambios",
     "Your version is up to date." : "A súa versión está actualizada.",
     "Checked on %s" : "Comprobado o %s",
     "Update channel:" : "Canle de actualización:",

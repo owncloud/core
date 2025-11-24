@@ -14,7 +14,7 @@
 	}
 
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
-	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password');
+	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password - password policy may apply');
 	var TEMPLATE =
 		'<div class="error-message-global hidden"></div>' +
 		'<div class="public-link-modal">'+

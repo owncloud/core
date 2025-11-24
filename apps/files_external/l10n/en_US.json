@@ -1,0 +1,12 @@
+{ "translations": {
+    "Personal" : "Personal",
+    "Username" : "Username",
+    "Password" : "Password",
+    "Save" : "Save",
+    "URL" : "URL",
+    "Share" : "Share",
+    "Name" : "Name",
+    "Never" : "Never",
+    "Folder name" : "Folder name"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
