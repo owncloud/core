@@ -1,3 +1,5 @@
 Security: disable phar stream wrapper
 
+CVE: CVE-2025-32804
+
 https://github.com/owncloud/core/pull/41358
