@@ -3,4 +3,6 @@ Bugfix: Harden remote service resolution
 Remote services such as webdav, caldav, etc, will be loaded from the app
 or from a hardcoded list.
 
+CVE: CVE-2025-53829
+
 https://github.com/owncloud/core/pull/41374

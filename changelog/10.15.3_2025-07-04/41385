@@ -6,5 +6,7 @@ At the end it can cause more pain than help.
 In addition the use of the web updater is discouraged by removing the
 integration in the admin ui.
 
+CVE: CVE-2025-53827
+
 https://github.com/owncloud/core/issues/41149
 https://github.com/owncloud/core/pull/41385
