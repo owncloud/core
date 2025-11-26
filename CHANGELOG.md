@@ -164,6 +164,8 @@ ownCloud admins and users.
    In addition the use of the web updater is discouraged by removing the
    integration in the admin ui.
 
+   CVE: CVE-2025-53827
+
    https://github.com/owncloud/core/issues/41149
    https://github.com/owncloud/core/pull/41385
 
@@ -171,6 +173,8 @@ ownCloud admins and users.
 
    Remote services such as webdav, caldav, etc, will be loaded from the app or from
    a hardcoded list.
+
+   CVE: CVE-2025-53829
 
    https://github.com/owncloud/core/pull/41374
 
@@ -188,6 +192,8 @@ ownCloud admins and users.
 ## Details
 
 * Security - Disable phar stream wrapper: [#41358](https://github.com/owncloud/core/pull/41358)
+
+   CVE: CVE-2025-32804
 
    https://github.com/owncloud/core/pull/41358
 
@@ -209,6 +215,8 @@ ownCloud admins and users.
    Prevent access to app config where the key is prefixed with remote_ and public_
    via the http api as these are internal configuration settings which are not to
    be exposed via the network.
+
+   CVE: CVE-2025-27844
 
    https://github.com/owncloud/core/pull/41355
 
