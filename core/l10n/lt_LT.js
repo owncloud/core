@@ -112,6 +112,7 @@ OC.L10N.register(
     "Good password" : "Geras slaptažodis",
     "Strong password" : "Stiprus slaptažodis",
     "Shared" : "Dalinamasi",
+    "Shared with {recipients}" : "Pasidalinta su {recipients}",
     "Error" : "Klaida",
     "Error while sharing" : "Klaida, dalijimosi metu",
     "Error while unsharing" : "Klaida, kai atšaukiamas dalijimasis",

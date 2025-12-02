@@ -13,6 +13,7 @@ OC.L10N.register(
     "You shared %1$s with group %2$s" : "អ្នក​បាន​ចែករំលែក %1$s ជាមួយ​ក្រុម %2$s",
     "You shared %1$s via link" : "អ្នក​បាន​ចែក​រំលែក %1$s តាម​រយៈ​តំណរភ្ជាប់",
     "%2$s shared %1$s with you" : "%2$s បាន​ចែករំលែក %1$s ជាមួយ​អ្នក",
+    "Shared by %2$s" : "%2$s បាន​ចែករំលែក",
     "Shares" : "ចែក​រំលែក",
     "This share is password-protected" : "ការ​ចែករំលែក​នេះ​ត្រូវ​បាន​ការពារ​ដោយ​ពាក្យ​សម្ងាត់",
     "Password" : "ពាក្យសម្ងាត់",

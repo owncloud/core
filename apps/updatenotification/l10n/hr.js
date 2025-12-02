@@ -1,6 +1,7 @@
 OC.L10N.register(
     "updatenotification",
     {
+    "{version} is available. Get more information on how to update." : "{version} je dostupan. Saznajte više informacija o tome kako ažurirati.",
     "Updater" : "Aplikcija za nadogradnju",
     "A new version is available: %s" : "Nova verzija je dostupna: %s"
 },

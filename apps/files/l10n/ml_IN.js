@@ -2,6 +2,7 @@ OC.L10N.register(
     "files",
     {
     "Files" : "ഫയലുകൾ",
+    "{dirs} and {files}" : "{dirs}ഉം {files}ഉം",
     "You created %1$s" : "നിങ്ങൾ %1$s സൃഷ്ടിച്ചു",
     "%2$s created %1$s" : "%2$s %1$s സൃഷ്ടിച്ചു",
     "You changed %1$s" : "നിങ്ങൾ %1$s പരിഷ്കരിച്ചു",

@@ -41,6 +41,7 @@ OC.L10N.register(
     "Shared via public link" : "Jagatud avaliku lingiga",
     "Removed public link" : "Avalik link on eemaldatud",
     "Public link expired" : "Avalik link aegus",
+    "Shared by %2$s" : "Jagatud %2$s poolt",
     "Shares" : "Jagamised",
     "File sharing" : "Faili jagamine",
     "Public link" : "Avalik link",

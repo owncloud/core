@@ -113,6 +113,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s usunął %1$s",
     "You restored %1$s" : "Przywróciłeś %1$s",
     "%2$s restored %1$s" : "%2$s przywrócił %1$s",
+    "You renamed %2$s to %1$s" : "Zmieniłeś nazwę %2$s na %1$s",
     "Changed by %2$s" : "Zmienione przez %2$s",
     "Deleted by %2$s" : "Usunięte przez %2$s",
     "Restored by %2$s" : "Przywrócone przez %2$s",

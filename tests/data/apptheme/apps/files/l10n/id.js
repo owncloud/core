@@ -86,6 +86,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s menghapus %1$s",
     "You restored %1$s" : "Anda memulihkan %1$s",
     "%2$s restored %1$s" : "%2$s memulihkan %1$s",
+    "You renamed %2$s to %1$s" : "Anda mengubah nama %2$s menjadi %1$s",
     "Changed by %2$s" : "Diubah oleh %2$s",
     "Deleted by %2$s" : "Dihapus oleh %2$s",
     "Restored by %2$s" : "Dipulihkan oleh %2$s",

@@ -87,6 +87,7 @@
     "%s shared »%s« with you" : "%sが あなたと »%s«を共有しました",
     "%s" : "%s",
     "%s via %s" : "%s に %s から",
+    "Sharing %s failed, because the backend does not allow shares from type %d" : "%s を共有できませんでした。%d タイプからの共有は許可されていません。",
     "Sharing %s failed, because the file does not exist" : "%s を共有できませんでした。そのファイルは存在しません。",
     "You are not allowed to share %s" : "%s を共有することを許可されていません。",
     "Sharing %s failed, because you can not share with yourself" : "%s を共有できませんでした。自分自身に共有することはできません。",

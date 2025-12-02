@@ -8,6 +8,8 @@ OC.L10N.register(
     "Delete" : "Obriši",
     "Delete permanently" : "Obriši zauvek",
     "Error" : "Greška",
+    "This operation is forbidden" : "Ова радња је забрањена",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Овај директоријум није доступан, проверите записнике или контактирајте администратора",
     "restored" : "vraćeno",
     "No deleted files" : "Nema obrisanih fajlova",
     "You will be able to recover deleted files from here" : "Odavde ćete moći da povratite obrisane fajlove",

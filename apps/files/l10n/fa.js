@@ -94,6 +94,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s مورد %1$s را حذف کرد",
     "You restored %1$s" : "شما %1$s را بازگردانی کردید",
     "%2$s restored %1$s" : "%2$s %1$s را بازگردانی کرد",
+    "You renamed %2$s to %1$s" : "شما %2$s را به %1$s تغییر نام دادید",
     "Changed by %2$s" : "تغییریافته توسط %2$s",
     "Deleted by %2$s" : "حذف شده توسط %2$s",
     "Restored by %2$s" : "بازگردانی شده توسط  %2$s",

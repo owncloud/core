@@ -88,6 +88,7 @@
     "%s shared »%s« with you" : "%s delade »%s« med dig",
     "%s" : "%s",
     "%s via %s" : "%s via %s",
+    "Sharing %s failed, because the backend does not allow shares from type %d" : "Misslyckades dela ut %s då backend inte tillåter delningar från typ %d",
     "Sharing %s failed, because the file does not exist" : "Delning av %s misslyckades på grund av att filen inte existerar",
     "You are not allowed to share %s" : "Du har inte rätt att dela %s",
     "Sharing %s failed, because you can not share with yourself" : "Delningen %s misslyckades då du inte kan dela med dig själv",

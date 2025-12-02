@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Delete" : "Устгах",
     "Files" : "Файлууд",
+    "{dirs} and {files}" : "{dirs} болон {files}",
     "Cancel" : "Цуцлах",
     "Upload" : "Байршуулах",
     "A new file or folder has been <strong>created</strong>" : "Файл эсвэл хавтас амжилттай <strong>үүсгэгдлээ</strong>",

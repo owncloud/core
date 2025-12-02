@@ -86,6 +86,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s ištrynė %1$s",
     "You restored %1$s" : "Jūs atkūrėte %1$s",
     "%2$s restored %1$s" : "%2$s atkurta %1$s",
+    "You renamed %2$s to %1$s" : "Jūs pervadinote %2$s į %1$s",
     "Changed by %2$s" : "Pakeitė %2$s",
     "Deleted by %2$s" : "Ištrynė %2$s",
     "Restored by %2$s" : "Atkūrė %2$s",

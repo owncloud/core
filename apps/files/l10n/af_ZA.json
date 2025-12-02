@@ -57,6 +57,7 @@
     "%2$s changed %1$s" : "%2$s het %1$s verander",
     "You deleted %1$s" : "U het %1$s geskrap",
     "%2$s deleted %1$s" : "%2$s het %1$s geskrap",
+    "You renamed %2$s to %1$s" : "U het %2$s na %1$s hernoem",
     "Changed by %2$s" : "Verander deur %2$s",
     "Deleted by %2$s" : "Geskrap deur %2$s",
     "Upload (max. %s)" : "Laai op (maks. %s)",

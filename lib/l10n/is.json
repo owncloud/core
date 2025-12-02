@@ -91,6 +91,7 @@
     "%s shared »%s« with you" : "%s deildi »%s« með þér",
     "%s" : "%s",
     "%s via %s" : "%s með %s",
+    "Sharing %s failed, because the backend does not allow shares from type %d" : "Deiling %s mistókst, því bakvinnslukerfið leyfir ekki sameignir af gerðinni %d",
     "Sharing %s failed, because the file does not exist" : "Deiling %s mistókst, því skráin er ekki til",
     "You are not allowed to share %s" : "Þú hefur ekki heimild til að deila %s",
     "Sharing %s failed, because you can not share with yourself" : "Deiling %s mistókst, því þú getur ekki deilt með sjálfum þér",

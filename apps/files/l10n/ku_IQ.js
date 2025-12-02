@@ -7,6 +7,7 @@ OC.L10N.register(
     "Files" : "په‌ڕگەکان",
     "Select" : "دیاریکردنی",
     "Name" : "ناو",
+    "{dirs} and {files}" : "{dirs} و {files}",
     "Folder" : "بوخچه",
     "Cancel" : "لابردن",
     "Upload" : "بارکردن",

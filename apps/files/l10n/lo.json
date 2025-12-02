@@ -21,6 +21,7 @@
     "Could not create file \"{file}\" because it already exists" : "ບໍ່ສາມາດສ້າງໄຟລ໌ \"{file}\" ໄດ້ ເພາະມີໄຟລ໌ຊື່ນີ້ຢູ່ແລ້ວ",
     "Name" : "ຊື່",
     "Size" : "ຂະໜາດ",
+    "{dirs} and {files}" : "{dirs} ແລະ {files}",
     "New" : "ໃໝ່",
     "Unknown user" : "ບໍ່ຮູ້ຈັກຜູ້ໃຊ້ນີ້",
     "\"{name}\" is an invalid file name." : "\"{name}\" ເປັນຊື່ໄຟລ໌ທີ່ບໍ່ຖືກຕ້ອງ.",

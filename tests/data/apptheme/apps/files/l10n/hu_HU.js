@@ -95,6 +95,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s törölte: %1$s",
     "You restored %1$s" : "Visszatöltötted %1$s",
     "%2$s restored %1$s" : "%1$s visszatöltötte %2$s",
+    "You renamed %2$s to %1$s" : "Átnevezted %2$s erre %1$s",
     "Changed by %2$s" : "Megváltoztatta: %2$s",
     "Deleted by %2$s" : "Törölte: %2$s",
     "Restored by %2$s" : "Visszaállította: %2$s",

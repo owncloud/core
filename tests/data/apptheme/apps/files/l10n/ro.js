@@ -75,6 +75,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s a șters %1$s",
     "You restored %1$s" : "Ai restaurat %1$s",
     "%2$s restored %1$s" : "%2$s a restaurat %1$s",
+    "You renamed %2$s to %1$s" : "Ai redenumit %2$s în %1$s",
     "Changed by %2$s" : "Modificat de %2$s",
     "Deleted by %2$s" : "Șters de %2$s",
     "Restored by %2$s" : "Restaurat de %2$s",

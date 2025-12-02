@@ -81,6 +81,7 @@
     "Invalid Federated Cloud ID" : "Neplatné združené Cloud ID",
     "%s shared »%s« with you" : "%s s vami zdieľa »%s«",
     "%s via %s" : "%s cez %s",
+    "Sharing %s failed, because the backend does not allow shares from type %d" : "Zdieľanie %s zlyhalo, pretože backend nepodporuje typ zdieľania %d",
     "Sharing %s failed, because the file does not exist" : "Zdieľanie %s zlyhalo, pretože súbor neexistuje",
     "You are not allowed to share %s" : "Nemôžete zdieľať %s",
     "Sharing %s failed, because you can not share with yourself" : "Zdieľanie %s zlyhalo, pretože nemôžete zdieľať sami so sebou.",

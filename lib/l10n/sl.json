@@ -88,6 +88,7 @@
     "%s shared »%s« with you" : "%s je omogočil souporabo »%s«",
     "%s" : "%s",
     "%s via %s" : "%s prek %s",
+    "Sharing %s failed, because the backend does not allow shares from type %d" : "Omogočanje souporabe %s je spodletelo, ker ozadnji program ne dopušča souporabe vrste %d.",
     "Sharing %s failed, because the file does not exist" : "Souporaba %s je spodletela, ker ta datoteka ne obstaja",
     "You are not allowed to share %s" : "Omogočanje souporabe %s brez ustreznih dovoljenj ni mogoče.",
     "Sharing %s failed, because you can not share with yourself" : "Nastavitev souporabe %s je spodletela, ker souporaba s samim sabo ni mogoča.",

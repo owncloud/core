@@ -80,6 +80,7 @@
     "%2$s deleted %1$s" : "%2$s desanició %1$s",
     "You restored %1$s" : "Recuperóse %1$s",
     "%2$s restored %1$s" : "%2$s recuperó %1$s",
+    "You renamed %2$s to %1$s" : "Renomó  %2$s a %1$s",
     "Changed by %2$s" : "Modificáu por %2$s",
     "Deleted by %2$s" : "Desaniciáu por %2$s",
     "Restored by %2$s" : "Recuperáu por %2$s",

@@ -21,6 +21,7 @@ OC.L10N.register(
     "Name" : "Назва",
     "Size" : "Памер",
     "Modified" : "Зменены",
+    "{dirs} and {files}" : "{dirs} і {files}",
     "Unknown user" : "Невядомы карыстальнік",
     "Path" : "Шлях",
     "New folder" : "Новая папка",

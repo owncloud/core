@@ -99,6 +99,7 @@
     "There are currently no link shares, you can create one" : "Chưa có liên kết nào được chia sẽ, bạn có thể tạo một liên kết mới.",
     "Anyone with the link has access to the file/folder" : "Bất cứ ai liên kết đều có quyền truy cập tệp tin/thư mục",
     "Name" : "Tên",
+    "Filename" : "Tên tệp tin",
     "Password" : "Mật khẩu",
     "Create link share: {name}" : "Chia sẽ liên kết tập tin: {name}",
     "Share" : "Chia sẻ",

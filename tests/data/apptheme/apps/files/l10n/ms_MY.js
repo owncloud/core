@@ -12,6 +12,7 @@ OC.L10N.register(
     "Name" : "Nama",
     "Size" : "Saiz",
     "Modified" : "Dimodifikasi",
+    "{dirs} and {files}" : "{dirs} dan {files}",
     "New" : "Baru",
     "Folder" : "Folder",
     "Cancel" : "Batal",

@@ -94,6 +94,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s izdzēsa %1$s",
     "You restored %1$s" : "Tu atjaunoji %1$s",
     "%2$s restored %1$s" : "%2$s atjaunoja %1$s",
+    "You renamed %2$s to %1$s" : "Tu pārdēvēji %2$s uz %1$s",
     "Changed by %2$s" : "%2$s mainīja",
     "Deleted by %2$s" : "%2$s izdzēsa",
     "Restored by %2$s" : "%2$s atjaunoja",

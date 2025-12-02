@@ -84,6 +84,7 @@
     "%2$s deleted %1$s" : "%2$s a suprimit %1$s",
     "You restored %1$s" : "Avètz restablit %1$s",
     "%2$s restored %1$s" : "%2$s a restablit %1$s",
+    "You renamed %2$s to %1$s" : "Avètz renomenat %2$s en %1$s",
     "Changed by %2$s" : "Modificat per %2$s",
     "Deleted by %2$s" : "Suprimit per %2$s",
     "Restored by %2$s" : "Restablit per %2$s",

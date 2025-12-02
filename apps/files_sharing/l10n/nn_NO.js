@@ -27,6 +27,8 @@ OC.L10N.register(
     "You shared %1$s with group %2$s" : "Du delte %1$s med gruppa %2$s",
     "You shared %1$s via link" : "Du delte %1$s via ei lenkje",
     "%2$s shared %1$s with you" : "%2$s delte %1$s med deg",
+    "Shared with %2$s" : "Delt med %2$s",
+    "Shared by %2$s" : "Delt av %2$s",
     "Shares" : "Delingar",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" delte \"%3$s\" med deg (på vegne av \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" delte \"%3$s\" med deg",

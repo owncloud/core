@@ -1,6 +1,7 @@
 { "translations": {
     "Couldn't delete %s permanently" : "Nun pudo desaniciase %s dafechu",
     "Couldn't restore %s" : "Nun pudo restaurase %s",
+    "Deleted files" : "Ficheros desaniciaos",
     "Restore" : "Restaurar",
     "Delete" : "Desaniciar",
     "Delete permanently" : "Desaniciar dafechu",

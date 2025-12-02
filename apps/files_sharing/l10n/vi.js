@@ -19,6 +19,7 @@ OC.L10N.register(
     "Pending" : "Đang chờ",
     "Shared by" : "Chia sẻ bởi",
     "Sharing" : "Chia sẻ",
+    "Shared by %2$s" : "Được chia sẽ bởi %2$s",
     "Shares" : "Chia sẻ",
     "Public link" : "Liên kết công khai",
     "Accept" : "Đồng ý",

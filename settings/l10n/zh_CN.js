@@ -52,6 +52,7 @@ OC.L10N.register(
     "%s email address changed successfully" : "%s 电子邮件地址更改成功。",
     "Couldn't send email address change notification mail. Please contact your administrator." : "无法发送电子邮件地址更改通知邮件。请与管理员联系。",
     "Unable to enable/disable user." : "无法启用/禁用用户。",
+    "Data too long" : "數據太長",
     "Invalid mail address" : "无效的电子邮件地址",
     "Owner language" : "拥有者语言",
     "Create" : "创建",

@@ -15,6 +15,7 @@ OC.L10N.register(
     "Name" : "Nomine",
     "Size" : "Dimension",
     "Modified" : "Modificate",
+    "{dirs} and {files}" : "{dirs} e {files}",
     "New" : "Nove",
     "File name cannot be empty." : "Le nomine de file non pote esser vacue.",
     "Folder" : "Dossier",

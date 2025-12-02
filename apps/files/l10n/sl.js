@@ -87,6 +87,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s je izbrisal %1$s",
     "You restored %1$s" : "Obnovljen je predmet %1$s",
     "%2$s restored %1$s" : "Uporabnik %2$s je obnovil predmet %1$s.",
+    "You renamed %2$s to %1$s" : "Preimenovali ste %2$s v %1$s",
     "Changed by %2$s" : "Zadnja sprememba: %2$s",
     "Deleted by %2$s" : "Izbrisano: %2$s",
     "Restored by %2$s" : "Obnovljeno: %2$s",

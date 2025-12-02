@@ -75,6 +75,7 @@
     "%2$s deleted %1$s" : "%2$s forigis %1$s",
     "You restored %1$s" : "Vi restaŭris %1$s",
     "%2$s restored %1$s" : "%2$s restaŭris %1$s",
+    "You renamed %2$s to %1$s" : "Vi alinomigis %2$s al %1$s",
     "Changed by %2$s" : "Ŝanĝita de %2$s",
     "Deleted by %2$s" : "Forigita de %2$s",
     "Restored by %2$s" : "Restaŭrita de %2$s",

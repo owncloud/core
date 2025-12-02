@@ -19,6 +19,7 @@ OC.L10N.register(
     "Name" : "பெயர்",
     "Size" : "அளவு",
     "Modified" : "மாற்றப்பட்டது",
+    "{dirs} and {files}" : "{dirs} மற்றும் {files}",
     "New" : "புதிய",
     "Favorite" : "விருப்பமான",
     "Folder" : "கோப்புறை",

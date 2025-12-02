@@ -76,6 +76,7 @@
     "%2$s deleted %1$s" : "%2$s zmazal %1$s",
     "You restored %1$s" : "Bol obnovený %1$s",
     "%2$s restored %1$s" : "%2$s obnovil %1$s",
+    "You renamed %2$s to %1$s" : "Premenovali ste %2$s na %1$s",
     "Changed by %2$s" : "Zmenené používateľom %2$s",
     "Deleted by %2$s" : "Vymazané používateľom %2$s",
     "Restored by %2$s" : "Obnovené používateľom %2$s",

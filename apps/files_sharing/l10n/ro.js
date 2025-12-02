@@ -32,6 +32,7 @@ OC.L10N.register(
     "Shared with %2$s" : "Partajat cu %2$s",
     "Shared with %3$s by %2$s" : "Partajat de %2$s cu %3$s",
     "Shared with group %2$s" : "Partajat cu grupul %2$s",
+    "Shared by %2$s" : "Partajat de %2$s",
     "Shares" : "Partajări",
     "Share API is disabled" : "API-ul de partajare este dezactivat",
     "Wrong share ID, share doesn't exist" : "ID greșit al elementului partajat, acesta nu există",

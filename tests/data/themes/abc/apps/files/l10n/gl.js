@@ -114,6 +114,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s eliminado %1$s",
     "You restored %1$s" : "Vostede restaurou %1$s",
     "%2$s restored %1$s" : "%2$s restaurou %1$s",
+    "You renamed %2$s to %1$s" : "Vostede renomeou %2$s a %1$s",
     "Changed by %2$s" : "Cambiado por %2$s",
     "Deleted by %2$s" : "Eliminado por %2$s",
     "Restored by %2$s" : "Restaurado por %2$s",

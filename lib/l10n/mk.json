@@ -54,6 +54,7 @@
     "Application is not enabled" : "Апликацијата не е овозможена",
     "Authentication error" : "Грешка во автентикација",
     "Token expired. Please reload page." : "Жетонот е истечен. Ве молам превчитајте ја страницата.",
-    "Unknown user" : "Непознат корисник"
+    "Unknown user" : "Непознат корисник",
+    "Storage is temporarily not available" : "Складот е привремено недостапен"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }

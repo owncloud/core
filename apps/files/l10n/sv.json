@@ -96,6 +96,7 @@
     "%2$s deleted %1$s" : "%2$s raderade %1$s",
     "You restored %1$s" : "Du återställde %1$s",
     "%2$s restored %1$s" : "%2$s återställda %1$s",
+    "You renamed %2$s to %1$s" : "Du döpte om %2$s till %1$s",
     "Changed by %2$s" : "Ändrad av %2$s",
     "Deleted by %2$s" : "Bortagen av %2$s",
     "Restored by %2$s" : "Återställd av %2$s",

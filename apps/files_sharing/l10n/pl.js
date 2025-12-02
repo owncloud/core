@@ -44,6 +44,7 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s współdzieli %1$s z Tobą",
     "%2$s removed the share for %1$s" : "%2$s usunął udział dla %1$s",
     "Downloaded via public link" : "Pobrano poprzez odnośnik publiczny",
+    "Shared with %2$s" : "Współdzielony z %2$s",
     "%2$s removed share of group %3$s" : "%2$susunął udział grupy %3$s",
     "Shared via link by %2$s" : "Udostępnione za pomocą odnośnika przez %2$s",
     "Shared via public link" : "Udostępniono poprzez publiczny odnośnik",

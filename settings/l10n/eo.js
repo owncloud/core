@@ -29,6 +29,7 @@ OC.L10N.register(
     "Uninstalling ...." : "Malinstalante...",
     "Error while uninstalling app" : "Eraris malinstalo de aplikaĵo",
     "Uninstall" : "Malinstali",
+    "Valid until {date}" : "Valida ĝis {date}",
     "Sending..." : "Sendante...",
     "Select a profile picture" : "Elekti profilan bildon",
     "Very weak password" : "Tre malforta pasvorto",

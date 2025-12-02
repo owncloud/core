@@ -105,6 +105,7 @@
     "%2$s deleted %1$s" : "%2$s verwijderde %1$s",
     "You restored %1$s" : "Hersteld: %1$s",
     "%2$s restored %1$s" : "%2$s herstelde %1$s",
+    "You renamed %2$s to %1$s" : "U hernoemde %2$s naar %1$s",
     "Changed by %2$s" : "Gewijzigd door %2$s",
     "Deleted by %2$s" : "Verwijderd door %2$s",
     "Restored by %2$s" : "Hersteld door %2$s",

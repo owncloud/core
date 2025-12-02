@@ -46,6 +46,7 @@
     "%s shared »%s« with you" : "%s kunhavigis “%s” kun vi",
     "%s" : "%s",
     "%s via %s" : "%s per %s",
+    "Sharing %s failed, because the backend does not allow shares from type %d" : "Kunhavigo de %s malsukcesis, ĉar la motoro ne permesas kunhavojn el tipo %d",
     "Sharing %s failed, because the file does not exist" : "Kunhavigo de %s malsukcesis, ĉar la dosiero ne ekzistas",
     "You are not allowed to share %s" : "Vi ne permesatas kunhavigi %s",
     "Sharing %s failed, because the user %s does not exist" : "Kunhavigo de %s malsukcesis, ĉar la uzanto %s ne ekzistas",

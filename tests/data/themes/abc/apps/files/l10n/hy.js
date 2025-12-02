@@ -34,6 +34,7 @@ OC.L10N.register(
     "Unknown user" : "Անհայտ օգտատեր",
     "File name cannot be empty." : "Ֆայլի անունը դատարկ լինել չի կարող",
     "_%n byte_::_%n bytes_" : ["%n բայտ","%n բայտ"],
+    "Favorite" : "Սիրված",
     "Folder" : "Պանակ",
     "New folder" : "Նոր պանակ",
     "Cancel" : "Չեղարկել",

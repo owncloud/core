@@ -6,6 +6,7 @@ OC.L10N.register(
     "Share" : "﻿ಹಂಚಿಕೊಳ್ಳಿ",
     "Pending" : "﻿ಬಾಕಿ ಇದೆ",
     "Sharing" : "﻿ಹಂಚಿಕೆ",
+    "Shared with %2$s" : "ಹಂಚಿಕೆಯನ್ನು ಪಡೆದವರು %2$s",
     "Password" : "ಗುಪ್ತ ಪದ",
     "Name" : "﻿ಹೆಸರು",
     "Expiration date" : "ಮುಕ್ತಾಯ ದಿನಾಂಕ",

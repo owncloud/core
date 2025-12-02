@@ -60,6 +60,7 @@ OC.L10N.register(
     "New folder" : "Tạo thư mục",
     "Cancel" : "Hủy",
     "Create" : "Tạo",
+    "{newname} already exists" : "{newname} đã có",
     "Upload" : "Tải lên",
     "Settings" : "Cài đặt",
     "Show hidden files" : "Hiện tập các tin ẩn",

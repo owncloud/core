@@ -10,6 +10,7 @@ OC.L10N.register(
     "You shared %1$s with group %2$s" : "Tu compartiva %1$s con gruppo %2$s",
     "You shared %1$s via link" : "Tu compartiva %1$s via ligamine",
     "%2$s shared %1$s with you" : "%2$s compartiva %1$s con te",
+    "Shared with %2$s" : "Compartite con %2$s",
     "Shares" : "Comparti",
     "Password" : "Contrasigno",
     "Name" : "Nomine",

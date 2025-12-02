@@ -5,6 +5,7 @@ OC.L10N.register(
     "Delete" : "తొలగించు",
     "Name" : "పేరు",
     "Size" : "పరిమాణం",
+    "{dirs} and {files}" : "{dirs}, {files}",
     "Folder" : "సంచయం",
     "New folder" : "కొత్త సంచయం",
     "Cancel" : "రద్దుచేయి",

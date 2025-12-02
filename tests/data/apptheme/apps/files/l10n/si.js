@@ -17,6 +17,7 @@ OC.L10N.register(
     "Name" : "නම",
     "Size" : "ප්‍රමාණය",
     "Modified" : "වෙනස් කළ",
+    "{dirs} and {files}" : "{dirs} සහ {files}",
     "New" : "නව",
     "Folder" : "ෆෝල්ඩරය",
     "New folder" : "නව බහාලුම",

@@ -21,6 +21,7 @@ OC.L10N.register(
     "Name" : "Numm",
     "Size" : "Gréisst",
     "Modified" : "Geännert",
+    "{dirs} and {files}" : "{dirs} an {files}",
     "New" : "Nei",
     "\"{name}\" is an invalid file name." : "\"{Numm}\" ass een ongültegen Numm fir e Fichier.",
     "File name cannot be empty." : "Den Numm vum Fichier kann net eidel sinn.",

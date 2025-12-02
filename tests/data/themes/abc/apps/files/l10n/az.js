@@ -26,6 +26,7 @@ OC.L10N.register(
     "Invalid path" : "Yalnış ünvan",
     "This operation is forbidden" : "Bu əməliyyat qadağandır",
     "group" : "qrup",
+    "{newName} already exists" : "{newName} artıq mövcuddur",
     "Name" : "Ad",
     "Size" : "Həcm",
     "Modified" : "Dəyişdirildi",

@@ -118,6 +118,7 @@ OC.L10N.register(
     "Open documentation" : "Atvērt dokumentāciju",
     "Execute one task with each page loaded" : "Izpildīt vienu uzdevumu ar katru ielādēto lapu",
     "Valid until" : "Derīgs līdz",
+    "Valid until %s" : "Valīds līdz %s",
     "Enable encryption" : "Ieslēgt šifrēšanu",
     "Sharing" : "Dalīšanās",
     "Allow apps to use the Share API" : "Ļauj lietotnēm izmantot koplietošanas API",

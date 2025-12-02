@@ -31,6 +31,7 @@
     "You shared %1$s with group %2$s" : "Siz yayımladınız %1$s qrupu ilə %2$s",
     "You shared %1$s via link" : "Siz yayımladınız %1$s link ilə",
     "%2$s shared %1$s with you" : "%2$s yayımlanıb %1$s sizinlə",
+    "Shared by %2$s" : "Tərəfindən paylaşılıb %2$s",
     "Shares" : "Yayımlanmalar",
     "This share is password-protected" : "Bu paylaşım şifrə ilə müdafiəlidir",
     "Password" : "Şifrə",

@@ -95,6 +95,7 @@
     "%2$s deleted %1$s" : "%2$s smazal(a) %1$s",
     "You restored %1$s" : "Obnovili jste %1$s",
     "%2$s restored %1$s" : "%2$s obnovil(a) %1$s",
+    "You renamed %2$s to %1$s" : "Přejmenoval(a) jsi %2$s na %1$s",
     "Changed by %2$s" : "Změněno uživatelem %2$s",
     "Deleted by %2$s" : "Smazáno uživatelem %2$s",
     "Restored by %2$s" : "Obnoveno uživatelem %2$s",

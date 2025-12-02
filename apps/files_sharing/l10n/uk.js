@@ -34,6 +34,8 @@ OC.L10N.register(
     "You shared %1$s with group %2$s" : "Ви поділилися %1$s з групою %2$s",
     "You shared %1$s via link" : "Ви поділилися %1$s використовуючи лінк",
     "%2$s shared %1$s with you" : "%2$s поділився %1$s з вами",
+    "Shared with %2$s" : "Опубліковано для %2$s",
+    "Shared by %2$s" : "Опублікував %2$s",
     "Shares" : "Розподільні",
     "Couldn't send mail to following recipient(s): %s " : "Не вдалося надіслати повідомлення наступним користувачам: %s",
     "Accept" : "Прийняти",

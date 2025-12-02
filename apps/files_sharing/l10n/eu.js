@@ -39,6 +39,8 @@ OC.L10N.register(
     "You shared %1$s via link" : "Konpartitu duzu %1$s esteka baten bidez",
     "%2$s shared %1$s with you" : "%2$sk zurekin %1$s elkarbanatu du",
     "%2$s removed the share for %1$s" : "%2$s-(e)k %1$szurekin partekatzeari utzi dio",
+    "Shared with %2$s" : "%2$s-rekin partekatua.",
+    "Shared by %2$s" : "%2$s-ek partekatua",
     "Shares" : "Partekatuak",
     "Couldn't send mail to following recipient(s): %s " : "Ezin izan da ondorengo helbidetara posta mezurik bidali: %s",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\"-(e)k \"%3$s\" partekatu du zurekin (\"%2$s\"-(r)en izenean)",

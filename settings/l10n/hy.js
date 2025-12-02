@@ -38,6 +38,7 @@ OC.L10N.register(
     "Cheers!" : "Չը՛խկ",
     "Language" : "Լեզու",
     "by %s" : "%s կողմից",
+    "Valid until %s" : "Վավեր մինչ %s",
     "days" : "օր",
     "Save" : "Պահել",
     "Log" : "Լոգ",

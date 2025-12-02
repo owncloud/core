@@ -8,6 +8,7 @@ OC.L10N.register(
     "Pending" : "მოცდის რეჟიმში",
     "Shared by" : "აზიარებს",
     "Sharing" : "გაზიარება",
+    "Shared by %2$s" : "გაზიარდა %2$s –ის მიერ",
     "This share is password-protected" : "ეს გაზიარება დაცულია პაროლით",
     "Password" : "პაროლი",
     "Name" : "სახელი",

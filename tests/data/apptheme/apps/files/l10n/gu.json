@@ -1,6 +1,7 @@
 { "translations": {
     "Close" : "બંધ ",
     "Delete" : "કાઢો",
-    "Files" : "ફાઇલો"
+    "Files" : "ફાઇલો",
+    "{dirs} and {files}" : "{dirs}  અને {files}"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

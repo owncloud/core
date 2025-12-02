@@ -7,6 +7,7 @@ OC.L10N.register(
     "Delete" : "हटाना",
     "Files" : "फाइलें ",
     "Details" : "विवरण ",
+    "{dirs} and {files}" : "{dirs} और {files}",
     "New folder" : "नया फ़ोल्डर",
     "Cancel" : "रद्द करें ",
     "Upload" : "अपलोड ",

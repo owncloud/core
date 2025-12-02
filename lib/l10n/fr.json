@@ -97,6 +97,7 @@
     "%s shared »%s« with you" : "%s a partagé «%s» avec vous",
     "%s" : "%s",
     "%s via %s" : "%s via %s",
+    "Sharing %s failed, because the backend does not allow shares from type %d" : "Le partage de %s a échoué car l’infrastructure n'autorise pas les partages de type %d",
     "Sharing %s failed, because the file does not exist" : "Le partage de %s a échoué car le fichier n'existe pas",
     "You are not allowed to share %s" : "Vous n'êtes pas autorisé à partager %s",
     "Sharing %s failed, because you can not share with yourself" : "Le partage de %s a échoué car vous ne pouvez pas partager avec vous-même",

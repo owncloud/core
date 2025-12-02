@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Close" : "બંધ ",
     "Delete" : "કાઢો",
-    "Files" : "ફાઇલો"
+    "Files" : "ફાઇલો",
+    "{dirs} and {files}" : "{dirs}  અને {files}"
 },
 "nplurals=2; plural=(n != 1);");
