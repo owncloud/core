@@ -140,7 +140,6 @@ config = {
             "externalTypes": [
                 "webdav",
                 "sftp",
-                "scality",
                 "owncloud",
             ],
             "coverage": True,
