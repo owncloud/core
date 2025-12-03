@@ -7,7 +7,7 @@ script('core', [
 	'login',
 	'browser-update'
 ]);
-?>
+?>	
 
 <!--[if IE 8]><style>input[type="checkbox"]{padding:0;}</style><![endif]-->
 <form method="post" name="login" autocapitalize="none">
@@ -50,7 +50,7 @@ script('core', [
 				<?php print_unescaped($_['licenseMessage']); ?>
 			</div>
 		<?php endif; ?>
-		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
+		<div id="input-box" class="grouptop<?php if (!empty($_['invalidpassword'])) {
 			echo ' shake';
 		} ?>">
 	<?php
@@ -61,8 +61,8 @@ script('core', [
 		}
 ?>
 			<label for="user" class=""><?php p($label); ?></label>
-			
-			<input type="text" name="user" id="user"
+		
+			<input style="border-radius: 8px" type="text" name="user" id="user"
 				value="<?php p($_['loginName']); ?>"
 				aria-label="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
@@ -71,12 +71,12 @@ script('core', [
 			
 		</div>
 
-		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
+		<div id="input-box" class="groupbottom<?php if (!empty($_['invalidpassword'])) {
 			echo ' shake';
 		} ?>">
 			<label for="password" class=""><?php p($l->t('Password')); ?></label>
 			
-			<input type="password" name="password" id="password" value=""
+			<input style="border-radius: 8px" type="password" name="password" id="password" value=""
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				aria-label="<?php p($l->t('Password')); ?>"
 				placeholder="<?php p($l->t('Password')); ?>"
@@ -106,7 +106,11 @@ script('core', [
 					<?php
 			} ?>
 				
-			<button type="submit" id="submit" class="login-button">
+			<button style="border: none;
+							outline: none;
+							border-radius: 8px;
+							background: #fa709a;" 
+					type="submit" id="submit" class="login-button">
 				<span><?php p($l->t('Login')); ?></span>
 				<div class="loading-spinner"><div></div><div></div><div></div><div></div></div>
 			</button>
@@ -149,7 +153,7 @@ script('core', [
 						<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
 					<?php
 				} ?>
-			<?php endforeach; ?>
+			<?php endforeach; ?> 
 		</ul>
 </form>
 <?php

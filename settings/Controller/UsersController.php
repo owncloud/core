@@ -59,6 +59,7 @@ use OCP\UserTokenExpiredException;
 use OCP\UserTokenMismatchException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\Util;
 
 /**
  * @package OC\Settings\Controller
@@ -226,6 +227,28 @@ class UsersController extends Controller {
 			];
 		}
 
+		$uid = $user->getUID();
+		$used = 0;
+
+		try {
+			$storageId = \OC::$server->getUserFolder($uid)->getStorage()->getId();
+			$connection = \OC::$server->getDatabaseConnection();
+
+			$sql = "SELECT f.size FROM oc_filecache f
+					JOIN oc_storages s ON f.storage = s.numeric_id
+					WHERE s.id = ? AND f.path = 'files'";
+
+			$stmt = $connection->prepare($sql);
+			$stmt->execute([$storageId]);
+			$row = $stmt->fetch();
+
+			$used = isset($row['size']) ? (int)$row['size'] : 0;
+		} catch (\Exception $e) {
+			$used = 0;
+		}
+		$usedHuman = \OC_Helper::humanFileSize($used);
+
+
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
@@ -233,6 +256,8 @@ class UsersController extends Controller {
 			'subadmin' => $subAdminGroupsKV,
 			'isEnabled' => $user->isEnabled(),
 			'quota' => $user->getQuota(),
+			'used_quota' => $usedHuman, 
+			'used_bytes' => $used, 
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin() * 1000,
 			'creationTime' => $user->getCreationTime() * 1000,
@@ -455,6 +480,7 @@ class UsersController extends Controller {
 
 			'@phan-var \OC\Group\Manager $this->groupManager';
 			if (empty($groups)) {
+				// if $groups is empty => $currentUser is group(s) admin, not system admin => get group(s) of $currentUser
 				$groups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($currentUser);
 				// New class returns IGroup[] so convert back
 				$gids = [];
@@ -476,6 +502,27 @@ class UsersController extends Controller {
 		}
 
 		try {
+			// check group remaining quota
+			// throw new \Exception('debug: do not create user');
+			$availGroups = [];
+			foreach ($groups as $groupName) {
+				$group = $this->groupManager->get($groupName);
+				$groupUsers = $group->getUsers();
+				$groupQuota = Util::computerFileSize($group->getQuota());
+				$usedQuota = 0;
+				foreach ($groupUsers as $member) {
+					$memberQuota = (strcmp($member->getQuota(), 'default') === 0) ? '999 GB' : $member->getQuota();
+					$usedQuota = $usedQuota + Util::computerFileSize($memberQuota);
+				}
+				if (($groupQuota - $usedQuota) >= Util::computerFileSize('1 GB')) {
+					$availGroups[] = $groupName;
+				}
+			}
+
+			if (empty($availGroups)) {
+				throw new \Exception('There is no group which has available quota!');
+			}
+
 			if (($password === '') && ($email !== '')) {
 				$event = new GenericEvent();
 				$this->eventDispatcher->dispatch($event, 'OCP\User::createPassword');
@@ -501,7 +548,8 @@ class UsersController extends Controller {
 
 		if ($user instanceof User) {
 			if ($groups !== null) {
-				foreach ($groups as $groupName) {
+				// foreach ($groups as $groupName) {
+				foreach ($availGroups as $groupName) {
 					$group = $this->groupManager->get($groupName);
 
 					if (empty($group)) {
@@ -1340,3 +1388,4 @@ class UsersController extends Controller {
 		);
 	}
 }
+

@@ -143,11 +143,12 @@ var GroupDeleteHandler;
 			}
 		},
 
-		createGroup: function (groupname) {
+		createGroup: function (groupname, quota) {
 			$.post(
 				OC.generateUrl('/settings/users/groups'),
 				{
-					id: groupname
+					id: groupname,
+					quota: quota
 				},
 				function (result) {
 					if (result.gid) {
@@ -157,11 +158,12 @@ var GroupDeleteHandler;
 						GroupList.addGroup(result.gid, result.name);
 					}
 					GroupList.toggleAddGroup();
-				}).fail(function(result) {
-					OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {
-						message: result.responseJSON.message
-					}));
-				});
+				}
+			).fail(function(result) {
+				OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {
+					message: result.responseJSON.message
+				}));
+			});
 		},
 
 		update: function () {
@@ -252,8 +254,10 @@ var GroupDeleteHandler;
 			}
 		},
 
-		handleAddGroupInput: function (input) {
-			if(input.length) {
+		handleAddGroupInput: function () {
+			var name = $.trim($('#newgroupname').val());
+			var quota = $.trim($('#newgroupquota').val());
+			if (name !== '' && quota !== '') {
 				$('#newgroup-form input[type="submit"]').attr('disabled', null);
 			} else {
 				$('#newgroup-form input[type="submit"]').attr('disabled', 'disabled');
@@ -369,8 +373,12 @@ $(document).ready( function () {
 	// Responsible for Creating Groups.
 	$('#newgroup-form form').submit(function (event) {
 		event.preventDefault();
-		if(GroupList.isGroupNameValid($('#newgroupname').val())) {
-			GroupList.createGroup($('#newgroupname').val());
+		var groupName = $('#newgroupname').val();
+		var quota = $('#newgroupquota').val();
+		if (GroupList.isGroupNameValid(groupName) && $.trim(quota) !== '') {
+			GroupList.createGroup(groupName, quota);
+		} else {
+			OC.Notification.showTemporary(t('settings', 'You must enter both a group name and a quota.'));
 		}
 	});
 
@@ -379,7 +387,7 @@ $(document).ready( function () {
 		GroupList.showGroup(GroupList.getElementGID(this));
 	});
 
-	$('#newgroupname').on('input', function(){
-		GroupList.handleAddGroupInput(this.value);
+	$('#newgroupname, #newgroupquota').on('input', function(){
+		GroupList.handleAddGroupInput();
 	});
 });

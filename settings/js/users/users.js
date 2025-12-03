@@ -54,7 +54,7 @@ var UserList = {
 	 *				'isRestoreDisabled':false
 	 * 			}
 	 * @returns table row created for this user
-	 */
+	 */	
 	add: function (user) {
 		if (this.currentGid && this.currentGid !== '_everyone' && user.groups[this.currentGid] === undefined) {
 			return;
@@ -164,6 +164,29 @@ var UserList = {
 		 * storage location
 		 */
 		$tr.find('td.storageLocation').text(user.storageLocation);
+		
+		/**
+                 * used quota
+                 */
+                function parseSize(sizeStr) {
+                        if (!sizeStr) return 0;
+                        const units = {"B":1, "KB":1024, "MB":1024**2, "GB":1024**3, "TB":1024**4};
+                        const match = sizeStr.match(/([\d\.]+)\s*(B|KB|MB|GB|TB)/i);
+                        if (!match) return 0;
+                        return parseFloat(match[1]) * units[match[2].toUpperCase()];
+                }
+
+                const quota = user.quota || '0 B';
+                const used = user.used_quota || '0 B';
+
+                const quotaBytes = parseSize(quota);
+                const usedBytes = parseSize(used);
+                let percent = quotaBytes > 0 ? (usedBytes / quotaBytes) * 100 : 0;
+                if (percent > 100) percent = 100;
+
+                $tr.find('.quota-text').text(used);
+                $tr.find('.quota-fill').css('width', percent + '%');
+
 
 		/**
 		 * user backend
@@ -1155,4 +1178,47 @@ $(document).ready(function () {
 		$('#app-content').trigger($.Event('apprendered'));
 	});
 
+
+
+	if ($('#groupQuotaManager').length) {
+    $('#saveSingleQuotaBtn').on('click', function() {
+      var groupId = $('#gidSelect').val();
+      var newQuota = $('#quotaInput').val();
+      var token = $('input[name="requesttoken"]').val();  // CSRF token from the form
+
+      if (!groupId || !newQuota) {
+        // Simple validation: both fields must be filled
+        OC.Notification.showTemporary('Vui lòng chọn nhóm và nhập quota.');  // e.g., "Please select a group and enter a quota."
+        return;
+      }
+
+      // Send AJAX POST to the new controller route
+      $.ajax({
+        url: OC.generateUrl('/settings/groupquota'),
+        type: 'POST',
+        data: {
+          requesttoken: token,  // CSRF token for security
+          gid: groupId,
+          quota: newQuota
+        },
+        success: function(response) {
+		console.log("hehehe:", response);
+          if (response.success) {
+            // Success: show confirmation message
+            OC.Notification.showTemporary('Đã cập nhật quota cho nhóm thành công.');
+          } else {
+            // Failure response from server (e.g. validation or DB error)
+            var msg = response.message ? response.message : 'Cập nhật quota thất bại.';
+            OC.Notification.showTemporary(msg);
+          }
+        },
+        error: function(xhr) {
+          // Network or server error (e.g. 500)
+          OC.Notification.showTemporary('Lỗi máy chủ, không thể cập nhật quota.');
+        }
+      });
+    });
+  }
+
 });
+

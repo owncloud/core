@@ -50,6 +50,8 @@ interface GroupInterface {
 	//OBSOLETE const GET_DISPLAYNAME	= 0x00010000;
 	public const COUNT_USERS		= 0x00100000;
 	public const GROUP_DETAILS		= 0x01000000;
+	public const SET_QUOTA			= 0x10000000;
+	public const GET_QUOTA			= 0x10000001;
 
 	/**
 	 * Check if backend implements actions
@@ -125,3 +127,4 @@ interface GroupInterface {
 	 */
 	public function isVisibleForScope($scope);
 }
+

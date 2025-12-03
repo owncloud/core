@@ -110,7 +110,19 @@ class GroupsController extends Controller {
 				Http::STATUS_CONFLICT
 			);
 		}
+
 		if ($groupObj = $this->groupManager->createGroup($id)) {
+			
+			$quota = $this->request->getParam('quota');
+
+			if ($quota !== null && trim($quota) !== '') {
+				$connection = \OC::$server->getDatabaseConnection();
+				$connection->executeUpdate(
+					'UPDATE `*PREFIX*groups` SET `quota` = ? WHERE `gid` = ?',
+					[$quota, $id]
+				);
+			}
+
 			return new DataResponse(
 				[
 					'gid' => $groupObj->getGID(),
@@ -128,6 +140,7 @@ class GroupsController extends Controller {
 			Http::STATUS_FORBIDDEN
 		);
 	}
+
 
 	/**
 	 * @param string $id

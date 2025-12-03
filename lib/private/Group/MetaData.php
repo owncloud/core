@@ -159,12 +159,64 @@ class MetaData {
 	 * @return array with the keys 'id', 'name' and 'usercount'
 	 */
 	private function generateGroupMetaData(\OCP\IGroup $group, $userSearch) {
-		return [
-				'id' => $group->getGID(),
-				'name' => $group->getDisplayName(),
-				'usercount' => $this->sorting === self::SORT_USERCOUNT ? $group->count($userSearch) : 0,
-		];
-	}
+				$gid = $group->getGID();
+
+				$connection = \OC::$server->getDatabaseConnection();
+				$row = $connection->executeQuery(
+					'SELECT `quota` FROM `*PREFIX*groups` WHERE `gid` = ?',
+					[$gid]
+				)->fetch();
+				$groupQuota = $row ? $row['quota'] : '';
+
+				
+				$totalAllocated = 0;
+				$users = $group->getUsers($userSearch);
+				foreach ($users as $user) {
+					$quotaRaw = $user->getQuota(); 
+
+				
+					if (in_array($quotaRaw, ['default', 'none', 'unlimited', false, null], true)) {
+						continue;
+					}
+
+					try {
+						$bytes = $this->convertToBytes($quotaRaw);
+						$totalAllocated += $bytes;
+					} catch (\Exception $e) {
+						continue;
+					}
+				}
+
+				$formattedAllocated = \OCP\Util::humanFileSize($totalAllocated);
+
+				return [
+					'id' => $gid,
+					'name' => $group->getDisplayName(),
+					'usercount' => $this->sorting === self::SORT_USERCOUNT ? $group->count($userSearch) : 0,
+					'quota' => $groupQuota,
+					'allocated_quota' => $formattedAllocated
+				];
+			}
+
+			
+			private function convertToBytes(string $size): int {
+				$size = trim(strtoupper($size));
+				if (preg_match('/^(\d+(?:\.\d+)?)\s*(B|KB|MB|GB|TB|PB)?$/', $size, $matches)) {
+					$value = (float)$matches[1];
+					$unit = $matches[2] ?? 'B';
+
+					switch ($unit) {
+						case 'PB': return (int)($value * pow(1024, 5));
+						case 'TB': return (int)($value * pow(1024, 4));
+						case 'GB': return (int)($value * pow(1024, 3));
+						case 'MB': return (int)($value * pow(1024, 2));
+						case 'KB': return (int)($value * 1024);
+						case 'B':
+						default:   return (int)$value;
+					}
+				}
+				throw new \InvalidArgumentException("Invalid size format: " . $size);
+			}
 
 	/**
 	 * sorts the result array, if applicable
@@ -201,3 +253,4 @@ class MetaData {
 		}
 	}
 }
+
