@@ -1,4 +1,5 @@
 # the default generated dir + db file
+.htaccess 
 /data
 /owncloud
 /config/config.php
