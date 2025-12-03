@@ -57,6 +57,8 @@
 	height: 45px; /* header height */
 	box-sizing: border-box;
 	opacity: 1;
+	display: flex;
+    align-items: center;
 }
 
 @media only screen and (max-width: 767px) {
@@ -84,22 +86,28 @@
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: center center;
-	width: 252px;
-	height: 142px;
+	width: 270px;
+	height: 110px;
 	margin: 0 auto;
 }
 
 #header .logo-icon {
 	/* display logo so appname can be shown next to it */
-	display: inline-block;
+	/* display: inline-block; */
+	display: flex;
 	background-image: url(../img/logo-icon.svg);
 	background-repeat: no-repeat;
-	background-size: 61px 34px;
-	height: 34px;
+	/* background-size: 61px 34px;
+	height: 34px; */ 
+	margin-top: -6px;
+    align-items: center; 
+	line-height: 71px;
+	background-size: 100px 71px;
+	height: 71px;
 	color: #fff;
 	margin: 0;
 	padding: 0;
-	padding-left: 66px;
+	padding-left: 100px;
 	font-size: 1.04rem;
 	font-weight: 300;
 	line-height: inherit;

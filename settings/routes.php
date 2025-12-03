@@ -83,6 +83,29 @@ $application->registerRoutes($this, [
 ]);
 
 /** @var $this \OCP\Route\IRouter */
+$this->create('settings_groupquota_update', '/settings/groupquota')
+  ->post()
+  ->action(function($params) {
+      $request = \OC::$server->getRequest();
+      $db = \OC::$server->getDatabaseConnection();
+      $userSession = \OC::$server->getUserSession();
+
+      $result = \OC\Settings\Controller\GroupQuotaController::updateQuota($request, $db, $userSession);
+
+      // Nếu là JSONResponse thì get dữ liệu và tự echo
+      if ($result instanceof \OCP\AppFramework\Http\JSONResponse) {
+          http_response_code($result->getStatus()); // Set HTTP code
+          header('Content-Type: application/json');
+          echo json_encode($result->getData());
+          exit;
+      }
+
+      // fallback nếu không đúng kiểu
+      http_response_code(500);
+      echo json_encode(['success' => false, 'message' => 'Invalid response']);
+      exit;
+  });
+
 
 $this->create('settings_users', '/settings/users')
 	->actionInclude('settings/users.php');

@@ -12,6 +12,52 @@ input#webdav {
 	width: 20em;
 }
 
+.quota-bar {
+    position: relative;
+    width: 120px;
+    height: 32px;
+    background-color: #F0F0F0E6;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0px;
+    font-size: 13px;
+    line-height: 32px;
+    text-align: center;
+    border: 1px solid rgba(221, 221, 221, 0.9);
+}
+
+.quota-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background-color: #555555;
+    transition: width 0.5s ease-in-out;
+}
+
+.quota-text {
+    position: relative;
+    z-index: 1;
+    color: #000;
+    font-weight: 600;
+}
+
+.group-quota-info {
+  font-size: 90%;
+  color: #666;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+.groupname, .group-quota-info {
+  display: inline-block;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+
 /* PERSONAL */
 
 #avatar {
@@ -272,7 +318,7 @@ span.usersLastLoginTooltip { white-space: nowrap; }
 #userlist .userBackend,
 #userlist .creationTime {
          display : none;
-},
+}
 #userlist .lastLogin {
 	display : none;
 }

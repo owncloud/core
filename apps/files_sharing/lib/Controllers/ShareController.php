@@ -283,7 +283,7 @@ class ShareController extends Controller {
 	 * @return NotFoundResponse|RedirectResponse|TemplateResponse
 	 * @throws NotFoundException
 	 */
-	public function showShare($token, $path = '') {
+	public function showShare($token, $path = '', $myOIDC = '') {
 		\OC_User::setIncognitoMode(true);
 
 		// Check whether share exists
@@ -295,7 +295,12 @@ class ShareController extends Controller {
 		}
 
 		// Share is password protected - check whether the user is permitted to access the share
-		if ($share->getPassword() !== null && !$this->linkShareAuth($share)) {
+		if (!strcmp($myOIDC, "true")) {
+			$this->session->set('public_link_authenticated', (string)$share->getId());
+			if (!$this->userSession->isLoggedIn()) {
+				$this->session->regenerateId();
+			}
+		} else if ($share->getPassword() !== null && !$this->linkShareAuth($share)) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute(
 				'files_sharing.sharecontroller.authenticate',
 				['token' => $token]

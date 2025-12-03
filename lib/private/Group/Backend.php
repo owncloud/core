@@ -39,6 +39,8 @@ abstract class Backend implements \OCP\GroupInterface {
 		self::REMOVE_FROM_GOUP => 'removeFromGroup',
 		self::COUNT_USERS => 'countUsersInGroup',
 		self::GROUP_DETAILS => 'getGroupDetails',
+		self::SET_QUOTA => 'setQuota',
+		self::GET_QUOTA => 'getQuota',
 	];
 
 	/**
@@ -134,3 +136,4 @@ abstract class Backend implements \OCP\GroupInterface {
 		return true;
 	}
 }
+

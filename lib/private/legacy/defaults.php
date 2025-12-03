@@ -60,10 +60,10 @@ class OC_Defaults {
 		$this->config = \OC::$server->getConfig();
 		$version = \OCP\Util::getVersion();
 
-		$this->defaultEntity = 'ownCloud'; /* e.g. company name, used for footers and copyright notices */
-		$this->defaultName = 'ownCloud'; /* short name, used when referring to the software */
-		$this->defaultTitle = 'ownCloud'; /* can be a longer name, for titles */
-		$this->defaultBaseUrl = 'https://owncloud.com';
+		$this->defaultEntity = 'MobiFone'; /* e.g. company name, used for footers and copyright notices */
+		$this->defaultName = 'MobiFone'; /* short name, used when referring to the software */
+		$this->defaultTitle = 'MobiFone'; /* can be a longer name, for titles */
+		$this->defaultBaseUrl = 'https://cloud.mobifone.vn/';
 		$this->defaultSyncClientUrl = 'https://owncloud.com/desktop-app/';
 		$this->defaultiOSClientUrl = 'https://apps.apple.com/app/id1359583808';
 		$this->defaultiTunesAppId = '1359583808';

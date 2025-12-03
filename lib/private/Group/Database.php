@@ -349,4 +349,42 @@ class Database extends \OC\Group\Backend {
 		}
 		return $count;
 	}
+
+	/**
+	 * set the quota of a group
+	 * @param string $gid
+	 * @param string $quota
+	 * @return bool
+	 */
+	public function setQuota($gid, $quota) {
+		$this->fixDI();
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->update('groups')
+			->set('quota', $qb->createNamedParameter($quota))
+			->where($qb->expr()->eq('gid', $qb->createNamedParameter($gid)))
+			->execute();
+		return true;
+	}
+	/**
+	 * get the quota of a group
+	 * @param string $gid
+	 * @return string|default
+	 */
+	public function getQuota($gid) {
+		$this->fixDI();
+		$default = $this->config->getSystemValue('default_group_quota', '50 GB');
+		$qb = $this->dbConn->getQueryBuilder();
+		$cursor = $qb->select('quota')
+			->from('groups')
+			->where($qb->expr()->eq('gid', $qb->createNamedParameter($gid)))
+			->execute();
+		$result = $cursor->fetch();
+		$cursor->closeCursor();
+
+		if (isset($result) && isset($result['quota'])) {
+			return $result['quota'];
+		}
+		return $default;
+	}
 }
+

@@ -65,6 +65,14 @@ class Application extends App {
 		/**
 		 * Controllers
 		 */
+		$container->registerService('GroupQuotaController', function (IContainer $c) {
+			return new GroupQuotaController(
+					$c->query('AppName'),
+					$c->query('Request'),
+					$c->query('DatabaseConnection'),
+					$c->query('UserSession')
+			);
+        });	
 		$container->registerService('SettingsPageController', function (IContainer $c) {
 			return new SettingsPageController(
 				$c->query('AppName'),

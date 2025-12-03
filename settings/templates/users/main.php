@@ -136,5 +136,29 @@ translation('settings');
 
 <div id="app-content">
 	<?php print_unescaped($this->inc('users/part.createuser')); ?>
+	<?php if (\OC_User::isAdminUser(\OC_User::getUser())): ?>
+        <div id="groupQuotaManager" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; margin-top: 40px;">
+                <form id="singleQuotaForm" method="post" action="#">
+                        <input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>">
+                        <label for="gidSelect"><strong>Chọn nhóm:</strong></label>
+                        <select id="gidSelect" name="gid">
+                                <?php
+                                $connection = \OC::$server->getDatabaseConnection();
+                                $stmt = $connection->prepare('SELECT gid FROM `*PREFIX*groups`');
+                                $stmt->execute();
+                                $groups = $stmt->fetchAll();
+                                foreach ($groups as $group):
+                                ?>
+                                        <option value="<?php p($group['gid']); ?>"><?php p($group['gid']); ?></option>
+                                <?php endforeach; ?>
+                        </select>
+
+                        <label for="quotaInput"><strong>Quota mới:</strong></label>
+                        <input type="text" id="quotaInput" name="quota" placeholder="VD: 5 GB" size="8" />
+
+                        <button type="button" id="saveSingleQuotaBtn"><?php p($l->t('Lưu')); ?></button>
+                </form>
+        </div>
+        <?php endif; ?>
 	<?php print_unescaped($this->inc('users/part.userlist', $userlistParams)); ?>
 </div>

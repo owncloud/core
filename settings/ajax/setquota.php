@@ -26,9 +26,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 OC_JSON::checkSubAdminUser();
 OCP\JSON::callCheck();
+
 
 $username = isset($_POST["username"]) ? (string)$_POST["username"] : '';
 
@@ -56,6 +56,28 @@ if ($quota !== 'none' and $quota !== 'default') {
 
 // Return Success story
 if ($username) {
+	$groupManager = \OC::$server->getGroupManager();
+	$groupIds = $groupManager->getUserGroupIds($targetUserObject);
+	foreach ($groupIds as $groupId) {
+		$group = $groupManager->get($groupId);
+		if ($group === null) {
+			OC_JSON::error(['data' => ['message' => 'Group not found']]);
+			exit();
+		}
+		$groupUsers = $group->getUsers();
+		$groupQuota = OC_Helper::computerFileSize($group->getQuota());
+		$usedQuota = 0;
+		foreach ($groupUsers as $user) {
+			if ($user->getUID() !== $targetUserObject->getUID()) {
+				$userQuota = (strcmp($user->getQuota(), 'default') === 0 || strcmp($user->getQuota(), 'none') === 0) ? '80 GB' : $user->getQuota();
+				$usedQuota = $usedQuota + OC_Helper::computerFileSize($userQuota);
+			}
+		}
+		if ($quota === 'default' || $quota === 'none' || OC_Helper::computerFileSize($quota) > ($groupQuota - $usedQuota)) {
+			OC_JSON::error(['data' => ['message' => "Quota exceeds remaining quota of {$groupId}"]]);
+			exit();
+		}
+	}
 	$targetUserObject->setQuota($quota);
 } else {//set the default quota when no username is specified
 	if ($quota === 'default') {//'default' as default quota makes no sense
@@ -64,3 +86,4 @@ if ($username) {
 	\OC::$server->getAppConfig()->setValue('files', 'default_quota', $quota);
 }
 OC_JSON::success(["data" => ["username" => $username , 'quota' => $quota]]);
+

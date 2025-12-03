@@ -51,7 +51,7 @@
 			<div id="header">
 				<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" id="owncloud" tabindex="1">
 					<h1 class="logo-icon">
-						<?php print_unescaped($theme->getHTMLName()); ?>
+						
 					</h1>
 				</a>
 				<a href="#" class="header-appname-container menutoggle" tabindex="2">

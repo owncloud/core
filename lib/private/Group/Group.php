@@ -325,4 +325,34 @@ class Group implements IGroup {
 		// but in practice there is only a single one, so return that one
 		return $this->backends[0];
 	}
+
+	/**
+	 * Set the quota for this group
+	 * 
+	 * @param string $quota
+	 * @return bool
+	 */
+	public function setQuota($quota) {
+		foreach ($this->backends as $backend) {
+			if ($backend->implementsActions(\OC\Group\Backend::SET_QUOTA)) {
+				$backend->setQuota($this->gid, $quota);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Get the quota for this group
+	 *
+	 * @return string|null
+	 */
+	public function getQuota() {
+		foreach ($this->backends as $backend) {
+			if ($backend->implementsActions(\OC\Group\Backend::GET_QUOTA)) {
+				return $backend->getQuota($this->gid);
+			}
+		}
+		return null;
+	}
 }
+
