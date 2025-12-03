@@ -1,0 +1,32 @@
+name: PHP
+
+on: [push]
+
+jobs:
+  run:
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        php-versions: ['7.4', '8.0', '8.1', '8.2']
+        phpunit-versions: ['9.5']
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mbstring, intl
+        ini-values: post_max_size=256M, max_execution_time=180
+        coverage: xdebug
+        tools: php-cs-fixer, phpunit:${{ matrix.phpunit-versions }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+
+    - name: Validate Composer
+      run: composer validate
+    - name: Install Composer Deps
+      run: composer install
+    - name: Run Tests
+      run: phpunit --testdox --coverage-text --coverage-clover=coverage.clover

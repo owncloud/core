@@ -1,0 +1,771 @@
+/* Copyright (c) 2011, Jan-Christoph Borchardt, http://jancborchardt.net
+ This file is licensed under the Affero General Public License version 3 or later.
+ See the COPYING-README file. */
+
+/* INPUTS */
+
+/* specifically override browser styles */
+input, textarea, select, button {
+	font-family: 'Open Sans', Frutiger, Calibri, 'Myriad Pro', Myriad, sans-serif;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="time"],
+input[type="date"],
+textarea,
+select,
+button, .button,
+input[type="submit"],
+input[type="button"],
+#quota,
+.pager li a {
+	width: 130px;
+	margin: 3px 3px 3px 0;
+	padding: 7px 6px 5px;
+	font-size: 13px;
+	background-color: #fff;
+	color: #333;
+	border: 1px solid #ddd;
+	outline: none;
+	border-radius: 3px;
+}
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, nav, section { margin:0; padding:0; border:0; outline:0; font-weight:inherit; font-size:100%; font-family:inherit; vertical-align:baseline; cursor:default; }
+html, body { height:100%; }
+article, aside, dialog, figure, footer, header, hgroup, nav, section { display:block; }
+body { line-height:1.5; }
+table { border-collapse:separate; border-spacing:0; white-space:nowrap; }
+caption, th, td { text-align:left; font-weight:normal; }
+table, td, th { vertical-align:middle; }
+a { border:0; color:#000; text-decoration:none;}
+a, a *, input, input *, select, .button span, label { cursor:pointer; }
+ul { list-style:none; }
+h2 {font-size: 20px;font-weight: 300;margin-bottom: 12px; color: #555}
+body {
+	background-color: #ffffff;
+	font-weight: 400;
+	font-size: .8em;
+	line-height: 1.6em;
+	font-family: 'Open Sans', Frutiger, Calibri, 'Myriad Pro', Myriad, sans-serif;
+	color: #000;
+	height: auto;
+}
+
+#body-login {
+	text-align: center;
+	background: #1d2d44; /* Old browsers */
+	background: -moz-linear-gradient(top, #35537a 0%, #1d2d44 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#35537a), color-stop(100%,#1d2d44)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #35537a 0%,#1d2d44 100%); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(top, #35537a 0%,#1d2d44 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#35537a', endColorstr='#1d2d44',GradientType=0 ); /* IE6-9 */
+}
+
+.float-spinner {
+	height: 32px;
+	display: none;
+}
+#body-login .float-spinner {
+	margin-top: -32px;
+	padding-top: 32px;
+}
+
+#nojavascript {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 9000;
+	text-align: center;
+	background-color: rgba(0,0,0,0.5);
+	color: #fff;
+	line-height: 125%;
+	font-size: 24px;
+}
+#nojavascript div {
+	display: block;
+	position: relative;
+	width: 50%;
+	top: 35%;
+	margin: 0px auto;
+}
+#nojavascript a {
+	color: #fff;
+	border-bottom: 2px dotted #fff;
+}
+#nojavascript a:hover,
+#nojavascript a:focus {
+	color: #ddd;
+}
+
+/* SCROLLING */
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-track-piece {
+	background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: #ddd;
+}
+
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+.clear-left {
+	clear: left;
+}
+
+.clear-right {
+	clear: right;
+}
+
+.clear-both {
+	clear: both;
+}
+
+.hidden {
+	display: none;
+}
+
+.hidden-visually {
+	position: absolute;
+	left:-10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.bold {
+	font-weight:600;
+}
+
+.center {
+	text-align:center;
+}
+
+.inlineblock {
+	display: inline-block;
+}
+
+/* prevent ugly selection effect on accidental selection */
+#header,
+#navigation,
+#expanddiv {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+/* removed until content-focusing issue is fixed */
+#skip-to-content a {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+#skip-to-content a:focus {
+	left: 76px;
+	top: -9px;
+	color: #fff;
+	width: auto;
+	height: auto;
+}
+
+
+
+/* HEADERS ------------------------------------------------------------------ */
+
+#body-user #header,
+#body-settings #header,
+#body-public #header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 2000;
+	height: 45px;
+	line-height: 2.5em;
+	background-color: #1d2d44;
+	box-sizing: border-box;
+}
+
+
+
+/* LOGO and APP NAME -------------------------------------------------------- */
+
+#owncloud {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 5px;
+	padding-bottom: 0;
+	height: 45px; /* header height */
+	box-sizing: border-box;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
+#owncloud:focus {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	opacity: .75;
+}
+#owncloud:hover,
+#owncloud:active {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
+
+#header .logo {
+	background-image: url(../img/logo-icon.svg);
+	background-repeat: no-repeat;
+	background-size: 175px;
+	background-position: center 30px;
+	width: 252px;
+	height: 120px;
+	margin: 0 auto;
+}
+
+#header .logo-icon {
+	/* display logo so appname can be shown next to it */
+	display: inline-block;
+	background-image: url(../img/logo-icon.svg);
+	background-repeat: no-repeat;
+	width: 62px;
+	height: 44px;
+}
+
+
+/* show appname next to logo */
+.header-appname {
+	display: inline-block;
+	position: relative;
+	color: #fff;
+	font-size: 16px;
+	font-weight: 300;
+	margin: 0;
+	margin-top: -24px;
+	padding: 7px 0 7px 5px;
+	vertical-align: middle;
+}
+/* show caret indicator next to logo to make clear it is tappable */
+#header .icon-caret {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	margin: 0;
+	margin-top: -21px;
+	padding: 0;
+	vertical-align: middle;
+}
+
+#header .header-appname-container {
+    display: inline-block;
+    position: absolute;
+    left: 70px;
+    height: 27px;
+    padding-top: 18px;
+    padding-right: 10px;
+}
+
+/* Some whitespace to the top */
+#body-login #header {
+	padding-top: 100px;
+}
+#body-login {
+	background-attachment: fixed; /* fix background gradient */
+	height: 100%; /* fix sticky footer */
+}
+
+/* Dark subtle label text */
+#body-login p.info,
+#body-login form fieldset legend,
+#body-login #datadirContent label,
+#body-login form fieldset .warning-info,
+#body-login form input[type="checkbox"]+label {
+	text-align: center;
+	color: #ccc;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+	opacity: .6;
+}
+/* overrides another !important statement that sets this to unreadable black */
+#body-login form .warning input[type="checkbox"]:hover+label,
+#body-login form .warning input[type="checkbox"]:focus+label,
+#body-login form .warning input[type="checkbox"]+label {
+	color: #fff !important;
+}
+
+#body-login .update h2 {
+	margin: 12px 0 20px;
+}
+
+#body-login .update a {
+	color: #fff;
+	border-bottom: 1px solid #aaa;
+}
+
+#body-login .infogroup {
+	margin-bottom: 15px;
+}
+
+#body-login p#message img {
+	vertical-align: middle;
+	padding: 5px;
+}
+
+#body-login div.buttons {
+	text-align: center;
+}
+#body-login p.info {
+	width: 22em;
+	margin: 0 auto;
+	padding-top: 20px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#body-login p.info a {
+	font-weight: 600;
+	padding: 13px;
+	margin: -13px;
+}
+
+/* position log in button as confirm icon in right of password field */
+#body-login #submit.login {
+	position: absolute;
+	right: 0;
+	top: 0;
+	border: none;
+	background-color: transparent;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+	opacity: .3;
+}
+#body-login #submit.login:hover,
+#body-login #submit.login:focus {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	opacity: .7;
+}
+#body-login input[type="password"] {
+	padding-right: 40px;
+	box-sizing: border-box;
+	min-width: 269px;
+}
+
+#body-login form {
+	position: relative;
+	width: 280px;
+	margin: 32px auto;
+	padding: 0;
+}
+#body-login form fieldset {
+	margin-bottom: 20px;
+	text-align: left;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#body-login form #sqliteInformation {
+	margin-top: -20px;
+	margin-bottom: 20px;
+}
+#body-login form #adminaccount {
+	margin-bottom: 15px;
+}
+#body-login form fieldset legend, #datadirContent label {
+	width: 100%;
+}
+#body-login #datadirContent label {
+	display: block;
+	margin: 0;
+}
+#body-login form #datadirField legend {
+	margin-bottom: 15px;
+}
+#body-login #showAdvanced {
+	padding: 13px; /* increase clickable area of Advanced dropdown */
+}
+#body-login #showAdvanced img {
+	vertical-align: bottom; /* adjust position of Advanced dropdown arrow */
+	margin-left: -4px;
+}
+#body-login .icon-info-white {
+	padding: 10px;
+}
+
+/* strengthify wrapper */
+#body-login .strengthify-wrapper {
+	display: inline-block;
+	position: relative;
+	left: 15px;
+	top: -21px;
+	width: 252px;
+}
+
+#body-login input[type="text"],
+#body-login input[type="password"],
+#body-login input[type="email"] {
+	border: none;
+	font-weight: 300;
+}
+
+/* Nicely grouping input field sets */
+
+
+.grouptop,
+.groupmiddle,
+.groupbottom {
+	position: relative;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#body-login .grouptop input,
+.grouptop input {
+	margin-bottom: 0;
+	border-bottom: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+#body-login .groupmiddle input,
+.groupmiddle input {
+	margin-top: 0;
+	margin-bottom: 0;
+	border-top: 0;
+	border-bottom: 0;
+	border-radius: 0;
+	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
+}
+#body-login .groupbottom input,
+.groupbottom input {
+	margin-top: 0;
+	border-top: 0;
+}
+#body-login .groupbottom #password {
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
+}
+
+/* keep the labels for screen readers but hide them since we use placeholders */
+label.infield {
+	display: none;
+}
+
+#body-login form input[type="checkbox"]+label {
+	position: relative;
+	margin: 0;
+	padding: 14px;
+	padding-left: 28px;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#body-login form .errors { background:#fed7d7; border:1px solid #f00; list-style-indent:inside; margin:0 0 2em; padding:1em; }
+#body-login .success { background:#d7fed7; border:1px solid #0f0; width: 35%; margin: 30px auto; padding:1em; text-align: center;}
+
+#body-login #remember_login:hover+label,
+#body-login #remember_login:focus+label  {
+	color: #fff !important;
+}
+
+#body-login #showAdvanced > img {
+	padding: 4px;
+	box-sizing: border-box;
+}
+
+#body-login p.info a, #body-login #showAdvanced {
+	color: #ccc;
+}
+
+#body-login p.info a:hover, #body-login p.info a:focus {
+	color: #fff;
+}
+
+
+#body-login footer .info {
+	white-space: nowrap;
+}
+
+/* Log in and install button */
+#body-login input {
+	font-size: 20px;
+	margin: 5px;
+	padding: 11px 10px 9px;
+}
+#body-login input[type="text"],
+#body-login input[type="password"] {
+	width: 249px;
+}
+#body-login input.login {
+	width: auto;
+	float: right;
+}
+#body-login input[type="submit"] {
+	padding: 10px 20px; /* larger log in and installation buttons */
+}
+
+/* Sticky footer */
+#body-login .wrapper {
+	min-height: 100%;
+	margin: 0 auto -70px;
+	width: 300px;
+}
+#body-login footer, #body-login .push {
+	height: 70px;
+}
+
+
+[class^="icon-"], [class*=" icon-"] {
+	background-repeat: no-repeat;
+	background-position: center;
+	min-width: 16px;
+	min-height: 16px;
+}
+
+.icon-confirm {
+	background-image: url('../img/actions/confirm.svg');
+}
+
+#content-wrapper {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    padding-top: 45px;
+    box-sizing: border-box;
+}
+
+#content {
+    position: relative;
+    height: 100%;
+	margin: 0 auto;
+}
+
+/* Warnings and errors are the same */
+#body-login .warning,
+#body-login .update,
+#body-login .error {
+	display: block;
+	padding: 10px;
+	background-color: rgba(0,0,0,.3);
+	color: #fff;
+	text-align: left;
+	border-radius: 3px;
+	cursor: default;
+}
+
+#body-login .warning {
+	margin: 0 7px 5px 4px;
+}
+
+#body-login #invalidPasswordWarning{
+	display:none;
+}
+
+/* APP-NAVIGATION ------------------------------------------------------------*/
+
+
+/* Navigation: folder like structure */
+#app-navigation {
+	width: 250px;
+	height: 100%;
+	float: left;
+	box-sizing: border-box;
+	background-color: #fff;
+	padding-bottom: 44px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border-right: 1px solid #eee;
+}
+#app-navigation > ul {
+	position: relative;
+	height: 100%;
+	width: inherit;
+	overflow: auto;
+	box-sizing: border-box;
+}
+#app-navigation li {
+	position: relative;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#app-navigation .active.with-menu > a,
+#app-navigation .with-counter > a {
+	padding-right: 50px;
+}
+
+#app-navigation .active.with-menu.with-counter > a {
+	padding-right: 90px;
+}
+
+#app-navigation .with-icon a,
+#app-navigation .app-navigation-entry-loading a {
+	padding-left: 44px;
+	background-size: 16px 16px;
+	background-position: 14px center;
+	background-repeat: no-repeat;
+}
+
+#app-navigation li > a {
+	display: block;
+	width: 100%;
+	line-height: 44px;
+	min-height: 44px;
+	padding: 0 12px;
+	overflow: hidden;
+	box-sizing: border-box;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #000;
+	opacity: .57;
+}
+#app-navigation .active,
+#app-navigation .active a,
+#app-navigation li:hover > a,
+#app-navigation li:focus > a,
+#app-navigation a:focus,
+#app-navigation .selected,
+#app-navigation .selected a {
+	opacity: 1;
+}
+
+#app-content {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.section {
+	padding: 25px 30px;
+}
+
+.updater-backups-table {
+	width: 100%;
+	margin: 0.8em 0;
+	max-width: 750px;
+}
+
+.updater-backups-table th {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+
+.updater-backups-table td {
+	padding: 10px 0;
+	cursor: pointer;
+}
+.updater-backups-table tr.template{
+	display:none;
+}
+
+.updater-backups-table .icon-delete {
+	cursor: pointer;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+
+.updater-warning-p {
+	padding-left: 0.5em;
+}
+
+.updater-space-bottom {
+	padding-bottom: 1em;
+}
+
+.updater-spinner {
+	display: block;
+}
+
+.updater-update {
+	padding: 2px 20px 8px 20px;
+	background-color: rgba(240, 240, 240, 0.9);
+	max-width: 750px;
+}
+
+
+#progress{
+	width:600px;
+}
+
+.side-button{
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+	cursor: pointer;
+}
+
+#output {
+	display: none;
+	padding: 10px;
+}
+
+li.step{
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=57)";
+	opacity: .57;
+}
+
+li.step h2 {
+	padding: 5px 2px 5px 30px;
+	margin-top: 12px;
+	margin-bottom: 0;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=57)";
+	opacity: .57;
+	background-position:8px 50%;
+	background-repeat: no-repeat;
+}
+
+li.current-step, li.passed-step, li.failed-step{
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
+
+li.current-step h2{
+	background-image: url(../img/loading-small.gif);
+}
+
+li.current-step h2, li.passed-step h2 {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
+
+li.passed-step h2{
+	cursor : pointer;
+	background-image: url(../img/actions/checkmark-color.svg);
+}
+
+li.failed-step h2{
+	background-color: #ffb0b0;
+	background-image: url(../img/actions/error-color.svg);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
+
+li.step .output{
+	position:relative;
+	padding: 5px 5px 5px 32px;
+}
+
