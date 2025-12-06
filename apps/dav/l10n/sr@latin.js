@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Contact birthdays" : "Rođendani kontakata",
     "Personal" : "Lično",
+    "Contacts" : "Контакти",
     "Technical details" : "Tehnički detalji",
     "Remote Address: %s" : "Udaljena adresa: %s",
     "Request ID: %s" : "ID zahteva: %s"

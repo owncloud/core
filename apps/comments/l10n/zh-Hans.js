@@ -10,6 +10,7 @@ OC.L10N.register(
     "Comments" : "留言",
     "No other comments available" : "沒有其他留言",
     "More comments..." : "更多留言…",
+    "Save" : "保存",
     "Allowed characters {count} of {max}" : "已輸入 {count} / 長度限制 {max}",
     "Error occurred while retrieving comment with id {id}" : "檢索ID為 {id} 的留言時發生錯誤",
     "Error occurred while updating comment with id {id}" : "更新ID為 {id} 的留言時發生錯誤",

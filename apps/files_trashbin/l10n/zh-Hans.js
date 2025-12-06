@@ -5,6 +5,7 @@ OC.L10N.register(
     "Couldn't restore %s" : "無法還原 %s",
     "Deleted files" : "已删除文件",
     "Restore" : "還原",
+    "Delete" : "刪除",
     "Delete permanently" : "永久删除",
     "Error" : "错误",
     "This operation is forbidden" : "此動作被禁止",
@@ -14,6 +15,7 @@ OC.L10N.register(
     "You will be able to recover deleted files from here" : "您可以從這裡還原已刪除的檔案",
     "No entries found in this folder" : "此文件夹中无项目",
     "Select all" : "全部选择",
-    "Name" : "名稱"
+    "Name" : "名稱",
+    "Deleted" : "已删除"
 },
 "nplurals=1; plural=0;");

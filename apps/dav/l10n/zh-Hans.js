@@ -5,7 +5,9 @@ OC.L10N.register(
     "User unknown" : "用户未知",
     "User disabled" : "用户禁用",
     "Personal" : "个人",
+    "Contacts" : "联系人",
     "Technical details" : "技術細節",
-    "Remote Address: %s" : "遠端位置：%s"
+    "Remote Address: %s" : "遠端位置：%s",
+    "Request ID: %s" : "请求 ID: %s"
 },
 "nplurals=1; plural=0;");

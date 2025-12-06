@@ -13,6 +13,7 @@
     "You will be able to recover deleted files from here" : "您可以從這裡還原已刪除的檔案",
     "No entries found in this folder" : "此文件夹中无项目",
     "Select all" : "全部选择",
-    "Name" : "名稱"
+    "Name" : "名稱",
+    "Deleted" : "已删除"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

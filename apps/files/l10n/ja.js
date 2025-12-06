@@ -104,6 +104,8 @@ OC.L10N.register(
     "You restored %1$s" : "%1$s を復元しました",
     "%2$s restored %1$s" : "%2$s は、 %1$s を復元しました",
     "You renamed %2$s to %1$s" : "%2$s から %1$s に名前を変更します",
+    "%2$s renamed %3$s to %1$s" : "%2$s が %3$s の名前を %1$s に変更しました",
+    "%2$s moved %3$s to %1$s" : "%2$s が %3$s を %1$s に移動しました",
     "Changed by %2$s" : "%2$s により更新",
     "Deleted by %2$s" : "%2$s により削除",
     "Restored by %2$s" : "%2$s により復元",

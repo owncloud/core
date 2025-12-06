@@ -1,7 +1,6 @@
 OC.L10N.register(
-    "settings",
+    "files_sharing",
     {
-    "Save" : "Saqlash",
     "Cancel" : "Bekor qilish"
 },
 "nplurals=1; plural=0;");

@@ -7,6 +7,7 @@ OC.L10N.register(
     "Personal" : "個人",
     "Contacts" : "聯絡人",
     "Technical details" : "技術細節",
-    "Remote Address: %s" : "遠端位置：%s"
+    "Remote Address: %s" : "遠端位置：%s",
+    "Request ID: %s" : "请求 ID: %s"
 },
 "nplurals=1; plural=0;");

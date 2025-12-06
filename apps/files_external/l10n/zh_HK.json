@@ -3,6 +3,7 @@
     "Step 2 failed. Exception: %s" : "步骤 2 失败。异常：%s",
     "External storage" : "外部儲存",
     "Google Drive App Configuration" : "Google Drive 应用配置",
+    "Error verifying OAuth2 Code for " : "驗證 OAuth2 代碼時發生錯誤",
     "Personal" : "個人",
     "System" : "系统",
     "Grant access" : "允許存取",

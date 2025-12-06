@@ -62,6 +62,7 @@ OC.L10N.register(
     "%2$s deleted %1$s" : "%2$s je izbrisao %1$s",
     "You restored %1$s" : "Vraćeno %1$s",
     "%2$s restored %1$s" : "%2$s vraćeno %1$s",
+    "%2$s moved %3$s to %1$s" : "%2$s seli %3$s u %1$s",
     "Upload (max. %s)" : "Prijenos (max. %s)",
     "Settings" : "Postavke",
     "WebDAV" : "WebDAV",

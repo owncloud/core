@@ -13,6 +13,7 @@ OC.L10N.register(
     "Uploading..." : "Otpremam…",
     "..." : "...",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Otpremanje fajla je u toku. Ako sada napustite stranicu, otkazaćete otpremanje.",
+    "Actions" : "Радње",
     "Download" : "Preuzmi",
     "Rename" : "Preimenuj",
     "Delete" : "Obriši",

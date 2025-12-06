@@ -34,6 +34,7 @@
     "Could not load info for file \"{file}\"" : "無法載入檔案資訊 \"{file}\"",
     "Files" : "文件",
     "Details" : "詳述",
+    "Select" : "选择",
     "Pending" : "等候中",
     "Unable to determine date" : "無法確定日期",
     "Invalid path" : "无效路径",

@@ -130,6 +130,7 @@ OC.L10N.register(
     "Automatically accept new incoming local user shares" : "自動地接受新來的本地端使用者分享",
     "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "允许通过共享对话框中的自动完成找到您。 如果禁用此功能，则需要输入完整的用户名。",
     "This share is password-protected" : "此共享受密码保护",
+    "Password" : "密碼",
     "The password is wrong. Try again." : "密码错误。请重试",
     "Proceed" : "继续",
     "No entries found in this folder" : "此文件夹中无项目",

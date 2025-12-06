@@ -73,6 +73,8 @@ OC.L10N.register(
     "You restored %1$s" : "Вами відновлено %1$s",
     "%2$s restored %1$s" : "%2$s відновлено %1$s",
     "You renamed %2$s to %1$s" : "Ви перейменували %2$s на %1$s",
+    "%2$s renamed %3$s to %1$s" : "%2$s перейменував %3$s на %1$s",
+    "%2$s moved %3$s to %1$s" : "%2$s переніс %3$s до %1$s",
     "Upload (max. %s)" : "Вивантаження (макс. %s)",
     "Settings" : "Налаштування",
     "Show hidden files" : "Показати приховані файли",

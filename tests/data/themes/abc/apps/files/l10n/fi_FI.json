@@ -89,6 +89,8 @@
     "%2$s deleted %1$s" : "%2$s poisti kohteen %1$s",
     "You restored %1$s" : "Palautit kohteen %1$s",
     "%2$s restored %1$s" : "%2$s palautti kohteen %1$s",
+    "%2$s renamed %3$s to %1$s" : "%2$s nimesi %3$s:n %1$s:ksi",
+    "%2$s moved %3$s to %1$s" : "%2$s siirsi resurssin %3$s %1$s:iin",
     "Changed by %2$s" : "Muuttanut %2$s",
     "Deleted by %2$s" : "Poistanut %2$s",
     "Restored by %2$s" : "Palauttanut %2$s",

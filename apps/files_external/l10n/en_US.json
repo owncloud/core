@@ -1,7 +1,9 @@
 { "translations": {
     "Step 1 failed. Exception: %s" : "Step 1 failed. Exception: %s",
+    "Step 2 failed. Exception: %s" : "Step 2 failed. Exception: %s",
     "External storage" : "External storage",
     "Google Drive App Configuration" : "Google Drive App Configuration",
+    "Error verifying OAuth2 Code for " : "Error verifying OAuth2 Code for ",
     "Personal" : "Personal",
     "System" : "System",
     "Grant access" : "Grant access",
@@ -68,6 +70,7 @@
     "Public key" : "Public key",
     "WebDAV" : "WebDAV",
     "URL" : "URL",
+    "Remote subfolder" : "Remote subfolder",
     "Secure https://" : "Secure https://",
     "Google Drive" : "Google Drive",
     "SubFolder" : "SubFolder",
@@ -76,6 +79,7 @@
     "ownCloud" : "ownCloud",
     "SFTP" : "SFTP",
     "Host" : "Host",
+    "Root" : "Root",
     "SFTP with secret key login" : "SFTP with secret key login",
     "SMB Personal (unique file IDs)" : "SMB Personal (unique file IDs)",
     "Share" : "Share",
@@ -109,6 +113,7 @@
     "Available for" : "Available for",
     "Add storage" : "Add storage",
     "Advanced settings" : "Advanced settings",
+    "Delete" : "Delete",
     "Allow users to mount external storage" : "Allow users to mount external storage",
     "Allow users to mount the following external storage" : "Allow users to mount the following external storage",
     "Allow sharing on user-mounted external storages" : "Allow sharing on user-mounted external storages"

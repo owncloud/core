@@ -1,4 +1,6 @@
 { "translations": {
-    "{dirs} and {files}" : "{dirs} va {files}"
+    "Files" : "Fayllar",
+    "{dirs} and {files}" : "{dirs} va {files}",
+    "Cancel" : "Bekor qilish"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
