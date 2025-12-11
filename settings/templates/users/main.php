@@ -156,7 +156,7 @@ translation('settings');
                         <label for="quotaInput"><strong>Quota mới:</strong></label>
                         <input type="text" id="quotaInput" name="quota" placeholder="VD: 5 GB" size="8" />
 
-                        <button type="button" id="saveSingleQuotaBtn"><?php p($l->t('Lưu')); ?></button>
+                        <button type="button" id="saveSingleQuotaBtn"><?php p($l->t('Save')); ?></button>
                 </form>
         </div>
         <?php endif; ?>
