@@ -1,4 +1,6 @@
 { "translations": {
+    "Email sent" : "Email yuborildi",
+    "All" : "Barcha",
     "Save" : "Saqlash",
     "Cancel" : "Bekor qilish"
 },"pluralForm" :"nplurals=1; plural=0;"

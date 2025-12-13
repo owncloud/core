@@ -1,8 +1,13 @@
 OC.L10N.register(
     "files",
     {
+    "Unshare" : "Ulashilmasin",
     "Files" : "Fayllar",
+    "group" : "guruh",
+    "Could not move \"{file}\", target exists" : "“{file}”ni koʻchirib boʻlmadi, fayl mavjud",
+    "Could not move \"{file}\"" : "“{file}”ni koʻchirib boʻlmadi",
     "{dirs} and {files}" : "{dirs} va {files}",
+    "New" : "Yangi",
     "Cancel" : "Bekor qilish"
 },
 "nplurals=1; plural=0;");
