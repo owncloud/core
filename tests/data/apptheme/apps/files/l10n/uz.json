@@ -1,11 +1,26 @@
 { "translations": {
+    "All files" : "Barcha fayllar",
+    "Close" : "Yopish",
+    "Favorites" : "Saralanganlar",
+    "Download" : "Yuklab olish",
+    "Rename" : "Nomini o‘zgartirish",
+    "Delete" : "O‘chirish",
     "Unshare" : "Ulashilmasin",
     "Files" : "Fayllar",
+    "Details" : "Tafsilotlar",
     "group" : "guruh",
     "Could not move \"{file}\", target exists" : "“{file}”ni koʻchirib boʻlmadi, fayl mavjud",
     "Could not move \"{file}\"" : "“{file}”ni koʻchirib boʻlmadi",
+    "Name" : "Ism",
+    "Size" : "Hajmi",
     "{dirs} and {files}" : "{dirs} va {files}",
     "New" : "Yangi",
-    "Cancel" : "Bekor qilish"
+    "Unknown user" : "Noma'lum foydalanuvchi",
+    "Folder" : "Papka",
+    "New folder" : "Yangi papka",
+    "Cancel" : "Bekor qilish",
+    "Upload" : "Yuklash",
+    "Settings" : "Sozlamalar",
+    "Select all" : "Barchasini belgilash"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

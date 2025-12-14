@@ -1,7 +1,28 @@
 { "translations": {
+    "Saved" : "Saqlandi",
     "Email sent" : "Email yuborildi",
+    "Delete" : "O‘chirish",
+    "Share" : "Ulashish",
+    "Unknown user" : "Noma'lum foydalanuvchi",
     "All" : "Barcha",
+    "Enabled" : "Yoqilgan",
+    "Uninstalling ...." : "O‘chirilmoqda ...",
+    "Uninstall" : "O‘chirish",
+    "Disconnect" : "Aloqani uzish",
+    "Language" : "Til",
     "Save" : "Saqlash",
-    "Cancel" : "Bekor qilish"
+    "Log" : "Log",
+    "Login" : "Tizimga kirish",
+    "Server address" : "Server adresi",
+    "Port" : "Port",
+    "Cancel" : "Bekor qilish",
+    "Username" : "Foydalanuvchi nomi",
+    "Password" : "Parol",
+    "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "{communityopen}ownCloud community{linkclose} tomonidan ishlab chiqilgan, {githubopen}manba kodi{linkclose} {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} asosida litsenziyalangan.",
+    "Sessions" : "Sessiyalar",
+    "Browser" : "Brauzer",
+    "Most recent activity" : "Oxirgi faoliyat",
+    "Name" : "Ism",
+    "Settings" : "Sozlamalar"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
