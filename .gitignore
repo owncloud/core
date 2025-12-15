@@ -37,6 +37,11 @@
 /apps/files_external/3rdparty/irodsphp/prods/test*
 /apps/files_external/tests/config.*.php
 
+# allow custom app
+!/apps/sso_auth
+!/apps/sso_auth/**
+/apps/sso_auth/vendor/
+
 /lib/composer
 /apps/files_external/3rdparty/*
 

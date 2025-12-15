@@ -216,6 +216,7 @@ class SettingsManager implements ISettingsManager {
 				new Section('search', $this->l->t('Search'), 75, 'search'),
 				new Section('help', $this->l->t('Help & Tips'), -5, 'info'),
 				new Section('additional', $this->l->t('Additional'), -10, 'more'),
+				new Section('sso_auth', $this->l->t('SSO Authentication'), -10, 'settings'),
 			];
 		} elseif ($type === 'personal') {
 			return [

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<info>
+  <id>sso_auth</id>
+  <name>SSO Authentication</name>
+  <summary>Single Sign-On MobiFoneIT for ownCloud</summary>
+  <version>1.0.0</version>
+  <description>SSO Authentication integration</description>
+  <licence>AGPL</licence>
+  <author>MobiFone IT</author>
+  <namespace>SsoAuth</namespace>
+  <category>authentication</category>
+
+  <dependencies>
+    <owncloud min-version="10.0" max-version="10.99"/>
+  </dependencies>
+
+  <settings>
+    <section>OCA\SsoAuth\Settings\Section</section>
+    <admin>OCA\SsoAuth\Settings\Admin</admin>
+  </settings>
+</info>

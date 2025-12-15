@@ -1,0 +1,13 @@
+{
+    "name": "central/sso-auth",
+    "description": "Centralized SSO Authentication for OwnCloud",
+    "type": "owncloud-app",
+    "require": {
+        "firebase/php-jwt": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "OCA\\SsoAuth\\": "lib/"
+        }
+    }
+}
