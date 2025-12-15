@@ -1,0 +1,21 @@
+#sso-auth-form .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#sso-auth-form label {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+}
+
+#sso-auth-form input[type="text"],
+#sso-auth-form input[type="url"] {
+    width: 300px;
+    margin-left: 10px;
+}
+
+#sso-auth-form button {
+    margin-top: 20px;
+}
