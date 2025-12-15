@@ -37,6 +37,21 @@ class ConfigController extends Controller {
      * @AdminRequired
      */
     public function save(string $sso_url, string $realm, string $client_id, string $client_secret): DataResponse {
+        if (!filter_var($sso_url, FILTER_VALIDATE_URL)) {
+            return new DataResponse(['status' => 'error', 'message' => 'Sso url is invalid'], 400);
+        }
+        if (empty($realm)) {
+            return new DataResponse(['status' => 'error', 'message' => 'Realm is required'], 400);
+        }
+
+        if (empty($client_id)) {
+            return new DataResponse(['status' => 'error', 'message' => 'Client id is required'], 400);
+        }
+
+        if (empty($client_secret)) {
+            return new DataResponse(['status' => 'error', 'message' => 'Client secret is required'], 400);
+        }
+
         $this->config->setAppValue('sso_auth', 'sso_url', $sso_url);
         $this->config->setAppValue('sso_auth', 'realm', $realm);
         $this->config->setAppValue('sso_auth', 'client_id', $client_id);
