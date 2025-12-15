@@ -36,11 +36,11 @@ class ConfigController extends Controller {
     /**
      * @AdminRequired
      */
-    public function save(string $ssoUrl, string $realm, string $clientId, string $clientSecret): DataResponse {
-        $this->config->setAppValue('sso_auth', 'ssoUrl', $ssoUrl);
+    public function save(string $sso_url, string $realm, string $client_id, string $client_secret): DataResponse {
+        $this->config->setAppValue('sso_auth', 'sso_url', $sso_url);
         $this->config->setAppValue('sso_auth', 'realm', $realm);
-        $this->config->setAppValue('sso_auth', 'clientId', $clientId);
-        $this->config->setAppValue('sso_auth', 'clientSecret', $clientSecret);
+        $this->config->setAppValue('sso_auth', 'client_id', $client_id);
+        $this->config->setAppValue('sso_auth', 'client_secret', $client_secret);
 
         return new DataResponse(['status' => 'success']);
     }

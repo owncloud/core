@@ -3,7 +3,8 @@
 /** @var $l \OCP\IL10N */
 script('sso_auth', 'admin');
 ?>
-<form method="post" autocapitalize="none">
+<form id="sso-auth-form" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('sso_auth.config.save')); ?>" method="post" autocapitalize="none">
+    <input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
     <fieldset id="admin-sso-fieldset">
         <legend>SSO Authentication</legend>
         <p>
