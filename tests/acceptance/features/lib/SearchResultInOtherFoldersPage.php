@@ -20,7 +20,7 @@
  *
  */
 
-namespace Page;
+namespace Tests\Acceptance\Page;
 
 /**
  * Page that shows the search results.

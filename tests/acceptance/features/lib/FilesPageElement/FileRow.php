@@ -21,13 +21,13 @@
  *
  */
 
-namespace Page\FilesPageElement;
+namespace Tests\Acceptance\Page\FilesPageElement;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Exception;
-use Page\FilesPage;
-use Page\OwncloudPage;
+use Tests\Acceptance\Page\FilesPage;
+use Tests\Acceptance\Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
