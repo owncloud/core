@@ -1,0 +1,5 @@
+Enhancement: Add mimetype aliases/mapping for .toml and .ovpn
+
+Mimetype aliases and mapping for .toml and .ovpn files got added.
+
+https://github.com/owncloud/core/pull/41431
