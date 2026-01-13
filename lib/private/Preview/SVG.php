@@ -23,6 +23,7 @@
  */
 namespace OC\Preview;
 
+use OC\Image\ImagickFactory;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
@@ -41,8 +42,8 @@ class SVG implements IProvider2 {
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		try {
-			$svg = new \Imagick();
-			$svg->setBackgroundColor(new \ImagickPixel('transparent'));
+			$imagick = ImagickFactory::create();
+			$imagick->setBackgroundColor(new \ImagickPixel('transparent'));
 
 			$stream = $file->fopen('r');
 			$content = \stream_get_contents($stream);
@@ -54,8 +55,8 @@ class SVG implements IProvider2 {
 			# sanitize SVG content
 			$output = self::sanitizeSVGContent($content);
 
-			$svg->readImageBlob($output);
-			$svg->setImageFormat('png32');
+			$imagick->readImageBlob($output);
+			$imagick->setImageFormat('png32');
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
 			return false;
@@ -63,7 +64,7 @@ class SVG implements IProvider2 {
 
 		//new image object
 		$image = new \OC_Image();
-		$image->loadFromData($svg);
+		$image->loadFromData($imagick);
 		//check if image object is valid
 		if ($image->valid()) {
 			$image->scaleDownToFit($maxX, $maxY);
@@ -84,6 +85,11 @@ class SVG implements IProvider2 {
 		$sanitizer = new DOMSanitizer(DOMSanitizer::SVG);
 		$sanitizer->addDisallowedTags(['image']);
 		$sanitizer->addDisallowedAttributes(['xlink:href']);
-		return $sanitizer->sanitize($content);
+		$sanitized_content = $sanitizer->sanitize($content);
+
+		// XML errors are expected here if the SVG is malformed
+		\libxml_clear_errors();
+
+		return $sanitized_content;
 	}
 }
