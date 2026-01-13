@@ -26,6 +26,7 @@
 
 namespace OCA\Federation\Controller;
 
+use Exception;
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
 use OCP\AppFramework\Http;
@@ -170,8 +171,21 @@ class OCSAuthAPIController extends OCSController {
 			'data' => ['sharedSecret' => $sharedSecret]];
 	}
 
-	protected function isValidToken($url, $token) {
+	/**
+	 * @note method is public for testing purposes
+	 * @param string|null $url
+	 * @param string|null $token
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function isValidToken(?string $url, ?string $token): bool {
+		if ($token === '' || $token === null) {
+			return false;
+		}
 		$storedToken = $this->dbHandler->getToken($url);
+		if ($storedToken === '' || $storedToken === null) {
+			return false;
+		}
 		return \hash_equals($storedToken, $token);
 	}
 }

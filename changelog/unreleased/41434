@@ -1,0 +1,5 @@
+Bugfix: Disallow empty tokens when pairing trusted servers
+
+An empty token could be used to pair trusted servers, which is not secure.
+
+https://github.com/owncloud/core/pull/41434
