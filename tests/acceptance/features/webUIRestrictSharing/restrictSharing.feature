@@ -70,7 +70,7 @@ Feature: restrict Sharing
       | share | no |
     Then dialog should be displayed on the webUI
       | title               | content                      |
-      | Error while sharing | Group sharing is not allowed |
+      | Error whilst sharing | Group sharing is not allowed |
     When the user reloads the current page of the webUI
     Then the following permissions are seen for "simple-folder" in the sharing dialog for group "grp1"
       | share | yes |
@@ -85,7 +85,7 @@ Feature: restrict Sharing
       | create | no |
     Then dialog should be displayed on the webUI
       | title               | content                      |
-      | Error while sharing | Group sharing is not allowed |
+      | Error whilst sharing | Group sharing is not allowed |
     When the user reloads the current page of the webUI
     Then the following permissions are seen for "simple-folder" in the sharing dialog for group "grp1"
       | create | yes |
