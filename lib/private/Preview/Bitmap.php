@@ -25,6 +25,7 @@
 namespace OC\Preview;
 
 use Imagick;
+use OC\Preview;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
@@ -40,6 +41,9 @@ abstract class Bitmap implements IProvider2 {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
+		if (Preview::isImageFileSizeTooBig($file)) {
+			return false;
+		}
 		$stream = $file->fopen('r');
 
 		// Creates \Imagick object from bitmap or vector file
@@ -78,9 +82,9 @@ abstract class Bitmap implements IProvider2 {
 	 * @param int $maxX
 	 * @param int $maxY
 	 *
-	 * @return \Imagick
+	 * @return Imagick
 	 */
-	private function getResizedPreview($stream, $maxX, $maxY) {
+	private function getResizedPreview($stream, int $maxX, int $maxY): Imagick {
 		# file content can be SVG - we need to sanitize it first
 		$content = \stream_get_contents($stream);
 		$output = SVG::sanitizeSVGContent($content);

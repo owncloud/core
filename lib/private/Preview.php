@@ -34,6 +34,7 @@ namespace OC;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCA\Files_Sharing\SharedMount;
+use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Files\Folder;
 use OCP\Files\Node;
@@ -1079,6 +1080,22 @@ class Preview {
 			}
 		}
 		return $this->getThumbnailsFolder() . '/' . $fileId . '/';
+	}
+
+	/**
+	 * @param File $file
+	 * @return bool
+	 * @throws \OCP\Files\InvalidPathException
+	 * @throws \OCP\Files\NotFoundException
+	 */
+	public static function isImageFileSizeTooBig(File $file): bool {
+		$maxSizeForImages = \OC::$server->getConfig()->getSystemValue('preview_max_filesize_image', 50);
+		if ($maxSizeForImages === -1) {
+			return false;
+		}
+		$size = $file->getSize();
+
+		return $size > ($maxSizeForImages * 1024 * 1024);
 	}
 
 	/**

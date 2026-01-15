@@ -26,6 +26,7 @@
  */
 namespace OC\Preview;
 
+use OC\Preview;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
@@ -35,13 +36,9 @@ abstract class Image implements IProvider2 {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
-		$maxSizeForImages = \OC::$server->getConfig()->getSystemValue('preview_max_filesize_image', 50);
-		$size = $file->getSize();
-
-		if ($maxSizeForImages !== -1 && $size > ($maxSizeForImages * 1024 * 1024)) {
+		if (Preview::isImageFileSizeTooBig($file)) {
 			return false;
 		}
-
 		$image = new \OC_Image();
 		$handle = $file->fopen('r');
 		$image->load($handle);
