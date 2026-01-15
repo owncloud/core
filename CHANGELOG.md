@@ -35,9 +35,16 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Disallow empty tokens when pairing trusted servers: [#41434](https://github.com/owncloud/core/pull/41434)
 * Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
 
 ## Details
+
+* Bugfix - Disallow empty tokens when pairing trusted servers: [#41434](https://github.com/owncloud/core/pull/41434)
+
+   An empty token could be used to pair trusted servers, which is not secure.
+
+   https://github.com/owncloud/core/pull/41434
 
 * Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
 
