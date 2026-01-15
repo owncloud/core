@@ -182,4 +182,40 @@ class OCSAuthAPITest extends TestCase {
 			[false, false, Http::STATUS_FORBIDDEN],
 		];
 	}
+
+	/**
+	 * @dataProvider dataTestIsTokenValid
+	 */
+	public function testIsTokenValid($storedToken, $requestToken): void {
+		$url = 'url';
+
+		/** @var OCSAuthAPIController | \PHPUnit\Framework\MockObject\MockObject $ocsAuthApi */
+		$ocsAuthApi = $this->getMockBuilder(OCSAuthAPIController::class)
+			->setConstructorArgs(
+				[
+					'federation',
+					$this->request,
+					$this->secureRandom,
+					$this->jobList,
+					$this->trustedServers,
+					$this->dbHandler,
+					$this->logger
+				]
+			)->getMock();
+
+		$this->dbHandler
+			->method('getToken')->willReturn($storedToken);
+
+		$result = $ocsAuthApi->isValidToken($url, $requestToken);
+		$this->assertFalse($result);
+	}
+
+	public function dataTestIsTokenValid(): \Generator {
+		yield 'no match' => ['xxx', 'yyy'];
+		yield 'empty token stored' => ['', 'yyy'];
+		yield 'null token stored' => [null, 'yyy'];
+		yield 'empty token requested' => ['xxx', ''];
+		yield 'null token requested' => ['xxx', null];
+	}
+
 }
