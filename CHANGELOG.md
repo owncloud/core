@@ -35,11 +35,19 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Apply SVG sanitization to all file content before using ImageMagick: [#41433](https://github.com/owncloud/core/pull/41433)
 * Bugfix - Disallow empty tokens when pairing trusted servers: [#41434](https://github.com/owncloud/core/pull/41434)
 * Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
 * Enhancement - Add mimetype aliases/mapping for .toml and .ovpn: [#41431](https://github.com/owncloud/core/pull/41431)
 
 ## Details
+
+* Bugfix - Apply SVG sanitization to all file content before using ImageMagick: [#41433](https://github.com/owncloud/core/pull/41433)
+
+   Any file content is now sanitized for SVG threats before being processed by
+   ImageMagick, preventing potential security vulnerabilities.
+
+   https://github.com/owncloud/core/pull/41433
 
 * Bugfix - Disallow empty tokens when pairing trusted servers: [#41434](https://github.com/owncloud/core/pull/41434)
 
