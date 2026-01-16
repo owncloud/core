@@ -24,6 +24,7 @@
  */
 namespace OC\Preview;
 
+use OC\Image\ImagickFactory;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
@@ -60,14 +61,15 @@ abstract class Office implements IProvider2 {
 
 		\shell_exec($exec);
 
-		//create imagick object from pdf
+		//create imagick object from PDF
 		$pdfPreview = null;
 		try {
 			$pathInfo = \pathinfo($absPath);
 			$pdfPreview = $tmpDir . '/' . $pathInfo['filename'] . '.pdf';
 
-			$pdf = new \Imagick($pdfPreview . '[0]');
-			$pdf->setImageFormat('jpg');
+			# Note: no SVG sanitization of the file content required ....
+			$imagick = ImagickFactory::create($pdfPreview . '[0]');
+			$imagick->setImageFormat('jpg');
 		} catch (\Exception $e) {
 			@\unlink($pdfPreview);
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
@@ -75,7 +77,7 @@ abstract class Office implements IProvider2 {
 		}
 
 		$image = new \OC_Image();
-		$image->loadFromData($pdf);
+		$image->loadFromData($imagick);
 
 		\unlink($pdfPreview);
 

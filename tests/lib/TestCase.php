@@ -555,4 +555,20 @@ abstract class TestCase extends BaseTestCase {
 		$file->putContent($fileContent);
 		return $file;
 	}
+
+	public function assertImage(string $expectedImagePath, \OC_Image $actualImage): void {
+		# GD to Imagick conversion
+		ob_start();
+		imagepng($actualImage->resource());
+		$actualImageBlob = ob_get_clean();
+
+		# Compare images
+		$img1 = new \Imagick($expectedImagePath);
+		$img2 = new \Imagick();
+		$img2->readImageBlob($actualImageBlob);
+
+		$result = $img1->compareImages($img2, \Imagick::METRIC_MEANSQUAREERROR);
+
+		$this->assertLessThan(0.001, $result[1]);
+	}
 }

@@ -1,0 +1,6 @@
+Bugfix: Apply SVG sanitization to all file content before using ImageMagick
+
+Any file content is now sanitized for SVG threats before being processed by
+ImageMagick, preventing potential security vulnerabilities.
+
+https://github.com/owncloud/core/pull/41433
