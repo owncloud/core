@@ -37,6 +37,7 @@ ownCloud admins and users.
 
 * Bugfix - Disallow empty tokens when pairing trusted servers: [#41434](https://github.com/owncloud/core/pull/41434)
 * Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
+* Enhancement - Add mimetype aliases/mapping for .toml and .ovpn: [#41431](https://github.com/owncloud/core/pull/41431)
 
 ## Details
 
@@ -56,6 +57,12 @@ ownCloud admins and users.
 
    https://github.com/owncloud/core/pull/41408
    https://github.com/owncloud/core/pull/41421
+
+* Enhancement - Add mimetype aliases/mapping for .toml and .ovpn: [#41431](https://github.com/owncloud/core/pull/41431)
+
+   Mimetype aliases and mapping for .toml and .ovpn files got added.
+
+   https://github.com/owncloud/core/pull/41431
 
 # Changelog for ownCloud Core [10.16.0] (2025-10-23)
 
