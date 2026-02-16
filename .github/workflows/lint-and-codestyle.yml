@@ -233,32 +233,5 @@ jobs:
           fetch-depth: 0
 
       - name: Validate commit messages
-        run: |
-          # Get all commits in the PR
-          git log --format=%B origin/master..${{ github.head_ref }} | while read line; do
-            # Check for common issues
-            if [[ $line =~ ^Merge\ branch ]]; then
-              echo "⚠️  Merge commits detected"
-            fi
-          done
-        continue-on-error: true
+        uses: aevea/commitsar@v1.0.2
 
-  changelog-check:
-    name: Changelog Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check for changelog entry
-        run: |
-          if [ -d "changelog/unreleased" ]; then
-            if [ "$(ls -A changelog/unreleased)" ]; then
-              echo "✓ Changelog entry found"
-            else
-              echo "⚠️  No changelog entry in changelog/unreleased"
-            fi
-          fi
-        continue-on-error: true
