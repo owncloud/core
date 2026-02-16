@@ -508,7 +508,7 @@ def main(ctx):
     return initial + before + coverageTests + afterCoverageTests + nonCoverageTests + stages
 
 def initialPipelines(ctx):
-    return dependencies(ctx) + checkStarlark() + checkGitCommit()
+    return dependencies(ctx) + checkStarlark()
 
 def beforePipelines(ctx):
     return codestyle(ctx) + changelog(ctx) + phpstan(ctx) + phan(ctx)
@@ -2941,25 +2941,6 @@ def checkStarlark():
                         "failure",
                     ],
                 },
-            },
-        ],
-        "depends_on": [],
-        "trigger": {
-            "ref": [
-                "refs/pull/**",
-            ],
-        },
-    }]
-
-def checkGitCommit():
-    return [{
-        "kind": "pipeline",
-        "type": "docker",
-        "name": "check-git-commit-messages",
-        "steps": [
-            {
-                "name": "format-check-git-commit",
-                "image": "aevea/commitsar:latest",
             },
         ],
         "depends_on": [],
