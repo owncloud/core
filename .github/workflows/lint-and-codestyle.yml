@@ -78,5 +78,5 @@ jobs:
           fetch-depth: 0
 
       - name: Validate commit messages
-        uses: aevea/commitsar@v1.0.2
+        uses: docker://aevea/commitsar:latest
 
