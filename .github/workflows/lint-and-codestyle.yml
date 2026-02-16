@@ -10,6 +10,9 @@ on:
       - synchronize
       - reopened
 
+permissions:
+    contents: read
+
 concurrency:
   group: lint-${{ github.ref }}
   cancel-in-progress: true
@@ -28,18 +31,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check if changes affect PHP
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            php:
-              - '**/*.php'
-              - '!tests/acceptance/**'
-              - '!build/**'
-
       - name: Setup PHP
-        if: steps.changes.outputs.php == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -48,7 +40,6 @@ jobs:
           tools: phpstan, codesniffer
 
       - name: Cache Composer dependencies
-        if: steps.changes.outputs.php == 'true'
         uses: actions/cache@v3
         with:
           path: vendor/
@@ -62,16 +53,13 @@ jobs:
           composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install vendor-bin dependencies
-        if: steps.changes.outputs.php == 'true'
         run: |
           composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/owncloud-codestyle
           composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/phpstan
           composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/phan
 
       - name: Run PHP Code Sniffer
-        if: steps.changes.outputs.php == 'true'
         run: make test-php-style
-        continue-on-error: true
 
   phpstan-analysis:
     name: PHPStan Static Analysis
@@ -86,18 +74,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check if changes affect PHP
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            php:
-              - '**/*.php'
-              - '!tests/acceptance/**'
-              - '!build/**'
-
       - name: Setup PHP
-        if: steps.changes.outputs.php == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -105,7 +82,6 @@ jobs:
           ini-values: "memory_limit=1024M"
 
       - name: Cache Composer dependencies
-        if: steps.changes.outputs.php == 'true'
         uses: actions/cache@v3
         with:
           path: vendor/
@@ -114,21 +90,16 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        if: steps.changes.outputs.php == 'true'
         run: composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install vendor-bin dependencies
-        if: steps.changes.outputs.php == 'true'
         run: composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/phpstan
 
       - name: Install server dependencies
-        if: steps.changes.outputs.php == 'true'
         run: make install-server
 
       - name: Run PHPStan
-        if: steps.changes.outputs.php == 'true'
         run: make test-php-phpstan
-        continue-on-error: true
 
   phan-analysis:
     name: Phan Static Analysis
@@ -143,18 +114,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check if changes affect PHP
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            php:
-              - '**/*.php'
-              - '!tests/acceptance/**'
-              - '!build/**'
-
       - name: Setup PHP
-        if: steps.changes.outputs.php == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -162,7 +122,6 @@ jobs:
           ini-values: "memory_limit=1024M"
 
       - name: Cache Composer dependencies
-        if: steps.changes.outputs.php == 'true'
         uses: actions/cache@v3
         with:
           path: vendor/
@@ -171,21 +130,16 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        if: steps.changes.outputs.php == 'true'
         run: composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install vendor-bin dependencies
-        if: steps.changes.outputs.php == 'true'
         run: composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/phan
 
       - name: Install server dependencies
-        if: steps.changes.outputs.php == 'true'
         run: make install-server
 
-      - name: Run Phan
-        if: steps.changes.outputs.php == 'true'
+      - name: Run PHP-Phan
         run: make test-php-phan
-        continue-on-error: true
 
   javascript-lint:
     name: JavaScript Linting
@@ -196,36 +150,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check if changes affect JavaScript
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            javascript:
-              - '**/*.js'
-              - 'package.json'
-              - 'package-lock.json'
-
       - name: Setup Node.js
-        if: steps.changes.outputs.javascript == 'true'
         uses: actions/setup-node@v3
         with:
           node-version: "14"
           cache: npm
 
       - name: Install Node dependencies
-        if: steps.changes.outputs.javascript == 'true'
         run: npm ci
 
       - name: Run JavaScript linting
-        if: steps.changes.outputs.javascript == 'true'
         run: npm run lint
-        continue-on-error: true
 
   git-commit-messages:
     name: Git Commit Messages
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
