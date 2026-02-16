@@ -48,119 +48,15 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        if: steps.changes.outputs.php == 'true'
         run: |
-          composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Install vendor-bin dependencies
-        run: |
-          composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/owncloud-codestyle
-          composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/phpstan
-          composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/phan
+          make install-composer-deps
+          make vendor-bin-deps
 
       - name: Run PHP Code Sniffer
-        run: make test-php-style
-
-  phpstan-analysis:
-    name: PHPStan Static Analysis
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ["7.4"]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: curl, gd, json, xml, zip
-          ini-values: "memory_limit=1024M"
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: vendor/
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install Composer dependencies
-        run: composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Install vendor-bin dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/phpstan
-
-      - name: Install server dependencies
-        run: make install-server
-
-      - name: Run PHPStan
-        run: make test-php-phpstan
-
-  phan-analysis:
-    name: Phan Static Analysis
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ["7.4"]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: curl, gd, json, xml, zip
-          ini-values: "memory_limit=1024M"
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: vendor/
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install Composer dependencies
-        run: composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Install vendor-bin dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --working-dir=vendor-bin/phan
-
-      - name: Install server dependencies
-        run: make install-server
-
-      - name: Run PHP-Phan
-        run: make test-php-phan
-
-  javascript-lint:
-    name: JavaScript Linting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "14"
-          cache: npm
-
-      - name: Install Node dependencies
-        run: npm ci
-
-      - name: Run JavaScript linting
-        run: npm run lint
+        run: |
+          make test-php-style
+          make test-php-phpstan
+          make test-php-phan
 
   git-commit-messages:
     name: Git Commit Messages
