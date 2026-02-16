@@ -52,10 +52,16 @@ jobs:
           make install-composer-deps
           make vendor-bin-deps
 
-      - name: Run PHP Code Sniffer
+      - name: Run PHP Code Style Checks
         run: |
           make test-php-style
+
+      - name: Run PHP Stan
+        run: |
           make test-php-phpstan
+
+      - name: Run PHP Phan
+        run: |
           make test-php-phan
 
   git-commit-messages:
