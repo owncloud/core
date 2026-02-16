@@ -52,6 +52,10 @@ jobs:
           make install-composer-deps
           make vendor-bin-deps
 
+      - name: Install Server
+        run: |
+          DATA_DIRECTORY=$(pwd)/data bash tests/drone/install-server.sh
+
       - name: Run PHP Code Style Checks
         run: |
           make test-php-style
