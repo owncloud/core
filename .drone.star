@@ -58,7 +58,6 @@ config = {
         "master",
     ],
     "dependencies": True,
-    "codestyle": True,
     "javascript": True,
     "litmus": True,
     "dav": True,
@@ -509,7 +508,7 @@ def initialPipelines(ctx):
     return dependencies(ctx) + checkStarlark()
 
 def beforePipelines(ctx):
-    return codestyle(ctx) + changelog(ctx)
+    return changelog(ctx)
 
 def coveragePipelines(ctx):
     # All unit test pipelines that have coverage or other test analysis reported
