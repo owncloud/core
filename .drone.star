@@ -82,18 +82,6 @@ config = {
                 "oracle",
             ],
         },
-        "ubuntu22": {
-            "phpVersions": [
-                "7.4-ubuntu22.04",
-            ],
-            # These pipelines are run just to help avoid any obscure regression
-            # on Ubuntu 22.04. We do not need coverage for this.
-            "coverage": False,
-            "databases": [
-                "mariadb:10.6",
-                "mariadb:10.11",
-            ],
-        },
         "external-samba": {
             "phpVersions": [
                 DEFAULT_PHP_VERSION,
@@ -248,10 +236,6 @@ config = {
             "testingRemoteSystem": False,
         },
         "cliEncryption": {
-            "phpVersions": [
-                DEFAULT_PHP_VERSION,
-                "7.4-ubuntu22.04",
-            ],
             "suites": [
                 "cliEncryption",
             ],
@@ -412,18 +396,6 @@ config = {
                 "apiProxySmoketest": "apiProxySmoke",
             },
             "proxyNeeded": True,
-            "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 8,
-        },
-        "apiUbuntu22": {
-            "phpVersions": [
-                "7.4-ubuntu22.04",
-            ],
-            "suites": {
-                "apiUbuntu22": "apiUbuntu22",
-            },
             "useHttps": False,
             "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
             "runAllSuites": True,
@@ -1150,15 +1122,18 @@ def phpTests(ctx, testType, withCoverage):
             else:
                 command = "unknown tbd"
 
-            # Shorten PHP docker tags that have longer names like 7.4-ubuntu22.04
-            phpVersionString = phpVersion.replace("-ubuntu", "-u")
+            # Get the first 3 characters of the PHP version (7.4 or 8.0 etc)
+            # And use that for constructing the pipeline name
+            # That helps shorten pipeline names when using owncloud-ci images
+            # that have longer names like 7.4-ubuntu20.04
+            phpMinorVersion = phpVersion[0:3]
 
             for db in params["databases"]:
                 for externalType in params["externalTypes"]:
                     keyString = "-" + category if params["includeKeyInMatrixName"] else ""
                     filesExternalType = externalType if externalType != "none" else ""
                     externalNameString = "-" + externalType if externalType != "none" else ""
-                    name = "%s%s-php%s-%s%s" % (testType, keyString, phpVersionString, getShortDbNameAndVersion(db), externalNameString)
+                    name = "%s%s-php%s-%s%s" % (testType, keyString, phpMinorVersion, getShortDbNameAndVersion(db), externalNameString)
                     maxLength = 50
                     nameLength = len(name)
                     if nameLength > maxLength:
@@ -1423,8 +1398,11 @@ def acceptance(ctx):
             for federatedServerVersion in params["federatedServerVersions"]:
                 for browser in params["browsers"]:
                     for phpVersion in params["phpVersions"]:
-                        # Shorten PHP docker tags that have longer names like 7.4-ubuntu22.04
-                        phpVersionString = phpVersion.replace("-ubuntu", "-u")
+                        # Get the first 3 characters of the PHP version (7.4 or 8.0 etc)
+                        # And use that for constructing the pipeline name
+                        # That helps shorten pipeline names when using owncloud-ci images
+                        # that have longer names like 7.4-ubuntu20.04
+                        phpMinorVersion = phpVersion[0:3]
                         for db in params["databases"]:
                             for runPart in range(1, params["numberOfParts"] + 1):
                                 debugPartsEnabled = (len(params["skipExceptParts"]) != 0)
@@ -1446,7 +1424,7 @@ def acceptance(ctx):
                                     keyString = "-" + category if params["includeKeyInMatrixName"] else ""
                                     partString = "" if params["numberOfParts"] == 1 else "-%d-%d" % (params["numberOfParts"], runPart)
                                     federatedServerVersionString = "-" + federatedServerVersion.replace("daily-", "").replace("-qa", "") if (federatedServerVersion != "") else ""
-                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersionString)
+                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpMinorVersion)
                                     maxLength = 50
                                     nameLength = len(name)
                                     if nameLength > maxLength:
