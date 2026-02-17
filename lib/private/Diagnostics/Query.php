@@ -76,7 +76,7 @@ class Query implements IQuery, \JsonSerializable {
 		return $this->end - $this->start;
 	}
 
-	public function jsonSerialize() {
+	public function jsonSerialize(): mixed {
 		return [
 			'query' => $this->sql,
 			'parameters' => $this->params,
