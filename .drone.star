@@ -26,7 +26,7 @@ SONARSOURCE_SONAR_SCANNER_CLI = "sonarsource/sonar-scanner-cli:5"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 WEBHIPPIE_REDIS = "webhippie/redis:latest"
 
-DEFAULT_PHP_VERSION = "8.2"
+DEFAULT_PHP_VERSION = "8.3"
 DEFAULT_NODEJS_VERSION = "14"
 
 # minio mc environment variables
