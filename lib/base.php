@@ -5,8 +5,8 @@ $eol = '<br>';
 if (\defined('OC_CONSOLE')) {
 	$eol = PHP_EOL;
 }
-if (PHP_VERSION_ID < 80200) {
-	echo 'This version of ownCloud requires at least PHP 8.2.0'.$eol;
+if (PHP_VERSION_ID < 80300) {
+	echo 'This version of ownCloud requires at least PHP 8.3.0'.$eol;
 	echo 'You are currently running PHP ' . PHP_VERSION . '. Please update your PHP version.'.$eol;
 	exit(1);
 }
