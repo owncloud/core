@@ -58,9 +58,6 @@ config = {
         "master",
     ],
     "dependencies": True,
-    "codestyle": True,
-    "phpstan": True,
-    "phan": True,
     "javascript": True,
     "litmus": True,
     "dav": True,
@@ -508,10 +505,10 @@ def main(ctx):
     return initial + before + coverageTests + afterCoverageTests + nonCoverageTests + stages
 
 def initialPipelines(ctx):
-    return dependencies(ctx) + checkStarlark() + checkGitCommit()
+    return dependencies(ctx) + checkStarlark()
 
 def beforePipelines(ctx):
-    return codestyle(ctx) + changelog(ctx) + phpstan(ctx) + phan(ctx)
+    return changelog(ctx)
 
 def coveragePipelines(ctx):
     # All unit test pipelines that have coverage or other test analysis reported
@@ -593,88 +590,10 @@ def dependencies(ctx):
                 "steps": cacheRestore() +
                          cacheClearOnEventPush(phpVersion) +
                          composerInstall(phpVersion) +
-                         vendorbinCodestyle(phpVersion) +
-                         vendorbinCodesniffer(phpVersion) +
-                         vendorbinPhan(phpVersion) +
-                         vendorbinPhpstan(phpVersion) +
                          vendorbinBehat() +
                          yarnInstall() +
                          cacheRebuildOnEventPush() +
                          cacheFlushOnEventPush(),
-                "depends_on": [],
-                "trigger": {
-                    "ref": [
-                        "refs/pull/**",
-                        "refs/tags/**",
-                    ],
-                },
-            }
-
-            for branch in config["branches"]:
-                result["trigger"]["ref"].append("refs/heads/%s" % branch)
-
-            pipelines.append(result)
-
-    return pipelines
-
-def codestyle(ctx):
-    pipelines = []
-
-    if "codestyle" not in config:
-        return pipelines
-
-    default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
-    }
-
-    if "defaults" in config:
-        if "codestyle" in config["defaults"]:
-            for item in config["defaults"]["codestyle"]:
-                default[item] = config["defaults"]["codestyle"][item]
-
-    codestyleConfig = config["codestyle"]
-
-    if type(codestyleConfig) == "bool":
-        if codestyleConfig:
-            # the config has 'codestyle' true, so specify an empty dict that will get the defaults
-            codestyleConfig = {}
-        else:
-            return pipelines
-
-    if len(codestyleConfig) == 0:
-        # 'codestyle' is an empty dict, so specify a single section that will get the defaults
-        codestyleConfig = {"doDefault": {}}
-
-    for category, matrix in codestyleConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
-
-        for phpVersion in params["phpVersions"]:
-            name = "coding-standard-php%s" % phpVersion
-
-            result = {
-                "kind": "pipeline",
-                "type": "docker",
-                "name": name,
-                "workspace": {
-                    "base": dir["base"],
-                    "path": "src",
-                },
-                "steps": skipIfUnchanged(ctx, "lint") +
-                         cacheRestore() +
-                         composerInstall(phpVersion) +
-                         vendorbinCodestyle(phpVersion) +
-                         vendorbinCodesniffer(phpVersion) +
-                         [
-                             {
-                                 "name": "php-style",
-                                 "image": OC_CI_PHP % phpVersion,
-                                 "commands": [
-                                     "make test-php-style",
-                                 ],
-                             },
-                         ],
                 "depends_on": [],
                 "trigger": {
                     "ref": [
@@ -782,150 +701,6 @@ def changelog(ctx):
     }
 
     pipelines.append(result)
-
-    return pipelines
-
-def phpstan(ctx):
-    pipelines = []
-
-    if "phpstan" not in config:
-        return pipelines
-
-    default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
-        "logLevel": "2",
-    }
-
-    if "defaults" in config:
-        if "phpstan" in config["defaults"]:
-            for item in config["defaults"]["phpstan"]:
-                default[item] = config["defaults"]["phpstan"][item]
-
-    phpstanConfig = config["phpstan"]
-
-    if type(phpstanConfig) == "bool":
-        if phpstanConfig:
-            # the config has 'phpstan' true, so specify an empty dict that will get the defaults
-            phpstanConfig = {}
-        else:
-            return pipelines
-
-    if len(phpstanConfig) == 0:
-        # 'phpstan' is an empty dict, so specify a single section that will get the defaults
-        phpstanConfig = {"doDefault": {}}
-
-    for category, matrix in phpstanConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
-
-        for phpVersion in params["phpVersions"]:
-            name = "phpstan-php%s" % phpVersion
-
-            result = {
-                "kind": "pipeline",
-                "type": "docker",
-                "name": name,
-                "workspace": {
-                    "base": dir["base"],
-                    "path": "src",
-                },
-                "steps": skipIfUnchanged(ctx, "lint") +
-                         cacheRestore() +
-                         composerInstall(phpVersion) +
-                         vendorbinPhpstan(phpVersion) +
-                         installServer(phpVersion, "sqlite", params["logLevel"]) +
-                         enableAppsForPhpStan(phpVersion) +
-                         [
-                             {
-                                 "name": "php-phpstan",
-                                 "image": OC_CI_PHP % phpVersion,
-                                 "commands": [
-                                     "make test-php-phpstan",
-                                 ],
-                             },
-                         ],
-                "depends_on": [],
-                "trigger": {
-                    "ref": [
-                        "refs/pull/**",
-                        "refs/tags/**",
-                    ],
-                },
-            }
-
-            pipelines.append(result)
-
-    return pipelines
-
-def phan(ctx):
-    pipelines = []
-
-    if "phan" not in config:
-        return pipelines
-
-    default = {
-        "phpVersions": [DEFAULT_PHP_VERSION],
-        "logLevel": "2",
-    }
-
-    if "defaults" in config:
-        if "phan" in config["defaults"]:
-            for item in config["defaults"]["phan"]:
-                default[item] = config["defaults"]["phan"][item]
-
-    phanConfig = config["phan"]
-
-    if type(phanConfig) == "bool":
-        if phanConfig:
-            # the config has 'phan' true, so specify an empty dict that will get the defaults
-            phanConfig = {}
-        else:
-            return pipelines
-
-    if len(phanConfig) == 0:
-        # 'phan' is an empty dict, so specify a single section that will get the defaults
-        phanConfig = {"doDefault": {}}
-
-    for category, matrix in phanConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
-
-        for phpVersion in params["phpVersions"]:
-            name = "phan-php%s" % phpVersion
-
-            result = {
-                "kind": "pipeline",
-                "type": "docker",
-                "name": name,
-                "workspace": {
-                    "base": dir["base"],
-                    "path": "src",
-                },
-                "steps": skipIfUnchanged(ctx, "lint") + cacheRestore() +
-                         composerInstall(phpVersion) +
-                         vendorbinPhan(phpVersion) +
-                         installServer(phpVersion, "sqlite", params["logLevel"]) +
-                         [
-                             {
-                                 "name": "phan",
-                                 "image": OC_CI_PHP % phpVersion,
-                                 "commands": [
-                                     "make test-php-phan",
-                                 ],
-                             },
-                         ],
-                "depends_on": [],
-                "trigger": {
-                    "ref": [
-                        "refs/pull/**",
-                        "refs/tags/**",
-                    ],
-                },
-            }
-
-            pipelines.append(result)
 
     return pipelines
 
@@ -2391,54 +2166,6 @@ def composerInstall(phpVersion):
         ],
     }]
 
-def vendorbinCodestyle(phpVersion):
-    return [{
-        "name": "vendorbin-codestyle",
-        "image": OC_CI_PHP % phpVersion,
-        "environment": {
-            "COMPOSER_HOME": "%s/.cache/composer" % dir["server"],
-        },
-        "commands": [
-            "make vendor-bin-codestyle",
-        ],
-    }]
-
-def vendorbinCodesniffer(phpVersion):
-    return [{
-        "name": "vendorbin-codesniffer",
-        "image": OC_CI_PHP % phpVersion,
-        "environment": {
-            "COMPOSER_HOME": "%s/.cache/composer" % dir["server"],
-        },
-        "commands": [
-            "make vendor-bin-codesniffer",
-        ],
-    }]
-
-def vendorbinPhan(phpVersion):
-    return [{
-        "name": "vendorbin-phan",
-        "image": OC_CI_PHP % phpVersion,
-        "environment": {
-            "COMPOSER_HOME": "%s/.cache/composer" % dir["server"],
-        },
-        "commands": [
-            "make vendor-bin-phan",
-        ],
-    }]
-
-def vendorbinPhpstan(phpVersion):
-    return [{
-        "name": "vendorbin-phpstan",
-        "image": OC_CI_PHP % phpVersion,
-        "environment": {
-            "COMPOSER_HOME": "%s/.cache/composer" % dir["server"],
-        },
-        "commands": [
-            "make vendor-bin-phpstan",
-        ],
-    }]
-
 def vendorbinBehat():
     return [{
         "name": "vendorbin-behat",
@@ -2574,18 +2301,6 @@ def installServer(phpVersion, db, logLevel = "2", ssl = False, federatedServerNe
             "php occ security:certificates:import %s/federated.crt" % dir["base"],
         ] if federatedServerNeeded and ssl else []) + [
             "php occ security:certificates",
-        ],
-    }]
-
-def enableAppsForPhpStan(phpVersion):
-    return [{
-        "name": "enable-apps-for-phpstan",
-        "image": OC_CI_PHP % phpVersion,
-        "commands": [
-            # files_external can be disabled.
-            # We need it to be enabled so that the PHP static analyser can find classes in it.
-            "php occ a:e files_external",
-            "php occ a:l",
         ],
     }]
 
@@ -2941,25 +2656,6 @@ def checkStarlark():
                         "failure",
                     ],
                 },
-            },
-        ],
-        "depends_on": [],
-        "trigger": {
-            "ref": [
-                "refs/pull/**",
-            ],
-        },
-    }]
-
-def checkGitCommit():
-    return [{
-        "kind": "pipeline",
-        "type": "docker",
-        "name": "check-git-commit-messages",
-        "steps": [
-            {
-                "name": "format-check-git-commit",
-                "image": "aevea/commitsar:latest",
             },
         ],
         "depends_on": [],

@@ -1,0 +1,72 @@
+name: Lint and Code Style
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+    contents: read
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-php-codestyle:
+    name: PHP Code Style
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: curl, gd, json, xml, zip
+          ini-values: "memory_limit=1024M"
+          tools: phpstan, codesniffer
+
+      - name: Install Composer dependencies
+        run: |
+          make install-composer-deps
+          make vendor-bin-deps
+
+      - name: Install Server
+        run: |
+          DATA_DIRECTORY=$(pwd)/data bash tests/drone/install-server.sh
+
+      - name: Run PHP Code Style Checks
+        run: |
+          make test-php-style
+
+      - name: Run PHP Stan
+        run: |
+          make test-php-phpstan
+
+      - name: Run PHP Phan
+        run: |
+          make test-php-phan
+
+  git-commit-messages:
+    name: Git Commit Messages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commit messages
+        uses: docker://aevea/commitsar:latest
+
