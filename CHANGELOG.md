@@ -37,6 +37,7 @@ ownCloud admins and users.
 
 * Bugfix - Apply SVG sanitization to all file content before using ImageMagick: [#41433](https://github.com/owncloud/core/pull/41433)
 * Bugfix - Disallow empty tokens when pairing trusted servers: [#41434](https://github.com/owncloud/core/pull/41434)
+* Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
 * Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
 * Enhancement - Add mimetype aliases/mapping for .toml and .ovpn: [#41431](https://github.com/owncloud/core/pull/41431)
 
@@ -54,6 +55,12 @@ ownCloud admins and users.
    An empty token could be used to pair trusted servers, which is not secure.
 
    https://github.com/owncloud/core/pull/41434
+
+* Change - No longer store auto loader information in any memory cache: [#41376](https://github.com/owncloud/core/pull/41376)
+
+   With composer managing auto loading for a long time this is no longer necessary.
+
+   https://github.com/owncloud/core/pull/41376
 
 * Change - Update PHP dependencies: [#41408](https://github.com/owncloud/core/pull/41408)
 
