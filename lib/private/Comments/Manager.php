@@ -163,7 +163,7 @@ class Manager implements ICommentsManager {
 
 		$resultStatement = $query->execute();
 		$data = $resultStatement->fetch(\PDO::FETCH_NUM);
-		$resultStatement->closeCursor();
+		$resultStatement->free();
 		$children = \intval($data[0]);
 
 		$comment = $this->get($id);
@@ -240,7 +240,7 @@ class Manager implements ICommentsManager {
 			->execute();
 
 		$data = $resultStatement->fetch();
-		$resultStatement->closeCursor();
+		$resultStatement->free();
 		if (!$data) {
 			throw new NotFoundException();
 		}
@@ -307,7 +307,7 @@ class Manager implements ICommentsManager {
 				'replies' => []
 			];
 		}
-		$resultStatement->closeCursor();
+		$resultStatement->free();
 
 		return $tree;
 	}
@@ -363,7 +363,7 @@ class Manager implements ICommentsManager {
 			$this->cache($comment);
 			$comments[] = $comment;
 		}
-		$resultStatement->closeCursor();
+		$resultStatement->free();
 
 		return $comments;
 	}
@@ -413,7 +413,7 @@ class Manager implements ICommentsManager {
 			while ($data = $cursor->fetch()) {
 				$unreadCountsForNodes[$data['id']] = \intval($data['count']);
 			}
-			$cursor->closeCursor();
+			$cursor->free();
 		}
 
 		return $unreadCountsForNodes;
@@ -444,7 +444,7 @@ class Manager implements ICommentsManager {
 
 		$resultStatement = $query->execute();
 		$data = $resultStatement->fetch(\PDO::FETCH_NUM);
-		$resultStatement->closeCursor();
+		$resultStatement->free();
 		return \intval($data[0]);
 	}
 
@@ -789,7 +789,7 @@ class Manager implements ICommentsManager {
 			->execute();
 
 		$data = $resultStatement->fetch();
-		$resultStatement->closeCursor();
+		$resultStatement->free();
 		if (!$data || $data['marker_datetime'] === null) {
 			return null;
 		}

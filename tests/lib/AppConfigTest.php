@@ -38,7 +38,7 @@ class AppConfigTest extends TestCase {
 			->from('appconfig');
 		$result = $sql->execute();
 		$this->originalConfig = $result->fetchAll();
-		$result->closeCursor();
+		$result->free();
 
 		$sql = $this->connection->getQueryBuilder();
 		$sql->delete('appconfig');
@@ -389,7 +389,7 @@ class AppConfigTest extends TestCase {
 			->setParameter('configkey', 'deletethis');
 		$query = $sql->execute();
 		$result = $query->fetch();
-		$query->closeCursor();
+		$query->free();
 		$this->assertFalse($result);
 	}
 
@@ -433,7 +433,7 @@ class AppConfigTest extends TestCase {
 			->setParameter('appid', 'someapp');
 		$query = $sql->execute();
 		$result = $query->fetch();
-		$query->closeCursor();
+		$query->free();
 		$this->assertFalse($result);
 	}
 
@@ -458,7 +458,7 @@ class AppConfigTest extends TestCase {
 		while ($row = $query->fetch()) {
 			$expected[$row['configkey']] = $row['configvalue'];
 		}
-		$query->closeCursor();
+		$query->free();
 
 		$values = $config->getValues('testapp', false);
 		$this->assertEquals($expected, $values);
@@ -473,7 +473,7 @@ class AppConfigTest extends TestCase {
 		while ($row = $query->fetch()) {
 			$expected[$row['appid']] = $row['configvalue'];
 		}
-		$query->closeCursor();
+		$query->free();
 
 		$values = $config->getValues(false, 'enabled');
 		$this->assertEquals($expected, $values);
@@ -507,7 +507,7 @@ class AppConfigTest extends TestCase {
 			->setParameter('configkey', $key);
 		$query = $sql->execute();
 		$actual = $query->fetch();
-		$query->closeCursor();
+		$query->free();
 
 		$this->assertSame($expected, $actual['configvalue']);
 	}

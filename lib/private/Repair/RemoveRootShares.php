@@ -130,7 +130,7 @@ class RemoveRootShares implements IRepairStep {
 
 		$cursor = $qb2->execute();
 		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		if ($data === false) {
 			return false;

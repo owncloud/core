@@ -99,7 +99,7 @@ class DeleteOrphanedItems extends TimedJob {
 				$deletedEntries += $deleteQuery->setParameter('objectid', (int) $row[$idCol])
 					->execute();
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 
 		return $deletedEntries;

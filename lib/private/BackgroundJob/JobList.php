@@ -142,7 +142,7 @@ class JobList implements IJobList {
 
 		$result = $query->execute();
 		$row = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 
 		return (bool) $row;
 	}
@@ -167,7 +167,7 @@ class JobList implements IJobList {
 				$jobs[] = $job;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $jobs;
 	}
@@ -195,7 +195,7 @@ class JobList implements IJobList {
 
 		$result = $query->execute();
 		$row = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 
 		if ($row) {
 			$update->setParameter('jobid', $row['id']);
@@ -239,7 +239,7 @@ class JobList implements IJobList {
 			->where($query->expr()->eq('id', $query->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
 		$result = $query->execute();
 		$row = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 
 		if ($row) {
 			return $this->buildJob($row);
@@ -259,7 +259,7 @@ class JobList implements IJobList {
 			->where($query->expr()->eq('id', $query->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
 		$result = $query->execute();
 		$row = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 
 		if ($row) {
 			return true;
@@ -376,7 +376,7 @@ class JobList implements IJobList {
 				}
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 	}
 
 	/**
@@ -405,6 +405,6 @@ class JobList implements IJobList {
 				}
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 	}
 }

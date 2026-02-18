@@ -108,8 +108,10 @@ class Migrator {
 	}
 
 	public function createSchema() {
-		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (string $assetName) {
+			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+			return str_starts_with($assetName, $prefix);
+		});
 		return $this->connection->getSchemaManager()->createSchema();
 	}
 
@@ -132,8 +134,10 @@ class Migrator {
 			}
 		}
 
-		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		$this->connection->getConfiguration()->setSchemaAssetsFilter(function (string $assetName) {
+			$prefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
+			return str_starts_with($assetName, $prefix);
+		});
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
 		// remove tables we don't know about
@@ -191,10 +195,6 @@ class Migrator {
 		$script .= PHP_EOL;
 		$script .= PHP_EOL;
 		return $script;
-	}
-
-	protected function getFilterExpression() {
-		return '/^' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 	}
 
 	protected function emit($sql, $step, $max) {

@@ -94,7 +94,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 			}
 		}
 
-		$result->closeCursor();
+		$result->free();
 
 		return $mapping;
 	}
@@ -238,7 +238,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 
 		$result = $query->execute();
 		$row = $result->fetch(\PDO::FETCH_NUM);
-		$result->closeCursor();
+		$result->free();
 
 		if ($all) {
 			return ((int)$row[0] === \count($objIds));

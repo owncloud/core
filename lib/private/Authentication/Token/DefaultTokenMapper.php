@@ -76,7 +76,7 @@ class DefaultTokenMapper extends Mapper {
 			->execute();
 
 		$data = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 		if ($data === false) {
 			throw new DoesNotExistException('token does not exist');
 		}
@@ -101,7 +101,7 @@ class DefaultTokenMapper extends Mapper {
 			->setMaxResults(1000);
 		$result = $qb->execute();
 		$data = $result->fetchAll();
-		$result->closeCursor();
+		$result->free();
 
 		$entities = \array_map(function ($row) {
 			return DefaultToken::fromRow($row);
