@@ -28,7 +28,7 @@
 
 namespace OC\DB;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
@@ -185,7 +185,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
 	 *
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 */
 	public function executeQuery($query, array $params = [], $types = [], QueryCacheProfile $qcp = null) : Result {
 		$query = $this->replaceTablePrefix($query);
@@ -208,7 +208,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * @return integer The number of affected rows.
 	 *
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 *
 	 * @deprecated since 10.8.0
 	 */
@@ -230,7 +230,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * @return integer The number of affected rows.
 	 *
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 *
 	 * @since 10.8.0
 	 */
@@ -272,7 +272,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *				If this is null or an empty array, all keys of $input will be compared
 	 *				Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of inserted rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null) {
 		return $this->adapter->insertIfNotExist($table, $input, $compare);
@@ -287,7 +287,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *				If this is null or an empty array, all keys of $input will be compared
 	 *				Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of affected rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 */
 	public function upsert($table, $input, array $compare = null) {
 		return $this->adapter->upsert($table, $input, $compare);
@@ -311,7 +311,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param array $values (column name => value)
 	 * @param array $updatePreconditionValues ensure values match preconditions (column name => value)
 	 * @return int number of new rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 * @throws PreConditionNotMetException
 	 */
 	public function setValues($table, array $keys, array $values, array $updatePreconditionValues = []) {
@@ -506,10 +506,10 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	}
 
 	public function errorCode() {
-		// TODO: Implement errorCode() method.
+		return $this->_conn->getWrappedConnection()->errorCode();
 	}
 
 	public function errorInfo() {
-		// TODO: Implement errorInfo() method.
+		return $this->_conn->getWrappedConnection()->errorInfo();
 	}
 }
