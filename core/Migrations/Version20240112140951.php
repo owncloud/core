@@ -3,6 +3,7 @@ namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -17,7 +18,7 @@ class Version20240112140951 implements ISchemaMigration {
 
 			$idColumn = $table->getColumn('id');
 			if ($idColumn) {
-				$idColumn->setType(Type::getType(Type::BIGINT));
+				$idColumn->setType(Type::getType(Types::BIGINT));
 				$idColumn->setOptions(['length' => 20]);
 			}
 		}

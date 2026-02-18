@@ -23,7 +23,7 @@
 namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -35,19 +35,19 @@ class Version20170516100103 implements ISchemaMigration {
 		if (!$schema->hasTable("{$prefix}account_terms")) {
 			$table = $schema->createTable("{$prefix}account_terms");
 
-			$table->addColumn('id', Type::BIGINT, [
+			$table->addColumn('id', Types::BIGINT, [
 				'autoincrement' => true,
 				'unsigned' => true,
 				'notnull' => true,
 			]);
 
 			// Foreign key to oc_accounts.id column
-			$table->addColumn('account_id', Type::BIGINT, [
+			$table->addColumn('account_id', Types::BIGINT, [
 				'notnull' => true,
 				'unsigned' => true,
 			]);
 
-			$table->addColumn('term', Type::STRING, [
+			$table->addColumn('term', Types::STRING, [
 				'notnull' => true,
 				'length' => 255
 			]);
