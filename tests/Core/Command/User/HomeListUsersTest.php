@@ -21,7 +21,7 @@
 
 namespace Tests\Core\Command\User;
 
-use Doctrine\DBAL\ForwardCompatibility\DriverStatement;
+use Doctrine\DBAL\Result;
 use OC\Core\Command\User\HomeListUsers;
 use OC\DB\Connection;
 use OCP\IDBConnection;
@@ -82,7 +82,7 @@ class HomeListUsersTest extends TestCase {
 		$homePath = '/path/to/homes';
 		$uid = 'user1';
 
-		$resultMock = $this->createMock(DriverStatement::class);
+		$resultMock = $this->createMock(Result::class);
 		$resultMock->method('fetch')->willReturnOnConsecutiveCalls(['user_id' => $uid], false);
 		$queryMock = $this->getMockBuilder('\OC\DB\QueryBuilder\QueryBuilder')
 			->setConstructorArgs([$this->connection])

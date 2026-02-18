@@ -104,7 +104,7 @@ class ConnectionTest extends \Test\TestCase {
 			->where($builder->expr()->eq('integerfield', $builder->createNamedParameter($integerField, IQueryBuilder::PARAM_INT)));
 
 		$result = $query->execute();
-		return $result->fetchColumn();
+		return $result->fetchOne();
 	}
 
 	public function testSetValues() {
