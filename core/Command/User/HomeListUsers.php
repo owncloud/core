@@ -102,7 +102,7 @@ class HomeListUsers extends Base {
 			while ($row = $result->fetch()) {
 				$outputData[] = $row['user_id'];
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 		parent::writeArrayInOutputFormat($input, $output, $outputData, self::DEFAULT_OUTPUT_PREFIX);
 

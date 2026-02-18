@@ -97,7 +97,7 @@ class RepairSubShares implements IRepairStep {
 
 		$results = $selectDuplicates->execute();
 		$rows = $results->fetchAll();
-		$results->closeCursor();
+		$results->free();
 		$rowIds = [];
 		if (\count($rows) > 0) {
 			$rowIds = \array_map(

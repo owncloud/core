@@ -258,7 +258,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 				$this->cache[$uid] = false;
 				return false;
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 
 		return true;

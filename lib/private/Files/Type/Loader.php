@@ -235,7 +235,7 @@ class Loader implements IMimeTypeLoader {
 			$this->mimetypes[$row['id']] = $row['mimetype'];
 			$this->mimetypeIds[$row['mimetype']] = $row['id'];
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $id;
 	}
@@ -269,7 +269,7 @@ class Loader implements IMimeTypeLoader {
 			$this->mimetypes[$row['id']] = $row['mimetype'];
 			$this->mimetypeIds[$row['mimetype']] = $row['id'];
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $mimetype;
 	}

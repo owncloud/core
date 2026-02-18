@@ -119,7 +119,7 @@ class DBLockingProviderTest extends LockingProvider {
 		$query = $this->connection->prepare('SELECT * FROM `*PREFIX*file_locks`');
 		$query->execute();
 		$rows = $query->fetchAll();
-		$query->closeCursor();
+		$query->free();
 		return $rows;
 	}
 

@@ -885,7 +885,7 @@ class Cache implements ICache {
 				'WHERE `parent` = ? AND `storage` = ?';
 			$result = $this->connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
 			if ($row = $result->fetch()) {
-				$result->closeCursor();
+				$result->free();
 				list($sum, $min) = \array_values($row);
 				if ($min === null && $entry['size'] < 0) {
 					// could happen if the folder hasn't been scanned.
@@ -910,7 +910,7 @@ class Cache implements ICache {
 					$this->update($id, $update);
 				}
 			} else {
-				$result->closeCursor();
+				$result->free();
 			}
 		}
 		return $totalSize;

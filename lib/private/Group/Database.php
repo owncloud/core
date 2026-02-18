@@ -154,7 +154,7 @@ class Database extends \OC\Group\Backend {
 			->execute();
 
 		$result = $cursor->fetch();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $result ? true : false;
 	}
@@ -226,7 +226,7 @@ class Database extends \OC\Group\Backend {
 			$groups[] = $row["gid"];
 			$this->groupCache[$row['gid']] = $row['gid'];
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $groups;
 	}
@@ -284,7 +284,7 @@ class Database extends \OC\Group\Backend {
 			->where($qb->expr()->eq('gid', $qb->createNamedParameter($gid)))
 			->execute();
 		$result = $cursor->fetch();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		if ($result !== false) {
 			$this->groupCache[$gid] = $gid;

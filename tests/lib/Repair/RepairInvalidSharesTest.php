@@ -257,7 +257,7 @@ class RepairInvalidSharesTest extends TestCase {
 			->execute();
 		$rows = $result->fetchAll();
 		$this->assertEquals([['id' => $parent], ['id' => $validChild], ['id' => $invalidChild]], $rows);
-		$result->closeCursor();
+		$result->free();
 
 		/** @var IOutput | \PHPUnit\Framework\MockObject\MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
@@ -273,7 +273,7 @@ class RepairInvalidSharesTest extends TestCase {
 			->execute();
 		$rows = $result->fetchAll();
 		$this->assertEquals([['id' => $parent], ['id' => $validChild]], $rows);
-		$result->closeCursor();
+		$result->free();
 	}
 
 	public function fileSharePermissionsProvider() {

@@ -22,6 +22,7 @@ namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -36,7 +37,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$addressBookChangesTable->addColumn(
 				'id',
-				Type::INTEGER,
+				Types::INTEGER,
 				[
 					'notnull' => true,
 					'autoincrement' => true,

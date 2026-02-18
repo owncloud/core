@@ -355,7 +355,7 @@ class MigrationTest extends TestCase {
 			$this->assertNull($share['parent']);
 			$i++;
 		}
-		$stmt->closeCursor();
+		$stmt->free();
 		$this->assertEquals(1001, $i);
 	}
 }
