@@ -59,7 +59,7 @@ class MDB2SchemaWriter {
 			return str_starts_with($asset, $prefix);
 		});
 
-		foreach ($conn->getSchemaManager()->listTables() as $table) {
+		foreach ($conn->createSchemaManager()->listTables() as $table) {
 			self::saveTable($table, $xml->addChild('table'));
 		}
 		\file_put_contents($file, $xml->asXML());

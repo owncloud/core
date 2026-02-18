@@ -315,7 +315,7 @@ class AllConfig implements IConfig {
 
 		$sql = 'DELETE FROM `*PREFIX*preferences` '.
 			'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?';
-		$this->connection->executeUpdate($sql, [$userId, $appName, $key]);
+		$this->connection->executeStatement($sql, [$userId, $appName, $key]);
 
 		if (isset($this->userCache[$userId], $this->userCache[$userId][$appName])) {
 			unset($this->userCache[$userId][$appName][$key]);
@@ -346,7 +346,7 @@ class AllConfig implements IConfig {
 
 		$sql = 'DELETE FROM `*PREFIX*preferences` '.
 			'WHERE `userid` = ?';
-		$this->connection->executeUpdate($sql, [$userId]);
+		$this->connection->executeStatement($sql, [$userId]);
 
 		unset($this->userCache[$userId]);
 
@@ -376,7 +376,7 @@ class AllConfig implements IConfig {
 
 		$sql = 'DELETE FROM `*PREFIX*preferences` '.
 			'WHERE `appid` = ?';
-		$this->connection->executeUpdate($sql, [$appName]);
+		$this->connection->executeStatement($sql, [$appName]);
 
 		foreach ($this->userCache as &$userCache) {
 			unset($userCache[$appName]);

@@ -87,8 +87,8 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
-	public function executeUpdate($query, array $params = [], array $types = []) {
-		return $this->connection->executeUpdate($query, $params, $types);
+	public function executeStatement($query, array $params = [], array $types = []) {
+		return $this->connection->executeStatement($query, $params, $types);
 	}
 
 	/**

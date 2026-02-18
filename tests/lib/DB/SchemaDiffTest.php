@@ -75,7 +75,7 @@ class SchemaDiffTest extends TestCase {
 		$this->manager->createDbFromStructure($schemaFile);
 
 		$schemaReader = new MDB2SchemaReader($this->config, $this->connection->getDatabasePlatform());
-		$toSchema = new Schema([], [], $this->connection->getSchemaManager()->createSchemaConfig());
+		$toSchema = new Schema([], [], $this->connection->createSchemaManager()->createSchemaConfig());
 		$endSchema = $schemaReader->loadSchemaFromFile($schemaFile, $toSchema);
 
 		// get the diff

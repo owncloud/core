@@ -172,7 +172,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			// If it was null, we need to delete the property
 			if ($propertyValue === null) {
 				if ($propertyExists) {
-					$this->connection->executeUpdate(
+					$this->connection->executeStatement(
 						self::DELETE_BY_ID_AND_NAME_STMT,
 						[
 							$fileId,
@@ -183,7 +183,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			} else {
 				$propertyData = $this->encodeValue($propertyValue);
 				if (!$propertyExists) {
-					$this->connection->executeUpdate(
+					$this->connection->executeStatement(
 						self::INSERT_BY_ID_STMT,
 						[
 							$fileId,
@@ -193,7 +193,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 						]
 					);
 				} else {
-					$this->connection->executeUpdate(
+					$this->connection->executeStatement(
 						self::UPDATE_BY_ID_AND_NAME_STMT,
 						[
 							$propertyData['value'],

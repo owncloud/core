@@ -42,7 +42,7 @@ class RepairInnoDBTest extends \Test\TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->connection->getSchemaManager()->dropTable($this->tableName);
+		$this->connection->createSchemaManager()->dropTable($this->tableName);
 		parent::tearDown();
 	}
 
@@ -68,9 +68,11 @@ class RepairInnoDBTest extends \Test\TestCase {
 	private function countMyIsamTables() {
 		$dbName = \OC::$server->getConfig()->getSystemValue("dbname");
 
-		return $this->connection->fetchOne(
+		$result = $this->connection->fetchOne(
 			"SELECT count(*) FROM information_schema.tables WHERE table_schema = ? and table_name = ? AND engine = 'MyISAM'",
 			[$dbName, $this->tableName]
 		);
+		$result->free();
+		return $result;
 	}
 }

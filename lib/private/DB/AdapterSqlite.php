@@ -30,11 +30,11 @@ class AdapterSqlite extends Adapter {
 	 * @param string $tableName
 	 */
 	public function lockTable($tableName) {
-		$this->conn->executeUpdate('BEGIN EXCLUSIVE TRANSACTION');
+		$this->conn->executeStatement('BEGIN EXCLUSIVE TRANSACTION');
 	}
 
 	public function unlockTable() {
-		$this->conn->executeUpdate('COMMIT TRANSACTION');
+		$this->conn->executeStatement('COMMIT TRANSACTION');
 	}
 
 	public function fixupStatement($statement) {
@@ -80,6 +80,6 @@ class AdapterSqlite extends Adapter {
 		$query = \substr($query, 0, \strlen($query) - 5);
 		$query .= ')';
 
-		return $this->conn->executeUpdate($query, $inserts);
+		return $this->conn->executeStatement($query, $inserts);
 	}
 }

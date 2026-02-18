@@ -51,7 +51,7 @@ class RemoveGetETagEntriesTest extends TestCase {
 		// insert test data
 		$sqlToInsertProperties = 'INSERT INTO `*PREFIX*properties` (`fileid`, `propertyname`, `propertyvalue`) VALUES (?, ? ,?)';
 		foreach ($data as $entry) {
-			$this->connection->executeUpdate($sqlToInsertProperties, $entry);
+			$this->connection->executeStatement($sqlToInsertProperties, $entry);
 		}
 
 		// check if test data is written to DB
@@ -85,6 +85,6 @@ class RemoveGetETagEntriesTest extends TestCase {
 
 		// remove test data
 		$sqlToRemoveProperties = 'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?';
-		$this->connection->executeUpdate($sqlToRemoveProperties, ['100500']);
+		$this->connection->executeStatement($sqlToRemoveProperties, ['100500']);
 	}
 }

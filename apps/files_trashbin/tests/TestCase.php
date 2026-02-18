@@ -138,7 +138,7 @@ abstract class TestCase extends \Test\TestCase {
 
 		// clear trash table
 		$connection = \OC::$server->getDatabaseConnection();
-		$connection->executeUpdate('DELETE FROM `*PREFIX*files_trash`');
+		$connection->executeStatement('DELETE FROM `*PREFIX*files_trash`');
 
 		parent::tearDown();
 	}

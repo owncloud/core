@@ -57,7 +57,7 @@ class DeleteOrphanedSharesJob extends TimedJob {
 			'WHERE `item_type` in (\'file\', \'folder\') ' .
 			'AND NOT EXISTS (SELECT `fileid` FROM `*PREFIX*filecache` WHERE `file_source` = `fileid`)';
 
-		$deletedEntries = $connection->executeUpdate($sql);
+		$deletedEntries = $connection->executeStatement($sql);
 		$logger->debug("$deletedEntries orphaned share(s) deleted", ['app' => 'DeleteOrphanedSharesJob']);
 	}
 }

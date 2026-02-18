@@ -34,6 +34,7 @@
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\Schema;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
@@ -71,14 +72,14 @@ interface IDBConnection {
 	 * @param string $query The SQL query to execute.
 	 * @param string[] $params The parameters to bind to the query, if any.
 	 * @param array $types The types the previous parameters are in.
-	 * @return \Doctrine\DBAL\Result
+	 * @return Result The executed statement.
 	 * @since 8.0.0
 	 */
 	public function executeQuery($query, array $params = [], $types = []);
 
 	/**
 	 * NOTE: Use executeStatement() instead as the underlying Doctrine
-	 * class deprecated the usage of executeUpdate().
+	 * class deprecated the usage of executeStatement().
 	 *
 	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
 	 * and returns the number of affected rows.
@@ -92,7 +93,7 @@ interface IDBConnection {
 	 * @since 8.0.0
 	 * @deprecated since 10.8.0
 	 */
-	public function executeUpdate($query, array $params = [], array $types = []);
+	public function executeUpdate($query, array $params = [], array $types = []): int;
 
 	/**
 	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
@@ -106,7 +107,7 @@ interface IDBConnection {
 	 * @return integer The number of affected rows.
 	 * @since 10.8.0
 	 */
-	public function executeStatement($query, array $params = [], array $types = []);
+	public function executeStatement($query, array $params = [], array $types = []): int;
 
 	/**
 	 * Used to get the id of the just inserted element

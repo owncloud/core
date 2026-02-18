@@ -226,7 +226,7 @@ class MigratorTest extends \Test\TestCase {
 
 		$migrator->migrate($schema);
 
-		$schemaManager = $this->connection->getSchemaManager();
+		$schemaManager = $this->connection->createSchemaManager();
 		$actualSchema = $schemaManager->createSchema();
 
 		// Oracle might change casing if double quotes were missing, so verify
@@ -253,7 +253,7 @@ class MigratorTest extends \Test\TestCase {
 
 		$migrator->migrate($schema);
 
-		$schemaManager = $this->connection->getSchemaManager();
+		$schemaManager = $this->connection->createSchemaManager();
 		$actualSchema = $schemaManager->createSchema();
 
 		// Oracle might change casing if double quotes were missing, so verify

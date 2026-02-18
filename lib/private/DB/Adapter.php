@@ -69,7 +69,7 @@ class Adapter {
 	 */
 	public function lockTable($tableName) {
 		$this->conn->beginTransaction();
-		$this->conn->executeUpdate('LOCK TABLE `' .$tableName . '` IN EXCLUSIVE MODE');
+		$this->conn->executeStatement('LOCK TABLE `' .$tableName . '` IN EXCLUSIVE MODE');
 	}
 
 	/**
@@ -113,7 +113,7 @@ class Adapter {
 		}
 		$query = \substr($query, 0, \strlen($query) - 5);
 		$query .= ' HAVING COUNT(*) = 0';
-		return $this->conn->executeUpdate($query, $inserts);
+		return $this->conn->executeStatement($query, $inserts);
 	}
 
 	/**

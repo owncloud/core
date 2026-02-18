@@ -182,7 +182,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param array                                       $types  The types the previous parameters are in.
 	 * @param \Doctrine\DBAL\Cache\QueryCacheProfile|null $qcp    The query cache profile, optional.
 	 *
-	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
+	 * @return Result The executed statement.
 	 *
 	 * @throws \Doctrine\DBAL\Exception
 	 */
@@ -212,9 +212,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @deprecated since 10.8.0
 	 */
 	public function executeUpdate($query, array $params = [], array $types = []) : int {
-		$query = $this->replaceTablePrefix($query);
-		$query = $this->adapter->fixupStatement($query);
-		return parent::executeUpdate($query, $params, $types);
+		return $this->executeStatement($query, $params, $types);
 	}
 
 	/**
@@ -233,7 +231,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * @since 10.8.0
 	 */
-	public function executeStatement($query, array $params = [], array $types = []) {
+	public function executeStatement($query, array $params = [], array $types = []): int {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeStatement($query, $params, $types);
@@ -397,7 +395,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 */
 	public function dropTable($table) {
 		$table = $this->tablePrefix . \trim($table);
-		$schema = $this->getSchemaManager();
+		$schema = $this->createSchemaManager();
 		if ($schema->tablesExist([$table])) {
 			$schema->dropTable($table);
 		}
@@ -411,7 +409,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 */
 	public function tableExists($table) {
 		$table = $this->tablePrefix . \trim($table);
-		$schema = $this->getSchemaManager();
+		$schema = $this->createSchemaManager();
 		return $schema->tablesExist([$table]);
 	}
 

@@ -143,7 +143,7 @@ class MigrationService {
 		$table->setPrimaryKey([
 			$this->connection->getDatabasePlatform()->quoteIdentifier('app'),
 			$this->connection->getDatabasePlatform()->quoteIdentifier('version')]);
-		$this->connection->getSchemaManager()->createTable($table);
+		$this->connection->createSchemaManager()->createTable($table);
 
 		$this->migrationTableCreated = true;
 

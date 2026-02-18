@@ -113,7 +113,7 @@ class Migrator {
 			}
 			return str_starts_with($asset, $prefix);
 		});
-		return $this->connection->getSchemaManager()->createSchema();
+		return $this->connection->createSchemaManager()->createSchema();
 	}
 
 	/**
@@ -142,7 +142,7 @@ class Migrator {
 			}
 			return str_starts_with($asset, $prefix);
 		});
-		$sourceSchema = $connection->getSchemaManager()->createSchema();
+		$sourceSchema = $connection->createSchemaManager()->createSchema();
 
 		// remove tables we don't know about
 		/** @var $table \Doctrine\DBAL\Schema\Table */

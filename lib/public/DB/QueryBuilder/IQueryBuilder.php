@@ -119,11 +119,28 @@ interface IQueryBuilder {
 	/**
 	 * Executes this query using the bound parameters and their types.
 	 *
-	 * Uses {@see Connection::executeQuery} for select statements and {@see Connection::executeUpdate}
+	 * @return Result
+	 * @since 10.16.0
+	 */
+	public function executeQuery(): Result;
+
+	/**
+	 * Executes this query using the bound parameters and their types.
+	 *
+	 * @return int
+	 * @since 10.16.0
+	 */
+	public function executeStatement(): int;
+
+	/**
+	 * Executes this query using the bound parameters and their types.
+	 *
+	 * Uses {@see Connection::executeQuery} for select statements and {@see Connection::executeStatement}
 	 * for insert, update and delete statements.
 	 *
 	 * @return Result|int|string
 	 * @since 8.2.0
+	 * @deprecated 10.16.0 use executeQuery() or executeStatement()
 	 */
 	public function execute();
 
