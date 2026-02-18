@@ -209,7 +209,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			}
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		// query for shared calendars
 		$principals = $this->principalBackend->getGroupMembership($principalUriOriginal, true);
@@ -261,7 +261,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				$calendars[$calendar['id']] = $calendar;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return \array_values($calendars);
 	}
@@ -309,7 +309,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			}
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return \array_values($calendars);
 	}
@@ -364,7 +364,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				$calendars[$calendar['id']] = $calendar;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return \array_values($calendars);
 	}
@@ -395,7 +395,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 
 		$row = $result->fetch(\PDO::FETCH_ASSOC);
 
-		$result->closeCursor();
+		$result->free();
 
 		if ($row === false) {
 			throw new NotFound('Node with name \'' . $uri . '\' could not be found');
@@ -450,7 +450,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt = $query->execute();
 
 		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
-		$stmt->closeCursor();
+		$stmt->free();
 		if ($row === false) {
 			return null;
 		}
@@ -494,7 +494,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt = $query->execute();
 
 		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
-		$stmt->closeCursor();
+		$stmt->free();
 		if ($row === false) {
 			return null;
 		}
@@ -784,7 +784,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 					'classification' => (int)$row['classification']
 				];
 			}
-			$stmt->closeCursor();
+			$stmt->free();
 			return $result;
 		}
 		$chunks = \array_chunk($uris, $chunkSize);
@@ -1645,7 +1645,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			->execute();
 
 		$row = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 		return $row ? \reset($row) : false;
 	}
 

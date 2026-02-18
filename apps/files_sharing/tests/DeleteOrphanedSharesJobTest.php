@@ -116,7 +116,7 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		while ($row = $result->fetch()) {
 			$shares[] = $row;
 		}
-		$result->closeCursor();
+		$result->free();
 		return $shares;
 	}
 

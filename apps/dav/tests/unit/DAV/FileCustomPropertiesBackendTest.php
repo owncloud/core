@@ -120,7 +120,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 				$this->maxId,
 			]
 		);
-		$deleteStatement->closeCursor();
+		$deleteStatement->free();
 	}
 
 	private function createTestNode($class) {

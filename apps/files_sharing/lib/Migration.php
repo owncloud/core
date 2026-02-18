@@ -73,7 +73,7 @@ class Migration {
 			}
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		if (\count($owners)) {
 			$this->updateOwners($owners);
@@ -192,7 +192,7 @@ class Migration {
 			->setMaxResults($n);
 		$result = $query->execute();
 		$shares = $result->fetchAll();
-		$result->closeCursor();
+		$result->free();
 
 		$ordered = [];
 		foreach ($shares as $share) {
@@ -215,7 +215,7 @@ class Migration {
 			->where($query->expr()->eq('id', $query->createNamedParameter($id)));
 		$result = $query->execute();
 		$share = $result->fetchAll();
-		$result->closeCursor();
+		$result->free();
 
 		return $share[0];
 	}

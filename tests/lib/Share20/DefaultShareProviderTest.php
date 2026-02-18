@@ -509,7 +509,7 @@ class DefaultShareProviderTest extends TestCase {
 
 		$cursor = $qb->execute();
 		$result = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		$this->assertEmpty($result);
 	}
@@ -542,7 +542,7 @@ class DefaultShareProviderTest extends TestCase {
 
 		$cursor = $qb->execute();
 		$result = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		$this->assertEmpty($result);
 	}
@@ -599,7 +599,7 @@ class DefaultShareProviderTest extends TestCase {
 
 		$cursor = $qb->execute();
 		$result = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		$this->assertEmpty($result);
 	}
@@ -2095,7 +2095,7 @@ class DefaultShareProviderTest extends TestCase {
 			->execute();
 
 		$shares = $stmt->fetchAll();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$this->assertCount(1, $shares);
 		$share2 = $shares[0];
@@ -2169,7 +2169,7 @@ class DefaultShareProviderTest extends TestCase {
 			->execute();
 
 		$shares = $stmt->fetchAll();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$this->assertCount(1, $shares);
 		$share2 = $shares[0];
@@ -2310,7 +2310,7 @@ class DefaultShareProviderTest extends TestCase {
 			->execute();
 
 		$shares = $stmt->fetchAll();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$this->assertCount(1, $shares);
 		$this->assertEquals($id, $shares[0]['id']);
@@ -2798,7 +2798,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame(1, (int)$shares[1]['permissions'], 'permissions adjusted from 0 to updated value from parent');
 		$this->assertSame(Share::STATE_REJECTED, (int)$shares[1]['accepted']);
 
-		$stmt->closeCursor();
+		$stmt->free();
 	}
 
 	public function testMoveCallsUpdateForRecipient() {
@@ -3048,7 +3048,7 @@ class DefaultShareProviderTest extends TestCase {
 			);
 		$cursor = $qb->execute();
 		$data = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		$this->assertCount($rowDeleted ? 0 : 1, $data);
 	}
@@ -3107,7 +3107,7 @@ class DefaultShareProviderTest extends TestCase {
 			);
 		$cursor = $qb->execute();
 		$data = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 		$this->assertCount($userGroupShareDeleted ? 0 : 1, $data);
 
 		$qb = $this->dbConn->getQueryBuilder();
@@ -3118,7 +3118,7 @@ class DefaultShareProviderTest extends TestCase {
 			);
 		$cursor = $qb->execute();
 		$data = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 		$this->assertCount($groupShareDeleted ? 0 : 1, $data);
 	}
 
@@ -3211,7 +3211,7 @@ class DefaultShareProviderTest extends TestCase {
 			->where($qb->expr()->in('id', $qb->createNamedParameter($ids, IQueryBuilder::PARAM_INT_ARRAY)))
 			->execute();
 		$data = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		$this->assertCount($shouldBeDeleted ? 0 : \count($ids), $data);
 	}
@@ -3269,7 +3269,7 @@ class DefaultShareProviderTest extends TestCase {
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id2)));
 		$cursor = $qb->execute();
 		$data = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		$this->assertCount($toDelete ? 0 : 1, $data);
 	}
